@@ -13,6 +13,10 @@ on:
       - 'tests/browser-smoke.mjs'
   workflow_dispatch:
 
+concurrency:
+  group: consolegames-mobile-validation
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
