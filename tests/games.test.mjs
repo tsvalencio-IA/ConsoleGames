@@ -266,3 +266,18 @@ test("câmera de ping-pong respeita resolução do vídeo, posição e vetor do 
  assert(js.includes("ctx.rotate(isPlayer&&!this.useMouse"));
  assert(js.includes("tennis_calib_v15"),"Configurações antigas preservadas");
 });
+test("regressões: câmera do tênis não pode ser pulada por toque, tela escala coordenadas",()=>{
+  const game=read("games/tenis/js/game_tennis.js");
+  assert(game.includes("canvas.width/rect.width"),"Direção horizontal sem escala CSS/Canvas");
+  assert(game.includes("canvas.height/rect.height"),"Direção vertical sem escala CSS/Canvas");
+  assert(!game.includes("else if (this.state.startsWith('CALIB')) { this.isOnline = false; this.useMouse = true;"),"Calibração foi pulada");
+  assert(game.includes("const mappedX=(point)=>640*(1-Number(point.x)/videoW)"),"Espelho de câmera frontal ausente");
+});
+test("regressões: avião não pula calibração e Família preserva os botões nativos",()=>{
+  const flight=read("games/voo/js/game_flight.js");
+  assert(!flight.includes("} else if (self.state === 'CALIBRATION') {\n                            self.timer = 0;"),"Toque pula calibração de voo");
+  assert(flight.includes("target.closest('#game-canvas')"),"Controles externos atingem handler nativo de voo");
+  const world=read("games/familia/3d/console-world.js");
+  assert(!world.includes('parent.appendChild(link);'),"Link extra inserido na barra original");
+  assert(read("games/familia/3d/studio-world.css").includes("#overlay .panel #studio-world-sound"),"FX fora do menu");
+});

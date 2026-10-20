@@ -95,13 +95,19 @@
             const handlePointer = (e) => {
                 const rect = window.System.canvas.getBoundingClientRect(); let cx = e.clientX; let cy = e.clientY;
                 if (e.touches && e.touches.length > 0) { cx = e.touches[0].clientX; cy = e.touches[0].clientY; }
-                if (cx !== undefined && cy !== undefined) { this.mouseX = cx - rect.left; this.mouseY = cy - rect.top; }
+                if (Number.isFinite(cx) && Number.isFinite(cy) && rect.width>0 && rect.height>0) {
+                    // Pointer coordinates must be converted from CSS pixels to the
+                    // internal canvas resolution, especially on portrait phones.
+                    const canvas=window.System.canvas;
+                    this.mouseX=MathCore.clamp((cx-rect.left)*(canvas.width/rect.width),0,canvas.width);
+                    this.mouseY=MathCore.clamp((cy-rect.top)*(canvas.height/rect.height),0,canvas.height);
+                }
             };
             window.System.canvas.onmousemove = handlePointer; window.System.canvas.ontouchstart = handlePointer;
             window.System.canvas.ontouchmove = (e) => { handlePointer(e); if (this.useMouse && e.cancelable) e.preventDefault(); };
             window.System.canvas.onclick = (e) => {
                 const h = window.System.canvas.height; const rect = window.System.canvas.getBoundingClientRect();
-                let cy = e.clientY; if (e.touches && e.touches.length > 0) cy = e.touches[0].clientY; const my = cy - rect.top;
+                let cy = e.clientY; if (e.touches && e.touches.length > 0) cy = e.touches[0].clientY; const my = (cy - rect.top) * (window.System.canvas.height / Math.max(1,rect.height));
 
                 if (this.state === 'MODE_SELECT') {
                     if (my >= h * 0.25 && my <= h * 0.25 + 50) { this.requestCameraMode(false); } 
@@ -110,7 +116,11 @@
                     else if (my >= h * 0.70 && my <= h * 0.70 + 50) { this.isOnline = !!window.DB; this.useMouse = true; this.handedness = 'right'; if (!this.isOnline) { if(window.System.msg) window.System.msg("SEM INTERNET/FIREBASE"); return; } this.connectMultiplayer(); }
                     this.calibTimer = 0; this.sfx('click');
                 } 
-                else if (this.state.startsWith('CALIB')) { this.isOnline = false; this.useMouse = true; this.handedness = 'right'; this.startGame(); }
+                else if (this.state.startsWith('CALIB')) {
+                    // Do not silently switch away from camera just because a user
+                    // touches the screen while calibrating. Camera mode requires
+                    // actual wrist tracking until the two corners are confirmed.
+                }
                 else if (this.state === 'SERVE' && this.useMouse && this.server === 'p1') { this.p1.vx = 0; this.p1.vy = -100; this.executeAimAssistHit('p1', 0, 0, 200); }
                 else if (this.state === 'LOBBY') { if (this.isHost) { const pCount = Object.keys(this.remotePlayersData || {}).length; if (pCount >= 2) { this.roomRef.update({ gameState: 'STARTING' }); this.startGame(); this.sfx('coin'); } } }
                 else if (this.state === 'END') { this.init(); }
