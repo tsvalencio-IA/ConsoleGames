@@ -94,6 +94,7 @@ try{
       await page.waitForFunction(()=>window.Games.find(g=>g.id==="drive").logic.state==="RACE",{},{timeout:6500});
       for(const name of ["left","right","go","brake","nitro","item"]){
         const button=page.locator('.kart-input [data-control="'+name+'"]');
+        await button.waitFor({state:"visible",timeout:5000});
         assert.equal(await button.isVisible(),true,"Botão ausente na corrida: "+name);
         const rect=await button.boundingBox();
         assert(rect && rect.x>=-2 && rect.x+rect.width<=viewport.width+2,"Botão saiu da tela: "+name);
