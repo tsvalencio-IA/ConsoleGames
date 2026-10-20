@@ -171,7 +171,8 @@
       renderProgress();
     }
     lastActive=id;
-    UI.top.hidden=false;UI.target.hidden=false;
+    // Kart keeps only its native lap/rank/speed HUD while racing.
+    UI.top.hidden=id==="drive";UI.target.hidden=id==="drive";
     // Native tennis doesn't call System.gameOver; end state + real score are trusted.
     if(id==="tennis"){
       const obj=g.logic;
