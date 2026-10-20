@@ -16,7 +16,7 @@ function init(){
  const bar=create("div");
  bar.id="world-console-toolbar";
  const back=create("a","console-world-link","← Console");
- back.href=mode==="familia"?"../../":"../../";
+ back.href=mode==="familia"?"../../../":"../../";
  back.title="Voltar ao console thIAguinho";
  back.setAttribute("aria-label","Voltar ao console de jogos");
  const summary=create("div","console-world-status");
@@ -28,7 +28,7 @@ function init(){
    const parent=$("#bar .topRight");
    if(parent){
      const link=create("a","console-world-link","Console");
-     link.href="../../";
+     link.href="../../../";
      link.style.cssText="min-height:34px;padding:6px 8px;font-size:10px";
      parent.appendChild(link);
    }
@@ -43,6 +43,7 @@ function init(){
  }
  function refresh(){
    if(mode==="familia"){
+      bar.hidden=true; // native world already has counters and top menu
       const star=parseInt($("#stars")?.textContent||"",10);
       const medal=parseInt($("#medals")?.textContent||"",10);
       if(Number.isFinite(star)&&Number.isFinite(medal)){
@@ -52,6 +53,7 @@ function init(){
    }else{
       const lobby=$("#lobby");
       const visible=lobby&&!lobby.hidden&&lobby.classList.contains("active");
+      bar.hidden=!visible;
       if(visible){
         const level=$("#lobbyLevel")?.textContent?.trim();
         const medals=$("#lobbyMedals")?.textContent?.trim();
