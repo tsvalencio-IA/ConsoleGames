@@ -1,77 +1,49 @@
-/* =================================================================
-   SERVICE WORKER - PWA INSTALLER
-   Este script transforma o jogo num App instalável e gere o cache
-   das tuas páginas e scripts (ignorando o Firebase para não quebrar o multiplayer).
-   ================================================================= */
-
-const CACHE_NAME = 'thiaguinho-wii-v1';
-
-// Lista de ficheiros do teu projeto que devem ser guardados offline
-// NOTA: Colocamos aqui os scripts que indicaste ter.
-const ASSETS_TO_CACHE = [
-    './',
-    './index.html',
-    './manifest.json',
-    './icon.svg',
-    './js/core.js',
-    './js/admin.js',
-    './js/game_kart.js',
-    './js/game_run.js',
-    './js/game_box.js',
-    './js/game_flight.js',
-    './js/game_tennis.js',
-    './js/game_ar.js'
-];
-
-// 1. Evento de Instalação: Guarda os ficheiros estáticos no cache
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] A fazer cache dos ficheiros da App');
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
-    );
-    self.skipWaiting(); // Força a ativação imediata
+/* thIAguinho ARCADE — ar: cache privado, versão atual primeiro.
+    Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
+"use strict";
+const PREFIX="thia-arcade-ar-";
+const CACHE=PREFIX+"controls-v3";
+const FILES=["./","./index.html","./manifest.json","./icon.svg",
+"./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
+"./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
+"./control-modes.js","./control-modes.css"];
+self.addEventListener("install",event=>{
+  event.waitUntil(caches.open(CACHE).then(async cache=>{
+    await Promise.all(FILES.map(async path=>{
+      try{
+        const response=await fetch(new Request(path,{cache:"reload"}));
+        if(response.ok)await cache.put(path,response);
+      }catch(error){ /* offline: next online load fills the cache */ }
+    }));
+    await self.skipWaiting();
+  }));
 });
-
-// 2. Evento de Ativação: Limpa caches antigos se mudares a versão (CACHE_NAME)
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((keyList) => {
-            return Promise.all(keyList.map((key) => {
-                if (key !== CACHE_NAME) {
-                    console.log('[Service Worker] A remover cache antigo:', key);
-                    return caches.delete(key);
-                }
-            }));
-        })
-    );
-    self.clients.claim();
+self.addEventListener("activate",event=>{
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(key=>key.startsWith(PREFIX)&&key!==CACHE).map(key=>caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
-
-// 3. Evento Fetch: Interceta pedidos da rede
-self.addEventListener('fetch', (event) => {
-    // Ignora pedidos que não sejam GET e ignora domínios externos 
-    // (Isto é VITAL para não bloquear as chamadas do Firebase, TensorFlow e Auth)
-    if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
-        return;
+self.addEventListener("fetch",event=>{
+  const req=event.request;
+  if(req.method!=="GET")return;
+  const url=new URL(req.url);
+  const scope=new URL(self.registration.scope);
+  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
+  event.respondWith((async()=>{
+    const cache=await caches.open(CACHE);
+    try{
+      const response=await fetch(req);
+      if(response.ok && (url.pathname.endsWith(".js")||url.pathname.endsWith(".css")||url.pathname.endsWith(".html")||req.mode==="navigate")){
+        event.waitUntil(cache.put(req,response.clone()));
+      }
+      return response;
+    }catch(error){
+      const hit=await cache.match(req);
+      if(hit)return hit;
+      if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
+      return Response.error();
     }
-
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            // Estratégia Stale-While-Revalidate: Devolve o cache imediatamente (rápido),
-            // mas vai à internet buscar a versão mais recente para atualizar o cache em background.
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, networkResponse.clone());
-                });
-                return networkResponse;
-            }).catch(() => {
-                // Se estiver offline e a rede falhar, não faz nada (já devolvemos o cache)
-                console.log('[Service Worker] Offline, a usar versão em cache.');
-            });
-
-            return cachedResponse || fetchPromise;
-        })
-    );
+  })());
 });
