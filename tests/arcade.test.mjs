@@ -12,7 +12,7 @@ const sw=read("arcade/sw.js");
 
 test("app ARCADE tem link, ID, nome, escopo e inicialização próprios",()=>{
   assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
-  assert.equal(arcadeManifest.scope,"/ConsoleGames/arcade/");
+  assert.equal(arcadeManifest.scope,"/ConsoleGames/");
   assert(arcadeManifest.start_url.startsWith(arcadeManifest.scope));
   assert.notEqual(arcadeManifest.id,oldManifest.id);
   assert.notEqual(arcadeManifest.name,oldManifest.name);
@@ -54,4 +54,15 @@ test("Firebase OTThi é idêntico entre console raiz e app ARCADE",()=>{
   assert(arcadeManifest.icons.some(icon=>icon.sizes==="192x192"&&icon.type==="image/png"));
   assert(arcadeManifest.icons.some(icon=>icon.sizes==="512x512"&&icon.type==="image/png"));
   assert(sw.includes("./icon-192.png")&&sw.includes("./icon-512.png"));
+});
+
+test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
+ for(const name of ["kart","boxe","tenis","ar","voo"]){
+  assert(read("games/"+name+"/arcade-enhancements.js").includes('back.href="../../arcade/"'));
+  assert(read("games/"+name+"/arcade-pause.js").includes('href="../../arcade/" data-action="exit"'));
+ }
+ assert(read("games/otthi/console-world.js").includes('link.href="../../arcade/"'));
+ assert(read("games/familia/console-world.js").includes('link.href="../../../arcade/"'));
+ assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
+ assert.equal(arcadeManifest.scope,"/ConsoleGames/");
 });

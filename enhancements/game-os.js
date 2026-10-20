@@ -73,7 +73,7 @@
     if(menu){
       const back=elt("a","","← Console");
       back.className="arcade-return";
-      back.href="../../";
+      back.href="../../arcade/";
       back.setAttribute("aria-label","Voltar ao console de jogos");
       menu.appendChild(back);
     }
@@ -81,7 +81,7 @@
     if(authScreen){
       const back=elt("a","","← Voltar ao console");
       back.className="arcade-return";
-      back.href="../../";
+      back.href="../../arcade/";
       authScreen.appendChild(back);
     }
     renderProgress();

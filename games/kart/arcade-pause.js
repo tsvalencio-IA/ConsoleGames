@@ -10,7 +10,7 @@ function init(){
   const modal=document.createElement("section");
   modal.id="arcade-pause-modal";modal.hidden=true;modal.setAttribute("role","dialog");
   modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","arcade-pause-title");
-  modal.innerHTML='<div class="arcade-pause-panel"><span class="arcade-pause-kicker">thIAguinho ARCADE</span><h2 id="arcade-pause-title">PARTIDA PAUSADA</h2><p>Descanse e volte para a aventura quando quiser.</p><div class="arcade-pause-actions"><button type="button" data-action="continue">▶ CONTINUAR</button><button type="button" data-action="phases">◈ ESCOLHER FASE</button><a href="../../" data-action="exit">⌂ VOLTAR AO CONSOLE</a></div><p class="arcade-pause-note">Seu progresso original permanece com o jogo.</p></div>';
+  modal.innerHTML='<div class="arcade-pause-panel"><span class="arcade-pause-kicker">thIAguinho ARCADE</span><h2 id="arcade-pause-title">PARTIDA PAUSADA</h2><p>Descanse e volte para a aventura quando quiser.</p><div class="arcade-pause-actions"><button type="button" data-action="continue">▶ CONTINUAR</button><button type="button" data-action="phases">◈ ESCOLHER FASE</button><a href="../../arcade/" data-action="exit">⌂ VOLTAR AO CONSOLE</a></div><p class="arcade-pause-note">Seu progresso original permanece com o jogo.</p></div>';
   stage.appendChild(pause);document.body.appendChild(modal);
   let lastFocus=null;
   function recoverClock(){

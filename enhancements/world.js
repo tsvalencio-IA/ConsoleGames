@@ -16,7 +16,7 @@ function init(){
  const bar=create("div");
  bar.id="world-console-toolbar";
  const back=create("a","console-world-link","← Console");
- back.href=mode==="familia"?"../../../":"../../";
+ back.href=mode==="familia"?"../../../arcade/":"../../arcade/";
  back.title="Voltar ao console thIAguinho";
  back.setAttribute("aria-label","Voltar ao console de jogos");
  const summary=create("div","console-world-status");
@@ -28,7 +28,7 @@ function init(){
    const parent=$("#bar .topRight");
    if(parent){
      const link=create("a","console-world-link","Console");
-     link.href="../../../";
+     link.href="../../../arcade/";
      link.style.cssText="min-height:34px;padding:6px 8px;font-size:10px";
      parent.appendChild(link);
    }
@@ -37,7 +37,7 @@ function init(){
    const hero=$("#lobby .hero-actions");
    if(hero){
      const link=create("a","console-world-link","← Todos os jogos");
-     link.href="../../";
+     link.href="../../arcade/";
      hero.appendChild(link);
    }
  }
