@@ -10,7 +10,7 @@ Console independente para reunir os jogos dos repositórios **[OTThi-World3](htt
 - Abertura dos jogos em novas abas para preservar o contexto original de cada aplicação (controles, câmera, permissões, autenticação e salvamento).
 - Identidade visual própria, navegação para computador/celular, acessibilidade básica, ícone, manifesto e PWA do **console**.
 - Consulta **somente leitura** do perfil/progresso existente em **Firebase OTThi** (projeto `otthi-656c5`) após autenticação por e-mail/senha **quando o provedor Firebase Authentication estiver habilitado**. A configuração pública foi espelhada do `OTThi-World3/firebase-config.js`.
-- Testes estáticos automatizados e fluxo de publicação via GitHub Actions.
+- Testes estáticos automatizados em GitHub Actions; publicação existente via GitHub Pages a partir de main.
 
 **O console não transfere contas ou progresso entre projetos diferentes, nem cria saldos, moedas, conquistas ou jogos fictícios.** A conta do `GAME` usa outro projeto Firebase (`thiaguinhogame-ac91b`). O `hq` usa armazenamento local. Favoritos do console também são locais.
 
@@ -32,10 +32,10 @@ Os cinco jogos do `GAME` foram verificados como registros em `js/game_kart.js`, 
 
 ## Publicar
 
-1. No GitHub, abra **ConsoleGames → Settings → Pages**.
-2. Em **Build and deployment → Source**, selecione **GitHub Actions**. Não exclua conteúdos do repositório.
-3. Abra **Actions → Validar e publicar console** e verifique os jobs `validar` e `publicar`.
-4. Se os jobs passarem, a URL esperada do console é **https://tsvalencio-ia.github.io/ConsoleGames/**. Não considere a implantação concluída sem sucesso no job de publicação e teste do endereço.
+1. O repositório já utiliza publicação **GitHub Pages a partir do branch** e possui execuções bem-sucedidas de `pages build and deployment`. Não é necessário trocar esse método.
+2. Confirme em **ConsoleGames → Settings → Pages** que a fonte é `Deploy from a branch`, branch `main` e pasta `/ (root)`.
+3. Abra **Actions** e confira os fluxos independentes **Verificar console** (testes) e **pages build and deployment** (publicação).
+4. A URL de publicação é **https://tsvalencio-ia.github.io/ConsoleGames/**. Confirme ambos os fluxos aprovados na revisão atual e teste o endereço num navegador; sucesso de deploy sozinho não prova os jogos internos.
 
 Se ainda não estiverem publicados, habilite as páginas dos outros projetos, em seus respectivos repositórios, sem alterar seu código.
 
