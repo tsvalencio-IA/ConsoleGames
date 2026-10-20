@@ -22,8 +22,11 @@ for(const name of ["studio-world.js","studio-world.css","quest-chapter.js","cons
  const hqSw=readFileSync(world+"sw.js","utf8");
  assert(hqSw.includes("'./"+name+"'"),"HQ PWA lacks "+name);
 }
-assert(readFileSync("games/familia/3d/sw.js","utf8").includes("universo-thiaguinho-3d-pwa-v6"));
+assert(readFileSync("games/familia/3d/sw.js","utf8").includes("universo-thiaguinho-3d-pwa-v7"));
 console.log("PWA SHA-256 verified:",verified,"OTThi release assets. HQ 3D local offline resources: 5.");
 
 assert(readFileSync("games/familia/3d/index.html","utf8").includes('src="./gamepad-support.js"'));
 assert(readFileSync("games/familia/3d/sw.js","utf8").includes("'./gamepad-support.js'"));
+
+assert(readFileSync('games/familia/3d/index.html','utf8').includes('__HQ_RENDER_SCALE'));
+assert(readFileSync('games/familia/3d/sw.js','utf8').includes("'./adaptive-quality.js'"));

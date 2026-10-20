@@ -1,9 +1,9 @@
 /* Instalação web do Universo thIAguinho 3D. Não altera estado nem jogabilidade. */
-const CACHE = 'universo-thiaguinho-3d-pwa-v6';
+const CACHE = 'universo-thiaguinho-3d-pwa-v7';
 const ASSETS = [
   './', './index.html', './manifest.webmanifest',
   './mascotes-3d.js', './acoes-visuais.js', './acoes-visuais.css',
-  './console-world.css', './console-world.js', './quest-chapter.js', './studio-world.css', './studio-world.js', './gamepad-support.js',
+  './console-world.css', './console-world.js', './quest-chapter.js', './studio-world.css', './studio-world.js', './gamepad-support.js','./adaptive-quality.js',
   './troca-bateria.js', './troca-bateria.css', './mascotes_aprovados.webp',
   './icons/mascotes-reais-192.png', './icons/mascotes-reais-512.png', './icons/mascotes-reais-maskable-512.png'
 ];
