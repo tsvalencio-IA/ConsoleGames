@@ -44,7 +44,7 @@ try{
   });
   const page=await context.newPage();
   const appErrors=[];
-  page.on("pageerror",error=>appErrors.push(error.message));
+  page.on("pageerror",error=>appErrors.push(error.stack || error.message));
   try{
     await page.goto(base+slug+"/",{waitUntil:"domcontentloaded",timeout:35000});
     await page.waitForFunction(id=>window.Games?.some(game=>game.id===id)&&window.System?.canvas,id,{timeout:15000});
@@ -55,7 +55,7 @@ try{
     });
     const phases=page.locator("#phase-grid .mission-card:not(.locked)");
     await phases.first().click({timeout:10000});
-    await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:18000});
+    await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:11000});
     await page.waitForTimeout(1100);
     const state=await page.evaluate(()=>({
       game:window.System?.activeGame?.id,
@@ -80,7 +80,10 @@ try{
     const fatal=appErrors.filter(v=>/uncaught|cannot read properties|is not a function|referenceerror/i.test(v));
     assert.equal(fatal.length,0,"Erros fatais no motor: "+fatal.join(" | "));
     completed++;
-  }catch(error){failures.push({slug,message:String(error),pageErrors:appErrors.slice(0,6)});}
+  }catch(error){
+    const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
+    failures.push({slug,message:String(error),diagnostic,pageErrors:appErrors.slice(0,6)});
+  }
   await context.close();
  }
 }finally{await browser.close()}
