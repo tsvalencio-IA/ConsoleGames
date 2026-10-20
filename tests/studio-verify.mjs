@@ -14,11 +14,14 @@ for(const [slug,id,source] of five){
  const js=read(root+"studio-fx.js");
  assert(js.includes("ctx.createRadialGradient"),slug+" missing genuine canvas light pass");
  assert(js.includes("AudioContext"),slug+" missing audio synthesis");
+ assert(html.includes('src="./studio-scenes.js"'),slug+" missing scene enhancement");
+ assert(read(root+"studio-scenes.js").includes("logic[method]=function"),slug+" scene module not wired to native renderer");
+ execFileSync(process.execPath,["--check",root+"studio-scenes.js"]);
  assert(js.includes("track(this)"),slug+" feedback not bound to game engine");
  assert(js.includes("localStorage.setItem(storageKey"),slug+" no sound preference");
  assert(!js.includes("window.DB.ref(")&&!js.includes("firebase.database("),slug+" touches player data");
  const sw=read(root+"sw.js");
- assert(sw.includes('studio-fx.js')&&sw.includes('studio-v4'),slug+" stale cache");
+ assert(sw.includes('studio-scenes.js')&&sw.includes('studio-v5'),slug+" stale cache");
  assert(read(root+"js/"+source).includes("registerGame('"+id+"'"));
  execFileSync(process.execPath,["--check",root+"studio-fx.js"]);
  count++;
