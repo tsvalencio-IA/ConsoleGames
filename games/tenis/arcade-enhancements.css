@@ -1,0 +1,64 @@
+/* ConsoleGames • GAME Mobile / Arcade. A tela fica dentro dos limites físicos
+   e das áreas seguras, sem alterar o canvas ou os IDs de Firebase. */
+:root{--arcade-safe-t:env(safe-area-inset-top,0px);--arcade-safe-b:env(safe-area-inset-bottom,0px);--arcade-safe-l:env(safe-area-inset-left,0px);--arcade-safe-r:env(safe-area-inset-right,0px);--arcade-accent:#65e7f3}
+html,body{width:100%;max-width:100%;height:100%;max-height:100dvh;overflow:hidden;overscroll-behavior:none}
+#game-canvas{display:block;width:100dvw!important;height:100dvh!important;max-width:100%;max-height:100%;touch-action:none}
+#auth-screen,#menu-screen,#phase-screen,#screen-over{min-height:0!important;max-height:100dvh!important;max-width:100dvw!important;padding:max(9px,var(--arcade-safe-t)) max(12px,var(--arcade-safe-r)) max(10px,var(--arcade-safe-b)) max(12px,var(--arcade-safe-l))!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:contain}
+#menu-screen .wii-header{width:min(100%,860px)!important;flex-shrink:0;margin-bottom:7px!important;padding-bottom:7px!important}
+#menu-screen .channel-grid{width:min(100%,860px)!important;max-width:100%;flex:1;min-height:0;align-content:center;overflow-y:auto;overflow-x:hidden}
+#menu-screen .wii-footer{width:min(100%,860px)!important;flex-shrink:0}
+#phase-screen .mission-grid{width:min(100%,920px)!important;max-width:100%;min-height:0;overflow-y:auto}
+#phase-screen .mission-card{min-width:0;max-width:100%;box-sizing:border-box}
+#game-ui .hud-score-box{position:fixed!important;top:max(8px,var(--arcade-safe-t))!important;left:max(8px,var(--arcade-safe-l))!important;display:flex;flex-direction:column;gap:1px;max-width:min(30vw,130px);padding:7px 10px!important;line-height:1.1;z-index:40!important;box-sizing:border-box;border-radius:12px!important}
+#game-ui .hud-score-box>span:first-child{font-size:clamp(8px,1.8vw,11px)!important}
+#hud-score{font-size:clamp(17px,4.2vw,28px)!important;max-width:100%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+#game-ui .home-btn{position:fixed!important;top:max(8px,var(--arcade-safe-t))!important;right:max(8px,var(--arcade-safe-r))!important;width:clamp(37px,8.5vw,48px)!important;height:clamp(37px,8.5vw,48px)!important;font-size:clamp(15px,3.7vw,21px)!important;z-index:75!important}
+#game-msg{max-width:calc(100vw - 34px)!important;font-size:clamp(13px,3.5vw,22px)!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:center}
+#screen-over .results-container{width:min(100%,510px)!important;max-width:100%!important;padding:clamp(12px,4vw,28px)!important}
+#screen-over .stats-grid{max-width:100%}
+#screen-over .stat-box{min-width:0;overflow:hidden}
+#screen-over .stat-val{overflow-wrap:anywhere;font-size:clamp(16px,4.5vw,30px)!important}
+#auth-screen .auth-box{max-width:min(400px,100%)!important}
+#auth-screen .auth-buttons{max-width:100%}
+#auth-screen .wii-input{font-size:16px!important}
+.channel-grid .channel{max-width:100%;min-width:0}
+.channel-grid .channel-title{overflow-wrap:anywhere}
+#arcade-topline{position:fixed;left:50%;top:max(9px,var(--arcade-safe-t));transform:translateX(-50%);max-width:min(46vw,330px);min-width:0;z-index:68;pointer-events:none;border-radius:14px;padding:8px 11px;background:rgba(5,12,29,.78);backdrop-filter:blur(7px);border:1px solid rgba(125,231,255,.28);box-shadow:0 9px 23px #0005;color:#e6faff;text-align:center;line-height:1.3}
+#arcade-topline strong{display:block;font-size:clamp(10px,2.1vw,12px);font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#arcade-topline small{font-size:clamp(9px,1.7vw,11px);color:#add2ed}
+#arcade-topline[hidden],#arcade-target[hidden],#arcade-menu-card[hidden]{display:none!important}
+#arcade-target{position:fixed;bottom:max(9px,var(--arcade-safe-b));left:50%;transform:translateX(-50%);z-index:68;background:rgba(5,12,29,.76);border:1px solid #73dcff5a;border-radius:100px;color:#e6f9ff;font-size:11px;font-weight:750;padding:8px 13px;max-width:calc(100vw - 42px);text-overflow:ellipsis;white-space:nowrap;overflow:hidden;pointer-events:none}
+#arcade-menu-card{flex-shrink:0;width:min(94%,550px);margin:4px auto 10px;padding:12px 15px;background:linear-gradient(105deg,#16273c,#20244c);border:1px solid #4ba7cb66;border-radius:15px;box-sizing:border-box;color:#f1f8ff;text-align:left}
+#arcade-menu-card strong{font-size:clamp(12px,2.5vw,15px)}
+#arcade-menu-card p{color:#a9ccdd;font-size:clamp(10px,2vw,12px);margin:5px 0 0;line-height:1.4}
+#arcade-menu-card .arcade-meta{color:#79dfe7;font-weight:800;font-size:10px;letter-spacing:.5px}
+.arcade-return{position:fixed;z-index:180;left:max(7px,var(--arcade-safe-l));bottom:max(6px,var(--arcade-safe-b));padding:8px 10px;border:1px solid #82d9f65b;border-radius:10px;background:#071323c9;color:#e3faff;font-size:11px;font-weight:850;text-decoration:none}
+#menu-screen .arcade-return,#auth-screen .arcade-return{position:static;display:inline-flex;margin:4px 0}
+@media(max-width:740px){
+ #menu-screen .wii-title{font-size:clamp(13px,4vw,22px)!important}
+ #menu-screen .player-profile{max-height:54px;overflow:hidden}
+ #menu-screen .wii-footer{min-height:40px}
+ #phase-screen .mission-card{padding:clamp(9px,2.2vh,17px)!important}
+ #phase-screen .mission-card h2{font-size:clamp(13px,3.1vw,18px)!important}
+ #phase-screen .mission-card p{font-size:clamp(10px,2.2vw,13px)!important;line-height:1.3}
+ #phase-screen>h1{font-size:clamp(22px,5vw,32px)!important;margin-bottom:8px!important}
+ #phase-screen>.wii-oval-btn{margin-top:10px!important}
+ #screen-over .rank-stamp{font-size:clamp(45px,12vh,76px)!important}
+ #screen-over .results-container{padding:12px!important}
+ #screen-over .stat-title{font-size:9px!important}
+ #webcam{width:clamp(60px,14vw,95px)!important;bottom:max(54px,calc(var(--arcade-safe-b) + 48px))!important;right:max(8px,var(--arcade-safe-r))!important}
+}
+@media(max-height:560px) and (orientation:landscape){
+ #menu-screen .wii-header{padding-bottom:4px!important;margin-bottom:3px!important}
+ #menu-screen .player-profile{max-height:42px!important}
+ #menu-screen .wii-footer{max-height:36px}
+ #menu-screen .channel-grid{overflow-y:auto!important}
+ #phase-screen>h1{font-size:19px!important;margin:0 0 4px!important}
+ #phase-screen .mission-card{padding:8px!important}
+ #screen-over .rank-stamp{font-size:40px!important}
+ #screen-over .results-container{padding:8px!important}
+ #arcade-topline{padding:5px 7px}
+ #arcade-target{padding:5px 9px}
+}
+@media(max-width:390px){#arcade-topline{max-width:43vw}#arcade-topline strong{font-size:10px}#arcade-topline small{font-size:9px}#arcade-target{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#arcade-topline,#arcade-target{transition:none!important}}
