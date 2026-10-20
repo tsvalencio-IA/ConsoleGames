@@ -156,7 +156,12 @@ try{
         "Acelerador não movimenta o kart: "+JSON.stringify(driving));
       const left=page.locator('.kart-input [data-control="left"]');
       await left.dispatchEvent("pointerdown",{pointerId:22});
-      await page.waitForTimeout(240);
+      // SwiftShader can take >240 ms to produce a frame at 885x770 in CI.
+      // Wait for the game's REAL updatePhysics frame, not an arbitrary timer.
+      await page.waitForFunction(()=>{
+        const g=window.Games.find(x=>x.id==="drive")?.logic;
+        return g && g.targetSteer < -.3;
+      },null,{timeout:5000,interval:80}).catch(()=>{});
       const steeringState=await page.evaluate(()=>{
         const g=window.Games.find(x=>x.id==="drive").logic;
         const b=document.querySelector('.kart-input [data-control="left"]');
