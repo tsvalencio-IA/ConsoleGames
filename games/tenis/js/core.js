@@ -89,7 +89,7 @@ window.Auth = {
             };
             
             if(window.Games) {
-                window.Games.forEach(g => {
+                (window.Games || []).forEach(g => {
                     initialProfile.permissions[g.id] = (role === 'admin' || g.id === 'drive'); 
                 });
             }
