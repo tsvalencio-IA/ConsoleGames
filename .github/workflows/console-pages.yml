@@ -17,4 +17,4 @@ jobs:
         with:
           node-version: "22"
       - name: Conferir integridade estática
-        run: node --test tests/console.test.mjs
+        run: node --test tests/*.test.mjs
