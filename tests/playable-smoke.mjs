@@ -5,14 +5,14 @@ import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
 import {join} from "node:path";
 const base="http://127.0.0.1:4173/games/";
-const catalog=[["kart","drive"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
+const catalog=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
 const browser=await chromium.launch({headless:true,args:["--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
 try{
  for(const [slug,id,device] of catalog){
-  const viewport=device==="desktop-885"?{width:885,height:770}:{width:390,height:844};
-  const mobile=!device;
+  const viewport=device==="desktop-885"?{width:885,height:770}:device==="landscape-844"?{width:844,height:390}:{width:390,height:844};
+  const mobile=device!=="desktop-885";
   const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1});
   await context.addInitScript(()=>{
    const permitted={drive:true,box_pro:true,tennis:true,ar_truck_sim:true,usarmy_flight_sim:true};
@@ -99,6 +99,30 @@ try{
         const rect=await button.boundingBox();
         assert(rect && rect.x>=-2 && rect.x+rect.width<=viewport.width+2,"Botão saiu da tela: "+name);
       }
+      const geometry=await page.locator('.kart-input .input-control').evaluateAll(buttons=>{
+        const {innerWidth:w,innerHeight:h}=window;
+        return buttons.map(btn=>{
+          const r=btn.getBoundingClientRect();
+          return {id:btn.dataset.control,x:r.x,y:r.y,width:r.width,height:r.height,
+                  midX:r.left+r.width/2,visible:getComputedStyle(btn).display!=="none"};
+        });
+      });
+      for(const b of geometry){
+        assert(b.width>=44 && b.height>=44,"Área tátil pequena: "+JSON.stringify(b));
+        assert(b.x>=-1 && b.x+b.width<=viewport.width+1,"Controle fora da tela: "+JSON.stringify(b));
+        assert(b.y>=-1 && b.y+b.height<=viewport.height+1,"Controle cortado verticalmente: "+JSON.stringify(b));
+        if(["left","right"].includes(b.id))assert(b.midX<viewport.width*.45,"Direção não está no polegar esquerdo");
+        else assert(b.midX>viewport.width*.53,"Ação não está no polegar direito: "+b.id);
+      }
+      for(let i=0;i<geometry.length;i++)for(let j=i+1;j<geometry.length;j++){
+        const a=geometry[i],b=geometry[j];
+        const overlapX=Math.max(0,Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x));
+        const overlapY=Math.max(0,Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y));
+        assert(overlapX*overlapY<12,"Botões sobrepostos: "+a.id+" e "+b.id);
+      }
+      const goArea=geometry.find(x=>x.id==="go"),brakeArea=geometry.find(x=>x.id==="brake");
+      assert(goArea.width*goArea.height>brakeArea.width*brakeArea.height,"Acelerador deveria ser o pedal dominante");
+      assert.equal(await page.locator('.kart-control-pod').count(),2,"Faltam conjuntos ergonômicos");
       const run=page.locator('.kart-input [data-control="go"]');
       await run.dispatchEvent("pointerdown",{pointerId:21});
       await page.waitForTimeout(1250);
