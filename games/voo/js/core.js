@@ -77,7 +77,7 @@ window.Auth = {
             document.getElementById('loading').classList.remove('hidden');
             const cred = await window.AuthApp.createUserWithEmailAndPassword(window.Auth.getFakeEmail(user), pass);
             
-            const role = user.toLowerCase() === 'thiago' ? 'admin' : 'player';
+            const role = 'player'; // Novas contas não recebem privilégios por nome escolhido.
             
             const initialProfile = {
                 username: user,
