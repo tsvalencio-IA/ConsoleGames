@@ -222,6 +222,26 @@ try{
        assert.equal(await page.evaluate(()=>!!window.Games.find(x=>x.id==="usarmy_flight_sim").logic.keys.ArrowLeft),false,"Controle preso");
     }
 
+    if(slug==="tenis"){
+      const track=await page.evaluate(()=>{
+        const g=window.Games.find(g=>g.id==="tennis").logic;
+        const c=window.System.canvas,rect=c.getBoundingClientRect();
+        // CSS pixels and canvas pixels must yield the same racket direction.
+        g.useMouse=true;
+        c.onmousemove?.({clientX:rect.left+rect.width*.80,clientY:rect.top+rect.height*.45});
+        const touch={mouse:g.mouseX,expected:c.width*.80};
+        g.useMouse=false;g.handedness="right";g.calib={tlX:0,tlY:0,brX:640,brY:480};
+        const mk=x=>({keypoints:[{name:"right_wrist",x,y:240,score:.99},{name:"right_elbow",x:x-20,y:350,score:.99}]});
+        g.processPose(mk(500),c.width,c.height);
+        const left=g.p1.x;
+        g.processPose(mk(150),c.width,c.height);
+        const right=g.p1.x;
+        g.useMouse=true;
+        return {...touch,left,right};
+      });
+      assert(Math.abs(track.mouse-track.expected)<2,"Tênis não corrige escala CSS/Canvas: "+JSON.stringify(track));
+      assert(track.right>track.left+30,"Movimento do pulso espelhado não acompanha direção: "+JSON.stringify(track));
+    }
     if(slug==="boxe"){
       // The selection screen must lead to a REAL fight, not just a decorative menu.
       const game=page.locator("#game-canvas");
@@ -244,10 +264,18 @@ try{
       // Real touch START must advance HANGAR -> CALIBRATION -> PLAYING.
       const start=page.locator('[data-control="start"]');
       assert.equal(await page.evaluate(()=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state),"HANGAR");
-      for(const target of ["CALIBRATION","PLAYING"]){
-        await start.click({timeout:5000});
-        await page.waitForFunction(target=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state===target,target,{timeout:6500});
-      }
+      await start.click({timeout:5000});
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state==="CALIBRATION",null,{timeout:6500});
+      const flightCanvas=page.locator("#game-canvas");
+      await flightCanvas.dispatchEvent("pointerdown",{pointerId:53,clientX:120,clientY:140});
+      const calibration=await page.evaluate(()=>{
+        const g=window.Games.find(g=>g.id==="usarmy_flight_sim").logic;
+        return {state:g.state,timer:g.timer};
+      });
+      assert.equal(calibration.state,"CALIBRATION","Tocar na tela pulou a calibragem");
+      assert(calibration.timer>=4,"Tocar na tela zerou temporizador: "+JSON.stringify(calibration));
+      await start.click({timeout:5000});
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state==="PLAYING",null,{timeout:6500});
       const physics=await page.evaluate(()=>{
         const g=window.Games.find(x=>x.id==="usarmy_flight_sim").logic;
         return {state:g.state,shipSpeed:g.ship.speed,shipHP:g.ship.hp};
