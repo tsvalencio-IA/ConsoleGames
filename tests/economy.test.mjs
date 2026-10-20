@@ -32,7 +32,8 @@ test("a recompensa em memória usa aritmética numérica sem concatenar saldos",
   const reward=profile.addReward(1000,true,5);
   assert.equal(profile.coins,905,file+" deve somar 700+200+5");
   assert.equal(reward.coins,205);
-  assert.equal(profile.xp,2000);
+  assert.equal(profile.xp,1000);
+  assert.equal(profile.level,2);
   const previous=profile.coins;
   profile.addReward(NaN,false,NaN);
   assert.equal(profile.coins,previous,"pontuação inválida não pode inflar saldo");
