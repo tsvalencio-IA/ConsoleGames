@@ -1,0 +1,24 @@
+/* thIAguinho input modes: não invade o jogo, mantém acessibilidade mobile. */
+.input-mode-dialog{position:fixed;inset:0;z-index:1500;display:grid;place-items:center;padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgba(3,9,26,.94);backdrop-filter:blur(12px);overflow:auto;box-sizing:border-box}
+.input-mode-panel{width:min(100%,520px);max-height:100%;overflow:auto;box-sizing:border-box;padding:clamp(17px,4vw,31px);border:1px solid #73bde380;border-radius:23px;background:linear-gradient(140deg,#142c50,#151a38);color:#ecf9ff;text-align:center;box-shadow:0 15px 80px #000b}
+.input-mode-eyebrow{font-size:10px;letter-spacing:2px;color:#9cefff;font-weight:850}
+.input-mode-panel h2{font-size:clamp(21px,5vw,29px);margin:9px 0}
+.input-mode-panel p{font-size:13px;line-height:1.5;color:#b9cce2;max-width:39ch;margin:8px auto 18px}
+.input-mode-options{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.input-mode-options button{display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;text-align:center;min-height:132px;border:2px solid #4984af;border-radius:18px;background:linear-gradient(145deg,#20466e,#122845);color:#fff;padding:15px 12px;cursor:pointer}
+.input-mode-options button:first-child{background:linear-gradient(145deg,#26545f,#175862);border-color:#7aeeed}
+.input-mode-options strong{font-size:clamp(12px,3.2vw,18px)}.input-mode-options small{font-size:11px;line-height:1.4;opacity:.8}
+.input-mode-cancel{margin-top:16px;background:transparent;color:#d4e8ff;border:1px solid #789bb480;border-radius:10px;padding:9px 19px;font-weight:800}
+.input-mode-foot{display:block;margin-top:14px;color:#98aec6;font-size:10px}
+.input-mode-dialog button:focus-visible,.input-game-controls button:focus-visible{outline:3px solid #fff198;outline-offset:3px}
+.input-game-controls{position:fixed;z-index:145;bottom:max(8px,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(97vw,560px);pointer-events:none;display:flex;flex-wrap:wrap;gap:6px;align-items:end;justify-content:center}
+.input-game-controls[hidden]{display:none!important}
+.input-game-controls .input-control{touch-action:none;user-select:none;pointer-events:auto;min-height:49px;min-width:51px;max-width:170px;flex:0 1 auto;background:linear-gradient(145deg,#183b61e8,#101c34e8);border:1px solid #8bd7ff99;color:#fff;border-radius:15px;padding:8px 11px;font-size:15px;font-weight:950;box-shadow:0 7px 23px #0007}
+.input-game-controls .input-control.held{transform:scale(.94);background:#367b8d}
+.input-game-controls.ar-input [data-control="go"]{background:#0f776e;color:#fff}
+.input-game-controls.ar-input [data-control="pick"]{background:#ae592f;color:#fff}
+.input-game-controls.ar-input [data-control="base"],.input-game-controls.ar-input [data-control="out"]{font-size:11px;min-height:38px}
+.input-mode-tip{position:fixed;z-index:130;top:max(8px,env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);pointer-events:none;max-width:calc(100vw - 20px);padding:7px 13px;border:1px solid #9fe9ecaa;background:#102845ec;border-radius:12px;color:#eefbff;font-size:clamp(9px,2vw,11px);font-weight:850;text-align:center}
+@media(max-width:420px){.input-mode-options{gap:7px}.input-mode-options button{padding:9px 6px;min-height:115px}.input-game-controls .input-control{min-width:44px;min-height:44px;padding:6px 8px;font-size:12px}.input-game-controls{gap:5px}}
+@media(max-height:470px){.input-mode-panel{padding:12px}.input-mode-options button{min-height:78px}.input-mode-panel p{margin:4px auto 8px}.input-game-controls .input-control{min-height:36px;font-size:12px;padding:4px 7px}.input-mode-tip{top:4px}}
+@media(prefers-reduced-motion:reduce){.input-game-controls .input-control{transition:none}}
