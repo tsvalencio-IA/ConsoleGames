@@ -72,8 +72,8 @@
     source.href=REPO_BASE+encodeURIComponent(game.source); source.target="_blank"; source.rel="noopener noreferrer";
     source.title="Ver código do projeto "+game.source;
     const play=el("a","game-open",game.destination==="menu"?"Abrir menu GAME ↗":"Jogar agora ↗");
-    play.href=game.url; play.target="_blank"; play.rel="noopener noreferrer"; play.dataset.launch=game.id;
-    play.setAttribute("aria-label",(game.destination==="menu"?"Abrir menu do GAME para escolher ":"Jogar ")+game.title+" em nova aba");
+    play.href=game.url; play.target="_self"; play.rel="noopener noreferrer"; play.dataset.launch=game.id;
+    play.setAttribute("aria-label",(game.destination==="menu"?"Abrir menu do GAME para escolher ":"Jogar ")+game.title+" no console");
     footer.append(source,play); detail.append(cat,title,description,footer); article.append(cover,detail);
     return article;
   }
