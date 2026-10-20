@@ -31,7 +31,7 @@
   };
   const $ = id => document.getElementById(id);
   const grid=$("games-grid"), filters=[...document.querySelectorAll("[data-filter]")], sections=[...document.querySelectorAll("[data-section]")];
-  let auth=null, db=null, deferredInstall=null;
+  let auth=null, db=null, deferredInstall=null, firebaseInit=null;
 
   function gameById(id) { return entries.find(game=>game.id===id); }
   function matches(game) {
@@ -163,15 +163,18 @@
       document.head.append(s);
     });
   }
-  async function ensureFirebase() {
-    if(state.firebaseReady)return;
+  function ensureFirebase() {
+    if(state.firebaseReady)return Promise.resolve();
+    if(firebaseInit)return firebaseInit;
+    firebaseInit=initializeFirebase().catch(error=>{firebaseInit=null;throw error});
+    return firebaseInit;
+  }
+  async function initializeFirebase() {
     if(!window.OTTHOS_FIREBASE_CONFIG?.enabled)throw new Error("Configuração do Firebase OTThi indisponível.");
     const cdn="https://www.gstatic.com/firebasejs/10.14.1/";
-    if(!window.firebase){
-      await loadScript(cdn+"firebase-app-compat.js");
-      await loadScript(cdn+"firebase-auth-compat.js");
-      await loadScript(cdn+"firebase-database-compat.js");
-    }
+    if(!window.firebase?.initializeApp)await loadScript(cdn+"firebase-app-compat.js");
+    if(!window.firebase?.auth)await loadScript(cdn+"firebase-auth-compat.js");
+    if(!window.firebase?.database)await loadScript(cdn+"firebase-database-compat.js");
     const config=window.OTTHOS_FIREBASE_CONFIG;
     const app=window.firebase.apps.find(x=>x.name==="[DEFAULT]")||window.firebase.initializeApp({
       apiKey:config.apiKey,authDomain:config.authDomain,databaseURL:config.databaseURL,projectId:config.projectId,appId:config.appId,
