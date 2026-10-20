@@ -55,7 +55,11 @@ try{
     });
     const phases=page.locator("#phase-grid .mission-card:not(.locked)");
     await phases.first().click({timeout:10000});
+    // Real interaction: player explicitly chooses controls without granting camera.
+    await page.locator(".input-mode-dialog [data-mode=controls]").waitFor({timeout:7000});
+    await page.locator(".input-mode-dialog [data-mode=controls]").click();
     await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:11000});
+    assert.equal(await page.evaluate(()=>window.ArcadeControls?.mode),"controls","Modo controle não ativo");
     await page.waitForTimeout(1100);
     const state=await page.evaluate(()=>({
       game:window.System?.activeGame?.id,
@@ -65,6 +69,22 @@ try{
       width:document.documentElement.scrollWidth,
       viewport:window.innerWidth
     }));
+    if(slug==="ar"){
+      const manual=await page.evaluate(()=>{
+        const g=window.Games.find(x=>x.id==="ar_truck_sim").logic;
+        return {state:g.state,model:!!g.objectModel,manual:g.arcadeManual};
+      });
+      assert(manual.manual && !manual.model,"Modo AR sem câmera não entrou no ambiente virtual");
+      assert.equal(await page.locator('[data-control="pick"]').count(),1,"Falta comando de coleta");
+    }else if(slug==="voo"){
+      assert.equal(await page.locator('[data-control="boost"]').count(),1,"Falta botão turbo");
+      assert.equal(await page.locator('[data-control="missile"]').count(),1,"Falta botão míssil");
+    }else if(slug==="boxe"){
+      assert.equal(await page.locator('[data-punch="l"]').count(),1,"Falta soco por toque");
+      assert.equal(await page.locator('[data-guard]').count(),1,"Falta defesa por toque");
+    }else if(slug==="tenis"){
+      assert.equal(await page.evaluate(()=>window.Games.find(x=>x.id==="tennis").logic.useMouse),true,"Tênis sem toque");
+    }
     assert.equal(state.game,id,"Motor foi encerrado inesperadamente");
     assert.equal(state.loaded,true,"HUD de jogo não exibido");
     assert(state.width<=state.viewport+3,JSON.stringify({slug,state}));
