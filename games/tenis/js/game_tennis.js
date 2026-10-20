@@ -482,10 +482,10 @@
 
         renderModeSelect: function(ctx, w, h) {
             ctx.fillStyle = "rgba(10, 20, 30, 0.85)"; ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold 45px 'Russo One'"; ctx.fillText("PING PONG V15", w/2, h * 0.15);
-            ctx.fillStyle = "#e67e22"; ctx.fillRect(w/2 - 160, h * 0.25, 320, 50); ctx.fillStyle = "#d35400"; ctx.fillRect(w/2 - 160, h * 0.40, 320, 50);
-            ctx.fillStyle = "#2ecc71"; ctx.fillRect(w/2 - 160, h * 0.55, 320, 50); ctx.fillStyle = "#27ae60"; ctx.fillRect(w/2 - 160, h * 0.70, 320, 50);
-            ctx.fillStyle = "white"; ctx.font = "bold 18px 'Russo One'";
+            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(42,Math.max(22,w*.075)) + "px 'Russo One'"; ctx.fillText("PING PONG • ARENA", w/2, h * 0.15,Math.max(150,w-26));
+            ctx.fillStyle = "#e67e22"; ctx.fillRect(w/2 - Math.min(160,(w-28)/2), h * 0.25, Math.min(320,w-28), 50); ctx.fillStyle = "#d35400"; ctx.fillRect(w/2 - Math.min(160,(w-28)/2), h * 0.40, Math.min(320,w-28), 50);
+            ctx.fillStyle = "#2ecc71"; ctx.fillRect(w/2 - Math.min(160,(w-28)/2), h * 0.55, Math.min(320,w-28), 50); ctx.fillStyle = "#27ae60"; ctx.fillRect(w/2 - Math.min(160,(w-28)/2), h * 0.70, Math.min(320,w-28), 50);
+            ctx.fillStyle = "white"; ctx.font = "bold " + Math.min(18,Math.max(12,w*.034)) + "px 'Russo One'";
             ctx.fillText("OFFLINE (CÂMERA)", w/2, h * 0.25 + 32); ctx.fillText("OFFLINE (DEDO)", w/2, h * 0.40 + 32);
             ctx.fillText("ONLINE (CÂMERA)", w/2, h * 0.55 + 32); ctx.fillText("ONLINE (DEDO)", w/2, h * 0.70 + 32);
         },
@@ -591,16 +591,16 @@
         },
 
         renderHUD: function(ctx, w, h) {
-            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold 60px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
-            ctx.fillText(this.score.p1, 60, 80); ctx.fillText(this.score.p2, w - 60, 80); ctx.shadowBlur = 0;
+            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(60,Math.max(28,w*.09)) + "px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
+            ctx.fillText(this.score.p1, Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.fillText(this.score.p2, w - Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.shadowBlur = 0;
             
             if (this.msgs && this.msgs.length > 0) {
                 for (let i = this.msgs.length - 1; i >= 0; i--) {
                     let m = this.msgs[i]; m.y -= 2; m.a -= 0.02; m.s += 0.02;
                     if (m.a <= 0) { this.msgs.splice(i, 1); continue; }
                     ctx.save(); ctx.translate(w/2, m.y); ctx.scale(m.s, m.s); ctx.globalAlpha = Math.min(1, m.a);
-                    ctx.fillStyle = m.c; ctx.font = "bold 45px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
-                    ctx.fillText(m.t, 0, 0); ctx.restore();
+                    ctx.fillStyle = m.c; ctx.font = "bold " + Math.min(45,Math.max(19,w*.073)) + "px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
+                    ctx.fillText(m.t, 0, 0,Math.max(120,w*.82)); ctx.restore();
                 }
             }
         },
@@ -608,11 +608,11 @@
         renderCalibration: function(ctx, w, h) {
              const cx = w/2; const cy = h/2;
              ctx.fillStyle = "rgba(0,0,0,0.85)"; ctx.fillRect(0,0,w,h);
-             ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.font = "bold 40px 'Russo One'";
+             ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(40,Math.max(16,w*.052)) + "px 'Russo One'";
 
              if (this.state === 'CALIB_HAND_SELECT') {
-                 ctx.fillText("ESCOLHA SUA MÃO DA RAQUETE", cx, h * 0.2);
-                 ctx.font = "20px sans-serif"; ctx.fillText("LEVANTE APENAS UMA MÃO ACIMA DA CABEÇA", cx, h * 0.3);
+                 ctx.fillText("ESCOLHA A MÃO DA RAQUETE", cx, h * 0.2,Math.max(135,w-30));
+                 ctx.font = "20px sans-serif"; ctx.fillText("LEVANTE UMA MÃO ACIMA DA CABEÇA", cx, h * 0.3,Math.max(130,w-26));
                  if (this.calibHandCandidate) {
                      ctx.fillStyle = "#f1c40f"; ctx.font = "bold 60px 'Russo One'";
                      ctx.fillText(this.calibHandCandidate === 'right' ? "DIREITA" : "ESQUERDA", cx, cy);
@@ -621,7 +621,7 @@
              } 
              else if (this.state === 'CALIB_TL' || this.state === 'CALIB_BR') {
                  ctx.fillText("CALIBRAÇÃO DE ÁREA", cx, 80); ctx.font = "24px sans-serif";
-                 ctx.fillText(this.state === 'CALIB_TL' ? "POSICIONE A RAQUETE NO TOPO ESQUERDO DA SUA ÁREA" : "POSICIONE A RAQUETE NO FUNDO DIREITO DA SUA ÁREA", cx, 120);
+                 ctx.fillText(this.state === 'CALIB_TL' ? "RAQUETE NO CANTO SUPERIOR ESQUERDO" : "RAQUETE NO CANTO INFERIOR DIREITO", cx, 120,Math.max(150,w-24));
                  
                  const pX = (this.state === 'CALIB_TL') ? w*0.2 : w*0.8;
                  const pY = (this.state === 'CALIB_TL') ? h*0.2 : h*0.8;
@@ -661,11 +661,11 @@
         renderEnd: function(ctx, w, h) {
             ctx.fillStyle = "rgba(0,0,0,0.9)"; ctx.fillRect(0,0,w,h);
             const win = this.score.p1 > this.score.p2;
-            ctx.fillStyle = win ? "#f1c40f" : "#e74c3c"; ctx.textAlign = "center"; ctx.font = "bold 80px 'Russo One'";
-            ctx.fillText(win ? "VITÓRIA!" : "DERROTA...", w/2, h/2 - 20);
-            ctx.fillStyle = "white"; ctx.font = "30px sans-serif";
+            ctx.fillStyle = win ? "#f1c40f" : "#e74c3c"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(80,Math.max(29,w*.12)) + "px 'Russo One'";
+            ctx.fillText(win ? "VITÓRIA!" : "DERROTA...", w/2, h/2 - 20,Math.max(120,w-24));
+            ctx.fillStyle = "white"; ctx.font = Math.min(30,Math.max(16,w*.05)) + "px sans-serif";
             ctx.fillText(`PLACAR: ${this.score.p1} x ${this.score.p2}`, w/2, h/2 + 50);
-            ctx.font = "20px sans-serif"; ctx.fillText("Clique para voltar ao menu", w/2, h - 50);
+            ctx.font = Math.min(20,Math.max(12,w*.035)) + "px sans-serif"; ctx.fillText("Toque para jogar de novo", w/2, h - 50,Math.max(140,w-28));
         }
     };
 
