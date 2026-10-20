@@ -281,3 +281,13 @@ test("regressões: avião não pula calibração e Família preserva os botões 
   assert(!world.includes('parent.appendChild(link);'),"Link extra inserido na barra original");
   assert(read("games/familia/3d/studio-world.css").includes("#overlay .panel #studio-world-sound"),"FX fora do menu");
 });
+
+test("kart reinicia estado de corrida e adversários ao jogar novamente",()=>{
+  const src=read("games/kart/js/game_kart.js");
+  const block=src.slice(src.indexOf("startRace: function(trackId)"),src.indexOf("startRace: function(trackId)")+750);
+  assert(block.includes('this.raceState = "RUNNING"'),"Nova corrida permanece encerrada");
+  assert(block.includes("this.player.lap = 1"),"Voltas não reiniciadas");
+  assert(block.includes("this.player.finished = false"),"Jogador já começa finalizado");
+  assert(block.includes("this.totalLaps = CONF.TOTAL_LAPS"),"Número de voltas inconsistente");
+  assert(src.includes("this.localBots = []"),"Bots devem ser criados para cada corrida");
+});

@@ -493,6 +493,14 @@
         syncLobby: function() { if(this.dbRef) { this.dbRef.child('players/' + window.System.playerId).update({ charId: this.selectedChar, ready: this.isReady, lastSeen: firebase.database.ServerValue.TIMESTAMP }); } },
 
         startRace: function(trackId) {
+            // Every new race must clear the previous finish state. Otherwise the
+            // render loop sees RACE but exits early from updatePhysics, leaving
+            // touch steering and rival simulation apparently frozen.
+            this.raceState = "RUNNING";
+            this.player.lap = 1;
+            this.player.finished = false;
+            this.totalLaps = CONF.TOTAL_LAPS;
+            this.reward = 0;
             this.state = 'RACE'; this.status = 'RACING'; this.buildTrack(trackId); 
             nitroBtn.style.display = 'flex'; resetBtn.style.display = 'none'; 
             this.pushMsg("LARGADA!", "#0f0", 60); window.Sfx.play(600, 'square', 0.5, 0.2); KartAudio.start();
