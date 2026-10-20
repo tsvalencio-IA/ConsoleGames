@@ -65,7 +65,7 @@ for(const [slug,id,title,filename] of specs){
     "                    await window.System.switchCamera(targetCamera);\n                    if (game.id !== 'ar_truck_sim' && window.System.ensureDetector) await window.System.ensureDetector();",corePath);
  core=once(core,"await new Promise((resolve) => { window.System.video.onloadedmetadata = () => resolve(); });",
     "await Promise.race([new Promise(resolve => { window.System.video.onloadedmetadata = resolve; }), new Promise(resolve => setTimeout(resolve,3500))]);",corePath);
- core=once(core,"        window.System.activeGame = null;\n    },\n    menu:",
+ core=once(core,"        window.System.activeGame = null;\n    },\n\n    menu:",
     "        window.System.activeGame = null;\n        if (window.System.video && window.System.video.srcObject) {\n          try { window.System.video.srcObject.getTracks().forEach(t => t.stop()); } catch {}\n          window.System.video.srcObject = null;\n        }\n        window.System.currentCameraMode = null;\n    },\n    menu:",corePath);
 
  html=once(html,"</head>",'  <link rel="stylesheet" href="./arcade-enhancements.css">\n</head>',path);
