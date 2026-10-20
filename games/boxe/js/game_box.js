@@ -25,10 +25,10 @@
     };
 
     const CHARACTERS = [
-        { id: 0, name: 'MARIO',   c: { hat: '#d32f2f', shirt: '#e74c3c', overall: '#3498db', skin: '#ffccaa' }, pwr: 1.0, speed: 1.0 },
-        { id: 1, name: 'LUIGI',   c: { hat: '#27ae60', shirt: '#2ecc71', overall: '#2b3a8f', skin: '#ffccaa' }, pwr: 0.9, speed: 1.2 },
-        { id: 2, name: 'WARIO',   c: { hat: '#f1c40f', shirt: '#f39c12', overall: '#8e44ad', skin: '#e67e22' }, pwr: 1.3, speed: 0.8 },
-        { id: 3, name: 'WALUIGI', c: { hat: '#5e2d85', shirt: '#8e44ad', overall: '#2c3e50', skin: '#ffccaa' }, pwr: 1.0, speed: 1.1 }
+        { id: 0, name: 'ASTRO',   c: { hat: '#d32f2f', shirt: '#e74c3c', overall: '#3498db', skin: '#ffccaa' }, pwr: 1.0, speed: 1.0 },
+        { id: 1, name: 'NEON',   c: { hat: '#27ae60', shirt: '#2ecc71', overall: '#2b3a8f', skin: '#ffccaa' }, pwr: 0.9, speed: 1.2 },
+        { id: 2, name: 'ATLAS',   c: { hat: '#f1c40f', shirt: '#f39c12', overall: '#8e44ad', skin: '#e67e22' }, pwr: 1.3, speed: 0.8 },
+        { id: 3, name: 'VÉRTICE', c: { hat: '#5e2d85', shirt: '#8e44ad', overall: '#2c3e50', skin: '#ffccaa' }, pwr: 1.0, speed: 1.1 }
     ];
 
     const ARENAS = [
@@ -223,10 +223,10 @@
                 let buffHp = 100;
                 let buffDmg = 1.0;
 
-                if (this.currentFase.id === 'f1') { cpuId = 1; } // Luigi (Treino)
-                if (this.currentFase.id === 'f2') { cpuId = 3; } // Waluigi (Agressivo)
+                if (this.currentFase.id === 'f1') { cpuId = 1; } // Neon (Treino)
+                if (this.currentFase.id === 'f2') { cpuId = 3; } // Vértice (Agressivo)
                 if (this.currentFase.id === 'f3') { 
-                    cpuId = 2; // Wario (Boss)
+                    cpuId = 2; // Atlas (Boss)
                     buffHp = 150; // Boss tem mais vida
                     buffDmg = 1.5; // Boss bate mais forte
                 }
@@ -234,7 +234,7 @@
                 this.p2 = this.createPlayer('p2', cpuId);
                 this.p2.maxHp = buffHp;
                 this.p2.hp = buffHp;
-                CHARACTERS[cpuId].pwr = buffDmg;
+                this.p2.attackMultiplier = buffDmg;
 
                 this.state = 'FIGHT';
                 this.timer = CONF.ROUND_TIME; 
@@ -613,7 +613,7 @@
                     return; 
                 }
                 
-                const basePwr = CHARACTERS[attacker.charId].pwr;
+                const basePwr = CHARACTERS[attacker.charId].pwr * (attacker.attackMultiplier || 1);
                 const fatigue = Math.max(0.3, attacker.stamina / 100);
                 let damage = basePwr * 5 * fatigue * hand.punchForce; 
 
@@ -951,9 +951,9 @@
                 camOpacity: 0.1,
                 // --- NOVO: FASES DE CAMPANHA DO BOXE ---
                 phases: [
-                    { id: 'f1', name: 'TREINO AMADOR', desc: 'Derrote o Luigi (Fácil).', reqLvl: 1 },
-                    { id: 'f2', name: 'RIVALIDADE', desc: 'Vença o Waluigi antes do 2º Round.', reqLvl: 2 },
-                    { id: 'f3', name: 'O CINTURÃO', desc: 'Derrote o Wario (Status de Campeão).', reqLvl: 3 },
+                    { id: 'f1', name: 'TREINO AMADOR', desc: 'Derrote o Neon (Fácil).', reqLvl: 1 },
+                    { id: 'f2', name: 'RIVALIDADE', desc: 'Vença o Vértice antes do 2º Round.', reqLvl: 2 },
+                    { id: 'f3', name: 'O CINTURÃO', desc: 'Derrote o Atlas (Status de Campeão).', reqLvl: 3 },
                     { id: 'arcade', name: 'MODO LIVRE', desc: 'Lute offline/online sem restrições.', reqLvl: 1 }
                 ]
             });

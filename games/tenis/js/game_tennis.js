@@ -104,9 +104,9 @@
                 let cy = e.clientY; if (e.touches && e.touches.length > 0) cy = e.touches[0].clientY; const my = cy - rect.top;
 
                 if (this.state === 'MODE_SELECT') {
-                    if (my >= h * 0.25 && my <= h * 0.25 + 50) { this.isOnline = false; this.useMouse = false; this.state = 'CALIB_HAND_SELECT'; } 
+                    if (my >= h * 0.25 && my <= h * 0.25 + 50) { this.requestCameraMode(false); } 
                     else if (my >= h * 0.40 && my <= h * 0.40 + 50) { this.isOnline = false; this.useMouse = true; this.handedness = 'right'; this.startGame(); } 
-                    else if (my >= h * 0.55 && my <= h * 0.55 + 50) { this.isOnline = !!window.DB; this.useMouse = false; if (!this.isOnline) { if(window.System.msg) window.System.msg("SEM INTERNET/FIREBASE"); return; } this.state = 'CALIB_HAND_SELECT'; } 
+                    else if (my >= h * 0.55 && my <= h * 0.55 + 50) { if (!window.DB) { window.System.msg('SEM FIREBASE'); return; } this.requestCameraMode(true); } 
                     else if (my >= h * 0.70 && my <= h * 0.70 + 50) { this.isOnline = !!window.DB; this.useMouse = true; this.handedness = 'right'; if (!this.isOnline) { if(window.System.msg) window.System.msg("SEM INTERNET/FIREBASE"); return; } this.connectMultiplayer(); }
                     this.calibTimer = 0; this.sfx('click');
                 } 
@@ -115,6 +115,22 @@
                 else if (this.state === 'LOBBY') { if (this.isHost) { const pCount = Object.keys(this.remotePlayersData || {}).length; if (pCount >= 2) { this.roomRef.update({ gameState: 'STARTING' }); this.startGame(); this.sfx('coin'); } } }
                 else if (this.state === 'END') { this.init(); }
             };
+        },
+
+        requestCameraMode: async function(online) {
+            this.isOnline=online;
+            const started=await window.System.switchCamera('user');
+            if(started && window.System.ensureDetector)await window.System.ensureDetector();
+            if(started && window.System.detector){
+                this.useMouse=false;
+                this.state='CALIB_HAND_SELECT';
+            } else {
+                // Camera denied/missing: fall back to a fully playable touch/mouse match.
+                this.useMouse=true;
+                this.handedness='right';
+                window.System.msg('CÂMERA INDISPONÍVEL - USE O DEDO');
+                if(online)this.connectMultiplayer();else this.startGame();
+            }
         },
 
         connectMultiplayer: function() {

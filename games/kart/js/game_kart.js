@@ -18,14 +18,14 @@
     const CURRENT_DIFFICULTY = 'HARD'; 
 
     const CHARACTERS = [
-        { id: 0, name: 'MARIO',  color: '#e74c3c', hat: '#d32f2f', speedInfo: 1.00, turnInfo: 1.00, weight: 1.0, accel: 0.040, aggression: 0.6 },
-        { id: 1, name: 'LUIGI',  color: '#2ecc71', hat: '#27ae60', speedInfo: 1.05, turnInfo: 0.90, weight: 1.0, accel: 0.038, aggression: 0.5 },
-        { id: 2, name: 'PEACH',  color: '#ff9ff3', hat: '#fd79a8', speedInfo: 0.98, turnInfo: 1.15, weight: 0.8, accel: 0.055, aggression: 0.3 },
-        { id: 3, name: 'BOWSER', color: '#f1c40f', hat: '#e67e22', speedInfo: 1.15, turnInfo: 0.70, weight: 1.6, accel: 0.025, aggression: 0.95 },
-        { id: 4, name: 'TOAD',   color: '#3498db', hat: '#ecf0f1', speedInfo: 0.92, turnInfo: 1.25, weight: 0.6, accel: 0.070, aggression: 0.4 },
-        { id: 5, name: 'YOSHI',  color: '#76ff03', hat: '#64dd17', speedInfo: 1.02, turnInfo: 1.10, weight: 0.9, accel: 0.045, aggression: 0.5 },
-        { id: 6, name: 'DK',     color: '#795548', hat: '#5d4037', speedInfo: 1.12, turnInfo: 0.80, weight: 1.5, accel: 0.030, aggression: 0.9 },
-        { id: 7, name: 'WARIO',  color: '#ffeb3b', hat: '#fbc02d', speedInfo: 1.08, turnInfo: 0.85, weight: 1.5, accel: 0.032, aggression: 0.95 }
+        { id: 0, name: 'ASTRO',  color: '#e74c3c', hat: '#d32f2f', speedInfo: 1.00, turnInfo: 1.00, weight: 1.0, accel: 0.040, aggression: 0.6 },
+        { id: 1, name: 'NEON',  color: '#2ecc71', hat: '#27ae60', speedInfo: 1.05, turnInfo: 0.90, weight: 1.0, accel: 0.038, aggression: 0.5 },
+        { id: 2, name: 'LUMI',  color: '#ff9ff3', hat: '#fd79a8', speedInfo: 0.98, turnInfo: 1.15, weight: 0.8, accel: 0.055, aggression: 0.3 },
+        { id: 3, name: 'ATLAS', color: '#f1c40f', hat: '#e67e22', speedInfo: 1.15, turnInfo: 0.70, weight: 1.6, accel: 0.025, aggression: 0.95 },
+        { id: 4, name: 'PIPO',   color: '#3498db', hat: '#ecf0f1', speedInfo: 0.92, turnInfo: 1.25, weight: 0.6, accel: 0.070, aggression: 0.4 },
+        { id: 5, name: 'BOLT',  color: '#76ff03', hat: '#64dd17', speedInfo: 1.02, turnInfo: 1.10, weight: 0.9, accel: 0.045, aggression: 0.5 },
+        { id: 6, name: 'ROCHA',     color: '#795548', hat: '#5d4037', speedInfo: 1.12, turnInfo: 0.80, weight: 1.5, accel: 0.030, aggression: 0.9 },
+        { id: 7, name: 'VÓRTEX',  color: '#ffeb3b', hat: '#fbc02d', speedInfo: 1.08, turnInfo: 0.85, weight: 1.5, accel: 0.032, aggression: 0.95 }
     ];
 
     const KART_MODELS = [
@@ -39,8 +39,8 @@
     ];
 
     const TRACKS = [
-        { id: 0, name: 'COGUMELO CUP', theme: 'grass', sky: 0, curveMult: 1.0 },
-        { id: 1, name: 'DESERTO KALIMARI', theme: 'sand', sky: 1, curveMult: 0.8 },
+        { id: 0, name: 'CIRCUITO SOLAR', theme: 'grass', sky: 0, curveMult: 1.0 },
+        { id: 1, name: 'DUNAS DO VENTO', theme: 'sand', sky: 1, curveMult: 0.8 },
         { id: 2, name: 'MONTANHA GELADA', theme: 'snow', sky: 2, curveMult: 1.3 }
     ];
 
@@ -116,30 +116,30 @@
         const stats = CHARACTERS[charId] || CHARACTERS[0]; const n = stats.name;
         ctx.save(); ctx.rotate(steer * 0.3);
         
-        if (n === 'DK') {
+        if (n === 'ROCHA') {
             ctx.translate(0, -15);
             ctx.fillStyle = '#4e342e'; ctx.beginPath(); ctx.ellipse(0, -20, 28, 30, 0, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.moveTo(-15, -45); ctx.lineTo(0, -65); ctx.lineTo(15, -45); ctx.fill();
             ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.moveTo(-8, -10); ctx.lineTo(8, -10); ctx.lineTo(0, 15); ctx.fill();
         } 
-        else if (n === 'BOWSER') {
+        else if (n === 'ATLAS') {
             ctx.translate(0, -5);
             ctx.fillStyle = '#27ae60'; ctx.beginPath(); ctx.ellipse(0, -25, 45, 50, 0, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle = '#ecf0f1'; ctx.lineWidth = 8; ctx.stroke(); 
             ctx.fillStyle = '#ecf0f1'; const drawSpike = (sx, sy) => { ctx.beginPath(); ctx.arc(sx, sy, 10, 0, Math.PI*2); ctx.fill(); }; drawSpike(0, -55); drawSpike(-25, -30); drawSpike(25, -30); drawSpike(0, -10);
             ctx.fillStyle = '#e67e22'; ctx.beginPath(); ctx.ellipse(0, -75, 20, 15, 0, 0, Math.PI*2); ctx.fill();
         }
-        else if (n === 'YOSHI') {
+        else if (n === 'BOLT') {
             ctx.translate(0, -10);
             ctx.fillStyle = '#76ff03'; ctx.beginPath(); ctx.ellipse(0, -20, 20, 30, 0, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.ellipse(0, -10, 14, 10, 0, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.moveTo(-6, -45); ctx.lineTo(0, -55); ctx.lineTo(6, -45); ctx.fill(); ctx.beginPath(); ctx.moveTo(-5, -30); ctx.lineTo(0, -40); ctx.lineTo(5, -30); ctx.fill();
         }
-        else if (n === 'PEACH') {
+        else if (n === 'LUMI') {
             ctx.translate(0, -10);
             ctx.fillStyle = '#ff9ff3'; ctx.beginPath(); ctx.ellipse(0, -15, 22, 25, 0, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.moveTo(-18, -45); ctx.lineTo(18, -45); ctx.lineTo(22, -10); ctx.lineTo(-22, -10); ctx.fill(); ctx.fillStyle = '#f39c12'; ctx.beginPath(); ctx.moveTo(-12, -45); ctx.lineTo(-18, -60); ctx.lineTo(-5, -50); ctx.lineTo(0, -65); ctx.lineTo(5, -50); ctx.lineTo(18, -60); ctx.lineTo(12, -45); ctx.fill(); ctx.fillStyle = '#3498db'; ctx.beginPath(); ctx.arc(0, -55, 3, 0, Math.PI*2); ctx.fill();
         }
-        else if (n === 'WARIO') {
+        else if (n === 'VÓRTEX') {
             ctx.translate(0, -10);
             ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.ellipse(0, -15, 32, 25, 0, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#8e44ad'; ctx.fillRect(-22, -25, 8, 25); ctx.fillRect(14, -25, 8, 25); ctx.strokeStyle = '#000'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-25, -35); ctx.lineTo(-35, -32); ctx.lineTo(-40, -38); ctx.stroke(); ctx.beginPath(); ctx.moveTo(25, -35); ctx.lineTo(35, -32); ctx.lineTo(40, -38); ctx.stroke(); ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.ellipse(0, -42, 20, 15, 0, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(0, -37, 28, 6, 0, 0, Math.PI*2); ctx.fill();
         }
-        else if (n === 'TOAD') {
+        else if (n === 'PIPO') {
             ctx.translate(0, -10);
             ctx.fillStyle = '#3498db'; ctx.fillRect(-12, -15, 24, 15); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, -35, 32, 22, 0, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.ellipse(0, -40, 12, 8, 0, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(-22, -30, 8, 12, 0, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(22, -30, 8, 12, 0, 0, Math.PI*2); ctx.fill();
         }
@@ -1156,17 +1156,17 @@
                 return;
             }
 
-            if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'DK') {
+            if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'ROCHA') {
                 drawWheels(28, 38, '#2c3e50');
-            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'BOWSER') {
+            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'ATLAS') {
                 drawWheels(34, 44);
-            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'YOSHI') {
+            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'BOLT') {
                 drawWheels(18, 28, '#27ae60');
-            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'PEACH') {
+            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'LUMI') {
                 drawWheels(16, 26, '#ecf0f1');
-            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'WARIO') {
+            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'VÓRTEX') {
                 drawWheels(26, 32); 
-            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'TOAD') {
+            } else if ((CHARACTERS[charId] || CHARACTERS[0]).name === 'PIPO') {
                 drawWheels(14, 22);
             } else {
                 drawWheels(20, 30);

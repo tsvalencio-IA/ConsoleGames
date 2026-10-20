@@ -77,7 +77,7 @@ window.Auth = {
             document.getElementById('loading').classList.remove('hidden');
             const cred = await window.AuthApp.createUserWithEmailAndPassword(window.Auth.getFakeEmail(user), pass);
             
-            const role = user.toLowerCase() === 'thiago' ? 'admin' : 'player';
+            const role = 'player'; // Acesso administrativo não pode ser autoconcedido no cadastro.
             
             const initialProfile = {
                 username: user,
@@ -281,7 +281,7 @@ window.System = {
                     document.getElementById('loading-text').innerText='PREPARANDO PARTIDA...';
                     try {
                         // Kart é controlável por toque: não pedir câmera/IA desnecessariamente.
-                        if (game.id !== 'drive') {
+                        if (game.id !== 'drive' && game.id !== 'tennis' && !(game.id === 'box_pro' && (navigator.maxTouchPoints>0 || matchMedia('(pointer:coarse)').matches))) {
                             const camera = game.opts.camera === 'environment' ? 'environment' : 'user';
                             await sys.switchCamera(camera);
                             if (game.id !== 'ar_truck_sim' && sys.video?.srcObject && sys.ensureDetector) {

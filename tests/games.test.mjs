@@ -34,7 +34,7 @@ test("motores GAME registrados com mesmos IDs e autenticação Firebase original
    assert(core.includes("getElementById('result-score')"),"Tela final correta ausente: "+slug);
    assert(core.includes("ensureDetector"),"Sensor não inicializado sob demanda: "+slug);
    assert(!core.includes("await window.System.switchCamera('user');"),"Não solicitar câmera antes do login: "+slug);
-   assert(core.includes("await window.System.switchCamera(targetCamera);"),"Preservar câmera nativa ao começar missão: "+slug);
+   assert(core.includes("await sys.switchCamera(camera);") || core.includes("const cameraStarted = await sys.switchCamera(camera);"),"Câmera sob demanda ausente: "+slug);
    execFileSync(process.execPath,["--check",here(root+"js/core.js").pathname]);
    execFileSync(process.execPath,["--check",here(root+"js/"+file).pathname]);
    execFileSync(process.execPath,["--check",here(root+"arcade-enhancements.js").pathname]);
@@ -120,4 +120,46 @@ test("resultado oferece caminho direto às fases sem contornar autorização",()
    assert(core.includes("if(permitted)window.System.openPhases(game)"),slug+" pode abrir fase sem autorização");
    assert(html.includes('onclick="window.System.replay()"'),slug+" botão de resultado não atualizado");
  }
+});
+
+test("motor completo: render assíncrono não vaza entre sessões e recompensa é única",()=>{
+ for(const {slug} of installed){
+  const core=read("games/"+slug+"/js/core.js");
+  assert(core.includes("system.loopEpoch !== epoch"),slug+" tem frame atrasado");
+  assert(core.includes("system.activeGame !== game"),slug+" mistura duas partidas");
+  assert(core.includes("if(window.System.resultLocked) return;"),slug+" pode dar recompensa dupla");
+  assert(core.includes("sys.isStarting=true"),slug+" permite abertura simultânea");
+  assert(core.includes("game.id !== 'drive'"),slug+" pede câmera no kart");
+ }
+});
+test("boxe com controles táteis originais, sem alteração dos IDs no Firebase",()=>{
+ const html=read("games/boxe/index.html");
+ const touch=read("games/boxe/boxing-touch.js");
+ const game=read("games/boxe/js/game_box.js");
+ const core=read("games/boxe/js/core.js");
+ assert(html.includes("boxing-touch.js")&&html.includes("boxing-touch.css"));
+ assert(touch.includes('logic.checkHit(hand,logic.p1,logic.p2)'));
+ assert(touch.includes('data-guard'));
+ assert(game.includes("this.p2.attackMultiplier = buffDmg"));
+ assert(game.includes("(attacker.attackMultiplier || 1)"));
+ assert(core.includes("game.id === 'box_pro'"));
+ assert(game.includes("registerGame('box_pro'"));
+});
+test("tênis pede câmera somente ao selecionar modalidade por câmera",()=>{
+ const game=read("games/tenis/js/game_tennis.js");
+ const core=read("games/tenis/js/core.js");
+ assert(game.includes("requestCameraMode: async function"));
+ assert(game.includes("CÂMERA INDISPONÍVEL - USE O DEDO"));
+ assert(core.includes("game.id !== 'tennis'"));
+ assert(game.includes("registerGame('tennis'"));
+});
+test("novas personagens próprias sem referências de franquias em títulos e modos",()=>{
+ const kart=read("games/kart/js/game_kart.js");
+ const box=read("games/boxe/js/game_box.js");
+ for(const franchise of ["MARIO","LUIGI","PEACH","BOWSER","TOAD","YOSHI","WARIO","WALUIGI"]){
+  assert(!new RegExp(franchise,"i").test(kart),franchise+" no kart");
+  assert(!new RegExp(franchise,"i").test(box),franchise+" no boxe");
+ }
+ assert(kart.includes("CIRCUITO SOLAR"));
+ assert(box.includes("VÉRTICE"));
 });
