@@ -74,7 +74,18 @@
     const play=el("a","game-open",game.destination==="menu"?"Abrir menu GAME ↗":"Jogar agora ↗");
     play.href=game.url; play.target="_self"; play.rel="noopener noreferrer"; play.dataset.launch=game.id;
     play.setAttribute("aria-label",(game.destination==="menu"?"Abrir menu do GAME para escolher ":"Jogar ")+game.title+" no console");
-    footer.append(source,play); detail.append(cat,title,description,footer); article.append(cover,detail);
+    footer.append(source,play);
+    // Outcomes from the real game engine, stored locally under the original game ID.
+    const originalIds={kart:"drive",boxe:"box_pro",tenis:"tennis",ar:"ar_truck_sim",voo:"usarmy_flight_sim"};
+    if(originalIds[game.id]){
+      const stats=store.read("console-games:v2:challenge:"+originalIds[game.id],{});
+      const today=new Date(),ymd=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
+      const goal=(game.id==="tenis"||game.id==="ar")?1:2;
+      const current=stats?.day===ymd ? Math.max(0,Number(stats.dailyWins)||0) : 0;
+      const challenge=el("div","game-challenge",(current>=goal?"✓ Concluído hoje • ":"✦ Desafio de hoje • ")+Math.min(current,goal)+"/"+goal+(game.id==="ar"?" missões":" vitórias"));
+      detail.append(cat,title,description,challenge,footer);
+    }else detail.append(cat,title,description,footer);
+    article.append(cover,detail);
     return article;
   }
   function render() {
