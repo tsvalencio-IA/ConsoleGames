@@ -10,9 +10,9 @@
   const entries = Object.freeze([
     { id:"otthi", title:"OTThi World", category:"aventura", categoryLabel:"Mundo aberto", short:"Crie sua vida na Vila do Sol, explore bairros, aprenda e encontre amigos.", icon:"🏡", coverA:"#123c75", coverB:"#1f8ca3", source:"OTThi-World3", url:BASE+"otthi/", tint:"#6ee9fe", destination:"direct" },
     { id:"familia", title:"Aventuras em Família 3D", category:"aventura", categoryLabel:"Universo 3D", short:"Corra pelo parque, brinque com Luna e Liz e descubra estrelas e desafios.", icon:"🌳", coverA:"#17554b", coverB:"#367b96", source:"hq", url:BASE+"familia/3d/", tint:"#8af2bf", destination:"direct" },
-    { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Pilote nas pistas de kart e dispute a melhor colocação.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"kart/", tint:"#ffd18d", destination:"direct" },
-    { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Um jogo de boxe com movimento e desafios por fases.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
-    { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Partidas de pingue-pongue com controles por movimento.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
+    { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Acelere, faça curvas, use o turbo e conquiste o primeiro lugar.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"kart/", tint:"#ffd18d", destination:"direct" },
+    { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Lute usando a câmera ou os botões de toque. Defenda, ataque e vença o campeonato.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
+    { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Dispute rallies usando o dedo ou a câmera e vença partidas desafiadoras.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
     { id:"ar", title:"AR Ops Premium", category:"acao", categoryLabel:"Realidade aumentada", short:"Missão em realidade aumentada com câmera e desafios interativos.", icon:"🚀", coverA:"#533d75", coverB:"#8464ab", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
     { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Missões aéreas e campanha com aeronaves e objetivos.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
   ]);
@@ -144,7 +144,18 @@
   filters.forEach(button=>button.addEventListener("click",()=>setFilter(button.dataset.filter)));
   $("search").addEventListener("input",event=>{state.query=event.target.value;render()});
   $("browse-btn").addEventListener("click",()=>$("biblioteca").scrollIntoView({behavior:"smooth"}));
-  document.querySelectorAll('[data-launch="otthi"]').forEach(link=>link.addEventListener("click",()=>launch("otthi")));
+  const history=store.read(HISTORY_KEY,[]);
+  const recent=Array.isArray(history)?gameById(history.find(gameId=>valid.has(gameId))):null;
+  const mainPlay=document.querySelector(".hero-actions [data-launch]");
+  if(mainPlay && recent){
+    mainPlay.href=recent.url;
+    mainPlay.dataset.launch=recent.id;
+    mainPlay.textContent="▶ Continuar "+recent.title+" ↗";
+    mainPlay.setAttribute("aria-label","Continuar "+recent.title);
+  }
+  document.querySelectorAll(".hero-actions [data-launch]").forEach(link=>
+    link.addEventListener("click",()=>launch(link.dataset.launch))
+  );
   $("year").textContent=String(new Date().getFullYear());
 
   function setFeedback(message,isError=false) {
@@ -220,7 +231,7 @@
     if(auth.currentUser?.uid!==uid)return;
     if(reads[0].status==="fulfilled")state.cloudProfile=reads[0].value.val();
     if(reads[1].status==="fulfilled")state.cloudProgress=reads[1].value.val();
-    if(reads.every(result=>result.status==="rejected"))setFeedback("Conta conectada, mas o Firebase não autorizou a leitura do perfil ou progresso.",true);
+    if(reads.every(result=>result.status==="rejected"))setFeedback("Conta conectada, mas não foi possível consultar seu progresso agora.",true);
   }
   function busy(flag) {
     state.authBusy=flag;$("login-btn").disabled=flag;
@@ -245,7 +256,7 @@
     }catch(e){
       // Não mostrar mensagens sensíveis do SDK ou credenciais.
       const known=["auth/invalid-credential","auth/wrong-password","auth/user-not-found","auth/invalid-email","auth/too-many-requests","auth/network-request-failed"];
-      const msg=known.includes(e.code)?"Não foi possível entrar. Confira sua conta OTThi, senha e conexão.":"Não foi possível conectar ao Firebase OTThi. Confira se sua conta usa Firebase Authentication.";
+      const msg=known.includes(e.code)?"Não foi possível entrar. Confira sua conta OTThi, senha e conexão.":"Não foi possível entrar. Verifique sua conexão e tente novamente.";
       setFeedback(msg,true);
     }finally{busy(false)}
   });
