@@ -62,3 +62,16 @@ test("PWA está no escopo do console e não tenta cachear jogos externos",()=>{
   assert(!sw.includes("OTThi-World3/"));
   assert(!sw.includes("GAME/"));
 });
+
+
+test("sete capas ilustradas originais estão presentes e possuem fallback acessível",()=>{
+  for(const id of ["otthi","familia","kart","boxe","tenis","ar","voo"]){
+    const path="covers/"+id+".svg";
+    const svg=readFileSync(new URL("../"+path,import.meta.url),"utf8");
+    assert.match(svg,/^<svg[\s\S]*viewBox="0 0 960 540"/);
+    assert.match(svg,/<\/svg>$/);
+    assert.match(sw,new RegExp("covers/"+id+"\\\\.svg"));
+  }
+  assert.match(js,/art\\.addEventListener\\("error",\\(\\)=>art\\.remove\\(\\)/);
+  assert.match(css,/\\.game-cover\\.has-art \\.cover-icon/);
+});
