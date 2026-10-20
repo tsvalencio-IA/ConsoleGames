@@ -88,7 +88,7 @@ const hub={
     btn.textContent=b.text;btn.dataset.control=b.id;btn.setAttribute("aria-label",b.label||b.text);
     const down=e=>{e.preventDefault();btn.classList.add("held");b.down?.(e)};
     const up=e=>{e.preventDefault();btn.classList.remove("held");b.up?.(e)};
-    btn.addEventListener("pointerdown",e=>{try{if(btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
+    btn.addEventListener("pointerdown",e=>{try{if(e.isTrusted && e.pointerId>=0 && btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
     for(const n of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(n,up,{passive:false});
     root.append(btn);
    }
