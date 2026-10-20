@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090e1d">
+  <meta name="description" content="thIAguinho GAME CONSOLE: sete aventuras em um só lugar, por thIAguinho Soluções Digitais e Otto MMP Ferri.">
+  <meta name="color-scheme" content="dark">
+  <title>thIAguinho GAME CONSOLE — Jogos e aventuras</title>
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#biblioteca">Ir para a biblioteca de jogos</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegação do console">
+      <a class="brand" href="./" aria-label="thIAguinho GAME CONSOLE, início">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M12 15c-3 1-6 8-7 17-1 7 4 11 10 7l8-7h2l8 7c6 4 11 0 10-7-1-9-4-16-7-17-4-2-7-2-12 0-5-2-8-2-12 0Z" fill="currentColor" opacity=".95"/><path d="M15 22v12M9 28h12" stroke="#152448" stroke-width="3" stroke-linecap="round"/><circle cx="33" cy="25" r="3" fill="#152448"/><circle cx="28" cy="31" r="3" fill="#152448"/></svg></span>
+        <span class="brand-copy"><strong>thIAguinho</strong><em>GAME CONSOLE</em></span>
+      </a>
+      <div class="sidebar-section-title">NAVEGAÇÃO</div>
+      <nav class="side-links" aria-label="Seções">
+        <button class="nav-item active" data-section="todos" aria-current="page"><span aria-hidden="true">⌂</span><span>Início</span></button>
+        <button class="nav-item" data-section="aventura"><span aria-hidden="true">◇</span><span>Universos 3D</span></button>
+        <button class="nav-item" data-section="acao"><span aria-hidden="true">⚡</span><span>Ação e esportes</span></button>
+        <button class="nav-item" data-section="favoritos"><span aria-hidden="true">♡</span><span>Favoritos</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note"><span class="sidebar-note-icon" aria-hidden="true">✦</span><strong>7 aventuras reunidas</strong><p>Cada jogo permanece em seu projeto original.</p></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span><span>Console v1.0</span></div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <div class="topbar-heading"><span class="eyebrow">SEU ESPAÇO PARA JOGAR</span><strong>Bem-vindo ao universo thIAguinho</strong></div>
+        <div class="topbar-actions">
+          <label class="search"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">Buscar jogos</span><input id="search" type="search" placeholder="Buscar um jogo..." autocomplete="off" maxlength="60"></label>
+          <button id="install-btn" class="icon-button" type="button" hidden title="Instalar o console" aria-label="Instalar o console">⬇</button>
+          <button id="profile-btn" class="profile-button" type="button" aria-label="Abrir meu perfil"><span class="avatar" id="avatar">J</span><span class="profile-label"><strong id="profile-name">Jogador</strong><small id="profile-status">Perfil local</small></span><span aria-hidden="true">⌄</span></button>
+        </div>
+      </header>
+
+      <main id="conteudo">
+        <section class="welcome-section" aria-label="Destaque">
+          <div class="hero-text">
+            <span class="section-kicker"><span class="pulse"></span> UM CONSOLE • VÁRIOS MUNDOS</span>
+            <h1>Seu próximo mundo<br><span>começa aqui.</span></h1>
+            <p>Explore, corra, voe, dispute partidas e viva aventuras. Escolha seu jogo e continue de onde ele já funciona.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://tsvalencio-ia.github.io/OTThi-World3/" target="_blank" rel="noopener noreferrer" data-launch="otthi">▶ Jogar OTThi World <span aria-hidden="true">↗</span></a>
+              <button class="btn btn-glass" id="browse-btn" type="button">Explorar jogos ↓</button>
+            </div>
+            <div class="hero-stat-row"><span><strong>07</strong> experiências</span><span class="stat-divider"></span><span><strong>03</strong> projetos originais</span></div>
+          </div>
+          <div class="hero-art" aria-hidden="true"><div class="art-orbit one"></div><div class="art-orbit two"></div><div class="art-grid"></div><div class="art-planet"></div><div class="art-pad"><span class="pad-cross">✚</span><span class="pad-center"></span><span class="pad-buttons">●<br>&nbsp;●</span></div><span class="art-spark spark-one">✦</span><span class="art-spark spark-two">✧</span><span class="art-spark spark-three">✦</span></div>
+        </section>
+
+        <section class="metrics-row" aria-label="Resumo da biblioteca">
+          <div class="metric"><span class="metric-icon blue" aria-hidden="true">▣</span><span><strong>7 jogos</strong><small>Biblioteca do console</small></span></div>
+          <div class="metric"><span class="metric-icon purple" aria-hidden="true">◇</span><span><strong>3 universos</strong><small>Projetos independentes</small></span></div>
+          <div class="metric"><span class="metric-icon amber" aria-hidden="true">☆</span><span><strong id="favorite-count">0 favoritos</strong><small>Salvos neste navegador</small></span></div>
+        </section>
+
+        <section id="biblioteca" class="library" aria-labelledby="library-title">
+          <div class="section-head"><div><span class="eyebrow">ESCOLHA SUA AVENTURA</span><h2 id="library-title">Biblioteca de jogos <span class="title-count" id="filtered-count">07</span></h2></div><div class="filter-list" aria-label="Filtrar jogos"><button type="button" class="filter active" data-filter="todos" aria-pressed="true">Todos</button><button type="button" class="filter" data-filter="aventura" aria-pressed="false">Universos 3D</button><button type="button" class="filter" data-filter="acao" aria-pressed="false">Ação e esportes</button><button type="button" class="filter" data-filter="favoritos" aria-pressed="false">Favoritos</button></div></div>
+          <div id="games-grid" class="games-grid" aria-live="polite"></div>
+          <p id="empty-state" class="empty-state" hidden>Nenhum jogo encontrado para esse filtro. Experimente outra busca.</p>
+        </section>
+
+        <section class="info-section" aria-labelledby="how-title"><div class="info-copy"><span class="eyebrow">TUDO ORGANIZADO</span><h2 id="how-title">Uma biblioteca. Jogos de verdade.</h2><p>Os jogos abrem em suas páginas próprias para preservar controles, câmera, desempenho e salvamentos existentes. Os cinco títulos do thIAguinho GAME são escolhidos no menu original desse projeto.</p></div><div class="info-points"><div><span aria-hidden="true">①</span> Escolha um jogo</div><div><span aria-hidden="true">②</span> Abra o projeto original</div><div><span aria-hidden="true">③</span> Continue sua aventura</div></div></section>
+      </main>
+      <footer class="footer"><span>© <span id="year"></span> <strong>thIAguinho GAME CONSOLE</strong></span><span>by <strong>thIAguinho Soluções Digitais</strong> &amp; <strong>Otto MMP Ferri</strong></span><a href="https://github.com/tsvalencio-IA/ConsoleGames" target="_blank" rel="noopener noreferrer">Código do console ↗</a></footer>
+    </div>
+  </div>
+
+  <dialog id="profile-dialog" class="dialog" aria-labelledby="dialog-title">
+    <form method="dialog"><button class="dialog-close" aria-label="Fechar" value="cancel">✕</button></form>
+    <span class="dialog-kicker">MINHA CONTA</span><h2 id="dialog-title">Seu perfil de jogador</h2>
+    <p class="dialog-lead">Favoritos são salvos neste navegador. Você também pode entrar com uma conta Firebase Auth do OTThi para consultar seu perfil e progresso do mundo original, sem alterar esses dados.</p>
+    <div class="account-state" id="account-state"><span class="status-dot"></span><span>Modo visitante • dados locais</span></div>
+    <form id="login-form" class="login-form">
+      <label>E-mail da conta OTThi<input id="email" type="email" autocomplete="username" placeholder="voce@exemplo.com" required maxlength="120"></label>
+      <label>Senha<input id="password" type="password" autocomplete="current-password" placeholder="Sua senha" required minlength="6"></label>
+      <button class="btn btn-primary" id="login-btn" type="submit">Entrar com Firebase OTThi</button>
+    </form>
+    <div id="account-details" class="account-details" hidden><p id="account-summary"></p><p id="progress-summary"></p><button id="logout-btn" class="btn btn-glass" type="button">Sair da conta</button></div>
+    <p id="login-feedback" class="feedback" role="status" aria-live="polite"></p>
+    <p class="privacy-note">Conta OTThi e conta thIAguinho GAME usam projetos Firebase diferentes. Este console não mistura credenciais, saldos, XP nem sobrescreve progresso.</p>
+  </dialog>
+  <noscript><div class="noscript">Ative o JavaScript para ver a biblioteca e acessar os jogos. <a href="https://github.com/tsvalencio-IA/ConsoleGames">Abrir repositório</a>.</div></noscript>
+</body>
+</html>
