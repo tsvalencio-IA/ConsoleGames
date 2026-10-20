@@ -155,10 +155,22 @@ window.Profile = {
     },
 
     addReward: (score, isWin, extraCoins = 0) => {
-        let xpGained = isWin ? Math.max(100, Math.floor(score * 2.0)) : Math.max(20, Math.floor(score * 0.5));
-        let coinsGained = (isWin ? Math.max(10, Math.floor(score * 0.2)) : 0) + extraCoins; 
-        
-        window.Profile.xp += xpGained; window.Profile.coins += coinsGained;
+        // Validate a single match, not historical balances. Original Firebase data
+        // is never zeroed or automatically reconciled.
+        const scoreNumber=Number(score);
+        const amount=Number(extraCoins);
+        const safeScore=Number.isFinite(scoreNumber)?Math.min(100000,Math.max(0,Math.floor(scoreNumber))):0;
+        const safeExtra=Number.isFinite(amount)?Math.min(20000,Math.max(0,Math.floor(amount))):0;
+        let xpGained = isWin ? Math.max(100, Math.floor(safeScore * 2.0)) : Math.max(20, Math.floor(safeScore * 0.5));
+        let coinsGained = (isWin ? Math.max(10, Math.floor(safeScore * 0.2)) : 0) + safeExtra;
+        const currentXp=Number(window.Profile.xp);
+        if(Number.isSafeInteger(currentXp)&&currentXp>=0){
+            window.Profile.xp=currentXp+xpGained;
+        }else{xpGained=0;console.warn("XP de perfil anormal: valor original preservado.");}
+        const currentCoins=Number(window.Profile.coins);
+        if(Number.isSafeInteger(currentCoins)&&currentCoins>=0&&currentCoins<=Number.MAX_SAFE_INTEGER-coinsGained){
+            window.Profile.coins=currentCoins+coinsGained;
+        }else{coinsGained=0;console.warn("Saldo de perfil anormal: valor original preservado.");}
         
         let nextLevelXP = window.Profile.level * 1000; let leveledUp = false;
         while(window.Profile.xp >= nextLevelXP) {
@@ -173,7 +185,11 @@ window.Profile = {
         document.getElementById('ui-level').innerText = window.Profile.level;
         document.getElementById('ui-xp-text').innerText = `${window.Profile.xp}/${reqXP}`;
         document.getElementById('ui-xp-bar').style.width = `${pct}%`;
-        document.getElementById('ui-coins').innerText = window.Profile.coins;
+        const wallet=Number(window.Profile.coins);
+        const walletLabel=Number.isSafeInteger(wallet)&&wallet>=0&&wallet<1e9
+            ? new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(wallet)
+            : "CONFERIR SALDO";
+        document.getElementById('ui-coins').innerText=walletLabel;
 
         const adminBtnContainer = document.getElementById('admin-btn-container');
         if (adminBtnContainer) {
