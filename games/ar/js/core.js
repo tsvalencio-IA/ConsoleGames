@@ -278,16 +278,28 @@ window.System = {
                     if(sys.isStarting || sys.activeGame)return;
                     sys.isStarting=true;
                     window.Sfx.click();
+                    // Explicit opt-in: touch/keyboard (default) or live camera.
+                    const requested = window.ArcadeControls ? await window.ArcadeControls.choose(game) : 'controls';
+                    if(!requested) {sys.isStarting=false;return;}
+                    window.ArcadeControls?.setMode(requested);
                     document.getElementById('phase-screen').classList.add('hidden');
                     document.getElementById('loading').classList.remove('hidden');
                     document.getElementById('loading-text').innerText='PREPARANDO PARTIDA...';
                     try {
-                        // Kart é controlável por toque: não pedir câmera/IA desnecessariamente.
-                        if (game.id !== 'drive') {
-                            const camera = game.opts.camera === 'environment' ? 'environment' : 'user';
-                            await sys.switchCamera(camera);
-                            if (game.id !== 'ar_truck_sim' && sys.video?.srcObject && sys.ensureDetector) {
-                                await sys.ensureDetector();
+                        if(window.ArcadeControls?.mode==='camera'){
+                            const face=game.opts.camera==='environment'?'environment':'user';
+                            const started=await sys.switchCamera(face);
+                            if(!started){
+                                window.ArcadeControls?.setMode('controls');
+                                window.System.msg('CÂMERA INDISPONÍVEL • CONTROLES ATIVADOS');
+                            }else if(face==='user' && sys.ensureDetector){
+                                const detector=await sys.ensureDetector();
+                                if(!detector){
+                                    window.ArcadeControls?.setMode('controls');
+                                    window.System.msg('SENSOR INDISPONÍVEL • CONTROLES ATIVADOS');
+                                    sys.video.srcObject?.getTracks?.().forEach(t=>t.stop());
+                                    sys.video.srcObject=null;sys.currentCameraMode=null;
+                                }
                             }
                         }
                         document.getElementById('loading-text').innerText='CARREGANDO CENÁRIO...';
@@ -298,6 +310,7 @@ window.System = {
                         sys.loopEpoch++;
                         sys.activeGame=game;
                         if(game.logic.init)game.logic.init(fase);
+                        window.ArcadeControls?.activate(game);
                         document.getElementById('loading').classList.add('hidden');
                         document.getElementById('game-ui').classList.remove('hidden');
                         sys.loop();
@@ -372,6 +385,7 @@ window.System = {
     },
 
     stopGame: () => {
+        window.ArcadeControls?.removeControls();
         window.System.paused=false;
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
