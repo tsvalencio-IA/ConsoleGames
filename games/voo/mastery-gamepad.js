@@ -24,7 +24,7 @@ function persist(){
 const clamp=(x,a,b)=>Math.min(b,Math.max(a,Number(x)||0));
 const isPlaying=g=>!!g&&(gameId==="drive"?g.state==="RACE"&&g.status==="RACING":
  gameId==="box_pro"?g.state==="FIGHT":
- gameId==="tennis"?["RALLY","SERVE","STARTING"].includes(g.state):
+ gameId==="tennis"?["RALLY","SERVE","STARTING","END"].includes(g.state):
  gameId==="ar_truck_sim"?["PLAY_REAR_AR","WAITING_PICKUP","ENTER_BASE_TRANSITION","FRONT_AR_OFFICE"].includes(g.state):
  g.state==="PLAYING");
 function make(){
@@ -88,6 +88,7 @@ function updateGoals(g,dt){
    goals[2].progress=session.guard;
  }else if(gameId==="tennis"){
    if(v.p1score>p.p1score)session.points+=v.p1score-p.p1score;
+   if(g.state==="END"&&v.p1score>Number(g.score?.p2||0))session.win=1;
    // A rally is confirmed by the native counter, not synthetic keypresses.
    goals[0].progress=Math.max(goals[0].progress,v.rally);
    goals[1].progress=session.points;
@@ -122,7 +123,10 @@ function cycle(){
  const active=current(),logic=active?.logic,playing=isPlaying(logic);
  const locked=document.hidden||window.System?.paused||!playing;
  ui.hidden=!playing;
- if(locked){lastTick=performance.now();return}
+ if(locked){
+   if(!playing&&session){session=null;last=null;goals.forEach(g=>g.progress=0);render()}
+   lastTick=performance.now();return
+ }
  if(!session)reset();
  const time=performance.now(),dt=clamp((time-lastTick)/1000,0,.25);
  lastTick=time;
@@ -132,7 +136,7 @@ function cycle(){
 function gamepadButtons(){
  const root=$(".input-game-controls:not([hidden])");
  const rootForBoxe=$("#arcade-boxing-controls:not([hidden])");
- const pad=(navigator.getGamepads?.()||[]).find(p=>p&&p.connected);
+ const pad=Array.from(navigator.getGamepads?.()||[]).find(p=>p&&p.connected);
  return {pad,root,box:rootForBoxe};
 }
 let lastPad=null,pressed=new Set(),prevAxes=[0,0],tennisPoint={x:0,y:0},startHeld=false;
