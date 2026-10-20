@@ -74,3 +74,39 @@ test("HUD do kart reduzido no celular sem eliminar rank/volta nem motor",()=>{
  assert(kart.includes("mapSize = w <= 520 ? 78 : 130"));
  assert(kart.includes("d.speed"));
 });
+
+
+test("progressão arcade é baseada em vitórias reais e não escreve no Firebase",()=>{
+ for(const {slug} of installed){
+   const js=read("games/"+slug+"/arcade-enhancements.js");
+   assert(js.includes("data.totalWins"),slug+" sem vitórias observadas");
+   assert(js.includes("medalCount()"),slug+" sem troféus de domínio");
+   assert(js.includes("milestones"),slug+" sem trilha de conquistas");
+   assert(js.includes("localStorage.setItem(key"),slug+" sem persistência própria");
+   assert(!js.includes("window.DB.ref("),slug+" não pode alterar dados no Firebase");
+ }
+});
+test("jornadas dos mundos leem contadores existentes sem inventar progressão",()=>{
+ for(const [folder,page] of [["otthi","index.html"],["familia","3d/index.html"]]){
+   const prefix="games/"+folder+"/";
+   const html=read(prefix+page),quest=read(prefix+"quest-chapter.js");
+   assert(html.includes("quest-chapter.js"),"Jornada não inserida: "+folder);
+   assert(quest.includes("console-games:v2:worldquest:"),"Namespace de quests divergente");
+   assert(quest.includes("localStorage.setItem(key"),"Quest sem persistência separada");
+   assert(quest.includes("peak"),"Quest sem leitura de incremento verdadeiro");
+   assert(!quest.includes("firebase."),"Jornada não deve modificar Firebase");
+   execFileSync(process.execPath,["--check",here(prefix+"quest-chapter.js").pathname]);
+ }
+});
+test("HUD Canvas responsivo nas modalidades 2D/3D sem desativar fases",()=>{
+ const boxing=read("games/boxe/js/game_box.js");
+ const tennis=read("games/tenis/js/game_tennis.js");
+ const flight=read("games/voo/js/game_flight.js");
+ assert(boxing.includes("HUD de luta estilo arcade"));
+ assert(boxing.includes("this.currentFase"),"Fases do boxe não preservadas");
+ assert(tennis.includes("Math.min(42,Math.max(22,w*.075))"),"Título tênis não adaptado");
+ assert(tennis.includes("this.score.p1"),"Placar tênis ausente");
+ assert(flight.includes("Instrumentos compactos"),"Cockpit responsivo ausente");
+ assert(flight.includes("this.combat.target"),"Mira de voo ausente");
+ assert(read("games/familia/3d/index.html").includes("w<760?1.35:1.6"),"HQ sem densidade adaptativa");
+});
