@@ -1197,9 +1197,23 @@
                 ctx.fillText(emoji, 55, 150);
             } else {
                 ctx.fillStyle = "#aaa"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center";
-                ctx.fillText("VAZIO", 55, 140);
+                ctx.fillText("—", 55, 140);
             }
 
+            // ConsoleGames: leitura instantânea em telas pequenas. 
+            // Apenas posição, volta e velocidade; sem círculos gigantes sobre a pista.
+            if (w <= 700 || h <= 490) {
+                const label = String(d.finalRank) + "º  •  " + d.lap + "/" + CONF.TOTAL_LAPS + "  •  " + Math.floor(d.speed);
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.font = "bold " + Math.min(15,Math.max(11,w*0.032)) + "px Arial";
+                ctx.fillStyle = "rgba(3,17,30,.70)";
+                if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(w/2-93,52,186,25,11); ctx.fill(); }
+                else ctx.fillRect(w/2-93,52,186,25);
+                ctx.fillStyle = '#eafaff';
+                ctx.fillText(label,w/2,69);
+                ctx.restore();
+            } else {
             const hudX = w - 80; const hudY = h - 60; 
             ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.beginPath(); ctx.arc(hudX, hudY, 55, 0, Math.PI * 2); ctx.fill();
             const rpm = Math.min(1, d.speed / CONF.TURBO_MAX_SPEED); 
@@ -1208,6 +1222,8 @@
             ctx.font = "bold 24px 'Russo One'"; ctx.fillStyle = '#ff0'; ctx.fillText(`${d.finalRank}º`, hudX, hudY - 35);
             ctx.fillStyle = '#fff'; ctx.font = "bold 14px 'Russo One'"; ctx.fillText(`VOLTA ${d.lap}/${CONF.TOTAL_LAPS}`, hudX, hudY - 20);
 
+            }
+
             ctx.fillStyle = '#111'; ctx.fillRect(w/2 - 110, 20, 220, 20); ctx.fillStyle = d.turboLock ? '#0ff' : (d.nitro > 25 ? '#f90' : '#f33'); ctx.fillRect(w/2 - 108, 22, (216) * (d.nitro/100), 16);
 
             if (ctx.roundRect) {
@@ -1215,12 +1231,16 @@
             } else {
                 ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.fillRect(20, h - 80, 150, 50);
             }
+            // Economia permanece no perfil, mas sem texto ocupando a pista no celular.
+            if (w > 700 && h > 510) {
             let coins = window.Profile ? (window.Profile.coins || 0) : 0;
             ctx.fillStyle = "#f1c40f"; ctx.font = "bold 20px 'Russo One'"; ctx.textAlign = "left";
             ctx.fillText(`🪙 R$ ${(coins/1000).toFixed(1)}k`, 35, h - 48);
 
+            }
+
             if (minimapPath.length > 0) {
-                const mapX = 25, mapY = 190, mapSize = 130; ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; ctx.fillRect(mapX, mapY, mapSize, mapSize); ctx.save(); ctx.translate(mapX + mapSize/2, mapY + mapSize/2);
+                const mapX = w <= 520 ? 10 : 25, mapY = w <= 520 ? 172 : 190, mapSize = w <= 520 ? 78 : 130; ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; ctx.fillRect(mapX, mapY, mapSize, mapSize); ctx.save(); ctx.translate(mapX + mapSize/2, mapY + mapSize/2);
                 const scale = Math.min((mapSize-20)/minimapBounds.w, (mapSize-20)/minimapBounds.h); ctx.scale(scale, scale); ctx.translate(-(minimapBounds.minX+minimapBounds.maxX)/2, -(minimapBounds.minZ+minimapBounds.maxZ)/2);
                 ctx.strokeStyle = '#fff'; ctx.lineWidth = 10; ctx.beginPath(); minimapPath.forEach((p, i) => { if(i===0) ctx.moveTo(p.x, p.z); else ctx.lineTo(p.x, p.z); }); ctx.closePath(); ctx.stroke();
                 const drawDot = (pos, c, r) => { const idx = Math.floor((pos/trackLength) * minimapPath.length) % minimapPath.length; const pt = minimapPath[idx]; if(pt){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(pt.x, pt.z, r, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.lineWidth=2; ctx.stroke(); } };
@@ -1286,7 +1306,7 @@
         renderCupEnd: function(ctx, w, h) {
             const cx = w / 2; const cy = h / 2;
             ctx.fillStyle = "rgba(20,0,0,0.95)"; ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = "#f1c40f"; ctx.textAlign = "center"; ctx.font = "bold 50px 'Russo One'";
+            ctx.fillStyle = "#f1c40f"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(50,Math.max(21,w*.07)) + "px 'Russo One'";
             ctx.fillText("🏁 FIM DA COPA! 🏁", cx, h*0.15);
             
             let playersArr = [{ name: window.Profile?.username || 'VOCÊ', pts: this.cupPoints || 0 }];
@@ -1302,11 +1322,11 @@
             }
             playersArr.sort((a,b) => b.pts - a.pts);
 
-            ctx.font = "bold 28px Arial";
+            ctx.font = "bold " + Math.min(28,Math.max(12,w*.043)) + "px Arial";
             playersArr.slice(0, 5).forEach((p, idx) => {
                 let color = idx === 0 ? '#f1c40f' : (idx === 1 ? '#bdc3c7' : (idx === 2 ? '#cd7f32' : '#fff'));
                 ctx.fillStyle = color;
-                ctx.fillText(`${idx+1}º LUGAR - ${p.name} - ${p.pts} PTS`, cx, h*0.35 + (idx*50));
+                ctx.fillText(`${idx+1}º ${String(p.name).slice(0,14)} - ${p.pts} PTS`, cx, h*0.34 + (idx*Math.min(38,h*.07)));
             });
 
             const btnW = Math.max(250, Math.min(400, w * 0.8));
@@ -1326,11 +1346,11 @@
         renderShop: function(ctx, w, h) {
             ctx.fillStyle = "#1e272e"; ctx.fillRect(0, 0, w, h);
             
-            ctx.fillStyle = "#f1c40f"; ctx.textAlign = "center"; ctx.font = "bold clamp(26px, 6vw, 45px) 'Russo One'";
+            ctx.fillStyle = "#f1c40f"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(45,Math.max(26,w*.06)) + "px 'Russo One'";
             ctx.fillText("OFICINA DE KARTS", w/2, h * 0.1);
 
             let coins = window.Profile ? (window.Profile.coins || 0) : 0;
-            ctx.fillStyle = "#2ecc71"; ctx.font = "bold clamp(18px, 4vw, 24px) 'Chakra Petch'";
+            ctx.fillStyle = "#2ecc71"; ctx.font = "bold " + Math.min(24,Math.max(18,w*.04)) + "px 'Chakra Petch'";
             ctx.fillText(`MEU DINHEIRO: R$ ${coins.toLocaleString()}`, w/2, h * 0.16);
 
             this.shopHitboxes = [];
