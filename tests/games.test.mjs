@@ -1,0 +1,76 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync, existsSync, statSync} from "node:fs";
+import {execFileSync} from "node:child_process";
+const here=path=>new URL("../"+path,import.meta.url);
+const read=path=>readFileSync(here(path),"utf8");
+const installed=[
+  {slug:"kart",id:"drive",file:"game_kart.js"},
+  {slug:"boxe",id:"box_pro",file:"game_box.js"},
+  {slug:"tenis",id:"tennis",file:"game_tennis.js"},
+  {slug:"ar",id:"ar_truck_sim",file:"game_ar.js"},
+  {slug:"voo",id:"usarmy_flight_sim",file:"game_flight.js"}
+];
+test("sete pastas de jogos próprias com páginas originais e arquivos reais",()=>{
+ for(const slug of ["kart","boxe","tenis","ar","voo","otthi","familia"]){
+   assert(existsSync(here("games/"+slug+"/index.html")),"Página ausente: "+slug);
+   assert(statSync(here("games/"+slug+"/index.html")).size>500,"Página pequena/placeholder: "+slug);
+ }
+ assert(existsSync(here("games/familia/3d/index.html")));
+ assert(existsSync(here("games/otthi/app.js")));
+});
+test("motores GAME registrados com mesmos IDs e autenticação Firebase original",()=>{
+ for(const {slug,id,file} of installed){
+   const root="games/"+slug+"/";
+   const html=read(root+"index.html");
+   const code=read(root+"js/"+file);
+   const core=read(root+"js/core.js");
+   assert(code.includes("registerGame('"+id+"'"),"Game ID divergente: "+id);
+   assert(html.includes('window.CONSOLE_GAME_ID="'+id+'"'),"Configuração de jogo divergente: "+id);
+   assert(html.includes('projectId: "thiaguinhogame-ac91b"'),"Firebase GAME divergente: "+slug);
+   assert(html.includes('src="js/'+file+'"'),"Motor não carregado: "+slug);
+   assert(html.includes('src="./arcade-enhancements.js"'),"Melhoria não incluída: "+slug);
+   assert(!core.includes("getElementById('final-score')"),"Crash conhecido na tela final: "+slug);
+   assert(core.includes("getElementById('result-score')"),"Tela final correta ausente: "+slug);
+   assert(core.includes("ensureDetector"),"Sensor não inicializado sob demanda: "+slug);
+   assert(!core.includes("await window.System.switchCamera('user');"),"Não solicitar câmera antes do login: "+slug);
+   assert(core.includes("await window.System.switchCamera(targetCamera);"),"Preservar câmera nativa ao começar missão: "+slug);
+   execFileSync(process.execPath,["--check",here(root+"js/core.js").pathname]);
+   execFileSync(process.execPath,["--check",here(root+"js/"+file).pathname]);
+   execFileSync(process.execPath,["--check",here(root+"arcade-enhancements.js").pathname]);
+ }
+});
+test("a leitura e as permissões do GAME permanecem no core original",()=>{
+ const core=read("games/kart/js/core.js");
+ assert(core.includes("window.Profile.permissions[g.id] === true"),"Permissões existentes não preservadas");
+ assert(core.includes("window.DB.ref('users/'"),"Persistência original removida");
+ assert(core.includes("window.AuthApp.onAuthStateChanged"),"Sessões Firebase originais removidas");
+});
+test("HQ preserva WebGL, personagens e armazenamento local",()=>{
+ const source=read("games/familia/3d/index.html");
+ assert(source.includes('id="gl"'));
+ assert(source.includes("mascotes-3d.js"));
+ assert(source.includes("localStorage"));
+ assert(source.includes('src="../console-world.js"'));
+});
+test("OTThi mantém app e Firebase originais, mas com estilos adaptáveis adicionais",()=>{
+ const original=read("games/otthi/index.html");
+ const config=read("games/otthi/firebase-config.js");
+ assert(original.includes("OTTHI World"));
+ assert(original.includes('src="./app.js'));
+ assert(original.includes('src="./console-world.js"'));
+ assert(config.includes('projectId: "otthi-656c5"'));
+ assert(read("games/otthi/console-world.css").includes("safe-area-inset"));
+});
+test("origem de cada snapshot documentada por commit SHA",()=>{
+ const commits=JSON.parse(read("games/source-commits.json"));
+ for(const name of ["GAME","OTThi-World3","hq"])assert.match(commits[name],/^[0-9a-f]{40}$/);
+});
+test("HUD do kart reduzido no celular sem eliminar rank/volta nem motor",()=>{
+ const kart=read("games/kart/js/game_kart.js");
+ assert(kart.includes("ConsoleGames: leitura instantânea"));
+ assert(kart.includes("w <= 700 || h <= 490"));
+ assert(kart.includes("d.finalRank"));
+ assert(kart.includes("mapSize = w <= 520 ? 78 : 130"));
+ assert(kart.includes("d.speed"));
+});
