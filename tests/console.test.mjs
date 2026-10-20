@@ -19,13 +19,17 @@ test("há sete jogos reais com IDs únicos: 2 mundos e 5 jogos GAME",()=>{
   assert.equal(items.filter(x=>x[3]==="acao").length,5);
   ["otthi","familia","kart","boxe","tenis","ar","voo"].forEach(id=>assert(items.some(x=>x[1]===id)));
 });
-test("jogos de GAME são abertos pelo menu original, sem inventar rotas",()=>{
-  for(const id of ["kart","boxe","tenis","ar","voo"]){
+test("sete experiências usam páginas locais reais em pastas independentes",()=>{
+  const expected={otthi:"otthi/",familia:"familia/3d/",kart:"kart/",boxe:"boxe/",tenis:"tenis/",ar:"ar/",voo:"voo/"};
+  for(const [id,folder] of Object.entries(expected)){
     const line=js.split("\n").find(x=>x.includes('id:"'+id+'"'));
-    assert.match(line,/source:"GAME"/);assert.match(line,/destination:"menu"/);
+    assert.ok(line,"Jogo sem catálogo: "+id);
+    assert.ok(line.includes('BASE+"'+folder+'"'),"Rota divergente: "+id);
+    assert.match(line,/destination:"direct"/);
   }
-  assert.match(html,/Os cinco títulos do thIAguinho GAME são escolhidos no menu original/);
+  assert.match(html,/Os sete jogos estão agora em pastas próprias/);
 });
+
 test("o Firebase é o OTThi e não acessa o banco do GAME",()=>{
   assert.match(cfg,/projectId:\s*"otthi-656c5"/);
   assert.match(cfg,/databaseURL:\s*"https:\/\/otthi-656c5-default-rtdb\.firebaseio\.com"/);
