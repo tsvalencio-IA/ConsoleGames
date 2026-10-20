@@ -25,7 +25,7 @@ function install(){
  const nativeInit=logic.init.bind(logic);
  logic.init=function(...args){
    const result=nativeInit(...args);
-   this.touchMode=coarse();
+   this.touchMode=coarse() || Boolean(window.CONSOLE_FORCE_TOUCH_BOXE);
    this.touchPunchAt=0;this.touchGuard=false;
    // Native character selection remains intact; skip only camera calibration
    // when entering a match in the touch mode.
