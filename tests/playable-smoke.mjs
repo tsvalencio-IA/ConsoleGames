@@ -227,6 +227,34 @@ try{
       assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
       assert(physics.shipHP>0,"Caça iniciou destruído");
     }
+    // Professional thumb UX: game controls stay within the game viewport
+    // and do not overlap one another or the centre of the action.
+    if(["ar","voo","boxe"].includes(slug)){
+      const selector=slug==="ar"?".ar-input .input-control:not([hidden])":
+         slug==="voo"?".flight-input .input-control:not([hidden])":
+         "#arcade-boxing-controls .boxing-action";
+      const rects=await page.locator(selector).evaluateAll(buttons=>{
+        return buttons.filter(b=>!b.hidden&&getComputedStyle(b).display!=="none").map(b=>{
+          const r=b.getBoundingClientRect();return {id:b.dataset.control||b.dataset.punch||b.dataset.guard||"",
+            x:r.x,y:r.y,width:r.width,height:r.height}
+        });
+      });
+      assert(rects.length>=3,slug+" has fewer than 3 reachable gameplay controls");
+      for(const r of rects){
+        assert(r.width>=44&&r.height>=44,"Touch target below 44px: "+JSON.stringify({slug,r}));
+        assert(r.x>=-1&&r.y>=-1&&r.x+r.width<=viewport.width+1&&r.y+r.height<=viewport.height+1,
+          "Control overflow: "+JSON.stringify({slug,r,viewport}));
+      }
+      for(let i=0;i<rects.length;i++)for(let j=i+1;j<rects.length;j++){
+        const a=rects[i],b=rects[j];
+        const ox=Math.max(0,Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x));
+        const oy=Math.max(0,Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y));
+        assert(ox*oy<20,"Controls overlap: "+JSON.stringify({slug,a,b}));
+      }
+      if(slug==="voo"){
+        await page.waitForFunction(()=>document.querySelector('.flight-input [data-control="start"]')?.hidden,{timeout:4000});
+      }
+    }
     const mastery=page.locator("#studio-mastery-toggle");
     await mastery.waitFor({state:"visible",timeout:5000});
     assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel ocupa espaço sem solicitação");
