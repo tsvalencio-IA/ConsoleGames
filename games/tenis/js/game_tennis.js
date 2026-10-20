@@ -239,7 +239,15 @@
         },
 
         processPose: function(pose, w, h) {
-            this.pose = pose; 
+            this.pose = pose;
+            // MoveNet provides pixel coordinates at the actual camera resolution.
+            // Normalize to the legacy 640x480 calibration space to preserve all
+            // previously saved hand calibrations across phones and webcams.
+            const video=window.System?.video;
+            const videoW=Math.max(1,Number(video?.videoWidth)||640);
+            const videoH=Math.max(1,Number(video?.videoHeight)||480);
+            const mappedX=(point)=>640*(1-Number(point.x)/videoW);
+            const mappedY=(point)=>480*Number(point.y)/videoH;
             if (this.useMouse) {
                 let nx = MathCore.clamp(this.mouseX / w, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
                 const targetX = MathCore.lerp(-CONF.TABLE_W * 1.2, CONF.TABLE_W * 1.2, nx); const targetY = MathCore.lerp(-200, 300, ny); 
@@ -256,8 +264,8 @@
                 const nose = pose.keypoints.find(k => k.name === 'nose'); const leftW = pose.keypoints.find(k => k.name === 'left_wrist'); const rightW = pose.keypoints.find(k => k.name === 'right_wrist');
                 this.calibHandCandidate = null;
                 if (nose && leftW && rightW) {
-                    if (leftW.y < nose.y && rightW.y >= nose.y) { this.calibHandCandidate = 'left'; this.p1.rawX = 640 - leftW.x; this.p1.rawY = leftW.y; } 
-                    else if (rightW.y < nose.y && leftW.y >= nose.y) { this.calibHandCandidate = 'right'; this.p1.rawX = 640 - rightW.x; this.p1.rawY = rightW.y; }
+                    if (leftW.y < nose.y && rightW.y >= nose.y) { this.calibHandCandidate = 'left'; this.p1.rawX = mappedX(leftW); this.p1.rawY = mappedY(leftW); } 
+                    else if (rightW.y < nose.y && leftW.y >= nose.y) { this.calibHandCandidate = 'right'; this.p1.rawX = mappedX(rightW); this.p1.rawY = mappedY(rightW); }
                 }
                 return;
             }
@@ -267,7 +275,7 @@
             const elbow = pose.keypoints.find(k => k.name === this.handedness + '_elbow' && k.score > 0.2);
 
             if (wrist) {
-                this.p1.rawX = 640 - wrist.x; this.p1.rawY = wrist.y;
+                this.p1.rawX = mappedX(wrist); this.p1.rawY = mappedY(wrist);
                 if (!this.state.startsWith('CALIB')) {
                     let minX = Math.min(this.calib.tlX, this.calib.brX); let maxX = Math.max(this.calib.tlX, this.calib.brX);
                     let minY = Math.min(this.calib.tlY, this.calib.brY); let maxY = Math.max(this.calib.tlY, this.calib.brY);
@@ -277,14 +285,21 @@
                     let targetX = MathCore.lerp(-CONF.TABLE_W*1.2, CONF.TABLE_W*1.2, nx); let targetY = MathCore.lerp(-800, 300, ny); 
                     if (!Number.isFinite(targetX)) targetX = 0; if (!Number.isFinite(targetY)) targetY = -200;
 
-                    this.p1.x = MathCore.lerp(this.p1.x || 0, targetX, 0.85); this.p1.y = MathCore.lerp(this.p1.y || -200, targetY, 0.85); this.p1.z = -CONF.TABLE_L/2 - 300; 
+                    // Stabilize the racket center while preserving the actual wrist motion direction.
+                    this.p1.x = MathCore.lerp(Number.isFinite(this.p1.x)?this.p1.x:0,targetX,0.62);
+                    this.p1.y = MathCore.lerp(Number.isFinite(this.p1.y)?this.p1.y:-200,targetY,0.62);
+                    this.p1.z = -CONF.TABLE_L/2 - 300; 
 
                     if (elbow) {
-                        let nex = MathCore.clamp((640 - elbow.x - minX) / rangeX, -0.5, 1.5); let ney = MathCore.clamp((elbow.y - minY) / rangeY, -0.5, 1.5);
+                        let nex = MathCore.clamp((mappedX(elbow) - minX) / rangeX, -0.5, 1.5); let ney = MathCore.clamp((mappedY(elbow) - minY) / rangeY, -0.5, 1.5);
                         let targetEx = MathCore.lerp(-CONF.TABLE_W*1.2, CONF.TABLE_W*1.2, nex); let targetEy = MathCore.lerp(-800, 300, ney);
                         if (!Number.isFinite(targetEx)) targetEx = targetX; if (!Number.isFinite(targetEy)) targetEy = targetY + 300;
                         this.p1.elbowX = MathCore.lerp(this.p1.elbowX || targetEx, Number.isFinite(targetEx) ? targetEx : targetX, 0.85);
-                        this.p1.elbowY = MathCore.lerp(this.p1.elbowY || targetEy, Number.isFinite(targetEy) ? targetEy : targetY, 0.85);
+                        this.p1.elbowY = MathCore.lerp(Number.isFinite(this.p1.elbowY)?this.p1.elbowY:targetEy, Number.isFinite(targetEy) ? targetEy : targetY, 0.62);
+                        // Arm vector rotates the rendered virtual racket. This is
+                        // wrist+elbow pose tracking, not object/remote recognition.
+                        const dx=this.p1.x-this.p1.elbowX,dy=this.p1.y-this.p1.elbowY;
+                        this.p1.racketTilt=MathCore.clamp(Math.atan2(dx,Math.abs(dy)+1)*0.8,-0.65,0.65);
                     } else { this.p1.elbowX = this.p1.x + (this.handedness === 'right' ? 150 : -150); this.p1.elbowY = this.p1.y + 300; }
 
                     let calculatedVelX = this.p1.x - (Number.isFinite(this.p1.prevX) ? this.p1.prevX : this.p1.x);
@@ -567,10 +582,15 @@
             const sPos = MathCore.project(paddle.x, CONF.FLOOR_Y, paddle.z, w, h);
             if (sPos.visible && Number.isFinite(sPos.x)) this.safeEllipse(ctx, sPos.x, sPos.y, 45*sPos.s, 15*sPos.s, "rgba(0,0,0,0.5)");
             if(Number.isFinite(scale) && scale > 0.1) {
+                ctx.save();
+                ctx.translate(pos.x,pos.y);
+                ctx.rotate(isPlayer&&!this.useMouse?(Number(paddle.racketTilt)||0):0);
+                ctx.translate(-pos.x,-pos.y);
                 ctx.fillStyle = "#8d6e63"; ctx.fillRect(pos.x - 8*scale, pos.y + 20*scale, 16*scale, 60*scale); 
                 this.safeEllipse(ctx, pos.x, pos.y + 3*scale, 52*scale, 57*scale, "#ecf0f1"); 
                 this.safeEllipse(ctx, pos.x, pos.y, 50*scale, 55*scale, isPlayer ? "#c0392b" : "#2c3e50"); 
-                this.safeEllipse(ctx, pos.x - 12*scale, pos.y - 12*scale, 15*scale, 20*scale, "rgba(255,255,255,0.15)"); 
+                this.safeEllipse(ctx, pos.x - 12*scale, pos.y - 12*scale, 15*scale, 20*scale, "rgba(255,255,255,0.15)");
+                ctx.restore();
             }
         },
 
