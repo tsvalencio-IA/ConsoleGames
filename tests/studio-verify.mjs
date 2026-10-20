@@ -21,7 +21,7 @@ for(const [slug,id,source] of five){
  assert(js.includes("localStorage.setItem(storageKey"),slug+" no sound preference");
  assert(!js.includes("window.DB.ref(")&&!js.includes("firebase.database("),slug+" touches player data");
  const sw=read(root+"sw.js");
- assert(sw.includes('studio-scenes.js')&&sw.includes('studio-v5'),slug+" stale cache");
+ assert(sw.includes('mastery-gamepad.js')&&sw.includes('mastery-v6'),slug+" stale cache");
  assert(read(root+"js/"+source).includes("registerGame('"+id+"'"));
  execFileSync(process.execPath,["--check",root+"studio-fx.js"]);
  count++;
