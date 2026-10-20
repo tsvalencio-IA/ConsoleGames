@@ -1231,7 +1231,7 @@
 
             // ConsoleGames: leitura instantânea em telas pequenas. 
             // Apenas posição, volta e velocidade; sem círculos gigantes sobre a pista.
-            if (w <= 700 || h <= 490) {
+            if (w <= 700 || h <= 490 || window.ArcadeControls?.mode === "controls") {
                 const label = String(d.finalRank) + "º  •  " + d.lap + "/" + CONF.TOTAL_LAPS + "  •  " + Math.floor(d.speed);
                 ctx.save();
                 ctx.textAlign = 'center';
@@ -1255,22 +1255,20 @@
 
             ctx.fillStyle = '#111'; ctx.fillRect(w/2 - 110, 20, 220, 20); ctx.fillStyle = d.turboLock ? '#0ff' : (d.nitro > 25 ? '#f90' : '#f33'); ctx.fillRect(w/2 - 108, 22, (216) * (d.nitro/100), 16);
 
-            if (ctx.roundRect) {
-                ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.beginPath(); ctx.roundRect(20, h - 80, 150, 50, 25); ctx.fill();
-            } else {
-                ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.fillRect(20, h - 80, 150, 50);
-            }
-            // Economia permanece no perfil, mas sem texto ocupando a pista no celular.
-            if (w > 700 && h > 510) {
-            let coins = window.Profile ? (window.Profile.coins || 0) : 0;
-            ctx.fillStyle = "#f1c40f"; ctx.font = "bold 20px 'Russo One'"; ctx.textAlign = "left";
-            // Extreme values can indicate legacy profile corruption; never change Firebase here.
-            const verified=Number(coins);
-            const label=Number.isFinite(verified)&&verified>=0&&verified<1e9
-              ? new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(verified)
-              : "consultar perfil";
-            ctx.fillText("SALDO: "+label,35,h-48,Math.max(100,w*.42));
-
+            // The steering zone is not a place for the wallet. Show balance only
+            // in the non-touch legacy HUD, without touching Firebase money.
+            if(w>700 && h>510 && window.ArcadeControls?.mode!=="controls"){
+                const money=Number(window.Profile?.coins);
+                const balance=Number.isFinite(money)&&money>=0&&money<1e9
+                    ? new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(money)
+                    : "consultar perfil";
+                ctx.save();
+                ctx.fillStyle="rgba(3,15,30,.63)";
+                if(ctx.roundRect){ctx.beginPath();ctx.roundRect(20,h-77,158,43,16);ctx.fill()}
+                else ctx.fillRect(20,h-77,158,43);
+                ctx.textAlign="left";ctx.fillStyle="#f7d869";ctx.font="bold 15px Arial";
+                ctx.fillText("SALDO: "+balance,32,h-50,142);
+                ctx.restore();
             }
 
             if (minimapPath.length > 0) {

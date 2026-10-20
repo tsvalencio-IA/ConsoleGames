@@ -88,7 +88,7 @@ const hub={
     btn.textContent=b.text;btn.dataset.control=b.id;btn.setAttribute("aria-label",b.label||b.text);
     const down=e=>{e.preventDefault();btn.classList.add("held");b.down?.(e)};
     const up=e=>{e.preventDefault();btn.classList.remove("held");b.up?.(e)};
-    btn.addEventListener("pointerdown",e=>{try{if(e.isPrimary && btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
+    btn.addEventListener("pointerdown",e=>{try{if(btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
     for(const n of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(n,up,{passive:false});
     root.append(btn);
    }
@@ -122,10 +122,50 @@ const hub={
     {id:"item",text:"◈ ITEM",label:"Usar item recolhido",down:()=>{if(active())manual.itemQueued=true}}
   ];
   const root=hub.createControls("kart-input",buttons);
+  // Console layout: two comfortable thumb areas, empty center for the track.
+  const makeGroup=(name,title,ids)=>{
+    const group=document.createElement("div");
+    group.className="kart-control-pod "+name;
+    const caption=document.createElement("span");
+    caption.className="kart-control-caption";caption.textContent=title;
+    const body=document.createElement("div");body.className="kart-control-buttons";
+    for(const controlId of ids){
+      const btn=root.querySelector('[data-control="'+controlId+'"]');
+      if(!btn)continue;
+      const symbol=btn.textContent;
+      const glyph=document.createElement("span");glyph.className="kart-control-glyph";
+      const label=document.createElement("span");label.className="kart-control-name";
+      const parts={
+        left:["◀",""],right:["▶",""],
+        go:["▲","ACELERAR"],brake:["▾","FREIO"],
+        nitro:["⚡","NITRO"],item:["◈","ITEM"]
+      }[controlId]||[symbol,""];
+      glyph.textContent=parts[0];label.textContent=parts[1];
+      btn.replaceChildren(glyph,label);
+      btn.classList.add("kart-control-"+controlId);
+      body.append(btn);
+    }
+    group.append(caption,body);root.append(group);
+    return group;
+  };
+  makeGroup("kart-steering","DIREÇÃO",["left","right"]);
+  makeGroup("kart-actions","PEDAIS & EXTRAS",["nitro","item","brake","go"]);
+  root.setAttribute("aria-label","Comandos de corrida: direção à esquerda, pedais à direita");
   const update=()=>{
     const visible=Boolean(window.System?.activeGame?.id==="drive" && active() && hub.mode==="controls" && !window.System.paused);
     root.hidden=!visible;
-    if(visible){const item=root.querySelector('[data-control="item"]');if(item)item.disabled=!logic.item}
+    if(visible){
+      const item=root.querySelector('[data-control="item"]');
+      const nitro=root.querySelector('[data-control="nitro"]');
+      if(item){item.disabled=!logic.item;item.setAttribute("aria-label",logic.item?"Usar item: "+logic.item:"Nenhum item disponível")}
+      if(nitro){
+        const n=Math.max(0,Math.min(100,Number(logic.nitro)||0));
+        nitro.style.setProperty("--nitro-fill",n+"%");
+        nitro.disabled=n<20 || !!logic.turboLock;
+        nitro.setAttribute("aria-label","Nitro: "+Math.round(n)+" por cento");
+      }
+      root.classList.toggle("kart-moving",!!logic.arcadeManual?.throttle);
+    }
   };
   const timer=setInterval(update,110);
   hub.releases.push(()=>clearInterval(timer));
@@ -160,7 +200,7 @@ const hub={
     logic.arcadeManual=null;
   });
   update();
-  hub.showTip("◀ ▶ DIREÇÃO  •  SEGURE ACELERAR  •  FREIO  •  NITRO  •  ITEM");
+  hub.showTip("POLEGAR ESQUERDO: VIRAR  •  DIREITO: ACELERAR E FREAR");
  },
  flightControls(logic){
    const tapStart=()=>{
