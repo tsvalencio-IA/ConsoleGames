@@ -1,0 +1,19 @@
+/* Mastery · game-safe compact overlay, no advertising, no fake currency. */
+#studio-mastery{position:fixed;z-index:119;top:max(69px,calc(env(safe-area-inset-top,0px) + 69px));right:max(8px,env(safe-area-inset-right,0px));display:grid;gap:5px;width:min(220px,39vw);font-family:system-ui,sans-serif;pointer-events:none;box-sizing:border-box}
+#studio-mastery[hidden]{display:none!important}
+#studio-mastery-toggle{pointer-events:auto;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:36px;width:100%;padding:7px 9px;border:1px solid rgba(145,222,252,.42);border-radius:12px;background:linear-gradient(150deg,rgba(10,31,57,.80),rgba(4,14,32,.86));color:#c5efff;box-shadow:0 4px 18px #0006;backdrop-filter:blur(8px);font:900 10px/1 system-ui;letter-spacing:1px;text-overflow:ellipsis;white-space:nowrap}
+#studio-mastery-summary{min-width:0;text-overflow:ellipsis;overflow:hidden}
+#studio-mastery-toggle:focus-visible{outline:3px solid #ffe9a3;outline-offset:2px}
+#studio-mastery-list{pointer-events:none;border:1px solid #83c9e466;border-radius:13px;padding:8px 9px;display:grid;gap:5px;background:rgba(2,14,31,.90);box-shadow:0 10px 26px #0007;backdrop-filter:blur(9px);max-width:100%;overflow:hidden}
+#studio-mastery-list[hidden]{display:none!important}
+.studio-mastery-task{display:flex;align-items:center;justify-content:space-between;gap:7px;padding-bottom:4px;border-bottom:1px solid #cad9e51c;color:#dfebf6;font:750 10px/1.3 system-ui}
+.studio-mastery-task:last-child{border-bottom:0;padding:0}
+.studio-mastery-task span{min-width:0}
+.studio-mastery-task strong{flex-shrink:0;color:#9ee2f4;white-space:nowrap}
+.studio-mastery-task.completed{color:#8deaaf}
+.studio-mastery-task.completed strong{color:#b8ffcf}
+#studio-mastery.all-complete #studio-mastery-toggle{color:#b4ffd5;border-color:#72dda7a6}
+#studio-mastery.just-earned{filter:drop-shadow(0 0 8px #74edbd)}
+@media(max-width:550px){#studio-mastery{top:max(62px,calc(env(safe-area-inset-top,0px) + 62px));right:max(5px,env(safe-area-inset-right,0px));width:min(154px,37vw)}#studio-mastery-toggle{font-size:9px;padding:6px 7px;min-height:32px}#studio-mastery-list{padding:7px}.studio-mastery-task{font-size:9px}}
+@media(max-height:480px){#studio-mastery{top:max(45px,calc(env(safe-area-inset-top,0px) + 45px));width:min(135px,35vw)}#studio-mastery-toggle{min-height:29px;font-size:8px;padding:4px 5px}}
+@media(prefers-reduced-motion:reduce){#studio-mastery.just-earned{filter:none}}
