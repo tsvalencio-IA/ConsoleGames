@@ -209,6 +209,13 @@ try{
       assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
       assert(physics.shipHP>0,"Caça iniciou destruído");
     }
+    // Authenticated actual gameplay: player can toggle contextual Studio effects.
+    const audioControl=page.locator("#studio-audio-switch");
+    await audioControl.waitFor({state:"visible",timeout:5000});
+    await audioControl.click({timeout:4000});
+    assert.equal(await audioControl.getAttribute("aria-pressed"),"false","Studio FX mute not applied");
+    await audioControl.click({timeout:4000});
+    assert.equal(await audioControl.getAttribute("aria-pressed"),"true","Studio FX enable not applied");
     assert.equal(state.game,id,"Motor foi encerrado inesperadamente");
     assert.equal(state.loaded,true,"HUD de jogo não exibido");
     assert(state.width<=state.viewport+3,JSON.stringify({slug,state}));
