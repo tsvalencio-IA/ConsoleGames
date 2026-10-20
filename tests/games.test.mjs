@@ -214,8 +214,8 @@ test("voo usa teclado e joystick tátil que acionam comandos originais",()=>{
  const flight=read("games/voo/js/game_flight.js");
  const input=read("games/voo/control-modes.js");
  assert(input.includes('ArrowLeft')&&input.includes('ArrowUp'));
- assert(input.includes('id:"start"')&&input.includes('id:"boost"'));
- assert(input.includes('id:"missile"'));
+ assert(input.includes('id:"start"')&&input.includes('key("boost"'));
+ assert(input.includes('key("missile"'));
  assert(flight.includes("this.keys['ArrowUp']"));
  assert(flight.includes("this.keys['Shift']"));
 });
