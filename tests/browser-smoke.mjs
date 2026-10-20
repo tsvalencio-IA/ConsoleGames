@@ -36,6 +36,18 @@ try{
     assert(firstWidth.scroll<=firstWidth.window+2,JSON.stringify({page:"console",size,firstWidth}));
     await page.screenshot({path:join("test-results/mobile","console-"+size.name+".png"),fullPage:true});
     attempts++;
+    // A instalação nova utiliza um segundo endereço, ID e manifest independentes.
+    await page.goto(base+"arcade/",{waitUntil:"domcontentloaded",timeout:45000});
+    await page.waitForSelector(".game-card",{timeout:15000});
+    assert.equal(await page.locator(".game-card").count(),7,"Arcade não mostra os sete jogos");
+    const arcadeLinks=await page.locator("a.game-open").evaluateAll(nodes=>nodes.map(a=>new URL(a.href).pathname));
+    assert(arcadeLinks.every(path=>path.startsWith("/games/") || path.startsWith("/ConsoleGames/games/")),JSON.stringify(arcadeLinks));
+    const arcadeWidth=await page.evaluate(()=>({window:window.innerWidth,scroll:document.documentElement.scrollWidth}));
+    assert(arcadeWidth.scroll<=arcadeWidth.window+2,JSON.stringify({page:"arcade",size,arcadeWidth}));
+    const manifestHref=await page.locator('link[rel="manifest"]').getAttribute("href");
+    assert.equal(manifestHref,"./manifest.webmanifest");
+    await page.screenshot({path:join("test-results/mobile","arcade-"+size.name+".png"),fullPage:true});
+    attempts++;
     for(const [slug,id] of games){
       await page.goto(base+"games/"+slug+"/",{waitUntil:"domcontentloaded",timeout:45000});
       const expected=slug==="familia/3d"?"familia":id;
@@ -58,7 +70,7 @@ try{
     }
     await context.close();
   }
-  console.log("Layout smoke OK: "+attempts+" checks, 7 games, 4 viewports.");
+  console.log("Layout smoke OK: "+attempts+" checks, 7 games, 2 consoles, 4 viewports.");
 }finally{
   await browser.close();
 }
