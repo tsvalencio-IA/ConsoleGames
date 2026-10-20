@@ -114,12 +114,16 @@ const hub={
      const map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight",boost:"Shift",missile:" "};
      const k=map[id];return {id,text,label:name||text,down:()=>{logic.keys[k]=true},up:()=>{logic.keys[k]=false}};
    };
-   hub.createControls("flight-input",[
+   const flightRoot=hub.createControls("flight-input",[
      key("left","◀","Virar à esquerda"),key("up","▲","Subir"),
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡","Acelerar com turbo"),key("missile","◎","Disparar míssil"),
      {id:"start",text:"▶ INICIAR",label:"Iniciar ou continuar voo",down:tapStart}
    ]);
+   const refreshFlight=()=>{const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
+   refreshFlight();
+   const interval=setInterval(refreshFlight,160);
+   hub.releases.push(()=>clearInterval(interval));
    hub.showTip("SETA PARA GUIAR • ⚡ TURBO • ◎ MÍSSIL • INICIAR NO HANGAR");
  },
  arControls(logic){
@@ -134,7 +138,7 @@ const hub={
   let turn=0;
   const left={id:"left",text:"◀",label:"Virar caminhão para a esquerda",down:()=>{turn=-1},up:()=>{if(turn===-1)turn=0}};
   const right={id:"right",text:"▶",label:"Virar caminhão para a direita",down:()=>{turn=1},up:()=>{if(turn===1)turn=0}};
-  hub.createControls("ar-input",[
+  const arRoot=hub.createControls("ar-input",[
    left,{id:"go",text:"ACELERAR",label:"Acelerar caminhão",down:()=>{if(drive())logic.manualAccelerate=true},up:()=>logic.manualAccelerate=false},
    right,{id:"pick",text:"◈ COLETAR",label:"Segurar para coletar brinquedo",down:()=>{
      if(drive()){logic.manualPickupRequested=true;logic.manualPickupHeld=true;logic.manualAccelerate=false}
@@ -147,6 +151,17 @@ const hub={
      if(logic.state==="FRONT_AR_OFFICE")logic.changeState("EXIT_BASE_TRANSITION");
    }}
   ]);
+  // Only contextual actions are shown: never cover the scene with inactive commands.
+  const refreshAR=()=>{
+    const base=arRoot.querySelector('[data-control="base"]');
+    const out=arRoot.querySelector('[data-control="out"]');
+    const distance=Math.hypot(Number(logic.vPos?.x)||0,Number(logic.vPos?.y)||0);
+    if(base)base.hidden=!(drive()&&distance<30);
+    if(out)out.hidden=logic.state!=="FRONT_AR_OFFICE";
+  };
+  refreshAR();
+  const refreshTimer=setInterval(refreshAR,170);
+  hub.releases.push(()=>clearInterval(refreshTimer));
   const pressed=new Set();
   const validKeys=new Set(["ArrowLeft","ArrowRight","ArrowUp","a","d","w"," ","e"]);
   const onKey=e=>{if(!validKeys.has(e.key))return;if(e.target instanceof HTMLInputElement)return;pressed.add(e.key);if(e.key===" "){logic.manualPickupRequested=true;logic.manualPickupHeld=true}else if(e.key==="e"&&Math.hypot(logic.vPos.x,logic.vPos.y)<30)logic.changeState("ENTER_BASE_TRANSITION");};
