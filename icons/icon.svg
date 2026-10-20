@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+<title>thIAguinho GAME CONSOLE</title><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#121f4a"/><stop offset="1" stop-color="#080e25"/></linearGradient><linearGradient id="pad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#85f1ff"/><stop offset="1" stop-color="#8192ff"/></linearGradient></defs>
+<rect width="512" height="512" rx="126" fill="url(#bg)"/><circle cx="365" cy="118" r="147" fill="#385fbc" opacity=".28"/><circle cx="130" cy="425" r="175" fill="#176e81" opacity=".22"/>
+<path d="M125 180c-37 17-68 93-74 184-5 67 46 104 103 65l87-71h30l88 71c57 39 108 2 102-65-6-91-37-167-74-184-40-19-70-15-130 3-61-18-92-22-132-3Z" fill="url(#pad)"/>
+<path d="M152 230v116M94 288h116" stroke="#17244f" stroke-width="30" stroke-linecap="round"/><circle cx="355" cy="256" r="28" fill="#17244f"/><circle cx="305" cy="313" r="28" fill="#17244f"/>
+<path d="M245 247l11-32 11 32 32 11-32 11-11 32-11-32-32-11 32-11Z" fill="#e9faff" opacity=".9"/></svg>
