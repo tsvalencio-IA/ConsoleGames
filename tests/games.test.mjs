@@ -34,7 +34,7 @@ test("motores GAME registrados com mesmos IDs e autenticação Firebase original
    assert(core.includes("getElementById('result-score')"),"Tela final correta ausente: "+slug);
    assert(core.includes("ensureDetector"),"Sensor não inicializado sob demanda: "+slug);
    assert(!core.includes("await window.System.switchCamera('user');"),"Não solicitar câmera antes do login: "+slug);
-   assert(core.includes("await sys.switchCamera(camera);") || core.includes("const cameraStarted = await sys.switchCamera(camera);"),"Câmera sob demanda ausente: "+slug);
+   assert(core.includes("const started=await sys.switchCamera(face);"),"Câmera sob demanda ausente: "+slug);
    execFileSync(process.execPath,["--check",here(root+"js/core.js").pathname]);
    execFileSync(process.execPath,["--check",here(root+"js/"+file).pathname]);
    execFileSync(process.execPath,["--check",here(root+"arcade-enhancements.js").pathname]);
@@ -129,7 +129,7 @@ test("motor completo: render assíncrono não vaza entre sessões e recompensa �
   assert(core.includes("system.activeGame !== game"),slug+" mistura duas partidas");
   assert(core.includes("if(window.System.resultLocked) return;"),slug+" pode dar recompensa dupla");
   assert(core.includes("sys.isStarting=true"),slug+" permite abertura simultânea");
-  assert(core.includes("game.id !== 'drive'"),slug+" pede câmera no kart");
+  assert(core.includes("window.ArcadeControls?.mode==='camera'"),slug+" pede câmera sem consentimento");
  }
 });
 test("boxe com controles táteis originais, sem alteração dos IDs no Firebase",()=>{
@@ -142,7 +142,7 @@ test("boxe com controles táteis originais, sem alteração dos IDs no Firebase"
  assert(touch.includes('data-guard'));
  assert(game.includes("this.p2.attackMultiplier = buffDmg"));
  assert(game.includes("(attacker.attackMultiplier || 1)"));
- assert(core.includes("game.id === 'box_pro'"));
+ assert(core.includes("window.ArcadeControls?.mode==='camera'"));
  assert(game.includes("registerGame('box_pro'"));
 });
 test("tênis pede câmera somente ao selecionar modalidade por câmera",()=>{
@@ -150,7 +150,7 @@ test("tênis pede câmera somente ao selecionar modalidade por câmera",()=>{
  const core=read("games/tenis/js/core.js");
  assert(game.includes("requestCameraMode: async function"));
  assert(game.includes("CÂMERA INDISPONÍVEL - USE O DEDO"));
- assert(core.includes("game.id !== 'tennis'"));
+ assert(core.includes("window.ArcadeControls?.mode==='camera'"));
  assert(game.includes("registerGame('tennis'"));
 });
 test("novas personagens próprias sem referências de franquias em títulos e modos",()=>{
@@ -182,4 +182,40 @@ test("cadastros públicos não autoconcedem perfil administrativo",()=>{
   assert(!core.includes("user.toLowerCase() === 'thiago'"),slug+" concede administração apenas pelo username");
   assert(core.includes("window.Profile.role = data.role || 'player'"),slug+" não respeita perfis de contas existentes");
  }
+});
+
+test("cinco jogos pedem permissão para câmera somente depois de escolha explícita",()=>{
+ for(const {slug} of installed){
+  const root="games/"+slug+"/";
+  const html=read(root+"index.html"),core=read(root+"js/core.js");
+  const input=read(root+"control-modes.js"),css=read(root+"control-modes.css");
+  assert(html.includes('src="./control-modes.js"'));
+  assert(html.includes('href="./control-modes.css"'));
+  assert(core.includes("await window.ArcadeControls.choose(game)"));
+  assert(core.includes("window.ArcadeControls?.mode==='camera'"));
+  assert(input.includes('data-mode="controls"')&&input.includes('data-mode="camera"'));
+  assert(css.includes("input-mode-dialog"));
+  assert(input.includes('hub.mode=choice'));
+  execFileSync(process.execPath,["--check",here(root+"control-modes.js").pathname]);
+ }
+});
+test("AR controla cenário virtual e coleta no motor sem câmera",()=>{
+ const ar=read("games/ar/js/game_ar.js"),input=read("games/ar/control-modes.js");
+ assert(ar.includes("drawVirtualScene: function"));
+ assert(ar.includes("this.manualPickupHeld"));
+ assert(ar.includes("this.manualPickupRequested"));
+ assert(ar.includes("this.changeState('WAITING_PICKUP')"));
+ assert(input.includes("logic.currentHeading="));
+ assert(input.includes("logic.manualAccelerate"));
+ assert(input.includes('id:"pick"'));
+ assert(ar.includes("this.completeMission()"));
+});
+test("voo usa teclado e joystick tátil que acionam comandos originais",()=>{
+ const flight=read("games/voo/js/game_flight.js");
+ const input=read("games/voo/control-modes.js");
+ assert(input.includes('ArrowLeft')&&input.includes('ArrowUp'));
+ assert(input.includes('id:"start"')&&input.includes('id:"boost"'));
+ assert(input.includes('id:"missile"'));
+ assert(flight.includes("this.keys['ArrowUp']"));
+ assert(flight.includes("this.keys['Shift']"));
 });
