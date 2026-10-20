@@ -82,7 +82,7 @@ function start(){
  button.id="studio-world-sound";button.type="button";
  button.setAttribute("aria-label","Ligar ou desligar sons de aventura");
  const update=()=>{
-   button.textContent=ctx.enabled?"♪ SONS":"♪ MUDO";
+   button.textContent=ctx.enabled?"♪ FX ON":"♪ FX OFF";
    button.setAttribute("aria-pressed",String(ctx.enabled));
  };
  update();
