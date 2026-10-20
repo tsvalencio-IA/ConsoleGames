@@ -86,10 +86,11 @@ const hub={
    for(const b of buttons){
     const btn=document.createElement("button");btn.type="button";btn.className="input-control "+(b.className||"");
     btn.textContent=b.text;btn.dataset.control=b.id;btn.setAttribute("aria-label",b.label||b.text);
-    const down=e=>{e.preventDefault();btn.classList.add("held");b.down?.(e)};
-    const up=e=>{e.preventDefault();btn.classList.remove("held");b.up?.(e)};
+    const down=e=>{e.preventDefault();e.stopPropagation();btn.classList.add("held");b.down?.(e)};
+    const up=e=>{e.preventDefault();e.stopPropagation();btn.classList.remove("held");b.up?.(e)};
     btn.addEventListener("pointerdown",e=>{try{if(e.isTrusted && e.pointerId>=0 && btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
     for(const n of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(n,up,{passive:false});
+    btn.addEventListener("touchstart",e=>{e.stopPropagation();e.preventDefault()},{passive:false});
     root.append(btn);
    }
    document.body.append(root);hub.buttons=root;
@@ -108,7 +109,18 @@ const hub={
  },
  flightControls(logic){
    const tapStart=()=>{
-     if(["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)){logic.keys[" "]=true;setTimeout(()=>logic.keys[" "]=false,350)}
+     // Do not hold Space for 350ms: that crosses two engine phases
+     // (HANGAR->CALIBRATION->PLAYING), skipping the actual calibration UI.
+     if(logic.state==="HANGAR" && (logic.mode==="SINGLE"||logic.mode==="FREE")){
+       logic.state="CALIBRATION";logic.timer=5;
+     }else if(logic.state==="CALIBRATION"){
+       logic.keys[" "]=true;
+       window.setTimeout(()=>{logic.keys[" "]=false},110);
+     }else if(logic.state==="LOBBY"||logic.state==="HANGAR"){
+       // Network modes retain the original host/ready rules.
+       logic.keys[" "]=true;
+       window.setTimeout(()=>{logic.keys[" "]=false},110);
+     }
    };
    const key=(id,text,name)=>{
      const map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight",boost:"Shift",missile:" "};
