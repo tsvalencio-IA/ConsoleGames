@@ -408,7 +408,7 @@
                     if (this.state === 'GAMEOVER') {
                         ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.fillRect(0,0,w,h);
                         ctx.fillStyle = this.p1.hp > 0 ? "#f1c40f" : "#e74c3c";
-                        ctx.textAlign="center"; ctx.font="bold 80px 'Russo One'";
+                        ctx.textAlign="center"; ctx.font="bold " + Math.min(76,Math.max(28,w*.105)) + "px 'Russo One'";
                         ctx.fillText(this.p1.hp > 0 ? "NOCAUTE!" : "CAIU!", w/2, h/2);
                     }
                 }
@@ -434,15 +434,15 @@
             ctx.fillStyle = "#FFF"; ctx.textAlign = "center";
             
             if (this.calibSuccessTimer > 0) {
-                ctx.font = "bold 50px Arial"; ctx.fillStyle = "#2ecc71";
+                ctx.font = "bold " + Math.min(50,Math.max(22,w*.07)) + "px Arial"; ctx.fillStyle = "#2ecc71";
                 ctx.fillText("CALIBRAÇÃO OK", w/2, h/2);
                 this.calibSuccessTimer += dt;
                 if (this.calibSuccessTimer > 1.0) this.startGame();
                 return;
             }
 
-            ctx.font = "bold 40px Arial"; ctx.fillText("FAÇA A POSE T", w/2, h * 0.2);
-            ctx.font = "20px Arial"; ctx.fillText("ABRA OS BRAÇOS EM 90°", w/2, h * 0.25);
+            ctx.font = "bold " + Math.min(40,Math.max(21,w*.062)) + "px Arial"; ctx.fillText("FAÇA A POSE T", w/2, h * 0.2);
+            ctx.font = Math.min(20,Math.max(11,w*.035)) + "px Arial"; ctx.fillText("ABRA OS BRAÇOS EM 90°", w/2, h * 0.25);
 
             const armL = Math.abs(p.wrists.l.x - p.shoulders.l.x);
             const armR = Math.abs(p.wrists.r.x - p.shoulders.r.x);
@@ -868,30 +868,47 @@
         },
 
         drawHUD: function(ctx, w, h) {
-            const barW = w * 0.4;
-            ctx.fillStyle = "#444"; ctx.fillRect(10, 10, barW, 25);
-            ctx.fillStyle = "#e74c3c"; ctx.fillRect(10, 10, barW * (this.p1.hp/this.p1.maxHp), 25);
-            ctx.fillStyle = "#444"; ctx.fillRect(w-10-barW, 10, barW, 25);
-            ctx.fillStyle = "#3498db"; ctx.fillRect(w-10-barW, 10, barW * (this.p2.hp/this.p2.maxHp), 25);
-            ctx.fillStyle = "#f1c40f"; ctx.fillRect(10, 40, barW * (this.p1.stamina/100), 5);
-            
-            if (this.counterTimer > 0) {
-                ctx.fillStyle = "#f39c12"; ctx.font="bold 20px Arial"; ctx.textAlign="left";
-                ctx.fillText("COUNTER READY!", 20, 70);
+            // HUD de luta estilo arcade: vida, energia, tempo e sinal de contra-ataque.
+            // No celular não cobrir golpes com textos de missão/moedas.
+            const compact = w < 700 || h < 490;
+            const margin = Math.max(9, Math.min(18, w * .025));
+            const centerGap = compact ? 55 : 90;
+            const barW = Math.max(40, Math.min(compact ? 180 : 330, (w - centerGap - 2*margin)/2));
+            const hpH = compact ? 12 : 20;
+            const leftX = margin, rightX = w - margin - barW;
+            const y = Math.max(9, h * .018);
+            const hp1 = Math.max(0, Math.min(1, this.p1.hp / (this.p1.maxHp || 100)));
+            const hp2 = Math.max(0, Math.min(1, this.p2.hp / (this.p2.maxHp || 100)));
+            ctx.save();
+            ctx.fillStyle = 'rgba(4,13,24,.8)';
+            if(ctx.roundRect){ctx.beginPath();ctx.roundRect(leftX-3,y-3,barW+6,hpH+7,7);ctx.fill();ctx.beginPath();ctx.roundRect(rightX-3,y-3,barW+6,hpH+7,7);ctx.fill();}
+            else {ctx.fillRect(leftX-3,y-3,barW+6,hpH+7);ctx.fillRect(rightX-3,y-3,barW+6,hpH+7);}
+            ctx.fillStyle = '#4d1722';ctx.fillRect(leftX,y,barW,hpH);
+            ctx.fillStyle = '#1a334d';ctx.fillRect(rightX,y,barW,hpH);
+            ctx.fillStyle = '#fa5868';ctx.fillRect(leftX,y,barW*hp1,hpH);
+            ctx.fillStyle = '#4ddaf7';ctx.fillRect(rightX+barW*(1-hp2),y,barW*hp2,hpH);
+            // Resistência: barra pequena sob a vida.
+            ctx.fillStyle='#ffcf67';
+            ctx.fillRect(leftX,y+hpH+4,barW*Math.max(0,Math.min(1,this.p1.stamina/100)),3);
+            ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
+            ctx.font='900 '+(compact?18:25)+'px Arial';
+            ctx.shadowColor='#06121d';ctx.shadowBlur=5;
+            ctx.fillText(String(Math.max(0,Math.ceil(this.timer))), w/2, y + hpH/2 + 2);
+            ctx.shadowBlur=0;
+            if(this.counterTimer > 0){
+                ctx.fillStyle='#ffe37a';ctx.font='bold '+(compact?11:16)+'px Arial';
+                ctx.textAlign='left';ctx.fillText(compact?'⚡ CONTRA-ATAQUE':'⚡ COUNTER READY',leftX,y+hpH+(compact?20:29));
             }
-
-            // Central HUD
-            ctx.fillStyle = "#fff"; ctx.font="bold 30px Arial"; ctx.textAlign="center";
-            ctx.fillText(Math.ceil(this.timer), w/2, 35);
-
-            // --- NOVO: MOEDAS COLETADAS NA LUTA ---
-            ctx.fillStyle = "#f1c40f"; ctx.font="bold 20px 'Russo One'";
-            ctx.fillText(`🪙 ${this.matchCoins}`, w/2, 65);
-            
-            if (this.currentFase.id !== 'arcade') {
-                ctx.fillStyle = "#ecf0f1"; ctx.font="14px Arial";
-                ctx.fillText(`Missão: ${this.currentFase.desc}`, w/2, 85);
+            if(!compact){
+                ctx.textAlign='center';ctx.fillStyle='#ffdf89';ctx.font='bold 14px Arial';
+                ctx.fillText('MOEDAS '+Math.max(0,this.matchCoins||0),w/2,y+hpH+30);
+                if(this.currentFase?.id!=='arcade'){
+                    ctx.fillStyle='#c9daea';ctx.font='12px Arial';
+                    const objective=String(this.currentFase?.desc||'').slice(0,65);
+                    ctx.fillText(objective,w/2,y+hpH+51,Math.max(100,w-100));
+                }
             }
+            ctx.restore();
         },
 
         drawBtn: function(ctx, x, y, txt) {
