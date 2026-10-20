@@ -60,8 +60,26 @@ try{
       // Every game must load its own production sound/render layer.
       if(slug==="otthi"||slug==="familia/3d"){
         await page.waitForSelector("#studio-world-sound",{timeout:12000});
-        const selector=slug==="otthi"?"#world-console-toolbar #studio-world-sound":"#bar .topRight #studio-world-sound";
+        const selector=slug==="otthi"?"#world-console-toolbar #studio-world-sound":"#overlay .panel #studio-world-sound";
         assert.equal(await page.locator(selector).count(),1,"World audio switch misplaced: "+slug);
+        if(slug==="familia/3d"){
+          assert.equal(await page.locator("#bar #studio-world-sound").count(),0,"Som cobre os controles do HUD");
+          const hud=await page.evaluate(()=>{
+            const b=document.querySelector("#bar");
+            const stats=document.querySelector("#bar .topRight");
+            const brand=document.querySelector("#bar .brand");
+            const nav=document.querySelector("#world-console-toolbar");
+            const toy=document.querySelector("#toybar");
+            const rect=x=>{const r=x?.getBoundingClientRect();return r?{left:r.left,top:r.top,right:r.right,bottom:r.bottom}:null};
+            return {width:innerWidth,bar:rect(b),stats:rect(stats),brand:rect(brand),nav:rect(nav),toy:rect(toy)}
+          });
+          assert(hud.brand.right<=hud.stats.left+3,"Marca e contadores sobrepostos: "+JSON.stringify(hud));
+          if(size.width<=540 && hud.nav && hud.toy){
+            const xOver=Math.max(0,Math.min(hud.nav.right,hud.toy.right)-Math.max(hud.nav.left,hud.toy.left));
+            const yOver=Math.max(0,Math.min(hud.nav.bottom,hud.toy.bottom)-Math.max(hud.nav.top,hud.toy.top));
+            assert(xOver*yOver<20,"Barra console sobrepõe brinquedos: "+JSON.stringify(hud));
+          }
+        }
       }else{
         await page.waitForSelector("#studio-audio-switch",{timeout:12000});
         const sceneMethod={kart:"renderWorld",boxe:"drawArena",tenis:"drawEnvironment",ar:"drawVirtualScene",voo:"_drawWorld"}[slug];

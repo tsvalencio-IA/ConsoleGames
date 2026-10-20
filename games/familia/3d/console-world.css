@@ -91,3 +91,7 @@ html,body{max-width:100%;min-width:0;overflow-x:hidden}
 #controls .joystick{width:94px;height:94px}
 #controls .buttons{grid-template-columns:repeat(2,48px);grid-template-rows:repeat(2,45px)}
 }
+
+/* Console/status lives above toy inventory in portrait; never over the joystick. */
+@media(max-width:540px) and (min-height:481px){#world-console-toolbar{bottom:calc(env(safe-area-inset-bottom) + 216px)!important;max-width:min(47vw,197px)}#world-console-toolbar .console-world-status{display:none}}
+@media(max-height:480px) and (orientation:landscape){#world-console-toolbar{bottom:calc(env(safe-area-inset-bottom) + 154px)!important;max-width:40vw}}
