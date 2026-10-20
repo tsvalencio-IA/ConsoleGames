@@ -157,7 +157,9 @@ test("novas personagens próprias sem referências de franquias em títulos e mo
  const kart=read("games/kart/js/game_kart.js");
  const box=read("games/boxe/js/game_box.js");
  for(const franchise of ["MARIO","LUIGI","PEACH","BOWSER","TOAD","YOSHI","WARIO","WALUIGI"]){
-  assert(!new RegExp(franchise,"i").test(kart),franchise+" no kart");
+  // The original multiplayer room ID is retained for Firebase compatibility.
+  const humanFacing=kart.replace(/roomId:\s*'[^']*'/g,"roomId: '[original Firebase room]' ");
+  assert(!new RegExp(franchise,"i").test(humanFacing),franchise+" visível no kart");
   assert(!new RegExp(franchise,"i").test(box),franchise+" no boxe");
  }
  assert(kart.includes("CIRCUITO SOLAR"));
