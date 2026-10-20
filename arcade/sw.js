@@ -1,8 +1,8 @@
 /* thIAguinho ARCADE: PWA autónomo. O service worker NÃO controla os sete jogos.
    Scope: /ConsoleGames/arcade/ - ID diferente do console anterior. */
 "use strict";
-const CACHE="thiaguinho-arcade-shell-v1";
-const SHELL=["./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg"];
+const CACHE="thiaguinho-arcade-shell-v2";
+const SHELL=["./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
