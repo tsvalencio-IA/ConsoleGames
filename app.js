@@ -53,7 +53,14 @@
     const cover=el("div","game-cover");
     cover.style.setProperty("--cover-a",game.coverA);
     cover.style.setProperty("--cover-b",game.coverB);
-    cover.append(el("span","cover-circle"), el("span","cover-icon",game.icon));
+    const art=el("img","cover-art");
+    art.src="./covers/"+game.id+".svg";
+    art.alt="";
+    art.loading="lazy";
+    art.decoding="async";
+    art.addEventListener("load",()=>{if(art.naturalWidth>0)cover.classList.add("has-art")},{once:true});
+    art.addEventListener("error",()=>art.remove(),{once:true});
+    cover.append(art,el("span","cover-circle"), el("span","cover-icon",game.icon));
     const sticker=el("span","cover-sticker",game.destination==="menu" ? "NO MENU GAME" : "JOGUE NO CONSOLE");
     const fav=el("button","favorite-btn"+(state.favorites.has(game.id)?" is-favorite":""));
     fav.type="button"; fav.dataset.favorite=game.id; fav.setAttribute("aria-pressed",String(state.favorites.has(game.id)));
