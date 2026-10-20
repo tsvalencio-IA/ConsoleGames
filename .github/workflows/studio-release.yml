@@ -1,0 +1,35 @@
+name: Studio comercial · integrar sete jogos
+on:
+  push:
+    paths:
+      - '.github/workflows/studio-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: consolegames-studio-release
+  cancel-in-progress: false
+jobs:
+  studio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preservar originais e integrar sete melhorias em transação
+        run: node tools/studio-release.mjs
+      - name: Auditar som, interface, renderização e Firebase
+        run: |
+          node --test tests/*.test.mjs
+          node tests/studio-verify.mjs
+      - name: Publicar conjunto único em main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/
+          git commit -m "feat(studio): unifica áudio contextual, render, UI e qualidade nos sete jogos"
+          git push origin HEAD:main
