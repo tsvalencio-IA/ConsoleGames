@@ -1636,9 +1636,9 @@
             ctx.fillStyle='rgba(0,10,15,0.95)';ctx.fillRect(0,0,w,h);
             ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.strokeRect(50*sc,50*sc,w-100*sc,h-100*sc);
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
-            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText('POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4);
-            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText('GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48);
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText('JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53);
+            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'USE AS SETAS OU O BOTÃO INICIAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'◀ ▶ CURVA • ▲ SUBIR • ▼ DESCER':'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
@@ -1648,7 +1648,7 @@
                 ctx.fillText(`MANTENHA A POSIÇÃO (${Math.ceil(this.timer)}s)`, w/2, h*0.75);
             } else {
                 ctx.fillStyle='#ff0000';
-                ctx.fillText('AGUARDANDO MÃOS NA CÂMERA...', w/2, h*0.75);
+                ctx.fillText(window.ArcadeControls?.mode==='controls'?'TOQUE EM INICIAR OU USE AS SETAS':'AGUARDANDO MÃOS NA CÂMERA...', w/2, h*0.75,Math.max(130,w-28));
             }
         },
 
