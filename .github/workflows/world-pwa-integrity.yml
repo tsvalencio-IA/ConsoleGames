@@ -1,3 +1,4 @@
+# Studio integrity retry: reconcile modified worker hash and index atomically.
 name: Corrigir integridade PWA dos dois mundos
 on:
   push:

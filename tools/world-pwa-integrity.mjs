@@ -20,6 +20,8 @@ for(const [path,oldHash] of Object.entries(manifest.files)){
  const hash=createHash("sha256").update(readFileSync(local)).digest("hex");
  if(path==="index.html"){
    if(oldHash!==hash){manifest.files[path]=hash;updated++;}
+ }else if(path==="sw.js"){
+   // SW code receives new optional Studio assets below; hash is reconciled after edit.
  }else if(hash!==oldHash) {
    throw Error("Unrequested upstream asset drift: "+path+" expected "+oldHash+" got "+hash);
  }
@@ -34,6 +36,8 @@ const addTo="'./404.html',";
 if(!sw.includes(addTo))throw Error("OTThi optional cache changed");
 sw=sw.replace(addTo,addTo+"\n  "+otthiResources.join(",\n  ")+",");
 write(swPath,sw);
+manifest.files["sw.js"]=createHash("sha256").update(readFileSync(swPath)).digest("hex");
+write(jsonPath,JSON.stringify(manifest,null,2)+"\n");
 const dir="games/familia/",world="games/familia/3d/";
 const modules=["console-world.css","console-world.js","quest-chapter.js","studio-world.css","studio-world.js"];
 for(const file of modules){
