@@ -165,3 +165,12 @@ test("novas personagens próprias sem referências de franquias em títulos e mo
  assert(kart.includes("CIRCUITO SOLAR"));
  assert(box.includes("VÉRTICE"));
 });
+
+test("menu é seguro quando Firebase autentica antes de registrar os jogos",()=>{
+  for(const {slug} of installed){
+    const core=read("games/"+slug+"/js/core.js");
+    assert(core.includes("!Array.isArray(window.Games)"),slug+" não aguarda o registro");
+    assert(core.includes("window.Games.forEach"),slug+" perdeu o catálogo original");
+    assert(core.includes("window.Profile.loadFromFirebase"),slug+" perdeu o login Firebase");
+  }
+});
