@@ -127,9 +127,11 @@ try{
       const hpAfter=await page.evaluate(()=>window.Games.find(g=>g.id==="box_pro").logic.p2.hp);
       assert(hpAfter<hpBefore,"Soco por toque não causou dano ao adversário: "+hpBefore+" -> "+hpAfter);
     } else if(slug==="voo"){
-      // The actual START control must transition LOBBY -> HANGAR -> CALIBRATION -> PLAYING.
+      // Single-player flight is already in HANGAR after initialization.
+      // Real touch START must advance HANGAR -> CALIBRATION -> PLAYING.
       const start=page.locator('[data-control="start"]');
-      for(const target of ["HANGAR","CALIBRATION","PLAYING"]){
+      assert.equal(await page.evaluate(()=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state),"HANGAR");
+      for(const target of ["CALIBRATION","PLAYING"]){
         await start.click({timeout:5000});
         await page.waitForFunction(target=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state===target,target,{timeout:6500});
       }
