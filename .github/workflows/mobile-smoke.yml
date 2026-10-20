@@ -1,8 +1,15 @@
 name: Smoke visual mobile dos sete jogos
 on:
   push:
+    branches: [main]
     paths:
-      - .github/workflows/mobile-smoke.yml
+      - '.github/workflows/mobile-smoke.yml'
+      - 'games/**'
+      - 'enhancements/**'
+      - 'app.js'
+      - 'index.html'
+      - 'styles.css'
+      - 'tests/browser-smoke.mjs'
   workflow_dispatch:
 
 permissions:
