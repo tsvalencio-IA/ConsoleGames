@@ -1,0 +1,20 @@
+{
+  "name": "thIAguinho GAME CONSOLE — thIAguinho Soluções Digitais & Otto MMP Ferri",
+  "short_name": "thIAguinho Console",
+  "description": "Sete aventuras reunidas, cada jogo em seu repositório original.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080d1b",
+  "theme_color": "#090e1d",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
