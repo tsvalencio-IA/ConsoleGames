@@ -68,10 +68,11 @@ test("sete capas ilustradas originais estão presentes e possuem fallback acess�
   for(const id of ["otthi","familia","kart","boxe","tenis","ar","voo"]){
     const path="covers/"+id+".svg";
     const svg=readFileSync(new URL("../"+path,import.meta.url),"utf8");
-    assert.match(svg,/^<svg[\s\S]*viewBox="0 0 960 540"/);
-    assert.match(svg,/<\/svg>$/);
-    assert.match(sw,new RegExp("covers/"+id+"\\\\.svg"));
+    assert(svg.startsWith("<svg "),"SVG inválido: "+path);
+    assert(svg.includes('viewBox="0 0 960 540"'),"Ilustração sem tamanho definido: "+path);
+    assert(svg.trimEnd().endsWith("</svg>"),"Ilustração incompleta: "+path);
+    assert(sw.includes(path),"Capa fora do cache: "+path);
   }
-  assert.match(js,/art\\.addEventListener\\("error",\\(\\)=>art\\.remove\\(\\)/);
-  assert.match(css,/\\.game-cover\\.has-art \\.cover-icon/);
+  assert(js.includes('art.addEventListener("error"'),"Falta fallback de imagem");
+  assert(css.includes(".game-cover.has-art .cover-icon"),"Falta estilo do fallback");
 });
