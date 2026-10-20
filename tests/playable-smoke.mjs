@@ -74,6 +74,46 @@ try{
       width:document.documentElement.scrollWidth,
       viewport:window.innerWidth
     }));
+    if(slug==="kart"){
+      // Critical regression: button layout MUST be tested during an actual race.
+      const canvas=page.locator("#game-canvas");
+      const race=()=>page.evaluate(()=>window.Games.find(g=>g.id==="drive").logic.state);
+      let phase=await race();
+      if(phase==="MODE_SELECT"){
+        const box=await canvas.boundingBox();
+        await page.mouse.click(box.x+box.width*.5,box.y+box.height*.48);
+        await page.waitForFunction(()=>window.Games.find(g=>g.id==="drive").logic.state==="LOBBY",{},{timeout:6500});
+      }
+      phase=await race();
+      if(phase==="LOBBY"){
+        const box=await canvas.boundingBox();
+        await page.mouse.click(box.x+box.width*.5,box.y+box.height*.92);
+      }
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==="drive").logic.state==="RACE",{},{timeout:6500});
+      for(const name of ["left","right","go","brake","nitro","item"]){
+        const button=page.locator('.kart-input [data-control="'+name+'"]');
+        assert.equal(await button.isVisible(),true,"Botão ausente na corrida: "+name);
+        const rect=await button.boundingBox();
+        assert(rect && rect.x>=-2 && rect.x+rect.width<=390+2,"Botão saiu da tela: "+name);
+      }
+      const run=page.locator('.kart-input [data-control="go"]');
+      await run.dispatchEvent("pointerdown",{pointerId:21});
+      await page.waitForTimeout(1250);
+      const driving=await page.evaluate(()=>{
+        const g=window.Games.find(g=>g.id==="drive").logic;
+        return {speed:g.speed,pos:g.pos,active:g.inputActive};
+      });
+      assert(driving.active && driving.speed>3 && driving.pos>3,
+        "Acelerador não movimenta o kart: "+JSON.stringify(driving));
+      const left=page.locator('.kart-input [data-control="left"]');
+      await left.dispatchEvent("pointerdown",{pointerId:22});
+      await page.waitForTimeout(240);
+      const steering=await page.evaluate(()=>window.Games.find(g=>g.id==="drive").logic.targetSteer);
+      assert(steering<-.3,"Volante esquerdo não altera direção real");
+      await left.dispatchEvent("pointerup",{pointerId:22});
+      await run.dispatchEvent("pointerup",{pointerId:21});
+      await page.screenshot({path:join("test-results/playable","kart-controls-visible.png")});
+    }
     if(slug==="ar"){
       const manual=await page.evaluate(()=>{
         const g=window.Games.find(x=>x.id==="ar_truck_sim").logic;
