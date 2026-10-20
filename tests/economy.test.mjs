@@ -24,7 +24,7 @@ test("a recompensa em memória usa aritmética numérica sem concatenar saldos",
  const {runInNewContext}=await import("node:vm");
  for(const file of files){
   const window={},noop=()=>{};
-  const document={getElementById:()=>({style:{},classList:{add:noop,remove:noop},innerText:""})};
+  const document={getElementById:()=>({style:{},classList:{add:noop,remove:noop},innerText:""}),createElement:()=>({innerHTML:""}),head:{appendChild:noop}};
   runInNewContext(readFileSync(file,"utf8"),{window,document,console,setTimeout,clearTimeout,performance:{now:()=>0}});
   const profile=window.Profile;
   profile.save=()=>{};
