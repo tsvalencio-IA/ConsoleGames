@@ -1,0 +1,17 @@
+/* Arcade pause: accessible, safe-area aware, no canvas stretching */
+#arcade-pause{position:fixed;right:max(8px,env(safe-area-inset-right,0px));top:max(65px,calc(env(safe-area-inset-top,0px) + 61px));z-index:110;pointer-events:auto;color:#e4faff;background:rgba(8,24,47,.83);border:1px solid #8dddff89;padding:9px 12px;border-radius:13px;font-size:11px;letter-spacing:.5px;font-weight:900;box-shadow:0 8px 20px #0006}
+#arcade-pause[hidden]{display:none!important}
+#arcade-pause:focus-visible,#arcade-pause-modal :focus-visible{outline:3px solid #98e8ff;outline-offset:3px}
+#arcade-pause-modal{position:fixed;inset:0;z-index:900;display:grid;place-items:center;overflow:auto;padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgba(2,9,24,.91);backdrop-filter:blur(14px);box-sizing:border-box}
+#arcade-pause-modal[hidden]{display:none!important}
+.arcade-pause-panel{width:min(100%,440px);max-height:95%;overflow:auto;background:linear-gradient(135deg,#162f50,#1c1d3e);border:1px solid #7ac5ed66;padding:clamp(18px,5vw,35px);border-radius:26px;color:#fff;box-shadow:0 18px 65px #000a;text-align:center}
+.arcade-pause-kicker{font-size:10px;letter-spacing:2px;font-weight:850;color:#83e5e9}
+.arcade-pause-panel h2{font-size:clamp(22px,5.5vw,32px);letter-spacing:-1px;margin:10px 0}
+.arcade-pause-panel p{font-size:12px;line-height:1.5;color:#b7cce4}
+.arcade-pause-actions{display:grid;gap:10px;margin:20px 0}
+.arcade-pause-actions>*{font:800 12px system-ui;letter-spacing:.5px;display:grid;place-items:center;min-height:47px;background:#274c76;border:1px solid #7faee5;border-radius:13px;color:white;text-decoration:none}
+.arcade-pause-actions>[data-action="continue"]{color:#06263f;background:linear-gradient(90deg,#70edf5,#87baff);border-color:#a4eaff}
+.arcade-pause-actions>*:hover{filter:brightness(1.1)}
+.arcade-pause-note{font-size:10px!important}
+@media(max-width:700px){#arcade-pause{padding:7px 9px;top:max(58px,calc(env(safe-area-inset-top,0px) + 53px));font-size:10px}}
+@media(max-height:440px){#arcade-pause{top:max(51px,calc(env(safe-area-inset-top,0px) + 49px));padding:4px 6px}.arcade-pause-panel{padding:12px}.arcade-pause-actions{gap:5px;margin:9px 0}.arcade-pause-actions>*{min-height:37px}}

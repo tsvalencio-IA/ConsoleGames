@@ -326,7 +326,7 @@ window.System = {
         system.busyEpoch = epoch;
         system.loopId = null;
         try {
-            if (!document.hidden) {
+            if (!document.hidden && !system.paused) {
                 const canvas = system.canvas;
                 const w = canvas.width, h = canvas.height;
                 let pose = null;
@@ -370,6 +370,7 @@ window.System = {
     },
 
     stopGame: () => {
+        window.System.paused=false;
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
         window.System.loopId=null;
