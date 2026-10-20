@@ -1,6 +1,6 @@
 /* Offline apenas para a INTERFACE DO CONSOLE; jogos externos exigem sua rede original. */
 "use strict";
-const CACHE="thiaguinho-console-static-v1";
+const CACHE="thiaguinho-console-static-v2";
 const APP_SHELL=["./","./index.html","./styles.css","./app.js","./firebase-config.js","./manifest.webmanifest","./icons/icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
@@ -17,5 +17,12 @@ self.addEventListener("fetch",event=>{
   if(request.mode==="navigate"){
     event.respondWith(fetch(request).catch(()=>caches.match("./index.html")));return;
   }
-  event.respondWith(caches.match(request).then(cached=>cached||fetch(request)));
+  // Network-first: edições do GitHub nunca ficam presas em cache antigo.
+  event.respondWith(fetch(request).then(response=>{
+    if(response.ok && APP_SHELL.some(path=>new URL(path,self.registration.scope).href===url.href)){
+      const copy=response.clone();
+      event.waitUntil(caches.open(CACHE).then(cache=>cache.put(request,copy)));
+    }
+    return response;
+  }).catch(()=>caches.match(request)));
 });
