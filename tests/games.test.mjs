@@ -174,3 +174,12 @@ test("menu é seguro quando Firebase autentica antes de registrar os jogos",()=>
     assert(core.includes("window.Profile.loadFromFirebase"),slug+" perdeu o login Firebase");
   }
 });
+
+test("cadastros públicos não autoconcedem perfil administrativo",()=>{
+ for(const {slug} of installed){
+  const core=read("games/"+slug+"/js/core.js");
+  assert(core.includes("const role = 'player'"),slug+" permite papel indefinido");
+  assert(!core.includes("user.toLowerCase() === 'thiago'"),slug+" concede administração apenas pelo username");
+  assert(core.includes("window.Profile.role = data.role || 'player'"),slug+" não respeita perfis de contas existentes");
+ }
+});
