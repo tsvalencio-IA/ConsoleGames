@@ -1,62 +1,88 @@
-# Plano técnico — console e evolução dos sete jogos
+# ConsoleGames — arquitetura, auditoria e objetivos 10/10
 
-Data do inventário: **20/10/2026**. Fonte: arquivos existentes nos repositórios do proprietário. Não substituir observações por suposições.
+Data: 20/10/2026. Situação: **7 pastas de jogos importadas, com melhorias iniciais e CI**. Não equivale a sete jogos certificados 10/10.
 
-## 1. Contrato entre aplicações
+## 1. Arquitetura entregue
 
-O repositório `ConsoleGames` é um **lançador/orquestrador**, e não uma cópia ou reimplementação do motor dos jogos. Cada projeto continua responsável por renderização, sensores, sessão própria, gravação de dados e interfaces internas. O console não insere scripts nos mundos, não usa iframe para jogos que dependem de câmera/WebGL e não intercepta seus service workers.
+```text
+ConsoleGames/index.html           -> console único (mesma aba)
+ConsoleGames/app.js               -> catálogo de 7 entradas locais
+ConsoleGames/games/kart/          -> GAME original + seleção drive + mobile
+ConsoleGames/games/boxe/          -> GAME original + seleção box_pro + mobile
+ConsoleGames/games/tenis/         -> GAME original + seleção tennis + mobile
+ConsoleGames/games/ar/            -> GAME original + seleção ar_truck_sim + mobile
+ConsoleGames/games/voo/           -> GAME original + seleção usarmy_flight_sim + mobile
+ConsoleGames/games/otthi/         -> OTThi-World3 original completo + mobile
+ConsoleGames/games/familia/3d/    -> HQ original 3D completo + mobile
+ConsoleGames/enhancements/        -> complementos versionados
+ConsoleGames/tools/               -> regras estritas de importação e patch
+ConsoleGames/tests/               -> integridade + layout Chromium
+```
 
-| Projeto | Entrada | Dados atuais | Técnica |
-| --- | --- | --- | --- |
-| OTThi-World3 | Página raiz do mundo | Firebase `otthi-656c5` + persistência já existente | Mundo WebGL, PWA; controles/recursos próprios |
-| hq | `3d/` | `localStorage` no navegador | Mundo 3D familiar com missões |
-| GAME | Página raiz/menu | Firebase `thiaguinhogame-ac91b` | Menu de cinco motores registrados, incluindo câmera/pose e fases |
+A cópia preserva os arquivos-base e recursos dos projetos, com as modificações pontuais documentadas. Os repos de origem não foram alterados. Cinco pastas GAME **duplicam recursos do mesmo motor** para ficarem autocontidas: vantagem de isolamento e redução de interdependência; desvantagem de tamanho de download/repo e necessidade de aplicar patches de segurança em todas as cópias. Essa duplicação pode ser consolidada no futuro com auditoria e testes de regressão, mas não foi simplificada sem provas.
 
-**GAME:** registros confirmados de `drive` (Kart Legends), `box_pro` (Boxing Pro), `tennis` (Ping Pong Wii), `ar_truck_sim` (AR Ops Premium), `usarmy_flight_sim` (Aero Strike WAR). `js/game_run.js` tem 1 byte; não anunciar corrida extra até implementar e validar. Não confundir com outro repositório chamado `GAME_`.
+**Commits de origem congelados:**
+- GAME: `b18e140896fbec438524b47316a9d4f300b8b747`
+- OTThi-World3: `d252e98d9de4c1b6d472117a81bf6a5b129d2537`
+- hq: `af8803ad31401f82002d4c5d6f9f36a344eee0bb`
 
-## 2. Dados e Firebase sem perda
+Esses hashes estão disponíveis em `games/source-commits.json` para diffs e rollback.
 
-O console usa **o Firebase do OTThi somente para autenticar usuários já existentes e consultar** `otthosWorld/users/$uid/profile` e `otthosWorld/users/$uid/progress`. Ambas as leituras dependem de `auth.uid === $uid` nas regras do projeto original. O console **não escreve** no Realtime Database e **não modifica** as regras de produção. O Login por e-mail/senha só funciona se esse método estiver habilitado para a conta; os dados locais do HQ e o banco separado do GAME não são migrados automaticamente.
+## 2. Dados, autenticação e autorização
 
-Quando for solicitado progresso unificado real, planejar contrato por jogo: `playerId`, `gameId`, `schemaVersion`, `progressPayload`, `updatedAt`, `source`. Fazer mapeamento de identidade explícito com prova de propriedade antes de ler/escrever outras contas. Separar `console/v1/users/$uid` de `otthosWorld`, com regras por proprietário, limites de tamanho, schema validado, migração versionada, backup verificável e rollback. **Nunca reutilizar índices de outro produto nem aumentar as permissões globais do banco.**
+| Jogos | Identificação preservada | Persistência |
+| --- | --- | --- |
+| Kart | `drive` | Firebase GAME, `thiaguinhogame-ac91b` |
+| Boxe | `box_pro` | Firebase GAME |
+| Tênis | `tennis` | Firebase GAME |
+| AR | `ar_truck_sim` | Firebase GAME |
+| Voo | `usarmy_flight_sim` | Firebase GAME |
+| OTThi World | `otthi-656c5` | Configuração, regras e rotas próprias originais |
+| HQ 3D | sem ID Firebase | `localStorage` original |
 
-A configuração de Firebase para cliente é pública por definição; tokens de serviço, credenciais administrativas e private keys **não** devem ser versionados.
+O console usa a configuração pública OTThi para **ler** `otthosWorld/users/$uid/profile` e `otthosWorld/users/$uid/progress` após autenticação válida; não grava nesse banco. Cada jogo GAME mantém o login e Firebase do próprio sistema original, inclusive permissões e painel original, quando disponível. Não usar uid do GAME como uid do OTThi, nem tentar copiar senhas/tokens.
 
-## 3. Critérios de qualidade “10/10” — não confundir meta com validação
+A implantação das sete pastas **não** publica novas regras de Firebase. Uma auditoria de segurança real precisa avaliar regras, índices, privilégios de admin e autorização efetiva no servidor — **não presumir que a variável `Profile.role` do JavaScript imponha segurança**.
 
-Para cada uma das sete experiências, registrar resultados no desktop Chrome e em pelo menos um Android real + um iPhone/iPad real quando o recurso exigir; exigir evidências para:
+O metajogo mantém somente resultados observados pelo jogo no namespace local `console-games:v2:challenge:<ID>`. Vitórias e placares GAME são considerados quando o motor relata fim de partida; tênis e missões AR têm adaptadores separados. Visitas ao console e favoritos usam outras chaves locais. Esses números **não** são XP, moedas ou resultados oficiais do Firebase.
 
-1. **Inicialização:** páginas publicadas, carregamento real e mensagens úteis quando offline.
-2. **Jogabilidade:** todas as fases, missões, objetivos e estados de vitória/derrota testados.
-3. **Controles:** teclado, mouse, toque, gestos, orientação e calibração da câmera.
-4. **Performance:** FPS, memória, consumo de rede e aquecimento medidos em aparelhos-alvo.
-5. **Persistência:** criar, salvar, relogar, reiniciar e continuar sem perda/duplicidade.
-6. **Interface:** tamanho, legibilidade, toque, rolagem e várias resoluções sem regressão.
-7. **Segurança:** Firebase rules, perfis, autorização, crianças, privilégios e dados privados.
-8. **Acessibilidade:** foco, teclado onde aplicável, descrições, contraste e redução de movimento.
-9. **Robustez:** recuperar de falha de rede, câmera negada, login inválido e interrupção.
-10. **Regressão:** testes automatizados, alterações pequenas, comparação e rollback.
+## 3. Melhorias aplicadas nos arquivos do ConsoleGames
 
-**Um jogo só recebe aprovação 10/10 após atender aos dez itens com provas**, nunca por aparência ou por nota subjetiva.
+- Core GAME: correção do ID da tela de resultado; sensor/câmera iniciados somente ao escolher uma fase; encerramento das trilhas de câmera ao deixar uma partida; timeout de metadata para evitar bloqueio indefinido.
+- Console: sete URLs locais, mesma aba, botão de retorno, biblioteca responsiva, favoritos, progresso diário local.
+- Metajogo: desafios diários progressivos na tela de seleção de fases, recorde e vitórias locais; acesso negado não é contornado, mas explicado.
+- Kart: redução de textos no meio da corrida, rank/volta/velocidade consolidados em telas pequenas, minimapa em escala menor e resultados que respeitam a largura.
+- AR: corrigidas 13 declarações `ctx.font = clamp(...)` inválidas para Canvas e reposicionados indicadores para telefone.
+- Outros GAME: CSS móvel aditivo, áreas seguras, menus/controles mais compactos, motor escolhido por pasta.
+- OTThi/HQ: CSS responsivo complementar, retorno ao console e consulta a contadores existentes sem escrever dados.
 
-## 4. Sequência de execução preservando os originais
+## 4. Verificação executada
 
-1. **Base do console (iniciada):** catálogo dos 7, design, favoritos, navegação, autenticação OTThi somente leitura, CI e implantação.
-2. **Auditoria por jogo:** reproduzir falhas reais, capturas, desempenho, travamentos e divergências de controle/salvamento. Inventariar fase por fase. Testar em aparelho físico.
-3. **Corrigir GAME:** por motor de jogo, garantir registro e acessibilidade a jogadores legítimos; auditar inicialização, câmera/pose, permissionamento e persistência no Firebase do GAME. Investigar `game_run.js` vazio sem inventar recurso.
-4. **Corrigir OTThi World:** tratar gargalos 3D, online, sessões, sincronização, proteção infantil e controles móveis, sem alterar o banco silenciosamente.
-5. **Corrigir HQ:** testar missões, geometria, checkpoints, saves e versões; preservar controles e personagens.
-6. **Integração real opcional:** somente após definir e autorizar contratos de identidade/progresso, adicionar integração bilateral versionada de cada repo sem ruptura das contas anteriores.
-7. **Validação final:** conferir cada jogo em produção e comparar funcionalidades antigas/nova versão. Manter histórico Git e rota de reversão.
+- **13 testes Node.js estáticos** em `tests/console.test.mjs` e `tests/games.test.mjs`.
+- **Smoke visual Chromium** em quatro viewports: 360×740, 390×844, 667×375 e 1280×800. Valida o console, todas as sete entradas e o overflow horizontal dos elementos da página, com capturas em `console-mobile-smoke` nos artefatos do GitHub Actions.
+- No smoke visual, o acesso a **serviços de terceiros é deliberadamente bloqueado**; portanto o teste **não prova** login Firebase, câmera, jogos 3D ativos, partidas completas ou multiplayer.
 
-**Mudanças de projeto de origem exigem acesso de escrita autorizado a cada um.** Publicar o console não altera os jogos nem concede automaticamente autorização de escrita nos repositórios `GAME` e `OTThi-World3`.
+## 5. Critérios de aceitação 10/10 ainda pendentes
 
-## 5. Regras de não regressão
+| Jogo | Próxima validação de jogabilidade obrigatória |
+| --- | --- |
+| Kart | Pilotar no touch, drift/nitro, 3 voltas, colisões, final de corrida, ranking de chegada e mudanças de orientação |
+| Boxing Pro | Calibração de mãos/câmera, reconhecimento de golpes, adversário, rounds, nocaute, CPU fraca/forte e vitória/derrota |
+| Ping Pong Wii | Arrastar com dedo, física de raquete, 11 pontos e 2 de diferença, IA e modos online entre dois aparelhos |
+| AR Ops | Permissão de câmera, sensor/objeto/carga real, missão completa, compras, indicadores e tela de oficinas |
+| Aero Strike WAR | Aceleração, câmera, aeronave, fases, retorno do jogo, controles mobile e objetivos de campanha |
+| OTThi World | Entrada/saída de bairros, casas, personagem, toque, multiplayer, salvamento offline/online e consumo em celular mediano |
+| HQ 3D | 15 estrelas, cinco conquistas, cachorrinhas, corrida dos checkpoints, controles joystick, câmera 3D e saves |
 
-- Não usar um CSS, DOM ou loop de renderização global entre jogos distintos.
-- Não misturar bancos `otthi-656c5` e `thiaguinhogame-ac91b` sem migração explícita.
-- Não transferir autenticação por senha, tokens ou `localStorage` por URL, iframe ou parâmetro.
-- Não tratar favoritos locais como conquistas reais ou progresso sincronizado.
-- Não sobrescrever dados ou lógica que não fazem parte da correção solicitada.
-- Não declarar links GitHub Pages funcionais antes de verificar deploy e acesso real.
-- Não declarar 10/10 sem testes e evidências em navegador/dispositivo.
+Para cada um ainda são necessários vídeos/capturas em **Android real e iPhone real**, testes completos de missão, controles, FPS, uso de memória, consumo de rede, sessões Firebase, modo desconectado e regressão. O fato de um card abrir ou passar em teste Chromium **não** comprova que o jogo esteja 10/10.
+
+## 6. Evolução sem regressões
+
+1. Testar cada experiência em um aparelho-alvo e registrar bug real com passos reproduzíveis e screenshot.
+2. Corrigir **a pasta do jogo afetado**; evitar CSS ou lógica global que comprometa outras experiências.
+3. Verificar ID original, conta/controle de acesso, pontuação, salvamento, câmera, toque e telas pequenas.
+4. Executar `node --test tests/*.test.mjs` e o smoke Chromium; testar cada missão em aparelho real.
+5. Comparar os resultados com a cópia original usando hashes fixados e permitir rollback do commit específico.
+6. Antes de unificar progresso entre os projetos, implementar contrato `gameId`, `playerId`, versão, dados e regras de autorização revisadas; **não** aplicar migração ou gravação sem revisão e backup.
+
+**O importador é inicial e estrito:** ele se recusa a sobrescrever as sete pastas já instaladas. Atualizações futuras exigem comparação de código da fonte e modificação controlada — nunca `rsync --delete` sobre uma versão em produção.
