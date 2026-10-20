@@ -2,7 +2,9 @@
 
 **by thIAguinho Soluções Digitais e Otto MMP Ferri**
 
-**[JOGAR O CONSOLE](https://tsvalencio-ia.github.io/ConsoleGames/)**
+**[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
+
+> O console original continua em `/ConsoleGames/`, mas o **novo Arcade** usa a URL `/ConsoleGames/arcade/`, seu próprio `manifest.webmanifest` com ID `/ConsoleGames/arcade/`, ícones PNG 192/512, service worker e cache próprios. O novo endereço deve ser aberto em uma aba do navegador (fora do aplicativo antigo) para que o navegador possa oferecê-lo como instalação separada. Nenhum jogo, ID de Firebase ou conta original foi alterado para criar essa instalação.
 
 Sete experiências reunidas em um mesmo site e repositório. Cada jogo é **uma pasta local executável**, não apenas um link para outro GitHub Pages. O objetivo é melhorar usabilidade, ritmo, metas e responsividade sem substituir informações reais de jogadores.
 
