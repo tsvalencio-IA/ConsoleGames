@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/mobile-smoke.yml'
       - 'games/**'
+      - 'arcade/**'
       - 'enhancements/**'
       - 'app.js'
       - 'index.html'
