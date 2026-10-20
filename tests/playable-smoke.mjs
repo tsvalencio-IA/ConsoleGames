@@ -135,8 +135,14 @@ try{
       const left=page.locator('.kart-input [data-control="left"]');
       await left.dispatchEvent("pointerdown",{pointerId:22});
       await page.waitForTimeout(240);
-      const steering=await page.evaluate(()=>window.Games.find(g=>g.id==="drive").logic.targetSteer);
-      assert(steering<-.3,"Volante esquerdo não altera direção real");
+      const steeringState=await page.evaluate(()=>{
+        const g=window.Games.find(x=>x.id==="drive").logic;
+        const b=document.querySelector('.kart-input [data-control="left"]');
+        return {target:g.targetSteer,steer:g.steer,manual:g.arcadeManual?{...g.arcadeManual}:null,
+          held:b?.classList.contains("held"),disabled:b?.disabled,gameState:g.state,status:g.status,
+          controlMode:window.ArcadeControls?.mode,paused:window.System?.paused};
+      });
+      assert(steeringState.target<-.3,"Volante esquerdo não altera direção real: "+JSON.stringify(steeringState));
       await left.dispatchEvent("pointerup",{pointerId:22});
       await run.dispatchEvent("pointerup",{pointerId:21});
       // Simulated physical gamepad uses the real six-button touch input bridge.
