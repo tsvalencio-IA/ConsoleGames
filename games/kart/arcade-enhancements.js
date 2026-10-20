@@ -55,8 +55,13 @@
     UI.menuTitle=elt("strong");UI.menuDescription=elt("p");
     UI.menu.append(UI.menuTitle,UI.menuDescription);
     document.body.append(UI.top,UI.target);
-    const grid=$("#channel-grid");
+    // Show real daily objectives in phase selection (where players actually decide what to play).
+    const grid=$("#phase-grid");
     if (grid && grid.parentNode) grid.parentNode.insertBefore(UI.menu,grid);
+    UI.locked=elt("p","arcade-locked");
+    UI.locked.hidden=true;
+    UI.locked.textContent="Este jogo ainda não está liberado para sua conta GAME. Um responsável pode autorizar pelo painel original.";
+    $("#menu-screen")?.appendChild(UI.locked);
     UI.top.hidden=true;UI.target.hidden=true; UI.menu.hidden=true;
     const menu=$("#menu-screen");
     if(menu){
@@ -136,8 +141,8 @@
     if(!target)return;
     const granted=Boolean(window.Profile && (window.Profile.role==="admin" || window.Profile.permissions?.[id] === true));
     if (UI.menu) UI.menu.hidden=false;
+    if(UI.locked)UI.locked.hidden=granted;
     if (!granted){
-      if(UI.menuDescription) UI.menuDescription.textContent="Este jogo ainda não está liberado para sua conta GAME. Peça ao responsável que autorize no painel original.";
       for(const c of grid.children)c.hidden=true;
       return;
     }
