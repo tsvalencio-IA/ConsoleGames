@@ -3,16 +3,16 @@
    Este arquivo nunca grava nos bancos dos jogos. */
 (() => {
   "use strict";
-  const BASE = "https://tsvalencio-ia.github.io/";
+  const BASE = "./games/";
   const REPO_BASE = "https://github.com/tsvalencio-IA/";
   const entries = Object.freeze([
-    { id:"otthi", title:"OTThi World", category:"aventura", categoryLabel:"Mundo aberto", short:"Crie sua vida na Vila do Sol, explore bairros, aprenda e encontre amigos.", icon:"🏡", coverA:"#123c75", coverB:"#1f8ca3", source:"OTThi-World3", url:BASE+"OTThi-World3/", tint:"#6ee9fe", destination:"direct" },
-    { id:"familia", title:"Aventuras em Família 3D", category:"aventura", categoryLabel:"Universo 3D", short:"Corra pelo parque, brinque com Luna e Liz e descubra estrelas e desafios.", icon:"🌳", coverA:"#17554b", coverB:"#367b96", source:"hq", url:BASE+"hq/3d/?v=20261015", tint:"#8af2bf", destination:"direct" },
-    { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Pilote nas pistas de kart e dispute a melhor colocação.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"GAME/", tint:"#ffd18d", destination:"menu" },
-    { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Um jogo de boxe com movimento e desafios por fases.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"GAME/", tint:"#ffc1be", destination:"menu" },
-    { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Partidas de pingue-pongue com controles por movimento.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"GAME/", tint:"#7de7f6", destination:"menu" },
-    { id:"ar", title:"AR Ops Premium", category:"acao", categoryLabel:"Realidade aumentada", short:"Missão em realidade aumentada com câmera e desafios interativos.", icon:"🚀", coverA:"#533d75", coverB:"#8464ab", source:"GAME", url:BASE+"GAME/", tint:"#ddbefc", destination:"menu" },
-    { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Missões aéreas e campanha com aeronaves e objetivos.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"GAME/", tint:"#a7c9ff", destination:"menu" }
+    { id:"otthi", title:"OTThi World", category:"aventura", categoryLabel:"Mundo aberto", short:"Crie sua vida na Vila do Sol, explore bairros, aprenda e encontre amigos.", icon:"🏡", coverA:"#123c75", coverB:"#1f8ca3", source:"OTThi-World3", url:BASE+"otthi/", tint:"#6ee9fe", destination:"direct" },
+    { id:"familia", title:"Aventuras em Família 3D", category:"aventura", categoryLabel:"Universo 3D", short:"Corra pelo parque, brinque com Luna e Liz e descubra estrelas e desafios.", icon:"🌳", coverA:"#17554b", coverB:"#367b96", source:"hq", url:BASE+"familia/3d/", tint:"#8af2bf", destination:"direct" },
+    { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Pilote nas pistas de kart e dispute a melhor colocação.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"kart/", tint:"#ffd18d", destination:"direct" },
+    { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Um jogo de boxe com movimento e desafios por fases.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
+    { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Partidas de pingue-pongue com controles por movimento.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
+    { id:"ar", title:"AR Ops Premium", category:"acao", categoryLabel:"Realidade aumentada", short:"Missão em realidade aumentada com câmera e desafios interativos.", icon:"🚀", coverA:"#533d75", coverB:"#8464ab", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
+    { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Missões aéreas e campanha com aeronaves e objetivos.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
   ]);
 
   const FAVORITES_KEY = "thiaguinho-console:v1:favorites";
@@ -54,7 +54,7 @@
     cover.style.setProperty("--cover-a",game.coverA);
     cover.style.setProperty("--cover-b",game.coverB);
     cover.append(el("span","cover-circle"), el("span","cover-icon",game.icon));
-    const sticker=el("span","cover-sticker",game.destination==="menu" ? "NO MENU GAME" : "MUNDO INDEPENDENTE");
+    const sticker=el("span","cover-sticker",game.destination==="menu" ? "NO MENU GAME" : "JOGUE NO CONSOLE");
     const fav=el("button","favorite-btn"+(state.favorites.has(game.id)?" is-favorite":""));
     fav.type="button"; fav.dataset.favorite=game.id; fav.setAttribute("aria-pressed",String(state.favorites.has(game.id)));
     fav.setAttribute("aria-label", (state.favorites.has(game.id)?"Remover dos favoritos: ":"Adicionar aos favoritos: ")+game.title);
