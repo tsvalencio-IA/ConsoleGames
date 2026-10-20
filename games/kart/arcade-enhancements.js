@@ -53,8 +53,14 @@
     UI.menu=elt("section","arcade-menu-card");
     UI.menu.innerHTML='<div class="arcade-meta">DESAFIO DE HOJE</div>';
     UI.menuTitle=elt("strong");UI.menuDescription=elt("p");
-    UI.menu.append(UI.menuTitle,UI.menuDescription);
-    document.body.append(UI.top,UI.target);
+    UI.trophies=elt("div","arcade-trophies");
+    UI.trophies.setAttribute("aria-label","Progresso dos desafios de domínio");
+    UI.menu.append(UI.menuTitle,UI.menuDescription,UI.trophies);
+    UI.toast=elt("div","arcade-achievement");
+    UI.toast.setAttribute("role","status");
+    UI.toast.setAttribute("aria-live","polite");
+    UI.toast.hidden=true;
+    document.body.append(UI.top,UI.target,UI.toast);
     // Show real daily objectives in phase selection (where players actually decide what to play).
     const grid=$("#phase-grid");
     if (grid && grid.parentNode) grid.parentNode.insertBefore(UI.menu,grid);
@@ -95,11 +101,40 @@
       UI.goal.textContent="✓ Desafio de hoje concluído";
       UI.target.textContent="✓ Desafio de hoje concluído";
     }
+    // Trilha de troféus verificada somente por partidas/vitórias reportadas pelo motor.
+    const matches=Math.max(0,Number(data.totalGames)||0), winsAll=Math.max(0,Number(data.totalWins)||0);
+    const milestones=[
+      {label:"ESTREIA",pass:matches>=1,hint:"Jogue uma partida"},
+      {label:"PRIMEIRA VITÓRIA",pass:winsAll>=1,hint:"Vença uma partida"},
+      {label:"CAMPEÃO",pass:winsAll>=3,hint:"Vença três partidas"},
+      {label:"LENDA",pass:winsAll>=10,hint:"Vença dez partidas"}
+    ];
+    if(UI.trophies){
+      const fragment=document.createDocumentFragment();
+      for(const trophy of milestones){
+        const chip=elt("span","arcade-trophy"+(trophy.pass?" earned":""));
+        chip.textContent=(trophy.pass?"★ ":"○ ")+trophy.label;
+        chip.title=trophy.hint;fragment.appendChild(chip);
+      }
+      UI.trophies.replaceChildren(fragment);
+    }
+  }
+  function medalCount(){
+    const matches=Number(data.totalGames)||0,wins=Number(data.totalWins)||0;
+    return Number(matches>=1)+Number(wins>=1)+Number(wins>=3)+Number(wins>=10);
+  }
+  function celebrate(){
+    if(!UI.toast)return;
+    UI.toast.textContent="★ NOVO TROFÉU DESBLOQUEADO!";
+    UI.toast.hidden=false;
+    if(UI.toastTimer)clearTimeout(UI.toastTimer);
+    UI.toastTimer=setTimeout(()=>{UI.toast.hidden=true},2600);
   }
   function record(score, won) {
     if(!gameStarted) return;
     // Persist just observed match results; do not invent XP, money or victories.
     const val=Number.isFinite(Number(score)) ? Math.max(0,Math.floor(Number(score))) : 0;
+    const medalsBefore=medalCount();
     data.totalGames=(Number(data.totalGames)||0)+1;
     data.dailyGames=(Number(data.dailyGames)||0)+1;
     data.bestScore=Math.max(Number(data.bestScore)||0,val);
@@ -109,6 +144,7 @@
       data.dailyWins=(Number(data.dailyWins)||0)+1;
     }
     gameStarted=false;store();renderProgress();
+    if(medalCount()>medalsBefore)celebrate();
   }
   function patchCore() {
     if(applied || !window.System || !Array.isArray(window.Games))return;
