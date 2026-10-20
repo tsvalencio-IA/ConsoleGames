@@ -1425,7 +1425,11 @@
 
             let coins = window.Profile ? (window.Profile.coins || 0) : 0;
             ctx.fillStyle = "#2ecc71"; ctx.font = "bold " + Math.min(24,Math.max(18,w*.04)) + "px 'Chakra Petch'";
-            ctx.fillText(`MEU DINHEIRO: R$ ${coins.toLocaleString()}`, w/2, h * 0.16);
+            const wallet=Number(coins);
+            const readable=Number.isSafeInteger(wallet)&&wallet>=0&&wallet<1e9
+              ? new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(wallet)
+              : "CONFERIR SALDO";
+            ctx.fillText("SALDO: "+readable,w/2,h*.16,Math.max(110,w-30));
 
             this.shopHitboxes = [];
             
