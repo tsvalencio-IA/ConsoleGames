@@ -123,6 +123,28 @@ try{
       const goArea=geometry.find(x=>x.id==="go"),brakeArea=geometry.find(x=>x.id==="brake");
       assert(goArea.width*goArea.height>brakeArea.width*brakeArea.height,"Acelerador deveria ser o pedal dominante");
       assert.equal(await page.locator('.kart-control-pod').count(),2,"Faltam conjuntos ergonômicos");
+      // Render must actually draw an existing CPU rival, not merely count
+      // simulated opponents that never appear on screen.
+      const rivalFixture=await page.evaluate(()=>{
+        const g=window.Games.find(x=>x.id==="drive").logic;
+        if(!g.rivals?.length)return {count:0};
+        const rival=g.rivals.find(r=>r.status==="RACING")||g.rivals[0];
+        rival.lap=g.lap;
+        rival.pos=g.pos+1800; // 9 existing track segments ahead
+        rival.x=0;
+        rival.speed=0;
+        const original=g.drawKartSprite;
+        g.__testRivalDraws=0;
+        g.drawKartSprite=function(...args){
+          if(args[8]!==g.selectedChar)g.__testRivalDraws++;
+          return original.apply(this,args);
+        };
+        return {count:g.rivals.length,id:rival.id};
+      });
+      assert(rivalFixture.count>0,"Corrida iniciou sem adversários reais");
+      await page.waitForTimeout(280);
+      const rivalDraws=await page.evaluate(()=>window.Games.find(x=>x.id==="drive").logic.__testRivalDraws);
+      assert(rivalDraws>0,"Adversário simulado não foi renderizado na pista: "+JSON.stringify(rivalFixture));
       const run=page.locator('.kart-input [data-control="go"]');
       await run.dispatchEvent("pointerdown",{pointerId:21});
       await page.waitForTimeout(1250);
