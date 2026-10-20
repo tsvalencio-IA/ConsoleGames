@@ -227,3 +227,42 @@ test("cinco jogos possuem favicon explícito sem erro 404",()=>{
   assert(existsSync(here("games/"+slug+"/icon.svg")));
  }
 });
+
+
+test("regressões: kart sem bolas laterais falsas e adversários projetados pelas posições reais",()=>{
+ const scenes=read("games/kart/studio-scenes.js");
+ const kart=read("games/kart/js/game_kart.js");
+ assert(scenes.includes("No invented roadside spheres"));
+ assert(!/oval\(ctx,px,y-treeH/.test(scenes));
+ assert(kart.includes("d.rivals.forEach(r =>"));
+ assert(kart.includes("(Number(r.lap)-Number(d.lap))*trackLength"));
+ assert(kart.includes("this.drawKartSprite(ctx,screenX"));
+ assert(!kart.includes("if(relPos < -trackLength/2) relPos += trackLength"));
+});
+test("regressões: voo exige confirmação no modo manual e presença em câmera",()=>{
+ const js=read("games/voo/js/game_flight.js");
+ const controls=read("games/voo/control-modes.js");
+ assert(js.includes("window.ArcadeControls?.mode==='controls' && this.keys[' ']"));
+ assert(js.includes("window.ArcadeControls?.mode!=='controls' && this.pilot.active"));
+ assert(js.includes("if(window.ArcadeControls?.mode==='controls')this.timer=5.0"));
+ assert(controls.includes('logic.state="CALIBRATION"')||controls.includes('logic.state="CALIBRATION"'.replaceAll('"',"'"))||controls.includes('logic.state="CALIBRATION";'));
+});
+test("regressões: família mantém som no menu, não sobre botões ou contadores",()=>{
+ const js=read("games/familia/3d/studio-world.js");
+ const css=read("games/familia/3d/console-world.css");
+ assert(js.includes('document.querySelector("#overlay .panel")'));
+ assert(!js.includes('document.querySelector("#bar .topRight")'));
+ assert(css.includes("Mobile family view"));
+ assert(css.includes("#world-console-toolbar"));
+});
+test("câmera de ping-pong respeita resolução do vídeo, posição e vetor do antebraço",()=>{
+ const js=read("games/tenis/js/game_tennis.js");
+ assert(js.includes("video.videoWidth")||js.includes("video?.videoWidth"));
+ assert(js.includes("video?.videoHeight"));
+ assert(js.includes("const mappedX=")&&js.includes("const mappedY="));
+ assert(js.includes("mappedX(wrist)")&&js.includes("mappedY(wrist)"));
+ assert(js.includes("mappedX(elbow)")&&js.includes("mappedY(elbow)"));
+ assert(js.includes("this.p1.racketTilt="));
+ assert(js.includes("ctx.rotate(isPlayer&&!this.useMouse"));
+ assert(js.includes("tennis_calib_v15"),"Configurações antigas preservadas");
+});
