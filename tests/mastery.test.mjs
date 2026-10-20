@@ -14,12 +14,13 @@ test("cada jogo possui desafios nativos, gamepad e PWA atualizado",()=>{
    assert(html.includes('window.CONSOLE_GAME_ID="'+id+'"'),slug+" perdeu identidade");
    assert(html.includes('src="./mastery-gamepad.js"'),slug+" sem missões/gamepad");
    assert(html.includes('href="./mastery-gamepad.css"'),slug+" sem CSS de missões");
-   assert(sw.includes('mastery-v6')&&sw.includes('mastery-gamepad.js')&&sw.includes('mastery-gamepad.css'),slug+" offline desatualizado");
+   assert(sw.includes('pro-control-v7')&&sw.includes('mastery-gamepad.js')&&sw.includes('mastery-gamepad.css'),slug+" offline desatualizado");
    assert(code.includes("const goalDefs"),slug+" sem desafios verificáveis");
    assert(code.includes("window.System?.activeGame"),slug+" sem isolamento de jogo");
    assert(code.includes("navigator.getGamepads"),slug+" sem gamepad físico");
    assert(code.includes("localStorage.setItem"),slug+" sem persistência local");
    assert(!code.includes("firebase.database(")&&!code.includes("window.Profile.save"),slug+" não pode afetar Firebase");
+   assert(html.includes('href="./pro-controls.css"'),slug+" missing ergonomic controllers");
    assert(css.includes("prefers-reduced-motion")&&css.includes("safe-area-inset"),slug+" layout inseguro");
    execFileSync(process.execPath,["--check",base+"mastery-gamepad.js"]);
  }
