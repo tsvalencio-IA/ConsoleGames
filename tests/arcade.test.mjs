@@ -36,7 +36,7 @@ test("sete jogos da nova instalação abrem no repositório correto",()=>{
 });
 
 test("instalação arcade usa um service worker com cache isolado",()=>{
-  assert(sw.includes('const CACHE="thiaguinho-arcade-shell-v1"'));
+  assert(sw.includes('const CACHE="thiaguinho-arcade-shell-v2"'));
   assert(!sw.includes('thiaguinho-console-static-v3'));
   assert(sw.includes("self.registration.scope"));
   assert(sw.includes("url.origin!==self.location.origin"));
@@ -51,4 +51,7 @@ test("Firebase OTThi é idêntico entre console raiz e app ARCADE",()=>{
   assert(read("arcade/firebase-config.js").includes('projectId: "otthi-656c5"'));
   assert(read("arcade/styles.css").length>10000);
   assert(arcadeManifest.icons.every(icon=>existsSync(new URL("arcade/"+icon.src.replace("./",""),root))));
+  assert(arcadeManifest.icons.some(icon=>icon.sizes==="192x192"&&icon.type==="image/png"));
+  assert(arcadeManifest.icons.some(icon=>icon.sizes==="512x512"&&icon.type==="image/png"));
+  assert(sw.includes("./icon-192.png")&&sw.includes("./icon-512.png"));
 });
