@@ -51,7 +51,7 @@ test("HQ preserva WebGL, personagens e armazenamento local",()=>{
  assert(source.includes('id="gl"'));
  assert(source.includes("mascotes-3d.js"));
  assert(source.includes("localStorage"));
- assert(source.includes('src="../console-world.js"'));
+ assert(source.includes('src="./console-world.js"'));
 });
 test("OTThi mantém app e Firebase originais, mas com estilos adaptáveis adicionais",()=>{
  const original=read("games/otthi/index.html");

@@ -1,0 +1,67 @@
+/* Small-screen safety layer for original OTThi/HQ worlds. Core gameplay stays native. */
+html,body{max-width:100%;min-width:0;overflow-x:hidden}
+#game,#gl,#app,.app{max-width:100vw}
+#gl{display:block}
+#bar,.brand-card,.lobby-layout,.menu-grid,.hero-panel,.panel,.game-shell,.screen{box-sizing:border-box;max-width:100%}
+#bar{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+#mission{max-height:min(24dvh,160px);overflow-y:auto;overscroll-behavior:contain}
+#location,#minimap{max-width:42vw}
+#lobby .hero-panel,#lobby .menu-panel{min-width:0}
+#lobby .hero-actions{flex-wrap:wrap}
+#lobby .hero-actions>*{min-width:0}
+#lobby .menu-grid{grid-template-columns:repeat(auto-fit,minmax(min(130px,100%),1fr))}
+#lobby .menu-tile{min-width:0;overflow-wrap:anywhere}
+#lobby .brand-card{min-width:0}
+#lobby .brand-card p{overflow-wrap:anywhere}
+#lobby .profile-strip{max-width:100%;flex-wrap:wrap}
+#lobby .lobby-layout{min-width:0}
+#lobby .hero-panel{overflow:hidden}
+#lobby .hero-copy{min-width:0}
+#lobby .viewer-shell{max-width:100%}
+.console-world-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;font-size:clamp(10px,2.3vw,12px);font-weight:850;border:1px solid #8be6fa6b;border-radius:10px;padding:9px 13px;min-height:40px;background:#09233ecc;color:#eafaff;line-height:1.25;max-width:100%;box-sizing:border-box}
+.console-world-link:hover,.console-world-link:focus-visible{background:#195170}
+.console-world-link:focus-visible{outline:3px solid #80efff;outline-offset:2px}
+.console-world-status{display:inline-flex;gap:6px;align-items:center;font-size:11px;background:#051a30c9;color:#d4efff;border:1px solid #b1dce94d;border-radius:12px;padding:8px 11px;max-width:min(96vw,280px);line-height:1.35}
+.console-world-status[hidden]{display:none!important}
+#world-console-toolbar{position:fixed;left:max(9px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));z-index:9999;display:flex;gap:6px;align-items:center;max-width:calc(100vw - 18px);pointer-events:none}
+#world-console-toolbar>*{pointer-events:auto}
+#world-console-toolbar .console-world-link{padding:6px 10px;min-height:32px;font-size:10px;background:#091d33d9}
+#world-console-toolbar .console-world-status{padding:6px 8px;font-size:10px}
+@media(max-width:700px){
+ #lobby .lobby-layout{display:flex!important;flex-direction:column!important;gap:12px}
+ #lobby .hero-panel,#lobby .menu-panel{width:100%!important;max-width:100%!important}
+ #lobby .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #lobby .menu-tile{max-width:100%;min-height:54px}
+ #lobby .brand-card{padding:12px!important}
+ #lobby .brand-card h1{font-size:clamp(22px,6vw,33px)!important}
+ #lobby .hero-copy h2{font-size:clamp(20px,5.5vw,32px)!important}
+ #lobby .hero-actions .btn{min-height:41px}
+ #bar .brand small{display:none}
+ #bar .brand{font-size:clamp(13px,4vw,18px)}
+ #bar .topRight{gap:3px}
+ #mission{max-width:calc(100vw - 110px)}
+ #world-console-toolbar .console-world-status{max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+@media(max-height:520px) and (orientation:landscape){
+ #world-console-toolbar{bottom:max(2px,env(safe-area-inset-bottom))}
+ #world-console-toolbar .console-world-link{padding:4px 8px;min-height:27px}
+ #mission{max-height:31vh}
+}
+@media(prefers-reduced-motion:reduce){.console-world-link{transition:none!important}}
+/* Jornada de exploração / progressão, sem sobrepor o joystick ou a cena. */
+.console-daily-quest{width:min(100%,580px);max-width:100%;box-sizing:border-box;border:1px solid rgba(127,214,250,.39);border-radius:16px;background:linear-gradient(135deg,rgba(13,37,59,.92),rgba(27,35,77,.93));padding:clamp(9px,2.2vw,14px);margin:12px auto;box-shadow:0 8px 30px rgba(0,0,0,.18);color:#e8f7ff;text-align:left}
+.quest-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.quest-head strong{font-size:clamp(10px,2.3vw,14px);letter-spacing:.9px}.quest-head span{font-size:clamp(8px,1.8vw,10px);font-weight:800;letter-spacing:1px;color:#83dfff}
+.quest-track{display:grid;gap:5px;max-width:100%}
+.quest-entry{display:flex;align-items:center;justify-content:space-between;gap:7px;border:1px solid rgba(131,181,223,.14);border-radius:9px;padding:7px 9px;background:rgba(9,19,38,.65);font-size:clamp(10px,2.35vw,12px)}
+.quest-entry-name{min-width:0;overflow-wrap:anywhere}
+.quest-entry strong{flex-shrink:0;color:#a5d6f6;font-size:clamp(10px,2.3vw,12px);font-variant-numeric:tabular-nums}
+.quest-entry.completed{background:rgba(53,106,88,.36);border-color:rgba(130,239,191,.4)}
+.quest-entry.completed strong{color:#81ecc1}
+.quest-note{font-size:clamp(9px,2vw,11px);line-height:1.35;color:#9fbed3;margin:9px 0 0}
+.console-world-medal-toast{position:fixed;top:max(15%,calc(env(safe-area-inset-top,0px) + 62px));left:50%;transform:translateX(-50%);z-index:10001;max-width:calc(100vw - 20px);box-sizing:border-box;text-align:center;background:linear-gradient(125deg,#192a50,#3e396d);border:1px solid #f5cf74;color:#ffeeb8;font-size:clamp(11px,2.8vw,19px);font-weight:900;padding:12px 18px;border-radius:14px;pointer-events:none;box-shadow:0 14px 40px #0009}
+.console-world-medal-toast[hidden]{display:none!important}
+#lobby .console-daily-quest{margin:12px 0;min-width:0}
+#overlay .console-daily-quest{width:min(100%,600px);max-height:35dvh;overflow-y:auto;overscroll-behavior:contain}
+@media(max-height:550px){#overlay .console-daily-quest{max-height:31vh;overflow-y:auto}.console-daily-quest{margin:5px auto}.quest-entry{padding:5px 8px}}
+@media(max-width:420px){.quest-entry{padding:6px 8px}.quest-head{margin-bottom:7px}}

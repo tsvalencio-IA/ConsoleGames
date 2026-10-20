@@ -1,0 +1,17 @@
+/* Shared premium worlds: preserve original positions and interactions. */
+#studio-world-sound{position:fixed;z-index:900;bottom:max(12px,env(safe-area-inset-bottom,0px));right:max(12px,env(safe-area-inset-right,0px));min-height:42px;border:1px solid #abecfa75;border-radius:14px;background:linear-gradient(155deg,rgba(15,43,68,.85),rgba(9,27,48,.93));color:#e5faff;font:800 11px system-ui;padding:8px 11px;box-shadow:0 8px 24px #00182e66;backdrop-filter:blur(8px);cursor:pointer;touch-action:manipulation}
+#studio-world-sound:focus-visible{outline:3px solid #ffe9a2;outline-offset:3px}
+/* Add luminous visual hierarchy, but do not recolor the three-dimensional world itself. */
+#lobby .hero-panel{box-shadow:0 22px 65px rgba(2,13,39,.45),inset 0 1px 0 rgba(220,253,255,.13);border:1px solid rgba(139,209,240,.35)}
+#lobby .hero-panel .hero-copy h2{text-shadow:0 2px 16px rgba(8,36,64,.46);letter-spacing:-.02em}
+#lobby .menu-tile{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+@media(hover:hover){#lobby .menu-tile:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(4,19,39,.3);border-color:rgba(135,234,248,.65)}}
+#overlay .panel{border:1px solid rgba(194,240,255,.28);box-shadow:0 14px 50px rgba(1,29,58,.29)}
+#bar .counter{backdrop-filter:blur(8px)}
+@media(max-height:490px){#studio-world-sound{bottom:max(6px,env(safe-area-inset-bottom,0px));min-height:33px;padding:4px 8px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){#lobby .menu-tile{transition:none}}
+
+/* Place the button inside existing native controls: never over an on-screen joystick. */
+#world-console-toolbar #studio-world-sound,#bar .topRight #studio-world-sound{position:static;inset:auto;min-height:32px;padding:5px 8px;max-width:64px;flex-shrink:0;font-size:9px;box-shadow:0 3px 12px #0004}
+#world-console-toolbar #studio-world-sound{pointer-events:auto}
+@media(max-width:470px){#bar .topRight #studio-world-sound{min-height:29px;max-width:53px;padding:4px 5px;font-size:8px}}

@@ -28,7 +28,7 @@ for(const [slug,id,source] of five){
 }
 for(const [slug,htmlPath,css,js] of [
  ["otthi","games/otthi/index.html","./studio-world.css","./studio-world.js"],
- ["familia","games/familia/3d/index.html","../studio-world.css","../studio-world.js"]
+ ["familia","games/familia/3d/index.html","./studio-world.css","./studio-world.js"]
 ]){
  const html=read(htmlPath);
  assert(html.includes('href="'+css+'"'),slug+" missing studio style");

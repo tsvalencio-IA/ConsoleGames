@@ -27,6 +27,11 @@ const REQUIRED_SHELL = [
 
 const OPTIONAL_ASSETS = [
   './404.html',
+  './console-world.css',
+  './console-world.js',
+  './quest-chapter.js',
+  './studio-world.css',
+  './studio-world.js',
   './athos.glb',
   './assets/textures/asphalt-v628.png',
   './assets/textures/brick-v628.png',
