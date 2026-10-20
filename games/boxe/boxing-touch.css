@@ -1,0 +1,9 @@
+/* Touch boxing stays within the viewport; no camera required on coarse pointers. */
+#arcade-boxing-controls{position:fixed;z-index:120;bottom:max(15px,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;align-items:end;justify-content:center;gap:clamp(8px,4vw,28px);width:min(calc(100vw - 24px),480px);pointer-events:none}
+#arcade-boxing-controls[hidden]{display:none!important}
+#arcade-boxing-controls .boxing-action{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;min-width:0;width:min(28vw,110px);height:clamp(62px,15vw,92px);border-radius:21px;border:2px solid #b9e9f7a8;background:linear-gradient(145deg,#123350dc,#0d1c37e8);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;box-shadow:0 8px 26px #0008;font-size:clamp(19px,7vw,35px)}
+#arcade-boxing-controls .boxing-action span{font-size:clamp(9px,2.25vw,11px);font-weight:900;letter-spacing:.4px}
+#arcade-boxing-controls .boxing-action.guard{height:clamp(52px,12vw,74px);border-color:#d0c3ff}
+#arcade-boxing-controls .boxing-action:active,#arcade-boxing-controls .boxing-action.pressed{transform:scale(.95);background:#346b86}
+@media(max-height:450px){#arcade-boxing-controls{bottom:max(5px,env(safe-area-inset-bottom,0px))}#arcade-boxing-controls .boxing-action{height:52px;width:82px;font-size:21px;border-radius:12px}#arcade-boxing-controls .boxing-action.guard{height:48px}}
+@media(prefers-reduced-motion:reduce){#arcade-boxing-controls .boxing-action{transition:none}}
