@@ -117,8 +117,8 @@
             let currentGlobalCoins = window.Profile ? (window.Profile.coins || 0) : gameState.fallbackMoney;
 
             ctx.fillStyle = "#ff00ff"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-            ctx.font = "bold clamp(30px, 8vw, 55px) 'Russo One'"; ctx.fillText(`PONTO DE ENCONTRO`, cx, Math.max(45, startY - 100));
-            ctx.fillStyle = "#00ff66"; ctx.font = "bold clamp(24px, 6vw, 36px) 'Chakra Petch'"; ctx.fillText(`MEU BOLSO: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
+            ctx.font = "bold " + Math.round(Math.min(55,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(`PONTO DE ENCONTRO`, cx, Math.max(45, startY - 100));
+            ctx.fillStyle = "#00ff66"; ctx.font = "bold " + Math.round(Math.min(36,Math.max(14,window.innerWidth*0.06))) + "px 'Chakra Petch'"; ctx.fillText(`MEU BOLSO: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
 
             let currentlyHovering = null;
 
@@ -291,8 +291,8 @@
             let currentGlobalCoins = window.Profile ? (window.Profile.coins || 0) : gameState.fallbackMoney;
 
             ctx.fillStyle = "#00ffff"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-            ctx.font = "bold clamp(30px, 8vw, 55px) 'Russo One'"; ctx.fillText(`OFICINA DE ${window.Profile?.username || 'PILOTO'}`, cx, Math.max(45, startY - 100));
-            ctx.fillStyle = "#00ff66"; ctx.font = "bold clamp(24px, 6vw, 36px) 'Chakra Petch'"; ctx.fillText(`CAIXA GERAL: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
+            ctx.font = "bold " + Math.round(Math.min(55,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(`OFICINA DE ${window.Profile?.username || 'PILOTO'}`, cx, Math.max(45, startY - 100));
+            ctx.fillStyle = "#00ff66"; ctx.font = "bold " + Math.round(Math.min(36,Math.max(14,window.innerWidth*0.06))) + "px 'Chakra Petch'"; ctx.fillText(`CAIXA GERAL: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
 
             const activeMenu = this.menus[this.menuState] || this.menus['MAIN'];
             let currentlyHovering = null;
@@ -338,7 +338,7 @@
                     ctx.fillText(btn.icon, bX + bW/2, bY + bH/2 - 20);
                     ctx.fillStyle = "#fff"; ctx.font = "bold 18px 'Chakra Petch'";
                     ctx.fillText(btn.label, bX + bW/2, bY + bH - 35);
-                    if(subDesc) { ctx.fillStyle = "#aaa"; ctx.font = "clamp(12px, 3vw, 16px) Arial"; ctx.fillText(subDesc, bX + bW/2, bY + bH - 18); }
+                    if(subDesc) { ctx.fillStyle = "#aaa"; ctx.font = "" + Math.round(Math.min(16,Math.max(12,window.innerWidth*0.03))) + "px Arial"; ctx.fillText(subDesc, bX + bW/2, bY + bH - 18); }
                     if (displayCost && !btn.id.startsWith('MENU_')) {
                         ctx.fillStyle = isClickable || displayCost === "MÁXIMO" || displayCost === "EQUIPADO" ? statusColor : "#e74c3c";
                         ctx.font = "bold 16px 'Russo One'"; ctx.fillText(displayCost, bX + bW/2, bY + bH - 5);
@@ -679,8 +679,8 @@
             } 
             else if (this.state === 'WAITING_PICKUP') {
                 const uiY = h - 160;
-                ctx.fillStyle = this.colors.danger; ctx.textAlign = "center"; ctx.font = "bold clamp(26px, 7vw, 50px) 'Russo One'"; ctx.fillText("ALVO BLOQUEADO!", cx, uiY - 55);
-                ctx.fillStyle = "#fff"; ctx.font = "bold clamp(18px, 4vw, 26px) Arial"; ctx.fillText("PARE E REMOVA COM A MÃO!", cx, uiY - 20);
+                ctx.fillStyle = this.colors.danger; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(50,Math.max(14,window.innerWidth*0.07))) + "px 'Russo One'"; ctx.fillText("ALVO BLOQUEADO!", cx, uiY - 55);
+                ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(26,Math.max(14,window.innerWidth*0.04))) + "px Arial"; ctx.fillText("PARE E REMOVA COM A MÃO!", cx, uiY - 20);
 
                 if (!visualFound) {
                     this.pickupTimer += dt;
@@ -732,7 +732,7 @@
 
             const topH = 70;
             ctx.fillStyle = this.colors.panel; ctx.fillRect(0, 0, w, topH); ctx.strokeStyle = this.colors.main; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, topH); ctx.lineTo(w, topH); ctx.stroke();
-            ctx.fillStyle = "#fff"; ctx.font = "bold clamp(16px, 4vw, 22px) 'Chakra Petch'"; ctx.textAlign = "left"; ctx.fillText(`LVL ${window.Profile?.level || 1} | VIDA: ${Math.floor(this.health)}%`, 15, 25);
+            ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(22,Math.max(14,window.innerWidth*0.04))) + "px 'Chakra Petch'"; ctx.textAlign = "left"; ctx.fillText(`LVL ${window.Profile?.level || 1} | VIDA: ${Math.floor(this.health)}%`, 15, 25);
             
             ctx.save();
             const fuelW = Math.min(200, w/2.2);
@@ -740,7 +740,7 @@
             ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(15, 38, fuelW, 20); ctx.fillStyle = fuelPct > 0.2 ? this.colors.success : this.colors.danger; ctx.fillRect(15, 38, fuelPct * fuelW, 20);
             ctx.strokeStyle = "#fff"; ctx.strokeRect(15, 38, fuelW, 20); ctx.fillStyle = "#fff"; ctx.font = "bold 14px Arial"; ctx.fillText("BATERIA", 22, 53); ctx.restore();
 
-            if (isFull && this.state !== 'TOW_MODE') { ctx.fillStyle = (Math.sin(this.timeTotal*5) > 0) ? this.colors.success : "#fff"; ctx.textAlign = "center"; ctx.font = "bold clamp(24px, 6vw, 40px) 'Russo One'"; ctx.fillText("CAÇAMBA CHEIA! VOLTE!", w/2, topH + 40); }
+            if (isFull && this.state !== 'TOW_MODE') { ctx.fillStyle = (Math.sin(this.timeTotal*5) > 0) ? this.colors.success : "#fff"; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(40,Math.max(14,window.innerWidth*0.06))) + "px 'Russo One'"; ctx.fillText("CAÇAMBA CHEIA! VOLTE!", w/2, topH + 40); }
 
             const btnS = Math.min(80, w * 0.18); const rightPad = 20; let distToBase = Math.hypot(this.vPos.x, this.vPos.y); let atBase = distToBase < 30; const garageY = topH + 20;
             ctx.fillStyle = atBase ? this.colors.success : "rgba(100,100,100,0.5)"; ctx.fillRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.strokeStyle = "#fff"; ctx.strokeRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.fillStyle = "#000"; ctx.textAlign="center"; ctx.font = `bold ${btnS*0.5}px Arial`; ctx.fillText("🔧", w - rightPad - btnS/2, garageY + btnS*0.7);
@@ -768,9 +768,9 @@
             ctx.fillStyle = this.manualAccelerate ? "rgba(0,255,255,0.6)" : "rgba(0,255,255,0.2)"; ctx.beginPath(); ctx.arc(accX, accY, accR, 0, Math.PI*2); ctx.fill(); ctx.stroke();
             ctx.fillStyle = "#fff"; ctx.font = "bold 16px Arial"; ctx.textAlign="center"; ctx.fillText("ACELERAR", accX, accY + 6);
 
-            ctx.textAlign = "left"; ctx.fillStyle = "#fff"; ctx.font = "bold clamp(20px, 5vw, 28px) 'Chakra Petch'"; ctx.fillText(`CARGA: ${this.cargo.length}/${this.stats.maxCargo}`, 180, h - 30);
-            ctx.fillStyle = this.colors.success; ctx.font = "bold clamp(24px, 6vw, 32px) 'Russo One'"; ctx.fillText(`R$ ${Math.floor(this.displayMoney).toLocaleString()}`, 380, h - 28);
-            ctx.textAlign = "right"; ctx.fillStyle = this.colors.main; ctx.font = "bold clamp(16px, 4vw, 22px) 'Chakra Petch'"; ctx.fillText(`BASE: ${Math.floor(distToBase)}m`, w - 20, h - 30);
+            ctx.textAlign = "left"; ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(28,Math.max(14,window.innerWidth*0.05))) + "px 'Chakra Petch'"; ctx.fillText(`CARGA: ${this.cargo.length}/${this.stats.maxCargo}`, w < 700 ? Math.max(108,w*.36) : 180, h - 30);
+            ctx.fillStyle = this.colors.success; ctx.font = "bold " + Math.round(Math.min(32,Math.max(14,window.innerWidth*0.06))) + "px 'Russo One'"; if (w > 700) ctx.fillText(`R$ ${Math.floor(this.displayMoney).toLocaleString()}`, 380, h - 28);
+            ctx.textAlign = "right"; ctx.fillStyle = this.colors.main; ctx.font = "bold " + Math.round(Math.min(22,Math.max(14,window.innerWidth*0.04))) + "px 'Chakra Petch'"; ctx.fillText(`BASE: ${Math.floor(distToBase)}m`, w - 20, w < 700 ? 51 : h - 30);
         },
 
         deliverCargo: function() {
@@ -859,7 +859,7 @@
         },
 
         drawOverlay: function(ctx, w, h, title, sub) {
-            ctx.fillStyle = "rgba(0, 5, 10, 0.95)"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = this.colors.main; ctx.textAlign = "center"; ctx.font = "bold clamp(30px, 8vw, 65px) 'Russo One'"; ctx.fillText(title, w/2, h/2 - 20); ctx.fillStyle = "#fff"; ctx.font = "bold 20px Arial"; ctx.fillText(sub, w/2, h/2 + 30);
+            ctx.fillStyle = "rgba(0, 5, 10, 0.95)"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = this.colors.main; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(65,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(title, w/2, h/2 - 20); ctx.fillStyle = "#fff"; ctx.font = "bold 20px Arial"; ctx.fillText(sub, w/2, h/2 + 30);
         },
 
         spawnParticles: function(x, y, count, color) {
