@@ -108,6 +108,38 @@ try{
        await control.dispatchEvent("pointerup",{pointerId:6});
        assert.equal(await page.evaluate(()=>!!window.Games.find(x=>x.id==="usarmy_flight_sim").logic.keys.ArrowLeft),false,"Controle preso");
     }
+
+    if(slug==="boxe"){
+      // The selection screen must lead to a REAL fight, not just a decorative menu.
+      const game=page.locator("#game-canvas");
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==="box_pro").logic.state==="CHAR_SELECT",null,{timeout:4000});
+      const box=await game.boundingBox();
+      assert(box,"Canvas boxe ausente");
+      await page.mouse.click(box.x+box.width*.2,box.y+box.height*.90);
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==="box_pro").logic.state==="FIGHT",null,{timeout:4000});
+      await page.waitForFunction(()=>{
+        const logic=window.Games.find(g=>g.id==="box_pro").logic;
+        return logic.p2?.pose?.head?.x>0 && logic.p1?.pose?.wrists;
+      },null,{timeout:5000});
+      const hpBefore=await page.evaluate(()=>window.Games.find(g=>g.id==="box_pro").logic.p2.hp);
+      await page.locator('[data-punch="l"]').dispatchEvent("pointerdown",{pointerId:11});
+      await page.waitForTimeout(200);
+      const hpAfter=await page.evaluate(()=>window.Games.find(g=>g.id==="box_pro").logic.p2.hp);
+      assert(hpAfter<hpBefore,"Soco por toque não causou dano ao adversário: "+hpBefore+" -> "+hpAfter);
+    } else if(slug==="voo"){
+      // The actual START control must transition LOBBY -> HANGAR -> CALIBRATION -> PLAYING.
+      const start=page.locator('[data-control="start"]');
+      for(const target of ["HANGAR","CALIBRATION","PLAYING"]){
+        await start.click({timeout:5000});
+        await page.waitForFunction(target=>window.Games.find(g=>g.id==="usarmy_flight_sim").logic.state===target,target,{timeout:6500});
+      }
+      const physics=await page.evaluate(()=>{
+        const g=window.Games.find(x=>x.id==="usarmy_flight_sim").logic;
+        return {state:g.state,shipSpeed:g.ship.speed,shipHP:g.ship.hp};
+      });
+      assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
+      assert(physics.shipHP>0,"Caça iniciou destruído");
+    }
     assert.equal(state.game,id,"Motor foi encerrado inesperadamente");
     assert.equal(state.loaded,true,"HUD de jogo não exibido");
     assert(state.width<=state.viewport+3,JSON.stringify({slug,state}));
