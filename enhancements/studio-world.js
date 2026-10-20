@@ -91,7 +91,8 @@ function start(){
    try{localStorage.setItem(key,ctx.enabled?"on":"off")}catch{}
    update();if(ctx.enabled){init();cue("quest")}
  });
- document.body.appendChild(button);
+ const parent=mode==="familia" ? document.querySelector("#bar .topRight") : document.querySelector("#world-console-toolbar");
+ (parent||document.body).appendChild(button);
  document.addEventListener("pointerdown",init,{passive:true,once:true});
  document.addEventListener("keydown",init,{once:true});
  document.addEventListener("visibilitychange",()=>{
