@@ -47,7 +47,7 @@ try{
   page.on("pageerror",error=>appErrors.push(error.message));
   try{
     await page.goto(base+slug+"/",{waitUntil:"domcontentloaded",timeout:35000});
-    await page.waitForFunction(id=>window.Games?.some(game=>game.id===id)&&window.System?.canvas,{timeout:15000},id);
+    await page.waitForFunction(id=>window.Games?.some(game=>game.id===id)&&window.System?.canvas,id,{timeout:15000});
     await page.waitForFunction(()=>!document.getElementById("menu-screen")?.classList.contains("hidden"),{timeout:15000});
     await page.waitForFunction(()=>!document.getElementById("phase-screen")?.classList.contains("hidden"),{timeout:10000}).catch(async()=>{
       await page.locator("#channel-grid .channel").first().click({timeout:5000});
@@ -55,7 +55,7 @@ try{
     });
     const phases=page.locator("#phase-grid .mission-card:not(.locked)");
     await phases.first().click({timeout:10000});
-    await page.waitForFunction(id=>window.System?.activeGame?.id===id,{timeout:18000},id);
+    await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:18000});
     await page.waitForTimeout(1100);
     const state=await page.evaluate(()=>({
       game:window.System?.activeGame?.id,
