@@ -238,7 +238,9 @@ window.System = {
     },
 
     renderChannels: () => {
-        const grid = document.getElementById('channel-grid'); if(!grid) return; grid.innerHTML = '';
+        const grid = document.getElementById('channel-grid');
+        if(!grid || !Array.isArray(window.Games)) return;
+        grid.innerHTML = '';
         window.Games.forEach(g => {
             const hasAccess = window.Profile.role === 'admin' || window.Profile.permissions[g.id] === true;
             if (hasAccess) {
