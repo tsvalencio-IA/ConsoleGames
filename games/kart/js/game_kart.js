@@ -642,7 +642,16 @@
                         }
                     }
                 }
-                d.inputActive = detected; if (!detected) { d.targetSteer = 0; d.virtualWheel.opacity *= 0.9; } 
+                // No camera mode: use the exact touch/keyboard state, not simulated poses.
+                const manual=window.ArcadeControls?.mode==="controls" ? d.arcadeManual : null;
+                if(manual){
+                    d.targetSteer=(Number(manual.right)-Number(manual.left))*.85;
+                    detected=Boolean(manual.throttle);
+                    if(manual.itemQueued){itemTriggered=true;manual.itemQueued=false;}
+                    d.virtualWheel.opacity=0;
+                }
+                d.inputActive=detected;
+                if(!detected && !manual){d.targetSteer=0;d.virtualWheel.opacity*=.9;} 
                 d.steer += (d.targetSteer - d.steer) * (PHYSICS.steerSensitivity / Math.sqrt(Math.max(0.5, char.weight)));
             }
 
@@ -673,6 +682,10 @@
             const isAccelerating = (d.inputActive || d.turboLock);
             if(d.status === 'RACING' && d.spinTimer <= 0 && isAccelerating) { d.speed += (max - d.speed) * char.accel; } else if (d.status !== 'FINISHED') { d.speed *= 0.96; }
             d.speed *= currentDrag;
+            if(window.ArcadeControls?.mode==="controls" && d.arcadeManual?.brake && d.status==="RACING"){
+                d.speed=Math.max(0,d.speed*.86);
+                d.turboLock=false;
+            }
 
             if (d.spinTimer > 0) { 
                 d.spinTimer--; 
@@ -748,7 +761,7 @@
                 if (d.item === 'mushroom') {
                     d.speed = Math.min(CONF.TURBO_MAX_SPEED + 50, d.speed + 150);
                     window.Gfx.shakeScreen(15); window.Sfx.play(800, 'square', 0.3, 0.2);
-                    this.pushMsg("COGUMELO BOOST!", "#f1c40f");
+                    this.pushMsg("ITEM: TURBO!", "#f1c40f",18);
                 } 
                 else if (d.item === 'banana') {
                     // Joga a banana pra trás
@@ -1180,7 +1193,23 @@
         renderUI: function(ctx, w, h) {
             const d = Logic;
             hudMessages = hudMessages.filter(m => m.life > 0);
-            hudMessages.forEach((m, i) => { ctx.save(); ctx.translate(w/2, h/2 - i*45); if(m.scale < 1) m.scale += 0.1; ctx.scale(m.scale, m.scale); ctx.fillStyle = m.color; ctx.font = `bold ${m.size}px 'Russo One'`; ctx.textAlign = 'center'; ctx.shadowColor = 'black'; ctx.shadowBlur = 10; ctx.fillText(m.text, 0, 0); ctx.restore(); m.life--; });
+            // Compact notifications above the driving view, never over the kart.
+            hudMessages.slice(-2).forEach((m,i)=>{
+                ctx.save();
+                const font=Math.round(Math.min(19,Math.max(11,w*.026,h*.034)));
+                const label=String(m.text||"").slice(0,55);
+                const y=Math.min(h*.16,108)+i*(font+10);
+                ctx.textAlign="center";ctx.textBaseline="middle";
+                ctx.font="900 "+font+"px Arial";
+                const measured=Math.min(w-24,ctx.measureText(label).width+27);
+                ctx.fillStyle="rgba(5,21,39,.82)";
+                if(ctx.roundRect){ctx.beginPath();ctx.roundRect((w-measured)/2,y-font*.9,measured,font+12,8);ctx.fill()}
+                else ctx.fillRect((w-measured)/2,y-font*.9,measured,font+12);
+                ctx.fillStyle=m.color||"#f7faff";
+                ctx.fillText(label,w/2,y+2,Math.max(80,w-40));
+                ctx.restore();
+                m.life--;
+            });
 
             if (d.state === 'GAMEOVER') return; 
 
@@ -1235,7 +1264,12 @@
             if (w > 700 && h > 510) {
             let coins = window.Profile ? (window.Profile.coins || 0) : 0;
             ctx.fillStyle = "#f1c40f"; ctx.font = "bold 20px 'Russo One'"; ctx.textAlign = "left";
-            ctx.fillText(`🪙 R$ ${(coins/1000).toFixed(1)}k`, 35, h - 48);
+            // Extreme values can indicate legacy profile corruption; never change Firebase here.
+            const verified=Number(coins);
+            const label=Number.isFinite(verified)&&verified>=0&&verified<1e9
+              ? new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(verified)
+              : "consultar perfil";
+            ctx.fillText("SALDO: "+label,35,h-48,Math.max(100,w*.42));
 
             }
 

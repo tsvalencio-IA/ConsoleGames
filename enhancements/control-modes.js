@@ -50,7 +50,7 @@ const hub={
    if(id==="box_pro")logic.touchMode=false;
    return;
   }
-  if(id==="drive")return;
+  if(id==="drive"){hub.kartControls(logic);return;}
   if(id==="box_pro"){
    logic.touchMode=true;
    window.CONSOLE_FORCE_TOUCH_BOXE=true;
@@ -105,6 +105,62 @@ const hub={
    });
    window.addEventListener("blur",blur);hub.releases.push(()=>window.removeEventListener("blur",blur));
    return root;
+ },
+ kartControls(logic){
+  // Dedicated on-screen controls. The physics engine reads these states each frame.
+  const manual={left:false,right:false,throttle:false,brake:false,itemQueued:false};
+  logic.arcadeManual=manual;
+  const active=()=>logic.state==="RACE"&&logic.status==="RACING";
+  const buttons=[
+    {id:"left",text:"◀",label:"Virar à esquerda",down:()=>manual.left=true,up:()=>manual.left=false},
+    {id:"right",text:"▶",label:"Virar à direita",down:()=>manual.right=true,up:()=>manual.right=false},
+    {id:"go",text:"ACELERAR",label:"Segurar para acelerar",down:()=>manual.throttle=true,up:()=>manual.throttle=false},
+    {id:"brake",text:"FREIO",label:"Segurar para frear",down:()=>manual.brake=true,up:()=>manual.brake=false},
+    {id:"nitro",text:"⚡ NITRO",label:"Usar nitro disponível",down:()=>{
+      if(active() && logic.nitro>=20 && !logic.turboLock)logic.turboLock=true;
+    }},
+    {id:"item",text:"◈ ITEM",label:"Usar item recolhido",down:()=>{if(active())manual.itemQueued=true}}
+  ];
+  const root=hub.createControls("kart-input",buttons);
+  const update=()=>{
+    const visible=Boolean(window.System?.activeGame?.id==="drive" && active() && hub.mode==="controls" && !window.System.paused);
+    root.hidden=!visible;
+    if(visible){const item=root.querySelector('[data-control="item"]');if(item)item.disabled=!logic.item}
+  };
+  const timer=setInterval(update,110);
+  hub.releases.push(()=>clearInterval(timer));
+  const keys=new Set();
+  const down=e=>{
+    if(e.target?.closest?.("input,textarea,select,[contenteditable=true]"))return;
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","a","d","w","s"," ","Shift","e"].includes(e.key))e.preventDefault();
+    keys.add(e.key);
+    if(e.key==="Shift"&&active()&&logic.nitro>=20)logic.turboLock=true;
+    if(e.key==="e"&&active())manual.itemQueued=true;
+    sync();
+  };
+  const up=e=>{keys.delete(e.key);sync()};
+  const sync=()=>{
+    manual.left=keys.has("ArrowLeft")||keys.has("a")||root.querySelector('[data-control="left"].held')!==null;
+    manual.right=keys.has("ArrowRight")||keys.has("d")||root.querySelector('[data-control="right"].held')!==null;
+    manual.throttle=keys.has("ArrowUp")||keys.has("w")||root.querySelector('[data-control="go"].held')!==null;
+    manual.brake=keys.has("ArrowDown")||keys.has("s")||keys.has(" ")||root.querySelector('[data-control="brake"].held')!==null;
+  };
+  const refresh=setInterval(sync,35);
+  window.addEventListener("keydown",down);
+  window.addEventListener("keyup",up);
+  const clear=()=>{keys.clear();for(const k of ["left","right","throttle","brake"])manual[k]=false};
+  window.addEventListener("blur",clear);
+  hub.releases.push(()=>{
+    clearInterval(refresh);
+    window.removeEventListener("keydown",down);
+    window.removeEventListener("keyup",up);
+    window.removeEventListener("blur",clear);
+    clear();
+    manual.itemQueued=false;
+    logic.arcadeManual=null;
+  });
+  update();
+  hub.showTip("◀ ▶ DIREÇÃO  •  SEGURE ACELERAR  •  FREIO  •  NITRO  •  ITEM");
  },
  flightControls(logic){
    const tapStart=()=>{

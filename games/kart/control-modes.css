@@ -22,3 +22,21 @@
 @media(max-width:420px){.input-mode-options{gap:7px}.input-mode-options button{padding:9px 6px;min-height:115px}.input-game-controls .input-control{min-width:44px;min-height:44px;padding:6px 8px;font-size:12px}.input-game-controls{gap:5px}}
 @media(max-height:470px){.input-mode-panel{padding:12px}.input-mode-options button{min-height:78px}.input-mode-panel p{margin:4px auto 8px}.input-game-controls .input-control{min-height:36px;font-size:12px;padding:4px 7px}.input-mode-tip{top:4px}}
 @media(prefers-reduced-motion:reduce){.input-game-controls .input-control{transition:none}}
+
+/* Kart: always-visible, safe-area-aware steering + throttle + brake + item controls. */
+.input-game-controls.kart-input{position:fixed;z-index:145;left:50%;bottom:max(7px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(calc(100vw - 12px),650px);max-width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,54px)) minmax(80px,1fr) minmax(67px,.8fr) minmax(70px,.85fr) minmax(60px,.8fr);align-items:end;justify-content:center;gap:clamp(3px,.65vw,7px);pointer-events:none}
+.input-game-controls.kart-input[hidden]{display:none!important}
+.input-game-controls.kart-input .input-control{width:100%;min-width:0;max-width:none;min-height:58px;box-sizing:border-box;padding:5px 3px;border-radius:14px;font-size:clamp(10px,1.8vw,15px);line-height:1.08}
+.input-game-controls.kart-input [data-control="left"],.input-game-controls.kart-input [data-control="right"]{font-size:clamp(23px,5vw,33px);color:#d7faff}
+.input-game-controls.kart-input [data-control="go"]{background:linear-gradient(160deg,#139f79,#07574b);border-color:#8ef0cb}
+.input-game-controls.kart-input [data-control="brake"]{background:linear-gradient(160deg,#bc4d5a,#6a273b);border-color:#ffafb7}
+.input-game-controls.kart-input [data-control="nitro"]{background:linear-gradient(160deg,#ef9a1c,#b85a11);border-color:#fff1b2}
+.input-game-controls.kart-input [data-control="item"]:disabled{opacity:.48;filter:grayscale(.4)}
+body:has(.input-game-controls.kart-input:not([hidden])) #nitro-btn-kart{display:none!important}
+@media(max-width:570px){
+ .input-game-controls.kart-input{grid-template-columns:repeat(2,minmax(0,42px)) minmax(66px,1fr) minmax(54px,.8fr) minmax(59px,.85fr) minmax(48px,.7fr);gap:3px}
+ .input-game-controls.kart-input .input-control{min-height:52px;font-size:9px;border-radius:11px}
+ .input-game-controls.kart-input [data-control="left"],.input-game-controls.kart-input [data-control="right"]{font-size:22px}
+}
+@media(max-width:360px){.input-game-controls.kart-input .input-control{min-height:47px;padding:4px 2px;font-size:8px}}
+@media(max-height:420px){.input-game-controls.kart-input{bottom:max(2px,env(safe-area-inset-bottom,0px))}.input-game-controls.kart-input .input-control{min-height:37px;font-size:10px;border-radius:9px}.input-game-controls.kart-input [data-control="left"],.input-game-controls.kart-input [data-control="right"]{font-size:20px}}

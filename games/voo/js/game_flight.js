@@ -1221,7 +1221,7 @@
             ctx.fillStyle='#00ffcc'; ctx.font=`bold ${40*sc}px "Russo One", Arial`; 
             ctx.fillText('HANGAR MILITAR', w/2, h*0.15,Math.max(160,w-35));
             ctx.fillStyle='#f1c40f'; ctx.font=`bold ${24*sc}px Arial`; 
-            ctx.fillText(`SALDO: R$ ${this.session.cash} | RANK: ${this._getRank()}`, w/2, h*0.25,Math.max(150,w-30));
+            ctx.fillText("SALDO: "+new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(Math.max(0,Number(this.session.cash)||0))+" • RANK: "+this._getRank(), w/2, h*.25,Math.max(100,w-30));
 
             let drawCard = (cx, cy, title, desc, cost, level, color) => {
                 ctx.fillStyle = this.session.cash >= cost ? color : '#333';
@@ -1467,11 +1467,11 @@
             }
 
             if (p.mach > 2.2) {
-                ctx.fillStyle='#ff0000'; ctx.font='bold 24px Arial'; ctx.textAlign='center';
-                ctx.fillText("ALERTA: OVERSPEED!", w/2, h/2 - 130);
+                ctx.fillStyle='#ff0000'; ctx.font='bold '+Math.min(18,Math.max(11,w*.031))+'px Arial'; ctx.textAlign='center';
+                ctx.fillText("VELOCIDADE CRÍTICA", w/2, Math.max(68,h*.14),Math.max(90,w-30));
             } else if (p.isStalling) {
                 ctx.fillStyle = (Math.floor(performance.now() / 150) % 2 === 0) ? "#ff0000" : "#fff"; 
-                ctx.textAlign = "center"; ctx.font = "bold 32px 'Russo One', Arial"; ctx.fillText("ALERTA DE ESTOL! BAIXE O BICO!", w/2, h/2 - 100); 
+                ctx.textAlign = "center"; ctx.font = "bold "+Math.min(18,Math.max(10,w*.029))+"px Arial"; ctx.fillText("ESTOL • BAIXE O BICO", w/2, Math.max(85,h*.18),Math.max(100,w-30)); 
             }
 
             const rx=w-90, ry=140, rr=75;
@@ -1655,11 +1655,11 @@
         _drawEnd: function(ctx,w,h){
             this._draw(ctx,w,h);
             ctx.fillStyle='rgba(0,0,0,0.85)';ctx.fillRect(0,0,w,h);
-            ctx.textAlign='center';ctx.font='bold 40px "Russo One", Arial';
+            ctx.textAlign='center';ctx.font='bold '+Math.min(29,Math.max(17,w*.055))+'px Arial';
             ctx.fillStyle=this.state==='VICTORY'?'#2ecc71':'#ff0000';
-            ctx.fillText(this.state==='VICTORY'?'MISSÃO CUMPRIDA!':'CAÇA ABATIDO',w/2,h/2);
-            ctx.fillStyle='#f1c40f';ctx.font='bold 30px Arial';
-            ctx.fillText(`RECOMPENSA DE COMBATE: R$ ${this.session.cash}`,w/2,h/2+60);
+            ctx.fillText(this.state==='VICTORY'?'MISSÃO CUMPRIDA!':'CAÇA ABATIDO',w/2,h/2,Math.max(100,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font='bold '+Math.min(18,Math.max(11,w*.03))+'px Arial';
+            ctx.fillText("SALDO: "+new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(Math.max(0,Number(this.session.cash)||0)),w/2,h/2+52,Math.max(100,w-30));
         }
     };
 
