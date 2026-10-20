@@ -139,6 +139,24 @@ try{
       assert(steering<-.3,"Volante esquerdo não altera direção real");
       await left.dispatchEvent("pointerup",{pointerId:22});
       await run.dispatchEvent("pointerup",{pointerId:21});
+      // Simulated physical gamepad uses the real six-button touch input bridge.
+      await page.evaluate(()=>{
+        const buttons=Array.from({length:18},()=>({pressed:false,value:0}));
+        buttons[7]={pressed:true,value:1};
+        window.__testPad={connected:true,axes:[-1,0],buttons};
+        Object.defineProperty(navigator,"getGamepads",{configurable:true,value:()=>[window.__testPad]});
+      });
+      await page.waitForTimeout(460);
+      const viaPad=await page.evaluate(()=>{
+        const g=window.Games.find(g=>g.id==="drive").logic;
+        return {left:g.arcadeManual?.left,accelerator:g.arcadeManual?.throttle,target:g.targetSteer};
+      });
+      assert(viaPad.left&&viaPad.accelerator&&viaPad.target<-.25,
+         "Controle físico não acionou aceleração e direção: "+JSON.stringify(viaPad));
+      await page.evaluate(()=>window.__testPad.connected=false);
+      await page.waitForTimeout(140);
+      assert.equal(await page.locator('.kart-input [data-control="go"].held').count(),0,
+        "Gamepad desconectado manteve acelerador pressionado");
       await page.screenshot({path:join("test-results/playable","kart-controls-visible"+(device?"-"+device:"")+".png")});
     }
     if(slug==="ar"){
@@ -209,6 +227,14 @@ try{
       assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
       assert(physics.shipHP>0,"Caça iniciou destruído");
     }
+    const mastery=page.locator("#studio-mastery-toggle");
+    await mastery.waitFor({state:"visible",timeout:5000});
+    assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel ocupa espaço sem solicitação");
+    await mastery.click({timeout:4000});
+    assert.equal(await mastery.getAttribute("aria-expanded"),"true","Missões não expandem");
+    assert.equal(await page.locator("#studio-mastery-list .studio-mastery-task").count(),3,"Faltam 3 objetivos por jogo");
+    await mastery.click({timeout:4000});
+    assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel não recolhe");
     // Authenticated actual gameplay: player can toggle contextual Studio effects.
     const audioControl=page.locator("#studio-audio-switch");
     await audioControl.waitFor({state:"visible",timeout:5000});
