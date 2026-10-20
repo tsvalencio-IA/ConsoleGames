@@ -219,3 +219,11 @@ test("voo usa teclado e joystick tátil que acionam comandos originais",()=>{
  assert(flight.includes("this.keys['ArrowUp']"));
  assert(flight.includes("this.keys['Shift']"));
 });
+
+test("cinco jogos possuem favicon explícito sem erro 404",()=>{
+ for(const {slug} of installed){
+  const html=read("games/"+slug+"/index.html");
+  assert(html.includes('<link rel="icon" type="image/svg+xml" href="./icon.svg">'));
+  assert(existsSync(here("games/"+slug+"/icon.svg")));
+ }
+});
