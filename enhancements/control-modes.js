@@ -4,7 +4,7 @@
 (()=>{
 "use strict";
 const id=window.CONSOLE_GAME_ID;
-const supported=new Set(["box_pro","tennis","ar_truck_sim","usarmy_flight_sim"]);
+const supported=new Set(["drive","box_pro","tennis","ar_truck_sim","usarmy_flight_sim"]);
 if(!supported.has(id))return;
 const key="thia-arcade:input-mode:"+id;
 const $=(sel)=>document.querySelector(sel);
@@ -50,6 +50,7 @@ const hub={
    if(id==="box_pro")logic.touchMode=false;
    return;
   }
+  if(id==="drive")return;
   if(id==="box_pro"){
    logic.touchMode=true;
    window.CONSOLE_FORCE_TOUCH_BOXE=true;
@@ -94,12 +95,14 @@ const hub={
    document.body.append(root);hub.buttons=root;
    const watch=setInterval(()=>{
      const s=window.System;
-     const visible=s?.activeGame?.id===id && !$(" #game-ui")?.classList.contains("hidden") && hub.mode==="controls";
+     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && hub.mode==="controls";
      root.hidden=!visible;
      if(!s?.activeGame){clearInterval(watch);root.remove();hub.buttons=null;}
    },200);
    hub.releases.push(()=>clearInterval(watch));
-   const blur=()=>root.querySelectorAll("button").forEach(b=>{if(b.classList.contains("held")){b.classList.remove("held");b.dispatchEvent(new PointerEvent("pointercancel",{bubbles:false}))}});
+   const blur=()=>root.querySelectorAll("button").forEach(b=>{
+     if(b.classList.contains("held")){b.classList.remove("held");if(typeof PointerEvent!=="undefined")b.dispatchEvent(new PointerEvent("pointercancel",{bubbles:false}))}
+   });
    window.addEventListener("blur",blur);hub.releases.push(()=>window.removeEventListener("blur",blur));
    return root;
  },
