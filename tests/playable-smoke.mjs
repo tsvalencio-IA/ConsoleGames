@@ -5,13 +5,15 @@ import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
 import {join} from "node:path";
 const base="http://127.0.0.1:4173/games/";
-const catalog=[["kart","drive"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
+const catalog=[["kart","drive"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
 const browser=await chromium.launch({headless:true,args:["--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
 try{
- for(const [slug,id] of catalog){
-  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+ for(const [slug,id,device] of catalog){
+  const viewport=device==="desktop-885"?{width:885,height:770}:{width:390,height:844};
+  const mobile=!device;
+  const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1});
   await context.addInitScript(()=>{
    const permitted={drive:true,box_pro:true,tennis:true,ar_truck_sim:true,usarmy_flight_sim:true};
    const profile={username:"Jogador Teste",role:"player",xp:0,level:10,coins:8000,permissions:permitted,arSave:{upgrades:{engine:1,battery:1,radar:1,chassis:1,scout:false}}};
@@ -94,7 +96,7 @@ try{
         const button=page.locator('.kart-input [data-control="'+name+'"]');
         assert.equal(await button.isVisible(),true,"Botão ausente na corrida: "+name);
         const rect=await button.boundingBox();
-        assert(rect && rect.x>=-2 && rect.x+rect.width<=390+2,"Botão saiu da tela: "+name);
+        assert(rect && rect.x>=-2 && rect.x+rect.width<=viewport.width+2,"Botão saiu da tela: "+name);
       }
       const run=page.locator('.kart-input [data-control="go"]');
       await run.dispatchEvent("pointerdown",{pointerId:21});
@@ -112,7 +114,7 @@ try{
       assert(steering<-.3,"Volante esquerdo não altera direção real");
       await left.dispatchEvent("pointerup",{pointerId:22});
       await run.dispatchEvent("pointerup",{pointerId:21});
-      await page.screenshot({path:join("test-results/playable","kart-controls-visible.png")});
+      await page.screenshot({path:join("test-results/playable","kart-controls-visible"+(device?"-"+device:"")+".png")});
     }
     if(slug==="ar"){
       const manual=await page.evaluate(()=>{
@@ -212,7 +214,7 @@ try{
     completed++;
   }catch(error){
     const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
-    failures.push({slug,message:String(error),diagnostic,pageErrors:appErrors.slice(0,6)});
+    failures.push({slug,device,message:String(error),diagnostic,pageErrors:appErrors.slice(0,6)});
   }
   await context.close();
  }
