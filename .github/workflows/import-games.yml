@@ -1,0 +1,87 @@
+name: Importar os sete jogos para o console
+
+on:
+  push:
+    paths:
+      - .github/workflows/import-games.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: consolegames-initial-import
+  cancel-in-progress: false
+
+jobs:
+  importar:
+    name: Copiar projetos, preservar IDs e aplicar melhorias
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout da base do console
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Checar que o catálogo ainda não foi importado
+        run: |
+          test ! -e games/kart/index.html
+          test ! -e games/otthi/index.html
+          test ! -e games/familia/3d/index.html
+      - name: Buscar fontes públicas originais sem alterar os repositórios
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/originais"
+          git clone --quiet --depth 1 https://github.com/tsvalencio-IA/GAME.git "$RUNNER_TEMP/originais/GAME"
+          git clone --quiet --depth 1 https://github.com/tsvalencio-IA/OTThi-World3.git "$RUNNER_TEMP/originais/OTThi-World3"
+          git clone --quiet --depth 1 https://github.com/tsvalencio-IA/hq.git "$RUNNER_TEMP/originais/hq"
+          git -C "$RUNNER_TEMP/originais/GAME" rev-parse HEAD > "$RUNNER_TEMP/GAME.sha"
+          git -C "$RUNNER_TEMP/originais/OTThi-World3" rev-parse HEAD > "$RUNNER_TEMP/OTThi.sha"
+          git -C "$RUNNER_TEMP/originais/hq" rev-parse HEAD > "$RUNNER_TEMP/hq.sha"
+      - name: Copiar sete versões originais completas e independentes
+        shell: bash
+        run: |
+          set -euo pipefail
+          for folder in kart boxe tenis ar voo; do
+            mkdir -p "games/$folder"
+            rsync -a --exclude='.git/' --exclude='.github/' --exclude='node_modules/' "$RUNNER_TEMP/originais/GAME/" "games/$folder/"
+          done
+          mkdir -p games/otthi games/familia
+          rsync -a --exclude='.git/' --exclude='.github/' --exclude='node_modules/' "$RUNNER_TEMP/originais/OTThi-World3/" games/otthi/
+          rsync -a --exclude='.git/' --exclude='.github/' --exclude='node_modules/' "$RUNNER_TEMP/originais/hq/" games/familia/
+          node tools/integrate-games.mjs
+          printf '{\n  "GAME": "%s",\n  "OTThi-World3": "%s",\n  "hq": "%s"\n}\n' "$(cat "$RUNNER_TEMP/GAME.sha")" "$(cat "$RUNNER_TEMP/OTThi.sha")" "$(cat "$RUNNER_TEMP/hq.sha")" > games/source-commits.json
+      - name: Verificar entradas, scripts e registro Firebase
+        shell: bash
+        run: |
+          set -euo pipefail
+          for folder in kart boxe tenis ar voo; do
+            test -s "games/$folder/index.html"
+            test -s "games/$folder/js/core.js"
+            test -s "games/$folder/arcade-enhancements.js"
+            node --check "games/$folder/js/core.js"
+            node --check "games/$folder/arcade-enhancements.js"
+          done
+          test -s games/otthi/app.js
+          test -s games/familia/3d/index.html
+          node --check games/otthi/console-world.js
+          node --check games/familia/console-world.js
+          node --test tests/console.test.mjs
+      - name: Registrar importação no próprio ConsoleGames
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para registrar."
+            exit 0
+          fi
+          git commit -m "feat(games): importa sete jogos reais e melhorias mobile por pasta"
+          git push origin HEAD:main
