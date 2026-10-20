@@ -1,0 +1,21 @@
+name: Auditar site publicado - thIAguinho ARCADE
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/production-audit.yml'
+      - 'tests/production-audit.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  production-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comparar arquivos publicados com código aprovado (SHA-256)
+        run: node tests/production-audit.mjs
