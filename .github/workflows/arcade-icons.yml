@@ -1,0 +1,45 @@
+name: Criar ícones PNG do thIAguinho ARCADE
+on:
+  push:
+    paths:
+      - .github/workflows/arcade-icons.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preparar renderizador SVG
+        run: python -m pip install --disable-pip-version-check --quiet cairosvg==2.7.1
+      - name: Renderizar PNGs de instalação
+        shell: bash
+        run: |
+          python - <<'PY'
+          import cairosvg
+          for size in (192, 512):
+              cairosvg.svg2png(url='arcade/icon.svg', write_to=f'arcade/icon-{size}.png', output_width=size, output_height=size)
+          PY
+          test -s arcade/icon-192.png
+          test -s arcade/icon-512.png
+          file arcade/icon-192.png arcade/icon-512.png
+      - name: Versionar ícones do novo aplicativo
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add arcade/icon-192.png arcade/icon-512.png
+          if git diff --cached --quiet; then
+            echo 'Ícones sem alterações'
+            exit 0
+          fi
+          git commit -m 'assets(pwa): adiciona ícones PNG exclusivos para instalar ARCADE'
+          git push origin HEAD:main
