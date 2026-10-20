@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+<title>thIAguinho ARCADE — aplicativo independente</title>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#163864"/><stop offset="1" stop-color="#061225"/></linearGradient><linearGradient id="arc" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6ff9e4"/><stop offset="1" stop-color="#6fa3ff"/></linearGradient></defs>
+<rect width="512" height="512" rx="116" fill="url(#bg)"/>
+<circle cx="356" cy="115" r="138" fill="#2c66c1" opacity=".24"/>
+<path d="M146 177h222c48 0 81 35 87 82l8 81c5 61-42 95-88 59l-68-53H204l-68 53c-46 36-93 2-88-59l8-81c6-47 39-82 90-82Z" fill="url(#arc)" stroke="#d6ffff" stroke-width="8"/>
+<path d="M160 223v96M112 271h96" stroke="#17345c" stroke-width="25" stroke-linecap="round"/>
+<circle cx="358" cy="246" r="17" fill="#17345c"/><circle cx="316" cy="293" r="17" fill="#17345c"/>
+<path d="M242 229l11-30 10 30 30 10-30 11-10 29-11-29-29-11Z" fill="#f8f2ab"/>
+<rect x="172" y="375" width="168" height="52" rx="25" fill="#0b1e38" stroke="#70e8f5" stroke-width="5"/>
+<text x="256" y="410" font-family="system-ui,sans-serif" font-size="25" font-weight="900" text-anchor="middle" fill="#8ef0f7">ARCADE</text>
+</svg>
