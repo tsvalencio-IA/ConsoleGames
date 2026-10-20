@@ -1,0 +1,37 @@
+name: Smoke visual mobile dos sete jogos
+on:
+  push:
+    paths:
+      - .github/workflows/mobile-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Preparar Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Servir o console localmente
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/console-http.log 2>&1 &
+          sleep 2
+      - name: Validar quatro telas e sete jogos sem acessar bancos de produção
+        run: node tests/browser-smoke.mjs
+      - name: Guardar imagens de evidência visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: console-mobile-smoke
+          path: test-results/mobile/
+          if-no-files-found: ignore
+          retention-days: 14
