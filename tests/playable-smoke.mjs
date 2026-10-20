@@ -35,7 +35,11 @@ try{
    window.firebase.database.ServerValue={TIMESTAMP:Date.now()};
    window.tf={ready:async()=>{},setBackend:async()=>true};
    window.poseDetection={SupportedModels:{MoveNet:"MoveNet"},movenet:{modelType:{SINGLEPOSE_LIGHTNING:"lite"}},createDetector:async()=>({estimatePoses:async()=>[]})};
-   try{Object.defineProperty(navigator,"mediaDevices",{configurable:true,value:{getUserMedia:async()=>{throw new Error("Câmera indisponível no smoke isolado")}}})}catch{}
+   window.__cameraRequests=0;
+   try{Object.defineProperty(navigator,"mediaDevices",{configurable:true,value:{getUserMedia:async()=>{
+      window.__cameraRequests++;
+      throw new Error("Câmera indisponível no smoke isolado");
+   }}})}catch{}
   });
   await context.route(/^https?:\/\//,route=>{
     if(new URL(route.request().url()).origin===new URL(base).origin)route.continue();
@@ -60,6 +64,7 @@ try{
     await page.locator(".input-mode-dialog [data-mode=controls]").click();
     await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:11000});
     assert.equal(await page.evaluate(()=>window.ArcadeControls?.mode),"controls","Modo controle não ativo");
+    assert.equal(await page.evaluate(()=>window.__cameraRequests),0,"Solicitou câmera sem escolha");
     await page.waitForTimeout(1100);
     const state=await page.evaluate(()=>({
       game:window.System?.activeGame?.id,
@@ -84,6 +89,24 @@ try{
       assert.equal(await page.locator('[data-guard]').count(),1,"Falta defesa por toque");
     }else if(slug==="tenis"){
       assert.equal(await page.evaluate(()=>window.Games.find(x=>x.id==="tennis").logic.useMouse),true,"Tênis sem toque");
+    }
+    if(slug==="ar"){
+       await page.evaluate(()=>{
+          const g=window.Games.find(x=>x.id==="ar_truck_sim").logic;
+          g.vPos={x:0,y:0};g.anomalies=[{id:"test-item",x:0,y:0,type:"NORMAL",val:500,life:999}];
+          g.cooldown=0;g.manualAccelerate=false;
+       });
+       await page.locator('[data-control="pick"]').dispatchEvent("pointerdown",{pointerId:4});
+       await page.waitForFunction(()=>window.Games.find(x=>x.id==="ar_truck_sim").logic.cargo.length>=1,null,{timeout:4200});
+       await page.locator('[data-control="pick"]').dispatchEvent("pointerup",{pointerId:4});
+       const progress=await page.evaluate(()=>window.Games.find(x=>x.id==="ar_truck_sim").logic.currentMission.progress);
+       assert(progress>=1,"Coleta não progrediu na missão AR");
+    }else if(slug==="voo"){
+       const control=page.locator('[data-control="left"]');
+       await control.dispatchEvent("pointerdown",{pointerId:6});
+       assert(await page.evaluate(()=>window.Games.find(x=>x.id==="usarmy_flight_sim").logic.keys.ArrowLeft),"Curva não acionou");
+       await control.dispatchEvent("pointerup",{pointerId:6});
+       assert.equal(await page.evaluate(()=>!!window.Games.find(x=>x.id==="usarmy_flight_sim").logic.keys.ArrowLeft),false,"Controle preso");
     }
     assert.equal(state.game,id,"Motor foi encerrado inesperadamente");
     assert.equal(state.loaded,true,"HUD de jogo não exibido");
