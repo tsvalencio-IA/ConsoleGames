@@ -10,3 +10,8 @@
 #bar .counter{backdrop-filter:blur(8px)}
 @media(max-height:490px){#studio-world-sound{bottom:max(6px,env(safe-area-inset-bottom,0px));min-height:33px;padding:4px 8px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){#lobby .menu-tile{transition:none}}
+
+/* Place the button inside existing native controls: never over an on-screen joystick. */
+#world-console-toolbar #studio-world-sound,#bar .topRight #studio-world-sound{position:static;inset:auto;min-height:32px;padding:5px 8px;max-width:64px;flex-shrink:0;font-size:9px;box-shadow:0 3px 12px #0004}
+#world-console-toolbar #studio-world-sound{pointer-events:auto}
+@media(max-width:470px){#bar .topRight #studio-world-sound{min-height:29px;max-width:53px;padding:4px 5px;font-size:8px}}
