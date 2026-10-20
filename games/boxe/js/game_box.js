@@ -814,7 +814,7 @@
                 }
                 ctx.strokeStyle='#8e4438';ctx.lineWidth=2.5*s;ctx.lineCap='round';
                 ctx.beginPath();ctx.arc(p.head.x,p.head.y+17*s,8*s,0.12*Math.PI,.89*Math.PI);ctx.stroke();
-                ctx.fillStyle="#fff";ctx.font=\`bold \${29*s}px Arial\`;ctx.textAlign='center';
+                ctx.fillStyle="#fff";ctx.font='bold '+(29*s)+'px Arial';ctx.textAlign='center';
                 ctx.fillText(CHARACTERS[player.charId].name[0],p.head.x,p.head.y-35*s,35*s);
             }
 
@@ -844,7 +844,7 @@
             ctx.strokeStyle=flash?'#fff':'#f1acc0';ctx.lineWidth=Math.max(1,size*.07);
             ctx.beginPath();ctx.ellipse(0,0,size*.98,size*1.08,.15,0,Math.PI*2);ctx.stroke();
             ctx.fillStyle=flash?'#fff':'#1f324d';
-            ctx.beginPath();ctx.roundRect(-size*.66,size*.48,size*1.32,size*.43,Math.max(2,size*.1));ctx.fill();
+            ctx.beginPath();if(ctx.roundRect){ctx.roundRect(-size*.66,size*.48,size*1.32,size*.43,Math.max(2,size*.1));}else{ctx.rect(-size*.66,size*.48,size*1.32,size*.43);}ctx.fill();
             ctx.fillStyle='rgba(255,255,255,.24)';
             ctx.beginPath();ctx.ellipse(-size*.35,-size*.4,size*.27,size*.15,-.5,0,Math.PI*2);ctx.fill();
             ctx.restore();
