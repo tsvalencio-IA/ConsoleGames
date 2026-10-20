@@ -1,0 +1,36 @@
+name: Validar gameplay real no Chromium
+on:
+  push:
+    paths:
+      - '.github/workflows/gameplay-smoke.yml'
+      - 'tests/playable-smoke.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  jogabilidade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Servir console
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/arcade-server.log 2>&1 &
+          sleep 2
+      - name: Entrar, iniciar e pausar cada um dos cinco jogos
+        run: node tests/playable-smoke.mjs
+      - name: Salvar evidências visuais
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gameplay-browser-artifacts
+          path: test-results/playable/
+          if-no-files-found: ignore
+          retention-days: 14
