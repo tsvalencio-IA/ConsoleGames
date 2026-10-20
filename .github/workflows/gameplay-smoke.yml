@@ -4,6 +4,8 @@ on:
     paths:
       - '.github/workflows/gameplay-smoke.yml'
       - 'tests/playable-smoke.mjs'
+      - 'games/**'
+      - 'enhancements/**'
   workflow_dispatch:
 permissions:
   contents: read
