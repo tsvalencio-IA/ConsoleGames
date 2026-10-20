@@ -1573,17 +1573,17 @@
                 
                 if (this.combat.target) {
                     if (this.combat.lockTimer >= 0.5) {
-                        ctx.fillStyle = "#ff0000"; ctx.font = "bold 24px Arial"; ctx.textAlign = "center";
-                        ctx.fillText("JUNTE AS MÃOS PARA ATIRAR!", 0, -50,Math.max(150,w*.68));
+                        ctx.fillStyle = "#ffcf68"; ctx.font = "bold "+Math.min(16,Math.max(10,w*.029))+"px Arial"; ctx.textAlign = "center";
+                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"APERTE ◎ PARA DISPARAR":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
                     } else {
                         ctx.fillStyle = "#ffcc00"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
-                        ctx.fillText("TRAVANDO MIRA...", 0, -50);
+                        ctx.fillText("TRAVANDO MIRA...",0,-50,Math.max(95,w*.62));
                     }
                 }
 
                 ctx.restore();
             } else {
-                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold 22px Arial';ctx.fillText('SEGURE O VOLANTE COM AS DUAS MÃOS',cx,h-100,Math.max(160,w-30));
+                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold '+Math.min(17,Math.max(10,w*.028))+'px Arial';ctx.fillText(window.ArcadeControls?.mode==="controls"?"USE AS SETAS PARA PILOTAR":"SEGURE O VOLANTE COM AS DUAS MÃOS",cx,h-100,Math.max(95,w-30));
             }
 
             ctx.fillStyle='rgba(0,15,10,0.8)';ctx.fillRect(0,h-50,w,50);
