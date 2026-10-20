@@ -334,6 +334,14 @@ window.System = {
         window.Profile.updateUI(); 
     },
     home: () => { window.Sfx.click(); window.System.menu(); },
+    // Arcade: resultado -> fases do mesmo jogo em um toque, sem recarregar login.
+    replay: () => {
+        window.System.menu();
+        const id=window.CONSOLE_GAME_ID;
+        const game=(window.Games||[]).find(entry=>entry.id===id);
+        const permitted=game && (window.Profile.role==='admin' || window.Profile.permissions?.[id]===true);
+        if(permitted)window.System.openPhases(game);
+    },
     
     gameOver: (score, isWin = true, coinsInGame = 0) => {
         window.System.stopGame();
