@@ -196,11 +196,13 @@ window.Profile = {
 
 window.System = {
     playerId: 'p_' + Math.floor(Math.random()*10000), 
-    activeGame: null, loopId: null, canvas: null, video: null, detector: null,
+    activeGame: null, loopId: null, loopEpoch: 0, busyEpoch: null, resultLocked: false, isStarting: false,
+    canvas: null, video: null, detector: null,
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
-        if (window.System.currentCameraMode === facingMode) return;
+        if (window.System.currentCameraMode === facingMode && window.System.video?.srcObject?.active) return true;
+        if (!navigator.mediaDevices?.getUserMedia || !window.System.video) return false;
         if (window.System.video.srcObject) {
             window.System.video.srcObject.getTracks().forEach(track => track.stop());
         }
@@ -219,8 +221,11 @@ window.System = {
             
             await Promise.race([new Promise(resolve => { window.System.video.onloadedmetadata = resolve; }), new Promise(resolve => setTimeout(resolve,3500))]);
             window.System.currentCameraMode = facingMode;
+            return true;
         } catch(error) {
-            console.error("Erro ao trocar de câmera:", error);
+            console.warn("Câmera indisponível (modo por toque pode continuar):", error);
+            window.System.currentCameraMode=null;
+            return false;
         }
     },
 
@@ -267,24 +272,42 @@ window.System = {
             
             if(isUnlocked) {
                 card.onclick = async () => {
+                    const sys=window.System;
+                    if(sys.isStarting || sys.activeGame)return;
+                    sys.isStarting=true;
                     window.Sfx.click();
                     document.getElementById('phase-screen').classList.add('hidden');
                     document.getElementById('loading').classList.remove('hidden');
-                    document.getElementById('loading-text').innerText = "AJUSTANDO SENSORES...";
-
-                    const targetCamera = game.opts.camera === 'environment' ? 'environment' : 'user';
-                    await window.System.switchCamera(targetCamera);
-                    if (game.id !== 'ar_truck_sim' && window.System.ensureDetector) await window.System.ensureDetector();
-
-                    document.getElementById('loading-text').innerText = "CARREGANDO MISSÃO...";
-                    
-                    setTimeout(() => {
+                    document.getElementById('loading-text').innerText='PREPARANDO PARTIDA...';
+                    try {
+                        // Kart é controlável por toque: não pedir câmera/IA desnecessariamente.
+                        if (game.id !== 'drive') {
+                            const camera = game.opts.camera === 'environment' ? 'environment' : 'user';
+                            await sys.switchCamera(camera);
+                            if (game.id !== 'ar_truck_sim' && sys.video?.srcObject && sys.ensureDetector) {
+                                await sys.ensureDetector();
+                            }
+                        }
+                        document.getElementById('loading-text').innerText='CARREGANDO CENÁRIO...';
+                        // Revalidar permissão e nível após carregamento assíncrono.
+                        const access=window.Profile.role==='admin'||window.Profile.permissions?.[game.id]===true;
+                        if(!access || window.Profile.level < fase.reqLvl)throw new Error('Jogo ou fase não autorizados.');
+                        sys.resultLocked=false;
+                        sys.loopEpoch++;
+                        sys.activeGame=game;
+                        if(game.logic.init)game.logic.init(fase);
                         document.getElementById('loading').classList.add('hidden');
                         document.getElementById('game-ui').classList.remove('hidden');
-                        window.System.activeGame = game;
-                        if(game.logic.init) game.logic.init(fase);
-                        window.System.loop();
-                    }, 500);
+                        sys.loop();
+                    } catch(error) {
+                        console.error('Não foi possível iniciar a partida:',error);
+                        sys.stopGame();
+                        document.getElementById('loading').classList.add('hidden');
+                        document.getElementById('game-ui').classList.add('hidden');
+                        document.getElementById('phase-screen').classList.remove('hidden');
+                        sys.msg('Não foi possível abrir a fase. Verifique permissões e sensores.');
+                    } finally {sys.isStarting=false;}
+
                 };
             } else {
                 card.onclick = () => window.System.msg(`Requer Nível ${fase.reqLvl}`);
@@ -293,30 +316,63 @@ window.System = {
         });
     },
 
+    // Um frame por vez. Qualquer promessa de câmera atrasada é descartada
+    // quando a partida é encerrada ou outra fase é iniciada.
     loop: async () => {
-        if(!window.System.activeGame) return;
-        const w = window.System.canvas.width; const h = window.System.canvas.height;
-        const ctx = window.System.canvas.getContext('2d');
-        let pose = null;
-
-        const isArMode = window.System.activeGame.opts.camera === 'environment';
-
-        if(!isArMode && window.System.detector && window.System.video.readyState === 4) {
-            const p = await window.System.detector.estimatePoses(window.System.video, {flipHorizontal: false});
-            if(p.length > 0) pose = p[0];
+        const system = window.System;
+        const game = system.activeGame;
+        const epoch = system.loopEpoch;
+        if (!game || system.busyEpoch === epoch) return;
+        system.busyEpoch = epoch;
+        system.loopId = null;
+        try {
+            if (!document.hidden) {
+                const canvas = system.canvas;
+                const w = canvas.width, h = canvas.height;
+                let pose = null;
+                const isAr = game.opts.camera === 'environment';
+                if (!isAr && system.detector && system.video?.readyState === 4) {
+                    try {
+                        const people = await system.detector.estimatePoses(system.video, {flipHorizontal:false});
+                        if (people?.length) pose = people[0];
+                    } catch (error) {
+                        if (!system.lastPoseWarning || performance.now()-system.lastPoseWarning > 15000) {
+                            console.warn('Leitura de movimento temporariamente indisponível:',error);
+                            system.lastPoseWarning=performance.now();
+                        }
+                    }
+                }
+                if (system.loopEpoch !== epoch || system.activeGame !== game) return;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) throw new Error('Canvas 2D indisponível.');
+                let score = 0;
+                ctx.save();
+                try {
+                    window.Gfx.updateShake(ctx);
+                    score = game.logic.update(ctx,w,h,pose);
+                } finally {ctx.restore();}
+                if (system.loopEpoch !== epoch || system.activeGame !== game) return;
+                const hud = document.getElementById('hud-score');
+                if (hud) hud.innerText = String(Math.max(0,Math.floor(Number(score)||0)));
+            }
+        } catch (error) {
+            console.error('Falha durante partida:',error);
+            if (system.loopEpoch === epoch && system.activeGame === game) {
+                system.menu();
+                system.msg('Partida interrompida. Você pode tentar novamente.');
+            }
+        } finally {
+            if (system.busyEpoch === epoch) system.busyEpoch = null;
+            if (system.activeGame === game && system.loopEpoch === epoch) {
+                system.loopId = requestAnimationFrame(system.loop);
+            }
         }
-
-        ctx.save(); window.Gfx.updateShake(ctx);
-        const score = window.System.activeGame.logic.update(ctx, w, h, pose);
-        ctx.restore();
-        
-        const hud = document.getElementById('hud-score');
-        if(hud) hud.innerText = Math.floor(score || 0);
-        window.System.loopId = requestAnimationFrame(window.System.loop);
     },
 
     stopGame: () => {
+        window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
+        window.System.loopId=null;
         if(window.System.activeGame?.logic.cleanup) window.System.activeGame.logic.cleanup();
         window.System.activeGame = null;
         if (window.System.video && window.System.video.srcObject) {
@@ -344,6 +400,8 @@ window.System = {
     },
     
     gameOver: (score, isWin = true, coinsInGame = 0) => {
+        if(window.System.resultLocked) return;
+        window.System.resultLocked=true;
         window.System.stopGame();
         let finalScore = Math.floor(score || 0);
         
