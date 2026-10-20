@@ -1207,7 +1207,7 @@
             ctx.restore();
             
             ctx.fillStyle='rgba(0,0,0,0.1)';
-            for(let i=0;i<h;i+=4) ctx.fillRect(0,i,w,1);
+            for(let i=0;i<h;i+=(w<760?12:5)) ctx.fillRect(0,i,w,1);
         },
 
         _drawHangar: function(ctx, w, h) {
@@ -1219,9 +1219,9 @@
             ctx.fillStyle='#fff'; ctx.font=`bold ${14*sc}px Arial`; ctx.textAlign='center'; ctx.fillText('SAIR', 70*sc, 45*sc);
 
             ctx.fillStyle='#00ffcc'; ctx.font=`bold ${40*sc}px "Russo One", Arial`; 
-            ctx.fillText('HANGAR MILITAR', w/2, h*0.15);
+            ctx.fillText('HANGAR MILITAR', w/2, h*0.15,Math.max(160,w-35));
             ctx.fillStyle='#f1c40f'; ctx.font=`bold ${24*sc}px Arial`; 
-            ctx.fillText(`SALDO: R$ ${this.session.cash} | RANK: ${this._getRank()}`, w/2, h*0.25);
+            ctx.fillText(`SALDO: R$ ${this.session.cash} | RANK: ${this._getRank()}`, w/2, h*0.25,Math.max(150,w-30));
 
             let drawCard = (cx, cy, title, desc, cost, level, color) => {
                 ctx.fillStyle = this.session.cash >= cost ? color : '#333';
@@ -1239,9 +1239,9 @@
             ctx.fillStyle='#fff'; ctx.font=`bold ${22*sc}px "Russo One", Arial`; 
             
             if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
-                ctx.fillText('TOQUE AQUI PARA VOAR', w/2, h*0.85+38*sc);
+                ctx.fillText('TOQUE AQUI PARA VOAR', w/2, h*0.85+38*sc,Math.max(150,w-32));
             } else {
-                ctx.fillText('AGUARDANDO LÍDER INICIAR...', w/2, h*0.85+38*sc);
+                ctx.fillText('AGUARDANDO LÍDER INICIAR...', w/2, h*0.85+38*sc,Math.max(150,w-32));
             }
         },
 
@@ -1290,14 +1290,14 @@
             let sx=Math.floor((this.ship.x||0)/st)*st - st*15;
             let sz=Math.floor((this.ship.z||0)/st)*st - st*15;
             
-            for(let x=0; x<=30; x++) {
+            for(let x=0; x<=(w<760?24:30); x++) {
                 let p1 = Engine3D.project(sx + x*st, 0, sz, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
                 let p2 = Engine3D.project(sx + x*st, 0, sz + 60*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
                 if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
                     ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); 
                 }
             }
-            for (let z = 0; z <= 60; z++) {
+            for (let z = 0; z <= (w<760?38:60); z++) {
                 let p1 = Engine3D.project(sx, 0, sz + z*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
                 let p2 = Engine3D.project(sx + 30*st, 0, sz + z*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
                 if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
@@ -1380,6 +1380,24 @@
         _drawHUD: function(ctx,w,h){
             let p = this.ship;
             
+            if (w <= 720 || h <= 500) {
+                // Instrumentos compactos: visão do céu e do alvo livres no celular.
+                ctx.save();
+                const px=Math.min(110,Math.max(74,w*.22));
+                const cardY=54,cardH=33;
+                ctx.fillStyle='rgba(3,15,28,.78)';
+                if(ctx.roundRect){
+                    ctx.beginPath();ctx.roundRect(8,cardY,px,cardH,8);ctx.fill();
+                    ctx.beginPath();ctx.roundRect(w-px-8,cardY,px,cardH,8);ctx.fill();
+                }else {ctx.fillRect(8,cardY,px,cardH);ctx.fillRect(w-px-8,cardY,px,cardH);}
+                ctx.fillStyle='#8eeaff';ctx.font='bold 10px Arial';ctx.textAlign='center';
+                ctx.fillText('VELOCIDADE',8+px/2,cardY+12);
+                ctx.fillText('ALTITUDE',w-8-px/2,cardY+12);
+                ctx.fillStyle='#f4ffff';ctx.font='bold 14px Arial';
+                ctx.fillText(String(Math.max(0,Math.round(p.speed*3.6))),8+px/2,cardY+27);
+                ctx.fillText(String(Math.round(p.y)),w-8-px/2,cardY+27);
+                ctx.restore();
+            } else {
             ctx.fillStyle='rgba(0,20,10,0.5)'; ctx.fillRect(10, h/2 - 120, 50, 240);
             ctx.fillStyle='#00ffcc'; ctx.font='bold 14px Arial'; ctx.textAlign='center';
             ctx.fillText("SPD", 35, h/2 - 130);
@@ -1400,6 +1418,8 @@
                 if(i===0) { ctx.fillStyle='#fff'; ctx.fillText(val, w-25, yPos+4); ctx.fillStyle='#00ffcc'; }
             }
             ctx.beginPath(); ctx.moveTo(w-60, h/2); ctx.lineTo(w-70, h/2-8); ctx.lineTo(w-70, h/2+8); ctx.fill();
+
+            }
 
             let hdg=(p.yaw*180/Math.PI)%360;if(hdg<0)hdg+=360;
             ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(0,0,w,50);
@@ -1554,7 +1574,7 @@
                 if (this.combat.target) {
                     if (this.combat.lockTimer >= 0.5) {
                         ctx.fillStyle = "#ff0000"; ctx.font = "bold 24px Arial"; ctx.textAlign = "center";
-                        ctx.fillText("JUNTE AS MÃOS PARA ATIRAR!", 0, -50);
+                        ctx.fillText("JUNTE AS MÃOS PARA ATIRAR!", 0, -50,Math.max(150,w*.68));
                     } else {
                         ctx.fillStyle = "#ffcc00"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
                         ctx.fillText("TRAVANDO MIRA...", 0, -50);
@@ -1563,7 +1583,7 @@
 
                 ctx.restore();
             } else {
-                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold 22px Arial';ctx.fillText('SEGURE O VOLANTE COM AS DUAS MÃOS',cx,h-100);
+                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold 22px Arial';ctx.fillText('SEGURE O VOLANTE COM AS DUAS MÃOS',cx,h-100,Math.max(160,w-30));
             }
 
             ctx.fillStyle='rgba(0,15,10,0.8)';ctx.fillRect(0,h-50,w,50);
