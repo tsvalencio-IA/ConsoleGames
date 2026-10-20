@@ -1054,12 +1054,19 @@
                     });
                 }
 
+                // Actual rivals only: use authoritative lap + track positions.
                 d.rivals.forEach(r => {
-                    let relPos = r.pos - d.pos; if(relPos < -trackLength/2) relPos += trackLength;
-                    if (Math.abs(Math.floor(relPos / CONF.SEGMENT_LENGTH) - n) < 2.0 && n > 0) {
-                        this.drawKartSprite(ctx, coord.x + (r.x * (w*1.5) * coord.scale), coord.y, w*0.0022*coord.scale, 0, 0, r.spinAngle || 0, r.color, r.charId, r.kartId);
-                        if (r.status === 'FINISHED') { ctx.fillStyle = "#ff0"; ctx.font = `bold ${20*coord.scale}px Arial`; ctx.fillText("🏁", coord.x + (r.x * (w*1.5) * coord.scale), coord.y - 80*coord.scale); }
-                    }
+                    const ahead=(Number(r.lap)-Number(d.lap))*trackLength+Number(r.pos)-Number(d.pos);
+                    if(!Number.isFinite(ahead)||ahead<=0||ahead>=CONF.DRAW_DISTANCE*CONF.SEGMENT_LENGTH)return;
+                    const posAhead=ahead/CONF.SEGMENT_LENGTH;
+                    if(Math.floor(posAhead)!==n||n<=0)return;
+                    const t=Math.max(0,Math.min(1,posAhead-n));
+                    const far=segmentCoords[Math.min(n+1,segmentCoords.length-1)]||coord;
+                    const lerp=(a,b,t)=>a+(b-a)*t;
+                    const scale=lerp(coord.scale,far.scale,t);
+                    const screenX=lerp(coord.x,far.x,t)+(Number(r.x)||0)*w*1.5*scale;
+                    const spriteScale=Math.min(w*.0022,Math.max(w*.00020,w*.0022*scale*1.55));
+                    this.drawKartSprite(ctx,screenX,lerp(coord.y,far.y,t),spriteScale,0,0,r.spinAngle||0,r.color,r.charId,r.kartId);
                 });
             }
 

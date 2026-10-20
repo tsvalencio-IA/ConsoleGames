@@ -476,14 +476,16 @@
                 this._readPose(pose, w, h, dt); 
 
                 if (this.state === 'CALIBRATION') {
-                    if (this.pilot.active) this.timer -= dt;
+                    if(window.ArcadeControls?.mode==='controls')this.timer=5.0;
+                    else if(this.pilot.active)this.timer-=dt;
                     else {
                         this.timer += dt * 2; 
                         if (this.timer > 5.0) this.timer = 5.0;
                     }
                     
                     this._drawCalib(ctx, w, h);
-                    if (this.timer <= 0 || this.keys[' ']) {
+                    if ((window.ArcadeControls?.mode==='controls' && this.keys[' ']) ||
+                       (window.ArcadeControls?.mode!=='controls' && this.pilot.active && this.timer <= 0)) {
                         this.currentStats.thrust = BASE_PLANE_STATS.thrust + ((this.upgrades.engine - 1) * 50000);
                         this.ship.maxHp = 100 + ((this.upgrades.armor - 1) * 100);
                         this.ship.hp = this.ship.maxHp;
@@ -1648,7 +1650,7 @@
                 ctx.fillText(`MANTENHA A POSIÇÃO (${Math.ceil(this.timer)}s)`, w/2, h*0.75);
             } else {
                 ctx.fillStyle='#ff0000';
-                ctx.fillText(window.ArcadeControls?.mode==='controls'?'TOQUE EM INICIAR OU USE AS SETAS':'AGUARDANDO MÃOS NA CÂMERA...', w/2, h*0.75,Math.max(130,w-28));
+                ctx.fillText(window.ArcadeControls?.mode==='controls'?'CONFIRA OS COMANDOS E TOQUE EM INICIAR':'AGUARDANDO MÃOS NA CÂMERA...', w/2, h*0.75,Math.max(130,w-28));
             }
         },
 

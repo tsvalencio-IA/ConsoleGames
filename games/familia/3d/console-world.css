@@ -65,3 +65,29 @@ html,body{max-width:100%;min-width:0;overflow-x:hidden}
 #overlay .console-daily-quest{width:min(100%,600px);max-height:35dvh;overflow-y:auto;overscroll-behavior:contain}
 @media(max-height:550px){#overlay .console-daily-quest{max-height:31vh;overflow-y:auto}.console-daily-quest{margin:5px auto}.quest-entry{padding:5px 8px}}
 @media(max-width:420px){.quest-entry{padding:6px 8px}.quest-head{margin-bottom:7px}}
+
+/* Mobile family view: HUD does not cover original controls or objectives. */
+@media(max-width:540px){
+#bar{gap:3px;align-items:flex-start}
+#bar .brand{flex:0 1 auto;max-width:31vw;min-width:0;font-size:clamp(12px,3.5vw,17px);line-height:1.08}
+#bar .topRight{flex:0 0 auto;max-width:calc(100vw - 36vw);gap:3px}
+#bar .counter{font-size:clamp(10px,2.5vw,12px);padding:5px 6px;min-height:32px}
+#bar .square{width:32px;min-height:32px;padding:3px}
+#mission{top:calc(env(safe-area-inset-top) + 70px);width:min(275px,calc(100vw - 116px));max-width:calc(100vw - 116px);max-height:95px;overflow:hidden;pointer-events:none}
+#minimap{top:calc(env(safe-area-inset-top) + 70px);width:95px;height:95px}
+#location{top:calc(env(safe-area-inset-top) + 176px);max-width:calc(100vw - 120px)}
+#world-console-toolbar{left:max(7px,env(safe-area-inset-left));bottom:calc(env(safe-area-inset-bottom) + 152px);max-width:min(52vw,230px);flex-wrap:wrap;gap:4px}
+#world-console-toolbar .console-world-status{max-width:100%;font-size:9px;white-space:normal;line-height:1.15;max-height:3em;overflow:hidden}
+#controls{bottom:calc(env(safe-area-inset-bottom) + 9px);padding:0 10px}
+#toybar{bottom:calc(env(safe-area-inset-bottom) + 145px);right:max(8px,env(safe-area-inset-right))}
+#cameraNote{display:none}
+}
+@media(max-height:480px) and (orientation:landscape){
+#mission{top:calc(env(safe-area-inset-top) + 42px);max-height:58px}
+#minimap{top:calc(env(safe-area-inset-top) + 42px);width:74px;height:74px}
+#location{top:calc(env(safe-area-inset-top) + 122px)}
+#world-console-toolbar{bottom:calc(env(safe-area-inset-bottom) + 106px)}
+#toybar{bottom:calc(env(safe-area-inset-bottom) + 100px)}
+#controls .joystick{width:94px;height:94px}
+#controls .buttons{grid-template-columns:repeat(2,48px);grid-template-rows:repeat(2,45px)}
+}

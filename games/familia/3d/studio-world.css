@@ -15,3 +15,6 @@
 #world-console-toolbar #studio-world-sound,#bar .topRight #studio-world-sound{position:static;inset:auto;min-height:32px;padding:5px 8px;max-width:64px;flex-shrink:0;font-size:9px;box-shadow:0 3px 12px #0004}
 #world-console-toolbar #studio-world-sound{pointer-events:auto}
 @media(max-width:470px){#bar .topRight #studio-world-sound{min-height:29px;max-width:53px;padding:4px 5px;font-size:8px}}
+
+/* FX setting belongs in the pause/menu panel, never in the game header. */
+#overlay .panel #studio-world-sound{position:static;display:inline-flex;align-items:center;justify-content:center;min-height:36px;max-width:130px;margin:8px 0 0 auto;padding:7px 11px;box-shadow:none;font-size:10px;float:right}

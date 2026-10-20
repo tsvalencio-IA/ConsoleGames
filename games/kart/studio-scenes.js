@@ -21,35 +21,10 @@ function cloud(ctx,x,y,size,alpha=.23){
  oval(ctx,x,y,size*1.65,size*.56,grad);
 }
 function kart(ctx,w,h,logic){
- if(logic.state!=="RACE")return;
- const horizon=h*.35;
- const shift=((Number(logic.pos)||0)*.001)%w;
- ctx.save();
- // Background environment is animated slowly, not a static wallpaper.
- for(let i=0;i<5;i++){
-   const x=((i*249 + w*.11-shift*.06)%(w+300)+w+300)%(w+300)-140;
-   cloud(ctx,x,horizon*(.18+.13*(i%2)),w*(.075+(i%3)*.015),.18);
- }
- const sunX=w*.78,sunY=horizon*.34,r=Math.min(w,h)*.085;
- const glow=ctx.createRadialGradient(sunX,sunY,0,sunX,sunY,r*2.6);
- glow.addColorStop(0,"rgba(255,241,180,.28)");
- glow.addColorStop(.35,"rgba(255,244,199,.13)");
- glow.addColorStop(1,"rgba(255,245,205,0)");
- ctx.fillStyle=glow;ctx.fillRect(sunX-r*2.6,0,r*5.2,horizon);
- // Peripheral vegetation silhouettes — the car and asphalt remain untouched.
- const grass=["#205c39","#236c41","#357e4b"];
- for(let i=0;i<10;i++){
-   const depth=(i+1)/10;
-   const treeH=depth*h*.19;
-   const phase=(i*185 + (Number(logic.pos)||0)*.03);
-   const x=(i%2===0?-1:1)*(w*.02+(phase%(w*.09)));
-   const px=i%2===0?Math.min(w*.10,Math.abs(x)):w-Math.min(w*.10,Math.abs(x));
-   const y=h*.50+depth*h*.52;
-   ctx.fillStyle="#604631";ctx.fillRect(px-1,y-treeH*.43,Math.max(1,treeH*.075),treeH*.43);
-   oval(ctx,px,y-treeH*.62,treeH*.35,treeH*.40,grass[i%grass.length],.80);
- }
- ctx.restore();
+ // No invented roadside spheres. The track engine owns its scenery.
+ return;
 }
+
 function boxing(ctx,w,h,logic){
  if(!["FIGHT","GAMEOVER","CALIBRATION"].includes(logic.state))return;
  const horizon=h*.60;
