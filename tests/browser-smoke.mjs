@@ -57,6 +57,24 @@ try{
         const configured=await page.evaluate(()=>window.CONSOLE_GAME_ID||null);
         assert.equal(configured,id,"Jogo GAME com ID diferente: "+slug);
       }
+      // Every game must load its own production sound/render layer.
+      if(slug==="otthi"||slug==="familia/3d"){
+        await page.waitForSelector("#studio-world-sound",{timeout:12000});
+        const selector=slug==="otthi"?"#world-console-toolbar #studio-world-sound":"#bar .topRight #studio-world-sound";
+        assert.equal(await page.locator(selector).count(),1,"World audio switch misplaced: "+slug);
+      }else{
+        await page.waitForSelector("#studio-audio-switch",{timeout:12000});
+        const sceneMethod={kart:"renderWorld",boxe:"drawArena",tenis:"drawEnvironment",ar:"drawVirtualScene",voo:"_drawWorld"}[slug];
+        await page.waitForFunction(([gameId,method])=>{
+          const game=(window.Games||[]).find(g=>g.id===gameId);
+          return typeof game?.logic?.[method]==="function" && game.logic[method].__studioScenes===true;
+        },[id,sceneMethod],{timeout:12000});
+        assert.equal(await page.locator("#studio-audio-switch").getAttribute("aria-pressed"),"true");
+        await page.locator("#studio-audio-switch").click();
+        assert.equal(await page.locator("#studio-audio-switch").getAttribute("aria-pressed"),"false");
+        await page.locator("#studio-audio-switch").click();
+        assert.equal(await page.locator("#studio-audio-switch").getAttribute("aria-pressed"),"true");
+      }
       // Check visible app frames and horizontally scrollable root. Fixed HUD elements
       // are bounded by CSS, but actual matches/canvas scenes require separate tests.
       const box=await page.evaluate(()=>({
