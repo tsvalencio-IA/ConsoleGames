@@ -110,3 +110,14 @@ test("HUD Canvas responsivo nas modalidades 2D/3D sem desativar fases",()=>{
  assert(flight.includes("this.combat.target"),"Mira de voo ausente");
  assert(read("games/familia/3d/index.html").includes("w<760?1.35:1.6"),"HQ sem densidade adaptativa");
 });
+
+
+test("resultado oferece caminho direto às fases sem contornar autorização",()=>{
+ for(const {slug} of installed){
+   const core=read("games/"+slug+"/js/core.js"),html=read("games/"+slug+"/index.html");
+   assert(core.includes("replay: () =>"),slug+" sem reentrada de fases");
+   assert(core.includes("window.Profile.permissions?.[id]===true"),slug+" não verifica permissão no replay");
+   assert(core.includes("if(permitted)window.System.openPhases(game)"),slug+" pode abrir fase sem autorização");
+   assert(html.includes('onclick="window.System.replay()"'),slug+" botão de resultado não atualizado");
+ }
+});
