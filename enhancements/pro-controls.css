@@ -1,0 +1,124 @@
+/* thIAguinho Pro Controller System v7.
+   No centre-screen obstruction. All touch buttons at least 44 CSS px.
+   Safe areas, landscape/pocket widths, one-handed interaction targets. */
+.input-game-controls.flight-input,.input-game-controls.ar-input{
+ --pd:clamp(44px,13.4vw,60px);--act:clamp(47px,15.5vw,72px);
+ display:block!important;position:fixed!important;left:0!important;right:0!important;
+ bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
+ width:100%!important;max-width:none!important;transform:none!important;
+ height:clamp(128px,23dvh,168px);padding:0;margin:0;z-index:145;
+ pointer-events:none;overflow:visible;
+}
+.input-game-controls.flight-input[hidden],.input-game-controls.ar-input[hidden]{display:none!important}
+.input-game-controls.flight-input .input-control,.input-game-controls.ar-input .input-control{
+ position:absolute;display:flex;align-items:center;justify-content:center;
+ box-sizing:border-box;pointer-events:auto;touch-action:none;
+ min-width:44px;max-width:none;min-height:44px;
+ width:var(--pd);height:var(--pd);padding:3px 5px;margin:0;
+ border:1px solid rgba(163,223,255,.65);
+ border-radius:15px;background:linear-gradient(155deg,rgba(31,66,94,.94),rgba(7,25,48,.92));
+ box-shadow:0 6px 20px #0009,inset 0 1px 0 #ffffff30;
+ backdrop-filter:blur(8px);font:900 clamp(14px,3.5vw,23px)/1 system-ui;
+ color:#e9fcff;text-shadow:0 2px 6px #020d22;
+}
+.input-game-controls.flight-input .input-control.held,
+.input-game-controls.ar-input .input-control.held{
+ transform:scale(.94);border-color:#edffff;background:linear-gradient(150deg,#205f90,#124a62);
+}
+.input-game-controls.flight-input [data-control="left"],
+.input-game-controls.ar-input [data-control="left"]{left:max(8px,env(safe-area-inset-left,0px));bottom:calc(var(--pd)*.87)}
+.input-game-controls.flight-input [data-control="right"],
+.input-game-controls.ar-input [data-control="right"]{left:calc(max(8px,env(safe-area-inset-left,0px)) + var(--pd)*2 + 12px);bottom:calc(var(--pd)*.87)}
+.input-game-controls.flight-input [data-control="up"]{
+ left:calc(max(8px,env(safe-area-inset-left,0px)) + var(--pd) + 6px);
+ bottom:calc(var(--pd)*1.72);
+ background:linear-gradient(160deg,rgba(54,103,139,.96),rgba(11,46,80,.95));
+}
+.input-game-controls.flight-input [data-control="down"]{
+ left:calc(max(8px,env(safe-area-inset-left,0px)) + var(--pd) + 6px);
+ bottom:0;background:linear-gradient(160deg,rgba(54,103,139,.96),rgba(11,46,80,.95));
+}
+.input-game-controls.flight-input [data-control="boost"],
+.input-game-controls.flight-input [data-control="missile"],
+.input-game-controls.ar-input [data-control="go"],
+.input-game-controls.ar-input [data-control="pick"]{
+ width:var(--act);height:var(--act);border-radius:50%;
+ bottom:0;font-size:clamp(9px,2.1vw,12px);line-height:1.15;text-align:center;
+ box-shadow:0 4px 19px #000a,inset 0 2px 1px #fff3;
+}
+.input-game-controls.flight-input [data-control="missile"],
+.input-game-controls.ar-input [data-control="pick"]{
+ right:max(8px,env(safe-area-inset-right,0px));
+ background:linear-gradient(160deg,#ef864d,#8b354b);border-color:#ffbe8b;
+ font-size:clamp(12px,3.2vw,21px);
+}
+.input-game-controls.flight-input [data-control="boost"],
+.input-game-controls.ar-input [data-control="go"]{
+ right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 9px);
+ background:linear-gradient(160deg,#16af90,#08695f);border-color:#8dffcd;
+}
+.input-game-controls.flight-input [data-control="start"],
+.input-game-controls.ar-input [data-control="base"],
+.input-game-controls.ar-input [data-control="out"]{
+ right:max(8px,env(safe-area-inset-right,0px));bottom:calc(var(--act) + 11px);
+ width:calc(var(--act)*2 + 9px);height:44px;max-width:none;
+ font:900 clamp(9px,2.2vw,12px)/1 system-ui;letter-spacing:.4px;
+ background:linear-gradient(155deg,rgba(38,79,115,.93),rgba(11,40,69,.95));
+ border-radius:13px;color:#d9faff;
+}
+.input-game-controls.ar-input [data-control="out"]{
+ right:max(8px,env(safe-area-inset-right,0px));
+}
+.input-game-controls .input-control[hidden]{display:none!important}
+#arcade-boxing-controls{
+ position:fixed;inset:auto 0 max(8px,env(safe-area-inset-bottom,0px)) 0;
+ display:block;left:0;transform:none;width:100%;max-width:100%;
+ height:clamp(77px,16dvh,108px);pointer-events:none;z-index:145;
+}
+#arcade-boxing-controls[hidden]{display:none!important}
+#arcade-boxing-controls .boxing-action{
+ position:absolute;bottom:0;width:clamp(70px,21vw,104px);
+ height:clamp(68px,16dvh,96px);border-radius:50%;
+ pointer-events:auto;min-height:48px;min-width:48px;
+ font-size:clamp(19px,5.5vw,29px);padding:6px;
+ background:radial-gradient(circle at 35% 20%,#476a96,#10284b 80%);
+ border:2px solid rgba(154,219,249,.65);box-shadow:0 5px 24px #0009,inset 0 1px 1px #fff5;
+}
+#arcade-boxing-controls .boxing-action.jab{
+ left:max(9px,env(safe-area-inset-left,0px));
+ border-color:#ffb3b5;background:radial-gradient(circle at 35% 20%,#d66b79,#652440 85%);
+}
+#arcade-boxing-controls .boxing-action.cross{
+ right:max(9px,env(safe-area-inset-right,0px));
+ border-color:#acdbff;background:radial-gradient(circle at 35% 20%,#6199d2,#17395e 85%);
+}
+#arcade-boxing-controls .boxing-action.guard{
+ left:50%;bottom:3px;transform:translateX(-50%);
+ width:clamp(60px,17vw,80px);height:clamp(60px,13dvh,80px);
+ background:radial-gradient(circle at 35% 20%,#698475,#224f4c 85%);
+ border-color:#b5ffe5;
+}
+#arcade-boxing-controls .boxing-action.guard.pressed{
+ transform:translateX(-50%) scale(.94);
+}
+#arcade-boxing-controls .boxing-action span{font:900 clamp(8px,1.8vw,10px)/1 system-ui;letter-spacing:.25px}
+@media(max-height:460px){
+ .input-game-controls.flight-input,.input-game-controls.ar-input{height:120px;--pd:44px;--act:45px;bottom:max(3px,env(safe-area-inset-bottom,0px))!important}
+ .input-game-controls.flight-input [data-control="up"]{bottom:75px}
+ .input-game-controls.flight-input [data-control="left"],.input-game-controls.flight-input [data-control="right"],
+ .input-game-controls.ar-input [data-control="left"],.input-game-controls.ar-input [data-control="right"]{bottom:36px}
+ #arcade-boxing-controls{bottom:max(3px,env(safe-area-inset-bottom,0px));height:65px}
+ #arcade-boxing-controls .boxing-action{height:59px;width:70px;font-size:20px}
+ #arcade-boxing-controls .boxing-action.guard{height:55px;width:58px}
+}
+@media(max-width:345px){
+ .input-game-controls.flight-input,.input-game-controls.ar-input{--pd:44px;--act:46px}
+ .input-game-controls.flight-input [data-control="right"],.input-game-controls.ar-input [data-control="right"]{
+ left:calc(max(5px,env(safe-area-inset-left,0px)) + var(--pd)*2 + 3px)
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #arcade-boxing-controls .boxing-action,
+ .input-game-controls.flight-input .input-control,
+ .input-game-controls.ar-input .input-control{transition:none!important}
+}
