@@ -1,0 +1,34 @@
+name: Corrigir integridade PWA dos dois mundos
+on:
+  push:
+    paths:
+      - '.github/workflows/world-pwa-integrity.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: arcade-world-pwa-integrity
+  cancel-in-progress: false
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reparar SHA de OTThi e manter os arquivos de HQ dentro do escopo offline
+        run: node tools/world-pwa-integrity.mjs
+      - name: Verificar conteúdo e integridade sem acesso aos bancos
+        run: |
+          node --test tests/*.test.mjs
+          node tests/studio-verify.mjs
+          node tests/world-integrity.mjs
+      - name: Registrar release conjunta
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/otthi/release-manifest.json games/otthi/sw.js games/familia/3d/ tests/games.test.mjs tests/studio-verify.mjs
+          git commit -m "fix(world-pwa): OTThi SHA-256 and HQ offline audio/UI files within service worker scope"
+          git push origin HEAD:main
