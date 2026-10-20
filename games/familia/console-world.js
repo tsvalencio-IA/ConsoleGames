@@ -24,15 +24,8 @@ function init(){
  summary.setAttribute("role","status");
  bar.append(back,summary);
  document.body.appendChild(bar);
- if(mode==="familia"){
-   const parent=$("#bar .topRight");
-   if(parent){
-     const link=create("a","console-world-link","Console");
-     link.href="../../../arcade/";
-     link.style.cssText="min-height:34px;padding:6px 8px;font-size:10px";
-     parent.appendChild(link);
-   }
- }
+ // The native top bar must contain ONLY the original counters and menu.
+ // Return to Arcade stays in the existing pause/menu surface.
  if(mode==="otthi"){
    const hero=$("#lobby .hero-actions");
    if(hero){

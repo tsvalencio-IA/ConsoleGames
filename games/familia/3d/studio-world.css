@@ -18,3 +18,7 @@
 
 /* FX setting belongs in the pause/menu panel, never in the game header. */
 #overlay .panel #studio-world-sound{position:static;display:inline-flex;align-items:center;justify-content:center;min-height:36px;max-width:130px;margin:8px 0 0 auto;padding:7px 11px;box-shadow:none;font-size:10px;float:right}
+
+/* Family audio switch exists ONLY inside the menu/start panel, never floats on controls. */
+#overlay .panel #studio-world-sound{position:static!important;inset:auto!important;display:inline-flex;align-items:center;justify-content:center;width:auto;max-width:100%;min-height:36px;margin:8px 0 0;padding:6px 11px;z-index:auto;box-shadow:none;vertical-align:middle}
+#overlay:not(:has(.panel)) #studio-world-sound{display:none!important}

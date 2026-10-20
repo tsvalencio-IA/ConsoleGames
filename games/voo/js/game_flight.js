@@ -244,6 +244,11 @@
                 let self = this;
                 let handleTap = function(e) {
                     try {
+                        // Do not let an overlay button trigger a second native
+                        // interaction. Canvas is the only flight touch surface.
+                        const target=e.target;
+                        if(!target || !target.closest || !target.closest('#game-canvas'))return;
+                        if(e.type==='touchstart' && typeof PointerEvent!=='undefined')return;
                         let cvs = window.System && window.System.canvas ? window.System.canvas : document.getElementById('game-canvas');
                         let rect = cvs ? cvs.getBoundingClientRect() : {left:0, top:0, width: window.innerWidth, height: window.innerHeight};
                         let cx = e.clientX; let cy = e.clientY;
@@ -281,7 +286,9 @@
                         } else if (self.state === 'HANGAR') {
                             self._processHangarClick(touchX, touchY, window.innerWidth, window.innerHeight);
                         } else if (self.state === 'CALIBRATION') {
-                            self.timer = 0; 
+                            // Calibration only completes via the explicit CONTINUAR
+                            // control or by holding a valid camera pose for 5 seconds.
+                            // Touching the canvas must never force timer to zero.
                         } else if (self.state === 'PLAYING') {
                             self.pilot.headTilt = true;
                             setTimeout(() => { self.pilot.headTilt = false; }, 250);
