@@ -1,0 +1,29 @@
+name: Corrigir escopo do thIAguinho ARCADE
+on:
+  push:
+    paths: ['.github/workflows/relink-arcade.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  relink:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Aplicar navegação PWA da instalação independente
+        run: node tools/relink-arcade.mjs
+      - name: Testar o console e jogos
+        run: node --test tests/*.test.mjs
+      - name: Publicar todas as correções em main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add arcade/manifest.webmanifest games/ enhancements/ tests/arcade.test.mjs
+          git commit -m "fix(pwa): console instalado mantém sete jogos dentro do ARCADE"
+          git push origin HEAD:main
