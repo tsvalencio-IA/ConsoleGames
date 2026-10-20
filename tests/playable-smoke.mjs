@@ -118,6 +118,19 @@ try{
     await page.locator('#arcade-pause-modal [data-action="continue"]').click();
     assert.equal(await page.evaluate(()=>window.System.paused),false,"Motor não retomou");
     assert.equal(await page.evaluate(()=>window.System.activeGame?.id),id);
+    // Explicit camera consent followed by a denied permission must fall back,
+    // not deadlock, and must preserve the very same game/ID.
+    await page.evaluate(id=>{
+      const game=window.Games.find(g=>g.id===id);
+      window.System.menu();window.System.openPhases(game);
+    },id);
+    await page.locator("#phase-grid .mission-card:not(.locked)").first().click({timeout:6000});
+    await page.locator(".input-mode-dialog [data-mode=camera]").click({timeout:6000});
+    await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:12000});
+    assert.equal(await page.evaluate(()=>window.ArcadeControls?.mode),"controls",
+       "Câmera negada não ativou controles no "+slug);
+    assert(await page.evaluate(()=>window.__cameraRequests>0),
+       "Câmera não foi solicitada após escolha explícita em "+slug);
     // Browser runtime pageerrors are checked selectively: blocked CDN errors do not
     // matter because the mocks bypass Firebase/pose SDK on purpose.
     const fatal=appErrors.filter(v=>/uncaught|cannot read properties|is not a function|referenceerror/i.test(v));
