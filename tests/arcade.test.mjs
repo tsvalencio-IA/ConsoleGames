@@ -62,7 +62,8 @@ test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
   assert(read("games/"+name+"/arcade-pause.js").includes('href="../../arcade/" data-action="exit"'));
  }
  assert(read("games/otthi/console-world.js").includes('link.href="../../arcade/"'));
- assert(read("games/familia/console-world.js").includes('link.href="../../../arcade/"'));
+ assert(read("games/familia/console-world.js").includes('back.href=mode==="familia"?"../../../arcade/"'));
+ assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");
  assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
  assert.equal(arcadeManifest.scope,"/ConsoleGames/");
 });
