@@ -1008,8 +1008,16 @@
                 ctx.fillStyle = (seg.color === 'dark') ? (isOffRoad?'#336622':theme[1]) : (isOffRoad?'#336622':theme[0]); ctx.fillRect(0, nsy, w, sy - nsy);
                 ctx.fillStyle = (seg.color === 'dark') ? '#f33' : '#fff'; 
                 ctx.beginPath(); ctx.moveTo(sx - (w*3*scale)*0.6, sy); ctx.lineTo(sx + (w*3*scale)*0.6, sy); ctx.lineTo(nsx + (w*3*nextScale)*0.6, nsy); ctx.lineTo(nsx - (w*3*nextScale)*0.6, nsy); ctx.fill();
-                ctx.fillStyle = (seg.color === 'dark') ? '#444' : '#494949'; 
+                ctx.fillStyle = (seg.color === 'dark') ? '#35424f' : '#3d4c5b';
                 ctx.beginPath(); ctx.moveTo(sx - (w*3*scale)*0.5, sy); ctx.lineTo(sx + (w*3*scale)*0.5, sy); ctx.lineTo(nsx + (w*3*nextScale)*0.5, nsy); ctx.lineTo(nsx - (w*3*nextScale)*0.5, nsy); ctx.fill();
+                if(((currentSegIndex+n)%14)<5){
+                    const stripeWidth=w*3*.013;
+                    ctx.fillStyle='rgba(221,236,250,.35)';
+                    ctx.beginPath();ctx.moveTo(sx-stripeWidth*scale,sy);
+                    ctx.lineTo(sx+stripeWidth*scale,sy);
+                    ctx.lineTo(nsx+stripeWidth*nextScale,nsy);
+                    ctx.lineTo(nsx-stripeWidth*nextScale,nsy);ctx.fill();
+                }
             }
 
             for(let n = CONF.DRAW_DISTANCE - 1; n >= 0; n--) {
@@ -1186,8 +1194,42 @@
                 ctx.fillStyle = '#95a5a6'; ctx.fillRect(-15, 15, 30, 18); ctx.strokeStyle = (CHARACTERS[charId] || CHARACTERS[0]).color; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-25, -20); ctx.lineTo(25, -20); ctx.lineTo(35, 10); ctx.lineTo(-35, 10); ctx.closePath(); ctx.stroke();
             }
 
+            // V8 kart silhouette: dimensional rear body, cockpit and reflectors.
+            // The original character head stays mounted above the kart unchanged.
+            ctx.save();
+            const hull=ctx.createLinearGradient(0,-35,0,37);
+            hull.addColorStop(0,'#ffdfe0');
+            hull.addColorStop(.18,color||'#ef5258');
+            hull.addColorStop(.62,color||'#d23845');
+            hull.addColorStop(1,'#4a1b33');
+            ctx.shadowColor='rgba(0,0,0,.38)';ctx.shadowBlur=7;
+            ctx.fillStyle='#263846';
+            ctx.beginPath();ctx.moveTo(-37,16);ctx.lineTo(37,16);ctx.lineTo(40,31);ctx.lineTo(-40,31);ctx.closePath();ctx.fill();
+            ctx.shadowBlur=0;ctx.fillStyle=hull;
+            ctx.beginPath();ctx.moveTo(-30,-26);ctx.quadraticCurveTo(-36,-8,-37,15);
+            ctx.lineTo(-31,32);ctx.quadraticCurveTo(0,40,31,32);
+            ctx.lineTo(37,15);ctx.quadraticCurveTo(36,-8,30,-26);ctx.closePath();ctx.fill();
+            const center=ctx.createLinearGradient(-15,0,15,0);
+            center.addColorStop(0,'rgba(14,24,45,.92)');
+            center.addColorStop(.45,'rgba(52,74,96,.96)');
+            center.addColorStop(1,'rgba(9,20,35,.94)');
+            ctx.fillStyle=center;
+            ctx.beginPath();ctx.ellipse(0,-7,22,25,0,0,Math.PI*2);ctx.fill();
+            ctx.strokeStyle='rgba(248,254,255,.72)';ctx.lineWidth=1.7;
+            ctx.beginPath();ctx.ellipse(0,-7,22,25,0,0,Math.PI*2);ctx.stroke();
+            // Painted side fenders and clear reflections respond to the track lighting.
+            ctx.fillStyle='rgba(255,255,255,.28)';
+            ctx.beginPath();ctx.moveTo(-29,-19);ctx.lineTo(-24,-27);ctx.lineTo(-19,6);ctx.lineTo(-25,21);ctx.closePath();ctx.fill();
+            ctx.beginPath();ctx.moveTo(29,-19);ctx.lineTo(24,-27);ctx.lineTo(19,6);ctx.lineTo(25,21);ctx.closePath();ctx.fill();
+            ctx.fillStyle='#ffe3b2';
+            for(const side of [-1,1]){ctx.beginPath();ctx.ellipse(side*28,26,6.5,3.8,0,0,Math.PI*2);ctx.fill();}
+            ctx.strokeStyle='#cbeaff';ctx.lineWidth=2;
+            ctx.beginPath();ctx.moveTo(-23,32);ctx.lineTo(23,32);ctx.stroke();
+            ctx.fillStyle='#f3f8ff';ctx.font='900 15px system-ui';ctx.textAlign='center';
+            ctx.fillText(String((CHARACTERS[charId]||CHARACTERS[0]).name||'K')[0],0,28);
+            ctx.restore();
             drawCharacterHead(ctx, charId, steer);
-            ctx.restore(); 
+            ctx.restore();
         },
 
         renderUI: function(ctx, w, h) {

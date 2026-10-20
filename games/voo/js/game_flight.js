@@ -1258,7 +1258,7 @@
             if (Math.abs(skyY0 - skyY1) < 1) skyY1 = skyY0 + 1; 
 
             let sG = ctx.createLinearGradient(0, skyY0, 0, skyY1);
-            sG.addColorStop(0,'#020b14'); sG.addColorStop(0.6,'#0a2342'); sG.addColorStop(1,'#1d4d76');
+            sG.addColorStop(0,'#03121f');sG.addColorStop(.34,'#102e51');sG.addColorStop(.71,'#205680');sG.addColorStop(1,'#73a5b9');
             ctx.fillStyle = sG;
             ctx.fillRect(-w*3, -safeH*4, w*6, hy + safeH*4);
             

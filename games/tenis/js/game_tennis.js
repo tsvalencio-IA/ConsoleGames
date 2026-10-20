@@ -481,7 +481,9 @@
         },
 
         drawEnvironment: function(ctx, w, h) {
-            ctx.fillStyle = "#0f172a"; ctx.fillRect(0,0,w,h);
+            const ambience=ctx.createLinearGradient(0,0,0,h);
+            ambience.addColorStop(0,'#101b37');ambience.addColorStop(.55,'#213e53');ambience.addColorStop(1,'#071d32');
+            ctx.fillStyle=ambience;ctx.fillRect(0,0,w,h);
             let wTL = MathCore.project(-8000, -4000, 6000, w, h); let wTR = MathCore.project(8000, -4000, 6000, w, h);
             let wBL = MathCore.project(-8000, CONF.FLOOR_Y, 6000, w, h); let wBR = MathCore.project(8000, CONF.FLOOR_Y, 6000, w, h);
             this.safeDrawPoly(ctx, [wTL, wTR, wBR, wBL], "#1e293b");
@@ -492,7 +494,9 @@
 
             const c1 = MathCore.project(-3000, CONF.FLOOR_Y, 4000, w, h); const c2 = MathCore.project(3000, CONF.FLOOR_Y, 4000, w, h);
             const c3 = MathCore.project(3000, CONF.FLOOR_Y, -3000, w, h); const c4 = MathCore.project(-3000, CONF.FLOOR_Y, -3000, w, h);
-            this.safeDrawPoly(ctx, [c1, c2, c3, c4], "#c0392b"); 
+            const paint=ctx.createLinearGradient(0,h*.4,0,h);
+            paint.addColorStop(0,'#c85059');paint.addColorStop(1,'#7b233b');
+            this.safeDrawPoly(ctx,[c1,c2,c3,c4],paint); 
             if (c1.visible && c2.visible && c3.visible && c4.visible) { ctx.strokeStyle = "rgba(255,255,255,0.5)"; ctx.lineWidth = Math.max(2, 4 * c1.s); ctx.beginPath(); ctx.moveTo(c1.x, c1.y); ctx.lineTo(c2.x, c2.y); ctx.lineTo(c3.x, c3.y); ctx.lineTo(c4.x, c4.y); ctx.closePath(); ctx.stroke(); }
         },
 

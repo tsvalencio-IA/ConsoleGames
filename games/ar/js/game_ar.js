@@ -654,7 +654,7 @@
             const yaw=(this.currentHeading-this.baseHeading)*Math.PI/180;
             const horizon=h*.42;
             const sky=ctx.createLinearGradient(0,0,0,h);
-            sky.addColorStop(0,'#0e3158');sky.addColorStop(.45,'#29658a');sky.addColorStop(.46,'#e8b98a');sky.addColorStop(1,'#173e4c');
+            sky.addColorStop(0,'#092849');sky.addColorStop(.28,'#337196');sky.addColorStop(.45,'#7fbac0');sky.addColorStop(.46,'#b6a281');sky.addColorStop(1,'#23434d');
             ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
             ctx.fillStyle='#f8d8a2';ctx.beginPath();ctx.arc(w*.78,horizon*.44,Math.max(16,w*.065),0,Math.PI*2);ctx.fill();
             ctx.fillStyle='#234768';
