@@ -173,7 +173,9 @@ window.Profile = {
         }else{coinsGained=0;console.warn("Saldo de perfil anormal: valor original preservado.");}
         
         let nextLevelXP = window.Profile.level * 1000; let leveledUp = false;
-        while(window.Profile.xp >= nextLevelXP) {
+        // Never lock a mobile game if a legacy XP record is abnormally large.
+        let levelSafety=0;
+        while(window.Profile.xp >= nextLevelXP && levelSafety++<100) {
             window.Profile.level++; window.Profile.xp -= nextLevelXP; nextLevelXP = window.Profile.level * 1000; leveledUp = true;
         }
         window.Profile.save(); return { xp: xpGained, coins: coinsGained, leveledUp };
