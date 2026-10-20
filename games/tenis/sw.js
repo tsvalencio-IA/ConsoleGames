@@ -2,11 +2,12 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-tenis-";
-const CACHE=PREFIX+"controls-v3";
+const CACHE=PREFIX+"studio-v4";
 const FILES=["./","./index.html","./manifest.json","./icon.svg",
 "./js/core.js","./js/game_tennis.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
-"./control-modes.js","./control-modes.css"];
+"./control-modes.js","./control-modes.css",
+"./studio-fx.js","./studio-fx.css"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(async cache=>{
     await Promise.all(FILES.map(async path=>{
