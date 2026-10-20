@@ -95,7 +95,7 @@ const hub={
    document.body.append(root);hub.buttons=root;
    const watch=setInterval(()=>{
      const s=window.System;
-     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && hub.mode==="controls";
+     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && hub.mode==="controls" && (kind!=="kart-input" || (s.activeGame.logic?.state==="RACE" && s.activeGame.logic?.status==="RACING" && !s.paused));
      root.hidden=!visible;
      if(!s?.activeGame){clearInterval(watch);root.remove();hub.buttons=null;}
    },200);
