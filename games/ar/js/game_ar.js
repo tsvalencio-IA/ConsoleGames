@@ -415,11 +415,16 @@
             this.cargo = []; this.anomalies = []; this.isExtracting = false; this.pickupTimer = 0; this.currentPose = null; this.isEstimatingPose = false;
             particles = [];
             
-            this.generateMission(); this.setupSensors(); this.setupInput(); 
-            
-            if (window.System && window.System.switchCamera) { 
-                window.System.switchCamera('environment').then(() => { this.loadAIModel(); }); 
-            } else { this.loadAIModel(); }
+            this.generateMission(); this.setupInput();
+            if(window.ArcadeControls?.mode==='controls'){
+                // Manual mode uses in-game virtual targets and native mission/reward logic.
+                // Never request camera, compass, motion sensors or COCO-SSD.
+                this.objectModel=null;this.detectedItems=[];this.deviceForce=0;
+                this.changeState('PLAY_REAR_AR');
+            }else{
+                this.setupSensors();
+                this.loadAIModel(); // Camera already granted in core after explicit player choice.
+            }
         },
 
         generateMission: function() { this.currentMission = { type: 'HEAVY LOAD', goal: 3 + Math.floor(Math.random() * 3), progress: 0, timer: 0, active: true }; },
@@ -478,7 +483,7 @@
                 else if (this.state === 'PLAY_REAR_AR' || this.state === 'TOW_MODE') {
                     let distToBase = Math.hypot(this.vPos.x, this.vPos.y); const btnS = Math.min(80, w * 0.18);
                     if (y > 70 && y < 70 + btnS && x > w - btnS - 15 && x < w - 15) {
-                        if (distToBase < 30) { if(window.System.switchCamera) window.System.switchCamera('user'); this.changeState('ENTER_BASE_TRANSITION'); } 
+                        if (distToBase < 30) { if(window.ArcadeControls?.mode==='camera' && window.System.switchCamera) window.System.switchCamera('user'); this.changeState('ENTER_BASE_TRANSITION'); } 
                         else { window.System.msg("MUITO LONGE DA BASE!"); } return;
                     }
                     const accR = Math.min(60, w * 0.15); if (x < 30 + accR*2 && y > h - 100 - accR*2 && this.state !== 'TOW_MODE') { this.manualAccelerate = true; }
@@ -553,6 +558,7 @@
                 if (this.virtualSpeed > 0.1 && !this.isExtracting) { let susY = Math.sin(this.timeTotal * this.virtualSpeed * 1.5) * (this.virtualSpeed / this.stats.baseSpeed) * 3; ctx.translate(0, susY); }
                 if (this.collectZoom > 0) { let z = 1 + (this.collectZoom * 0.03); ctx.translate(w/2, h/2); ctx.scale(z, z); ctx.translate(-w/2, -h/2); this.collectZoom -= dt * 2; }
                 if (window.System?.video && window.System.video.readyState === 4) { ctx.drawImage(window.System.video, drawX, drawY, drawW, drawH); } 
+                else if(window.ArcadeControls?.mode==='controls')this.drawVirtualScene(ctx,w,h);
                 else { ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h); }
                 if (this.baseFlash > 0) { ctx.fillStyle = `rgba(0, 255, 100, ${this.baseFlash * 0.5})`; ctx.fillRect(0, 0, w, h); this.baseFlash -= dt * 1.5; }
                 if (this.state === 'WAITING_PICKUP') { ctx.fillStyle = `rgba(255, 0, 60, ${Math.abs(Math.sin(this.timeTotal*10))*0.15})`; ctx.fillRect(0, 0, w, h); }
@@ -642,6 +648,45 @@
             this.anomalies.forEach(a => { if (a.life < 999) a.life -= dt; }); this.anomalies = this.anomalies.filter(a => a.life > 0);
         },
 
+        // Original game engine, but synthetic scenery when the player chooses no camera.
+        drawVirtualScene: function(ctx,w,h) {
+            const time=this.timeTotal||0;
+            const yaw=(this.currentHeading-this.baseHeading)*Math.PI/180;
+            const horizon=h*.42;
+            const sky=ctx.createLinearGradient(0,0,0,h);
+            sky.addColorStop(0,'#0e3158');sky.addColorStop(.45,'#29658a');sky.addColorStop(.46,'#e8b98a');sky.addColorStop(1,'#173e4c');
+            ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+            ctx.fillStyle='#f8d8a2';ctx.beginPath();ctx.arc(w*.78,horizon*.44,Math.max(16,w*.065),0,Math.PI*2);ctx.fill();
+            ctx.fillStyle='#234768';
+            ctx.beginPath();ctx.moveTo(0,horizon);for(let x=0;x<=w+30;x+=30){ctx.lineTo(x,horizon-24-Math.sin(x*.029+yaw)*22)}ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+            ctx.fillStyle='#183d4a';ctx.fillRect(0,horizon,w,h-horizon);
+            // Moving landscape grid and road, not a black placeholder.
+            ctx.beginPath();ctx.moveTo(w*.42,horizon);ctx.lineTo(w*.58,horizon);ctx.lineTo(w*1.15,h);ctx.lineTo(-w*.15,h);ctx.closePath();ctx.fillStyle='#3d5363';ctx.fill();
+            ctx.strokeStyle='rgba(186,237,233,.2)';ctx.lineWidth=1;
+            for(let n=0;n<15;n++){
+                const z=((n/15+time*Math.max(0,this.virtualSpeed)*.009)%1);
+                const y=horizon+(h-horizon)*z*z;
+                ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+            }
+            ctx.strokeStyle='rgba(249,237,179,.8)';ctx.lineWidth=Math.max(2,w*.006);ctx.setLineDash([20,25]);ctx.beginPath();ctx.moveTo(w*.5,horizon);ctx.lineTo(w*.5,h);ctx.stroke();ctx.setLineDash([]);
+            // A small target marker uses real anomaly positions and bearing.
+            if(this.anomalies?.length){
+                const target=this.anomalies.reduce((a,b)=>Math.hypot(a.x-this.vPos.x,a.y-this.vPos.y)<Math.hypot(b.x-this.vPos.x,b.y-this.vPos.y)?a:b);
+                const dist=Math.hypot(target.x-this.vPos.x,target.y-this.vPos.y);
+                const ang=Math.atan2(target.y-this.vPos.y,target.x-this.vPos.x)+yaw+Math.PI/2;
+                const bearing=Math.atan2(Math.sin(ang),Math.cos(ang));
+                const px=Math.max(42,Math.min(w-42,w/2+bearing*w*.35));
+                const py=Math.max(horizon+35,Math.min(h-145,horizon+(h-horizon)*(.30+35/Math.max(35,dist+35))));
+                const radius=Math.max(12,Math.min(34,850/Math.max(26,dist)));
+                ctx.save();ctx.translate(px,py);
+                ctx.fillStyle=target.type==='RARE'?'#f4a9ff':'#ffc36b';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=18;
+                ctx.beginPath();ctx.moveTo(0,-radius);ctx.lineTo(radius,0);ctx.lineTo(0,radius);ctx.lineTo(-radius,0);ctx.closePath();ctx.fill();
+                ctx.shadowBlur=0;ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#fff';
+                ctx.fillText(dist<30?'ALVO ALCANÇADO':Math.round(dist)+' m',0,-radius-12);
+                ctx.restore();
+            }
+        },
+
         processAR: function(ctx, w, h, dt, drawX, drawY, scaleCanvas) {
             if (this.state === 'TOW_MODE') { this.isExtracting = false; return; }
 
@@ -650,6 +695,26 @@
             this.anomalies.forEach(ano => { let d = Math.hypot(ano.x - this.vPos.x, ano.y - this.vPos.y); if (d < nearestDist) { nearestDist = d; this.activeAnomaly = ano; } });
 
             let visualFound = false; let foundBox = null;
+            // With no camera, proximity and an explicit HOLD TO COLLECT replace
+            // object recognition. The original cargo/currency/mission logic still runs.
+            if(window.ArcadeControls?.mode==='controls'){
+                const close=nearestDist<30;
+                if(this.state==='PLAY_REAR_AR'){
+                    if(close && this.manualPickupRequested && this.cargo.length<this.stats.maxCargo && this.cooldown<=0){
+                        this.manualPickupRequested=false;
+                        this.changeState('WAITING_PICKUP');
+                    }else if(!close)this.manualPickupRequested=false;
+                }
+                if(this.state==='WAITING_PICKUP'){
+                    ctx.fillStyle='rgba(10,33,54,.85)';
+                    ctx.fillRect(w*.15,h*.50,w*.70,37);
+                    ctx.fillStyle='#dcf8f9';ctx.textAlign='center';ctx.font='bold '+Math.min(16,Math.max(11,w*.037))+'px Arial';
+                    ctx.fillText('SEGURE COLETAR PARA RECOLHER',w/2,h*.50+24,w*.68);
+                    if(!this.manualPickupHeld){this.pickupTimer=0;return;}
+                    // Keep using existing one-second pickup timer and mission reward.
+                    this.manualAccelerate=false;
+                }
+            }
             
             // FILTRO DE IA: Objetos permitidos
             const allowedClasses = ['car', 'truck', 'bus', 'train', 'mouse', 'remote', 'cell phone', 'bottle', 'cup', 'keyboard'];
@@ -680,7 +745,7 @@
             else if (this.state === 'WAITING_PICKUP') {
                 const uiY = h - 160;
                 ctx.fillStyle = this.colors.danger; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(50,Math.max(14,window.innerWidth*0.07))) + "px 'Russo One'"; ctx.fillText("ALVO BLOQUEADO!", cx, uiY - 55);
-                ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(26,Math.max(14,window.innerWidth*0.04))) + "px Arial"; ctx.fillText("PARE E REMOVA COM A MÃO!", cx, uiY - 20);
+                ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(26,Math.max(14,window.innerWidth*0.04))) + "px Arial"; ctx.fillText(window.ArcadeControls?.mode==="controls"?"SEGURE COLETAR!":"PARE E REMOVA COM A MÃO!", cx, uiY - 20,Math.max(150,w-25));
 
                 if (!visualFound) {
                     this.pickupTimer += dt;
