@@ -101,6 +101,30 @@ try{
         appHeight:document.body?.getBoundingClientRect()?.height
       }));
       assert(box.scrollWidth<=box.innerWidth+3,JSON.stringify({slug,size,box}));
+      if(slug==="familia/3d" && (size.width<=540||size.height<=480)){
+        // Inspect the actual running world, not the splash screen.
+        await page.locator("#start").click({timeout:5000});
+        await page.waitForFunction(()=>document.querySelector("#overlay")?.classList.contains("hidden"),null,{timeout:7000});
+        const gameGeometry=await page.evaluate(()=>{
+          const sel=["#controls .joystick","#controls .buttons","#toybar","#world-console-toolbar","#mission","#minimap","#bar"];
+          const boxes=Object.fromEntries(sel.map(key=>{
+            const el=document.querySelector(key);
+            const rect=el?.getBoundingClientRect();
+            return [key,rect?{x:rect.x,y:rect.y,r:rect.right,b:rect.bottom,w:rect.width,h:rect.height}:null];
+          }));
+          return {w:innerWidth,h:innerHeight,boxes};
+        });
+        const b=gameGeometry.boxes;
+        for(const key of ["#controls .joystick","#controls .buttons","#toybar","#world-console-toolbar"]){
+          const e=b[key];
+          assert(e&&e.x>=-2&&e.r<=gameGeometry.w+2&&e.b<=gameGeometry.h+2,"Controle fora da tela: "+key+" "+JSON.stringify(gameGeometry));
+        }
+        const overlap=(a,b)=>a&&b?Math.max(0,Math.min(a.r,b.r)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.y,b.y)):0;
+        for(const [one,two] of [["#world-console-toolbar","#controls .joystick"],["#world-console-toolbar","#toybar"],["#mission","#minimap"]]){
+          assert(overlap(b[one],b[two])<25,"Interface familiar sobreposta: "+one+" / "+two+" "+JSON.stringify(gameGeometry));
+        }
+        await page.screenshot({path:join("test-results/mobile","familia-world-"+size.name+".png"),fullPage:false});
+      }
       if(size.name==="mobile-360") await page.screenshot({path:join("test-results/mobile",slug.replace("/","-")+".png"),fullPage:false});
       attempts++;
     }
