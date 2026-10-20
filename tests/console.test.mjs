@@ -31,9 +31,9 @@ test("o Firebase é o OTThi e não acessa o banco do GAME",()=>{
   assert.match(cfg,/databaseURL:\s*"https:\/\/otthi-656c5-default-rtdb\.firebaseio\.com"/);
   assert.doesNotMatch(cfg,/thiaguinhogame-ac91b/);
   assert.match(js,/otthosWorld\/users\//);
-  assert.doesNotMatch(js,/\.set\(/);
-  assert.doesNotMatch(js,/\.update\(/);
-  assert.doesNotMatch(js,/\.push\(/);
+  // Não confundir Array.push() com gravação no Firebase.
+  assert.doesNotMatch(js,/db\.ref\([^)]*\)\s*\.\s*(?:set|update|push|remove)\s*\(/);
+  assert.doesNotMatch(js,/window\.DB\.ref\(/);
   assert(html.indexOf('src="./firebase-config.js"') < html.indexOf('src="./app.js"'));
 });
 test("páginas possuem navegação acessível, links seguros, nomes e assinaturas corretas",()=>{
