@@ -588,13 +588,23 @@
     else{state.profile.name='';state.profile.nameConfirmed=false;}
   }
   state.multiplayer.displayName=state.profile.name||'';state.multiplayer.room=normalizeRoomId(state.multiplayer.room);
+  function latestLocalProgress(databaseSave,localRaw){
+    try{
+      const local=JSON.parse(localRaw),localTime=Number(local?.lastSaved||0),databaseTime=Number(databaseSave?.lastSaved||0);
+      if(local?.profile&&Number.isFinite(localTime)&&localTime>databaseTime)return local;
+    }catch{}
+    return databaseSave;
+  }
   let dbReady = Promise.resolve();
   if (window.OTTHOS_DB) {
     dbReady = window.OTTHOS_DB.load().then(saved => {
       if (saved && saved.profile) {
-        state = normalizeState(saved);
+        // An immediate reload can leave the newer synchronous copy ahead of IndexedDB.
+        const latest=latestLocalProgress(saved,safeLocalGet(STORAGE_KEY));
+        state = normalizeState(latest);
         if(accountSession)state.account={...(state.account||{}),linked:true,accountId:accountSession.accountId,username:accountSession.username||state.account?.username||''};
         safeLocalSet(STORAGE_KEY, JSON.stringify(state));
+        if(latest!==saved)window.OTTHOS_DB.save(state).catch(console.warn);
       } else {
         window.OTTHOS_DB.save(state).catch(console.warn);
       }

@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const read=path=>readFileSync(path,'utf8');
+test('family selection reloads the newest saved profile when the database write is still pending',()=>{
+ const source=read('games/otthi/src/modules/02-state-save-cloud-account.js');
+ const helper=source.slice(source.indexOf('  function latestLocalProgress('),source.indexOf('  let dbReady ='));
+ const choose=vm.runInNewContext(helper+';latestLocalProgress');
+ const database={profile:{coins:500},lastSaved:100,avatar:{bodyStyle:'family-thiago'}};
+ const local={profile:{coins:550},lastSaved:200,avatar:{bodyStyle:'family-thamis'}};
+ assert.deepEqual(JSON.parse(JSON.stringify(choose(database,JSON.stringify(local)))),local);
+ assert.equal(choose(database,JSON.stringify({...local,lastSaved:99})),database);
+ for(const raw of [null,'corrupt','{}',JSON.stringify({...local,lastSaved:'bad'})])assert.equal(choose(database,raw),database);
+ assert.equal(database.avatar.bodyStyle,'family-thiago');assert.equal(local.avatar.bodyStyle,'family-thamis');
+});
 test('family: playable instances keep the approved geometry and independent animated skeletons',()=>{
  const c=vm.createContext({console,performance:{now:()=>100},URLSearchParams,Float32Array,setTimeout(){}});
  c.window={addEventListener(){},location:{search:''}};c.document={hidden:false};

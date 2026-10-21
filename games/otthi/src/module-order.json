@@ -28,7 +28,7 @@
       "startLine": 490,
       "endLine": 756,
       "description": "Estado, save local, IndexedDB, nuvem e conta",
-      "sha256Body": "67ac8284f0d4d3bb153549a54dfed90929745d77ae4c5a13f21e077eb31d25f4"
+      "sha256Body": "412359d293bfb56a0628346bc561ee357553d95975eddf40ddcef42c28010bde"
     },
     {
       "file": "src/modules/03-ui-modal-install-pwa.js",
