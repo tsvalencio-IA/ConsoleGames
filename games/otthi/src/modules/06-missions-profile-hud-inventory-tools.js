@@ -10,15 +10,15 @@
 // @otthi-module-body
   function deriveMissionFlags() {
     const friendCount = Object.values(state.friendship).filter(v => v > 0).length;
-    state.flags.metNeighbors = friendCount >= 3;
-    state.flags.hasMaterials = state.inventory.wood >= 3 && state.inventory.stone >= 2;
-    state.flags.builtThree = state.builds.length >= 3;
-    state.flags.fiveCrystals = state.inventory.crystals >= 5;
-    state.flags.threeEnemies = state.defeated >= 3;
-    state.flags.rep50 = state.profile.reputation >= 50;
-    state.flags.friend10 = Object.values(state.friendship).some(v => v >= 10);
-    state.flags.completedJob = (state.career?.completed || 0) > 0;
-    state.flags.decoratedHome = state.builds.some(b => Math.hypot((b.x||0), (b.z||0)-18) < 12);
+    state.flags.metNeighbors = !!state.flags.metNeighbors || friendCount >= 3;
+    state.flags.hasMaterials = !!state.flags.hasMaterials || state.inventory.wood >= 3 && state.inventory.stone >= 2;
+    state.flags.builtThree = !!state.flags.builtThree || state.builds.length >= 3;
+    state.flags.fiveCrystals = !!state.flags.fiveCrystals || state.inventory.crystals >= 5;
+    state.flags.threeEnemies = !!state.flags.threeEnemies || state.defeated >= 3;
+    state.flags.rep50 = !!state.flags.rep50 || state.profile.reputation >= 50;
+    state.flags.friend10 = !!state.flags.friend10 || Object.values(state.friendship).some(v => v >= 10);
+    state.flags.completedJob = !!state.flags.completedJob || (state.career?.completed || 0) > 0;
+    state.flags.decoratedHome = !!state.flags.decoratedHome || state.builds.some(b => Math.hypot((b.x||0), (b.z||0)-18) < 12);
   }
   function evaluateMissions() {
     deriveMissionFlags();

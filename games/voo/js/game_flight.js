@@ -224,7 +224,7 @@
                 engineHealth: 100, wingHealth: 100, structuralIntegrity: 100, engineHeat: 0 
             };
             this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0 };
-            this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
+            this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
             this.combat = { target: null, locked: false, lockTimer: 0, vulcanCd: 0, missileCd: 0 };
             
             for (let i = 0; i < 50; i++) {
@@ -755,12 +755,13 @@
             if (this.keys['Shift']) this.ship.afterburner = true; else this.ship.afterburner = false;
             if (this.keys['ArrowUp'] || this.keys['ArrowDown'] || this.keys['ArrowLeft'] || this.keys['ArrowRight']) inputDetected = true;
 
+            if(window.ArcadeControls?.mode==='controls'&&this.manualStick?.active){trgRoll=this.manualStick.x*(window.ArcadePlaySettings?.get().sensitivity??1);trgPitch=this.manualStick.y*(window.ArcadePlaySettings?.get().sensitivity??1);inputDetected=Math.hypot(this.manualStick.x,this.manualStick.y)>.001;}
             let pts = null;
             if (pose && Array.isArray(pose)) pts = pose;
             else if (pose && pose.keypoints) pts = pose.keypoints;
             else if (pose && Array.isArray(pose) && pose[0] && pose[0].keypoints) pts = pose[0].keypoints;
 
-            if (pts && pts.length > 0) {
+            if (window.ArcadeControls?.mode!=='controls' && pts && pts.length > 0) {
                 let rightWrist = null, leftWrist = null;
                 for (let i = 0; i < pts.length; i++) {
                     let k = pts[i];
@@ -872,7 +873,7 @@
 
             let firingState = false;
 
-            if (this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
+            if ((window.ArcadeControls?.mode!=='controls'||this.manualFireHeld||this.keys['f']) && this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
                 this.combat.vulcanCd = performance.now();
                 let spd = this.ship.speed + 1200;
                 

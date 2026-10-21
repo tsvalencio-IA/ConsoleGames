@@ -80,12 +80,13 @@ function install(){
    button.addEventListener("pointerdown",e=>{e.preventDefault();punch(button.dataset.punch)},{passive:false});
  }
  const guard=controls.querySelector("[data-guard]");
- guard.addEventListener("pointerdown",e=>{e.preventDefault();logic.touchGuard=true;guard.classList.add("pressed");guard.setPointerCapture?.(e.pointerId)},{passive:false});
- for(const type of ["pointerup","pointercancel","lostpointercapture"]){
-   guard.addEventListener(type,()=>{logic.touchGuard=false;guard.classList.remove("pressed")});
- }
+ const guardPointers=new Set();
+ const releaseGuard=()=>{guardPointers.clear();logic.touchGuard=false;guard.classList.remove('pressed')};
+ guard.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();guardPointers.add(e.pointerId);logic.touchGuard=true;guard.classList.add('pressed');try{if(e.isTrusted)guard.setPointerCapture?.(e.pointerId)}catch{}},{passive:false});
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])guard.addEventListener(type,e=>{if(!guardPointers.delete(e.pointerId)||guardPointers.size)return;logic.touchGuard=false;guard.classList.remove('pressed')});
+ window.addEventListener('blur',releaseGuard);window.addEventListener('arcade:release-inputs',releaseGuard);
  const nativeCleanup=logic.cleanup.bind(logic);
- logic.cleanup=function(...args){controls.hidden=true;this.touchGuard=false;return nativeCleanup(...args)};
+ logic.cleanup=function(...args){controls.hidden=true;releaseGuard();return nativeCleanup(...args)};
  const refresh=()=>{
    const visible=Boolean(window.System?.activeGame?.id==="box_pro" && logic.touchMode && logic.state==="FIGHT" && !window.System?.paused);
    controls.hidden=!visible;

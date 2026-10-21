@@ -32,7 +32,7 @@ test('flight: level mirrored wrists are neutral, lowering the screen-right wrist
  for(let i=0;i<25;i++)g._readPose(pose(170,230),390,844,1/60);assert(g.pilot.targetRoll>.2);
 });
 test('flight: only continuous sight acquisition of one enemy permits fire; losing or switching targets stops it',()=>{
- const {game:g,advance}=engine('voo','game_flight');g.init({mode:'SINGLE'});g.entities=[{type:'jet',x:1800,y:3000,z:4000,hp:150,vx:0,vy:0,vz:0}];
+ const {game:g,advance,window}=engine('voo','game_flight');g.init({mode:'SINGLE'});window.ArcadeControls.mode='camera';g.entities=[{type:'jet',x:1800,y:3000,z:4000,hp:150,vx:0,vy:0,vz:0}];
  const step=()=>{advance(1000/60);g._processCombat(1/60,390,844)};
  for(let i=0;i<100;i++)step();assert.equal(g.bullets.length,0,'Enemies away from the sight cannot trigger automatic fire');
  g.entities[0].x=0;for(let i=0;i<38;i++)step();assert.equal(g.bullets.length,0,'Acquisition must last 650ms');
@@ -120,4 +120,16 @@ test('OTThi: the family portrait fits all four at different depths after fetchin
   }failures;
  `,context);
  assert.equal(result.length,0,JSON.stringify(result));
+});
+
+test('flight: analog diagonal strength and manual trigger remain independent; bullets still require a lock',()=>{
+ const {game:g,advance}=engine('voo','game_flight');g.init({mode:'SINGLE'});g.manualStick={active:true,x:.45,y:.25};
+ for(let i=0;i<30;i++)g._readPose(null,390,844,1/60);
+ assert(g.pilot.targetRoll>.4&&g.pilot.targetRoll<.5);assert(g.pilot.targetPitch>.2&&g.pilot.targetPitch<.3);
+ g.entities=[{type:'jet',x:0,y:3000,z:4000,hp:150,vx:0,vy:0,vz:0}];g.ship.roll=g.ship.pitch=0;
+ const step=()=>{advance(1000/60);g._processCombat(1/60,390,844)};
+ for(let i=0;i<45;i++)step();assert(g.combat.locked);assert.equal(g.bullets.length,0,'Manual mode must wait for the trigger');
+ g.manualFireHeld=true;step();assert(g.bullets.length>0);const count=g.bullets.length;
+ g.manualFireHeld=false;for(let i=0;i<10;i++)step();assert.equal(g.bullets.length,count);
+ g.manualFireHeld=true;g.entities[0].x=4000;for(let i=0;i<10;i++)step();assert.equal(g.bullets.length,count,'A trigger cannot bypass target lock');
 });

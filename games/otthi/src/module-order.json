@@ -63,7 +63,7 @@
       "startLine": 1316,
       "endLine": 1454,
       "description": "Missões, objetivos, perfil, HUD, inventário e ferramentas",
-      "sha256Body": "83eaf7cf710018b3ed47f4dc26f61c4036d5b4d554fed027940a68341dd6ae45"
+      "sha256Body": "6ba2e934982e3d106801341994a29edf1b02295570c911c5fa1912e5de159a8a"
     },
     {
       "file": "src/modules/07-navigation-traffic-routes.js",
@@ -189,7 +189,7 @@
       "startLine": 4128,
       "endLine": 4243,
       "description": "Carreiras, estados de missão, uniformes, professor, bombeiro e entrega",
-      "sha256Body": "e5e68b3147df7d02829f8dec18b5f2297c407c46838840d213c099f1a0111602"
+      "sha256Body": "2b6cf0fc4de38b280ae26d13fbb20dee5fd101632bc3aba636f8ece4fdb30d93"
     },
     {
       "file": "src/modules/23-vehicle-effects-driving.js",
@@ -210,7 +210,7 @@
       "startLine": 5453,
       "endLine": 5678,
       "description": "Missões cooperativas infantis, equipes online/solo, pesca, escola e corridas",
-      "sha256Body": "5f40fd8163b2a83602f9f1ec154f06c11883b8415e89b3abd440e224fd069d01"
+      "sha256Body": "0d5d43fe24e7f32395e593b07eaa489cf69470b9ff2479c956a0b4d77bbc3599"
     },
     {
       "file": "src/modules/25-render-init-resize-position-collision.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "fcbeed2b7b64052fcdf250e8f1cef65a9130b35c903890a800951e03a6a8acb0"
+      "sha256Body": "3c32c7a2062269d60afdd1f492b00eec502458c74a33aafd2ae145949518dcf4"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "f8fc473fd52a42761ff4c321397693e3b58ee47b52e1e57873b516e6b93e7331"
+      "sha256Body": "5c2227800fb08ea1e26bb4aee6589da730d70a7f114eb4f135ad0469821ec37c"
     }
   ],
   "styles": [

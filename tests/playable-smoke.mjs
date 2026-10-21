@@ -4,6 +4,7 @@ import {chromium} from "playwright";
 import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
 import {join} from "node:path";
+import {touchSession} from "./helpers/touch-session.mjs";
 const base="http://127.0.0.1:4173/games/";
 const catalog=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
 const browser=await chromium.launch({headless:true,args:["--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
@@ -48,7 +49,7 @@ try{
     else if(route.request().resourceType()==="script")route.fulfill({status:200,contentType:"application/javascript",body:"/* test remote stub */"});
     else route.abort("blockedbyclient");
   });
-  const page=await context.newPage();
+  const page=await context.newPage();const fingers=await touchSession(context,page);
   const appErrors=[];
   page.on("pageerror",error=>appErrors.push(error.stack || error.message));
   try{
@@ -176,18 +177,18 @@ try{
       // renderer speed. This reproduces the player's real short steering tap.
       await run.dispatchEvent('pointerdown',{pointerId:21});
       await page.evaluate(()=>{
-        const g=window.System.activeGame.logic,original=g.updatePhysics;
+        const g=window.System.activeGame.logic,original=g.updatePhysics;g.startRace(1);
         const left=document.querySelector('.kart-input [data-control="left"]');
         g.__shortTap={ticks:0,released:0,final:0};
         g.updatePhysics=function(...args){
           const result=original.apply(this,args),t=g.__shortTap;++t.ticks;
           if(t.ticks===6){t.released=g.playerX;left.dispatchEvent(new PointerEvent('pointerup',{pointerId:23}));}
-          if(t.ticks===96){t.final=g.playerX;g.updatePhysics=original;}
+          if(t.ticks===46){t.final=g.playerX;g.updatePhysics=original;}
           return result;
         };
         left.dispatchEvent(new PointerEvent('pointerdown',{pointerId:23}));
       });
-      await page.waitForFunction(()=>window.System.activeGame.logic.__shortTap.ticks>=96,null,{timeout:15000});
+      await page.waitForFunction(()=>window.System.activeGame.logic.__shortTap.ticks>=46,null,{timeout:15000});
       const tap=await page.evaluate(()=>window.System.activeGame.logic.__shortTap);
       assert(Math.abs(tap.final-tap.released)<.14,'Kart continued sliding after a short released tap: '+JSON.stringify(tap));
       await run.dispatchEvent('pointerup',{pointerId:21});
@@ -209,6 +210,14 @@ try{
       await page.waitForTimeout(140);
       assert.equal(await page.locator('.kart-input [data-control="go"].held').count(),0,
         "Gamepad desconectado manteve acelerador pressionado");
+      if(mobile){
+        const go=await fingers.start(page.locator('.kart-input [data-control="go"]'));
+        const right=await fingers.start(page.locator('.kart-input [data-control="right"]'));
+        const drift=await fingers.start(page.locator('.kart-input [data-control="drift"]'));
+        assert(await page.evaluate(()=>{const m=window.System.activeGame.logic.arcadeManual;return m.throttle&&m.right&&m.drift}),'Kart must hold three independent fingers');
+        await fingers.end(right);assert(await page.evaluate(()=>{const m=window.System.activeGame.logic.arcadeManual;return m.throttle&&!m.right&&m.drift}),'Releasing direction cancelled another finger');
+        await fingers.end(drift);await fingers.end(go);
+      }
       // Reproduce the screenshot regression in a real curve, after proving input.
       await page.evaluate(()=>{const g=window.System.activeGame.logic;g.pos=28050;g.speed=0;g.playerX=0;g.cameraX=0;g.steer=0;g.targetSteer=0;g.lateralInertia=0;g.cameraDepth=7.5;});
       await page.waitForFunction(()=>{const p=window.System.activeGame.logic.playerScreen;return p&&Math.abs(p.x-innerWidth/2)<4&&Math.abs(p.x-p.roadX)<p.roadHalfWidth},null,{timeout:5000});
@@ -241,6 +250,12 @@ try{
        await page.locator('[data-control="pick"]').dispatchEvent("pointerup",{pointerId:4});
        const progress=await page.evaluate(()=>window.Games.find(x=>x.id==="ar_truck_sim").logic.currentMission.progress);
        assert(progress>=1,"Coleta não progrediu na missão AR");
+       await page.waitForFunction(()=>window.System.activeGame.logic.state==='PLAY_REAR_AR',null,{timeout:8000});
+       const direction=await fingers.start(page.locator('[data-control="right"]')),go=await fingers.start(page.locator('[data-control="go"]')),pick=await fingers.start(page.locator('[data-control="pick"]'));
+       assert.equal(await page.locator('.ar-input .held').count(),3);await fingers.end(pick);
+       await page.waitForFunction(()=>window.System.activeGame.logic.manualAccelerate,null,{timeout:3000});
+       assert.equal(await page.locator('.ar-input .held').count(),2);await fingers.end(direction);await fingers.end(go);
+
     }else if(slug==="voo"){
        const control=page.locator('[data-control="left"]');
        await control.dispatchEvent("pointerdown",{pointerId:6});
@@ -255,7 +270,7 @@ try{
         const c=window.System.canvas,rect=c.getBoundingClientRect();
         // CSS pixels and canvas pixels must yield the same racket direction.
         g.useMouse=true;
-        c.onmousemove?.({clientX:rect.left+rect.width*.80,clientY:rect.top+rect.height*.45});
+        c.onpointermove?.({pointerType:'mouse',clientX:rect.left+rect.width*.80,clientY:rect.top+rect.height*.45});
         const touch={mouse:g.mouseX,expected:c.width*.80};
         g.useMouse=false;g.handedness="right";g.calib={tlX:0,tlY:0,brX:640,brY:480};
         const mk=x=>({keypoints:[{name:"right_wrist",x,y:240,score:.99},{name:"right_elbow",x:x-20,y:350,score:.99}]});
@@ -268,6 +283,12 @@ try{
       });
       assert(Math.abs(track.mouse-track.expected)<2,"Tênis não corrige escala CSS/Canvas: "+JSON.stringify(track));
       assert(track.right>track.left+30,"Movimento do pulso espelhado não acompanha direção: "+JSON.stringify(track));
+      const c=page.locator('#game-canvas'),racket=await fingers.start(c,.3,.6),second=await fingers.start(c,.7,.5),third=await fingers.start(c,.8,.55);
+      const before=await page.evaluate(()=>window.System.activeGame.logic.mouseX);await fingers.move(second,c,.9,.3);
+      assert.equal(await page.evaluate(()=>window.System.activeGame.logic.mouseX),before,'Another finger stole the tennis paddle');
+      await fingers.end(second);await fingers.end(third);await fingers.move(racket,c,.4,.6);
+      assert(await page.evaluate(x=>window.System.activeGame.logic.mouseX>x,before));await fingers.end(racket);
+
     }
     if(slug==="boxe"){
       // The selection screen must lead to a REAL fight, not just a decorative menu.
@@ -286,6 +307,13 @@ try{
       await page.waitForTimeout(200);
       const hpAfter=await page.evaluate(()=>window.Games.find(g=>g.id==="box_pro").logic.p2.hp);
       assert(hpAfter<hpBefore,"Soco por toque não causou dano ao adversário: "+hpBefore+" -> "+hpAfter);
+      const guardFinger=await fingers.start(page.locator('[data-guard]'));
+      const leftFinger=await fingers.start(page.locator('[data-punch="l"]'));
+      const rightFinger=await fingers.start(page.locator('[data-punch="r"]'));
+      assert(await page.evaluate(()=>window.System.activeGame.logic.touchGuard),'Boxing guard must survive two simultaneous punches');
+      await fingers.end(leftFinger);await fingers.end(rightFinger);assert(await page.evaluate(()=>window.System.activeGame.logic.touchGuard));await fingers.end(guardFinger);
+      assert.equal(await page.evaluate(()=>window.System.activeGame.logic.touchGuard),false);
+
     } else if(slug==="voo"){
       // Single-player flight is already in HANGAR after initialization.
       // Real touch START must advance HANGAR -> CALIBRATION -> PLAYING.
@@ -311,13 +339,19 @@ try{
       assert(physics.shipHP>0,"Caça iniciou destruído");
       // Signed trajectory, not only a key flag: fly left and right in a clear fixture.
       await page.evaluate(()=>{const g=window.System.activeGame.logic;g.mode='FREE';g.entities=[];Object.assign(g.ship,{x:0,y:3000,z:0,vx:0,vy:0,vz:250,yaw:0,pitch:0,roll:0});g.view=null;});
-      const turn=page.locator('[data-control="left"]');await turn.dispatchEvent('pointerdown',{pointerId:71});
+      const stick=page.locator('[data-control="joystick"]');const stickFinger=await fingers.start(stick,.12,.5);
       await page.waitForFunction(()=>{const s=window.System.activeGame.logic.ship;return s.roll<-.2&&s.yaw<0&&s.vx<-.1},null,{timeout:7000});
-      await page.screenshot({path:join('test-results/playable','voo-left-bank.png')});await turn.dispatchEvent('pointerup',{pointerId:71});
+      await page.screenshot({path:join('test-results/playable','voo-left-bank.png')});await fingers.end(stickFinger);
       await page.evaluate(()=>{const g=window.System.activeGame.logic;Object.assign(g.ship,{x:0,y:3000,z:0,vx:0,vy:0,vz:250,yaw:0,pitch:0,roll:0});g.pilot.targetRoll=0;g.view=null;});
-      const right=page.locator('[data-control="right"]');await right.dispatchEvent('pointerdown',{pointerId:72});
+      const rightFinger=await fingers.start(stick,.88,.5);
       await page.waitForFunction(()=>{const s=window.System.activeGame.logic.ship;return s.roll>.2&&s.yaw>0&&s.vx>.1},null,{timeout:7000});
-      await page.screenshot({path:join('test-results/playable','voo-right-bank.png')});await right.dispatchEvent('pointerup',{pointerId:72});
+      await page.screenshot({path:join('test-results/playable','voo-right-bank.png')});await fingers.move(rightFinger,stick,.82,.25);
+      const fireFinger=await fingers.start(page.locator('[data-control="fire"]'));const turboFinger=await fingers.start(page.locator('[data-control="boost"]'));
+      await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.manualStick.x>.3&&g.manualStick.y>.2&&g.manualFireHeld&&g.ship.afterburner},null,{timeout:5000});
+      await page.screenshot({path:join('test-results/playable','voo-joystick-three-fingers.png')});
+      await fingers.end(turboFinger);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return g.manualStick.active&&g.manualFireHeld}));
+      await fingers.end(fireFinger);assert(await page.evaluate(()=>window.System.activeGame.logic.manualStick.active));await fingers.end(rightFinger);
+      assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.manualStick.active&&!g.manualFireHeld&&!g.keys.Shift}),'Flight input remains stuck after releasing all fingers');
       const quiet=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {locked:g.combat.locked,shots:g.bullets.filter(b=>!b.isEnemy).length}});assert(!quiet.locked&&quiet.shots===0,'No adversary in sight must mean no player fire');
 
     }

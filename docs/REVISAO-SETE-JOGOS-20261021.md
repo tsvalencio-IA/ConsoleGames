@@ -37,3 +37,38 @@ O painel Família permite escolher quem controla (Thiago ou Thamis), marcar Todo
 O projeto `android/` abre o console dos sete jogos, separado do antigo aplicativo exclusivo do mundo aberto. Compilação, análise Android e instalação em emulador são verificadas no workflow próprio. A chave final de assinatura não passa pelo CI público. O aplicativo usa internet para carregar jogos e serviços; não promete todos os jogos offline.
 
 Resultados de testes descrevem os fluxos cobertos. Não representam nota de jogabilidade 10/10 nem certificação em celulares físicos.
+
+
+## Nova revisão: direção, missões e toques simultâneos
+
+O relato de turbo sem piloto revelou duas lacunas nos testes anteriores: o turbo bastava para acelerar sem pose e a física não compensava a curvatura da estrada. Uma corrida neutra no centro não deve ser usada como prova de boa dirigibilidade. Agora as curvas produzem deslocamento para fora; o jogador as compensa com o volante. A ajuda de direção tem quatro posições explícitas (desligada, leve, média e forte), reduz o efeito das curvas e protege a borda sem fixar o kart no centro. O padrão é leve; os adversários têm dificuldade independente. Turbo exige aceleração válida; perder as mãos na câmera cancela o turbo e desacelera o kart, com aviso na tela.
+
+O avião no modo Controles recebe joystick analógico com zona neutra e eixos independentes: direita e subida podem ser dosadas juntas. ATIRAR, MÍSSIL e TURBO aceitam outros dedos. No modo manual, o canhão exige gatilho e mira travada; no modo câmera continua disparando somente após aquisição válida. Os botões antigos de direção continuam como ponte interna para teclado/gamepad. Sons extras (antigo FX) não comandam direção ou assistência.
+
+Os botões compartilhados mantêm seus próprios conjuntos de dedos: soltar um não encerra outro. O mesmo botão continua pressionado enquanto restar um dedo nele. Joysticks pertencem ao primeiro dedo até sua liberação. Pausa e ajustes liberam os comandos. No ping-pong, dedos adicionais não roubam a raquete e um segundo toque permite sacar. Boxe conserva a defesa enquanto outros dedos socam. OTThi e HQ preservam movimento, correr e ações simultâneas.
+
+### Missões do OTThi
+
+Inventário revisto: nove capítulos de conquistas, oito trabalhos individuais, sete modelos de missões compartilhadas, desafios diários, atividades locais e atividades da família. Trabalhos e capítulos conservam seus objetivos próprios e o progresso individual. O seletor de modalidade/dificuldade fica na central de missões solo e online; ele não transforma compras de casa, capítulos ou profissões individuais em objetivos compartilhados.
+
+| Missão compartilhada | Treino | Normal | Desafio |
+|---|---|---|---|
+| Bombeiros | 3 aplicações + liberação | 4 + liberação | 6 + liberação |
+| Resgate | etapas com 0,6 s no atendimento | 1,2 s | 2 s |
+| Polícia | etapas com 0,6 s na abordagem | 1,2 s | 2 s |
+| Pescaria | 4 peixes, 2 assados | 6, 3 | 8, 4 |
+| Escola | 2 alunos entregues | 4 | 6 |
+| Corrida de rua | 4 checkpoints, raio 5,4 m | raio 4,2 m | raio 3 m |
+| Pista oval | 2 voltas | 3 | 4 |
+
+Cada modelo oferece solo, dupla online com exatamente dois jogadores e equipe de até três. Corridas também preservam competição online. Todos devem estar prontos e conectados ao mesmo bairro para iniciar. Uma falha online não escolhe solo automaticamente: o progresso aguarda o parceiro; copiar para solo é uma ação explícita. A transação de entrada impede um terceiro usuário na dupla. A dificuldade é sincronizada no registro da missão.
+
+Bombeiros em dupla permite ao motorista assumir a liberação da área depois que a mangueira controla o fogo. Resgate exige duas pessoas próximas para a maca no modo online. Polícia espera o personagem acompanhado chegar à viatura; escola espera o aluno chegar ao destino. As corridas cooperativas exigem o percurso de cada participante; não basta somar checkpoints de pessoas que cortam caminhos. Corrigido o setor zero da pista oval, que antes era descartado como valor ausente. Metas de capítulos já atingidas não desaparecem quando os materiais/cristais são consumidos.
+
+Família: seleção de Thiago ou Thamis, todos/somente eu/subconjuntos, inclusive Thiago + Luna + Liz, e escolha explícita de bolinha, disco ou ossinho. A devolução real de cada brinquedo continua produzindo um único crédito.
+
+### Evidências e limites desta revisão
+
+Testes de motor cobrem direção ativa em três pistas com oito pilotos e ajuda desligada, resposta dos quatro níveis, turbo sem câmera, perda de tracking, joystick diagonal e gatilho com trava. Os sete modelos de missão têm seus estados exercitados em solo e dupla nos três níveis (42 combinações), usando mundo isolado e objetos Three; isso verifica lógica, ordem, metas e conclusão, sem afirmar que percorreu fisicamente cada trajeto em dois aparelhos. As funções reais do cliente RTDB são verificadas contra uma API transacional em memória com três clientes, incluindo capacidade, pronto, dificuldade, presença e idempotência.
+
+O Chromium executa toques nativos com IDs distintos, além dos testes de botões, nos cinco jogos de ação, OTThi e HQ. Os serviços externos são isolados nesses testes. Câmera física, dois celulares reais na rede de produção e desempenho no aparelho do Thiago precisam ser distinguidos dessa evidência. Não há confirmação honesta de jogabilidade “10/10” a partir de testes automatizados.

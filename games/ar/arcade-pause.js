@@ -23,7 +23,7 @@ function init(){
   }
   function open(){
     if(!sys.activeGame||sys.activeGame.logic?.isOnline)return;
-    lastFocus=document.activeElement;sys.paused=true;modal.hidden=false;
+    window.dispatchEvent(new Event('arcade:release-inputs'));lastFocus=document.activeElement;sys.paused=true;modal.hidden=false;
     modal.querySelector('[data-action="continue"]').focus({preventScroll:true});
   }
   pause.addEventListener("click",open);

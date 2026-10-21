@@ -139,7 +139,7 @@ function moveGamepad(){
    act('.ar-input [data-control="pick"]',a);
    act('.ar-input [data-control="base"]',b);
  }else if(gameId==="usarmy_flight_sim"){
-   for(const [name,on] of [["left",left],["right",right],["up",up],["down",down],["boost",rt||b],["missile",a]]){
+   for(const [name,on] of [["left",left],["right",right],["up",up],["down",down],["boost",b],["missile",a],["fire",rt]]){
      act('.flight-input [data-control="'+name+'"]',on);
    }
  }

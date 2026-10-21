@@ -2,6 +2,7 @@
 import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
+import {touchSession} from './helpers/touch-session.mjs';
 const base='http://127.0.0.1:4173/';
 mkdirSync('test-results/playable',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
@@ -9,7 +10,7 @@ try{
  const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
  await context.addInitScript(()=>!localStorage.getItem('otthos_life_world_roleplay_v700')&&localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort('blockedbyclient'));
- const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const page=await context.newPage(),errors=[];const fingers=await touchSession(context,page);page.on('pageerror',e=>errors.push(e.message));
  try{
  await page.goto(base+'games/otthi/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#playBtn').click();
@@ -45,6 +46,11 @@ try{
   await page.screenshot({path:'test-results/playable/playing-as-'+id+'.png'});
  }
  await moveCharacter('thiago');
+ // Native touch delivery: movement, run and jump are independently held.
+ const moving=await fingers.start(page.locator('#joystick'),.8,.5),runningFinger=await fingers.start(page.locator('#runBtn')),jumping=await fingers.start(page.locator('#jumpBtn'));
+ await fingers.end(jumping);assert(await page.locator('#joystick').evaluate(el=>el.querySelector('#joystickKnob')?.style.transform!=='translate(-50%,-50%)'));
+ await fingers.end(runningFinger);await fingers.end(moving);
+
  // The family panel provides the same playable choice, with immediate save.
  await chooseParty('thamis',['thamis']);
  await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis',null,{timeout:15000});
@@ -82,6 +88,7 @@ try{
  await groupJoy.dispatchEvent('pointerup',{pointerId:96});
  await page.screenshot({path:'test-results/playable/family-party-walking.png'});
  await page.evaluate(()=>window.OTTHI_FAMILY.open());
+ await page.locator('[data-family-toy]').selectOption('ball');
  await page.locator('[data-family-throw="luna"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().ball==='seek'||window.OTTHI_FAMILY.diagnostics().ball==='return',null,{timeout:20000});
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.luna===1,null,{timeout:60000});
@@ -128,6 +135,8 @@ try{
  // The original HQ keeps its native buttons and original fetch activity.
  await page.goto(base+'games/familia/3d/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#start').click();
+ const hqJoy=await fingers.start(page.locator('#stick'),.8,.5),hqRun=await fingers.start(page.locator('#run')),hqCamera=await fingers.start(page.locator('#gl'),.6,.5);
+ await fingers.end(hqCamera);assert(await page.locator('#run').evaluate(el=>el.classList.contains('active')));await fingers.end(hqRun);assert(await page.locator('#nub').evaluate(el=>el.style.transform!=='translate(-50%,-50%)'));await fingers.end(hqJoy);
  await page.evaluate(()=>window.__THIA_TEST.selectDog('luna'));await page.locator('#throw').click();
  await page.waitForFunction(()=>window.__THIA_TEST.state.byDog.luna>=1,null,{timeout:60000});
  await page.evaluate(()=>window.__THIA_TEST.selectDog('liz'));await page.locator('#throw').click();

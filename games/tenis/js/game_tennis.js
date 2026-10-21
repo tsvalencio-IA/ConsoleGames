@@ -65,7 +65,7 @@
             if (this.dbRef) { try { this.dbRef.child('players/' + this.playerId).remove(); this.dbRef.off(); } catch(e){} }
             if (this.roomRef) try { this.roomRef.off(); } catch(e){}
             if (this.maintenanceInterval) clearInterval(this.maintenanceInterval);
-            if(window.System && window.System.canvas) { window.System.canvas.onclick = null; window.System.canvas.onmousemove = null; window.System.canvas.ontouchstart = null; window.System.canvas.ontouchmove = null; }
+            if(window.System && window.System.canvas) { window.System.canvas.onpointerdown=window.System.canvas.onpointermove=window.System.canvas.onpointerup=window.System.canvas.onpointercancel=window.System.canvas.onlostpointercapture=null;window.System.canvas.onclick = null; window.System.canvas.onmousemove = null; window.System.canvas.ontouchstart = null; window.System.canvas.ontouchmove = null; }
         },
 
         addMsg: function(t, c) { if (!this.msgs) this.msgs = []; this.msgs.push({t, c, y: 300, a: 1.5, s: 1.0}); },
@@ -105,8 +105,11 @@
                     this.mouseY=MathCore.clamp((cy-rect.top)*(canvas.height/rect.height),0,canvas.height);
                 }
             };
-            window.System.canvas.onmousemove = handlePointer; window.System.canvas.ontouchstart = handlePointer;
-            window.System.canvas.ontouchmove = (e) => { handlePointer(e); if (this.useMouse && e.cancelable) e.preventDefault(); };
+            const canvas=window.System.canvas;let racketPointer=null;
+            canvas.ontouchstart=canvas.ontouchmove=null;canvas.onmousemove=null;
+            canvas.onpointerdown=e=>{if(racketPointer===null){racketPointer=e.pointerId;handlePointer(e);try{if(e.isTrusted)canvas.setPointerCapture(e.pointerId)}catch{}}else if(e.pointerId!==racketPointer&&this.useMouse&&this.state==='SERVE'&&this.server==='p1'){this.p1.vx=0;this.p1.vy=-100;this.executeAimAssistHit('p1',0,0,200);}if(e.cancelable)e.preventDefault();};
+            canvas.onpointermove=e=>{if(e.pointerId===racketPointer||(e.pointerType==='mouse'&&racketPointer===null))handlePointer(e);};
+            const release=e=>{if(e.pointerId===racketPointer)racketPointer=null;};canvas.onpointerup=canvas.onpointercancel=canvas.onlostpointercapture=release;
             window.System.canvas.onclick = (e) => {
                 const h = window.System.canvas.height; const rect = window.System.canvas.getBoundingClientRect();
                 let cy = e.clientY; if (e.touches && e.touches.length > 0) cy = e.touches[0].clientY; const my = (cy - rect.top) * (window.System.canvas.height / Math.max(1,rect.height));

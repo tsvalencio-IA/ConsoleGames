@@ -16,7 +16,8 @@
     };
     
     const CURRENT_DIFFICULTY = 'MEDIUM';
-    const playOptions=()=>window.ArcadePlaySettings?.get()||{distance:'far',sensitivity:1,autoAccelerate:false,difficulty:'normal'};
+    const playOptions=()=>window.ArcadePlaySettings?.get()||{distance:'far',sensitivity:1,autoAccelerate:false,difficulty:'normal',steeringAssist:'light'};
+    const STEERING_ASSISTS={off:{label:'Desligada',curve:0,edge:0},light:{label:'Leve',curve:.25,edge:.002},medium:{label:'Média',curve:.50,edge:.005},high:{label:'Forte',curve:.75,edge:.010}};
 
     const CHARACTERS = [
         { id: 0, name: 'ASTRO',  color: '#e74c3c', hat: '#d32f2f', speedInfo: 1.00, turnInfo: 1.00, weight: 1.0, accel: 0.040, aggression: 0.6 },
@@ -193,7 +194,7 @@
         },
 
         resetPhysics: function() {
-            this.lastTime=performance.now();this.physicsAccumulator=0;this.collisionContacts=new Set();
+            this.lastTime=performance.now();this.physicsAccumulator=0;this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
             this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
             this.lap = 1; this.maxLapPos = 0; this.status = 'RACING'; this.finishTime = 0; this.finalRank = 0; this.score = 0; this.nitro = 100; this.spinAngle = 0; this.spinTimer = 0; this.lateralInertia = 0; this.vibration = 0; this.engineTimer = 0; this.inputActive = false; this.rivals = []; this.localBots = []; particles = []; hudMessages = []; this.remotePlayersData = {};
             this.matchCoins = 0; this.item = null; this.itemCooldown = 0; this.projectiles = [];
@@ -208,6 +209,15 @@
 
         pushMsg: function(text, color='#fff', size=40) { hudMessages.push({ text, color, size, life: 90, scale: 0.1 }); },
 
+        requestTurbo: function() {
+            if(this.state!=='RACE'||this.status!=='RACING'||this.turboLock)return false;
+            const manual=window.ArcadeControls?.mode==='controls'?this.arcadeManual:null;
+            const accelerating=manual?!!(manual.throttle||playOptions().autoAccelerate)&&!manual.brake:this.inputActive&&!this.trackingLost;
+            if(!accelerating){this.pushMsg(manual?'SEGURE ACELERAR':'MOSTRE AS DUAS MÃOS À CÂMERA','#fff',24);return false;}
+            if(this.nitro<20){this.pushMsg('NITRO CARREGANDO...','#f90',24);return false;}
+            this.turboLock=true;window.Sfx.play(600,'square',.1,.1);this.pushMsg('TURBO!','#0ff');return true;
+        },
+
         setupUI: function() {
             if(nitroBtn) nitroBtn.remove();
             nitroBtn = document.createElement('div'); nitroBtn.id = 'nitro-btn-kart'; nitroBtn.innerHTML = "NITRO";
@@ -217,8 +227,7 @@
             resetBtn = document.createElement('div'); resetBtn.id = 'reset-btn-kart'; resetBtn.innerHTML = "RESET SALA";
             Object.assign(resetBtn.style, { position: 'absolute', top: '10px', left: '10px', width: '100px', height: '40px', borderRadius: '5px', background: '#c0392b', border: '2px solid #fff', color: '#fff', display: 'none', alignItems: 'center', justifyContent: 'center', fontFamily: "'Russo One', sans-serif", fontSize: '12px', zIndex: '101', cursor: 'pointer', userSelect: 'none' });
 
-            nitroBtn.addEventListener('mousedown', (e)=>{ e.preventDefault(); if((this.state === 'RACE') && this.nitro >= 20 && !this.turboLock) { this.turboLock = true; window.Sfx.play(600, 'square', 0.1, 0.1); this.pushMsg("TURBO MAX!", "#0ff"); } else if (this.nitro < 20) { this.pushMsg("CARREGANDO...", "#f00", 30); }});
-            nitroBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); if((this.state === 'RACE') && this.nitro >= 20 && !this.turboLock) { this.turboLock = true; window.Sfx.play(600, 'square', 0.1, 0.1); this.pushMsg("TURBO MAX!", "#0ff"); } else if (this.nitro < 20) { this.pushMsg("CARREGANDO...", "#f00", 30); }});
+            nitroBtn.addEventListener('pointerdown', e=>{e.preventDefault();this.requestTurbo();});
             
             resetBtn.addEventListener('mousedown', (e)=>{ 
                 e.preventDefault(); 
@@ -636,7 +645,7 @@
                 d.steer += (-futureSeg.curve * 0.05 - d.steer) * 0.1; 
                 d.speed = MathCore.lerp(d.speed, 130, 0.05); d.playerX *= 0.95; 
             } else {
-                if(pose && pose.keypoints) {
+                if(window.ArcadeControls?.mode!=='controls' && pose && pose.keypoints) {
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
                     const map=pt=>({x:(1-pt.x/videoW)*w,y:pt.y/videoH*h});
                     const lw = pose.keypoints.find(k => k.name === 'left_wrist'); const rw = pose.keypoints.find(k => k.name === 'right_wrist'); const nose = pose.keypoints.find(k => k.name === 'nose');
@@ -649,7 +658,7 @@
                         
                         if (nose && lw.y < nose.y && rw.y < nose.y) {
                             d.gestureTimer++; d.virtualWheel.isHigh = true;
-                            if (d.gestureTimer > 25 && d.nitro >= 20 && !d.turboLock) { d.turboLock = true; d.pushMsg("TURBO ON!", "#0ff"); window.Sfx.play(800, 'square', 0.1, 0.1); }
+                            if (d.gestureTimer > 25 && d.nitro >= 20 && !d.turboLock) { d.inputActive=true;d.trackingLost=false;d.requestTurbo(); }
                         } else { d.gestureTimer = 0; d.virtualWheel.isHigh = false; }
 
                         if (nose) {
@@ -662,13 +671,15 @@
                 // No camera mode: use the exact touch/keyboard state, not simulated poses.
                 const manual=window.ArcadeControls?.mode==="controls" ? d.arcadeManual : null;
                 if(manual){
-                    d.targetSteer=(Number(manual.right)-Number(manual.left))*.85*playOptions().sensitivity;
+                    d.targetSteer=(Number(!!manual.right)-Number(!!manual.left))*.85*playOptions().sensitivity;
                     detected=Boolean(manual.throttle||playOptions().autoAccelerate)&&!manual.brake;
                     if(manual.itemQueued){itemTriggered=true;manual.itemQueued=false;}
                     d.virtualWheel.opacity=0;
                 }
                 d.inputActive=detected;
-                if(!detected && !manual){d.targetSteer=0;d.virtualWheel.opacity*=.9;} 
+                d.trackingLost=!manual&&!detected;
+                if(!detected && !manual){d.targetSteer=0;d.virtualWheel.opacity*=.9;d.gestureTimer=0;}
+                if(!detected)d.turboLock=false;
                 if (Math.abs(d.targetSteer) < .055) d.targetSteer = 0;
                 const release = d.targetSteer === 0;
                 const response = release ? .48 : PHYSICS.steerSensitivity / Math.pow(Math.max(.5, char.weight), .25);
@@ -700,7 +711,7 @@
                 if (d.nitro <= 0) { d.nitro = 0; d.turboLock = false; window.Sfx.play(200, 'sawtooth', 0.5, 0.2); } 
             } else { d.nitro = Math.min(100, d.nitro + 0.15); }
 
-            const isAccelerating = (d.inputActive || d.turboLock);
+            const isAccelerating = d.inputActive;
             if(d.status === 'RACING' && d.spinTimer <= 0 && isAccelerating) { d.speed += (max - d.speed) * char.accel; } else if (d.status !== 'FINISHED') { d.speed *= 0.96; }
             d.speed *= currentDrag;
             if(window.ArcadeControls?.mode==="controls" && d.arcadeManual?.brake && d.status==="RACING"){
@@ -718,7 +729,7 @@
                 d.bounce = (Math.random() - 0.5) * d.vibration; 
             }
 
-            if ((d.arcadeManual ? d.arcadeManual.drift && Math.abs(d.targetSteer) > .2 : Math.abs(d.targetSteer) > .5) && d.speed > 100 && absX < 1.3 && d.spinTimer <= 0) {
+            if ((window.ArcadeControls?.mode==='controls' ? d.arcadeManual?.drift && Math.abs(d.targetSteer) > .2 : Math.abs(d.targetSteer) > .5) && d.speed > 100 && absX < 1.3 && d.spinTimer <= 0) {
                 d.driftSparks = Math.min((d.driftSparks || 0) + 1, 100);
                 if (Math.random() > 0.3) this.spawnParticle(w/2 + (d.targetSteer > 0 ? -30 : 30), partY, d.driftSparks > 70 ? 'drift_blue' : 'drift_yellow');
             } else if (d.driftSparks > 0) {
@@ -868,12 +879,23 @@
             // Releasing a button must stop a lane change, not keep it drifting.
             const ratio = Math.max(0, Math.min(1.35, d.speed / CONF.MAX_SPEED));
             const turnForce = d.steer * char.turnInfo * currentGrip * Math.sqrt(ratio);
-            const targetLateral = Math.max(-PHYSICS.maxLateralSpeed, Math.min(PHYSICS.maxLateralSpeed, turnForce * PHYSICS.lateralSpeed));
+            // The road turns under the axle: positive bends require right input.
+            // Blend nearby segments to avoid a lateral jolt at a curve entrance.
+            const segment=d.pos/CONF.SEGMENT_LENGTH,base=Math.floor(segment),fraction=segment-base;
+            const sample=at=>{let sum=0;for(let i=-4;i<=4;i++)sum+=getSegment(at+i).curve*(5-Math.abs(i));return sum/25;};
+            d.roadCurve=sample(base)*(1-fraction)+sample(base+1)*fraction;
+            const curveDrift=-d.roadCurve*ratio*ratio*.0065;
+            const help=STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light;
+            // Help reduces understeer and guards the edge. It never snaps to the
+            // centre or overrides a deliberate lane change in either direction.
+            const edge=Math.sign(d.playerX)*Math.max(0,Math.min(1,(Math.abs(d.playerX)-.65)/.7));
+            d.steeringHelp=d.inputActive&&d.spinTimer<=0?-curveDrift*help.curve-edge*help.edge*(1-Math.min(1,Math.abs(d.targetSteer))):0;
+            const targetLateral = Math.max(-PHYSICS.maxLateralSpeed, Math.min(PHYSICS.maxLateralSpeed, turnForce * PHYSICS.lateralSpeed+curveDrift+d.steeringHelp));
             const lateralResponse = d.targetSteer === 0 ? .48 : .30;
             d.lateralInertia += (targetLateral - d.lateralInertia) * lateralResponse;
             if (d.speed < 1 || Math.abs(d.lateralInertia) < .00001) d.lateralInertia = 0;
             d.playerX += d.lateralInertia;
-            if(d.arcadeManual?.drift && Math.abs(d.lateralInertia) > .012 && d.speed > 100 && absX < 1.2) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
+            if(window.ArcadeControls?.mode==='controls'&&d.arcadeManual?.drift && Math.abs(d.lateralInertia) > .012 && d.speed > 100 && absX < 1.2) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
 
             if (this.localBots.length > 0 && d.state !== 'GAMEOVER') {
                 const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline&&this.currentFase.id==='arcade'?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
@@ -1013,7 +1035,7 @@
         cameraView: function(w,h){
             const opts=playOptions(),target={near:2.4,medium:4.5,far:7.5}[opts.distance]||7.5;
             this.cameraDepth=Number.isFinite(this.cameraDepth)?this.cameraDepth+(target-this.cameraDepth)*.1:target;
-            const direction=this.arcadeManual?.rear?-1:1,depth=this.cameraDepth;
+            const direction=window.ArcadeControls?.mode==='controls'&&this.arcadeManual?.rear?-1:1,depth=this.cameraDepth;
             const baseFloat=this.pos/CONF.SEGMENT_LENGTH-direction*depth;
             const base=direction===1?Math.floor(baseFloat):Math.ceil(baseFloat);
             return {depth,direction,base,fraction:Math.abs(baseFloat-base),horizon:h*.30,drawDistance:opts.quality==='low'?180:CONF.DRAW_DISTANCE};
@@ -1369,6 +1391,12 @@
             }
 
             ctx.fillStyle = '#111'; ctx.fillRect(w/2 - 110, 20, 220, 20); ctx.fillStyle = d.turboLock ? '#0ff' : (d.nitro > 25 ? '#f90' : '#f33'); ctx.fillRect(w/2 - 108, 22, (216) * (d.nitro/100), 16);
+            ctx.save();ctx.textAlign='center';ctx.font='bold 11px Arial';ctx.fillStyle='#fff';
+            ctx.fillText('DIREÇÃO: '+(STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light).label.toUpperCase(),w/2,49);
+            if(d.trackingLost&&d.status==='RACING'){
+                ctx.fillStyle='rgba(6,18,32,.88)';ctx.fillRect(w*.08,h*.40,w*.84,70);ctx.fillStyle='#fff';ctx.font='bold 15px Arial';
+                ctx.fillText('CÂMERA SEM PILOTO',w/2,h*.40+25);ctx.font='12px Arial';ctx.fillText('Mostre as duas mãos para acelerar e dirigir.',w/2,h*.40+48,w*.8);
+            }ctx.restore();
 
             // The steering zone is not a place for the wallet. Show balance only
             // in the non-touch legacy HUD, without touching Firebase money.

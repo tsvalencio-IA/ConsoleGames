@@ -170,7 +170,7 @@
     button.type="button";button.id="studio-audio-switch";
     button.setAttribute("aria-label","Ativar ou silenciar efeitos sonoros");
     button.setAttribute("aria-pressed",String(context.enabled));
-    const redraw=()=>{button.textContent=context.enabled?"♪ FX ON":"♪ FX OFF";button.title=context.enabled?"Desativar efeitos adicionais do Studio":"Ativar efeitos adicionais do Studio";button.setAttribute("aria-pressed",String(context.enabled))};
+    const redraw=()=>{button.textContent=context.enabled?"♪ SOM ON":"♪ SOM OFF";button.title=context.enabled?"Silenciar sons extras (não altera a direção)":"Ativar sons extras (não altera a direção)";button.setAttribute("aria-pressed",String(context.enabled))};
     redraw();
     button.addEventListener("click",()=>{
       context.enabled=!context.enabled;

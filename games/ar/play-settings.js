@@ -4,7 +4,7 @@
  const id=window.CONSOLE_GAME_ID;
  if(!id)return;
  const key='thia:play-settings:v1:'+id;
- const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,smoothing:.62,autoAccelerate:false,assist:true,controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
+ const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
  let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
  const values={...defaults};
  const ranges={sensitivity:[.5,1.5],smoothing:[.35,.9],controlSize:[.9,1.15],controlOpacity:[.45,1],controlInset:[0,28],effectsVolume:[0,1],engineVolume:[0,1],alertVolume:[0,1]};
@@ -12,7 +12,7 @@
   if(!(name in defaults))return;
   if(name in ranges){const n=Number(value);if(!Number.isFinite(n))return;value=Math.max(ranges[name][0],Math.min(ranges[name][1],n))}
   else if(typeof defaults[name]==='boolean')value=value===true||value==='true';
-  else{const allowed={camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
+  else{const allowed={camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],steeringAssist:['off','light','medium','high'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
   values[name]=value;
  }
  Object.entries(saved).forEach(([k,v])=>set(k,v));
@@ -32,7 +32,7 @@
  function close(){if(!dialog)return;dialog.remove();dialog=null;if(window.System){window.System.paused=wasPaused;const g=window.System.activeGame?.logic;if(g){if('lastTime'in g)g.lastTime=performance.now();if('lastFrameTime'in g)g.lastFrameTime=performance.now()}}window.dispatchEvent(new Event('arcade:play-settings-close'));previousFocus?.isConnected&&previousFocus.focus({preventScroll:true})}
  function open(){
   if(dialog)return;
-  previousFocus=document.activeElement;wasPaused=!!window.System?.paused;
+  window.dispatchEvent(new Event('arcade:release-inputs'));previousFocus=document.activeElement;wasPaused=!!window.System?.paused;
   const logic=window.System?.activeGame?.logic;if(logic?.keys)for(const k of Object.keys(logic.keys))logic.keys[k]=false;if(logic?.arcadeManual&&typeof logic.arcadeManual==='object')for(const k of Object.keys(logic.arcadeManual))logic.arcadeManual[k]=false;document.querySelectorAll('.input-game-controls .held').forEach(b=>b.classList.remove('held'));
   const online=!!(window.System?.activeGame?.logic?.isOnline||['PVP','COOP'].includes(window.System?.activeGame?.logic?.mode));
   if(window.System&&!online)window.System.paused=true;
@@ -47,14 +47,14 @@
   if(['drive','tennis','box_pro'].includes(id))content+=select('difficulty','Dificuldade solo',[['easy','Treino'],['normal','Normal'],['hard','Desafio']]);
   if(id!=='box_pro')content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
   if(id==='tennis')content+=range('smoothing','Suavização da raquete',.35,.9,.05);
-  if(id==='drive')content+=toggle('autoAccelerate','Aceleração automática');
+  if(id==='drive')content+='<h3>Ajuda de direção</h3>'+select('steeringAssist','Auxiliar de direção',[['off','Desligado'],['light','Leve'],['medium','Médio'],['high','Forte']])+'<p>Reduz a saída nas curvas e ajuda perto da borda. Você continua livre para virar e mudar de faixa. A dificuldade solo muda os adversários. No modo câmera, o kart só acelera com as duas mãos detectadas.</p>'+toggle('autoAccelerate','Aceleração automática nos controles');
   if(id==='usarmy_flight_sim')content+=toggle('assist','Estabilizar ao soltar os comandos');
   if(id!=='tennis')content+='<h3>Controles na tela</h3>'+range('controlSize','Tamanho',.9,1.15,.05)+range('controlOpacity','Opacidade',.45,1,.05)+(id==='box_pro'?'':range('controlInset','Afastamento da borda',0,28,2));
-  content+='<h3>Som e imagem</h3><button type="button" data-studio-audio>Efeitos de aventura: '+(document.getElementById('studio-audio-switch')?.getAttribute('aria-pressed')==='false'?'desligados':'ligados')+'</button>'+range('effectsVolume','Efeitos',0,1,.05)+range('engineVolume','Motor',0,1,.05)+range('alertVolume','Alertas',0,1,.05)+select('quality','Detalhes visuais',[['auto','Automática'],['low','Economia'],['high','Alta']]);
+  content+='<h3>Som e imagem</h3><p>Sons extras (antigo FX) não são auxílio de jogo.</p><button type="button" data-studio-audio>Sons extras: '+(document.getElementById('studio-audio-switch')?.getAttribute('aria-pressed')==='false'?'desligados':'ligados')+'</button>'+range('effectsVolume','Efeitos',0,1,.05)+range('engineVolume','Motor',0,1,.05)+range('alertVolume','Alertas',0,1,.05)+select('quality','Detalhes visuais',[['auto','Automática'],['low','Economia'],['high','Alta']]);
   dialog.innerHTML='<div class="play-panel"><header><div><small>SEU JEITO DE JOGAR</small><h2 id="play-settings-title">Ajustes do jogo</h2></div><button type="button" data-close aria-label="Fechar ajustes">✕</button></header><p>Preferências salvas neste dispositivo.'+(online?' A partida online continua em andamento.':'')+'</p>'+content+'<footer><button type="button" data-reset>Restaurar ajustes</button><button type="button" data-close>PRONTO</button></footer></div>';
   document.body.append(dialog);
   dialog.addEventListener('input',e=>{const el=e.target,k=el.dataset.setting;if(el.matches('[data-airframe]')){logic?.selectAirframe(el.value);return;}if(!k)return;set(k,el.type==='checkbox'?el.checked:el.value);const out=el.closest('label')?.querySelector('output');if(out)out.value=String(values[k]);apply()});
-  dialog.addEventListener('click',e=>{const sound=e.target.closest('[data-studio-audio]');if(sound){const native=document.getElementById('studio-audio-switch');native?.click();sound.textContent='Efeitos de aventura: '+(native?.getAttribute('aria-pressed')==='false'?'desligados':'ligados');}if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
+  dialog.addEventListener('click',e=>{const sound=e.target.closest('[data-studio-audio]');if(sound){const native=document.getElementById('studio-audio-switch');native?.click();sound.textContent='Sons extras: '+(native?.getAttribute('aria-pressed')==='false'?'desligados':'ligados');}if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
   dialog.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close()}if(e.key==='Tab'){const focus=[...dialog.querySelectorAll('button,select,input')],a=focus[0],b=focus.at(-1);if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus()}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus()}}});
   dialog.querySelector('[data-close]').focus();
  }

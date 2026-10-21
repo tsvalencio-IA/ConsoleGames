@@ -31,7 +31,7 @@
     o.frequency.exponentialRampToValueAtTime(Math.max(35,final),start+t);
     f.type="lowpass";f.frequency.value=clamp(Math.max(frequency,final)*3,650,5600);
     g.gain.setValueAtTime(.00001,start);
-    g.gain.exponentialRampToValueAtTime(Math.max(.001,gain),start+.009);
+    g.gain.exponentialRampToValueAtTime(Math.max(.00001,gain*(window.ArcadePlaySettings?.get()[["danger"].includes(context.currentCue)?"alertVolume":"effectsVolume"]??1)),start+.009);
     g.gain.exponentialRampToValueAtTime(.00001,start+t);
     o.connect(f);f.connect(g);g.connect(c.destination);
     context.voices++;
@@ -58,7 +58,7 @@
     if(!context.enabled||!patterns[name]||document.hidden||window.System?.paused)return;
     const stamp=now();if(stamp-(context.last.get(name)||-1e6)<cooldown)return;
     context.last.set(name,stamp);
-    try{patterns[name]()}catch{}
+    try{context.currentCue=name;patterns[name]()}catch{}
   }
   function state(logic){
     const o={phase:String(logic.state||logic.status||""),elapsed:now()};
@@ -147,7 +147,7 @@
     logic.update=function(ctx,w,h,...input){
       const output=old.call(this,ctx,w,h,...input);
       if(window.System?.activeGame===game){
-        try{track(this);addStudioFrame(ctx,w,h,this)}catch(error){
+        try{track(this);if(window.ArcadePlaySettings?.get().quality!=='low')addStudioFrame(ctx,w,h,this)}catch(error){
           if(!context.warned){console.warn("Studio visual/audio overlay indisponível:",error);context.warned=true}
         }
       }
@@ -170,7 +170,7 @@
     button.type="button";button.id="studio-audio-switch";
     button.setAttribute("aria-label","Ativar ou silenciar efeitos sonoros");
     button.setAttribute("aria-pressed",String(context.enabled));
-    const redraw=()=>{button.textContent=context.enabled?"♪ FX ON":"♪ FX OFF";button.title=context.enabled?"Desativar efeitos adicionais do Studio":"Ativar efeitos adicionais do Studio";button.setAttribute("aria-pressed",String(context.enabled))};
+    const redraw=()=>{button.textContent=context.enabled?"♪ SOM ON":"♪ SOM OFF";button.title=context.enabled?"Silenciar sons extras (não altera a direção)":"Ativar sons extras (não altera a direção)";button.setAttribute("aria-pressed",String(context.enabled))};
     redraw();
     button.addEventListener("click",()=>{
       context.enabled=!context.enabled;

@@ -1,4 +1,4 @@
-const REVISION = '3be0f44517828953';
+const REVISION = '42f1469545f61837';
 const CACHE = `otthi-v70615-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.16.7.17-visual-performance-governor';

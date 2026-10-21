@@ -81,14 +81,16 @@ const hub={
  },
  releases:[],
  createControls(kind,buttons){
-   const root=document.createElement("div");root.className="input-game-controls "+kind;
+   const root=document.createElement("div");root.className="input-game-controls "+kind;const cancellations=[];
    root.setAttribute("aria-label","Controles do jogo");
    for(const b of buttons){
     const btn=document.createElement("button");btn.type="button";btn.className="input-control "+(b.className||"");
     btn.textContent=b.text;btn.dataset.control=b.id;btn.setAttribute("aria-label",b.label||b.text);
-    const down=e=>{e.preventDefault();e.stopPropagation();btn.classList.add("held");b.down?.(e)};
-    const up=e=>{e.preventDefault();e.stopPropagation();btn.classList.remove("held");b.up?.(e)};
-    btn.addEventListener("pointerdown",e=>{try{if(e.isTrusted && e.pointerId>=0 && btn.setPointerCapture)btn.setPointerCapture(e.pointerId)}catch{}down(e)},{passive:false});
+    const pointers=new Set();
+    const down=e=>{e.preventDefault();e.stopPropagation();if(btn.disabled||pointers.has(e.pointerId))return;const first=pointers.size===0;pointers.add(e.pointerId);btn.classList.add("held");try{if(e.isTrusted&&e.pointerId>=0)btn.setPointerCapture?.(e.pointerId)}catch{}if(first)b.down?.(e)};
+    const up=e=>{e.preventDefault();e.stopPropagation();if(!pointers.delete(e.pointerId)||pointers.size)return;btn.classList.remove("held");b.up?.(e)};
+    const cancel=()=>{if(!pointers.size)return;pointers.clear();btn.classList.remove("held");b.up?.()};cancellations.push(cancel);
+    btn.addEventListener("pointerdown",down,{passive:false});
     for(const n of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(n,up,{passive:false});
     btn.addEventListener("touchstart",e=>{e.stopPropagation();e.preventDefault()},{passive:false});
     root.append(btn);
@@ -101,11 +103,23 @@ const hub={
      if(!s?.activeGame){clearInterval(watch);root.remove();hub.buttons=null;}
    },200);
    hub.releases.push(()=>clearInterval(watch));
-   const blur=()=>root.querySelectorAll("button").forEach(b=>{
-     if(b.classList.contains("held")){b.classList.remove("held");if(typeof PointerEvent!=="undefined")b.dispatchEvent(new PointerEvent("pointercancel",{bubbles:false}))}
-   });
-   window.addEventListener("blur",blur);hub.releases.push(()=>window.removeEventListener("blur",blur));
+   const blur=()=>cancellations.forEach(cancel=>cancel());
+   window.addEventListener("blur",blur);window.addEventListener("arcade:release-inputs",blur);
+   hub.releases.push(()=>{blur();window.removeEventListener("blur",blur);window.removeEventListener("arcade:release-inputs",blur)});
    return root;
+ },
+ flightJoystick(logic,root){
+   const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
+   stick.className='flight-stick';stick.dataset.control='joystick';stick.setAttribute('role','group');stick.setAttribute('aria-label','Joystick analógico de voo: arraste para virar e subir ou descer');
+   knob.className='flight-stick-knob';caption.textContent='JOYSTICK';stick.append(knob,caption);root.append(stick);
+   const axis=logic.manualStick={x:0,y:0,active:false};let owner=null;
+   const reset=()=>{owner=null;axis.x=axis.y=0;axis.active=false;stick.classList.remove('held');knob.style.transform='translate(-50%,-50%)';};
+   const move=e=>{if(owner!==e.pointerId)return;e.preventDefault();e.stopPropagation();const r=stick.getBoundingClientRect(),radius=r.width*.34,dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,mag=Math.hypot(dx,dy),length=Math.min(radius,mag),strength=Math.max(0,(length/radius-.10)/.90);axis.x=mag?dx/mag*strength:0;axis.y=mag?-dy/mag*strength:0;axis.active=true;knob.style.transform=`translate(calc(-50% + ${mag?dx/mag*length:0}px),calc(-50% + ${mag?dy/mag*length:0}px))`;};
+   stick.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(owner!==null)return;owner=e.pointerId;stick.classList.add('held');try{if(e.isTrusted)stick.setPointerCapture(e.pointerId)}catch{}move(e);},{passive:false});
+   stick.addEventListener('pointermove',move,{passive:false});
+   const end=e=>{if(owner===e.pointerId)reset()};for(const type of ['pointerup','pointercancel','lostpointercapture'])stick.addEventListener(type,end);
+   const hide=()=>{if(document.hidden)reset()};window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);window.addEventListener('resize',reset);document.addEventListener('visibilitychange',hide);
+   hub.releases.push(()=>{reset();window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset);window.removeEventListener('resize',reset);document.removeEventListener('visibilitychange',hide)});
  },
  flightControls(logic){
    const tapStart=()=>{
@@ -129,16 +143,21 @@ const hub={
    const flightRoot=hub.createControls("flight-input",[
      key("left","◀","Virar à esquerda"),key("up","▲","Subir"),
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
-     key("boost","⚡","Acelerar com turbo"),key("missile","◎","Disparar míssil"),
+     key("boost","⚡ TURBO","Acelerar com turbo"),key("missile","◎ MÍSSIL","Disparar míssil após travar a mira"),
+     {id:"fire",text:"ATIRAR",label:"Segurar para atirar após travar a mira",down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
      {id:"powerDown",text:"− POT",label:"Reduzir potência do motor",down:()=>logic.manualThrottle=Math.max(0,(logic.manualThrottle??1)-.15)},
      {id:"powerUp",text:"+ POT",label:"Aumentar potência do motor",down:()=>logic.manualThrottle=Math.min(1,(logic.manualThrottle??1)+.15)},
      {id:"start",text:"▶ INICIAR",label:"Iniciar ou continuar voo",down:tapStart}
    ]);
-   const refreshFlight=()=>{const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
+   for(const name of ["left","right","up","down"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=true;
+   hub.flightJoystick(logic,flightRoot);
+   const clearFlight=()=>{logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
+   window.addEventListener('blur',clearFlight);window.addEventListener('arcade:release-inputs',clearFlight);hub.releases.push(()=>{clearFlight();window.removeEventListener('blur',clearFlight);window.removeEventListener('arcade:release-inputs',clearFlight)});
+   const refreshFlight=()=>{for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));
-   hub.showTip("SETA PARA GUIAR • ⚡ TURBO • ◎ MÍSSIL • INICIAR NO HANGAR");
+   hub.showTip("JOYSTICK PARA GUIAR • SEGURE ATIRAR COM A MIRA TRAVADA • TOQUES SIMULTÂNEOS");
  },
  arControls(logic){
   logic.arcadeManual=true;
@@ -149,9 +168,9 @@ const hub={
     logic.changeState("PLAY_REAR_AR");
   }
   const drive=()=>logic.state==="PLAY_REAR_AR"||logic.state==="WAITING_PICKUP";
-  let turn=0;
-  const left={id:"left",text:"◀",label:"Virar caminhão para a esquerda",down:()=>{turn=-1},up:()=>{if(turn===-1)turn=0}};
-  const right={id:"right",text:"▶",label:"Virar caminhão para a direita",down:()=>{turn=1},up:()=>{if(turn===1)turn=0}};
+  const turnHeld={left:false,right:false};
+  const left={id:"left",text:"◀",label:"Virar caminhão para a esquerda",down:()=>{turnHeld.left=true},up:()=>{turnHeld.left=false}};
+  const right={id:"right",text:"▶",label:"Virar caminhão para a direita",down:()=>{turnHeld.right=true},up:()=>{turnHeld.right=false}};
   const arRoot=hub.createControls("ar-input",[
    left,{id:"go",text:"ACELERAR",label:"Acelerar caminhão",down:()=>{if(drive())logic.manualAccelerate=true},up:()=>logic.manualAccelerate=false},
    right,{id:"pick",text:"◈ COLETAR",label:"Segurar para coletar brinquedo",down:()=>{
@@ -182,16 +201,16 @@ const hub={
   const onKeyUp=e=>{pressed.delete(e.key);if(e.key===" ")logic.manualPickupHeld=false};
   window.addEventListener("keydown",onKey);window.addEventListener("keyup",onKeyUp);
   hub.releases.push(()=>{window.removeEventListener("keydown",onKey);window.removeEventListener("keyup",onKeyUp)});
+  const clearAR=()=>{pressed.clear();turnHeld.left=turnHeld.right=false;logic.manualAccelerate=false;logic.manualPickupHeld=false;logic.manualPickupRequested=false;};
+  window.addEventListener('blur',clearAR);window.addEventListener('arcade:release-inputs',clearAR);hub.releases.push(()=>{clearAR();window.removeEventListener('blur',clearAR);window.removeEventListener('arcade:release-inputs',clearAR)});
   let prev=performance.now();
   const cycle=()=>{
    const now=performance.now(),dt=Math.min(.05,(now-prev)/1000);prev=now;
    if(window.System?.activeGame?.id!==id){logic.manualAccelerate=false;logic.manualPickupHeld=false;return}
    if(!window.System.paused && drive()){
-     let steer=turn+(pressed.has("ArrowRight")||pressed.has("d")?1:0)-(pressed.has("ArrowLeft")||pressed.has("a")?1:0);
+     let steer=Number(turnHeld.right)-Number(turnHeld.left)+(pressed.has("ArrowRight")||pressed.has("d")?1:0)-(pressed.has("ArrowLeft")||pressed.has("a")?1:0);
      logic.currentHeading=(logic.currentHeading+steer*110*dt+360)%360;
-     logic.manualAccelerate=logic.manualAccelerate||pressed.has("ArrowUp")||pressed.has("w");
-     if(pressed.has("ArrowUp")||pressed.has("w"))logic.manualAccelerate=true;
-     else if(!hub.buttons?.querySelector('[data-control="go"].held'))logic.manualAccelerate=false;
+     logic.manualAccelerate=!logic.manualPickupHeld&&(pressed.has("ArrowUp")||pressed.has("w")||!!hub.buttons?.querySelector('[data-control="go"].held'));
    }
    hub.raf=requestAnimationFrame(cycle);
   };
