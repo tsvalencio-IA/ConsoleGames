@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/gameplay-smoke.yml'
-      - 'tests/playable-smoke.mjs'
+      - 'tests/**'
       - 'games/**'
       - 'enhancements/**'
   workflow_dispatch:

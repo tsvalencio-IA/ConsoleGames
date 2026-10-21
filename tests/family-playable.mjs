@@ -16,6 +16,7 @@ try{
  await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
  const info=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics());assert.equal(info.actors.length,4);assert(info.actors.every(a=>a.bones>12&&a.vertices>1000));
  // Choose the real playable model through the player's own character menu.
+ if(!await page.locator('#avatarGameBtn').isVisible())await page.locator('#quickToggleBtn').click();
  await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();
  await page.screenshot({path:'test-results/playable/family-character-selector.png'});
  await page.locator('[data-world-avatar-value="family-thiago"]').click();
@@ -48,6 +49,7 @@ try{
  assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().id),'thamis');
  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('otthos:mp-leave',{detail:{uid:'family-remote-test'}})));
  // Returning to a previous style restores its customization controls.
+ if(!await page.locator('#avatarGameBtn').isVisible())await page.locator('#quickToggleBtn').click();
  await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();await page.locator('[data-world-avatar-value="lego"]').click();
  assert(await page.locator('[data-world-avatar-custom]').isVisible());await page.locator('[data-world-avatar-save]').click();
  assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar()),null);
