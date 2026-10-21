@@ -84,6 +84,7 @@
     const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.
+    updateFamilyPlayableVisuals();
     const portrait=window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}

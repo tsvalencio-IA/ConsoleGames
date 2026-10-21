@@ -1,10 +1,10 @@
 {
   "version": 705,
   "build": "705.16.7.17-visual-performance-governor",
-  "revision": "696878de6e17826d",
+  "revision": "f6b4778cc8caa1ad",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "a1ef93ba186cdd96b893583608f78024576f54f7912ab37faa8f1edff76cace9",
+    "index.html": "7465950da70cbee8610dba2da3b0f47a299691d8e50a50a8d6e4fa52db5cbfdc",
     "style.css": "8577bff64eeb584d53b6e48a0c2e7b249b22a443ee64eeaa869577d2a8595ce4",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
     "assets/js/core/runtime-config.js": "a8090a19300e9c2f60253259b6f64bda75c77bfcdc35777859d81e7c2a211491",
@@ -14,7 +14,7 @@
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "49807c2542172d4b2464647628cafca18db8f0a659b616a4a1bdc12ba1ce9ec2",
-    "app.js": "61aa7d9cd3b5a517b3dab852e9b80485b6fbd850a4fdf1e3f37ad8120ed1d264",
+    "app.js": "701800bab0f46e0261910dfd413cec76b66daa4b39b8be493906aaac4764f91b",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
     "assets/js/core/performance-guardian.js": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
@@ -24,6 +24,6 @@
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
     "VERSION.json": "5a4df7bd2e78ea449e5cf6d31e9dd8295020e0dc3ff01502f8783e7424692821",
-    "sw.js": "43aa1bc3a692f1dc4d047feb4f3d85736beaaf18e12e6c6c53db97bbe053ac8b"
+    "sw.js": "351c90d43b50606349e647b63f110ada54d9e16df9ccde0c5102f190cdba85ca"
   }
 }

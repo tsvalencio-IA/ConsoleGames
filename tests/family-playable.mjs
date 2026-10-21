@@ -7,7 +7,7 @@ mkdirSync('test-results/playable',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 try{
  const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
- await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
+ await context.addInitScript(()=>!localStorage.getItem('otthos_life_world_roleplay_v700')&&localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
@@ -15,6 +15,44 @@ try{
  await page.locator('#playBtn').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
  const info=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics());assert.equal(info.actors.length,4);assert(info.actors.every(a=>a.bones>12&&a.vertices>1000));
+ // Choose the real playable model through the player's own character menu.
+ await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();
+ await page.screenshot({path:'test-results/playable/family-character-selector.png'});
+ await page.locator('[data-world-avatar-value="family-thiago"]').click();
+ assert(await page.locator('[data-world-avatar-custom]').isHidden());
+ await page.locator('[data-world-avatar-save]').click();
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thiago'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:15000});
+ assert(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().baseHidden),'The original avatar overlaps the family model');
+ async function moveCharacter(id){
+  const before=await page.evaluate(()=>window.OTTHOS_TEST_API.getGame().player),joystick=page.locator('#joystick'),box=await joystick.boundingBox();
+  await joystick.dispatchEvent('pointerdown',{pointerId:91,clientX:box.x+box.width*.8,clientY:box.y+box.height*.5});
+  await page.waitForFunction(p=>{const q=window.OTTHOS_TEST_API.getGame().player;return Math.hypot(q.x-p.x,q.z-p.z)>.8&&Math.abs(window.OTTHI_FAMILY.playerAvatar()?.leg[0]||0)>.05;},before,{timeout:20000});
+  await joystick.dispatchEvent('pointerup',{pointerId:91});
+  const y=await page.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.y);
+  await page.locator('#jumpBtn').dispatchEvent('pointerdown',{pointerId:92});await page.locator('#jumpBtn').dispatchEvent('pointerup',{pointerId:92});
+  await page.waitForFunction(y=>window.OTTHOS_TEST_API.getGame().player.y>y+.3,y,{timeout:12000});
+  await page.waitForFunction(()=>window.OTTHOS_TEST_API.getGame().player.grounded,null,{timeout:15000});
+  assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().id),id);
+  await page.screenshot({path:'test-results/playable/playing-as-'+id+'.png'});
+ }
+ await moveCharacter('thiago');
+ // The family panel provides the same playable choice, with immediate save.
+ await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-play="thamis"]').click();
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis',null,{timeout:15000});
+ await page.reload({waitUntil:'domcontentloaded'});await page.locator('#playBtn').click();
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:120000});
+ await moveCharacter('thamis');
+ // Receive the real multiplayer presence shape without connecting to production.
+ await page.evaluate(()=>{const p=window.OTTHOS_TEST_API.getGame().player;window.dispatchEvent(new CustomEvent('otthos:mp-player',{detail:{uid:'family-remote-test',name:'Participante teste',x:p.x+2,y:p.y,z:p.z,r:0,avatar:{bodyStyle:'family-thiago'}}}));});
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.remoteAvatars().some(a=>a.uid==='family-remote-test'&&a.id==='thiago'&&a.bones>20),null,{timeout:15000});
+ assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().id),'thamis');
+ await page.evaluate(()=>window.dispatchEvent(new CustomEvent('otthos:mp-leave',{detail:{uid:'family-remote-test'}})));
+ // Returning to a previous style restores its customization controls.
+ await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();await page.locator('[data-world-avatar-value="lego"]').click();
+ assert(await page.locator('[data-world-avatar-custom]').isVisible());await page.locator('[data-world-avatar-save]').click();
+ assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar()),null);
+ await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-play="thamis"]').click();
+
  await page.evaluate(()=>{const p=window.OTTHI_FAMILY.diagnostics().home;window.OTTHOS_TEST_API.teleport(p.x,p.z+6);window.OTTHI_FAMILY.open();});
  await page.locator('[data-family-throw="luna"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().ball==='seek'||window.OTTHI_FAMILY.diagnostics().ball==='return',null,{timeout:20000});
@@ -49,7 +87,7 @@ try{
  await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-throw="liz"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.liz===1,null,{timeout:60000});
  // A real native vehicle still responds to the visible accelerator and brake.
- const vehicle=await page.evaluate(()=>window.OTTHOS_TEST_API.prepareVehicleTest());assert(vehicle.active,'Open world has no usable test vehicle');
+ const vehicle=await page.evaluate(()=>window.OTTHOS_TEST_API.prepareVehicleTest());assert(vehicle.active,'Open world has no usable test vehicle');assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().meshVisible),false,'Selected character must use native in-car visibility');
  await page.locator('#runBtn').dispatchEvent('pointerdown',{pointerId:81});
  await page.waitForFunction(()=>window.OTTHOS_TEST_API.mobilityControls().speed>1,null,{timeout:15000});
  const speedBefore=await page.evaluate(()=>window.OTTHOS_TEST_API.mobilityControls().speed);
@@ -58,7 +96,7 @@ try{
  await page.waitForFunction(s=>Math.abs(window.OTTHOS_TEST_API.mobilityControls().speed)<s*.7,speedBefore,{timeout:15000});
  await page.locator('#jumpBtn').dispatchEvent('pointerup',{pointerId:82});
  await page.screenshot({path:'test-results/playable/otthi-driving-world.png'});
- await page.evaluate(()=>window.OTTHOS_TEST_API.exitVehicle());
+ await page.evaluate(()=>window.OTTHOS_TEST_API.exitVehicle());assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().meshVisible),true);
  // The original HQ keeps its native buttons and original fetch activity.
  await page.goto(base+'games/familia/3d/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#start').click();
@@ -83,7 +121,7 @@ try{
  await page.screenshot({path:'test-results/playable/family-original-menu.png'});
  assert.deepEqual(errors,[]);
  writeFileSync('test-results/playable/family-world-report.json',JSON.stringify({actors:info.actors,progress,layout,errors},null,2));
- console.log('Family world: approved rig skinning, real throw/return, walking, original HQ controls and no page errors.');
+ console.log('Family world: approved rig skinning, playable Thiago/Thamis with save/reload and received presence, real throw/return, walking, original HQ controls and no page errors.');
  }catch(error){await page.screenshot({path:'test-results/playable/family-failure.png'}).catch(()=>{});console.error('Family diagnostics',await page.evaluate(()=>({modal:document.getElementById('modal')?.innerText,ready:window.OTTHI_FAMILY?.diagnostics(),familyState:window.OTTHI_FAMILY?.snapshot(),game:window.OTTHOS_TEST_API?.getGame()})).catch(()=>null));throw error;}
  await context.close();
 }finally{await browser.close()}

@@ -49,7 +49,7 @@
       "startLine": 1173,
       "endLine": 1314,
       "description": "Avatar, roupas, uniformes, vida, moldes e ajuda",
-      "sha256Body": "48eee0d596cf07cfffb597d2b8c5b3a3a8423b77fa4dcee070740827f04ffdd1"
+      "sha256Body": "0f3a8dadd171705cfbdc2b0f4483c54fde3ebe80e5a4c4e7605e32ee6b619ddd"
     },
     {
       "file": "src/modules/05a-world-layout-v704.js",
@@ -63,7 +63,7 @@
       "startLine": 1316,
       "endLine": 1454,
       "description": "Missões, objetivos, perfil, HUD, inventário e ferramentas",
-      "sha256Body": "73db927a29e186535b6e8f598f955694df99d92a58720a07d760a237c4c2cf19"
+      "sha256Body": "83eaf7cf710018b3ed47f4dc26f61c4036d5b4d554fed027940a68341dd6ae45"
     },
     {
       "file": "src/modules/07-navigation-traffic-routes.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "50b844098318c90a19758efe0ecfb5bddea4318a2c3debe2dd0725826cc3b7cf"
+      "sha256Body": "486d57391a8cd2bc9fbe68fe4d08d237eaed301b6d0d2a1b01a5e1bc53bf613b"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -245,21 +245,21 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "fed7512d4303233c4c39db0a87701bda80bec6ee63ea06bca3cdcc948f033a82"
+      "sha256Body": "537038433e557a60c590908d8b1c8ee939176275a4a3ff0666e5e1a1f2858302"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "e89b6d6e5899f05e95ba76f6b0b56d611ca2fc900585ea5774828efd07b021e9"
+      "sha256Body": "30bb2500d8de1cc8dce3d4ce069d1a039c4a2fc20e82a4733b9ee7060b9b1f46"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "d43192e20a06a1cbe66dbe587b67e39188f4761482dfb42b59c85d0c7cce1e2b"
+      "sha256Body": "fcbeed2b7b64052fcdf250e8f1cef65a9130b35c903890a800951e03a6a8acb0"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -287,7 +287,7 @@
       "startLine": 5803,
       "endLine": 5897,
       "description": "Avatar modular V3 sobre o rig procedural preservado",
-      "sha256Body": "1fd036b85f405036bcd5101fdd559d056de2e8583a859562c0e58b7eccf064f4"
+      "sha256Body": "378cb21c33f2bfee6751baaf8d716fa93faf72bb2f466534ddcee90024100bb6"
     },
     {
       "file": "src/modules/35-world-render-pbr-environment.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "35c581076c35ecdec0012cd50ee4a42d69347cc204b92fa7cda6632deb110e49"
+      "sha256Body": "cda72aa2593631909197ef704b404d1ee4854c6f7d3e892e60b7e20e03327cd1"
     }
   ],
   "styles": [

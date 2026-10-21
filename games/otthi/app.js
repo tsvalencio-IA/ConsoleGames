@@ -1454,7 +1454,7 @@
     const c = state.career;
     const friendships = Object.entries(state.friendship).sort((a,b)=>b[1]-a[1]).map(([id,value])=>`<div class="friend-row"><span>${({nino:'Nino',luna:'Luna',teo:'Teo',bia:'Bia',maya:'Maya',clara:'Clara',rafa:'Rafa',davi:'Davi',leo:'Leo'})[id]||id}</span><b>${value}/100</b></div>`).join('');
     const companions=(world.npcs||[]).filter(n=>n.following||n.pendingRide||n.passengerMode);
-    openModal('Minha vida', `<div class="roleplay-card"><small>CARREIRA</small><h3>${c.title}</h3><p>Nível ${c.level} • ${c.xp} XP profissional • ${c.completed} trabalhos</p></div><div class="choice-grid"><button class="choice" data-life-avatar><b>👕 Meu personagem</b><span>Roupas e acessórios</span></button><button class="choice" data-life-jobs><b>💼 Trabalhos</b><span>Ganhe moedas e reputação</span></button><button class="choice" data-life-adventures><b>🏰 Desafios da cidade</b><span>Castelo, metrô, ônibus e skills</span></button><button class="choice" data-life-transit><b>Ⓜ️ Rede de transporte</b><span>Estações, linhas e progresso</span></button>${companions.length?`<button class="choice warning" data-life-cancel-companions><b>✋ Encerrar passeio</b><span>${companions.map(n=>n.name).join(', ')}</span></button>`:''}</div><h3>Amizades</h3><div class="friend-list">${friendships}</div>`, root => {
+    openModal('Minha vida', `<div class="roleplay-card"><small>CARREIRA</small><h3>${c.title}</h3><p>Nível ${c.level} • ${c.xp} XP profissional • ${c.completed} trabalhos</p></div><div class="choice-grid"><button class="choice" data-life-avatar><b>👕 Meu personagem</b><span>Thiago, Thamis e outros estilos</span></button><button class="choice" data-life-jobs><b>💼 Trabalhos</b><span>Ganhe moedas e reputação</span></button><button class="choice" data-life-adventures><b>🏰 Desafios da cidade</b><span>Castelo, metrô, ônibus e skills</span></button><button class="choice" data-life-transit><b>Ⓜ️ Rede de transporte</b><span>Estações, linhas e progresso</span></button>${companions.length?`<button class="choice warning" data-life-cancel-companions><b>✋ Encerrar passeio</b><span>${companions.map(n=>n.name).join(', ')}</span></button>`:''}</div><h3>Amizades</h3><div class="friend-list">${friendships}</div>`, root => {
       $('[data-life-avatar]', root).onclick = openAvatarStudio;
       $('[data-life-jobs]', root).onclick = openJobCenter;
       $('[data-life-adventures]', root).onclick = openAdventureHub;
@@ -1979,7 +1979,7 @@
   }
   function refreshEquippedToolVisual(){
     if(!playerModel?.userData?.parts?.rightArm)return;
-    const arm=playerModel.userData.parts.rightArm;if(toolVisual){arm.remove(toolVisual);toolVisual=null;}
+    const arm=playerModel.userData.parts.rightArm;if(toolVisual){toolVisual.parent?.remove(toolVisual);toolVisual=null;}
     toolVisual=new THREE.Group();toolVisual.position.set(0,-1.12,.14);toolVisual.rotation.z=-.18;arm.add(toolVisual);
     const type=state.tools?.equipped||'axe',wood=materials.wood||0x8c542c,metal=materials.metal||0x8d9aa6;
     if(type==='bucket'){
@@ -6918,9 +6918,10 @@
       const portrait=innerHeight>innerWidth;const speed=Math.hypot(player.vx,player.vz);
       if((player.vehicle||player.boating)&&!input.cameraDrag){const heading=player.vehicle?player.car.heading:player.boat.heading;cameraYaw=lerpAngle(cameraYaw,Math.PI-heading,Math.min(1,dt*3.2));}
       const speedKick=clamp(Math.abs(player.vehicle?player.car.speed:speed)/9,0,1.6),pitch=clamp(cameraPitch,-.55,1.35);
-      const dist=clamp((portrait?12.5:10.2)+(player.vehicle?3.4:player.boating?2.2:0)+speedKick*1.6+cameraZoom,5.3,27);
-      const normalized=(pitch+.55)/1.9,height=clamp((portrait?2.35:1.75)+normalized*(portrait?11.8:10.4)+(player.vehicle?.55:player.boating?.32:0)+cameraZoom*.12,1.35,15.8);
-      const forwardLook=lerp(7.0,1.6,normalized),visualHeight=1.35*playerScaleValue()*(player.crouched?.72:1)+(player.swimming?-.2:0);
+      const followScale=playerModel?.userData?.familyAvatar&&!player.vehicle&&!player.boating?.72:1;
+      const dist=clamp((portrait?12.5:10.2)*followScale+(player.vehicle?3.4:player.boating?2.2:0)+speedKick*1.6+cameraZoom,5.3,27);
+      const normalized=(pitch+.55)/1.9,height=clamp(((portrait?2.35:1.75)+normalized*(portrait?11.8:10.4))*followScale+(player.vehicle?.55:player.boating?.32:0)+cameraZoom*.12,1.35,15.8);
+      const forwardLook=lerp(7.0,1.6,normalized),visualHeight=1.35*followScale*playerScaleValue()*(player.crouched?.72:1)+(player.swimming?-.2:0);
       desiredPos=new THREE.Vector3(player.x-Math.sin(cameraYaw)*dist,player.y+height,player.z+Math.cos(cameraYaw)*dist);look=new THREE.Vector3(player.x+Math.sin(cameraYaw)*forwardLook,player.y+visualHeight+lerp(.9,-.25,normalized),player.z-Math.cos(cameraYaw)*forwardLook);
       camera.fov=(portrait?55:58)+speedKick*(player.vehicle?7:player.boating?4:2)+lerp(4,-2,normalized);
     }
@@ -7251,7 +7252,7 @@
   function avatarIdIncludes(value,...tokens){const id=String(value||'').toLowerCase();return tokens.some(token=>id.includes(String(token).toLowerCase()));}
   function avatarSkinHex(value,fallback=0xd9a075){const id=String(value||'').toLowerCase(),palette={'tone-01':0xf6d2b8,'tone-02':0xe9b98e,'tone-03':0xd9a075,'tone-04':0xb97850,'tone-05':0x8b5638,'tone-06':0x5e3828};return palette[id]??avatarHex(value,fallback);}
   function multiplayerAvatarPrimaryColor(avatar={},fallback=0x5ad8ff){return avatarHex(avatar.primaryColor,fallback);}
-  function disposeGhostAvatar(root){if(!root)return;for(const child of [...root.children]){root.remove(child);if(typeof disposeWorldAvatarObject==='function')disposeWorldAvatarObject(child);else try{disposeDetachedVisual?.(child);}catch{}}}
+  function disposeGhostAvatar(root){if(!root)return;for(const child of [...root.children]){root.remove(child);if(child.userData.familyAvatarSharedResources)releaseFamilyAvatarVisual(child);else if(typeof disposeWorldAvatarObject==='function')disposeWorldAvatarObject(child);else try{disposeDetachedVisual?.(child);}catch{}}}
   function remoteAvatarLayer(parent,name){const group=new THREE.Group();group.name=`OTTHI_REMOTE_AVATAR_${name}`;parent?.add(group);return group;}
   function remoteAvatarLegacyOptions(avatar,theme,bodyLayer,headLayer,backLayer,primary,secondary,accent){
     const uniform=String(avatar.uniform||'none');
@@ -7262,7 +7263,9 @@
     if(uniform&&uniform!=='none'){const badge=remoteAvatarLayer(bodyLayer,'UNIFORM_BADGE'),label=uniform.toUpperCase().slice(0,8),patch=new THREE.Mesh(new THREE.PlaneGeometry(.72,.2),new THREE.MeshStandardMaterial({map:signTexture(label,'#173b59','#ffffff'),transparent:true,roughness:.55,side:THREE.DoubleSide}));patch.position.set(0,.15,.53);badge.add(patch);}
   }
   function buildRemoteAvatarVisual(ghost,rawAvatar={}){
-    const avatar=sanitizeMultiplayerAvatar(rawAvatar),root=ghost.userData.avatar;disposeGhostAvatar(root);const allowed=new Set(['lego','minecraft','playmobil','mario-world','luigi-world']),style=String(avatar.bodyStyle||'').toLowerCase(),legacyTheme=style==='toy'?'lego':style==='hero'?'mario-world':style==='adventure'?'playmobil':style,theme=allowed.has(legacyTheme)?legacyTheme:'lego',isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world';
+    const avatar=sanitizeMultiplayerAvatar(rawAvatar),root=ghost.userData.avatar;disposeGhostAvatar(root);ghost.userData.familyAvatar=null;
+    if(applyFamilyRemoteAvatar(ghost,avatar))return avatar;
+    const allowed=new Set(['lego','minecraft','playmobil','mario-world','luigi-world']),style=String(avatar.bodyStyle||'').toLowerCase(),legacyTheme=style==='toy'?'lego':style==='hero'?'mario-world':style==='adventure'?'playmobil':style,theme=allowed.has(legacyTheme)?legacyTheme:'lego',isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world';
     const bodyLayer=remoteAvatarLayer(root,'THEME_TORSO'),headLayer=remoteAvatarLayer(root,'THEME_HEAD'),leftArm=remoteAvatarLayer(root,'THEME_ARM_LEFT'),rightArm=remoteAvatarLayer(root,'THEME_ARM_RIGHT'),leftLeg=remoteAvatarLayer(root,'THEME_LEG_LEFT'),rightLeg=remoteAvatarLayer(root,'THEME_LEG_RIGHT'),backLayer=remoteAvatarLayer(bodyLayer,'THEME_BACK');bodyLayer.position.set(0,1.55,0);headLayer.position.set(0,2.72,0);leftArm.position.set(-.72,2.0,0);rightArm.position.set(.72,2.0,0);leftLeg.position.set(-.28,.92,0);rightLeg.position.set(.28,.92,0);
     const primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatar.pattern==='world-star'?0xffd84d:avatar.pattern==='world-pixels'?0x5ad7ff:avatar.pattern==='world-stripe'?0xffffff:avatar.secondaryColor,{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075,{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
     if(theme==='lego'){
@@ -7380,7 +7383,7 @@
   }
   function sharedWorkshopReconcile(dt=0){const now=performance.now();if(now-sharedWorldRuntime.yardAt<650)return;sharedWorldRuntime.yardAt=now;let moved=false;for(const entry of sharedWorkshopEntries().filter(item=>item.local&&item.vehicle?.group)){const pose=sharedWorkshopYardPose(entry.uid,entry.id,entry.status,entry.bodyType),vehicle=entry.vehicle;if(!pose||Math.hypot(vehicle.group.position.x-pose.x,vehicle.group.position.z-pose.z)<.12)continue;vehicle.group.position.set(pose.x,pose.y,pose.z);vehicle.group.rotation.y=pose.heading;vehicle.x=pose.x;vehicle.z=pose.z;vehicle.heading=pose.heading;vehicle.workshopYardSlot=pose.id;const record=state.vehicles?.workshopComponents?.[entry.id];if(record)record.yardSlot=pose.id;if(typeof persistParkedVehicle==='function')persistParkedVehicle(vehicle);moved=true;}if(moved)saveState(true);if(now-sharedWorldRuntime.liftAt>650){sharedWorldRuntime.liftAt=now;sharedWorkshopResolveLiftConflict();}}
 
-  function sharedWorldBuildGhostTool(ghost,type){const arm=ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool?.parent)ghost.userData.remoteTool.parent.remove(ghost.userData.remoteTool);const root=new THREE.Group();root.position.set(0,-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
+  function sharedWorldBuildGhostTool(ghost,type){const hand=ghost?.userData?.familyAvatar?.byName?.hand1,arm=hand||ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool?.parent)ghost.userData.remoteTool.parent.remove(ghost.userData.remoteTool);const root=new THREE.Group();root.position.set(0,hand?-.13:-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
   function sharedWorldSkillAura(ghost){if(ghost.userData.sharedSkillAura)return ghost.userData.sharedSkillAura;const material=renderMat(0x6fe9ff,{emissive:0x2d9ed0,emissiveIntensity:.8,transparent:true,opacity:.68}),ring=new THREE.Mesh(new THREE.TorusGeometry(.82,.07,8,28),material);ring.rotation.x=Math.PI/2;ring.position.y=.08;ring.visible=false;ghost.add(ring);ghost.userData.sharedSkillAura=ring;return ring;}
   function sharedWorldCarSignals(ghost){if(ghost.userData.sharedCarSignals?.root?.parent===ghost.userData.carVisual)return ghost.userData.sharedCarSignals;ghost.userData.sharedCarSignals=null;const root=new THREE.Group(),red=box(.42,.14,.24,renderMat(0xe93445,{emissive:0xe93445,emissiveIntensity:1.2}),-.26,1.34,-.12,root),blue=box(.42,.14,.24,renderMat(0x35a9ff,{emissive:0x35a9ff,emissiveIntensity:1.2}),.26,1.34,-.12,root),turbo=box(.72,.16,.08,renderMat(0xff9a35,{emissive:0xff5c18,emissiveIntensity:1.35}),0,.48,-1.54,root);root.visible=false;ghost.userData.carVisual?.add(root);ghost.userData.sharedCarSignals={root,red,blue,turbo};return ghost.userData.sharedCarSignals;}
   function sharedWorldApplyGhostAppearance(ghost,target,{carDriver=false,carPassenger=false,passengerSeat=null,boatDriver=false}={}){
@@ -7467,6 +7470,7 @@
     const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.
+    updateFamilyPlayableVisuals();
     const portrait=window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}
@@ -7867,7 +7871,7 @@
 
   // ===== MODULE: 34-avatar-studio-professional-v3.js =====
   const OTTHI_WORLD_AVATAR_CATALOG=Object.freeze({
-    bodyStyle:Object.freeze([['lego','LEGO','🧱'],['minecraft','Minecraft / Manycraft','🟩'],['playmobil','Playmobil','🧍'],['mario-world','Mario World — Mario','🧢'],['luigi-world','Mario World — Luigi','🟢']]),
+    bodyStyle:Object.freeze([['lego','LEGO','🧱'],['family-thiago','Thiago','👨🏻'],['family-thamis','Thamis','👩🏻'],['minecraft','Minecraft / Manycraft','🟩'],['playmobil','Playmobil','🧍'],['mario-world','Mario World — Mario','🧢'],['luigi-world','Mario World — Luigi','🟢']]),
     face:Object.freeze([['face-happy-01','Feliz','🙂'],['face-brave-01','Corajoso','😎'],['face-curious-01','Curioso','🤔'],['face-focus-01','Concentrado','🎯']]),
     hair:Object.freeze([['hair-none','Sem cabelo','◯'],['hair-short-01','Curto','✂'],['hair-spikes-01','Espetado','⚡'],['hair-curls-01','Cacheado','〰']]),
     torso:Object.freeze([['world-jacket-01','Jaqueta World','🧥'],['world-hoodie-01','Moletom','👕'],['world-explorer-01','Explorador','🧭'],['world-hero-01','Herói OTTHI','⚡'],['world-shadow-guardian','Guardião Noturno','🌙'],['world-web-runner','Corredor de Fios','🕸️'],['world-mushroom-adventurer','Macacão de aventura','🧢'],['world-toy-rescuer','Resgatista Brinquedo','🧸']]),
@@ -7929,6 +7933,9 @@
   }
   function applyWorldAvatarV3(){
     if(!playerModel?.userData?.parts)return false;ensureOtthiWorldState();clearWorldAvatarV3();hideLegacyAvatarForToySkin();
+    const familyId=familyCharacterId(state.avatar?.bodyStyle);
+    if(familyId&&applyFamilyPlayerAvatar(familyId)){otthiWorldRuntime.avatarReady=true;return true;}
+    clearFamilyPlayerAvatar();playerModel.userData.parts.body.parent.visible=true;
     const parts=playerModel.userData.parts,avatar=state.avatar;avatar.bodyStyle=worldAvatarSafeChoice('bodyStyle',avatar.bodyStyle);avatar.face=worldAvatarSafeChoice('face',avatar.face);avatar.hair=worldAvatarSafeChoice('hair',avatar.hair);avatar.torso=worldAvatarSafeChoice('torso',avatar.torso);avatar.legs=worldAvatarSafeChoice('legs',avatar.legs);avatar.shoes=worldAvatarSafeChoice('shoes',avatar.shoes);avatar.back=worldAvatarSafeChoice('back',avatar.back);avatar.pattern=worldAvatarSafeChoice('pattern',avatar.pattern);
     const theme=avatar.bodyStyle,isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world',primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatarPatternColor(),{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075,{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
     const headLayer=worldAvatarLayer(parts.head,'THEME_HEAD'),bodyLayer=worldAvatarLayer(parts.body,'THEME_TORSO'),leftArm=worldAvatarLayer(parts.leftArm,'THEME_ARM_LEFT'),rightArm=worldAvatarLayer(parts.rightArm,'THEME_ARM_RIGHT'),leftLeg=worldAvatarLayer(parts.leftLeg,'THEME_LEG_LEFT'),rightLeg=worldAvatarLayer(parts.rightLeg,'THEME_LEG_RIGHT'),backLayer=worldAvatarLayer(parts.body,'THEME_BACK');
@@ -7954,15 +7961,15 @@
     toySkinApplyLegacyOptions(theme,bodyLayer,headLayer,backLayer,primary,secondary,accent,hairMat);playerModel.userData.toyTheme=theme;otthiWorldRuntime.avatarReady=true;return true;
   }
   function worldAvatarOptions(field,title){
-    const selected=state.avatar[field];return `<section class="avatar-section world-avatar-section"><h3>${title}</h3><div class="avatar-grid">${OTTHI_WORLD_AVATAR_CATALOG[field].map(([id,name,icon])=>`<button class="avatar-option ${selected===id?'selected':''}" data-world-avatar-field="${field}" data-world-avatar-value="${id}"><b>${icon}</b><span>${name}</span></button>`).join('')}</div></section>`;
+    const selected=state.avatar[field];return `<section class="avatar-section world-avatar-section"><h3>${title}</h3>${field==='bodyStyle'?'<p>Escolha quem você controla. Thiago e Thamis usam os personagens originais da Família.</p>':''}<div class="avatar-grid">${OTTHI_WORLD_AVATAR_CATALOG[field].map(([id,name,icon])=>`<button class="avatar-option ${selected===id?'selected':''}" aria-pressed="${selected===id}" data-world-avatar-field="${field}" data-world-avatar-value="${id}"><b>${icon}</b><span>${name}</span></button>`).join('')}</div></section>`;
   }
   const legacyApplyAvatarCustomization=applyAvatarCustomization;
   applyAvatarCustomization=function applyAvatarCustomizationWorld(){legacyApplyAvatarCustomization();applyWorldAvatarV3();};
   const legacyOpenAvatarStudio=openAvatarStudio;
   openAvatarStudio=function openAvatarStudioWorld(){
     ensureOtthiWorldState();
-    openModal(`Personagem — ${playerDisplayName()}`,`<div class="avatar-summary world-avatar-summary"><div class="avatar-face"><i></i><i></i></div><div><b>Personalize seu personagem</b><span>Escolha corpo, rosto, cabelo, roupas, acessórios e cores. Suas escolhas ficam salvas no seu perfil.</span></div></div>${worldAvatarOptions('bodyStyle','Skin / estilo do personagem')}${worldAvatarOptions('face','Expressão')}${worldAvatarOptions('hair','Cabelo')}${worldAvatarOptions('torso','Parte superior')}${worldAvatarOptions('legs','Parte inferior')}${worldAvatarOptions('shoes','Calçados')}${worldAvatarOptions('back','Costas')}${worldAvatarOptions('pattern','Estampa')}<section class="avatar-section"><h3>Cores</h3><div class="world-color-grid"><label>Cor principal<input type="color" data-world-avatar-color="primaryColor" value="${state.avatar.primaryColor}"></label><label>Cor secundária<input type="color" data-world-avatar-color="secondaryColor" value="${state.avatar.secondaryColor}"></label><label>Cabelo<input type="color" data-world-avatar-color="hairColor" value="${state.avatar.hairColor}"></label></div></section>${avatarChoiceGroup('uniform','Uniforme')}${avatarChoiceGroup('hat','Chapéu')}${avatarChoiceGroup('accessory','Acessório')}<div class="modal-actions"><button class="btn primary" data-world-avatar-save>Salvar personagem</button></div>`,root=>{
-      $$('[data-world-avatar-field]',root).forEach(button=>button.onclick=()=>{const field=button.dataset.worldAvatarField,value=button.dataset.worldAvatarValue;state.avatar={...state.avatar,[field]:worldAvatarSafeChoice(field,value),renderMode:'otthi-world-v3'};$$(`[data-world-avatar-field="${field}"]`,root).forEach(item=>item.classList.toggle('selected',item===button));applyAvatarCustomization();});
+    openModal(`Personagem — ${playerDisplayName()}`,`<div class="avatar-summary world-avatar-summary"><div class="avatar-face"><i></i><i></i></div><div><b>Escolha seu personagem</b><span>Jogue como Thiago, Thamis ou personalize os outros estilos. Suas escolhas ficam salvas no seu perfil.</span></div></div>${worldAvatarOptions('bodyStyle','Quem você quer controlar?')}<p data-family-avatar-note ${familyCharacterId(state.avatar.bodyStyle)?'':'hidden'}>Thiago e Thamis mantêm o visual original da Família. Seus outros estilos, roupas e acessórios continuam guardados.</p><div data-world-avatar-custom ${familyCharacterId(state.avatar.bodyStyle)?'hidden':''}>${worldAvatarOptions('face','Expressão')}${worldAvatarOptions('hair','Cabelo')}${worldAvatarOptions('torso','Parte superior')}${worldAvatarOptions('legs','Parte inferior')}${worldAvatarOptions('shoes','Calçados')}${worldAvatarOptions('back','Costas')}${worldAvatarOptions('pattern','Estampa')}<section class="avatar-section"><h3>Cores</h3><div class="world-color-grid"><label>Cor principal<input type="color" data-world-avatar-color="primaryColor" value="${state.avatar.primaryColor}"></label><label>Cor secundária<input type="color" data-world-avatar-color="secondaryColor" value="${state.avatar.secondaryColor}"></label><label>Cabelo<input type="color" data-world-avatar-color="hairColor" value="${state.avatar.hairColor}"></label></div></section>${avatarChoiceGroup('uniform','Uniforme')}${avatarChoiceGroup('hat','Chapéu')}${avatarChoiceGroup('accessory','Acessório')}</div><div class="modal-actions"><button class="btn primary" data-world-avatar-save>Salvar personagem</button></div>`,root=>{
+      $$('[data-world-avatar-field]',root).forEach(button=>button.onclick=()=>{const field=button.dataset.worldAvatarField,value=button.dataset.worldAvatarValue;state.avatar={...state.avatar,[field]:worldAvatarSafeChoice(field,value),renderMode:'otthi-world-v3'};$$(`[data-world-avatar-field="${field}"]`,root).forEach(item=>{item.classList.toggle('selected',item===button);item.setAttribute('aria-pressed',String(item===button));});root.querySelector('[data-world-avatar-custom]').hidden=!!familyCharacterId(state.avatar.bodyStyle);root.querySelector('[data-family-avatar-note]').hidden=!familyCharacterId(state.avatar.bodyStyle);applyAvatarCustomization();});
       $$('[data-world-avatar-color]',root).forEach(input=>input.oninput=()=>{state.avatar={...state.avatar,[input.dataset.worldAvatarColor]:safeAvatarColor(input.value,state.avatar[input.dataset.worldAvatarColor])};applyAvatarCustomization();});
       $$('[data-avatar-type]',root).forEach(button=>button.onclick=()=>{state.avatar=updateAvatarV2LegacyChoice(state.avatar,button.dataset.avatarType,button.dataset.avatarId);$$(`[data-avatar-type="${button.dataset.avatarType}"]`,root).forEach(item=>item.classList.toggle('selected',item===button));applyAvatarCustomization();});
       $('[data-world-avatar-save]',root).onclick=()=>{state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3'});setFlag('customizedAvatar');setFlag('otthiWorldAvatarV3');saveState(true);closeModal();toast('Personagem salvo no seu perfil.','good',2000);};
@@ -8670,6 +8677,8 @@
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
     familyWorld.toyMesh=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),new THREE.MeshStandardMaterial({color:0xf7ba47,roughness:.45}));familyWorld.toyMesh.visible=false;worldGroup.add(familyWorld.toyMesh);
     familyWorld.ready=true;familyProgress();familyCreateEntry();
+    if(familyCharacterId(state.avatar?.bodyStyle)&&typeof applyAvatarCustomization==='function')applyAvatarCustomization();
+    for(const ghost of world.ghosts?.values?.()||[])if(familyCharacterId(ghost.userData.target?.avatar?.bodyStyle)){ghost.userData.avatarSignature='';applyRemoteAvatarIfChanged(ghost,ghost.userData.target.avatar);}
     if(new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
   }
   function familyCreateEntry(){
@@ -8697,6 +8706,70 @@
     return{position:look.clone().addScaledVector(back,distance),look,fov};
   }
   function locationSearch(){return window.location?.search||'';}
+  function familyCharacterId(style){return style==='family-thiago'?'thiago':style==='family-thamis'?'thamis':'';}
+  function familyCloneAvatar(id,parent,baseY=0){
+    const source=familyWorld.actors[id];if(!source||!parent)return null;
+    const group=source.group.clone(true),byName={};let mesh;
+    group.position.set(0,0,0);group.rotation.set(0,0,0);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
+    group.traverse(o=>{if(o.isBone)byName[o.name.split(':')[1]]=o;if(o.isSkinnedMesh)mesh=o;});
+    const bones=source.bones.map(b=>byName[b.name.split(':')[1]]);
+    mesh.bind(new THREE.Skeleton(bones,source.mesh.skeleton.boneInverses.map(m=>m.clone())),source.mesh.bindMatrix.clone());
+    // Geometry and materials are shared; every controllable instance owns its bones.
+    if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
+    group.position.y=.006-mesh.geometry.boundingBox.min.y*source.scale-baseY;
+    parent.add(group);return{id,group,mesh,bones,byName,source};
+  }
+  function releaseFamilyAvatarVisual(group){group?.parent?.remove(group);group?.traverse(o=>{if(o.isSkinnedMesh)o.skeleton?.dispose?.();});}
+  function clearFamilyPlayerAvatar(){
+    const visual=playerModel?.userData?.familyAvatar;if(!visual)return;
+    if(toolVisual&&visual.group.getObjectById(toolVisual.id)){playerModel.userData.parts.rightArm.add(toolVisual);toolVisual.position.set(0,-1.12,.14);}
+    releaseFamilyAvatarVisual(visual.group);playerModel.userData.familyAvatar=null;
+  }
+  function applyFamilyPlayerAvatar(id){
+    if(!playerModel?.userData?.parts||!familyWorld.actors[id])return false;
+    let visual=playerModel.userData.familyAvatar;
+    if(visual?.id!==id){clearFamilyPlayerAvatar();visual=familyCloneAvatar(id,playerModel,Number(playerModel.userData.baseY||0));playerModel.userData.familyAvatar=visual;}
+    playerModel.userData.parts.body.parent.visible=false;if(avatarLayer)avatarLayer.visible=false;
+    playerModel.userData.toyTheme='family-'+id;return!!visual;
+  }
+  function applyFamilyRemoteAvatar(ghost,avatar){
+    const id=familyCharacterId(avatar.bodyStyle),root=ghost.userData.avatar;if(!id)return false;
+    const visual=familyCloneAvatar(id,root);if(!visual)return false;
+    ghost.userData.familyAvatar=visual;ghost.userData.limbs=Object.fromEntries(['leftArm','rightArm','leftLeg','rightLeg'].map(key=>[key,new THREE.Group()]));
+    root.userData.remoteAvatar=avatar;root.userData.toyTheme='family-'+id;ghost.userData.avatarSignature=multiplayerAvatarSignature(avatar);return true;
+  }
+  function familyAnimateAvatar(visual,parts,{speed=0,run=false,jump=false,emote='',special=false,sitting=false,time=0}={}){
+    const walk=Math.min(1,speed/5);
+    familyWorld.studio.drawHuman(visual.id,0,0,0,walk,run,jump?.3:0,time,0,emote==='wave'?1:0);
+    visual.source.joints.forEach((joint,i)=>visual.bones[i].rotation.set(...joint.rot,'YXZ'));
+    if(special&&emote!=='wave')for(const[part,bone]of[['leftArm','shoulder-1'],['rightArm','shoulder1'],['leftLeg','hip-1'],['rightLeg','hip1']]){
+      if(parts?.[part]&&visual.byName[bone])visual.byName[bone].rotation.copy(parts[part].rotation);
+    }
+    if(sitting)for(const sign of[-1,1]){visual.byName['hip'+sign].rotation.x=-1.25;visual.byName['knee'+sign].rotation.x=1.25;visual.byName['ankle'+sign].rotation.x=0;}
+  }
+  function familyAttachTool(visual,tool){
+    const hand=visual.byName.hand1;if(tool&&hand&&tool.parent!==hand){hand.add(tool);tool.position.set(0,-.13,.07);}
+  }
+  function updateFamilyPlayableVisuals(){
+    const visual=playerModel?.userData?.familyAvatar;
+    if(visual){
+      if(avatarLayer)avatarLayer.visible=false;
+      const active=performance.now()<player.emoteUntil;
+      familyAnimateAvatar(visual,playerModel.userData.parts,{speed:player.vehicle||player.boating||player.swimming?0:Math.hypot(player.vx,player.vz),run:!!input.isSprinting,jump:!player.grounded,emote:active?player.emoteType:'',special:active||player.swimming||!!fishingVisual?.active,sitting:performance.now()<player.sitUntil,time:animTime});
+      familyAttachTool(visual,toolVisual);
+    }
+    for(const ghost of world.ghosts.values()){
+      const v=ghost.userData.familyAvatar;if(!v)continue;const target=ghost.userData.target||{},pose=ghost.userData.v2Pose||{},emote=performance.now()<Number(ghost.userData.emoteUntil||0)?ghost.userData.emoteType:String(target.actionMode||'');
+      const moving=Math.hypot(Number(pose.vx||0),Number(pose.vz||0))>.2||Math.hypot(ghost.position.x-Number(v.lastX??ghost.position.x),ghost.position.z-Number(v.lastZ??ghost.position.z))>.001;
+      v.lastX=ghost.position.x;v.lastZ=ghost.position.z;
+      familyAnimateAvatar(v,ghost.userData.limbs,{speed:moving?5:0,emote,special:!!emote,sitting:!!target.vehicle,time:animTime+Number(ghost.userData.phase||0)});familyAttachTool(v,ghost.userData.remoteTool);
+    }
+  }
+  function selectFamilyCharacter(id){
+    if(!['thiago','thamis'].includes(id))return false;
+    state.avatar=normalizeAvatarV2({...state.avatar,bodyStyle:'family-'+id,renderMode:'otthi-world-v3'});familyWorld.portraitUntil=0;
+    applyAvatarCustomization();saveState(true);updateMultiplayer(0,true);closeModal();toast('Você está jogando como '+(id==='thiago'?'Thiago':'Thamis')+'.','good',2400);return true;
+  }
   function familyMapLocations(){if(!familyWorld.location)return[];const p=familyWorld.location;return[{id:'family-home',name:p.meetingOnly?'Encontro da Família':'Casa da Família',icon:'🐾',group:'Aventuras em Família',x:p.x,z:p.z+6,description:'Thiago, Thamis, Luna e Liz. Passeio ao parque, brinquedos e desafios da oficina e tecnologia.',actions:['Encontrar a família','Brincar com as cachorrinhas','Começar um passeio']},...['park','workshop','tech'].map(kind=>{const point=worldLayoutPoint(kind==='park'?'playground':kind==='workshop'?'workshop':'learningEntrance');return{id:'family-'+kind,name:kind==='park'?'Passeio da Família no parque':kind==='workshop'?'Família na oficina':'Família no laboratório',icon:kind==='park'?'🐾':kind==='workshop'?'🔧':'💻',group:'Aventuras em Família',x:point.x,z:point.z,navX:point.x,navZ:point.z+(kind==='workshop'?6:0)};})];}
   function familyRoute(id){setWaypoint(id);}
   function familyNear(){return familyWorld.location&&Math.hypot(player.x-familyWorld.actors.thiago.x,player.z-familyWorld.actors.thiago.z)<16;}
@@ -8791,6 +8864,7 @@
     const p=familyProgress(),name=familyWorld.location?.meetingOnly?'Encontro da Família':'Casa da Família';
     openModal('🐾 '+name,'<p>Thiago de óculos e polo azul, Thamis de óculos e cabelo cacheado preso, Luna de coleira rosa e Liz de laços vermelhos. Os quatro estão no jardim da Casa da Família.</p><p>Escolha Encontrar a família para seguir o GPS. Perto deles, feche esta janela para vê-los de frente.</p><div class="family-chapters"><p>'+(p.flags.park?'✓':'○')+' Passear até o parque</p><p>'+(p.deliveries.luna>=2&&p.deliveries.liz>=2?'✓':'○')+' Brincar com as duas: Luna '+p.deliveries.luna+'/2 · Liz '+p.deliveries.liz+'/2</p><p>'+(p.flags.workshop?'✓':'○')+' Diagnóstico na oficina</p><p>'+(p.flags.technology?'✓':'○')+' Desafio de tecnologia</p></div><div class="choice-grid"><button class="choice" data-family-gps>📍 Encontrar a família</button><button class="choice" data-family-walk>🚶 Passeio até o parque</button><button class="choice" data-family-throw="luna">🤍 Lançar para Luna</button><button class="choice" data-family-throw="liz">🖤 Lançar para Liz</button><button class="choice" data-family-task="workshop">🔧 Oficina</button><button class="choice" data-family-task="technology">💻 Tecnologia</button><button class="choice" data-family-stop>🏡 Encerrar passeio</button><a class="choice" href="../familia/3d/">Abrir aventuras originais da Família</a></div>',root=>{
       $('[data-family-gps]',root).onclick=()=>familyRoute('family-home');
+      for(const [id,name]of[['thiago','Thiago'],['thamis','Thamis']]){const play=document.createElement('button');play.className='choice';play.dataset.familyPlay=id;play.textContent='Jogar como '+name;play.onclick=()=>selectFamilyCharacter(id);root.querySelector('.choice-grid').prepend(play);}
       const portrait=document.createElement('button');portrait.className='choice';portrait.dataset.familyPortrait='';portrait.textContent='📷 Ver os quatro personagens';portrait.onclick=()=>{if(!familyNear()){familyRoute('family-home');return;}familyWorld.portraitUntil=Infinity;closeModal();toast('Thiago, Thamis, Luna e Liz. Caminhe ou arraste a câmera para voltar.','good',4500);};root.querySelector('.choice-grid').prepend(portrait);
       $('[data-family-walk]',root).onclick=()=>{if(player.vehicle){toast('Saia do veículo para iniciar o passeio.','warn',1500);return;}if(familyCommand('walk')){familyRoute('family-park');closeModal();toast('Vamos juntos ao parque. Caminhe e espere a família.','good',2500);}};
       $$('[data-family-throw]',root).forEach(button=>button.onclick=()=>{if(familyCommand('throw',{dog:button.dataset.familyThrow,toy:familyWorld.toy})){closeModal();toast('Brinquedo lançado. Espere a devolução!','good',1600);}});
@@ -8799,6 +8873,6 @@
     });
   }
   window.addEventListener('otthi:event-v2',event=>{const e=event.detail;if(e?.kind!=='family-command'||!sharedWorldIsAuthority()||!e.actorUid)return;familyApplyCommand(e.payload?.kind,e.payload||{},String(e.actorUid),remotePresence.get(String(e.actorUid)));});
-  window.OTTHI_FAMILY={open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
+  window.OTTHI_FAMILY={remoteAvatars:()=>[...world.ghosts.entries()].map(([uid,g])=>({uid,id:g.userData.familyAvatar?.id||'',bones:g.userData.familyAvatar?.bones.length||0,signature:g.userData.avatarSignature})),playerAvatar:()=>{const v=playerModel?.userData?.familyAvatar;return v?{id:v.id,bones:v.bones.length,meshVisible:v.mesh.visible&&playerModel.visible,baseHidden:!playerModel.userData.parts.body.parent.visible,position:playerGroup.position.toArray(),arm:v.byName.shoulder1.rotation.toArray(),leg:v.byName['hip1'].rotation.toArray(),toolInHand:!!toolVisual&&toolVisual.parent===v.byName.hand1}:null;},open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
 
 })();

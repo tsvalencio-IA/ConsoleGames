@@ -127,7 +127,7 @@
   }
   function refreshEquippedToolVisual(){
     if(!playerModel?.userData?.parts?.rightArm)return;
-    const arm=playerModel.userData.parts.rightArm;if(toolVisual){arm.remove(toolVisual);toolVisual=null;}
+    const arm=playerModel.userData.parts.rightArm;if(toolVisual){toolVisual.parent?.remove(toolVisual);toolVisual=null;}
     toolVisual=new THREE.Group();toolVisual.position.set(0,-1.12,.14);toolVisual.rotation.z=-.18;arm.add(toolVisual);
     const type=state.tools?.equipped||'axe',wood=materials.wood||0x8c542c,metal=materials.metal||0x8d9aa6;
     if(type==='bucket'){
