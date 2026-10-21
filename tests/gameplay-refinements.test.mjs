@@ -3,16 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const read=p=>readFileSync(p,'utf8');
-function engine(slug,file,settings={}){
- let clock=100;
- const defaults={distance:'far',camera:'chase',sensitivity:1,smoothing:.62,difficulty:'normal',quality:'auto',assist:true,...settings};
- const element=()=>({style:{},classList:{add(){},remove(){},contains(){return false}},remove(){},appendChild(){},addEventListener(){},getBoundingClientRect(){return {width:390,height:844,left:0,top:0}}});
- const window={ArcadePlaySettings:{get:()=>defaults},ArcadeControls:{mode:'controls'},Sfx:{play(){}},Profile:{coins:0},addEventListener(){},System:{registerGame:(id,name,e,logic)=>window.logic=logic,canvas:{...element(),width:390,height:844},msg(){},playerId:'unit-player',player:{}}};
- const document={getElementById:element,createElement:element};
- vm.runInNewContext(read('games/'+slug+'/js/'+file+'.js'),{window,document,performance:{now:()=>clock},console,navigator:{},setTimeout(){},setInterval(){},clearInterval(){},clearTimeout(){},localStorage:{getItem(){return null},setItem(){}},firebase:{database:{ServerValue:{TIMESTAMP:0}}}});
- return {game:window.logic,window,settings:defaults,advance:n=>clock+=n};
-}
-function canvas(){const operations=[];return new Proxy({operations,measureText:t=>({width:String(t).length*7}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})}, {get(o,k){if(k in o)return o[k];return (...args)=>operations.push([k,...args])}})}
+import {engine,canvas} from './helpers/game-fixture.mjs';
 test('kart: zoom moves road and actual competitors with the same camera; rear view reverses direction',()=>{
  const {game:g,settings}=engine('kart','game_kart');g.currentFase={mode:'RACE'};g.buildTrack(0);g.state='RACE';g.rivals=[{lap:1,pos:1500,x:.25,charId:1,name:'Rival real',kartId:0}];
  const c=canvas();g.renderWorld(c,390,844);const far={...g.playerScreen};assert(Number.isFinite(far.x)&&far.y>200&&far.y<844);

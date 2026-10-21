@@ -55,8 +55,13 @@
   function loadWorldTexture(pack,channel,options={}){
     const key=`${pack}:${channel}:${(options.repeat||[1,1]).join('x')}`;
     if(otthiWorldRuntime.textures.has(key))return otthiWorldRuntime.textures.get(key);
-    const texture=new THREE.TextureLoader().load(worldPbrPath(pack,channel),loaded=>{
-      configureWorldTexture(loaded,options);loaded.needsUpdate=true;registerVisualAsset(`world-texture:${key}`,loaded,{type:'texture',status:'loaded',pack,channel});
+    // A texture that has no decoded image samples black on mobile GPUs. Keep a
+    // neutral pixel until decoding finishes, and keep it if the request fails.
+    const pixel=document.createElement('canvas');pixel.width=pixel.height=1;
+    const context=pixel.getContext('2d');context.fillStyle=channel==='normal'?'rgb(128,128,255)':channel==='emissive'?'#000000':'#ffffff';context.fillRect(0,0,1,1);
+    const texture=new THREE.CanvasTexture(pixel);configureWorldTexture(texture,options);
+    new THREE.ImageLoader().load(worldPbrPath(pack,channel),image=>{
+      texture.image=image;configureWorldTexture(texture,options);texture.needsUpdate=true;registerVisualAsset(`world-texture:${key}`,texture,{type:'texture',status:'loaded',pack,channel});
     },undefined,error=>{
       otthiWorldRuntime.errors.push(`texture:${pack}:${channel}:${String(error?.message||'load')}`);updateVisualAsset(`world-texture:${key}`,{status:'fallback'});
     });

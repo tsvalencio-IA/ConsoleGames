@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "8a76c1d3f3e8aafb0ab38112cd639daafab93e556fa6843fd9dbc4db74a23d57"
+      "sha256Body": "72e042500cbd0d3b7dec44d30388a73ec6fedf112dcc07a62f0c1721a9439fe7"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "008bc64bf4f389990ca195a0aad297827609fd0c76ff84e33981b7e6a0093e95"
+      "sha256Body": "cbdd917c3d5899745ba4a41259dc187b8a4601a343256dd4500409b9da6c86e3"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -280,7 +280,7 @@
       "startLine": 5680,
       "endLine": 5801,
       "description": "Fundação OTTHI World, PBR local, diagnóstico e painel das cinco etapas",
-      "sha256Body": "2ec572ff70b3506da65ad223c1d689d8154117ba1549eeaa4bc976c7453bed0d"
+      "sha256Body": "ead115d5ea1f921805af5231f36bbdf0b992355f158d5ef22487fb4bb7e9e9d8"
     },
     {
       "file": "src/modules/34-avatar-studio-professional-v3.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "e9615c624efc7145a44231b4532e0ee701aa4a7337a4bf314b0be3337f7037ee"
+      "sha256Body": "7730d81840fa2e152c0b49ecd26220dde9c2fa0fedbc99f105c9d67270beeebd"
     }
   ],
   "styles": [

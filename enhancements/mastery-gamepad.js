@@ -8,130 +8,62 @@ const names={drive:"KART LEGENDS",box_pro:"BOXE PRO",tennis:"TÊNIS ARENA",ar_tr
 if(!Object.prototype.hasOwnProperty.call(names,gameId))return;
 const $=s=>document.querySelector(s);
 const goalDefs={
- drive:[["lap","COMPLETE UMA VOLTA",1],["speed","VELOCIDADE 150+",3],["nitro","ATIVAR NITRO",1]],
- box_pro:[["hits","ACERTE 3 GOLPES",3],["time","SOBREVIVA 30s",30],["guard","DEFENDA POR 3s",3]],
- tennis:[["rally","RALLY DE 4 TOQUES",4],["points","MARQUE 2 PONTOS",2],["match","VENCER UMA PARTIDA",1]],
- ar_truck_sim:[["collect","COLETE 2 OBJETOS",2],["mission","CONCLUA UMA MISSÃO",1],["return","RETORNE À BASE",1]],
- usarmy_flight_sim:[["survive","VOE POR 35s",35],["missiles","DISPARE 2 MÍSSEIS",2],["wave","ENFRENTE A 2ª ONDA",2]]
+ drive:[[["lap","COMPLETE UMA VOLTA",1],["fast","MANTENHA 150+ POR 3s",3],["nitro","USE O NITRO",1]],[["laps","COMPLETE 2 VOLTAS",2],["fast","MANTENHA 150+ POR 12s",12],["podium","TERMINE NO PÓDIO",1]],[["win","VENÇA UMA CORRIDA",1],["hardWin","VENÇA NO DESAFIO",1],["boosts","FAÇA 2 MINI-TURBOS",2]]],
+ box_pro:[[["hits","ACERTE 3 GOLPES",3],["time","LUTE POR 30s",30],["blocks","BLOQUEIE 2 GOLPES",2]],[["dodges","FAÇA 2 ESQUIVAS",2],["counters","ACERTE UM CONTRAGOLPE",1],["win","VENÇA UMA LUTA",1]],[["counters","ACERTE 3 CONTRAGOLPES",3],["hardWin","VENÇA O CINTURÃO OU DESAFIO",1],["healthyWin","VENÇA COM 50% DE VIDA",1]]],
+ tennis:[[["rally","RALLY DE 4 TOQUES",4],["points","MARQUE 2 PONTOS",2],["win","VENÇA UMA PARTIDA",1]],[["rally","RALLY DE 8 TOQUES",8],["points","MARQUE 8 PONTOS",8],["win","VENÇA UMA PARTIDA",1]],[["rally","RALLY DE 12 TOQUES",12],["hardWin","VENÇA NO DESAFIO",1],["marginWin","VENÇA COM 5 DE VANTAGEM",1]]],
+ ar_truck_sim:[[["collect","COLETE 2 OBJETOS",2],["missions","CONCLUA UMA MISSÃO",1],["deliveries","ENTREGUE UMA CARGA NA BASE",1]],[["itemsDelivered","ENTREGUE 6 OBJETOS",6],["missions","CONCLUA 2 MISSÕES",2],["safeReturn","ENTREGUE COM 80% DE VIDA",1]],[["itemsDelivered","ENTREGUE 12 OBJETOS",12],["missions","CONCLUA 4 MISSÕES",4],["deliveries","FAÇA 4 ENTREGAS",4]]],
+ usarmy_flight_sim:[[["time","VOE POR 35s",35],["locks","TRAVE A MIRA NUM INIMIGO",1],["kills","ABATA UM ADVERSÁRIO",1]],[["kills","ABATA 5 ADVERSÁRIOS",5],["wave","ALCANCE A SEGUNDA ONDA",2],["school","CONCLUA A ESCOLA DE VOO",1]],[["kills","ABATA 12 ADVERSÁRIOS",12],["boss","ABATA O CHEFÃO",1],["victory","CONCLUA A CAMPANHA",1]]]
 };
-const goals=goalDefs[gameId].map(([id,title,target])=>({id,title,target,progress:0}));
-const key="thia:mastery:v1:"+gameId;
-let completed={},session=null,last=null,lastTick=performance.now(),ui=null,info=null,toggle=null,badge=null;
-try{const saved=JSON.parse(localStorage.getItem(key)||"{}");if(saved&&typeof saved==="object"&&saved.completed&&typeof saved.completed==="object")completed=saved.completed}catch{}
-function persist(){
- try{localStorage.setItem(key,JSON.stringify({completed,updatedAt:new Date().toISOString()}))}catch{}
-}
+const key="thia:mastery:v2:"+gameId;
+let completed={},session=null,last=null,lastTick=performance.now(),ui=null,info=null,toggle=null,badge=null,tier=0;
+try{const saved=JSON.parse(localStorage.getItem(key)||"{}");if(saved&&typeof saved.completed==='object')completed=saved.completed||{}}catch{}
+const stages=['INICIAÇÃO','TÉCNICA','MAESTRIA'];
+function firstUnfinished(){return Math.min(2,goalDefs[gameId].findIndex((rows,i)=>rows.some(([id])=>!completed[i+':'+id]))<0?2:goalDefs[gameId].findIndex((rows,i)=>rows.some(([id])=>!completed[i+':'+id])))}
+let goals=[];
+function selectTier(){tier=firstUnfinished();goals=goalDefs[gameId][tier].map(([id,title,target])=>({id,title,target,progress:completed[tier+':'+id]?target:0}))}
+selectTier();
+function persist(){try{localStorage.setItem(key,JSON.stringify({completed,updatedAt:new Date().toISOString()}))}catch{}}
 const clamp=(x,a,b)=>Math.min(b,Math.max(a,Number(x)||0));
-const isPlaying=g=>!!g&&(gameId==="drive"?g.state==="RACE"&&g.status==="RACING":
- gameId==="box_pro"?g.state==="FIGHT":
- gameId==="tennis"?["RALLY","SERVE","STARTING","END"].includes(g.state):
- gameId==="ar_truck_sim"?["PLAY_REAR_AR","WAITING_PICKUP","ENTER_BASE_TRANSITION","FRONT_AR_OFFICE"].includes(g.state):
- g.state==="PLAYING");
+const isPlaying=g=>!!g&&(gameId==='drive'?['RACE','SPECTATE_WAIT'].includes(g.state):gameId==='box_pro'?['FIGHT','GAMEOVER'].includes(g.state):gameId==='tennis'?['IDLE','RALLY','SERVE','STARTING','END_WAIT','END'].includes(g.state):gameId==='ar_truck_sim'?['PLAY_REAR_AR','WAITING_PICKUP','ENTER_BASE_TRANSITION','FRONT_AR_OFFICE'].includes(g.state):['PLAYING','VICTORY','GAMEOVER'].includes(g.state));
 function make(){
- if(ui)return;
- ui=document.createElement("section");ui.id="studio-mastery";ui.setAttribute("role","status");
- ui.setAttribute("aria-label","Missões de domínio nesta partida");
- toggle=document.createElement("button");toggle.type="button";toggle.id="studio-mastery-toggle";
- toggle.setAttribute("aria-expanded","false");toggle.setAttribute("aria-label","Mostrar ou ocultar desafios da partida");
- const symbol=document.createElement("span");symbol.textContent="◉";
- info=document.createElement("span");info.id="studio-mastery-summary";info.textContent="DESAFIOS";
- toggle.append(symbol,info);
- badge=document.createElement("div");badge.id="studio-mastery-list";badge.hidden=true;
- ui.append(toggle,badge);document.body.append(ui);ui.hidden=true;
- toggle.addEventListener("click",()=>{badge.hidden=!badge.hidden;toggle.setAttribute("aria-expanded",String(!badge.hidden));render()});
- render();
+ if(ui)return;ui=document.createElement('section');ui.id='studio-mastery';ui.setAttribute('aria-label','Carreira e desafios de domínio');
+ toggle=document.createElement('button');toggle.type='button';toggle.id='studio-mastery-toggle';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Mostrar carreira e desafios');
+ const symbol=document.createElement('span');symbol.textContent='◉';info=document.createElement('span');info.id='studio-mastery-summary';toggle.append(symbol,info);
+ badge=document.createElement('div');badge.id='studio-mastery-list';badge.hidden=true;ui.append(toggle,badge);document.body.append(ui);ui.hidden=true;
+ toggle.addEventListener('click',()=>{badge.hidden=!badge.hidden;toggle.setAttribute('aria-expanded',String(!badge.hidden));render()});render();
 }
 function render(){
- if(!ui)return;
- const done=goals.filter(g=>g.progress>=g.target).length;
- info.textContent="MISSÕES "+done+"/"+goals.length;
- badge.replaceChildren(...goals.map(g=>{
-   const el=document.createElement("div");el.className="studio-mastery-task"+(g.progress>=g.target?" completed":"");
-   const text=document.createElement("span");text.textContent=g.title;
-   const fraction=document.createElement("strong");
-   const value=Math.min(g.target,Math.floor(g.progress));
-   fraction.textContent=value+"/"+g.target;
-   el.append(text,fraction);return el;
- }));
- ui.classList.toggle("all-complete",done===goals.length);
+ if(!ui)return;const done=goals.filter(g=>completed[tier+':'+g.id]).length;info.textContent=stages[tier]+' '+done+'/3';
+ const heading=document.createElement('div');heading.className='studio-mastery-heading';heading.textContent='CARREIRA · ETAPA '+(tier+1)+'/3';
+ badge.replaceChildren(heading,...goals.map(g=>{const earned=!!completed[tier+':'+g.id],el=document.createElement('div');el.className='studio-mastery-task'+(earned?' completed':'');const text=document.createElement('span');text.textContent=g.title;const fraction=document.createElement('strong');fraction.textContent=earned?'✓':Math.min(g.target,Math.floor(g.progress))+'/'+g.target;el.append(text,fraction);return el}));
+ if(done===3){const note=document.createElement('small');note.textContent=tier<2?'Etapa concluída. A próxima começa na próxima partida.':'Carreira completa. Melhore seus recordes!';badge.append(note)}
+ ui.classList.toggle('all-complete',done===3);
 }
-function reset(){
- goals.forEach(g=>g.progress=0);
- session={time:0,hits:0,guard:0,fast:0,missiles:0,nitro:0,points:0,missions:0,returns:0,win:0};
- last=null;render();
-}
-function snapshot(g){
- return {
-  state:String(g.state||""),status:String(g.status||""),
-  lap:Number(g.lap)||1,speed:Number(g.speed)||0,nitro:!!g.turboLock,
-  hp:Number(g.p1?.hp)||0,enemyHp:Number(g.p2?.hp)||0,guard:!!g.p1?.guard,round:Number(g.round)||0,
-  rally:Number(g.rallyCount)||0,p1score:Number(g.score?.p1)||0,tennisEnd:g.state==="END",
-  collected:Number(g.currentMission?.progress)||0,cargo:Number(g.cargo?.length)||0,missionActive:!!g.currentMission?.active,
-  missiles:Number(g.missiles?.length)||0,wave:Number(g.session?.wave)||0,
-  shipHP:Number(g.ship?.hp)||0
- };
-}
+function reset(){selectTier();session={time:0,fast:0,nitro:0,locks:0,safeReturn:0};last=null;render()}
 function updateGoals(g,dt){
- const v=snapshot(g),p=last||v;
- session.time+=dt;
- if(gameId==="drive"){
-   if(v.speed>=150)session.fast+=dt;
-   if(v.nitro&&!p.nitro)session.nitro++;
-   goals[0].progress=Math.max(0,v.lap-1);
-   goals[1].progress=session.fast;
-   goals[2].progress=session.nitro;
- }else if(gameId==="box_pro"){
-   if(v.enemyHp<p.enemyHp-0.1)session.hits++;
-   if(v.guard)session.guard+=dt;
-   goals[0].progress=session.hits;
-   goals[1].progress=session.time;
-   goals[2].progress=session.guard;
- }else if(gameId==="tennis"){
-   if(v.p1score>p.p1score)session.points+=v.p1score-p.p1score;
-   if(g.state==="END"&&v.p1score>Number(g.score?.p2||0))session.win=1;
-   // A rally is confirmed by the native counter, not synthetic keypresses.
-   goals[0].progress=Math.max(goals[0].progress,v.rally);
-   goals[1].progress=session.points;
-   goals[2].progress=session.win;
- }else if(gameId==="ar_truck_sim"){
-   goals[0].progress=Math.max(goals[0].progress,v.collected,session.collectTotal||0);
-   if(p.missionActive&&!v.missionActive)session.missions++;
-   if(g.state==="FRONT_AR_OFFICE"&&p.state!=="FRONT_AR_OFFICE")session.returns++;
-   session.collectTotal=Math.max(session.collectTotal||0,v.collected);
-   goals[1].progress=session.missions;
-   goals[2].progress=session.returns;
- }else if(gameId==="usarmy_flight_sim"){
-   if(v.missiles>p.missiles)session.missiles+=v.missiles-p.missiles;
-   goals[0].progress=session.time;
-   goals[1].progress=session.missiles;
-   goals[2].progress=v.wave;
+ const p=last||{},v={state:g.state,nitro:!!g.turboLock,locked:!!g.combat?.locked,deliveries:Number(g.expedition?.deliveries)||0};
+ const active=['RACE','FIGHT','RALLY','SERVE','PLAYING','PLAY_REAR_AR','WAITING_PICKUP'].includes(g.state);if(active)session.time+=dt;
+ const hard=window.ArcadePlaySettings?.get().difficulty==='hard';let metrics={time:session.time};
+ if(gameId==='drive'){
+  if(g.speed>=150&&active)session.fast+=dt;if(v.nitro&&!p.nitro)session.nitro++;
+  const finished=g.status==='FINISHED',won=finished&&g.finalRank===1;
+  Object.assign(metrics,{lap:Math.max(0,g.lap-1),laps:Math.max(0,g.lap-1),fast:session.fast,nitro:session.nitro,podium:Number(finished&&g.finalRank<=3),win:Number(won),hardWin:Number(won&&hard),boosts:g.driftBoosts||0});
+ }else if(gameId==='box_pro')Object.assign(metrics,g.boutStats||{},{win:Number(g.matchWon),hardWin:Number(g.matchWon&&(hard||g.currentFase?.id==='f3')),healthyWin:Number(g.matchWon&&g.p1?.hp>=50)});
+ else if(gameId==='tennis'){
+  const won=['END','END_WAIT'].includes(g.state)&&g.score.p1>g.score.p2;Object.assign(metrics,{rally:Math.max(g.matchBestRally||0,g.rallyCount||0),points:g.score.p1,win:Number(won),hardWin:Number(won&&hard),marginWin:Number(won&&g.score.p1-g.score.p2>=5)});
+ }else if(gameId==='ar_truck_sim'){
+  if(v.deliveries>(p.deliveries||0)&&g.health>=80)session.safeReturn=1;Object.assign(metrics,g.expedition||{},{collect:g.currentMission?.progress||0,safeReturn:session.safeReturn});
+ }else{
+  if(v.locked&&!p.locked)session.locks++;Object.assign(metrics,{locks:session.locks,kills:g.session?.kills||0,wave:g.session?.wave||0,school:Number(g.flightCareer?.school),boss:Number(g.bossDefeated),victory:Number(g.state==='VICTORY')});
  }
- let changed=false;
- for(const goal of goals){
-   if(goal.progress>=goal.target&&!completed[goal.id]){
-     completed[goal.id]=true;changed=true;
-     ui?.classList.add("just-earned");
-     window.setTimeout(()=>ui?.classList.remove("just-earned"),1300);
-   }
- }
- if(changed)persist();
- last=v;
+ let changed=false;for(const goal of goals){goal.progress=Math.max(goal.progress,Number(metrics[goal.id])||0);const stamp=tier+':'+goal.id;if(goal.progress>=goal.target&&!completed[stamp]){completed[stamp]=true;changed=true;ui?.classList.add('just-earned');window.setTimeout(()=>ui?.classList.remove('just-earned'),1300)}}
+ if(changed)persist();last=v;
 }
-const current=()=> (window.Games||[]).find(x=>x.id===gameId && window.System?.activeGame===x);
+const current=()=> (window.Games||[]).find(x=>x.id===gameId&&window.System?.activeGame===x);
 function cycle(){
- if(!ui)make();
- const active=current(),logic=active?.logic,playing=isPlaying(logic);
- const locked=document.hidden||window.System?.paused||!playing;
- ui.hidden=!playing;
- if(locked){
-   if(!playing&&session){session=null;last=null;goals.forEach(g=>g.progress=0);render()}
-   lastTick=performance.now();return
- }
- if(!session)reset();
- const time=performance.now(),dt=clamp((time-lastTick)/1000,0,.25);
- lastTick=time;
- updateGoals(logic,dt);
- render();
+ if(!ui)make();const logic=current()?.logic,playing=isPlaying(logic);ui.hidden=!playing;
+ if(document.hidden||window.System?.paused||!playing){if(!playing&&session){session=null;last=null;selectTier();render()}lastTick=performance.now();return}
+ if(!session)reset();const time=performance.now(),dt=clamp((time-lastTick)/1000,0,.25);lastTick=time;updateGoals(logic,dt);render();
 }
 function gamepadButtons(){
  const root=$(".input-game-controls:not([hidden])");

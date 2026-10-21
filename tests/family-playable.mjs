@@ -19,16 +19,37 @@ try{
  await page.locator('[data-family-throw="luna"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().ball==='seek'||window.OTTHI_FAMILY.diagnostics().ball==='return',null,{timeout:20000});
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.luna===1,null,{timeout:60000});
+ await page.evaluate(()=>window.OTTHI_FAMILY.open());
+ await page.locator('[data-family-portrait]').click();
+ await page.waitForFunction(()=>!!window.OTTHI_FAMILY.cameraFrame(),null,{timeout:6000});
+ await page.waitForTimeout(1600);
  await page.screenshot({path:'test-results/playable/family-integrated-world.png'});
+ await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1000);
+ await page.screenshot({path:'test-results/playable/family-portrait-mobile.png'});
+ await page.setViewportSize({width:844,height:390});await page.waitForTimeout(600);
+ assert.equal(await page.locator('#family-world-entry').count(),1,'Direct family entry is missing');
  const progress=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.luna);assert.equal(progress,1);
  await page.evaluate(()=>window.OTTHI_FAMILY.open());
  assert.equal(await page.locator('[data-family-task]').count(),2);
  await page.locator('[data-family-walk]').click();
  const walking=await page.evaluate(()=>window.OTTHI_FAMILY.snapshot().walkOwner);assert(walking,'Family must actually follow a participant');
  const layout=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth,drawCalls:window.OTTHOS_TEST_API.performance().drawCalls}));assert(layout.width<=layout.viewport+2);
+ // Both dogs return real toys, then the native HQ activities remain playable.
+ await page.evaluate(()=>{const p=window.OTTHI_FAMILY.diagnostics().home;window.OTTHOS_TEST_API.teleport(p.x,p.z+6);window.OTTHI_FAMILY.open();});
+ await page.locator('[data-family-stop]').click();
+ await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-throw="liz"]').click();
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.liz===1,null,{timeout:60000});
  // The original HQ keeps its native buttons and original fetch activity.
  await page.goto(base+'games/familia/3d/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#start').click();
+ await page.evaluate(()=>window.__THIA_TEST.selectDog('luna'));await page.locator('#throw').click();
+ await page.waitForFunction(()=>window.__THIA_TEST.state.byDog.luna>=1,null,{timeout:60000});
+ await page.evaluate(()=>window.__THIA_TEST.selectDog('liz'));await page.locator('#throw').click();
+ await page.waitForFunction(()=>window.__THIA_TEST.state.byDog.liz>=1,null,{timeout:60000});
+ await page.screenshot({path:'test-results/playable/family-original-game.png'});
+ await page.evaluate(()=>window.__THIA_TEST.openLocation('park'));
+ assert((await page.locator('#dialogBody').innerText()).includes('Ouro'),'Race lacks its visible time progression');
+ await page.locator('#closeDialog').click();
  await page.locator('#menuBtn').click();
  await page.locator('#menuChoices a[href*="otthi"]').waitFor();
  assert.equal(await page.locator('#controls #throw').count(),1);

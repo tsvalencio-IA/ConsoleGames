@@ -193,7 +193,8 @@
         },
 
         resetPhysics: function() {
-            this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.cameraX = 0; this.driftSparks = 0; this.slipstreamTimer = 0; 
+            this.lastTime=performance.now();this.physicsAccumulator=0;
+            this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
             this.lap = 1; this.maxLapPos = 0; this.status = 'RACING'; this.finishTime = 0; this.finalRank = 0; this.score = 0; this.nitro = 100; this.spinAngle = 0; this.spinTimer = 0; this.lateralInertia = 0; this.vibration = 0; this.engineTimer = 0; this.inputActive = false; this.rivals = []; this.localBots = []; particles = []; hudMessages = []; this.remotePlayersData = {};
             this.matchCoins = 0; this.item = null; this.itemCooldown = 0; this.projectiles = [];
             
@@ -252,7 +253,7 @@
 
                 // --- SISTEMA DE PÓDIO E COPA (NOVO) ---
                 if (this.raceState === "FINISHED") {
-                    if (window.Profile) { window.Profile.coins = (window.Profile.coins || 0) + this.reward; if(window.Profile.save) window.Profile.save(); }
+                    if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + this.reward; if(window.Profile.save) window.Profile.save(); }
                     this.player.lap = 1;
                     this.player.finished = false;
                     this.reward = 0;
@@ -370,7 +371,7 @@
                                 if (this.garage.length > 1) {
                                     const model = KART_MODELS[this.garage[this.shopCarouselIdx].modelId];
                                     let refund = Math.floor(model.price * 0.5);
-                                    if (window.Profile) window.Profile.coins = (window.Profile.coins || 0) + refund;
+                                    if (window.Profile) window.Profile.coins = (Number(window.Profile.coins) || 0) + refund;
                                     this.garage.splice(this.shopCarouselIdx, 1);
                                     this.shopCarouselIdx = 0; this.activeKartIdx = 0;
                                     this.saveGarage(); window.Sfx.coin(); window.System.msg(`VENDIDO POR R$${refund}`);
@@ -507,7 +508,7 @@
             this.pushMsg("LARGADA!", "#0f0", 60); window.Sfx.play(600, 'square', 0.5, 0.2); KartAudio.start();
             this.pos = 0; this.lap = 1; this.maxLapPos = 0; this.speed = 0; this.finishTime = 0; this.localBots = [];
             
-            const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||this.currentFase.diff||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
+            const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline&&this.currentFase.id==='arcade'?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
             if (!this.isOnline || (this.isOnline && this.isHost)) {
                 let availableChars = [0, 1, 2, 3, 4, 5, 6, 7].filter(c => c !== this.selectedChar);
                 const botConfigs = [];
@@ -545,7 +546,11 @@
                 return Math.floor(this.score);
             }
             
-            this.updatePhysics(w, h, pose);
+            const now=performance.now(),elapsed=Math.max(0,Math.min(100,now-(this.lastTime??now-16.667)));
+            this.lastTime=now;this.physicsAccumulator=Math.min(100,(this.physicsAccumulator||0)+elapsed);
+            while(this.physicsAccumulator>=1000/60-.001){
+                this.updatePhysics(w,h,pose);this.physicsAccumulator-=1000/60;
+            }
             this.checkRaceStatus();
             this.renderWorld(ctx, w, h);
             this.renderUI(ctx, w, h);
@@ -710,7 +715,7 @@
                 d.driftSparks = Math.min((d.driftSparks || 0) + 1, 100);
                 if (Math.random() > 0.3) this.spawnParticle(w/2 + (d.targetSteer > 0 ? -30 : 30), partY, d.driftSparks > 70 ? 'drift_blue' : 'drift_yellow');
             } else if (d.driftSparks > 0) {
-                if (d.driftSparks > 70) { d.speed = Math.min(CONF.TURBO_MAX_SPEED, d.speed + 60); window.Sfx.play(600, 'square', 0.2, 0.2); d.vibration = 8; this.pushMsg("DRIFT BOOST!", "#0ff", 30); }
+                if (d.driftSparks > 70) { d.driftBoosts=(d.driftBoosts||0)+1; d.speed = Math.min(CONF.TURBO_MAX_SPEED, d.speed + 60); window.Sfx.play(600, 'square', 0.2, 0.2); d.vibration = 8; this.pushMsg("DRIFT BOOST!", "#0ff", 30); }
                 d.driftSparks = 0;
             }
 
@@ -725,7 +730,7 @@
             } else { d.slipstreamTimer = 0; }
 
             // --- MAGNETISMO E HITBOX AUMENTADA ---
-            const pickupHitbox = 4.5; 
+            const pickupHitbox = .23;
             for (let i = 0; i <= 1; i++) {
                 const segInfo = getSegment((d.pos / CONF.SEGMENT_LENGTH) + i);
                 if (segInfo.obs) {
@@ -734,15 +739,15 @@
                             let dist = Math.abs(d.playerX - o.x);
                             
                             // Efeito Magnético: Atrai o item pro jogador se estiver proximo
-                            if (dist < 4.5 && o.type !== 'banana') {
-                                o.x += (d.playerX - o.x) * 0.15; 
+                            if(dist<.62&&o.type!=='banana') {
+                                o.x+=(d.playerX-o.x)*.06;
                                 dist = Math.abs(d.playerX - o.x);
                             }
 
                             if (dist < pickupHitbox) {
                                 if (o.type === 'coin') {
                                     o.collected = true; d.matchCoins++; d.score += 50; window.Sfx.coin(); 
-                                    if (window.Profile) { window.Profile.coins = (window.Profile.coins || 0) + 1000; if(window.Profile.save) window.Profile.save(); }
+                                    if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + 1000; if(window.Profile.save) window.Profile.save(); }
                                 } else if (o.type === 'item_box' && !d.item) {
                                     o.collected = true; window.Sfx.play(1000, 'sine', 0.1);
                                     const possibleItems = ['mushroom', 'banana', 'shell'];
@@ -859,7 +864,7 @@
             if(Math.abs(d.lateralInertia) > 0.12 && d.speed > 60 && absX < 1.4) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
 
             if (this.localBots.length > 0 && d.state !== 'GAMEOVER') {
-                const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||this.currentFase.diff||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
+                const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline&&this.currentFase.id==='arcade'?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
                 let playerTotalDist = (d.lap * trackLength) + d.pos;
 
                 this.localBots.forEach(r => {
@@ -1014,15 +1019,28 @@
             const theme = themes[TRACKS[d.selectedTrack].theme] || themes['grass']; 
             ctx.fillStyle = isOffRoad ? '#336622' : theme[1]; ctx.fillRect(0, horizon, w, h-horizon);
 
-            let dx = 0; let camX = d.cameraX * (w * 1.5); let segmentCoords = [];
+            const camX = d.cameraX * (w * 1.5), segmentCoords = [];
+            // Integrate the road once, then express it in the tangent frame at
+            // the player's axle. Curvature must not displace the player together
+            // with a camera segment behind them (the old dx*n did exactly that).
+            const road = [0], tangents = [0];
+            for(let n=0;n<=view.drawDistance;n++){
+                const bend=getSegment(currentSegIndex+view.direction*n).curve;
+                tangents.push(tangents[n]+bend*view.direction*w*.0028);
+                road.push(road[n]+tangents[n]);
+            }
+            const axle=view.depth+view.fraction, ai=Math.floor(axle), af=axle-ai;
+            const anchor=road[ai]+(road[ai+1]-road[ai])*af;
+            const tangent=tangents[ai]+(tangents[ai+1]-tangents[ai])*af;
+            const roadX=(n,scale)=>cx+(road[n]-anchor-(n-axle)*tangent-camX)*scale;
 
             for(let n = 0; n < view.drawDistance; n++) {
-                const seg = getSegment(currentSegIndex + view.direction*n); dx += (seg.curve * CONF.CAMERA_DEPTH * view.direction);
+                const seg = getSegment(currentSegIndex + view.direction*n);
                 const scale = 1 / (1 + Math.max(.05,n-view.fraction) * .22);
                 const nextScale = 1 / (1 + Math.max(.05,n+1-view.fraction) * .22);
                 const sy = horizon + ((h*1.2 - horizon) * scale); const nsy = horizon + ((h*1.2 - horizon) * nextScale);
-                const sx = cx - (camX * scale) - (dx * n * 20 * scale * 2); const nsx = cx - (camX * nextScale) - ((dx + seg.curve*CONF.CAMERA_DEPTH*view.direction) * (n+1) * 20 * nextScale * 2);
-                segmentCoords.push({ x: sx, y: sy, scale });
+                const sx=roadX(n,scale),nsx=roadX(n+1,nextScale);
+                segmentCoords.push({x:sx,y:sy,scale,halfWidth:w*1.5*scale});
                 ctx.fillStyle = (seg.color === 'dark') ? (isOffRoad?'#336622':theme[1]) : (isOffRoad?'#336622':theme[0]); ctx.fillRect(0, nsy, w, sy - nsy);
                 ctx.fillStyle = (seg.color === 'dark') ? '#f33' : '#fff'; 
                 ctx.beginPath(); ctx.moveTo(sx - (w*3*scale)*0.6, sy); ctx.lineTo(sx + (w*3*scale)*0.6, sy); ctx.lineTo(nsx + (w*3*nextScale)*0.6, nsy); ctx.lineTo(nsx - (w*3*nextScale)*0.6, nsy); ctx.fill();
@@ -1119,7 +1137,7 @@
                 const a=segmentCoords[index],b=segmentCoords[index+1]||a;
                 if(a){const scale=a.scale+(b.scale-a.scale)*t;
                   const x=a.x+(b.x-a.x)*t+d.playerX*w*1.5*scale,y=a.y+(b.y-a.y)*t;
-                  this.playerScreen={x,y,scale};
+                  this.playerScreen={x,y,scale,roadX:a.x+(b.x-a.x)*t,roadHalfWidth:w*1.5*scale};
                   this.drawKartSprite(ctx,x,y+d.bounce,w*.0022*scale*1.55,d.steer,d.visualTilt*.45,d.spinAngle,CHARACTERS[d.selectedChar].color,d.selectedChar,myKartId);
                 }
                 if(d.arcadeManual?.rear){ctx.save();ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText('OLHANDO PARA TRÁS',w/2,h*.27);ctx.restore();}

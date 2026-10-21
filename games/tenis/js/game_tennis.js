@@ -187,7 +187,7 @@
 
         startGame: function() {
             if (this.roundTimeout) { clearTimeout(this.roundTimeout); this.roundTimeout = null; }
-            this.state = 'STARTING'; this.score = { p1: 0, p2: 0 }; this.server = 'p1';
+            this.state='STARTING';this.score={p1:0,p2:0};this.server='p1';this.physicsAccumulator=0;this.matchBestRally=0;
             this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(); this.resetRound();
         },
 
@@ -213,7 +213,8 @@
                     if (dt > 0) {
                         this.processPose(pose, w, h);
                         if (this.state.startsWith('CALIB')) this.updateAutoCalibration(dt);
-                        if ((this.state === 'RALLY' || this.state === 'SERVE') && !(this.trackingLost&&!this.useMouse&&!this.isOnline)) { if (!this.isOnline || this.isHost) { this.updatePhysics(dt); if (!this.isOnline) this.updateAI(); this.updateRules(dt); } else { this.updatePhysicsClient(); } }
+                        if ((this.state==='RALLY'||this.state==='SERVE')&&!(this.trackingLost&&!this.useMouse&&!this.isOnline))this.stepSimulation(dt);
+                        else this.physicsAccumulator=0;
                     }
                 }
 
@@ -232,6 +233,16 @@
 
             } catch (e) { console.error("SHIELD V15.0: Crash Prevented ", e); }
             return this.score.p1 || 0;
+        },
+
+        stepSimulation: function(elapsed){
+            const step=1000/60;this.physicsAccumulator=Math.min(100,(this.physicsAccumulator||0)+elapsed);
+            while(this.physicsAccumulator>=step-.001){
+                this.physicsAccumulator-=step;
+                if(this.state!=='RALLY'&&this.state!=='SERVE'){this.physicsAccumulator=0;break;}
+                if(!this.isOnline||this.isHost){this.updatePhysics(step);if(!this.isOnline)this.updateAI();this.updateRules(step);}
+                else this.updatePhysicsClient();
+            }
         },
 
         updateAutoCalibration: function(dt) {
@@ -255,7 +266,8 @@
         processPose: function(pose, w, h) {
             this.pose = pose;
             const settings=window.ArcadePlaySettings?.get()||{sensitivity:1,smoothing:.62};
-            const smooth=1-Math.pow(1-settings.smoothing,Math.max(.5,Math.min(2,(performance.now()-(this.poseAt||performance.now()-16.67))/16.67)));
+            const poseDt=Math.max(8,Math.min(100,performance.now()-(this.poseAt??performance.now()-16.67))),velocityScale=16.67/poseDt;
+            const smooth=1-Math.pow(1-settings.smoothing,poseDt/16.67);
             this.poseAt=performance.now();
             // MoveNet provides pixel coordinates at the actual camera resolution.
             // Normalize to the legacy 640x480 calibration space to preserve all
@@ -268,10 +280,11 @@
             if (this.useMouse) {
                 let nx = MathCore.clamp(.5+(this.mouseX / w-.5)*settings.sensitivity, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
                 const targetX = MathCore.lerp(-CONF.TABLE_W * 1.2, CONF.TABLE_W * 1.2, nx); const targetY = MathCore.lerp(-200, 300, ny); 
-                this.p1.x = MathCore.lerp(this.p1.x || 0, targetX, 0.85); this.p1.y = MathCore.lerp(this.p1.y || -200, targetY, 0.85); this.p1.z = -CONF.TABLE_L/2 - 250; 
+                const pointerSmooth=1-Math.pow(.15,poseDt/16.67);
+                this.p1.x = MathCore.lerp(this.p1.x || 0, targetX, pointerSmooth); this.p1.y = MathCore.lerp(this.p1.y || -200, targetY, pointerSmooth); this.p1.z = -CONF.TABLE_L/2 - 250;
                 this.p1.elbowX = this.p1.x + 100; this.p1.elbowY = this.p1.y + 300;
                 let calcVX = this.p1.x - (Number.isFinite(this.p1.prevX) ? this.p1.prevX : this.p1.x); let calcVY = this.p1.y - (Number.isFinite(this.p1.prevY) ? this.p1.prevY : this.p1.y);
-                this.p1.vx = MathCore.clamp(Number.isFinite(calcVX) ? calcVX : 0, -300, 300); this.p1.vy = MathCore.clamp(Number.isFinite(calcVY) ? calcVY : 0, -300, 300);
+                this.p1.vx = MathCore.clamp(Number.isFinite(calcVX)?calcVX*velocityScale:0,-300,300);this.p1.vy=MathCore.clamp(Number.isFinite(calcVY)?calcVY*velocityScale:0,-300,300);
                 this.p1.prevX = this.p1.x; this.p1.prevY = this.p1.y;
                 return;
             }
@@ -329,8 +342,8 @@
                     let calculatedVelX = this.p1.x - (Number.isFinite(this.p1.prevX) ? this.p1.prevX : this.p1.x);
                     let calculatedVelY = this.p1.y - (Number.isFinite(this.p1.prevY) ? this.p1.prevY : this.p1.y);
 
-                    this.p1.vx = MathCore.clamp(Number.isFinite(calculatedVelX) ? calculatedVelX : 0, -350, 350);
-                    this.p1.vy = MathCore.clamp(Number.isFinite(calculatedVelY) ? calculatedVelY : 0, -350, 350);
+                    this.p1.vx = MathCore.clamp(Number.isFinite(calculatedVelX)?calculatedVelX*velocityScale:0,-350,350);
+                    this.p1.vy = MathCore.clamp(Number.isFinite(calculatedVelY)?calculatedVelY*velocityScale:0,-350,350);
                     this.p1.prevX = this.p1.x; this.p1.prevY = this.p1.y;
 
                     if (this.state === 'SERVE' && this.server === 'p1') { if (this.p1.vy < -25) this.executeAimAssistHit('p1', 0, 0, Math.abs(this.p1.vy)); }
@@ -499,10 +512,12 @@
         scorePoint: function(winner, txt) {
             if (this.state !== 'RALLY') return; 
             this.score[winner]++; this.addMsg(txt, winner === 'p1' ? "#0f0" : "#f00"); this.sfx(winner === 'p1' ? 'coin' : 'error');
+            this.matchBestRally=Math.max(this.matchBestRally||0,this.rallyCount);
             this.ball.active = false; this.rallyCount = 0;
             if (winner === 'p2') this.activeAIProfile.speed = Math.min(this.activeAIProfile.speed * 1.02, this.activeAIProfile.baseSpeed * 1.5);
             else this.activeAIProfile.speed = Math.max(this.activeAIProfile.speed * 0.99, this.activeAIProfile.baseSpeed);
-            if ((this.score.p1 >= 11 || this.score.p2 >= 11) && Math.abs(this.score.p1 - this.score.p2) >= 2) { this.state = 'END_WAIT'; this.endTimer = 0; } else { this.server = winner; this.resetRound(); }
+            if ((this.score.p1>=11||this.score.p2>=11)&&Math.abs(this.score.p1-this.score.p2)>=2){this.state='END_WAIT';this.endTimer=0;}
+            else{const total=this.score.p1+this.score.p2;this.server=(this.score.p1>=10&&this.score.p2>=10?total%2:Math.floor(total/2)%2)?'p2':'p1';this.resetRound();}
         },
 
         resetRound: function() {

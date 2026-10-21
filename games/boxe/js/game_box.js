@@ -141,6 +141,7 @@
                 this.particles = [];
                 this.matchCoins = 0;
                 this.matchEnded = false;
+                this.boutStats={hits:0,blocks:0,dodges:0,counters:0};
                 
                 this.setupInput();
             } catch(e) {
@@ -311,6 +312,8 @@
             this.state = 'GAMEOVER';
 
             let isWin = false;
+            this.endReason=this.p1.hp<=0||this.p2.hp<=0?'KO':'DECISÃO';
+            if(this.endReason==='DECISÃO')isWin=this.p1.hp>0&&(this.p1.score>this.p2.score||(this.p1.score===this.p2.score&&this.p1.hp>this.p2.hp));
             
             if (this.p1.hp > 0 && this.p2.hp <= 0) {
                 isWin = true; // Ganhou a luta
@@ -323,6 +326,8 @@
                     this.spawnMsg(window.innerWidth/2, window.innerHeight/2, "TEMPO ESGOTADO!", "#e74c3c");
                 }
             }
+            if(this.currentFase?.id==='f2'&&this.p2.hp>0)isWin=false;
+            this.matchWon=isWin;
 
             // Pausa dramática para saborear o nocaute antes de fechar o jogo
             setTimeout(() => {
@@ -604,6 +609,7 @@
 
                 // --- INJEÇÃO 20/10: MOEDAS POR ESQUIVA PERFEITA ---
                 if (defender === this.p1 && defender.isDodging) {
+                    if(this.boutStats)this.boutStats.dodges++;
                     this.spawnMsg(headBox.x, headBox.y - 40, "ESQUIVA!", "#2ecc71");
                     this.playSound('sine', 800, 0.2);
                     this.counterTimer = 1.5; 
@@ -620,6 +626,7 @@
 
                 // Counter Attack Massivo
                 if (attacker === this.p1 && this.counterTimer > 0) {
+                    if(this.boutStats)this.boutStats.counters++;
                     damage *= 2.0;
                     this.spawnMsg(cx, cy, "COUNTER!!", "#f39c12");
                     this.playSound('sawtooth', 300, 0.3);
@@ -629,6 +636,7 @@
                 if (defender.guard) {
                     damage *= 0.2; 
                     if (defender === this.p1) {
+                        if(this.boutStats)this.boutStats.blocks++;
                         this.spawnMsg(headBox.x, headBox.y - 60, "PERFECT BLOCK!", "#3498db");
                         this.counterTimer = 1.0; 
                         this.matchCoins += 1; // Recompensa a Defesa!
@@ -670,6 +678,7 @@
                 }
                 
                 defender.hp = Math.max(0, defender.hp - damage);
+                if(attacker===this.p1&&this.boutStats)this.boutStats.hits++;
                 
                 if(this.isOnline && this.dbRef && attacker === this.p1) {
                      this.dbRef.child('players/' + defender.id).update({ hp: defender.hp });
@@ -692,7 +701,7 @@
             p.elbows.l = { x: p.shoulders.l.x - 20, y: p.shoulders.l.y + 60 };
             p.elbows.r = { x: p.shoulders.r.x + 20, y: p.shoulders.r.y + 60 };
 
-            const difficulty=window.ArcadePlaySettings?.get().difficulty||'normal';
+            const difficulty=this.currentFase?.id==='f1'?'easy':this.currentFase?.id==='f3'?'hard':this.currentFase?.id==='f2'?'normal':window.ArcadePlaySettings?.get().difficulty||'normal';
             const pace=difficulty==='easy'?1.85:difficulty==='hard'?.92:1.35;
             const lead=difficulty==='easy'?.68:difficulty==='hard'?.30:.48;
             const brain=ai.aiState;brain.timer=(brain.timer||0)+dt;
@@ -967,6 +976,7 @@
         },
 
         endRound: function() {
+            if(this.currentFase?.id==='f2'){this.processMatchEnd();return;}
             if(this.round < CONF.ROUNDS) {
                 this.round++;
                 this.timer = CONF.ROUND_TIME;

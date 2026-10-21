@@ -400,6 +400,7 @@
         colors: { main: '#00ffff', danger: '#ff003c', success: '#00ff66', warn: '#f1c40f', panel: 'rgba(0,15,30,0.85)', rare: '#ff00ff' },
 
         init: function() {
+            this.expedition={missions:0,deliveries:0,itemsDelivered:0};
             this.state = 'INIT'; this.lastTime = performance.now(); this.timeTotal = 0; this.score = 0;
             
             // INTEGRAÇÃO COM O SISTEMA GLOBAL (Usando o perfil do seu core original)
@@ -427,11 +428,13 @@
             }
         },
 
-        generateMission: function() { this.currentMission = { type: 'HEAVY LOAD', goal: 3 + Math.floor(Math.random() * 3), progress: 0, timer: 0, active: true }; },
+        generateMission: function() { const stage=Math.min(3,Math.floor((this.expedition?.missions||0)/2));this.currentMission={type:stage>=2?'HEAVY LOAD':'EXPLORAÇÃO',goal:3+stage,progress:0,timer:0,active:true,stage:stage+1}; },
         
         completeMission: function() {
+            if(!this.currentMission?.active||this.currentMission.progress<this.currentMission.goal)return false;
+            if(this.expedition)this.expedition.missions++;
             this.currentMission.active = false; let bonus = this.currentMission.goal * 1000;
-            if (window.Profile) { window.Profile.coins = (window.Profile.coins || 0) + bonus; if(window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades); } else { this.fallbackMoney += bonus; }
+            if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + bonus; if(window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades); } else { this.fallbackMoney += bonus; }
             window.System.msg("BÔNUS: R$" + bonus); this.baseFlash = 1.0; if (window.Sfx) window.Sfx.epic();
         },
         
@@ -840,11 +843,12 @@
 
         deliverCargo: function() {
             if (this.cargo.length > 0) {
+                if(this.expedition){this.expedition.deliveries++;this.expedition.itemsDelivered+=this.cargo.length;}
                 let total = this.cargo.reduce((a, b) => a + b, 0); let effBonus = Math.floor(total * (this.fuel / this.stats.maxFuel) * 0.3); total += effBonus;
                 if (this.currentMission && this.currentMission.active && this.currentMission.type === 'HEAVY LOAD') { total = Math.floor(total * 1.5); }
                 
                 if (window.Profile) {
-                    window.Profile.coins = (window.Profile.coins || 0) + total;
+                    window.Profile.coins = (Number(window.Profile.coins) || 0) + total;
                     if(window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades);
                 } else { this.fallbackMoney += total; }
 

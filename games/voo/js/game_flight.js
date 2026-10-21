@@ -184,6 +184,8 @@
         state: 'INIT', lastTime: 0, mode: 'SINGLE',
         session: { kills: 0, cash: 0, goal: 15, wave: 1, xp: 0 },
         upgrades: { engine: 1, missiles: 1, armor: 1 },
+        airframe:'falcon',
+        airframes:[{id:'falcon',name:'Falcão · equilibrado'},{id:'interceptor',name:'Interceptor · motor nível 3',requires:'engine'},{id:'sentinel',name:'Sentinela · blindagem nível 3',requires:'armor'}],
         currentStats: null,
         ship: { 
             hp: 100, maxHp: 100, speed: 250, x: 0, y: 3000, z: 0, vx: 0, vy: 0, vz: 250, 
@@ -201,8 +203,14 @@
             this._cleanupNet();
             
             this.lastTime = performance.now();
-            this.session = { kills: 0, cash: (window.Profile && window.Profile.coins) ? window.Profile.coins : 0, goal: 15, wave: 1, xp: (window.Profile && window.Profile.xp) ? window.Profile.xp : 0 };
+            this.session = { kills: 0, cash:Number(window.Profile?.coins)||0, goal: 15, wave: 1, xp:Number(window.Profile?.xp)||0 };
             this.upgrades = { engine: 1, missiles: 1, armor: 1 };
+            this.state='INIT';
+            this.careerKey='thia:flight-career:v1:'+(window.System?.playerId||'local');
+            let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{};}catch{}
+            for(const key of Object.keys(this.upgrades))this.upgrades[key]=Math.max(1,Math.min(5,Math.floor(Number(saved.upgrades?.[key])||1)));
+            this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school};
+            this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
             this.currentStats = JSON.parse(JSON.stringify(BASE_PLANE_STATS));
             
             this.ship = { 
@@ -402,11 +410,23 @@
             return ranks[idx];
         },
 
+        _saveCareer: function(){
+            try{localStorage.setItem(this.careerKey,JSON.stringify({...this.flightCareer,upgrades:this.upgrades,airframe:this.airframe}));}catch{}
+        },
+        selectAirframe: function(id){
+            const model=this.airframes.find(m=>m.id===id);
+            if(!model||(model.requires&&this.upgrades[model.requires]<3))return false;
+            if(this.state==='PLAYING'||this.state==='CALIBRATION')return false;
+            this.airframe=id;this._saveCareer();return true;
+        },
+
         _processHangarClick: function(x, y, w, h) {
             let buy = (cost, type) => {
-                if (this.session.cash >= cost) {
+                if (this.upgrades[type]<5 && this.session.cash >= cost) {
                     this.session.cash -= cost;
                     this.upgrades[type]++;
+                    if(window.Profile)window.Profile.coins=this.session.cash;
+                    this._saveCareer();
                     GameSfx.play('buy');
                     let realId = window.System && window.System.playerId;
                     if (window.DB && realId) {
@@ -416,6 +436,7 @@
             };
 
             let sc = Math.min(1, w / 600);
+            if(Math.abs(x-w/2)>150*sc)return;
             if (y > h*0.3 && y < h*0.45) buy(500 * this.upgrades.engine, 'engine');
             else if (y > h*0.48 && y < h*0.63) buy(800 * this.upgrades.missiles, 'missiles');
             else if (y > h*0.66 && y < h*0.81) buy(1000 * this.upgrades.armor, 'armor');
@@ -430,9 +451,15 @@
         },
 
         _startMission: function() {
+            this.currentStats=JSON.parse(JSON.stringify(BASE_PLANE_STATS));
+            this.currentStats.thrust+=((this.upgrades.engine-1)*50000);
+            this.ship.maxHp=100+(this.upgrades.armor-1)*100;
+            if(this.airframe==='interceptor'){this.currentStats.thrust*=1.12;this.currentStats.mass*=.95;this.currentStats.maxRollRate*=1.15;}
+            if(this.airframe==='sentinel'){this.ship.maxHp*=1.25;this.currentStats.mass*=1.15;this.currentStats.maxRollRate*=.85;}
+            this.ship.hp=this.ship.maxHp;
             this.state = 'PLAYING';
             if(this.flightSchool){Object.assign(this.ship,{x:0,y:8,z:-2200,vx:0,vy:0,vz:0,speed:0,yaw:0,pitch:0,roll:0});this.manualThrottle=.7;this.pilot.throttle=.7;this.flightSchool.stage='takeoff';this.flightSchool.gate=0;this.view=null;}
-            this.session.wave = 1;
+            this.session.wave=1;this.bossDefeated=false;
             this.entities = [];
             this.bullets = [];
             this.missiles = [];
@@ -445,7 +472,7 @@
                 this.lastTime = now;
                 
                 if (dt > 0.05) dt = 0.05; 
-                if (dt < 0.001) return this.session.cash || 0;
+                if (dt < 0.001) return this.session.kills*100;
 
                 if (!Number.isFinite(this.ship.vx)) this.ship.vx = 0;
                 if (!Number.isFinite(this.ship.vy)) this.ship.vy = 0;
@@ -509,7 +536,7 @@
 
                 if (this.state === 'GAMEOVER' || this.state === 'VICTORY') {
                     this._drawEnd(ctx, w, h);
-                    return this.session.cash;
+                    return this.session.kills*100;
                 }
 
                 if (this.ship.hp < this.ship.maxHp) {
@@ -566,7 +593,9 @@
                 let cr = Math.cos(this.ship.roll), sr = Math.sin(this.ship.roll);
 
                 let fwdX = sy * cp, fwdY = sp, fwdZ = cy * cp;
-                let upX = -sy*sp*cr - cy*sr, upY = cp*cr, upZ = -cy*sp*cr + sy*sr;
+                // Positive bank means the right wing goes down and lift turns
+                // the flight path to the right, consistently with positive yaw.
+                let upX = -sy*sp*cr + cy*sr, upY = cp*cr, upZ = -cy*sp*cr - sy*sr;
 
                 let vDirX = this.ship.vx/V, vDirY = this.ship.vy/V, vDirZ = this.ship.vz/V;
                 let cosAlpha = fwdX*vDirX + fwdY*vDirY + fwdZ*vDirZ;
@@ -635,7 +664,7 @@
                     if(this.ship.y<8){
                       const gentle=onRunway&&this.ship.speed<120&&Math.abs(this.ship.vy)<10&&Math.abs(this.ship.roll)<.35;
                       this.ship.y=8;this.ship.vy=0;
-                      if(this.flightSchool.stage==='landing'&&gentle){this.flightSchool.complete=true;this.flightSchool.stage='complete';this.ship.pitch=0;this.manualThrottle=0;}
+                      if(this.flightSchool.stage==='landing'&&gentle){this.flightSchool.complete=true;this.flightSchool.stage='complete';this.ship.pitch=0;this.manualThrottle=0;this.flightCareer.school=true;this._saveCareer();}
                       else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
                     }
                     if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
@@ -693,7 +722,7 @@
                 }
 
                 this._draw(ctx, w, h);
-                return this.session.cash + this.session.kills * 10;
+                return this.session.kills*100;
 
             } catch (err) {
                 console.error("CRITICAL FLIGHT ERROR:", err);
@@ -740,8 +769,12 @@
                     let lx = (1 - ((leftWrist.x || 0) / 640)) * w; 
                     let ly = ((leftWrist.y || 0) / 480) * h;
                     
-                    let rollInput = Math.atan2(ry - ly, rx - lx) / 1.5;
-                    trgRoll = Math.max(-1.0, Math.min(1.0, rollInput));
+                    // Anatomical wrist names swap sides in the mirrored view.
+                    // A level pair must always yield zero, never atan2(0,-span)=π.
+                    const rightIsOnRight=rx>lx;
+                    const slope=(rightIsOnRight?ry-ly:ly-ry);
+                    let rollInput=Math.atan2(slope,Math.max(1,Math.abs(rx-lx)))*1.8;
+                    trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
                     
                     let avgY = (ry + ly) / 2;
                     if (this.state === 'CALIBRATION') {
@@ -790,7 +823,8 @@
         },
 
         _processCombat: function(dt, w, h) {
-            this.combat.target = null; this.combat.locked = false; let closestZ = Infinity;
+            const previous=this.combat.target,wasLocked=this.combat.locked;
+            this.combat.target=null;this.combat.locked=false;let closestAngle=Infinity;
             
             const scan = (obj, isPlayer, uid) => {
                 let p = Engine3D.project(obj.x, obj.y, obj.z, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, h);
@@ -798,34 +832,34 @@
                 let dist = Math.hypot(dx, dy, dz);
                 if (dist < 1) dist = 1;
                 
-                let vDirX = this.ship.vx/this.ship.speed, vDirY = this.ship.vy/this.ship.speed, vDirZ = this.ship.vz/this.ship.speed;
-                let dirX = dx/dist, dirY = dy/dist, dirZ = dz/dist;
-                let dot = vDirX*dirX + vDirY*dirY + vDirZ*dirZ;
-
-                if (p.visible && p.z > 200 && p.z < 60000 && dot > 0.5 && p.z < closestZ) { 
-                    closestZ = p.z;
+                const angle=p.visible?Math.hypot(p.x-w/2,p.y-h/2)/800:Infinity;
+                // Six degrees around the aircraft's sight, not an entire forward
+                // hemisphere. Keep the same adversary in sight for acquisition.
+                if (obj.hp>0 && p.visible && p.z>200 && dist<30000 && angle<Math.tan(Math.PI/30) && angle<closestAngle) {
+                    closestAngle=angle;
                     this.combat.target = isPlayer ? {x:obj.x, y:obj.y, z:obj.z, vx:obj.vx||0, vy:obj.vy||0, vz:obj.vz||0, hp:obj.hp, isPlayer:true, uid:uid} : obj;
                 }
             };
 
             this.entities.forEach(e => { if(e.type && (e.type.startsWith('jet') || e.type === 'boss')) scan(e, false); });
 
-            if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.players) {
+            if (this.mode === 'PVP' && this.net.players) {
                 Object.keys(this.net.players).forEach(id => {
                     if (id !== this.net.uid && this.net.players[id]?.hp > 0) scan(this.net.players[id], true, id);
                 });
             }
 
+            const same=this.combat.target&&previous&&(this.combat.target.isPlayer?previous.isPlayer&&previous.uid===this.combat.target.uid:previous===this.combat.target);
+            if(!same)this.combat.lockTimer=0;
             if (this.combat.target) {
                 this.combat.lockTimer += dt;
-                if (this.combat.lockTimer >= 0.5) {
-                    if (!this.combat.locked) GameSfx.play('lock');
+                if (this.combat.lockTimer >= 0.65) {
+                    if (!wasLocked||!same) GameSfx.play('lock');
                     this.combat.locked = true;
-                    this.combat.lockTimer = 0.5;
+                    this.combat.lockTimer = 0.65;
                 }
             } else {
-                this.combat.lockTimer -= dt * 2;
-                if (this.combat.lockTimer < 0) this.combat.lockTimer = 0;
+                this.combat.lockTimer=0;
             }
 
             let firingState = false;
@@ -1193,6 +1227,7 @@
         },
 
         _kill: function(t, rew) {
+            if(t.rewarded)return;t.rewarded=true;if(t.isBoss)this.bossDefeated=true;
             GameSfx.play('boom');
             this._fx(t.x,t.y,t.z,'#f33',40,300);
             this._fx(t.x,t.y,t.z,'#234',30,600);
@@ -1203,6 +1238,8 @@
             this.session.kills++;
             this.session.cash += rew;
             this.session.xp += rew;
+            this.flightCareer.kills++;this._saveCareer();
+            if(window.Profile){window.Profile.coins=this.session.cash;window.Profile.xp=this.session.xp;}
             
             if (this.mode === 'COOP' && this.net.sharedRef) {
                 let teamKills = (this.net.sharedData.teamKills || 0) + 1;
@@ -1212,7 +1249,7 @@
             let realId = window.System && window.System.playerId;
             if (window.DB && realId) {
                 window.DB.ref('users/' + realId + '/coins').set(this.session.cash);
-                window.DB.ref('users/' + realId + '/xp').transaction(current => (current || 0) + this.session.xp);
+                window.DB.ref('users/' + realId + '/xp').transaction(current => (Number(current)||0)+rew);
             }
         },
 
@@ -1220,7 +1257,7 @@
             this.state = res;
             GameSfx.stop();
             setTimeout(() => {
-                if (window.System && window.System.gameOver) window.System.gameOver(this.session.kills*100, res==='VICTORY', this.session.cash);
+                if (window.System && window.System.gameOver) window.System.gameOver(this.session.kills*100,res==='VICTORY',0);
                 else if (window.System && window.System.home) window.System.home();
             }, 2000);
         },
@@ -1255,17 +1292,53 @@
             v.z=p.z-Math.cos(v.yaw)*Math.cos(p.pitch)*distance;
         },
         _projectView: function(x,y,z,w,h){const v=this.view||this.ship;return Engine3D.project(x,y,z,v.x,v.y,v.z,v.pitch,v.yaw,v.roll,w,h);},
+        _airframePoint: function([x,y,z]){
+            if(this.airframe==='interceptor'){x*=.87;z*=1.12;}else if(this.airframe==='sentinel'){x*=1.12;y*=1.07;}
+            const p=this.ship,cr=Math.cos(p.roll),sr=Math.sin(p.roll),cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),cy=Math.cos(p.yaw),sy=Math.sin(p.yaw);
+            const rx=x*cr+y*sr,ry=-x*sr+y*cr,py=ry*cp+z*sp,pz=z*cp-ry*sp;
+            return {x:p.x+rx*cy+pz*sy,y:p.y+py,z:p.z-rx*sy+pz*cy};
+        },
+        _airframeMesh: function(){
+            if(this.airframeMesh)return this.airframeMesh;
+            const faces=[],add=(vertices,color)=>faces.push({vertices,color});
+            const shell=(rings,color,steps=10)=>{
+                const points=rings.map(([z,rx,ry,y=0,x=0])=>Array.from({length:steps},(_,i)=>{const t=i*Math.PI*2/steps;return[x+Math.cos(t)*rx,y+Math.sin(t)*ry,z];}));
+                for(let j=0;j<points.length-1;j++)for(let i=0;i<steps;i++)add([points[j][i],points[j][(i+1)%steps],points[j+1][(i+1)%steps],points[j+1][i]],color);
+            };
+            // Closed volumes: ogive nose, fuselage, glass canopy, twin engines,
+            // swept wings, horizontal stabilizers and canted vertical fins.
+            shell([[-29,3,3],[-23,5.1,4.2],[-10,5.8,4.4],[5,4.8,4.5],[20,3.3,3.1],[33,1.8,1.8],[40,.12,.12]],[132,158,176]);
+            shell([[-5,.2,.2,4],[0,2.8,2,4],[8,3.1,2.6,4],[17,1.4,1.5,3],[21,.1,.1,2.8]],[34,91,124],12);
+            for(const side of [-1,1]){
+                shell([[-32,2.6,2.6,-.5,side*4.1],[-26,3.4,3.1,-.5,side*4.1],[-8,3.2,3,-.4,side*4.1],[1,2.7,2.2,-.3,side*4.1]],[87,111,131]);
+                shell([[-32.8,2.15,2.15,-.5,side*4.1],[-32.9,.1,.1,-.5,side*4.1]],[28,36,48]);
+                const wing=(outline,thickness,color)=>{
+                    const top=outline.map(([x,y,z])=>[x*side,y+thickness,z]),bottom=outline.map(([x,y,z])=>[x*side,y-thickness,z]);
+                    add(top,color);add([...bottom].reverse(),color.map(c=>c*.65));
+                    for(let i=0;i<top.length;i++)add([top[i],bottom[i],bottom[(i+1)%top.length],top[(i+1)%top.length]],color.map(c=>c*.8));
+                };
+                wing([[4,-.2,13],[31,-.9,-13],[29,-.9,-20],[5,-.2,-13]],.65,[154,178,195]);
+                wing([[3,1,-20],[15,1,-29],[13,1,-34],[3,1,-29]],.4,[132,158,180]);
+                const fin=[[side*3.7,1,-17],[side*7.2,12,-25],[side*7,12,-31],[side*4,1,-32]];
+                add(fin,[169,189,200]);add(fin.map(([x,y,z])=>[x+side*.65,y,z]).reverse(),[92,122,146]);
+                add([[side*27,-.15,-12],[side*29,-.15,-14],[side*27,-.15,-16],[side*25,-.15,-14]],[215,90,62]);
+            }
+            return this.airframeMesh=faces;
+        },
         _drawOwnPlane: function(ctx,w,h){
             if(window.ArcadePlaySettings?.get().camera==='cockpit')return;
-            const p=this.ship,cr=Math.cos(p.roll),sr=Math.sin(p.roll),cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),cy=Math.cos(p.yaw),sy=Math.sin(p.yaw);
-            const point=([x,y,z])=>{const rx=x*cr-y*sr,ry=x*sr+y*cr,py=ry*cp+z*sp,pz=z*cp-ry*sp;return this._projectView(p.x+rx*cy+pz*sy,p.y+py,p.z-rx*sy+pz*cy,w,h);};
-            const v=[[-2,0,-30],[2,0,-30],[0,3,29],[0,-3,29],[-6,0,-15],[6,0,-15],[-36,-1,-5],[36,-1,-5],[-13,1,-27],[13,1,-27],[0,11,-25],[0,1,-15]];
-            const faces=[[[0,1,2],'#c0d7e5'],[[0,3,1],'#36576d'],[[0,2,6],'#7b9fb8'],[[1,7,2],'#acc8da'],[[0,8,4],'#5f859f'],[[1,5,9],'#97bbd0'],[[0,10,11],'#d3e5ee'],[[1,11,10],'#698da9']];
-            const pts=v.map(point);
-            faces.map(([indices,color])=>({indices,color,z:indices.reduce((n,i)=>n+(pts[i].z||0),0)/3})).sort((a,b)=>b.z-a.z).forEach(f=>{if(f.indices.some(i=>!pts[i].visible))return;ctx.beginPath();f.indices.forEach((i,j)=>j?ctx.lineTo(pts[i].x,pts[i].y):ctx.moveTo(pts[i].x,pts[i].y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();ctx.strokeStyle='#243f54';ctx.lineWidth=.7;ctx.stroke();});
-            const canopy=point([0,4,7]),tail=point([0,0,-32]);
-            if(canopy.visible){ctx.fillStyle='#182e47';ctx.beginPath();ctx.ellipse(canopy.x,canopy.y,Math.max(2,canopy.s*3),Math.max(3,canopy.s*7),-(p.roll-(this.view?.roll||0)),0,Math.PI*2);ctx.fill();}
-            if(tail.visible){ctx.fillStyle=p.afterburner?'#80edff':'#f5a755';ctx.beginPath();ctx.ellipse(tail.x,tail.y,Math.max(2,tail.s*2),Math.max(3,tail.s*(p.afterburner?15:5)),0,0,Math.PI*2);ctx.fill();}
+            const project=v=>{const p=this._airframePoint(v);return this._projectView(p.x,p.y,p.z,w,h);};
+            const surfaces=this._airframeMesh().map(face=>{
+                const world=face.vertices.map(v=>this._airframePoint(v)),pts=world.map(v=>this._projectView(v.x,v.y,v.z,w,h));
+                const a=world[0],b=world[1],c=world[2],ux=b.x-a.x,uy=b.y-a.y,uz=b.z-a.z,vx=c.x-a.x,vy=c.y-a.y,vz=c.z-a.z;
+                const nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx,length=Math.hypot(nx,ny,nz)||1;
+                const light=.55+.45*Math.abs((nx*.3+ny*.85+nz*.43)/length);
+                return{pts,z:pts.reduce((n,p)=>n+(p.z||0),0)/pts.length,color:face.color.map(v=>Math.round(v*light))};
+            }).sort((a,b)=>b.z-a.z);
+            for(const f of surfaces){if(f.pts.some(p=>!p.visible))continue;ctx.beginPath();f.pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='rgb('+f.color.join(',')+')';ctx.fill();ctx.strokeStyle='rgba(29,51,67,.24)';ctx.lineWidth=.45;ctx.stroke();}
+            if(this.pilot.throttle>.1){
+                for(const side of [-1,1]){const length=this.ship.afterburner?19:4+this.pilot.throttle*4,points=[[side*4.1-1.7,-.5,-33],[side*4.1+1.7,-.5,-33],[side*4.1,-.5,-33-length]].map(project);if(points.every(p=>p.visible)){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=this.ship.afterburner?'rgba(106,221,255,.84)':'rgba(250,172,74,.7)';ctx.fill();}}
+            }
         },
         _draw: function(ctx, w, h) {
             this._updateView(w,h);
@@ -1304,8 +1377,8 @@
                 ctx.fillStyle = this.session.cash >= cost ? color : '#333';
                 ctx.fillRect(cx - 150*sc, cy - 30*sc, 300*sc, 60*sc);
                 ctx.fillStyle = '#fff'; ctx.font=`bold ${16*sc}px Arial`;
-                ctx.fillText(`${title} (LVL ${level})`, cx, cy - 5*sc);
-                ctx.font=`${12*sc}px Arial`; ctx.fillText(`${desc} - R$ ${cost}`, cx, cy + 15*sc);
+                ctx.fillText(`${title} (LVL ${level}/5)`, cx, cy - 5*sc);
+                ctx.font=`${12*sc}px Arial`; ctx.fillText(level>=5?'EVOLUÇÃO COMPLETA':`${desc} - R$ ${cost}`, cx, cy + 15*sc);
             };
 
             drawCard(w/2, h*0.37, "MOTOR TURBINADO", "Potência e Aceleração", 500 * this.upgrades.engine, this.upgrades.engine, '#2980b9');

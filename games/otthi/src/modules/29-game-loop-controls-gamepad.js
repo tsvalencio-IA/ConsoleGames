@@ -81,7 +81,12 @@
       perf.panelAcc+=dt;if(perf.panelAcc>=1){perf.panelAcc=0;refreshTechnicalPanel();}
     }
     const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=dt;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
-    const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;renderer.render(scene,camera);
+    const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
+    // The optional family portrait frames the four actors without the local
+    // avatar covering their faces; restore visibility immediately after drawing.
+    const portrait=window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
+    if(portrait)playerGroup.visible=false;
+    try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}
   }
 
   function setupControls(){

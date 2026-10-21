@@ -17,3 +17,5 @@
 @media(max-width:550px){#studio-mastery{top:max(113px,calc(env(safe-area-inset-top,0px) + 113px));right:max(5px,env(safe-area-inset-right,0px));width:min(154px,37vw)}#studio-mastery-toggle{font-size:9px;padding:6px 7px;min-height:32px}#studio-mastery-list{padding:7px}.studio-mastery-task{font-size:9px}}
 @media(max-height:480px){#studio-mastery{top:max(94px,calc(env(safe-area-inset-top,0px) + 94px));width:min(135px,35vw)}#studio-mastery-toggle{min-height:29px;font-size:8px;padding:4px 5px}}
 @media(prefers-reduced-motion:reduce){#studio-mastery.just-earned{filter:none}}
+
+.studio-mastery-heading{font:800 10px/1.4 system-ui;color:#ffdf9a;margin-bottom:3px}#studio-mastery-list small{font:11px/1.4 system-ui;color:#c4e4ec}

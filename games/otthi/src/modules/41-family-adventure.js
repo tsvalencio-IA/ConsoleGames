@@ -20,13 +20,20 @@
     branch(rig.root,group);group.updateMatrixWorld(true);
     // Three bones render this rig; avoid a second traversal through the HQ renderer.
     rig.root.render=()=>{};
-    const pos=[],norm=[],colors=[],indices=[],weights=[];
-    for(const {data,index,bone} of buffers){const normal=new THREE.Matrix3().getNormalMatrix(bone.matrixWorld),point=new THREE.Vector3(),n=new THREE.Vector3();for(let k=0;k<data.length;k+=9){point.set(data[k],data[k+1],data[k+2]).applyMatrix4(bone.matrixWorld);n.set(data[k+3],data[k+4],data[k+5]).applyMatrix3(normal).normalize();pos.push(point.x,point.y,point.z);norm.push(n.x,n.y,n.z);colors.push(data[k+6],data[k+7],data[k+8]);indices.push(index,0,0,0);weights.push(1,0,0,0);}}
-    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(indices,4));geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(weights,4));geometry.computeBoundingSphere();
+    const pos=[],norm=[],colors=[],indices=[],weights=[],triangles=[];
+    for(const {data,index,bone} of buffers){
+      const normal=new THREE.Matrix3().getNormalMatrix(bone.matrixWorld),point=new THREE.Vector3(),n=new THREE.Vector3(),lookup=new Map();
+      for(let k=0;k<data.length;k+=9){
+        const key=Array.from(data.subarray(k,k+9)).join(',');let vertex=lookup.get(key);
+        if(vertex===undefined){vertex=pos.length/3;lookup.set(key,vertex);point.set(data[k],data[k+1],data[k+2]).applyMatrix4(bone.matrixWorld);n.set(data[k+3],data[k+4],data[k+5]).applyMatrix3(normal).normalize();pos.push(point.x,point.y,point.z);norm.push(n.x,n.y,n.z);colors.push(data[k+6],data[k+7],data[k+8]);indices.push(index,0,0,0);weights.push(1,0,0,0);}
+        triangles.push(vertex);
+      }
+    }
+    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(indices,4));geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(weights,4));geometry.setIndex(triangles);geometry.computeBoundingSphere();
     const mesh=new THREE.SkinnedMesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,skinning:true,roughness:.83,metalness:.015}));group.add(mesh);mesh.bind(new THREE.Skeleton(bones));mesh.frustumCulled=false;
     const scale=(id==='thiago'||id==='thamis') ? .64*(rig.scale||1) : .7;group.scale.setScalar(scale);worldGroup.add(group);
     const shadow=new THREE.Mesh(new THREE.CircleGeometry(id==='luna'||id==='liz'?.42:.40,20),new THREE.MeshBasicMaterial({color:0x10232a,transparent:true,opacity:.19,depthWrite:false}));shadow.rotation.x=-Math.PI/2;worldGroup.add(shadow);
-    return {id,x,z,heading:0,moving:0,group,mesh,shadow,bones,joints,scale,path:[],routeAt:0,vertices:pos.length/3};
+    return {id,x,z,heading:0,moving:0,group,mesh,shadow,bones,joints,scale,path:[],routeAt:0,vertices:triangles.length,uniqueVertices:pos.length/3};
   }
   function familyHomeLocation(){
     // A new free lot is selected without moving a road, house or existing activity.
@@ -46,8 +53,23 @@
     for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]])familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
     familyWorld.toyMesh=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),new THREE.MeshStandardMaterial({color:0xf7ba47,roughness:.45}));familyWorld.toyMesh.visible=false;worldGroup.add(familyWorld.toyMesh);
-    familyWorld.ready=true;familyProgress();
+    familyWorld.ready=true;familyProgress();familyCreateEntry();
     if(new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
+  }
+  function familyCreateEntry(){
+    if(typeof document.getElementById!=='function'||document.getElementById('family-world-entry'))return;
+    const area=document.getElementById('quickBar')||document.getElementById('game');if(!area)return;
+    const button=document.createElement('button');button.id='family-world-entry';button.className='btn';button.type='button';button.innerHTML='🐾<span>Família</span>';button.setAttribute('aria-label','Encontrar Thiago, Thamis, Luna e Liz');button.onclick=openFamilyAdventure;area.appendChild(button);
+    if(typeof document.createElement==='function')for(const a of Object.values(familyWorld.actors)){
+      const canvas=document.createElement('canvas');canvas.width=256;canvas.height=64;const c=canvas.getContext('2d');c.fillStyle='rgba(8,29,43,.86)';c.fillRect(8,6,240,52);c.font='bold 32px system-ui';c.textAlign='center';c.fillStyle='#fff7db';c.fillText(a.id==='thiago'?'Thiago':a.id==='thamis'?'Thamis':a.id==='luna'?'Luna':'Liz',128,44);
+      const label=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(canvas),transparent:true,depthTest:true}));label.scale.set(a.id==='thiago'||a.id==='thamis'?1.5:1.1,.36,1);worldGroup.add(label);a.label=label;
+    }
+  }
+  function familyCameraFrame(){
+    if(input.cameraDrag||Math.hypot(player.vx,player.vz)>.3){familyWorld.portraitUntil=0;return null;}
+    if(!familyWorld.ready||performance.now()>Number(familyWorld.portraitUntil||0)||!familyNear()||player.vehicle||player.boating||currentHouse)return null;
+    const a=familyWorld.actors.thiago,b=familyWorld.actors.thamis,x=(a.x+b.x)/2,z=(a.z+b.z)/2,y=groundHeightAt(x,z),portrait=innerHeight>innerWidth;
+    return{position:new THREE.Vector3(x+.7,y+2.4,z+(portrait?11:6.5)),look:new THREE.Vector3(x,y+1.05,z),fov:portrait?43:45};
   }
   function locationSearch(){return window.location?.search||'';}
   function familyMapLocations(){if(!familyWorld.location)return[];const p=familyWorld.location;return[{id:'family-home',name:p.meetingOnly?'Encontro da Família':'Casa da Família',icon:'🐾',group:'Aventuras em Família',x:p.x,z:p.z+6,description:'Thiago, Thamis, Luna e Liz. Passeio ao parque, brinquedos e desafios da oficina e tecnologia.',actions:['Encontrar a família','Brincar com as cachorrinhas','Começar um passeio']},...['park','workshop','tech'].map(kind=>{const point=worldLayoutPoint(kind==='park'?'playground':kind==='workshop'?'workshop':'learningEntrance');return{id:'family-'+kind,name:kind==='park'?'Passeio da Família no parque':kind==='workshop'?'Família na oficina':'Família no laboratório',icon:kind==='park'?'🐾':kind==='workshop'?'🔧':'💻',group:'Aventuras em Família',x:point.x,z:point.z,navX:point.x,navZ:point.z+(kind==='workshop'?6:0)};})];}
@@ -109,7 +131,7 @@
       for(const [index,a] of Object.values(familyWorld.actors).entries()){
         if(familyWorld.ball&&a.id===familyWorld.ball.dog)continue;
         const home=familyWorld.location,target=follow?{x:follow.x+Math.sin((follow.facing??follow.r??0)+Math.PI)*2.6+(index-1.5)*.9,z:follow.z+Math.cos((follow.facing??follow.r??0)+Math.PI)*2.6+index*.55}:{x:home.x+(index%2?1.2:-1.2),z:home.z+5.5+Math.floor(index/2)*1.4};
-        familyMove(a,target,follow?4.1:2.1,dt);
+        familyMove(a,target,follow?4.1:2.1,dt);if(!follow&&!a.moving&&familyNear())a.heading=Math.atan2(player.x-a.x,player.z-a.z);
       }
       const b=familyWorld.ball;
       if(b){const dog=familyWorld.actors[b.dog],origin=familyOwnerPosition(b.owner);if(!origin){familyWorld.ball=null;}else if(b.stage==='flight'){b.t=Math.min(1,b.t+dt/0.85);b.at={x:lerp(b.start.x,b.land.x,b.t),z:lerp(b.start.z,b.land.z,b.t),y:lerp(1.5,.22,b.t)+Math.sin(b.t*Math.PI)*2.2};if(b.t>=1)b.stage='seek';}
@@ -121,7 +143,7 @@
     if(familyWorld.walkOwner===sharedWorldOwnId()&&Math.hypot(player.x-park.x,player.z-park.z)<12&&Math.hypot(familyWorld.actors.thiago.x-park.x,familyWorld.actors.thiago.z-park.z)<14&&!progress.flags.park){progress.flags.park=true;saveState();toast('Passeio em família concluído no parque!','good',2300);}
     const visible=Math.hypot(player.x-familyWorld.actors.thiago.x,player.z-familyWorld.actors.thiago.z)<90;
     for(const a of Object.values(familyWorld.actors)){
-      a.group.visible=visible;a.shadow.visible=visible;if(!visible)continue;
+      a.group.visible=visible;a.shadow.visible=visible;if(a.label){a.label.visible=visible&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:1.3),a.z);}if(!visible)continue;
       const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>familyWorld.clock;
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
       else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
@@ -141,9 +163,10 @@
     show();
   }
   function openFamilyAdventure(){
-    const p=familyProgress(),name=familyWorld.location?.meetingOnly?'Encontro da Família':'Casa da Família';
-    openModal('🐾 '+name,'<p>Thiago, Thamis, Luna e Liz agora passeiam neste mundo. AÇÃO abre as atividades ao se aproximar da família.</p><div class="family-chapters"><p>'+(p.flags.park?'✓':'○')+' Passear até o parque</p><p>'+(p.deliveries.luna>=2&&p.deliveries.liz>=2?'✓':'○')+' Brincar com as duas: Luna '+p.deliveries.luna+'/2 · Liz '+p.deliveries.liz+'/2</p><p>'+(p.flags.workshop?'✓':'○')+' Diagnóstico na oficina</p><p>'+(p.flags.technology?'✓':'○')+' Desafio de tecnologia</p></div><div class="choice-grid"><button class="choice" data-family-gps>📍 Encontrar a família</button><button class="choice" data-family-walk>🚶 Passeio até o parque</button><button class="choice" data-family-throw="luna">🤍 Lançar para Luna</button><button class="choice" data-family-throw="liz">🖤 Lançar para Liz</button><button class="choice" data-family-task="workshop">🔧 Oficina</button><button class="choice" data-family-task="technology">💻 Tecnologia</button><button class="choice" data-family-stop>🏡 Encerrar passeio</button><a class="choice" href="../familia/3d/">Abrir aventuras originais da Família</a></div>',root=>{
+    const p=familyProgress(),name=familyWorld.location?.meetingOnly?'Encontro da Família':'Casa da Família';if(familyNear())familyWorld.portraitUntil=performance.now()+18000;
+    openModal('🐾 '+name,'<p>Thiago de óculos e polo azul, Thamis de óculos e cabelo cacheado preso, Luna de coleira rosa e Liz de laços vermelhos. Os quatro estão no jardim da Casa da Família.</p><p>Escolha Encontrar a família para seguir o GPS. Perto deles, feche esta janela para vê-los de frente.</p><div class="family-chapters"><p>'+(p.flags.park?'✓':'○')+' Passear até o parque</p><p>'+(p.deliveries.luna>=2&&p.deliveries.liz>=2?'✓':'○')+' Brincar com as duas: Luna '+p.deliveries.luna+'/2 · Liz '+p.deliveries.liz+'/2</p><p>'+(p.flags.workshop?'✓':'○')+' Diagnóstico na oficina</p><p>'+(p.flags.technology?'✓':'○')+' Desafio de tecnologia</p></div><div class="choice-grid"><button class="choice" data-family-gps>📍 Encontrar a família</button><button class="choice" data-family-walk>🚶 Passeio até o parque</button><button class="choice" data-family-throw="luna">🤍 Lançar para Luna</button><button class="choice" data-family-throw="liz">🖤 Lançar para Liz</button><button class="choice" data-family-task="workshop">🔧 Oficina</button><button class="choice" data-family-task="technology">💻 Tecnologia</button><button class="choice" data-family-stop>🏡 Encerrar passeio</button><a class="choice" href="../familia/3d/">Abrir aventuras originais da Família</a></div>',root=>{
       $('[data-family-gps]',root).onclick=()=>familyRoute('family-home');
+      const portrait=document.createElement('button');portrait.className='choice';portrait.dataset.familyPortrait='';portrait.textContent='📷 Ver os quatro personagens';portrait.onclick=()=>{if(!familyNear()){familyRoute('family-home');return;}familyWorld.portraitUntil=performance.now()+20000;closeModal();toast('Thiago, Thamis, Luna e Liz. Caminhe ou arraste a câmera para voltar.','good',4500);};root.querySelector('.choice-grid').prepend(portrait);
       $('[data-family-walk]',root).onclick=()=>{if(player.vehicle){toast('Saia do veículo para iniciar o passeio.','warn',1500);return;}if(familyCommand('walk')){familyRoute('family-park');closeModal();toast('Vamos juntos ao parque. Caminhe e espere a família.','good',2500);}};
       $$('[data-family-throw]',root).forEach(button=>button.onclick=()=>{if(familyCommand('throw',{dog:button.dataset.familyThrow,toy:familyWorld.toy})){closeModal();toast('Brinquedo lançado. Espere a devolução!','good',1600);}});
       $$('[data-family-task]',root).forEach(button=>button.onclick=()=>familyTask(button.dataset.familyTask));
@@ -151,4 +174,4 @@
     });
   }
   window.addEventListener('otthi:event-v2',event=>{const e=event.detail;if(e?.kind!=='family-command'||!sharedWorldIsAuthority()||!e.actorUid)return;familyApplyCommand(e.payload?.kind,e.payload||{},String(e.actorUid),remotePresence.get(String(e.actorUid)));});
-  window.OTTHI_FAMILY={open:openFamilyAdventure,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,drawCalls:1})),progress:familyProgress(),authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
+  window.OTTHI_FAMILY={open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};

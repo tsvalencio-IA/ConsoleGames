@@ -190,6 +190,9 @@ try{
       await page.waitForTimeout(140);
       assert.equal(await page.locator('.kart-input [data-control="go"].held').count(),0,
         "Gamepad desconectado manteve acelerador pressionado");
+      // Reproduce the screenshot regression in a real curve, after proving input.
+      await page.evaluate(()=>{const g=window.System.activeGame.logic;g.pos=28050;g.speed=0;g.playerX=0;g.cameraX=0;g.steer=0;g.targetSteer=0;g.lateralInertia=0;g.cameraDepth=7.5;});
+      await page.waitForFunction(()=>{const p=window.System.activeGame.logic.playerScreen;return p&&Math.abs(p.x-innerWidth/2)<4&&Math.abs(p.x-p.roadX)<p.roadHalfWidth},null,{timeout:5000});
       await page.screenshot({path:join("test-results/playable","kart-controls-visible"+(device?"-"+device:"")+".png")});
     }
     if(slug==="ar"){
@@ -287,6 +290,17 @@ try{
       });
       assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
       assert(physics.shipHP>0,"Caça iniciou destruído");
+      // Signed trajectory, not only a key flag: fly left and right in a clear fixture.
+      await page.evaluate(()=>{const g=window.System.activeGame.logic;g.mode='FREE';g.entities=[];Object.assign(g.ship,{x:0,y:3000,z:0,vx:0,vy:0,vz:250,yaw:0,pitch:0,roll:0});g.view=null;});
+      const turn=page.locator('[data-control="left"]');await turn.dispatchEvent('pointerdown',{pointerId:71});
+      await page.waitForFunction(()=>{const s=window.System.activeGame.logic.ship;return s.roll<-.2&&s.yaw<0&&s.vx<-.1},null,{timeout:7000});
+      await page.screenshot({path:join('test-results/playable','voo-left-bank.png')});await turn.dispatchEvent('pointerup',{pointerId:71});
+      await page.evaluate(()=>{const g=window.System.activeGame.logic;Object.assign(g.ship,{x:0,y:3000,z:0,vx:0,vy:0,vz:250,yaw:0,pitch:0,roll:0});g.pilot.targetRoll=0;g.view=null;});
+      const right=page.locator('[data-control="right"]');await right.dispatchEvent('pointerdown',{pointerId:72});
+      await page.waitForFunction(()=>{const s=window.System.activeGame.logic.ship;return s.roll>.2&&s.yaw>0&&s.vx>.1},null,{timeout:7000});
+      await page.screenshot({path:join('test-results/playable','voo-right-bank.png')});await right.dispatchEvent('pointerup',{pointerId:72});
+      const quiet=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {locked:g.combat.locked,shots:g.bullets.filter(b=>!b.isEnemy).length}});assert(!quiet.locked&&quiet.shots===0,'No adversary in sight must mean no player fire');
+
     }
     // Change native preferences through the actual player settings UI.
     await page.locator('#play-settings-button').click();
