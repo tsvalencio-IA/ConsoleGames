@@ -101,3 +101,23 @@ test('camera: mirrored steering stays neutral with level hands and uses actual c
  g.updatePhysics(390,844,pose(400,400));assert.equal(g.targetSteer,0);g.updatePhysics(390,844,pose(320,480));assert(g.targetSteer>0,'Lowering the screen-right hand must steer right');
  const {game:f,window:fw}=engine('voo','game_flight');f.init({mode:'FREE'});fw.ArcadeControls.mode='camera';fw.System.video={videoWidth:1280,videoHeight:960};f.pilot.baseY=400/960*844;for(let i=0;i<30;i++)f._readPose(pose(400,400),390,844,1/60);assert(Math.abs(f.pilot.targetRoll)<.001);assert(Math.abs(f.pilot.targetPitch)<.001,'A larger video resolution cannot invent a climb command');
 });
+test('OTThi: the family portrait fits all four at different depths after fetching and while following',()=>{
+ const context=vm.createContext({console,window:{addEventListener(){}},performance:{now:()=>100}});
+ vm.runInContext(readFileSync('games/otthi/assets/vendor/three-r128.min.js','utf8'),context);
+ vm.runInContext(`const input={cameraDrag:false},player={x:0,z:6,vx:0,vz:0,vehicle:false,boating:false};let currentHouse=null,innerWidth=390,innerHeight=844;const groundHeightAt=(x,z)=>0;`,context);
+ vm.runInContext(readFileSync('games/otthi/src/modules/41-family-adventure.js','utf8'),context);
+ const result=vm.runInContext(`
+  familyWorld.ready=true;familyWorld.location={x:0,z:0};familyWorld.portraitUntil=Infinity;
+  const failures=[];
+  const formations=[[[0,0],[1.6,0],[0,1.4],[1.6,1.4]],[[0,0],[1.6,0],[-1.5,4.5],[1.6,1.4]],[[0,0],[1.6,0],[4.5,3.5],[-1,1]],[[0,0],[1.6,2],[-4.5,-3],[5,4]]];
+  for(const [w,h] of [[390,844],[844,390],[360,800],[1365,768]])for(const formation of formations){
+   innerWidth=w;innerHeight=h;familyWorld.actors=Object.fromEntries(['thiago','thamis','luna','liz'].map((id,i)=>[id,{id,x:formation[i][0],z:formation[i][1]}]));
+   const frame=familyCameraFrame(),camera=new THREE.PerspectiveCamera(frame.fov,w/h,.05,1200);camera.position.copy(frame.position);camera.lookAt(frame.look);camera.updateMatrixWorld(true);
+   for(const a of Object.values(familyWorld.actors))for(const dx of[-.5,.5])for(const dy of[0,a.id==='luna'||a.id==='liz'?1:2.3])for(const dz of[-.5,.5]){
+    const p=new THREE.Vector3(a.x+dx,dy,a.z+dz).project(camera);
+    if(Math.abs(p.x)>.9||Math.abs(p.y)>.8||p.z>=1)failures.push({w,h,id:a.id,point:p.toArray()});
+   }
+  }failures;
+ `,context);
+ assert.equal(result.length,0,JSON.stringify(result));
+});

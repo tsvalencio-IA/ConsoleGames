@@ -18,7 +18,7 @@ Os cinco jogos de ação recebem três etapas de carreira: Iniciação, Técnica
 
 - `node --test tests/*.test.mjs`: comportamento, controles, projeção, frequência de tela, aquisição de alvo, economia, persistência e progressão.
 - `node tests/playable-smoke.mjs`: partidas reais no Chromium, com contas/câmera isoladas; aceleração, direção, golpes, coleta, raquete, voo, ajustes, gamepad, pausa e retorno. Inclui curvas do kart e trajetórias à esquerda/direita do avião.
-- `node tests/family-playable.mjs`: WebGL/Three.js reais; ambas as cachorrinhas devolvem brinquedos nos dois mundos; retrato em duas orientações; passeio; veículo nativo; respostas erradas/certas no laboratório original.
+- `node tests/family-playable.mjs`: WebGL/Three.js reais; ambas as cachorrinhas devolvem brinquedos nos dois mundos; retrato em duas orientações; passeio; veículo nativo; respostas erradas/certas no laboratório original. O enquadramento inclui a profundidade e a posição dos quatro, inclusive durante o retorno do brinquedo; cenários de retorno e passeio também são verificados sem renderização.
 - `node tests/studio-verify.mjs` e `node tests/world-integrity.mjs`: integração e integridade SHA-256 do PWA.
 - `node tests/production-audit.mjs`: bytes publicados comparados com os arquivos aprovados, após a implantação.
 

@@ -8685,9 +8685,16 @@
   function familyCameraFrame(){
     if(input.cameraDrag||Math.hypot(player.vx,player.vz)>.3){familyWorld.portraitUntil=0;return null;}
     if(!familyWorld.ready||performance.now()>Number(familyWorld.portraitUntil||0)||!familyNear()||player.vehicle||player.boating||currentHouse)return null;
-    const a=familyWorld.actors.thiago,b=familyWorld.actors.thamis,x=(a.x+b.x)/2,z=(a.z+b.z)/2,y=groundHeightAt(x,z),aspect=innerWidth/innerHeight,fov=45;
-    const width=Math.max(...Object.values(familyWorld.actors).map(a=>a.x+.55))-Math.min(...Object.values(familyWorld.actors).map(a=>a.x-.55)),distance=Math.max(5.9,width/(2*Math.tan(fov*Math.PI/360)*aspect)*1.18);
-    return{position:new THREE.Vector3(x+.25,y+2.2,z+distance),look:new THREE.Vector3(x,y+1.05,z+.45),fov};
+    // Fit all four volumes, including a dog returning closer to the camera.
+    const boxes=Object.values(familyWorld.actors).map(a=>{const dog=a.id==='luna'||a.id==='liz',y=groundHeightAt(a.x,a.z);return{minX:a.x-.62,maxX:a.x+.62,minY:y-.05,maxY:y+(dog?1.15:2.55),minZ:a.z-(dog?.85:.55),maxZ:a.z+(dog?.85:.55)};});
+    const center=axis=>(Math.min(...boxes.map(b=>b['min'+axis]))+Math.max(...boxes.map(b=>b['max'+axis])))/2;
+    const look=new THREE.Vector3(center('X'),center('Y'),center('Z')),back=new THREE.Vector3(0,.18,1).normalize(),aspect=innerWidth/innerHeight,fov=45,tan=Math.tan(fov*Math.PI/360);
+    let distance=5.9;
+    for(const b of boxes)for(const x of[b.minX,b.maxX])for(const y of[b.minY,b.maxY])for(const z of[b.minZ,b.maxZ]){
+      const dx=x-look.x,dy=y-look.y,dz=z-look.z,depth=dy*back.y+dz*back.z,up=dy*back.z-dz*back.y;
+      distance=Math.max(distance,depth+Math.abs(dx)/(tan*aspect*.84),depth+Math.abs(up)/(tan*.68));
+    }
+    return{position:look.clone().addScaledVector(back,distance),look,fov};
   }
   function locationSearch(){return window.location?.search||'';}
   function familyMapLocations(){if(!familyWorld.location)return[];const p=familyWorld.location;return[{id:'family-home',name:p.meetingOnly?'Encontro da Família':'Casa da Família',icon:'🐾',group:'Aventuras em Família',x:p.x,z:p.z+6,description:'Thiago, Thamis, Luna e Liz. Passeio ao parque, brinquedos e desafios da oficina e tecnologia.',actions:['Encontrar a família','Brincar com as cachorrinhas','Começar um passeio']},...['park','workshop','tech'].map(kind=>{const point=worldLayoutPoint(kind==='park'?'playground':kind==='workshop'?'workshop':'learningEntrance');return{id:'family-'+kind,name:kind==='park'?'Passeio da Família no parque':kind==='workshop'?'Família na oficina':'Família no laboratório',icon:kind==='park'?'🐾':kind==='workshop'?'🔧':'💻',group:'Aventuras em Família',x:point.x,z:point.z,navX:point.x,navZ:point.z+(kind==='workshop'?6:0)};})];}
