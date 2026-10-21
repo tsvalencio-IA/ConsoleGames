@@ -1,7 +1,7 @@
 name: Auditar site publicado - thIAguinho ARCADE
 on:
   workflow_run:
-    workflows: ['pages build and deployment']
+    workflows: ['Verificar console']
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -20,4 +20,16 @@ jobs:
         with:
           node-version: '22'
       - name: Comparar arquivos publicados com código aprovado (SHA-256)
-        run: node tests/production-audit.mjs
+        run: |
+          for attempt in 1 2 3 4; do
+            if node tests/production-audit.mjs > /tmp/publication-audit.log 2>&1; then
+              cat /tmp/publication-audit.log
+              exit 0
+            fi
+            if [ "$attempt" -lt 4 ]; then
+              echo 'Aguardando a publicação dos arquivos desta revisão...'
+              sleep 15
+            fi
+          done
+          cat /tmp/publication-audit.log
+          exit 1
