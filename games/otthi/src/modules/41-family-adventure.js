@@ -18,6 +18,8 @@
       if(joint.buffer)buffers.push({data:joint.buffer.data,index,bone});joint.children.forEach(child=>branch(child,bone));
     }
     branch(rig.root,group);group.updateMatrixWorld(true);
+    // Three bones render this rig; avoid a second traversal through the HQ renderer.
+    rig.root.render=()=>{};
     const pos=[],norm=[],colors=[],indices=[],weights=[];
     for(const {data,index,bone} of buffers){const normal=new THREE.Matrix3().getNormalMatrix(bone.matrixWorld),point=new THREE.Vector3(),n=new THREE.Vector3();for(let k=0;k<data.length;k+=9){point.set(data[k],data[k+1],data[k+2]).applyMatrix4(bone.matrixWorld);n.set(data[k+3],data[k+4],data[k+5]).applyMatrix3(normal).normalize();pos.push(point.x,point.y,point.z);norm.push(n.x,n.y,n.z);colors.push(data[k+6],data[k+7],data[k+8]);indices.push(index,0,0,0);weights.push(1,0,0,0);}}
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(indices,4));geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(weights,4));geometry.computeBoundingSphere();
@@ -59,6 +61,7 @@
     }
     return familyApplyCommand(kind,payload,sharedWorldOwnId(),player);
   }
+  function familyClear(a,b){const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22));for(let i=0;i<=steps;i++){const t=i/steps;if(positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25))return false;}return true;}
   function familyApplyCommand(kind,payload,owner,origin){
     if(!origin||!Number.isFinite(Number(origin.x))||!Number.isFinite(Number(origin.z)))return false;
     const a=familyWorld.actors.thiago;if(!a||Math.hypot(origin.x-a.x,origin.z-a.z)>18)return false;
@@ -68,14 +71,14 @@
     if(kind!=='throw'||familyWorld.ball)return false;
     const dog=payload.dog==='liz'?'liz':'luna',actor=familyWorld.actors[dog];
     let at=null;const heading=Number(origin.facing??origin.r??0);
-    for(const angle of [0,.45,-.45,.9,-.9,Math.PI]){const x=Number(origin.x)+Math.sin(heading+angle)*7,z=Number(origin.z)+Math.cos(heading+angle)*7;if(!positionBlockedForPlayer(x,z,.3)&&!waterAt(x,z)&&segmentClear(actor,{x,z})){at={x,z};break;}}
+    for(const angle of [0,.45,-.45,.9,-.9,Math.PI]){const x=Number(origin.x)+Math.sin(heading+angle)*7,z=Number(origin.z)+Math.cos(heading+angle)*7;if(!positionBlockedForPlayer(x,z,.3)&&!waterAt(x,z)&&!(world.houses||[]).some(h=>Math.abs(x-h.x)<(h.w||9)/2+1.2&&Math.abs(z-h.z)<(h.d||7)/2+1.2)&&familyClear(actor,{x,z})&&familyClear({x,z},origin)){at={x,z};break;}}
     if(!at){if(owner===sharedWorldOwnId())toast('Encontre um espaço livre para lançar o brinquedo.','warn',1700);return false;}
     familyWorld.sequence++;familyWorld.ball={id:sharedWorldOwnId()+':'+Date.now()+':'+familyWorld.sequence,owner,dog,kind:['ball','disk','bone'].includes(payload.toy)?payload.toy:'ball',stage:'flight',t:0,start:{x:Number(origin.x),z:Number(origin.z)},land:at,at:{x:Number(origin.x),y:1.5,z:Number(origin.z)}};return true;
   }
   function familyMove(actor,target,speed,dt){
     const dx=target.x-actor.x,dz=target.z-actor.z,distance=Math.hypot(dx,dz);actor.moving=0;if(distance<.30)return true;
     let dest=target;
-    if(!segmentClear(actor,target)&&distance>1.4){
+    if(!familyClear(actor,target)&&distance>1.4){
       if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
       while(actor.path.length&&Math.hypot(actor.path[0].x-actor.x,actor.path[0].z-actor.z)<1.1)actor.path.shift();
       if(actor.path.length)dest=actor.path[0];
@@ -88,13 +91,13 @@
   function familyCollectAck(ack){
     if(!ack||ack.id===familyWorld.lastAck)return;familyWorld.lastAck=ack.id;
     if(ack.owner!==sharedWorldOwnId())return;
-    const progress=familyProgress();progress.deliveries[ack.dog]=(Number(progress.deliveries[ack.dog])||0)+1;saveState();toast((ack.dog==='luna'?'Luna':'Liz')+' devolveu o brinquedo!','good',1800);beep(780,65);
+    const progress=familyProgress();if(progress.lastDeliveryId===ack.id)return;progress.lastDeliveryId=ack.id;progress.deliveries[ack.dog]=(Number(progress.deliveries[ack.dog])||0)+1;saveState();toast((ack.dog==='luna'?'Luna':'Liz')+' devolveu o brinquedo!','good',1800);beep(780,65);
   }
   function familySnapshot(){if(!familyWorld.ready)return null;return{actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:+a.x.toFixed(3),z:+a.z.toFixed(3),heading:+a.heading.toFixed(3),moving:a.moving})),ball:familyWorld.ball?JSON.parse(JSON.stringify(familyWorld.ball)):null,walkOwner:familyWorld.walkOwner,ack:familyWorld.ack,clock:familyWorld.clock,workUntil:familyWorld.workUntil,workKind:familyWorld.workKind||null};}
   function familyApplySnapshot(data,dt){
     if(!data||!Array.isArray(data.actors))return;
     for(const row of data.actors){const a=familyWorld.actors[row.id];if(!a||![row.x,row.z,row.heading].every(Number.isFinite))continue;a.x=lerp(a.x,row.x,Math.min(1,dt*10));a.z=lerp(a.z,row.z,Math.min(1,dt*10));a.heading=lerpAngle(a.heading,row.heading,Math.min(1,dt*12));a.moving=Number(row.moving)||0;}
-    familyWorld.ball=data.ball&&['luna','liz'].includes(data.ball.dog)?data.ball:null;familyWorld.walkOwner=String(data.walkOwner||'');familyWorld.clock=Number(data.clock)||familyWorld.clock;familyWorld.workUntil=Number(data.workUntil)||0;familyWorld.workKind=String(data.workKind||'');familyWorld.ack=data.ack;familyCollectAck(data.ack);
+    const previousBall=familyWorld.ball,nextBall=data.ball&&['luna','liz'].includes(data.ball.dog)?JSON.parse(JSON.stringify(data.ball)):null;if(nextBall?.at&&previousBall?.id===nextBall.id&&previousBall?.at){for(const axis of ['x','y','z'])nextBall.at[axis]=lerp(previousBall.at[axis],Number(nextBall.at[axis])||0,Math.min(1,dt*14));}familyWorld.ball=nextBall;familyWorld.walkOwner=String(data.walkOwner||'');const remoteClock=Number(data.clock);if(Number.isFinite(remoteClock))familyWorld.clock=Math.abs(remoteClock-familyWorld.clock)>2?remoteClock:lerp(familyWorld.clock,remoteClock,.035);familyWorld.workUntil=Number(data.workUntil)||0;familyWorld.workKind=String(data.workKind||'');familyWorld.ack=data.ack;familyCollectAck(data.ack);
   }
   function updateFamilyAdventure(dt){
     if(!familyWorld.ready)return;familyWorld.clock+=dt;const authority=sharedWorldIsAuthority();

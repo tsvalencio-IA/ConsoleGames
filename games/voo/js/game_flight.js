@@ -1284,7 +1284,7 @@
             ctx.restore();
             
             ctx.fillStyle='rgba(0,0,0,0.1)';
-            for(let i=0;i<h;i+=(w<760?12:5)) ctx.fillRect(0,i,w,1);
+            // Native scene remains clear; no screen-wide scanline pass.
         },
 
         _drawHangar: function(ctx, w, h) {
@@ -1459,18 +1459,18 @@
                 // Instrumentos compactos: visão do céu e do alvo livres no celular.
                 ctx.save();
                 const px=Math.min(110,Math.max(74,w*.22));
-                const cardY=54,cardH=33;
+                const cardY=54,cardH=33,rightX=Math.min(w-px-8,w/2+8);
                 ctx.fillStyle='rgba(3,15,28,.78)';
                 if(ctx.roundRect){
                     ctx.beginPath();ctx.roundRect(8,cardY,px,cardH,8);ctx.fill();
-                    ctx.beginPath();ctx.roundRect(w-px-8,cardY,px,cardH,8);ctx.fill();
-                }else {ctx.fillRect(8,cardY,px,cardH);ctx.fillRect(w-px-8,cardY,px,cardH);}
+                    ctx.beginPath();ctx.roundRect(rightX,cardY,px,cardH,8);ctx.fill();
+                }else {ctx.fillRect(8,cardY,px,cardH);ctx.fillRect(rightX,cardY,px,cardH);}
                 ctx.fillStyle='#8eeaff';ctx.font='bold 10px Arial';ctx.textAlign='center';
                 ctx.fillText('VELOCIDADE',8+px/2,cardY+12);
-                ctx.fillText('ALTITUDE',w-8-px/2,cardY+12);
+                ctx.fillText('ALTITUDE',rightX+px/2,cardY+12);
                 ctx.fillStyle='#f4ffff';ctx.font='bold 14px Arial';
                 ctx.fillText(String(Math.max(0,Math.round(p.speed*3.6))),8+px/2,cardY+27);
-                ctx.fillText(String(Math.round(p.y)),w-8-px/2,cardY+27);
+                ctx.fillText(String(Math.round(p.y)),rightX+px/2,cardY+27);
                 ctx.restore();
             } else {
             ctx.fillStyle='rgba(0,20,10,0.5)'; ctx.fillRect(10, h/2 - 120, 50, 240);
@@ -1535,11 +1535,13 @@
                 ctx.beginPath(); ctx.moveTo(vP.x, vP.y-10); ctx.lineTo(vP.x, vP.y-5); ctx.stroke();
             }
 
+            if(w>720&&h>500){
             ctx.textAlign='left'; ctx.font='bold 14px Arial'; ctx.fillStyle='#00ffcc';
             ctx.fillText(`FORÇA G: ${p.gForce.toFixed(1)}G`, 20, 80);
             ctx.fillText(`MACH: ${p.mach.toFixed(2)}`, 20, 100);
             ctx.fillText(`AoA: ${(p.alpha * 180/Math.PI).toFixed(1)}°`, 20, 120);
             
+            }
             if (p.afterburner) {
                 ctx.fillStyle='#ff9900';
                 ctx.fillText(`AQUECIMENTO: ${Math.floor(p.engineHeat)}%`, 20, 140);
@@ -1553,7 +1555,7 @@
                 ctx.textAlign = "center"; ctx.font = "bold "+Math.min(18,Math.max(10,w*.029))+"px Arial"; ctx.fillText("ESTOL • BAIXE O BICO", w/2, Math.max(85,h*.18),Math.max(100,w-30)); 
             }
 
-            const rx=w-90, ry=140, rr=75;
+            const compact=w<=720||h<=500,rr=compact?36:65,rx=compact?46:w-82,ry=compact?140:220;
             ctx.fillStyle='rgba(0,30,10,0.85)'; ctx.beginPath(); ctx.arc(rx,ry,rr,0,Math.PI*2); ctx.fill();
             ctx.strokeStyle='rgba(0,255,204,0.3)'; ctx.lineWidth=1;
             ctx.beginPath(); ctx.arc(rx,ry,rr*0.5,0,Math.PI*2); ctx.stroke();

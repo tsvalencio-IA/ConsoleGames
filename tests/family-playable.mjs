@@ -36,6 +36,6 @@ try{
  assert.deepEqual(errors,[]);
  writeFileSync('test-results/playable/family-world-report.json',JSON.stringify({actors:info.actors,progress,layout,errors},null,2));
  console.log('Family world: approved rig skinning, real throw/return, walking, original HQ controls and no page errors.');
- }catch(error){await page.screenshot({path:'test-results/playable/family-failure.png'}).catch(()=>{});console.error('Family diagnostics',await page.evaluate(()=>({modal:document.getElementById('modal')?.innerText,ready:window.OTTHI_FAMILY?.diagnostics(),game:window.OTTHOS_TEST_API?.getGame()})).catch(()=>null));throw error;}
+ }catch(error){await page.screenshot({path:'test-results/playable/family-failure.png'}).catch(()=>{});console.error('Family diagnostics',await page.evaluate(()=>({modal:document.getElementById('modal')?.innerText,ready:window.OTTHI_FAMILY?.diagnostics(),familyState:window.OTTHI_FAMILY?.snapshot(),game:window.OTTHOS_TEST_API?.getGame()})).catch(()=>null));throw error;}
  await context.close();
 }finally{await browser.close()}

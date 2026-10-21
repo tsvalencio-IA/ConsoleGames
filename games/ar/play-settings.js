@@ -60,7 +60,7 @@
  function init(){
   apply();
   const button=document.createElement('button');button.type='button';button.id='play-settings-button';button.textContent='⚙ AJUSTES';button.setAttribute('aria-label','Ajustar câmera, controles, dificuldade e som');button.onclick=open;document.body.append(button);
-  const sync=()=>{window.System?.activeGame?.logic?.updateAudio?.();button.hidden=!window.System?.activeGame||document.getElementById('game-ui')?.classList.contains('hidden');};
+  const sync=()=>{window.System?.activeGame?.logic?.updateAudio?.();button.hidden=!window.System?.activeGame||document.getElementById('game-ui')?.classList.contains('hidden');document.documentElement.dataset.playing=String(!button.hidden);};
   sync();const watch=setInterval(sync,250);window.addEventListener('pagehide',()=>clearInterval(watch),{once:true});
   document.addEventListener('keydown',e=>{if(e.code==='KeyC'&&!e.repeat&&!e.target.closest?.('input,select,textarea')&&['drive','usarmy_flight_sim'].includes(id)&&window.System?.activeGame){const choices=['near','medium','far'];set('distance',choices[(choices.indexOf(values.distance)+1)%3]);apply()}});
  }

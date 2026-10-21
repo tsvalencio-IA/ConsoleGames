@@ -53,10 +53,15 @@ test('approved family rigs deform with actual Three.js bones and complete fetch 
  vm.runInContext('for(let i=0;i<1100;i++)updateFamilyAdventure(.016);',context);
  const progress=vm.runInContext('familyProgress().deliveries.luna',context);assert.equal(progress,1,'Exactly one actual return must count');
  vm.runInContext('for(let i=0;i<120;i++)updateFamilyAdventure(.016);',context);assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),1,'Repeated frames cannot duplicate completed fetch');
+ vm.runInContext('familyWorld.lastAck="";familyCollectAck(familyWorld.ack);',context);assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),1,'Reconnecting cannot credit the same delivery twice');
 });
 
 test('flight school: real throttle accelerates on runway and climb advances to the maneuver lesson',()=>{
  const {game:g,advance}=engine('voo','game_flight');const c=canvas();g.init({mode:'FREE',school:true});g._startMission();assert.equal(g.ship.y,8);assert.equal(g.flightSchool.stage,'takeoff');
  g.manualThrottle=1;for(let i=0;i<600;i++){advance(17);if(g.ship.speed>70)g.keys.ArrowUp=true;g.update(c,390,844,null);}
  assert(g.ship.speed>65,'Engine power must accelerate the aircraft');assert(g.ship.y>95,'Climb command must lift the aircraft from the runway');assert.equal(g.flightSchool.stage,'gates');
+});
+
+test('player settings load after the game identity and all local assets are cached',()=>{
+ for(const slug of ['kart','voo','tenis','boxe','ar']){const html=read('games/'+slug+'/index.html'),worker=read('games/'+slug+'/sw.js');assert(html.indexOf('src="./play-settings.js"')>html.indexOf('window.CONSOLE_GAME_ID='),slug+' settings must load after its identity');assert(worker.includes('play-settings.js')&&worker.includes('play-settings.css'));}
 });
