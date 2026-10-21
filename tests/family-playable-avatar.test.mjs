@@ -25,7 +25,7 @@ test('family: playable instances keep the approved geometry and independent anim
  const data=vm.runInContext(`
   initFamilyAdventure();const checks=[];
   for(const id of ['thiago','thamis']){
-   const source=familyWorld.actors[id],a=familyCloneAvatar(id,new THREE.Group()),b=familyCloneAvatar(id,new THREE.Group());
+   const source=familyWorld.actors[id];source.group.visible=false;const a=familyCloneAvatar(id,new THREE.Group()),b=familyCloneAvatar(id,new THREE.Group());
    const independent=a.bones.every((bone,i)=>bone!==source.bones[i]&&bone!==b.bones[i]);
    const shared=a.mesh.geometry===source.mesh.geometry&&a.mesh.material===source.mesh.material;
    const sourcePose=source.bones.map(b=>b.rotation.toArray().join(','));
@@ -33,7 +33,7 @@ test('family: playable instances keep the approved geometry and independent anim
    familyAnimateAvatar(a,{}, {speed:6,run:true,time:.38});const second=a.byName.hip1.rotation.x;
    const npcUntouched=source.bones.every((b,i)=>b.rotation.toArray().join(',')===sourcePose[i]);
    let disposed=0;source.mesh.geometry.addEventListener('dispose',()=>disposed++);releaseFamilyAvatarVisual(a.group);
-   checks.push({id,independent,shared,animated:Math.abs(first-second)>.01,npcUntouched,disposed,bones:b.bones.length});
+   checks.push({id,visible:a.group.visible&&b.group.visible,independent,shared,animated:Math.abs(first-second)>.01,npcUntouched,disposed,bones:b.bones.length});
   }
   playerModel=new THREE.Group();playerGroup.add(playerModel);const bodyRoot=new THREE.Group();playerModel.add(bodyRoot);
   const parts=Object.fromEntries(['body','leftArm','rightArm','leftLeg','rightLeg'].map(key=>[key,new THREE.Group()]));Object.values(parts).forEach(part=>bodyRoot.add(part));playerModel.userData.parts=parts;playerModel.userData.baseY=.24;
@@ -43,7 +43,7 @@ test('family: playable instances keep the approved geometry and independent anim
   const saved=normalizeAvatarV2({...state.avatar,bodyStyle:'family-thamis',primaryColor:'#123456'});
   ({checks,toolInHand,toolRestored,savedStyle:saved.bodyStyle,savedColor:saved.primaryColor});
  `,c);
- for(const row of data.checks){assert(row.independent&&row.shared&&row.animated&&row.npcUntouched,JSON.stringify(row));assert.equal(row.disposed,0);assert(row.bones>20);}
+ for(const row of data.checks){assert(row.visible&&row.independent&&row.shared&&row.animated&&row.npcUntouched,JSON.stringify(row));assert.equal(row.disposed,0);assert(row.bones>20);}
  assert(data.toolInHand&&data.toolRestored,'Tool must follow the selected model and return to the original arm');
  assert.equal(data.savedStyle,'family-thamis');assert.equal(data.savedColor,'#123456');
 });

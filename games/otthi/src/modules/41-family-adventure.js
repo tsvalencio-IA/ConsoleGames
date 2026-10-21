@@ -94,7 +94,7 @@
   function familyCloneAvatar(id,parent,baseY=0){
     const source=familyWorld.actors[id];if(!source||!parent)return null;
     const group=source.group.clone(true),byName={};let mesh;
-    group.position.set(0,0,0);group.rotation.set(0,0,0);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
+    group.visible=true;group.position.set(0,0,0);group.rotation.set(0,0,0);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
     group.traverse(o=>{if(o.isBone)byName[o.name.split(':')[1]]=o;if(o.isSkinnedMesh)mesh=o;});
     const bones=source.bones.map(b=>byName[b.name.split(':')[1]]);
     mesh.bind(new THREE.Skeleton(bones,source.mesh.skeleton.boneInverses.map(m=>m.clone())),source.mesh.bindMatrix.clone());
@@ -168,6 +168,7 @@
     if(!familyWorld.ready)return false;
     if(kind!=='party'&&!familyNear()){familyRoute('family-home');toast('Encontre a família seguindo o GPS.','good',2000);return false;}
     if((kind==='party'||kind==='walk')&&familyWorld.walkOwner&&familyWorld.walkOwner!==sharedWorldOwnId()){toast('A família já está passeando com outro participante.','warn',2000);return false;}
+    if(kind==='walk')payload={...normalizeFamilyParty(familyProgress().party),...payload};
     if(!sharedWorldIsAuthority()&&window.OTTHOS_RTDB?.connected?.()){
       window.OTTHOS_RTDB.sendEventV2('family-command',{kind,...payload}).then(r=>{if(!r?.ok)toast('Não foi possível enviar. Tente novamente perto da família.','warn',2000);});return true;
     }
@@ -306,4 +307,4 @@
     });
   }
   window.addEventListener('otthi:event-v2',event=>{const e=event.detail;if(e?.kind!=='family-command'||!sharedWorldIsAuthority()||!e.actorUid)return;familyApplyCommand(e.payload?.kind,e.payload||{},String(e.actorUid),remotePresence.get(String(e.actorUid)));});
-  window.OTTHI_FAMILY={remoteAvatars:()=>[...world.ghosts.entries()].map(([uid,g])=>({uid,id:g.userData.familyAvatar?.id||'',bones:g.userData.familyAvatar?.bones.length||0,signature:g.userData.avatarSignature})),playerAvatar:()=>{const v=playerModel?.userData?.familyAvatar;return v?{id:v.id,bones:v.bones.length,meshVisible:v.mesh.visible&&playerModel.visible,baseHidden:!playerModel.userData.parts.body.parent.visible,position:playerGroup.position.toArray(),arm:v.byName.shoulder1.rotation.toArray(),leg:v.byName['hip1'].rotation.toArray(),toolInHand:!!toolVisual&&toolVisual.parent===v.byName.hand1}:null;},open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),party:{owner:familyWorld.walkOwner,controller:familyWorld.walkController,members:[...familyWorld.walkMembers]},authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
+  window.OTTHI_FAMILY={remoteAvatars:()=>[...world.ghosts.entries()].map(([uid,g])=>({uid,id:g.userData.familyAvatar?.id||'',bones:g.userData.familyAvatar?.bones.length||0,visible:!!g.userData.familyAvatar?.group.visible&&g.visible,signature:g.userData.avatarSignature})),playerAvatar:()=>{const v=playerModel?.userData?.familyAvatar;return v?{id:v.id,bones:v.bones.length,meshVisible:v.mesh.visible&&v.group.visible&&playerModel.visible,baseHidden:!playerModel.userData.parts.body.parent.visible,position:playerGroup.position.toArray(),arm:v.byName.shoulder1.rotation.toArray(),leg:v.byName['hip1'].rotation.toArray(),toolInHand:!!toolVisual&&toolVisual.parent===v.byName.hand1}:null;},open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),party:{owner:familyWorld.walkOwner,controller:familyWorld.walkController,members:[...familyWorld.walkMembers]},authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};

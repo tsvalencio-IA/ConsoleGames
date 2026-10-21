@@ -6,7 +6,7 @@ function family(){
  const c=vm.createContext({console,performance:{now:()=>100},URLSearchParams,Float32Array,setTimeout(){}});
  c.window={addEventListener(){},location:{search:''}};c.document={hidden:false};
  vm.runInContext(readFileSync('games/otthi/assets/vendor/three-r128.min.js','utf8'),c);
- vm.runInContext(`const state={avatar:{bodyStyle:'family-thiago'}},player={x:0,z:6,facing:0,vx:0,vz:0},input={};const world={colliders:[],ghosts:new Map()},worldGroup=new THREE.Group(),remotePresence=new Map();const lerp=(a,b,t)=>a+(b-a)*t,lerpAngle=lerp;const waterAt=()=>false,v704RoadAt=()=>false,positionBlockedForPlayer=()=>false,groundHeightAt=()=>0,worldLayoutPoint=()=>({x:0,z:0}),createHouse=()=>{},registerInteractable=()=>{},sharedWorldIsAuthority=()=>true,sharedWorldOwnId=()=> 'party-test',saveState=()=>{},toast=()=>{},beep=()=>{},buildRoutePoints=(a,b)=>[b];`,c);
+ vm.runInContext(`let authority=true;const state={avatar:{bodyStyle:'family-thiago'}},player={x:0,z:6,facing:0,vx:0,vz:0},input={};const world={colliders:[],ghosts:new Map()},worldGroup=new THREE.Group(),remotePresence=new Map();const lerp=(a,b,t)=>a+(b-a)*t,lerpAngle=lerp;const waterAt=()=>false,v704RoadAt=()=>false,positionBlockedForPlayer=()=>false,groundHeightAt=()=>0,worldLayoutPoint=()=>({x:0,z:0}),createHouse=()=>{},registerInteractable=()=>{},sharedWorldIsAuthority=()=>authority,sharedWorldOwnId=()=> 'party-test',saveState=()=>{},toast=()=>{},beep=()=>{},buildRoutePoints=(a,b)=>[b];`,c);
  vm.runInContext(readFileSync('games/otthi/family-mascots.js','utf8'),c);
  vm.runInContext(readFileSync('games/otthi/src/modules/41-family-adventure.js','utf8'),c);
  vm.runInContext('initFamilyAdventure()',c);
@@ -38,4 +38,11 @@ test('family: a shared party cannot be stolen, and its selected members survive 
  familyWorld.walkMembers=[];familyApplySnapshot(saved,1);
  ({stolen,stopped,members:familyWorld.walkMembers,controller:familyWorld.walkController,owner:familyWorld.walkOwner});`);
  assert(!result.stolen&&!result.stopped);assert.deepEqual(Array.from(result.members),['thiago','luna','liz']);assert.equal(result.controller,'thiago');assert.equal(result.owner,'party-test');
+});
+
+test('family: a guest sends the chosen subset when starting a walk in a shared room',()=>{
+ const run=family();
+ const sent=run(`authority=false;let sent=null;window.OTTHOS_RTDB={connected:()=>true,sendEventV2:(event,payload)=>{sent={event,payload};return Promise.resolve({ok:true});}};
+ familyProgress().party={controller:'thiago',members:['thiago','luna','liz']};familyWorld.walkOwner='party-test';familyCommand('walk');sent;`);
+ assert.equal(sent.event,'family-command');assert.equal(sent.payload.kind,'walk');assert.deepEqual(Array.from(sent.payload.members),['thiago','luna','liz']);
 });

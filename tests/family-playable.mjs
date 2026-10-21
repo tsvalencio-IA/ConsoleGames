@@ -54,8 +54,8 @@ try{
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().party.members.join(',')==='thamis',null,{timeout:15000});
  await moveCharacter('thamis');
  // Receive the real multiplayer presence shape without connecting to production.
- await page.evaluate(()=>{const p=window.OTTHOS_TEST_API.getGame().player;window.dispatchEvent(new CustomEvent('otthos:mp-player',{detail:{uid:'family-remote-test',name:'Participante teste',x:p.x+2,y:p.y,z:p.z,r:0,avatar:{bodyStyle:'family-thiago'}}}));});
- await page.waitForFunction(()=>window.OTTHI_FAMILY.remoteAvatars().some(a=>a.uid==='family-remote-test'&&a.id==='thiago'&&a.bones>20),null,{timeout:15000});
+ await page.evaluate(()=>{const p=window.OTTHOS_TEST_API.getGame().player;window.dispatchEvent(new CustomEvent('otthos:mp-player',{detail:{uid:'family-remote-test',name:'Participante teste',x:p.x+2,y:p.y,z:p.z,r:0,avatar:{bodyStyle:'family-thamis'}}}));});
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.remoteAvatars().some(a=>a.uid==='family-remote-test'&&a.id==='thamis'&&a.bones>20&&a.visible),null,{timeout:15000});
  assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().id),'thamis');
  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('otthos:mp-leave',{detail:{uid:'family-remote-test'}})));
  // Returning to a previous style restores its customization controls.
