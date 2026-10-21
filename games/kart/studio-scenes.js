@@ -119,7 +119,7 @@ function install(){
  logic[method]=function(...args){
    const result=original.apply(this,args);
    const ctx=args[0],w=args[1],h=args[2];
-   try{if(ctx&&w>0&&h>0&&this===logic)draw(ctx,w,h,this)}catch(error){
+   try{if(ctx&&w>0&&h>0&&this===logic&&window.ArcadePlaySettings?.get().quality!=='low')draw(ctx,w,h,this)}catch(error){
      if(!installed)console.warn("Scene enhancement unavailable:",error);
    }
    return result;

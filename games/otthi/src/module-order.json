@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "816eb70f8dd705e7f89dfbd88433b731c97e2ee9754d8ece6db7f5e0e01521a6"
+      "sha256Body": "008bc64bf4f389990ca195a0aad297827609fd0c76ff84e33981b7e6a0093e95"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "46c12263784e4f35f3d61f51a1bc905dbcf6b94430f4b429cc2579517abfd408"
+      "sha256Body": "e9615c624efc7145a44231b4532e0ee701aa4a7337a4bf314b0be3337f7037ee"
     }
   ],
   "styles": [

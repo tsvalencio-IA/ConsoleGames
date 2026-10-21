@@ -7433,6 +7433,7 @@
     const simulationInterval=1/targetSimulationFrameRate();if(perf.loopAcc<simulationInterval*.92)return;
     const dt=Math.min(.033,perf.loopAcc);perf.loopAcc=Math.max(0,perf.loopAcc-simulationInterval);samplePerformance(dt);
     updatePlayUsage();
+    if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
@@ -8688,7 +8689,7 @@
       if(actor.path.length)dest=actor.path[0];
     }else actor.path=[];
     const heading=Math.atan2(dest.x-actor.x,dest.z-actor.z),step=Math.min(distance,speed*dt);
-    for(const turn of [0,.45,-.45,.9,-.9,1.35,-1.35]){const x=actor.x+Math.sin(heading+turn)*step,z=actor.z+Math.cos(heading+turn)*step;if(!positionBlockedForPlayer(x,z,.18)){actor.x=x;actor.z=z;actor.heading=heading+turn;actor.moving=1;return distance<=.45;}}
+    for(const turn of [0,.45,-.45,.9,-.9,1.35,-1.35]){const x=actor.x+Math.sin(heading+turn)*step,z=actor.z+Math.cos(heading+turn)*step;if(!positionBlockedForPlayer(x,z,.18)&&familyClear(actor,{x,z})){actor.x=x;actor.z=z;actor.heading=heading+turn;actor.moving=1;return distance<=.45;}}
     return false;
   }
   function familyOwnerPosition(owner){return owner===sharedWorldOwnId()?player:remotePresence.get(String(owner));}
@@ -8704,7 +8705,7 @@
     const previousBall=familyWorld.ball,nextBall=data.ball&&['luna','liz'].includes(data.ball.dog)?JSON.parse(JSON.stringify(data.ball)):null;if(nextBall?.at&&previousBall?.id===nextBall.id&&previousBall?.at){for(const axis of ['x','y','z'])nextBall.at[axis]=lerp(previousBall.at[axis],Number(nextBall.at[axis])||0,Math.min(1,dt*14));}familyWorld.ball=nextBall;familyWorld.walkOwner=String(data.walkOwner||'');const remoteClock=Number(data.clock);if(Number.isFinite(remoteClock))familyWorld.clock=Math.abs(remoteClock-familyWorld.clock)>2?remoteClock:lerp(familyWorld.clock,remoteClock,.035);familyWorld.workUntil=Number(data.workUntil)||0;familyWorld.workKind=String(data.workKind||'');familyWorld.ack=data.ack;familyCollectAck(data.ack);
   }
   function updateFamilyAdventure(dt){
-    if(!familyWorld.ready)return;familyWorld.clock+=dt;const authority=sharedWorldIsAuthority();
+    if(!familyWorld.ready)return;const wall=performance.now();dt=wall>Number(familyWorld.lastWall)?Math.min(.6,(wall-familyWorld.lastWall)/1000):dt;familyWorld.lastWall=wall;if(document.hidden)return;familyWorld.clock+=dt;const authority=sharedWorldIsAuthority();
     if(!authority){const host=remotePresence.get(sharedWorldAuthorityId()),snapshot=(typeof multiplayerV2WorldSnapshot==='function'?multiplayerV2WorldSnapshot():null)||host?.sharedScene;familyApplySnapshot(snapshot?.f,dt);}
     else{
       const owner=familyOwnerPosition(familyWorld.walkOwner),follow=owner&&!owner.vehicle?owner:null;

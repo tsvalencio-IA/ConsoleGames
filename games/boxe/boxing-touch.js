@@ -90,6 +90,7 @@ function install(){
    const visible=Boolean(window.System?.activeGame?.id==="box_pro" && logic.touchMode && logic.state==="FIGHT" && !window.System?.paused);
    controls.hidden=!visible;
  };
+ window.addEventListener('arcade:play-settings-close',refresh);
  const observer=setInterval(refresh,180);
  window.addEventListener("pagehide",()=>clearInterval(observer),{once:true});
 }

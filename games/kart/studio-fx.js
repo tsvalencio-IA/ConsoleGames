@@ -147,7 +147,7 @@
     logic.update=function(ctx,w,h,...input){
       const output=old.call(this,ctx,w,h,...input);
       if(window.System?.activeGame===game){
-        try{track(this);addStudioFrame(ctx,w,h,this)}catch(error){
+        try{track(this);if(window.ArcadePlaySettings?.get().quality!=='low')addStudioFrame(ctx,w,h,this)}catch(error){
           if(!context.warned){console.warn("Studio visual/audio overlay indisponível:",error);context.warned=true}
         }
       }

@@ -35,12 +35,13 @@ test('tennis: loss holds racket without synthetic velocity; recovery and real wr
 });
 test('boxing: a preparation interval precedes a real attack and difficulty changes its pace',()=>{
  const {game:g,settings}=engine('boxe','game_box');g.p1=g.createPlayer('p1',0);g.p2=g.createPlayer('p2',1);g.timer=180;g.p1.pose.head={x:195,y:500};
+ for(let i=0;i<25;i++)g.updateAI(390,844,.016);assert(Object.values(g.p2.pose.wrists).every(h=>h.state==='IDLE'),'Idle repositioning cannot invent an unannounced punch');
  let seen=false,attacks=0;g.updateHandLogic=(hand,target,shoulder,owner)=>{if(hand.state==='PUNCH')attacks++;};
  for(let i=0;i<150;i++){g.updateAI(390,844,.016);if(g.telegraph)seen=true;}
  assert(seen,'Opponent must signal preparation');assert(attacks>0,'Preparation must lead to real native PUNCH state');
 });
 test('approved family rigs deform with actual Three.js bones and complete fetch once',()=>{
- const context=vm.createContext({console,performance:{now:()=>100},URLSearchParams,Float32Array,setTimeout(){}});context.window={addEventListener(){},location:{search:''}};
+ const context=vm.createContext({console,performance:{now:()=>100},URLSearchParams,Float32Array,setTimeout(){}});context.window={addEventListener(){},location:{search:''}};context.document={hidden:false};
  vm.runInContext(read('games/otthi/assets/vendor/three-r128.min.js'),context);context.window.THREE=context.THREE;
  const setup=`const state={};const player={x:0,z:0,facing:0};const world={colliders:[]};const worldGroup=new THREE.Group();const remotePresence=new Map();const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));const lerp=(a,b,t)=>a+(b-a)*t;const lerpAngle=lerp;const waterAt=()=>false;const v704RoadAt=()=>false;const positionBlockedForPlayer=()=>false;const segmentClear=()=>true;const groundHeightAt=()=>0;const worldLayoutPoint=()=>({x:0,z:0});const createHouse=()=>{};const registerInteractable=()=>{};const sharedWorldIsAuthority=()=>true;const sharedWorldOwnId=()=> 'unit-player';const saveState=()=>{};const toast=()=>{};const beep=()=>{};const buildRoutePoints=(a,b)=>[b];`;
  vm.runInContext(setup,context);vm.runInContext(read('games/otthi/family-mascots.js'),context);vm.runInContext(read('games/otthi/src/modules/41-family-adventure.js'),context);
@@ -54,6 +55,7 @@ test('approved family rigs deform with actual Three.js bones and complete fetch 
  const progress=vm.runInContext('familyProgress().deliveries.luna',context);assert.equal(progress,1,'Exactly one actual return must count');
  vm.runInContext('for(let i=0;i<120;i++)updateFamilyAdventure(.016);',context);assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),1,'Repeated frames cannot duplicate completed fetch');
  vm.runInContext('familyWorld.lastAck="";familyCollectAck(familyWorld.ack);',context);assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),1,'Reconnecting cannot credit the same delivery twice');
+ let wall=100;context.performance.now=()=>wall;vm.runInContext('window.OTTHI_FAMILY.throwToy("luna")',context);for(let i=0;i<25;i++){wall+=500;vm.runInContext('updateFamilyAdventure(.016)',context);}assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),2,'Slow rendering must not turn a short fetch into a minute of slow motion');
 });
 
 test('flight school: real throttle accelerates on runway and climb advances to the maneuver lesson',()=>{

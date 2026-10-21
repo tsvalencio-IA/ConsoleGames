@@ -29,10 +29,11 @@
  const select=(name,title,options)=>'<label class="play-option"><span>'+title+'</span><select data-setting="'+name+'">'+options.map(([v,t])=>'<option value="'+v+'"'+(values[name]===v?' selected':'')+'>'+t+'</option>').join('')+'</select></label>';
  const range=(name,title,min,max,step)=>'<label class="play-option"><span>'+title+' <output>'+values[name]+'</output></span><input data-setting="'+name+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+values[name]+'"></label>';
  const toggle=(name,title)=>'<label class="play-option play-check"><span>'+title+'</span><input data-setting="'+name+'" type="checkbox"'+(values[name]?' checked':'')+'></label>';
- function close(){if(!dialog)return;dialog.remove();dialog=null;if(window.System){window.System.paused=wasPaused;const g=window.System.activeGame?.logic;if(g){if('lastTime'in g)g.lastTime=performance.now();if('lastFrameTime'in g)g.lastFrameTime=performance.now()}}previousFocus?.isConnected&&previousFocus.focus({preventScroll:true})}
+ function close(){if(!dialog)return;dialog.remove();dialog=null;if(window.System){window.System.paused=wasPaused;const g=window.System.activeGame?.logic;if(g){if('lastTime'in g)g.lastTime=performance.now();if('lastFrameTime'in g)g.lastFrameTime=performance.now()}}window.dispatchEvent(new Event('arcade:play-settings-close'));previousFocus?.isConnected&&previousFocus.focus({preventScroll:true})}
  function open(){
   if(dialog)return;
   previousFocus=document.activeElement;wasPaused=!!window.System?.paused;
+  const logic=window.System?.activeGame?.logic;if(logic?.keys)for(const k of Object.keys(logic.keys))logic.keys[k]=false;if(logic?.arcadeManual&&typeof logic.arcadeManual==='object')for(const k of Object.keys(logic.arcadeManual))logic.arcadeManual[k]=false;document.querySelectorAll('.input-game-controls .held').forEach(b=>b.classList.remove('held'));
   const online=!!(window.System?.activeGame?.logic?.isOnline||['PVP','COOP'].includes(window.System?.activeGame?.logic?.mode));
   if(window.System&&!online)window.System.paused=true;
   dialog=document.createElement('section');dialog.id='play-settings';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','play-settings-title');
@@ -43,17 +44,17 @@
    content+=select('distance','Distância',[['near','Próxima'],['medium','Média'],['far','Distante']]);
   }
   if(['drive','tennis','box_pro'].includes(id))content+=select('difficulty','Dificuldade solo',[['easy','Treino'],['normal','Normal'],['hard','Desafio']]);
-  content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
+  if(id!=='box_pro')content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
   if(id==='tennis')content+=range('smoothing','Suavização da raquete',.35,.9,.05);
   if(id==='drive')content+=toggle('autoAccelerate','Aceleração automática');
   if(id==='usarmy_flight_sim')content+=toggle('assist','Estabilizar ao soltar os comandos');
-  content+='<h3>Controles na tela</h3>'+range('controlSize','Tamanho',.9,1.15,.05)+range('controlOpacity','Opacidade',.45,1,.05)+range('controlInset','Afastamento da borda',0,28,2);
-  content+='<h3>Som e imagem</h3>'+range('effectsVolume','Efeitos',0,1,.05)+range('engineVolume','Motor',0,1,.05)+range('alertVolume','Alertas',0,1,.05)+select('quality','Qualidade',[['auto','Automática'],['low','Economia'],['high','Alta']]);
+  if(id!=='tennis')content+='<h3>Controles na tela</h3>'+range('controlSize','Tamanho',.9,1.15,.05)+range('controlOpacity','Opacidade',.45,1,.05)+(id==='box_pro'?'':range('controlInset','Afastamento da borda',0,28,2));
+  content+='<h3>Som e imagem</h3><button type="button" data-studio-audio>Efeitos de aventura: '+(document.getElementById('studio-audio-switch')?.getAttribute('aria-pressed')==='false'?'desligados':'ligados')+'</button>'+range('effectsVolume','Efeitos',0,1,.05)+range('engineVolume','Motor',0,1,.05)+range('alertVolume','Alertas',0,1,.05)+select('quality','Detalhes visuais',[['auto','Automática'],['low','Economia'],['high','Alta']]);
   dialog.innerHTML='<div class="play-panel"><header><div><small>SEU JEITO DE JOGAR</small><h2 id="play-settings-title">Ajustes do jogo</h2></div><button type="button" data-close aria-label="Fechar ajustes">✕</button></header><p>Preferências salvas neste dispositivo.'+(online?' A partida online continua em andamento.':'')+'</p>'+content+'<footer><button type="button" data-reset>Restaurar ajustes</button><button type="button" data-close>PRONTO</button></footer></div>';
   document.body.append(dialog);
   dialog.addEventListener('input',e=>{const el=e.target,k=el.dataset.setting;if(!k)return;set(k,el.type==='checkbox'?el.checked:el.value);const out=el.closest('label')?.querySelector('output');if(out)out.value=String(values[k]);apply()});
-  dialog.addEventListener('click',e=>{if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
-  dialog.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close()}if(e.key==='Tab'){const focus=[...dialog.querySelectorAll('button,select,input')],a=focus[0],b=focus.at(-1);if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus()}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus()}}});
+  dialog.addEventListener('click',e=>{const sound=e.target.closest('[data-studio-audio]');if(sound){const native=document.getElementById('studio-audio-switch');native?.click();sound.textContent='Efeitos de aventura: '+(native?.getAttribute('aria-pressed')==='false'?'desligados':'ligados');}if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
+  dialog.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close()}if(e.key==='Tab'){const focus=[...dialog.querySelectorAll('button,select,input')],a=focus[0],b=focus.at(-1);if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus()}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus()}}});
   dialog.querySelector('[data-close]').focus();
  }
  window.ArcadePlaySettings={get:()=>({...values}),set:(k,v)=>{set(k,v);apply()},open,close};

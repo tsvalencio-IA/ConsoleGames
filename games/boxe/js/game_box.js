@@ -709,6 +709,7 @@
                     hand.state='PUNCH';hand.z=0;hand.hasHit=false;hand.punchForce=difficulty==='easy'?.65:difficulty==='hard'?1.15:.85;ai.stamina-=20;
                 }else if(hand.state==='PUNCH'){target={x:this.p1.pose.head.x,y:this.p1.pose.head.y+8};}
                 const shoulder=side==='l'?p.shoulders.l:p.shoulders.r;
+                if(hand.state==='IDLE'&&!(strike&&chosen)){hand.x=target.x;hand.y=target.y;}
                 this.updateHandLogic(hand,target,shoulder,ai,this.p1,dt);
             });
             if(brain.preparing&&!strike){

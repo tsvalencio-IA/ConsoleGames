@@ -51,6 +51,7 @@
     const simulationInterval=1/targetSimulationFrameRate();if(perf.loopAcc<simulationInterval*.92)return;
     const dt=Math.min(.033,perf.loopAcc);perf.loopAcc=Math.max(0,perf.loopAcc-simulationInterval);samplePerformance(dt);
     updatePlayUsage();
+    if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.

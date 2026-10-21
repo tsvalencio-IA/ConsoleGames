@@ -35,3 +35,10 @@ html[data-playing="true"] #studio-audio-switch{display:none}
 @media(max-height:480px){.input-game-controls.kart-input [data-control="drift"],.input-game-controls.kart-input [data-control="rear"]{bottom:116px}}
 /* Keep match information in the native HUD; goals stay available in Missões. */
 html[data-playing="true"] #arcade-topline,html[data-playing="true"] #arcade-target,.crt-overlay{display:none!important}
+
+#arcade-boxing-controls{--box-punch:clamp(64px,calc(20vw * var(--play-control-size,1)),104px);--box-guard:clamp(54px,calc(16vw * var(--play-control-size,1)),80px)}
+#arcade-boxing-controls .boxing-action.jab,#arcade-boxing-controls .boxing-action.cross{width:var(--box-punch)}
+#arcade-boxing-controls .boxing-action.guard{width:var(--box-guard)}
+#arcade-boxing-controls .boxing-action[data-dodge="-1"]{left:calc(max(9px,env(safe-area-inset-left)) + var(--box-punch) + 8px)}
+#arcade-boxing-controls .boxing-action[data-dodge="1"]{right:calc(max(9px,env(safe-area-inset-right)) + var(--box-punch) + 8px)}
+@media(max-width:350px){#arcade-boxing-controls .boxing-action[data-dodge="-1"]{left:15px}#arcade-boxing-controls .boxing-action[data-dodge="1"]{right:15px}}

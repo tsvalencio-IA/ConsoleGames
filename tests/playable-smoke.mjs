@@ -179,7 +179,7 @@ try{
         window.__testPad={connected:true,axes:[-1,0],buttons};
         Object.defineProperty(navigator,"getGamepads",{configurable:true,value:()=>[window.__testPad]});
       });
-      await page.waitForTimeout(460);
+      await page.waitForFunction(()=>{const g=window.Games.find(g=>g.id==='drive').logic;return g.arcadeManual?.left&&g.arcadeManual?.throttle&&g.targetSteer<-.25},null,{timeout:5000});
       const viaPad=await page.evaluate(()=>{
         const g=window.Games.find(g=>g.id==="drive").logic;
         return {left:g.arcadeManual?.left,accelerator:g.arcadeManual?.throttle,target:g.targetSteer};
@@ -307,6 +307,7 @@ try{
       const selector=slug==="ar"?".ar-input .input-control:not([hidden])":
          slug==="voo"?".flight-input .input-control:not([hidden])":
          "#arcade-boxing-controls .boxing-action";
+      await page.locator(selector).first().waitFor({state:'visible',timeout:5000});
       const rects=await page.locator(selector).evaluateAll(buttons=>{
         return buttons.filter(b=>!b.hidden&&getComputedStyle(b).display!=="none").map(b=>{
           const r=b.getBoundingClientRect();return {id:b.dataset.control||b.dataset.punch||b.dataset.guard||"",
@@ -339,11 +340,13 @@ try{
     assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel não recolhe");
     // Authenticated actual gameplay: player can toggle contextual Studio effects.
     const audioControl=page.locator("#studio-audio-switch");
-    await audioControl.waitFor({state:"visible",timeout:5000});
-    await audioControl.click({timeout:4000});
+    await audioControl.waitFor({state:"attached",timeout:5000});
+    await page.locator('#play-settings-button').click();
+    await page.locator('#play-settings [data-studio-audio]').click();
     assert.equal(await audioControl.getAttribute("aria-pressed"),"false","Studio FX mute not applied");
-    await audioControl.click({timeout:4000});
+    await page.locator('#play-settings [data-studio-audio]').click();
     assert.equal(await audioControl.getAttribute("aria-pressed"),"true","Studio FX enable not applied");
+    await page.locator('#play-settings [data-close]').last().click();
     assert.equal(state.game,id,"Motor foi encerrado inesperadamente");
     assert.equal(state.loaded,true,"HUD de jogo não exibido");
     assert(state.width<=state.viewport+3,JSON.stringify({slug,state}));
