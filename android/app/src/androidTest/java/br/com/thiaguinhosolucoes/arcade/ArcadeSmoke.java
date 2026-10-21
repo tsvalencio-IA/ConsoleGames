@@ -53,7 +53,7 @@ public final class ArcadeSmoke extends Instrumentation {
         while(System.currentTimeMillis()<deadline){
             AccessibilityNodeInfo root=getUiAutomation().getRootInActiveWindow();
             if(root!=null)for(AccessibilityNodeInfo node:root.findAccessibilityNodeInfosByText("Explorar jogos")){
-                node.performAction(AccessibilityNodeInfo.ACTION_SHOW_ON_SCREEN);
+                node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SHOW_ON_SCREEN.getId());
                 if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK))return;
             }
             Thread.sleep(300);

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync,existsSync} from "node:fs";
+import {createHash} from "node:crypto";
 import {execFileSync} from "node:child_process";
 const root=new URL("../",import.meta.url);
 const read=path=>readFileSync(new URL(path,root),"utf8");
@@ -36,7 +37,7 @@ test("sete jogos da nova instalação abrem no repositório correto",()=>{
 });
 
 test("instalação arcade usa um service worker com cache isolado",()=>{
-  assert(sw.includes('const CACHE="thiaguinho-arcade-shell-v2"'));
+  assert.match(sw,/const CACHE="thiaguinho-arcade-shell-v\d+"/);
   assert(!sw.includes('thiaguinho-console-static-v3'));
   assert(sw.includes("self.registration.scope"));
   assert(sw.includes("url.origin!==self.location.origin"));
@@ -66,4 +67,18 @@ test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
  assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");
  assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
  assert.equal(arcadeManifest.scope,"/ConsoleGames/");
+});
+
+test("Android: botão de instalação referencia o APK íntegro com a versão publicada",()=>{
+ const release=JSON.parse(read("arcade/downloads/release.json"));
+ const apk=readFileSync(new URL("arcade/downloads/"+release.file,root));
+ assert(html.includes('href="./downloads/'+release.file+'" download'));
+ assert.equal(apk.subarray(0,4).toString('hex'),'504b0304');
+ assert.equal(apk.length,release.bytes);
+ assert.equal(createHash('sha256').update(apk).digest('hex'),release.sha256);
+ const gradle=read('android/app/build.gradle');
+ assert(gradle.includes("applicationId '"+release.package+"'"));
+ assert(gradle.includes("versionName '"+release.version+"'"));
+ assert(gradle.includes('versionCode '+release.versionCode));
+ assert(read('arcade/downloads/SHA256SUMS.txt').includes(release.sha256+'  '+release.file));
 });
