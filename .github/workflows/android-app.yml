@@ -1,0 +1,54 @@
+name: Gerar e instalar aplicativo Android
+on:
+  push:
+    paths: ['android/**', '.github/workflows/android-app.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Compilar aplicativo e teste Android
+        working-directory: android
+        run: gradle --no-daemon assembleRelease assembleDebug assembleDebugAndroidTest lintRelease
+      - name: Preparar APK sem chave privada no CI
+        run: |
+          mkdir -p android-delivery
+          cp android/app/build/outputs/apk/release/app-release-unsigned.apk android-delivery/arcade-unsigned.apk
+          cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" android-delivery/apksigner.jar
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging android-delivery/arcade-unsigned.apk > android-delivery/apk-manifest.txt
+          sha256sum android-delivery/arcade-unsigned.apk > android-delivery/SHA256SUMS
+      - name: Habilitar aceleração do emulador
+        run: sudo chmod 666 /dev/kvm
+      - name: Instalar e abrir no Android 35
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            adb install android/app/build/outputs/apk/debug/app-debug.apk
+            adb install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+            adb shell am instrument -w br.com.thiaguinhosolucoes.arcade.test/br.com.thiaguinhosolucoes.arcade.ArcadeSmoke | tee android-delivery/android-install-test.txt
+            rg 'Android: installed' android-delivery/android-install-test.txt
+            adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files/android-portrait.png android-delivery/android-portrait.png
+            adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files/android-landscape.png android-delivery/android-landscape.png
+      - name: Guardar pacote para assinatura final e evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-install-package
+          path: android-delivery/
+          retention-days: 7
