@@ -5,7 +5,7 @@ import {mkdirSync,writeFileSync} from 'node:fs';
 import {touchSession} from './helpers/touch-session.mjs';
 const base='http://127.0.0.1:4173/';
 mkdirSync('test-results/playable',{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
+const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 try{
  const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
  await context.addInitScript(()=>!localStorage.getItem('otthos_life_world_roleplay_v700')&&localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
@@ -16,6 +16,21 @@ try{
  await page.locator('#playBtn').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
  const info=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics());assert.equal(info.actors.length,4);assert(info.actors.every(a=>a.bones>12&&a.vertices>1000));
+ // Exercise the player's actual mission choices; no connection to production.
+ await page.evaluate(()=>window.OTTHI_COOP.open());
+ assert.equal(await page.locator('[data-create-solo]').count(),7);assert.equal(await page.locator('[data-create-duo]').count(),7);
+ await page.locator('[data-coop-difficulty]').selectOption('hard');
+ assert.equal(await page.evaluate(()=>window.OTTHI_COOP.difficulty().laps),4);
+ await page.locator('[data-create-duo="streetRace"]').click();
+ assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active()),null,'Failed online selection must not silently start solo');
+ await page.locator('[data-create-solo="streetRace"]').click();
+ assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active().record.mode),'solo');
+ assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active().record.difficulty),'hard');
+ await page.evaluate(()=>window.OTTHI_COOP.open());await page.locator('[data-open-active-coop]').click();
+ await page.screenshot({path:'test-results/playable/otthi-solo-mission-hard.png'});
+ await page.locator('[data-coop-leave]').click();await page.locator('[data-yes]').click();
+ await page.waitForFunction(()=>!window.OTTHI_COOP.active(),null,{timeout:10000});
+
  async function chooseParty(controller,members){
   await page.evaluate(()=>window.OTTHI_FAMILY.open());
   await page.locator('[data-family-controller="'+controller+'"]').check();

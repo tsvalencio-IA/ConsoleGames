@@ -189,7 +189,7 @@
       "startLine": 4128,
       "endLine": 4243,
       "description": "Carreiras, estados de missão, uniformes, professor, bombeiro e entrega",
-      "sha256Body": "2b6cf0fc4de38b280ae26d13fbb20dee5fd101632bc3aba636f8ece4fdb30d93"
+      "sha256Body": "cc75d8573457e0c8f14b2c9b3e21f1a421cb81978ea609d5e9dd8b48ae45fac5"
     },
     {
       "file": "src/modules/23-vehicle-effects-driving.js",

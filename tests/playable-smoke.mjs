@@ -7,7 +7,7 @@ import {join} from "node:path";
 import {touchSession} from "./helpers/touch-session.mjs";
 const base="http://127.0.0.1:4173/games/";
 const catalog=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
-const browser=await chromium.launch({headless:true,args:["--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
+const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
 try{
@@ -349,8 +349,8 @@ try{
       const fireFinger=await fingers.start(page.locator('[data-control="fire"]'));const turboFinger=await fingers.start(page.locator('[data-control="boost"]'));
       await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.manualStick.x>.3&&g.manualStick.y>.2&&g.manualFireHeld&&g.ship.afterburner},null,{timeout:5000});
       await page.screenshot({path:join('test-results/playable','voo-joystick-three-fingers.png')});
-      await fingers.end(turboFinger);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return g.manualStick.active&&g.manualFireHeld}));
-      await fingers.end(fireFinger);assert(await page.evaluate(()=>window.System.activeGame.logic.manualStick.active));await fingers.end(rightFinger);
+      await fingers.end(turboFinger);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return g.manualStick.active&&g.manualFireHeld}),'Releasing turbo must preserve stick and fire');
+      await fingers.end(fireFinger);assert(await page.evaluate(()=>window.System.activeGame.logic.manualStick.active),'Releasing fire must preserve the stick');await fingers.end(rightFinger);
       assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.manualStick.active&&!g.manualFireHeld&&!g.keys.Shift}),'Flight input remains stuck after releasing all fingers');
       const quiet=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {locked:g.combat.locked,shots:g.bullets.filter(b=>!b.isEnemy).length}});assert(!quiet.locked&&quiet.shots===0,'No adversary in sight must mean no player fire');
 

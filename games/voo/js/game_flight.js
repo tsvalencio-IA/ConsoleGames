@@ -1732,7 +1732,7 @@
                 if (this.combat.target) {
                     if (this.combat.locked) {
                         ctx.fillStyle = "#ffcf68"; ctx.font = "bold "+Math.min(16,Math.max(10,w*.029))+"px Arial"; ctx.textAlign = "center";
-                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"APERTE ◎ PARA DISPARAR":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
+                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"SEGURE ATIRAR • ◎ MÍSSIL":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
                     } else {
                         ctx.fillStyle = "#ffcc00"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
                         ctx.fillText("TRAVANDO MIRA...",0,-50,Math.max(95,w*.62));
@@ -1741,7 +1741,7 @@
 
                 ctx.restore();
             } else {
-                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold '+Math.min(17,Math.max(10,w*.028))+'px Arial';ctx.fillText(window.ArcadeControls?.mode==="controls"?"USE AS SETAS PARA PILOTAR":"SEGURE O VOLANTE COM AS DUAS MÃOS",cx,h-100,Math.max(95,w-30));
+                ctx.fillStyle='#ff0000';ctx.textAlign='center';ctx.font='bold '+Math.min(17,Math.max(10,w*.028))+'px Arial';ctx.fillText(window.ArcadeControls?.mode==="controls"?"JOYSTICK OU SETAS PARA PILOTAR":"SEGURE O VOLANTE COM AS DUAS MÃOS",cx,h-100,Math.max(95,w-30));
             }
 
             ctx.fillStyle='rgba(0,15,10,0.8)';ctx.fillRect(0,h-50,w,50);
@@ -1794,9 +1794,9 @@
             ctx.fillStyle='rgba(0,10,15,0.95)';ctx.fillRect(0,0,w,h);
             ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.strokeRect(50*sc,50*sc,w-100*sc,h-100*sc);
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
-            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'USE AS SETAS OU O BOTÃO INICIAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
-            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'◀ ▶ CURVA • ▲ SUBIR • ▼ DESCER':'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
+            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.':'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR COM TRAVA • ◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
