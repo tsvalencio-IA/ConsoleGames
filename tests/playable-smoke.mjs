@@ -142,7 +142,7 @@ try{
         return {count:g.rivals.length,id:rival.id};
       });
       assert(rivalFixture.count>0,"Corrida iniciou sem adversários reais");
-      await page.waitForTimeout(280);
+      await page.waitForFunction(()=>window.Games.find(x=>x.id==='drive').logic.__testRivalDraws>0,null,{timeout:8000});
       const rivalDraws=await page.evaluate(()=>window.Games.find(x=>x.id==="drive").logic.__testRivalDraws);
       assert(rivalDraws>0,"Adversário simulado não foi renderizado na pista: "+JSON.stringify(rivalFixture));
       const run=page.locator('.kart-input [data-control="go"]');
