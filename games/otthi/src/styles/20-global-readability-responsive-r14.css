@@ -249,3 +249,5 @@
 @media(max-width:900px){.thamis-tabs-five{grid-template-columns:repeat(3,minmax(0,1fr))!important}.thamis-stage-columns{grid-template-columns:1fr}}
 @media(max-width:520px){.thamis-tabs-five{grid-template-columns:repeat(2,minmax(0,1fr))!important}.thamis-tabs-five button:last-child{grid-column:1/-1}.edu-node{width:100%!important;transform:none!important}.edu-stage-meta{padding:9px 10px}.thamis-stage-row{min-height:56px!important}}
 @media(max-height:430px) and (orientation:landscape){.thamis-stage-columns{grid-template-columns:repeat(3,minmax(230px,1fr));overflow-x:auto;align-items:start;padding-bottom:6px}.thamis-stage-column{max-height:62vh;overflow-y:auto}.thamis-tabs-five{grid-template-columns:repeat(5,minmax(105px,1fr))!important;overflow-x:auto}.edu-stage-meta{margin-bottom:7px;padding:7px 9px}.edu-question{padding:9px!important;margin-bottom:8px!important}.edu-visual{min-height:46px!important;margin:5px 0!important;padding:7px!important}}
+
+body.family-portrait .mini-nav,body.family-portrait .camera-controls,body.family-portrait .mission-card,body.family-portrait .context-prompt{visibility:hidden!important;pointer-events:none!important}

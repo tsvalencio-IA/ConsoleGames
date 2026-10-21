@@ -132,6 +132,7 @@ window.Profile = {
                     window.Profile.coins = data.coins || 0;
                     window.Profile.permissions = data.permissions || {};
                     if(data.arSave) window.Profile.arSave = data.arSave;
+                    window.Profile.kartSave=data.kartSave||{garage:[{modelId:0}],activeKartIdx:0,upgrades:{engine:1,tires:1,suspension:1},useCustomKart:false};
                     window.Profile.updateUI();
                     window.System.renderChannels(); 
                 }
@@ -146,7 +147,8 @@ window.Profile = {
                 xp: window.Profile.xp,
                 level: window.Profile.level,
                 coins: window.Profile.coins,
-                arSave: window.Profile.arSave
+                arSave: window.Profile.arSave,
+                kartSave:window.Profile.kartSave||{garage:[{modelId:0}],activeKartIdx:0,upgrades:{engine:1,tires:1,suspension:1},useCustomKart:false}
             });
         }
         window.Profile.updateUI(); 

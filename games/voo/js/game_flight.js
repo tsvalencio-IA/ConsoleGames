@@ -139,7 +139,10 @@
             const t = this.ctx.currentTime;
             const volume=window.ArcadePlaySettings?.get()[type==='lock'||type==='hit'?'alertVolume':'effectsVolume']??1;
             
-            if (type === 'missile') { // 2: Som realista de míssil (propulsão/whoosh)
+            if(type==='lock'){
+                const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.setValueAtTime(880,t);o.frequency.setValueAtTime(1175,t+.07);g.gain.setValueAtTime(Math.max(.00001,.09*volume),t);g.gain.exponentialRampToValueAtTime(.00001,t+.16);o.connect(g);g.connect(this.ctx.destination);o.onended=()=>{o.disconnect();g.disconnect();};o.start(t);o.stop(t+.17);
+            }
+            else if (type === 'missile') { // 2: Som realista de míssil (propulsão/whoosh)
                 const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
                 const data = buf.getChannelData(0);
                 for (let i = 0; i < buf.length; i++) data[i] = (Math.random() * 2 - 1);
@@ -208,6 +211,7 @@
             this.state='INIT';
             this.careerKey='thia:flight-career:v1:'+(window.System?.playerId||'local');
             let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{};}catch{}
+            if(window.Profile?.flightSave&&typeof window.Profile.flightSave==='object')saved=window.Profile.flightSave;
             for(const key of Object.keys(this.upgrades))this.upgrades[key]=Math.max(1,Math.min(5,Math.floor(Number(saved.upgrades?.[key])||1)));
             this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school};
             this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
@@ -232,7 +236,7 @@
                     x: (Math.random() - 0.5) * 100000,
                     z: (Math.random() - 0.5) * 100000,
                     w: 200 + Math.random() * 500,
-                    h: 100 + Math.random() * 2000,
+                    h:60+Math.random()*180,kind:j%4===0?'village':'forest',
                     color: `rgba(${30 + Math.random() * 30}, ${40 + Math.random() * 40}, ${30 + Math.random() * 30}, 1)` 
                 });
             }
@@ -411,7 +415,10 @@
         },
 
         _saveCareer: function(){
-            try{localStorage.setItem(this.careerKey,JSON.stringify({...this.flightCareer,upgrades:this.upgrades,airframe:this.airframe}));}catch{}
+            const record={...this.flightCareer,upgrades:{...this.upgrades},airframe:this.airframe};
+            try{localStorage.setItem(this.careerKey,JSON.stringify(record));}catch{}
+            if(window.Profile)window.Profile.flightSave=record;
+            if(this.state!=='INIT'&&window.DB&&window.System?.playerId)window.DB.ref('users/'+window.System.playerId+'/flightSave').set(record);
         },
         selectAirframe: function(id){
             const model=this.airframes.find(m=>m.id===id);
@@ -459,7 +466,7 @@
             this.ship.hp=this.ship.maxHp;
             this.state = 'PLAYING';
             if(this.flightSchool){Object.assign(this.ship,{x:0,y:8,z:-2200,vx:0,vy:0,vz:0,speed:0,yaw:0,pitch:0,roll:0});this.manualThrottle=.7;this.pilot.throttle=.7;this.flightSchool.stage='takeoff';this.flightSchool.gate=0;this.view=null;}
-            this.session.wave=1;this.bossDefeated=false;
+            this.session.wave=1;this.bossDefeated=false;this.pvpDefeated=new Set();
             this.entities = [];
             this.bullets = [];
             this.missiles = [];
@@ -1116,9 +1123,7 @@
                                     let newHp = this.net.players[uid].hp - 10;
                                     window.DB.ref(`sessions/flight_${this.mode}/players/${uid}/hp`).set(newHp);
                                     if (newHp <= 0 && this.state === 'PLAYING') {
-                                        this.session.kills++;
-                                        this.session.cash += 500;
-                                        this.session.xp += 100;
+                                        this._pvpKill(uid);
                                     }
                                 }
                             }
@@ -1150,9 +1155,7 @@
                                 let newHp = m.target.hp - 50;
                                 window.DB.ref(`sessions/flight_${this.mode}/players/${m.target.uid}/hp`).set(newHp);
                                 if (newHp <= 0 && this.state === 'PLAYING') {
-                                    this.session.kills++;
-                                    this.session.cash += 500;
-                                    this.session.xp += 100;
+                                    this._pvpKill(m.target.uid);
                                 }
                             }
                             this._fx(m.target.x,m.target.y,m.target.z,'#f33',40,300);
@@ -1226,6 +1229,12 @@
             }
         },
 
+        _pvpKill: function(uid){
+            if(!this.pvpDefeated)this.pvpDefeated=new Set();if(this.pvpDefeated.has(uid))return false;this.pvpDefeated.add(uid);
+            this.session.kills++;this.session.cash+=500;this.session.xp+=100;this.flightCareer.kills++;this._saveCareer();
+            if(window.Profile){window.Profile.coins=this.session.cash;window.Profile.xp=this.session.xp;}
+            const id=window.System?.playerId;if(window.DB&&id){window.DB.ref('users/'+id+'/coins').set(this.session.cash);window.DB.ref('users/'+id+'/xp').transaction(x=>(Number(x)||0)+100);}return true;
+        },
         _kill: function(t, rew) {
             if(t.rewarded)return;t.rewarded=true;if(t.isBoss)this.bossDefeated=true;
             GameSfx.play('boom');
@@ -1417,7 +1426,7 @@
             if (Math.abs(groundY0 - groundY1) < 1) groundY1 = groundY0 + 1;
 
             let gG = ctx.createLinearGradient(0, groundY0, 0, groundY1);
-            gG.addColorStop(0,'#1b2e1b'); gG.addColorStop(0.3,'#0d170d'); gG.addColorStop(1,'#050805');
+            gG.addColorStop(0,'#779283');gG.addColorStop(.3,'#395c3f');gG.addColorStop(1,'#263f36');
             ctx.fillStyle = gG;
             ctx.fillRect(-w*3, hy, w*6, safeH*4);
             ctx.restore();
@@ -1433,39 +1442,30 @@
                  ctx.shadowBlur = 0;
             }
 
-            ctx.strokeStyle='rgba(40, 150, 40, 0.3)'; ctx.lineWidth=2; ctx.beginPath();
-            let st=4000;
-            let sx=Math.floor((this.ship.x||0)/st)*st - st*15;
-            let sz=Math.floor((this.ship.z||0)/st)*st - st*15;
-            
-            for(let x=0; x<=(w<760?24:30); x++) {
-                let p1 = this._projectView(sx + x*st, 0, sz, w,safeH);
-                let p2 = this._projectView(sx + x*st, 0, sz + 60*st, w,safeH);
-                if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
-                    ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); 
+            this._drawTerrain(ctx,w,safeH);
+        },
+        _drawTerrain: function(ctx,w,h){
+            const size=6000,cx=Math.floor(this.ship.x/size),cz=Math.floor(this.ship.z/size),range=window.ArcadePlaySettings?.get().quality==='low'?5:7;
+            const palette=['#54784c','#63854f','#718b58','#8a9664','#5a8053','#66895e','#829b69','#597c61'];
+            const cells=[];
+            for(let x=cx-range;x<=cx+range;x++)for(let z=cz-range;z<=cz+range;z++){
+                const seed=Math.abs((x*73856093)^(z*19349663)),points=[[x*size,0,z*size],[(x+1)*size,0,z*size],[(x+1)*size,0,(z+1)*size],[x*size,0,(z+1)*size]].map(v=>this._projectView(...v,w,h));
+                if(points.every(p=>p.visible)&&points.some(p=>p.x>-w&&p.x<w*2&&p.y>-h&&p.y<h*2))cells.push({points,depth:points.reduce((n,p)=>n+p.z,0)/4,color:seed%19===0?'#527e89':palette[seed%palette.length]});
+            }
+            cells.sort((a,b)=>b.depth-a.depth);
+            for(const cell of cells){ctx.beginPath();cell.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=cell.color;ctx.fill();ctx.fillStyle='rgba(173,196,188,'+Math.min(.72,cell.depth/140000)+')';ctx.fill();}
+            const models=[];
+            for(const s of this.scenery){
+                const base=this._projectView(s.x,0,s.z,w,h);if(!base.visible||base.z>65000||base.x<-100||base.x>w+100)continue;
+                if(s.kind==='forest'){
+                    const v=[[s.x-s.w*.6,0,s.z],[s.x+s.w*.6,0,s.z],[s.x,s.h*1.6,s.z],[s.x,0,s.z-s.w*.6]],faces=[[0,1,2],[1,3,2],[3,0,2]];
+                    for(let i=0;i<faces.length;i++){const points=faces[i].map(k=>this._projectView(...v[k],w,h));if(points.every(p=>p.visible))models.push({points,depth:base.z,color:['#365b42','#41664a','#294b39'][i]});}
+                }else{
+                    const v=[[-1,0,-1],[1,0,-1],[1,0,1],[-1,0,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]].map(([x,y,z])=>this._projectView(s.x+x*s.w*.5,y*s.h,s.z+z*s.w*.5,w,h));
+                    for(const [indices,color]of [[[0,1,5,4],'#b6b49f'],[[1,2,6,5],'#8a968d'],[[2,3,7,6],'#9da696'],[[3,0,4,7],'#859184'],[[4,5,6,7],'#a46f52']]){const points=indices.map(i=>v[i]);if(points.every(p=>p.visible))models.push({points,depth:base.z,color});}
                 }
             }
-            for (let z = 0; z <= (w<760?38:60); z++) {
-                let p1 = this._projectView(sx, 0, sz + z*st, w,safeH);
-                let p2 = this._projectView(sx + 30*st, 0, sz + z*st, w,safeH);
-                if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
-                    ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); 
-                }
-            }
-            ctx.stroke();
-
-            this.scenery.forEach(s => {
-                let baseP = this._projectView(s.x, 0, s.z, w,safeH);
-                let topP = this._projectView(s.x, s.h, s.z, w,safeH);
-                
-                if (baseP.visible && topP.visible && baseP.y > topP.y && Number.isFinite(baseP.x)) {
-                    ctx.strokeStyle = s.color;
-                    ctx.lineWidth = s.w * baseP.s;
-                    ctx.lineCap = 'butt';
-                    ctx.beginPath(); ctx.moveTo(baseP.x, baseP.y); ctx.lineTo(topP.x, topP.y); ctx.stroke();
-                    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = (s.w * baseP.s) / 3; ctx.stroke(); 
-                }
-            });
+            models.sort((a,b)=>b.depth-a.depth);for(const model of models){ctx.beginPath();model.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=model.color;ctx.fill();}
         },
 
         _drawEntities: function(ctx,w,h) {
@@ -1497,7 +1497,8 @@
                     if(isNet){ctx.fillStyle=this.mode==='COOP'?'#00ffcc':'#ff3300';ctx.font='bold 14px Arial';ctx.textAlign='center';ctx.fillText(o.name||'ALIADO',p.x,p.y-300*s-10);}
                     
                     let dist = Math.hypot(o.x - this.ship.x, o.y - this.ship.y, o.z - this.ship.z);
-                    let locked=this.combat.target&&(isNet?this.combat.target.uid===d.id:this.combat.target===o);
+                    const selected=this.combat.target&&(isNet?this.combat.target.uid===d.id:this.combat.target===o);
+                    const locked=selected&&this.combat.locked;
                     
                     ctx.strokeStyle = locked ? '#ff0000' : (isNet && this.mode==='COOP' ? '#00ffcc' : '#ff9900');
                     ctx.lineWidth = locked ? 2 : 1;
@@ -1508,6 +1509,7 @@
                     
                     ctx.fillText(Math.floor(dist) + 'm', p.x, p.y - 28);
                     ctx.fillText('ALT:' + Math.floor(o.y), p.x, p.y - 15);
+                    if(selected&&!locked){ctx.strokeStyle='#ffdc79';ctx.beginPath();ctx.arc(p.x,p.y,27,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,this.combat.lockTimer/.65));ctx.stroke();ctx.fillText('TRAVANDO '+Math.floor(this.combat.lockTimer/.65*100)+'%',p.x,p.y+42);}
 
                     if(locked){
                         let bs = Math.max(40, 250*s); 
@@ -1726,7 +1728,7 @@
                 ctx.fillStyle='#ffcc00'; ctx.beginPath(); ctx.arc(110, 0, 10, 0, Math.PI*2); ctx.fill();
                 
                 if (this.combat.target) {
-                    if (this.combat.lockTimer >= 0.5) {
+                    if (this.combat.locked) {
                         ctx.fillStyle = "#ffcf68"; ctx.font = "bold "+Math.min(16,Math.max(10,w*.029))+"px Arial"; ctx.textAlign = "center";
                         ctx.fillText(window.ArcadeControls?.mode==="controls"?"APERTE ◎ PARA DISPARAR":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
                     } else {

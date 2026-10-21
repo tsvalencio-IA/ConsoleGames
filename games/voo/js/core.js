@@ -115,6 +115,7 @@ window.Auth = {
 window.Profile = {
     username: 'Jogador', role: 'player', xp: 0, level: 1, coins: 0, permissions: {},
     
+    flightSave:null,
     // Suporte aos Dados do Jogo de AR
     arSave: { 
         upgrades: { engine: 1, battery: 1, radar: 1, chassis: 1, scout: false } 
@@ -132,6 +133,7 @@ window.Profile = {
                     window.Profile.coins = data.coins || 0;
                     window.Profile.permissions = data.permissions || {};
                     if(data.arSave) window.Profile.arSave = data.arSave;
+                    window.Profile.flightSave=data.flightSave||null;
                     window.Profile.updateUI();
                     window.System.renderChannels(); 
                 }
@@ -146,7 +148,7 @@ window.Profile = {
                 xp: window.Profile.xp,
                 level: window.Profile.level,
                 coins: window.Profile.coins,
-                arSave: window.Profile.arSave
+                arSave:window.Profile.arSave,flightSave:window.Profile.flightSave||null
             });
         }
         window.Profile.updateUI(); 

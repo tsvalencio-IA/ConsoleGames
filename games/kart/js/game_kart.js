@@ -178,7 +178,7 @@
                 this.activeKartIdx = 0;
                 this.kartUpgrades = { engine: 1, tires: 1, suspension: 1 };
             }
-            this.useCustomKart = false;
+            this.useCustomKart=!!window.Profile?.kartSave?.useCustomKart;
         },
 
         cleanup: function() {
@@ -338,7 +338,7 @@
                                         }
                                     } else { window.Sfx.error(); this.pushMsg("PISTA FIXA NA MISSÃO!", "#f00", 25); }
                                 } else if (clicked.action === 'toggle_kart') {
-                                    this.useCustomKart = !this.useCustomKart; window.Sfx.hover();
+                                    this.useCustomKart=!this.useCustomKart;this.saveGarage();window.Sfx.hover();
                                 } else if (clicked.action === 'open_shop') {
                                     this.state = 'KART_SHOP'; this.shopTab = 'SHOP'; this.shopCarouselIdx = 1; window.Sfx.click();
                                 }
@@ -366,7 +366,7 @@
                                 if(this.shopCarouselIdx > max) this.shopCarouselIdx = 0; 
                                 window.Sfx.hover(); 
                             }
-                            else if (clicked.action === 'equip') { this.activeKartIdx = this.shopCarouselIdx; this.saveGarage(); window.Sfx.click(); }
+                            else if (clicked.action === 'equip') { this.activeKartIdx=this.shopCarouselIdx;this.useCustomKart=true;this.saveGarage(); window.Sfx.click(); }
                             else if (clicked.action === 'sell') {
                                 if (this.garage.length > 1) {
                                     const model = KART_MODELS[this.garage[this.shopCarouselIdx].modelId];
@@ -404,7 +404,7 @@
                 if (!window.Profile.kartSave) window.Profile.kartSave = {};
                 window.Profile.kartSave.garage = this.garage;
                 window.Profile.kartSave.activeKartIdx = this.activeKartIdx;
-                window.Profile.kartSave.upgrades = this.kartUpgrades;
+                window.Profile.kartSave.upgrades=this.kartUpgrades;window.Profile.kartSave.useCustomKart=this.useCustomKart;
                 if (window.Profile.save) window.Profile.save();
             }
         },
@@ -495,6 +495,7 @@
         syncLobby: function() { if(this.dbRef) { this.dbRef.child('players/' + window.System.playerId).update({ charId: this.selectedChar, ready: this.isReady, lastSeen: firebase.database.ServerValue.TIMESTAMP }); } },
 
         startRace: function(trackId) {
+            this.lastTime=performance.now();this.physicsAccumulator=0;this.driftBoosts=0;
             // Every new race must clear the previous finish state. Otherwise the
             // render loop sees RACE but exits early from updatePhysics, leaving
             // touch steering and rival simulation apparently frozen.
@@ -1128,7 +1129,7 @@
                 if (p.isLine) { ctx.strokeStyle = p.c; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, p.y - 60); ctx.stroke(); } 
                 else if (p.isDrift) { ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI*2); ctx.fill(); } 
                 else if (p.isExplosion) { ctx.beginPath(); ctx.arc(p.x, p.y, (p.maxL - p.l)*3, 0, Math.PI*2); ctx.fill(); }
-                else { ctx.beginPath(); ctx.arc(p.x, p.y, 4 + (p.maxL - p.l)*0.5, 0, Math.PI*2); ctx.fill(); }
+                else { ctx.beginPath(); ctx.arc(p.x,p.y,(2+(p.maxL-p.l)*.12)*Math.max(.5,(d.playerScreen?.scale||.4)*1.55),0,Math.PI*2); ctx.fill(); }
             }); ctx.globalAlpha = 1;
 
             if (d.status !== 'FINISHED' && d.state !== 'GAMEOVER') {

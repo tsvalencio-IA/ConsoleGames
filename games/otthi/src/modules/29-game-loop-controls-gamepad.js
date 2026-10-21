@@ -85,7 +85,7 @@
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.
     const portrait=window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
-    if(portrait)playerGroup.visible=false;
+    document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}
   }
 

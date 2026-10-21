@@ -24,10 +24,18 @@ try{
  await page.waitForFunction(()=>!!window.OTTHI_FAMILY.cameraFrame(),null,{timeout:6000});
  await page.waitForTimeout(1600);
  await page.screenshot({path:'test-results/playable/family-integrated-world.png'});
- await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1000);
+ await page.setViewportSize({width:390,height:844});
+ await page.waitForFunction(()=>{const wanted=window.OTTHI_FAMILY.cameraFrame()?.position,actual=window.OTTHOS_TEST_API.camera().position;return wanted&&Math.hypot(wanted.x-actual.x,wanted.y-actual.y,wanted.z-actual.z)<.3;},null,{timeout:15000});
+ const portraitBounds=await page.evaluate(()=>{const f=window.OTTHI_FAMILY.cameraFrame(),c=new THREE.PerspectiveCamera(f.fov,innerWidth/innerHeight,.05,1200);c.position.copy(f.position);c.lookAt(f.look);c.updateMatrixWorld(true);return window.OTTHI_FAMILY.diagnostics().actors.map(a=>{const pts=[];for(const x of[-.5,.5])for(const y of[0,a.id==='luna'||a.id==='liz'?1:2.3])for(const z of[-.5,.5]){const p=new THREE.Vector3(a.x+x,y,a.z+z).project(c);pts.push({x:(p.x+1)*innerWidth/2,y:(1-p.y)*innerHeight/2});}return{id:a.id,minX:Math.min(...pts.map(p=>p.x)),maxX:Math.max(...pts.map(p=>p.x)),minY:Math.min(...pts.map(p=>p.y)),maxY:Math.max(...pts.map(p=>p.y))};});});
+ assert(portraitBounds.every(b=>b.minX>4&&b.maxX<386&&b.minY>50&&b.maxY<720),'Family portrait clips actors: '+JSON.stringify(portraitBounds));
  await page.screenshot({path:'test-results/playable/family-portrait-mobile.png'});
  await page.setViewportSize({width:844,height:390});await page.waitForTimeout(600);
  assert.equal(await page.locator('#family-world-entry').count(),1,'Direct family entry is missing');
+ const joy=page.locator('#joystick'),joyBox=await joy.boundingBox();
+ await joy.dispatchEvent('pointerdown',{pointerId:61,clientX:joyBox.x+joyBox.width*.8,clientY:joyBox.y+joyBox.height*.5});
+ await page.waitForFunction(()=>!window.OTTHI_FAMILY.cameraFrame(),null,{timeout:15000});
+ await joy.dispatchEvent('pointerup',{pointerId:61});
+
  const progress=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.luna);assert.equal(progress,1);
  await page.evaluate(()=>window.OTTHI_FAMILY.open());
  assert.equal(await page.locator('[data-family-task]').count(),2);
@@ -39,6 +47,17 @@ try{
  await page.locator('[data-family-stop]').click();
  await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-throw="liz"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.liz===1,null,{timeout:60000});
+ // A real native vehicle still responds to the visible accelerator and brake.
+ const vehicle=await page.evaluate(()=>window.OTTHOS_TEST_API.prepareVehicleTest());assert(vehicle.active,'Open world has no usable test vehicle');
+ await page.locator('#runBtn').dispatchEvent('pointerdown',{pointerId:81});
+ await page.waitForFunction(()=>window.OTTHOS_TEST_API.mobilityControls().speed>1,null,{timeout:15000});
+ const speedBefore=await page.evaluate(()=>window.OTTHOS_TEST_API.mobilityControls().speed);
+ await page.locator('#runBtn').dispatchEvent('pointerup',{pointerId:81});
+ await page.locator('#jumpBtn').dispatchEvent('pointerdown',{pointerId:82});
+ await page.waitForFunction(s=>Math.abs(window.OTTHOS_TEST_API.mobilityControls().speed)<s*.7,speedBefore,{timeout:15000});
+ await page.locator('#jumpBtn').dispatchEvent('pointerup',{pointerId:82});
+ await page.screenshot({path:'test-results/playable/otthi-driving-world.png'});
+ await page.evaluate(()=>window.OTTHOS_TEST_API.exitVehicle());
  // The original HQ keeps its native buttons and original fetch activity.
  await page.goto(base+'games/familia/3d/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#start').click();
@@ -46,9 +65,16 @@ try{
  await page.waitForFunction(()=>window.__THIA_TEST.state.byDog.luna>=1,null,{timeout:60000});
  await page.evaluate(()=>window.__THIA_TEST.selectDog('liz'));await page.locator('#throw').click();
  await page.waitForFunction(()=>window.__THIA_TEST.state.byDog.liz>=1,null,{timeout:60000});
+ await page.evaluate(()=>{window.__THIA_TEST.camera.yaw=Math.PI;window.__THIA_TEST.camera.dist=8;});
+ await page.waitForFunction(()=>!document.getElementById('toast').classList.contains('show'),null,{timeout:25000});
  await page.screenshot({path:'test-results/playable/family-original-game.png'});
  await page.evaluate(()=>window.__THIA_TEST.openLocation('park'));
  assert((await page.locator('#dialogBody').innerText()).includes('Ouro'),'Race lacks its visible time progression');
+ await page.locator('#closeDialog').click();
+ await page.evaluate(()=>window.__THIA_TEST.openLocation('code'));
+ const question=await page.locator('#dialogKicker').innerText();await page.locator('#dialogActions button').nth(0).click();assert.equal(await page.locator('#dialogKicker').innerText(),question,'Wrong answers advance the challenge');
+ for(const correct of [1,2,0,1])await page.locator('#dialogActions button').nth(correct).click();
+ assert(await page.evaluate(()=>window.__THIA_TEST.state.medals.code),'Correct answers did not finish the native technology challenge');
  await page.locator('#closeDialog').click();
  await page.locator('#menuBtn').click();
  await page.locator('#menuChoices a[href*="otthi"]').waitFor();

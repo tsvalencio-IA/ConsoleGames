@@ -1,5 +1,7 @@
 # Jogabilidade — 21/10/2026
 
+Atualização posterior: [revisão dos sete jogos](REVISAO-SETE-JOGOS-20261021.md).
+
 Esta atualização mantém os IDs dos jogos, projetos Firebase, contas, fases e economias existentes. As preferências novas são locais e separadas por jogo.
 
 - Kart: câmera de acompanhamento com três distâncias, projeção comum da pista, obstáculos e competidores; olhar para trás; drift explícito com carga e impulso; aceleração automática opcional e dificuldade solo. Teclado: setas/WASD, Z para drift, R para olhar para trás, Shift para nitro, E para item, C para distância.
@@ -10,7 +12,7 @@ Esta atualização mantém os IDs dos jogos, projetos Firebase, contas, fases e 
 - OTThi + Família: a Casa da Família ocupa um lote livre. Personagens usam as malhas e articulações aprovadas do HQ, convertidas para quatro malhas com esqueleto Three.js. O menu de pausa e o mapa dão acesso à família. Passeio ao parque, busca/devolução de brinquedos e as quatro questões originais de cada desafio de oficina e tecnologia ficam no mesmo mundo.
 - Família original: permanece acessível e conserva controles, ações, câmeras, personagens e progresso. Seu menu inclui uma entrada para o mundo integrado.
 
-Os ajustes ficam no botão ⚙ AJUSTES durante a partida: câmera, dificuldade solo, comandos, som e detalhes visuais conforme a modalidade. Missões de domínio continuam acessíveis pelo botão MISSÕES. Efeitos adicionais podem ser ativados nos ajustes durante a partida.
+Os ajustes ficam no botão ⚙ AJUSTES durante a partida: câmera, dificuldade solo, comandos, som e detalhes visuais conforme a modalidade. Missões de domínio continuam acessíveis pelo botão da etapa da carreira. Efeitos adicionais podem ser ativados nos ajustes durante a partida.
 
 A Família usa a autoridade da sala e o transporte de snapshots/eventos V2 já existentes. Não são criadas regras mais abertas. A devolução só é contabilizada quando concluída; o identificador é persistido para impedir repetição ao reconectar. A Família usa tempo decorrido com um limite por atualização, sem assumir que o navegador desenha 60 quadros por segundo.
 

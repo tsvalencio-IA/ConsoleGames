@@ -33,7 +33,7 @@
     ? "Complete " + winTarget + " missão AR"
     : id === "tennis" ? "Vença uma partida"
     : "Vença " + winTarget + " partidas hoje";
-  let checkedTennis = false, lastArCompleted = false;
+  let checkedTennis=false,lastArCompleted=false,lastArMissions=0;
   let lastActive = null, gameStarted = false, applied = false, opened = false, timer=null;
   const UI = {};
   function elt(tag, idName, text) {
@@ -208,7 +208,7 @@
       return;
     }
     if(lastActive!==id) {
-      gameStarted=true;checkedTennis=false;lastArCompleted=false;
+      gameStarted=true;checkedTennis=false;lastArCompleted=false;lastArMissions=0;
       renderProgress();
     }
     lastActive=id;
@@ -227,13 +227,14 @@
     }
     // The AR game keeps its own missions/score and does not call System.gameOver.
     if(id==="ar_truck_sim"){
-      const mission=g.logic?.currentMission;
-      const completed=Boolean(mission && mission.goal>0 && mission.progress>=mission.goal && !mission.active);
-      if(completed&&!lastArCompleted){
-        record(g.logic?.score || 0,true);
-        gameStarted=true; // missions may run consecutively in the same AR session
+      const total=Number(g.logic?.expedition?.missions);
+      if(Number.isFinite(total)){
+        if(total<lastArMissions)lastArMissions=0;
+        while(lastArMissions<total){record(g.logic?.score||0,true);gameStarted=true;lastArMissions++;}
+      }else{
+        const mission=g.logic?.currentMission,completed=Boolean(mission&&mission.goal>0&&mission.progress>=mission.goal&&!mission.active);
+        if(completed&&!lastArCompleted){record(g.logic?.score||0,true);gameStarted=true;}lastArCompleted=completed;
       }
-      lastArCompleted=completed;
     }
   }
   function tick() {

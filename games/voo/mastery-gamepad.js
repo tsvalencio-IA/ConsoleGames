@@ -18,7 +18,7 @@ const key="thia:mastery:v2:"+gameId;
 let completed={},session=null,last=null,lastTick=performance.now(),ui=null,info=null,toggle=null,badge=null,tier=0;
 try{const saved=JSON.parse(localStorage.getItem(key)||"{}");if(saved&&typeof saved.completed==='object')completed=saved.completed||{}}catch{}
 const stages=['INICIAÇÃO','TÉCNICA','MAESTRIA'];
-function firstUnfinished(){return Math.min(2,goalDefs[gameId].findIndex((rows,i)=>rows.some(([id])=>!completed[i+':'+id]))<0?2:goalDefs[gameId].findIndex((rows,i)=>rows.some(([id])=>!completed[i+':'+id])))}
+function firstUnfinished(){const next=goalDefs[gameId].findIndex((rows,i)=>rows.some(([id])=>!completed[i+':'+id]));return next<0?2:next;}
 let goals=[];
 function selectTier(){tier=firstUnfinished();goals=goalDefs[gameId][tier].map(([id,title,target])=>({id,title,target,progress:completed[tier+':'+id]?target:0}))}
 selectTier();
@@ -43,7 +43,7 @@ function reset(){selectTier();session={time:0,fast:0,nitro:0,locks:0,safeReturn:
 function updateGoals(g,dt){
  const p=last||{},v={state:g.state,nitro:!!g.turboLock,locked:!!g.combat?.locked,deliveries:Number(g.expedition?.deliveries)||0};
  const active=['RACE','FIGHT','RALLY','SERVE','PLAYING','PLAY_REAR_AR','WAITING_PICKUP'].includes(g.state);if(active)session.time+=dt;
- const hard=window.ArcadePlaySettings?.get().difficulty==='hard';let metrics={time:session.time};
+ const chosen=window.ArcadePlaySettings?.get().difficulty;const campaign=g.currentFase?.id&&g.currentFase.id!=='arcade';const hard=gameId==='drive'&&campaign?g.currentFase.diff==='HARD':gameId==='box_pro'&&campaign?g.currentFase.id==='f3':gameId==='tennis'&&g.currentFase?.difficulty?g.currentFase.difficulty==='hard':chosen==='hard';let metrics={time:session.time};
  if(gameId==='drive'){
   if(g.speed>=150&&active)session.fast+=dt;if(v.nitro&&!p.nitro)session.nitro++;
   const finished=g.status==='FINISHED',won=finished&&g.finalRank===1;

@@ -69,3 +69,29 @@ test('OTThi: pending and failed world textures have neutral images rather than b
  const info=vm.runInContext(`const grass=loadWorldTexture('grass','basecolor',{color:true});const normal=loadWorldTexture('grass','normal');pending[0].fail(new Error('offline'));({grass:!!grass.image,normal:!!normal.image,w:grass.image.width,errors:otthiWorldRuntime.errors.length})`,context);
  assert(info.grass&&info.normal&&info.w===1);assert.equal(info.errors,1);
 });
+test('kart: a real second of acceleration covers the same distance on 30, 60 and 120Hz displays',()=>{
+ const results=[30,60,120].map(fps=>{const {game:g,advance}=engine('kart','game_kart');g.currentFase={id:'arcade',mode:'RACE',targetRank:3};g.setupUI();g.resetPhysics();g.startRace(0);g.localBots=[];g.rivals=[];g.arcadeManual={throttle:true,brake:false,left:false,right:false,rear:false};g.renderWorld=()=>{};g.renderUI=()=>{};const c=canvas();for(let i=0;i<fps;i++){advance(1000/fps);g.update(c,390,844,null);}return {pos:g.pos,speed:g.speed,x:g.playerX};});
+ assert.deepEqual(results[0],results[1]);assert.deepEqual(results[1],results[2]);assert(results[0].pos>100);
+});
+test('AR: mission difficulty grows from completed expeditions, and an empty or repeated delivery pays nothing',()=>{
+ const {game:g,window}=engine('ar','game_ar');g.expedition={missions:0,deliveries:0,itemsDelivered:0};window.Profile.coins='1200';window.Profile.getRank=()=>({msg:'OK'});g.generateMission();assert.equal(g.currentMission.goal,3);
+ g.currentMission.progress=3;g.completeMission();const paid=window.Profile.coins;g.completeMission();assert.equal(window.Profile.coins,paid);assert.equal(g.expedition.missions,1);
+ g.generateMission();g.currentMission.progress=g.currentMission.goal;g.completeMission();g.generateMission();assert.equal(g.currentMission.goal,4);
+ g.fuel=g.stats.maxFuel;g.cargo=[100,200];g.deliverCargo();assert.equal(g.expedition.deliveries,1);assert.equal(g.expedition.itemsDelivered,2);const money=window.Profile.coins;g.deliverCargo();assert.equal(window.Profile.coins,money);assert.equal(g.expedition.deliveries,1);assert.equal(typeof money,'number');
+});
+test('kart and flight: profile persistence reloads actual owned vehicles and writes only their saved fields',async()=>{
+ for(const [slug,field,data]of [['kart','kartSave',{garage:[{modelId:0},{modelId:3}],activeKartIdx:1,upgrades:{engine:3,tires:2,suspension:1},useCustomKart:true}],['voo','flightSave',{upgrades:{engine:3,missiles:2,armor:1},airframe:'interceptor',kills:7,school:true}]]){
+  const noop=()=>{},element=()=>({style:{},classList:{add:noop,remove:noop},innerText:''});const window={},document={getElementById:element,createElement:element,head:{appendChild:noop}};
+  vm.runInNewContext(readFileSync('games/'+slug+'/js/core.js','utf8'),{window,document,console,setTimeout:noop,clearTimeout:noop,performance:{now:()=>0}});
+  let written;window.Profile.updateUI=noop;window.System.renderChannels=noop;window.System.playerId='profile-test-user-123456789012345';window.DB={ref:()=>({on:(event,fn)=>fn({val:()=>({coins:1200,xp:100,level:2,[field]:data})}),update:payload=>written=payload})};
+  await window.Profile.loadFromFirebase(window.System.playerId);assert.deepEqual(JSON.parse(JSON.stringify(window.Profile[field])),data);window.Profile.save();assert.deepEqual(JSON.parse(JSON.stringify(written[field])),data);
+ }
+});
+test('flight: PvP credits only one confirmed defeat, including when gun and missile hits share a frame',()=>{
+ const {game:g,window}=engine('voo','game_flight');window.Profile.coins=1000;window.Profile.xp=200;g.init({mode:'FREE'});g._startMission();g._pvpKill('rival');g._pvpKill('rival');assert.equal(g.session.kills,1);assert.equal(window.Profile.coins,1500);assert.equal(window.Profile.xp,300);
+});
+test('tennis: pointer and calibrated camera edge positions keep the racket inside the portrait viewport',()=>{
+ const {game:g,window,advance}=engine('tenis','game_tennis');g.updateCameraAdapter(390,844);g.useMouse=true;g.handedness='right';g.mouseY=422;
+ for(const x of [0,390]){g.mouseX=x;for(let i=0;i<30;i++){advance(17);g.processPose(null,390,844);}const scale=390*1.8/((2400-200)*Math.sin(.35)+(5000-1620)*Math.cos(.35));const screenX=195+g.p1.x*scale;assert(screenX>=28&&screenX<=362,'Racket must not disappear beyond a screen edge');}
+ window.ArcadeControls.mode='camera';g.useMouse=false;g.calib={tlX:0,tlY:0,brX:640,brY:480};const pose={keypoints:[{name:'right_wrist',score:1,x:0,y:200},{name:'right_elbow',score:1,x:10,y:300}]};for(let i=0;i<30;i++){advance(17);g.processPose(pose,390,844);}assert(g.p1.x<1200,'Calibrated hand must use the same visible physical range');
+});

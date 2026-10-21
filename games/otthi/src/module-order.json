@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "72e042500cbd0d3b7dec44d30388a73ec6fedf112dcc07a62f0c1721a9439fe7"
+      "sha256Body": "50b844098318c90a19758efe0ecfb5bddea4318a2c3debe2dd0725826cc3b7cf"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "cbdd917c3d5899745ba4a41259dc187b8a4601a343256dd4500409b9da6c86e3"
+      "sha256Body": "d43192e20a06a1cbe66dbe587b67e39188f4761482dfb42b59c85d0c7cce1e2b"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "7730d81840fa2e152c0b49ecd26220dde9c2fa0fedbc99f105c9d67270beeebd"
+      "sha256Body": "fabf0fbda8bf5f2c47b40d04adbd891cca5db015098236963b9952f57a248b8c"
     }
   ],
   "styles": [
@@ -499,7 +499,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade final R14: legibilidade, contraste, escala e responsividade global",
-      "sha256Body": "ae51deace3c0bd48fa4589058bff5085d93e43524711a5e3de1c284d590d32a9"
+      "sha256Body": "6c64011431d0632104bb3d4f660167c3f6d9ad70e408891d6de3f7ac8f9f1a8d"
     }
   ]
 }

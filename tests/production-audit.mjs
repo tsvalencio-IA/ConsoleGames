@@ -21,7 +21,8 @@ const paths=[
   "games/ar/js/game_ar.js",
   "games/voo/js/game_flight.js",
   "games/kart/js/game_kart.js","games/tenis/js/game_tennis.js",
-  "games/otthi/app.js","games/otthi/family-mascots.js",
+  "games/otthi/app.js","games/otthi/family-mascots.js","games/familia/3d/sw.js",
+  ...["kart","boxe","tenis","ar","voo"].flatMap(name=>["games/"+name+"/mastery-gamepad.js","games/"+name+"/control-modes.css","games/"+name+"/arcade-enhancements.js"]),
   ...["kart","boxe","tenis","ar","voo"].flatMap(name=>["games/"+name+"/play-settings.js","games/"+name+"/play-settings.css"])
 ];
 const sha=buf=>createHash("sha256").update(buf).digest("hex");

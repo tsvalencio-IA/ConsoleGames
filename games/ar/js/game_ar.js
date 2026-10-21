@@ -479,6 +479,7 @@
         setupInput: function() {
             const canvas = window.System?.canvas; if (!canvas) return;
             canvas.onpointerdown = (e) => {
+                if(window.ArcadeControls?.mode==='controls'&&['PLAY_REAR_AR','WAITING_PICKUP','TOW_MODE'].includes(this.state))return;
                 if (this.state === 'ENTER_BASE_TRANSITION' || this.state === 'EXIT_BASE_TRANSITION') return;
                 const r = canvas.getBoundingClientRect(); const x = e.clientX - r.left; const y = e.clientY - r.top; const w = r.width; const h = r.height;
 
@@ -775,6 +776,7 @@
         },
 
         drawHUD: function(ctx, w, h) {
+            const manual=window.ArcadeControls?.mode==='controls';
             let fuelPct = this.displayFuel / this.stats.maxFuel; let isFull = this.cargo.length >= this.stats.maxCargo; let radHead = (this.currentHeading - this.baseHeading) * (Math.PI / 180);
             if (this.collectGlow > 0) { ctx.fillStyle = `rgba(0, 255, 255, ${this.collectGlow * 0.3})`; ctx.fillRect(0, 0, w, h); this.collectGlow -= 0.03; }
 
@@ -799,19 +801,22 @@
             else { const nearest=[...this.anomalies].sort((a,b)=>Math.hypot(a.x-this.vPos.x,a.y-this.vPos.y)-Math.hypot(b.x-this.vPos.x,b.y-this.vPos.y))[0];if(nearest)drawARWaypoint(nearest.x,nearest.y,nearest.type==='RARE'?"RARO":"SUCATA",nearest.type==='RARE'?this.colors.rare:this.colors.warn,false); ctx.globalAlpha = 0.3; drawARWaypoint(0, 0, "BASE", this.colors.success, true); ctx.globalAlpha = 1.0; }
 
             const topH = 70;
+            if(this.currentMission){ctx.save();ctx.textAlign='left';ctx.font='bold 12px Arial';ctx.fillStyle='#d8f7ff';const m=this.currentMission;ctx.fillText('EXPEDIÇÃO '+(m.stage||1)+' · '+Math.min(m.progress,m.goal)+'/'+m.goal+' OBJETOS',14,topH+22,Math.max(100,w*.66));ctx.restore();}
             ctx.fillStyle = this.colors.panel; ctx.fillRect(0, 0, w, topH); ctx.strokeStyle = this.colors.main; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, topH); ctx.lineTo(w, topH); ctx.stroke();
-            ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(22,Math.max(14,window.innerWidth*0.04))) + "px 'Chakra Petch'"; ctx.textAlign = "left"; ctx.fillText(`LVL ${window.Profile?.level || 1} | VIDA: ${Math.floor(this.health)}%`, 15, 25);
+            ctx.fillStyle="#fff";ctx.font="bold 14px Arial";ctx.textAlign='left';ctx.fillText('VIDA: '+Math.floor(this.health)+'%',80,26,Math.max(80,w-250));
             
             ctx.save();
-            const fuelW = Math.min(200, w/2.2);
-            if (fuelPct < 0.2) { let pulse = 1 + Math.abs(Math.sin(this.timeTotal * 10)) * 0.05; ctx.translate(15 + fuelW/2, 38 + 10); ctx.scale(pulse, pulse); ctx.translate(-(15 + fuelW/2), -(38 + 10)); }
-            ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(15, 38, fuelW, 20); ctx.fillStyle = fuelPct > 0.2 ? this.colors.success : this.colors.danger; ctx.fillRect(15, 38, fuelPct * fuelW, 20);
-            ctx.strokeStyle = "#fff"; ctx.strokeRect(15, 38, fuelW, 20); ctx.fillStyle = "#fff"; ctx.font = "bold 14px Arial"; ctx.fillText("BATERIA", 22, 53); ctx.restore();
+            const fuelW=Math.max(80,Math.min(200,w-272)),fuelX=80;
+            if (fuelPct < 0.2) { let pulse = 1 + Math.abs(Math.sin(this.timeTotal * 10)) * 0.05; ctx.translate(fuelX+fuelW/2,38+10); ctx.scale(pulse, pulse); ctx.translate(-(fuelX+fuelW/2),-(38+10)); }
+            ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(fuelX,38, fuelW, 20); ctx.fillStyle = fuelPct > 0.2 ? this.colors.success : this.colors.danger; ctx.fillRect(fuelX,38, fuelPct * fuelW, 20);
+            ctx.strokeStyle = "#fff"; ctx.strokeRect(fuelX,38, fuelW, 20); ctx.fillStyle = "#fff"; ctx.font = "bold 14px Arial"; ctx.fillText("BATERIA",fuelX+7,53); ctx.restore();
 
             if (isFull && this.state !== 'TOW_MODE') { ctx.fillStyle = (Math.sin(this.timeTotal*5) > 0) ? this.colors.success : "#fff"; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(40,Math.max(14,window.innerWidth*0.06))) + "px 'Russo One'"; ctx.fillText("CAÇAMBA CHEIA! VOLTE!", w/2, topH + 40); }
 
             const btnS = Math.min(80, w * 0.18); const rightPad = 20; let distToBase = Math.hypot(this.vPos.x, this.vPos.y); let atBase = distToBase < 30; const garageY = topH + 20;
+            if(!manual){
             ctx.fillStyle = atBase ? this.colors.success : "rgba(100,100,100,0.5)"; ctx.fillRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.strokeStyle = "#fff"; ctx.strokeRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.fillStyle = "#000"; ctx.textAlign="center"; ctx.font = `bold ${btnS*0.5}px Arial`; ctx.fillText("🔧", w - rightPad - btnS/2, garageY + btnS*0.7);
+            }
 
             const rR = Math.min(60, w * 0.15); const rCx = w - rR - rightPad; const rCy = garageY + btnS + rR + 20;
             let radarGradient = ctx.createRadialGradient(rCx, rCy, 0, rCx, rCy, rR); radarGradient.addColorStop(0, "rgba(0, 50, 40, 0.9)"); radarGradient.addColorStop(1, "rgba(0, 10, 20, 0.7)");
@@ -829,7 +834,8 @@
             drawBlip(0, 0, this.colors.success, 8, false); if(!isFull) this.anomalies.forEach(a => drawBlip(a.x, a.y, a.type==='RARE'?this.colors.rare:this.colors.warn, 5, a.type==='RARE'));
             ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.moveTo(rCx, rCy - 8); ctx.lineTo(rCx+6, rCy+6); ctx.lineTo(rCx-6, rCy+6); ctx.fill();
 
-            const botH = 80; const botY = h - botH;
+            const botH=80,botY=h-botH;
+            if(manual){const y=Math.max(100,h-Math.max(128,Math.min(168,h*.23))-46);ctx.save();ctx.fillStyle=this.colors.panel;ctx.fillRect(10,y-22,w-20,32);ctx.fillStyle='#e5fbff';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText('CARGA '+this.cargo.length+'/'+this.stats.maxCargo+' · BASE '+Math.floor(distToBase)+' m',w/2,y,w-32);ctx.restore();return;}
             ctx.fillStyle = this.colors.panel; ctx.fillRect(0, botY, w, botH); ctx.strokeStyle = this.colors.main; ctx.beginPath(); ctx.moveTo(0, botY); ctx.lineTo(w, botY); ctx.stroke();
 
             const accR = Math.min(60, w * 0.15); const accX = 20 + accR; const accY = botY - accR - 20;

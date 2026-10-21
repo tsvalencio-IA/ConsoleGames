@@ -18,7 +18,7 @@
     };
 
     const AI_PROFILES = { 'PRO': { speed: 0.16, difficultyFactor: 0.80, baseSpeed: 0.16 } };
-    const aiProfile=()=>{const d=window.ArcadePlaySettings?.get().difficulty;return d==='easy'?{speed:.11,baseSpeed:.11,difficultyFactor:1.8}:d==='hard'?{speed:.19,baseSpeed:.19,difficultyFactor:.55}:{...AI_PROFILES.PRO};};
+    const aiProfile=forced=>{const d=forced||window.ArcadePlaySettings?.get().difficulty;return d==='easy'?{speed:.11,baseSpeed:.11,difficultyFactor:1.8}:d==='hard'?{speed:.19,baseSpeed:.19,difficultyFactor:.55}:{...AI_PROFILES.PRO};};
 
     // -----------------------------------------------------------------
     // 2. MATH CORE
@@ -54,8 +54,9 @@
         ball: { x: 0, y: -300, z: -CONF.TABLE_L/2, vx: 0, vy: 0, vz: 0, spinX: 0, spinY: 0, active: false, lastHitBy: null, bounceCount: 0, trail: [] },
         score: { p1: 0, p2: 0 }, server: 'p1', lastHitter: null, rallyCount: 0, shake: 0, shakeX: 0, shakeY: 0, flash: 0, particles: [], msgs: [],
 
-        init: function() {
-            this.cleanup(); this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile();
+        init: function(faseData) {
+            this.currentFase=faseData||{id:'arcade'};
+            this.cleanup(); this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(this.currentFase?.difficulty);
             this.lastFrameTime = performance.now(); this.msgs = []; this.particles = []; this.loadCalib();
             if(window.System && window.System.msg) window.System.msg("THIAGUINHO WII - V15"); this.setupInput();
         },
@@ -187,8 +188,8 @@
 
         startGame: function() {
             if (this.roundTimeout) { clearTimeout(this.roundTimeout); this.roundTimeout = null; }
-            this.state='STARTING';this.score={p1:0,p2:0};this.server='p1';this.physicsAccumulator=0;this.matchBestRally=0;
-            this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(); this.resetRound();
+            this.state='STARTING';this.score={p1:0,p2:0};this.server='p1';this.physicsAccumulator=0;this.matchBestRally=0;this.resultRecorded=false;this.matchReward=null;
+            this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(this.currentFase?.difficulty); this.resetRound();
         },
 
         updateCameraAdapter: function(w, h) {
@@ -277,9 +278,10 @@
             const videoH=Math.max(1,Number(video?.videoHeight)||480);
             const mappedX=(point)=>640*(1-Number(point.x)/videoW);
             const mappedY=(point)=>480*Number(point.y)/videoH;
+            const racketScale=MathCore.project(0,-200,-CONF.TABLE_L/2-300,w,h).s||1,visibleRange=Math.min(CONF.TABLE_W*1.2,Math.max(CONF.TABLE_W*.55,(w/2-32)/racketScale));
             if (this.useMouse) {
                 let nx = MathCore.clamp(.5+(this.mouseX / w-.5)*settings.sensitivity, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
-                const targetX = MathCore.lerp(-CONF.TABLE_W * 1.2, CONF.TABLE_W * 1.2, nx); const targetY = MathCore.lerp(-200, 300, ny); 
+                const targetX = MathCore.lerp(-visibleRange,visibleRange,nx); const targetY = MathCore.lerp(-200, 300, ny);
                 const pointerSmooth=1-Math.pow(.15,poseDt/16.67);
                 this.p1.x = MathCore.lerp(this.p1.x || 0, targetX, pointerSmooth); this.p1.y = MathCore.lerp(this.p1.y || -200, targetY, pointerSmooth); this.p1.z = -CONF.TABLE_L/2 - 250;
                 this.p1.elbowX = this.p1.x + 100; this.p1.elbowY = this.p1.y + 300;
@@ -318,7 +320,7 @@
                     let nx = MathCore.clamp((this.p1.rawX - minX) / rangeX, -0.5, 1.5); let ny = MathCore.clamp((this.p1.rawY - minY) / rangeY, -0.5, 1.5);
 
                     nx=.5+(nx-.5)*settings.sensitivity;ny=.5+(ny-.5)*settings.sensitivity;
-                    let targetX = MathCore.lerp(-CONF.TABLE_W*1.2, CONF.TABLE_W*1.2, nx); let targetY = MathCore.lerp(-800, 300, ny); 
+                    let targetX = MathCore.lerp(-visibleRange,visibleRange,nx); let targetY = MathCore.lerp(-800, 300, ny);
                     if (!Number.isFinite(targetX)) targetX = 0; if (!Number.isFinite(targetY)) targetY = -200;
 
                     // Stabilize the racket center while preserving the actual wrist motion direction.
@@ -516,9 +518,11 @@
             this.ball.active = false; this.rallyCount = 0;
             if (winner === 'p2') this.activeAIProfile.speed = Math.min(this.activeAIProfile.speed * 1.02, this.activeAIProfile.baseSpeed * 1.5);
             else this.activeAIProfile.speed = Math.max(this.activeAIProfile.speed * 0.99, this.activeAIProfile.baseSpeed);
-            if ((this.score.p1>=11||this.score.p2>=11)&&Math.abs(this.score.p1-this.score.p2)>=2){this.state='END_WAIT';this.endTimer=0;}
+            if ((this.score.p1>=11||this.score.p2>=11)&&Math.abs(this.score.p1-this.score.p2)>=2){this.state='END_WAIT';this.endTimer=0;this.recordResult();}
             else{const total=this.score.p1+this.score.p2;this.server=(this.score.p1>=10&&this.score.p2>=10?total%2:Math.floor(total/2)%2)?'p2':'p1';this.resetRound();}
         },
+
+        recordResult:function(){if(this.resultRecorded)return;this.resultRecorded=true;if(!this.isOnline)this.matchReward=window.Profile?.addReward?.(this.score.p1*100,this.score.p1>this.score.p2,0)||null;},
 
         resetRound: function() {
             this.state = 'IDLE'; this.idleTimer = 0; this.endTimer = 0; this.serveTimeout = 0;
@@ -670,6 +674,7 @@
         },
 
         renderHUD: function(ctx, w, h) {
+            if(['IDLE','SERVE','RALLY'].includes(this.state)){ctx.save();ctx.textAlign='center';ctx.fillStyle='#e6f3ff';ctx.font='bold 12px Arial';ctx.fillText(this.score.p1>=10&&this.score.p2>=10?'EMPATE · SAQUE ALTERNADO':this.server==='p1'?'SEU SAQUE':'SAQUE DO ADVERSÁRIO',w/2,Math.max(104,h*.18),w*.8);ctx.restore();}
             ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(60,Math.max(28,w*.09)) + "px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
             ctx.fillText(this.score.p1, Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.fillText(this.score.p2, w - Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.shadowBlur = 0;
             
@@ -744,13 +749,14 @@
             ctx.fillText(win ? "VITÓRIA!" : "DERROTA...", w/2, h/2 - 20,Math.max(120,w-24));
             ctx.fillStyle = "white"; ctx.font = Math.min(30,Math.max(16,w*.05)) + "px sans-serif";
             ctx.fillText(`PLACAR: ${this.score.p1} x ${this.score.p2}`, w/2, h/2 + 50);
+            if(this.matchReward){ctx.font='bold 14px Arial';ctx.fillStyle='#aee9cd';ctx.fillText('+'+this.matchReward.xp+' XP · +'+this.matchReward.coins+' moedas',w/2,h/2+84);}
             ctx.font = Math.min(20,Math.max(12,w*.035)) + "px sans-serif"; ctx.fillText("Toque para jogar de novo", w/2, h - 50,Math.max(140,w-28));
         }
     };
 
     // A MÁGICA QUE FARÁ O JOGO APARECER NOVAMENTE NO MENU:
     if(window.System && window.System.registerGame) {
-        window.System.registerGame('tennis', 'Ping Pong Wii', '🏓', Game, { camOpacity: 0.1 });
+        window.System.registerGame('tennis', 'Ping Pong Wii', '🏓', Game, {camOpacity:.1,phases:[{id:'rookie',name:'INICIAÇÃO',desc:'Aprenda o tempo da bola. Adversário de treino; partida até 11.',difficulty:'easy',reqLvl:1},{id:'club',name:'LIGA DO CLUBE',desc:'Rallies mais rápidos contra um adversário intermediário.',difficulty:'normal',reqLvl:2},{id:'championship',name:'FINAL DO CAMPEONATO',desc:'Vença o adversário mais rápido. Dois pontos de vantagem para fechar.',difficulty:'hard',reqLvl:3},{id:'arcade',name:'JOGO LIVRE E ONLINE',desc:'Escolha seu nível nos ajustes ou enfrente outro jogador.',reqLvl:1}]});
     }
 
 })();
