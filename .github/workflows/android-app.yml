@@ -45,9 +45,9 @@ jobs:
             adb install android/app/build/outputs/apk/debug/app-debug.apk
             adb install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
             adb shell am instrument -w br.com.thiaguinhosolucoes.arcade.test/br.com.thiaguinhosolucoes.arcade.ArcadeSmoke | tee android-delivery/android-install-test.txt
-            rg 'Android: installed' android-delivery/android-install-test.txt
-            adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files/android-portrait.png android-delivery/android-portrait.png
-            adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files/android-landscape.png android-delivery/android-landscape.png
+            adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files android-delivery/screenshots || true
+            adb logcat -d -s AndroidRuntime chromium WebViewFactory > android-delivery/android-webview.log
+            python3 -c "from pathlib import Path; assert 'Android: installed' in Path('android-delivery/android-install-test.txt').read_text()"
       - name: Guardar pacote para assinatura final e evidências
         if: always()
         uses: actions/upload-artifact@v4

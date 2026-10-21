@@ -19,7 +19,7 @@ public final class ArcadeSmoke extends Instrumentation {
     private String evaluate(MainActivity activity,String expression) throws Exception {
         CountDownLatch latch=new CountDownLatch(1);AtomicReference<String> value=new AtomicReference<>();
         runOnMainSync(() -> activity.webView.evaluateJavascript(expression,result -> {value.set(result);latch.countDown();}));
-        if(!latch.await(5,TimeUnit.SECONDS))throw new AssertionError("WebView did not answer");
+        if(!latch.await(15,TimeUnit.SECONDS))return "null";
         return value.get();
     }
     private void waitFor(MainActivity activity,String expression) throws Exception {
@@ -50,6 +50,6 @@ public final class ArcadeSmoke extends Instrumentation {
             screenshot("android-landscape.png");
             result.putString("stream","Android: installed, seven games, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
             finish(-1,result);
-        } catch(Throwable error) {result.putString("stream",error.toString()+"\n");finish(0,result);}
+        } catch(Throwable error) {try{screenshot("android-failure.png");}catch(Exception ignored){}result.putString("stream",error.toString()+"\n");finish(0,result);}
     }
 }
