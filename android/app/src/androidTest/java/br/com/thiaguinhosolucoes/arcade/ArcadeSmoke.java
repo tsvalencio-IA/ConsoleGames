@@ -9,7 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.graphics.Bitmap;
 import android.view.accessibility.AccessibilityNodeInfo;
-import java.util.List;
+import android.view.MotionEvent;
+import android.view.InputDevice;
+import android.os.SystemClock;
+import org.json.JSONArray;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.CountDownLatch;
@@ -48,17 +51,25 @@ public final class ArcadeSmoke extends Instrumentation {
         }
         throw new AssertionError("A system window is covering the console");
     }
-    private void openLibrary() throws Exception {
-        long deadline=System.currentTimeMillis()+15000;
-        while(System.currentTimeMillis()<deadline){
-            AccessibilityNodeInfo root=getUiAutomation().getRootInActiveWindow();
-            if(root!=null)for(AccessibilityNodeInfo node:root.findAccessibilityNodeInfosByText("Explorar jogos")){
-                node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SHOW_ON_SCREEN.getId());
-                if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK))return;
-            }
-            Thread.sleep(300);
-        }
-        throw new AssertionError("The visible console button did not respond");
+    private void openLibrary(MainActivity activity) throws Exception {
+        // Locate the real button in CSS pixels, then tap through Android input.
+        // This also works when the system WebView omits HTML text from its AX tree.
+        String json=evaluate(activity,"(()=>{const b=document.getElementById('browse-btn');b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2];})()");
+        JSONArray css=new JSONArray(json);float[] point=new float[2];
+        runOnMainSync(() -> {
+            int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);
+            float scale=currentActivity.webView.getWidth()/(float)css.optDouble(0);
+            point[0]=origin[0]+(float)css.optDouble(1)*scale;
+            point[1]=origin[1]+(float)css.optDouble(2)*scale;
+        });
+        waitForIdleSync();Thread.sleep(500);
+        long time=SystemClock.uptimeMillis();
+        MotionEvent down=MotionEvent.obtain(time,time,MotionEvent.ACTION_DOWN,point[0],point[1],0);
+        down.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+        if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch was rejected");
+        down.recycle();Thread.sleep(80);
+        MotionEvent up=MotionEvent.obtain(time,SystemClock.uptimeMillis(),MotionEvent.ACTION_UP,point[0],point[1],0);
+        up.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(up,true);up.recycle();
     }
     private void screenshot(String name) throws Exception {
         Bitmap image=getUiAutomation().takeScreenshot();
@@ -76,7 +87,7 @@ public final class ArcadeSmoke extends Instrumentation {
             waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
             if(getTargetContext().checkSelfPermission(android.Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)throw new AssertionError("Camera requested before choosing camera mode");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
-            waitForAppWindow();openLibrary();waitFor(activity,"scrollY>100");
+            waitForAppWindow();openLibrary(activity);waitFor(activity,"document.getElementById('biblioteca').getBoundingClientRect().top<180 && scrollY>100");
             waitForIdleSync();Thread.sleep(800);
             screenshot("android-portrait.png");
             runOnMainSync(() -> currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
