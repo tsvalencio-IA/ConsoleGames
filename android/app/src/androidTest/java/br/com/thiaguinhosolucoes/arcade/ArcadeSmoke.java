@@ -1,6 +1,7 @@
 package br.com.thiaguinhosolucoes.arcade;
 
 import android.app.Instrumentation;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -15,10 +16,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /** Real Android WebView, without signing into any account or changing game progress. */
 public final class ArcadeSmoke extends Instrumentation {
+    private volatile MainActivity currentActivity;
+    @Override public void callActivityOnResume(Activity activity) {
+        super.callActivityOnResume(activity);
+        if(activity instanceof MainActivity)currentActivity=(MainActivity)activity;
+    }
     @Override public void onCreate(Bundle args) {super.onCreate(args);start();}
     private String evaluate(MainActivity activity,String expression) throws Exception {
         CountDownLatch latch=new CountDownLatch(1);AtomicReference<String> value=new AtomicReference<>();
-        runOnMainSync(() -> activity.webView.evaluateJavascript(expression,result -> {value.set(result);latch.countDown();}));
+        runOnMainSync(() -> {
+            MainActivity active=currentActivity;
+            if(active==null || active.webView==null){value.set("null");latch.countDown();return;}
+            active.webView.evaluateJavascript(expression,result -> {value.set(result);latch.countDown();});
+        });
         if(!latch.await(15,TimeUnit.SECONDS))return "null";
         return value.get();
     }
@@ -44,7 +54,7 @@ public final class ArcadeSmoke extends Instrumentation {
             if(getTargetContext().checkSelfPermission(android.Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)throw new AssertionError("Camera requested before choosing camera mode");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
             screenshot("android-portrait.png");
-            runOnMainSync(() -> activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+            runOnMainSync(() -> currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
             waitFor(activity,"innerWidth>innerHeight && document.querySelectorAll('#games-grid [data-game]').length===7");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
             screenshot("android-landscape.png");
