@@ -13,3 +13,4 @@ android/**/build/
 *.keystore
 *.apk
 *.idsig
+!arcade/downloads/thIAguinho-ARCADE.apk

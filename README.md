@@ -10,7 +10,7 @@ Sete experiências reunidas em um mesmo site e repositório. Cada jogo é **uma 
 
 ## Aplicativo Android
 
-O aplicativo do console reúne as sete entradas em tela cheia, com rotação e câmera opcional. O projeto e as instruções de compilação estão em [android/](android/README.md); a validação instala o aplicativo no Android 35. O APK de instalação direta usa Android 7.0 ou superior e internet para carregar os jogos.
+O aplicativo do console reúne as sete entradas em tela cheia, com rotação e câmera opcional. O projeto e as instruções de compilação estão em [android/](android/README.md); a validação instala o aplicativo no Android 35. O [APK de instalação direta](https://tsvalencio-ia.github.io/ConsoleGames/arcade/downloads/thIAguinho-ARCADE.apk) usa Android 7.0 ou superior e internet para carregar os jogos. No Android, baixe e abra o arquivo; se o sistema solicitar, permita a instalação pelo aplicativo usado no download.
 
 ## 📁 Sete jogos instalados
 

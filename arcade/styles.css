@@ -27,3 +27,5 @@ main{flex:1}.welcome-section{min-height:350px;position:relative;display:flex;ali
 .game-cover.has-art::after{z-index:2;pointer-events:none;opacity:.1}
 .game-cover .cover-sticker,.game-cover .favorite-btn{z-index:3}
 @media(prefers-reduced-motion:reduce){.game-cover .cover-art{transition:none}.game-card:hover .cover-art{transform:none}}
+
+.android-download-note{font-size:12px!important;margin:12px 0 0!important;color:#b7c8e5!important}#android-apk-link[hidden],#android-download-note[hidden]{display:none!important}

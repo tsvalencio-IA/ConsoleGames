@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.view.accessibility.AccessibilityNodeInfo;
+import java.util.List;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.CountDownLatch;
@@ -37,6 +39,27 @@ public final class ArcadeSmoke extends Instrumentation {
         while(System.currentTimeMillis()<deadline){if("true".equals(evaluate(activity,expression)))return;Thread.sleep(400);}
         throw new AssertionError("Android flow failed: "+expression+" URL="+evaluate(activity,"location.href"));
     }
+    private void waitForAppWindow() throws Exception {
+        long deadline=System.currentTimeMillis()+15000;
+        while(System.currentTimeMillis()<deadline){
+            AccessibilityNodeInfo root=getUiAutomation().getRootInActiveWindow();
+            if(root!=null && root.getPackageName()!=null && getTargetContext().getPackageName().contentEquals(root.getPackageName()))return;
+            Thread.sleep(300);
+        }
+        throw new AssertionError("A system window is covering the console");
+    }
+    private void openLibrary() throws Exception {
+        long deadline=System.currentTimeMillis()+15000;
+        while(System.currentTimeMillis()<deadline){
+            AccessibilityNodeInfo root=getUiAutomation().getRootInActiveWindow();
+            if(root!=null)for(AccessibilityNodeInfo node:root.findAccessibilityNodeInfosByText("Explorar jogos")){
+                node.performAction(AccessibilityNodeInfo.ACTION_SHOW_ON_SCREEN);
+                if(node.performAction(AccessibilityNodeInfo.ACTION_CLICK))return;
+            }
+            Thread.sleep(300);
+        }
+        throw new AssertionError("The visible console button did not respond");
+    }
     private void screenshot(String name) throws Exception {
         Bitmap image=getUiAutomation().takeScreenshot();
         File folder=getTargetContext().getExternalFilesDir(null);
@@ -53,12 +76,15 @@ public final class ArcadeSmoke extends Instrumentation {
             waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
             if(getTargetContext().checkSelfPermission(android.Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)throw new AssertionError("Camera requested before choosing camera mode");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
+            waitForAppWindow();openLibrary();waitFor(activity,"scrollY>100");
+            waitForIdleSync();Thread.sleep(800);
             screenshot("android-portrait.png");
             runOnMainSync(() -> currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
             waitFor(activity,"innerWidth>innerHeight && document.querySelectorAll('#games-grid [data-game]').length===7");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
+            waitForAppWindow();waitForIdleSync();Thread.sleep(800);
             screenshot("android-landscape.png");
-            result.putString("stream","Android: installed, seven games, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
+            result.putString("stream","Android: installed, seven games, visible native button, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
             finish(-1,result);
         } catch(Throwable error) {try{screenshot("android-failure.png");}catch(Exception ignored){}result.putString("stream",error.toString()+"\n");finish(0,result);}
     }

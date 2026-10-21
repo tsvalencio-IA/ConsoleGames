@@ -1,0 +1,11 @@
+{
+  "name": "thIAguinho ARCADE",
+  "version": "1.0.0",
+  "versionCode": 1,
+  "package": "br.com.thiaguinhosolucoes.arcade",
+  "minAndroid": "7.0",
+  "file": "thIAguinho-ARCADE.apk",
+  "sha256": "26f29deaa0a4fc95b1a0b97855a1eb4106b77775924dc9e2e7d5d32386126474",
+  "bytes": 57991,
+  "requiresInternet": true
+}

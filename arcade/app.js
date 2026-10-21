@@ -277,6 +277,7 @@
   if("serviceWorker" in navigator && location.protocol==="https:"){
     window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}),{once:true});
   }
+  if(typeof navigator!=="undefined"&&/\bwv\b/.test(navigator.userAgent||"")){for(const id of ["android-apk-link","android-download-note"]){const node=$(id);if(node)node.hidden=true;}}
   updateAccountUI();render();
   // Diagnóstico somente leitura para testes; não altera jogos nem dados.
   Object.defineProperty(window,"THIAGUINHO_CONSOLE",{value:Object.freeze({

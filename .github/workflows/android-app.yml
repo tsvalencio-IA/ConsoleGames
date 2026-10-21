@@ -1,7 +1,7 @@
 name: Gerar e instalar aplicativo Android
 on:
   push:
-    paths: ['android/**', '.github/workflows/android-app.yml']
+    paths: ['android/**', 'arcade/downloads/**', '.github/workflows/android-app.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -42,6 +42,18 @@ jobs:
           profile: pixel_6
           disable-animations: true
           script: |
+            adb shell wm size 720x1280
+            adb shell wm density 320
+            adb shell settings put secure immersive_mode_confirmations confirmed
+            adb shell am force-stop com.android.launcher3
+            adb shell input keyevent 4
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose arcade/downloads/thIAguinho-ARCADE.apk
+            adb install arcade/downloads/thIAguinho-ARCADE.apk
+            adb shell am start -W -n br.com.thiaguinhosolucoes.arcade/.MainActivity
+            sleep 4
+            adb shell pidof br.com.thiaguinhosolucoes.arcade
+            adb exec-out screencap -p > android-delivery/android-signed-release.png
+            adb uninstall br.com.thiaguinhosolucoes.arcade
             adb install android/app/build/outputs/apk/debug/app-debug.apk
             adb install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
             adb shell am instrument -w br.com.thiaguinhosolucoes.arcade.test/br.com.thiaguinhosolucoes.arcade.ArcadeSmoke | tee android-delivery/android-install-test.txt
