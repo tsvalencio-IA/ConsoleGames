@@ -95,3 +95,9 @@ test('tennis: pointer and calibrated camera edge positions keep the racket insid
  for(const x of [0,390]){g.mouseX=x;for(let i=0;i<30;i++){advance(17);g.processPose(null,390,844);}const scale=390*1.8/((2400-200)*Math.sin(.35)+(5000-1620)*Math.cos(.35));const screenX=195+g.p1.x*scale;assert(screenX>=28&&screenX<=362,'Racket must not disappear beyond a screen edge');}
  window.ArcadeControls.mode='camera';g.useMouse=false;g.calib={tlX:0,tlY:0,brX:640,brY:480};const pose={keypoints:[{name:'right_wrist',score:1,x:0,y:200},{name:'right_elbow',score:1,x:10,y:300}]};for(let i=0;i<30;i++){advance(17);g.processPose(pose,390,844);}assert(g.p1.x<1200,'Calibrated hand must use the same visible physical range');
 });
+test('camera: mirrored steering stays neutral with level hands and uses actual camera dimensions',()=>{
+ const {game:g,window}=engine('kart','game_kart');g.currentFase={id:'arcade',mode:'RACE'};g.buildTrack(0);g.resetPhysics();window.ArcadeControls.mode='camera';window.System.video={videoWidth:1280,videoHeight:960};
+ const pose=(a,b)=>({keypoints:[{name:'left_wrist',score:1,x:900,y:a},{name:'right_wrist',score:1,x:380,y:b}]});
+ g.updatePhysics(390,844,pose(400,400));assert.equal(g.targetSteer,0);g.updatePhysics(390,844,pose(320,480));assert(g.targetSteer>0,'Lowering the screen-right hand must steer right');
+ const {game:f,window:fw}=engine('voo','game_flight');f.init({mode:'FREE'});fw.ArcadeControls.mode='camera';fw.System.video={videoWidth:1280,videoHeight:960};f.pilot.baseY=400/960*844;for(let i=0;i<30;i++)f._readPose(pose(400,400),390,844,1/60);assert(Math.abs(f.pilot.targetRoll)<.001);assert(Math.abs(f.pilot.targetPitch)<.001,'A larger video resolution cannot invent a climb command');
+});

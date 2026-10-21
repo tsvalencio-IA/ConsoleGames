@@ -637,11 +637,13 @@
                 d.speed = MathCore.lerp(d.speed, 130, 0.05); d.playerX *= 0.95; 
             } else {
                 if(pose && pose.keypoints) {
-                    const map = (pt) => ({ x: (1 - pt.x/640)*w, y: (pt.y/480)*h });
+                    const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
+                    const map=pt=>({x:(1-pt.x/videoW)*w,y:pt.y/videoH*h});
                     const lw = pose.keypoints.find(k => k.name === 'left_wrist'); const rw = pose.keypoints.find(k => k.name === 'right_wrist'); const nose = pose.keypoints.find(k => k.name === 'nose');
                     if (lw?.score > 0.2 && rw?.score > 0.2) {
                         const pl = map(lw); const pr = map(rw);
-                        d.targetSteer = Math.atan2(pr.y - pl.y, pr.x - pl.x) * 1.8;
+                        const slope=pr.x>=pl.x?pr.y-pl.y:pl.y-pr.y;
+                        d.targetSteer=Math.max(-1,Math.min(1,Math.atan2(slope,Math.max(1,Math.abs(pr.x-pl.x)))*1.8))*playOptions().sensitivity;
                         d.virtualWheel = { x: (pl.x+pr.x)/2, y: (pl.y+pr.y)/2, r: Math.hypot(pr.x-pl.x, pr.y-pl.y)/2, opacity: 1 };
                         detected = true;
                         

@@ -28,6 +28,7 @@ try{
  await page.waitForFunction(()=>{const wanted=window.OTTHI_FAMILY.cameraFrame()?.position,actual=window.OTTHOS_TEST_API.camera().position;return wanted&&Math.hypot(wanted.x-actual.x,wanted.y-actual.y,wanted.z-actual.z)<.3;},null,{timeout:15000});
  const portraitBounds=await page.evaluate(()=>{const f=window.OTTHI_FAMILY.cameraFrame(),c=new THREE.PerspectiveCamera(f.fov,innerWidth/innerHeight,.05,1200);c.position.copy(f.position);c.lookAt(f.look);c.updateMatrixWorld(true);return window.OTTHI_FAMILY.diagnostics().actors.map(a=>{const pts=[];for(const x of[-.5,.5])for(const y of[0,a.id==='luna'||a.id==='liz'?1:2.3])for(const z of[-.5,.5]){const p=new THREE.Vector3(a.x+x,y,a.z+z).project(c);pts.push({x:(p.x+1)*innerWidth/2,y:(1-p.y)*innerHeight/2});}return{id:a.id,minX:Math.min(...pts.map(p=>p.x)),maxX:Math.max(...pts.map(p=>p.x)),minY:Math.min(...pts.map(p=>p.y)),maxY:Math.max(...pts.map(p=>p.y))};});});
  assert(portraitBounds.every(b=>b.minX>4&&b.maxX<386&&b.minY>50&&b.maxY<720),'Family portrait clips actors: '+JSON.stringify(portraitBounds));
+ assert(await page.evaluate(()=>document.body.classList.contains('family-portrait')),'Portrait ended before the player left it');
  await page.screenshot({path:'test-results/playable/family-portrait-mobile.png'});
  await page.setViewportSize({width:844,height:390});await page.waitForTimeout(600);
  assert.equal(await page.locator('#family-world-entry').count(),1,'Direct family entry is missing');
@@ -72,8 +73,8 @@ try{
  assert((await page.locator('#dialogBody').innerText()).includes('Ouro'),'Race lacks its visible time progression');
  await page.locator('#closeDialog').click();
  await page.evaluate(()=>window.__THIA_TEST.openLocation('code'));
- const question=await page.locator('#dialogKicker').innerText();await page.locator('#dialogActions button').nth(0).click();assert.equal(await page.locator('#dialogKicker').innerText(),question,'Wrong answers advance the challenge');
- for(const correct of [1,2,0,1])await page.locator('#dialogActions button').nth(correct).click();
+ const question=await page.locator('#dialogKicker').innerText();await page.locator('#dialogActions button').nth(0).click();await page.waitForFunction(()=>{const b=document.getElementById('actionContinue');return b&&!b.disabled},null,{timeout:25000});await page.locator('#actionContinue').click();assert.equal(await page.locator('#dialogKicker').innerText(),question,'Wrong answers advance the challenge');
+ for(const correct of [1,2,0,1]){await page.locator('#dialogActions button').nth(correct).click();await page.waitForFunction(()=>{const b=document.getElementById('actionContinue');return b&&!b.disabled},null,{timeout:25000});await page.locator('#actionContinue').click();}
  assert(await page.evaluate(()=>window.__THIA_TEST.state.medals.code),'Correct answers did not finish the native technology challenge');
  await page.locator('#closeDialog').click();
  await page.locator('#menuBtn').click();

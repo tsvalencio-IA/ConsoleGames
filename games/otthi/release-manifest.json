@@ -1,11 +1,11 @@
 {
   "version": 705,
   "build": "705.16.7.17-visual-performance-governor",
-  "revision": "5e2a15ce4afaba7f",
+  "revision": "d76ed9a01bbc33aa",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "973af53eedba38e17611dec60ce2f870aaf42961a18e321c0261b861c46adb90",
-    "style.css": "570080dd3cb59d1c1fe22eef012ed64745cf8d6860c8debce40fd11b7441cc62",
+    "index.html": "0e76e48b8214ff98996828d676ed080bb32f915d8415c2efab2f1de3bc08eb65",
+    "style.css": "8577bff64eeb584d53b6e48a0c2e7b249b22a443ee64eeaa869577d2a8595ce4",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
     "assets/js/core/runtime-config.js": "a8090a19300e9c2f60253259b6f64bda75c77bfcdc35777859d81e7c2a211491",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
@@ -14,7 +14,7 @@
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "49807c2542172d4b2464647628cafca18db8f0a659b616a4a1bdc12ba1ce9ec2",
-    "app.js": "22e26c0fbed5e1ef5674ff69bf7d33f2de8642f7df862cf665f31402e2c04b7f",
+    "app.js": "52d3bf260d587ec3c2229cc9e9af1cbfe5e1d4089607a8b42c31eb23ad16921f",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
     "assets/js/core/performance-guardian.js": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
@@ -24,6 +24,6 @@
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
     "VERSION.json": "5a4df7bd2e78ea449e5cf6d31e9dd8295020e0dc3ff01502f8783e7424692821",
-    "sw.js": "84d7404557e0d5b84a43b8bd82dcbcba57e562accee55b90cb36422308cfb965"
+    "sw.js": "a9beb88da8d7395153c0f1e688d51da5a8955235b33aa0836f90950679581290"
   }
 }

@@ -771,10 +771,11 @@
                 
                 if (rightWrist && leftWrist) {
                     inputDetected = true;
-                    let rx = (1 - ((rightWrist.x || 0) / 640)) * w; 
-                    let ry = ((rightWrist.y || 0) / 480) * h;
-                    let lx = (1 - ((leftWrist.x || 0) / 640)) * w; 
-                    let ly = ((leftWrist.y || 0) / 480) * h;
+                    const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
+                    let rx = (1 - ((rightWrist.x || 0) / videoW)) * w;
+                    let ry = ((rightWrist.y || 0) / videoH) * h;
+                    let lx = (1 - ((leftWrist.x || 0) / videoW)) * w;
+                    let ly = ((leftWrist.y || 0) / videoH) * h;
                     
                     // Anatomical wrist names swap sides in the mirrored view.
                     // A level pair must always yield zero, never atan2(0,-span)=π.
@@ -1489,7 +1490,7 @@
             buf.sort((a,b)=>b.p.z-a.p.z);
             buf.forEach(d=>{
                 let p=d.p,s=p.s,o=d.o;
-                if(d.t==='c'){ctx.fillStyle='rgba(255,255,255,0.05)';ctx.beginPath();ctx.arc(p.x,p.y,o.size*s,0,Math.PI*2);ctx.fill();}
+                if(d.t==='c'){ctx.save();ctx.translate(p.x,p.y);ctx.scale(1,.23);const radius=Math.max(1,o.size*s),g=ctx.createRadialGradient(0,0,0,0,0,radius);g.addColorStop(0,'rgba(244,251,255,.16)');g.addColorStop(1,'rgba(244,251,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.fill();ctx.restore();}
                 else if(d.t==='x'){ctx.fillStyle='#2ecc71';ctx.font=`bold ${Math.max(16,1500*s)}px 'Russo One'`;ctx.textAlign='center';ctx.fillText(o.text,p.x,p.y);}
                 else if(d.t==='e'||d.t==='p'){
                     let isNet=d.t==='p';

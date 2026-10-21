@@ -1923,3 +1923,5 @@ body.ui-landscape.otthi-v705-world .vehicle-context-action span{font-size:11px!i
 @media(max-height:430px) and (orientation:landscape){.thamis-stage-columns{grid-template-columns:repeat(3,minmax(230px,1fr));overflow-x:auto;align-items:start;padding-bottom:6px}.thamis-stage-column{max-height:62vh;overflow-y:auto}.thamis-tabs-five{grid-template-columns:repeat(5,minmax(105px,1fr))!important;overflow-x:auto}.edu-stage-meta{margin-bottom:7px;padding:7px 9px}.edu-question{padding:9px!important;margin-bottom:8px!important}.edu-visual{min-height:46px!important;margin:5px 0!important;padding:7px!important}}
 
 body.family-portrait .mini-nav,body.family-portrait .camera-controls,body.family-portrait .mission-card,body.family-portrait .context-prompt{visibility:hidden!important;pointer-events:none!important}
+
+#family-portrait-exit{display:none;position:absolute;left:12px;top:calc(64px + var(--safe-top,0px));z-index:82;min-height:44px;padding:8px 14px;font:700 12px system-ui}body.family-portrait #family-portrait-exit{display:block}
