@@ -12,10 +12,12 @@ function install(){
  const controls=document.createElement("div");
  controls.id="arcade-boxing-controls";controls.setAttribute("aria-label","Controles de boxe por toque");
  controls.innerHTML='<button type="button" class="boxing-action jab" data-punch="l" aria-label="Soco esquerdo">👊 <span>ESQUERDO</span></button><button type="button" class="boxing-action guard" data-guard="1" aria-label="Segurar para defender">🛡 <span>DEFESA</span></button><button type="button" class="boxing-action cross" data-punch="r" aria-label="Soco direito">🥊 <span>DIREITO</span></button>';
+ for(const [side,label] of [[-1,'◁'],[1,'▷']]){const b=document.createElement('button');b.type='button';b.className='boxing-action dodge';b.dataset.dodge=String(side);b.setAttribute('aria-label','Esquivar para '+(side<0?'esquerda':'direita'));b.innerHTML=label+'<span>ESQUIVAR</span>';b.addEventListener('pointerdown',e=>{e.preventDefault();if(logic.state!=='FIGHT'||window.System?.paused||logic.p1?.stamina<12||performance.now()<(logic.touchDodgeUntil||0)+350)return;logic.touchDodgeDir=side;logic.touchDodgeUntil=performance.now()+280;logic.p1.stamina-=12;});side<0?controls.prepend(b):controls.append(b);}
  controls.hidden=true;gameUi.appendChild(controls);
  const freshPose=(w,h)=>{
    if(!logic.p1?.pose)return;
-   const p=logic.p1.pose,x=w*.5,y=h*.70,reach=Math.max(42,Math.min(70,w*.12));
+   const dodge=performance.now()<(logic.touchDodgeUntil||0);logic.p1.isDodging=dodge;
+   const p=logic.p1.pose,x=w*.5+(dodge?(logic.touchDodgeDir||0)*w*.16:0),y=h*.70,reach=Math.max(42,Math.min(70,w*.12));
    const put=(v,a,b)=>{v.x=a;v.y=b};
    put(p.head,x,y-70);put(p.shoulders.l,x-reach,y);put(p.shoulders.r,x+reach,y);
    put(p.elbows.l,x-reach*1.3,y+44);put(p.elbows.r,x+reach*1.3,y+44);
@@ -57,7 +59,7 @@ function install(){
    return nativeUpdate(ctx,w,h,pose);
  };
  function punch(side){
-   if(!logic.touchMode||logic.state!=="FIGHT"||logic.matchEnded||!logic.p1||!logic.p2)return;
+   if(window.System?.paused||!logic.touchMode||logic.state!=="FIGHT"||logic.matchEnded||!logic.p1||!logic.p2)return;
    if(logic.touchGuard || logic.p1.stamina<20)return;
    const stamp=performance.now();
    if(stamp-(logic.touchPunchAt||0)<290)return;
@@ -85,7 +87,7 @@ function install(){
  const nativeCleanup=logic.cleanup.bind(logic);
  logic.cleanup=function(...args){controls.hidden=true;this.touchGuard=false;return nativeCleanup(...args)};
  const refresh=()=>{
-   const visible=Boolean(window.System?.activeGame?.id==="box_pro" && logic.touchMode && logic.state==="FIGHT");
+   const visible=Boolean(window.System?.activeGame?.id==="box_pro" && logic.touchMode && logic.state==="FIGHT" && !window.System?.paused);
    controls.hidden=!visible;
  };
  const observer=setInterval(refresh,180);

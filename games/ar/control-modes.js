@@ -186,7 +186,7 @@ const hub={
    if(window.System?.activeGame?.id!==id){logic.manualAccelerate=false;logic.manualPickupHeld=false;return}
    if(!window.System.paused && drive()){
      let steer=turn+(pressed.has("ArrowRight")||pressed.has("d")?1:0)-(pressed.has("ArrowLeft")||pressed.has("a")?1:0);
-     logic.currentHeading=(logic.currentHeading+steer*110*dt+360)%360;
+     logic.currentHeading=(logic.currentHeading+steer*110*dt*(window.ArcadePlaySettings?.get().sensitivity??1)+360)%360;
      logic.manualAccelerate=logic.manualAccelerate||pressed.has("ArrowUp")||pressed.has("w");
      if(pressed.has("ArrowUp")||pressed.has("w"))logic.manualAccelerate=true;
      else if(!hub.buttons?.querySelector('[data-control="go"].held'))logic.manualAccelerate=false;

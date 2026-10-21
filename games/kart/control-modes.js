@@ -109,7 +109,7 @@ const hub={
  },
  kartControls(logic){
   // Dedicated on-screen controls. The physics engine reads these states each frame.
-  const manual={left:false,right:false,throttle:false,brake:false,itemQueued:false};
+  const manual={left:false,right:false,throttle:false,brake:false,drift:false,rear:false,itemQueued:false};
   logic.arcadeManual=manual;
   const active=()=>logic.state==="RACE"&&logic.status==="RACING";
   const buttons=[
@@ -122,6 +122,7 @@ const hub={
     }},
     {id:"item",text:"◈ ITEM",label:"Usar item recolhido",down:()=>{if(active())manual.itemQueued=true}}
   ];
+  buttons.push({id:'drift',text:'DRIFT',label:'Segurar para derrapar',down:()=>manual.drift=true,up:()=>manual.drift=false},{id:'rear',text:'ATRÁS',label:'Segurar para olhar para trás',down:()=>manual.rear=true,up:()=>manual.rear=false});
   const root=hub.createControls("kart-input",buttons);
   // Console layout: two comfortable thumb areas, empty center for the track.
   const makeGroup=(name,title,ids)=>{
@@ -184,12 +185,14 @@ const hub={
     manual.left=keys.has("ArrowLeft")||keys.has("a")||root.querySelector('[data-control="left"].held')!==null;
     manual.right=keys.has("ArrowRight")||keys.has("d")||root.querySelector('[data-control="right"].held')!==null;
     manual.throttle=keys.has("ArrowUp")||keys.has("w")||root.querySelector('[data-control="go"].held')!==null;
+    manual.drift=keys.has("z")||root.querySelector('[data-control="drift"].held')!==null;
+    manual.rear=keys.has("r")||root.querySelector('[data-control="rear"].held')!==null;
     manual.brake=keys.has("ArrowDown")||keys.has("s")||keys.has(" ")||root.querySelector('[data-control="brake"].held')!==null;
   };
   const refresh=setInterval(sync,35);
   window.addEventListener("keydown",down);
   window.addEventListener("keyup",up);
-  const clear=()=>{keys.clear();for(const k of ["left","right","throttle","brake"])manual[k]=false};
+  const clear=()=>{keys.clear();for(const k of ["left","right","throttle","brake","drift","rear"])manual[k]=false};
   window.addEventListener("blur",clear);
   hub.releases.push(()=>{
     clearInterval(refresh);

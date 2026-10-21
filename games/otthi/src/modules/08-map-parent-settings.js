@@ -17,7 +17,7 @@
     return items;
   }
   function onlinePlayerMapLocations(){const presence=window.OTTHOS_RTDB?.getPresence?.()||{};return Object.entries(presence).filter(([,item])=>item&&Number.isFinite(Number(item.x))&&Number.isFinite(Number(item.z))).map(([uid,item])=>({id:`online-${String(uid).replace(/[^A-Za-z0-9_-]/g,'').slice(0,48)}`,name:item.name||'Jogador online',icon:'👤',group:'Jogadores online',x:Number(item.x),z:Number(item.z),navX:Number(item.x),navZ:Number(item.z),description:'Posição individual sincronizada deste participante no bairro atual.',actions:['Marcar no GPS','Encontrar o participante voluntariamente']}));}
-  function currentMapLocations(){const all=[...MAP_LOCATIONS,...(window.OTTHI_ROOM_WORLD?.mapHouseLocations?.()||[]),...missionMapLocations(),...(typeof coopMissionMapLocations==='function'?coopMissionMapLocations():[]),...onlinePlayerMapLocations()];const unique=new Map();for(const loc of all)if(loc?.id)unique.set(loc.id,loc);return[...unique.values()];}
+  function currentMapLocations(){const all=[...MAP_LOCATIONS,...(typeof familyMapLocations==='function'?familyMapLocations():[]),...(window.OTTHI_ROOM_WORLD?.mapHouseLocations?.()||[]),...missionMapLocations(),...(typeof coopMissionMapLocations==='function'?coopMissionMapLocations():[]),...onlinePlayerMapLocations()];const unique=new Map();for(const loc of all)if(loc?.id)unique.set(loc.id,loc);return[...unique.values()];}
   function mapDistance(point){ return Math.round(Math.hypot(player.x-(point.navX??point.x),player.z-(point.navZ??point.z))); }
   let mapSelectedId='';
   const mapViewState={zoom:1,panX:0,panY:0};

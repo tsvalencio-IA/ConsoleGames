@@ -1,4 +1,4 @@
-const REVISION = '23b438434d19f439';
+const REVISION = '4d68b75c5c91488f';
 const CACHE = `otthi-v70615-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.16.7.17-visual-performance-governor';
@@ -27,6 +27,7 @@ const REQUIRED_SHELL = [
 
 const OPTIONAL_ASSETS = [
   './404.html',
+  './family-mascots.js',
   './console-world.css',
   './console-world.js',
   './quest-chapter.js',

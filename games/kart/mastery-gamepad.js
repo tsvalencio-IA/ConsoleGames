@@ -180,6 +180,8 @@ function moveGamepad(){
    act('.kart-input [data-control="brake"]',lt||down);
    act('.kart-input [data-control="item"]',a);
    act('.kart-input [data-control="nitro"]',b);
+   act('.kart-input [data-control="drift"]',lb);
+   act('.kart-input [data-control="rear"]',xx);
  }else if(gameId==="box_pro"){
    // Installed touch boxing handler is also the official no-camera handler.
    if(window.ArcadeControls?.mode==="controls")logic.touchMode=true;

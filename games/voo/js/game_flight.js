@@ -123,7 +123,7 @@
             this.engineSrc = this.ctx.createBufferSource();
             this.engineSrc.buffer = buf; this.engineSrc.loop = true;
             const filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400;
-            const gain = this.ctx.createGain(); gain.gain.value = 0.15;
+            const gain = this.ctx.createGain(); gain.gain.value = 0.15;this.engineGain=gain;this.engineFilter=filter;
             this.engineSrc.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
             this.engineSrc.start();
         },
@@ -696,8 +696,8 @@
             let trgRoll = 0, trgPitch = 0, inputDetected = false;
             this.pilot.headTilt = false; 
             
-            if (this.keys['ArrowUp']) trgPitch = 1.0; else if (this.keys['ArrowDown']) trgPitch = -1.0;
-            if (this.keys['ArrowRight']) trgRoll = 1.0; else if (this.keys['ArrowLeft']) trgRoll = -1.0;
+            if (this.keys['ArrowUp']) trgPitch = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowDown']) trgPitch = -(window.ArcadePlaySettings?.get().sensitivity??1);
+            if (this.keys['ArrowRight']) trgRoll = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowLeft']) trgRoll = -(window.ArcadePlaySettings?.get().sensitivity??1);
             if (this.keys[' ']) this.pilot.headTilt = true;
             if (this.keys['Shift']) this.ship.afterburner = true; else this.ship.afterburner = false;
             if (this.keys['ArrowUp'] || this.keys['ArrowDown'] || this.keys['ArrowLeft'] || this.keys['ArrowRight']) inputDetected = true;
@@ -762,6 +762,12 @@
                 this.pilot.targetPitch *= 0.9;
             }
             
+            if(window.ArcadeControls?.mode==='controls'){
+                this.pilot.active=true;
+                this.pilot.throttle=Math.max(.25,Math.min(1,this.manualThrottle??1));
+                if(!inputDetected&&window.ArcadePlaySettings?.get().assist===false){this.pilot.targetRoll=this.ship.roll;this.pilot.targetPitch=this.ship.pitch;}
+                if(!inputDetected&&window.ArcadePlaySettings?.get().assist!==false){this.pilot.targetRoll*=Math.exp(-dt*5);this.pilot.targetPitch*=Math.exp(-dt*5);}
+            }
             this.ship.inputs.pitch = this.pilot.targetPitch;
             this.ship.inputs.roll = this.pilot.targetRoll;
         },
@@ -1202,7 +1208,40 @@
             }, 2000);
         },
 
+        updateAudio: function(){
+            if(!GameSfx.ctx||!GameSfx.engineGain)return;
+            const opts=window.ArcadePlaySettings?.get()||{},active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden,t=GameSfx.ctx.currentTime,power=this.pilot.throttle||0;
+            GameSfx.engineGain.gain.setTargetAtTime(active?(.065+power*.1+(this.ship.afterburner ? .035 : 0))*(opts.engineVolume??1):0,t,.1);
+            GameSfx.engineFilter.frequency.setTargetAtTime(220+power*700+Math.min(1500,this.ship.speed*1.3),t,.16);
+        },
+        _updateView: function(w,h){
+            const opts=window.ArcadePlaySettings?.get()||{},p=this.ship;
+            if(opts.camera==='cockpit'){this.view={x:p.x,y:p.y,z:p.z,pitch:p.pitch,yaw:p.yaw,roll:p.roll};return;}
+            const distance={near:180,medium:280,far:420}[opts.distance]||420;
+            let v=this.view;
+            if(!v||Math.hypot(v.x-p.x,v.y-p.y,v.z-p.z)>distance*5)v=this.view={x:p.x,y:p.y,z:p.z,pitch:p.pitch-.10,yaw:p.yaw,roll:0};
+            const blend=.18,angle=(a,b)=>a+Math.atan2(Math.sin(b-a),Math.cos(b-a))*blend;
+            v.yaw=angle(v.yaw,p.yaw);v.pitch+=(p.pitch-.10-v.pitch)*blend;v.roll+=(Math.max(-.34,Math.min(.34,p.roll*.23))-v.roll)*.12;
+            // Position relative to aircraft, not frame-lagged world position: no fly-through on tight turns.
+            v.x=p.x-Math.sin(v.yaw)*Math.cos(p.pitch)*distance;
+            v.y=p.y-Math.sin(p.pitch)*distance+distance*.16;
+            v.z=p.z-Math.cos(v.yaw)*Math.cos(p.pitch)*distance;
+        },
+        _projectView: function(x,y,z,w,h){const v=this.view||this.ship;return Engine3D.project(x,y,z,v.x,v.y,v.z,v.pitch,v.yaw,v.roll,w,h);},
+        _drawOwnPlane: function(ctx,w,h){
+            if(window.ArcadePlaySettings?.get().camera==='cockpit')return;
+            const p=this.ship,cr=Math.cos(p.roll),sr=Math.sin(p.roll),cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),cy=Math.cos(p.yaw),sy=Math.sin(p.yaw);
+            const point=([x,y,z])=>{const rx=x*cr-y*sr,ry=x*sr+y*cr,py=ry*cp+z*sp,pz=z*cp-ry*sp;return this._projectView(p.x+rx*cy+pz*sy,p.y+py,p.z-rx*sy+pz*cy,w,h);};
+            const v=[[-2,0,-30],[2,0,-30],[0,3,29],[0,-3,29],[-6,0,-15],[6,0,-15],[-36,-1,-5],[36,-1,-5],[-13,1,-27],[13,1,-27],[0,11,-25],[0,1,-15]];
+            const faces=[[[0,1,2],'#c0d7e5'],[[0,3,1],'#36576d'],[[0,2,6],'#7b9fb8'],[[1,7,2],'#acc8da'],[[0,8,4],'#5f859f'],[[1,5,9],'#97bbd0'],[[0,10,11],'#d3e5ee'],[[1,11,10],'#698da9']];
+            const pts=v.map(point);
+            faces.map(([indices,color])=>({indices,color,z:indices.reduce((n,i)=>n+(pts[i].z||0),0)/3})).sort((a,b)=>b.z-a.z).forEach(f=>{if(f.indices.some(i=>!pts[i].visible))return;ctx.beginPath();f.indices.forEach((i,j)=>j?ctx.lineTo(pts[i].x,pts[i].y):ctx.moveTo(pts[i].x,pts[i].y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();ctx.strokeStyle='#243f54';ctx.lineWidth=.7;ctx.stroke();});
+            const canopy=point([0,4,7]),tail=point([0,0,-32]);
+            if(canopy.visible){ctx.fillStyle='#182e47';ctx.beginPath();ctx.ellipse(canopy.x,canopy.y,Math.max(2,canopy.s*3),Math.max(3,canopy.s*7),-(p.roll-(this.view?.roll||0)),0,Math.PI*2);ctx.fill();}
+            if(tail.visible){ctx.fillStyle=p.afterburner?'#80edff':'#f5a755';ctx.beginPath();ctx.ellipse(tail.x,tail.y,Math.max(2,tail.s*2),Math.max(3,tail.s*(p.afterburner?15:5)),0,0,Math.PI*2);ctx.fill();}
+        },
         _draw: function(ctx, w, h) {
+            this._updateView(w,h);
             ctx.save();
             let gShake = Math.min(10, Math.max(0, (this.ship.gForce - 6.0) * 1.5));
             if (gShake > 0) {
@@ -1211,8 +1250,9 @@
             
             this._drawWorld(ctx,w,h);
             this._drawEntities(ctx,w,h);
+            if(window.ArcadePlaySettings?.get().camera!=='cockpit')this._drawOwnPlane(ctx,w,h);
             this._drawHUD(ctx,w,h);
-            this._drawCockpit(ctx,w,h);
+            if(window.ArcadePlaySettings?.get().camera==='cockpit')this._drawCockpit(ctx,w,h);
             ctx.restore();
             
             ctx.fillStyle='rgba(0,0,0,0.1)';
@@ -1256,11 +1296,11 @@
 
         _drawWorld: function(ctx,w,h) {
             let safeH = h > 0 ? h : 100;
-            let hy = Math.sin(this.ship.pitch || 0) * safeH * 1.5;
+            let hy = Math.sin(this.view?.pitch??this.ship.pitch??0) * safeH * 1.5;
             
             ctx.save();
             ctx.translate(w/2, safeH/2);
-            ctx.rotate(-(this.ship.roll || 0));
+            ctx.rotate(-(this.view?.roll || 0));
             
             let skyY0 = -safeH * 4;
             let skyY1 = hy;
@@ -1281,11 +1321,9 @@
             ctx.fillRect(-w*3, hy, w*6, safeH*4);
             ctx.restore();
 
-            let sunP = Engine3D.project(
+            let sunP = this._projectView(
                 this.ship.x, this.ship.y + 50000, this.ship.z + 200000, 
-                this.ship.x, this.ship.y, this.ship.z, 
-                this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH
-            );
+                w,safeH);
             
             if (sunP.visible) {
                  ctx.fillStyle = "rgba(255, 255, 200, 0.9)";
@@ -1300,15 +1338,15 @@
             let sz=Math.floor((this.ship.z||0)/st)*st - st*15;
             
             for(let x=0; x<=(w<760?24:30); x++) {
-                let p1 = Engine3D.project(sx + x*st, 0, sz, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
-                let p2 = Engine3D.project(sx + x*st, 0, sz + 60*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
+                let p1 = this._projectView(sx + x*st, 0, sz, w,safeH);
+                let p2 = this._projectView(sx + x*st, 0, sz + 60*st, w,safeH);
                 if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
                     ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); 
                 }
             }
             for (let z = 0; z <= (w<760?38:60); z++) {
-                let p1 = Engine3D.project(sx, 0, sz + z*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
-                let p2 = Engine3D.project(sx + 30*st, 0, sz + z*st, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
+                let p1 = this._projectView(sx, 0, sz + z*st, w,safeH);
+                let p2 = this._projectView(sx + 30*st, 0, sz + z*st, w,safeH);
                 if (p1.visible && p2.visible && Number.isFinite(p1.x) && Number.isFinite(p2.x)) { 
                     ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); 
                 }
@@ -1316,8 +1354,8 @@
             ctx.stroke();
 
             this.scenery.forEach(s => {
-                let baseP = Engine3D.project(s.x, 0, s.z, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
-                let topP = Engine3D.project(s.x, s.h, s.z, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, safeH);
+                let baseP = this._projectView(s.x, 0, s.z, w,safeH);
+                let topP = this._projectView(s.x, s.h, s.z, w,safeH);
                 
                 if (baseP.visible && topP.visible && baseP.y > topP.y && Number.isFinite(baseP.x)) {
                     ctx.strokeStyle = s.color;
@@ -1332,7 +1370,7 @@
         _drawEntities: function(ctx,w,h) {
             let buf=[];
             const add=(list,t)=>list.forEach(o=>{
-                let p=Engine3D.project(o.x,o.y,o.z,this.ship.x,this.ship.y,this.ship.z,this.ship.pitch,this.ship.yaw,this.ship.roll,w,h);
+                let p=this._projectView(o.x,o.y,o.z,w,h);
                 if(p.visible && Number.isFinite(p.x)) buf.push({p,t,o});
             });
             add(this.clouds,'c'); add(this.entities,'e'); add(this.bullets,'b'); add(this.missiles,'m'); add(this.fx,'f'); add(this.floaters,'x');
@@ -1342,7 +1380,7 @@
                     if(uid!==this.net.uid&&this.net.players[uid]?.hp>0){
                         let rp = this.net.players[uid];
                         let px = rp.x + (rp.vx||0)*0.05, py = rp.y + (rp.vy||0)*0.05, pz = rp.z + (rp.vz||0)*0.05; 
-                        let p=Engine3D.project(px, py, pz, this.ship.x, this.ship.y, this.ship.z, this.ship.pitch, this.ship.yaw, this.ship.roll, w, h);
+                        let p=this._projectView(px, py, pz, w,h);
                         if(p.visible && Number.isFinite(p.x)) buf.push({p,t:'p',o:rp,id:uid});
                     }
                 });
@@ -1430,10 +1468,13 @@
 
             }
 
+            ctx.save();ctx.fillStyle='#b5e5ff';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText('POTÊNCIA '+Math.round(this.pilot.throttle*100)+'%',w/2,h-28);ctx.restore();
             let hdg=(p.yaw*180/Math.PI)%360;if(hdg<0)hdg+=360;
             ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(0,0,w,50);
             ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='bold 22px "Russo One", Arial';ctx.fillText(Math.floor(hdg)+'°',w/2,35);
             
+            const aim=this._projectView(p.x+Math.sin(p.yaw)*Math.cos(p.pitch)*4000,p.y+Math.sin(p.pitch)*4000,p.z+Math.cos(p.yaw)*Math.cos(p.pitch)*4000,w,h);
+            ctx.save();if(aim.visible)ctx.translate(aim.x-w/2,aim.y-h/2);
             ctx.strokeStyle='#00ffcc'; ctx.lineWidth=2;
             ctx.beginPath(); ctx.arc(w/2, h/2, 4, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(w/2, h/2, 20, 0, Math.PI*2); ctx.stroke();
@@ -1441,6 +1482,7 @@
             ctx.beginPath(); ctx.moveTo(w/2 + 40, h/2); ctx.lineTo(w/2 + 20, h/2); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(w/2, h/2 - 40); ctx.lineTo(w/2, h/2 - 20); ctx.stroke();
 
+            ctx.restore();
             if (this.combat.target) {
                 let distToTarget = Math.hypot(this.combat.target.x - p.x, this.combat.target.y - p.y, this.combat.target.z - p.z);
                 let spd = p.speed + 1200;
@@ -1448,7 +1490,7 @@
                 let tX = this.combat.target.x + (this.combat.target.vx || 0) * leadTime;
                 let tY = this.combat.target.y + (this.combat.target.vy || 0) * leadTime;
                 let tZ = this.combat.target.z + (this.combat.target.vz || 0) * leadTime;
-                let leadP = Engine3D.project(tX, tY, tZ, p.x, p.y, p.z, p.pitch, p.yaw, p.roll, w, h);
+                let leadP = this._projectView(tX, tY, tZ, w,h);
                 if (leadP.visible) {
                     ctx.strokeStyle = 'rgba(255, 200, 0, 0.5)';
                     ctx.beginPath(); ctx.arc(leadP.x, leadP.y, 10, 0, Math.PI*2); ctx.stroke();
@@ -1456,7 +1498,7 @@
             }
 
             let vDirX = p.vx/p.speed, vDirY = p.vy/p.speed, vDirZ = p.vz/p.speed;
-            let vP = Engine3D.project(p.x + vDirX*1000, p.y + vDirY*1000, p.z + vDirZ*1000, p.x, p.y, p.z, p.pitch, p.yaw, p.roll, w, h);
+            let vP = this._projectView(p.x + vDirX*1000, p.y + vDirY*1000, p.z + vDirZ*1000, w,h);
             if (vP.visible) {
                 ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
                 ctx.beginPath(); ctx.arc(vP.x, vP.y, 5, 0, Math.PI*2); ctx.stroke();

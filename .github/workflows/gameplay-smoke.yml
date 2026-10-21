@@ -30,8 +30,12 @@ jobs:
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/arcade-server.log 2>&1 &
           sleep 2
+      - name: Verificar motores, câmera e personagens
+        run: node --test tests/*.test.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         run: node tests/playable-smoke.mjs
+      - name: Jogar com a Família no OTThi e preservar o HQ
+        run: node tests/family-playable.mjs
       - name: Salvar evidências visuais
         if: always()
         uses: actions/upload-artifact@v4

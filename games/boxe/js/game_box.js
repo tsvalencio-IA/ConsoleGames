@@ -386,6 +386,7 @@
                     if (this.p2.hp <= 0) { this.p2.pose.head.y += 100 * dt; }
 
                     this.drawCharacter(ctx, this.p2, w, h, false, this.enemyFlash > 0);
+                    if(this.telegraph&&!this.isOnline){ctx.save();ctx.fillStyle='#ffc078';ctx.strokeStyle='#311b12';ctx.lineWidth=2;ctx.beginPath();ctx.arc(this.telegraph.x,this.telegraph.y,13,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#20150c';ctx.fillText('!',this.telegraph.x,this.telegraph.y+4);ctx.restore();}
                     
                     ctx.globalAlpha = 0.7;
                     this.drawCharacter(ctx, this.p1, w, h, true, false);
@@ -691,30 +692,33 @@
             p.elbows.l = { x: p.shoulders.l.x - 20, y: p.shoulders.l.y + 60 };
             p.elbows.r = { x: p.shoulders.r.x + 20, y: p.shoulders.r.y + 60 };
 
-            if (this.p1.stamina < 50) ai.guard = true;
-            else if (ai.stamina > 70) ai.guard = false;
-
-            const attackPattern = Math.sin(t * 5); 
-            
-            ['l', 'r'].forEach(s => {
-                const hnd = p.wrists[s];
-                let tx = p.head.x + (s==='l'?-40:40);
-                let ty = p.head.y + (ai.guard ? 20 : 80); 
-
-                if (attackPattern > 0.9 && hnd.state === 'IDLE' && ai.stamina > 30) {
-                      ai.aiState.targetX = w/2 + (Math.sin(t)*50);
-                      ai.aiState.targetY = h/2 + 50;
-                      tx = ai.aiState.targetX;
-                      ty = ai.aiState.targetY;
-                }
-
-                const speed = 8.0; 
-                const nextPos = SafeUtils.lerpPoint(hnd, {x: tx, y: ty}, speed, dt);
-                const shoulder = (s === 'l') ? p.shoulders.l : p.shoulders.r;
-                this.updateHandLogic(hnd, nextPos, shoulder, ai, this.p1, dt);
+            const difficulty=window.ArcadePlaySettings?.get().difficulty||'normal';
+            const pace=difficulty==='easy'?1.85:difficulty==='hard'?.92:1.35;
+            const lead=difficulty==='easy'?.68:difficulty==='hard'?.30:.48;
+            const brain=ai.aiState;brain.timer=(brain.timer||0)+dt;
+            if(!brain.next)brain.next=pace;
+            if(brain.timer>=brain.next-lead&&!brain.preparing&&ai.stamina>24){brain.preparing=true;brain.side=(brain.sequence||0)%2?'r':'l';}
+            ai.guard=!brain.preparing&&ai.stamina>35&&this.p1.stamina<65;
+            const strike=brain.preparing&&brain.timer>=brain.next;
+            ['l','r'].forEach(side=>{
+                const hand=p.wrists[side],chosen=side===brain.side,telegraph=chosen&&brain.preparing;
+                let target={x:p.head.x+(side==='l'?-40:40),y:p.head.y+(ai.guard?20:80)};
+                if(telegraph){target.x+=(side==='l'?-18:18);target.y-=18;}
+                if(strike&&chosen&&hand.state==='IDLE'&&ai.stamina>20){
+                    target={x:this.p1.pose.head.x,y:this.p1.pose.head.y+8};
+                    hand.state='PUNCH';hand.z=0;hand.hasHit=false;hand.punchForce=difficulty==='easy'?.65:difficulty==='hard'?1.15:.85;ai.stamina-=20;
+                }else if(hand.state==='PUNCH'){target={x:this.p1.pose.head.x,y:this.p1.pose.head.y+8};}
+                const shoulder=side==='l'?p.shoulders.l:p.shoulders.r;
+                this.updateHandLogic(hand,target,shoulder,ai,this.p1,dt);
             });
-            
-            if(ai.stamina < 100) ai.stamina += (10 * dt);
+            if(brain.preparing&&!strike){
+                const x=p.head.x+(brain.side==='l'?-65:65);
+                { // Rendered in the normal frame, not a separate overlay.
+                  this.telegraph={x,y:p.head.y-35,side:brain.side,remaining:Math.max(0,brain.next-brain.timer)};
+                }
+            }else this.telegraph=null;
+            if(strike){brain.preparing=false;brain.sequence=(brain.sequence||0)+1;brain.next=brain.timer+pace+Math.sin(brain.sequence*2)*.15;}
+            ai.stamina=Math.min(100,ai.stamina+(ai.guard?7:11)*dt);
         },
 
         sendUpdate: function() {

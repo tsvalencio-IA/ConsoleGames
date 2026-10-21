@@ -23,6 +23,7 @@ RELEASE_FILES = [
     'assets/js/game-account.js',
     'assets/js/multiplayer-rtdb.js',
     'app.js',
+    'family-mascots.js',
     'assets/js/ui/shared-modal.js',
     'assets/js/core/performance-guardian.js',
     'assets/js/multiplayer/room-manager.js',

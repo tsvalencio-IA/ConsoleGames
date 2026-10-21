@@ -15,7 +15,8 @@
         'HARD':   { speedMult: 1.25, accelMult: 1.4,  reaction: 0.25, lookAhead: 40, errorRate: 0.02, rubberBand: 0.4 } 
     };
     
-    const CURRENT_DIFFICULTY = 'HARD'; 
+    const CURRENT_DIFFICULTY = 'MEDIUM';
+    const playOptions=()=>window.ArcadePlaySettings?.get()||{distance:'far',sensitivity:1,autoAccelerate:false,difficulty:'normal'};
 
     const CHARACTERS = [
         { id: 0, name: 'ASTRO',  color: '#e74c3c', hat: '#d32f2f', speedInfo: 1.00, turnInfo: 1.00, weight: 1.0, accel: 0.040, aggression: 0.6 },
@@ -84,7 +85,7 @@
             if (!this.isPlaying) return;
             const ratio = Math.abs(speed) / maxSpeed; const now = this.ctx.currentTime;
             const baseFreq = 60 + (ratio * 240); this.osc1.frequency.setTargetAtTime(baseFreq, now, 0.1); this.osc2.frequency.setTargetAtTime(baseFreq * 0.5, now, 0.1);
-            const idleWobble = (speed < 5) ? (Math.sin(now * 20) * 0.05) : 0; this.engineGain.gain.setTargetAtTime(0.1 + (ratio * 0.1) + idleWobble, now, 0.1);
+            const idleWobble = (speed < 5) ? (Math.sin(now * 20) * 0.05) : 0; this.masterGain.gain.setTargetAtTime((window.System?.paused?0:.3)*(window.ArcadePlaySettings?.get().engineVolume??1),now,.08); this.engineGain.gain.setTargetAtTime(0.1 + (ratio * 0.1) + idleWobble, now, 0.1);
             if (isTurbo) { this.osc1.frequency.setTargetAtTime(baseFreq * 1.5, now, 0.2); this.engineGain.gain.setTargetAtTime(0.3, now, 0.1); }
             let targetNoiseVol = 0; let targetFilterFreq = 800; let targetQ = 1;
             if (isOffroad) { targetNoiseVol = Math.min(0.4, ratio * 0.5); targetFilterFreq = 400; targetQ = 0.5; } else if (Math.abs(driftIntensity) > 0.15 && speed > 50) { targetNoiseVol = Math.min(0.3, (Math.abs(driftIntensity) - 0.15) * 2.0); targetFilterFreq = 1200 + (ratio * 500); targetQ = 5; }
@@ -506,7 +507,7 @@
             this.pushMsg("LARGADA!", "#0f0", 60); window.Sfx.play(600, 'square', 0.5, 0.2); KartAudio.start();
             this.pos = 0; this.lap = 1; this.maxLapPos = 0; this.speed = 0; this.finishTime = 0; this.localBots = [];
             
-            const diff = AI_DIFFICULTY_SETTINGS[this.currentFase.diff || CURRENT_DIFFICULTY];
+            const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||this.currentFase.diff||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
             if (!this.isOnline || (this.isOnline && this.isHost)) {
                 let availableChars = [0, 1, 2, 3, 4, 5, 6, 7].filter(c => c !== this.selectedChar);
                 const botConfigs = [];
@@ -653,8 +654,8 @@
                 // No camera mode: use the exact touch/keyboard state, not simulated poses.
                 const manual=window.ArcadeControls?.mode==="controls" ? d.arcadeManual : null;
                 if(manual){
-                    d.targetSteer=(Number(manual.right)-Number(manual.left))*.85;
-                    detected=Boolean(manual.throttle);
+                    d.targetSteer=(Number(manual.right)-Number(manual.left))*.85*playOptions().sensitivity;
+                    detected=Boolean(manual.throttle||playOptions().autoAccelerate)&&!manual.brake;
                     if(manual.itemQueued){itemTriggered=true;manual.itemQueued=false;}
                     d.virtualWheel.opacity=0;
                 }
@@ -665,7 +666,7 @@
 
             const absX = Math.abs(d.playerX); let currentGrip = PHYSICS.gripAsphalt; let currentDrag = CONF.FRICTION; d.vibration = 0;
             const carScaleGlobal = w * 0.0022;
-            const partY = (h * 0.80) + (15 * carScaleGlobal) + 5; 
+            const partY = (d.playerScreen?.y??h*.72) + (15 * carScaleGlobal) + 5;
             
             let offroadDrag = CONF.OFFROAD_DECEL;
             if (activeKart.type === 'monster') offroadDrag = 0.95;
@@ -683,7 +684,7 @@
 
             let max = CONF.MAX_SPEED * char.speedInfo;
             if (d.turboLock) {
-                max = CONF.TURBO_MAX_SPEED; d.nitro -= 0.5; this.spawnParticle(w/2 - 15, partY, 'turbo'); this.spawnParticle(w/2 + 15, partY, 'turbo');
+                max = CONF.TURBO_MAX_SPEED; d.nitro -= 0.5; this.spawnParticle((d.playerScreen?.x??w/2)-12,partY,'turbo');this.spawnParticle((d.playerScreen?.x??w/2)+12,partY,'turbo');
                 if (d.nitro <= 0) { d.nitro = 0; d.turboLock = false; window.Sfx.play(200, 'sawtooth', 0.5, 0.2); } 
             } else { d.nitro = Math.min(100, d.nitro + 0.15); }
 
@@ -705,7 +706,7 @@
                 d.bounce = (Math.random() - 0.5) * d.vibration; 
             }
 
-            if (Math.abs(d.targetSteer) > 0.5 && d.speed > 100 && absX < 1.3 && d.spinTimer <= 0) {
+            if ((d.arcadeManual ? d.arcadeManual.drift && Math.abs(d.targetSteer) > .2 : Math.abs(d.targetSteer) > .5) && d.speed > 100 && absX < 1.3 && d.spinTimer <= 0) {
                 d.driftSparks = Math.min((d.driftSparks || 0) + 1, 100);
                 if (Math.random() > 0.3) this.spawnParticle(w/2 + (d.targetSteer > 0 ? -30 : 30), partY, d.driftSparks > 70 ? 'drift_blue' : 'drift_yellow');
             } else if (d.driftSparks > 0) {
@@ -858,7 +859,7 @@
             if(Math.abs(d.lateralInertia) > 0.12 && d.speed > 60 && absX < 1.4) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
 
             if (this.localBots.length > 0 && d.state !== 'GAMEOVER') {
-                const diff = AI_DIFFICULTY_SETTINGS[this.currentFase.diff || CURRENT_DIFFICULTY];
+                const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||this.currentFase.diff||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
                 let playerTotalDist = (d.lap * trackLength) + d.pos;
 
                 this.localBots.forEach(r => {
@@ -983,11 +984,20 @@
             particles.push({ x, y, vx: (Math.random()-0.5)*4, vy: (Math.random())*4, l: 20, maxL: 20, c: type==='turbo'?'#ffaa00':(type==='dust'?'#95a5a6':'#ecf0f1') });
         },
 
+        cameraView: function(w,h){
+            const opts=playOptions(),target={near:2.4,medium:4.5,far:7.5}[opts.distance]||7.5;
+            this.cameraDepth=Number.isFinite(this.cameraDepth)?this.cameraDepth+(target-this.cameraDepth)*.1:target;
+            const direction=this.arcadeManual?.rear?-1:1,depth=this.cameraDepth;
+            const baseFloat=this.pos/CONF.SEGMENT_LENGTH-direction*depth;
+            const base=direction===1?Math.floor(baseFloat):Math.ceil(baseFloat);
+            return {depth,direction,base,fraction:Math.abs(baseFloat-base),horizon:h*.30,drawDistance:opts.quality==='low'?180:CONF.DRAW_DISTANCE};
+        },
         renderWorld: function(ctx, w, h) {
             const d = Logic; const cx = w / 2; 
-            const horizon = (h * 0.35) + d.bounce - (d.visualTilt * 2);
+            const view=this.cameraView(w,h);
+            const horizon=view.horizon;
             
-            const currentSegIndex = Math.floor(d.pos / CONF.SEGMENT_LENGTH); const isOffRoad = Math.abs(d.playerX) > 1.2;
+            const currentSegIndex = view.base; const isOffRoad = Math.abs(d.playerX) > 1.2;
             const skyGrads = [['#3388ff', '#88ccff'], ['#e67e22', '#f1c40f'], ['#0984e3', '#74b9ff']];
             const currentSky = skyGrads[this.skyColor] || skyGrads[0];
             const gradSky = ctx.createLinearGradient(0, 0, 0, horizon);
@@ -1004,14 +1014,14 @@
             const theme = themes[TRACKS[d.selectedTrack].theme] || themes['grass']; 
             ctx.fillStyle = isOffRoad ? '#336622' : theme[1]; ctx.fillRect(0, horizon, w, h-horizon);
 
-            let dx = 0; let camX = d.cameraX * (w * 0.45); let segmentCoords = [];
+            let dx = 0; let camX = d.cameraX * (w * 1.5); let segmentCoords = [];
 
-            for(let n = 0; n < CONF.DRAW_DISTANCE; n++) {
-                const seg = getSegment(currentSegIndex + n); dx += (seg.curve * CONF.CAMERA_DEPTH); 
-                const scale = 1 / (1 + (n * 20 * 0.020)); 
-                const nextScale = 1 / (1 + ((n+1) * 20 * 0.020));
-                const sy = horizon + ((h - horizon) * scale); const nsy = horizon + ((h - horizon) * nextScale);
-                const sx = cx - (camX * scale) - (dx * n * 20 * scale * 2); const nsx = cx - (camX * nextScale) - ((dx + seg.curve*CONF.CAMERA_DEPTH) * (n+1) * 20 * nextScale * 2);
+            for(let n = 0; n < view.drawDistance; n++) {
+                const seg = getSegment(currentSegIndex + view.direction*n); dx += (seg.curve * CONF.CAMERA_DEPTH * view.direction);
+                const scale = 1 / (1 + Math.max(.05,n-view.fraction) * .22);
+                const nextScale = 1 / (1 + Math.max(.05,n+1-view.fraction) * .22);
+                const sy = horizon + ((h*1.2 - horizon) * scale); const nsy = horizon + ((h*1.2 - horizon) * nextScale);
+                const sx = cx - (camX * scale) - (dx * n * 20 * scale * 2); const nsx = cx - (camX * nextScale) - ((dx + seg.curve*CONF.CAMERA_DEPTH*view.direction) * (n+1) * 20 * nextScale * 2);
                 segmentCoords.push({ x: sx, y: sy, scale });
                 ctx.fillStyle = (seg.color === 'dark') ? (isOffRoad?'#336622':theme[1]) : (isOffRoad?'#336622':theme[0]); ctx.fillRect(0, nsy, w, sy - nsy);
                 ctx.fillStyle = (seg.color === 'dark') ? '#f33' : '#fff'; 
@@ -1028,10 +1038,10 @@
                 }
             }
 
-            for(let n = CONF.DRAW_DISTANCE - 1; n >= 0; n--) {
+            for(let n = view.drawDistance - 1; n >= 0; n--) {
                 const coord = segmentCoords[n]; if(!coord) continue;
                 
-                const seg = getSegment(currentSegIndex + n);
+                const seg = getSegment(currentSegIndex + view.direction*n);
                 if (seg.obs) {
                     seg.obs.forEach(o => {
                         if (o.collected) return;
@@ -1064,23 +1074,24 @@
 
                 // Actual rivals only: use authoritative lap + track positions.
                 d.rivals.forEach(r => {
-                    const ahead=(Number(r.lap)-Number(d.lap))*trackLength+Number(r.pos)-Number(d.pos);
-                    if(!Number.isFinite(ahead)||ahead<=0||ahead>=CONF.DRAW_DISTANCE*CONF.SEGMENT_LENGTH)return;
+                    const ahead=((Number(r.lap)-Number(d.lap))*trackLength+Number(r.pos)-Number(d.pos))*view.direction+view.depth*CONF.SEGMENT_LENGTH;
+                    if(!Number.isFinite(ahead)||ahead<=0||ahead>=view.drawDistance*CONF.SEGMENT_LENGTH)return;
                     const posAhead=ahead/CONF.SEGMENT_LENGTH;
-                    if(Math.floor(posAhead)!==n||n<=0)return;
-                    const t=Math.max(0,Math.min(1,posAhead-n));
+                    if(Math.floor(posAhead+view.fraction)!==n)return;
+                    const t=Math.max(0,Math.min(1,posAhead+view.fraction-n));
                     const far=segmentCoords[Math.min(n+1,segmentCoords.length-1)]||coord;
                     const lerp=(a,b,t)=>a+(b-a)*t;
                     const scale=lerp(coord.scale,far.scale,t);
                     const screenX=lerp(coord.x,far.x,t)+(Number(r.x)||0)*w*1.5*scale;
-                    const spriteScale=Math.min(w*.0022,Math.max(w*.00020,w*.0022*scale*1.55));
+                    const spriteScale=Math.max(w*.00006,w*.0022*scale*1.55);
                     this.drawKartSprite(ctx,screenX,lerp(coord.y,far.y,t),spriteScale,0,0,r.spinAngle||0,r.color,r.charId,r.kartId);
+                    if(scale>.025){ctx.save();ctx.font='bold '+Math.max(10,Math.min(13,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.shadowColor='#001';ctx.shadowBlur=4;ctx.fillText(String(r.name||'RIVAL').slice(0,16),screenX,lerp(coord.y,far.y,t)-130*spriteScale-9);ctx.restore();}
                 });
             }
 
             d.projectiles.forEach(p => {
                 if (!p.active) return;
-                let relPos = p.pos - d.pos; if (relPos < 0) relPos += trackLength;
+                let relPos = (p.pos - d.pos)*view.direction+view.depth*CONF.SEGMENT_LENGTH; if (relPos < 0) relPos += trackLength;
                 let n = Math.floor(relPos / CONF.SEGMENT_LENGTH);
                 if (n > 0 && n < CONF.DRAW_DISTANCE) {
                     let coord = segmentCoords[n];
@@ -1104,7 +1115,14 @@
 
             if (d.status !== 'FINISHED' && d.state !== 'GAMEOVER') {
                 let myKartId = (this.useCustomKart && this.garage[this.activeKartIdx]) ? this.garage[this.activeKartIdx].modelId : 0;
-                this.drawKartSprite(ctx, cx, h * 0.80 + d.bounce, w * 0.0022, d.steer, d.visualTilt, d.spinAngle, CHARACTERS[d.selectedChar].color, d.selectedChar, myKartId);
+                const at=view.depth+view.fraction, index=Math.floor(at),t=at-index;
+                const a=segmentCoords[index],b=segmentCoords[index+1]||a;
+                if(a){const scale=a.scale+(b.scale-a.scale)*t;
+                  const x=a.x+(b.x-a.x)*t+d.playerX*w*1.5*scale,y=a.y+(b.y-a.y)*t;
+                  this.playerScreen={x,y,scale};
+                  this.drawKartSprite(ctx,x,y+d.bounce,w*.0022*scale*1.55,d.steer,d.visualTilt*.45,d.spinAngle,CHARACTERS[d.selectedChar].color,d.selectedChar,myKartId);
+                }
+                if(d.arcadeManual?.rear){ctx.save();ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText('OLHANDO PARA TRÁS',w/2,h*.27);ctx.restore();}
             }
         },
 
@@ -1277,6 +1295,7 @@
                 ctx.fillStyle = "rgba(0,0,0,0.5)"; ctx.fillRect(20, 100, 70, 70);
             }
 
+            if(d.driftSparks>0){ctx.save();const bx=w/2-55,by=h*.23;ctx.fillStyle='rgba(6,20,34,.8)';ctx.fillRect(bx,by,110,18);ctx.fillStyle=d.driftSparks>70?'#65eeff':'#ffc96b';ctx.fillRect(bx+3,by+13,Math.min(104,d.driftSparks*1.04),3);ctx.textAlign='center';ctx.font='bold 10px Arial';ctx.fillText(d.driftSparks>70?'SOLTE: IMPULSO PRONTO':'CARREGANDO DRIFT',w/2,by+10);ctx.restore();}
             if (d.item) {
                 ctx.font = "40px Arial"; ctx.textAlign = "center";
                 let emoji = d.item === 'mushroom' ? '🍄' : (d.item === 'banana' ? '🍌' : '🐢');
@@ -1333,7 +1352,7 @@
                 const scale = Math.min((mapSize-20)/minimapBounds.w, (mapSize-20)/minimapBounds.h); ctx.scale(scale, scale); ctx.translate(-(minimapBounds.minX+minimapBounds.maxX)/2, -(minimapBounds.minZ+minimapBounds.maxZ)/2);
                 ctx.strokeStyle = '#fff'; ctx.lineWidth = 10; ctx.beginPath(); minimapPath.forEach((p, i) => { if(i===0) ctx.moveTo(p.x, p.z); else ctx.lineTo(p.x, p.z); }); ctx.closePath(); ctx.stroke();
                 const drawDot = (pos, c, r) => { const idx = Math.floor((pos/trackLength) * minimapPath.length) % minimapPath.length; const pt = minimapPath[idx]; if(pt){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(pt.x, pt.z, r, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.lineWidth=2; ctx.stroke(); } };
-                d.rivals.forEach(r => drawDot(r.pos, r.status==='FINISHED' ? '#0f0' : '#ffee00', 22)); drawDot(d.pos, '#ff0000', 26); ctx.restore();
+                d.rivals.forEach(r => drawDot(r.pos, r.status==='FINISHED' ? '#0f0' : (r.color||'#ffee00'), 22)); drawDot(d.pos, '#ff0000', 26); ctx.restore();
             }
 
             if (d.virtualWheel.opacity > 0.01) {

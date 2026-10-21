@@ -18,6 +18,7 @@
     };
 
     const AI_PROFILES = { 'PRO': { speed: 0.16, difficultyFactor: 0.80, baseSpeed: 0.16 } };
+    const aiProfile=()=>{const d=window.ArcadePlaySettings?.get().difficulty;return d==='easy'?{speed:.11,baseSpeed:.11,difficultyFactor:1.8}:d==='hard'?{speed:.19,baseSpeed:.19,difficultyFactor:.55}:{...AI_PROFILES.PRO};};
 
     // -----------------------------------------------------------------
     // 2. MATH CORE
@@ -54,7 +55,7 @@
         score: { p1: 0, p2: 0 }, server: 'p1', lastHitter: null, rallyCount: 0, shake: 0, shakeX: 0, shakeY: 0, flash: 0, particles: [], msgs: [],
 
         init: function() {
-            this.cleanup(); this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = JSON.parse(JSON.stringify(AI_PROFILES.PRO));
+            this.cleanup(); this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile();
             this.lastFrameTime = performance.now(); this.msgs = []; this.particles = []; this.loadCalib();
             if(window.System && window.System.msg) window.System.msg("THIAGUINHO WII - V15"); this.setupInput();
         },
@@ -80,10 +81,10 @@
                 if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
                 const osc = this.audioCtx.createOscillator(); const gain = this.audioCtx.createGain();
                 osc.connect(gain); gain.connect(this.audioCtx.destination);
-                let baseFreq = 200 + Math.min(speed * 2, 800); let rallyBoost = Math.min(400, (rally || 0) * 30);
+                let baseFreq = 360 + Math.min(speed * .9, 260); let rallyBoost = Math.min(55, (rally || 0) * 4);
                 osc.frequency.value = baseFreq + rallyBoost; osc.type = 'sine';
-                const vol = Math.min(speed / 150, 0.8); gain.gain.setValueAtTime(vol, this.audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.15);
-                osc.start(); osc.stop(this.audioCtx.currentTime + 0.15);
+                const vol = Math.min(.25,Math.max(.04,speed / 350))*(window.ArcadePlaySettings?.get().effectsVolume??1); gain.gain.setValueAtTime(vol, this.audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.042);
+                osc.start(); osc.stop(this.audioCtx.currentTime + 0.042);
             } catch(e) {}
         },
         sfx: function(action) { try { if (window.Sfx) { if (action === 'coin') window.Sfx.play(1200, 'sine', 0.1); else if (action === 'click') window.Sfx.play(1000, 'sine', 0.1, 0.08); } } catch (e) {} },
@@ -187,7 +188,7 @@
         startGame: function() {
             if (this.roundTimeout) { clearTimeout(this.roundTimeout); this.roundTimeout = null; }
             this.state = 'STARTING'; this.score = { p1: 0, p2: 0 }; this.server = 'p1';
-            this.activeAIProfile = JSON.parse(JSON.stringify(AI_PROFILES.PRO)); this.resetRound();
+            this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(); this.resetRound();
         },
 
         updateCameraAdapter: function(w, h) {
@@ -212,7 +213,7 @@
                     if (dt > 0) {
                         this.processPose(pose, w, h);
                         if (this.state.startsWith('CALIB')) this.updateAutoCalibration(dt);
-                        if (this.state === 'RALLY' || this.state === 'SERVE') { if (!this.isOnline || this.isHost) { this.updatePhysics(dt); if (!this.isOnline) this.updateAI(); this.updateRules(dt); } else { this.updatePhysicsClient(); } }
+                        if ((this.state === 'RALLY' || this.state === 'SERVE') && !(this.trackingLost&&!this.useMouse&&!this.isOnline)) { if (!this.isOnline || this.isHost) { this.updatePhysics(dt); if (!this.isOnline) this.updateAI(); this.updateRules(dt); } else { this.updatePhysicsClient(); } }
                     }
                 }
 
@@ -220,6 +221,9 @@
                 try {
                     if(this.shake > 0 && Number.isFinite(this.shake)) { ctx.translate((Math.random()-0.5)*this.shake, (Math.random()-0.5)*this.shake); this.shake *= 0.9; if(this.shake < 0.5) this.shake = 0; }
                     this.renderScene(ctx, w, h);
+                    if(this.trackingLost&&!this.useMouse&&!this.state.startsWith('CALIB')&&this.state!=='MODE_SELECT'){
+                      ctx.save();ctx.fillStyle='rgba(7,22,39,.9)';ctx.fillRect(w*.08,h*.28,w*.84,48);ctx.fillStyle='#ffe0a0';ctx.font='bold '+Math.max(11,Math.min(16,w*.033))+'px Arial';ctx.textAlign='center';ctx.fillText('MOSTRE A MÃO E O ANTEBRAÇO À CÂMERA',w/2,h*.28+20,w*.8);ctx.fillStyle='#d6e8ef';ctx.font='12px Arial';ctx.fillText(this.isOnline?'Raquete estável até recuperar a mão':'A bola aguarda recuperar a mão',w/2,h*.28+38,w*.8);ctx.restore();
+                    }
                     if (this.flash > 0 && Number.isFinite(this.flash)) { ctx.fillStyle = `rgba(255,255,255,${this.flash})`; ctx.fillRect(0,0,w,h); this.flash -= 0.05; if(this.flash < 0.01) this.flash = 0; }
                     if (this.state === 'MODE_SELECT') this.renderModeSelect(ctx, w, h); else if (this.state === 'LOBBY') this.renderLobby(ctx, w, h); else if (this.state.startsWith('CALIB')) this.renderCalibration(ctx, w, h); else if (this.state === 'END') this.renderEnd(ctx, w, h); else this.renderHUD(ctx, w, h);
                 } finally { ctx.restore(); }
@@ -250,6 +254,9 @@
 
         processPose: function(pose, w, h) {
             this.pose = pose;
+            const settings=window.ArcadePlaySettings?.get()||{sensitivity:1,smoothing:.62};
+            const smooth=1-Math.pow(1-settings.smoothing,Math.min(2,(performance.now()-(this.poseAt||performance.now()-16.67))/16.67));
+            this.poseAt=performance.now();
             // MoveNet provides pixel coordinates at the actual camera resolution.
             // Normalize to the legacy 640x480 calibration space to preserve all
             // previously saved hand calibrations across phones and webcams.
@@ -259,7 +266,7 @@
             const mappedX=(point)=>640*(1-Number(point.x)/videoW);
             const mappedY=(point)=>480*Number(point.y)/videoH;
             if (this.useMouse) {
-                let nx = MathCore.clamp(this.mouseX / w, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
+                let nx = MathCore.clamp(.5+(this.mouseX / w-.5)*settings.sensitivity, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
                 const targetX = MathCore.lerp(-CONF.TABLE_W * 1.2, CONF.TABLE_W * 1.2, nx); const targetY = MathCore.lerp(-200, 300, ny); 
                 this.p1.x = MathCore.lerp(this.p1.x || 0, targetX, 0.85); this.p1.y = MathCore.lerp(this.p1.y || -200, targetY, 0.85); this.p1.z = -CONF.TABLE_L/2 - 250; 
                 this.p1.elbowX = this.p1.x + 100; this.p1.elbowY = this.p1.y + 300;
@@ -280,11 +287,16 @@
                 return;
             }
 
-            if (!this.handedness || !pose || !pose.keypoints) return; 
+            if(!this.handedness)return;
+            const missing=()=>{this.trackingLost=true;this.p1.vx=0;this.p1.vy=0;};
+            if (!pose || !pose.keypoints){missing();return;}
             const wrist = pose.keypoints.find(k => k.name === this.handedness + '_wrist' && k.score > 0.2);
             const elbow = pose.keypoints.find(k => k.name === this.handedness + '_elbow' && k.score > 0.2);
 
+            if (!wrist){missing();return;}
             if (wrist) {
+                const reacquired=this.trackingLost;
+                this.trackingLost=false;
                 this.p1.rawX = mappedX(wrist); this.p1.rawY = mappedY(wrist);
                 if (!this.state.startsWith('CALIB')) {
                     let minX = Math.min(this.calib.tlX, this.calib.brX); let maxX = Math.max(this.calib.tlX, this.calib.brX);
@@ -292,12 +304,13 @@
                     let rangeX = Math.max(200, Math.abs(maxX - minX)); let rangeY = Math.max(150, Math.abs(maxY - minY));
                     let nx = MathCore.clamp((this.p1.rawX - minX) / rangeX, -0.5, 1.5); let ny = MathCore.clamp((this.p1.rawY - minY) / rangeY, -0.5, 1.5);
 
+                    nx=.5+(nx-.5)*settings.sensitivity;ny=.5+(ny-.5)*settings.sensitivity;
                     let targetX = MathCore.lerp(-CONF.TABLE_W*1.2, CONF.TABLE_W*1.2, nx); let targetY = MathCore.lerp(-800, 300, ny); 
                     if (!Number.isFinite(targetX)) targetX = 0; if (!Number.isFinite(targetY)) targetY = -200;
 
                     // Stabilize the racket center while preserving the actual wrist motion direction.
-                    this.p1.x = MathCore.lerp(Number.isFinite(this.p1.x)?this.p1.x:0,targetX,0.62);
-                    this.p1.y = MathCore.lerp(Number.isFinite(this.p1.y)?this.p1.y:-200,targetY,0.62);
+                    this.p1.x = MathCore.lerp(Number.isFinite(this.p1.x)?this.p1.x:0,targetX,smooth);
+                    this.p1.y = MathCore.lerp(Number.isFinite(this.p1.y)?this.p1.y:-200,targetY,smooth);
                     this.p1.z = -CONF.TABLE_L/2 - 300; 
 
                     if (elbow) {
@@ -312,6 +325,7 @@
                         this.p1.racketTilt=MathCore.clamp(Math.atan2(dx,Math.abs(dy)+1)*0.8,-0.65,0.65);
                     } else { this.p1.elbowX = this.p1.x + (this.handedness === 'right' ? 150 : -150); this.p1.elbowY = this.p1.y + 300; }
 
+                    if(reacquired){this.p1.prevX=this.p1.x;this.p1.prevY=this.p1.y;}
                     let calculatedVelX = this.p1.x - (Number.isFinite(this.p1.prevX) ? this.p1.prevX : this.p1.x);
                     let calculatedVelY = this.p1.y - (Number.isFinite(this.p1.prevY) ? this.p1.prevY : this.p1.y);
 

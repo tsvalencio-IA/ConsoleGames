@@ -2,13 +2,13 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-voo-";
-const CACHE=PREFIX+"pro-control-v9";
+const CACHE=PREFIX+"pro-control-v10";
 const FILES=["./","./index.html","./manifest.json","./icon.svg",
 "./js/core.js","./js/game_flight.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",
 "./studio-fx.js","./studio-fx.css","./studio-scenes.js",
-"./mastery-gamepad.js","./mastery-gamepad.css","./pro-controls.css"];
+"./mastery-gamepad.js","./mastery-gamepad.css","./pro-controls.css","./play-settings.js","./play-settings.css"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(async cache=>{
     await Promise.all(FILES.map(async path=>{

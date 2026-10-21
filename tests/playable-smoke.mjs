@@ -288,6 +288,19 @@ try{
       assert.equal(physics.state,"PLAYING","Voo não iniciou missão real");
       assert(physics.shipHP>0,"Caça iniciou destruído");
     }
+    // Change native preferences through the actual player settings UI.
+    await page.locator('#play-settings-button').click();
+    await page.locator('#play-settings').waitFor();
+    assert.equal(await page.evaluate(()=>window.System.paused),true);
+    if(slug==='kart'||slug==='voo'){
+      await page.locator('#play-settings [data-setting="distance"]').selectOption('near');
+      assert.equal(await page.evaluate(()=>window.ArcadePlaySettings.get().distance),'near');
+    }
+    await page.locator('#play-settings [data-close]').last().click();
+    assert.equal(await page.evaluate(()=>window.System.paused),false);
+    if(slug==='voo'){
+      await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.view&&g._projectView(g.ship.x,g.ship.y,g.ship.z,390,844).visible},null,{timeout:8000});
+    }
     // Professional thumb UX: game controls stay within the game viewport
     // and do not overlap one another or the centre of the action.
     if(["ar","voo","boxe"].includes(slug)){

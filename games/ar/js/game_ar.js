@@ -592,7 +592,7 @@
                 this.transitionAlpha += dt * 3.0; 
                 if (this.transitionAlpha >= 1) { this.transitionAlpha = 1; this.transitionPhase = 'SWITCH_CAM'; this.transitionPhase = 'FADE_IN'; }
             } else if (this.transitionPhase === 'SWITCH_CAM') {
-                ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = "#fff"; ctx.font = "bold 20px Arial"; ctx.textAlign="center"; ctx.fillText("A INICIAR INTERFACE...", w/2, h/2);
+                ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.textAlign="center"; ctx.fillText("A INICIAR INTERFACE...", w/2, h/2);
             } else if (this.transitionPhase === 'FADE_IN') {
                 this.transitionAlpha -= dt * 3.0; if (this.transitionAlpha <= 0) { this.transitionAlpha = 0; this.changeState(nextState); }
             }
@@ -784,16 +784,16 @@
                     ctx.fillStyle = "#fff"; ctx.font = "bold 14px 'Russo One'"; ctx.textAlign = "center"; ctx.fillText(label, projX, projY - 45);
                     ctx.font = "bold 16px Arial"; ctx.fillText(Math.floor(dist) + "m", projX, projY + 60);
                 } else {
-                    let isRight = fwdAngle > 0; let edgeX = isRight ? w - 50 : 50; let edgeY = h / 2;
+                    let isRight = fwdAngle > 0; let edgeX = isRight ? w - 24 : 24; let edgeY = h / 2;
                     ctx.fillStyle = isBase ? this.colors.success : color; ctx.beginPath();
-                    if (isRight) { ctx.moveTo(edgeX-30, edgeY - 40); ctx.lineTo(edgeX + 30, edgeY); ctx.lineTo(edgeX-30, edgeY + 40); } 
-                    else { ctx.moveTo(edgeX+30, edgeY - 40); ctx.lineTo(edgeX - 30, edgeY); ctx.lineTo(edgeX+30, edgeY + 40); }
-                    ctx.fill(); ctx.fillStyle = "#fff"; ctx.font = "bold 20px Arial"; ctx.textAlign = "center"; ctx.fillText(isRight ? "GIRE ->" : "<- GIRE", isRight ? edgeX - 60 : edgeX + 60, edgeY + 8);
+                    if (isRight) { ctx.moveTo(edgeX-12, edgeY - 16); ctx.lineTo(edgeX + 12, edgeY); ctx.lineTo(edgeX-12, edgeY + 16); }
+                    else { ctx.moveTo(edgeX+12, edgeY - 16); ctx.lineTo(edgeX - 12, edgeY); ctx.lineTo(edgeX+12, edgeY + 16); }
+                    ctx.fill(); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center"; ctx.fillText(isRight ? "GIRE ->" : "<- GIRE", isRight ? edgeX - 40 : edgeX + 40, edgeY + 8);
                 }
             };
 
             if (isFull || this.state === 'TOW_MODE') { drawARWaypoint(0, 0, "BASE DE ENTREGA", this.colors.success, true); } 
-            else { this.anomalies.forEach(a => drawARWaypoint(a.x, a.y, a.type==='RARE'?"RARO":"SUCATA", a.type==='RARE'?this.colors.rare:this.colors.warn, false)); ctx.globalAlpha = 0.3; drawARWaypoint(0, 0, "BASE", this.colors.success, true); ctx.globalAlpha = 1.0; }
+            else { const nearest=[...this.anomalies].sort((a,b)=>Math.hypot(a.x-this.vPos.x,a.y-this.vPos.y)-Math.hypot(b.x-this.vPos.x,b.y-this.vPos.y))[0];if(nearest)drawARWaypoint(nearest.x,nearest.y,nearest.type==='RARE'?"RARO":"SUCATA",nearest.type==='RARE'?this.colors.rare:this.colors.warn,false); ctx.globalAlpha = 0.3; drawARWaypoint(0, 0, "BASE", this.colors.success, true); ctx.globalAlpha = 1.0; }
 
             const topH = 70;
             ctx.fillStyle = this.colors.panel; ctx.fillRect(0, 0, w, topH); ctx.strokeStyle = this.colors.main; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, topH); ctx.lineTo(w, topH); ctx.stroke();
@@ -924,7 +924,7 @@
         },
 
         drawOverlay: function(ctx, w, h, title, sub) {
-            ctx.fillStyle = "rgba(0, 5, 10, 0.95)"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = this.colors.main; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(65,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(title, w/2, h/2 - 20); ctx.fillStyle = "#fff"; ctx.font = "bold 20px Arial"; ctx.fillText(sub, w/2, h/2 + 30);
+            ctx.fillStyle = "rgba(0, 5, 10, 0.95)"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = this.colors.main; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(65,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(title, w/2, h/2 - 20); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.fillText(sub, w/2, h/2 + 30);
         },
 
         spawnParticles: function(x, y, count, color) {

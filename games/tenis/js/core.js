@@ -13,12 +13,17 @@ window.Sfx = {
     play: (f, t, d, v=0.1) => {
         if(!window.Sfx.ctx) return;
         try {
+            if(t==='noise'){
+                const c=window.Sfx.ctx,length=Math.max(.015,Math.min(.3,d)),buf=c.createBuffer(1,Math.ceil(c.sampleRate*length),c.sampleRate),data=buf.getChannelData(0);
+                for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,2);
+                const source=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();source.buffer=buf;filter.type='lowpass';filter.frequency.value=Math.max(350,f*4);gain.gain.value=v*(window.ArcadePlaySettings?.get().effectsVolume??1);source.connect(filter);filter.connect(gain);gain.connect(c.destination);source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};source.start();return;
+            }
             const o = window.Sfx.ctx.createOscillator(); const g = window.Sfx.ctx.createGain();
             o.type=t; o.frequency.value=f; 
-            g.gain.setValueAtTime(v, window.Sfx.ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, window.Sfx.ctx.currentTime+d);
+            g.gain.setValueAtTime(Math.max(.00001,v*(window.ArcadePlaySettings?.get().effectsVolume??1)), window.Sfx.ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.00001, window.Sfx.ctx.currentTime+d);
             o.connect(g); g.connect(window.Sfx.ctx.destination); 
-            o.start(); o.stop(window.Sfx.ctx.currentTime+d);
+            o.onended=()=>{o.disconnect();g.disconnect();};o.start(); o.stop(window.Sfx.ctx.currentTime+d);
         } catch(e){}
     },
     hover: () => window.Sfx.play(800, 'sine', 0.05, 0.04),

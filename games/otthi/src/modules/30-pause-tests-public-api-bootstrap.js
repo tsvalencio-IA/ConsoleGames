@@ -17,10 +17,11 @@
   function openPauseMenu(){
     if(!running||pauseMenuOpen)return;
     if(buildMode)endBuildMode('cancelled',true);
-    paused=true;pauseMenuOpen=true;if(engineAudio)stopEngineSound();openModal('Jogo pausado',`<div class="choice-grid"><button class="choice" data-resume><b>▶ Continuar</b><span>Voltar ao mundo</span></button><button class="choice" data-life><b>👤 Minha vida</b><span>Carreira, amizades e visual</span></button><button class="choice" data-safe><b>🛟 Desprender</b><span>Voltar ao último ponto seguro</span></button><button class="choice" data-home><b>🏠 Casa</b><span>Voltar para minha casa</span></button><button class="choice" data-menu><b>↩ Menu inicial</b><span>Salvar e sair</span></button></div>`,root=>{
+    paused=true;pauseMenuOpen=true;if(engineAudio)stopEngineSound();openModal('Jogo pausado',`<div class="choice-grid"><button class="choice" data-resume><b>▶ Continuar</b><span>Voltar ao mundo</span></button><button class="choice" data-life><b>👤 Minha vida</b><span>Carreira, amizades e visual</span></button><button class="choice" data-safe><b>🛟 Desprender</b><span>Voltar ao último ponto seguro</span></button><button class="choice" data-family><b>🐾 Aventuras em Família</b><span>Thiago, Thamis, Luna e Liz</span></button><button class="choice" data-home><b>🏠 Casa</b><span>Voltar para minha casa</span></button><button class="choice" data-menu><b>↩ Menu inicial</b><span>Salvar e sair</span></button></div>`,root=>{
       $('[data-resume]',root).onclick=()=>closeModal();
       $('[data-life]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();if(player.vehicle)startEngineSound();openLifePanel();};
       $('[data-safe]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();recoverPlayerToLastSafe('retorno manual',true);};
+      $('[data-family]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();openFamilyAdventure();};
       $('[data-home]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();returnHome();};
       $('[data-menu]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();stopGame();};
     });
