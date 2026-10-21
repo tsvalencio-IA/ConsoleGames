@@ -8,6 +8,10 @@
 
 Sete experiências reunidas em um mesmo site e repositório. Cada jogo é **uma pasta local executável**, não apenas um link para outro GitHub Pages. O objetivo é melhorar usabilidade, ritmo, metas e responsividade sem substituir informações reais de jogadores.
 
+## Aplicativo Android
+
+O aplicativo do console reúne as sete entradas em tela cheia, com rotação e câmera opcional. O projeto e as instruções de compilação estão em [android/](android/README.md); a validação instala o aplicativo no Android 35. O APK de instalação direta usa Android 7.0 ou superior e internet para carregar os jogos.
+
 ## 📁 Sete jogos instalados
 
 | Jogo | Pasta jogável no ConsoleGames | ID original Firebase / motor | Projeto de origem |
@@ -66,7 +70,7 @@ python3 -m http.server 4173
 node tests/browser-smoke.mjs
 ```
 
-- [CI estático](https://github.com/tsvalencio-IA/ConsoleGames/actions/workflows/console-pages.yml): testa motor e IDs, interface e PWA (13 testes).
+- [CI estático](https://github.com/tsvalencio-IA/ConsoleGames/actions/workflows/console-pages.yml): testa motor e IDs, interface, PWA e comportamento dos motores.
 - [Smoke mobile com screenshots](https://github.com/tsvalencio-IA/ConsoleGames/actions/workflows/mobile-smoke.yml): mede overflow da página e abre as sete entradas em quatro viewports, **sem acessar servidores externos ou câmeras reais**.
 - [GitHub Pages](https://github.com/tsvalencio-IA/ConsoleGames/actions): publicação nativa do branch `main`.
 

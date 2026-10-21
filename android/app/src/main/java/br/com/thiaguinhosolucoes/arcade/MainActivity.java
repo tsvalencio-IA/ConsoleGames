@@ -84,12 +84,13 @@ public final class MainActivity extends Activity {
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        settings.setMediaPlaybackRequiresUserGesture(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         CookieManager.getInstance().setAcceptCookie(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if(!request.isForMainFrame()) return false;
                 Uri uri=request.getUrl();
                 if (isGameUrl(uri)) return false;
                 if ("https".equals(uri.getScheme()) || "http".equals(uri.getScheme())) {
