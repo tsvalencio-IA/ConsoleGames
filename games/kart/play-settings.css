@@ -11,7 +11,7 @@
 .input-game-controls.flight-input [data-control="powerDown"],.input-game-controls.flight-input [data-control="powerUp"]{right:max(8px,env(safe-area-inset-right));width:45px;height:44px;font-size:14px;bottom:calc(var(--act)*2 + 15px)}.input-game-controls.flight-input [data-control="powerDown"]{right:calc(max(8px,env(safe-area-inset-right)) + 51px)}
 #arcade-boxing-controls [data-dodge]{min-width:44px;font-size:14px}#arcade-boxing-controls{gap:5px}
 @media(max-width:420px){#play-settings .play-panel{padding:15px}.play-option{font-size:12px;grid-template-columns:minmax(0,1fr) minmax(100px,.85fr)}#arcade-boxing-controls .boxing-action{min-width:44px;padding:5px}#arcade-boxing-controls .boxing-action span{font-size:9px}}
-@media(max-height:480px){#play-settings-button{top:94px;min-height:32px}.input-game-controls.kart-input [data-control="drift"],.input-game-controls.kart-input [data-control="rear"]{bottom:112px;min-height:39px}.input-game-controls.flight-input [data-control="powerUp"],.input-game-controls.flight-input [data-control="powerDown"]{bottom:118px;min-height:39px}}
+@media(max-height:480px){#play-settings-button{top:94px;min-height:32px}.input-game-controls.kart-input [data-control="drift"],.input-game-controls.kart-input [data-control="rear"]{bottom:112px;min-height:44px}.input-game-controls.flight-input [data-control="powerUp"],.input-game-controls.flight-input [data-control="powerDown"]{bottom:118px;min-height:44px}}
 @media(prefers-reduced-motion:reduce){#play-settings *{scroll-behavior:auto;transition:none}}
 /* Side dodges fill the two gaps between the native punches and guard. */
 #arcade-boxing-controls .boxing-action.dodge{width:44px;height:54px;min-width:44px;min-height:44px;bottom:9px;border-radius:15px;font-size:18px}

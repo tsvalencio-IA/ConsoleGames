@@ -19,7 +19,10 @@ const paths=[
   "games/boxe/boxing-touch.js",
   "games/boxe/js/game_box.js",
   "games/ar/js/game_ar.js",
-  "games/voo/js/game_flight.js"
+  "games/voo/js/game_flight.js",
+  "games/kart/js/game_kart.js","games/tenis/js/game_tennis.js",
+  "games/otthi/app.js","games/otthi/family-mascots.js",
+  ...["kart","boxe","tenis","ar","voo"].flatMap(name=>["games/"+name+"/play-settings.js","games/"+name+"/play-settings.css"])
 ];
 const sha=buf=>createHash("sha256").update(buf).digest("hex");
 const errors=[],verified=[];

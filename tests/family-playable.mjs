@@ -10,6 +10,7 @@ try{
  await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
  await page.goto(base+'games/otthi/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#playBtn').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
@@ -35,5 +36,6 @@ try{
  assert.deepEqual(errors,[]);
  writeFileSync('test-results/playable/family-world-report.json',JSON.stringify({actors:info.actors,progress,layout,errors},null,2));
  console.log('Family world: approved rig skinning, real throw/return, walking, original HQ controls and no page errors.');
+ }catch(error){await page.screenshot({path:'test-results/playable/family-failure.png'}).catch(()=>{});console.error('Family diagnostics',await page.evaluate(()=>({modal:document.getElementById('modal')?.innerText,ready:window.OTTHI_FAMILY?.diagnostics(),game:window.OTTHOS_TEST_API?.getGame()})).catch(()=>null));throw error;}
  await context.close();
 }finally{await browser.close()}

@@ -7,7 +7,7 @@ function engine(slug,file,settings={}){
  let clock=100;
  const defaults={distance:'far',camera:'chase',sensitivity:1,smoothing:.62,difficulty:'normal',quality:'auto',assist:true,...settings};
  const element=()=>({style:{},classList:{add(){},remove(){},contains(){return false}},remove(){},appendChild(){},addEventListener(){},getBoundingClientRect(){return {width:390,height:844,left:0,top:0}}});
- const window={ArcadePlaySettings:{get:()=>defaults},ArcadeControls:{mode:'controls'},Sfx:{play(){}},Profile:{coins:0},addEventListener(){},System:{registerGame:(id,name,e,logic)=>window.logic=logic,canvas:{width:390,height:844},msg(){},playerId:'unit-player',player:{}}};
+ const window={ArcadePlaySettings:{get:()=>defaults},ArcadeControls:{mode:'controls'},Sfx:{play(){}},Profile:{coins:0},addEventListener(){},System:{registerGame:(id,name,e,logic)=>window.logic=logic,canvas:{...element(),width:390,height:844},msg(){},playerId:'unit-player',player:{}}};
  const document={getElementById:element,createElement:element};
  vm.runInNewContext(read('games/'+slug+'/js/'+file+'.js'),{window,document,performance:{now:()=>clock},console,navigator:{},setTimeout(){},setInterval(){},clearInterval(){},clearTimeout(){},localStorage:{getItem(){return null},setItem(){}},firebase:{database:{ServerValue:{TIMESTAMP:0}}}});
  return {game:window.logic,window,settings:defaults,advance:n=>clock+=n};
@@ -53,4 +53,10 @@ test('approved family rigs deform with actual Three.js bones and complete fetch 
  vm.runInContext('for(let i=0;i<1100;i++)updateFamilyAdventure(.016);',context);
  const progress=vm.runInContext('familyProgress().deliveries.luna',context);assert.equal(progress,1,'Exactly one actual return must count');
  vm.runInContext('for(let i=0;i<120;i++)updateFamilyAdventure(.016);',context);assert.equal(vm.runInContext('familyProgress().deliveries.luna',context),1,'Repeated frames cannot duplicate completed fetch');
+});
+
+test('flight school: real throttle accelerates on runway and climb advances to the maneuver lesson',()=>{
+ const {game:g,advance}=engine('voo','game_flight');const c=canvas();g.init({mode:'FREE',school:true});g._startMission();assert.equal(g.ship.y,8);assert.equal(g.flightSchool.stage,'takeoff');
+ g.manualThrottle=1;for(let i=0;i<600;i++){advance(17);if(g.ship.speed>70)g.keys.ArrowUp=true;g.update(c,390,844,null);}
+ assert(g.ship.speed>65,'Engine power must accelerate the aircraft');assert(g.ship.y>95,'Climb command must lift the aircraft from the runway');assert.equal(g.flightSchool.stage,'gates');
 });

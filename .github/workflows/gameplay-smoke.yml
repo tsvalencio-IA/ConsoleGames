@@ -35,6 +35,7 @@ jobs:
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         run: node tests/playable-smoke.mjs
       - name: Jogar com a Família no OTThi e preservar o HQ
+        if: always()
         run: node tests/family-playable.mjs
       - name: Salvar evidências visuais
         if: always()

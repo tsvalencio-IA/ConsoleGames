@@ -255,7 +255,7 @@
         processPose: function(pose, w, h) {
             this.pose = pose;
             const settings=window.ArcadePlaySettings?.get()||{sensitivity:1,smoothing:.62};
-            const smooth=1-Math.pow(1-settings.smoothing,Math.min(2,(performance.now()-(this.poseAt||performance.now()-16.67))/16.67));
+            const smooth=1-Math.pow(1-settings.smoothing,Math.max(.5,Math.min(2,(performance.now()-(this.poseAt||performance.now()-16.67))/16.67)));
             this.poseAt=performance.now();
             // MoveNet provides pixel coordinates at the actual camera resolution.
             // Normalize to the legacy 640x480 calibration space to preserve all

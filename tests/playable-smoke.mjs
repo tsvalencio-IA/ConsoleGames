@@ -111,7 +111,7 @@ try{
         assert(b.width>=44 && b.height>=44,"Área tátil pequena: "+JSON.stringify(b));
         assert(b.x>=-1 && b.x+b.width<=viewport.width+1,"Controle fora da tela: "+JSON.stringify(b));
         assert(b.y>=-1 && b.y+b.height<=viewport.height+1,"Controle cortado verticalmente: "+JSON.stringify(b));
-        if(["left","right"].includes(b.id))assert(b.midX<viewport.width*.45,"Direção não está no polegar esquerdo");
+        if(["left","right","rear"].includes(b.id))assert(b.midX<viewport.width*.45,"Direção não está no polegar esquerdo");
         else assert(b.midX>viewport.width*.53,"Ação não está no polegar direito: "+b.id);
       }
       for(let i=0;i<geometry.length;i++)for(let j=i+1;j<geometry.length;j++){
@@ -373,6 +373,7 @@ try{
     assert.equal(fatal.length,0,"Erros fatais no motor: "+fatal.join(" | "));
     completed++;
   }catch(error){
+    await page.screenshot({path:join("test-results/playable",slug+"-"+(device||"mobile")+"-failure.png")}).catch(()=>{});
     const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
     failures.push({slug,device,message:String(error),diagnostic,pageErrors:appErrors.slice(0,6)});
   }

@@ -130,7 +130,7 @@ const hub={
      key("left","◀","Virar à esquerda"),key("up","▲","Subir"),
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡","Acelerar com turbo"),key("missile","◎","Disparar míssil"),
-     {id:"powerDown",text:"− POT",label:"Reduzir potência do motor",down:()=>logic.manualThrottle=Math.max(.25,(logic.manualThrottle??1)-.15)},
+     {id:"powerDown",text:"− POT",label:"Reduzir potência do motor",down:()=>logic.manualThrottle=Math.max(0,(logic.manualThrottle??1)-.15)},
      {id:"powerUp",text:"+ POT",label:"Aumentar potência do motor",down:()=>logic.manualThrottle=Math.min(1,(logic.manualThrottle??1)+.15)},
      {id:"start",text:"▶ INICIAR",label:"Iniciar ou continuar voo",down:tapStart}
    ]);

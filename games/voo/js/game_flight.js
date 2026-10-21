@@ -137,6 +137,7 @@
             // Novos sons nativos focados em imersão (sem depender do window.Sfx)
             if (!this.ctx) return;
             const t = this.ctx.currentTime;
+            const volume=window.ArcadePlaySettings?.get()[type==='lock'||type==='hit'?'alertVolume':'effectsVolume']??1;
             
             if (type === 'missile') { // 2: Som realista de míssil (propulsão/whoosh)
                 const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
@@ -145,14 +146,14 @@
                 const noise = this.ctx.createBufferSource(); noise.buffer = buf;
                 const filter = this.ctx.createBiquadFilter(); filter.type = 'bandpass';
                 filter.frequency.setValueAtTime(800, t); filter.frequency.linearRampToValueAtTime(200, t + 1.5);
-                const g = this.ctx.createGain(); g.gain.setValueAtTime(0.8, t); g.gain.exponentialRampToValueAtTime(0.01, t + 1.5);
+                const g = this.ctx.createGain(); g.gain.setValueAtTime(Math.max(.00001,.8*volume), t); g.gain.exponentialRampToValueAtTime(0.01, t + 1.5);
                 noise.connect(filter); filter.connect(g); g.connect(this.ctx.destination);
                 noise.start(t); noise.stop(t + 1.5);
             } 
             else if (type === 'vulcan') { // 3: Som da metralhadora
                 const o = this.ctx.createOscillator(), g = this.ctx.createGain();
                 o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(50, t + 0.1);
-                g.gain.setValueAtTime(0.3, t); g.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+                g.gain.setValueAtTime(Math.max(.00001,.3*volume), t); g.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
                 o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t + 0.1);
             }
             else if (type === 'boom') { // 4: Som de explosão das aeronaves
@@ -162,14 +163,14 @@
                 const noise = this.ctx.createBufferSource(); noise.buffer = buf;
                 const filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass'; 
                 filter.frequency.setValueAtTime(1000, t); filter.frequency.exponentialRampToValueAtTime(50, t + 1.5);
-                const g = this.ctx.createGain(); g.gain.setValueAtTime(1.0, t); g.gain.exponentialRampToValueAtTime(0.01, t + 1.5);
+                const g = this.ctx.createGain(); g.gain.setValueAtTime(Math.max(.00001,volume), t); g.gain.exponentialRampToValueAtTime(0.01, t + 1.5);
                 noise.connect(filter); filter.connect(g); g.connect(this.ctx.destination);
                 noise.start(t); noise.stop(t + 1.5);
             }
             else if (type === 'hit') { // 5: Som de impacto na nave do jogador
                 const o = this.ctx.createOscillator(), g = this.ctx.createGain();
                 o.type = 'square'; o.frequency.setValueAtTime(100, t); o.frequency.exponentialRampToValueAtTime(20, t + 0.3);
-                g.gain.setValueAtTime(0.8, t); g.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+                g.gain.setValueAtTime(Math.max(.00001,.8*volume), t); g.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
                 o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t + 0.3);
             }
         },
@@ -233,6 +234,7 @@
             this.net.uid = baseUid + "_" + sessionSuffix;
 
             this.mode = (faseData && faseData.mode) ? faseData.mode : 'SINGLE';
+            this.flightSchool=faseData?.school?{stage:'takeoff',gate:0,complete:false,lastMessage:''}:null;
             
             if (!this.keysBound) {
                 window.addEventListener('keydown', (e) => this.keys[e.key] = true);
@@ -429,6 +431,7 @@
 
         _startMission: function() {
             this.state = 'PLAYING';
+            if(this.flightSchool){Object.assign(this.ship,{x:0,y:8,z:-2200,vx:0,vy:0,vz:0,speed:0,yaw:0,pitch:0,roll:0});this.manualThrottle=.7;this.pilot.throttle=.7;this.flightSchool.stage='takeoff';this.flightSchool.gate=0;this.view=null;}
             this.session.wave = 1;
             this.entities = [];
             this.bullets = [];
@@ -626,7 +629,21 @@
                 this.ship.y += this.ship.vy * dt;
                 this.ship.z += this.ship.vz * dt;
 
-                if (this.ship.y < 50) { 
+                if(this.flightSchool){
+                    const onRunway=Math.abs(this.ship.x)<105&&Math.abs(this.ship.z)<3000;
+                    if(this.flightSchool.stage==='takeoff'&&this.ship.speed<65){this.ship.y=8;this.ship.vy=0;}
+                    if(this.ship.y<8){
+                      const gentle=onRunway&&this.ship.speed<120&&Math.abs(this.ship.vy)<10&&Math.abs(this.ship.roll)<.35;
+                      this.ship.y=8;this.ship.vy=0;
+                      if(this.flightSchool.stage==='landing'&&gentle){this.flightSchool.complete=true;this.flightSchool.stage='complete';this.ship.pitch=0;this.manualThrottle=0;}
+                      else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
+                    }
+                    if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
+                    if(this.ship.y>95&&this.flightSchool.stage==='takeoff')this.flightSchool.stage='gates';
+                    const gate=this._schoolGates()[this.flightSchool.gate];
+                    if(this.flightSchool.stage==='gates'&&gate&&Math.hypot(this.ship.x-gate.x,this.ship.y-gate.y,this.ship.z-gate.z)<330){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
+                }
+                if (!this.flightSchool && this.ship.y < 50) {
                     this.ship.y = 50; 
                     this.ship.vy = Math.max(0, this.ship.vy); 
                     if (this.ship.pitch < 0) this.ship.pitch = 0; 
@@ -649,7 +666,7 @@
                 }
                 this.ship.pitch = Math.max(-Math.PI/2.5, Math.min(Math.PI/2.5, this.ship.pitch));
                 
-                this._processCombat(dt, w, h);
+                if(!this.flightSchool)this._processCombat(dt, w, h);
                 this._spawnEnemies(); 
                 this._updateAI(dt);
                 this._updateEntities(dt, now);
@@ -764,7 +781,7 @@
             
             if(window.ArcadeControls?.mode==='controls'){
                 this.pilot.active=true;
-                this.pilot.throttle=Math.max(.25,Math.min(1,this.manualThrottle??1));
+                this.pilot.throttle=Math.max(0,Math.min(1,this.manualThrottle??1));
                 if(!inputDetected&&window.ArcadePlaySettings?.get().assist===false){this.pilot.targetRoll=this.ship.roll;this.pilot.targetPitch=this.ship.pitch;}
                 if(!inputDetected&&window.ArcadePlaySettings?.get().assist!==false){this.pilot.targetRoll*=Math.exp(-dt*5);this.pilot.targetPitch*=Math.exp(-dt*5);}
             }
@@ -1208,6 +1225,16 @@
             }, 2000);
         },
 
+        _schoolGates: function(){return[{x:0,y:230,z:0},{x:1000,y:450,z:1900},{x:2300,y:480,z:0},{x:1200,y:300,z:-2600},{x:0,y:120,z:-2300}];},
+        _drawSchool: function(ctx,w,h){
+            const quad=(points,color)=>{const pp=points.map(p=>this._projectView(...p,w,h));if(pp.some(p=>!p.visible))return;ctx.beginPath();pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
+            // One continuous runway at ground level, rendered in the same camera space.
+            for(let z=-3000;z<3000;z+=100){quad([[-110,0,z],[110,0,z],[110,0,z+100],[-110,0,z+100]],'#394856');if(z%300===0)quad([[-4,.3,z],[4,.3,z],[4,.3,z+65],[-4,.3,z+65]],'#f4f2d9');}
+            const school=this.flightSchool,gate=this._schoolGates()[school.gate];
+            if(school.stage==='gates'&&gate){const center=this._projectView(gate.x,gate.y,gate.z,w,h);if(center.visible){const radius=Math.min(w*.28,Math.max(7,300*center.s));ctx.strokeStyle='#88e9e1';ctx.lineWidth=3;ctx.beginPath();ctx.arc(center.x,center.y,radius,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText((school.gate+1)+'/5',center.x,center.y-radius-10);}else{ctx.fillStyle='#ffdc88';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('VIRE PARA O PRÓXIMO ARCO',w/2,h*.30);}}
+            const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'APROXIMAÇÃO INSTÁVEL • use Pausa → Escolher fase para repetir'};
+            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,h*.19,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(labels[school.stage]||'',w/2,h*.19+21,w*.82);ctx.restore();
+        },
         updateAudio: function(){
             if(!GameSfx.ctx||!GameSfx.engineGain)return;
             const opts=window.ArcadePlaySettings?.get()||{},active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden,t=GameSfx.ctx.currentTime,power=this.pilot.throttle||0;
@@ -1250,6 +1277,7 @@
             
             this._drawWorld(ctx,w,h);
             this._drawEntities(ctx,w,h);
+            if(this.flightSchool)this._drawSchool(ctx,w,h);
             if(window.ArcadePlaySettings?.get().camera!=='cockpit')this._drawOwnPlane(ctx,w,h);
             this._drawHUD(ctx,w,h);
             if(window.ArcadePlaySettings?.get().camera==='cockpit')this._drawCockpit(ctx,w,h);
@@ -1721,6 +1749,7 @@
                 phases: [
                     { id: 'training', name: 'CAMPANHA SOLO', desc: 'Destrua as ameaças e evolua o seu caça.', mode: 'SINGLE', reqLvl: 1 },
                     { id: 'free', name: 'VOO LIVRE', desc: 'Explore o cenário e treine manobras.', mode: 'FREE', reqLvl: 1 },
+                    { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse cinco arcos e pratique a aproximação e o pouso.', mode: 'FREE', school:true, reqLvl: 1 },
                     { id: 'coop', name: 'CO-OP ESQUADRÃO', desc: 'Junte-se a aliados para abater o ACE.', mode: 'COOP', reqLvl: 1 },
                     { id: 'pvp', name: 'COMBATE PVP', desc: 'Batalha aérea multijogador.', mode: 'PVP', reqLvl: 1 }
                 ]

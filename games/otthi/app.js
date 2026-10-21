@@ -8666,6 +8666,7 @@
   function familyApplyCommand(kind,payload,owner,origin){
     if(!origin||!Number.isFinite(Number(origin.x))||!Number.isFinite(Number(origin.z)))return false;
     const a=familyWorld.actors.thiago;if(!a||Math.hypot(origin.x-a.x,origin.z-a.z)>18)return false;
+    if(kind==='work'){familyWorld.workUntil=familyWorld.clock+2.5;familyWorld.workKind=payload.activity==='workshop'?'garage:meter':'code:review';return true;}
     if(kind==='walk'){if(familyWorld.walkOwner&&familyWorld.walkOwner!==owner)return false;familyWorld.walkOwner=owner;return true;}
     if(kind==='stop'){if(familyWorld.walkOwner&&familyWorld.walkOwner!==owner)return false;familyWorld.walkOwner='';return true;}
     if(kind!=='throw'||familyWorld.ball)return false;
@@ -8693,11 +8694,11 @@
     if(ack.owner!==sharedWorldOwnId())return;
     const progress=familyProgress();progress.deliveries[ack.dog]=(Number(progress.deliveries[ack.dog])||0)+1;saveState();toast((ack.dog==='luna'?'Luna':'Liz')+' devolveu o brinquedo!','good',1800);beep(780,65);
   }
-  function familySnapshot(){if(!familyWorld.ready)return null;return{actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:+a.x.toFixed(3),z:+a.z.toFixed(3),heading:+a.heading.toFixed(3),moving:a.moving})),ball:familyWorld.ball?JSON.parse(JSON.stringify(familyWorld.ball)):null,walkOwner:familyWorld.walkOwner,ack:familyWorld.ack,clock:familyWorld.clock};}
+  function familySnapshot(){if(!familyWorld.ready)return null;return{actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:+a.x.toFixed(3),z:+a.z.toFixed(3),heading:+a.heading.toFixed(3),moving:a.moving})),ball:familyWorld.ball?JSON.parse(JSON.stringify(familyWorld.ball)):null,walkOwner:familyWorld.walkOwner,ack:familyWorld.ack,clock:familyWorld.clock,workUntil:familyWorld.workUntil,workKind:familyWorld.workKind||null};}
   function familyApplySnapshot(data,dt){
     if(!data||!Array.isArray(data.actors))return;
     for(const row of data.actors){const a=familyWorld.actors[row.id];if(!a||![row.x,row.z,row.heading].every(Number.isFinite))continue;a.x=lerp(a.x,row.x,Math.min(1,dt*10));a.z=lerp(a.z,row.z,Math.min(1,dt*10));a.heading=lerpAngle(a.heading,row.heading,Math.min(1,dt*12));a.moving=Number(row.moving)||0;}
-    familyWorld.ball=data.ball&&['luna','liz'].includes(data.ball.dog)?data.ball:null;familyWorld.walkOwner=String(data.walkOwner||'');familyWorld.clock=Number(data.clock)||familyWorld.clock;familyWorld.ack=data.ack;familyCollectAck(data.ack);
+    familyWorld.ball=data.ball&&['luna','liz'].includes(data.ball.dog)?data.ball:null;familyWorld.walkOwner=String(data.walkOwner||'');familyWorld.clock=Number(data.clock)||familyWorld.clock;familyWorld.workUntil=Number(data.workUntil)||0;familyWorld.workKind=String(data.workKind||'');familyWorld.ack=data.ack;familyCollectAck(data.ack);
   }
   function updateFamilyAdventure(dt){
     if(!familyWorld.ready)return;familyWorld.clock+=dt;const authority=sharedWorldIsAuthority();
@@ -8722,9 +8723,9 @@
     const visible=Math.hypot(player.x-familyWorld.actors.thiago.x,player.z-familyWorld.actors.thiago.z)<90;
     for(const a of Object.values(familyWorld.actors)){
       a.group.visible=visible;a.shadow.visible=visible;if(!visible)continue;
-      const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>performance.now();
+      const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>familyWorld.clock;
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
-      else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,0,0,work?1:0,work?'code:review':null);
+      else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
       for(let i=0;i<a.bones.length;i++){const rot=a.joints[i].rot;a.bones[i].rotation.set(rot[0],rot[1],rot[2],'YXZ');}
       const y=groundHeightAt(a.x,a.z);a.group.position.set(a.x,y+(dog ? .012 : -.038),a.z);a.group.rotation.y=a.heading;a.shadow.position.set(a.x,y+.025,a.z);
     }
@@ -8733,11 +8734,11 @@
   }
   function familyTask(kind){
     const progress=familyProgress(),destination=kind==='workshop'?worldLayoutPoint('workshop',{x:22,z:-18}):worldLayoutPoint('learningEntrance',{x:14,z:-40});
-    if(Math.hypot(player.x-destination.x,player.z-destination.z)>20){familyRoute(kind==='workshop'?'family-workshop':'family-tech');toast('Siga o GPS e abra a tarefa ao chegar.','good',1900);return;}
+    if(Math.hypot(player.x-destination.x,player.z-destination.z)>20){familyCommand('walk');familyRoute(kind==='workshop'?'family-workshop':'family-tech');toast('Siga o GPS e abra a tarefa ao chegar.','good',1900);return;}
     const tasks=FAMILY_TASKS[kind];
     let step=0;
-    function show(){if(step===tasks.length){progress.flags[kind]=true;saveState();familyWorld.workUntil=performance.now()+2500;openModal('Desafio concluído','<p>✓ '+(kind==='workshop'?'Conexão testada e resultado conferido sob carga.':'Alteração validada preservando os dados.')+'</p><button class="btn primary" data-family-back>Voltar à família</button>',root=>$('[data-family-back]',root).onclick=openFamilyAdventure);return;}
-      const task=tasks[step];openModal((kind==='workshop'?'Oficina':'Tecnologia')+' • '+(step+1)+'/'+tasks.length,'<p>'+task.q+'</p><div class="choice-grid">'+task.a.map((a,i)=>'<button class="choice" data-family-answer="'+i+'">'+a+'</button>').join('')+'</div><p data-family-feedback role="status"></p>',root=>$$('[data-family-answer]',root).forEach(button=>button.onclick=()=>{if(Number(button.dataset.familyAnswer)!==task.ok){$('[data-family-feedback]',root).textContent='Confira a evidência antes de escolher.';return;}familyWorld.workUntil=performance.now()+1800;step++;show();}));}
+    function show(){if(step===tasks.length){progress.flags[kind]=true;saveState();familyCommand('work',{activity:kind});openModal('Desafio concluído','<p>✓ '+(kind==='workshop'?'Conexão testada e resultado conferido sob carga.':'Alteração validada preservando os dados.')+'</p><button class="btn primary" data-family-back>Voltar à família</button>',root=>$('[data-family-back]',root).onclick=openFamilyAdventure);return;}
+      const task=tasks[step];openModal((kind==='workshop'?'Oficina':'Tecnologia')+' • '+(step+1)+'/'+tasks.length,'<p>'+task.q+'</p><div class="choice-grid">'+task.a.map((a,i)=>'<button class="choice" data-family-answer="'+i+'">'+a+'</button>').join('')+'</div><p data-family-feedback role="status"></p>',root=>$$('[data-family-answer]',root).forEach(button=>button.onclick=()=>{if(Number(button.dataset.familyAnswer)!==task.ok){$('[data-family-feedback]',root).textContent='Confira a evidência antes de escolher.';return;}familyCommand('work',{activity:kind});step++;show();}));}
     show();
   }
   function openFamilyAdventure(){
