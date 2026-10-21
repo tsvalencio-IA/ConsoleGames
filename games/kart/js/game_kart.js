@@ -52,7 +52,7 @@
     };
 
     const SAFETY = { ZOMBIE_TIMEOUT: 15000, MAX_RACE_TIME: 300000, MAINTENANCE_RATE: 2000 };
-    const PHYSICS = { gripAsphalt: 0.98, gripZebra: 0.85, gripOffroad: 0.35, centrifugalForce: 0.16, momentumTransfer: 1.6, steerSensitivity: 0.0555, lateralInertiaDecay: 0.95 };
+    const PHYSICS = { gripAsphalt: 0.98, gripZebra: 0.85, gripOffroad: 0.55, steerSensitivity: 0.30, lateralSpeed: 0.026, maxLateralSpeed: 0.040 };
 
     const KartAudio = {
         ctx: null, masterGain: null, osc1: null, osc2: null, engineGain: null, noiseBuffer: null, noiseSource: null, noiseFilter: null, noiseGain: null, initialized: false, isPlaying: false,
@@ -193,8 +193,8 @@
         },
 
         resetPhysics: function() {
-            this.lastTime=performance.now();this.physicsAccumulator=0;
-            this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
+            this.lastTime=performance.now();this.physicsAccumulator=0;this.collisionContacts=new Set();
+            this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
             this.lap = 1; this.maxLapPos = 0; this.status = 'RACING'; this.finishTime = 0; this.finalRank = 0; this.score = 0; this.nitro = 100; this.spinAngle = 0; this.spinTimer = 0; this.lateralInertia = 0; this.vibration = 0; this.engineTimer = 0; this.inputActive = false; this.rivals = []; this.localBots = []; particles = []; hudMessages = []; this.remotePlayersData = {};
             this.matchCoins = 0; this.item = null; this.itemCooldown = 0; this.projectiles = [];
             
@@ -507,7 +507,7 @@
             this.state = 'RACE'; this.status = 'RACING'; this.buildTrack(trackId); 
             nitroBtn.style.display = 'flex'; resetBtn.style.display = 'none'; 
             this.pushMsg("LARGADA!", "#0f0", 60); window.Sfx.play(600, 'square', 0.5, 0.2); KartAudio.start();
-            this.pos = 0; this.lap = 1; this.maxLapPos = 0; this.speed = 0; this.finishTime = 0; this.localBots = [];
+            this.pos = 0; this.lap = 1; this.maxLapPos = 0; this.speed = 0; this.finishTime = 0; this.localBots = []; this.collisionContacts = new Set();
             
             const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline&&this.currentFase.id==='arcade'?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
             if (!this.isOnline || (this.isOnline && this.isHost)) {
@@ -669,7 +669,11 @@
                 }
                 d.inputActive=detected;
                 if(!detected && !manual){d.targetSteer=0;d.virtualWheel.opacity*=.9;} 
-                d.steer += (d.targetSteer - d.steer) * (PHYSICS.steerSensitivity / Math.sqrt(Math.max(0.5, char.weight)));
+                if (Math.abs(d.targetSteer) < .055) d.targetSteer = 0;
+                const release = d.targetSteer === 0;
+                const response = release ? .48 : PHYSICS.steerSensitivity / Math.pow(Math.max(.5, char.weight), .25);
+                d.steer += (d.targetSteer - d.steer) * response;
+                if (Math.abs(d.steer) < .001) d.steer = 0;
             }
 
             const absX = Math.abs(d.playerX); let currentGrip = PHYSICS.gripAsphalt; let currentDrag = CONF.FRICTION; d.vibration = 0;
@@ -859,12 +863,17 @@
 
             KartAudio.update(d.speed, CONF.MAX_SPEED, d.lateralInertia, absX > 1.45, d.turboLock);
 
-            d.cameraX += (d.playerX - d.cameraX) * CONF.CAMERA_LERP;
-            const ratio = d.speed / CONF.MAX_SPEED;
-            const turnForce = d.steer * char.turnInfo * currentGrip * ratio;
-            d.lateralInertia = (d.lateralInertia * PHYSICS.lateralInertiaDecay) + (turnForce) * 0.08;
+            // Track coordinates are half-road widths. Steering sets a bounded
+            // lateral velocity instead of adding acceleration on every tick.
+            // Releasing a button must stop a lane change, not keep it drifting.
+            const ratio = Math.max(0, Math.min(1.35, d.speed / CONF.MAX_SPEED));
+            const turnForce = d.steer * char.turnInfo * currentGrip * Math.sqrt(ratio);
+            const targetLateral = Math.max(-PHYSICS.maxLateralSpeed, Math.min(PHYSICS.maxLateralSpeed, turnForce * PHYSICS.lateralSpeed));
+            const lateralResponse = d.targetSteer === 0 ? .48 : .30;
+            d.lateralInertia += (targetLateral - d.lateralInertia) * lateralResponse;
+            if (d.speed < 1 || Math.abs(d.lateralInertia) < .00001) d.lateralInertia = 0;
             d.playerX += d.lateralInertia;
-            if(Math.abs(d.lateralInertia) > 0.12 && d.speed > 60 && absX < 1.4) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
+            if(d.arcadeManual?.drift && Math.abs(d.lateralInertia) > .012 && d.speed > 100 && absX < 1.2) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
 
             if (this.localBots.length > 0 && d.state !== 'GAMEOVER') {
                 const diff = AI_DIFFICULTY_SETTINGS[!this.isOnline&&this.currentFase.id==='arcade'?({easy:'EASY',normal:'MEDIUM',hard:'HARD'}[playOptions().difficulty]||CURRENT_DIFFICULTY):(this.currentFase.diff||CURRENT_DIFFICULTY)];
@@ -880,7 +889,8 @@
                     if (distBehind > 300 && diff.rubberBand > 0) { dynamicRubberBand = 1.0 + (Math.min(distBehind, 4000) / 4000) * diff.rubberBand; }
 
                     const futureSeg = getSegment((r.pos + (r.ai_lookAhead * CONF.SEGMENT_LENGTH)) / CONF.SEGMENT_LENGTH);
-                    let targetSpeed = CONF.MAX_SPEED * rChar.speedInfo * r.ai_speedMult * dynamicRubberBand;
+                    const driveRatio = rChar.accel * CONF.FRICTION / (1 - (1-rChar.accel) * CONF.FRICTION);
+                    let targetSpeed = CONF.MAX_SPEED * rChar.speedInfo * r.ai_speedMult * dynamicRubberBand * driveRatio;
                     if (Math.abs(futureSeg.curve) > 2) targetSpeed *= 0.85; else if (Math.abs(futureSeg.curve) > 1) targetSpeed *= 0.95;
                     
                     const botSeg = getSegment(r.pos / CONF.SEGMENT_LENGTH);
@@ -932,7 +942,7 @@
                     let moveX = (r.ai_targetLane - r.x) * r.ai_reaction; moveX -= (getSegment(r.pos / CONF.SEGMENT_LENGTH).curve * 0.04); 
                     r.x += moveX; if (Math.abs(r.x) > 1.8) { r.x = Math.sign(r.x)*1.8; r.speed *= 0.95; } 
 
-                    if (r.speed < targetSpeed) r.speed += rChar.accel * r.ai_accelMult * (dynamicRubberBand > 1 ? 1.5 : 1); else r.speed *= 0.995; 
+                    r.speed += (targetSpeed - r.speed) * rChar.accel * r.ai_accelMult; 
                     
                     if (r.spinTimer > 0) { r.spinTimer--; r.spinAngle += (Math.PI * 2) / 40; r.speed *= 0.95; } else { r.spinAngle = 0; }
                     r.pos += r.speed;
@@ -941,17 +951,25 @@
                 });
             }
 
+            const contacts = new Set();
+            const previousContacts = d.collisionContacts || new Set();
             d.rivals.forEach(r => {
                 const distZ = Math.abs(((d.lap * trackLength) + d.pos) - ((Number(r.lap) * trackLength) + Number(r.pos)));
                 if (distZ < 250 && Math.abs(r.x - d.playerX) < 0.8 && r.status === 'RACING' && d.status === 'RACING') {
-                    const pushForce = 0.2 * ((CHARACTERS[r.charId] || CHARACTERS[0]).weight / char.weight);
-                    d.lateralInertia += (d.playerX > r.x ? pushForce : -pushForce); d.speed *= 0.95; 
-                    if (!r.isRemote && this.localBots.includes(r)) r.x += (d.playerX > r.x ? -0.1 : 0.1);
+                    const contactId = r.id || r;
+                    contacts.add(contactId);
+                    if (previousContacts.has(contactId)) return;
+                    const pushForce = .018 * Math.max(.5, Math.min(1.7, ((CHARACTERS[r.charId] || CHARACTERS[0]).weight / char.weight)));
+                    d.lateralInertia = Math.max(-PHYSICS.maxLateralSpeed, Math.min(PHYSICS.maxLateralSpeed, d.lateralInertia + (d.playerX > r.x ? pushForce : -pushForce))); d.speed *= 0.94;
+                    if (!r.isRemote && this.localBots.includes(r)) r.x += (d.playerX > r.x ? -.04 : .04);
                     KartAudio.crash();
                 }
             });
-
-            d.playerX = Math.max(-3.5, Math.min(3.5, d.playerX)); d.pos += d.speed;
+            d.collisionContacts = contacts;
+            d.playerX = Math.max(-1.8, Math.min(1.8, d.playerX));
+            if (Math.abs(d.playerX) >= 1.8 && Math.sign(d.lateralInertia) === Math.sign(d.playerX)) d.lateralInertia = 0;
+            d.cameraX += (d.playerX - d.cameraX) * CONF.CAMERA_LERP;
+            d.pos += d.speed;
 
             if (d.pos > trackLength * 0.60 && d.pos < trackLength * 0.95) { d.maxLapPos = Math.max(d.maxLapPos, d.pos); }
             if (d.pos >= trackLength) { 

@@ -172,6 +172,25 @@ try{
       assert(steeringState.target<-.3,"Volante esquerdo não altera direção real: "+JSON.stringify(steeringState));
       await left.dispatchEvent("pointerup",{pointerId:22});
       await run.dispatchEvent("pointerup",{pointerId:21});
+      // Release after exactly six native 60Hz physics ticks, regardless of
+      // renderer speed. This reproduces the player's real short steering tap.
+      await run.dispatchEvent('pointerdown',{pointerId:21});
+      await page.evaluate(()=>{
+        const g=window.System.activeGame.logic,original=g.updatePhysics;
+        const left=document.querySelector('.kart-input [data-control="left"]');
+        g.__shortTap={ticks:0,released:0,final:0};
+        g.updatePhysics=function(...args){
+          const result=original.apply(this,args),t=g.__shortTap;++t.ticks;
+          if(t.ticks===6){t.released=g.playerX;left.dispatchEvent(new PointerEvent('pointerup',{pointerId:23}));}
+          if(t.ticks===96){t.final=g.playerX;g.updatePhysics=original;}
+          return result;
+        };
+        left.dispatchEvent(new PointerEvent('pointerdown',{pointerId:23}));
+      });
+      await page.waitForFunction(()=>window.System.activeGame.logic.__shortTap.ticks>=96,null,{timeout:15000});
+      const tap=await page.evaluate(()=>window.System.activeGame.logic.__shortTap);
+      assert(Math.abs(tap.final-tap.released)<.14,'Kart continued sliding after a short released tap: '+JSON.stringify(tap));
+      await run.dispatchEvent('pointerup',{pointerId:21});
       // Simulated physical gamepad uses the real six-button touch input bridge.
       await page.evaluate(()=>{
         const buttons=Array.from({length:18},()=>({pressed:false,value:0}));
@@ -371,6 +390,31 @@ try{
     await page.locator('#arcade-pause-modal [data-action="continue"]').click();
     assert.equal(await page.evaluate(()=>window.System.paused),false,"Motor não retomou");
     assert.equal(await page.evaluate(()=>window.System.activeGame?.id),id);
+    if(slug==='kart'&&!device){
+      // Complete a race through the actual controls, using simple lane targets.
+      // No direct writes to playerX, speed or lap counters in this race.
+      await page.evaluate(()=>{
+        const g=window.System.activeGame.logic;g.startRace(g.selectedTrack);
+        const original=g.updatePhysics,held={left:false,right:false};
+        const button=id=>document.querySelector('.kart-input [data-control="'+id+'"]');
+        const set=(id,on)=>{if(held[id]===on)return;held[id]=on;button(id).dispatchEvent(new PointerEvent(on?'pointerdown':'pointerup',{pointerId:id==='left'?31:32}));};
+        g.__lapDrive={ticks:0,maxOffset:0,finished:false};
+        button('go').dispatchEvent(new PointerEvent('pointerdown',{pointerId:30}));
+        g.updatePhysics=function(...args){
+          const target=.35*Math.sin(g.__lapDrive.ticks/110);
+          set('left',g.playerX>target+.07);set('right',g.playerX<target-.07);
+          const result=original.apply(this,args),data=g.__lapDrive;
+          data.ticks++;data.maxOffset=Math.max(data.maxOffset,Math.abs(g.playerX));
+          if(g.status==='FINISHED'){data.finished=true;set('left',false);set('right',false);button('go').dispatchEvent(new PointerEvent('pointerup',{pointerId:30}));g.updatePhysics=original;}
+          return result;
+        };
+      });
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive?.finished,null,{timeout:90000});
+      const laps=await page.evaluate(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive);
+      assert(laps.ticks>500&&laps.maxOffset<1,'Complete race leaves asphalt: '+JSON.stringify(laps));
+      console.log('Kart real three-lap race:',JSON.stringify(laps));
+      await page.screenshot({path:join('test-results/playable','kart-complete-race.png')});
+    }
     // Explicit camera consent followed by a denied permission must fall back,
     // not deadlock, and must preserve the very same game/ID.
     await page.evaluate(id=>{

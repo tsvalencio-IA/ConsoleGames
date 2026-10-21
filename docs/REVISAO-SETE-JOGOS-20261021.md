@@ -25,3 +25,15 @@ No mundo aberto, Vida → Personagem → Meu personagem permite escolher Thiago 
 - `node tests/production-audit.mjs`: bytes publicados comparados com os arquivos aprovados, após a implantação.
 
 A revisão usa os modelos volumétricos existentes de `mascotes-3d.js`, que foram construídos a partir da prancha aprovada. Não equivale a afirmar identidade visual perfeita com uma imagem de referência. Os testes de navegador isolam serviços externos; câmera física, multiplayer entre aparelhos e desempenho de um celular específico exigem validação nesses aparelhos.
+
+## Correção após o relato de direção e escolha de grupo
+
+O teste anterior de enquadramento não cobria a dirigibilidade: em velocidade normal, seis passos de direção (0,1 s) ainda faziam o kart deslizar até o limite antigo de 3,5 meias larguras da pista. A direção agora define velocidade lateral limitada, com retorno rápido ao soltar; colisões só aplicam impulso ao iniciar o contato. O gramado continua reduzindo a velocidade e permite recuperação. Os rivais passaram a acelerar pela mesma escala de velocidade do jogador, em vez de somar apenas 0,04 por passo.
+
+A validação inclui toques de 0,1 s com os oito pilotos, três voltas completas nas três pistas alternando faixas, contato prolongado com rival, retorno do gramado e frenagem com turbo. O Chromium também verifica soltura após seis passos reais e uma corrida de três voltas pelos botões visíveis.
+
+O painel Família permite escolher quem controla (Thiago ou Thamis), marcar Todos, Só eu ou qualquer conjunto de acompanhantes. Thiago + Luna + Liz mantém Thamis em casa. O grupo e o personagem são salvos; os acompanhantes usam seus modelos originais e caminham no mundo. O personagem controlado não aparece duplicado no grupo. A autoridade de sala impede que outro participante tome um passeio ativo.
+
+O projeto `android/` abre o console dos sete jogos, separado do antigo aplicativo exclusivo do mundo aberto. Compilação, análise Android e instalação em emulador são verificadas no workflow próprio. A chave final de assinatura não passa pelo CI público. O aplicativo usa internet para carregar jogos e serviços; não promete todos os jogos offline.
+
+Resultados de testes descrevem os fluxos cobertos. Não representam nota de jogabilidade 10/10 nem certificação em celulares físicos.

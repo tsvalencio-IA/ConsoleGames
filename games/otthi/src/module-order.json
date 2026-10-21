@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "cda72aa2593631909197ef704b404d1ee4854c6f7d3e892e60b7e20e03327cd1"
+      "sha256Body": "3a6b78082019e66ddce08e906cc80df79a2be6415fbddb4e411329da502608d4"
     }
   ],
   "styles": [
@@ -499,7 +499,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade final R14: legibilidade, contraste, escala e responsividade global",
-      "sha256Body": "14f6891708337764c5b04a8ddff3a954f8ad14679e1e1952980e950e8dffe777"
+      "sha256Body": "7ae5340adbeedff33093a08e740add34ad81baefc4113d235dfe9fe6e09cc92c"
     }
   ]
 }

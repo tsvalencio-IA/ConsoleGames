@@ -15,6 +15,14 @@ try{
  await page.locator('#playBtn').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
  const info=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics());assert.equal(info.actors.length,4);assert(info.actors.every(a=>a.bones>12&&a.vertices>1000));
+ async function chooseParty(controller,members){
+  await page.evaluate(()=>window.OTTHI_FAMILY.open());
+  await page.locator('[data-family-controller="'+controller+'"]').check();
+  await page.locator('[data-family-alone]').click();
+  for(const id of members.filter(id=>id!==controller))await page.locator('[data-family-member="'+id+'"]').check();
+  await page.locator('[data-family-apply]').click();
+  await page.waitForFunction(id=>window.OTTHI_FAMILY.playerAvatar()?.id===id,controller,{timeout:15000});
+ }
  // Choose the real playable model through the player's own character menu.
  if(!await page.locator('#avatarGameBtn').isVisible())await page.locator('#quickToggleBtn').click();
  await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();
@@ -38,10 +46,12 @@ try{
  }
  await moveCharacter('thiago');
  // The family panel provides the same playable choice, with immediate save.
- await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-play="thamis"]').click();
+ await chooseParty('thamis',['thamis']);
  await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis',null,{timeout:15000});
  await page.reload({waitUntil:'domcontentloaded'});await page.locator('#playBtn').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:120000});
+ assert.deepEqual(await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().progress.party),{controller:'thamis',members:['thamis']});
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().party.members.join(',')==='thamis',null,{timeout:15000});
  await moveCharacter('thamis');
  // Receive the real multiplayer presence shape without connecting to production.
  await page.evaluate(()=>{const p=window.OTTHOS_TEST_API.getGame().player;window.dispatchEvent(new CustomEvent('otthos:mp-player',{detail:{uid:'family-remote-test',name:'Participante teste',x:p.x+2,y:p.y,z:p.z,r:0,avatar:{bodyStyle:'family-thiago'}}}));});
@@ -53,9 +63,25 @@ try{
  await page.locator('#avatarGameBtn').click();await page.locator('[data-life-avatar]').click();await page.locator('[data-world-avatar-value="lego"]').click();
  assert(await page.locator('[data-world-avatar-custom]').isVisible());await page.locator('[data-world-avatar-save]').click();
  assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar()),null);
- await page.evaluate(()=>window.OTTHI_FAMILY.open());await page.locator('[data-family-play="thamis"]').click();
+ await chooseParty('thamis',['thamis']);
 
+ // Select the user's exact example through the multi-select UI.
  await page.evaluate(()=>{const p=window.OTTHI_FAMILY.diagnostics().home;window.OTTHOS_TEST_API.teleport(p.x,p.z+6);window.OTTHI_FAMILY.open();});
+ await page.locator('[data-family-controller="thiago"]').check();
+ await page.locator('[data-family-all]').click();
+ assert.equal(await page.locator('[data-family-member]:checked').count(),4);
+ await page.locator('[data-family-member="thamis"]').uncheck();
+ assert.equal(await page.locator('[data-family-summary]').innerText(),'Thiago + Luna + Liz');
+ await page.screenshot({path:'test-results/playable/family-party-selector.png'});
+ await page.locator('[data-family-apply]').click();
+ assert.deepEqual(await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().party.members),['thiago','luna','liz']);
+ const groupBefore=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().actors);
+ const groupJoy=page.locator('#joystick'),groupBox=await groupJoy.boundingBox();
+ await groupJoy.dispatchEvent('pointerdown',{pointerId:96,clientX:groupBox.x+groupBox.width*.8,clientY:groupBox.y+groupBox.height*.5});
+ await page.waitForFunction(before=>window.OTTHI_FAMILY.diagnostics().actors.filter(a=>a.id==='luna'||a.id==='liz').every(a=>{const old=before.find(b=>b.id===a.id);return Math.hypot(a.x-old.x,a.z-old.z)>.3;}),groupBefore,{timeout:20000});
+ await groupJoy.dispatchEvent('pointerup',{pointerId:96});
+ await page.screenshot({path:'test-results/playable/family-party-walking.png'});
+ await page.evaluate(()=>window.OTTHI_FAMILY.open());
  await page.locator('[data-family-throw="luna"]').click();
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().ball==='seek'||window.OTTHI_FAMILY.diagnostics().ball==='return',null,{timeout:20000});
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().progress.deliveries.luna===1,null,{timeout:60000});
@@ -123,7 +149,7 @@ try{
  await page.screenshot({path:'test-results/playable/family-original-menu.png'});
  assert.deepEqual(errors,[]);
  writeFileSync('test-results/playable/family-world-report.json',JSON.stringify({actors:info.actors,progress,layout,errors},null,2));
- console.log('Family world: approved rig skinning, playable Thiago/Thamis with save/reload and received presence, real throw/return, walking, original HQ controls and no page errors.');
+ console.log('Family world: approved rig skinning, playable Thiago/Thamis, all/solo/subset parties with save/reload, real companions and received presence, real throw/return, walking, original HQ controls and no page errors.');
  }catch(error){await page.screenshot({path:'test-results/playable/family-failure.png'}).catch(()=>{});console.error('Family diagnostics',await page.evaluate(()=>({selected:window.OTTHI_FAMILY?.playerAvatar(),avatar:window.OTTHOS_TEST_API?.getState().avatar,modal:document.getElementById('modal')?.innerText,ready:window.OTTHI_FAMILY?.diagnostics(),familyState:window.OTTHI_FAMILY?.snapshot(),game:window.OTTHOS_TEST_API?.getGame()})).catch(()=>null));throw error;}
  await context.close();
 }finally{await browser.close()}
