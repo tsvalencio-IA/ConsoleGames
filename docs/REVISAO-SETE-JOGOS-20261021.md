@@ -14,7 +14,7 @@ Problemas reproduzidos a partir das três capturas fornecidas: pista fora do enq
 
 Os cinco jogos de ação recebem três etapas de carreira: Iniciação, Técnica e Maestria. Os objetivos usam acontecimentos reais do motor; guardar defesa sem bloquear um golpe, abrir uma garagem vazia ou apertar um disparo não conclui um desafio. A conclusão fica salva neste dispositivo. A etapa seguinte começa na próxima partida.
 
-No mundo aberto, Vida → Meu personagem permite escolher Thiago ou Thamis como personagem controlado. O painel Família também oferece Jogar como Thiago / Jogar como Thamis. A seleção utiliza os modelos originais com esqueletos independentes e fica no campo de aparência já salvo e sincronizado pelo perfil. A física, as ações, os veículos e os outros estilos continuam disponíveis. Ferramentas seguem a mão do modelo escolhido; voltar a outro estilo restaura a personalização anterior.
+No mundo aberto, Vida → Personagem → Meu personagem permite escolher Thiago ou Thamis como personagem controlado. O painel Família também oferece Jogar como Thiago / Jogar como Thamis. A seleção utiliza os modelos originais com esqueletos independentes e fica no campo de aparência já salvo e sincronizado pelo perfil. A física, as ações, os veículos e os outros estilos continuam disponíveis. Ferramentas seguem a mão do modelo escolhido; voltar a outro estilo restaura a personalização anterior.
 
 ## Validação
 

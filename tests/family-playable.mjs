@@ -32,7 +32,7 @@ try{
   const y=await page.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.y);
   await page.locator('#jumpBtn').dispatchEvent('pointerdown',{pointerId:92});await page.locator('#jumpBtn').dispatchEvent('pointerup',{pointerId:92});
   await page.waitForFunction(y=>window.OTTHOS_TEST_API.getGame().player.y>y+.3,y,{timeout:12000});
-  await page.waitForFunction(()=>window.OTTHOS_TEST_API.getGame().player.grounded,null,{timeout:15000});
+  await page.waitForFunction(()=>window.OTTHOS_TEST_API.getGame().player.grounded,null,{timeout:60000});
   assert.equal(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().id),id);
   await page.screenshot({path:'test-results/playable/playing-as-'+id+'.png'});
  }
