@@ -199,16 +199,11 @@ test("cinco jogos pedem permissão para câmera somente depois de escolha explí
   execFileSync(process.execPath,["--check",here(root+"control-modes.js").pathname]);
  }
 });
-test("AR controla cenário virtual e coleta no motor sem câmera",()=>{
+test("AR Combat usa câmera opcional, joysticks independentes e gatilho explícito",()=>{
  const ar=read("games/ar/js/game_ar.js"),input=read("games/ar/control-modes.js");
- assert(ar.includes("drawVirtualScene: function"));
- assert(ar.includes("this.manualPickupHeld"));
- assert(ar.includes("this.manualPickupRequested"));
- assert(ar.includes("this.changeState('WAITING_PICKUP')"));
- assert(input.includes("logic.currentHeading="));
- assert(input.includes("logic.manualAccelerate"));
- assert(input.includes('id:"pick"'));
- assert(ar.includes("this.completeMission()"));
+ assert(ar.includes("drawVirtualScene: function"));assert(ar.includes("camera:'environment'"));assert(ar.includes("this.fireHeld||this.keys[' ']"));
+ assert(input.includes("owner!==e.pointerId"));assert(input.includes("aimStick"));assert(input.includes("id:'fire'"));assert(!ar.includes("generateMission"));
+ assert(!read('games/ar/index.html').includes('@tensorflow'));assert(read('games/ar/sw.js').includes('combat-controls.css'));
 });
 test("voo usa teclado e joystick tátil que acionam comandos originais",()=>{
  const flight=read("games/voo/js/game_flight.js");

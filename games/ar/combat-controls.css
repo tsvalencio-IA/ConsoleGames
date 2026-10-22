@@ -1,0 +1,12 @@
+/* Separate owners for movement, aim and action: three simultaneous touches. */
+#webcam{opacity:0!important;pointer-events:none}
+.input-game-controls.combat-input{height:190px;inset:auto 0 max(7px,env(safe-area-inset-bottom,0px));width:100%;max-width:none;transform:none;pointer-events:none;display:block;padding:0}
+.combat-stick{position:absolute;bottom:5px;width:clamp(96px,28vw,132px);height:clamp(96px,28vw,132px);border:2px solid #9bd8d596;border-radius:50%;background:radial-gradient(circle,#315c67d9,#0c2738c2 66%,#54797caa);box-sizing:border-box;touch-action:none;pointer-events:auto;opacity:var(--play-control-opacity,.92)}
+.move-stick{left:max(10px,env(safe-area-inset-left,0px))}.aim-stick{right:max(10px,env(safe-area-inset-right,0px))}
+.combat-stick-knob{position:absolute;left:50%;top:50%;width:43%;height:43%;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #d4f3e9a8;background:linear-gradient(145deg,#7cacb3,#2c586e);box-shadow:0 4px 12px #0009;pointer-events:none}
+.combat-stick small{position:absolute;bottom:7px;left:0;right:0;text-align:center;font:800 9px system-ui;letter-spacing:1px;color:#e0f7ff;pointer-events:none}.combat-stick.held{border-color:#e2ffed}
+.input-game-controls.combat-input .input-control{position:absolute;left:auto;bottom:auto;width:86px;height:46px;min-height:44px;border-radius:14px;font-size:10px;pointer-events:auto}
+.input-game-controls.combat-input [data-control="fire"]{right:max(17px,env(safe-area-inset-right,0px));bottom:calc(clamp(96px,28vw,132px) + 16px);background:linear-gradient(150deg,#c4804b,#7f3b3a);border-color:#ffd4a1}
+.input-game-controls.combat-input [data-control="reload"]{left:calc(50% - 43px);bottom:5px}
+.input-game-controls.combat-input [data-control="cover"]{left:max(17px,env(safe-area-inset-left,0px));bottom:calc(clamp(96px,28vw,132px) + 16px)}
+@media(max-height:460px){.input-game-controls.combat-input{height:158px}.combat-stick{width:96px;height:96px}.input-game-controls.combat-input [data-control="fire"],.input-game-controls.combat-input [data-control="cover"]{bottom:111px}.input-game-controls.combat-input [data-control="reload"]{bottom:8px}}

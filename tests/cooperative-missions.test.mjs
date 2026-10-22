@@ -86,3 +86,16 @@ test('OTThi: all chapter flags and eight career objectives have implementations'
  for(const flag of flags)assert(all.includes("setFlag('"+flag+"')")||all.includes('state.flags.'+flag+' =')||all.includes('state.flags.'+flag+'=')||['wonRace','wonCoinRace'].includes(flag),'No producer for chapter '+flag);
  const careers=all.slice(all.indexOf('  const JOBS = ['),all.indexOf('  const MISSION_STATES='));assert.equal([...careers.matchAll(/\{id:'/g)].length,8);
 });
+
+test('OTThi: running race checkpoints never credit a car, boat or public transport',async()=>{
+ const f=cooperativeFixture(),{run}=f;await f.start('streetRace');run('activeCoopMission().race.started=true;player.x=COOP_STREET_ROUTE[1].x;player.z=COOP_STREET_ROUTE[1].z');
+ for(const source of ['player.vehicle=true','player.vehicle=false;player.boating=true','player.boating=false;player.transit={mode:"bus"}']){run(source);run('updateCoopRaceProgress(activeCoopMission(),activeCoopRecord())');assert.equal(run('activeCoopMission().race.checkpoints'),0);}
+ run('player.transit=null;updateCoopRaceProgress(activeCoopMission(),activeCoopRecord())');assert.equal(run('activeCoopMission().race.checkpoints'),1);
+});
+test('OTThi: authoritative NPC escorts follow the confirmed guest rather than the host, pause on loss and release after delivery',async()=>{
+ const f=cooperativeFixture(),{run}=f;await f.start('school','duo');
+ run("activeCoopRecord().progress.events[coopEventSubjectId('student','npc-0')]={uid:'guest',kind:'student-invited'};window.OTTHOS_RTDB.getPresence=()=>({guest:{x:84,z:-12,facing:1,updatedAt:Date.now()}})");
+ assert.equal(run("coopNpcEscortTarget(world.npcs[0]).x"),84);assert.equal(run("world.npcs[0].coopEscortOwner"),'guest');assert.equal(run("coopNpcEscortTarget(world.npcs[0]).paused"),false);
+ run('window.OTTHOS_RTDB.getPresence=()=>({})');assert.equal(run('coopNpcEscortTarget(world.npcs[0]).paused'),true);
+ run("activeCoopRecord().progress.events[coopEventSubjectId('student-delivered','npc-0')]={uid:'guest',kind:'student-delivered'}");assert.equal(run('coopNpcEscortTarget(world.npcs[0])'),null);assert.equal(run('world.npcs[0].following'),false);
+});

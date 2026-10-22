@@ -93,6 +93,7 @@ function tennis(ctx,w,h,logic){
  ctx.restore();
 }
 function ar(ctx,w,h,logic){
+ if(logic.player&&logic.gun)return;
  if(window.ArcadeControls?.mode!=="controls")return;
  ctx.save();
  const horizon=h*.42;

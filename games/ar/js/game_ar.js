@@ -1,971 +1,187 @@
-// =============================================================================
-// AR TOY TRUCK SIMULATOR: MASTER ARCHITECT EDITION (V31 - MULTIPLAYER HUB)
-// OFICINA MINORITY REPORT + PONTO DE ENCONTRO SOCIAL (ROBLOX STYLE) E FIREBASE
-// =============================================================================
-
-(function() {
-    "use strict";
-
-    // =========================================================================
-    // 1) FUNÇÃO AUXILIAR: GLASSMORPHISM E CARTÕES
-    // =========================================================================
-    function roundRect(ctx, x, y, width, height, radius) {
-        ctx.beginPath(); ctx.moveTo(x + radius, y); ctx.lineTo(x + width - radius, y);
-        ctx.quadraticCurveTo(x + width, y, x + width, y + radius); ctx.lineTo(x + width, y + height - radius);
-        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height); ctx.lineTo(x + radius, y + height);
-        ctx.quadraticCurveTo(x, y + height, x, y + height - radius); ctx.lineTo(x, y + radius);
-        ctx.quadraticCurveTo(x, y, x + radius, y); ctx.closePath();
-    }
-
-    // =========================================================================
-    // 2) SISTEMA SOCIAL MULTIPLAYER HUB (NOVO!)
-    // =========================================================================
-    const MultiplayerHub = {
-        isActive: false, cursor: { x: 0, y: 0, active: false }, hoverTime: 0, hoveredBtn: null, eventCallback: null,
-        remotePlayers: {}, myAction: null, actionTimer: 0,
-        
-        buttons: [
-            { id: 'BUY_ICECREAM', icon: '🍦', label: 'TOMAR SORVETE', cost: 10, color: '#ff9ff3' },
-            { id: 'BUY_PIZZA', icon: '🍕', label: 'COMER PIZZA', cost: 25, color: '#ff9f43' },
-            { id: 'BUY_POPCORN', icon: '🍿', label: 'COMPRAR PIPOCA', cost: 15, color: '#feca57' },
-            { id: 'LEAVE_HUB', icon: '🔙', label: 'VOLTAR À OFICINA', cost: 0, color: '#c8d6e5', isWide: true }
-        ],
-
-        init: function(callback) {
-            this.eventCallback = callback; this.isActive = true;
-            this.cursor = { x: window.innerWidth/2, y: window.innerHeight/2, active: false };
-            this.hoverTime = 0; this.hoveredBtn = null; this.myAction = null; this.actionTimer = 0;
-            
-            // Conecta ao Firebase Hub
-            if(window.DB && window.System && window.System.playerId) {
-                const hubRef = window.DB.ref('ar_hub');
-                hubRef.on('value', snap => { this.remotePlayers = snap.val() || {}; });
-                window.DB.ref('ar_hub/' + window.System.playerId).onDisconnect().remove();
-            }
-        },
-
-        update: function(ctx, w, h, dt, gameState, rawPose, drawX, drawY, scaleCanvas) {
-            if (!this.isActive) return;
-
-            const cx = w / 2;
-            const gap = Math.min(20, w * 0.04); 
-            const btnW = Math.min(250, (w * 0.45));
-            const btnH = 120; 
-            const startY = Math.max(160, h * 0.25);
-            
-            // Fundo Lounge Social
-            ctx.fillStyle = "rgba(15, 5, 30, 0.92)"; ctx.fillRect(0, 0, w, h);
-            
-            // PROCESSAMENTO MOVENET LOCAL
-            this.cursor.active = false;
-            let kps = rawPose ? (Array.isArray(rawPose) ? (rawPose[0]?.keypoints || rawPose) : (rawPose.keypoints || rawPose.pose?.keypoints || [])) : [];
-            
-            if (kps && kps.length > 0) {
-                ctx.lineWidth = 6; ctx.strokeStyle = "rgba(255, 0, 255, 0.5)"; ctx.fillStyle = "#fff";
-                const vW = window.System?.video?.videoWidth || 640; const vH = window.System?.video?.videoHeight || 480;
-                const mapKpx = (valX) => (w / 2) - ((valX - vW / 2) * scaleCanvas);
-                const mapKpy = (valY) => (h / 2) + ((valY - vH / 2) * scaleCanvas);
-
-                const rw = kps.find(k => k.name === 'right_wrist'); const lw = kps.find(k => k.name === 'left_wrist');
-                let domWrist = null;
-                if (rw && rw.score > 0.25 && lw && lw.score > 0.25) { domWrist = rw.y < lw.y ? rw : lw; } 
-                else if (rw && rw.score > 0.25) { domWrist = rw; } else if (lw && lw.score > 0.25) { domWrist = lw; }
-
-                if (domWrist) {
-                    const cxW = mapKpx(domWrist.x); const cyW = mapKpy(domWrist.y);
-                    if(Number.isFinite(cxW) && Number.isFinite(cyW)) { this.cursor.x = cxW; this.cursor.y = cyW; this.cursor.active = true; }
-                }
-            }
-
-            // SINCRONIZAÇÃO COM O FIREBASE MULTIPLAYER
-            if (this.cursor.active && window.DB && window.System && window.System.playerId) {
-                window.DB.ref('ar_hub/' + window.System.playerId).set({
-                    name: window.Profile?.username || 'Piloto',
-                    nx: this.cursor.x / w, 
-                    ny: this.cursor.y / h,
-                    action: this.myAction,
-                    timestamp: Date.now()
-                });
-            }
-
-            if (this.actionTimer > 0) {
-                this.actionTimer -= dt;
-                if (this.actionTimer <= 0) this.myAction = null;
-            }
-
-            // RENDERIZA OS AMIGOS MULTIPLAYER (AVATARES/CURSORES)
-            const now = Date.now();
-            for(let pid in this.remotePlayers) {
-                if(pid === window.System?.playerId) continue; 
-                let p = this.remotePlayers[pid];
-                if(now - p.timestamp > 5000) continue; 
-                
-                let px = p.nx * w; let py = p.ny * h;
-                
-                ctx.fillStyle = "rgba(46, 204, 113, 0.9)";
-                ctx.beginPath(); ctx.arc(px, py, 15, 0, Math.PI*2); ctx.fill();
-                ctx.strokeStyle = "#fff"; ctx.lineWidth = 3; ctx.stroke();
-                
-                ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.font = "bold 16px 'Chakra Petch'";
-                ctx.fillText(p.name, px, py - 25);
-                
-                if(p.action) {
-                    ctx.font = "40px Arial"; ctx.fillText(p.action, px, py - 50);
-                }
-            }
-
-            let currentGlobalCoins = window.Profile ? (window.Profile.coins || 0) : gameState.fallbackMoney;
-
-            ctx.fillStyle = "#ff00ff"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-            ctx.font = "bold " + Math.round(Math.min(55,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(`PONTO DE ENCONTRO`, cx, Math.max(45, startY - 100));
-            ctx.fillStyle = "#00ff66"; ctx.font = "bold " + Math.round(Math.min(36,Math.max(14,window.innerWidth*0.06))) + "px 'Chakra Petch'"; ctx.fillText(`MEU BOLSO: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
-
-            let currentlyHovering = null;
-
-            this.buttons.forEach((btn, index) => {
-                let row = Math.floor(index / 2); let col = index % 2;
-                let bX = cx + (col === 0 ? -btnW - gap/2 : gap/2); let bY = startY + row * (btnH + gap);
-                let bW = btnW; let bH = btnH;
-
-                if (btn.isWide) { bX = cx - btnW - gap/2; bW = (btnW * 2) + gap; bH = 80; bY = startY + 2 * (btnH + gap); }
-
-                let isHover = false;
-                if (this.cursor.active && this.cursor.x > bX && this.cursor.x < bX + bW && this.cursor.y > bY && this.cursor.y < bY + bH) { 
-                    isHover = true; currentlyHovering = btn; 
-                }
-
-                let isClickable = currentGlobalCoins >= btn.cost || btn.cost === 0;
-                let statusColor = isClickable ? btn.color : "#e74c3c";
-
-                ctx.fillStyle = isHover && isClickable ? "rgba(255, 255, 255, 0.15)" : "rgba(25, 35, 50, 0.9)";
-                roundRect(ctx, bX, bY, bW, bH, 20); ctx.fill();
-                ctx.strokeStyle = isHover && isClickable ? statusColor : "rgba(255, 255, 255, 0.1)"; ctx.lineWidth = isHover && isClickable ? 5 : 2; ctx.stroke();
-
-                if (isHover && isClickable) { ctx.shadowColor = statusColor; ctx.shadowBlur = 20; ctx.strokeStyle = statusColor; ctx.stroke(); ctx.shadowBlur = 0; }
-
-                ctx.textAlign = "center"; ctx.textBaseline = "middle";
-                if (btn.isWide) {
-                    ctx.font = "40px Arial"; ctx.fillStyle = "#fff"; ctx.font = "bold 22px 'Chakra Petch'";
-                    ctx.fillText(`${btn.icon} ${btn.label} ${btn.icon}`, bX + bW/2, bY + bH/2);
-                } else {
-                    ctx.font = isHover ? "60px Arial" : "50px Arial";
-                    ctx.fillText(btn.icon, bX + bW/2, bY + bH/2 - 15);
-                    ctx.fillStyle = "#fff"; ctx.font = "bold 18px 'Chakra Petch'";
-                    ctx.fillText(btn.label, bX + bW/2, bY + bH - 30);
-                    ctx.fillStyle = statusColor; ctx.font = "bold 18px 'Russo One'"; 
-                    ctx.fillText(isClickable ? (btn.cost > 0 ? `R$ ${btn.cost}` : "GRÁTIS") : "SEM SALDO", bX + bW/2, bY + bH - 10);
-                }
-                btn.hitbox = { x: bX, y: bY, w: bW, h: bH };
-            });
-
-            ctx.textBaseline = "alphabetic"; 
-
-            if (currentlyHovering) {
-                if (this.hoveredBtn && this.hoveredBtn.id !== currentlyHovering.id) this.hoverTime = 0;
-                this.hoveredBtn = currentlyHovering; this.hoverTime += dt;
-                if (this.hoverTime >= 1.5) { 
-                    if (this.eventCallback) this.eventCallback(this.hoveredBtn); 
-                    this.hoverTime = 0; this.hoveredBtn = null;
-                }
-            } else { this.hoveredBtn = null; this.hoverTime = 0; }
-
-            if (this.cursor.active) {
-                ctx.fillStyle = "rgba(255, 0, 255, 0.9)"; ctx.beginPath(); ctx.arc(this.cursor.x, this.cursor.y, 15, 0, Math.PI*2); ctx.fill();
-                if (this.myAction) { ctx.font = "30px Arial"; ctx.textAlign = "center"; ctx.fillText(this.myAction, this.cursor.x, this.cursor.y - 30); }
-                if (this.hoverTime > 0 && this.hoveredBtn) {
-                    let tb = this.hoveredBtn.hitbox;
-                    if (tb) { ctx.strokeStyle = "#ff00ff"; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(tb.x + tb.w/2, tb.y + tb.h/2, 45, -Math.PI/2, -Math.PI/2 + (this.hoverTime/1.5)*(Math.PI*2)); ctx.stroke(); }
-                }
-            } else {
-                ctx.fillStyle = "rgba(255,255,255,0.6)"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center"; 
-                ctx.fillText("APAREÇA NA CÂMERA E LEVANTE A MÃO PARA INTERAGIR (OU TOQUE)", cx, h - 20);
-            }
-        },
-
-        destroy: function() {
-            this.isActive = false; this.cursor = { x: 0, y: 0, active: false };
-            if(window.DB && window.System && window.System.playerId) {
-                window.DB.ref('ar_hub/' + window.System.playerId).remove();
-            }
-        }
-    };
-
-    // =========================================================================
-    // 3) FRONT_AR_OFFICE (MINORITY REPORT DA GARAGEM)
-    // =========================================================================
-    const GestureOffice = {
-        isActive: false, cursor: { x: 0, y: 0, active: false }, hoverTime: 0, hoveredBtn: null, eventCallback: null,
-        
-        menuState: 'MAIN',
-        menus: {
-            MAIN: [
-                { id: 'MENU_BATTERY', icon: '🔋', label: 'BATERIAS', color: '#f39c12' },
-                { id: 'MENU_ENGINE', icon: '⚙️', label: 'MOTORES', color: '#3498db' },
-                { id: 'MENU_RADAR', icon: '📡', label: 'RADARES', color: '#00ffff' },
-                { id: 'MENU_CHASSIS', icon: '🚜', label: 'CHASSIS', color: '#f1c40f' },
-                { id: 'GO_HUB', icon: '🌍', label: 'PONTO DE ENCONTRO', color: '#ff00ff', isWide: true },
-                { id: 'EXIT', icon: '🚀', label: 'SAIR DA BASE', color: '#00ff66', isWide: true }
-            ],
-            ENGINE: [
-                { id: 'BUY_ENG_1', type: 'engine', lvlReq: 1, icon: '⚙️', label: 'MOTOR V1', desc: 'Velocidade: 20', cost: 0, color: '#3498db' },
-                { id: 'BUY_ENG_2', type: 'engine', lvlReq: 2, icon: '⚡', label: 'MOTOR V2', desc: 'Velocidade: 35', cost: 1500, color: '#3498db' },
-                { id: 'BUY_ENG_3', type: 'engine', lvlReq: 3, icon: '🔥', label: 'MOTOR V3', desc: 'Velocidade: 55', cost: 4000, color: '#3498db' },
-                { id: 'BACK', icon: '🔙', label: 'VOLTAR AO MENU', color: '#aaaaaa', isWide: true }
-            ],
-            BATTERY: [
-                { id: 'BUY_BAT_1', type: 'battery', lvlReq: 1, icon: '🔋', label: 'BATERIA STD', desc: 'Energia: 100', cost: 0, color: '#f39c12' },
-                { id: 'BUY_BAT_2', type: 'battery', lvlReq: 2, icon: '⚡', label: 'BATERIA LIPO', desc: 'Energia: 250', cost: 1200, color: '#f39c12' },
-                { id: 'BUY_BAT_3', type: 'battery', lvlReq: 3, icon: '☢️', label: 'CÉLULA FUSÃO', desc: 'Energia: 600', cost: 3500, color: '#f39c12' },
-                { id: 'BACK', icon: '🔙', label: 'VOLTAR AO MENU', color: '#aaaaaa', isWide: true }
-            ],
-            RADAR: [
-                { id: 'BUY_RAD_1', type: 'radar', lvlReq: 1, icon: '📡', label: 'RADAR BÁSICO', desc: 'Alcance: 150m', cost: 0, color: '#00ffff' },
-                { id: 'BUY_RAD_2', type: 'radar', lvlReq: 2, icon: '🔭', label: 'RADAR FORTE', desc: 'Alcance: 300m', cost: 1800, color: '#00ffff' },
-                { id: 'BUY_RAD_3', type: 'radar', lvlReq: 3, icon: '🛰️', label: 'SATÉLITE USR', desc: 'Alcance: 600m', cost: 5000, color: '#00ffff' },
-                { id: 'BACK', icon: '🔙', label: 'VOLTAR AO MENU', color: '#aaaaaa', isWide: true }
-            ],
-            CHASSIS: [
-                { id: 'BUY_CHA_1', type: 'chassis', lvlReq: 1, icon: '🛻', label: 'CHASSI PLÁSTICO', desc: 'Carga Máx: 3', cost: 0, color: '#f1c40f' },
-                { id: 'BUY_CHA_2', type: 'chassis', lvlReq: 2, icon: '🚜', label: 'CHASSI ALUMÍNIO', desc: 'Carga Máx: 6', cost: 2000, color: '#f1c40f' },
-                { id: 'BUY_CHA_3', type: 'chassis', lvlReq: 3, icon: '🚛', label: 'CHASSI TITÂNIO', desc: 'Carga Máx: 12', cost: 6000, color: '#f1c40f' },
-                { id: 'BACK', icon: '🔙', label: 'VOLTAR AO MENU', color: '#aaaaaa', isWide: true }
-            ]
-        },
-
-        init: function(callback) {
-            this.eventCallback = callback; this.isActive = true; this.menuState = 'MAIN';
-            this.cursor = { x: window.innerWidth/2, y: window.innerHeight/2, active: false }; 
-            this.hoverTime = 0; this.hoveredBtn = null;
-        },
-
-        update: function(ctx, w, h, dt, gameState, rawPose, drawX, drawY, scaleCanvas) {
-            if (!this.isActive) return;
-
-            const cx = w / 2;
-            const gap = Math.min(20, w * 0.04); 
-            const btnW = Math.min(250, (w * 0.45));
-            const btnH = Math.min(120, h * 0.18);
-            const startY = Math.max(160, h * 0.25);
-            
-            ctx.fillStyle = "rgba(5, 10, 20, 0.92)"; ctx.fillRect(0, 0, w, h);
-            
-            // PROCESSAMENTO MOVENET
-            this.cursor.active = false;
-            let kps = rawPose ? (Array.isArray(rawPose) ? (rawPose[0]?.keypoints || rawPose) : (rawPose.keypoints || rawPose.pose?.keypoints || [])) : [];
-            
-            if (kps && kps.length > 0) {
-                ctx.lineWidth = 6; ctx.strokeStyle = "rgba(0, 255, 255, 0.8)"; ctx.fillStyle = "#fff";
-                const vW = window.System?.video?.videoWidth || 640; const vH = window.System?.video?.videoHeight || 480;
-
-                const mapKpx = (valX) => (w / 2) - ((valX - vW / 2) * scaleCanvas);
-                const mapKpy = (valY) => (h / 2) + ((valY - vH / 2) * scaleCanvas);
-
-                const drawBone = (p1Name, p2Name) => {
-                    const kp1 = kps.find(k => k.name === p1Name); const kp2 = kps.find(k => k.name === p2Name);
-                    if (kp1 && kp2 && kp1.score > 0.25 && kp2.score > 0.25) {
-                        const x1 = mapKpx(kp1.x); const y1 = mapKpy(kp1.y);
-                        const x2 = mapKpx(kp2.x); const y2 = mapKpy(kp2.y);
-                        if(Number.isFinite(x1) && Number.isFinite(y1) && Number.isFinite(x2) && Number.isFinite(y2)) {
-                            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-                            ctx.beginPath(); ctx.arc(x1, y1, 6, 0, Math.PI*2); ctx.fill();
-                            ctx.beginPath(); ctx.arc(x2, y2, 6, 0, Math.PI*2); ctx.fill();
-                        }
-                    }
-                };
-
-                drawBone('left_shoulder', 'right_shoulder'); drawBone('left_shoulder', 'left_elbow'); drawBone('left_elbow', 'left_wrist');
-                drawBone('right_shoulder', 'right_elbow'); drawBone('right_elbow', 'right_wrist');
-
-                const rw = kps.find(k => k.name === 'right_wrist'); const lw = kps.find(k => k.name === 'left_wrist');
-                let domWrist = null;
-                if (rw && rw.score > 0.25 && lw && lw.score > 0.25) { domWrist = rw.y < lw.y ? rw : lw; } 
-                else if (rw && rw.score > 0.25) { domWrist = rw; } 
-                else if (lw && lw.score > 0.25) { domWrist = lw; }
-
-                if (domWrist) {
-                    const cxW = mapKpx(domWrist.x); const cyW = mapKpy(domWrist.y);
-                    if(Number.isFinite(cxW) && Number.isFinite(cyW)) { this.cursor.x = cxW; this.cursor.y = cyW; this.cursor.active = true; }
-                }
-            }
-
-            let currentGlobalCoins = window.Profile ? (window.Profile.coins || 0) : gameState.fallbackMoney;
-
-            ctx.fillStyle = "#00ffff"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
-            ctx.font = "bold " + Math.round(Math.min(55,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(`OFICINA DE ${window.Profile?.username || 'PILOTO'}`, cx, Math.max(45, startY - 100));
-            ctx.fillStyle = "#00ff66"; ctx.font = "bold " + Math.round(Math.min(36,Math.max(14,window.innerWidth*0.06))) + "px 'Chakra Petch'"; ctx.fillText(`CAIXA GERAL: R$ ${Math.floor(currentGlobalCoins).toLocaleString()}`, cx, Math.max(80, startY - 55));
-
-            const activeMenu = this.menus[this.menuState] || this.menus['MAIN'];
-            let currentlyHovering = null;
-            let wideCount = 0; 
-
-            activeMenu.forEach((btn, index) => {
-                let row = Math.floor(index / 2); let col = index % 2;
-                let bX = cx + (col === 0 ? -btnW - gap/2 : gap/2); let bY = startY + row * (btnH + gap);
-                let bW = btnW; let bH = btnH;
-
-                if (btn.isWide) { 
-                    bX = cx - btnW - gap/2; bW = (btnW * 2) + gap; bH = Math.min(80, btnH * 0.8); 
-                    bY = startY + Math.ceil(activeMenu.length / 2) * (btnH + gap) + (wideCount * (bH + gap));
-                    wideCount++;
-                }
-
-                let isHover = false;
-                if (this.cursor.active && this.cursor.x > bX && this.cursor.x < bX + bW && this.cursor.y > bY && this.cursor.y < bY + bH) { isHover = true; currentlyHovering = btn; }
-
-                let displayCost = btn.cost ? `R$ ${btn.cost}` : ""; let subDesc = btn.desc || ""; let isClickable = true; let statusColor = btn.color; let badgeTxt = null;
-
-                if (btn.id.startsWith('BUY_')) {
-                    const currentLvl = gameState.upgrades[btn.type];
-                    if (currentLvl >= btn.lvlReq) { displayCost = "EQUIPADO"; statusColor = "#2ecc71"; isClickable = false; badgeTxt = "✓ SEU"; } 
-                    else if (currentLvl === btn.lvlReq - 1) {
-                        isClickable = currentGlobalCoins >= btn.cost;
-                        if (!isClickable) { statusColor = "#e74c3c"; displayCost = "SEM SALDO"; }
-                    } else { displayCost = "BLOQUEADO"; statusColor = "#555555"; isClickable = false; badgeTxt = "🔒 REQ V" + (btn.lvlReq - 1); }
-                }
-
-                ctx.fillStyle = isHover && isClickable ? "rgba(255, 255, 255, 0.15)" : "rgba(25, 35, 50, 0.9)";
-                roundRect(ctx, bX, bY, bW, bH, 20); ctx.fill();
-                ctx.strokeStyle = isHover && isClickable ? statusColor : "rgba(255, 255, 255, 0.1)"; ctx.lineWidth = isHover && isClickable ? 5 : 2; ctx.stroke();
-
-                if (isHover && isClickable) { ctx.shadowColor = statusColor; ctx.shadowBlur = 20; ctx.strokeStyle = statusColor; ctx.stroke(); ctx.shadowBlur = 0; }
-
-                ctx.textAlign = "center"; ctx.textBaseline = "middle";
-                if (btn.isWide) {
-                    ctx.font = "35px Arial"; ctx.fillStyle = "#fff"; ctx.font = "bold 22px 'Chakra Petch'";
-                    ctx.fillText(`${btn.icon} ${btn.label} ${btn.icon}`, bX + bW/2, bY + bH/2);
-                } else {
-                    ctx.font = isHover ? "55px Arial" : "50px Arial";
-                    ctx.fillText(btn.icon, bX + bW/2, bY + bH/2 - 20);
-                    ctx.fillStyle = "#fff"; ctx.font = "bold 18px 'Chakra Petch'";
-                    ctx.fillText(btn.label, bX + bW/2, bY + bH - 35);
-                    if(subDesc) { ctx.fillStyle = "#aaa"; ctx.font = "" + Math.round(Math.min(16,Math.max(12,window.innerWidth*0.03))) + "px Arial"; ctx.fillText(subDesc, bX + bW/2, bY + bH - 18); }
-                    if (displayCost && !btn.id.startsWith('MENU_')) {
-                        ctx.fillStyle = isClickable || displayCost === "MÁXIMO" || displayCost === "EQUIPADO" ? statusColor : "#e74c3c";
-                        ctx.font = "bold 16px 'Russo One'"; ctx.fillText(displayCost, bX + bW/2, bY + bH - 5);
-                    }
-                    if (badgeTxt) {
-                        ctx.fillStyle = statusColor; let badgeW = ctx.measureText(badgeTxt).width + 20;
-                        roundRect(ctx, bX - 10, bY - 15, badgeW, 25, 8); ctx.fill();
-                        ctx.fillStyle = "#000"; ctx.font = "bold 12px Arial"; ctx.fillText(badgeTxt, bX - 10 + badgeW/2, bY - 2);
-                    }
-                }
-                btn.hitbox = { x: bX, y: bY, w: bW, h: bH };
-            });
-
-            ctx.textBaseline = "alphabetic"; 
-
-            if (currentlyHovering) {
-                if (this.hoveredBtn && this.hoveredBtn.id !== currentlyHovering.id) this.hoverTime = 0;
-                this.hoveredBtn = currentlyHovering; this.hoverTime += dt;
-                if (this.hoverTime >= 1.5) { 
-                    if (this.eventCallback) this.eventCallback(this.hoveredBtn); 
-                    this.hoverTime = 0; this.hoveredBtn = null;
-                }
-            } else { this.hoveredBtn = null; this.hoverTime = 0; }
-
-            if (this.cursor.active) {
-                ctx.fillStyle = "rgba(0, 255, 255, 0.9)"; ctx.beginPath(); ctx.arc(this.cursor.x, this.cursor.y, 15, 0, Math.PI*2); ctx.fill();
-                if (this.hoverTime > 0 && this.hoveredBtn) {
-                    let tb = this.hoveredBtn.hitbox;
-                    if (tb) { ctx.strokeStyle = "#00ff66"; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(tb.x + tb.w/2, tb.y + tb.h/2, 45, -Math.PI/2, -Math.PI/2 + (this.hoverTime/1.5)*(Math.PI*2)); ctx.stroke(); }
-                }
-            } else {
-                ctx.fillStyle = "rgba(255,255,255,0.6)"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center"; 
-                ctx.fillText("APAREÇA NA CÂMERA E LEVANTE A MÃO PARA CONTROLAR (OU TOQUE)", cx, h - 20);
-            }
-        },
-        destroy: function() { this.isActive = false; this.cursor = { x: 0, y: 0, active: false }; }
-    };
-
-    // =========================================================================
-    // 4) ENGINE AR PRINCIPAL (CÂMERA TRASEIRA E FÍSICA)
-    // =========================================================================
-    let particles = [];
-    
-    const Game = {
-        state: 'UNINITIALIZED', lastTime: 0, timeTotal: 0, score: 0, transitionAlpha: 0, transitionPhase: 0, 
-        vPos: { x: 0, y: 0 }, baseHeading: 0, currentHeading: 0, virtualSpeed: 0, manualAccelerate: false, deviceForce: 0,
-        _deviceOrientationHandler: null, _deviceMotionHandler: null,
-        
-        objectModel: null, detectedItems: [], lastAiTime: 0, aiIntervalMs: 500, aiIntervalId: null, aiProcessing: false,
-        activeAnomaly: null, anomalies: [], spawnTimer: 0, isExtracting: false, pickupTimer: 0, cooldown: 0,
-        currentPose: null, isEstimatingPose: false,
-        
-        fallbackMoney: 0, displayMoney: 0, displayFuel: 100, collectGlow: 0, collectZoom: 0, baseFlash: 0,
-        currentMission: { type: 'NORMAL', goal: 3, progress: 0, timer: 0, active: false },
-        
-        health: 100, fuel: 100, wear: { motor: 0, wheels: 0 }, cargo: [], xp: 0, level: 1,
-        stats: { maxFuel: 100, maxCargo: 3, baseSpeed: 20, scanPower: 1.0, radarRange: 150, wearRate: 0.3 },
-        upgrades: { engine: 1, battery: 1, radar: 1, chassis: 1, scout: false },
-        colors: { main: '#00ffff', danger: '#ff003c', success: '#00ff66', warn: '#f1c40f', panel: 'rgba(0,15,30,0.85)', rare: '#ff00ff' },
-
-        init: function() {
-            this.expedition={missions:0,deliveries:0,itemsDelivered:0};
-            this.state = 'INIT'; this.lastTime = performance.now(); this.timeTotal = 0; this.score = 0;
-            
-            // INTEGRAÇÃO COM O SISTEMA GLOBAL (Usando o perfil do seu core original)
-            if (window.Profile && window.Profile.arSave && window.Profile.arSave.upgrades) {
-                this.upgrades = window.Profile.arSave.upgrades;
-            } else { 
-                this.upgrades = { engine: 1, battery: 1, radar: 1, chassis: 1, scout: false }; 
-            }
-            this.applyStats();
-            
-            this.health = 100; this.fuel = this.stats.maxFuel; this.wear = { motor: 0, wheels: 0 }; this.displayFuel = this.fuel;
-            this.displayMoney = window.Profile ? (window.Profile.coins || 0) : this.fallbackMoney; 
-            this.cargo = []; this.anomalies = []; this.isExtracting = false; this.pickupTimer = 0; this.currentPose = null; this.isEstimatingPose = false;
-            particles = [];
-            
-            this.generateMission(); this.setupInput();
-            if(window.ArcadeControls?.mode==='controls'){
-                // Manual mode uses in-game virtual targets and native mission/reward logic.
-                // Never request camera, compass, motion sensors or COCO-SSD.
-                this.objectModel=null;this.detectedItems=[];this.deviceForce=0;
-                this.changeState('PLAY_REAR_AR');
-            }else{
-                this.setupSensors();
-                this.loadAIModel(); // Camera already granted in core after explicit player choice.
-            }
-        },
-
-        generateMission: function() { const stage=Math.min(3,Math.floor((this.expedition?.missions||0)/2));this.currentMission={type:stage>=2?'HEAVY LOAD':'EXPLORAÇÃO',goal:3+stage,progress:0,timer:0,active:true,stage:stage+1}; },
-        
-        completeMission: function() {
-            if(!this.currentMission?.active||this.currentMission.progress<this.currentMission.goal)return false;
-            if(this.expedition)this.expedition.missions++;
-            this.currentMission.active = false; let bonus = this.currentMission.goal * 1000;
-            if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + bonus; if(window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades); } else { this.fallbackMoney += bonus; }
-            window.System.msg("BÔNUS: R$" + bonus); this.baseFlash = 1.0; if (window.Sfx) window.Sfx.epic();
-        },
-        
-        changeState: function(newState) {
-            if (this.state === newState) return;
-            if (this.state === 'FRONT_AR_OFFICE') GestureOffice.destroy();
-            if (this.state === 'MULTIPLAYER_HUB') MultiplayerHub.destroy();
-            this.state = newState;
-            
-            switch(newState) {
-                case 'PLAY_REAR_AR': this.startAILoop(); if (!this.currentMission.active) this.generateMission(); break;
-                case 'WAITING_PICKUP': this.pickupTimer = 0; if(window.Sfx) window.Sfx.play(800, 'square', 0.2, 0.2); break;
-                case 'ENTER_BASE_TRANSITION': this.stopAILoop(); this.transitionAlpha = 0; this.transitionPhase = 'FADE_OUT'; this.virtualSpeed = 0; this.isExtracting = false; this.manualAccelerate = false; break;
-                case 'FRONT_AR_OFFICE': this.virtualSpeed = 0; this.deliverCargo(); this.baseFlash = 1.0; GestureOffice.init(this.handleOfficeAction.bind(this)); break;
-                case 'MULTIPLAYER_HUB': this.virtualSpeed = 0; MultiplayerHub.init(this.handleHubAction.bind(this)); break;
-                case 'EXIT_BASE_TRANSITION': this.transitionAlpha = 0; this.transitionPhase = 'FADE_OUT'; this.manualAccelerate = false; break;
-            }
-        },
-
-        setupSensors: function() {
-            if (!this._deviceOrientationHandler) { this._deviceOrientationHandler = (e) => { this.currentHeading = e.webkitCompassHeading !== undefined ? 360 - e.webkitCompassHeading : (e.alpha || 0); }; }
-            if (!this._deviceMotionHandler) {
-                this._deviceMotionHandler = (e) => {
-                    if (this.state === 'ENTER_BASE_TRANSITION' || this.state === 'EXIT_BASE_TRANSITION') return;
-                    let acc = e.acceleration || e.accelerationIncludingGravity; if (!acc) return;
-                    let mag = Math.sqrt((acc.x||0)*(acc.x||0) + (acc.y||0)*(acc.y||0) + (acc.z||0)*(acc.z||0));
-                    let force = Math.abs(mag - (e.acceleration ? 0 : 9.81));
-                    if (force > 0.3) {
-                        this.deviceForce = force;
-                        if (force > 15 && this.state === 'PLAY_REAR_AR') {
-                            this.health -= force * 0.5; if(navigator.vibrate) navigator.vibrate(200);
-                            this.spawnParticles(window.innerWidth/2, window.innerHeight/2, 20, this.colors.danger); window.System.msg("IMPACTO!");
-                            if (this.health <= 0 && this.state !== 'TOW_MODE') this.changeState('TOW_MODE');
-                        }
-                    } else { this.deviceForce = 0; }
-                };
-            }
-            window.removeEventListener('deviceorientation', this._deviceOrientationHandler); window.removeEventListener('devicemotion', this._deviceMotionHandler);
-            window.addEventListener('deviceorientation', this._deviceOrientationHandler); window.addEventListener('devicemotion', this._deviceMotionHandler);
-        },
-
-        setupInput: function() {
-            const canvas = window.System?.canvas; if (!canvas) return;
-            canvas.onpointerdown = (e) => {
-                if(window.ArcadeControls?.mode==='controls'&&['PLAY_REAR_AR','WAITING_PICKUP','TOW_MODE'].includes(this.state))return;
-                if (this.state === 'ENTER_BASE_TRANSITION' || this.state === 'EXIT_BASE_TRANSITION') return;
-                const r = canvas.getBoundingClientRect(); const x = e.clientX - r.left; const y = e.clientY - r.top; const w = r.width; const h = r.height;
-
-                if (this.state === 'CALIBRATION') { this.baseHeading = this.currentHeading; this.vPos = { x: 0, y: 0 }; this.changeState('PLAY_REAR_AR'); }
-                else if (this.state === 'PLAY_REAR_AR' || this.state === 'TOW_MODE') {
-                    let distToBase = Math.hypot(this.vPos.x, this.vPos.y); const btnS = Math.min(80, w * 0.18);
-                    if (y > 70 && y < 70 + btnS && x > w - btnS - 15 && x < w - 15) {
-                        if (distToBase < 30) { if(window.ArcadeControls?.mode==='camera' && window.System.switchCamera) window.System.switchCamera('user'); this.changeState('ENTER_BASE_TRANSITION'); } 
-                        else { window.System.msg("MUITO LONGE DA BASE!"); } return;
-                    }
-                    const accR = Math.min(60, w * 0.15); if (x < 30 + accR*2 && y > h - 100 - accR*2 && this.state !== 'TOW_MODE') { this.manualAccelerate = true; }
-                }
-                else if (this.state === 'FRONT_AR_OFFICE') {
-                    const activeMenu = GestureOffice.menus[GestureOffice.menuState] || GestureOffice.menus['MAIN'];
-                    let btnClicked = activeMenu.find(btn => btn.hitbox && x > btn.hitbox.x && x < btn.hitbox.x + btn.hitbox.w && y > btn.hitbox.y && y < btn.hitbox.y + btn.hitbox.h);
-                    if(btnClicked && GestureOffice.eventCallback) GestureOffice.eventCallback(btnClicked);
-                }
-                else if (this.state === 'MULTIPLAYER_HUB') {
-                    let btnClicked = MultiplayerHub.buttons.find(btn => btn.hitbox && x > btn.hitbox.x && x < btn.hitbox.x + btn.hitbox.w && y > btn.hitbox.y && y < btn.hitbox.y + btn.hitbox.h);
-                    if(btnClicked && MultiplayerHub.eventCallback) MultiplayerHub.eventCallback(btnClicked);
-                }
-            };
-            canvas.onpointerup = () => { this.manualAccelerate = false; };
-        },
-
-        loadAIModel: async function() {
-            const loadPromise = new Promise((resolve) => {
-                if (typeof cocoSsd === 'undefined') {
-                    const script = document.createElement('script'); script.src = "https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd";
-                    script.onload = () => { if (typeof cocoSsd !== 'undefined') cocoSsd.load().then(m => { this.objectModel = m; resolve(); }).catch(() => resolve()); else resolve(); };
-                    script.onerror = () => resolve(); document.head.appendChild(script);
-                } else { cocoSsd.load().then(m => { this.objectModel = m; resolve(); }).catch(() => resolve()); }
-            });
-            await Promise.race([loadPromise, new Promise(res => setTimeout(res, 5000))]); this.changeState('CALIBRATION');
-        },
-
-        startAILoop: function() {
-            if (this.aiIntervalId !== null) { clearInterval(this.aiIntervalId); this.aiIntervalId = null; }
-            this.aiIntervalId = setInterval(async () => {
-                if (this.aiProcessing) return;
-                if ((this.state === 'PLAY_REAR_AR' || this.state === 'WAITING_PICKUP') && this.objectModel && window.System?.video && window.System.video.readyState === 4) {
-                    this.aiProcessing = true;
-                    try { const preds = await this.objectModel.detect(window.System.video); this.detectedItems = preds || []; } 
-                    catch(e) { this.detectedItems = []; } finally { this.aiProcessing = false; }
-                }
-            }, this.aiIntervalMs);
-        },
-        
-        stopAILoop: function() { if (this.aiIntervalId !== null) clearInterval(this.aiIntervalId); this.aiProcessing = false; },
-
-        update: function(ctx, w, h, globalPose) {
-            const now = performance.now(); let dt = (now - this.lastTime) / 1000; if (isNaN(dt) || dt > 0.1 || dt < 0) dt = 0.016; this.lastTime = now; this.timeTotal += dt;
-
-            // FORÇA O MOVENET NA OFICINA E HUB (Para a magia social acontecer)
-            if ((this.state === 'FRONT_AR_OFFICE' || this.state === 'MULTIPLAYER_HUB') && window.System?.detector && window.System.video?.readyState === 4) {
-                if (!this.isEstimatingPose) {
-                    this.isEstimatingPose = true;
-                    window.System.detector.estimatePoses(window.System.video, {flipHorizontal: false}).then(p => {
-                        if (p && p.length > 0) this.currentPose = p[0]; this.isEstimatingPose = false;
-                    }).catch(() => { this.isEstimatingPose = false; });
-                }
-            }
-
-            let realMoney = window.Profile ? (window.Profile.coins || 0) : this.fallbackMoney;
-            if (isNaN(this.displayMoney)) this.displayMoney = 0; if (isNaN(this.displayFuel)) this.displayFuel = 100;
-            this.displayMoney += (realMoney - this.displayMoney) * 10 * dt; this.displayFuel += (this.fuel - this.displayFuel) * 5 * dt;
-
-            let fps = 1 / dt; let newInterval = (fps < 20) ? 1000 : 500;
-            if (this.aiIntervalMs !== newInterval) { this.aiIntervalMs = newInterval; if (this.state === 'PLAY_REAR_AR' || this.state === 'WAITING_PICKUP') { this.startAILoop(); } }
-
-            const vW = window.System?.video?.videoWidth || w; const vH = window.System?.video?.videoHeight || h;
-            const videoRatio = vW / vH; const canvasRatio = w / h; 
-            let drawW = w, drawH = h, drawX = 0, drawY = 0;
-            if (videoRatio > canvasRatio) { drawW = h * videoRatio; drawX = (w - drawW) / 2; } else { drawH = w / videoRatio; drawY = (h - drawH) / 2; }
-            const scaleCanvas = drawW / vW; 
-
-            // CÂMERA TRASEIRA (PARA O JOGO)
-            if (!['FRONT_AR_OFFICE', 'MULTIPLAYER_HUB', 'ENTER_BASE_TRANSITION', 'EXIT_BASE_TRANSITION'].includes(this.state)) {
-                ctx.save();
-                if (this.virtualSpeed > 0.1 && !this.isExtracting) { let susY = Math.sin(this.timeTotal * this.virtualSpeed * 1.5) * (this.virtualSpeed / this.stats.baseSpeed) * 3; ctx.translate(0, susY); }
-                if (this.collectZoom > 0) { let z = 1 + (this.collectZoom * 0.03); ctx.translate(w/2, h/2); ctx.scale(z, z); ctx.translate(-w/2, -h/2); this.collectZoom -= dt * 2; }
-                if (window.System?.video && window.System.video.readyState === 4) { ctx.drawImage(window.System.video, drawX, drawY, drawW, drawH); } 
-                else if(window.ArcadeControls?.mode==='controls')this.drawVirtualScene(ctx,w,h);
-                else { ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h); }
-                if (this.baseFlash > 0) { ctx.fillStyle = `rgba(0, 255, 100, ${this.baseFlash * 0.5})`; ctx.fillRect(0, 0, w, h); this.baseFlash -= dt * 1.5; }
-                if (this.state === 'WAITING_PICKUP') { ctx.fillStyle = `rgba(255, 0, 60, ${Math.abs(Math.sin(this.timeTotal*10))*0.15})`; ctx.fillRect(0, 0, w, h); }
-                else { ctx.fillStyle = `rgba(0, 50, 60, ${0.1 + Math.sin(this.timeTotal*2)*0.05})`; ctx.fillRect(0, 0, w, h); }
-                ctx.restore();
-            }
-
-            switch (this.state) {
-                case 'INIT': 
-                case 'BOOT': this.drawOverlay(ctx, w, h, "A LIGAR O CAMINHÃO...", "Carregando Motores de IA"); break;
-                case 'CALIBRATION': this.drawOverlay(ctx, w, h, "MARCAR A BASE", "Aponte o caminhão e TOQUE NA TELA"); break;
-                case 'PLAY_REAR_AR': case 'WAITING_PICKUP': case 'TOW_MODE':
-                    this.updatePhysics(dt); this.updateEvents(dt); this.spawnAnomalies(dt); this.processAR(ctx, w, h, dt, drawX, drawY, scaleCanvas); this.drawHUD(ctx, w, h); break;
-                case 'ENTER_BASE_TRANSITION': this.processTransition(ctx, w, h, dt, 'FRONT_AR_OFFICE'); break;
-                
-                // CÂMERA FRONTAL (PARA OFICINA E HUB)
-                case 'FRONT_AR_OFFICE':
-                    if (window.System?.video && window.System.video.readyState === 4) { ctx.save(); ctx.translate(w, 0); ctx.scale(-1, 1); ctx.drawImage(window.System.video, -drawX, drawY, drawW, drawH); ctx.restore(); }
-                    GestureOffice.update(ctx, w, h, dt, this, this.currentPose || globalPose, drawX, drawY, scaleCanvas); break;
-                case 'MULTIPLAYER_HUB':
-                    if (window.System?.video && window.System.video.readyState === 4) { ctx.save(); ctx.translate(w, 0); ctx.scale(-1, 1); ctx.drawImage(window.System.video, -drawX, drawY, drawW, drawH); ctx.restore(); }
-                    MultiplayerHub.update(ctx, w, h, dt, this, this.currentPose || globalPose, drawX, drawY, scaleCanvas); break;
-                    
-                case 'EXIT_BASE_TRANSITION': this.processTransition(ctx, w, h, dt, 'PLAY_REAR_AR'); break;
-            }
-            this.updateParticles(ctx, dt, w, h); return this.score || 0; 
-        },
-
-        processTransition: function(ctx, w, h, dt, nextState) {
-            if (this.transitionPhase === 'FADE_OUT') {
-                this.transitionAlpha += dt * 3.0; 
-                if (this.transitionAlpha >= 1) { this.transitionAlpha = 1; this.transitionPhase = 'SWITCH_CAM'; this.transitionPhase = 'FADE_IN'; }
-            } else if (this.transitionPhase === 'SWITCH_CAM') {
-                ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.textAlign="center"; ctx.fillText("A INICIAR INTERFACE...", w/2, h/2);
-            } else if (this.transitionPhase === 'FADE_IN') {
-                this.transitionAlpha -= dt * 3.0; if (this.transitionAlpha <= 0) { this.transitionAlpha = 0; this.changeState(nextState); }
-            }
-            if (this.transitionPhase !== 'SWITCH_CAM') { ctx.fillStyle = `rgba(0,0,0,${this.transitionAlpha})`; ctx.fillRect(0, 0, w, h); }
-        },
-
-        updatePhysics: function(dt) {
-            if (this.cooldown > 0) this.cooldown -= dt;
-            let accelInput = (this.manualAccelerate || this.deviceForce > 0.5) ? (5.0 + (this.upgrades.engine * 2)) : 0;
-            let drag = 0.05 * this.virtualSpeed * this.virtualSpeed; 
-            
-            if (accelInput > 0) { let speedRatio = this.virtualSpeed / this.stats.baseSpeed; this.virtualSpeed += accelInput * (1 - speedRatio * speedRatio) * dt * 8; }
-            this.virtualSpeed -= drag * dt; this.virtualSpeed = Math.max(0, Math.min(this.virtualSpeed, this.stats.baseSpeed));
-
-            if (this.state === 'TOW_MODE') {
-                this.virtualSpeed = Math.min(this.virtualSpeed, this.stats.baseSpeed * 0.4); let distToBase = Math.hypot(this.vPos.x, this.vPos.y);
-                if (distToBase < 30) { if(window.System.switchCamera) window.System.switchCamera('user'); this.changeState('ENTER_BASE_TRANSITION'); return; }
-            }
-
-            let isMoving = this.virtualSpeed > 0.15;
-            if (isMoving) {
-                let speedMod = 1.0; if (this.currentEvent === 'STORM') speedMod *= 0.5; 
-                let currentSpeed = this.virtualSpeed * speedMod;
-                let rad = (this.currentHeading - this.baseHeading) * (Math.PI / 180);
-                this.vPos.x += -Math.sin(rad) * currentSpeed * dt; this.vPos.y += Math.cos(rad) * currentSpeed * dt; 
-
-                let wearMod = 1.0 - (this.upgrades.chassis * 0.05);
-                this.wear.motor = Math.min(100, this.wear.motor + (this.stats.wearRate * wearMod * dt));
-                this.wear.wheels = Math.min(100, this.wear.wheels + (this.stats.wearRate * wearMod * 1.5 * dt));
-
-                let heavyMod = (this.currentMission && this.currentMission.active && this.currentMission.type === 'HEAVY LOAD') ? 2.0 : 1.0;
-                let fuelLoss = ((0.8 / 60) + (this.virtualSpeed * 0.015) + (this.cargo.length * 0.01 * heavyMod)) * dt;
-                this.fuel = Math.max(0, Math.min(this.fuel - fuelLoss, this.stats.maxFuel));
-            } else { this.fuel = Math.max(0, Math.min(this.fuel, this.stats.maxFuel)); }
-
-            if (this.fuel <= 0 && this.state !== 'TOW_MODE') { this.fuel = 0; this.changeState('TOW_MODE'); }
-        },
-
-        updateEvents: function(dt) {
-            if (this.currentEvent) { this.eventTimer -= dt; if (this.eventTimer <= 0) this.currentEvent = null; } 
-            else if (Math.random() < (0.01 * dt)) { this.currentEvent = Math.random() > 0.5 ? 'STORM' : 'GLITCH'; this.eventTimer = 10; window.System.msg("EVENTO: " + this.currentEvent); }
-        },
-
-        spawnAnomalies: function(dt) {
-            if (this.state === 'TOW_MODE') return;
-            this.spawnTimer += dt;
-            if (this.anomalies.length < 5 && this.spawnTimer > 2.0) {
-                this.spawnTimer = 0; 
-                let isRare = Math.random() < (this.upgrades.scout ? 0.35 : 0.15); 
-                let dist = 40 + Math.random() * (100 + this.level * 20); let ang = Math.random() * Math.PI * 2;
-                this.anomalies.push({ id: Math.random().toString(36), x: this.vPos.x + Math.cos(ang) * dist, y: this.vPos.y + Math.sin(ang) * dist, type: isRare ? 'RARE' : 'NORMAL', val: isRare ? 5000 : (500 + Math.floor(Math.random()*500)), life: isRare ? 25 : 999 });
-            }
-            this.anomalies.forEach(a => { if (a.life < 999) a.life -= dt; }); this.anomalies = this.anomalies.filter(a => a.life > 0);
-        },
-
-        // Original game engine, but synthetic scenery when the player chooses no camera.
-        drawVirtualScene: function(ctx,w,h) {
-            const time=this.timeTotal||0;
-            const yaw=(this.currentHeading-this.baseHeading)*Math.PI/180;
-            const horizon=h*.42;
-            const sky=ctx.createLinearGradient(0,0,0,h);
-            sky.addColorStop(0,'#092849');sky.addColorStop(.28,'#337196');sky.addColorStop(.45,'#7fbac0');sky.addColorStop(.46,'#b6a281');sky.addColorStop(1,'#23434d');
-            ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-            ctx.fillStyle='#f8d8a2';ctx.beginPath();ctx.arc(w*.78,horizon*.44,Math.max(16,w*.065),0,Math.PI*2);ctx.fill();
-            ctx.fillStyle='#234768';
-            ctx.beginPath();ctx.moveTo(0,horizon);for(let x=0;x<=w+30;x+=30){ctx.lineTo(x,horizon-24-Math.sin(x*.029+yaw)*22)}ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
-            ctx.fillStyle='#183d4a';ctx.fillRect(0,horizon,w,h-horizon);
-            // Moving landscape grid and road, not a black placeholder.
-            ctx.beginPath();ctx.moveTo(w*.42,horizon);ctx.lineTo(w*.58,horizon);ctx.lineTo(w*1.15,h);ctx.lineTo(-w*.15,h);ctx.closePath();ctx.fillStyle='#3d5363';ctx.fill();
-            ctx.strokeStyle='rgba(186,237,233,.2)';ctx.lineWidth=1;
-            for(let n=0;n<15;n++){
-                const z=((n/15+time*Math.max(0,this.virtualSpeed)*.009)%1);
-                const y=horizon+(h-horizon)*z*z;
-                ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
-            }
-            ctx.strokeStyle='rgba(249,237,179,.8)';ctx.lineWidth=Math.max(2,w*.006);ctx.setLineDash([20,25]);ctx.beginPath();ctx.moveTo(w*.5,horizon);ctx.lineTo(w*.5,h);ctx.stroke();ctx.setLineDash([]);
-            // A small target marker uses real anomaly positions and bearing.
-            if(this.anomalies?.length){
-                const target=this.anomalies.reduce((a,b)=>Math.hypot(a.x-this.vPos.x,a.y-this.vPos.y)<Math.hypot(b.x-this.vPos.x,b.y-this.vPos.y)?a:b);
-                const dist=Math.hypot(target.x-this.vPos.x,target.y-this.vPos.y);
-                const ang=Math.atan2(target.y-this.vPos.y,target.x-this.vPos.x)+yaw+Math.PI/2;
-                const bearing=Math.atan2(Math.sin(ang),Math.cos(ang));
-                const px=Math.max(42,Math.min(w-42,w/2+bearing*w*.35));
-                const py=Math.max(horizon+35,Math.min(h-145,horizon+(h-horizon)*(.30+35/Math.max(35,dist+35))));
-                const radius=Math.max(12,Math.min(34,850/Math.max(26,dist)));
-                ctx.save();ctx.translate(px,py);
-                ctx.fillStyle=target.type==='RARE'?'#f4a9ff':'#ffc36b';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=18;
-                ctx.beginPath();ctx.moveTo(0,-radius);ctx.lineTo(radius,0);ctx.lineTo(0,radius);ctx.lineTo(-radius,0);ctx.closePath();ctx.fill();
-                ctx.shadowBlur=0;ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#fff';
-                ctx.fillText(dist<30?'ALVO ALCANÇADO':Math.round(dist)+' m',0,-radius-12);
-                ctx.restore();
-            }
-        },
-
-        processAR: function(ctx, w, h, dt, drawX, drawY, scaleCanvas) {
-            if (this.state === 'TOW_MODE') { this.isExtracting = false; return; }
-
-            const cx = w / 2; const cy = h / 2;
-            let nearestDist = 9999; this.activeAnomaly = null;
-            this.anomalies.forEach(ano => { let d = Math.hypot(ano.x - this.vPos.x, ano.y - this.vPos.y); if (d < nearestDist) { nearestDist = d; this.activeAnomaly = ano; } });
-
-            let visualFound = false; let foundBox = null;
-            // With no camera, proximity and an explicit HOLD TO COLLECT replace
-            // object recognition. The original cargo/currency/mission logic still runs.
-            if(window.ArcadeControls?.mode==='controls'){
-                const close=nearestDist<30;
-                if(this.state==='PLAY_REAR_AR'){
-                    if(close && this.manualPickupRequested && this.cargo.length<this.stats.maxCargo && this.cooldown<=0){
-                        this.manualPickupRequested=false;
-                        this.changeState('WAITING_PICKUP');
-                    }else if(!close)this.manualPickupRequested=false;
-                }
-                if(this.state==='WAITING_PICKUP'){
-                    ctx.fillStyle='rgba(10,33,54,.85)';
-                    ctx.fillRect(w*.15,h*.50,w*.70,37);
-                    ctx.fillStyle='#dcf8f9';ctx.textAlign='center';ctx.font='bold '+Math.min(16,Math.max(11,w*.037))+'px Arial';
-                    ctx.fillText('SEGURE COLETAR PARA RECOLHER',w/2,h*.50+24,w*.68);
-                    if(!this.manualPickupHeld){this.pickupTimer=0;return;}
-                    // Keep using existing one-second pickup timer and mission reward.
-                    this.manualAccelerate=false;
-                }
-            }
-            
-            // FILTRO DE IA: Objetos permitidos
-            const allowedClasses = ['car', 'truck', 'bus', 'train', 'mouse', 'remote', 'cell phone', 'bottle', 'cup', 'keyboard'];
-            
-            this.detectedItems.forEach(item => {
-                if (!allowedClasses.includes(item.class) || item.score < 0.25) return;
-                const bW = item.bbox[2] * scaleCanvas; const bH = item.bbox[3] * scaleCanvas;
-                
-                const bX = (w / 2) + (item.bbox[0] - (window.System?.video?.videoWidth||640) / 2) * scaleCanvas;
-                const bY = (h / 2) + (item.bbox[1] - (window.System?.video?.videoHeight||480) / 2) * scaleCanvas;
-                
-                if (bW > w * 0.8 || bW < w * 0.05) return; 
-                
-                const cX = bX + bW/2; const cY = bY + bH/2;
-                let isCentered = Math.hypot(cX - cx, cY - cy) < Math.min(w, h) * 0.4;
-                
-                ctx.strokeStyle = isCentered ? this.colors.danger : "rgba(255, 255, 0, 0.8)"; ctx.lineWidth = isCentered ? 4 : 2;
-                ctx.strokeRect(bX, bY, bW, bH);
-                ctx.fillStyle = isCentered ? this.colors.danger : "rgba(255, 255, 0, 0.8)"; ctx.font = "bold 14px Arial";
-                ctx.fillText(item.class.toUpperCase(), bX, bY - 5);
-
-                if (isCentered) { visualFound = true; foundBox = { x: bX, y: bY, w: bW, h: bH, label: item.class }; }
-            });
-
-            if (this.state === 'PLAY_REAR_AR') {
-                if (visualFound && this.cargo.length < this.stats.maxCargo && this.cooldown <= 0) { this.changeState('WAITING_PICKUP'); }
-            } 
-            else if (this.state === 'WAITING_PICKUP') {
-                const uiY = h - 160;
-                ctx.fillStyle = this.colors.danger; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(50,Math.max(14,window.innerWidth*0.07))) + "px 'Russo One'"; ctx.fillText("ALVO BLOQUEADO!", cx, uiY - 55);
-                ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(26,Math.max(14,window.innerWidth*0.04))) + "px Arial"; ctx.fillText(window.ArcadeControls?.mode==="controls"?"SEGURE COLETAR!":"PARE E REMOVA COM A MÃO!", cx, uiY - 20,Math.max(150,w-25));
-
-                if (!visualFound) {
-                    this.pickupTimer += dt;
-                    ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(w*0.1, uiY + 10, w*0.8, 30);
-                    ctx.fillStyle = this.colors.success; ctx.fillRect(w*0.1, uiY + 10, (this.pickupTimer/1.0)*(w*0.8), 30); 
-                    ctx.strokeStyle = "#fff"; ctx.lineWidth = 3; ctx.strokeRect(w*0.1, uiY + 10, w*0.8, 30);
-                    
-                    if (this.pickupTimer > 1.0) { 
-                        let val = (this.activeAnomaly && nearestDist < 30) ? this.activeAnomaly.val : (500 + Math.floor(Math.random() * 500));
-                        this.cargo.push(val); this.score += val / 10; window.System.msg("BRINQUEDO NA CAÇAMBA!");
-                        
-                        if (this.currentMission && this.currentMission.active) { this.currentMission.progress++; if (this.currentMission.progress >= this.currentMission.goal) this.completeMission(); }
-                        if (this.activeAnomaly && nearestDist < 30) this.anomalies = this.anomalies.filter(a => a.id !== this.activeAnomaly.id);
-
-                        this.changeState('PLAY_REAR_AR'); this.cooldown = 3.0; 
-                        if(window.Gfx && typeof window.Gfx.shakeScreen === 'function') window.Gfx.shakeScreen(20);
-                        if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
-                        this.collectGlow = 1.0; this.collectZoom = 1.0; this.spawnParticles(cx, cy, 40, this.colors.main);
-                    }
-                } else { this.pickupTimer = Math.max(0, this.pickupTimer - (dt * 0.5)); }
-
-                if (this.virtualSpeed > 10) { this.changeState('PLAY_REAR_AR'); window.System.msg("ALVO ABANDONADO"); }
-            }
-        },
-
-        drawHUD: function(ctx, w, h) {
-            const manual=window.ArcadeControls?.mode==='controls';
-            let fuelPct = this.displayFuel / this.stats.maxFuel; let isFull = this.cargo.length >= this.stats.maxCargo; let radHead = (this.currentHeading - this.baseHeading) * (Math.PI / 180);
-            if (this.collectGlow > 0) { ctx.fillStyle = `rgba(0, 255, 255, ${this.collectGlow * 0.3})`; ctx.fillRect(0, 0, w, h); this.collectGlow -= 0.03; }
-
-            const drawARWaypoint = (worldX, worldY, label, color, isBase) => {
-                let dx = worldX - this.vPos.x; let dy = worldY - this.vPos.y; let dist = Math.hypot(dx, dy);
-                let angle = Math.atan2(dy, dx) + radHead + (Math.PI/2); let fwdAngle = Math.atan2(Math.sin(angle), Math.cos(angle)); let fov = Math.PI / 2.5; 
-                if (Math.abs(fwdAngle) < fov) {
-                    let projX = (w/2) + (fwdAngle / fov) * (w/2); let projY = h/2 + Math.sin(this.timeTotal * 4) * 10;
-                    ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(projX, projY - 35); ctx.lineTo(projX + 25, projY); ctx.lineTo(projX, projY + 35); ctx.lineTo(projX - 25, projY); ctx.fill();
-                    ctx.fillStyle = "#fff"; ctx.font = "bold 14px 'Russo One'"; ctx.textAlign = "center"; ctx.fillText(label, projX, projY - 45);
-                    ctx.font = "bold 16px Arial"; ctx.fillText(Math.floor(dist) + "m", projX, projY + 60);
-                } else {
-                    let isRight = fwdAngle > 0; let edgeX = isRight ? w - 24 : 24; let edgeY = h / 2;
-                    ctx.fillStyle = isBase ? this.colors.success : color; ctx.beginPath();
-                    if (isRight) { ctx.moveTo(edgeX-12, edgeY - 16); ctx.lineTo(edgeX + 12, edgeY); ctx.lineTo(edgeX-12, edgeY + 16); }
-                    else { ctx.moveTo(edgeX+12, edgeY - 16); ctx.lineTo(edgeX - 12, edgeY); ctx.lineTo(edgeX+12, edgeY + 16); }
-                    ctx.fill(); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center"; ctx.fillText(isRight ? "GIRE ->" : "<- GIRE", isRight ? edgeX - 40 : edgeX + 40, edgeY + 8);
-                }
-            };
-
-            if (isFull || this.state === 'TOW_MODE') { drawARWaypoint(0, 0, "BASE DE ENTREGA", this.colors.success, true); } 
-            else { const nearest=[...this.anomalies].sort((a,b)=>Math.hypot(a.x-this.vPos.x,a.y-this.vPos.y)-Math.hypot(b.x-this.vPos.x,b.y-this.vPos.y))[0];if(nearest)drawARWaypoint(nearest.x,nearest.y,nearest.type==='RARE'?"RARO":"SUCATA",nearest.type==='RARE'?this.colors.rare:this.colors.warn,false); ctx.globalAlpha = 0.3; drawARWaypoint(0, 0, "BASE", this.colors.success, true); ctx.globalAlpha = 1.0; }
-
-            const topH = 70;
-            if(this.currentMission){ctx.save();ctx.textAlign='left';ctx.font='bold 12px Arial';ctx.fillStyle='#d8f7ff';const m=this.currentMission;ctx.fillText('EXPEDIÇÃO '+(m.stage||1)+' · '+Math.min(m.progress,m.goal)+'/'+m.goal+' OBJETOS',14,topH+22,Math.max(100,w*.66));ctx.restore();}
-            ctx.fillStyle = this.colors.panel; ctx.fillRect(0, 0, w, topH); ctx.strokeStyle = this.colors.main; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, topH); ctx.lineTo(w, topH); ctx.stroke();
-            ctx.fillStyle="#fff";ctx.font="bold 14px Arial";ctx.textAlign='left';ctx.fillText('VIDA: '+Math.floor(this.health)+'%',80,26,Math.max(80,w-250));
-            
-            ctx.save();
-            const fuelW=Math.max(80,Math.min(200,w-272)),fuelX=80;
-            if (fuelPct < 0.2) { let pulse = 1 + Math.abs(Math.sin(this.timeTotal * 10)) * 0.05; ctx.translate(fuelX+fuelW/2,38+10); ctx.scale(pulse, pulse); ctx.translate(-(fuelX+fuelW/2),-(38+10)); }
-            ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(fuelX,38, fuelW, 20); ctx.fillStyle = fuelPct > 0.2 ? this.colors.success : this.colors.danger; ctx.fillRect(fuelX,38, fuelPct * fuelW, 20);
-            ctx.strokeStyle = "#fff"; ctx.strokeRect(fuelX,38, fuelW, 20); ctx.fillStyle = "#fff"; ctx.font = "bold 14px Arial"; ctx.fillText("BATERIA",fuelX+7,53); ctx.restore();
-
-            if (isFull && this.state !== 'TOW_MODE') { ctx.fillStyle = (Math.sin(this.timeTotal*5) > 0) ? this.colors.success : "#fff"; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(40,Math.max(14,window.innerWidth*0.06))) + "px 'Russo One'"; ctx.fillText("CAÇAMBA CHEIA! VOLTE!", w/2, topH + 40); }
-
-            const btnS = Math.min(80, w * 0.18); const rightPad = 20; let distToBase = Math.hypot(this.vPos.x, this.vPos.y); let atBase = distToBase < 30; const garageY = topH + 20;
-            if(!manual){
-            ctx.fillStyle = atBase ? this.colors.success : "rgba(100,100,100,0.5)"; ctx.fillRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.strokeStyle = "#fff"; ctx.strokeRect(w - btnS - rightPad, garageY, btnS, btnS); ctx.fillStyle = "#000"; ctx.textAlign="center"; ctx.font = `bold ${btnS*0.5}px Arial`; ctx.fillText("🔧", w - rightPad - btnS/2, garageY + btnS*0.7);
-            }
-
-            const rR = Math.min(60, w * 0.15); const rCx = w - rR - rightPad; const rCy = garageY + btnS + rR + 20;
-            let radarGradient = ctx.createRadialGradient(rCx, rCy, 0, rCx, rCy, rR); radarGradient.addColorStop(0, "rgba(0, 50, 40, 0.9)"); radarGradient.addColorStop(1, "rgba(0, 10, 20, 0.7)");
-            ctx.fillStyle = radarGradient; ctx.beginPath(); ctx.arc(rCx, rCy, rR, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle = this.currentEvent ? this.colors.danger : this.colors.main; ctx.lineWidth = 3; ctx.stroke();
-
-            const drawBlip = (wX, wY, col, sz, isBlinking) => {
-                let dx = wX - this.vPos.x; let dy = wY - this.vPos.y; let dist = Math.hypot(dx, dy);
-                if (dist < this.stats.radarRange) {
-                    if (isBlinking && Math.sin(this.timeTotal * 15) > 0) return;
-                    let worldAngle = Math.atan2(dy, dx); let playerForwardAngle = (Math.PI / 2) + radHead; let relAngle = worldAngle - playerForwardAngle; let canvasAngle = -relAngle - Math.PI/2; 
-                    let sD = (dist / this.stats.radarRange) * rR;
-                    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(rCx + Math.cos(canvasAngle)*sD, rCy + Math.sin(canvasAngle)*sD, sz, 0, Math.PI*2); ctx.fill();
-                }
-            };
-            drawBlip(0, 0, this.colors.success, 8, false); if(!isFull) this.anomalies.forEach(a => drawBlip(a.x, a.y, a.type==='RARE'?this.colors.rare:this.colors.warn, 5, a.type==='RARE'));
-            ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.moveTo(rCx, rCy - 8); ctx.lineTo(rCx+6, rCy+6); ctx.lineTo(rCx-6, rCy+6); ctx.fill();
-
-            const botH=80,botY=h-botH;
-            if(manual){const y=Math.max(100,h-Math.max(128,Math.min(168,h*.23))-46);ctx.save();ctx.fillStyle=this.colors.panel;ctx.fillRect(10,y-22,w-20,32);ctx.fillStyle='#e5fbff';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText('CARGA '+this.cargo.length+'/'+this.stats.maxCargo+' · BASE '+Math.floor(distToBase)+' m',w/2,y,w-32);ctx.restore();return;}
-            ctx.fillStyle = this.colors.panel; ctx.fillRect(0, botY, w, botH); ctx.strokeStyle = this.colors.main; ctx.beginPath(); ctx.moveTo(0, botY); ctx.lineTo(w, botY); ctx.stroke();
-
-            const accR = Math.min(60, w * 0.15); const accX = 20 + accR; const accY = botY - accR - 20;
-            ctx.fillStyle = this.manualAccelerate ? "rgba(0,255,255,0.6)" : "rgba(0,255,255,0.2)"; ctx.beginPath(); ctx.arc(accX, accY, accR, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = "#fff"; ctx.font = "bold 16px Arial"; ctx.textAlign="center"; ctx.fillText("ACELERAR", accX, accY + 6);
-
-            ctx.textAlign = "left"; ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(Math.min(28,Math.max(14,window.innerWidth*0.05))) + "px 'Chakra Petch'"; ctx.fillText(`CARGA: ${this.cargo.length}/${this.stats.maxCargo}`, w < 700 ? Math.max(108,w*.36) : 180, h - 30);
-            ctx.fillStyle = this.colors.success; ctx.font = "bold " + Math.round(Math.min(32,Math.max(14,window.innerWidth*0.06))) + "px 'Russo One'"; if (w > 700) ctx.fillText(`R$ ${Math.floor(this.displayMoney).toLocaleString()}`, 380, h - 28);
-            ctx.textAlign = "right"; ctx.fillStyle = this.colors.main; ctx.font = "bold " + Math.round(Math.min(22,Math.max(14,window.innerWidth*0.04))) + "px 'Chakra Petch'"; ctx.fillText(`BASE: ${Math.floor(distToBase)}m`, w - 20, w < 700 ? 51 : h - 30);
-        },
-
-        deliverCargo: function() {
-            if (this.cargo.length > 0) {
-                if(this.expedition){this.expedition.deliveries++;this.expedition.itemsDelivered+=this.cargo.length;}
-                let total = this.cargo.reduce((a, b) => a + b, 0); let effBonus = Math.floor(total * (this.fuel / this.stats.maxFuel) * 0.3); total += effBonus;
-                if (this.currentMission && this.currentMission.active && this.currentMission.type === 'HEAVY LOAD') { total = Math.floor(total * 1.5); }
-                
-                if (window.Profile) {
-                    window.Profile.coins = (Number(window.Profile.coins) || 0) + total;
-                    if(window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades);
-                } else { this.fallbackMoney += total; }
-
-                let rankData = window.Profile ? window.Profile.getRank(total, true) : {msg: "BOM TRABALHO"};
-                window.System.msg(`ENTREGA: R$${total} - ${rankData.msg}`);
-                this.cargo = [];
-            }
-        },
-
-        handleOfficeAction: function(btn) {
-            let id = btn.id || btn;
-
-            if (id.startsWith('MENU_')) { GestureOffice.menuState = id.replace('MENU_', ''); if(window.Sfx) window.Sfx.hover(); return; }
-            if (id === 'BACK') { GestureOffice.menuState = 'MAIN'; if(window.Sfx) window.Sfx.click(); return; }
-
-            const buyObj = (cost, callback) => {
-                let wallet = window.Profile ? window.Profile.coins : this.fallbackMoney;
-                if (wallet >= cost && cost >= 0) { 
-                    if (window.Profile) { window.Profile.coins -= cost; } else { this.fallbackMoney -= cost; }
-                    callback(); if(window.Sfx) window.Sfx.coin(); return true; 
-                }
-                if(window.Sfx) window.Sfx.error(); return false;
-            };
-
-            const saveState = () => { if(window.Profile && window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades); };
-
-            if (id.startsWith('BUY_')) {
-                if (buyObj(btn.cost, () => { this.upgrades[btn.type] = btn.lvlReq; this.applyStats(); saveState(); })) { window.System.msg("UPGRADE INSTALADO!"); }
-            }
-            else if (id.startsWith('ACT_')) {
-                if (btn.action === 'repair' && this.health < 100) { buyObj(btn.cost, () => { this.health = 100; saveState(); }); }
-                else if (btn.action === 'refuel' && this.fuel < this.stats.maxFuel) { buyObj(btn.cost, () => { this.fuel = this.stats.maxFuel; saveState(); }); }
-                else if (btn.action === 'scout' && !this.upgrades.scout) { buyObj(btn.cost, () => { this.upgrades.scout = true; saveState(); }); }
-            }
-
-            if (id === 'GO_HUB') {
-                this.changeState('MULTIPLAYER_HUB');
-            }
-            if (id === 'EXIT') { if(window.System && window.System.switchCamera) window.System.switchCamera('environment'); this.changeState('EXIT_BASE_TRANSITION'); }
-        },
-        
-        handleHubAction: function(btn) {
-            let id = btn.id || btn;
-            
-            if (id === 'LEAVE_HUB') {
-                this.changeState('FRONT_AR_OFFICE');
-                return;
-            }
-            
-            const buyObj = (cost, callback) => {
-                let wallet = window.Profile ? window.Profile.coins : this.fallbackMoney;
-                if (wallet >= cost && cost > 0) { 
-                    if (window.Profile) { window.Profile.coins -= cost; } else { this.fallbackMoney -= cost; }
-                    callback(); if(window.Sfx) window.Sfx.coin(); return true; 
-                }
-                if(window.Sfx) window.Sfx.error(); return false;
-            };
-            
-            const saveState = () => { if(window.Profile && window.Profile.saveAR) window.Profile.saveAR(window.Profile.coins, this.upgrades); };
-            
-            if (id.startsWith('BUY_')) {
-                if (buyObj(btn.cost, () => { saveState(); })) {
-                    MultiplayerHub.myAction = btn.icon;
-                    MultiplayerHub.actionTimer = 5.0;
-                    window.System.msg(`COMPROU ${btn.label.replace('COMPRAR ', '').replace('COMER ', '').replace('TOMAR ', '')}!`);
-                }
-            }
-        },
-
-        applyStats: function() {
-            const engSpeeds = [20, 35, 55]; const batCaps = [100, 250, 600]; const radRanges = [150, 300, 600]; const chasCargo = [3, 6, 12];
-            this.stats.baseSpeed = engSpeeds[this.upgrades.engine - 1]; 
-            this.stats.maxFuel = batCaps[this.upgrades.battery - 1]; 
-            this.stats.radarRange = radRanges[this.upgrades.radar - 1]; 
-            this.stats.maxCargo = chasCargo[this.upgrades.chassis - 1];
-            if (this.fuel > this.stats.maxFuel) this.fuel = this.stats.maxFuel;
-        },
-
-        drawOverlay: function(ctx, w, h, title, sub) {
-            ctx.fillStyle = "rgba(0, 5, 10, 0.95)"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = this.colors.main; ctx.textAlign = "center"; ctx.font = "bold " + Math.round(Math.min(65,Math.max(14,window.innerWidth*0.08))) + "px 'Russo One'"; ctx.fillText(title, w/2, h/2 - 20); ctx.fillStyle = "#fff"; ctx.font = "bold 11px Arial"; ctx.fillText(sub, w/2, h/2 + 30);
-        },
-
-        spawnParticles: function(x, y, count, color) {
-            for(let i=0; i<count; i++) { particles.push({ x: x, y: y, vx: (Math.random()-0.5)*20, vy: (Math.random()-0.5)*20, life: 1.0, color: color, size: Math.random()*8+4 }); }
-        },
-
-        updateParticles: function(ctx, dt, w, h) {
-            ctx.globalCompositeOperation = 'screen';
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i]; p.x += p.vx * dt * 60; p.y += p.vy * dt * 60; p.life -= dt * 2;
-                if (p.life <= 0) { particles.splice(i, 1); continue; } ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.life); ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-            }
-            ctx.globalAlpha = 1.0; ctx.globalCompositeOperation = 'source-over';
-        },
-
-        cleanup: function() {
-            this.stopAILoop(); 
-            if (this.state === 'FRONT_AR_OFFICE') GestureOffice.destroy();
-            if (this.state === 'MULTIPLAYER_HUB') MultiplayerHub.destroy();
-            if (this._deviceOrientationHandler) window.removeEventListener('deviceorientation', this._deviceOrientationHandler);
-            if (this._deviceMotionHandler) window.removeEventListener('devicemotion', this._deviceMotionHandler);
-        }
-    };
-
-    const regLoop = setInterval(() => {
-        if(window.System && window.System.registerGame) {
-            window.System.registerGame('ar_truck_sim', 'AR Ops Premium', '🚀', Game, {
-                camera: 'environment', phases: [{ id: 'f1', name: 'MISSÃO AR GLOBAL', desc: 'Siga a Bússola e Recolha Brinquedos com a Mão!', reqLvl: 1 }]
-            });
-            clearInterval(regLoop);
-        }
-    }, 100);
-
+/* AR COMBAT — câmera opcional, arena virtual, alvos somente do jogo.
+ * O identificador legado conserva as permissões originais. O progresso de
+ * combate usa um novo namespace e nunca converte cargas antigas em vitórias. */
+(function(){
+'use strict';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const angle=v=>Math.atan2(Math.sin(v),Math.cos(v));
+const MISSIONS=[
+ {id:'patrol',name:'PATRULHA • PORTO',waves:2,count:3,desc:'Limpe dois setores. Aprenda a mirar, recarregar e usar cobertura.'},
+ {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Avance por três setores contra infantaria e drones.'},
+ {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:4,count:4,desc:'Atravesse quatro setores e neutralize o blindado final.'}
+];
+const WEAPONS=[
+ {id:'rifle',name:'Fuzil',mag:30,reserve:180,damage:34,interval:.15,reload:1.65,requires:0},
+ {id:'smg',name:'Submetralhadora',mag:24,reserve:192,damage:24,interval:.085,reload:1.25,requires:1},
+ {id:'marksman',name:'Precisão',mag:8,reserve:56,damage:85,interval:.48,reload:2,requires:2}
+];
+const LEVELS={easy:{aim:2.4,damage:8,count:0,health:.8},normal:{aim:1.8,damage:12,count:1,health:1},hard:{aim:1.2,damage:17,count:2,health:1.25}};
+const Game={
+ state:'INIT',lastTime:0,weapons:WEAPONS,manualStick:{x:0,y:0,active:false},keys:{},
+ init(fase){
+  this.cleanup();this.lastTime=performance.now();this.state='PLAYING';this.resultPaid=false;this.resultTimer=0;
+  this.mission=MISSIONS.find(m=>m.id===fase?.id)||MISSIONS[0];
+  this.difficulty=window.ArcadePlaySettings?.get().difficulty||'normal';this.level=LEVELS[this.difficulty]||LEVELS.normal;
+  this.careerKey='thia:ar-combat:v1:'+(window.System?.playerId||'local');
+  let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
+  this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
+  this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
+  this.fireHeld=false;this.coverHeld=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
+  this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
+  this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
+  this.covers=[{x:-7,z:15,w:5,h:1.5,d:2},{x:8,z:27,w:6,h:2,d:2},{x:-12,z:43,w:5,h:2.3,d:3}];
+  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();}};
+  this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.fireHeld=this.coverHeld=false;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
+  window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
+ },
+ selectWeapon(id,initial=false){
+  const gun=WEAPONS.find(w=>w.id===id);if(!gun||this.career.wins<gun.requires)return false;
+  if(!initial&&this.state==='PLAYING'&&(this.stats.shots>0||this.wave>0))return false;
+  this.gun=gun;this.ammo=gun.mag;this.reserve=gun.reserve;this.reloadTime=0;this.career.weapon=gun.id;this.saveCareer();return true;
+ },
+ saveCareer(){try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
+ reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;return true;},
+ spawnWave(){
+  this.wave++;this.bannerTime=2.4;this.enemies=[];
+  const count=this.mission.count+this.level.count+this.wave-1;
+  for(let i=0;i<count;i++){
+   const kind=this.mission.id==='extraction'&&this.wave===this.mission.waves&&i===count-1?'tank':this.mission.id!=='patrol'&&i%3===2?'drone':'soldier';
+   this.enemies.push({id:this.wave+':'+i,kind,x:(i-(count-1)/2)*6,z:34+(i%3)*8,y:kind==='drone'?5:1.15,hp:(kind==='tank'?260:kind==='drone'?70:100)*this.level.health,active:true,aim:this.level.aim+1.5+i*.35,flash:0,phase:i*.7,rewarded:false});
+  }
+ },
+ // The same wall depth test is used by hits, enemy fire and rendered occlusion.
+ blocked(x,z,y){
+  const p=this.player,dx=x-p.x,dz=z-p.z;
+  return this.covers.some(c=>{
+   const tx=Math.abs(dx)<1e-8?[-Infinity,Infinity]:[(c.x-c.w/2-p.x)/dx,(c.x+c.w/2-p.x)/dx].sort((a,b)=>a-b);
+   const tz=Math.abs(dz)<1e-8?[-Infinity,Infinity]:[(c.z-c.d/2-p.z)/dz,(c.z+c.d/2-p.z)/dz].sort((a,b)=>a-b);
+   if(Math.abs(dx)<1e-8&&Math.abs(p.x-c.x)>c.w/2||Math.abs(dz)<1e-8&&Math.abs(p.z-c.z)>c.d/2)return false;
+   const t=Math.max(0,tx[0],tz[0]),end=Math.min(1,tx[1],tz[1]);
+   return t<=end&&t>0.001&&t<.99&&(this.eyeY+(y-this.eyeY)*t)<c.h;
+  });
+ },
+ shoot(){
+  if(this.state!=='PLAYING'||this.reloadTime>0||this.shotCooldown>0)return false;
+  if(this.ammo<=0){this.reload();return false;}
+  this.ammo--;this.stats.shots++;this.shotCooldown=this.gun.interval;this.muzzle=.075;
+  const p=this.player;let best=null,bestDistance=Infinity;
+  for(const e of this.enemies){
+   if(!e.active)continue;const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),dy=e.y-this.eyeY;
+   const radius=e.kind==='tank'?2.6:e.kind==='drone'?.85:.72;
+   if(Math.abs(angle(Math.atan2(dx,dz)-p.yaw))<Math.atan2(radius,distance)&&Math.abs(Math.atan2(dy,distance)-p.pitch)<Math.atan2(radius,distance)&&distance<bestDistance&&!this.blocked(e.x,e.z,e.y)){best=e;bestDistance=distance;}
+  }
+  if(best){best.hp-=this.gun.damage;best.flash=.12;this.stats.hits++;this.hitFlash=.13;if(best.hp<=0)this.defeat(best);}
+  return true;
+ },
+ defeat(e){
+  if(!e.active||e.rewarded)return false;e.active=false;e.rewarded=true;this.stats.kills++;this.score+=e.kind==='tank'?350:100;
+  for(let i=0;i<9;i++)this.particles.push({x:e.x,y:e.y,z:e.z,life:.7,vx:(Math.random()-.5)*5,vy:Math.random()*3,vz:(Math.random()-.5)*5});return true;
+ },
+ finish(won){
+  if(this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.fireHeld=false;
+  this.career.kills+=this.stats.kills;if(won){this.stats.missions=1;this.career.wins++;this.career.completed[this.mission.id]=true;}this.saveCareer();return true;
+ },
+ step(dt){
+  this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
+  this.eyeY=(this.coverHeld||this.keys.c)?1.05:1.8;
+  if(this.state!=='PLAYING'){
+   this.resultTimer-=dt;if(this.resultTimer<=0&&!this.resultSent){this.resultSent=true;window.System?.gameOver?.(this.score,this.state==='VICTORY',0);}return;
+  }
+  const p=this.player,stick=this.manualStick,aim=this.aimStick,cover=this.coverHeld||this.keys.c;
+  const sensitivity=window.ArcadePlaySettings?.get().sensitivity??1;
+  p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);
+  let mx=(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
+  const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
+  p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
+  p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);
+  const speed=cover?1.9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
+  if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){p.x=nx;p.z=nz;}
+  this.shotCooldown=Math.max(0,this.shotCooldown-dt);
+  if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
+  if(this.fireHeld||this.keys[' '])this.shoot();
+  if(!this.enemies.some(e=>e.active)){
+   this.waveDelay-=dt;
+   if(this.waveDelay<=0){if(this.wave>=this.mission.waves)this.finish(true);else{this.spawnWave();this.waveDelay=2.5;this.reserve=Math.max(this.reserve,this.gun.mag*2);p.hp=Math.min(100,p.hp+18);}}
+  }
+  for(const e of this.enemies){
+   if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);e.aim-=dt;
+   if(e.kind==='drone')e.y=5+Math.sin(this.elapsed*1.5+e.phase)*.8;
+   if(e.kind==='soldier')e.x=clamp(e.x+Math.sin(this.elapsed*.5+e.phase)*dt*.7,-26,26);
+   if(e.aim<=0){
+    if(!this.blocked(e.x,e.z,e.y)){const damage=this.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1);p.hp=Math.max(0,p.hp-damage);this.hurtFlash=.15;if(cover)this.stats.blocks++;}
+    e.aim=this.level.aim+1.2;e.shot=.14;
+   }
+   e.shot=Math.max(0,(e.shot||0)-dt);
+  }
+  for(const f of this.particles){f.life-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.z+=f.vz*dt;}this.particles=this.particles.filter(f=>f.life>0);
+  if(p.hp<=0)this.finish(false);
+ },
+ update(ctx,w,h){
+  const now=performance.now(),dt=clamp((now-this.lastTime)/1000,0,.05);this.lastTime=now;if(!this.player)return 0;
+  this.step(dt);this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
+ },
+ project(x,y,z,w,h){
+  const p=this.player,dx=x-p.x,dz=z-p.z,cy=Math.cos(p.yaw),sy=Math.sin(p.yaw),rx=dx*cy-dz*sy,rz=dx*sy+dz*cy,dy=y-this.eyeY,cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),depth=rz*cp+dy*sp;
+  if(depth<.25)return null;const f=Math.min(w,h)*.88;return{x:w/2+rx*f/depth,y:h*.48-(dy*cp-rz*sp)*f/depth,s:f/depth,z:depth};
+ },
+ drawVirtualScene: function(ctx,w,h){
+  this.viewSize={w,h};const video=window.System?.video,camera=window.ArcadeControls?.mode==='camera'&&video?.readyState>=2;
+  ctx.clearRect(0,0,w,h);
+  if(camera){const scale=Math.max(w/(video.videoWidth||640),h/(video.videoHeight||480));ctx.drawImage(video,(w-(video.videoWidth||640)*scale)/2,(h-(video.videoHeight||480)*scale)/2,(video.videoWidth||640)*scale,(video.videoHeight||480)*scale);ctx.fillStyle='rgba(6,18,27,.22)';ctx.fillRect(0,0,w,h);}
+  else{const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#152d46');bg.addColorStop(.46,'#8aabad');bg.addColorStop(.48,'#6c7566');bg.addColorStop(1,'#263d3e');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);}
+  const faces=[];
+  const face=(vertices,color)=>{const points=vertices.map(v=>this.project(...v,w,h));if(points.some(p=>!p))return;faces.push({points,color,z:points.reduce((s,p)=>s+p.z,0)/points.length});};
+  const box=(x,y,z,bw,bh,bd,color)=>{
+   const v=[[-1,0,-1],[1,0,-1],[1,0,1],[-1,0,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]].map(([a,b,c])=>[x+a*bw/2,y+b*bh,z+c*bd/2]);
+   for(const [indices,tint] of [[[0,1,5,4],color],[[1,2,6,5],color],[[2,3,7,6],color],[[3,0,4,7],color],[[4,5,6,7],color]])face(indices.map(i=>v[i]),tint);
+  };
+  if(!camera){
+   for(let z=0;z<100;z+=10)face([[-32,0,z],[32,0,z],[32,0,z+1],[-32,0,z+1]],'rgba(177,194,171,.14)');
+   for(let i=0;i<10;i++){const side=i%2?1:-1;box(side*(22+i%3*3),0,15+Math.floor(i/2)*18,7,5+i%4*3,9,i%2?'#607277':'#76858a');box(side*(22+i%3*3),5+i%4*3,15+Math.floor(i/2)*18,7.5,.3,9.5,'#a2aca6');}
+  }
+  for(const c of this.covers){box(c.x,0,c.z,c.w,c.h,c.d,'#5a6964');box(c.x,c.h,c.z,c.w+.12,.12,c.d+.12,'#b4b89a');}
+  for(const e of this.enemies){
+   if(!e.active)continue;const color=e.flash?'#f2ebca':e.kind==='tank'?'#66784e':'#586a61';
+   if(e.kind==='soldier'){
+    const walk=Math.sin(this.elapsed*4+e.phase)*.12;
+    box(e.x-.21,0,e.z+walk,.3,.82,.32,'#273b3b');box(e.x+.21,0,e.z-walk,.3,.82,.32,'#314846');
+    box(e.x,.75,e.z,.86,.84,.48,color);box(e.x,1.58,e.z,.48,.39,.43,'#a2a891');box(e.x,1.94,e.z,.58,.17,.5,'#354c46');
+    box(e.x,1.74,e.z-.225,.36,.1,.03,'#61c6c2');box(e.x+.5,1.1,e.z-.32,.22,.23,.95,'#202f35');
+   }else if(e.kind==='drone'){
+    box(e.x,e.y-.25,e.z,1.1,.45,.8,color);for(const s of [-1,1]){box(e.x+s,e.y,e.z,1,.1,.13,'#a7b5b5');box(e.x+s,e.y+.12,e.z,1.5,.035,.18,'#293f49');}box(e.x,e.y-.13,e.z-.5,.25,.12,.04,'#f6a050');
+   }else{
+    box(e.x,0,e.z,4.8,.75,5.4,'#2c3e36');box(e.x,.7,e.z,4.3,1.1,4.5,color);box(e.x,1.8,e.z,2.8,.8,2.7,'#83916b');box(e.x,2.1,e.z-2.5,.26,.26,4,'#394f42');
+   }
+  }
+  faces.sort((a,b)=>b.z-a.z);for(const f of faces){ctx.beginPath();f.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();ctx.strokeStyle='rgba(10,26,32,.2)';ctx.lineWidth=.6;ctx.stroke();}
+  for(const e of this.enemies){
+   if(!e.active)continue;const p=this.project(e.x,e.kind==='soldier'?2.7:e.y+1.8,e.z,w,h);if(!p)continue;
+   ctx.strokeStyle=e.aim<.8?'#ffba55':'#e58d77';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(6,Math.min(13,p.s*.5)),-Math.PI/2,-Math.PI/2+Math.PI*2*(1-clamp(e.aim/(this.level.aim+1.2),0,1)));ctx.stroke();
+   if(e.shot>0){ctx.strokeStyle='rgba(255,187,87,.8)';ctx.beginPath();ctx.moveTo(p.x,p.y+20);ctx.lineTo(w*.5,h*.76);ctx.stroke();}
+  }
+  for(const f of this.particles){const p=this.project(f.x,f.y,f.z,w,h);if(p){ctx.fillStyle='rgba(255,194,94,'+f.life+')';ctx.fillRect(p.x,p.y,Math.max(2,p.s*.15),Math.max(2,p.s*.15));}}
+  // First-person weapon, below the reticle. All targets are rendered game objects.
+  const bx=w*.62,by=h*.83,unit=Math.min(w,h)*.16;ctx.fillStyle='#293e44';ctx.fillRect(bx,by,unit*.48,unit*1.6);ctx.fillStyle='#5b7175';ctx.fillRect(bx+unit*.08,by-unit*.65,unit*.25,unit*1.5);ctx.fillStyle='#152b32';ctx.fillRect(bx+unit*.12,by-unit*.9,unit*.17,unit*.6);
+  if(this.muzzle>0){ctx.fillStyle='#ffe4a0';ctx.beginPath();ctx.arc(bx+unit*.20,by-unit*.95,unit*.3,0,Math.PI*2);ctx.fill();}
+  if(this.hurtFlash>0){ctx.fillStyle='rgba(175,54,33,.17)';ctx.fillRect(0,0,w,h);}
+ },
+ drawHUD(ctx,w,h){
+  ctx.save();ctx.textAlign='left';const size=Math.min(16,Math.max(11,w*.032));ctx.font='bold '+size+'px Arial';
+  ctx.fillStyle='rgba(5,20,29,.82)';ctx.fillRect(12,h*.13,w-24,65);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),23,h*.13+22,w-46);
+  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,23,h*.13+46,w-46);
+  const y=h*.72;ctx.fillStyle='rgba(5,20,29,.84)';ctx.fillRect(w*.20,y,w*.60,50);ctx.textAlign='center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,w/2,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,w/2,y+40,w*.55);
+  const cx=w/2,cy=h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
+  for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
+  ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?'CÂMERA • ALVOS VIRTUAIS • ARRASTE MIRAR':'ARENA VIRTUAL • MOVER + MIRAR + ATIRAR',w/2,h*.24,w-24);
+  if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}
+  if(this.bannerTime>0&&this.wave===0){ctx.fillStyle='#fff';ctx.fillText('MOVA À ESQUERDA • MIRE À DIREITA • SEGURE ATIRAR',w/2,h*.31,w-22);}
+  if(this.state==='VICTORY'||this.state==='DEFEAT'){ctx.fillStyle='rgba(6,18,27,.86)';ctx.fillRect(0,h*.34,w,h*.28);ctx.fillStyle=this.state==='VICTORY'?'#a3edbd':'#ffbe9c';ctx.font='bold 23px Arial';ctx.fillText(this.state==='VICTORY'?'OPERAÇÃO CONCLUÍDA':'TENTE OUTRA ESTRATÉGIA',w/2,h*.44,w-24);ctx.font='14px Arial';ctx.fillText(this.stats.kills+' alvos • '+this.stats.hits+'/'+this.stats.shots+' acertos',w/2,h*.50,w-24);}
+  ctx.restore();
+ },
+ cleanup(){
+  this.release?.();if(this.keyDown)window.removeEventListener?.('keydown',this.keyDown);if(this.keyUp)window.removeEventListener?.('keyup',this.keyUp);if(this.release){window.removeEventListener?.('blur',this.release);window.removeEventListener?.('arcade:release-inputs',this.release);}this.resultSent=false;
+ }
+};
+const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','AR Combat','🎯',Game,{camera:'environment',camOpacity:0,phases:MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1}))});return true;};
+if(!register()){const timer=setInterval(()=>{if(register())clearInterval(timer)},100);}
 })();

@@ -4,17 +4,17 @@
  * No game APIs are called until a real match begins. */
 (()=>{"use strict";
 const gameId=window.CONSOLE_GAME_ID;
-const names={drive:"KART LEGENDS",box_pro:"BOXE PRO",tennis:"TÊNIS ARENA",ar_truck_sim:"AR OPS",usarmy_flight_sim:"AERO STRIKE"};
+const names={drive:"KART LEGENDS",box_pro:"BOXE PRO",tennis:"TÊNIS ARENA",ar_truck_sim:"AR COMBAT",usarmy_flight_sim:"AERO STRIKE"};
 if(!Object.prototype.hasOwnProperty.call(names,gameId))return;
 const $=s=>document.querySelector(s);
 const goalDefs={
  drive:[[["lap","COMPLETE UMA VOLTA",1],["fast","MANTENHA 150+ POR 3s",3],["nitro","USE O NITRO",1]],[["laps","COMPLETE 2 VOLTAS",2],["fast","MANTENHA 150+ POR 12s",12],["podium","TERMINE NO PÓDIO",1]],[["win","VENÇA UMA CORRIDA",1],["hardWin","VENÇA NO DESAFIO",1],["boosts","FAÇA 2 MINI-TURBOS",2]]],
  box_pro:[[["hits","ACERTE 3 GOLPES",3],["time","LUTE POR 30s",30],["blocks","BLOQUEIE 2 GOLPES",2]],[["dodges","FAÇA 2 ESQUIVAS",2],["counters","ACERTE UM CONTRAGOLPE",1],["win","VENÇA UMA LUTA",1]],[["counters","ACERTE 3 CONTRAGOLPES",3],["hardWin","VENÇA O CINTURÃO OU DESAFIO",1],["healthyWin","VENÇA COM 50% DE VIDA",1]]],
  tennis:[[["rally","RALLY DE 4 TOQUES",4],["points","MARQUE 2 PONTOS",2],["win","VENÇA UMA PARTIDA",1]],[["rally","RALLY DE 8 TOQUES",8],["points","MARQUE 8 PONTOS",8],["win","VENÇA UMA PARTIDA",1]],[["rally","RALLY DE 12 TOQUES",12],["hardWin","VENÇA NO DESAFIO",1],["marginWin","VENÇA COM 5 DE VANTAGEM",1]]],
- ar_truck_sim:[[["collect","COLETE 2 OBJETOS",2],["missions","CONCLUA UMA MISSÃO",1],["deliveries","ENTREGUE UMA CARGA NA BASE",1]],[["itemsDelivered","ENTREGUE 6 OBJETOS",6],["missions","CONCLUA 2 MISSÕES",2],["safeReturn","ENTREGUE COM 80% DE VIDA",1]],[["itemsDelivered","ENTREGUE 12 OBJETOS",12],["missions","CONCLUA 4 MISSÕES",4],["deliveries","FAÇA 4 ENTREGAS",4]]],
+ ar_truck_sim:[[["hits","ACERTE 6 DISPAROS",6],["kills","NEUTRALIZE 3 ALVOS",3],["reloads","RECARREGUE A ARMA",1]],[["kills","NEUTRALIZE 8 ALVOS",8],["wave","ALCANCE O TERCEIRO SETOR",3],["blocks","USE COBERTURA EM 2 ATAQUES",2]],[["kills","NEUTRALIZE 15 ALVOS",15],["victory","CONCLUA UMA OPERAÇÃO",1],["hardWin","VENÇA NO DESAFIO",1]]],
  usarmy_flight_sim:[[["time","VOE POR 35s",35],["locks","TRAVE A MIRA NUM INIMIGO",1],["kills","ABATA UM ADVERSÁRIO",1]],[["kills","ABATA 5 ADVERSÁRIOS",5],["wave","ALCANCE A SEGUNDA ONDA",2],["school","CONCLUA A ESCOLA DE VOO",1]],[["kills","ABATA 12 ADVERSÁRIOS",12],["boss","ABATA O CHEFÃO",1],["victory","CONCLUA A CAMPANHA",1]]]
 };
-const key="thia:mastery:v2:"+gameId;
+const key=(gameId==='ar_truck_sim'?"thia:combat-mastery:v1:":"thia:mastery:v2:")+gameId;
 let completed={},session=null,last=null,lastTick=performance.now(),ui=null,info=null,toggle=null,badge=null,tier=0;
 try{const saved=JSON.parse(localStorage.getItem(key)||"{}");if(saved&&typeof saved.completed==='object')completed=saved.completed||{}}catch{}
 const stages=['INICIAÇÃO','TÉCNICA','MAESTRIA'];
@@ -24,7 +24,7 @@ function selectTier(){tier=firstUnfinished();goals=goalDefs[gameId][tier].map(([
 selectTier();
 function persist(){try{localStorage.setItem(key,JSON.stringify({completed,updatedAt:new Date().toISOString()}))}catch{}}
 const clamp=(x,a,b)=>Math.min(b,Math.max(a,Number(x)||0));
-const isPlaying=g=>!!g&&(gameId==='drive'?['RACE','SPECTATE_WAIT'].includes(g.state):gameId==='box_pro'?['FIGHT','GAMEOVER'].includes(g.state):gameId==='tennis'?['IDLE','RALLY','SERVE','STARTING','END_WAIT','END'].includes(g.state):gameId==='ar_truck_sim'?['PLAY_REAR_AR','WAITING_PICKUP','ENTER_BASE_TRANSITION','FRONT_AR_OFFICE'].includes(g.state):['PLAYING','VICTORY','GAMEOVER'].includes(g.state));
+const isPlaying=g=>!!g&&(gameId==='drive'?['RACE','SPECTATE_WAIT'].includes(g.state):gameId==='box_pro'?['FIGHT','GAMEOVER'].includes(g.state):gameId==='tennis'?['IDLE','RALLY','SERVE','STARTING','END_WAIT','END'].includes(g.state):gameId==='ar_truck_sim'?['PLAYING','VICTORY','DEFEAT'].includes(g.state):['PLAYING','VICTORY','GAMEOVER'].includes(g.state));
 function make(){
  if(ui)return;ui=document.createElement('section');ui.id='studio-mastery';ui.setAttribute('aria-label','Carreira e desafios de domínio');
  toggle=document.createElement('button');toggle.type='button';toggle.id='studio-mastery-toggle';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Mostrar carreira e desafios');
@@ -52,7 +52,7 @@ function updateGoals(g,dt){
  else if(gameId==='tennis'){
   const won=['END','END_WAIT'].includes(g.state)&&g.score.p1>g.score.p2;Object.assign(metrics,{rally:Math.max(g.matchBestRally||0,g.rallyCount||0),points:g.score.p1,win:Number(won),hardWin:Number(won&&hard),marginWin:Number(won&&g.score.p1-g.score.p2>=5)});
  }else if(gameId==='ar_truck_sim'){
-  if(v.deliveries>(p.deliveries||0)&&g.health>=80)session.safeReturn=1;Object.assign(metrics,g.expedition||{},{collect:g.currentMission?.progress||0,safeReturn:session.safeReturn});
+  Object.assign(metrics,g.stats||{},{wave:g.wave||0,victory:Number(g.state==='VICTORY'),hardWin:Number(g.state==='VICTORY'&&g.difficulty==='hard')});
  }else{
   if(v.locked&&!p.locked)session.locks++;Object.assign(metrics,{locks:session.locks,kills:g.session?.kills||0,wave:g.session?.wave||0,school:Number(g.flightCareer?.school),boss:Number(g.bossDefeated),victory:Number(g.state==='VICTORY')});
  }
@@ -82,6 +82,7 @@ function release(){
  for(const target of pressed){const btn=$(target);synthetic(btn,false)}
  pressed.clear();
  const logic=current()?.logic;
+ if(gameId==='ar_truck_sim'&&logic){logic.release?.();}
  if(logic?.keys){for(const k of ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Shift"," "])logic.keys[k]=false}
 }
 function act(selector,hold){
@@ -133,11 +134,8 @@ function moveGamepad(){
      }
    }
  }else if(gameId==="ar_truck_sim"){
-   act('.ar-input [data-control="left"]',left);
-   act('.ar-input [data-control="right"]',right);
-   act('.ar-input [data-control="go"]',rt||up);
-   act('.ar-input [data-control="pick"]',a);
-   act('.ar-input [data-control="base"]',b);
+   logic.manualStick={x,y:-y,active:Math.hypot(x,y)>.1};logic.aimStick={x:axis(2),y:-axis(3),active:true};
+   act('.ar-input [data-control="fire"]',rt);act('.ar-input [data-control="reload"]',xx);act('.ar-input [data-control="cover"]',lt||lb);
  }else if(gameId==="usarmy_flight_sim"){
    for(const [name,on] of [["left",left],["right",right],["up",up],["down",down],["boost",b],["missile",a],["fire",rt]]){
      act('.flight-input [data-control="'+name+'"]',on);

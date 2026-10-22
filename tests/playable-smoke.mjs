@@ -224,12 +224,9 @@ try{
       await page.screenshot({path:join("test-results/playable","kart-controls-visible"+(device?"-"+device:"")+".png")});
     }
     if(slug==="ar"){
-      const manual=await page.evaluate(()=>{
-        const g=window.Games.find(x=>x.id==="ar_truck_sim").logic;
-        return {state:g.state,model:!!g.objectModel,manual:g.arcadeManual};
-      });
-      assert(manual.manual && !manual.model,"Modo AR sem câmera não entrou no ambiente virtual");
-      assert.equal(await page.locator('[data-control="pick"]').count(),1,"Falta comando de coleta");
+      const combat=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {state:g.state,shots:g.stats.shots,camera:window.__cameraRequests};});
+      assert.equal(combat.state,'PLAYING');assert.equal(combat.shots,0,'Combat must wait for the trigger');assert.equal(combat.camera,0);
+      for(const control of ['joystick','aim','fire','reload','cover'])assert.equal(await page.locator('.combat-input [data-control="'+control+'"]').count(),1);
     }else if(slug==="voo"){
       assert.equal(await page.locator('[data-control="boost"]').count(),1,"Falta botão turbo");
       assert.equal(await page.locator('[data-control="missile"]').count(),1,"Falta botão míssil");
@@ -240,22 +237,22 @@ try{
       assert.equal(await page.evaluate(()=>window.Games.find(x=>x.id==="tennis").logic.useMouse),true,"Tênis sem toque");
     }
     if(slug==="ar"){
+       const move=page.locator('.combat-input [data-control="joystick"]'),aim=page.locator('.combat-input [data-control="aim"]');
+       const moving=await fingers.start(move,.78,.22),aiming=await fingers.start(aim,.73,.30),firing=await fingers.start(page.locator('.combat-input [data-control="fire"]'));
+       await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.manualStick.x>.2&&g.manualStick.y>.2&&g.aimStick.x>.2&&g.aimStick.y>.2&&g.fireHeld&&g.stats.shots>0;},null,{timeout:3000});
+       await page.screenshot({path:join('test-results/playable','ar-combat-three-fingers.png')});
+       await fingers.end(aiming);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.aimStick.active&&g.manualStick.active&&g.fireHeld}));await fingers.end(firing);await fingers.end(moving);
        await page.evaluate(()=>{
-          const g=window.Games.find(x=>x.id==="ar_truck_sim").logic;
-          g.vPos={x:0,y:0};g.anomalies=[{id:"test-item",x:0,y:0,type:"NORMAL",val:500,life:999}];
-          g.cooldown=0;g.manualAccelerate=false;
+          const g=window.System.activeGame.logic;g.covers=[];Object.assign(g.player,{x:0,z:0,yaw:0,pitch:0});g.spawnWave();for(const e of g.enemies)e.aim=999;
+          const e=g.enemies[0];e.x=0;e.z=24;e.y=1.15;g.player.pitch=Math.atan2(e.y-g.eyeY,e.z);g.shotCooldown=0;
        });
-       await page.locator('[data-control="pick"]').dispatchEvent("pointerdown",{pointerId:4});
-       await page.waitForFunction(()=>window.Games.find(x=>x.id==="ar_truck_sim").logic.cargo.length>=1,null,{timeout:4200});
-       await page.locator('[data-control="pick"]').dispatchEvent("pointerup",{pointerId:4});
-       const progress=await page.evaluate(()=>window.Games.find(x=>x.id==="ar_truck_sim").logic.currentMission.progress);
-       assert(progress>=1,"Coleta não progrediu na missão AR");
-       await page.waitForFunction(()=>window.System.activeGame.logic.state==='PLAY_REAR_AR',null,{timeout:8000});
-       const direction=await fingers.start(page.locator('[data-control="right"]')),go=await fingers.start(page.locator('[data-control="go"]')),pick=await fingers.start(page.locator('[data-control="pick"]'));
-       assert.equal(await page.locator('.ar-input .held').count(),3);await fingers.end(pick);
-       await page.waitForFunction(()=>window.System.activeGame.logic.manualAccelerate,null,{timeout:3000});
-       assert.equal(await page.locator('.ar-input .held').count(),2);await fingers.end(direction);await fingers.end(go);
-
+       const before=await page.evaluate(()=>window.System.activeGame.logic.stats.kills);
+       const fire=await fingers.start(page.locator('.combat-input [data-control="fire"]'));
+       await page.waitForFunction(n=>window.System.activeGame.logic.stats.kills>n,before,{timeout:4000});await fingers.end(fire);
+       const ammo=await page.evaluate(()=>window.System.activeGame.logic.ammo);await page.locator('.combat-input [data-control="reload"]').click();
+       await page.waitForFunction(()=>window.System.activeGame.logic.reloadTime>0,null,{timeout:2000});
+       await page.waitForFunction(n=>window.System.activeGame.logic.ammo>n,ammo,{timeout:4000});
+       await page.screenshot({path:join('test-results/playable','ar-combat-arena.png')});
     }else if(slug==="voo"){
        const control=page.locator('[data-control="left"]');
        await control.dispatchEvent("pointerdown",{pointerId:6});
@@ -353,6 +350,23 @@ try{
       await fingers.end(fireFinger);assert(await page.evaluate(()=>window.System.activeGame.logic.manualStick.active),'Releasing fire must preserve the stick');await fingers.end(rightFinger);
       assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.manualStick.active&&!g.manualFireHeld&&!g.keys.Shift}),'Flight input remains stuck after releasing all fingers');
       const quiet=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {locked:g.combat.locked,shots:g.bullets.filter(b=>!b.isEnemy).length}});assert(!quiet.locked&&quiet.shots===0,'No adversary in sight must mean no player fire');
+      // Frame a real city and an opponent for visual review; no collision/physics substitution.
+      await page.evaluate(()=>{const g=window.System.activeGame.logic;Object.assign(g.ship,{x:-1100,y:700,z:-1600,yaw:.12,pitch:-.15,roll:0,vx:0,vy:0,vz:250});g.view=null;g.entities=[{type:'jet_fighter',airframe:'interceptor',x:-1030,y:750,z:-1100,yaw:Math.PI,pitch:0,roll:.2,vx:0,vy:0,vz:0,hp:150,active:true,stateTimer:99}];});
+      await page.waitForTimeout(180);await page.screenshot({path:join('test-results/playable','voo-city-and-opponent.png')});
+      await page.locator('#arcade-pause').click();await page.locator('#arcade-pause-modal [data-action="phases"]').click();
+      await page.locator('#phase-grid .mission-card:not(.locked)').nth(1).click();await page.locator('.input-mode-dialog [data-mode="controls"]').click();
+      await page.waitForFunction(()=>window.System.activeGame?.logic.state==='HANGAR');
+      await page.locator('#play-settings-button').click();await page.locator('#play-settings [data-airframe]').selectOption('kestrel');
+      assert.equal(await page.evaluate(()=>window.System.activeGame.logic.airframe),'kestrel');await page.locator('#play-settings [data-close]').last().click();
+      await page.locator('.flight-input [data-control="start"]').click();await page.waitForFunction(()=>window.System.activeGame.logic.state==='CALIBRATION');await page.locator('.flight-input [data-control="start"]').click();
+      await page.waitForFunction(()=>window.System.activeGame.logic.state==='PLAYING');
+      const hover=await page.evaluate(()=>({y:window.System.activeGame.logic.ship.y,z:window.System.activeGame.logic.ship.z}));await page.waitForTimeout(750);
+      assert(await page.evaluate(y=>Math.abs(window.System.activeGame.logic.ship.y-y)<1,hover.y),'Helicopter must hover at 50% collective');
+      const heliStick=await fingers.start(page.locator('.flight-input [data-control="joystick"]'),.75,.20);
+      await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerdown',{pointerId:91});await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerup',{pointerId:91});
+      await page.waitForFunction(y=>{const g=window.System.activeGame.logic;return g.ship.y>y+2&&g.ship.vz>1&&g.ship.yaw>0&&!g.ship.isStalling},hover.y,{timeout:6000});
+      await page.screenshot({path:join('test-results/playable','voo-helicopter-city.png')});await fingers.end(heliStick);
+
 
     }
     // Change native preferences through the actual player settings UI.
@@ -371,7 +385,7 @@ try{
     // Professional thumb UX: game controls stay within the game viewport
     // and do not overlap one another or the centre of the action.
     if(["ar","voo","boxe"].includes(slug)){
-      const selector=slug==="ar"?".ar-input .input-control:not([hidden])":
+      const selector=slug==="ar"?".ar-input .input-control:not([hidden]),.ar-input .combat-stick":
          slug==="voo"?".flight-input .input-control:not([hidden])":
          "#arcade-boxing-controls .boxing-action";
       await page.locator(selector).first().waitFor({state:'visible',timeout:5000});
@@ -462,6 +476,19 @@ try{
        "Câmera negada não ativou controles no "+slug);
     assert(await page.evaluate(()=>window.__cameraRequests>0),
        "Câmera não foi solicitada após escolha explícita em "+slug);
+    if(slug==='ar'){
+      // Explicitly selected rear-camera path with a local video stream. This is
+      // compositing evidence, not physical room anchoring or real-device QA.
+      await page.evaluate(()=>{
+        window.System.menu();window.System.openPhases(window.Games.find(g=>g.id==='ar_truck_sim'));
+        const c=document.createElement('canvas');c.width=640;c.height=480;const x=c.getContext('2d');x.fillStyle='#387d87';x.fillRect(0,0,640,480);x.fillStyle='#bbcba1';x.fillRect(30,150,170,330);x.fillStyle='#1b4f5e';x.fillRect(430,80,190,400);window.__arTestCamera=c;
+        Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{window.__cameraRequests++;return c.captureStream(15)}}});
+      });
+      await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('.input-mode-dialog [data-mode="camera"]').click();
+      await page.waitForFunction(()=>window.System.activeGame?.id==='ar_truck_sim'&&window.ArcadeControls.mode==='camera'&&window.System.video.readyState>=2,null,{timeout:10000});
+      assert.equal(await page.locator('.combat-input [data-control="fire"]').isVisible(),true,'Camera mode still needs independent touch controls');
+      await page.waitForTimeout(2200);await page.screenshot({path:join('test-results/playable','ar-combat-camera-overlay.png')});
+    }
     // Browser runtime pageerrors are checked selectively: blocked CDN errors do not
     // matter because the mocks bypass Firebase/pose SDK on purpose.
     const fatal=appErrors.filter(v=>/uncaught|cannot read properties|is not a function|referenceerror/i.test(v));

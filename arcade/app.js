@@ -13,8 +13,8 @@
     { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Acelere, faça curvas, use o turbo e conquiste o primeiro lugar.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"kart/", tint:"#ffd18d", destination:"direct" },
     { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Lute usando a câmera ou os botões de toque. Defenda, ataque e vença o campeonato.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
     { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Dispute rallies usando o dedo ou a câmera e vença partidas desafiadoras.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
-    { id:"ar", title:"AR Ops Premium", category:"acao", categoryLabel:"Realidade aumentada", short:"Missão em realidade aumentada com câmera e desafios interativos.", icon:"🚀", coverA:"#533d75", coverB:"#8464ab", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
-    { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Missões aéreas e campanha com aeronaves e objetivos.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
+    { id:"ar", title:"AR Combat", category:"acao", categoryLabel:"Realidade aumentada", short:"Combate com câmera opcional, joysticks, cobertura e três operações.", icon:"🎯", coverA:"#173642", coverB:"#385951", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
+    { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Pilote caças e helicópteros sobre cidades com trânsito e combate no solo.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
   ]);
 
   const FAVORITES_KEY = "thiaguinho-console:v1:favorites";

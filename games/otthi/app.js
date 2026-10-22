@@ -6453,8 +6453,18 @@
       }
       if(type==='police'){
         if(!coopHasEvent('approach')){if(role!=='officer'&&record.mode!=='solo'){toast('O policial deve iniciar a abordagem educativa.','warn');return false;}if(!await coopWorkAtTarget('approach'))return false;await coopRecordEvent('approach',role,1,3);toast('Abordagem calma: converse antes de concluir.','good');return true;}
-        if(!coopHasEvent('you-are-arrested')){const npc=active.sceneTarget?.ref;if(npc){npc.following=true;npc.emoteType='wave';npc.emoteUntil=performance.now()+1800;}await coopRecordEvent('you-are-arrested',role,1,4);toast('“Você está preso.” Agora acompanhe o personagem, sem armas ou agressões, até a viatura.','good',3200);const vehicle=serviceMissionVehicle(active.serviceJob);if(vehicle)coopSetWaypoint({id:`service-${vehicle.id}`,name:'Acompanhar até a viatura',icon:'🚓',x:vehicle.group.position.x,z:vehicle.group.position.z});return true;}
-        const npc=active.sceneTarget?.ref;if(npc&&Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z)>6){toast('Espere o personagem chegar até a viatura.','warn');return false;}if(npc)npc.following=false;await coopRecordEvent('suspect-escorted',role,1,5);toast('Personagem acompanhado com segurança até a viatura.','good');return true;
+        if(record.mode!=='solo'&&role!=='officer'){toast('O policial deve acompanhar o personagem; o motorista cuida da viatura.','warn');return false;}
+        if(!coopHasEvent('you-are-arrested')){
+          const npc=active.sceneTarget?.ref;if(!npc)return false;
+          const result=await coopReserveEvent(coopEventSubjectId('suspect',npc.id),'you-are-arrested',1,{phase:4});
+          if(!result?.ok||result.eventOwner!==coopUid()){toast('Aguarde a confirmação da equipe.','warn');return false;}
+          npc.following=true;npc.emoteType='wave';npc.emoteUntil=performance.now()+1800;
+          toast('“Você está preso.” Agora acompanhe o personagem, sem armas ou agressões, até a viatura.','good',3200);
+          const vehicle=serviceMissionVehicle(active.serviceJob);if(vehicle)coopSetWaypoint({id:`service-${vehicle.id}`,name:'Acompanhar até a viatura',icon:'🚓',x:vehicle.group.position.x,z:vehicle.group.position.z});return true;
+        }
+        const npc=active.sceneTarget?.ref;if(!npc||Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z)>6){toast('Espere o personagem chegar até a viatura.','warn');return false;}
+        const result=await coopReserveEvent(coopEventSubjectId('suspect-escorted',npc.id),'suspect-escorted',1,{phase:5});if(!result?.ok)return false;
+        npc.following=false;toast('Personagem acompanhado com segurança até a viatura.','good');return true;
       }
     }
     if(type==='fishing'){
@@ -6473,13 +6483,33 @@
     return false;
   }
   function updateCoopFishingProgress(active,record){const p=coopProgress(record);if(record.type!=='fishing'||record.status!=='active')return;const caught=Math.max(0,Number(state.inventory.rawFish||0)-Number(active.baselineRawFish||0));if(p.phase===1&&caught>Number(active.reportedFish||0)){const delta=caught-Number(active.reportedFish||0);active.reportedFish=caught;coopAddCounter('fish-caught',delta,coopDifficulty(record).fish).catch(()=>{});}const latest=coopProgress(activeCoopRecord());if(latest.phase===1&&latest.counter>=coopDifficulty(record).fish&&!active.fishingCookPhaseStarted){active.fishingCookPhaseStarted=true;coopAdvancePhase(2,{counterSet:0,target:coopDifficulty(record).cook}).then(()=>{active.baselineCookedFish=Number(state.inventory.cookedFish||0);const camp=active.coopCampfirePoint||worldLayoutPoint('camp');coopSetWaypoint({id:'coop-campfire',name:'Fogueira da equipe',icon:'🔥',x:camp.x,z:camp.z});updateMissionHUD();});}}
-  function updateCoopSchoolFollowers(active){active.followingNpcIds=[...new Set(active.followingNpcIds||[])];for(const id of active.followingNpcIds){const npc=world.npcs.find(n=>n.id===id);if(!npc)continue;npc.following=true;const distance=Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z);if(!Number.isFinite(distance)||distance>22){npc.group.position.set(player.x-1.4,0,player.z-1.4);npc.baseX=player.x-1.4;npc.baseZ=player.z-1.4;}}}
+  // The world authority follows the owner of the confirmed invitation, including
+  // a guest. Replicas consume the existing shared NPC snapshots; no second NPC.
+  function coopNpcEscortTarget(npc){
+    if(!npc?.id)return null;
+    const records=new Map(Object.values(coopRemoteMissions).filter(Boolean).map(record=>[record.id,record]));
+    const own=activeCoopRecord();if(own)records.set(own.id,own);
+    for(const record of records.values()){
+      if(!['school','police'].includes(record.type)||record.status!=='active')continue;
+      const events=record.progress?.events||{},prefix=record.type==='school'?'student':'suspect',event=events[coopEventSubjectId(prefix,npc.id)];
+      if(!event||!record.participants?.[event.uid])continue;
+      const delivered=events[coopEventSubjectId(record.type==='school'?'student-delivered':'suspect-escorted',npc.id)];
+      if(delivered){npc.following=false;npc.coopEscortOwner='';npc.baseX=npc.group.position.x;npc.baseZ=npc.group.position.z;if(record.type==='school')npc.coopSchoolDelivered=true;return null;}
+      npc.coopEscortOwner=event.uid;npc.following=true;
+      if(event.uid===coopUid())return{x:player.x,z:player.z,facing:Number(player.facing)||0,paused:!coopTeamState(record).ok};
+      const presence=(window.OTTHOS_RTDB?.getPresence?.()||{})[event.uid];
+      if(!presence||!coopTeamState(record).ok)return{paused:true,x:npc.group.position.x,z:npc.group.position.z,facing:npc.group.rotation.y};
+      return{x:Number(presence.x)||0,z:Number(presence.z)||0,facing:Number(presence.facing??presence.heading)||0,paused:false};
+    }
+    if(npc.coopEscortOwner){npc.following=false;npc.coopEscortOwner='';}return null;
+  }
+  function updateCoopSchoolFollowers(active){active.followingNpcIds=[...new Set(active.followingNpcIds||[])];for(const id of active.followingNpcIds){const npc=world.npcs.find(n=>n.id===id);if(!npc)continue;npc.following=true;const distance=Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z);if((!active.remote||(typeof sharedWorldIsAuthority==='function'&&sharedWorldIsAuthority()))&&(!Number.isFinite(distance)||distance>22)){npc.group.position.set(player.x-1.4,0,player.z-1.4);npc.baseX=player.x-1.4;npc.baseZ=player.z-1.4;}}}
   function activateCoopRaceBots(type){coopRaceBots.forEach((bot,index)=>{bot.group.visible=true;bot.coopRaceMode=type;bot.coopRaceIndex=index;bot.coopRaceLane=index%3;bot.coopRaceT=0;bot.coopRaceFinished=false;bot.coopRaceSpeed=.055+index*.004;if(type==='streetRace'){const start=coopStreetRoutePoint(0,(Number(bot.coopRaceLane||0)-1)*.78);bot.group.position.set(start.x,0,start.z);bot.group.rotation.y=start.heading;}});}
   function deactivateCoopRaceBots(){for(const bot of coopRaceBots){bot.coopRaceMode='';bot.coopRaceFinished=false;bot.coopRaceT=0;bot.group.visible=false;}}
   function updateCoopRaceVisuals(dt){const active=activeCoopMission(),record=activeCoopRecord();if(!active||!record||!['streetRace','ovalRace'].includes(record.type)||record.status!=='active')return;for(const bot of coopRaceBots){if(!bot.coopRaceMode)continue;const nearPlayer=Math.hypot(player.x-bot.group.position.x,player.z-bot.group.position.z)<1.8,pace=nearPlayer?.55:1;if(record.type==='ovalRace'){bot.coopRaceT=(bot.coopRaceT+dt*bot.coopRaceSpeed*pace*coopDifficulty(record).pace)%1;const a=bot.coopRaceT*Math.PI*2,rx=23.7+Number(bot.coopRaceLane||0)*.9,rz=12.4+Number(bot.coopRaceLane||0)*.45;{const gym=world.gym||{centerX:worldLayoutPoint('sports').x,centerZ:worldLayoutPoint('sports').z};bot.group.position.set(gym.centerX+Math.cos(a)*rx,0,gym.centerZ+Math.sin(a)*rz)};bot.group.rotation.y=Math.atan2(-Math.sin(a)*rx,Math.cos(a)*rz);}else if(!bot.coopRaceFinished){bot.coopRaceT=Math.min(1,bot.coopRaceT+dt*bot.coopRaceSpeed*pace*coopDifficulty(record).pace);const point=coopStreetRoutePoint(bot.coopRaceT,(Number(bot.coopRaceLane||0)-1)*.78);bot.group.position.set(point.x,0,point.z);bot.group.rotation.y=point.heading;if(bot.coopRaceT>=1)bot.coopRaceFinished=true;}}
   }
   function updateCoopRaceProgress(active,record){
-    const p=coopProgress(record),race=active.race||(active.race={started:false,checkpoints:0,lastCheckpoint:-1,expectedSector:1,laps:0});if(!race.started)return;
+    const p=coopProgress(record),race=active.race||(active.race={started:false,checkpoints:0,lastCheckpoint:-1,expectedSector:1,laps:0});if(!race.started||player.vehicle||player.boating||player.transit?.mode)return;
     if(record.type==='streetRace'){
       const nextIndex=Math.min(4,Number(race.checkpoints||0)+1),point=COOP_STREET_ROUTE[nextIndex];
       if(point&&Math.hypot(player.x-point.x,player.z-point.z)<coopDifficulty(record).radius&&race.lastCheckpoint!==nextIndex){race.lastCheckpoint=nextIndex;race.checkpoints=nextIndex;coopAddCounter('street-checkpoint',1,4).catch(()=>{});toast(`Checkpoint ${race.checkpoints}/4 validado.`,'good');const next=coopCurrentTarget(active,activeCoopRecord());if(race.checkpoints<4&&next)coopSetWaypoint(next);}
@@ -6900,6 +6930,7 @@
   function updateNPCs(dt){
     const now=performance.now();
     for(const npc of world.npcs){
+      const escort=typeof coopNpcEscortTarget==='function'?coopNpcEscortTarget(npc):null;
       const playerDistance=distance2D(player,npc.group.position),near=playerDistance<3.2,oldX=npc.group.position.x,oldZ=npc.group.position.z,b=v705NpcBrain(npc),culled=npc.group.visible===false&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode,background=playerDistance>(perf.mobile?62:88)&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode&&!npc.mobility&&!near;
       if(culled&&!npc.mobility)continue;if(background){npc._perfSkipSeq=(Number(npc._perfSkipSeq||0)+1)%3;if(npc._perfSkipSeq!==0)continue;}
       if(npc.passengerMode){const heading=npc.passengerMode==='boat'?player.boat.heading:player.car.heading,lx=.65,lz=npc.passengerMode==='boat'?.62:-.18;npc.group.position.x=player.x+Math.cos(heading)*lx+Math.sin(heading)*lz;npc.group.position.z=player.z-Math.sin(heading)*lx+Math.cos(heading)*lz;npc.group.position.y=npc.passengerMode==='boat'?.75:.3;npc.group.rotation.y=heading;}
@@ -6909,7 +6940,8 @@
       else if(npc.mobility){const route=npc.mobility.route,target=route[npc.mobility.index],dx=target.x-npc.group.position.x,dz=target.z-npc.group.position.z,d=Math.hypot(dx,dz);if(performance.now()<Number(npc.mobility.trafficHoldUntil||0)){npc.mobility.currentSpeed=0;}else if(d<.2)npc.mobility.index=(npc.mobility.index+1)%route.length;else{const heading=Math.atan2(dx,dz),factor=trafficSpeedFactor(npc.mobility,heading,6),targetSpeed=npc.mobility.speed*factor;npc.mobility.currentSpeed=lerp(Number(npc.mobility.currentSpeed||0),targetSpeed,Math.min(1,dt*4));const step=Math.min(d,npc.mobility.currentSpeed*dt),previous={x:npc.group.position.x,z:npc.group.position.z};if(step>.0001){npc.group.position.x+=dx/d*step;npc.group.position.z+=dz/d*step;snapTrafficToRoad(npc.group,previous);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,heading,Math.min(1,dt*5));for(const wheel of npc.mobility.wheels)wheel.rotation.x-=step*3;}}}
       else{
         if(now>Number(b.nextThink||0)){b.nextThink=now+260+Math.random()*260;v705NpcThink(npc);}
-        if(npc.following){const backX=player.x-Math.sin(player.facing)*2.1,backZ=player.z-Math.cos(player.facing)*2.1;v705NpcWalk(npc,dt,{x:backX,z:backZ},2.65);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,player.facing,Math.min(1,dt*6));}
+        if(escort?.paused){b.state='follow-wait';}
+        else if(npc.following){const leader=escort||player,backX=leader.x-Math.sin(leader.facing)*2.1,backZ=leader.z-Math.cos(leader.facing)*2.1;v705NpcWalk(npc,dt,{x:backX,z:backZ},2.65);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,leader.facing,Math.min(1,dt*6));}
         else if(b.state==='social'||near){const look=Math.atan2(player.x-npc.group.position.x,player.z-npc.group.position.z);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,look,Math.min(1,dt*5.8));if(Math.hypot(player.vx,player.vz)>4.2&&distance2D(player,npc.group.position)<1.6){const side=Math.sin(player.facing+(npc.id.length%2?Math.PI/2:-Math.PI/2)),sideZ=Math.cos(player.facing+(npc.id.length%2?Math.PI/2:-Math.PI/2)),target={x:npc.group.position.x+side*1.8,z:npc.group.position.z+sideZ*1.8};if(v705NpcPositionClear(target.x,target.z)){b.target=target;b.state='step-aside';}}}
         else if(b.state==='peer-social'){const peer=(world.npcs||[]).find(item=>item.id===b.peerId);if(peer&&peer.group){const look=Math.atan2(peer.group.position.x-npc.group.position.x,peer.group.position.z-npc.group.position.z);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,look,Math.min(1,dt*4.5));if(Math.hypot(npc.group.position.x-peer.group.position.x,npc.group.position.z-peer.group.position.z)>2.3)v705NpcWalk(npc,dt,{x:peer.group.position.x,z:peer.group.position.z},.75);}else{b.peerId='';b.socialUntil=0;}}
         else if(b.state==='idle-look'){npc.group.rotation.y+=Math.sin(animTime*.7+npc.phase)*dt*.08;}

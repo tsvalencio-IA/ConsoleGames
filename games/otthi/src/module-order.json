@@ -210,7 +210,7 @@
       "startLine": 5453,
       "endLine": 5678,
       "description": "Missões cooperativas infantis, equipes online/solo, pesca, escola e corridas",
-      "sha256Body": "0d5d43fe24e7f32395e593b07eaa489cf69470b9ff2479c956a0b4d77bbc3599"
+      "sha256Body": "1d1eefe4af5a8e89bd517dd375c1744f1b48cfd90619a9658b14a3ec962a9605"
     },
     {
       "file": "src/modules/25-render-init-resize-position-collision.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "486d57391a8cd2bc9fbe68fe4d08d237eaed301b6d0d2a1b01a5e1bc53bf613b"
+      "sha256Body": "9d8538adb85f8e3a642631c6cb64cbe57ab7dac531c89e60d0e20ac07f53a141"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",

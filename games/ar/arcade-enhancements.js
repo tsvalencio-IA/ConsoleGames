@@ -6,7 +6,7 @@
   const id = window.CONSOLE_GAME_ID;
   const titles = {
     drive: "Kart Legends", box_pro: "Boxing Pro", tennis: "Ping Pong Wii",
-    ar_truck_sim: "AR Ops Premium", usarmy_flight_sim: "Aero Strike WAR"
+    ar_truck_sim: "AR Combat", usarmy_flight_sim: "Aero Strike WAR"
   };
   if (!id || !Object.prototype.hasOwnProperty.call(titles, id)) return;
   const $ = (selector) => document.querySelector(selector);
@@ -14,7 +14,7 @@
     const d = new Date();
     return [d.getFullYear(), String(d.getMonth()+1).padStart(2,"0"), String(d.getDate()).padStart(2,"0")].join("-");
   };
-  const key = "console-games:v2:challenge:" + id;
+  const key = (id==="ar_truck_sim"?"console-games:combat-v1:challenge:":"console-games:v2:challenge:") + id;
   const read = () => {
     try {
       const v = JSON.parse(localStorage.getItem(key) || "{}");
@@ -155,7 +155,7 @@
       system.gameOver=function(score,won,...rest) {
         // The original method handles Firebase rewards and the original result UI.
         const result=original.call(this,score,won,...rest);
-        if(id!=="tennis" && id!=="ar_truck_sim") record(score,Boolean(won));
+        if(id!=="tennis") record(score,Boolean(won));
         return result;
       };
     }
@@ -225,17 +225,7 @@
         record(a,a>b);
       }
     }
-    // The AR game keeps its own missions/score and does not call System.gameOver.
-    if(id==="ar_truck_sim"){
-      const total=Number(g.logic?.expedition?.missions);
-      if(Number.isFinite(total)){
-        if(total<lastArMissions)lastArMissions=0;
-        while(lastArMissions<total){record(g.logic?.score||0,true);gameStarted=true;lastArMissions++;}
-      }else{
-        const mission=g.logic?.currentMission,completed=Boolean(mission&&mission.goal>0&&mission.progress>=mission.goal&&!mission.active);
-        if(completed&&!lastArCompleted){record(g.logic?.score||0,true);gameStarted=true;}lastArCompleted=completed;
-      }
-    }
+
   }
   function tick() {
     ensureUI();patchCore();

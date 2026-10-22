@@ -1,7 +1,7 @@
 {
-  "name": "thIAguinho GAME",
-  "short_name": "thIAguinho GAME",
-  "description": "Plataforma de Jogos com Câmera e Inteligência Artificial",
+  "name": "AR Combat • thIAguinho",
+  "short_name": "AR Combat",
+  "description": "Combate com alvos virtuais sobre a câmera ou na arena. Três operações, armas e cobertura.",
   "start_url": "./index.html",
   "display": "fullscreen",
   "background_color": "#050508",

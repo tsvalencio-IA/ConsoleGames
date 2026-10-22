@@ -5,7 +5,7 @@
 (() => {
   "use strict";
   const gameId=window.CONSOLE_GAME_ID;
-  const titles={drive:"KART",box_pro:"BOXE",tennis:"TÊNIS",ar_truck_sim:"AR OPS",usarmy_flight_sim:"VOO"};
+  const titles={drive:"KART",box_pro:"BOXE",tennis:"TÊNIS",ar_truck_sim:"AR COMBAT",usarmy_flight_sim:"VOO"};
   if(!Object.hasOwn(titles,gameId))return;
   const storageKey="thia:studio:audio:v1";
   const context={ctx:null,enabled:true,last:new Map(),voices:0,game:null,
@@ -65,7 +65,7 @@
     if(gameId==="drive")Object.assign(o,{lap:Number(logic.lap)||0,boost:!!logic.turboLock,item:String(logic.item||""),speed:Number(logic.speed)||0,rank:Number(logic.finalRank)||0,done:String(logic.status||"")});
     if(gameId==="box_pro")Object.assign(o,{hp:Number(logic.p1?.hp)||0,rival:Number(logic.p2?.hp)||0,round:Number(logic.round)||0,done:!!logic.matchEnded});
     if(gameId==="tennis")Object.assign(o,{left:Number(logic.score?.p1)||0,right:Number(logic.score?.p2)||0,hit:Math.max(0,Number(logic.hitstop)||0)});
-    if(gameId==="ar_truck_sim")Object.assign(o,{cargo:Number(logic.cargo?.length)||0,progress:Number(logic.currentMission?.progress)||0,fuel:Number(logic.fuel)||0});
+    if(gameId==="ar_truck_sim")Object.assign(o,{shots:Number(logic.stats?.shots)||0,kills:Number(logic.stats?.kills)||0,reloads:Number(logic.stats?.reloads)||0,hp:Number(logic.player?.hp)||0});
     if(gameId==="usarmy_flight_sim")Object.assign(o,{hp:Number(logic.ship?.hp)||0,missiles:Number(logic.missiles?.length)||0,score:Number(logic.session?.cash)||0});
     return o;
   }
@@ -92,8 +92,10 @@
       if(current.left>prev.left)cue("score",180);
       if(current.right>prev.right)cue("rival",180);
     }else if(gameId==="ar_truck_sim"){
-      if(current.cargo>prev.cargo||current.progress>prev.progress)cue("collect",180);
-      if(current.fuel<14&&current.fuel>=0&&prev.fuel>=14)cue("danger",3500);
+      if(current.shots>prev.shots)cue("jab",90);
+      if(current.kills>prev.kills)cue("collect",180);
+      if(current.reloads>prev.reloads)cue("dock",300);
+      if(current.hp+2<prev.hp)cue("impact",230);
     }else if(gameId==="usarmy_flight_sim"){
       if(current.hp+3<prev.hp)cue("impact",240);
       if(current.missiles>prev.missiles)cue("missile",350);

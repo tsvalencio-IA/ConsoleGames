@@ -18,7 +18,7 @@ const paths=[
   ]),
   "games/boxe/boxing-touch.js",
   "games/boxe/js/game_box.js",
-  "games/ar/js/game_ar.js",
+  "games/ar/js/game_ar.js","games/ar/combat-controls.css","games/ar/icon.svg","covers/ar.svg",
   "games/voo/js/game_flight.js",
   "games/kart/js/game_kart.js","games/tenis/js/game_tennis.js",
   "games/otthi/app.js","games/otthi/family-mascots.js","games/familia/3d/sw.js",

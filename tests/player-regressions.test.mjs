@@ -73,11 +73,11 @@ test('kart: a real second of acceleration covers the same distance on 30, 60 and
  const results=[30,60,120].map(fps=>{const {game:g,advance}=engine('kart','game_kart');g.currentFase={id:'arcade',mode:'RACE',targetRank:3};g.setupUI();g.resetPhysics();g.startRace(0);g.localBots=[];g.rivals=[];g.arcadeManual={throttle:true,brake:false,left:false,right:false,rear:false};g.renderWorld=()=>{};g.renderUI=()=>{};const c=canvas();for(let i=0;i<fps;i++){advance(1000/fps);g.update(c,390,844,null);}return {pos:g.pos,speed:g.speed,x:g.playerX};});
  assert.deepEqual(results[0],results[1]);assert.deepEqual(results[1],results[2]);assert(results[0].pos>100);
 });
-test('AR: mission difficulty grows from completed expeditions, and an empty or repeated delivery pays nothing',()=>{
- const {game:g,window}=engine('ar','game_ar');g.expedition={missions:0,deliveries:0,itemsDelivered:0};window.Profile.coins='1200';window.Profile.getRank=()=>({msg:'OK'});g.generateMission();assert.equal(g.currentMission.goal,3);
- g.currentMission.progress=3;g.completeMission();const paid=window.Profile.coins;g.completeMission();assert.equal(window.Profile.coins,paid);assert.equal(g.expedition.missions,1);
- g.generateMission();g.currentMission.progress=g.currentMission.goal;g.completeMission();g.generateMission();assert.equal(g.currentMission.goal,4);
- g.fuel=g.stats.maxFuel;g.cargo=[100,200];g.deliverCargo();assert.equal(g.expedition.deliveries,1);assert.equal(g.expedition.itemsDelivered,2);const money=window.Profile.coins;g.deliverCargo();assert.equal(window.Profile.coins,money);assert.equal(g.expedition.deliveries,1);assert.equal(typeof money,'number');
+test('AR Combat: rewards and progression require a real completed operation and remain idempotent',()=>{
+ const {game:g,window}=engine('ar','game_ar');g.init({id:'patrol'});let results=0;window.System.gameOver=()=>results++;
+ assert.equal(g.career.wins,0);assert.equal(g.selectWeapon('smg'),false);
+ g.stats.kills=9;assert.equal(g.finish(true),true);const wins=g.career.wins;assert.equal(g.finish(true),false);assert.equal(g.career.wins,wins);
+ g.step(3);g.step(3);assert.equal(results,1);assert.equal(g.selectWeapon('smg'),true);
 });
 test('kart and flight: profile persistence reloads actual owned vehicles and writes only their saved fields',async()=>{
  for(const [slug,field,data]of [['kart','kartSave',{garage:[{modelId:0},{modelId:3}],activeKartIdx:1,upgrades:{engine:3,tires:2,suspension:1},useCustomKart:true}],['voo','flightSave',{upgrades:{engine:3,missiles:2,armor:1},airframe:'interceptor',kills:7,school:true}]]){

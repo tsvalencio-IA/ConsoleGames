@@ -250,8 +250,18 @@
       }
       if(type==='police'){
         if(!coopHasEvent('approach')){if(role!=='officer'&&record.mode!=='solo'){toast('O policial deve iniciar a abordagem educativa.','warn');return false;}if(!await coopWorkAtTarget('approach'))return false;await coopRecordEvent('approach',role,1,3);toast('Abordagem calma: converse antes de concluir.','good');return true;}
-        if(!coopHasEvent('you-are-arrested')){const npc=active.sceneTarget?.ref;if(npc){npc.following=true;npc.emoteType='wave';npc.emoteUntil=performance.now()+1800;}await coopRecordEvent('you-are-arrested',role,1,4);toast('“Você está preso.” Agora acompanhe o personagem, sem armas ou agressões, até a viatura.','good',3200);const vehicle=serviceMissionVehicle(active.serviceJob);if(vehicle)coopSetWaypoint({id:`service-${vehicle.id}`,name:'Acompanhar até a viatura',icon:'🚓',x:vehicle.group.position.x,z:vehicle.group.position.z});return true;}
-        const npc=active.sceneTarget?.ref;if(npc&&Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z)>6){toast('Espere o personagem chegar até a viatura.','warn');return false;}if(npc)npc.following=false;await coopRecordEvent('suspect-escorted',role,1,5);toast('Personagem acompanhado com segurança até a viatura.','good');return true;
+        if(record.mode!=='solo'&&role!=='officer'){toast('O policial deve acompanhar o personagem; o motorista cuida da viatura.','warn');return false;}
+        if(!coopHasEvent('you-are-arrested')){
+          const npc=active.sceneTarget?.ref;if(!npc)return false;
+          const result=await coopReserveEvent(coopEventSubjectId('suspect',npc.id),'you-are-arrested',1,{phase:4});
+          if(!result?.ok||result.eventOwner!==coopUid()){toast('Aguarde a confirmação da equipe.','warn');return false;}
+          npc.following=true;npc.emoteType='wave';npc.emoteUntil=performance.now()+1800;
+          toast('“Você está preso.” Agora acompanhe o personagem, sem armas ou agressões, até a viatura.','good',3200);
+          const vehicle=serviceMissionVehicle(active.serviceJob);if(vehicle)coopSetWaypoint({id:`service-${vehicle.id}`,name:'Acompanhar até a viatura',icon:'🚓',x:vehicle.group.position.x,z:vehicle.group.position.z});return true;
+        }
+        const npc=active.sceneTarget?.ref;if(!npc||Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z)>6){toast('Espere o personagem chegar até a viatura.','warn');return false;}
+        const result=await coopReserveEvent(coopEventSubjectId('suspect-escorted',npc.id),'suspect-escorted',1,{phase:5});if(!result?.ok)return false;
+        npc.following=false;toast('Personagem acompanhado com segurança até a viatura.','good');return true;
       }
     }
     if(type==='fishing'){
@@ -270,13 +280,33 @@
     return false;
   }
   function updateCoopFishingProgress(active,record){const p=coopProgress(record);if(record.type!=='fishing'||record.status!=='active')return;const caught=Math.max(0,Number(state.inventory.rawFish||0)-Number(active.baselineRawFish||0));if(p.phase===1&&caught>Number(active.reportedFish||0)){const delta=caught-Number(active.reportedFish||0);active.reportedFish=caught;coopAddCounter('fish-caught',delta,coopDifficulty(record).fish).catch(()=>{});}const latest=coopProgress(activeCoopRecord());if(latest.phase===1&&latest.counter>=coopDifficulty(record).fish&&!active.fishingCookPhaseStarted){active.fishingCookPhaseStarted=true;coopAdvancePhase(2,{counterSet:0,target:coopDifficulty(record).cook}).then(()=>{active.baselineCookedFish=Number(state.inventory.cookedFish||0);const camp=active.coopCampfirePoint||worldLayoutPoint('camp');coopSetWaypoint({id:'coop-campfire',name:'Fogueira da equipe',icon:'🔥',x:camp.x,z:camp.z});updateMissionHUD();});}}
-  function updateCoopSchoolFollowers(active){active.followingNpcIds=[...new Set(active.followingNpcIds||[])];for(const id of active.followingNpcIds){const npc=world.npcs.find(n=>n.id===id);if(!npc)continue;npc.following=true;const distance=Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z);if(!Number.isFinite(distance)||distance>22){npc.group.position.set(player.x-1.4,0,player.z-1.4);npc.baseX=player.x-1.4;npc.baseZ=player.z-1.4;}}}
+  // The world authority follows the owner of the confirmed invitation, including
+  // a guest. Replicas consume the existing shared NPC snapshots; no second NPC.
+  function coopNpcEscortTarget(npc){
+    if(!npc?.id)return null;
+    const records=new Map(Object.values(coopRemoteMissions).filter(Boolean).map(record=>[record.id,record]));
+    const own=activeCoopRecord();if(own)records.set(own.id,own);
+    for(const record of records.values()){
+      if(!['school','police'].includes(record.type)||record.status!=='active')continue;
+      const events=record.progress?.events||{},prefix=record.type==='school'?'student':'suspect',event=events[coopEventSubjectId(prefix,npc.id)];
+      if(!event||!record.participants?.[event.uid])continue;
+      const delivered=events[coopEventSubjectId(record.type==='school'?'student-delivered':'suspect-escorted',npc.id)];
+      if(delivered){npc.following=false;npc.coopEscortOwner='';npc.baseX=npc.group.position.x;npc.baseZ=npc.group.position.z;if(record.type==='school')npc.coopSchoolDelivered=true;return null;}
+      npc.coopEscortOwner=event.uid;npc.following=true;
+      if(event.uid===coopUid())return{x:player.x,z:player.z,facing:Number(player.facing)||0,paused:!coopTeamState(record).ok};
+      const presence=(window.OTTHOS_RTDB?.getPresence?.()||{})[event.uid];
+      if(!presence||!coopTeamState(record).ok)return{paused:true,x:npc.group.position.x,z:npc.group.position.z,facing:npc.group.rotation.y};
+      return{x:Number(presence.x)||0,z:Number(presence.z)||0,facing:Number(presence.facing??presence.heading)||0,paused:false};
+    }
+    if(npc.coopEscortOwner){npc.following=false;npc.coopEscortOwner='';}return null;
+  }
+  function updateCoopSchoolFollowers(active){active.followingNpcIds=[...new Set(active.followingNpcIds||[])];for(const id of active.followingNpcIds){const npc=world.npcs.find(n=>n.id===id);if(!npc)continue;npc.following=true;const distance=Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z);if((!active.remote||(typeof sharedWorldIsAuthority==='function'&&sharedWorldIsAuthority()))&&(!Number.isFinite(distance)||distance>22)){npc.group.position.set(player.x-1.4,0,player.z-1.4);npc.baseX=player.x-1.4;npc.baseZ=player.z-1.4;}}}
   function activateCoopRaceBots(type){coopRaceBots.forEach((bot,index)=>{bot.group.visible=true;bot.coopRaceMode=type;bot.coopRaceIndex=index;bot.coopRaceLane=index%3;bot.coopRaceT=0;bot.coopRaceFinished=false;bot.coopRaceSpeed=.055+index*.004;if(type==='streetRace'){const start=coopStreetRoutePoint(0,(Number(bot.coopRaceLane||0)-1)*.78);bot.group.position.set(start.x,0,start.z);bot.group.rotation.y=start.heading;}});}
   function deactivateCoopRaceBots(){for(const bot of coopRaceBots){bot.coopRaceMode='';bot.coopRaceFinished=false;bot.coopRaceT=0;bot.group.visible=false;}}
   function updateCoopRaceVisuals(dt){const active=activeCoopMission(),record=activeCoopRecord();if(!active||!record||!['streetRace','ovalRace'].includes(record.type)||record.status!=='active')return;for(const bot of coopRaceBots){if(!bot.coopRaceMode)continue;const nearPlayer=Math.hypot(player.x-bot.group.position.x,player.z-bot.group.position.z)<1.8,pace=nearPlayer?.55:1;if(record.type==='ovalRace'){bot.coopRaceT=(bot.coopRaceT+dt*bot.coopRaceSpeed*pace*coopDifficulty(record).pace)%1;const a=bot.coopRaceT*Math.PI*2,rx=23.7+Number(bot.coopRaceLane||0)*.9,rz=12.4+Number(bot.coopRaceLane||0)*.45;{const gym=world.gym||{centerX:worldLayoutPoint('sports').x,centerZ:worldLayoutPoint('sports').z};bot.group.position.set(gym.centerX+Math.cos(a)*rx,0,gym.centerZ+Math.sin(a)*rz)};bot.group.rotation.y=Math.atan2(-Math.sin(a)*rx,Math.cos(a)*rz);}else if(!bot.coopRaceFinished){bot.coopRaceT=Math.min(1,bot.coopRaceT+dt*bot.coopRaceSpeed*pace*coopDifficulty(record).pace);const point=coopStreetRoutePoint(bot.coopRaceT,(Number(bot.coopRaceLane||0)-1)*.78);bot.group.position.set(point.x,0,point.z);bot.group.rotation.y=point.heading;if(bot.coopRaceT>=1)bot.coopRaceFinished=true;}}
   }
   function updateCoopRaceProgress(active,record){
-    const p=coopProgress(record),race=active.race||(active.race={started:false,checkpoints:0,lastCheckpoint:-1,expectedSector:1,laps:0});if(!race.started)return;
+    const p=coopProgress(record),race=active.race||(active.race={started:false,checkpoints:0,lastCheckpoint:-1,expectedSector:1,laps:0});if(!race.started||player.vehicle||player.boating||player.transit?.mode)return;
     if(record.type==='streetRace'){
       const nextIndex=Math.min(4,Number(race.checkpoints||0)+1),point=COOP_STREET_ROUTE[nextIndex];
       if(point&&Math.hypot(player.x-point.x,player.z-point.z)<coopDifficulty(record).radius&&race.lastCheckpoint!==nextIndex){race.lastCheckpoint=nextIndex;race.checkpoints=nextIndex;coopAddCounter('street-checkpoint',1,4).catch(()=>{});toast(`Checkpoint ${race.checkpoints}/4 validado.`,'good');const next=coopCurrentTarget(active,activeCoopRecord());if(race.checkpoints<4&&next)coopSetWaypoint(next);}
