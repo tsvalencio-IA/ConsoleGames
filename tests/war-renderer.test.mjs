@@ -47,7 +47,7 @@ test('flight: lit aircraft retain native yaw, pitch, roll, model scaling and coc
  const f=engine('voo','game_flight');f.game.init({mode:'FREE'});const api=renderer(f),g=f.game;
  for(const model of ['falcon','interceptor','sentinel','kestrel','guardian']){
   g.airframe=model;Object.assign(g.ship,{x:33,y:520,z:160,pitch:.3,yaw:-.7,roll:.4});g._updateView(390,844);assert(api.flight(g,canvas(),390,844));assert(api.hasAircraft(g,g.ship));
-  const root=f.sceneCapture.children.find(o=>o.isGroup),p=new f.window.THREE.Vector3(11,3,-12).applyMatrix4(root.matrixWorld),native=g._airframePoint([11,3,-12],g.ship,model);
+  const root=f.sceneCapture.getObjectByProperty('type','Group'),p=new f.window.THREE.Vector3(11,3,-12).applyMatrix4(root.matrixWorld),native=g._airframePoint([11,3,-12],g.ship,model);
   assert(Math.hypot(p.x-native.x,p.y-native.y,-p.z-native.z)<1e-8,model+' aircraft transform differs');
  }
  f.settings.camera='cockpit';g._updateView(390,844);api.flight(g,canvas(),390,844);assert.equal(api.hasAircraft(g,g.ship),false);api.release(g);
@@ -60,4 +60,9 @@ test('WAR branding: installable PNG icon, cover art and visible game name use th
   assert.equal(read(`games/${slug}/world-renderer.js`),read('enhancements/war-world-renderer.js'));
   assert(read(`games/${slug}/sw.js`).includes('./vendor/three-r128.min.js'));
  }
+});
+test('WAR: the visible weapon follows hand aim on both axes without reversing vertical pointing',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'patrol'});const api=renderer(f),g=f.game,T=f.window.THREE;
+ const direction=(x,y)=>{g.handAim={x,y,fresh:true};g.player.yaw+=.15;assert(api.combat(g,canvas(),390,844,false));const weapon=f.sceneCapture.getObjectByProperty('type','Group');return new T.Vector3(0,0,-1).applyQuaternion(weapon.quaternion);};
+ const left=direction(.25,.48),right=direction(.75,.48),up=direction(.5,.25),down=direction(.5,.7);assert(right.x>left.x);assert(up.y>down.y);api.release(g);
 });

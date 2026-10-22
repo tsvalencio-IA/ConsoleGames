@@ -355,7 +355,7 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else this.tank(b,e.x,e.z,0,1,e.shot)}
-   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=-.07+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=-.1+(g.handAim?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=.06+(g.handAim?(g.handAim.y-.48)*.45:0);
+   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=-.07+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=-.1+(g.handAim?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=.06-(g.handAim?(g.handAim.y-.48)*.45:0);
   }else{
    for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw+(car.crashed?.18:0),5,car.crashed?m.dark:m.cars[i%4])}
    for(const tank of g.groundTanks||[]){const p=g._groundPath(tank);if(tank.active!==false)this.tank(b,p.x,p.z,p.yaw+Math.PI,8,tank.flash);else{b.box(m.dark,p.x,3,p.z,35,8,46,p.yaw);b.box(m.steel,p.x,11,p.z,20,5,24,p.yaw+.4);b.box(m.rubber,p.x-16,1,p.z,7,8,48,p.yaw)}}
