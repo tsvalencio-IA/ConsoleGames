@@ -1,5 +1,6 @@
 /* @otthi-style-body */
-#quickBar #ot-games-button{background:linear-gradient(#386b71,#173c48);border-color:#a6d9c9}
+#quickBar #ot-games-button{background:linear-gradient(#386b71,#173c48);border-color:#a6d9c9;padding:2px!important}
+#quickBar #ot-games-button b{font:900 17px/18px system-ui;color:#b3f3db;letter-spacing:1px}#quickBar #ot-games-button span{font-size:11px!important;line-height:14px!important;white-space:nowrap!important;overflow-wrap:normal!important}
 #ot-games-hud{position:fixed;inset:0;z-index:500;pointer-events:none;color:#eafff5;font-family:system-ui}
 #ot-games-hud button{min-width:44px;min-height:44px;padding:8px;border:1px solid #a6d9d5b5;border-radius:12px;background:#123b4bea;color:#effff5;font:800 11px system-ui;pointer-events:auto;touch-action:none}
 #ot-games-hud header{position:absolute;left:max(9px,env(safe-area-inset-left,0px));right:max(9px,env(safe-area-inset-right,0px));top:max(9px,env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between;gap:8px;background:#081d2ae8;border:1px solid #9bddd75c;padding:6px;border-radius:15px}

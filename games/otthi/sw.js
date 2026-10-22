@@ -1,4 +1,4 @@
-const REVISION = 'f1c4b00e881af503';
+const REVISION = '9ec22efa9089e20a';
 const CACHE = `otthi-v70615-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.16.7.19-walk-missions';

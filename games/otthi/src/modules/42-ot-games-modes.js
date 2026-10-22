@@ -284,7 +284,7 @@
     dialog.querySelector('[data-ot-mode="peace"]').focus();dialog.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Tab'){const a=[...dialog.querySelectorAll('button,input,select')],first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
   }
   function otGamesInit(){
-    const button=document.createElement('button');button.id='ot-games-button';button.innerHTML='🎮<span>OT Games</span>';button.type='button';button.setAttribute('aria-label','OT Games: combate, avião e helicóptero');button.onclick=()=>{state.ui.quickOpen=false;syncMobilePanels();otGamesChoose();};document.getElementById('quickBar').prepend(button);
+    const button=document.createElement('button');button.id='ot-games-button';button.innerHTML='<b aria-hidden="true">OT</b><span>Games</span>';button.type='button';button.setAttribute('aria-label','OT Games: combate, avião e helicóptero');button.onclick=()=>{state.ui.quickOpen=false;syncMobilePanels();otGamesChoose();};document.getElementById('quickBar').prepend(button);
     window.addEventListener('blur',otGamesClearInput);window.addEventListener('resize',otGamesClearInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)otGamesClearInput();});
     for(const type of ['keydown','keyup'])window.addEventListener(type,e=>{
       if(!otGames.active||e.target.closest?.('input,select,button')||document.getElementById('ot-games-choose'))return;

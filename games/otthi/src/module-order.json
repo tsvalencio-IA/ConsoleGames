@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "1b38f6432c713805fc4094496b2e9918473dbd22dc12159d6e32113389100d0d"
+      "sha256Body": "352c7e3feee693eda2f9f36a2c798216262e3bcd494b5c8e46ba59efe64e149e"
     }
   ],
   "styles": [
@@ -513,7 +513,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "f473fea24d4081739a59f99d449c3ed6be07fc0f989dbe75210d62e57f5e94fb"
+      "sha256Body": "6a01cecd8b35ee4901e7f8e63a66e6c160f450af2df0700c56148dcbf65ff951"
     }
   ]
 }
