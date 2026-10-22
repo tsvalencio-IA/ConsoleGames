@@ -134,20 +134,6 @@ const hub={
   const manual={left:false,right:false,throttle:false,brake:false,drift:false,rear:false,itemQueued:false};
   logic.arcadeManual=manual;
   const active=()=>logic.state==="RACE"&&logic.status==="RACING";
-  const cameraItem=document.createElement("button");
-  cameraItem.type="button";cameraItem.textContent="◈ USAR ITEM";
-  cameraItem.setAttribute("aria-label","Usar o item que está guardado; nunca usar automaticamente");
-  cameraItem.style.cssText="position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:410;min-width:104px;min-height:54px;border-radius:14px;border:2px solid #bcd9c5;background:#214b56ec;color:#fff;font:800 12px system-ui;touch-action:manipulation";
-  cameraItem.addEventListener("pointerdown",e=>{e.stopPropagation();if(active()&&logic.item)manual.itemQueued=true;});
-  document.body.append(cameraItem);
-  const updateCameraItem=()=>{
-    const shown=Boolean(window.System?.activeGame?.id==="drive"&&active()&&hub.mode==="camera"&&!window.System?.paused);
-    cameraItem.hidden=!shown;
-    cameraItem.disabled=!logic.item;
-    if(shown)cameraItem.textContent=logic.item?"◈ USAR "+logic.item.toUpperCase():"◈ SEM ITEM";
-  };
-  const cameraItemTimer=setInterval(updateCameraItem,120);updateCameraItem();
-  hub.releases.push(()=>{clearInterval(cameraItemTimer);cameraItem.remove();});
   const buttons=[
     {id:"left",text:"◀",label:"Virar à esquerda",down:()=>manual.left=true,up:()=>manual.left=false},
     {id:"right",text:"▶",label:"Virar à direita",down:()=>manual.right=true,up:()=>manual.right=false},
