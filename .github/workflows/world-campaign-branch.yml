@@ -1,0 +1,45 @@
+name: World campaign isolated build
+on:
+  push:
+    branches: [world-unificado-campanha-20261022]
+    paths:
+      - games/otthi/src/**
+      - .github/workflows/world-campaign-branch.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: world-campaign-branch-build
+  cancel-in-progress: false
+jobs:
+  compile-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: world-unificado-campanha-20261022
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify independent game scripts
+        run: |
+          node --check games/kart/js/game_kart.js
+          node --check games/kart/control-modes.js
+          node --check games/otthi/src/modules/43-world-campaign.js
+      - name: Compile OTThi from verified modular sources
+        run: python3 games/otthi/tools/build_project.py
+      - name: Verify unit tests without production database writes
+        run: |
+          node --test tests/ot-games.test.mjs tests/kart-drivability.test.mjs tests/war-hands.test.mjs
+      - name: Commit generated release only to isolated branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/otthi/app.js games/otthi/style.css games/otthi/src/module-order.json games/otthi/index.html games/otthi/sw.js games/otthi/release-manifest.json
+          if git diff --cached --quiet; then
+            echo "Already synchronized"
+          else
+            git commit -m "build(world): regenerate verified campaign release"
+            git push origin HEAD:world-unificado-campanha-20261022
+          fi
