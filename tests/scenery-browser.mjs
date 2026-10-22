@@ -78,8 +78,8 @@ try{
     const errors=await page.evaluate(slug=>{
       const g=window.System.activeGame.logic,s=window.System,c=s.canvas,w=c.width,h=c.height;
       s.paused=true;
-      if(slug==='ar'){Object.assign(g.player,{x:-3,z:5,yaw:.28,pitch:-.12});g.eyeY=1.8;g.drawVirtualScene(s.ctx,w,h)}
-      else{Object.assign(g.ship,{x:-1100,y:700,z:-1600,yaw:.12,pitch:-.2,roll:.3});g.view=null;g._draw(s.ctx,w,h)}
+      if(slug==='ar'){Object.assign(g.player,{x:-3,z:5,yaw:.28,pitch:-.12});g.eyeY=1.8;g.drawVirtualScene(s.canvas.getContext('2d'),w,h)}
+      else{Object.assign(g.ship,{x:-1100,y:700,z:-1600,yaw:.12,pitch:-.2,roll:.3});g.view=null;g._draw(s.canvas.getContext('2d'),w,h)}
       const points=slug==='ar'?[[0,1,35],[10,3,50],[-8,8,60]]:[[-900,200,100],[-400,500,1000],[0,140,3000]];
       return points.map(p=>{const a=slug==='ar'?g.project(...p,w,h):g._projectView(...p,w,h),b=window.ArcadeWorldRenderer.project(g,...p,w,h);return Math.hypot(a.x-b.x,a.y-b.y)});
     },slug);
@@ -89,9 +89,9 @@ try{
         const s=window.System,g=s.activeGame.logic,w=s.canvas.width,h=s.canvas.height;
         if(slug==='ar'){
           if(setup.mission){g.init({id:setup.mission});g.step(0);g.spawnWave();for(const e of g.enemies)e.aim=99}
-          Object.assign(g.player,setup.position||{});g.eyeY=1.8;g.drawVirtualScene(s.ctx,w,h);g.drawHUD(s.ctx,w,h);
+          Object.assign(g.player,setup.position||{});g.eyeY=1.8;g.drawVirtualScene(s.canvas.getContext('2d'),w,h);g.drawHUD(s.canvas.getContext('2d'),w,h);
         }else{
-          Object.assign(g.ship,setup.position);g.view=null;g._draw(s.ctx,w,h);
+          Object.assign(g.ship,setup.position);g.view=null;g._draw(s.canvas.getContext('2d'),w,h);
         }
       },{slug,setup});
       await page.screenshot({path:'test-results/scenery/'+name+'.png'});
@@ -109,7 +109,7 @@ try{
     await page.setViewportSize({width:390,height:844});
     if(slug==='ar')await take('war-portrait',{mission:'city',position:{x:-12,z:8,yaw:.19,pitch:0}});
     else await take('voo-portrait',{position:{x:-1100,y:700,z:-1600,yaw:.12,pitch:-.15,roll:0}});
-    const pixels=await page.evaluate(()=>{const s=window.System,c=s.ctx,img=c.getImageData(0,0,s.canvas.width,s.canvas.height).data;let nonempty=0;for(let i=3;i<img.length;i+=100)nonempty+=img[i]>0;return nonempty});
+    const pixels=await page.evaluate(()=>{const s=window.System,c=s.canvas.getContext('2d'),img=c.getImageData(0,0,s.canvas.width,s.canvas.height).data;let nonempty=0;for(let i=3;i<img.length;i+=100)nonempty+=img[i]>0;return nonempty});
     assert(pixels>1000,'O canvas não contém cenário');assert.deepEqual(appErrors,[]);
     results.push({slug,metrics,projectionErrors:errors,pixels});
   }catch(error){await page.screenshot({path:'test-results/scenery/'+slug+'-failure.png'}).catch(()=>{});throw error}
