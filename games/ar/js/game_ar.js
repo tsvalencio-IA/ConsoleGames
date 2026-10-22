@@ -171,16 +171,16 @@ const Game={
  },
  drawHUD(ctx,w,h){
   ctx.save();ctx.textAlign='left';const size=Math.min(16,Math.max(11,w*.032));ctx.font='bold '+size+'px Arial';
-  ctx.fillStyle='rgba(5,20,29,.82)';ctx.fillRect(12,h*.13,w-24,65);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),23,h*.13+22,w-46);
-  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,23,h*.13+46,w-46);
-  const y=h*.72;ctx.fillStyle='rgba(5,20,29,.84)';ctx.fillRect(w*.20,y,w*.60,50);ctx.textAlign='center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,w/2,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,w/2,y+40,w*.55);
+  const compact=h<500,hx=compact?87:12,hy=compact?9:h*.13,hw=compact?Math.min(w-285,550):w-24,hh=compact?44:65;
+  ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),hw-22);
+  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,hx+11,hy+(compact?35:46),hw-22);
+  const y=h*.72,panelW=Math.min(w*.60,320);ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect((w-panelW)/2,y,panelW,50);ctx.textAlign='center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,w/2,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,w/2,y+40,w*.55);
   const cx=w/2,cy=h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?'CÂMERA • ALVOS VIRTUAIS • ARRASTE MIRAR':'ARENA VIRTUAL • MOVER + MIRAR + ATIRAR',w/2,h*.24,w-24);
   const nearest=this.enemies.filter(e=>e.active).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   if(nearest){const bearing=angle(Math.atan2(nearest.x-this.player.x,nearest.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?'ALVO À DIREITA →':'← ALVO À ESQUERDA',w/2,h*.28,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}
-  if(this.bannerTime>0&&this.wave===0){ctx.fillStyle='#fff';ctx.fillText('MOVA À ESQUERDA • MIRE À DIREITA • SEGURE ATIRAR',w/2,h*.31,w-22);}
   if(this.state==='VICTORY'||this.state==='DEFEAT'){ctx.fillStyle='rgba(6,18,27,.86)';ctx.fillRect(0,h*.34,w,h*.28);ctx.fillStyle=this.state==='VICTORY'?'#a3edbd':'#ffbe9c';ctx.font='bold 23px Arial';ctx.fillText(this.state==='VICTORY'?'OPERAÇÃO CONCLUÍDA':'TENTE OUTRA ESTRATÉGIA',w/2,h*.44,w-24);ctx.font='14px Arial';ctx.fillText(this.stats.kills+' alvos • '+this.stats.hits+'/'+this.stats.shots+' acertos',w/2,h*.50,w-24);}
   ctx.restore();
  },

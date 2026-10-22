@@ -107,6 +107,10 @@ try{
       await take('voo-ponte-rio',{position:{x:-7900,y:1600,z:-2900,yaw:.38,pitch:-.3,roll:0}});
     }
     await page.setViewportSize({width:390,height:844});
+    // Both window and visualViewport resize events resize (and clear) the native canvas.
+    // Let those settle before drawing our paused inspection frame.
+    await page.waitForTimeout(250);
+    await page.waitForFunction(()=>window.System.canvas.width===390&&window.System.canvas.height===844);
     if(slug==='ar')await take('war-portrait',{mission:'city',position:{x:-12,z:8,yaw:.19,pitch:0}});
     else await take('voo-portrait',{position:{x:-1100,y:700,z:-1600,yaw:.12,pitch:-.15,roll:0}});
     const pixels=await page.evaluate(()=>{const s=window.System,c=s.canvas.getContext('2d'),img=c.getImageData(0,0,s.canvas.width,s.canvas.height).data;let nonempty=0;for(let i=3;i<img.length;i+=100)nonempty+=img[i]>0;return nonempty});

@@ -25,7 +25,7 @@ jobs:
       - name: Instalar navegador de teste
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
-          npx playwright install --with-deps chromium
+          npx playwright install chromium
       - name: Servir console
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/arcade-server.log 2>&1 &
@@ -35,7 +35,7 @@ jobs:
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         run: node tests/playable-smoke.mjs
       - name: Jogar com a Família no OTThi e preservar o HQ
-        if: always()
+        if: ${{ always() && !cancelled() }}
         run: node tests/family-playable.mjs
       - name: Salvar evidências visuais
         if: always()

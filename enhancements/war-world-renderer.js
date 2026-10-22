@@ -134,7 +134,7 @@ class World{
   const sky=new T.Mesh(new T.SphereGeometry(1,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color('#315c7b')},bottom:{value:new T.Color('#d4c9ae')},sunDir:{value:new T.Vector3(-.5,.3,.8).normalize()}},vertexShader:'varying vec3 dir; void main(){dir=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec3 dir; uniform vec3 top; uniform vec3 bottom; uniform vec3 sunDir; void main(){vec3 d=normalize(dir);float h=max(0.0,d.y);vec3 c=mix(bottom,top,pow(h,.48));float s=max(0.0,dot(d,sunDir));c+=vec3(1.0,.72,.38)*pow(s,80.0)*.3+vec3(1.0,.85,.60)*pow(s,1800.0)*2.0;float cloud=sin(d.x*31.0+d.z*19.0)+sin(d.x*67.0-d.z*29.0)*.4;float band=smoothstep(.02,.18,h)*(1.0-smoothstep(.25,.5,h));c=mix(c,vec3(.91,.88,.79),max(0.0,cloud-.35)*band*.22);gl_FragColor=vec4(c,1.0);}'}));
   sky.scale.setScalar(this.type==='flight'?110000:1200);sky.frustumCulled=false;sky.renderOrder=-100;this.sky=sky;this.scene.add(sky);
  }
- shadow(b,x,z,w,d,y=.025){b.add('plane',this.m.shadow,x,y,z,w,d,1,-Math.PI/2)}
+ shadow(b,x,z,w,d,y=this.type==='flight'?.6:.025){b.add('plane',this.m.shadow,x,y,z,w,d,1,-Math.PI/2)}
  tree(b,x,z,size=1){
   const m=this.m;b.add('cylinder',m.bark,x,2*size,z,.65*size,4*size,.65*size);
   b.round(m.leaf,x,5*size,z,2.5*size,3*size,2.4*size);b.round(m.leafLight,x+1.3*size,4.9*size,z-.5*size,1.7*size,1.9*size,1.8*size);this.shadow(b,x,z,size*6,size*6);
