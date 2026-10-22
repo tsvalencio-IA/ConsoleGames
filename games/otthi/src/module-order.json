@@ -77,7 +77,7 @@
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "a975020a5446c18f3bc0afabdbc41a45faf77c0277c1e03f405637c24caff2d3"
+      "sha256Body": "cd7c543ba30a3d10d32008a524eaed38e370eac74a6ea7b77313c214702405f1"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
