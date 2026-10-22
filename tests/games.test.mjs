@@ -218,8 +218,8 @@ test("voo usa teclado e joystick tátil que acionam comandos originais",()=>{
 test("cinco jogos possuem favicon explícito sem erro 404",()=>{
  for(const {slug} of installed){
   const html=read("games/"+slug+"/index.html");
-  assert(html.includes('<link rel="icon" type="image/svg+xml" href="./icon.svg">'));
-  assert(existsSync(here("games/"+slug+"/icon.svg")));
+  const icon=html.match(/<link rel="icon" type="(image\/(?:svg\+xml|png))" href="(\.\/[^"\s]+)"/);
+  assert(icon,slug+" sem favicon");assert(existsSync(here("games/"+slug+"/"+icon[2].slice(2))),slug+" favicon inexistente");
  }
 });
 

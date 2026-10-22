@@ -15,7 +15,7 @@ const specs=[
  ["kart","drive","Kart Legends","game_kart.js"],
  ["boxe","box_pro","Boxing Pro","game_box.js"],
  ["tenis","tennis","Ping Pong Wii","game_tennis.js"],
- ["ar","ar_truck_sim","AR Ops Premium","game_ar.js"],
+ ["ar","ar_truck_sim","WWAR Combatee","game_ar.js"],
  ["voo","usarmy_flight_sim","Aero Strike WAR","game_flight.js"]
 ];
 const all=["game_kart.js","game_box.js","game_tennis.js","game_ar.js","game_flight.js"];

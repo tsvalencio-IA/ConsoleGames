@@ -202,6 +202,7 @@
         net: { isHost: false, uid: null, players: {}, sessionRef: null, playersRef: null, sharedRef: null, loop: null, sharedData: { wave: 1, teamKills: 0 }, lastSend: 0 },
 
         init: function(faseData) {
+            window.ArcadeWorldRenderer?.release(this);
             this._cleanupNet();
             
             this.lastTime = performance.now();
@@ -1532,6 +1533,7 @@
         },
 
         _drawWorld: function(ctx,w,h) {
+            if(window.ArcadeWorldRenderer?.flight(this,ctx,w,h))return;
             let safeH = h > 0 ? h : 100;
             let hy = Math.sin(this.view?.pitch??this.ship.pitch??0) * safeH * 1.5;
             

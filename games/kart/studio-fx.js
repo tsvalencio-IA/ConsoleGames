@@ -5,7 +5,7 @@
 (() => {
   "use strict";
   const gameId=window.CONSOLE_GAME_ID;
-  const titles={drive:"KART",box_pro:"BOXE",tennis:"TÊNIS",ar_truck_sim:"AR COMBAT",usarmy_flight_sim:"VOO"};
+  const titles={drive:"KART",box_pro:"BOXE",tennis:"TÊNIS",ar_truck_sim:"WAR COMBATE",usarmy_flight_sim:"VOO"};
   if(!Object.hasOwn(titles,gameId))return;
   const storageKey="thia:studio:audio:v1";
   const context={ctx:null,enabled:true,last:new Map(),voices:0,game:null,

@@ -4,7 +4,7 @@
  * No game APIs are called until a real match begins. */
 (()=>{"use strict";
 const gameId=window.CONSOLE_GAME_ID;
-const names={drive:"KART LEGENDS",box_pro:"BOXE PRO",tennis:"TÊNIS ARENA",ar_truck_sim:"AR COMBAT",usarmy_flight_sim:"AERO STRIKE"};
+const names={drive:"KART LEGENDS",box_pro:"BOXE PRO",tennis:"TÊNIS ARENA",ar_truck_sim:"WAR COMBATE",usarmy_flight_sim:"AERO STRIKE"};
 if(!Object.prototype.hasOwnProperty.call(names,gameId))return;
 const $=s=>document.querySelector(s);
 const goalDefs={

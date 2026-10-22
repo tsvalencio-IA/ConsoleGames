@@ -1,0 +1,43 @@
+name: Conferir cenários 3D e alinhamento da mira
+on:
+  push:
+    paths:
+      - '.github/workflows/scenery-smoke.yml'
+      - 'tests/scenery-browser.mjs'
+      - 'games/ar/world-renderer.js'
+      - 'games/voo/world-renderer.js'
+      - 'games/ar/js/game_ar.js'
+      - 'games/voo/js/game_flight.js'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: consolegames-scenery-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  scenery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preparar Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Servir jogos
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/scenery-server.log 2>&1 &
+          sleep 2
+      - name: Verificar cenários com WebGL real
+        run: node tests/scenery-browser.mjs
+      - name: Guardar imagens e medições
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scenery-browser-artifacts
+          path: test-results/scenery/
+          if-no-files-found: ignore
+          retention-days: 14

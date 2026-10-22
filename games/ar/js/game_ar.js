@@ -1,4 +1,4 @@
-/* AR COMBAT — câmera opcional, arena virtual, alvos somente do jogo.
+/* WAR Combate — câmera opcional, arena virtual, alvos somente do jogo.
  * O identificador legado conserva as permissões originais. O progresso de
  * combate usa um novo namespace e nunca converte cargas antigas em vitórias. */
 (function(){
@@ -129,6 +129,7 @@ const Game={
   ctx.clearRect(0,0,w,h);
   if(camera){const scale=Math.max(w/(video.videoWidth||640),h/(video.videoHeight||480));ctx.drawImage(video,(w-(video.videoWidth||640)*scale)/2,(h-(video.videoHeight||480)*scale)/2,(video.videoWidth||640)*scale,(video.videoHeight||480)*scale);ctx.fillStyle='rgba(6,18,27,.22)';ctx.fillRect(0,0,w,h);}
   else{const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#152d46');bg.addColorStop(.46,'#8aabad');bg.addColorStop(.48,'#6c7566');bg.addColorStop(1,'#263d3e');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);}
+  if(window.ArcadeWorldRenderer?.combat(this,ctx,w,h,camera)){this.drawCombatSignals(ctx,w,h);return;}
   const faces=[];
   const face=(vertices,color)=>{const points=vertices.map(v=>this.project(...v,w,h));if(points.some(p=>!p))return;faces.push({points,color,z:points.reduce((s,p)=>s+p.z,0)/points.length});};
   const box=(x,y,z,bw,bh,bd,color)=>{
@@ -154,15 +155,18 @@ const Game={
    }
   }
   faces.sort((a,b)=>b.z-a.z);for(const f of faces){ctx.beginPath();f.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();ctx.strokeStyle='rgba(10,26,32,.2)';ctx.lineWidth=.6;ctx.stroke();}
+  // First-person weapon, below the reticle. All targets are rendered game objects.
+  const bx=w*.62,by=h*.83,unit=Math.min(w,h)*.16;ctx.fillStyle='#293e44';ctx.fillRect(bx,by,unit*.48,unit*1.6);ctx.fillStyle='#5b7175';ctx.fillRect(bx+unit*.08,by-unit*.65,unit*.25,unit*1.5);ctx.fillStyle='#152b32';ctx.fillRect(bx+unit*.12,by-unit*.9,unit*.17,unit*.6);
+  if(this.muzzle>0){ctx.fillStyle='#ffe4a0';ctx.beginPath();ctx.arc(bx+unit*.20,by-unit*.95,unit*.3,0,Math.PI*2);ctx.fill();}
+  this.drawCombatSignals(ctx,w,h);
+ },
+ drawCombatSignals(ctx,w,h){
   for(const e of this.enemies){
    if(!e.active)continue;const p=this.project(e.x,e.kind==='soldier'?2.7:e.y+1.8,e.z,w,h);if(!p)continue;
    ctx.strokeStyle=e.aim<.8?'#ffba55':'#e58d77';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(6,Math.min(13,p.s*.5)),-Math.PI/2,-Math.PI/2+Math.PI*2*(1-clamp(e.aim/(this.level.aim+1.2),0,1)));ctx.stroke();
    if(e.shot>0){ctx.strokeStyle='rgba(255,187,87,.8)';ctx.beginPath();ctx.moveTo(p.x,p.y+20);ctx.lineTo(w*.5,h*.76);ctx.stroke();}
   }
   for(const f of this.particles){const p=this.project(f.x,f.y,f.z,w,h);if(p){ctx.fillStyle='rgba(255,194,94,'+f.life+')';ctx.fillRect(p.x,p.y,Math.max(2,p.s*.15),Math.max(2,p.s*.15));}}
-  // First-person weapon, below the reticle. All targets are rendered game objects.
-  const bx=w*.62,by=h*.83,unit=Math.min(w,h)*.16;ctx.fillStyle='#293e44';ctx.fillRect(bx,by,unit*.48,unit*1.6);ctx.fillStyle='#5b7175';ctx.fillRect(bx+unit*.08,by-unit*.65,unit*.25,unit*1.5);ctx.fillStyle='#152b32';ctx.fillRect(bx+unit*.12,by-unit*.9,unit*.17,unit*.6);
-  if(this.muzzle>0){ctx.fillStyle='#ffe4a0';ctx.beginPath();ctx.arc(bx+unit*.20,by-unit*.95,unit*.3,0,Math.PI*2);ctx.fill();}
   if(this.hurtFlash>0){ctx.fillStyle='rgba(175,54,33,.17)';ctx.fillRect(0,0,w,h);}
  },
  drawHUD(ctx,w,h){
@@ -181,9 +185,10 @@ const Game={
   ctx.restore();
  },
  cleanup(){
+  window.ArcadeWorldRenderer?.release(this);
   this.release?.();if(this.keyDown)window.removeEventListener?.('keydown',this.keyDown);if(this.keyUp)window.removeEventListener?.('keyup',this.keyUp);if(this.release){window.removeEventListener?.('blur',this.release);window.removeEventListener?.('arcade:release-inputs',this.release);}this.resultSent=false;
  }
 };
-const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','AR Combat','🎯',Game,{camera:'environment',camOpacity:0,phases:MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1}))});return true;};
+const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','WAR Combate','🎯',Game,{camera:'environment',camOpacity:0,phases:MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1}))});return true;};
 if(!register()){const timer=setInterval(()=>{if(register())clearInterval(timer)},100);}
 })();

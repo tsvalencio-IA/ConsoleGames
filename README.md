@@ -21,7 +21,7 @@ O aplicativo do console reúne as sete entradas em tela cheia, com rotação e c
 | **Kart Legends** | [games/kart/](./games/kart/) | `drive` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 | **Boxing Pro** | [games/boxe/](./games/boxe/) | `box_pro` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 | **Ping Pong Wii** | [games/tenis/](./games/tenis/) | `tennis` | [GAME](https://github.com/tsvalencio-IA/GAME) |
-| **AR Ops Premium** | [games/ar/](./games/ar/) | `ar_truck_sim` | [GAME](https://github.com/tsvalencio-IA/GAME) |
+| **WWAR Combatee** | [games/ar/](./games/ar/) | `ar_truck_sim` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 | **Aero Strike WAR** | [games/voo/](./games/voo/) | `usarmy_flight_sim` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 
 Os arquivos originais completos foram copiados para o novo repositório **sem alterar os três repositórios de origem**. A lista de hashes (40 caracteres) dos snapshots exatos está em [games/source-commits.json](games/source-commits.json). As cinco pastas GAME possuem motor, assets e Firebase originais, mas carregam somente o módulo do jogo escolhido. **O arquivo vazio `game_run.js` não foi anunciado como oitavo jogo**.

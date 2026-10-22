@@ -6,7 +6,7 @@
   const id = window.CONSOLE_GAME_ID;
   const titles = {
     drive: "Kart Legends", box_pro: "Boxing Pro", tennis: "Ping Pong Wii",
-    ar_truck_sim: "AR Combat", usarmy_flight_sim: "Aero Strike WAR"
+    ar_truck_sim: "WAR Combate", usarmy_flight_sim: "Aero Strike WAR"
   };
   if (!id || !Object.prototype.hasOwnProperty.call(titles, id)) return;
   const $ = (selector) => document.querySelector(selector);

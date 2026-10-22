@@ -11,7 +11,7 @@
     { id:"kart", title:"Kart Legends", category:"acao", categoryLabel:"Corrida", short:"Pilote nas pistas de kart e dispute a melhor colocação.", icon:"🏎️", coverA:"#67404b", coverB:"#c06b36", source:"GAME", url:BASE+"kart/", tint:"#ffd18d", destination:"direct" },
     { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Um jogo de boxe com movimento e desafios por fases.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
     { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Partidas de pingue-pongue com controles por movimento.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
-    { id:"ar", title:"AR Combat", category:"acao", categoryLabel:"Realidade aumentada", short:"Combate com câmera opcional, joysticks, cobertura e três operações.", icon:"🎯", coverA:"#173642", coverB:"#385951", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
+    { id:"ar", title:"WAR Combate", category:"acao", categoryLabel:"Combate tático", short:"Combate com câmera opcional, joysticks, cobertura e três operações.", icon:"🎯", coverA:"#173642", coverB:"#385951", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
     { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Pilote caças e helicópteros sobre cidades com trânsito e combate no solo.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
   ]);
 
