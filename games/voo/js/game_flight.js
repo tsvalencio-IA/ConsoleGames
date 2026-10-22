@@ -1699,7 +1699,7 @@
 
             }
 
-            ctx.save();ctx.fillStyle='#b5e5ff';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText((this.isHelicopter()?'COLETIVO ':'POTÊNCIA ')+Math.round(this.pilot.throttle*100)+'%'+(this.isHelicopter()?' · 50% PAIRA':''),w/2,h-28);ctx.restore();
+            ctx.save();ctx.fillStyle='#b5e5ff';ctx.font='bold 11px Arial';ctx.textAlign=this.isHelicopter()?'left':'center';ctx.fillText((this.isHelicopter()?'COLETIVO ':'POTÊNCIA ')+Math.round(this.pilot.throttle*100)+'%'+(this.isHelicopter()?' · 50% PAIRA':''),this.isHelicopter()?14:w/2,this.isHelicopter()?h-Math.min(182,h*.46):h-28,this.isHelicopter()?Math.max(140,w*.48):w-30);ctx.restore();
             let hdg=(p.yaw*180/Math.PI)%360;if(hdg<0)hdg+=360;
             ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(0,0,w,50);
             ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='bold 22px "Russo One", Arial';ctx.fillText(Math.floor(hdg)+'°',w/2,35);
