@@ -4,7 +4,7 @@ on:
     branches: [world-unificado-campanha-20261022]
     paths:
       - games/otthi/src/**
-      - tests/world-campaign.test.mjs
+      - tests/**
       - .github/workflows/world-campaign-branch.yml
   workflow_dispatch:
 permissions:
