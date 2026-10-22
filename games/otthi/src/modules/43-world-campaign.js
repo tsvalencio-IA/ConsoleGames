@@ -74,8 +74,10 @@
     if(document.getElementById('ot-campaign-css'))return;
     const css=document.createElement('style');css.id='ot-campaign-css';
     css.textContent=[
-      'body.campaign-world #ot-games-button{display:none!important}',
-      '#worldCampaignBtn{font:800 11px system-ui;color:#e5fff2;background:#20505b;border:1px solid #88cdb4;border-radius:11px;min-height:44px;padding:4px 8px}',
+      '#worldCampaignBtn{position:absolute;z-index:110;top:calc(130px + var(--safe-top,0px));right:calc(8px + var(--safe-right,0px));width:103px;min-height:44px;padding:5px 8px;border-radius:13px;border:2px solid #8fdbb4;background:linear-gradient(180deg,#317c69,#163d4c);color:#f4fff4;font:800 12px system-ui;line-height:1.15;box-shadow:0 4px 15px #0018;cursor:pointer;touch-action:manipulation;pointer-events:auto}',
+      'body.ot-games-active #worldCampaignBtn{display:none!important}',
+      'body.ui-landscape.otthi-v705-world #worldCampaignBtn{top:calc(96px + var(--safe-top,0px));right:calc(min(20vw,150px) + 17px + var(--safe-right,0px));min-height:42px}',
+      '@media(max-width:550px) and (orientation:portrait){#worldCampaignBtn{top:calc(175px + var(--safe-top,0px));right:calc(10px + var(--safe-right,0px))}}',
       '#campaignRoute{position:fixed;z-index:590;top:max(5px,env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(350px,calc(100vw - 22px));box-sizing:border-box;text-align:center;border:1px solid #b1d7c08f;border-radius:10px;padding:6px 9px;background:#102c39e9;color:#f0ffea;font:700 12px/1.3 system-ui;pointer-events:none}',
       '#campaignRoute small{display:block;font:600 10px/1.3 system-ui;color:#c2ded1}',
       '#campaignRoute[hidden]{display:none!important}',
@@ -94,8 +96,11 @@
     for(const site of Object.values(WORLD_CAMPAIGN_SITES))campaignDrawSite(site);
     worldCampaign.recordKey='thia:otthi:campaign:v1:'+(state.profile?.playerId||'local');
     const button=document.createElement('button');button.id='worldCampaignBtn';button.type='button';
-    button.textContent='MISSÕES';button.setAttribute('aria-label','Bases e missões do mundo');button.onclick=campaignOpen;
-    document.getElementById('quickBar')?.prepend(button);
+    button.textContent='MISSÕES';button.setAttribute('aria-label','Abrir missões, Quartel-General, Base Aérea e Setor Norte');button.onclick=campaignOpen;
+    // HUD button is independent of the collapsed Vida/quickBar.
+    const gameScreen=document.getElementById('game');
+    if(!gameScreen)return;
+    gameScreen.append(button);
     const box=document.createElement('div');box.id='campaignRoute';box.hidden=true;box.innerHTML='<b></b><small></small>';
     document.body.append(box);worldCampaign.routeUi=box;
     document.body.classList.add('campaign-world');worldCampaign.initialized=true;
@@ -103,16 +108,33 @@
   function campaignHistory(){
     try{return JSON.parse(safeLocalGet(worldCampaign.recordKey)||'{}')||{};}catch{return{};}
   }
+  function campaignMapLocations(){
+    return Object.values(WORLD_CAMPAIGN_SITES).map(site=>({
+      id:'campaign-'+site.id,name:site.label,
+      icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':'🎯',
+      group:'Bases e campanhas',x:site.x,z:site.z,navX:site.x,navZ:site.z,
+      missionTarget:true,
+      description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Partida de operações com avião ou helicóptero para o Setor Norte.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
+      actions:['Marcar a rota azul no GPS','Viajar até o destino','Abrir MISSÕES ao chegar']
+    }));
+  }
   function campaignNavigate(site){
-    worldCampaign.route=site;worldCampaign.time=1;closeModal();
-    toast('Rota definida: '+site.label+'.', 'info',2400);
+    if(!site)return false;
+    worldCampaign.route=site;worldCampaign.time=1;
+    if(!worldCampaign.mission){
+      // World GPS owns the map markers, cyan path, minimap and 3D route arrows.
+      setWaypoint('campaign-'+site.id);
+    }else{
+      closeModal();toast('Destino da operação: '+site.label+'.', 'info',2400);
+    }
+    return true;
   }
   function campaignOpen(){
     if(!running||!worldCampaign.initialized)return;
     const pos=otGames.active?otGames.body:player,history=campaignHistory();
     const cards=Object.values(WORLD_CAMPAIGN_SITES).map(site=>{
       const distance=Math.round(campaignDist(pos,site)),near=distance<site.radius;
-      let actions='<button class="btn" data-campaign-nav="'+site.id+'">ROTA</button>';
+      let actions='<button class="btn" data-campaign-nav="'+site.id+'">ROTA NO GPS</button>';
       if(near&&!otGames.active&&site.id==='hq')actions+='<button class="btn primary" data-campaign-start="ground">PATRULHA</button>';
       if(near&&!otGames.active&&site.id==='airbase')actions+='<button class="btn primary" data-campaign-start="helicopter">HELICOPTERO</button><button class="btn primary" data-campaign-start="plane">AVIAO</button>';
       return '<section style="padding:9px;margin:8px 0;border:1px solid #547f83;border-radius:12px"><b>'+site.label+'</b><p>'+distance+' m · '+(near?'no local':'siga a rota')+'</p><div class="modal-actions">'+actions+'</div></section>';
@@ -133,6 +155,9 @@
     catch(e){toast(e?.message||'Não foi possível iniciar.','warn',3000);}
     if(!ok)return false;
     otGames.goal=mode==='ground'?6:8;
+    if(state.waypoint?.id?.startsWith('campaign-')){
+      state.waypoint=null;updateWaypointMarker();updateNavigation(0,true);saveState(true);
+    }
     worldCampaign.mission={id:'norte-'+mode,mode,base:site,phase:'travel',recorded:false};
     worldCampaign.route=WORLD_CAMPAIGN_SITES.north;worldCampaign.time=1;
     toast('Operação iniciada. Desloque-se até o Setor Norte.','info',3600);
