@@ -118,6 +118,8 @@
     }
   }
   function otGamesSaveResult(won){
+    // The geographic campaign is complete only after a return to its home base.
+    if(won&&typeof worldCampaign!=='undefined'&&worldCampaign.mission&&!worldCampaign.mission.recorded)return;
     const g=otGames;if(g.resultSaved)return;g.resultSaved=true;
     if(won){let career={wins:0};try{career=JSON.parse(safeLocalGet(g.careerKey)||'{}')}catch{}career.wins=(Number(career.wins)||0)+1;career.lastMode=g.mode;career.lastDifficulty=g.difficulty;safeLocalSet(g.careerKey,JSON.stringify(career));}
   }
