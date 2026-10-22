@@ -661,11 +661,8 @@
                             if (d.gestureTimer > 25 && d.nitro >= 20 && !d.turboLock) { d.inputActive=true;d.trackingLost=false;d.requestTurbo(); }
                         } else { d.gestureTimer = 0; d.virtualWheel.isHigh = false; }
 
-                        if (nose) {
-                            const dl = Math.hypot(lw.x - nose.x, lw.y - nose.y);
-                            const dr = Math.hypot(rw.x - nose.x, rw.y - nose.y);
-                            if ((dl < 70 && lw.y < nose.y + 40) || (dr < 70 && rw.y < nose.y + 40)) { itemTriggered = true; }
-                        }
+                        // Camera steering must never consume an acquired item.
+                        // Only an explicit USE ITEM action can activate it.
                     }
                 }
                 // No camera mode: use the exact touch/keyboard state, not simulated poses.
@@ -673,9 +670,10 @@
                 if(manual){
                     d.targetSteer=(Number(!!manual.right)-Number(!!manual.left))*.85*playOptions().sensitivity;
                     detected=Boolean(manual.throttle||playOptions().autoAccelerate)&&!manual.brake;
-                    if(manual.itemQueued){itemTriggered=true;manual.itemQueued=false;}
+                    // Item action is processed independently of steering mode.
                     d.virtualWheel.opacity=0;
                 }
+                if(d.arcadeManual?.itemQueued){itemTriggered=true;d.arcadeManual.itemQueued=false;}
                 d.inputActive=detected;
                 d.trackingLost=!manual&&!detected;
                 if(!detected && !manual){d.targetSteer=0;d.virtualWheel.opacity*=.9;d.gestureTimer=0;}
