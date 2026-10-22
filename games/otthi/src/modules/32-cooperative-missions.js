@@ -287,7 +287,8 @@
     const records=new Map(Object.values(coopRemoteMissions).filter(Boolean).map(record=>[record.id,record]));
     const own=activeCoopRecord();if(own)records.set(own.id,own);
     for(const record of records.values()){
-      if(!['school','police'].includes(record.type)||record.status!=='active')continue;
+      const room=window.OTTHOS_RTDB?.getRoom?.()||state.multiplayer?.room||'bairro-central';
+      if(!['school','police'].includes(record.type)||record.status!=='active'||(record.room&&record.room!==room))continue;
       const events=record.progress?.events||{},prefix=record.type==='school'?'student':'suspect',event=events[coopEventSubjectId(prefix,npc.id)];
       if(!event||!record.participants?.[event.uid])continue;
       const delivered=events[coopEventSubjectId(record.type==='school'?'student-delivered':'suspect-escorted',npc.id)];
@@ -296,7 +297,7 @@
       if(event.uid===coopUid())return{x:player.x,z:player.z,facing:Number(player.facing)||0,paused:!coopTeamState(record).ok};
       const presence=(window.OTTHOS_RTDB?.getPresence?.()||{})[event.uid];
       if(!presence||!coopTeamState(record).ok)return{paused:true,x:npc.group.position.x,z:npc.group.position.z,facing:npc.group.rotation.y};
-      return{x:Number(presence.x)||0,z:Number(presence.z)||0,facing:Number(presence.facing??presence.heading)||0,paused:false};
+      return{x:Number(presence.x)||0,z:Number(presence.z)||0,facing:Number(presence.r??presence.facing??presence.heading)||0,paused:false};
     }
     if(npc.coopEscortOwner){npc.following=false;npc.coopEscortOwner='';}return null;
   }

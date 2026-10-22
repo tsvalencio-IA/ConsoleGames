@@ -99,3 +99,8 @@ test('OTThi: authoritative NPC escorts follow the confirmed guest rather than th
  run('window.OTTHOS_RTDB.getPresence=()=>({})');assert.equal(run('coopNpcEscortTarget(world.npcs[0]).paused'),true);
  run("activeCoopRecord().progress.events[coopEventSubjectId('student-delivered','npc-0')]={uid:'guest',kind:'student-delivered'}");assert.equal(run('coopNpcEscortTarget(world.npcs[0])'),null);assert.equal(run('world.npcs[0].following'),false);
 });
+
+test('OTThi: escort records from another neighborhood do not control local NPCs, and remote facing uses actual presence rotation',async()=>{
+ const f=cooperativeFixture(),{run}=f;await f.start('school','duo');run("activeCoopRecord().progress.events[coopEventSubjectId('student','npc-0')]={uid:'guest',kind:'student-invited'};window.OTTHOS_RTDB.getPresence=()=>({guest:{x:84,z:-12,r:1.2,updatedAt:Date.now()}})");
+ assert.equal(run('coopNpcEscortTarget(world.npcs[0]).facing'),1.2);run("activeCoopRecord().room='other-neighborhood'");assert.equal(run('coopNpcEscortTarget(world.npcs[0])'),null);assert.equal(run('world.npcs[0].following'),false);
+});
