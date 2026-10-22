@@ -36,9 +36,9 @@ test('combat: every operation and difficulty can finish through actual shots, an
  }
  const {game:g}=fresh();g.player.hp=0;g.step(.1);assert.equal(g.state,'DEFEAT');assert.equal(g.career.wins,0);assert.equal(g.selectWeapon('smg'),false);
 });
-test('combat: camera backdrop uses video pixels only when explicitly selected and available',()=>{
+test('combat: the front camera is a sensor and never replaces the battlefield',()=>{
  const {game:g,window}=fresh();const ctx=canvas();window.System.video={readyState:4,videoWidth:640,videoHeight:480};g.drawVirtualScene(ctx,390,844);assert(!ctx.operations.some(o=>o[0]==='drawImage'));
- window.ArcadeControls.mode='camera';g.drawVirtualScene(ctx,390,844);assert.equal(ctx.operations.filter(o=>o[0]==='drawImage').length,1);
+ window.ArcadeControls.mode='camera';g.drawVirtualScene(ctx,390,844);assert.equal(ctx.operations.filter(o=>o[0]==='drawImage').length,0);
 });
 
 test('combat: held automatic fire has the same cadence on 30, 60 and 120 Hz screens',()=>{

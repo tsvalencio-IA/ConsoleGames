@@ -355,10 +355,16 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else this.tank(b,e.x,e.z,0,1,e.shot)}
-   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=-.07+(g.reloadTime>0?-.25:0);
+   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=-.07+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=-.1+(g.handAim?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=.06+(g.handAim?(g.handAim.y-.48)*.45:0);
   }else{
-   for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw,5,m.cars[i%4])}
-   for(const tank of g.groundTanks||[]){const p=g._groundPath(tank);this.tank(b,p.x,p.z,p.yaw+Math.PI,8,tank.flash)}
+   for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw+(car.crashed?.18:0),5,car.crashed?m.dark:m.cars[i%4])}
+   for(const tank of g.groundTanks||[]){const p=g._groundPath(tank);if(tank.active!==false)this.tank(b,p.x,p.z,p.yaw+Math.PI,8,tank.flash);else{b.box(m.dark,p.x,3,p.z,35,8,46,p.yaw);b.box(m.steel,p.x,11,p.z,20,5,24,p.yaw+.4);b.box(m.rubber,p.x-16,1,p.z,7,8,48,p.yaw)}}
+   for(const fx of g.groundExplosions||[]){
+    const burst=Math.max(0,1-fx.age/.65),fade=Math.min(1,fx.life/4),size=30+fx.age*6;
+    if(burst)b.round(m.light,fx.x,20+fx.age*25,fx.z,80*burst,65*burst,80*burst);
+    for(let i=0;i<5;i++){const rise=fx.age*20+i*size*.7;b.round(m.dark,fx.x+Math.sin(i*2+fx.age*.2)*size*.35,20+rise,fx.z,size*fade,(size*1.3)*fade,size*fade);}
+    for(let i=0;i<6&&fx.age<2;i++){const a=i*Math.PI/3,d=fx.age*65;b.box(m.steel,fx.x+Math.cos(a)*d,15+Math.max(0,fx.age*70-fx.age*fx.age*40),fx.z+Math.sin(a)*d,5,5,10,a+fx.age*3);}
+   }
    if(!this.low)for(const [i,person]of (g.groundPeople||[]).entries()){
     const p=g._groundPath(person,true),step=Math.sin(time*4+i)*1.3;b.round(m.skin,p.x,7,p.z,1.1,1.2,1.1);b.round(i%2?m.blue:m.rust,p.x,4.6,p.z,1.5,2,1.1);b.box(m.dark,p.x-1,0,p.z+step,.9,3,1);b.box(m.dark,p.x+1,0,p.z-step,.9,3,1);
    }
@@ -428,7 +434,7 @@ class World{
   const duration=clock()-begin;this.lastWidth=w;this.lastHeight=h;this.lastCamera=cameraBackground;this.lastView={...v};
   // Software GPUs share CPU time with input and physics. Leave several native
   // animation ticks between draws instead of stalling reloads and flight motion.
-  this.nextRenderAt=clock()+(this.software?33:0);
+  this.nextRenderAt=clock()+(this.software||g.handSession?33:0);
   if(q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
   g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
   return true;

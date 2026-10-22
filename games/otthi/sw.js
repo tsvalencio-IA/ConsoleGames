@@ -1,11 +1,12 @@
-const REVISION = '11bdff69a196a241';
+const REVISION = '3aad1b83409b1497';
 const CACHE = `otthi-v70615-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.16.7.17-visual-performance-governor';
+const BUILD = '705.16.7.18-ot-games-front-hand';
 const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70615';
 
 const REQUIRED_SHELL = [
+  './assets/ot-games-airframes.json',
   './index.html?v=70615',
   './style.css?v=70615',
   './assets/vendor/three-r128.min.js?v=70615',

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.16.7.17-visual-performance-governor",
+  "build": "705.16.7.18-ot-games-front-hand",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "c9341b185aec519212ad80a34828ce507f78656289d7c81d9d5e0c271812cbb4"
+      "sha256Body": "48745a14e3d2884effb94b854f85e1532a7b66e02e556b6242b89c826f15fbb6"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -84,7 +84,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "a8b0886bcecdb1ff44aa9adc1c2837867d9a538fcbe32628c9491c61d9098f00"
+      "sha256Body": "4832b637d42ca2cba5b5e9a65344b8ab246235ca0526e78d19cb4ede2a6216fd"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "9d8538adb85f8e3a642631c6cb64cbe57ab7dac531c89e60d0e20ac07f53a141"
+      "sha256Body": "fcb1dc7c8b9ac1582d0617db48f2708940c11ddceb43ecfc885949552af71630"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -259,14 +259,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "3c32c7a2062269d60afdd1f492b00eec502458c74a33aafd2ae145949518dcf4"
+      "sha256Body": "4ddd10259055b35185e700456440c9cc720706835f965b60d6bba8955415de35"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "f34d88db482e3ad814baff614bca0681e6ecb344aa09f477a71b4e39d6866d7d"
+      "sha256Body": "644ffc1dd15d334e4deb6fad4ee4f153481b96da93ab9cc5a336232b806a565a"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -344,6 +344,13 @@
       "startLine": 0,
       "endLine": 0,
       "sha256Body": "5c2227800fb08ea1e26bb4aee6589da730d70a7f114eb4f135ad0469821ec37c"
+    },
+    {
+      "file": "src/modules/42-ot-games-modes.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
+      "sha256Body": "a8f02cdeb1950f4133689dbf771f6c0aae5324fa71ab4f164a5f7e1286351954"
     }
   ],
   "styles": [
@@ -500,6 +507,13 @@
       "endLine": 0,
       "description": "Autoridade final R14: legibilidade, contraste, escala e responsividade global",
       "sha256Body": "7ae5340adbeedff33093a08e740add34ad81baefc4113d235dfe9fe6e09cc92c"
+    },
+    {
+      "file": "src/styles/21-ot-games-modes.css",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "OT Games accessible selector and simultaneous touch controls",
+      "sha256Body": "0e2a3dfc1b12d8e753223a0259879e91689d682e8834e2bff5f75d5198c21a5e"
     }
   ]
 }

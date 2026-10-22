@@ -1,0 +1,50 @@
+name: Câmera frontal e modos no mundo OT
+on:
+  push:
+    paths:
+      - '.github/workflows/ot-games-smoke.yml'
+      - 'games/ar/**'
+      - 'games/voo/**'
+      - 'games/otthi/**'
+      - 'tests/war-*'
+      - 'tests/ot-games*'
+      - 'tests/fixtures/hand/**'
+      - 'tests/helpers/console-context.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ot-games-camera-world-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  camera-e-mundo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Servir jogos
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/ot-games-server.log 2>&1 &
+          sleep 2
+      - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
+        run: node tests/war-camera-browser.mjs
+      - name: Voar e trocar de modo na cena original do OT preservando a família
+        if: ${{ always() && !cancelled() }}
+        run: node tests/ot-games-browser.mjs
+      - name: Guardar evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ot-games-hand-camera-world
+          path: |
+            test-results/hand-camera/
+            test-results/ot-games/
+          if-no-files-found: ignore
+          retention-days: 14

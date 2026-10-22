@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.16.7.17-visual-performance-governor',
+    build: '705.16.7.18-ot-games-front-hand',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

@@ -295,19 +295,21 @@
     return{critical:122,npc:96,resource:112,enemy:106,crystal:120,animal:100};
   }
   function updateCriticalSurfaceDistanceVisibility(){
+    const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
     const range=performanceDistanceRanges().critical;let visible=0,hidden=0;
     for(const mesh of world.criticalSurfaces||[]){
       if(!mesh?.parent)continue;
       if(mesh.userData?.alwaysVisible===true||Number(mesh.renderOrder||0)>=900){mesh.visible=true;visible++;continue;}
       let radius=0;
       try{if(mesh.geometry&&!mesh.geometry.boundingSphere)mesh.geometry.computeBoundingSphere();radius=Number(mesh.geometry?.boundingSphere?.radius||0);mesh.getWorldPosition(distanceCullPosition);mesh.getWorldScale(distanceCullScale);radius*=Math.max(Math.abs(distanceCullScale.x)||1,Math.abs(distanceCullScale.y)||1,Math.abs(distanceCullScale.z)||1);}catch{mesh.visible=true;visible++;continue;}
-      const d=Math.hypot(player.x-distanceCullPosition.x,player.z-distanceCullPosition.z),show=!Number.isFinite(d)||!Number.isFinite(radius)||d<=range+Math.max(1,radius);
+      const d=Math.hypot(focus.x-distanceCullPosition.x,focus.z-distanceCullPosition.z),show=!Number.isFinite(d)||!Number.isFinite(radius)||d<=range+Math.max(1,radius);
       mesh.visible=show;mesh.frustumCulled=false;mesh.userData.otthiDistanceCulled=!show;if(show)visible++;else hidden++;
     }
     perf.criticalVisible=visible;perf.criticalHidden=hidden;return{visible,hidden,range};
   }
   function updateDynamicEntityVisibility(){
-    const ranges=performanceDistanceRanges(),distance=(x,z)=>Math.hypot(player.x-Number(x||0),player.z-Number(z||0));let visible=0,hidden=0;
+    const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
+    const ranges=performanceDistanceRanges(),distance=(x,z)=>Math.hypot(focus.x-Number(x||0),focus.z-Number(z||0));let visible=0,hidden=0;
     for(const npc of world.npcs||[]){if(!npc?.group)continue;if(npc.coopRaceBot&&!npc.coopRaceMode){npc.group.visible=false;hidden++;continue;}const keep=!!npc.passengerMode||!!npc.following||!!npc.coopRaceMode,insideOk=!npc.interiorOnlyHouseId||currentHouse?.id===npc.interiorOnlyHouseId,show=insideOk&&(keep||distance(npc.group.position.x,npc.group.position.z)<=ranges.npc);npc.group.visible=show;if(show)visible++;else hidden++;}
     for(const resource of world.resources||[]){const object=resource?.mesh;if(!object)continue;const show=!resource.collected&&distance(resource.x,resource.z)<=ranges.resource;object.visible=show;if(show)visible++;else hidden++;}
     for(const enemy of world.enemies||[]){if(!enemy?.group)continue;const show=!enemy.dead&&distance(enemy.group.position.x,enemy.group.position.z)<=ranges.enemy;enemy.group.visible=show;if(show)visible++;else hidden++;}

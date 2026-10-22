@@ -19,7 +19,7 @@ const hub={
    overlay.setAttribute("aria-label","Escolha como jogar");
    const previous=document.activeElement;
    overlay.innerHTML='<div class="input-mode-panel"><div class="input-mode-eyebrow">thIAguinho ARCADE</div><h2>COMO VOCÊ QUER JOGAR?</h2><p>Você pode jogar sem câmera. Escolha a opção que preferir para esta partida.</p><div class="input-mode-options"><button type="button" data-mode="controls"><strong>🎮 CONTROLES</strong><small>Toque na tela ou use o teclado. Sem acesso à câmera.</small></button><button type="button" data-mode="camera"><strong>📷 CÂMERA</strong><small>Use seus movimentos. A câmera só será solicitada após esta escolha.</small></button></div><button type="button" data-mode="cancel" class="input-mode-cancel">VOLTAR ÀS FASES</button><span class="input-mode-foot">A escolha pode ser alterada antes da próxima partida.</span></div>';
-   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="Combate com alvos virtuais sobre a câmera traseira. Use os joysticks para mover e mirar.";overlay.querySelector('[data-mode="controls"] small').textContent="Arena virtual, sem câmera. Dois joysticks e botões independentes.";}
+   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal acompanha sua mão direita. Calibre, aponte e dispare automaticamente ao mirar em um adversário.";overlay.querySelector('[data-mode="controls"] small').textContent="Arena virtual, sem câmera. Dois joysticks e botões independentes.";}
    document.body.appendChild(overlay);
    const stored=(()=>{try{return localStorage.getItem(key)}catch{return null}})();
    const first=overlay.querySelector(stored==="camera"?'[data-mode="camera"]':'[data-mode="controls"]');
@@ -166,6 +166,7 @@ const hub={
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
    {id:'cover',text:'COBERTURA',label:'Segurar para se proteger e reduzir dano',down:()=>logic.coverHeld=true,up:()=>logic.coverHeld=false}
   ]);
+  if(hub.mode==='camera')root.classList.add('hand-input');
   for(const aim of [false,true]){
    const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
    stick.className='combat-stick '+(aim?'aim-stick':'move-stick');stick.dataset.control=aim?'aim':'joystick';stick.setAttribute('role','group');stick.setAttribute('aria-label',aim?'Joystick de mira: horizontal e vertical':'Joystick de movimento: andar e deslocar de lado');
@@ -178,7 +179,7 @@ const hub={
    const hidden=()=>{if(document.hidden)reset()};window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);window.addEventListener('resize',reset);document.addEventListener('visibilitychange',hidden);
    hub.releases.push(()=>{reset();window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset);window.removeEventListener('resize',reset);document.removeEventListener('visibilitychange',hidden)});
   }
-  hub.showTip('MOVER + MIRAR + ATIRAR • 3 TOQUES SIMULTÂNEOS • R RECARREGA • C PROTEGE');
+  hub.showTip(hub.mode==='camera'?'CALIBRE A MÃO DIREITA • APONTE PARA ATIRAR • JOYSTICK PARA ANDAR':'MOVER + MIRAR + ATIRAR • 3 TOQUES SIMULTÂNEOS • R RECARREGA • C PROTEGE');
  }
 
 };

@@ -224,7 +224,7 @@
                 engineHealth: 100, wingHealth: 100, structuralIntegrity: 100, engineHeat: 0 
             };
             this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0 };
-            this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
+            this.manualPedal=0;this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
             this.combat = { target: null, locked: false, lockTimer: 0, vulcanCd: 0, missileCd: 0 };
             
             for (let i = 0; i < 50; i++) {
@@ -843,6 +843,8 @@
 
         _processCombat: function(dt, w, h) {
             const previous=this.combat.target,wasLocked=this.combat.locked;
+            const heli=this.isHelicopter(),assisted=window.ArcadePlaySettings?.get().assist!==false;
+            const cone=(heli&&assisted?28:assisted?8:6)*Math.PI/180,acquire=heli&&assisted?.35:.65;
             this.combat.target=null;this.combat.locked=false;let closestAngle=Infinity;
             
             const scan = (obj, isPlayer, uid) => {
@@ -854,7 +856,7 @@
                 const angle=p.visible?Math.hypot(p.x-w/2,p.y-h/2)/800:Infinity;
                 // Six degrees around the aircraft's sight, not an entire forward
                 // hemisphere. Keep the same adversary in sight for acquisition.
-                if (obj.hp>0 && p.visible && p.z>200 && dist<30000 && angle<Math.tan(Math.PI/30) && angle<closestAngle) {
+                if (obj.hp>0 && p.visible && p.z>200 && dist<30000 && angle<Math.tan(cone) && angle<closestAngle && !this._worldOccludes(obj)) {
                     closestAngle=angle;
                     this.combat.target = isPlayer ? {x:obj.x, y:obj.y, z:obj.z, vx:obj.vx||0, vy:obj.vy||0, vz:obj.vz||0, hp:obj.hp, isPlayer:true, uid:uid} : obj;
                 }
@@ -862,6 +864,7 @@
 
             this.entities.forEach(e => { if(e.type && (e.type.startsWith('jet') || e.type === 'boss')) scan(e, false); });
 
+            if(this.mode==='SINGLE'&&!this.flightSchool)for(const tank of this.groundTanks||[])if(tank.active)scan(tank,false);
             if (this.mode === 'PVP' && this.net.players) {
                 Object.keys(this.net.players).forEach(id => {
                     if (id !== this.net.uid && this.net.players[id]?.hp > 0) scan(this.net.players[id], true, id);
@@ -872,10 +875,10 @@
             if(!same)this.combat.lockTimer=0;
             if (this.combat.target) {
                 this.combat.lockTimer += dt;
-                if (this.combat.lockTimer >= 0.65) {
+                if (this.combat.lockTimer >= acquire) {
                     if (!wasLocked||!same) GameSfx.play('lock');
                     this.combat.locked = true;
-                    this.combat.lockTimer = 0.65;
+                    this.combat.lockTimer = acquire;
                 }
             } else {
                 this.combat.lockTimer=0;
@@ -883,23 +886,12 @@
 
             let firingState = false;
 
-            if ((window.ArcadeControls?.mode!=='controls'||this.manualFireHeld||this.keys['f']) && this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
+            if ((window.ArcadeControls?.mode!=='controls'||this.manualFireHeld||this.keys['f']||(heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false)) && this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
                 this.combat.vulcanCd = performance.now();
-                let spd = this.ship.speed + 1200;
-                
-                let tX = this.combat.target.x + (this.combat.target.vx || 0) * 0.1;
-                let tY = this.combat.target.y + (this.combat.target.vy || 0) * 0.1;
-                let tZ = this.combat.target.z + (this.combat.target.vz || 0) * 0.1;
-
-                let dx = tX - this.ship.x, dy = tY - this.ship.y, dz = tZ - this.ship.z;
-                let distLead = Math.hypot(dx,dy,dz);
-                if (distLead < 1) distLead = 1;
-
-                this.bullets.push({
-                    x: this.ship.x + Math.cos(this.ship.yaw)*60, y: this.ship.y-20, z: this.ship.z - Math.sin(this.ship.yaw)*60,
-                    vx: this.ship.vx + (dx/distLead)*spd, vy: this.ship.vy + (dy/distLead)*spd, vz: this.ship.vz + (dz/distLead)*spd,
-                    isEnemy: false, life: 2
-                });
+                const speed=1400,t=this.combat.target,ship=this.ship;
+                const origin={x:ship.x+Math.cos(ship.yaw)*(heli?12:60),y:ship.y-(heli?8:20),z:ship.z-Math.sin(ship.yaw)*(heli?12:60)};
+                const lead=this._leadShot(origin,t,speed),dx=lead.x-origin.x,dy=lead.y-origin.y,dz=lead.z-origin.z,d=Math.hypot(dx,dy,dz)||1;
+                this.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:ship.vx+dx/d*speed,vy:ship.vy+dy/d*speed,vz:ship.vz+dz/d*speed,isEnemy:false,life:Math.min(24,Math.max(2,d/speed+1))});
                 GameSfx.play('vulcan');
                 firingState = true;
             }
@@ -1094,6 +1086,7 @@
         _updateBullets: function(dt) {
             for (let i = this.bullets.length-1; i >= 0; i--) {
                 let b = this.bullets[i];
+                const previous={x:b.x,y:b.y,z:b.z};
                 b.x += b.vx*dt; b.y += b.vy*dt; b.z += b.vz*dt; b.life -= dt;
                 if (b.isEnemy) {
                     if (Math.hypot(b.x-this.ship.x, b.y-this.ship.y, b.z-this.ship.z) < 80) {
@@ -1112,7 +1105,13 @@
                         b.life = 0;
                     }
                 } else {
+                    if(this.mode==='SINGLE')for(const tank of this.groundTanks||[]){
+                        if(tank.active&&this._segmentDistance(previous,b,tank)<42&&!this._worldOccludes(tank,previous)){
+                            this._damageGroundTank(tank,50);b.life=0;break;
+                        }
+                    }
                     for (let e of this.entities) {
+                        if(b.life<=0)break;
                         if (Math.hypot(b.x-e.x, b.y-e.y, b.z-e.z) < (e.isBoss? 300 : 150)) {
                             if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
                                 e.hp -= 50; 
@@ -1175,7 +1174,7 @@
                             this._fx(m.target.x,m.target.y,m.target.z,'#f33',40,300);
                         } else if (!m.target.isPlayer) {
                             if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
-                                m.target.hp -= 400 + (this.upgrades.missiles * 100);
+                                if(m.target.groundTank){this._damageGroundTank(m.target,400+this.upgrades.missiles*100);}else m.target.hp -= 400 + (this.upgrades.missiles * 100);
                                 if (m.target.hp <= 0) this._kill(m.target, m.target.isBoss?2000:300);
                             }
                             this._fx(m.target.x,m.target.y,m.target.z,'#f33',40,300);
@@ -1317,15 +1316,51 @@
         _projectView: function(x,y,z,w,h){const v=this.view||this.ship;return Engine3D.project(x,y,z,v.x,v.y,v.z,v.pitch,v.yaw,v.roll,w,h);},
         isHelicopter: function(){return this.airframe==='kestrel'||this.airframe==='guardian';},
         _updateHelicopter: function(dt){
-            const p=this.ship,heavy=this.airframe==='guardian',forward=this.pilot.targetPitch*(heavy?62:82),turn=this.pilot.targetRoll;
-            p.yaw+=turn*(heavy?.7:.95)*dt;
-            const desiredX=Math.sin(p.yaw)*forward,desiredZ=Math.cos(p.yaw)*forward,response=1-Math.exp(-dt*1.8);
+            const p=this.ship,heavy=this.airframe==='guardian',forward=this.pilot.targetPitch*(heavy?62:82),cyclic=this.pilot.targetRoll;
+            const pedal=Number(this.manualPedal)||0,coordinated=window.ArcadePlaySettings?.get().assist!==false;
+            const yawInput=pedal||(coordinated?cyclic*.85:0);
+            p.yaw+=yawInput*(heavy?.9:1.2)*dt;
+            const lateral=cyclic*(heavy?24:34),desiredX=Math.sin(p.yaw)*forward+Math.cos(p.yaw)*lateral,desiredZ=Math.cos(p.yaw)*forward-Math.sin(p.yaw)*lateral,response=1-Math.exp(-dt*(heavy?2.8:3.6));
             p.vx+=(desiredX-p.vx)*response;p.vz+=(desiredZ-p.vz)*response;
-            // Collective 50% hovers. Altitude is independent of forward speed.
-            const climb=(this.pilot.throttle-.5)*48;p.vy+=(climb-p.vy)*(1-Math.exp(-dt*2.5));
+            // Collective is independent of the cyclic. Center = stable hover.
+            const climb=(this.pilot.throttle-.5)*48;p.vy+=(climb-p.vy)*(1-Math.exp(-dt*3.5));
             p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;p.speed=Math.hypot(p.vx,p.vy,p.vz);p.mach=p.speed/340;
-            p.roll+=(turn*.34-p.roll)*response;p.pitch+=(-this.pilot.targetPitch*.24-p.pitch)*response;
-            p.isStalling=false;p.gForce=1+Math.abs(turn)*.3;p.afterburner=false;p.engineHeat=Math.max(0,p.engineHeat-dt*10);
+            p.roll+=(cyclic*.34-p.roll)*response;p.pitch+=(-this.pilot.targetPitch*.24-p.pitch)*response;
+            p.isStalling=false;p.gForce=1+Math.abs(cyclic)*.3;p.afterburner=false;p.engineHeat=Math.max(0,p.engineHeat-dt*10);
+        },
+        _leadShot: function(origin,target,speed){
+            const r=[target.x-origin.x,target.y-origin.y,target.z-origin.z],v=[(target.vx||0)-this.ship.vx,(target.vy||0)-this.ship.vy,(target.vz||0)-this.ship.vz];
+            const a=v.reduce((s,n)=>s+n*n,0)-speed*speed,b=2*r.reduce((s,n,i)=>s+n*v[i],0),c=r.reduce((s,n)=>s+n*n,0),disc=b*b-4*a*c;
+            let time=Math.sqrt(c)/speed;
+            if(Math.abs(a)>1e-8&&disc>=0){const roots=[(-b-Math.sqrt(disc))/(2*a),(-b+Math.sqrt(disc))/(2*a)].filter(t=>t>0);if(roots.length)time=Math.min(...roots);}
+            time=Math.min(22,time);return {x:target.x+v[0]*time,y:target.y+v[1]*time,z:target.z+v[2]*time};
+        },
+        _segmentDistance: function(a,b,p){
+            const dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,l=dx*dx+dy*dy+dz*dz,t=l?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy+(p.z-a.z)*dz)/l)):0;
+            return Math.hypot(a.x+dx*t-p.x,a.y+dy*t-p.y,a.z+dz*t-p.z);
+        },
+        _worldOccludes: function(target,origin=this.ship){
+            const d={x:target.x-origin.x,y:target.y-origin.y,z:target.z-origin.z};
+            for(const city of this.battleCities||[]){
+                if(Math.min(origin.y,target.y)>400)continue;
+                for(const box of city.buildings){
+                    let near=.001,far=.995;
+                    for(const [axis,min,max]of [['x',box.x-box.w/2,box.x+box.w/2],['y',0,box.h],['z',box.z-box.d/2,box.z+box.d/2]]){
+                        if(Math.abs(d[axis])<1e-8){if(origin[axis]<min||origin[axis]>max){far=-1;break;}}
+                        else{const a=(min-origin[axis])/d[axis],b=(max-origin[axis])/d[axis];near=Math.max(near,Math.min(a,b));far=Math.min(far,Math.max(a,b));}
+                    }
+                    if(near<=far)return true;
+                }
+            }return false;
+        },
+        _damageGroundTank: function(tank,damage){
+            if(this.mode!=='SINGLE'||this.flightSchool||!tank.active||tank.hp<=0)return false;
+            tank.hp=Math.max(0,tank.hp-damage);tank.flash=.15;this._fx(tank.x,tank.y,tank.z,'#ffbc66',5,50);
+            if(tank.hp<=0){
+                tank.active=false;tank.vx=tank.vz=0;tank.wreckTime=0;this._kill(tank,250);
+                this.groundExplosions.push({x:tank.x,y:tank.y,z:tank.z,life:12,age:0});
+                for(const car of this.groundTraffic){const p=this._groundPath(car),distance=Math.hypot(p.x-tank.x,p.z-tank.z);if(distance<250)car.brakeTime=Math.max(car.brakeTime||0,8);if(distance<55)car.crashed=true;}
+            }return true;
         },
         _helicopterMesh: function(){
             if(this.rotorMesh)return this.rotorMesh;const faces=[],add=(vertices,color,rotor=false,tailRotor=false)=>faces.push({vertices,color,rotor,tailRotor});
@@ -1361,7 +1396,7 @@
             return this.rotorMesh=faces;
         },
         _initBattleWorld: function(){
-            this.worldTime=0;this.battleCities=[];this.groundTraffic=[];this.groundPeople=[];this.groundTanks=[];
+            this.worldTime=0;this.battleCities=[];this.groundTraffic=[];this.groundPeople=[];this.groundTanks=[];this.groundExplosions=[];
             let seed=1977;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
             for(const [index,[x,z]]of [[0,2500],[9500,14000],[-14000,17000],[19000,-6000]].entries()){
                 const city={name:['PORTO AZUL','NOVA AURORA','SERRA NORTE','BASE LESTE'][index],x,z,buildings:[]};
@@ -1373,8 +1408,9 @@
                 this.battleCities.push(city);
                 for(let i=0;i<12;i++)this.groundTraffic.push({city:index,phase:i/12,speed:.009+rnd()*.008,lane:i%2,color:['#b8c9d1','#d0b38a','#809ba3','#b07159'][i%4]});
                 for(let i=0;i<18;i++)this.groundPeople.push({city:index,phase:rnd(),lane:i%3,speed:.002+rnd()*.002});
-                for(let i=0;i<3;i++)this.groundTanks.push({city:index,phase:i/3,speed:.0035,fire:4+i*2,flash:0});
+                for(let i=0;i<3;i++)this.groundTanks.push({id:'ground-'+index+'-'+i,groundTank:true,city:index,phase:i/3,speed:.0035,fire:4+i*2,flash:0,hp:250,active:true,x:0,y:18,z:0,vx:0,vy:0,vz:0});
             }
+            for(const tank of this.groundTanks)Object.assign(tank,this._groundPath(tank));
         },
         _groundPath: function(unit,sidewalk=false){
             const c=this.battleCities[unit.city],r=sidewalk?755:720,t=((unit.phase%1)+1)%1*4,i=Math.floor(t),v=t-i;
@@ -1383,9 +1419,18 @@
             return{x:c.x+a[0]+(b[0]-a[0])*v+Math.cos(yaw)*lane,z:c.z+a[1]+(b[1]-a[1])*v-Math.sin(yaw)*lane,yaw};
         },
         _updateBattleWorld: function(dt){
+            if(dt<=0)return;
             this.worldTime+=dt;
-            for(const unit of [...this.groundTraffic,...this.groundPeople,...this.groundTanks])unit.phase=(unit.phase+dt*unit.speed)%1;
+            for(const unit of [...this.groundTraffic,...this.groundPeople,...this.groundTanks]){
+                if(unit.active===false){unit.wreckTime=(unit.wreckTime||0)+dt;continue;}
+                if(unit.crashed)continue;
+                if(unit.brakeTime>0){unit.brakeTime=Math.max(0,unit.brakeTime-dt);continue;}
+                const before=this._groundPath(unit);unit.phase=(unit.phase+dt*unit.speed)%1;
+                if(unit.groundTank){const after=this._groundPath(unit);Object.assign(unit,{x:after.x,z:after.z,yaw:after.yaw,vx:(after.x-before.x)/dt,vz:(after.z-before.z)/dt});}
+            }
+            for(const fx of this.groundExplosions){fx.age+=dt;fx.life-=dt;}this.groundExplosions=this.groundExplosions.filter(e=>e.life>0);
             for(const tank of this.groundTanks){
+                if(!tank.active)continue;
                 tank.flash=Math.max(0,tank.flash-dt);tank.fire-=dt;
                 // Ground battle remains visible in free flight; live AA is solo campaign only.
                 if(tank.fire<=0){tank.fire=6;tank.flash=.22;const pos=this._groundPath(tank),dx=this.ship.x-pos.x,dy=this.ship.y-20,dz=this.ship.z-pos.z,dist=Math.hypot(dx,dy,dz);
@@ -1417,7 +1462,7 @@
             }
             for(const car of this.groundTraffic||[]){const p=this._groundPath(car);box(p.x,1,p.z,10,6,21,car.color,p.yaw);box(p.x,7,p.z,8,4,12,[104,155,170],p.yaw);}
             for(const person of low?[]:this.groundPeople||[]){const p=this._groundPath(person,true);box(p.x,0,p.z,2.5,5.5,2.2,[107,139,129]);box(p.x,5.5,p.z,2,2,2,[193,164,134]);}
-            for(const tank of this.groundTanks||[]){const p=this._groundPath(tank);box(p.x,0,p.z,32,7,49,[48,65,55],p.yaw);box(p.x,7,p.z,28,12,40,[106,127,85],p.yaw);box(p.x,19,p.z,17,8,22,[139,150,106],p.yaw);box(p.x+Math.sin(p.yaw)*26,23,p.z+Math.cos(p.yaw)*26,2.5,2.5,35,[65,83,60],p.yaw);if(tank.flash)box(p.x+Math.sin(p.yaw)*44,22,p.z+Math.cos(p.yaw)*44,7,7,8,[255,191,84]);}
+            for(const tank of this.groundTanks||[]){const p=this._groundPath(tank);if(!tank.active){box(p.x,0,p.z,32,9,49,[39,43,40],p.yaw);continue;}box(p.x,0,p.z,32,7,49,[48,65,55],p.yaw);box(p.x,7,p.z,28,12,40,[106,127,85],p.yaw);box(p.x,19,p.z,17,8,22,[139,150,106],p.yaw);box(p.x+Math.sin(p.yaw)*26,23,p.z+Math.cos(p.yaw)*26,2.5,2.5,35,[65,83,60],p.yaw);if(tank.flash)box(p.x+Math.sin(p.yaw)*44,22,p.z+Math.cos(p.yaw)*44,7,7,8,[255,191,84]);}
             faces.sort((a,b)=>b.z-a.z);for(const f of faces){ctx.beginPath();f.pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();const fog=Math.min(.65,f.z/65000);ctx.fillStyle='rgba(166,195,192,'+fog+')';ctx.fill();}
             ctx.save();ctx.textAlign='center';ctx.font='bold 10px Arial';ctx.fillStyle='#d9ece2';
             for(const city of this.battleCities||[]){const p=this._projectView(city.x,430,city.z,w,h);if(p.visible&&p.x>50&&p.x<w-50&&p.y>h*.2&&p.y<h*.65)ctx.fillText(city.name,p.x,p.y);}

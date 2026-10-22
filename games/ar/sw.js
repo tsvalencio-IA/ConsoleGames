@@ -2,9 +2,9 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v14";
+const CACHE=PREFIX+"pro-control-v15";
 const FILES=["./","./index.html","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
-"./combat-controls.css","./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
+"./hand-controls.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",
 "./studio-fx.js","./studio-fx.css","./studio-scenes.js",
@@ -37,7 +37,7 @@ self.addEventListener("fetch",event=>{
     const cache=await caches.open(CACHE);
     try{
       const response=await fetch(req);
-      if(response.ok && (url.pathname.endsWith(".js")||url.pathname.endsWith(".css")||url.pathname.endsWith(".html")||req.mode==="navigate")){
+      if(response.ok && (/\.(?:js|mjs|wasm|task)$/.test(url.pathname)||url.pathname.endsWith(".css")||url.pathname.endsWith(".html")||req.mode==="navigate")){
         event.waitUntil(cache.put(req,response.clone()));
       }
       return response;

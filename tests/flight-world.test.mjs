@@ -16,7 +16,7 @@ test('flight: selectable helicopters hover, turn, move forward and climb using c
   const {game:g}=fresh();g.upgrades.armor=3;assert(g.selectAirframe(model));g._startMission();assert.equal(g.ship.speed,0);assert.equal(g.manualThrottle,.5);
   const y=g.ship.y;for(let i=0;i<120;i++)g._updateHelicopter(1/60);assert(Math.abs(g.ship.y-y)<1e-8);assert.equal(g.ship.isStalling,false);
   g.pilot.targetRoll=.8;g.pilot.targetPitch=.7;g.pilot.throttle=.8;
-  for(let i=0;i<120;i++)g._updateHelicopter(1/60);assert(g.ship.y>y+8&&g.ship.yaw>0&&g.ship.vx>0&&g.ship.vz>0);
+  for(let i=0;i<120;i++)g._updateHelicopter(1/60);assert(g.ship.y>y+8&&g.ship.yaw>0&&g.ship.vx>0&&(g.ship.vx*Math.sin(g.ship.yaw)+g.ship.vz*Math.cos(g.ship.yaw))>0);
   g.pilot.throttle=.2;for(let i=0;i<240;i++)g._updateHelicopter(1/60);assert(g.ship.vy<0);
  }
 });

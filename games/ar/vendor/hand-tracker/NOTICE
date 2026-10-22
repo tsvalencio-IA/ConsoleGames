@@ -1,0 +1,5 @@
+MediaPipe Tasks Vision 0.10.21
+Copyright The MediaPipe Authors. Apache License 2.0.
+Official pretrained Hand Landmarker (float16, model version 1).
+Source URLs and SHA-256 digests: sources.json.
+Camera frames are processed locally and are not sent to a server.

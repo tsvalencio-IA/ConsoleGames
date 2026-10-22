@@ -321,12 +321,12 @@ window.System = {
                     document.getElementById('loading-text').innerText='PREPARANDO PARTIDA...';
                     try {
                         if(window.ArcadeControls?.mode==='camera'){
-                            const face=game.opts.camera==='environment'?'environment':'user';
+                            const face='user'; // WAR uses the front camera to follow the player's hand.
                             const started=await sys.switchCamera(face);
                             if(!started){
                                 window.ArcadeControls?.setMode('controls');
                                 window.System.msg('CÂMERA INDISPONÍVEL • CONTROLES ATIVADOS');
-                            }else if(face==='user' && sys.ensureDetector){
+                            }else if(game.id!=='ar_truck_sim' && face==='user' && sys.ensureDetector){
                                 const detector=await sys.ensureDetector();
                                 if(!detector){
                                     window.ArcadeControls?.setMode('controls');
@@ -379,7 +379,7 @@ window.System = {
                 const canvas = system.canvas;
                 const w = canvas.width, h = canvas.height;
                 let pose = null;
-                const isAr = game.opts.camera === 'environment';
+                const isAr = game.id === 'ar_truck_sim';
                 if (!isAr && system.detector && system.video?.readyState === 4) {
                     try {
                         const people = await system.detector.estimatePoses(system.video, {flipHorizontal:false});

@@ -24,6 +24,7 @@ RELEASE_FILES = [
     'assets/js/multiplayer-rtdb.js',
     'app.js',
     'family-mascots.js',
+    'assets/ot-games-airframes.json',
     'assets/js/ui/shared-modal.js',
     'assets/js/core/performance-guardian.js',
     'assets/js/multiplayer/room-manager.js',

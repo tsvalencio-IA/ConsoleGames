@@ -25,7 +25,7 @@ const Game={
   this.careerKey='thia:ar-combat:v1:'+(window.System?.playerId||'local');
   let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
   this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
-  this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
+  this.eyeY=1.8;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
   this.fireHeld=false;this.coverHeld=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
@@ -33,6 +33,7 @@ const Game={
   this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();}};
   this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.fireHeld=this.coverHeld=false;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
+  if(window.ArcadeControls?.mode==='camera'&&window.WarHandControl){this.state='HAND_CALIBRATION';this.handSession=window.WarHandControl.start(this);}
  },
  selectWeapon(id,initial=false){
   const gun=WEAPONS.find(w=>w.id===id);if(!gun||this.career.wins<gun.requires)return false;
@@ -60,16 +61,28 @@ const Game={
    return t<=end&&t>0.001&&t<.99&&(this.eyeY+(y-this.eyeY)*t)<c.h;
   });
  },
+ aimRay(){
+  const p=this.player,a=this.handAim,view=this.viewSize;
+  if(!a||!view)return {yaw:p.yaw,pitch:p.pitch};
+  const f=Math.min(view.w,view.h)*.88,x=(a.x*view.w-view.w/2)/f,y=(view.h*.48-a.y*view.h)/f;
+  const cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),rz=cp-y*sp,dy=y*cp+sp;
+  const dx=x*Math.cos(p.yaw)+rz*Math.sin(p.yaw),dz=-x*Math.sin(p.yaw)+rz*Math.cos(p.yaw);
+  return {yaw:Math.atan2(dx,dz),pitch:Math.atan2(dy,Math.hypot(dx,dz))};
+ },
+ targetAtAim(){
+  const p=this.player,ray=this.aimRay();let best=null,bestDistance=Infinity;
+  for(const e of this.enemies){
+   if(!e.active)continue;const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),dy=e.y-this.eyeY;
+   const radius=e.kind==='tank'?2.6:e.kind==='drone'?.85:.72;
+   if(Math.abs(angle(Math.atan2(dx,dz)-ray.yaw))<Math.atan2(radius,distance)&&Math.abs(Math.atan2(dy,distance)-ray.pitch)<Math.atan2(radius,distance)&&distance<bestDistance&&!this.blocked(e.x,e.z,e.y)){best=e;bestDistance=distance;}
+  }
+  return best;
+ },
  shoot(){
   if(this.state!=='PLAYING'||this.reloadTime>0||this.shotCooldown>0)return false;
   if(this.ammo<=0){this.reload();return false;}
   this.ammo--;this.stats.shots++;this.shotCooldown=this.gun.interval;this.muzzle=.075;
-  const p=this.player;let best=null,bestDistance=Infinity;
-  for(const e of this.enemies){
-   if(!e.active)continue;const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),dy=e.y-this.eyeY;
-   const radius=e.kind==='tank'?2.6:e.kind==='drone'?.85:.72;
-   if(Math.abs(angle(Math.atan2(dx,dz)-p.yaw))<Math.atan2(radius,distance)&&Math.abs(Math.atan2(dy,distance)-p.pitch)<Math.atan2(radius,distance)&&distance<bestDistance&&!this.blocked(e.x,e.z,e.y)){best=e;bestDistance=distance;}
-  }
+  const best=this.targetAtAim();
   if(best){best.hp-=this.gun.damage;best.flash=.12;this.stats.hits++;this.hitFlash=.13;if(best.hp<=0)this.defeat(best);}
   return true;
  },
@@ -82,6 +95,8 @@ const Game={
   this.career.kills+=this.stats.kills;if(won){this.stats.missions=1;this.career.wins++;this.career.completed[this.mission.id]=true;}this.saveCareer();return true;
  },
  step(dt){
+  if(this.state==='HAND_CALIBRATION')return;
+  if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
   this.eyeY=(this.coverHeld||this.keys.c)?1.05:1.8;
   if(this.state!=='PLAYING'){
@@ -98,7 +113,17 @@ const Game={
   if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){p.x=nx;p.z=nz;}
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
   if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
-  if(this.fireHeld||this.keys[' ']){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
+  let automatic=false;
+  if(this.handSession){
+   const target=this.handAim?.fresh?this.targetAtAim():null;
+   if(!target)this.handLock=null;
+   else if(this.handLock?.target===target){this.handLock.time+=dt;automatic=this.handLock.time>=.12;}
+   else this.handLock={target,time:0};
+   // Turn the view at the horizontal edge, keeping pointing useful for 360°.
+   if(this.handAim?.fresh&&this.handAim.x>.88)p.yaw=angle(p.yaw+dt*.7);
+   if(this.handAim?.fresh&&this.handAim.x<.12)p.yaw=angle(p.yaw-dt*.7);
+  }
+  if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
   if(!this.enemies.some(e=>e.active)){
    this.waveDelay-=dt;
    if(this.waveDelay<=0){if(this.wave>=this.mission.waves)this.finish(true);else{this.spawnWave();this.waveDelay=2.5;this.reserve=Math.max(this.reserve,this.gun.mag*2);p.hp=Math.min(100,p.hp+18);}}
@@ -118,17 +143,16 @@ const Game={
  },
  update(ctx,w,h){
   const now=performance.now(),dt=clamp((now-this.lastTime)/1000,0,.05);this.lastTime=now;if(!this.player)return 0;
-  this.step(dt);this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
+  this.viewSize={w,h};this.step(dt);this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
  },
  project(x,y,z,w,h){
   const p=this.player,dx=x-p.x,dz=z-p.z,cy=Math.cos(p.yaw),sy=Math.sin(p.yaw),rx=dx*cy-dz*sy,rz=dx*sy+dz*cy,dy=y-this.eyeY,cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),depth=rz*cp+dy*sp;
   if(depth<.25)return null;const f=Math.min(w,h)*.88;return{x:w/2+rx*f/depth,y:h*.48-(dy*cp-rz*sp)*f/depth,s:f/depth,z:depth};
  },
  drawVirtualScene: function(ctx,w,h){
-  this.viewSize={w,h};const video=window.System?.video,camera=window.ArcadeControls?.mode==='camera'&&video?.readyState>=2;
+  this.viewSize={w,h};const camera=false; // Front camera is a hand sensor; the battlefield remains the game world.
   ctx.clearRect(0,0,w,h);
-  if(camera){const scale=Math.max(w/(video.videoWidth||640),h/(video.videoHeight||480));ctx.drawImage(video,(w-(video.videoWidth||640)*scale)/2,(h-(video.videoHeight||480)*scale)/2,(video.videoWidth||640)*scale,(video.videoHeight||480)*scale);ctx.fillStyle='rgba(6,18,27,.22)';ctx.fillRect(0,0,w,h);}
-  else{const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#152d46');bg.addColorStop(.46,'#8aabad');bg.addColorStop(.48,'#6c7566');bg.addColorStop(1,'#263d3e');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);}
+  const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#152d46');bg.addColorStop(.46,'#8aabad');bg.addColorStop(.48,'#6c7566');bg.addColorStop(1,'#263d3e');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
   if(window.ArcadeWorldRenderer?.combat(this,ctx,w,h,camera)){this.drawCombatSignals(ctx,w,h);return;}
   const faces=[];
   const face=(vertices,color)=>{const points=vertices.map(v=>this.project(...v,w,h));if(points.some(p=>!p))return;faces.push({points,color,z:points.reduce((s,p)=>s+p.z,0)/points.length});};
@@ -175,9 +199,9 @@ const Game={
   ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),textW);
   ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,hx+11,hy+(compact?35:46),textW);
   const y=h*.72,panelW=Math.min(w*.60,320);ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect((w-panelW)/2,y,panelW,50);ctx.textAlign='center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,w/2,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,w/2,y+40,w*.55);
-  const cx=w/2,cy=h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
+  const cx=this.handAim?this.handAim.x*w:w/2,cy=this.handAim?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
-  ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?'CÂMERA • ALVOS VIRTUAIS • ARRASTE MIRAR':'ARENA VIRTUAL • MOVER + MIRAR + ATIRAR',w/2,h*.24,w-24);
+  ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handAim?.fresh?'MÃO DIREITA • DISPARO AO ALINHAR NO ADVERSÁRIO':'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):'ARENA VIRTUAL • MOVER + MIRAR + ATIRAR',w/2,h*.24,w-24);
   const nearest=this.enemies.filter(e=>e.active).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   if(nearest){const bearing=angle(Math.atan2(nearest.x-this.player.x,nearest.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?'ALVO À DIREITA →':'← ALVO À ESQUERDA',w/2,h*.28,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}
@@ -185,10 +209,11 @@ const Game={
   ctx.restore();
  },
  cleanup(){
+  this.handSession?.dispose();this.handSession=null;this.handAim=null;
   window.ArcadeWorldRenderer?.release(this);
   this.release?.();if(this.keyDown)window.removeEventListener?.('keydown',this.keyDown);if(this.keyUp)window.removeEventListener?.('keyup',this.keyUp);if(this.release){window.removeEventListener?.('blur',this.release);window.removeEventListener?.('arcade:release-inputs',this.release);}this.resultSent=false;
  }
 };
-const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','WAR Combate','🎯',Game,{camera:'environment',camOpacity:0,phases:MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1}))});return true;};
+const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','WAR Combate','🎯',Game,{camera:'hand',camOpacity:0,phases:MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1}))});return true;};
 if(!register()){const timer=setInterval(()=>{if(register())clearInterval(timer)},100);}
 })();

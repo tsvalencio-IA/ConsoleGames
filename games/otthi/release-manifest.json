@@ -1,21 +1,22 @@
 {
   "version": 705,
-  "build": "705.16.7.17-visual-performance-governor",
-  "revision": "11bdff69a196a241",
+  "build": "705.16.7.18-ot-games-front-hand",
+  "revision": "3aad1b83409b1497",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "bb9ee95edbe9c75a0317e43dc57e1222165ad539bb83eeaad36eb565cc77f26b",
-    "style.css": "e327b118c4631ae2eff1d5aac219ca4f5b90a00de6a421514e1c4e89b99e7fa3",
+    "index.html": "8edd547a7addaf81c42f9704899bcd22b2bf3e77ee132462da086f96bdd4d8ff",
+    "style.css": "56bdc51d6a38333bd1a4d96b736d1381c1d26245de1408fdd774e785519272ec",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "a8090a19300e9c2f60253259b6f64bda75c77bfcdc35777859d81e7c2a211491",
+    "assets/js/core/runtime-config.js": "ff83036ac675a37ace32ec91201fec2a3d7a27da1923c7626b7791956c18d9ef",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "fc942916ace2986d94d8f318f522f4538c410ddc50710dc8218bcb684737d01a",
+    "app.js": "b4627387ecf1b5eb80587d6fcb79a1ff8bdbfca314ed3d2ab84efdbd1a6d37ca",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
+    "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
     "assets/js/core/performance-guardian.js": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
     "assets/js/multiplayer/room-manager.js": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4",
@@ -23,7 +24,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "5a4df7bd2e78ea449e5cf6d31e9dd8295020e0dc3ff01502f8783e7424692821",
-    "sw.js": "e4884a55ec0768a019c56b30d52f7d39dfbec019e11da32c20d55b5b63d191bc"
+    "VERSION.json": "389c19ef34136e6e2c18e1edb538e3639764196b125636e50d4017c2a4d20887",
+    "sw.js": "dadabbd0c458d23d0c9039e14ed353eb1621607b63492e94b76f844e1ce29a46"
   }
 }

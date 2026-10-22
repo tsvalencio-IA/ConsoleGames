@@ -257,6 +257,8 @@
   <link rel="stylesheet" href="./mastery-gamepad.css">
   <link rel="stylesheet" href="./pro-controls.css">
   <link rel="stylesheet" href="./arcade-pause.css">
+<link rel="stylesheet" href="helicopter-controls.css">
+<style>.ot-games-world-link{display:block;margin:8px auto 18px;padding:14px;max-width:650px;min-height:44px;box-sizing:border-box;text-align:center;text-decoration:none;color:#bcf2de;border:1px solid #82bfb385;border-radius:12px;background:#123c4acc;font:800 12px system-ui;line-height:1.5}</style>
 </head>
 <body>
 
@@ -329,6 +331,7 @@
     <!-- MODO CARREIRA (TELA DE FASES) -->
     <div id="phase-screen" class="wii-container hidden" style="justify-content: center;">
         <h1 id="phase-title" style="font-family: 'Russo One'; font-size: clamp(2rem, 8vw, 3.5rem); color: #fff; margin-bottom: clamp(15px, 4vh, 40px); text-shadow: 0 0 15px rgba(0,176,240,0.8); text-align: center;">KART LEGENDS</h1>
+        <a class="ot-games-world-link" href="../otthi/?ot-games=plane">🌎 JOGAR NO MUNDO OT · PAZ, TERRA E AR →</a>
         <div class="mission-grid" id="phase-grid"></div>
         <button class="wii-oval-btn" onclick="document.getElementById('phase-screen').classList.add('hidden'); document.getElementById('menu-screen').classList.remove('hidden');" style="margin-top: clamp(20px, 5vh, 40px);">VOLTAR AO MENU</button>
     </div>

@@ -199,9 +199,9 @@ test("cinco jogos pedem permissão para câmera somente depois de escolha explí
   execFileSync(process.execPath,["--check",here(root+"control-modes.js").pathname]);
  }
 });
-test("AR Combat usa câmera opcional, joysticks independentes e gatilho explícito",()=>{
+test("WAR usa câmera frontal para a mão e mantém os gatilhos manuais independentes",()=>{
  const ar=read("games/ar/js/game_ar.js"),input=read("games/ar/control-modes.js");
- assert(ar.includes("drawVirtualScene: function"));assert(ar.includes("camera:'environment'"));assert(ar.includes("this.fireHeld||this.keys[' ']"));
+ assert(ar.includes("drawVirtualScene: function"));assert(ar.includes("camera:'hand'"));assert(ar.includes("this.fireHeld||this.keys[' ']"));
  assert(input.includes("owner!==e.pointerId"));assert(input.includes("aimStick"));assert(input.includes("id:'fire'"));assert(!ar.includes("generateMission"));
  assert(!read('games/ar/index.html').includes('@tensorflow'));assert(read('games/ar/sw.js').includes('combat-controls.css'));
 });

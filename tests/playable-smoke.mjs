@@ -7,7 +7,7 @@ import {join} from "node:path";
 import {touchSession} from "./helpers/touch-session.mjs";
 const base="http://127.0.0.1:4173/games/";
 const catalog=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
-const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
+const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
 try{
@@ -363,7 +363,7 @@ try{
       const hover=await page.evaluate(()=>({y:window.System.activeGame.logic.ship.y,z:window.System.activeGame.logic.ship.z}));await page.waitForTimeout(750);
       assert(await page.evaluate(y=>Math.abs(window.System.activeGame.logic.ship.y-y)<1,hover.y),'Helicopter must hover at 50% collective');
       const heliStick=await fingers.start(page.locator('.flight-input [data-control="joystick"]'),.75,.20);
-      await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerdown',{pointerId:91});await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerup',{pointerId:91});
+      const collectiveFinger=await fingers.start(page.locator('.flight-input [data-control="collective"]'),.5,.20);const pedalFinger=await fingers.start(page.locator('.flight-input [data-control="pedalRight"]'));await page.waitForTimeout(250);await fingers.end(collectiveFinger);await fingers.end(pedalFinger);
       await page.waitForFunction(y=>{const g=window.System.activeGame.logic;return g.ship.y>y+2&&g.ship.vz>1&&g.ship.yaw>0&&!g.ship.isStalling},hover.y,{timeout:6000});
       await page.screenshot({path:join('test-results/playable','voo-helicopter-city.png')});await fingers.end(heliStick);
       await page.locator('.flight-input [data-control="hover"]').click();assert.equal(await page.evaluate(()=>window.System.activeGame.logic.manualThrottle),.5);
@@ -478,8 +478,8 @@ try{
     assert(await page.evaluate(()=>window.__cameraRequests>0),
        "Câmera não foi solicitada após escolha explícita em "+slug);
     if(slug==='ar'){
-      // Explicitly selected rear-camera path with a local video stream. This is
-      // compositing evidence, not physical room anchoring or real-device QA.
+      // A blank front-camera frame must hold calibration and never start shooting.
+      // Actual model/hand detection is verified in war-camera-browser.mjs.
       await page.evaluate(()=>{
         window.System.menu();window.System.openPhases(window.Games.find(g=>g.id==='ar_truck_sim'));
         const c=document.createElement('canvas');c.width=640;c.height=480;const x=c.getContext('2d');x.fillStyle='#387d87';x.fillRect(0,0,640,480);x.fillStyle='#bbcba1';x.fillRect(30,150,170,330);x.fillStyle='#1b4f5e';x.fillRect(430,80,190,400);window.__arTestCamera=c;
@@ -487,7 +487,9 @@ try{
       });
       await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('.input-mode-dialog [data-mode="camera"]').click();
       await page.waitForFunction(()=>window.System.activeGame?.id==='ar_truck_sim'&&window.ArcadeControls.mode==='camera'&&window.System.video.readyState>=2,null,{timeout:10000});
-      assert.equal(await page.locator('.combat-input [data-control="fire"]').isVisible(),true,'Camera mode still needs independent touch controls');
+      assert.equal(await page.locator('.combat-input [data-control="fire"]').isVisible(),false,'Hand mode must not require the manual fire button');
+      assert.equal(await page.evaluate(()=>window.System.currentCameraMode),'user');
+      assert.equal(await page.evaluate(()=>window.System.activeGame.logic.state),'HAND_CALIBRATION');
       await page.waitForTimeout(2200);await page.screenshot({path:join('test-results/playable','ar-combat-camera-overlay.png')});
     }
     // Browser runtime pageerrors are checked selectively: blocked CDN errors do not

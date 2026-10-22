@@ -1,0 +1,9 @@
+.heli-collective{display:none}
+.heli-controls .heli-collective:not([hidden]){display:block;position:absolute;left:calc(50% - 26px);bottom:62px;width:52px;height:162px;box-sizing:border-box;pointer-events:auto;touch-action:none;background:linear-gradient(90deg,#132c3c,#476075 46%,#94cbb9 49%,#172d3c 53%);border:1px solid #b7e4d4a0;border-radius:14px;box-shadow:0 6px 20px #0008}
+.heli-collective::before{content:'50%';position:absolute;top:calc(50% - 7px);left:7px;right:7px;border-top:1px solid #cdf7e9;color:#d2fbe3;font:9px system-ui;text-align:center;padding-top:2px;pointer-events:none}
+.heli-collective-thumb{position:absolute;left:-4px;width:58px;height:28px;border:2px solid #c3f5e9;border-radius:9px;background:linear-gradient(#58978e,#214853);box-shadow:0 3px 9px #000a;transform:translateY(-50%);pointer-events:none;box-sizing:border-box}
+.heli-collective small{position:absolute;left:-26px;right:-26px;top:-23px;font:800 10px system-ui;color:#c9f6e6;text-align:center;pointer-events:none}
+.input-game-controls.heli-controls [data-control="pedalLeft"],.input-game-controls.heli-controls [data-control="pedalRight"]{display:block;position:absolute;left:max(8px,env(safe-area-inset-left,0px));right:auto;bottom:calc(clamp(104px,calc(31vw * var(--play-control-size,1)),144px) + 19px);width:57px;height:44px;min-width:44px;min-height:44px;border-radius:12px;font-size:9px;pointer-events:auto}
+.input-game-controls.heli-controls [data-control="pedalRight"]{left:max(69px,calc(env(safe-area-inset-left,0px) + 69px))}
+.input-game-controls.heli-controls [data-control="hover"]{left:calc(50% - 42px);bottom:6px}
+@media(max-height:460px){.heli-controls .heli-collective:not([hidden]){left:auto;right:117px;bottom:7px;height:140px}.input-game-controls.heli-controls [data-control="pedalLeft"],.input-game-controls.heli-controls [data-control="pedalRight"]{bottom:120px}.input-game-controls.heli-controls [data-control="hover"]{left:calc(50% - 42px);bottom:6px}}

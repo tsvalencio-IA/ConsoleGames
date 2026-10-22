@@ -124,6 +124,19 @@ const hub={
    const hide=()=>{if(document.hidden)reset()};window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);window.addEventListener('resize',reset);document.addEventListener('visibilitychange',hide);
    hub.releases.push(()=>{reset();window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset);window.removeEventListener('resize',reset);document.removeEventListener('visibilitychange',hide)});
  },
+ helicopterCollective(logic,root){
+   const lever=document.createElement('div'),thumb=document.createElement('span'),label=document.createElement('small');
+   lever.className='heli-collective';lever.dataset.control='collective';lever.setAttribute('role','slider');lever.setAttribute('tabindex','0');lever.setAttribute('aria-label','Coletivo do helicóptero: centro para pairar, acima sobe, abaixo desce');lever.setAttribute('aria-valuemin','0');lever.setAttribute('aria-valuemax','100');
+   thumb.className='heli-collective-thumb';label.textContent='COLETIVO';lever.append(thumb,label);root.append(lever);let owner=null;
+   const move=e=>{if(owner!==e.pointerId)return;e.preventDefault();e.stopPropagation();const r=lever.getBoundingClientRect();let value=Math.max(0,Math.min(1,1-(e.clientY-r.top-16)/(r.height-32)));if(Math.abs(value-.5)<.045)value=.5;logic.manualThrottle=value;refresh();};
+   const refresh=()=>{const value=logic.manualThrottle??.5;lever.setAttribute('aria-valuenow',Math.round(value*100));thumb.style.top=(16+(1-value)*Math.max(1,lever.clientHeight-32))+'px';label.textContent=value===.5?'PAIRAR 50%':'COLETIVO '+Math.round(value*100)+'%';};
+   lever.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(owner!==null)return;owner=e.pointerId;try{if(e.isTrusted)lever.setPointerCapture(e.pointerId)}catch{}move(e);},{passive:false});lever.addEventListener('pointermove',move,{passive:false});
+   for(const type of ['pointerup','pointercancel','lostpointercapture'])lever.addEventListener(type,e=>{if(owner===e.pointerId)owner=null;});
+   lever.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();e.stopPropagation();logic.manualThrottle=e.key==='Home'?.5:Math.max(0,Math.min(1,(logic.manualThrottle??.5)+(e.key==='ArrowUp'?.05:-.05)));refresh();});
+   const release=()=>{owner=null;logic.manualPedal=0;if(logic.isHelicopter?.())logic.manualThrottle=.5;};
+   window.addEventListener('blur',release);window.addEventListener('resize',release);window.addEventListener('arcade:release-inputs',release);const interval=setInterval(refresh,160);
+   hub.releases.push(()=>{release();clearInterval(interval);window.removeEventListener('blur',release);window.removeEventListener('resize',release);window.removeEventListener('arcade:release-inputs',release)});refresh();
+ },
  flightControls(logic){
    const tapStart=()=>{
      // Do not hold Space for 350ms: that crosses two engine phases
@@ -143,7 +156,10 @@ const hub={
      const map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight",boost:"Shift",missile:" "};
      const k=map[id];return {id,text,label:name||text,down:()=>{logic.keys[k]=true},up:()=>{logic.keys[k]=false}};
    };
+   const pedals=new Set(),setPedal=()=>logic.manualPedal=(pedals.has('right')?1:0)-(pedals.has('left')?1:0);
    const flightRoot=hub.createControls("flight-input",[
+     {id:'pedalLeft',text:'↶ PEDAL',label:'Pedal esquerdo: girar helicóptero à esquerda',down:()=>{pedals.add('left');setPedal();},up:()=>{pedals.delete('left');setPedal();}},
+     {id:'pedalRight',text:'PEDAL ↷',label:'Pedal direito: girar helicóptero à direita',down:()=>{pedals.add('right');setPedal();},up:()=>{pedals.delete('right');setPedal();}},
      key("left","◀","Virar à esquerda"),key("up","▲","Subir"),
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡ TURBO","Acelerar com turbo"),key("missile","◎ MÍSSIL","Disparar míssil após travar a mira"),
@@ -154,14 +170,14 @@ const hub={
      {id:"start",text:"▶ INICIAR",label:"Iniciar ou continuar voo",down:tapStart}
    ]);
    for(const name of ["left","right","up","down"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=true;
-   hub.flightJoystick(logic,flightRoot);
+   hub.flightJoystick(logic,flightRoot);hub.helicopterCollective(logic,flightRoot);
    const clearFlight=()=>{logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
    window.addEventListener('blur',clearFlight);window.addEventListener('arcade:release-inputs',clearFlight);hub.releases.push(()=>{clearFlight();window.removeEventListener('blur',clearFlight);window.removeEventListener('arcade:release-inputs',clearFlight)});
-   const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Joystick de helicóptero: virar e avançar ou recuar; coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const boost=flightRoot.querySelector('[data-control="boost"]');if(boost&&heli)boost.hidden=true;const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
+   const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();flightRoot.classList.toggle('heli-controls',heli);for(const name of ['pedalLeft','pedalRight','collective'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=!heli||logic.state!=='PLAYING';for(const name of ['powerUp','powerDown'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=heli||logic.state!=='PLAYING';const caption=flightRoot.querySelector('.flight-stick small');if(caption)caption.textContent=heli?'MANCHE CÍCLICO':'JOYSTICK';const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Manche cíclico: inclinar para os lados e avançar ou recuar; pedais giram, coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const boost=flightRoot.querySelector('[data-control="boost"]');if(boost&&heli)boost.hidden=true;const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));
-   hub.showTip("JOYSTICK PARA GUIAR • SEGURE ATIRAR COM A MIRA TRAVADA • TOQUES SIMULTÂNEOS");
+   hub.showTip("HELICÓPTERO: MANCHE + COLETIVO + PEDAIS • MIRA ASSISTIDA NOS AJUSTES • TOQUES SIMULTÂNEOS");
  },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[

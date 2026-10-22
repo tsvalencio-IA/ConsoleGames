@@ -1,0 +1,3 @@
+MediaPipe official hand-landmarker example image (Google).
+https://storage.googleapis.com/mediapipe-assets/woman_hands.jpg
+Used only for local model verification.

@@ -4,7 +4,7 @@
  const id=window.CONSOLE_GAME_ID;
  if(!id)return;
  const key='thia:play-settings:v1:'+id;
- const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
+ const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,smoothing:.62,autoAccelerate:false,assist:true,heliAutoFire:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
  let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
  const values={...defaults};
  const ranges={sensitivity:[.5,1.5],smoothing:[.35,.9],controlSize:[.9,1.15],controlOpacity:[.45,1],controlInset:[0,28],effectsVolume:[0,1],engineVolume:[0,1],alertVolume:[0,1]};
@@ -49,7 +49,7 @@
   if(id!=='box_pro')content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
   if(id==='tennis')content+=range('smoothing','Suavização da raquete',.35,.9,.05);
   if(id==='drive')content+='<h3>Ajuda de direção</h3>'+select('steeringAssist','Auxiliar de direção',[['off','Desligado'],['light','Leve'],['medium','Médio'],['high','Forte']])+'<p>Reduz a saída nas curvas e ajuda perto da borda. Você continua livre para virar e mudar de faixa. A dificuldade solo muda os adversários. No modo câmera, o kart só acelera com as duas mãos detectadas.</p>'+toggle('autoAccelerate','Aceleração automática nos controles');
-  if(id==='usarmy_flight_sim')content+=toggle('assist','Estabilizar ao soltar os comandos');
+  if(id==='usarmy_flight_sim')content+=toggle('assist','Estabilização e assistência de mira')+toggle('heliAutoFire','Helicóptero nos controles: disparo automático com alvo travado')+'<p>Helicóptero: manche inclina e avança, pedais giram e coletivo controla a altitude. No centro (50%), paira. Com assistência ligada, o manche também ajuda na curva.</p>';
   if(id!=='tennis')content+='<h3>Controles na tela</h3>'+range('controlSize','Tamanho',.9,1.15,.05)+range('controlOpacity','Opacidade',.45,1,.05)+(id==='box_pro'?'':range('controlInset','Afastamento da borda',0,28,2));
   content+='<h3>Som e imagem</h3><p>Sons extras (antigo FX) não são auxílio de jogo.</p><button type="button" data-studio-audio>Sons extras: '+(document.getElementById('studio-audio-switch')?.getAttribute('aria-pressed')==='false'?'desligados':'ligados')+'</button>'+range('effectsVolume','Efeitos',0,1,.05)+range('engineVolume','Motor',0,1,.05)+range('alertVolume','Alertas',0,1,.05)+select('quality','Detalhes visuais',[['auto','Automática'],['low','Economia'],['high','Alta']]);
   dialog.innerHTML='<div class="play-panel"><header><div><small>SEU JEITO DE JOGAR</small><h2 id="play-settings-title">Ajustes do jogo</h2></div><button type="button" data-close aria-label="Fechar ajustes">✕</button></header><p>Preferências salvas neste dispositivo.'+(online?' A partida online continua em andamento.':'')+'</p>'+content+'<footer><button type="button" data-reset>Restaurar ajustes</button><button type="button" data-close>PRONTO</button></footer></div>';
