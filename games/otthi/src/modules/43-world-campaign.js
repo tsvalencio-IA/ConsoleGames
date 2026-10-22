@@ -154,6 +154,7 @@
     m.recorded=true;const history=campaignHistory();
     history[m.id]=(Number(history[m.id])||0)+1;
     safeLocalSet(worldCampaign.recordKey,JSON.stringify(history));
+    otGamesSaveResult(true);
     worldCampaign.mission=null;worldCampaign.route=null;worldCampaign.routeUi.hidden=true;
     otGamesLeave();toast('Missão concluída e retorno registrado.','success',4200);
   }
