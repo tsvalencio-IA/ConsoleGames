@@ -35,3 +35,8 @@ test('WAR hand: inverse sight projection selects the same world target in portra
 test('WAR hand: calibration freezes the mission rather than counting as defeat or skipping an operation',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'city'});g.state='HAND_CALIBRATION';const ammo=g.ammo;for(let i=0;i<200;i++)g.step(.05);assert.equal(g.state,'HAND_CALIBRATION');assert.equal(g.elapsed,0);assert.equal(g.wave,0);assert.equal(g.ammo,ammo);
 });
+test('WAR hand: two confirmed aligned observations acquire the target even when render frames are slow; an actual missing hand clears acquisition',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.spawnWave();g.covers=[];g.viewSize={w:390,h:844};g.handSession={dispose(){}};g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,y:1.8,z:30,aim:999});g.handAim={x:.5,y:.48,fresh:true,present:true,timestamp:1000};g.step(.016);assert.equal(g.stats.shots,0);
+ g.handAim.fresh=false;g.step(.05);assert(g.handLock);g.handAim.fresh=true;g.handAim.timestamp=1420;g.step(.016);assert.equal(g.stats.shots,1);
+ g.handAim.fresh=false;g.handAim.present=false;g.step(.05);assert.equal(g.handLock,null);g.handAim.fresh=true;g.handAim.present=true;g.handAim.timestamp=1900;g.step(.016);assert.equal(g.stats.shots,1);
+});

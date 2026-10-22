@@ -23,3 +23,6 @@ test('OT Games: failed and blocked battles never count a victory; hand calibrati
 test('OT Games: a modal, vehicle or active co-op mission prevents entering a second conflicting mode',async()=>{
  const f=fixture();f.context.paused=true;assert.equal(await f.api.enter('plane'),false);f.context.paused=false;f.player.vehicle=true;assert.equal(await f.api.enter('plane'),false);f.player.vehicle=false;f.context.window.OTTHI_COOP.active=()=>({id:'active'});assert.equal(await f.api.enter('ground'),false);assert(!f.g.active);assert.equal(f.scene.children.length,0);
 });
+test('OT Games: a late camera permission cannot attach a ground hand controller to a new aircraft session',async()=>{
+ const f=fixture();let resolve,stopped=0,controllers=0;f.context.navigator={mediaDevices:{getUserMedia:()=>new Promise(r=>resolve=r)}};f.context.window.WarHandControl={start(){controllers++;return {dispose(){}}}};await f.api.enter('ground');const pending=f.context.otGamesStartCamera();await Promise.resolve();f.api.peace();await f.api.enter('helicopter',{armed:false});resolve({getTracks:()=>[{stop:()=>stopped++}]});await pending;assert.equal(controllers,0);assert.equal(stopped,1);assert.equal(f.g.mode,'helicopter');assert.equal(f.g.state,'PLAYING');assert.equal(f.g.handSession,null);
+});

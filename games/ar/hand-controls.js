@@ -13,7 +13,7 @@ const feature=points=>{
 };
 class AimController{
  constructor(){this.reset();}
- reset(){this.maxAge=300;this.state='calibrating';this.samples=[];this.neutral=null;this.label=null;this.last=null;this.lastSeen=-Infinity;this.aim={x:.5,y:.48,fresh:false,twoHands:false};this.gripSince=0;}
+ reset(){this.maxAge=300;this.state='calibrating';this.samples=[];this.neutral=null;this.label=null;this.last=null;this.lastSeen=-Infinity;this.aim={x:.5,y:.48,fresh:false,present:false,timestamp:0,twoHands:false};this.gripSince=0;}
  consume(result,now){
   const candidates=(result.landmarks||[]).map((p,i)=>({f:feature(p),label:result.handedness?.[i]?.[0]?.categoryName,score:result.handedness?.[i]?.[0]?.score??0})).filter(h=>h.f&&h.score>=.6);
   if(this.state==='calibrating'){
@@ -31,7 +31,7 @@ class AimController{
   }
   const matching=candidates.filter(h=>h.label===this.label&&(!this.last||Math.hypot(h.f.x-this.last.x,h.f.y-this.last.y)<.4));
   const hand=matching.sort((a,b)=>Math.hypot(a.f.x-this.last.x,a.f.y-this.last.y)-Math.hypot(b.f.x-this.last.x,b.f.y-this.last.y))[0];
-  if(!hand){this.aim.fresh=false;this.aim.twoHands=false;this.gripSince=0;return this.aim;}
+  if(!hand){this.aim.present=false;this.aim.fresh=false;this.aim.twoHands=false;this.gripSince=0;return this.aim;}
   const f=hand.f,n=this.neutral,secondary=candidates.find(h=>h!==hand&&h.label!==this.label&&Math.hypot(h.f.x-f.x,h.f.y-f.y)<.42&&Math.abs(h.f.y-f.y)<.25);
   if(secondary){if(!this.gripSince)this.gripSince=now;}else this.gripSince=0;
   const twoHands=!!secondary&&now-this.gripSince>=200,smooth=twoHands?.21:.36;
@@ -39,7 +39,7 @@ class AimController{
   const tx=clamp(.5+(n.x-f.x)*1.85-(f.dx-n.dx)*.075,.07,.93);
   const ty=clamp(.48+(f.y-n.y)*1.8+(f.dy-n.dy)*.075,.12,.82);
   this.aim.x+=(tx-this.aim.x)*smooth;this.aim.y+=(ty-this.aim.y)*smooth;
-  this.last=f;this.lastSeen=now;Object.assign(this.aim,{fresh:true,twoHands});return this.aim;
+  this.last=f;this.lastSeen=now;Object.assign(this.aim,{fresh:true,present:true,timestamp:now,twoHands});return this.aim;
  }
  read(now){if(now-this.lastSeen>this.maxAge)this.aim.fresh=false;return this.aim;}
 }
@@ -51,7 +51,7 @@ class CameraSession{
   root.innerHTML='<div class="war-hand-panel"><span class="war-hand-eyebrow">CÂMERA FRONTAL · MÃO DIREITA</span><h2>APONTE COM A SUA MÃO</h2><canvas width="320" height="240" aria-label="Prévia espelhada da câmera frontal"></canvas><p class="war-hand-status" role="status">Carregando reconhecimento de mãos…</p><p class="war-hand-instruction">Mostre somente a mão direita, na posição em que vai jogar. Mantenha-a parada por um segundo. Depois, mova e vire a mão para mirar.</p><small>Você pode apoiar com a outra mão depois de calibrar. Se segurar um objeto, deixe a mão visível.</small><div class="war-hand-actions"><button type="button" data-hand="recalibrate">CALIBRAR NOVAMENTE</button><button type="button" data-hand="manual">USAR CONTROLES</button></div></div>';
   document.body.append(root);this.canvas=root.querySelector('canvas');this.status=root.querySelector('.war-hand-status');
   root.querySelector('[data-hand="recalibrate"]').onclick=()=>this.recalibrate();root.querySelector('[data-hand="manual"]').onclick=()=>this.manual();
-  this.release=()=>{this.game.handAim&&(this.game.handAim.fresh=false);this.controller.aim.fresh=false;this.controller.lastSeen=-Infinity;this.serial++;};
+  this.release=()=>{this.game.handAim&&(this.game.handAim.fresh=false);this.controller.aim.fresh=false;this.controller.aim.present=false;this.controller.lastSeen=-Infinity;this.serial++;};
   this.blur=()=>{this.focused=false;this.release();};this.focus=()=>{this.focused=true;};
   window.addEventListener('blur',this.blur);window.addEventListener('focus',this.focus);window.addEventListener('arcade:release-inputs',this.release);
   this.orientation=()=>{if(['PLAYING','HAND_CALIBRATION'].includes(this.game.state))this.recalibrate();};window.addEventListener('orientationchange',this.orientation);

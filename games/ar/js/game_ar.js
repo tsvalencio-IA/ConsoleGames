@@ -96,7 +96,7 @@ const Game={
  },
  step(dt){
   if(this.state==='HAND_CALIBRATION')return;
-  if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){this.handLock=null;return;}
+  if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
   this.eyeY=(this.coverHeld||this.keys.c)?1.05:1.8;
   if(this.state!=='PLAYING'){
@@ -117,8 +117,8 @@ const Game={
   if(this.handSession){
    const target=this.handAim?.fresh?this.targetAtAim():null;
    if(!target)this.handLock=null;
-   else if(this.handLock?.target===target){this.handLock.time+=dt;automatic=this.handLock.time>=.12;}
-   else this.handLock={target,time:0};
+   else if(this.handLock?.target===target){this.handLock.time=Math.max(this.handLock.time+dt,Math.max(0,((this.handAim.timestamp||0)-this.handLock.firstSample)/1000));automatic=this.handLock.time>=.12;}
+   else this.handLock={target,time:0,firstSample:this.handAim.timestamp||0};
    // Turn the view at the horizontal edge, keeping pointing useful for 360°.
    if(this.handAim?.fresh&&this.handAim.x>.88)p.yaw=angle(p.yaw+dt*.7);
    if(this.handAim?.fresh&&this.handAim.x<.12)p.yaw=angle(p.yaw-dt*.7);
