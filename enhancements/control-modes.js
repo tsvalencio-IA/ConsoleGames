@@ -204,13 +204,14 @@ const hub={
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡ TURBO","Acelerar com turbo"),key("missile","◎ MÍSSIL","Disparar míssil após travar a mira"),
      {id:"fire",text:"ATIRAR",label:"Segurar para atirar após travar a mira",down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
+     {id:"hover",text:"PAIRAR",label:"Estabilizar altitude do helicóptero; solte o joystick para pairar",down:()=>{if(logic.isHelicopter?.()){logic.manualThrottle=.5;logic.ship.vy=0;}}},
      {id:"start",text:"▶ INICIAR",label:"Iniciar ou continuar voo",down:tapStart}
    ]);
    for(const name of ["left","right","up","down"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=true;
    hub.flightJoystick(logic,flightRoot);
    const clearFlight=()=>{logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
    window.addEventListener('blur',clearFlight);window.addEventListener('arcade:release-inputs',clearFlight);hub.releases.push(()=>{clearFlight();window.removeEventListener('blur',clearFlight);window.removeEventListener('arcade:release-inputs',clearFlight)});
-   const refreshFlight=()=>{for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
+   const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Joystick de helicóptero: virar e avançar ou recuar; coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));

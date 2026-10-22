@@ -213,7 +213,7 @@
             if(window.Profile?.flightSave&&typeof window.Profile.flightSave==='object')saved=window.Profile.flightSave;
             for(const key of Object.keys(this.upgrades))this.upgrades[key]=Math.max(1,Math.min(5,Math.floor(Number(saved.upgrades?.[key])||1)));
             this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school};
-            this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
+            this.flightSchool=null;this.manualThrottle=1;this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
             this.currentStats = JSON.parse(JSON.stringify(BASE_PLANE_STATS));
             
             this.ship = { 
@@ -1327,16 +1327,37 @@
             p.isStalling=false;p.gForce=1+Math.abs(turn)*.3;p.afterburner=false;p.engineHeat=Math.max(0,p.engineHeat-dt*10);
         },
         _helicopterMesh: function(){
-            if(this.rotorMesh)return this.rotorMesh;const faces=[],add=(vertices,color,rotor=false)=>faces.push({vertices,color,rotor});
+            if(this.rotorMesh)return this.rotorMesh;const faces=[],add=(vertices,color,rotor=false,tailRotor=false)=>faces.push({vertices,color,rotor,tailRotor});
+            const shell=(rings,color,steps=10)=>{
+                const points=rings.map(([z,rx,ry,y=0,x=0])=>Array.from({length:steps},(_,i)=>{const a=i*Math.PI*2/steps;return[x+Math.cos(a)*rx,y+Math.sin(a)*ry,z];}));
+                for(let j=0;j<points.length-1;j++)for(let i=0;i<steps;i++)add([points[j][i],points[j][(i+1)%steps],points[j+1][(i+1)%steps],points[j+1][i]],color);
+            };
             const box=(x,y,z,w,h,d,color)=>{
                 const v=[[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]].map(([a,b,c])=>[x+a*w/2,y+b*h/2,z+c*d/2]);
                 for(const f of [[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7],[0,3,2,1]])add(f.map(i=>v[i]),color);
             };
-            box(0,0,4,13,12,27,[93,128,122]);box(0,2,18,11,9,10,[41,98,128]);box(0,0,-23,3.4,4,35,[103,133,125]);box(0,4,-39,3,14,5,[121,151,134]);
-            box(0,9,0,3,9,3,[62,78,87]);
-            for(const side of [-1,1]){box(side*7,-8,0,1.8,1.8,32,[152,170,171]);box(side*5,-5,-7,1.3,6,1.3,[112,137,142]);box(side*5,-5,10,1.3,6,1.3,[112,137,142]);box(side*11,-1,-1,11,1.7,7,[99,130,123]);box(side*14,-4,0,2,3,15,[60,79,85]);}
-            for(let i=0;i<4;i++){const a=i*Math.PI/2,verts=[[3,14,-1],[41,14,-1],[40,14,1.5],[4,14,1]].map(([x,y,z])=>[x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a)]);add(verts,[152,173,179],true);}
-            add([[2,0,-40],[2,13,-41],[2,0,-42],[2,-10,-41]],[179,189,180]);return this.rotorMesh=faces;
+            // Rounded cabin, stepped windshield, tapered tail boom, engine pods,
+            // landing skids, weapons pylons and independently turning rotors.
+            shell([[-20,.5,.5],[-16,5,4],[-7,8,6],[8,7.6,6],[18,5,4],[25,.2,.4]],[108,143,131],12);
+            shell([[8,6.9,3.4,3],[14,6,4,3],[21,3.3,2.5,2.5],[25,.1,.2,1]],[40,101,130],12);
+            shell([[-18,3,2.6,1],[-29,2.2,2.1,2],[-43,1.4,1.6,4],[-51,.6,1,5]],[125,152,134]);
+            for(const side of [-1,1]){
+                shell([[-16,1.1,1.1,6,side*4.8],[-12,2.6,2.7,6,side*4.8],[1,2.7,2.5,6,side*4.8],[8,1.4,1.5,6,side*4.8]],[79,106,112]);
+                box(side*8,-9,0,1.4,1.4,34,[155,175,177]);box(side*6,-6,-9,1.1,6,1.1,[117,144,145]);box(side*6,-6,11,1.1,6,1.1,[117,144,145]);
+                const wing=[[side*7,-1,5],[side*17,-2,0],[side*17,-2,-5],[side*7,-1,-5]];add(wing,[139,162,145]);add(wing.map(([x,y,z])=>[x,y-.7,z]).reverse(),[73,100,100]);
+                box(side*14,-4,0,2.8,3,15,[58,79,86]);box(side*7.9,0,3,.3,4,7,[71,105,105]);
+                add([[side*2,5,-43],[side*9,5,-47],[side*8,5,-50],[side,5,-48]],[151,173,147]);
+                box(side*8,1,-3,.5,.8,1.2,side>0?[228,105,76]:[101,208,158]);
+            }
+            add([[0,3,-43],[0,17,-49],[0,16,-53],[0,4,-51]],[149,175,151]);add([[.7,3,-43],[.7,17,-49],[.7,16,-53],[.7,4,-51]],[89,119,112]);
+            box(0,10,0,2.1,10,2.1,[96,119,126]);box(0,15,0,6,1.4,6,[147,164,160]);
+            for(let i=0;i<4;i++){
+                const a=i*Math.PI/2,rotate=([x,y,z])=>[x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a)];
+                add([[3,15,-1],[43,15,-1.4],[42,15,2],[4,15,1.4]].map(rotate),[155,176,177],true);
+                add([[38,15,-1.35],[43,15,-1.4],[42,15,2],[38,15,1.9]].map(rotate),[210,208,167],true);
+                add([[3.2,6,-50],[3.2,15,-50],[3.2,15,-48],[3.2,6,-48]].map(([x,y,z])=>{const dy=y-6,dz=z+49;return[x,6+dy*Math.cos(a)-dz*Math.sin(a),-49+dy*Math.sin(a)+dz*Math.cos(a)];}),[187,199,185],false,true);
+            }
+            return this.rotorMesh=faces;
         },
         _initBattleWorld: function(){
             this.worldTime=0;this.battleCities=[];this.groundTraffic=[];this.groundPeople=[];this.groundTanks=[];
@@ -1355,9 +1376,10 @@
             }
         },
         _groundPath: function(unit,sidewalk=false){
-            const c=this.battleCities[unit.city],r=sidewalk?565:720,t=((unit.phase%1)+1)%1*4,i=Math.floor(t),v=t-i;
+            const c=this.battleCities[unit.city],r=sidewalk?755:720,t=((unit.phase%1)+1)%1*4,i=Math.floor(t),v=t-i;
             const points=[[-r,-r],[r,-r],[r,r],[-r,r],[-r,-r]],a=points[i],b=points[i+1];
-            return{x:c.x+a[0]+(b[0]-a[0])*v+(unit.lane||0)*24,z:c.z+a[1]+(b[1]-a[1])*v,yaw:Math.atan2(b[0]-a[0],b[1]-a[1])};
+            const yaw=Math.atan2(b[0]-a[0],b[1]-a[1]),lane=sidewalk?((unit.lane||0)-1)*5:unit.lane===undefined?0:unit.lane?9:-9;
+            return{x:c.x+a[0]+(b[0]-a[0])*v+Math.cos(yaw)*lane,z:c.z+a[1]+(b[1]-a[1])*v-Math.sin(yaw)*lane,yaw};
         },
         _updateBattleWorld: function(dt){
             this.worldTime+=dt;
@@ -1373,8 +1395,8 @@
         _drawBattleWorld: function(ctx,w,h){
             const faces=[],low=window.ArcadePlaySettings?.get().quality==='low';
             const face=(vertices,color)=>{const pp=vertices.map(v=>this._projectView(...v,w,h));if(pp.some(p=>!p.visible)||!pp.some(p=>p.x>-120&&p.x<w+120&&p.y>-120&&p.y<h+120))return;faces.push({pp,z:pp.reduce((n,p)=>n+p.z,0)/pp.length,color});};
-            const box=(x,y,z,bw,bh,bd,color)=>{
-                const v=[[-1,0,-1],[1,0,-1],[1,0,1],[-1,0,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]].map(([a,b,c])=>[x+a*bw/2,y+b*bh,z+c*bd/2]);
+            const box=(x,y,z,bw,bh,bd,color,yaw=0)=>{
+                const v=[[-1,0,-1],[1,0,-1],[1,0,1],[-1,0,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]].map(([a,b,c])=>[x+a*bw/2*Math.cos(yaw)+c*bd/2*Math.sin(yaw),y+b*bh,z-a*bw/2*Math.sin(yaw)+c*bd/2*Math.cos(yaw)]);
                 for(const [f,t]of [[[0,1,5,4],.78],[[1,2,6,5],.62],[[2,3,7,6],.9],[[3,0,4,7],.72],[[4,5,6,7],1]])face(f.map(i=>v[i]),Array.isArray(color)?'rgb('+color.map(c=>Math.round(c*t)).join(',')+')':color);
             };
             for(const city of this.battleCities||[]){
@@ -1392,16 +1414,16 @@
                     else{box(b.x,b.h,b.z,b.w*.65,5,b.d*.65,[161,179,177]);if(!low&&center.s>.13)for(let floor=22;floor<b.h-8;floor+=28)face([[b.x-b.w*.35,floor,b.z-b.d*.501],[b.x+b.w*.35,floor,b.z-b.d*.501],[b.x+b.w*.35,floor+8,b.z-b.d*.501],[b.x-b.w*.35,floor+8,b.z-b.d*.501]],'#b1d0c9');}
                 }
             }
-            for(const car of this.groundTraffic||[]){const p=this._groundPath(car);box(p.x,1,p.z,10,6,21,car.color);box(p.x,7,p.z,8,4,12,[104,155,170]);}
+            for(const car of this.groundTraffic||[]){const p=this._groundPath(car);box(p.x,1,p.z,10,6,21,car.color,p.yaw);box(p.x,7,p.z,8,4,12,[104,155,170],p.yaw);}
             for(const person of low?[]:this.groundPeople||[]){const p=this._groundPath(person,true);box(p.x,0,p.z,2.5,5.5,2.2,[107,139,129]);box(p.x,5.5,p.z,2,2,2,[193,164,134]);}
-            for(const tank of this.groundTanks||[]){const p=this._groundPath(tank);box(p.x,0,p.z,32,7,49,[48,65,55]);box(p.x,7,p.z,28,12,40,[106,127,85]);box(p.x,19,p.z,17,8,22,[139,150,106]);box(p.x,23,p.z+26,2.5,2.5,35,[65,83,60]);if(tank.flash)box(p.x,22,p.z+44,7,7,8,[255,191,84]);}
+            for(const tank of this.groundTanks||[]){const p=this._groundPath(tank);box(p.x,0,p.z,32,7,49,[48,65,55],p.yaw);box(p.x,7,p.z,28,12,40,[106,127,85],p.yaw);box(p.x,19,p.z,17,8,22,[139,150,106],p.yaw);box(p.x+Math.sin(p.yaw)*26,23,p.z+Math.cos(p.yaw)*26,2.5,2.5,35,[65,83,60],p.yaw);if(tank.flash)box(p.x+Math.sin(p.yaw)*44,22,p.z+Math.cos(p.yaw)*44,7,7,8,[255,191,84]);}
             faces.sort((a,b)=>b.z-a.z);for(const f of faces){ctx.beginPath();f.pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();const fog=Math.min(.65,f.z/65000);ctx.fillStyle='rgba(166,195,192,'+fog+')';ctx.fill();}
             ctx.save();ctx.textAlign='center';ctx.font='bold 10px Arial';ctx.fillStyle='#d9ece2';
             for(const city of this.battleCities||[]){const p=this._projectView(city.x,430,city.z,w,h);if(p.visible&&p.x>50&&p.x<w-50&&p.y>h*.2&&p.y<h*.65)ctx.fillText(city.name,p.x,p.y);}
             ctx.restore();
         },
         _airframePoint: function([x,y,z],body=this.ship,model=this.airframe){
-            if(model==='interceptor'){x*=.87;z*=1.12;}else if(model==='sentinel'){x*=1.12;y*=1.07;}
+            if(model==='interceptor'){x*=.87;z*=1.12;}else if(model==='sentinel'){x*=1.12;y*=1.07;}else if(model==='guardian'){x*=1.2;y*=1.12;z*=1.08;}
             const p=body,cr=Math.cos(p.roll),sr=Math.sin(p.roll),cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),cy=Math.cos(p.yaw),sy=Math.sin(p.yaw);
             const rx=x*cr+y*sr,ry=-x*sr+y*cr,py=ry*cp+z*sp,pz=z*cp-ry*sp;
             return {x:p.x+rx*cy+pz*sy,y:p.y+py,z:p.z-rx*sy+pz*cy};
@@ -1436,7 +1458,7 @@
         },
         _drawAirframe: function(ctx,w,h,body=this.ship,model=this.airframe,enemy=false){
             const surfaces=this._airframeMesh(model).map(face=>{
-                const verts=face.rotor?face.vertices.map(([x,y,z])=>{const a=this.worldTime*35;return[x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a)];}):face.vertices;
+                const verts=face.rotor?face.vertices.map(([x,y,z])=>{const a=this.worldTime*35;return[x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a)];}):face.tailRotor?face.vertices.map(([x,y,z])=>{const a=this.worldTime*65,dy=y-6,dz=z+49;return[x,6+dy*Math.cos(a)-dz*Math.sin(a),-49+dy*Math.sin(a)+dz*Math.cos(a)];}):face.vertices;
                 const world=verts.map(v=>this._airframePoint(v,body,model)),pts=world.map(v=>this._projectView(v.x,v.y,v.z,w,h));
                 const a=world[0],b=world[1],c=world[2],ux=b.x-a.x,uy=b.y-a.y,uz=b.z-a.z,vx=c.x-a.x,vy=c.y-a.y,vz=c.z-a.z;
                 const nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx,length=Math.hypot(nx,ny,nz)||1;
@@ -1899,7 +1921,7 @@
             ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.strokeRect(50*sc,50*sc,w-100*sc,h-100*sc);
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
             ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
-            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.':'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
             ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR COM TRAVA • ◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);

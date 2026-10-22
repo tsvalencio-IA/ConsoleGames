@@ -224,7 +224,7 @@ window.System = {
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
-        if (window.System.currentCameraMode === facingMode && window.System.video?.srcObject?.active) return true;
+        if (window.System.currentCameraMode === facingMode && window.System.video?.srcObject?.active && window.System.video.readyState>=2) return true;
         if (!navigator.mediaDevices?.getUserMedia || !window.System.video) return false;
         if (window.System.video.srcObject) {
             window.System.video.srcObject.getTracks().forEach(track => track.stop());
@@ -234,7 +234,17 @@ window.System = {
                 video: { facingMode: { ideal: facingMode }, width: 640, height: 480 },
                 audio: false
             });
-            window.System.video.srcObject = stream;
+            const video=window.System.video;
+            video.muted=true;video.playsInline=true;video.autoplay=true;
+            await new Promise((resolve,reject)=>{
+                const finish=error=>{clearTimeout(timeout);video.removeEventListener('loadeddata',ready);video.removeEventListener('error',failed);error?reject(error):resolve();};
+                const ready=()=>{if(video.readyState>=2&&video.srcObject===stream)finish();};
+                const failed=()=>finish(new Error('A câmera não forneceu imagem.'));
+                const timeout=setTimeout(failed,5000);
+                video.addEventListener('loadeddata',ready);video.addEventListener('error',failed);
+                video.srcObject=stream;
+                Promise.resolve(video.play()).then(ready,finish);
+            });
             
             if (facingMode === 'environment') {
                 window.System.video.style.transform = "none";
@@ -242,11 +252,12 @@ window.System = {
                 window.System.video.style.transform = "scaleX(-1)";
             }
             
-            await Promise.race([new Promise(resolve => { window.System.video.onloadedmetadata = resolve; }), new Promise(resolve => setTimeout(resolve,3500))]);
             window.System.currentCameraMode = facingMode;
             return true;
         } catch(error) {
             console.warn("Câmera indisponível (modo por toque pode continuar):", error);
+            window.System.video?.srcObject?.getTracks?.().forEach(track=>track.stop());
+            if(window.System.video)window.System.video.srcObject=null;
             window.System.currentCameraMode=null;
             return false;
         }

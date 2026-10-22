@@ -28,3 +28,11 @@ test('flight: all aircraft use volumetric faces, rotor blades animate and city r
  g._drawAirframe(ctx,390,844,{x:30,y:380,z:200,yaw:Math.PI,pitch:.1,roll:.2},'interceptor',true);
  assert(ctx.operations.filter(o=>o[0]==='fill').length>30);for(const op of ctx.operations)for(const n of op.slice(1))if(typeof n==='number')assert(Number.isFinite(n),'Non-finite rendering argument in '+op[0]);
 });
+
+test('flight: leaving school restores the selected helicopter, and changing to a jet resets rotorcraft collective',()=>{
+ const {game:g}=fresh();g.selectAirframe('kestrel');g._startMission();g.init({mode:'FREE',school:true});assert.equal(g.airframe,'falcon');g.init({mode:'FREE'});assert.equal(g.airframe,'kestrel');
+ g.state='HANGAR';g.selectAirframe('falcon');g._startMission();assert.equal(g.manualThrottle,1);
+});
+test('flight world: every car stays inside the drawn road at every segment of its route',()=>{
+ const {game:g}=fresh();for(const car of g.groundTraffic)for(let i=0;i<80;i++){car.phase=i/80;const p=g._groundPath(car),c=g.battleCities[car.city];const dx=Math.abs((p.x-c.x)-Math.round((p.x-c.x)/360)*360),dz=Math.abs((p.z-c.z)-Math.round((p.z-c.z)/360)*360);assert(Math.min(dx,dz)<=10,'Car left its actual road');}
+});

@@ -40,3 +40,8 @@ test('combat: camera backdrop uses video pixels only when explicitly selected an
  const {game:g,window}=fresh();const ctx=canvas();window.System.video={readyState:4,videoWidth:640,videoHeight:480};g.drawVirtualScene(ctx,390,844);assert(!ctx.operations.some(o=>o[0]==='drawImage'));
  window.ArcadeControls.mode='camera';g.drawVirtualScene(ctx,390,844);assert.equal(ctx.operations.filter(o=>o[0]==='drawImage').length,1);
 });
+
+test('combat: held automatic fire has the same cadence on 30, 60 and 120 Hz screens',()=>{
+ const counts=[];for(const hz of [30,60,120]){const {game:g}=fresh();g.waveDelay=1000;g.ammo=1000;g.fireHeld=true;for(let i=0;i<hz*6;i++)g.step(1/hz);counts.push(g.stats.shots);}
+ assert(Math.max(...counts)-Math.min(...counts)<=1,'Frame rate changed the weapon cadence: '+counts.join('/'));
+});

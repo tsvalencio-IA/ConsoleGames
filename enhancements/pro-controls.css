@@ -131,3 +131,5 @@
 .input-game-controls.flight-input [data-control="fire"]{right:max(8px,env(safe-area-inset-right,0px));bottom:0;width:var(--act);height:var(--act);border-radius:50%;font-size:11px;background:linear-gradient(150deg,#e98147,#8c3441);border-color:#ffd19e}
 .input-game-controls.flight-input [data-control="missile"]{bottom:calc(var(--act) + 10px);font-size:10px}
 @media(max-height:460px){.flight-input .flight-stick{width:108px;height:108px;bottom:3px}.input-game-controls.flight-input [data-control="fire"]{min-width:48px;min-height:48px}.input-game-controls.flight-input [data-control="missile"]{bottom:56px}}
+
+.input-game-controls.flight-input [data-control="hover"]{left:calc(50% - 42px);right:auto;bottom:8px;width:84px;height:44px;border-radius:13px;font-size:10px;background:linear-gradient(155deg,#225e66,#133746)}

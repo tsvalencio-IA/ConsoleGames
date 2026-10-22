@@ -366,6 +366,7 @@ try{
       await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerdown',{pointerId:91});await page.locator('.flight-input [data-control="powerUp"]').dispatchEvent('pointerup',{pointerId:91});
       await page.waitForFunction(y=>{const g=window.System.activeGame.logic;return g.ship.y>y+2&&g.ship.vz>1&&g.ship.yaw>0&&!g.ship.isStalling},hover.y,{timeout:6000});
       await page.screenshot({path:join('test-results/playable','voo-helicopter-city.png')});await fingers.end(heliStick);
+      await page.locator('.flight-input [data-control="hover"]').click();assert.equal(await page.evaluate(()=>window.System.activeGame.logic.manualThrottle),.5);
 
 
     }
@@ -482,7 +483,7 @@ try{
       await page.evaluate(()=>{
         window.System.menu();window.System.openPhases(window.Games.find(g=>g.id==='ar_truck_sim'));
         const c=document.createElement('canvas');c.width=640;c.height=480;const x=c.getContext('2d');x.fillStyle='#387d87';x.fillRect(0,0,640,480);x.fillStyle='#bbcba1';x.fillRect(30,150,170,330);x.fillStyle='#1b4f5e';x.fillRect(430,80,190,400);window.__arTestCamera=c;
-        Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{window.__cameraRequests++;return c.captureStream(15)}}});
+        Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{window.__cameraRequests++;const stream=c.captureStream(15);let tick=0;window.__arCameraTick=setInterval(()=>{x.fillStyle=++tick%2?'#aed5cb':'#beddd3';x.fillRect(280,200,20,20)},60);return stream}}});
       });
       await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('.input-mode-dialog [data-mode="camera"]').click();
       await page.waitForFunction(()=>window.System.activeGame?.id==='ar_truck_sim'&&window.ArcadeControls.mode==='camera'&&window.System.video.readyState>=2,null,{timeout:10000});
@@ -496,8 +497,8 @@ try{
     completed++;
   }catch(error){
     await page.screenshot({path:join("test-results/playable",slug+"-"+(device||"mobile")+"-failure.png")}).catch(()=>{});
-    const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
-    failures.push({slug,device,message:String(error),diagnostic,pageErrors:appErrors.slice(0,6)});
+    const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},video:window.System?.video?{ready:window.System.video.readyState,paused:window.System.video.paused,mode:window.ArcadeControls?.mode}:null,arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
+    failures.push({slug,device,message:String(error.stack||error),diagnostic,pageErrors:appErrors.slice(0,6)});
   }
   await context.close();
  }
