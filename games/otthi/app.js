@@ -9165,7 +9165,7 @@
     const g=otGames;g.mode=mode;g.armed=options.armed!==false;g.difficulty=['easy','normal','hard'].includes(options.difficulty)?options.difficulty:'normal';g.level={easy:{label:'INICIANTE',goal:6,damage:7,enemyRate:3.8},normal:{label:'NORMAL',goal:8,damage:10,enemyRate:2.9},hard:{label:'VETERANO',goal:10,damage:15,enemyRate:2.1}}[g.difficulty];
     state.ui.quickOpen=false;syncMobilePanels();
     g.entry={camera:camera.position.clone(),rotation:camera.quaternion.clone(),fov:camera.fov,playerVisible:playerGroup.visible,shadowVisible:contactShadow?.visible,toolVisible:toolVisual?.visible,position:{x:player.x,y:player.y,z:player.z},cameraYaw,cameraPitch,cameraZoom};
-    savePlayerPosition(true);clearMovementInputs();otGamesClearInput();g.active=true;g.state='PLAYING';g.kills=0;g.goal=g.level.goal;g.wave=0;g.ammo=30;g.reserve=180;g.reload=0;g.cooldown=0;g.elapsed=0;g.resultSaved=false;g.notice='';g.lock=null;g.enemies=[];g.bullets=[];g.effects=[];
+    savePlayerPosition(true);clearMovementInputs();otGamesClearInput();g.active=true;g.state='PLAYING';g.handMode=false;g.kills=0;g.goal=g.level.goal;g.wave=0;g.ammo=30;g.reserve=180;g.reload=0;g.cooldown=0;g.elapsed=0;g.resultSaved=false;g.notice='';g.lock=null;g.enemies=[];g.bullets=[];g.effects=[];
     g.noticeUntil=0;g.autoWalkSide=0;g.autoWalking=false;g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_COMBAT_SESSION';scene.add(g.group);
     const safe=safePointNear(player.x,player.z,{ignoreTraffic:true,allowWater:false,radius:.5});
     g.body={x:safe.x,y:safe.y+(mode==='ground'?1.8:mode==='helicopter'?18:32),z:safe.z,yaw:Math.PI-cameraYaw,pitch:0,roll:0,vx:0,vy:0,vz:0,hp:100};
@@ -9180,12 +9180,13 @@
     const g=otGames;if(!g.active)return;g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;otGamesClearInput();g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
     playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
-    g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
+    g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
   function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;}
   async function otGamesStartCamera(){
     const g=otGames;if(!g.active||g.mode!=='ground')return;if(g.handSession){g.handSession.recalibrate();return;}
-    g.state='HAND_CALIBRATION';otGamesClearInput();const epoch=++g.cameraEpoch,current=()=>g.active&&g.mode==='ground'&&g.cameraEpoch===epoch;let stream;
+    g.state='HAND_CALIBRATION';g.handMode=true;g.ui?.classList.add('ot-hands');otGamesClearInput();
+    const epoch=++g.cameraEpoch,current=()=>g.active&&g.mode==='ground'&&g.cameraEpoch===epoch;let stream;
     try{
       if(!document.querySelector('[data-ot-hand-style]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('../ar/combat-controls.css?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;link.dataset.otHandStyle='true';document.head.append(link);}
       if(!window.WarHandControl)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('../ar/hand-controls.js',OTTHI_GAME_LIVE_BASE).href;script.onload=resolve;script.onerror=reject;document.head.append(script);});
@@ -9198,8 +9199,8 @@
         const timer=setTimeout(()=>finish(Error('A câmera não forneceu imagens.')),5000);for(const event of events)video.addEventListener(event,frame);Promise.resolve(video.play()).then(frame,error=>finish(error));
       });
       if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
-      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;}});
-    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo=null;g.state='PLAYING';toast('Câmera frontal indisponível. Os controles continuam ativos.','warn',3000);}}
+      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
+    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera frontal indisponível. Os controles continuam ativos.','warn',3000);}}
   }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
@@ -9226,7 +9227,9 @@
     camera.updateProjectionMatrix();
     if(g.weapon){
       const offset=new THREE.Vector3(.23,-.24-(g.reload>0?.2:0),-.4).applyQuaternion(camera.quaternion);g.weapon.position.copy(camera.position).add(offset);
-      if(g.handAim){const direction=new THREE.Vector3(g.handAim.x*2-1,1-g.handAim.y*2,.5).unproject(camera).sub(camera.position).normalize();g.weapon.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,-1),direction);}else g.weapon.quaternion.copy(camera.quaternion);
+      // In camera-hand mode the camera itself follows the fingers; gun and reticle
+      // stay aligned with the camera centre. Never apply a second angular offset.
+      g.weapon.quaternion.copy(camera.quaternion);
       g.weapon.userData.flash.visible=g.cooldown>.10&&g.state==='PLAYING';
     }
     return true;
@@ -9238,15 +9241,22 @@
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
     if(g.mode==='ground'){
-      b.yaw+=g.aim.x*dt*1.8;b.pitch=clamp(b.pitch+g.aim.y*dt*1.2,-.85,.85);
-      if(g.handSession&&g.handAim?.fresh){
+      // Joystick only for manual mode. Hand mode is controlled exclusively
+      // by the right-hand tracker used in WAR.
+      if(!g.handMode){
+        b.yaw+=g.aim.x*dt*1.8;
+        b.pitch=clamp(b.pitch+g.aim.y*dt*1.2,-.85,.85);
+      }
+      if(g.handMode&&g.handSession&&g.handAim?.fresh){
         // Follow the calibrated real hand continuously, with a small neutral region.
+        // Mirrored front-facing camera from WAR: rightward fingers turn the view
+        // right, upward fingers raise the view. Neutral hand keeps angle steady.
         const horizontal=g.handAim.x-.5,vertical=.48-g.handAim.y;
-        if(Math.abs(horizontal)>.08)b.yaw+=Math.sign(horizontal)*(Math.abs(horizontal)-.08)*dt*2.4;
-        if(Math.abs(vertical)>.11)b.pitch=clamp(b.pitch+Math.sign(vertical)*(Math.abs(vertical)-.11)*dt*.9,-.85,.85);
+        if(Math.abs(horizontal)>.055)b.yaw+=Math.sign(horizontal)*(Math.abs(horizontal)-.055)*dt*2.8;
+        if(Math.abs(vertical)>.06)b.pitch=clamp(b.pitch+Math.sign(vertical)*(Math.abs(vertical)-.06)*dt*1.9,-.85,.85);
       }
       let mx=x,my=y,speed=5;const free=(px,pz)=>!positionBlockedForPlayer(px,pz,.45,{ignoreTraffic:true});
-      if(g.handSession&&!x&&!y){
+      if(g.handMode&&g.handSession&&!x&&!y){
         speed=2.8;const near=g.enemies.some(e=>e.active&&Math.hypot(e.x-b.x,e.z-b.z)<11);
         if(!near&&!g.lock){
           const fx=Math.sin(b.yaw),fz=Math.cos(b.yaw),rx=Math.cos(b.yaw),rz=-Math.sin(b.yaw);
@@ -9272,7 +9282,7 @@
     }
     b.x=clamp(b.x,bounds.minX+2,bounds.maxX-2);b.z=clamp(b.z,bounds.minZ+2,bounds.maxZ-2);otGamesCamera(dt);
     if(g.armed){
-      const ray=g.handAim?new THREE.Vector3(g.handAim.x*2-1,1-g.handAim.y*2,.5).unproject(camera).sub(camera.position).normalize():camera.getWorldDirection(new THREE.Vector3()),origin=g.mode==='ground'?camera.position.clone():new THREE.Vector3(b.x,b.y-.4,b.z);let target=null,best=Infinity;
+      const ray=camera.getWorldDirection(new THREE.Vector3()),origin=g.mode==='ground'?camera.position.clone():new THREE.Vector3(b.x,b.y-.4,b.z);let target=null,best=Infinity;
       for(const e of g.enemies){
         if(!e.active)continue;e.aim-=dt;e.hit=Math.max(0,e.hit-dt);e.group.rotation.y=Math.atan2(b.x-e.x,b.z-e.z);
         if(e.kind==='drone'){e.y=(e.baseY??groundHeightAt(e.x,e.z)+9)+Math.sin(g.elapsed+e.phase);e.group.position.y=e.y;for(const [i,rotor]of e.rotors.entries())rotor.rotation.y=g.elapsed*35*(i%2?1:-1);}
@@ -9325,7 +9335,7 @@
     if(g.noticeUntil&&g.elapsed>g.noticeUntil){g.notice='';g.noticeUntil=0;}
     const live=g.enemies.filter(e=>e.active),next=live.slice().sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
     if(next&&g.state==='PLAYING'){const bearing=Math.atan2(Math.sin(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw),Math.cos(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw)),pitch=Math.atan2(next.y-g.body.y,Math.hypot(next.x-g.body.x,next.z-g.body.z))-g.body.pitch;let hint=Math.abs(bearing)>.5?(bearing>0?'VIRE À DIREITA →':'← VIRE À ESQUERDA'):Math.abs(pitch)>.22?(pitch>0?'ALVO ACIMA ↑':'ALVO ABAIXO ↓'):'';if(g.handSession&&!g.handAim?.fresh)hint='MOSTRE A MÃO · AVANÇO E TIRO PAUSADOS';else if(g.autoWalking)hint='AVANÇO AUTOMÁTICO · MIRE COM A MÃO';if(hint)g.ui.querySelector('.ot-games-mission').textContent+=' · '+hint;}
-    const reticle=g.ui.querySelector('.ot-games-reticle');reticle.hidden=!g.armed;reticle.classList.toggle('locked',!!g.lock&&g.lock.time>.3);reticle.style.left=(g.handAim?.x??.5)*100+'%';reticle.style.top=(g.handAim?.y??.5)*100+'%';
+    const reticle=g.ui.querySelector('.ot-games-reticle');reticle.hidden=!g.armed;reticle.classList.toggle('locked',!!g.lock&&g.lock.time>.3);reticle.style.left='50%';reticle.style.top='50%';
     const targets=g.ui.querySelector('.ot-games-targets'),primary=g.lock?.target||next;
     for(const marker of targets.children)if(!live.some(e=>e.id===marker.dataset.target))marker.remove();
     for(const e of live){
@@ -9334,7 +9344,7 @@
       marker.hidden=!visible;marker.classList.toggle('secondary',e!==primary);marker.style.left=(p.x*.5+.5)*100+'%';marker.style.top=(-p.y*.5+.5)*100+'%';marker.textContent=e===primary?(e.kind==='tank'?'BLINDADO':e.kind==='drone'?'DRONE':'ALVO')+' · '+Math.round(Math.hypot(e.x-g.body.x,e.z-g.body.z))+' m':'';
     }
     const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
-    g.ui.classList.toggle('ot-hands',!!g.handSession);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
+    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
   }
   function otGamesChoose(){
     if(!running||document.getElementById('ot-games-choose'))return;const previousPaused=paused;paused=true;otGamesClearInput();clearMovementInputs();const dialog=document.createElement('section');dialog.id='ot-games-choose';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','Escolha seu modo OT Games');
@@ -9426,8 +9436,10 @@
     if(document.getElementById('ot-campaign-css'))return;
     const css=document.createElement('style');css.id='ot-campaign-css';
     css.textContent=[
-      'body.campaign-world #ot-games-button{display:none!important}',
-      '#worldCampaignBtn{font:800 11px system-ui;color:#e5fff2;background:#20505b;border:1px solid #88cdb4;border-radius:11px;min-height:44px;padding:4px 8px}',
+      '#worldCampaignBtn{position:absolute;z-index:110;top:calc(130px + var(--safe-top,0px));right:calc(8px + var(--safe-right,0px));width:103px;min-height:44px;padding:5px 8px;border-radius:13px;border:2px solid #8fdbb4;background:linear-gradient(180deg,#317c69,#163d4c);color:#f4fff4;font:800 12px system-ui;line-height:1.15;box-shadow:0 4px 15px #0018;cursor:pointer;touch-action:manipulation;pointer-events:auto}',
+      'body.ot-games-active #worldCampaignBtn{display:none!important}',
+      'body.ui-landscape.otthi-v705-world #worldCampaignBtn{top:calc(96px + var(--safe-top,0px));right:calc(min(20vw,150px) + 17px + var(--safe-right,0px));min-height:42px}',
+      '@media(max-width:550px) and (orientation:portrait){#worldCampaignBtn{top:calc(175px + var(--safe-top,0px));right:calc(10px + var(--safe-right,0px))}}',
       '#campaignRoute{position:fixed;z-index:590;top:max(5px,env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(350px,calc(100vw - 22px));box-sizing:border-box;text-align:center;border:1px solid #b1d7c08f;border-radius:10px;padding:6px 9px;background:#102c39e9;color:#f0ffea;font:700 12px/1.3 system-ui;pointer-events:none}',
       '#campaignRoute small{display:block;font:600 10px/1.3 system-ui;color:#c2ded1}',
       '#campaignRoute[hidden]{display:none!important}',
@@ -9446,8 +9458,11 @@
     for(const site of Object.values(WORLD_CAMPAIGN_SITES))campaignDrawSite(site);
     worldCampaign.recordKey='thia:otthi:campaign:v1:'+(state.profile?.playerId||'local');
     const button=document.createElement('button');button.id='worldCampaignBtn';button.type='button';
-    button.textContent='MISSÕES';button.setAttribute('aria-label','Bases e missões do mundo');button.onclick=campaignOpen;
-    document.getElementById('quickBar')?.prepend(button);
+    button.textContent='MISSÕES';button.setAttribute('aria-label','Abrir missões, Quartel-General, Base Aérea e Setor Norte');button.onclick=campaignOpen;
+    // HUD button is independent of the collapsed Vida/quickBar.
+    const gameScreen=document.getElementById('game');
+    if(!gameScreen)return;
+    gameScreen.append(button);
     const box=document.createElement('div');box.id='campaignRoute';box.hidden=true;box.innerHTML='<b></b><small></small>';
     document.body.append(box);worldCampaign.routeUi=box;
     document.body.classList.add('campaign-world');worldCampaign.initialized=true;
@@ -9455,16 +9470,33 @@
   function campaignHistory(){
     try{return JSON.parse(safeLocalGet(worldCampaign.recordKey)||'{}')||{};}catch{return{};}
   }
+  function campaignMapLocations(){
+    return Object.values(WORLD_CAMPAIGN_SITES).map(site=>({
+      id:'campaign-'+site.id,name:site.label,
+      icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':'🎯',
+      group:'Bases e campanhas',x:site.x,z:site.z,navX:site.x,navZ:site.z,
+      missionTarget:true,
+      description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Partida de operações com avião ou helicóptero para o Setor Norte.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
+      actions:['Marcar a rota azul no GPS','Viajar até o destino','Abrir MISSÕES ao chegar']
+    }));
+  }
   function campaignNavigate(site){
-    worldCampaign.route=site;worldCampaign.time=1;closeModal();
-    toast('Rota definida: '+site.label+'.', 'info',2400);
+    if(!site)return false;
+    worldCampaign.route=site;worldCampaign.time=1;
+    if(!worldCampaign.mission){
+      // World GPS owns the map markers, cyan path, minimap and 3D route arrows.
+      setWaypoint('campaign-'+site.id);
+    }else{
+      closeModal();toast('Destino da operação: '+site.label+'.', 'info',2400);
+    }
+    return true;
   }
   function campaignOpen(){
     if(!running||!worldCampaign.initialized)return;
     const pos=otGames.active?otGames.body:player,history=campaignHistory();
     const cards=Object.values(WORLD_CAMPAIGN_SITES).map(site=>{
       const distance=Math.round(campaignDist(pos,site)),near=distance<site.radius;
-      let actions='<button class="btn" data-campaign-nav="'+site.id+'">ROTA</button>';
+      let actions='<button class="btn" data-campaign-nav="'+site.id+'">ROTA NO GPS</button>';
       if(near&&!otGames.active&&site.id==='hq')actions+='<button class="btn primary" data-campaign-start="ground">PATRULHA</button>';
       if(near&&!otGames.active&&site.id==='airbase')actions+='<button class="btn primary" data-campaign-start="helicopter">HELICOPTERO</button><button class="btn primary" data-campaign-start="plane">AVIAO</button>';
       return '<section style="padding:9px;margin:8px 0;border:1px solid #547f83;border-radius:12px"><b>'+site.label+'</b><p>'+distance+' m · '+(near?'no local':'siga a rota')+'</p><div class="modal-actions">'+actions+'</div></section>';
@@ -9485,6 +9517,9 @@
     catch(e){toast(e?.message||'Não foi possível iniciar.','warn',3000);}
     if(!ok)return false;
     otGames.goal=mode==='ground'?6:8;
+    if(state.waypoint?.id?.startsWith('campaign-')){
+      state.waypoint=null;updateWaypointMarker();updateNavigation(0,true);saveState(true);
+    }
     worldCampaign.mission={id:'norte-'+mode,mode,base:site,phase:'travel',recorded:false};
     worldCampaign.route=WORLD_CAMPAIGN_SITES.north;worldCampaign.time=1;
     toast('Operação iniciada. Desloque-se até o Setor Norte.','info',3600);

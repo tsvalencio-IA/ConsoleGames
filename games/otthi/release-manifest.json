@@ -1,11 +1,11 @@
 {
   "version": 705,
   "build": "705.16.7.19-walk-missions",
-  "revision": "0c74342cf92c7f44",
+  "revision": "82dc793ec338e976",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "ff1e0bd8ae416c3ed93905f293982395fd65e5db1e5f4c352aec932948423c2e",
-    "style.css": "d45573451124a562aa9fd6e2faa443b93523d0aae7530b9a323b1f2fa288cd7c",
+    "index.html": "b780669a6ea94a645e6552f83aa41649c78b0db6c3a8082c95b0225905e6c86b",
+    "style.css": "d4e0506883509d6cae1c49092c190cb2fa2528856c760c77852153f7279bafd6",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
     "assets/js/core/runtime-config.js": "9717c4b2941e572b000192d29a69395e58fdea9899cd0ff58e1c3c67440a21c5",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
@@ -14,7 +14,7 @@
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "1269dd4ee9c67dc4062a8217c1730295363e2a47a847679f457e1c123e9efbb4",
+    "app.js": "46dee364916e8425952e40a18689ad2a3e868fd350a07b22dd708f6c2ad7c0bc",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
@@ -25,6 +25,6 @@
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
     "VERSION.json": "f0182a6350fbd5f834b41189a5f106d762040b427eec4414aba51efc03e36f97",
-    "sw.js": "db55c1b3487bf211249dd8aebbb7d7f0770ff1791ee05f3ed6b5a06dd7d46e57"
+    "sw.js": "296868be928044679062b958a9e35027083d7912a7bf723f56d1b7e3feb7c510"
   }
 }
