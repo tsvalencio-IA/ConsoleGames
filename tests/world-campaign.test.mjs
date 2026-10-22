@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source=readFileSync(new URL('../games/otthi/src/modules/43-world-campaign.js',import.meta.url),'utf8');
 function fixture(){
-  const saved=new Map(),toastCalls=[],spawnCalls=[],nativeResults=[];
+  const saved=new Map(),toastCalls=[],spawnCalls=[],nativeResults=[],waypoints=[];
   class Object3D {
     constructor(){this.children=[];this.position={x:0,y:0,z:0,set(x,y,z){this.x=x;this.y=y;this.z=z}};this.rotation={};this.parent=null;this.visible=true;}
     add(o){o.parent=this;this.children.push(o);}
@@ -24,8 +24,8 @@ function fixture(){
       fillRect(){},strokeRect(){},fillText(){},set font(v){},set fillStyle(v){},set strokeStyle(v){},set textAlign(v){},set lineWidth(v){}
     }}
   });
-  const body=element('body'),head=element('head'),quickBar=element('quickBar');
-  const document={body,head,createElement:element,getElementById:id=>id==='quickBar'?quickBar:null};
+  const body=element('body'),head=element('head'),quickBar=element('quickBar'),game=element('game');
+  const document={body,head,createElement:element,getElementById:id=>id==='quickBar'?quickBar:id==='game'?game:null};
   const player={x:-120,y:0,z:-54};
   const otGames={active:false,mode:'peace',state:'PLAYING',body:null,armed:false,enemies:[],bullets:[],effects:[],
     ui:{querySelector(){return {hidden:true}}},kills:0,goal:0};
@@ -35,7 +35,7 @@ function fixture(){
     groundHeightAt:()=>0,
     safeLocalGet:key=>saved.get(key)||null,
     safeLocalSet:(key,value)=>saved.set(key,value),
-    toast:(...args)=>toastCalls.push(args),closeModal(){},
+    toast:(...args)=>toastCalls.push(args),closeModal(){},setWaypoint(id){waypoints.push(id);},
     openModal(){},$$(){return []},
     otGamesEnter:async(mode,opts)=>{
       otGames.active=true;otGames.mode=mode;otGames.armed=opts.armed;
@@ -50,7 +50,7 @@ function fixture(){
   };
   vm.createContext(context);
   vm.runInContext(source+'\n;globalThis.campaignTick=updateWorldCampaign;',context);
-  return {context,player,otGames,saved,spawnCalls,toastCalls,nativeResults,
+  return {context,player,otGames,saved,spawnCalls,toastCalls,nativeResults,waypoints,game,
     tick:()=>context.campaignTick(.25),api:context.window.OTTHI_CAMPAIGN};
 }
 
@@ -91,4 +91,17 @@ test('no remote start is allowed, and abandoning combat awards no completion',as
   f.otGames.active=false;f.tick();
   assert.equal(f.api.diagnostics().phase,'idle');
   assert.equal(f.api.diagnostics().records['norte-helicopter'],undefined);
+});
+
+test('campaign MISSÕES button exists outside collapsed quickBar; all three locations appear as official map markers',()=>{
+  const f=fixture();f.tick();
+  const button=f.game.children.find(x=>x.id==='worldCampaignBtn');
+  assert(button,'MISSÕES must be visible in game HUD rather than the collapsed Vida menu');
+  assert.equal(button.textContent,'MISSÕES');
+  const all=Array.from(f.context.campaignMapLocations());
+  assert.equal(all.length,3);
+  assert.deepEqual(all.map(x=>x.id),['campaign-hq','campaign-airbase','campaign-north']);
+  assert(all.every(x=>x.missionTarget),'all bases must be visually marked on the map');
+  f.api.navigate('airbase');
+  assert.deepEqual(f.waypoints,['campaign-airbase'],'route button must call existing blue-arrow GPS system');
 });
