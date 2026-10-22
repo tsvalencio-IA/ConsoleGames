@@ -378,7 +378,7 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else this.tank(b,e.x,e.z,0,1,e.shot)}
-   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=-.07+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=-.1+(g.handAim?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=.06-(g.handAim?(g.handAim.y-.48)*.45:0);
+   this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=(g.aiming?0:-.07)+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=(g.aiming?0:-.1)+(g.handAim?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=(g.aiming?0:.06)-(g.handAim?(g.handAim.y-.48)*.45:0);
   }else{
    for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw+(car.crashed?.18:0),5,car.crashed?m.dark:m.cars[i%4])}
    for(const tank of g.groundTanks||[]){const p=g._groundPath(tank);if(tank.active!==false)this.tank(b,p.x,p.z,p.yaw+Math.PI,8,tank.flash);else{b.box(m.dark,p.x,3,p.z,35,8,46,p.yaw);b.box(m.steel,p.x,11,p.z,20,5,24,p.yaw+.4);b.box(m.rubber,p.x-16,1,p.z,7,8,48,p.yaw)}}
@@ -432,13 +432,14 @@ class World{
   if(this.lost||this.disposed||w<=0||h<=0)return false;
   const g=this.game,flight=this.type==='flight',q=window.ArcadePlaySettings?.get().quality;
   const v=flight?(g.view||g.ship):{x:g.player.x,y:g.eyeY||1.8,z:g.player.z,yaw:g.player.yaw,pitch:g.player.pitch,roll:0};
-  const lv=this.lastView,jump=!lv||Math.hypot(v.x-lv.x,v.y-lv.y,v.z-lv.z)>(flight?75:1)||Math.abs(v.yaw-lv.yaw)>.12||Math.abs(v.pitch-lv.pitch)>.12;
+  const focal=flight?800:(g.focalLength?.(w,h)||Math.min(w,h)*.88);
+  const lv=this.lastView,jump=this.lastFocal!==focal||!lv||Math.hypot(v.x-lv.x,v.y-lv.y,v.z-lv.z)>(flight?75:1)||Math.abs(v.yaw-lv.yaw)>.12||Math.abs(v.pitch-lv.pitch)>.12;
   if(this.frames&&!jump&&clock()<this.nextRenderAt&&this.lastWidth===w&&this.lastHeight===h&&this.lastCamera===cameraBackground){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
   // Internal pixels are capped on phones, independently of the HUD canvas.
   const begin=clock(),cap=q==='high'?1400000:800000;
   const factor=Math.min(this.renderScale,Math.sqrt(cap/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
   if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
-  configureCamera(this.camera,v,w,h,flight?800:Math.min(w,h)*.88,flight?.5:.48,flight?10:.15,flight?120000:1800);
+  configureCamera(this.camera,v,w,h,focal,flight?.5:.48,flight?10:.15,flight?120000:1800);
   this.sky.position.set(v.x,v.y,v.z);this.sky.visible=!cameraBackground;
   // Only rendered environment is hidden for the optional camera backdrop.
   for(const batch of this.static.items.values())if(batch.mesh)batch.mesh.visible=!cameraBackground;
@@ -448,13 +449,13 @@ class World{
   for(const o of this.scene.children)if(o.isMesh&&o!==this.sky&&!o.isInstancedMesh&&o!==this.terrain)o.visible=!cameraBackground;
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
-  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=.124*w/edge;this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
+  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=g.aiming?-.6:-.18;if(g.aiming)this.weapon.position.y=-.166+.022*h/edge+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
   if(this.frameCanvas){
    if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
    this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);
   }
   ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);this.frames++;
-  const duration=clock()-begin;this.lastWidth=w;this.lastHeight=h;this.lastCamera=cameraBackground;this.lastView={...v};
+  const duration=clock()-begin;this.lastWidth=w;this.lastHeight=h;this.lastCamera=cameraBackground;this.lastView={...v};this.lastFocal=focal;
   // Software GPUs share CPU time with input and physics. Leave several native
   // animation ticks between draws instead of stalling reloads and flight motion.
   this.nextRenderAt=clock()+(this.software||g.handSession?33:0);

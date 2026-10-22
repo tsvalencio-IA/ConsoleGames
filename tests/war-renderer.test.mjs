@@ -20,7 +20,8 @@ function renderer(f,unavailable=false){
 }
 test('WAR: GPU camera matches hit-test projection through pitch/yaw and both screen orientations',()=>{
  const f=engine('ar','game_ar');f.game.init({id:'city'});const api=renderer(f),g=f.game;g.eyeY=1.8;
- for(const [w,h]of [[390,844],[844,390]])for(const [yaw,pitch]of [[0,0],[.35,-.2],[-.4,.3]]){
+ for(const [w,h]of [[390,844],[844,390]])for(const aiming of [false,true])for(const [yaw,pitch]of [[0,0],[.35,-.2],[-.4,.3]]){
+  g.setAiming(aiming);
   Object.assign(g.player,{x:-3,z:5,yaw,pitch});assert(api.combat(g,canvas(),w,h,false));
   for(const p of [[0,1,35],[10,3,50],[-8,8,60]]){const a=g.project(...p,w,h),b=api.project(g,...p,w,h);assert(Math.hypot(a.x-b.x,a.y-b.y)<1e-8)}
  }

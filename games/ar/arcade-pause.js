@@ -22,12 +22,15 @@ function init(){
     (lastFocus&&lastFocus.isConnected?lastFocus:pause).focus({preventScroll:true});
   }
   function open(){
-    if(!sys.activeGame||sys.activeGame.logic?.isOnline)return;
+    if(!sys.activeGame||sys.activeGame.logic?.isOnline||!modal.hidden)return;
     window.dispatchEvent(new Event('arcade:release-inputs'));lastFocus=document.activeElement;sys.paused=true;modal.hidden=false;
     modal.querySelector('[data-action="continue"]').focus({preventScroll:true});
   }
   pause.addEventListener("click",open);
-  modal.addEventListener("click",event=>{
+  // A secondary touch does not reliably synthesize click on Android browsers.
+  pause.addEventListener("pointerdown",event=>{if(event.pointerType==='touch'||event.pointerType==='pen'){event.preventDefault();event.stopPropagation();open()}},{passive:false});
+  const activate=event=>{
+    if(modal.hidden)return;
     const action=event.target.closest("[data-action]")?.dataset.action;
     if(action==="continue")close();
     else if(action==="phases"){
@@ -36,7 +39,9 @@ function init(){
       const allow=g&&(window.Profile?.role==="admin"||window.Profile?.permissions?.[id]===true);
       if(allow)sys.openPhases(g);
     }
-  });
+  };
+  modal.addEventListener("click",activate);
+  modal.addEventListener("pointerdown",event=>{const action=event.target.closest('[data-action]')?.dataset.action;if((event.pointerType==='touch'||event.pointerType==='pen')&&(action==='continue'||action==='phases')){event.preventDefault();event.stopPropagation();activate(event)}},{passive:false});
   document.addEventListener("keydown",event=>{
     if(!modal.hidden&&event.key==="Escape"){event.preventDefault();close()}
     if(!modal.hidden&&event.key==="Tab"){

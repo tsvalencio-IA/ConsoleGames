@@ -19,7 +19,7 @@ const hub={
    overlay.setAttribute("aria-label","Escolha como jogar");
    const previous=document.activeElement;
    overlay.innerHTML='<div class="input-mode-panel"><div class="input-mode-eyebrow">thIAguinho ARCADE</div><h2>COMO VOCÊ QUER JOGAR?</h2><p>Você pode jogar sem câmera. Escolha a opção que preferir para esta partida.</p><div class="input-mode-options"><button type="button" data-mode="controls"><strong>🎮 CONTROLES</strong><small>Toque na tela ou use o teclado. Sem acesso à câmera.</small></button><button type="button" data-mode="camera"><strong>📷 CÂMERA</strong><small>Use seus movimentos. A câmera só será solicitada após esta escolha.</small></button></div><button type="button" data-mode="cancel" class="input-mode-cancel">VOLTAR ÀS FASES</button><span class="input-mode-foot">A escolha pode ser alterada antes da próxima partida.</span></div>';
-   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal acompanha sua mão direita. Calibre, aponte e dispare automaticamente ao mirar em um adversário.";overlay.querySelector('[data-mode="controls"] small').textContent="Arena virtual, sem câmera. Dois joysticks e botões independentes.";}
+   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal acompanha sua mão direita. Calibre, aponte e dispare automaticamente ao mirar em um adversário.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
    document.body.appendChild(overlay);
    const stored=(()=>{try{return localStorage.getItem(key)}catch{return null}})();
    const first=overlay.querySelector(stored==="camera"?'[data-mode="camera"]':'[data-mode="controls"]');
@@ -107,8 +107,8 @@ const hub={
    hub.releases.push(()=>clearInterval(watch));
    const blur=()=>cancellations.forEach(cancel=>cancel());
    const visibility=()=>{if(document.hidden)blur()};document.addEventListener("visibilitychange",visibility);
-   window.addEventListener("blur",blur);window.addEventListener("arcade:release-inputs",blur);
-   hub.releases.push(()=>{blur();document.removeEventListener("visibilitychange",visibility);window.removeEventListener("blur",blur);window.removeEventListener("arcade:release-inputs",blur)});
+   window.addEventListener("blur",blur);window.addEventListener("resize",blur);window.addEventListener("arcade:release-inputs",blur);
+   hub.releases.push(()=>{blur();document.removeEventListener("visibilitychange",visibility);window.removeEventListener("blur",blur);window.removeEventListener("resize",blur);window.removeEventListener("arcade:release-inputs",blur)});
    return root;
  },
  flightJoystick(logic,root){
@@ -160,20 +160,43 @@ const hub={
    hub.releases.push(()=>clearInterval(interval));
    hub.showTip("JOYSTICK PARA GUIAR • SEGURE ATIRAR COM A MIRA TRAVADA • TOQUES SIMULTÂNEOS");
  },
+ combatLook(logic,root){
+  const surface=window.System?.canvas;if(!surface)return;
+  const previousControl=surface.dataset.control;surface.dataset.control='look';surface.classList.add('combat-look-surface');
+  let owner=null,lastX=0,lastY=0;
+  const enabled=()=>hub.mode==='controls'&&window.System?.activeGame?.logic===logic&&!window.System.paused&&logic.state==='PLAYING'&&!root.hidden&&!$('#game-ui')?.classList.contains('hidden');
+  const reset=()=>{const pointer=owner;owner=null;logic.lookPointerActive=false;try{if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer)}catch{}};
+  const down=e=>{
+   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0))return;
+   e.preventDefault();e.stopPropagation();owner=e.pointerId;lastX=e.clientX;lastY=e.clientY;logic.lookPointerActive=true;
+   try{if(e.isTrusted)surface.setPointerCapture(e.pointerId)}catch{}
+  };
+  const move=e=>{
+   if(owner!==e.pointerId)return;if(!enabled()){reset();return;}e.preventDefault();e.stopPropagation();
+   const r=surface.getBoundingClientRect();logic.lookBy(e.clientX-lastX,e.clientY-lastY,r.width,r.height);lastX=e.clientX;lastY=e.clientY;
+  };
+  const end=e=>{if(owner===e.pointerId)reset()};
+  const hide=()=>{if(document.hidden)reset()};
+  surface.addEventListener('pointerdown',down,{passive:false});surface.addEventListener('pointermove',move,{passive:false});
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])surface.addEventListener(type,end);
+  for(const type of ['blur','resize','arcade:release-inputs'])window.addEventListener(type,reset);document.addEventListener('visibilitychange',hide);
+  hub.releases.push(()=>{reset();surface.removeEventListener('pointerdown',down);surface.removeEventListener('pointermove',move);for(const type of ['pointerup','pointercancel','lostpointercapture'])surface.removeEventListener(type,end);for(const type of ['blur','resize','arcade:release-inputs'])window.removeEventListener(type,reset);document.removeEventListener('visibilitychange',hide);surface.classList.remove('combat-look-surface');if(previousControl===undefined)delete surface.dataset.control;else surface.dataset.control=previousControl;});
+ },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[
    {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
+   {id:'ads',text:'MIRAR',label:'Ligar ou desligar a mira aproximada',down:()=>{logic.setAiming(!logic.aiming);refreshAim()}},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
    {id:'cover',text:'COBERTURA',label:'Segurar para se proteger e reduzir dano',down:()=>logic.coverHeld=true,up:()=>logic.coverHeld=false},
    {id:'hand',text:'CALIBRAR MÃO',label:'Calibrar novamente a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);
   root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
-  for(const aim of [false,true]){
+  {
    const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
-   stick.className='combat-stick '+(aim?'aim-stick':'move-stick');stick.dataset.control=aim?'aim':'joystick';stick.setAttribute('role','group');stick.setAttribute('aria-label',aim?'Joystick de mira: horizontal e vertical':'Joystick de movimento: andar e deslocar de lado');
-   knob.className='combat-stick-knob';caption.textContent=aim?'MIRAR':'MOVER';stick.append(knob,caption);root.append(stick);
-   const axis=logic[aim?'aimStick':'manualStick']={x:0,y:0,active:false};let owner=null;
+   stick.className='combat-stick move-stick';stick.dataset.control='joystick';stick.setAttribute('role','group');stick.setAttribute('aria-label','Joystick de movimento: andar e deslocar de lado');
+   knob.className='combat-stick-knob';caption.textContent='MOVER';stick.append(knob,caption);root.append(stick);
+   const axis=logic.manualStick={x:0,y:0,active:false};let owner=null;
    const reset=()=>{owner=null;axis.x=axis.y=0;axis.active=false;stick.classList.remove('held');knob.style.transform='translate(-50%,-50%)'};
    const move=e=>{if(owner!==e.pointerId)return;e.preventDefault();e.stopPropagation();const r=stick.getBoundingClientRect(),radius=r.width*.34,dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,mag=Math.hypot(dx,dy),length=Math.min(radius,mag),strength=Math.max(0,(length/radius-.08)/.92);axis.x=mag?dx/mag*strength:0;axis.y=mag?-dy/mag*strength:0;axis.active=true;knob.style.transform=`translate(calc(-50% + ${mag?dx/mag*length:0}px),calc(-50% + ${mag?dy/mag*length:0}px))`};
    stick.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(owner!==null)return;owner=e.pointerId;stick.classList.add('held');try{if(e.isTrusted)stick.setPointerCapture(e.pointerId)}catch{}move(e)},{passive:false});
@@ -181,7 +204,11 @@ const hub={
    const hidden=()=>{if(document.hidden)reset()};window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);window.addEventListener('resize',reset);document.addEventListener('visibilitychange',hidden);
    hub.releases.push(()=>{reset();window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset);window.removeEventListener('resize',reset);document.removeEventListener('visibilitychange',hidden)});
   }
-  hub.showTip(hub.mode==='camera'?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO • COBERTURA PAUSA O AVANÇO':'MOVER + MIRAR + ATIRAR • 3 TOQUES SIMULTÂNEOS • R RECARREGA • C PROTEGE');
+  hub.combatLook(logic,root);
+  const aimButton=root.querySelector('[data-control="ads"]');
+  const refreshAim=()=>{aimButton.setAttribute('aria-pressed',String(!!logic.aiming));aimButton.classList.toggle('selected',!!logic.aiming);};refreshAim();
+  const watchAim=setInterval(refreshAim,160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
+  hub.showTip(hub.mode==='camera'?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO • COBERTURA PAUSA O AVANÇO':'ARRASTE NA CENA PARA OLHAR • MIRAR APROXIMA • ANDE E ATIRE AO MESMO TEMPO');
  }
 
 };

@@ -35,6 +35,9 @@ jobs:
           sleep 2
       - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
         run: node tests/war-camera-browser.mjs
+      - name: Arrastar a câmera e jogar com toques simultâneos no WAR
+        if: ${{ always() && !cancelled() }}
+        run: node tests/war-touch-browser.mjs
       - name: Voar e trocar de modo na cena original do OT preservando a família
         if: ${{ always() && !cancelled() }}
         run: node tests/ot-games-browser.mjs
@@ -45,6 +48,7 @@ jobs:
           name: ot-games-hand-camera-world
           path: |
             test-results/hand-camera/
+            test-results/war-touch/
             test-results/ot-games/
           if-no-files-found: ignore
           retention-days: 14

@@ -1,6 +1,7 @@
 /* Arcade pause: accessible, safe-area aware, no canvas stretching */
 #arcade-pause{position:fixed;right:max(8px,env(safe-area-inset-right,0px));top:max(65px,calc(env(safe-area-inset-top,0px) + 61px));z-index:110;pointer-events:auto;color:#e4faff;background:rgba(8,24,47,.83);border:1px solid #8dddff89;padding:9px 12px;border-radius:13px;font-size:11px;letter-spacing:.5px;font-weight:900;box-shadow:0 8px 20px #0006}
 #arcade-pause[hidden]{display:none!important}
+#arcade-pause{min-height:44px;min-width:72px;touch-action:none}
 #arcade-pause:focus-visible,#arcade-pause-modal :focus-visible{outline:3px solid #98e8ff;outline-offset:3px}
 #arcade-pause-modal{position:fixed;inset:0;z-index:900;display:grid;place-items:center;overflow:auto;padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgba(2,9,24,.91);backdrop-filter:blur(14px);box-sizing:border-box}
 #arcade-pause-modal[hidden]{display:none!important}

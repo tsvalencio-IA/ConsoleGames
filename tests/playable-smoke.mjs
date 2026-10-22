@@ -226,7 +226,8 @@ try{
     if(slug==="ar"){
       const combat=await page.evaluate(()=>{const g=window.System.activeGame.logic;return {state:g.state,shots:g.stats.shots,camera:window.__cameraRequests};});
       assert.equal(combat.state,'PLAYING');assert.equal(combat.shots,0,'Combat must wait for the trigger');assert.equal(combat.camera,0);
-      for(const control of ['joystick','aim','fire','reload','cover'])assert.equal(await page.locator('.combat-input [data-control="'+control+'"]').count(),1);
+      for(const control of ['joystick','ads','fire','reload','cover'])assert.equal(await page.locator('.combat-input [data-control="'+control+'"]').count(),1);
+      assert.equal(await page.locator('.aim-stick').count(),0,'Looking uses scene dragging, not a second joystick');
     }else if(slug==="voo"){
       assert.equal(await page.locator('[data-control="boost"]').count(),1,"Falta botão turbo");
       assert.equal(await page.locator('[data-control="missile"]').count(),1,"Falta botão míssil");
@@ -237,11 +238,12 @@ try{
       assert.equal(await page.evaluate(()=>window.Games.find(x=>x.id==="tennis").logic.useMouse),true,"Tênis sem toque");
     }
     if(slug==="ar"){
-       const move=page.locator('.combat-input [data-control="joystick"]'),aim=page.locator('.combat-input [data-control="aim"]');
-       const moving=await fingers.start(move,.78,.22),aiming=await fingers.start(aim,.73,.30),firing=await fingers.start(page.locator('.combat-input [data-control="fire"]'));
-       await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.manualStick.x>.2&&g.manualStick.y>.2&&g.aimStick.x>.2&&g.aimStick.y>.2&&g.fireHeld&&g.stats.shots>0;},null,{timeout:3000});
+       const move=page.locator('.combat-input [data-control="joystick"]'),scene=page.locator('#game-canvas');
+       const moving=await fingers.start(move,.78,.22),looking=await fingers.start(scene,.57,.45);
+       await fingers.move(looking,scene,.72,.38);const firing=await fingers.start(page.locator('.combat-input [data-control="fire"]'));
+       await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.manualStick.x>.2&&g.manualStick.y>.2&&g.lookPointerActive&&g.player.yaw>.1&&g.player.pitch>.1&&g.fireHeld&&g.stats.shots>0;},null,{timeout:3000});
        await page.screenshot({path:join('test-results/playable','ar-combat-three-fingers.png')});
-       await fingers.end(aiming);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.aimStick.active&&g.manualStick.active&&g.fireHeld}));await fingers.end(firing);await fingers.end(moving);
+       await fingers.end(looking);assert(await page.evaluate(()=>{const g=window.System.activeGame.logic;return !g.lookPointerActive&&g.manualStick.active&&g.fireHeld}));await fingers.end(firing);await fingers.end(moving);
        await page.evaluate(()=>{
           const g=window.System.activeGame.logic;g.covers=[];Object.assign(g.player,{x:0,z:0,yaw:0,pitch:0});g.spawnWave();for(const e of g.enemies)e.aim=999;
           const e=g.enemies[0];e.x=0;e.z=24;e.y=1.15;g.player.pitch=Math.atan2(e.y-g.eyeY,e.z);g.shotCooldown=0;

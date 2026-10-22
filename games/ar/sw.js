@@ -1,6 +1,6 @@
 /* thIAguinho ARCADE — ar: cache privado, versão atual primeiro.
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
-// Release 2026-10-22: refresh the game shell while retaining cached local recognition models.
+// Release 2026-10-22 war3: refresh touch look and ADS in the game shell while retaining cached local recognition models.
 "use strict";
 const PREFIX="thia-arcade-ar-";
 const CACHE=PREFIX+"pro-control-v15";

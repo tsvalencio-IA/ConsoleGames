@@ -24,6 +24,20 @@ test('combat: analog diagonal movement is normalized and aim axes remain indepen
  const {game:g}=fresh();g.covers=[];g.manualStick={x:1,y:1,active:true};g.aimStick={x:0,y:0};g.step(1);assert(Math.abs(Math.hypot(g.player.x,g.player.z)-6.5)<1e-8);
  g.manualStick={x:0,y:0};g.aimStick={x:1,y:1,active:true};const p={...g.player};g.step(.1);assert(g.player.yaw>p.yaw&&g.player.pitch>p.pitch);assert.equal(g.player.x,p.x);g.release();assert(!g.aimStick.active&&!g.manualStick.active&&!g.fireHeld);
 });
+test('combat: scene swipes follow both axes, do not drift and respect pause and camera mode',()=>{
+ const {game:g,window}=fresh();g.covers=[];g.waveDelay=999;
+ g.lookBy(80,-35,390,844);assert(g.player.yaw>0&&g.player.pitch>0);const p={...g.player};g.step(.1);assert.equal(g.player.yaw,p.yaw);assert.equal(g.player.pitch,p.pitch);
+ const {game:other}=fresh();for(let i=0;i<8;i++)other.lookBy(10,-35/8,390,844);assert(Math.abs(g.player.yaw-other.player.yaw)<1e-10);assert(Math.abs(g.player.pitch-other.player.pitch)<1e-10);
+ window.System.paused=true;g.lookBy(100,100,390,844);assert.equal(g.player.yaw,p.yaw);window.System.paused=false;
+ g.handSession={};g.lookBy(100,100,390,844);assert.equal(g.player.yaw,p.yaw);assert.equal(g.setAiming(true),false);
+ g.handSession=null;assert.equal(g.setAiming(true),true);g.release();assert.equal(g.aiming,false);
+});
+test('combat: ADS enlarges the scene while preserving reticle and actual hit alignment',()=>{
+ const {game:g}=fresh();g.covers=[];g.spawnWave();const e=g.enemies[0];aim(g,e);
+ const normal=g.project(e.x+1,e.y,e.z,390,844);assert.equal(g.targetAtAim(),e);assert.equal(g.stats.shots,0);
+ g.setAiming(true);const zoom=g.project(e.x+1,e.y,e.z,390,844);assert(Math.abs((zoom.x-195)/(normal.x-195)-1.65)<1e-10);assert.equal(g.targetAtAim(),e);g.shoot();assert.equal(g.stats.hits,1);
+ const yaw=g.player.yaw;g.lookBy(30,0,390,844);const zoomDelta=g.player.yaw-yaw;g.player.yaw=yaw;g.setAiming(false);g.lookBy(30,0,390,844);assert(Math.abs((g.player.yaw-yaw)/zoomDelta-1.65)<1e-10);
+});
 test('combat: every operation and difficulty can finish through actual shots, and defeat never unlocks weapons',()=>{
  for(const difficulty of ['easy','normal','hard'])for(const mission of ['patrol','city','extraction']){
   const {game:g}=fresh(difficulty,mission);g.covers=[];g.waveDelay=0;
