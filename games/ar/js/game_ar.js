@@ -171,9 +171,9 @@ const Game={
  },
  drawHUD(ctx,w,h){
   ctx.save();ctx.textAlign='left';const size=Math.min(16,Math.max(11,w*.032));ctx.font='bold '+size+'px Arial';
-  const compact=h<500,hx=compact?87:12,hy=compact?9:h*.13,hw=compact?Math.min(w-285,550):w-24,hh=compact?44:65;
-  ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),hw-22);
-  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,hx+11,hy+(compact?35:46),hw-22);
+  const compact=h<500,hx=compact?87:12,hy=compact?9:h*.13,hw=compact?Math.min(w-285,550):w-24,hh=compact?44:65,textW=compact?hw-22:Math.min(hw-22,w*.55);
+  ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),textW);
+  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,hx+11,hy+(compact?35:46),textW);
   const y=h*.72,panelW=Math.min(w*.60,320);ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect((w-panelW)/2,y,panelW,50);ctx.textAlign='center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,w/2,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,w/2,y+40,w*.55);
   const cx=w/2,cy=h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}

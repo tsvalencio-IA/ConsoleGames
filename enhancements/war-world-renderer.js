@@ -419,7 +419,7 @@ class World{
   for(const o of this.scene.children)if(o.isMesh&&o!==this.sky&&!o.isInstancedMesh&&o!==this.terrain)o.visible=!cameraBackground;
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
-  if(!flight){this.weapon.position.x=.124*(w/h);this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
+  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=.124*w/edge;this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
   if(this.frameCanvas){
    if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
    this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);
