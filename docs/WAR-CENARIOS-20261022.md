@@ -6,9 +6,9 @@ Os dois jogos recebem um renderizador WebGL com Three r128 empacotado localmente
 
 WAR tem ambientes de porto, centro urbano e fortaleza, com fachadas texturizadas, telhados, caixotes industriais, guindastes, sinalização, postes, vegetação, fumaça, sombras e arma em primeira pessoa. Soldados, drones e tanque são malhas arredondadas com peças distintas. A cobertura acompanha os volumes usados pela colisão e pelos disparos; decoração fica fora dos limites de movimento. A câmera opcional mantém apenas os alvos virtuais e a arma sobre o vídeo.
 
-No voo, os quatro distritos mantêm suas ruas e trajetos reais. A cena acrescenta fachadas, coberturas, praças, fontes, árvores, aeroporto, galpões, torre de controle, pontes, rodovias, rio, campos e vales. Carros, pessoas e tanques seguem as posições da simulação, sem animação independente que abandone os percursos. A escola mantém a pista nas coordenadas originais. O relevo decorativo fica abaixo do piso original de voo.
+No voo, os quatro distritos mantêm suas ruas e trajetos reais. A cena acrescenta fachadas, coberturas, praças, fontes, árvores, aeroporto, galpões, torre de controle, pontes, rodovias, rio, campos e vales. Porto de contêineres, estádio e base militar distinguem regiões. As aeronaves usam as mesmas malhas e transformações nativas com iluminação 3D, inclusive os rotores; a mira continua seguindo a mesma projeção. Carros, pessoas e tanques seguem as posições da simulação, sem animação independente que abandone os percursos. A escola mantém a pista nas coordenadas originais. O relevo decorativo fica abaixo do piso original de voo.
 
-As peças estáticas e móveis usam instâncias por geometria/material; o buffer interno tem limite de pixels e a qualidade baixa reduz vegetação e sombras. A opção baixa continua usando a cena 3D. A arte de ícone não é usada como substituta para o cenário jogável.
+As peças estáticas e móveis usam instâncias por geometria/material; o buffer interno tem limite de pixels e a qualidade baixa reduz vegetação e sombras. A opção baixa continua usando a cena 3D. Sombras dinâmicas completas ficam na qualidade Alta; as demais usam sombras de contato. GPUs por software guardam os quadros entre desenhos para liberar tempo para comandos e simulação. A arte de ícone não é usada como substituta para o cenário jogável.
 
 ## Arte de ícone
 

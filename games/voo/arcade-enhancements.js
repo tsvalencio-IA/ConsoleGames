@@ -30,7 +30,7 @@
   }
   const winTarget = id === "tennis" || id === "ar_truck_sim" ? 1 : 2;
   const missionText = () => id === "ar_truck_sim"
-    ? "Complete " + winTarget + " missão AR"
+    ? "Complete " + winTarget + " operação"
     : id === "tennis" ? "Vença uma partida"
     : "Vença " + winTarget + " partidas hoje";
   let checkedTennis=false,lastArCompleted=false,lastArMissions=0;

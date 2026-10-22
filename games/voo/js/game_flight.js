@@ -1458,6 +1458,7 @@
             return this.airframeMesh=faces;
         },
         _drawAirframe: function(ctx,w,h,body=this.ship,model=this.airframe,enemy=false){
+            if(window.ArcadeWorldRenderer?.hasAircraft(this,body))return;
             const surfaces=this._airframeMesh(model).map(face=>{
                 const verts=face.rotor?face.vertices.map(([x,y,z])=>{const a=this.worldTime*35;return[x*Math.cos(a)-z*Math.sin(a),y,x*Math.sin(a)+z*Math.cos(a)];}):face.tailRotor?face.vertices.map(([x,y,z])=>{const a=this.worldTime*65,dy=y-6,dz=z+49;return[x,6+dy*Math.cos(a)-dz*Math.sin(a),-49+dy*Math.sin(a)+dz*Math.cos(a)];}):face.vertices;
                 const world=verts.map(v=>this._airframePoint(v,body,model)),pts=world.map(v=>this._projectView(v.x,v.y,v.z,w,h));

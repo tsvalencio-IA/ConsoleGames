@@ -6,11 +6,12 @@
 'use strict';
 const T=window.THREE;if(!T)return;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const clock=()=>window.performance?.now?.()||Date.now();
 const smooth=(a,b,n)=>{const t=clamp((n-a)/(b-a),0,1);return t*t*(3-2*t)};
 const random=(seed=1977)=>()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
 const cache=new WeakMap(),failed=new WeakSet();
 const mat4=new T.Matrix4(),quat=new T.Quaternion(),pos=new T.Vector3(),scale=new T.Vector3(),euler=new T.Euler();
-const geometries={box:new T.BoxGeometry(1,1,1),round:new T.SphereGeometry(1,10,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),cone:new T.ConeGeometry(.5,1,10),plane:new T.PlaneGeometry(1,1)};
+const geometries={box:new T.BoxGeometry(1,1,1),round:new T.SphereGeometry(1,10,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),cone:new T.ConeGeometry(.5,1,10),plane:new T.PlaneGeometry(1,1),ring:new T.TorusGeometry(1,.09,6,40)};
 
 function canvasTexture(paint,w=512,h=512){
  const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);
@@ -93,15 +94,21 @@ function configureCamera(camera,v,w,h,focal,center=.5,near=.25,far=120000){
 
 class World{
  constructor(game,type){
-  this.game=game;this.type=type;this.low=window.ArcadePlaySettings?.get().quality==='low';this.frames=0;this.lost=false;this.disposed=false;
+  this.game=game;this.type=type;this.quality=window.ArcadePlaySettings?.get().quality||'auto';this.low=this.quality==='low';this.frames=0;this.lost=false;this.disposed=false;
   this.canvas=document.createElement('canvas');
   this.renderer=new T.WebGLRenderer({canvas:this.canvas,alpha:true,antialias:!this.low,powerPreference:'high-performance',preserveDrawingBuffer:false});
   this.renderer.setPixelRatio(1);this.renderer.outputEncoding=T.sRGBEncoding;this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;
-  this.renderer.shadowMap.enabled=!this.low;this.renderer.shadowMap.type=T.PCFSoftShadowMap;
+  const gl=this.renderer.getContext?.(),debug=gl?.getExtension('WEBGL_debug_renderer_info');
+  this.software=!!debug&&/swiftshader|llvmpipe|lavapipe|software/i.test(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL));
+  if(this.software){this.frameCanvas=document.createElement('canvas');this.frameContext=this.frameCanvas.getContext('2d')}
+  // Contact shadows work on every preset. Full dynamic shadow maps are an
+  // optional high-quality pass, never a tax on the default mobile simulation.
+  this.shadows=this.quality==='high'&&!this.software;this.renderScale=this.low?.72:this.software?.7:1;
+  this.renderer.shadowMap.enabled=this.shadows;this.renderer.shadowMap.type=T.PCFSoftShadowMap;
   this.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();this.lost=true});
   this.canvas.addEventListener('webglcontextrestored',()=>{this.dispose();cache.delete(game)});
   this.scene=new T.Scene();this.scene.scale.z=-1;this.camera=new T.PerspectiveCamera();this.textures=textureSet();this.materials=[];
-  this.static=new Batch(this.scene);this.dynamic=new Batch(this.scene,true);this.smokes=[];
+  this.static=new Batch(this.scene);this.dynamic=new Batch(this.scene,true);this.smokes=[];this.aircraft=new Map();this.aircraftTemplates=new Map();
   this.createMaterials();this.lighting();
   if(type==='flight')this.buildFlight();else this.buildCombat();this.static.finish();
  }
@@ -120,10 +127,10 @@ class World{
  }
  lighting(){
   this.scene.add(new T.HemisphereLight('#c4dfeb','#776750',.8));
-  this.sun=new T.DirectionalLight('#ffdcaa',1.6);this.sun.castShadow=!this.low;this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.bias=-.0003;this.sun.shadow.normalBias=this.type==='flight'?3:.035;
+  this.sun=new T.DirectionalLight('#ffdcaa',1.6);this.sun.castShadow=this.shadows;this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.bias=-.0003;this.sun.shadow.normalBias=this.type==='flight'?3:.035;
   const s=this.type==='flight'?4300:95;Object.assign(this.sun.shadow.camera,{left:-s,right:s,top:s,bottom:-s,near:1,far:s*9});this.sun.shadow.camera.updateProjectionMatrix();this.scene.add(this.sun,this.sun.target);
   this.sun.position.set(-s,s*1.7,-s*.8);this.sun.target.position.set(0,0,this.type==='flight'?2500:35);
-  this.fog=this.scene.fog=new T.FogExp2('#94a9b1',this.type==='flight'?.000022:.004);
+  this.fog=this.scene.fog=new T.FogExp2('#94a9b1',this.type==='flight'?.000022:.004);this.fog.color.convertSRGBToLinear();
   const sky=new T.Mesh(new T.SphereGeometry(1,24,16),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,uniforms:{top:{value:new T.Color('#315c7b')},bottom:{value:new T.Color('#d4c9ae')},sunDir:{value:new T.Vector3(-.5,.3,.8).normalize()}},vertexShader:'varying vec3 dir; void main(){dir=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec3 dir; uniform vec3 top; uniform vec3 bottom; uniform vec3 sunDir; void main(){vec3 d=normalize(dir);float h=max(0.0,d.y);vec3 c=mix(bottom,top,pow(h,.48));float s=max(0.0,dot(d,sunDir));c+=vec3(1.0,.72,.38)*pow(s,80.0)*.3+vec3(1.0,.85,.60)*pow(s,1800.0)*2.0;float cloud=sin(d.x*31.0+d.z*19.0)+sin(d.x*67.0-d.z*29.0)*.4;float band=smoothstep(.02,.18,h)*(1.0-smoothstep(.25,.5,h));c=mix(c,vec3(.91,.88,.79),max(0.0,cloud-.35)*band*.22);gl_FragColor=vec4(c,1.0);}'}));
   sky.scale.setScalar(this.type==='flight'?110000:1200);sky.frustumCulled=false;sky.renderOrder=-100;this.sky=sky;this.scene.add(sky);
  }
@@ -275,13 +282,33 @@ class World{
   b.box(m.asphalt,0,.1,-500,120,.2,4200);for(let z=-2400;z<1500;z+=160)b.box(m.line,0,.4,z,4,.1,70);
   // Wooded valleys, agricultural fields and smaller villages replace the old
   // repeating checkerboard and enormous triangular trees.
-  for(let i=0;i<(this.low?650:1600);i++){
-   const x=(rnd()-.5)*65000,z=(rnd()-.5)*65000;
-   if(cities.some(c=>Math.hypot(x-c.x,z-c.z)<2900)||Math.abs(x)<150&&z>-2700&&z<1900||Math.abs(x-3100)<1000&&Math.abs(z+500)<1800)continue;
-   const y=this.terrainHeight(x,z);if(y<-200)continue;
-   const treeSize=6+rnd()*11;
-   // Static trees have roots on the sampled terrain, never floating above it.
-   b.add('cylinder',m.bark,x,y+2*treeSize,z,.6*treeSize,4*treeSize,.6*treeSize);b.round(m.leaf,x,y+5*treeSize,z,2.5*treeSize,3*treeSize,2.4*treeSize);b.round(m.leafLight,x+treeSize,y+5*treeSize,z,1.8*treeSize,2*treeSize,1.7*treeSize);
+  for(let cluster=0;cluster<(this.low?24:55);cluster++){
+   const cx=(rnd()-.5)*62000,cz=(rnd()-.5)*62000;
+   for(let i=0;i<(this.low?16:32);i++){
+    const a=rnd()*Math.PI*2,r=Math.sqrt(rnd())*480,x=cx+Math.cos(a)*r,z=cz+Math.sin(a)*r;
+    if(cities.some(c=>Math.hypot(x-c.x,z-c.z)<2900)||Math.abs(x)<150&&z>-2700&&z<1900||Math.abs(x-3100)<1000&&Math.abs(z+500)<1800)continue;
+    const y=this.terrainHeight(x,z);if(y<-220)continue;const size=8+rnd()*11;
+    b.add('cylinder',m.bark,x,y+2*size,z,.6*size,4*size,.6*size);b.round(m.leaf,x,y+5*size,z,2.5*size,3*size,2.4*size);b.round(m.leafLight,x+size,y+5*size,z,1.8*size,2*size,1.7*size);
+   }
+  }
+  // Harbor district: raised quays, container stacks and gantry cranes follow
+  // the river bend, with support columns descending to the terrain.
+  b.box(m.concrete,-4660,-30,6500,1300,34,2000);b.box(m.asphalt,-4600,4.1,6500,1120,.3,1830);
+  for(let i=0;i<7;i++){
+   const z=5700+i*240;b.box(m.steel,-5220,4,z,24,290,24);b.box(m.steel,-4750,4,z,24,290,24);b.box(m.yellow,-5040,285,z,750,25,22);b.box(m.dark,-5410,140,z,6,145,6);b.box(m.yellow,-5410,127,z,60,20,60);
+   for(let j=0;j<4;j++)for(let k=0;k<2;k++)b.box([m.blue,m.rust,m.olive][(i+j+k)%3],-4450+j*105,4+k*48,z,95,47,190);
+  }
+  // Distinct civic and military landmarks, rather than four identical grids.
+  const civic=cities[1];if(civic){
+   const x=civic.x+2550,z=civic.z+300;
+   b.add('cylinder',m.concrete,x,14,z,930,28,1250);b.add('ring',m.stone,x,45,z,410,560,80,Math.PI/2);b.add('ring',m.steel,x,83,z,440,590,35,Math.PI/2);
+   b.box(m.grass,x,29,z,420,1,650);b.box(m.line,x,31,z,2,1,650);b.box(m.line,x,31,z-325,420,1,2);b.box(m.line,x,31,z+325,420,1,2);
+   for(const side of [-1,1]){this.lamp(b,x+side*440,z-480,22);this.lamp(b,x+side*440,z+480,22)}
+  }
+  const military=cities[3];if(military){
+   const x=military.x+2500,z=military.z;b.box(m.asphalt,x,0,z,950,.5,1800);
+   for(let i=0;i<5;i++){this.building(b,x+290,z-650+i*300,220,65,180,0);this.tank(b,x-200,z-650+i*300,0,8)}
+   b.add('cylinder',m.darkConcrete,x-150,1,z+600,280,1,280);b.box(m.line,x-190,2,z+600,8,1,120);b.box(m.line,x-110,2,z+600,8,1,120);b.box(m.line,x-150,2,z+600,80,1,8);
   }
   for(let i=0;i<26;i++){
    const x=(rnd()-.5)*42000,z=(rnd()-.5)*42000;if(cities.some(c=>Math.hypot(x-c.x,z-c.z)<3400))continue;
@@ -335,17 +362,53 @@ class World{
    if(!this.low)for(const [i,person]of (g.groundPeople||[]).entries()){
     const p=g._groundPath(person,true),step=Math.sin(time*4+i)*1.3;b.round(m.skin,p.x,7,p.z,1.1,1.2,1.1);b.round(i%2?m.blue:m.rust,p.x,4.6,p.z,1.5,2,1.1);b.box(m.dark,p.x-1,0,p.z+step,.9,3,1);b.box(m.dark,p.x+1,0,p.z-step,.9,3,1);
    }
-   if(this.water)this.water.uniforms.time.value=time;
+   this.updateAircraft();if(this.water)this.water.uniforms.time.value=time;
   }
   b.finish();for(const s of this.smokes){s.sprite.position.x=s.x+Math.sin(time*.1+s.phase)*s.size*.4;s.sprite.position.y=s.y+Math.sin(time*.15+s.phase)*s.size*.15}
+ }
+ aircraftTemplate(model,enemy){
+  const key=model+':'+enemy;if(this.aircraftTemplates.has(key))return this.aircraftTemplates.get(key);
+  const root=new T.Group(),parts=new Map();
+  for(const f of this.game._airframeMesh(model)){
+   const kind=f.rotor?'mainRotor':f.tailRotor?'tailRotor':f.color[0]<80&&f.color[2]>f.color[0]*1.5?'glass':'hull';
+   let part=parts.get(kind);if(!part){part={positions:[],colors:[]};parts.set(kind,part)}
+   const color=new T.Color(...f.color.map((v,i)=>v/255*(enemy?[1,.72,.58][i]:1))).convertSRGBToLinear();
+   for(let i=1;i<f.vertices.length-1;i++)for(const v of [f.vertices[0],f.vertices[i],f.vertices[i+1]]){
+    part.positions.push(v[0],v[1]-(kind==='tailRotor'?6:0),v[2]+(kind==='tailRotor'?49:0));part.colors.push(color.r,color.g,color.b);
+   }
+  }
+  for(const [kind,p]of parts){
+   const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(p.positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(p.colors,3));geometry.computeVertexNormals();
+   const material=new T.MeshStandardMaterial({vertexColors:true,metalness:kind==='glass'?.65:.48,roughness:kind==='glass'?.2:.52,side:T.DoubleSide});this.materials.push(material);
+   const mesh=new T.Mesh(geometry,material);mesh.name=kind;mesh.castShadow=true;mesh.receiveShadow=true;if(kind==='tailRotor')mesh.position.set(0,6,-49);root.add(mesh);
+  }
+  this.aircraftTemplates.set(key,root);return root;
+ }
+ updateAircraft(){
+  const g=this.game,live=new Set(),bodies=[];
+  if(window.ArcadePlaySettings?.get().camera!=='cockpit')bodies.push([g.ship,g.airframe,false]);
+  for(const e of g.entities||[])if(e.active!==false&&e.hp>0)bodies.push([e,e.airframe||(e.isBoss?'sentinel':'falcon'),true]);
+  if(g.mode==='PVP'||g.mode==='COOP')for(const [id,p]of Object.entries(g.net?.players||{}))if(id!==g.net.uid&&p.hp>0)bodies.push([p,p.airframe||'falcon',g.mode!=='COOP']);
+  for(const [body,model,enemy]of bodies){
+   live.add(body);let actor=this.aircraft.get(body);const key=model+':'+enemy;
+   if(actor&&actor.key!==key){this.scene.remove(actor.root);this.aircraft.delete(body);actor=null}
+   if(!actor){const root=this.aircraftTemplate(model,enemy).clone(true);actor={root,key};this.aircraft.set(body,actor);this.scene.add(root)}
+   const root=actor.root;root.position.set(body.x,body.y,body.z);root.rotation.set(-(body.pitch||0),body.yaw||0,-(body.roll||0),'YXZ');
+   root.scale.set(...(model==='interceptor'?[.87,1,1.12]:model==='sentinel'?[1.12,1.07,1]:model==='guardian'?[1.2,1.12,1.08]:[1,1,1]));
+   const rotor=root.getObjectByName('mainRotor'),tail=root.getObjectByName('tailRotor');if(rotor)rotor.rotation.y=-g.worldTime*35;if(tail)tail.rotation.x=g.worldTime*65;
+  }
+  for(const [body,actor]of this.aircraft)if(!live.has(body)){this.scene.remove(actor.root);this.aircraft.delete(body)}
  }
  render(ctx,w,h,cameraBackground=false){
   if(this.lost||this.disposed||w<=0||h<=0)return false;
   const g=this.game,flight=this.type==='flight',q=window.ArcadePlaySettings?.get().quality;
-  // Internal pixels are capped on phones, independently of the HUD canvas.
-  const factor=q==='low'?.72:Math.min(1.25,Math.sqrt(1100000/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
-  if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
   const v=flight?(g.view||g.ship):{x:g.player.x,y:g.eyeY||1.8,z:g.player.z,yaw:g.player.yaw,pitch:g.player.pitch,roll:0};
+  const lv=this.lastView,jump=!lv||Math.hypot(v.x-lv.x,v.y-lv.y,v.z-lv.z)>(flight?75:1)||Math.abs(v.yaw-lv.yaw)>.12||Math.abs(v.pitch-lv.pitch)>.12;
+  if(this.frames&&!jump&&clock()<this.nextRenderAt&&this.lastWidth===w&&this.lastHeight===h&&this.lastCamera===cameraBackground){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
+  // Internal pixels are capped on phones, independently of the HUD canvas.
+  const begin=clock(),cap=q==='high'?1400000:800000;
+  const factor=Math.min(this.renderScale,Math.sqrt(cap/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
+  if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
   configureCamera(this.camera,v,w,h,flight?800:Math.min(w,h)*.88,flight?.5:.48,flight?10:.15,flight?120000:1800);
   this.sky.position.set(v.x,v.y,v.z);this.sky.visible=!cameraBackground;
   // Only rendered environment is hidden for the optional camera backdrop.
@@ -357,28 +420,39 @@ class World{
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
   if(!flight){this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
-  ctx.drawImage(this.canvas,0,0,w,h);this.frames++;
-  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,width:rw,height:rh,low:this.low};
+  if(this.frameCanvas){
+   if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
+   this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);
+  }
+  ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);this.frames++;
+  const duration=clock()-begin;this.lastWidth=w;this.lastHeight=h;this.lastCamera=cameraBackground;this.lastView={...v};
+  // Software GPUs share CPU time with input and physics. Leave several native
+  // animation ticks between draws instead of stalling reloads and flight motion.
+  this.nextRenderAt=clock()+(this.software?33:0);
+  if(q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
+  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
   return true;
  }
  dispose(){
   if(this.disposed)return;this.disposed=true;this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
   this.scene.traverse(o=>{if(o.geometry&&!Object.values(geometries).includes(o.geometry))o.geometry.dispose()});
+  for(const template of this.aircraftTemplates.values())template.traverse(o=>o.geometry?.dispose());this.aircraft.clear();this.aircraftTemplates.clear();
   for(const m of this.materials){m.map?.dispose();m.dispose();}for(const tx of Object.values(this.textures).flat())tx.dispose();this.sky.material.dispose();this.renderer.dispose();
  }
 }
 function render(type,game,ctx,w,h,camera=false){
  if(failed.has(game))return false;
  try{
-  let world=cache.get(game);if(world&&(world.disposed||world.type!==type||type==='combat'&&world.mission!==game.mission?.id)){world.dispose();cache.delete(game);world=null}
+  let world=cache.get(game);if(world&&(world.disposed||world.type!==type||world.quality!==(window.ArcadePlaySettings?.get().quality||'auto')||type==='combat'&&world.mission!==game.mission?.id)){world.dispose();cache.delete(game);world=null}
   if(!world){world=new World(game,type);cache.set(game,world)}return world.render(ctx,w,h,camera);
  }catch(error){cache.get(game)?.dispose();cache.delete(game);failed.add(game);console.warn('Cenário 3D indisponível, usando renderização compatível.',error.message);return false}
 }
 window.ArcadeWorldRenderer={
  flight:(game,ctx,w,h)=>render('flight',game,ctx,w,h),combat:(game,ctx,w,h,camera)=>render('combat',game,ctx,w,h,camera),
- release(game){cache.get(game)?.dispose();cache.delete(game);delete game.worldVisual},
+ release(game){cache.get(game)?.dispose();cache.delete(game);failed.delete(game);delete game.worldVisual},
+ hasAircraft(game,body){return !cache.get(game)?.lost&&cache.get(game)?.aircraft.has(body)||false},
  // Read-only projection inspection used by the browser regression checks.
  project(game,x,y,z,w,h){const world=cache.get(game);if(!world)return null;const p=new T.Vector3(x,y,-z).project(world.camera);return{x:(p.x+1)*w/2,y:(1-p.y)*h/2}},
- inspect(game){const world=cache.get(game);return world?{staticInstances:[...world.static.items.values()].reduce((n,b)=>n+b.count,0),dynamicInstances:[...world.dynamic.items.values()].reduce((n,b)=>n+b.count,0),materials:world.materials.length,renderer:game.worldVisual,mission:world.mission||'flight'}:null}
+ inspect(game){const world=cache.get(game);return world?{staticInstances:[...world.static.items.values()].reduce((n,b)=>n+b.count,0),dynamicInstances:[...world.dynamic.items.values()].reduce((n,b)=>n+b.count,0),materials:world.materials.length,renderer:game.worldVisual,mission:world.mission||'flight',aircraft:world.aircraft.size}:null}
 };
 })();
