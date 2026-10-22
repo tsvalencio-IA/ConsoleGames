@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.16.7.18-ot-games-front-hand';
+  const OTTHI_GAME_WEB_BUILD = '705.16.7.19-walk-missions';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -9060,6 +9060,19 @@
     const flash=otGamesMesh('round','#ffe4a5',0,.03,-.74,.09,.08,.13,parts);flash.visible=false;root.userData.flash=flash;
     root.traverse(o=>{if(o.material){o.material.depthTest=false;o.material.depthWrite=false;o.renderOrder=990;}});return root;
   }
+  function otGamesMergeStatic(group){
+    // Bake rigid equipment into one coloured mesh. Limbs and rotor groups stay
+    // articulated; more model detail no longer adds a draw call for every pouch.
+    const positions=[],normals=[],colors=[],meshes=group.children.filter(o=>o.isMesh);
+    for(const mesh of meshes){
+      mesh.updateMatrix();const geometry=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry.clone();geometry.applyMatrix4(mesh.matrix);
+      const p=geometry.getAttribute('position'),n=geometry.getAttribute('normal'),color=mesh.material.color;
+      for(let i=0;i<p.count;i++){positions.push(p.getX(i),p.getY(i),p.getZ(i));normals.push(n.getX(i),n.getY(i),n.getZ(i));colors.push(color.r,color.g,color.b);}
+      geometry.dispose();mesh.geometry.dispose();mesh.material.dispose();group.remove(mesh);
+    }
+    if(!positions.length)return null;const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeBoundingSphere();
+    const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.82,metalness:.15}));mesh.castShadow=mesh.receiveShadow=true;group.add(mesh);return mesh;
+  }
   function otGamesEnemy(kind,x,z,index){
     const group=new THREE.Group(),y=groundHeightAt(x,z)+(kind==='drone'?9:0),e={id:'ot-enemy-'+index,kind,x,y:y+(kind==='tank'?1.3:kind==='drone'?0:1.15),z,hp:kind==='tank'?300:kind==='drone'?80:100,radius:kind==='tank'?2.3:kind==='drone'?1:.72,group,active:true,aim:2.8+index*.4,phase:index,hit:0};
     const box=(color,a,b,c,w,h,d)=>otGamesMesh('box',color,a,b,c,w,h,d,group),round=(color,a,b,c,w,h,d)=>otGamesMesh('round',color,a,b,c,w,h,d,group);
@@ -9069,18 +9082,22 @@
       box('#304c4b',0,2.2,-.3,.75,.2,.8);box('#43515a',.8,2.6,-.7,.04,1.1,.04);
     }else if(kind==='drone'){
       round('#637f89',0,0,0,.8,.35,.5);round('#fd995e',0,-.18,.5,.14,.12,.1);
-      for(const side of [-1,1])for(const end of [-1,1]){box('#263e49',side*.8,0,end*.65,1.3,.1,.1);box('#526c79',side*1.1,.18,end*.65,1.1,.03,.15);}
+      for(const side of [-1,1])for(const end of [-1,1]){box('#263e49',side*.8,0,end*.65,1.3,.1,.1);const rotor=new THREE.Group();rotor.position.set(side*1.1,.18,end*.65);group.add(rotor);otGamesMesh('box','#526c79',0,0,0,1.1,.03,.15,rotor);(e.rotors||(e.rotors=[])).push(rotor);}
     }else{
       // Articulated infantry, closed volumes and visible equipment.
       for(const side of [-1,1]){
-        const leg=new THREE.Group();leg.position.set(side*.2,.85,0);group.add(leg);otGamesMesh('cylinder','#374a51',0,-.4,0,.32,.8,.32,leg);otGamesMesh('round','#1e2d32',0,-.71,.09,.2,.17,.29,leg);(e.legs||(e.legs=[])).push(leg);
+        const leg=new THREE.Group();leg.position.set(side*.2,.85,0);group.add(leg);otGamesMesh('cylinder','#465a50',0,-.19,0,.29,.39,.32,leg);otGamesMesh('cylinder','#576653',0,-.53,.035,.24,.33,.26,leg);otGamesMesh('round','#263e3f',0,-.38,.14,.14,.15,.08,leg);otGamesMesh('box','#1e2d32',0,-.71,.08,.28,.22,.44,leg);otGamesMesh('box','#121f28',0,-.81,.08,.29,.05,.46,leg);otGamesMergeStatic(leg);(e.legs||(e.legs=[])).push(leg);
         round('#5b6f66',side*.47,1.45,0,.18,.2,.18);const arm=otGamesMesh('cylinder','#667767',side*.42,1.2,.14,.24,.55,.24,group);arm.rotation.x=-.65;round('#243944',side*.32,1.02,.35,.13,.12,.16);
       }
       round('#71816a',0,1.3,0,.44,.5,.28);box('#364d4c',0,1.26,.25,.65,.6,.16);for(const side of [-1,1])box('#849681',side*.18,1.15,.35,.21,.26,.11);
       round('#a9977a',0,1.95,0,.23,.28,.23);round('#3d5356',0,2.12,0,.29,.15,.28);box('#7fd2d2',0,2,.22,.36,.1,.07);box('#29404a',0,1.75,.1,.38,.17,.3);
       box('#24313b',.12,1.12,.52,.18,.2,.92);box('#788f8f',.12,1.26,.4,.09,.07,.38);box('#232f36',.12,1.04,.76,.10,.12,.36);
+      box('#263c42',0,.92,0,.65,.1,.44);box('#63705c',0,1.35,-.28,.49,.49,.24);box('#839174',0,1.4,-.42,.4,.29,.06);
+      for(const side of [-1,1]){box('#a5a387',side*.24,1.39,.27,.07,.45,.055);box('#b3ad8c',side*.34,1.57,.03,.1,.08,.27);round('#253b40',side*.25,2.02,0,.06,.11,.09);box('#8a9479',side*.15,2.2,0,.05,.04,.28);box('#a5a387',side*.23,.94,.2,.12,.12,.11);}
+      box('#1c3039',0,2.02,.255,.39,.13,.06);box('#c9bd83',0,2.03,.29,.30,.075,.025);round('#475b57',0,1.83,.14,.22,.14,.15);box('#233a3f',-.23,1.59,-.19,.08,.21,.08);otGamesMesh('cylinder','#304b51',-.23,1.84,-.19,.015,.34,.015,group);
+      box('#344b54',.12,1.31,.45,.075,.08,.14);box('#b8d5b9',.12,1.32,.53,.03,.035,.025);box('#1d2e37',.12,1.03,.41,.085,.20,.10);
     }
-    group.position.set(x,y,z);otGames.group.add(group);return e;
+    e.rigid=otGamesMergeStatic(group);group.position.set(x,y,z);otGames.group.add(group);return e;
   }
   function otGamesBlocked(a,b){
     const start=new THREE.Vector3(a.x,a.y,a.z),end=new THREE.Vector3(b.x,b.y,b.z),direction=end.clone().sub(start),distance=direction.length();if(distance<.01)return false;
@@ -9088,23 +9105,29 @@
     for(const box of otGames.obstacles||[]){const hit=ray.intersectBox(box,new THREE.Vector3());if(hit&&hit.distanceTo(start)<distance-.65)return true;}return false;
   }
   function otGamesSpawnWave(){
-    const g=otGames;g.wave++;const remaining=g.goal-g.kills,count=Math.min(remaining,4),bounds=v704WorldBounds();
-    const roads=WORLD_LAYOUT_V704.roads.filter(r=>r.w>=7&&r.d>=7);let made=0;
+    const g=otGames;g.wave++;g.lock=null;const remaining=g.goal-g.kills,count=Math.min(remaining,4),bounds=v704WorldBounds();let made=0;
+    // A sector is staged around the actual combat body, in open sight. Selecting
+    // arbitrary roads across the entire town left targets behind houses or 150m away.
+    const free=(x,z,radius)=>!waterAt(x,z)&&!positionBlockedForPlayer(x,z,radius,{ignoreTraffic:true});
     for(let i=0;i<count;i++){
-      let point;
-      for(let trial=0;trial<70;trial++){
-        const r=roads[(i*3+trial+g.wave)%roads.length],t=((i*.23+trial*.071+g.wave*.12)%1)-.5;
-        const x=clamp(r.x+(r.w>r.d?r.w*t:0),bounds.minX+8,bounds.maxX-8),z=clamp(r.z+(r.d>=r.w?r.d*t:0),bounds.minZ+8,bounds.maxZ-8),d=Math.hypot(x-g.body.x,z-g.body.z);
-        if(d>14&&d<155&&!waterAt(x,z)&&!positionBlockedForPlayer(x,z,.9,{ignoreTraffic:true,ignoreParkedVehicles:true})){point={x,z};break;}
+      const kind=g.mode==='ground'?(i===3?'drone':'soldier'):(i%2?'tank':'drone');let point;
+      for(let trial=0;trial<180;trial++){
+        const spread=trial<72?.85:Math.PI,j=trial%18,offset=(i-(count-1)/2)*.18+(j?Math.ceil(j/2)/9*(j%2?1:-1)*spread:0);
+        const distance=(g.mode==='plane'?75+i*25:22)+(Math.floor(trial/18)%4)*(g.mode==='plane'?8:7)+(i%2)*3,heading=g.body.yaw+offset;
+        const x=g.body.x+Math.sin(heading)*distance,z=g.body.z+Math.cos(heading)*distance;
+        const y=kind==='drone'&&g.mode!=='ground'?Math.max(groundHeightAt(x,z)+9,g.body.y):groundHeightAt(x,z)+(kind==='drone'?9:kind==='tank'?1.3:1.15);
+        if(x<bounds.minX+5||x>bounds.maxX-5||z<bounds.minZ+5||z>bounds.maxZ-5||!free(x,z,kind==='tank'?2.6:.9)||g.enemies.some(e=>e.active&&Math.hypot(e.x-x,e.z-z)<6))continue;
+        if(!otGamesBlocked(g.body,{x,y,z})){point={x,y,z};break;}
       }
-      if(!point)continue;const kind=g.mode==='ground'?(i===3?'drone':'soldier'):(i%2?'tank':'drone');g.enemies.push(otGamesEnemy(kind,point.x,point.z,g.wave*10+i));made++;
+      if(!point)continue;const e=otGamesEnemy(kind,point.x,point.z,g.wave*10+i);if(kind==='drone'){e.y=e.baseY=point.y;e.group.position.y=point.y;}g.enemies.push(e);made++;
     }
-    if(!made){g.state='SPAWN_BLOCKED';g.notice='Não há setor livre para os alvos. Volte à paz e escolha outra área.';}
+    if(made&&g.wave>1){g.body.hp=Math.min(100,g.body.hp+20);g.reserve=Math.max(g.reserve,60);g.notice='NOVO SETOR · +20 VIDA';g.noticeUntil=g.elapsed+3;}
+    if(!made){g.state='SPAWN_BLOCKED';g.notice='Área fechada para combate. Volte à paz e entre em uma rua ou praça.';}
   }
   function otGamesSegmentDistance(a,b,p){const d=new THREE.Vector3(b.x-a.x,b.y-a.y,b.z-a.z),r=new THREE.Vector3(p.x-a.x,p.y-a.y,p.z-a.z),t=clamp(r.dot(d)/Math.max(.001,d.lengthSq()),0,1);return new THREE.Vector3(a.x,a.y,a.z).addScaledVector(d,t).distanceTo(new THREE.Vector3(p.x,p.y,p.z));}
   function otGamesShot(origin,direction,enemy=false){
     const mesh=otGamesMesh('round',enemy?'#ff7a54':'#ffe5a0',origin.x,origin.y,origin.z,.07,.07,.24,otGames.group),speed=enemy?30:180;
-    otGames.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:direction.x*speed,vy:direction.y*speed,vz:direction.z*speed,life:enemy?5:2,enemy,mesh});
+    otGames.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:direction.x*speed,vy:direction.y*speed,vz:direction.z*speed,life:enemy?5:2,enemy,damage:otGames.mode==='plane'?110:otGames.mode==='helicopter'?65:50,mesh});
   }
   function otGamesExplosion(e){
     const g=otGames;for(let i=0;i<14;i++){const mesh=otGamesMesh('round',i<4?'#ffb357':'#38464a',e.x,e.y,e.z,.2,.2,.2,g.group);g.effects.push({mesh,x:e.x,y:e.y,z:e.z,vx:Math.cos(i*2)*4,vy:2+(i%4),vz:Math.sin(i*2)*4,age:0,life:i<4?.7:6,smoke:i>=4});}
@@ -9116,7 +9139,8 @@
   function otGamesDamage(e,damage){
     if(!e.active)return;e.hp=Math.max(0,e.hp-damage);e.hit=.12;
     if(e.hp===0){e.active=false;otGames.kills++;otGamesExplosion(e);if(e.kind==='tank'){e.group.traverse(o=>{if(o.isMesh)o.material.color.multiplyScalar(.30);});e.group.rotation.z=.09;}else e.group.visible=false;
-      if(otGames.kills>=otGames.goal){otGames.state='VICTORY';otGamesSaveResult(true);}
+      // The frame resolves all projectiles before deciding the result. Trading
+      // the last kill for zero health must not save a victory and show defeat.
     }
   }
   function otGamesSaveResult(won){
@@ -9131,10 +9155,11 @@
     }
     if(otGames.active)otGamesLeave();
     if(!otGames.assets){otGames.starting=true;let response;try{response=await fetch(new URL('assets/ot-games-airframes.json',OTTHI_GAME_LIVE_BASE));}finally{otGames.starting=false;}if(!response.ok)throw Error('Não foi possível carregar os veículos.');otGames.assets=await response.json();}
-    const g=otGames;g.mode=mode;g.armed=options.armed!==false;g.difficulty=['easy','normal','hard'].includes(options.difficulty)?options.difficulty:'normal';g.level={easy:{goal:6,damage:7,enemyRate:3.8},normal:{goal:8,damage:10,enemyRate:2.9},hard:{goal:10,damage:15,enemyRate:2.1}}[g.difficulty];
+    const g=otGames;g.mode=mode;g.armed=options.armed!==false;g.difficulty=['easy','normal','hard'].includes(options.difficulty)?options.difficulty:'normal';g.level={easy:{label:'INICIANTE',goal:6,damage:7,enemyRate:3.8},normal:{label:'NORMAL',goal:8,damage:10,enemyRate:2.9},hard:{label:'VETERANO',goal:10,damage:15,enemyRate:2.1}}[g.difficulty];
+    state.ui.quickOpen=false;syncMobilePanels();
     g.entry={camera:camera.position.clone(),rotation:camera.quaternion.clone(),fov:camera.fov,playerVisible:playerGroup.visible,shadowVisible:contactShadow?.visible,toolVisible:toolVisual?.visible,position:{x:player.x,y:player.y,z:player.z},cameraYaw,cameraPitch,cameraZoom};
     savePlayerPosition(true);clearMovementInputs();otGamesClearInput();g.active=true;g.state='PLAYING';g.kills=0;g.goal=g.level.goal;g.wave=0;g.ammo=30;g.reserve=180;g.reload=0;g.cooldown=0;g.elapsed=0;g.resultSaved=false;g.notice='';g.lock=null;g.enemies=[];g.bullets=[];g.effects=[];
-    g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_COMBAT_SESSION';scene.add(g.group);
+    g.noticeUntil=0;g.autoWalkSide=0;g.autoWalking=false;g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_COMBAT_SESSION';scene.add(g.group);
     const safe=safePointNear(player.x,player.z,{ignoreTraffic:true,allowWater:false,radius:.5});
     g.body={x:safe.x,y:safe.y+(mode==='ground'?1.8:mode==='helicopter'?18:32),z:safe.z,yaw:Math.PI-cameraYaw,pitch:0,roll:0,vx:0,vy:0,vz:0,hp:100};
     g.obstacles=(world.colliders||[]).filter(c=>!c.disabled).map(c=>new THREE.Box3(new THREE.Vector3(c.x-c.w/2,professionalTerrainHeightAt?.(c.x,c.z)||0,c.z-c.d/2),new THREE.Vector3(c.x+c.w/2,(professionalTerrainHeightAt?.(c.x,c.z)||0)+Number(c.height||c.h||6),c.z+c.d/2)));
@@ -9152,10 +9177,10 @@
   }
   function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;}
   async function otGamesStartCamera(){
-    const g=otGames;if(!g.active||g.mode!=='ground'||g.handSession)return;
+    const g=otGames;if(!g.active||g.mode!=='ground')return;if(g.handSession){g.handSession.recalibrate();return;}
     g.state='HAND_CALIBRATION';otGamesClearInput();const epoch=++g.cameraEpoch,current=()=>g.active&&g.mode==='ground'&&g.cameraEpoch===epoch;let stream;
     try{
-      if(!document.querySelector('[data-ot-hand-style]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('../ar/combat-controls.css',OTTHI_GAME_LIVE_BASE).href;link.dataset.otHandStyle='true';document.head.append(link);}
+      if(!document.querySelector('[data-ot-hand-style]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('../ar/combat-controls.css?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;link.dataset.otHandStyle='true';document.head.append(link);}
       if(!window.WarHandControl)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('../ar/hand-controls.js',OTTHI_GAME_LIVE_BASE).href;script.onload=resolve;script.onerror=reject;document.head.append(script);});
       if(!current())return;
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
@@ -9172,7 +9197,8 @@
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
     root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><div class="ot-games-stick ot-games-aim" data-ot="aim" role="group" aria-label="Joystick de mira"><i></i><small>MIRAR</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
-    document.body.append(root);root.querySelector('[data-ot="peace"]').onclick=otGamesLeave;root.querySelector('[data-ot="menu"]').onclick=otGamesChoose;
+    root.insertAdjacentHTML('beforeend','<div class="ot-games-targets" aria-hidden="true"></div><div class="ot-games-result" hidden><strong></strong><p></p><button data-ot="retry">JOGAR NOVAMENTE</button></div>');
+    document.body.append(root);root.querySelector('[data-ot="peace"]').onclick=otGamesLeave;root.querySelector('[data-ot="menu"]').onclick=otGamesChoose;root.querySelector('[data-ot="retry"]').onclick=()=>otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty});
     root.querySelector('[data-ot="camera"]').onclick=otGamesStartCamera;
     for(const name of ['aim','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='ground';
     for(const name of ['collective','pedal-left','pedal-right'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='helicopter';
@@ -9199,14 +9225,26 @@
     return true;
   }
   function updateOtGames(dt){
-    const g=otGames;if(!g.active)return;
-    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){otGamesUpdateHUD();return;}
+    const g=otGames;if(!g.active)return;g.autoWalking=false;
+    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
     const b=g.body,k=g.keys,x=clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
     if(g.mode==='ground'){
-      b.yaw+=g.aim.x*dt*1.8;b.pitch=clamp(b.pitch+g.aim.y*dt*1.2,-.85,.85);const n=Math.max(1,Math.hypot(x,y)),nx=b.x+(Math.cos(b.yaw)*x+Math.sin(b.yaw)*y)/n*5*dt,nz=b.z+(-Math.sin(b.yaw)*x+Math.cos(b.yaw)*y)/n*5*dt;
-      if(!positionBlockedForPlayer(nx,nz,.4,{ignoreTraffic:true})){b.x=nx;b.z=nz;}b.y=groundHeightAt(b.x,b.z)+1.8;
+      b.yaw+=g.aim.x*dt*1.8;b.pitch=clamp(b.pitch+g.aim.y*dt*1.2,-.85,.85);
+      if(g.handSession){if(g.handAim.x>.88)b.yaw+=dt*.7;if(g.handAim.x<.12)b.yaw-=dt*.7;}
+      let mx=x,my=y,speed=5;const free=(px,pz)=>!positionBlockedForPlayer(px,pz,.45,{ignoreTraffic:true});
+      if(g.handSession&&!x&&!y){
+        speed=2.8;const near=g.enemies.some(e=>e.active&&Math.hypot(e.x-b.x,e.z-b.z)<11);
+        if(!near&&!g.lock){
+          const fx=Math.sin(b.yaw),fz=Math.cos(b.yaw),rx=Math.cos(b.yaw),rz=-Math.sin(b.yaw);
+          if(free(b.x+fx*1.8,b.z+fz*1.8))g.autoWalkSide=0;
+          else if(!g.autoWalkSide){const score=s=>[1,2,3,4].filter(d=>free(b.x+rx*s*d+fx*1.8,b.z+rz*s*d+fz*1.8)).length;g.autoWalkSide=score(1)>=score(-1)?1:-1;}
+          mx=g.autoWalkSide;my=mx?0:1;
+        }
+      }
+      const n=Math.max(1,Math.hypot(mx,my)),nx=b.x+(Math.cos(b.yaw)*mx+Math.sin(b.yaw)*my)/n*speed*dt,nz=b.z+(-Math.sin(b.yaw)*mx+Math.cos(b.yaw)*my)/n*speed*dt;
+      if(free(nx,nz)){b.x=nx;b.z=nz;g.autoWalking=!!g.handSession&&!!(mx||my);}b.y=groundHeightAt(b.x,b.z)+1.8;
     }else if(g.mode==='helicopter'){
       b.yaw+=(g.pedal||x*.65)*dt;const dx=Math.sin(b.yaw)*y*13+Math.cos(b.yaw)*x*6,dz=Math.cos(b.yaw)*y*13-Math.sin(b.yaw)*x*6;b.vx+=(dx-b.vx)*blend;b.vz+=(dz-b.vz)*blend;
       const collective=clamp(g.collective+(k.has('KeyE')?.2:0)-(k.has('KeyQ')?.2:0),0,1);b.vy+=((collective-.5)*18-b.vy)*blend;b.x+=b.vx*dt;b.y+=b.vy*dt;b.z+=b.vz*dt;b.roll+=(x*.34-b.roll)*blend;b.pitch+=(-y*.18-b.pitch)*blend;
@@ -9225,13 +9263,14 @@
       const ray=g.handAim?new THREE.Vector3(g.handAim.x*2-1,1-g.handAim.y*2,.5).unproject(camera).sub(camera.position).normalize():camera.getWorldDirection(new THREE.Vector3()),origin=g.mode==='ground'?camera.position.clone():new THREE.Vector3(b.x,b.y-.4,b.z);let target=null,best=Infinity;
       for(const e of g.enemies){
         if(!e.active)continue;e.aim-=dt;e.hit=Math.max(0,e.hit-dt);e.group.rotation.y=Math.atan2(b.x-e.x,b.z-e.z);
-        if(e.kind==='drone'){e.y=groundHeightAt(e.x,e.z)+9+Math.sin(g.elapsed+e.phase);e.group.position.y=e.y;}else if(e.legs)for(const [i,leg]of e.legs.entries())leg.rotation.x=Math.sin(g.elapsed*3+e.phase+i*Math.PI)*.15;
-        const to=new THREE.Vector3(e.x-origin.x,e.y-origin.y,e.z-origin.z),distance=to.length(),angle=Math.acos(clamp(to.normalize().dot(ray),-1,1)),cone=g.handAim?Math.atan2(e.radius,distance)+.007:g.mode==='helicopter'?.49:g.mode==='plane'?.14:.035+Math.atan2(e.radius,distance);
+        if(e.kind==='drone'){e.y=(e.baseY??groundHeightAt(e.x,e.z)+9)+Math.sin(g.elapsed+e.phase);e.group.position.y=e.y;for(const [i,rotor]of e.rotors.entries())rotor.rotation.y=g.elapsed*35*(i%2?1:-1);}else if(e.legs){for(const [i,leg]of e.legs.entries())leg.rotation.x=Math.sin(g.elapsed*2+e.phase+i*Math.PI)*.045;if(e.rigid)e.rigid.position.y=Math.sin(g.elapsed*2.3+e.phase)*.012;}
+        if(e.rigid)e.rigid.material.emissive.setHex(e.hit>0?0x4c2416:0x000000);
+        const to=new THREE.Vector3(e.x-origin.x,e.y-origin.y,e.z-origin.z),distance=to.length(),angle=Math.acos(clamp(to.normalize().dot(ray),-1,1)),cone=g.handAim?Math.atan2(e.radius,distance)+.007:g.mode==='helicopter'?.49:g.mode==='plane'?.18:.035+Math.atan2(e.radius,distance);
         if(distance<170&&angle<cone&&angle<best&&!otGamesBlocked(origin,e)){target=e;best=angle;}
         if(e.aim<=0){e.aim=g.level.enemyRate+Math.sin(e.phase)*.3;if(distance<110&&!otGamesBlocked(e,b)){const start=new THREE.Vector3(e.x,e.y,e.z),direction=new THREE.Vector3(b.x,b.y,b.z).sub(start).normalize();otGamesShot(start,direction,true);}}
       }
-      if(target&&g.lock?.target===target)g.lock.time+=dt;else g.lock=target?{target,time:0}:null;
-      const locked=!!g.lock&&g.lock.time>=(g.mode==='ground'?.12:g.mode==='helicopter'?.3:.45),auto=!!g.handSession||g.mode!=='ground';
+      if(target&&g.lock?.target===target)g.lock.time=Math.max(g.lock.time+dt,g.handAim?Math.max(0,((g.handAim.timestamp||0)-g.lock.firstSample)/1000):0);else g.lock=target?{target,time:0,firstSample:g.handAim?.timestamp||0}:null;
+      const locked=!!g.lock&&g.lock.time>=(g.mode==='ground'?.12:g.mode==='helicopter'?.3:.25),auto=!!g.handSession||g.mode!=='ground';
       if(locked&&(auto||g.fire||k.has('Space'))&&g.cooldown===0&&g.reload===0){
         if(g.ammo===0)otGamesReload();else{
           g.ammo--;g.cooldown=.15;const lead=new THREE.Vector3(target.x,target.y,target.z).sub(origin).normalize();otGamesShot(origin,lead);
@@ -9241,39 +9280,49 @@
         const old={x:bullet.x,y:bullet.y,z:bullet.z};bullet.x+=bullet.vx*dt;bullet.y+=bullet.vy*dt;bullet.z+=bullet.vz*dt;bullet.life-=dt;bullet.mesh.position.set(bullet.x,bullet.y,bullet.z);
         if(otGamesBlocked(old,bullet)){bullet.life=0;continue;}
         if(bullet.enemy){if(otGamesSegmentDistance(old,bullet,b)<.8){b.hp=Math.max(0,b.hp-g.level.damage);bullet.life=0;}}
-        else for(const e of g.enemies)if(e.active&&otGamesSegmentDistance(old,bullet,e)<e.radius){otGamesDamage(e,50);bullet.life=0;break;}
+        else for(const e of g.enemies)if(e.active&&otGamesSegmentDistance(old,bullet,e)<e.radius){otGamesDamage(e,bullet.damage);bullet.life=0;break;}
       }
       for(const bullet of g.bullets.filter(b=>b.life<=0))otGamesDisposeGroup(bullet.mesh);g.bullets=g.bullets.filter(b=>b.life>0);
-      if(g.state==='PLAYING'&&!g.enemies.some(e=>e.active))otGamesSpawnWave();
       if(b.hp<=0){g.state='DEFEAT';otGamesSaveResult(false);}
+      else if(g.kills>=g.goal){g.state='VICTORY';otGamesSaveResult(true);}
+      else if(!g.enemies.some(e=>e.active))otGamesSpawnWave();
     }
     for(const fx of g.effects){fx.age+=dt;fx.life-=dt;fx.x+=fx.vx*dt;fx.y+=fx.vy*dt;fx.z+=fx.vz*dt;fx.mesh.position.set(fx.x,fx.y,fx.z);fx.mesh.scale.setScalar((fx.smoke?.3+fx.age*.5:1-fx.age)*1.2);}
     for(const fx of g.effects.filter(f=>f.life<=0))otGamesDisposeGroup(fx.mesh);g.effects=g.effects.filter(f=>f.life>0);otGamesUpdateHUD();
   }
   function otGamesUpdateHUD(){
     const g=otGames;if(!g.ui)return;g.ui.querySelector('[data-ot-status]').textContent=otGameModes[g.mode]+' · '+(g.armed?'VIDA '+Math.ceil(g.body.hp)+' · '+(g.reload>0?'RECARREGANDO':g.ammo+'/'+g.reserve):'PASSEIO DE PAZ');
-    g.ui.querySelector('.ot-games-mission').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA · '+g.kills+'/'+g.goal+' ALVOS':g.state==='DEFEAT'?'MISSÃO ENCERRADA · VOLTE AO MENU PARA TENTAR NOVAMENTE':g.notice||(g.armed?'MISSÃO SOLO · SETOR '+g.wave+' · '+g.kills+'/'+g.goal+' ALVOS · '+g.difficulty.toUpperCase():'Explore o mesmo bairro por cima. Voltar à paz retorna à sua família.');
-    const next=g.enemies.filter(e=>e.active).sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
-    if(next&&g.state==='PLAYING'){const bearing=Math.atan2(Math.sin(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw),Math.cos(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw));if(Math.abs(bearing)>.5)g.ui.querySelector('.ot-games-mission').textContent+=' · '+(bearing>0?'VIRE À DIREITA →':'← VIRE À ESQUERDA');}
+    g.ui.querySelector('.ot-games-mission').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA · '+g.kills+'/'+g.goal+' ALVOS':g.state==='DEFEAT'?'MISSÃO ENCERRADA · VOLTE AO MENU PARA TENTAR NOVAMENTE':g.notice||(g.armed?'MISSÃO SOLO · SETOR '+g.wave+' · '+g.kills+'/'+g.goal+' ALVOS · '+g.level.label:'Explore o mesmo bairro por cima. Voltar à paz retorna à sua família.');
+    if(g.noticeUntil&&g.elapsed>g.noticeUntil){g.notice='';g.noticeUntil=0;}
+    const live=g.enemies.filter(e=>e.active),next=live.slice().sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
+    if(next&&g.state==='PLAYING'){const bearing=Math.atan2(Math.sin(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw),Math.cos(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw)),pitch=Math.atan2(next.y-g.body.y,Math.hypot(next.x-g.body.x,next.z-g.body.z))-g.body.pitch;let hint=Math.abs(bearing)>.5?(bearing>0?'VIRE À DIREITA →':'← VIRE À ESQUERDA'):Math.abs(pitch)>.22?(pitch>0?'ALVO ACIMA ↑':'ALVO ABAIXO ↓'):'';if(g.handSession&&!g.handAim?.fresh)hint='MOSTRE A MÃO · AVANÇO E TIRO PAUSADOS';else if(g.autoWalking)hint='AVANÇO AUTOMÁTICO · MIRE COM A MÃO';if(hint)g.ui.querySelector('.ot-games-mission').textContent+=' · '+hint;}
     const reticle=g.ui.querySelector('.ot-games-reticle');reticle.hidden=!g.armed;reticle.classList.toggle('locked',!!g.lock&&g.lock.time>.3);reticle.style.left=(g.handAim?.x??.5)*100+'%';reticle.style.top=(g.handAim?.y??.5)*100+'%';
-    g.ui.classList.toggle('ot-hands',!!g.handSession);const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
+    const targets=g.ui.querySelector('.ot-games-targets'),primary=g.lock?.target||next;
+    for(const marker of targets.children)if(!live.some(e=>e.id===marker.dataset.target))marker.remove();
+    for(const e of live){
+      let marker=targets.querySelector('[data-target="'+e.id+'"]');if(!marker){marker=document.createElement('span');marker.dataset.target=e.id;targets.append(marker);}
+      const p=new THREE.Vector3(e.x,e.y+(e.kind==='tank'?2:1.5),e.z).project(camera),top=(-p.y*.5+.5)*g.ui.clientHeight,visible=p.z>-1&&p.z<1&&Math.abs(p.x)<.94&&Math.abs(p.y)<.74&&top>100&&!otGamesBlocked(g.body,e);
+      marker.hidden=!visible;marker.classList.toggle('secondary',e!==primary);marker.style.left=(p.x*.5+.5)*100+'%';marker.style.top=(-p.y*.5+.5)*100+'%';marker.textContent=e===primary?(e.kind==='tank'?'BLINDADO':e.kind==='drone'?'DRONE':'ALVO')+' · '+Math.round(Math.hypot(e.x-g.body.x,e.z-g.body.z))+' m':'';
+    }
+    const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
+    g.ui.classList.toggle('ot-hands',!!g.handSession);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
   }
   function otGamesChoose(){
     if(!running||document.getElementById('ot-games-choose'))return;const previousPaused=paused;paused=true;otGamesClearInput();clearMovementInputs();const dialog=document.createElement('section');dialog.id='ot-games-choose';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','Escolha seu modo OT Games');
-    dialog.innerHTML='<div><small>UM MUNDO · VÁRIAS FORMAS DE JOGAR</small><h2>OT GAMES</h2><p>As mesmas ruas, casas e trânsito do seu mundo.</p><div class="ot-games-mode-grid">'+Object.entries(otGameModes).map(([id,name])=>'<button data-ot-mode="'+id+'">'+({peace:'🌳',ground:'🎯',plane:'✈️',helicopter:'🚁'}[id])+'<strong>'+name+'</strong></button>').join('')+'</div><label><input type="checkbox" data-ot-armed checked> Missão de combate solo (desmarque para passeio de paz)</label><label>Dificuldade <select data-ot-difficulty><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Veterano</option></select></label><p class="ot-games-help">A pé: mover + mirar + atirar, ou calibrar a mão na câmera frontal. Helicóptero: manche + coletivo + pedais. Avião: manche e curvas. A mira alinhada trava o alvo antes de disparar.</p><button data-ot-close>CONTINUAR JOGO ATUAL</button></div>';
+    dialog.innerHTML='<div><small>UM MUNDO · VÁRIAS FORMAS DE JOGAR</small><h2>OT GAMES</h2><p>As mesmas ruas, casas e trânsito do seu mundo.</p><div class="ot-games-mode-grid">'+Object.entries(otGameModes).map(([id,name])=>'<button data-ot-mode="'+id+'">'+({peace:'🌳',ground:'🎯',plane:'✈️',helicopter:'🚁'}[id])+'<strong>'+name+'</strong></button>').join('')+'</div><label><input type="checkbox" data-ot-armed checked> Missão de combate solo (desmarque para passeio de paz)</label><label>Dificuldade <select data-ot-difficulty><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Veterano</option></select></label><p class="ot-games-help">A pé: mover + mirar + atirar. Na câmera frontal, calibre a mão para mirar; o personagem avança sozinho. Complete todos os alvos marcados para vencer. Helicóptero: manche + coletivo + pedais. Avião: manche e curvas. A mira alinhada trava o alvo antes de disparar.</p><button data-ot-close>CONTINUAR JOGO ATUAL</button></div>';
     document.body.append(dialog);const close=()=>{dialog.remove();paused=previousPaused;};dialog.querySelector('[data-ot-close]').onclick=close;
     for(const button of dialog.querySelectorAll('[data-ot-mode]'))button.onclick=async()=>{const mode=button.dataset.otMode,armed=dialog.querySelector('[data-ot-armed]').checked,difficulty=dialog.querySelector('select').value;close();try{await otGamesEnter(mode,{armed,difficulty});}catch(error){toast(error.message||'Não foi possível iniciar este modo.','warn',3500);}};
     dialog.querySelector('[data-ot-mode="peace"]').focus();dialog.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Tab'){const a=[...dialog.querySelectorAll('button,input,select')],first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
   }
   function otGamesInit(){
-    const button=document.createElement('button');button.id='ot-games-button';button.textContent='OT GAMES';button.type='button';button.hidden=true;button.onclick=otGamesChoose;document.body.append(button);setInterval(()=>button.hidden=!running||otGames.active,350);
+    const button=document.createElement('button');button.id='ot-games-button';button.innerHTML='🎮<span>OT Games</span>';button.type='button';button.setAttribute('aria-label','OT Games: combate, avião e helicóptero');button.onclick=()=>{state.ui.quickOpen=false;syncMobilePanels();otGamesChoose();};document.getElementById('quickBar').prepend(button);
     window.addEventListener('blur',otGamesClearInput);window.addEventListener('resize',otGamesClearInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)otGamesClearInput();});
     for(const type of ['keydown','keyup'])window.addEventListener(type,e=>{
       if(!otGames.active||e.target.closest?.('input,select,button')||document.getElementById('ot-games-choose'))return;
       if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyQ','KeyE','KeyR','Escape','ShiftLeft'].includes(e.code)){e.preventDefault();e.stopImmediatePropagation();if(type==='keydown'){otGames.keys.add(e.code);if(e.code==='KeyR')otGamesReload();if(e.code==='Escape')otGamesChoose();}else otGames.keys.delete(e.code);}
     },true);
   }
-  window.OT_GAMES={open:otGamesChoose,enter:otGamesEnter,peace:otGamesLeave,diagnostics:()=>({active:otGames.active,mode:otGames.mode,armed:otGames.armed,state:otGames.state,kills:otGames.kills,wave:otGames.wave,goal:otGames.goal,ammo:otGames.ammo,body:otGames.body?{...otGames.body}:null,peacePosition:{x:player.x,y:player.y,z:player.z},enemies:otGames.enemies.map(e=>({id:e.id,kind:e.kind,active:e.active,hp:e.hp,x:e.x,y:e.y,z:e.z})),sameScene:!!otGames.group&&otGames.group.parent===scene,trafficActors:trafficActorList().length,weapon:!!otGames.weapon&&otGames.active&&otGames.mode==='ground',renderCalls:renderer?.info?.render?.calls||0})};
+  window.OT_GAMES={open:otGamesChoose,enter:otGamesEnter,peace:otGamesLeave,diagnostics:()=>({active:otGames.active,mode:otGames.mode,armed:otGames.armed,state:otGames.state,elapsed:otGames.elapsed,autoWalking:otGames.autoWalking,lock:otGames.lock?{id:otGames.lock.target.id,time:otGames.lock.time}:null,kills:otGames.kills,wave:otGames.wave,goal:otGames.goal,ammo:otGames.ammo,body:otGames.body?{...otGames.body}:null,peacePosition:{x:player.x,y:player.y,z:player.z},enemies:otGames.enemies.map(e=>({id:e.id,kind:e.kind,active:e.active,hp:e.hp,x:e.x,y:e.y,z:e.z,lineOfSight:otGames.active&&!otGamesBlocked(otGames.body,e)})),sameScene:!!otGames.group&&otGames.group.parent===scene,trafficActors:trafficActorList().length,weapon:!!otGames.weapon&&otGames.active&&otGames.mode==='ground',renderCalls:renderer?.info?.render?.calls||0})};
   otGamesInit();
 
 })();

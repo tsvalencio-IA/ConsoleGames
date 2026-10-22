@@ -1,5 +1,6 @@
 /* thIAguinho ARCADE — voo: cache privado, versão atual primeiro.
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
+// Release 2026-10-22: refresh the game shell while retaining cached local recognition models.
 "use strict";
 const PREFIX="thia-arcade-voo-";
 const CACHE=PREFIX+"pro-control-v15";
@@ -42,7 +43,7 @@ self.addEventListener("fetch",event=>{
       }
       return response;
     }catch(error){
-      const hit=await cache.match(req);
+      const hit=await cache.match(req)||await cache.match(req,{ignoreSearch:true});
       if(hit)return hit;
       if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
       return Response.error();

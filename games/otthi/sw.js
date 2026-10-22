@@ -1,7 +1,7 @@
-const REVISION = '7b29a17a53d4cf51';
+const REVISION = 'f1c4b00e881af503';
 const CACHE = `otthi-v70615-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.16.7.18-ot-games-front-hand';
+const BUILD = '705.16.7.19-walk-missions';
 const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70615';
 

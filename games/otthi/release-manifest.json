@@ -1,20 +1,20 @@
 {
   "version": 705,
-  "build": "705.16.7.18-ot-games-front-hand",
-  "revision": "7b29a17a53d4cf51",
+  "build": "705.16.7.19-walk-missions",
+  "revision": "f1c4b00e881af503",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "7d90fa3cfcc3970e1aaf0cbe83d2cbe9d267fd39cbe3f953d175a1f8f088b91c",
-    "style.css": "56bdc51d6a38333bd1a4d96b736d1381c1d26245de1408fdd774e785519272ec",
+    "index.html": "9320426b96798814093fb5b9240be95e470e91eacbdbc809288d7d94afb2dbad",
+    "style.css": "ddbf0ae295d85704538fb98fb731fd88976e8ef0dba2a726393e56474e77a13c",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "ff83036ac675a37ace32ec91201fec2a3d7a27da1923c7626b7791956c18d9ef",
+    "assets/js/core/runtime-config.js": "9717c4b2941e572b000192d29a69395e58fdea9899cd0ff58e1c3c67440a21c5",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "b62645d01dd727f9c7a561590996904b27c8c153319604c3d4d4c9192d34d456",
+    "app.js": "cb028fd4f209320dc8a2975505468c172f8f900c39db9d3b9c2edd7e25eadb58",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
@@ -24,7 +24,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "389c19ef34136e6e2c18e1edb538e3639764196b125636e50d4017c2a4d20887",
-    "sw.js": "f05ed5389d23e5e919537e1c80e9d1593c7ebf20e4d2f2ea7b1e31ca31aa4729"
+    "VERSION.json": "f0182a6350fbd5f834b41189a5f106d762040b427eec4414aba51efc03e36f97",
+    "sw.js": "2653099dd36fe1c275ed0bad9ee214b452b66f48a9ff5fab31494326d3213ffc"
   }
 }

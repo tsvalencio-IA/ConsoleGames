@@ -51,6 +51,11 @@ function textureSet(){
    }
   }
  }));
+ set.uniform=canvasTexture((c,w,h)=>{
+  c.fillStyle='#6b7760';c.fillRect(0,0,w,h);
+  for(let i=0;i<440;i++){const x=rnd()*w,y=rnd()*h;c.fillStyle=['#3d5148','#919878','#53604f','#b0a389'][i%4];c.beginPath();c.moveTo(x,y);for(let j=0;j<7;j++){const a=j*Math.PI*2/7,r=8+rnd()*22;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r*.6)}c.closePath();c.fill();}
+  for(let y=0;y<h;y+=4){c.fillStyle='rgba(22,35,31,.07)';c.fillRect(0,y,w,1)}
+ },256,256);
  set.shadow=canvasTexture((c,w,h)=>{const g=c.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);g.addColorStop(0,'rgba(5,20,22,.48)');g.addColorStop(.55,'rgba(5,20,22,.25)');g.addColorStop(1,'rgba(5,20,22,0)');c.fillStyle=g;c.fillRect(0,0,w,h)},128,128);
  set.smoke=canvasTexture((c,w,h)=>{const g=c.createRadialGradient(w/2,h/2,1,w/2,h/2,w/2);g.addColorStop(0,'rgba(46,52,55,.48)');g.addColorStop(.5,'rgba(61,69,72,.23)');g.addColorStop(1,'rgba(70,78,81,0)');c.fillStyle=g;c.fillRect(0,0,w,h)},128,128);
  return set;
@@ -120,7 +125,7 @@ class World{
   m.asphalt=this.material('#959fa4',tx.asphalt);m.line=this.material('#ded9b7');m.yellow=this.material('#d4af54');m.olive=this.material('#748062',tx.metal,.28);m.sand=this.material('#baa582',tx.concrete);
   m.steel=this.material('#52646b',tx.metal,.5,.65);m.dark=this.material('#27363b',null,.3);m.rubber=this.material('#18242a');m.glass=this.material('#3b7289',null,.5,.27);m.light=this.material('#f7d5a0');m.light.emissive.set('#c7a26d');m.light.emissiveIntensity=.45;
   m.grass=this.material('#9aa680',tx.ground);m.bark=this.material('#685344',tx.concrete);m.leaf=this.material('#4e7459');m.leafLight=this.material('#7f9263');m.roof=this.material('#b69e80',tx.roof);m.rust=this.material('#a16f50',tx.metal,.3);
-  m.skin=this.material('#bfaa8a');m.fabric=this.material('#597467',tx.concrete);m.boot=this.material('#263938');m.visor=this.material('#edbb62',null,.55,.22);
+  m.skin=this.material('#bfaa8a');m.fabric=this.material('#d4dcc3',tx.uniform,0,.95);m.boot=this.material('#263938');m.visor=this.material('#edbb62',null,.55,.22);
   m.facade=tx.facades.map((t,i)=>this.material(['#b1bbb4','#e1d0b4','#a4bfca','#d5d7c8'][i],t,.14,.78));
   m.blue=this.material('#52798a',tx.metal,.3);m.red=this.material('#9a6354',tx.metal,.25);m.white=this.material('#d4d3c4',null,.3);m.cars=[m.white,m.blue,m.red,m.sand];
   m.shadow=new T.MeshBasicMaterial({map:tx.shadow,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});m.shadow.userData.cast=false;this.materials.push(m.shadow);
@@ -322,17 +327,35 @@ class World{
   this.shadow(b,c.x,c.z,c.w*1.6,c.d*2);
  }
  soldier(b,e,time){
-  const m=this.m,x=e.x,z=e.z,walk=Math.sin(time*4+(e.phase||0))*.12,f=e.flash?m.light:m.fabric;
-  for(const s of [-1,1]){
-   b.round(m.boot,x+s*.21,.19,z+walk*s,.17,.2,.27);b.add('cylinder',f,x+s*.2,.66,z-walk*s,.3,.82,.3,walk*s*.8);b.round(m.dark,x+s*.21,.6,z-.15,.16,.18,.13);
-   b.round(f,x+s*.46,1.46,z,.18,.2,.2);b.add('cylinder',f,x+s*.45,1.2,z-.14,.25,.48,.25,-.55,0,s*.35);b.round(m.boot,x+s*.32,1.03,z-.4,.13,.12,.14);
+  const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=time*4+(e.phase||0),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
+  // Local articulated parts are rotated as one body: armour, face and weapon
+  // always face the player, while knees/ankles keep the gait grounded.
+  const part=(kind,ma,lx,y,lz,w,h,d,rx=0,rz=0)=>b.add(kind,ma,x+lx*cy+lz*sy,y,z-lx*sy+lz*cy,w,h,d,rx,yaw,rz);
+  const box=(ma,lx,y,lz,w,h,d)=>part('box',ma,lx,y,lz,w,h,d),round=(ma,lx,y,lz,w,h,d)=>part('round',ma,lx,y,lz,w,h,d);
+  const limb=(ma,a,c,width,depth=width)=>{const dx=c[0]-a[0],dy=c[1]-a[1],dz=c[2]-a[2],length=Math.hypot(dx,dy,dz);part('cylinder',ma,(a[0]+c[0])/2,(a[1]+c[1])/2,(a[2]+c[2])/2,width,length,depth,Math.atan2(dz,dy),-Math.asin(dx/length));};
+  for(const side of [-1,1]){
+   const step=Math.sin(phase+side*Math.PI/2),lx=side*.18,knee=[lx,.54,step*.105],ankle=[lx,.19,-step*.12];
+   limb(f,[lx,.97-duck,0],knee,.27,.30);limb(f,knee,ankle,.23,.25);round(m.boot,lx,.55,knee[2]-.12,.13,.15,.075);
+   box(m.boot,lx,.13+Math.max(0,step)*.025,ankle[2]-.065,.26,.20,.43);box(m.rubber,lx,.045,ankle[2]-.07,.27,.06,.44);
+   box(m.sand,lx+.07*side,.78,.03,.12,.19,.22);
   }
-  b.round(f,x,1.21,z,.44,.49,.27);b.box(m.olive,x,.92,z-.225,.66,.53,.13);
-  for(let i=-1;i<=1;i++)b.box(m.sand,x+i*.2,1.04,z-.31,.16,.22,.09);
-  b.round(m.skin,x,1.91,z,.23,.27,.22);b.round(m.dark,x,2.08,z,.29,.15,.27);b.box(m.visor,x,1.97,z-.205,.35,.09,.06);b.box(m.boot,x,1.74,z-.13,.4,.17,.25);
-  b.box(m.dark,x+.15,1.08,z-.5,.15,.18,.7);b.add('cylinder',m.steel,x+.15,1.16,z-.92,.065,.3,.065,Math.PI/2);
-  if(e.shot)b.round(m.light,x+.15,1.16,z-1.1,.14,.12,.18);
-  this.shadow(b,x,z,1.7,1.6);
+  const y=breath-duck;
+  round(f,0,1.30+y,0,.34,.39,.23);box(m.dark,0,1.04+y,0,.61,.11,.41);round(m.olive,0,1.34+y,-.17,.32,.29,.14);box(m.olive,0,1.35+y,-.27,.55,.43,.09);
+  for(const side of [-1,1]){box(m.sand,side*.22,1.48+y,-.25,.08,.39,.055);box(m.sand,side*.16,1.17+y,-.35,.15,.20,.09);box(m.boot,side*.24,1.03+y,-.2,.12,.13,.11);}
+  box(m.fabric,0,1.35+y,.27,.48,.47,.24);box(m.olive,0,1.38+y,.4,.41,.34,.07);box(m.dark,-.23,1.58+y,.19,.09,.2,.08);part('cylinder',m.steel,-.23,1.82+y,.19,.015,.34,.015);
+  round(m.boot,0,1.68+y,0,.16,.12,.16);round(m.skin,0,1.89+y,-.005,.205,.245,.195);round(m.fabric,0,1.78+y,-.11,.205,.13,.14);
+  round(m.olive,0,2.055+y,.015,.25,.155,.245);box(m.dark,0,2.02+y,-.20,.41,.07,.12);box(m.dark,0,1.94+y,-.19,.37,.12,.065);box(m.visor,0,1.95+y,-.23,.31,.075,.035);
+  for(const side of [-1,1]){round(m.boot,side*.225,1.94+y,.015,.065,.11,.085);box(m.sand,side*.15,2.11+y,0,.05,.04,.25);}
+  part('cylinder',m.dark,.20,1.80+y,-.22,.025,.22,.025,-.45);round(m.dark,.20,1.71+y,-.27,.045,.04,.04);
+  for(const side of [-1,1]){
+   const shoulder=[side*.38,1.51+y,0],elbow=[side*.41,1.22+y,-.16],hand=[side<0?.05:.24,1.30+y,side<0?-.68:-.43];
+   round(f,...shoulder,.15,.18,.17);limb(f,shoulder,elbow,.22,.25);round(m.boot,...elbow,.12,.12,.12);limb(f,elbow,hand,.19,.21);round(m.boot,...hand,.10,.09,.13);
+  }
+  const kick=e.shot?.05:0;
+  box(m.dark,.18,1.33+y,-.43+kick,.12,.13,.54);box(m.steel,.18,1.39+y,-.45+kick,.08,.025,.44);box(m.boot,.18,1.25+y,-.39+kick,.085,.19,.09);box(m.dark,.18,1.33+y,-.09+kick,.14,.16,.23);
+  part('cylinder',m.steel,.18,1.35+y,-.88+kick,.05,.41,.05,Math.PI/2);box(m.dark,.18,1.43+y,-.47+kick,.07,.07,.13);box(m.visor,.18,1.45+y,-.54+kick,.035,.025,.02);
+  if(e.shot)round(m.light,.18,1.35+y,-1.13,.15,.13,.20);
+  this.shadow(b,x,z,1.5,1.7);
  }
  drone(b,e,time){
   const m=this.m;b.round(e.flash?m.light:m.steel,e.x,e.y,e.z,.65,.28,.4);b.box(m.visor,e.x,e.y-.12,e.z-.4,.25,.15,.08);

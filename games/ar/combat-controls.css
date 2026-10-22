@@ -10,7 +10,8 @@
 .input-game-controls.combat-input [data-control="reload"]{left:calc(50% - 43px);bottom:5px}
 .input-game-controls.combat-input [data-control="cover"]{left:max(17px,env(safe-area-inset-left,0px));bottom:calc(clamp(96px,28vw,132px) + 16px)}
 @media(max-height:460px){.input-game-controls.combat-input{height:158px}.combat-stick{width:96px;height:96px}.input-game-controls.combat-input [data-control="fire"],.input-game-controls.combat-input [data-control="cover"]{bottom:111px}.input-game-controls.combat-input [data-control="reload"]{bottom:8px}}
-/* The front camera is a motion sensor and a small mirrored preview. */
+/* The front camera preview exists only during calibration. Tracking continues
+   on the hidden canvas after calibration, without showing the player. */
 .war-hand-camera{position:fixed;right:max(10px,env(safe-area-inset-right,0px));top:max(62px,env(safe-area-inset-top,0px));z-index:350;width:142px;font-family:system-ui;color:#e8fff3;pointer-events:none}
 .war-hand-panel{background:#0a202dec;border:1px solid #8deac177;border-radius:14px;overflow:hidden;padding:7px;box-shadow:0 8px 28px #0006;text-align:center}
 .war-hand-camera canvas{display:block;width:100%;height:auto;border-radius:8px;aspect-ratio:4/3;background:#102732}
@@ -25,3 +26,6 @@
 @media(max-height:460px){.war-hand-camera:not(.calibrating){width:116px;top:60px}.war-hand-camera:not(.calibrating) canvas{display:none}.calibrating .war-hand-panel{display:grid;grid-template-columns:180px 1fr;gap:7px 14px;width:min(690px,100%);padding:12px}.calibrating .war-hand-eyebrow,.calibrating h2{grid-column:1/-1;margin:0}.calibrating canvas{grid-column:1;grid-row:3/6;max-height:145px}.calibrating .war-hand-status,.calibrating .war-hand-instruction,.calibrating small{margin:0}.calibrating .war-hand-actions{grid-column:1/-1}.calibrating .war-hand-instruction{font-size:12px}}
 
 .war-hand-camera canvas{transform:scaleX(-1)}
+.war-hand-camera:not(.calibrating) canvas{display:none!important}
+.war-hand-camera:not(.calibrating){display:none!important}
+.input-game-controls.combat-input [data-control="hand"]{right:max(17px,env(safe-area-inset-right,0px));bottom:8px;width:104px}

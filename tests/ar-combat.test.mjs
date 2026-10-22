@@ -45,3 +45,8 @@ test('combat: held automatic fire has the same cadence on 30, 60 and 120 Hz scre
  const counts=[];for(const hz of [30,60,120]){const {game:g}=fresh();g.waveDelay=1000;g.ammo=1000;g.fireHeld=true;for(let i=0;i<hz*6;i++)g.step(1/hz);counts.push(g.stats.shots);}
  assert(Math.max(...counts)-Math.min(...counts)<=1,'Frame rate changed the weapon cadence: '+counts.join('/'));
 });
+test('combat: the visible soldier head and legs acquire the target; pointing above the silhouette never does',()=>{
+ const {game:g}=fresh();g.covers=[];g.spawnWave();const e=g.enemies[0];g.enemies=[e];g.player.yaw=Math.atan2(e.x,e.z);const d=Math.hypot(e.x,e.z);
+ for(const height of [.18,1.15,2.12]){g.player.pitch=Math.atan2(height-g.eyeY,d);assert.equal(g.targetAtAim(),e,'The visible body must match aiming at height '+height);}
+ g.player.pitch=Math.atan2(2.8-g.eyeY,d);assert.equal(g.targetAtAim(),null);
+});

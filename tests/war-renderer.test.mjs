@@ -10,7 +10,7 @@ function renderer(f,unavailable=false){
  const module={exports:{}};vm.runInNewContext(read('games/ar/vendor/three-r128.min.js'),{module,exports:module.exports,console});
  class GPU{
   constructor({canvas}){if(unavailable)throw Error('GPU unavailable');this.domElement=canvas;this.shadowMap={};this.info={render:{calls:1,triangles:1000}}}
-  setPixelRatio(){}setSize(w,h){this.domElement.width=w;this.domElement.height=h}setClearColor(){}render(scene){scene.updateMatrixWorld(true);f.sceneCapture=scene}clearDepth(){}dispose(){}
+  setPixelRatio(){}setSize(w,h){this.domElement.width=w;this.domElement.height=h}setClearColor(){}render(scene){scene.updateMatrixWorld(true);f.sceneCapture=scene;(f.sceneCaptures??=[]).push(scene)}clearDepth(){}dispose(){}
  }
  const ctx=new Proxy({createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})}, {get(o,k){return o[k]||(()=>{})}});
  const document={createElement:()=>({width:1,height:1,getContext:()=>ctx,addEventListener(){}})};
@@ -65,4 +65,9 @@ test('WAR: the visible weapon follows hand aim on both axes without reversing ve
  const f=engine('ar','game_ar');f.game.init({id:'patrol'});const api=renderer(f),g=f.game,T=f.window.THREE;
  const direction=(x,y)=>{g.handAim={x,y,fresh:true};g.player.yaw+=.15;assert(api.combat(g,canvas(),390,844,false));const weapon=f.sceneCapture.getObjectByProperty('type','Group');return new T.Vector3(0,0,-1).applyQuaternion(weapon.quaternion);};
  const left=direction(.25,.48),right=direction(.75,.48),up=direction(.5,.25),down=direction(.5,.7);assert(right.x>left.x);assert(up.y>down.y);api.release(g);
+});
+test('WAR: detailed infantry face the player, animate with instanced geometry and leave combat physics untouched',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'patrol'});const api=renderer(f),g=f.game,T=f.window.THREE;g.covers=[];g.spawnWave();g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,z:25,aim:999});
+ const snapshot=JSON.stringify(g.enemies);const pose=()=>{api.combat(g,canvas(),844,390,false);const scene=f.sceneCaptures.findLast(s=>s.children.some(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8)),cloth=scene?.children.find(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8);assert(cloth&&cloth.count>=8);const matrix=new T.Matrix4();cloth.getMatrixAt(0,matrix);const q=new T.Quaternion(),scale=new T.Vector3(),pos=new T.Vector3();matrix.decompose(pos,q,scale);return {q,pos,count:api.inspect(g).dynamicInstances};};
+ const front=pose();g.player.x=20;g.elapsed=1;const side=pose();assert(Math.abs(front.q.dot(side.q))<.99,'The soldier must turn towards the actual player');assert(side.count>50&&side.count<150,'Detailed infantry should remain batched');assert.equal(JSON.stringify(g.enemies),snapshot);api.release(g);
 });

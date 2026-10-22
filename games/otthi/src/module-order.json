@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.16.7.18-ot-games-front-hand",
+  "build": "705.16.7.19-walk-missions",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "48745a14e3d2884effb94b854f85e1532a7b66e02e556b6242b89c826f15fbb6"
+      "sha256Body": "cb012a5ee5ebbe99d30079d1f2c623ed478ddaa739048d9bce00100e816d147c"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "d77192c627e0ea0fb0510d36377b70ae25da381026db632634f17683fd717cb3"
+      "sha256Body": "1b38f6432c713805fc4094496b2e9918473dbd22dc12159d6e32113389100d0d"
     }
   ],
   "styles": [
@@ -513,7 +513,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "0e2a3dfc1b12d8e753223a0259879e91689d682e8834e2bff5f75d5198c21a5e"
+      "sha256Body": "f473fea24d4081739a59f99d449c3ed6be07fc0f989dbe75210d62e57f5e94fb"
     }
   ]
 }

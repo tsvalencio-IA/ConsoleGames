@@ -4,6 +4,7 @@ import {readFileSync, existsSync, statSync} from "node:fs";
 import {execFileSync} from "node:child_process";
 const here=path=>new URL("../"+path,import.meta.url);
 const read=path=>readFileSync(here(path),"utf8");
+const loadsScript=(html,path)=>[...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/g)].some(([,src])=>new URL(src,'https://game.test/').pathname===new URL(path,'https://game.test/').pathname);
 const installed=[
   {slug:"kart",id:"drive",file:"game_kart.js"},
   {slug:"boxe",id:"box_pro",file:"game_box.js"},
@@ -28,7 +29,7 @@ test("motores GAME registrados com mesmos IDs e autenticação Firebase original
    assert(code.includes("registerGame('"+id+"'"),"Game ID divergente: "+id);
    assert(html.includes('window.CONSOLE_GAME_ID="'+id+'"'),"Configuração de jogo divergente: "+id);
    assert(html.includes('projectId: "thiaguinhogame-ac91b"'),"Firebase GAME divergente: "+slug);
-   assert(html.includes('src="js/'+file+'"'),"Motor não carregado: "+slug);
+   assert(loadsScript(html,'js/'+file),"Motor não carregado: "+slug);
    assert(html.includes('src="./arcade-enhancements.js"'),"Melhoria não incluída: "+slug);
    assert(!core.includes("getElementById('final-score')"),"Crash conhecido na tela final: "+slug);
    assert(core.includes("getElementById('result-score')"),"Tela final correta ausente: "+slug);
@@ -189,7 +190,7 @@ test("cinco jogos pedem permissão para câmera somente depois de escolha explí
   const root="games/"+slug+"/";
   const html=read(root+"index.html"),core=read(root+"js/core.js");
   const input=read(root+"control-modes.js"),css=read(root+"control-modes.css");
-  assert(html.includes('src="./control-modes.js"'));
+  assert(loadsScript(html,'./control-modes.js'));
   assert(html.includes('href="./control-modes.css"'));
   assert(core.includes("await window.ArcadeControls.choose(game)"));
   assert(core.includes("window.ArcadeControls?.mode==='camera'"));

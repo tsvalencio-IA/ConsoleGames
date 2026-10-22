@@ -164,8 +164,10 @@ const hub={
   const root=hub.createControls('ar-input combat-input',[
    {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
-   {id:'cover',text:'COBERTURA',label:'Segurar para se proteger e reduzir dano',down:()=>logic.coverHeld=true,up:()=>logic.coverHeld=false}
+   {id:'cover',text:'COBERTURA',label:'Segurar para se proteger e reduzir dano',down:()=>logic.coverHeld=true,up:()=>logic.coverHeld=false},
+   {id:'hand',text:'CALIBRAR MÃO',label:'Calibrar novamente a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);
+  root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
   for(const aim of [false,true]){
    const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
@@ -179,7 +181,7 @@ const hub={
    const hidden=()=>{if(document.hidden)reset()};window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);window.addEventListener('resize',reset);document.addEventListener('visibilitychange',hidden);
    hub.releases.push(()=>{reset();window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset);window.removeEventListener('resize',reset);document.removeEventListener('visibilitychange',hidden)});
   }
-  hub.showTip(hub.mode==='camera'?'CALIBRE A MÃO DIREITA • APONTE PARA ATIRAR • JOYSTICK PARA ANDAR':'MOVER + MIRAR + ATIRAR • 3 TOQUES SIMULTÂNEOS • R RECARREGA • C PROTEGE');
+  hub.showTip(hub.mode==='camera'?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO • COBERTURA PAUSA O AVANÇO':'MOVER + MIRAR + ATIRAR • 3 TOQUES SIMULTÂNEOS • R RECARREGA • C PROTEGE');
  }
 
 };

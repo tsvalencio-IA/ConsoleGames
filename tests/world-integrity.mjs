@@ -3,6 +3,14 @@ import assert from "node:assert/strict";
 import {readFileSync,existsSync} from "node:fs";
 import {createHash} from "node:crypto";
 const root="games/otthi/",manifest=JSON.parse(readFileSync(root+"release-manifest.json","utf8"));
+const build=JSON.parse(readFileSync(root+'VERSION.json','utf8')).build;
+assert.equal(manifest.build,build,'Release build mismatch');
+for(const [file,pattern]of [
+ ['index.html',/data-otthi-build="([^"]+)"/],
+ ['assets/js/core/runtime-config.js',/build:\s*'([^']+)'/],
+ ['src/modules/00-runtime-foundation.js',/OTTHI_GAME_WEB_BUILD = '([^']+)'/],
+ ['sw.js',/const BUILD = '([^']+)'/]
+])assert.equal(readFileSync(root+file,'utf8').match(pattern)?.[1],build,'Startup build mismatch: '+file);
 let verified=0;
 for(const [file,expected] of Object.entries(manifest.files)){
  assert(existsSync(root+file),"Missing OTThi release file: "+file);
