@@ -50,6 +50,7 @@ const hub={
   if(id==="ar_truck_sim"){hub.arControls(logic);return;}
   if(hub.mode!=="controls"){
    if(id==="box_pro")logic.touchMode=false;
+   if(id==="drive")hub.kartCameraItem(logic);
    return;
   }
   if(id==="drive"){hub.kartControls(logic);return;}
@@ -110,6 +111,23 @@ const hub={
    window.addEventListener("blur",blur);window.addEventListener("arcade:release-inputs",blur);
    hub.releases.push(()=>{blur();document.removeEventListener("visibilitychange",visibility);window.removeEventListener("blur",blur);window.removeEventListener("arcade:release-inputs",blur)});
    return root;
+ },
+ kartCameraItem(logic){
+  // Camera steering stays independent: an explicit touch is the only way to spend the held item.
+  const manual={itemQueued:false};
+  logic.arcadeManual=manual;
+  const button=document.createElement("button");button.type="button";
+  button.setAttribute("aria-label","Usar item guardado somente ao tocar");
+  button.style.cssText="position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:410;min-width:116px;min-height:56px;border-radius:14px;border:2px solid #bcd9c5;background:#214b56f2;color:#fff;font:800 12px system-ui;touch-action:manipulation";
+  const use=e=>{e.preventDefault();e.stopPropagation();if(logic.state==="RACE"&&logic.status==="RACING"&&logic.item)manual.itemQueued=true;};
+  button.addEventListener("pointerdown",use,{passive:false});document.body.append(button);
+  const update=()=>{
+    const visible=!!(window.System?.activeGame?.id==="drive"&&hub.mode==="camera"&&logic.state==="RACE"&&logic.status==="RACING"&&!window.System.paused);
+    button.hidden=!visible;button.disabled=!logic.item;
+    if(visible)button.textContent=logic.item?"USAR "+String(logic.item).toUpperCase():"SEM ITEM";
+  };
+  const timer=setInterval(update,120);update();
+  hub.releases.push(()=>{clearInterval(timer);button.remove();if(logic.arcadeManual===manual)logic.arcadeManual=null;});
  },
  kartControls(logic){
   // Dedicated on-screen controls. The physics engine reads these states each frame.

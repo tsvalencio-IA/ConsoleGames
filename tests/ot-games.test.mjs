@@ -31,7 +31,7 @@ test('OT Games: each sector spawns nearby, separated targets with an unobstructe
  for(const e of g.enemies){assert(Math.hypot(e.x-g.body.x,e.z-g.body.z)<45);assert(!f.context.otGamesBlocked(g.body,e));for(const other of g.enemies)if(other!==e)assert(Math.hypot(e.x-other.x,e.z-other.z)>=6);}
 });
 test('OT Games: front-camera ground mode advances without a joystick and freezes on calibration, lost tracking and completed missions',async()=>{
- const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};const p={...g.body};f.step(.5);assert(Math.hypot(g.body.x-p.x,g.body.z-p.z)>1);assert(g.autoWalking);
+ const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};const p={...g.body};f.step(.5);assert(Math.hypot(g.body.x-p.x,g.body.z-p.z)>1);assert(g.autoWalking);
  for(const state of ['HAND_CALIBRATION','VICTORY']){g.state=state;const stopped={...g.body};f.step(.5);assert.deepEqual({...g.body},stopped);}
  g.state='PLAYING';g.handAim.fresh=false;const stopped={...g.body};f.step(.5);assert.deepEqual({...g.body},stopped);assert(!g.autoWalking);
 });
@@ -40,5 +40,22 @@ test('OT Games: a lethal projectile in the final-kill frame resolves as defeat a
  f.context.otGamesShot(e,new f.T.Vector3());f.context.otGamesShot(g.body,new f.T.Vector3(),true);f.step(.016);assert.equal(g.kills,1);assert.equal(g.body.hp,0);assert.equal(g.state,'DEFEAT');assert.equal(f.storage.size,0);assert(g.resultSaved);
 });
 test('OT Games: detailed combat models keep articulated limbs and spinning rotors while batching rigid equipment',async()=>{
- const f=fixture();await f.api.enter('ground',{armed:true});const g=f.g,soldier=g.enemies.find(e=>e.kind==='soldier'),drone=g.enemies.find(e=>e.kind==='drone');let draws=0;soldier.group.traverse(o=>{if(o.isMesh)draws++;});assert.equal(draws,3);assert.equal(soldier.legs.length,2);assert(soldier.rigid.geometry.getAttribute('position').count>1000);const old=drone.rotors[0].rotation.y;f.step(.1);assert.notEqual(drone.rotors[0].rotation.y,old);
+ const f=fixture();await f.api.enter('ground',{armed:true});const g=f.g,soldier=g.enemies.find(e=>e.kind==='soldier'),drone=g.enemies.find(e=>e.kind==='drone');let draws=0;soldier.group.traverse(o=>{if(o.isMesh)draws++;});assert.equal(draws,5);assert.equal(soldier.legs.length,2);assert.equal(soldier.arms.length,2);assert(soldier.rigid.geometry.getAttribute('position').count>1000);const old=drone.rotors[0].rotation.y;f.step(.1);assert.notEqual(drone.rotors[0].rotation.y,old);
+});
+
+test('OT Games: hand-camera right goes right, up looks up and manual stick never overrides active hand',async()=>{
+ const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;
+ g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.77,y:.25,fresh:true,present:true,timestamp:100};
+ g.aim.x=-1;g.aim.y=-1;g.move.x=g.move.y=0;
+ const start={yaw:g.body.yaw,pitch:g.body.pitch};f.step(.1);
+ assert(g.body.yaw>start.yaw,'right hand turns view right even if stale joystick points left');
+ assert(g.body.pitch>start.pitch,'raised hand lifts the viewpoint');
+ assert.equal(g.autoWalking,true);
+ const facing=g.body.yaw;g.handAim.x=.5;g.handAim.y=.48;f.step(.1);
+ assert(Math.abs(g.body.yaw-facing)<.001,'neutral tracked hand holds angle rather than drifting by joystick input');
+});
+test('OT Games: camera-hand mode and manual joystick remain separate',async()=>{
+ const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;
+ g.handMode=false;g.handSession=null;g.aim.x=1;
+ const yaw=g.body.yaw;f.step(.2);assert(g.body.yaw>yaw,'manual joystick still works when hand control is disabled');
 });
