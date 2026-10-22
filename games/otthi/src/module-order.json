@@ -351,6 +351,13 @@
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
       "sha256Body": "352c7e3feee693eda2f9f36a2c798216262e3bcd494b5c8e46ba59efe64e149e"
+    },
+    {
+      "file": "src/modules/43-world-campaign.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
+      "sha256Body": "pending-build-recompute"
     }
   ],
   "styles": [
