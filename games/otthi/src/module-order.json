@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "4ddd10259055b35185e700456440c9cc720706835f965b60d6bba8955415de35"
+      "sha256Body": "766e4403b9c59696121d92fd41b751703ed6af21be9df7cb098db6c00481dafc"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "pending-build-recompute"
+      "sha256Body": "53ecdcc7c3549cf21bef6e3f5dede60041e19b53e7cdd9520e3f3048f15332c7"
     }
   ],
   "styles": [
