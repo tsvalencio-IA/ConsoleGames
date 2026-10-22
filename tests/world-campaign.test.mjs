@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source=readFileSync(new URL('../games/otthi/src/modules/43-world-campaign.js',import.meta.url),'utf8');
 function fixture(){
-  const saved=new Map(),toastCalls=[],spawnCalls=[];
+  const saved=new Map(),toastCalls=[],spawnCalls=[],nativeResults=[];
   class Object3D {
     constructor(){this.children=[];this.position={x:0,y:0,z:0,set(x,y,z){this.x=x;this.y=y;this.z=z}};this.rotation={};this.parent=null;this.visible=true;}
     add(o){o.parent=this;this.children.push(o);}
@@ -44,12 +44,13 @@ function fixture(){
       return true;
     },
     otGamesSpawnWave(){spawnCalls.push('wave');},
+    otGamesSaveResult(won){nativeResults.push(won);},
     otGamesDisposeGroup(){},
     otGamesLeave(){otGames.active=false;otGames.mode='peace';}
   };
   vm.createContext(context);
   vm.runInContext(source+'\n;globalThis.campaignTick=updateWorldCampaign;',context);
-  return {context,player,otGames,saved,spawnCalls,toastCalls,
+  return {context,player,otGames,saved,spawnCalls,toastCalls,nativeResults,
     tick:()=>context.campaignTick(.25),api:context.window.OTTHI_CAMPAIGN};
 }
 
@@ -76,7 +77,9 @@ test('a ground mission must start at HQ; north-sector victory only records after
   assert.equal(f.otGames.active,false);
   assert.equal(f.api.diagnostics().phase,'idle');
   assert.equal(f.api.diagnostics().records['norte-ground'],1);
+  assert.deepEqual(f.nativeResults,[true],'native progression is credited only after physical return');
   f.tick();assert.equal(f.api.diagnostics().records['norte-ground'],1,'reconnect and next ticks must not duplicate completion');
+  assert.deepEqual(f.nativeResults,[true],'native progression is not duplicated on later frames');
 });
 
 test('no remote start is allowed, and abandoning combat awards no completion',async()=>{
