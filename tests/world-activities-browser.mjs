@@ -1,13 +1,17 @@
+import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mjs';
 /* Local saved-position fixtures select a scenario. Play and scoring use real UI inputs. */
 import {chromium} from 'playwright';import assert from 'node:assert/strict';import fs from 'node:fs';import {touchSession} from './helpers/touch-session.mjs';import {installConsoleStubs} from './helpers/console-context.mjs';
 const BASE=process.env.WORLD_QA_URL||'http://127.0.0.1:4173/games/otthi/';const ORIGIN=new URL(BASE).origin;fs.mkdirSync('test-results/world-activities',{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});const errors=[];
+const browser=await chromium.launch({...browserNetwork(BASE),headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});const errors=[];
 async function scenario(position,portrait=false){
- const c=await browser.newContext({viewport:portrait?{width:390,height:844}:{width:844,height:390},isMobile:true,hasTouch:true});
+ const c=await browser.newContext({...browserContextNetwork(BASE),viewport:portrait?{width:390,height:844}:{width:844,height:390},isMobile:true,hasTouch:true});
  await c.addInitScript(p=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,position:{...p,y:0,yaw:0},profile:{name:'QA Atividades',nameConfirmed:true,playerId:'world-activities'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},multiplayer:{room:'bairro-central'},familyAdventure:{party:{controller:'thiago',members:['thiago','luna','liz']},deliveries:{luna:0,liz:0},flags:{}}})),position);
  await installConsoleStubs({addInitScript:fn=>c.addInitScript('if(window.top!==window)('+fn.toString()+')();')});
  await c.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===ORIGIN?r.continue():r.request().resourceType()==='script'?r.fulfill({status:200,contentType:'application/javascript',body:'/* local isolated external service */'}):r.abort('blockedbyclient'));
- const p=await c.newPage();p.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR',e.stack)});await p.goto(BASE,{waitUntil:'domcontentloaded'});await p.locator('#playBtn').click();await p.waitForFunction(()=>window.OTTHI_EXPANSION?.diagnostics().assets.length===2,null,{timeout:90000});assert(Math.hypot((await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.x))-position.x,(await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.z))-position.z)<2,'saved scenario position must be restored');return {c,p};
+ const p=await c.newPage();p.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR',e.stack)});await p.goto(BASE,{waitUntil:'domcontentloaded'});
+ // Observe real draw calls; physics, input and visibility stay under game control.
+ await p.evaluate(()=>{window.__worldQaAsphaltDraws=0;const before=THREE.InstancedMesh.prototype.onBeforeRender;THREE.InstancedMesh.prototype.onBeforeRender=function(...args){if(this.name==='OTTHI_KART_ASPHALT')window.__worldQaAsphaltDraws++;before?.apply(this,args);};});
+ await p.locator('#playBtn').click();await p.waitForFunction(()=>window.OTTHI_EXPANSION?.diagnostics().assets.length===2,null,{timeout:90000});assert(Math.hypot((await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.x))-position.x,(await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player.z))-position.z)<2,'saved scenario position must be restored');return {c,p};
 }
 try{
  if(!process.env.WORLD_ONLY_RACE){console.log('STARTING DANCE');
@@ -26,6 +30,7 @@ try{
  }
  if(!process.env.WORLD_SKIP_RACE){console.log('STARTING AUTODROME');
   const {c,p}=await scenario({x:300,z:-212});await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='kart-race-aurora');{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}await p.locator('#worldRaceAssist').selectOption('strong');await p.locator('#worldRaceDifficulty').selectOption('easy');await p.locator('#kartSoloV705').click();await p.waitForFunction(()=>window.OTTHI_SPORTS_V705.state().kart.active);await p.waitForFunction(()=>window.OTTHI_SPORTS_V705.state().kart.countdown<0,null,{timeout:40000});const still=await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart);await p.waitForTimeout(500);assert(Math.abs((await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart)).speed)<.05,'race cannot accelerate itself without a held accelerator');
+  await p.waitForFunction(()=>window.__worldQaAsphaltDraws>0,null,{timeout:10000});await p.screenshot({path:'test-results/world-activities/race-start.png'});
   for(const sel of ['#missionCard','#skillsToggleBtn','.secondary-actions','#cameraControls','#worldCampaignBtn','#miniNav'])assert(!await p.locator(sel).isVisible(),sel+' must be hidden during a race');const fingers=await touchSession(c,p);const f=await fingers.start(p.locator('#runBtn'));let turbo=null;const started=Date.now();let done=false,lastLog=0;
   try{for(let step=0;step<1000;step++){
    const k=await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart);if(!k.active){done=true;break;}if(Date.now()-started>360000)break;

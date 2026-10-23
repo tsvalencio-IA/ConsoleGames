@@ -1,10 +1,10 @@
 {
   "version": 705,
   "build": "705.17.0-world-cities",
-  "revision": "1b681fc30d806c24",
+  "revision": "817ba45eefdd3753",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "8582ecde26f035f7d4ac148920a22c405e74e575604230de40b0c2d77b510011",
+    "index.html": "04a734312832978f1fcde4bcfac92a137a3545b0ead1c7b9103c53586667a400",
     "style.css": "3279a0bca9c568f6cd4ba34a441ddce738426c005304dce4fc018a2d2b741820",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
     "assets/js/core/runtime-config.js": "ce41c84653053d6736b157dc252aa3f7a723600b67cba9c526da27d0f868d919",
@@ -14,7 +14,7 @@
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "fb4dd2a0874b4df0039271adf47e27e83e9966dcc22865709b8b42dbf692fcbf",
+    "app.js": "731dd4af9a99875c1f70de0c45c19d9f9b95e3bab5709185075383263d07a382",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -30,6 +30,6 @@
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
     "VERSION.json": "57b35658bd5ede9e1d40b3a0aaa0b8cb246f3714cdcfa022534471ed84c7e668",
-    "sw.js": "c61db7b37540204a4b50a9006c1796df203bc2e707566cb2f0ccbd1e442c823e"
+    "sw.js": "3a441dda8c3e9f73941d22aa51491b2015408205eba39364e184ed3abe34a720"
   }
 }

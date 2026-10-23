@@ -8071,7 +8071,9 @@
     root.traverse(object=>{
       if(!object?.isMesh)return;ensureUv2(object);
       object.castShadow=qualityTier()==='high'&&!perf.mobile&&object.geometry?.type!=='PlaneGeometry';
-      object.receiveShadow=true;object.frustumCulled=object.userData?.criticalSurface!==true;
+      // r128 bounds describe the base geometry, not the distributed instances.
+      // Material upgrades must preserve the visibility decisions made at creation.
+      object.receiveShadow=true;object.frustumCulled=object.frustumCulled&&!object.isInstancedMesh&&object.userData?.criticalSurface!==true;
       const list=Array.isArray(object.material)?object.material:[object.material];for(const material of list){if(!material)continue;material.dithering=true;if(material.map)configureWorldTexture(material.map,{repeat:material.map.repeat?.toArray?.()||[1,1],color:true});}
       count++;
     });

@@ -1,8 +1,9 @@
+import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mjs';
 import {chromium} from 'playwright';import assert from 'node:assert/strict';import fs from 'node:fs';
 const BASE=process.env.WORLD_QA_URL||'http://127.0.0.1:4173/games/otthi/';fs.mkdirSync('test-results/world-expansion',{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
+const browser=await chromium.launch({...browserNetwork(BASE),headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 try{
- const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
+ const context=await browser.newContext({...browserContextNetwork(BASE),viewport:{width:844,height:390},isMobile:true,hasTouch:true});
  await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'QA World',nameConfirmed:true,playerId:'world-qa'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','luna','liz']},deliveries:{luna:0,liz:0},flags:{}}})));
  await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR',e.stack)});page.on('response',r=>{if(r.status()>=400&&new URL(r.url()).origin===new URL(BASE).origin)bad.push([r.status(),r.url()]);});
