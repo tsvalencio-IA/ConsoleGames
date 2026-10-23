@@ -13,6 +13,9 @@ MANIFEST = json.loads((ROOT / 'src/module-order.json').read_text('utf-8'))
 VERSION = json.loads((ROOT / 'VERSION.json').read_text('utf-8'))
 RELEASE_FILES = [
     'index.html',
+    'game-audio.js',
+    'console-world.js',
+    'console-world.css',
     'style.css',
     'assets/vendor/three-r128.min.js',
     'assets/js/core/runtime-config.js',
@@ -48,6 +51,20 @@ def body_after_marker(path: Path, marker: str) -> str:
     if marker not in text:
         raise RuntimeError(f'Marcador {marker!r} ausente em {path}')
     return text.split(marker, 1)[1].lstrip('\r\n')
+
+
+def validate_release_identity():
+    expected = str(VERSION['build'])
+    sources = [
+        ('index.html', r'data-otthi-build="([^"]+)"'),
+        ('src/modules/00-runtime-foundation.js', r"const OTTHI_GAME_WEB_BUILD = '([^']+)'"),
+        ('assets/js/core/runtime-config.js', r"build: '([^']+)'"),
+        ('sw.js', r"const BUILD = '([^']+)'"),
+    ]
+    for filename, pattern in sources:
+        match = re.search(pattern, (ROOT / filename).read_text('utf-8'))
+        if not match or match.group(1) != expected:
+            raise RuntimeError(f'Release identity mismatch in {filename}; expected {expected}')
 
 
 def build_js() -> str:
@@ -200,6 +217,7 @@ def commit_candidates(candidates: dict[str, bytes]) -> None:
 
 
 if __name__ == '__main__':
+    validate_release_identity()
     js = build_js()
     css = build_css()
     MANIFEST['version'] = int(VERSION['version'])

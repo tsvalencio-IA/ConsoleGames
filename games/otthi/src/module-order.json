@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.17.2-venue-mobile",
+  "build": "705.18.0-original-games",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3889a38a02a51f15ce1306d82789370393ea3a46e60cfed28e429892b4f81502"
+      "sha256Body": "eb559244fb2493bef4842a2758269ddcd6e9836ab9475c0b0a5ee2d69b9d67da"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "0e159f2985cb5b95dc14b81925be648a95b92cf1cee1ba5cd3d58339ff302fd1"
+      "sha256Body": "344f18c4f5c6939c58cf9f6bb2734fb495a259878019a3e2acf96af7a0e9a076"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "3a9ab85cfe10226ecef15908614b0edbe94c3888ea6b6264b683caa9741c4c91"
+      "sha256Body": "6e9a0e4bfa9d478a0fd1790338867372c0eadba0ea16e099ab380054c3474f38"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -119,7 +119,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "9f1b6419f169ea5f3796d2aa8f7d8f5c09b86a691f675c9853d0033532a6afd6"
+      "sha256Body": "e46f666cead2ff2b055dd99153685be2e321d68c59f161e710647130971e8c7c"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -196,7 +196,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "ab31f442de88801874a828d6fec3253c0f2a4ba0a51e9e718096b4cf9c6ed8f5"
+      "sha256Body": "953055e455dc04923d24e90b7d14a6dce3349047ce146933626ea4dd9ccde904"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "8b92ac3f2f68961ef467fe147ffda708bd188ad36fbcfbc779c3cf0ba7c0b6a0"
+      "sha256Body": "bf277453cabd8ef370807b124df9bbe1d844d6af64edb14182d144fc261e00bd"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "b84144ce55f9cdbd47ce4441d880c221458bad73c765f258c63f7f4d917ea041"
+      "sha256Body": "82f47fae5016bb482cb455f2f494205536d03561db0aaa2dece7a4b30e3a71a3"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "ccc8cb2b5fddf336e17858db37b9894c1a417bf588f489323c13046508cf8c1c"
+      "sha256Body": "d02396295c4e8d48ccfe8a9cf731dbbefb982b29d4284f82e228c11c15b1c53d"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Cidades, autódromos e veículos GLB no mundo unificado",
-      "sha256Body": "73ed9bfb350cb21ba87e5972de70ff66e106acb785943bfd9568d898bbcea2fe"
+      "sha256Body": "df8f5c1ba823336052d325f17a04f5c548b3ccb1333978999a6ffe725346e806"
     }
   ],
   "styles": [

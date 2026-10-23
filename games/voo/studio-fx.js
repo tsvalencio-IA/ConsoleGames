@@ -18,7 +18,7 @@
     const A=window.AudioContext||window.webkitAudioContext;
     if(!A)return null;
     try{
-      if(!context.ctx)context.ctx=new A();
+      if(!context.ctx)context.ctx=window.GameAudio?.context() || new A();
       if(context.ctx.state==="suspended")context.ctx.resume().catch(()=>{});
       return context.ctx;
     }catch{return null}
@@ -92,9 +92,9 @@
       if(current.left>prev.left)cue("score",180);
       if(current.right>prev.right)cue("rival",180);
     }else if(gameId==="ar_truck_sim"){
-      if(current.shots>prev.shots)cue("jab",90);
+      if(current.shots>prev.shots&&!window.GameAudio)cue("jab",90);
       if(current.kills>prev.kills)cue("collect",180);
-      if(current.reloads>prev.reloads)cue("dock",300);
+      if(current.reloads>prev.reloads&&!window.GameAudio)cue("dock",300);
       if(current.hp+2<prev.hp)cue("impact",230);
     }else if(gameId==="usarmy_flight_sim"){
       if(current.hp+3<prev.hp)cue("impact",240);

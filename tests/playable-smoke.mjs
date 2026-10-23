@@ -6,7 +6,8 @@ import {mkdirSync} from "node:fs";
 import {join} from "node:path";
 import {touchSession} from "./helpers/touch-session.mjs";
 const base="http://127.0.0.1:4173/games/";
-const catalog=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
+const allScenarios=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
+const catalog=allScenarios.filter(([slug])=>!process.env.ARCADE_QA_GAMES||process.env.ARCADE_QA_GAMES.split(',').includes(slug));
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
@@ -416,14 +417,13 @@ try{
         await page.waitForFunction(()=>document.querySelector('.flight-input [data-control="start"]')?.hidden,{timeout:4000});
       }
     }
-    const mastery=page.locator("#studio-mastery-toggle");
-    await mastery.waitFor({state:"visible",timeout:5000});
-    assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel ocupa espaço sem solicitação");
-    await mastery.click({timeout:4000});
-    assert.equal(await mastery.getAttribute("aria-expanded"),"true","Missões não expandem");
-    assert.equal(await page.locator("#studio-mastery-list .studio-mastery-task").count(),3,"Faltam 3 objetivos por jogo");
-    await mastery.click({timeout:4000});
-    assert.equal(await page.locator("#studio-mastery-list").isVisible(),false,"Painel não recolhe");
+    assert.equal(await page.locator('#studio-mastery-toggle').isVisible(),false,'Career overlay must not cover the action');
+    await page.locator('#arcade-pause').click();
+    await page.locator('#arcade-pause-modal [data-action="career"]').click();
+    assert.equal(await page.locator('#arcade-pause-modal [data-career-panel] .studio-mastery-task').count(),3,'All three native career objectives remain accessible');
+    await page.locator('#arcade-pause-modal [data-action="career"]').click();
+    assert.equal(await page.locator('#arcade-pause-modal [data-career-panel]').isVisible(),false);
+    await page.locator('#arcade-pause-modal [data-action="continue"]').click();
     // Authenticated actual gameplay: player can toggle contextual Studio effects.
     const audioControl=page.locator("#studio-audio-switch");
     await audioControl.waitFor({state:"attached",timeout:5000});

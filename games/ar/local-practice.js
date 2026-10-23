@@ -28,7 +28,7 @@
     save(){
       if(!this.active||!window.Profile)return;
       const p=window.Profile;
-      try{localStorage.setItem(key,JSON.stringify({version:1,username:p.username,xp:p.xp,level:p.level,coins:p.coins,arSave:p.arSave}));}catch{}
+      try{localStorage.setItem(key,JSON.stringify({version:1,username:p.username,playerId:window.System?.playerId,xp:p.xp,level:p.level,coins:p.coins,arSave:p.arSave}));}catch{}
       p.updateUI?.();
     },
     async enter(name){
@@ -41,7 +41,8 @@
       Object.assign(p,{username:String(name||data.username||'Jogador local').slice(0,32),role:'player',xp:Math.max(0,Number(data.xp)||0),level:Math.max(1,Math.min(100,Number(data.level)||1)),coins:Math.max(0,Number(data.coins)||0),permissions:{[id]:true}});
       p.arSave=data.arSave&&typeof data.arSave==='object'?data.arSave:{upgrades:{engine:1,battery:1,radar:1,chassis:1,scout:false}};
       await window.onload?.(); // Original canvas, detector and resize setup; auth is skipped only for this local session.
-      s.playerId='local-'+crypto.randomUUID();
+      s.playerId=/^local-[a-zA-Z0-9-]{16,80}$/.test(data.playerId||'')?data.playerId:'local-'+crypto.randomUUID();
+      this.save();
       for(const name of ['loading','auth-screen','menu-screen','result-screen','game-ui'])$('#'+name)?.classList.add('hidden');
       entry?.remove();entry=null;
       hookResult();p.updateUI();s.openPhases(game);
@@ -50,6 +51,13 @@
         label.style.cssText='display:block;pointer-events:none;color:#c8ead7;margin:0 0 10px;font:700 11px system-ui;text-align:center';$('#phase-grid').before(label);
       }
       if(venue)venueMessage('ot-venue-playing');
+    },
+    account(){
+      this.save();window.System?.stopGame();this.active=false;window.DB=cloudDB;
+      if(savedProfile)Object.assign(window.Profile,savedProfile);
+      $('#solo-indicator')?.remove();
+      for(const name of ['loading','phase-screen','menu-screen','game-ui','result-screen'])$('#'+name)?.classList.add('hidden');
+      $('#auth-screen')?.classList.remove('hidden');window.onload?.();
     },
     leave(){
       if(!this.active)return;
@@ -67,7 +75,7 @@
     if(resultHooked)return;resultHooked=true;
     const original=window.System.gameOver;
     window.System.gameOver=function(score,won=true,coins=0){
-      const system=window.System,game=system.activeGame,valid=practice.active&&game?.id===id&&!system.resultLocked&&Number.isFinite(score);
+      const system=window.System,game=system.activeGame,valid=(practice.active||venue)&&game?.id===id&&!system.resultLocked&&Number.isFinite(score);
       const result=original.call(system,score,won,coins);
       if(valid){practice.save();if(venue)venueMessage('ot-venue-result',{score:Math.floor(score),won:!!won});}
       return result;
@@ -78,7 +86,7 @@
     if(id==='tennis'&&typeof tennis?.recordResult==='function'){
       const record=tennis.recordResult;
       tennis.recordResult=function(...args){
-        const valid=practice.active&&!this.resultRecorded&&!this.isOnline&&window.System.activeGame?.logic===this&&
+        const valid=(practice.active||venue)&&!this.resultRecorded&&window.System.activeGame?.logic===this&&
           Number.isFinite(this.score?.p1)&&Number.isFinite(this.score?.p2)&&Math.max(this.score.p1,this.score.p2)>=11&&Math.abs(this.score.p1-this.score.p2)>=2;
         const result=record.apply(this,args);
         if(valid&&this.resultRecorded){practice.save();if(venue)venueMessage('ot-venue-result',{score:Math.floor(this.score.p1*100),won:this.score.p1>this.score.p2});}
@@ -104,7 +112,10 @@
     const header=document.createElement('header');header.id='venue-trip-header';header.style.cssText='position:fixed;inset:0 0 auto;min-height:48px;box-sizing:border-box;z-index:20000;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 10px;background:#213e51;color:#f1f6ee;font:700 12px system-ui';
     const title=document.createElement('span');title.textContent=trip.label;
     const back=document.createElement('button');back.type='button';back.dataset.venueReturn='';back.textContent='VOLTAR AO MUNDO';back.style.cssText='min-height:40px;border:1px solid #8dc6bc;border-radius:9px;padding:6px 10px;background:#305e6a;color:#fff;font:800 11px system-ui';
-    back.onclick=()=>{practice.save();window.System?.stopGame();returnToWorld();};header.append(title,back);document.body.append(header);
+    back.onclick=()=>{practice.save();window.System?.stopGame();returnToWorld();};const account=document.createElement('button');account.type='button';account.dataset.venueAccount='';account.textContent='CONTA ONLINE';account.style.cssText=back.style.cssText;
+    title.style.cssText='flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+    account.onclick=async()=>{if(practice.active){practice.account();account.textContent='JOGAR SOLO';}else{await practice.enter(trip.name);account.textContent='CONTA ONLINE';}};
+    header.append(title,account,back);document.body.append(header);
     document.querySelectorAll('.arcade-return').forEach(el=>el.hidden=true);
     const resize=window.System.resize;window.System.resize=()=>{resize();const r=surface.getBoundingClientRect();if(window.System.canvas){window.System.canvas.width=Math.round(r.width);window.System.canvas.height=Math.round(r.height);}};
     practice.enter(trip.name).catch(error=>show('Não foi possível preparar a atividade. Volte ao mundo e tente novamente.'));

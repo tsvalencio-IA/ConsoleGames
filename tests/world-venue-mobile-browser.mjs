@@ -5,7 +5,7 @@ const base=process.env.WORLD_QA_URL||'http://127.0.0.1:4173/games/otthi/',origin
 const browser=await chromium.launch({...browserNetwork(base),headless:true,args:[...(browserNetwork(base).proxy?['--ignore-certificate-errors']:[]),'--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 fs.mkdirSync('test-results/venue-mobile',{recursive:true});const results=[];
 try{
- for(const scenario of [{id:'pingpong',slug:'tenis',game:'tennis',position:{x:48,z:10},portrait:true},{id:'boxing',slug:'boxe',game:'box_pro',position:{x:46,z:-12},portrait:false},{id:'pingpong',slug:'tenis',game:'tennis',position:{x:48,z:10},desktop:true,failFrame:true}]){
+ for(const scenario of [{id:'pingpong',slug:'tenis',game:'tennis',position:{x:48,z:10},portrait:true},{id:'boxing',slug:'boxe',game:'box_pro',position:{x:46,z:-48},portrait:false},{id:'pingpong',slug:'tenis',game:'tennis',position:{x:48,z:10},desktop:true,failFrame:true}]){
   const label=scenario.desktop?'desktop-failed-frame':scenario.slug+'-'+(scenario.portrait?'portrait':'landscape');
   if(process.env.VENUE_QA_CASES&&!process.env.VENUE_QA_CASES.split(',').includes(label))continue;
   const context=await browser.newContext({...browserContextNetwork(base),serviceWorkers:scenario.failFrame?'block':'allow',viewport:scenario.desktop?{width:1024,height:768}:scenario.portrait?{width:393,height:852}:{width:852,height:393},deviceScaleFactor:scenario.desktop?1:3,isMobile:!scenario.desktop,hasTouch:!scenario.desktop});

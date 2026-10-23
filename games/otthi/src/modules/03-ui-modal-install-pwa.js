@@ -59,7 +59,8 @@
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
-      const ctx = beep.ctx || (beep.ctx = new Ctx());
+      const ctx = beep.ctx?.state !== 'closed' && beep.ctx || (beep.ctx = window.GameAudio?.context() || new Ctx());
+      if(ctx.state !== 'running')ctx.resume().catch(()=>{});
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = type; osc.frequency.value = freq; gain.gain.value = .025;

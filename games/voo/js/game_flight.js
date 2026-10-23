@@ -111,7 +111,7 @@
         ctx: null, engineSrc: null, ready: false,
         init: function() {
             if (this.ready) return;
-            try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); this.ready = true; } catch(e) {}
+            try { this.ctx = window.GameAudio?.context() || new (window.AudioContext || window.webkitAudioContext)(); this.ready = true; } catch(e) {}
         },
         startEngine: function() {
             if (!this.ready || this.engineSrc || !this.ctx) return;
@@ -1298,8 +1298,9 @@
         updateAudio: function(){
             if(!GameSfx.ctx||!GameSfx.engineGain)return;
             const opts=window.ArcadePlaySettings?.get()||{},active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden,t=GameSfx.ctx.currentTime,power=this.pilot.throttle||0;
-            GameSfx.engineGain.gain.setTargetAtTime(active?(.065+power*.1+(this.ship.afterburner ? .035 : 0))*(opts.engineVolume??1):0,t,.1);
-            GameSfx.engineFilter.frequency.setTargetAtTime(220+power*700+Math.min(1500,this.ship.speed*1.3),t,.16);
+            const rotor=this.isHelicopter(),pulse=rotor?.62+.38*Math.pow(Math.sin(t*45),2):1;
+            GameSfx.engineGain.gain.setTargetAtTime(active?(.065+power*.1+(this.ship.afterburner ? .035 : 0))*pulse*(opts.engineVolume??1):0,t,rotor?.012:.1);
+            GameSfx.engineFilter.frequency.setTargetAtTime(rotor?260+power*260:220+power*700+Math.min(1500,this.ship.speed*1.3),t,.16);
         },
         _updateView: function(w,h){
             const opts=window.ArcadePlaySettings?.get()||{},p=this.ship;
@@ -1704,6 +1705,21 @@
             });
         },
         
+        _drawFlightInstruments: function(ctx,w,h){
+            const p=this.ship,compact=w<=720||h<=500,cx=w/2,cy=compact?112:83,r=compact?20:25;
+            ctx.save();ctx.translate(cx,cy);ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.clip();
+            ctx.rotate(-p.roll);const pitch=Math.max(-1.2,Math.min(1.2,p.pitch))*r;
+            ctx.fillStyle='rgba(30,84,112,.8)';ctx.fillRect(-r*2,-r*3,r*4,r*3+pitch);
+            ctx.fillStyle='rgba(108,85,54,.8)';ctx.fillRect(-r*2,pitch,r*4,r*3);
+            ctx.strokeStyle='#d7eee5';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-r*2,pitch);ctx.lineTo(r*2,pitch);ctx.stroke();
+            for(const mark of [-.5,.5]){ctx.beginPath();ctx.moveTo(-r*.4,pitch+mark*r);ctx.lineTo(r*.4,pitch+mark*r);ctx.stroke();}ctx.restore();
+            ctx.save();ctx.translate(cx,cy);ctx.strokeStyle='#b8d8d5';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();
+            ctx.strokeStyle='#f6da88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-r*.65,0);ctx.lineTo(-r*.2,0);ctx.lineTo(0,3);ctx.lineTo(r*.2,0);ctx.lineTo(r*.65,0);ctx.stroke();
+            ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillStyle='#e0f3e7';const climb=Number(p.vy)||0;
+            ctx.fillText((climb>=0?'+':'')+climb.toFixed(1)+' m/s',0,r+13);
+            if(this.isHelicopter()&&p.speed<4&&Math.abs(climb)<1)ctx.fillText('PAIRANDO',0,r+25);
+            ctx.restore();
+        },
         _drawHUD: function(ctx,w,h){
             let p = this.ship;
             
@@ -1721,8 +1737,8 @@
                 ctx.fillText('VELOCIDADE',8+px/2,cardY+12);
                 ctx.fillText('ALTITUDE',rightX+px/2,cardY+12);
                 ctx.fillStyle='#f4ffff';ctx.font='bold 14px Arial';
-                ctx.fillText(String(Math.max(0,Math.round(p.speed*3.6))),8+px/2,cardY+27);
-                ctx.fillText(String(Math.round(p.y)),rightX+px/2,cardY+27);
+                ctx.fillText(String(Math.max(0,Math.round(p.speed*3.6)))+' km/h',8+px/2,cardY+27);
+                ctx.fillText(String(Math.round(p.y))+' m',rightX+px/2,cardY+27);
                 ctx.restore();
             } else {
             ctx.fillStyle='rgba(0,20,10,0.5)'; ctx.fillRect(10, h/2 - 120, 50, 240);
@@ -1748,6 +1764,7 @@
 
             }
 
+            this._drawFlightInstruments(ctx,w,h);
             ctx.save();ctx.fillStyle='#b5e5ff';ctx.font='bold 11px Arial';ctx.textAlign=this.isHelicopter()?'left':'center';ctx.fillText((this.isHelicopter()?'COLETIVO ':'POTÊNCIA ')+Math.round(this.pilot.throttle*100)+'%'+(this.isHelicopter()?' · 50% PAIRA':''),this.isHelicopter()?14:w/2,this.isHelicopter()?h-Math.min(182,h*.46):h-28,this.isHelicopter()?Math.max(140,w*.48):w-30);ctx.restore();
             let hdg=(p.yaw*180/Math.PI)%360;if(hdg<0)hdg+=360;
             ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(0,0,w,50);

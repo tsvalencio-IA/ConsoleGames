@@ -24,11 +24,11 @@ jobs:
           gradle-version: '8.7'
       - name: Compilar aplicativo e teste Android
         working-directory: android
-        run: gradle --no-daemon assembleRelease assembleDebug assembleDebugAndroidTest lintRelease
+        run: gradle --no-daemon assembleRecoveryRelease assembleRecoveryDebug assembleRecoveryDebugAndroidTest lintRecoveryRelease
       - name: Preparar APK sem chave privada no CI
         run: |
           mkdir -p android-delivery
-          cp android/app/build/outputs/apk/release/app-release-unsigned.apk android-delivery/arcade-unsigned.apk
+          cp android/app/build/outputs/apk/recovery/release/app-recovery-release-unsigned.apk android-delivery/arcade-unsigned.apk
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" android-delivery/apksigner.jar
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging android-delivery/arcade-unsigned.apk > android-delivery/apk-manifest.txt
           sha256sum android-delivery/arcade-unsigned.apk > android-delivery/SHA256SUMS
@@ -54,8 +54,8 @@ jobs:
             adb shell pidof br.com.thiaguinhosolucoes.arcade
             adb exec-out screencap -p > android-delivery/android-signed-release.png
             adb uninstall br.com.thiaguinhosolucoes.arcade
-            adb install android/app/build/outputs/apk/debug/app-debug.apk
-            adb install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+            adb install android/app/build/outputs/apk/recovery/debug/app-recovery-debug.apk
+            adb install android/app/build/outputs/apk/androidTest/recovery/debug/app-recovery-debug-androidTest.apk
             adb shell am instrument -w br.com.thiaguinhosolucoes.arcade.test/br.com.thiaguinhosolucoes.arcade.ArcadeSmoke | tee android-delivery/android-install-test.txt
             adb pull /sdcard/Android/data/br.com.thiaguinhosolucoes.arcade/files android-delivery/screenshots || true
             adb logcat -d -s AndroidRuntime chromium WebViewFactory > android-delivery/android-webview.log

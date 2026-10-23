@@ -63,13 +63,14 @@ class CameraSession{
    this.worker=new Worker(new URL('hand-tracker-worker.js',handRoot));
    this.worker.onmessage=({data})=>{
     if(this.disposed)return;
-    if(data.type==='ready'){clearTimeout(this.loadTimer);this.ready=true;this.status.textContent='Mostre somente a mão direita. Fique na posição de jogo.';}
+    if(data.type==='ready'){clearTimeout(this.loadTimer);this.ready=true;this.busy=false;this.delegate=data.delegate;this.status.textContent='Mostre somente a mão direita. Fique na posição de jogo.';}
+    if(data.type==='recovering'){this.ready=false;this.busy=false;this.release();this.status.textContent=data.message;}
     if(data.type==='error')this.fail(data.message);
     if(data.type==='result'){
-     this.busy=false;this.lastInferenceMs=performance.now()-data.timestamp;this.lastComputeMs=data.inferenceMs;this.lastHandCount=data.landmarks?.length||0;if(this.inflightSerial!==this.serial||document.hidden||this.paused()||!this.focused)return;
+     this.busy=false;this.lastInferenceMs=performance.now()-data.timestamp;this.lastComputeMs=data.inferenceMs;this.frameSent=0;this.lastHandCount=data.landmarks?.length||0;if(this.inflightSerial!==this.serial||document.hidden||this.paused()||!this.focused)return;
      // Inference latency must not turn an old camera image into a valid shot.
      this.controller.maxAge=Math.min(550,Math.max(300,(data.inferenceMs||0)*1.6+80));
-     if(performance.now()-data.timestamp>this.controller.maxAge){this.release();return;}
+     if(performance.now()-data.timestamp>(this.controller.state==='calibrating'?1800:this.controller.maxAge)){this.release();return;}
      const aim=this.controller.consume(data,data.timestamp);this.landmarks=data.landmarks;this.game.handAim=aim;
      if(this.controller.state==='ready'&&this.game.state==='HAND_CALIBRATION'){
       this.game.state='PLAYING';this.game.lastTime=performance.now();this.root.classList.remove('calibrating');this.root.setAttribute('role','region');this.root.removeAttribute('aria-modal');
@@ -78,27 +79,28 @@ class CameraSession{
    };
    this.worker.onerror=()=>this.fail('Não foi possível iniciar o reconhecimento.');
    this.loadTimer=setTimeout(()=>this.fail('O reconhecimento demorou para carregar. Tente calibrar novamente.'),60000);
-   this.worker.postMessage({type:'init'});this.tick();
+   this.worker.postMessage({type:'init',delegate:this.forceCPU?'CPU':undefined});this.tick();
   }catch(error){this.fail(error.message);}
  }
  tick(){
   if(this.disposed)return;this.raf=requestAnimationFrame(()=>this.tick());
-  const now=performance.now(),video=this.host?.video,paused=document.hidden||this.paused()||!this.focused;
+  const now=performance.now(),video=this.host?.video;
+  if(document.hasFocus?.())this.focused=true;
+  const paused=document.hidden||this.paused()||!this.focused;
+  if(this.busy&&this.frameSent&&now-this.frameSent>7000){this.fail('O reconhecimento parou de responder.');return;}
+  if(video&&!video.classList.contains('war-camera-source')){video.classList.add('war-camera-source');if(!video.isConnected)document.body.append(video);}
+  if(video?.paused&&!paused&&video.srcObject?.active&&!this.videoRestart){this.videoRestart=true;Promise.resolve(video.play()).catch(()=>this.fail('A câmera foi interrompida.')).finally(()=>this.videoRestart=false);}
   this.root.hidden=!['PLAYING','HAND_CALIBRATION'].includes(this.game.state);
   this.game.handAim=this.controller.read(now);
   if(video?.readyState>=2&&!paused){
+   const ctx=this.canvas.getContext('2d',{willReadFrequently:true});ctx.save();
+   const vw=video.videoWidth||320,vh=video.videoHeight||240,fit=Math.min(320/vw,240/vh),dw=vw*fit,dh=vh*fit;
+   ctx.fillStyle='#102732';ctx.fillRect(0,0,320,240);ctx.drawImage(video,0,0,vw,vh,(320-dw)/2,(240-dh)/2,dw,dh);
    const due=this.ready&&!this.busy&&now>=this.nextFrame&&video.currentTime!==this.lastVideo;
-   const preview=this.controller.state==='calibrating'&&now>=(this.nextPreview||0);let rawFrame=null;
-   // The preview is hidden after calibration. Copying the video and drawing its
-   // skeleton at every render frame wastes the same CPU needed by inference.
-   if(due||preview){
-    const ctx=this.canvas.getContext('2d',{willReadFrequently:true});ctx.save();ctx.drawImage(video,0,0,320,240);
-    if(due)rawFrame=ctx.getImageData(0,0,320,240);
-    if(preview){this.nextPreview=now+100;ctx.lineWidth=2;ctx.strokeStyle='#8bf4c2';for(const hand of this.landmarks||[])for(const line of connections){ctx.beginPath();line.forEach((i,j)=>j?ctx.lineTo(hand[i].x*320,hand[i].y*240):ctx.moveTo(hand[i].x*320,hand[i].y*240));ctx.stroke();}}
-    ctx.restore();
-   }
+   const rawFrame=due?ctx.getImageData(0,0,320,240):null;
+   ctx.lineWidth=2;ctx.strokeStyle='#8bf4c2';for(const hand of this.landmarks||[])for(const line of connections){ctx.beginPath();line.forEach((i,j)=>j?ctx.lineTo(hand[i].x*320,hand[i].y*240):ctx.moveTo(hand[i].x*320,hand[i].y*240));ctx.stroke();}ctx.restore();
    if(due){
-    this.busy=true;this.lastVideo=video.currentTime;this.nextFrame=now+80;this.inflightSerial=this.serial;
+    this.busy=true;this.frameSent=now;this.lastVideo=video.currentTime;this.nextFrame=now+80;this.inflightSerial=this.serial;
     try{
      const pixels=rawFrame;this.worker.postMessage({type:'frame',pixels:pixels.data.buffer,width:320,height:240,timestamp:now},[pixels.data.buffer]);
     }catch{this.busy=false;this.release();}
@@ -110,11 +112,11 @@ class CameraSession{
    this.root.classList.toggle('hand-lost',!this.game.handAim.fresh);
   }
  }
- fail(message){this.error=true;this.ready=false;this.status.textContent=message+' Use os controles ou tente novamente.';this.release();clearTimeout(this.loadTimer);this.worker?.terminate();}
+ fail(message){this.error=true;this.ready=false;this.busy=false;this.status.textContent=message+' Toque em CALIBRAR NOVAMENTE ou USAR CONTROLES.';this.release();clearTimeout(this.loadTimer);this.worker?.terminate();if(['PLAYING','HAND_CALIBRATION'].includes(this.game.state)){this.game.state='HAND_CALIBRATION';this.root.classList.add('calibrating');this.root.setAttribute('role','dialog');this.root.setAttribute('aria-modal','true');}}
  recalibrate(){
   if(!['PLAYING','HAND_CALIBRATION'].includes(this.game.state))return;
   this.release();this.controller.reset();this.game.handAim=this.controller.aim;this.game.handLock=null;this.game.state='HAND_CALIBRATION';this.root.classList.add('calibrating');this.root.setAttribute('role','dialog');this.root.setAttribute('aria-modal','true');
-  if(this.error){this.error=false;this.worker?.terminate();cancelAnimationFrame(this.raf);this.start();}
+  if(this.error){this.error=false;this.forceCPU=true;this.worker?.terminate();cancelAnimationFrame(this.raf);this.start();}
  }
  manual(){
   const game=this.game;this.dispose();game.handSession=null;game.handAim=null;if(['PLAYING','HAND_CALIBRATION'].includes(game.state))game.state='PLAYING';game.lastTime=performance.now();

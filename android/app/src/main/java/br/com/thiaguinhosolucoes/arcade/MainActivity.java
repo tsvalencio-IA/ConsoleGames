@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 /** The seven existing games run on their original HTTPS origin and keep their saves. */
 public final class MainActivity extends Activity {
-    public static final String CONSOLE_URL = "https://tsvalencio-ia.github.io/ConsoleGames/arcade/?android=1";
+    public static final String CONSOLE_URL = BuildConfig.CONSOLE_URL;
     private static final int CAMERA_REQUEST = 71;
     WebView webView;
     private ProgressBar progress;
@@ -37,11 +37,15 @@ public final class MainActivity extends Activity {
 
     static boolean isConsoleOrigin(Uri uri) {
         return uri != null && "https".equals(uri.getScheme())
-                && "tsvalencio-ia.github.io".equals(uri.getHost())
+                && ("tsvalencio-ia.github.io".equals(uri.getHost())
+                    || ("recovery".equals(BuildConfig.FLAVOR) && "otthi-world-campanha-teste.vercel.app".equals(uri.getHost())))
                 && (uri.getPort() == -1 || uri.getPort() == 443);
     }
     static boolean isGameUrl(Uri uri) {
-        return isConsoleOrigin(uri) && uri.getPath() != null && uri.getPath().startsWith("/ConsoleGames/");
+        if(!isConsoleOrigin(uri) || uri.getPath()==null)return false;
+        if("tsvalencio-ia.github.io".equals(uri.getHost()))return uri.getPath().startsWith("/ConsoleGames/");
+        String path=uri.getPath();
+        return path.equals("/") || path.startsWith("/arcade/") || path.startsWith("/games/");
     }
     @SuppressLint("SetJavaScriptEnabled")
     @Override public void onCreate(Bundle savedState) {
@@ -88,6 +92,12 @@ public final class MainActivity extends Activity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         CookieManager.getInstance().setAcceptCookie(true);
+        webView.setDownloadListener((url,agent,disposition,mime,length) -> {
+            Uri uri=Uri.parse(url);
+            if(isGameUrl(uri) && uri.getPath().endsWith(".apk")) {
+                try {startActivity(new Intent(Intent.ACTION_VIEW,uri));} catch(Exception ignored) { }
+            }
+        });
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 if(!request.isForMainFrame()) return false;

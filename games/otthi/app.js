@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.17.2-venue-mobile';
+  const OTTHI_GAME_WEB_BUILD = '705.18.0-original-games';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -839,7 +839,8 @@
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return;
-      const ctx = beep.ctx || (beep.ctx = new Ctx());
+      const ctx = beep.ctx?.state !== 'closed' && beep.ctx || (beep.ctx = window.GameAudio?.context() || new Ctx());
+      if(ctx.state !== 'running')ctx.resume().catch(()=>{});
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = type; osc.frequency.value = freq; gain.gain.value = .025;
@@ -1634,7 +1635,7 @@
       costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1}
     }),
     activityVenues:Object.freeze({
-      boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-20,w:14,d:12,navX:46,navZ:-12,face:1,slug:'boxe'},
+      boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-56,w:14,d:12,navX:46,navZ:-48,face:1,slug:'boxe'},
       dance:{id:'dance',label:'Academia de Dança',activity:'Dança',icon:'🎵',x:-38,z:-18,w:12,d:12,navX:-38,navZ:-10,face:1},
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
@@ -1724,13 +1725,13 @@
       OV22:{x:-88,z:-132},
       OV23:{x:-48,z:-145},
       OV24:{x:-15,z:-130},OVN1:{x:0,z:132},
-      V_GYM_TURN:{x:46,z:0},VB_GATE:{x:46,z:-12},VD_GATE:{x:-38,z:-10},VP_GATE:{x:48,z:10},
+      V_GYM_TURN:{x:46,z:0},VB_TURN:{x:65,z:-48},VB_GATE:{x:46,z:-48},VD_GATE:{x:-38,z:-10},VP_GATE:{x:48,z:10},
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
       ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
-      ['H25E','V_GYM_TURN'],['V_GYM_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['H25W','VD_GATE'],
+      ['H25E','V_GYM_TURN'],['E65S','VB_TURN'],['VB_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['H25W','VD_GATE'],
       ['OV20','CQ_TURN'],['CQ_TURN','CQ_GATE'],['OV1','CA_TURN'],['CA_TURN','CA_GATE'],['OV10','CN_GATE'],
       ['VS','V65S'],['V65S','V18S'],['V18S','C'],['C','V18N'],['V18N','V58N'],['V58N','VN'],
       ['HW','H55W'],['H55W','H25W'],['H25W','C'],['C','H25E'],['H25E','H65E'],['H65E','H88E'],['H88E','HE'],
@@ -1788,7 +1789,7 @@
     paths:Object.freeze([
       {id:'costa-autodromo-acesso',x1:-300,z1:-150,x2:-300,z2:-156,w:3.2,destination:'circuit-costa'},
       {id:'ginasios-acesso',x1:25,z1:0,x2:46,z2:0,w:2.6,destination:'venue-boxing'},
-      {id:'academia-luta-acesso',x1:46,z1:0,x2:46,z2:-12,w:2.6,destination:'venue-boxing'},
+      {id:'academia-luta-acesso',x1:65,z1:-48,x2:46,z2:-48,w:2.6,destination:'venue-boxing'},
       {id:'academia-danca-acesso',x1:-25,z1:0,x2:-38,z2:-10,w:2.6,destination:'venue-dance'},
       {id:'ginasio-pingpong-acesso',x1:46,z1:0,x2:48,z2:10,w:2.6,destination:'venue-pingpong'},
       {id:'quartel-acesso-a',x1:-150,z1:-72,x2:-145,z2:-38,w:3.2,destination:'campaign-hq'},
@@ -1839,7 +1840,8 @@
       {id:'aurora-block-1',kind:'city',x:332,z:-65,w:23,d:22,margin:.5},
       {id:'aurora-block-0',kind:'city',x:268,z:-65,w:23,d:22,margin:.5},
       {id:'circuit-costa',kind:'kart',x:-300,z:-210,w:108,d:96,margin:.4},
-      {id:'venue-boxing',kind:'activity',x:46,z:-20,w:14,d:12,margin:.4},
+      {id:'venue-boxing',kind:'activity',x:46,z:-56,w:14,d:12,margin:.4},
+      {id:'workshop-yard',kind:'workshop-yard',x:43.9,z:-18,w:23,d:18,margin:0,allowedRoads:['avenida-central-ew']},
       {id:'venue-dance',kind:'activity',x:-38,z:-18,w:12,d:12,margin:.4},
       {id:'venue-pingpong',kind:'activity',x:48,z:18,w:14,d:12,margin:.4},
       {id:'campaign-hq',kind:'campaign',x:-120,z:-54,w:30,d:24,margin:.4},
@@ -4058,14 +4060,9 @@
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
     if(Math.hypot(player.x-k.entrance.x,player.z-k.entrance.z)>10){setWaypoint('circuit-'+k.id);toast('Siga até a entrada do autódromo para correr.','info',2500);return;}
-    openModal('🏁 '+k.label,'<p>Três voltas, três adversários e turbo. Escolha o auxílio antes de alinhar.</p><label>Direção assistida <select id="worldRaceAssist"><option value="off">Desligada</option><option value="light">Leve</option><option value="normal">Normal</option><option value="strong">Forte</option></select></label><label>Dificuldade <select id="worldRaceDifficulty"><option value="easy">Iniciante</option><option value="normal">Normal</option><option value="hard">Difícil</option></select></label><p>O auxílio ajuda nas curvas. Você controla a aceleração e pode corrigir a direção.</p><div class="button-grid"><button id="kartSoloV705" class="primary">CORRIDA SOLO</button><button id="kartOnlineV705">CORRIDA ONLINE</button></div>',root=>{
-      root.querySelector('#worldRaceAssist').value=SPORTS_V705.assist;
-      const settings=()=>{SPORTS_V705.assist=root.querySelector('#worldRaceAssist').value;SPORTS_V705.difficulty=root.querySelector('#worldRaceDifficulty').value;};
-      root.querySelector('#kartSoloV705').onclick=()=>{settings();closeModal();startKartRaceV704('solo');};
-      if(k.id!=='aurora')root.querySelector('#kartOnlineV705').textContent='ONLINE EM NOVA AURORA';
-      root.querySelector('#kartOnlineV705').onclick=async e=>{if(k.id!=='aurora'){closeModal();setWaypoint('circuit-aurora');toast('Encontre os outros jogadores no Autódromo Nova Aurora.','info',3000);return;}settings();const b=e.currentTarget;b.disabled=true;b.textContent='CONECTANDO…';const result=await multiplayerV2PrepareSport('kart');if(result?.ok){closeModal();startKartRaceV704('online');}else{b.disabled=false;b.textContent='CORRIDA ONLINE';toast(result?.error||'Não foi possível conectar.','warn',3000);}};
-    });
+    closeModal();venueOpen('kart-'+k.id);
   }
+
   function v705KartAssist(dt,manual){
     const k=SPORTS_V705.kart,car=player.car;if(!k?.active||!player.vehicle||k.countdown>0||!k.assist||k.assist==='off'||Math.abs(car.speed)<.5)return;
     const track=v705KartContinuousProgress(k),length=k.curve.getLength(),look=k.curve.getPointAt((track.t+(3+Math.abs(car.speed)*.24)/length)%1),desired=Math.atan2(look.x-player.x,look.z-player.z),error=Math.atan2(Math.sin(desired-car.heading),Math.cos(desired-car.heading));
@@ -6092,7 +6089,7 @@
     if(!state.settings.sound||engineAudio)return;
     try{
       const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)return;
-      const ctx=beep.ctx||(beep.ctx=new Ctx());
+      const ctx=beep.ctx||(beep.ctx=window.GameAudio?.context()||new Ctx());
       const osc=ctx.createOscillator(),gain=ctx.createGain();
       osc.type='sawtooth';osc.frequency.value=65;gain.gain.value=0;
       osc.connect(gain);gain.connect(ctx.destination);osc.start();
@@ -7795,6 +7792,18 @@
     if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}toast('Bem-vindo à Vila do Sol!','good',2200);
   }
 
+  let consoleLeaving=false;
+  window.OTTHI_NAVIGATION={async toConsole(){
+    if(consoleLeaving)return;consoleLeaving=true;
+    try{
+      clearMovementInputs();
+      if(otGames.active)otGamesLeave({preserveCampaign:true});
+      if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
+      savePlayerPosition(true);await saveState(true);
+      location.assign(new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
+    }catch(error){consoleLeaving=false;toast('Não foi possível guardar a saída. Tente novamente.','warn',2500);}
+  }};
+
   // ===== MODULE: 30-pause-tests-public-api-bootstrap.js =====
   function stopGame(){
     if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
@@ -9300,9 +9309,11 @@
   function otGamesSegmentDistance(a,b,p){const d=new THREE.Vector3(b.x-a.x,b.y-a.y,b.z-a.z),r=new THREE.Vector3(p.x-a.x,p.y-a.y,p.z-a.z),t=clamp(r.dot(d)/Math.max(.001,d.lengthSq()),0,1);return new THREE.Vector3(a.x,a.y,a.z).addScaledVector(d,t).distanceTo(new THREE.Vector3(p.x,p.y,p.z));}
   function otGamesShot(origin,direction,enemy=false){
     const mesh=otGamesMesh('round',enemy?'#ff7a54':'#ffe5a0',origin.x,origin.y,origin.z,.07,.07,.24,otGames.group),speed=enemy?30:180;
+    if(state.settings?.sound!==false)window.GameAudio?.effect(enemy?'smg':otGames.mode==='ground'?'rifle':'marksman',enemy?.18:.7);
     otGames.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:direction.x*speed,vy:direction.y*speed,vz:direction.z*speed,life:enemy?5:2,enemy,damage:otGames.mode==='plane'?110:otGames.mode==='helicopter'?65:50,mesh});
   }
   function otGamesExplosion(e){
+    if(state.settings?.sound!==false)window.GameAudio?.effect(e.kind==='tank'?'explosion':'impact',.8);
     const g=otGames;for(let i=0;i<14;i++){const mesh=otGamesMesh('round',i<4?'#ffb357':'#38464a',e.x,e.y,e.z,.2,.2,.2,g.group);g.effects.push({mesh,x:e.x,y:e.y,z:e.z,vx:Math.cos(i*2)*4,vy:2+(i%4),vz:Math.sin(i*2)*4,age:0,life:i<4?.7:6,smoke:i>=4});}
     if(e.kind==='tank'){
       // Nearby original OT traffic brakes; its prior hold is restored on exit.
@@ -9347,12 +9358,12 @@
   }
   function otGamesDisposeGroup(group){if(!group)return;const geometries=new Set(),materials=new Set();group.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.add(m);});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());group.parent?.remove(group);}
   function otGamesLeave(options={}){
-    const g=otGames;if(!g.active)return;if(typeof campaignAbort==='function')campaignAbort({preserve:options?.preserveCampaign===true});g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;otGamesClearInput();g.lookCleanup?.();g.lookCleanup=null;g.inputResets=[];g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
+    const g=otGames;if(!g.active)return;if(typeof campaignAbort==='function')campaignAbort({preserve:options?.preserveCampaign===true});g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo?.remove();g.cameraVideo=null;otGamesClearInput();g.lookCleanup?.();g.lookCleanup=null;g.inputResets=[];g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
     playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
     g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
-  function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;}
+  function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;if(state.settings?.sound!==false)window.GameAudio?.effect('reload');}
   async function otGamesStartCamera(){
     const g=otGames;if(!g.active||g.mode!=='ground')return;if(g.handSession){g.handSession.recalibrate();return;}
     g.state='HAND_CALIBRATION';g.handMode=true;g.ui?.classList.add('ot-hands');otGamesClearInput();
@@ -9363,14 +9374,14 @@
       if(!current())return;
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
       if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
-      const video=g.cameraVideo=document.createElement('video');video.muted=true;video.playsInline=true;video.srcObject=stream;
+      const video=g.cameraVideo=document.createElement('video');video.muted=true;video.playsInline=true;video.autoplay=true;video.className='war-camera-source';document.body.append(video);video.srcObject=stream;
       await new Promise((resolve,reject)=>{
         let done=false;const events=['loadeddata','canplay','playing'],finish=error=>{if(done)return;done=true;clearTimeout(timer);for(const event of events)video.removeEventListener(event,frame);error?reject(error):resolve();},frame=()=>{if(video.readyState>=2)finish();};
         const timer=setTimeout(()=>finish(Error('A câmera não forneceu imagens.')),5000);for(const event of events)video.addEventListener(event,frame);Promise.resolve(video.play()).then(frame,error=>finish(error));
       });
       if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
-      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
-    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera frontal indisponível. Os controles continuam ativos.','warn',3000);}}
+      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());video.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
+    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo?.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera: '+(error?.message||'não foi possível iniciar')+'. Os controles continuam ativos.','warn',3000);}}
   }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');g.inputResets=[];g.aiming=false;root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
@@ -9890,9 +9901,9 @@
 
   // ===== MODULE: 45-world-activity-venues.js =====
   const worldVenues={ready:false,landmarks:[],session:null};
-  const WORLD_ACTIVITY_VENUES=WORLD_LAYOUT_V704.activityVenues;
+  const WORLD_ACTIVITY_VENUES=Object.freeze({...WORLD_LAYOUT_V704.activityVenues,...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
   function venueMapLocations(){return Object.values(WORLD_ACTIVITY_VENUES).map(v=>({id:'venue-'+v.id,name:v.label,icon:v.icon,group:'Esportes e dança',x:v.x,z:v.z,navX:v.navX,navZ:v.navZ,missionTarget:true,description:v.activity+' dentro do bairro. Vá até a entrada para jogar e depois continuar o passeio.',actions:['Marque a rota no GPS','Caminhe até a entrada','Use a ação Entrar']}));}
-  function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>O kartódromo, o estádio e as quadras também continuam no mapa.</p>';}
+  function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>Os autódromos abrem o mesmo Kart Legends do console. O estádio e as quadras continuam no mapa.</p>';}
   function venueBindDirectory(root){root.querySelectorAll('[data-venue-route]').forEach(b=>b.onclick=()=>setWaypoint('venue-'+b.dataset.venueRoute));}
   function venueCollider(v,x,z,w,d,height){const c={x:v.x+x,z:v.z+z*v.face,w,d,height,activityVenue:v.id};(worldVenues.colliders||(worldVenues.colliders=[])).push(c);world.colliders.push(c);}
   function venueDraw(v){
@@ -9926,7 +9937,7 @@
   function venueEnsure(){
     if(!running||!worldGroup)return;
     if(worldVenues.ready){for(const {root}of worldVenues.landmarks)if(root.parent!==worldGroup)worldGroup.add(root);for(const c of worldVenues.colliders||[])if(!world.colliders.includes(c))world.colliders.push(c);return;}
-    Object.values(WORLD_ACTIVITY_VENUES).forEach(venueDraw);world.navCache?.clear?.();worldVenues.ready=true;
+    Object.values(WORLD_LAYOUT_V704.activityVenues).forEach(venueDraw);world.navCache?.clear?.();worldVenues.ready=true;
   }
   function updateWorldVenues(){venueEnsure();for(const {root,venue}of worldVenues.landmarks)root.visible=Math.hypot(otGamesFocus().x-venue.x,otGamesFocus().z-venue.z)<170;}
   function venueRecordKey(){return 'thia:otthi:venues:v1:'+(state.profile?.playerId||'local');}
@@ -9941,7 +9952,7 @@
     const status=s.ui.querySelector('[data-venue-loading]');if(status)status.textContent='Abrindo '+s.venue.activity+'…';
     savePlayerPosition(true);await saveState(true);
     if(worldVenues.session!==s)return;
-    const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.id==='pingpong'?'tennis':'box_pro',label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
+    const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.venue.gameId||(s.id==='pingpong'?'tennis':'box_pro'),label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
     if(!trip){s.leaving=false;if(status)status.textContent='Não foi possível guardar o retorno. Volte ao mundo e tente novamente.';return;}
     s.cleanup?.();const url=new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
@@ -9956,7 +9967,7 @@
     if(id==='dance'){venueDanceMenu(s);return true;}
     // On phones the original activity owns the page. The city is saved before
     // leaving; it is not kept active behind a second browser document.
-    if((matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}
+    if(v.gameId==='drive'||(matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}
     const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{if(!frame.contentDocument?.documentElement){venueLaunchPage(s);return;}const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('A atividade não abriu no quadro:',e.message);venueLaunchPage(s);}});ui.querySelector('main').append(frame);
     const message=e=>{
       const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.token!==s.token)return;
@@ -10060,7 +10071,7 @@
   function expansionRepairParking(){
     const protectedRects=v704ProtectedRectangles(),roads=WORLD_LAYOUT_V704.roads.map(r=>v704RoadFootprint(r,true));
     for(const car of world.vehicles){
-      if(car.occupied||car.kind==='kart')continue;
+      if(car.occupied||car.kind==='kart'||car.workshopYardStatus)continue;
       const owned=state.vehicles?.owned?.includes(car.id),radius=car.radius||1.5;
       const valid=(x,z)=>!waterAt(x,z)&&!roads.some(r=>v704PointInRect({x,z},r,radius))&&!protectedRects.some(r=>!(r.kind==='garage'&&owned)&&v704PointInRect({x,z},r,1.3))&&!world.vehicles.some(o=>o!==car&&Math.hypot(x-o.group.position.x,z-o.group.position.z)<radius+(o.radius||1.4)+.35);
       const x=car.group.position.x,z=car.group.position.z;if(valid(x,z))continue;let point=null;

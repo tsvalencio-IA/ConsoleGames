@@ -78,14 +78,9 @@
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
     if(Math.hypot(player.x-k.entrance.x,player.z-k.entrance.z)>10){setWaypoint('circuit-'+k.id);toast('Siga até a entrada do autódromo para correr.','info',2500);return;}
-    openModal('🏁 '+k.label,'<p>Três voltas, três adversários e turbo. Escolha o auxílio antes de alinhar.</p><label>Direção assistida <select id="worldRaceAssist"><option value="off">Desligada</option><option value="light">Leve</option><option value="normal">Normal</option><option value="strong">Forte</option></select></label><label>Dificuldade <select id="worldRaceDifficulty"><option value="easy">Iniciante</option><option value="normal">Normal</option><option value="hard">Difícil</option></select></label><p>O auxílio ajuda nas curvas. Você controla a aceleração e pode corrigir a direção.</p><div class="button-grid"><button id="kartSoloV705" class="primary">CORRIDA SOLO</button><button id="kartOnlineV705">CORRIDA ONLINE</button></div>',root=>{
-      root.querySelector('#worldRaceAssist').value=SPORTS_V705.assist;
-      const settings=()=>{SPORTS_V705.assist=root.querySelector('#worldRaceAssist').value;SPORTS_V705.difficulty=root.querySelector('#worldRaceDifficulty').value;};
-      root.querySelector('#kartSoloV705').onclick=()=>{settings();closeModal();startKartRaceV704('solo');};
-      if(k.id!=='aurora')root.querySelector('#kartOnlineV705').textContent='ONLINE EM NOVA AURORA';
-      root.querySelector('#kartOnlineV705').onclick=async e=>{if(k.id!=='aurora'){closeModal();setWaypoint('circuit-aurora');toast('Encontre os outros jogadores no Autódromo Nova Aurora.','info',3000);return;}settings();const b=e.currentTarget;b.disabled=true;b.textContent='CONECTANDO…';const result=await multiplayerV2PrepareSport('kart');if(result?.ok){closeModal();startKartRaceV704('online');}else{b.disabled=false;b.textContent='CORRIDA ONLINE';toast(result?.error||'Não foi possível conectar.','warn',3000);}};
-    });
+    closeModal();venueOpen('kart-'+k.id);
   }
+
   function v705KartAssist(dt,manual){
     const k=SPORTS_V705.kart,car=player.car;if(!k?.active||!player.vehicle||k.countdown>0||!k.assist||k.assist==='off'||Math.abs(car.speed)<.5)return;
     const track=v705KartContinuousProgress(k),length=k.curve.getLength(),look=k.curve.getPointAt((track.t+(3+Math.abs(car.speed)*.24)/length)%1),desired=Math.atan2(look.x-player.x,look.z-player.z),error=Math.atan2(Math.sin(desired-car.heading),Math.cos(desired-car.heading));

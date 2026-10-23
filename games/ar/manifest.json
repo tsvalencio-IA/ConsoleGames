@@ -1,7 +1,7 @@
 {
   "name": "WAR Combate • thIAguinho",
   "short_name": "WAR Combate",
-  "description": "Combate com alvos virtuais sobre a câmera ou na arena. Três operações, armas e cobertura.",
+  "description": "Combate em cenário virtual, com câmera frontal para acompanhar a mão ou controles por toque. Três operações, armas e cobertura.",
   "start_url": "./index.html",
   "display": "fullscreen",
   "background_color": "#050508",

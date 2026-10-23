@@ -43,7 +43,7 @@
   function expansionRepairParking(){
     const protectedRects=v704ProtectedRectangles(),roads=WORLD_LAYOUT_V704.roads.map(r=>v704RoadFootprint(r,true));
     for(const car of world.vehicles){
-      if(car.occupied||car.kind==='kart')continue;
+      if(car.occupied||car.kind==='kart'||car.workshopYardStatus)continue;
       const owned=state.vehicles?.owned?.includes(car.id),radius=car.radius||1.5;
       const valid=(x,z)=>!waterAt(x,z)&&!roads.some(r=>v704PointInRect({x,z},r,radius))&&!protectedRects.some(r=>!(r.kind==='garage'&&owned)&&v704PointInRect({x,z},r,1.3))&&!world.vehicles.some(o=>o!==car&&Math.hypot(x-o.group.position.x,z-o.group.position.z)<radius+(o.radius||1.4)+.35);
       const x=car.group.position.x,z=car.group.position.z;if(valid(x,z))continue;let point=null;

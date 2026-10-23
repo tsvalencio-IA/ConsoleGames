@@ -1,9 +1,9 @@
 /** Physical activity venues reuse original games without changing their access policy. */
 // @otthi-module-body
   const worldVenues={ready:false,landmarks:[],session:null};
-  const WORLD_ACTIVITY_VENUES=WORLD_LAYOUT_V704.activityVenues;
+  const WORLD_ACTIVITY_VENUES=Object.freeze({...WORLD_LAYOUT_V704.activityVenues,...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
   function venueMapLocations(){return Object.values(WORLD_ACTIVITY_VENUES).map(v=>({id:'venue-'+v.id,name:v.label,icon:v.icon,group:'Esportes e dança',x:v.x,z:v.z,navX:v.navX,navZ:v.navZ,missionTarget:true,description:v.activity+' dentro do bairro. Vá até a entrada para jogar e depois continuar o passeio.',actions:['Marque a rota no GPS','Caminhe até a entrada','Use a ação Entrar']}));}
-  function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>O kartódromo, o estádio e as quadras também continuam no mapa.</p>';}
+  function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>Os autódromos abrem o mesmo Kart Legends do console. O estádio e as quadras continuam no mapa.</p>';}
   function venueBindDirectory(root){root.querySelectorAll('[data-venue-route]').forEach(b=>b.onclick=()=>setWaypoint('venue-'+b.dataset.venueRoute));}
   function venueCollider(v,x,z,w,d,height){const c={x:v.x+x,z:v.z+z*v.face,w,d,height,activityVenue:v.id};(worldVenues.colliders||(worldVenues.colliders=[])).push(c);world.colliders.push(c);}
   function venueDraw(v){
@@ -37,7 +37,7 @@
   function venueEnsure(){
     if(!running||!worldGroup)return;
     if(worldVenues.ready){for(const {root}of worldVenues.landmarks)if(root.parent!==worldGroup)worldGroup.add(root);for(const c of worldVenues.colliders||[])if(!world.colliders.includes(c))world.colliders.push(c);return;}
-    Object.values(WORLD_ACTIVITY_VENUES).forEach(venueDraw);world.navCache?.clear?.();worldVenues.ready=true;
+    Object.values(WORLD_LAYOUT_V704.activityVenues).forEach(venueDraw);world.navCache?.clear?.();worldVenues.ready=true;
   }
   function updateWorldVenues(){venueEnsure();for(const {root,venue}of worldVenues.landmarks)root.visible=Math.hypot(otGamesFocus().x-venue.x,otGamesFocus().z-venue.z)<170;}
   function venueRecordKey(){return 'thia:otthi:venues:v1:'+(state.profile?.playerId||'local');}
@@ -52,7 +52,7 @@
     const status=s.ui.querySelector('[data-venue-loading]');if(status)status.textContent='Abrindo '+s.venue.activity+'…';
     savePlayerPosition(true);await saveState(true);
     if(worldVenues.session!==s)return;
-    const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.id==='pingpong'?'tennis':'box_pro',label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
+    const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.venue.gameId||(s.id==='pingpong'?'tennis':'box_pro'),label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
     if(!trip){s.leaving=false;if(status)status.textContent='Não foi possível guardar o retorno. Volte ao mundo e tente novamente.';return;}
     s.cleanup?.();const url=new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
@@ -67,7 +67,7 @@
     if(id==='dance'){venueDanceMenu(s);return true;}
     // On phones the original activity owns the page. The city is saved before
     // leaving; it is not kept active behind a second browser document.
-    if((matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}
+    if(v.gameId==='drive'||(matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}
     const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{if(!frame.contentDocument?.documentElement){venueLaunchPage(s);return;}const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('A atividade não abriu no quadro:',e.message);venueLaunchPage(s);}});ui.querySelector('main').append(frame);
     const message=e=>{
       const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.token!==s.token)return;

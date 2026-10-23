@@ -41,6 +41,14 @@ function init(){
      hero.appendChild(link);
    }
  }
+ if(mode==='otthi'){
+   const quick=$('#quickBar');
+   if(quick){const link=create('a','console-world-link','🎮 Console');link.id='worldConsoleLink';link.href='../../arcade/';link.setAttribute('aria-label','Abrir console com todos os jogos');quick.append(link);}
+   for(const link of document.querySelectorAll('a.console-world-link'))link.addEventListener('click',event=>{
+     if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+     if(window.OTTHI_NAVIGATION){event.preventDefault();window.OTTHI_NAVIGATION.toConsole();}
+   });
+ }
  function refresh(){
    if(mode==="familia"){
       bar.hidden=true; // native world already has counters and top menu

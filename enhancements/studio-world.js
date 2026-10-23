@@ -12,7 +12,7 @@ function init(){
   if(!ctx.enabled)return;
   const A=window.AudioContext||window.webkitAudioContext;
   if(!A)return;
-  try{if(!ctx.ac)ctx.ac=new A();if(ctx.ac.state==="suspended")ctx.ac.resume().catch(()=>{})}catch{}
+  try{if(!ctx.ac)ctx.ac=window.GameAudio?.context() || new A();if(ctx.ac.state==="suspended")ctx.ac.resume().catch(()=>{})}catch{}
 }
 function tone(f,fEnd,length,volume=.04,kind="sine",delay=0){
   if(!ctx.enabled||document.hidden)return;

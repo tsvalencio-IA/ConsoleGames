@@ -158,3 +158,15 @@
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
     if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}toast('Bem-vindo à Vila do Sol!','good',2200);
   }
+
+  let consoleLeaving=false;
+  window.OTTHI_NAVIGATION={async toConsole(){
+    if(consoleLeaving)return;consoleLeaving=true;
+    try{
+      clearMovementInputs();
+      if(otGames.active)otGamesLeave({preserveCampaign:true});
+      if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
+      savePlayerPosition(true);await saveState(true);
+      location.assign(new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
+    }catch(error){consoleLeaving=false;toast('Não foi possível guardar a saída. Tente novamente.','warn',2500);}
+  }};

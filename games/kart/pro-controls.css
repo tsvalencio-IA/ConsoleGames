@@ -122,3 +122,10 @@
  .input-game-controls.flight-input .input-control,
  .input-game-controls.ar-input .input-control{transition:none!important}
 }
+
+/* The native race owns one HUD. Career details remain in the pause menu. */
+body:has(#game-ui:not(.hidden)) #studio-mastery{display:none!important}
+body.kart-racing .hud-score-box,body.kart-racing .arcade-topline,body.kart-racing #game-msg{display:none!important}
+#arcade-pause-modal [data-career-panel]{display:grid;gap:8px;padding:12px;border:1px solid #83c9e466;border-radius:12px;background:#061525;text-align:left;font-size:12px}
+#arcade-pause-modal [data-career-panel][hidden]{display:none!important}
+#arcade-pause-modal [data-career-panel] .studio-mastery-task{display:flex;justify-content:space-between;gap:10px}

@@ -101,9 +101,11 @@
   function otGamesSegmentDistance(a,b,p){const d=new THREE.Vector3(b.x-a.x,b.y-a.y,b.z-a.z),r=new THREE.Vector3(p.x-a.x,p.y-a.y,p.z-a.z),t=clamp(r.dot(d)/Math.max(.001,d.lengthSq()),0,1);return new THREE.Vector3(a.x,a.y,a.z).addScaledVector(d,t).distanceTo(new THREE.Vector3(p.x,p.y,p.z));}
   function otGamesShot(origin,direction,enemy=false){
     const mesh=otGamesMesh('round',enemy?'#ff7a54':'#ffe5a0',origin.x,origin.y,origin.z,.07,.07,.24,otGames.group),speed=enemy?30:180;
+    if(state.settings?.sound!==false)window.GameAudio?.effect(enemy?'smg':otGames.mode==='ground'?'rifle':'marksman',enemy?.18:.7);
     otGames.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:direction.x*speed,vy:direction.y*speed,vz:direction.z*speed,life:enemy?5:2,enemy,damage:otGames.mode==='plane'?110:otGames.mode==='helicopter'?65:50,mesh});
   }
   function otGamesExplosion(e){
+    if(state.settings?.sound!==false)window.GameAudio?.effect(e.kind==='tank'?'explosion':'impact',.8);
     const g=otGames;for(let i=0;i<14;i++){const mesh=otGamesMesh('round',i<4?'#ffb357':'#38464a',e.x,e.y,e.z,.2,.2,.2,g.group);g.effects.push({mesh,x:e.x,y:e.y,z:e.z,vx:Math.cos(i*2)*4,vy:2+(i%4),vz:Math.sin(i*2)*4,age:0,life:i<4?.7:6,smoke:i>=4});}
     if(e.kind==='tank'){
       // Nearby original OT traffic brakes; its prior hold is restored on exit.
@@ -148,12 +150,12 @@
   }
   function otGamesDisposeGroup(group){if(!group)return;const geometries=new Set(),materials=new Set();group.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.add(m);});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());group.parent?.remove(group);}
   function otGamesLeave(options={}){
-    const g=otGames;if(!g.active)return;if(typeof campaignAbort==='function')campaignAbort({preserve:options?.preserveCampaign===true});g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;otGamesClearInput();g.lookCleanup?.();g.lookCleanup=null;g.inputResets=[];g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
+    const g=otGames;if(!g.active)return;if(typeof campaignAbort==='function')campaignAbort({preserve:options?.preserveCampaign===true});g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo?.remove();g.cameraVideo=null;otGamesClearInput();g.lookCleanup?.();g.lookCleanup=null;g.inputResets=[];g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
     playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
     g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
-  function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;}
+  function otGamesReload(){const g=otGames;if(g.state!=='PLAYING'||g.reload>0||g.ammo>=30||g.reserve<=0)return;g.reload=1.6;if(state.settings?.sound!==false)window.GameAudio?.effect('reload');}
   async function otGamesStartCamera(){
     const g=otGames;if(!g.active||g.mode!=='ground')return;if(g.handSession){g.handSession.recalibrate();return;}
     g.state='HAND_CALIBRATION';g.handMode=true;g.ui?.classList.add('ot-hands');otGamesClearInput();
@@ -164,14 +166,14 @@
       if(!current())return;
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
       if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
-      const video=g.cameraVideo=document.createElement('video');video.muted=true;video.playsInline=true;video.srcObject=stream;
+      const video=g.cameraVideo=document.createElement('video');video.muted=true;video.playsInline=true;video.autoplay=true;video.className='war-camera-source';document.body.append(video);video.srcObject=stream;
       await new Promise((resolve,reject)=>{
         let done=false;const events=['loadeddata','canplay','playing'],finish=error=>{if(done)return;done=true;clearTimeout(timer);for(const event of events)video.removeEventListener(event,frame);error?reject(error):resolve();},frame=()=>{if(video.readyState>=2)finish();};
         const timer=setTimeout(()=>finish(Error('A câmera não forneceu imagens.')),5000);for(const event of events)video.addEventListener(event,frame);Promise.resolve(video.play()).then(frame,error=>finish(error));
       });
       if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
-      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
-    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera frontal indisponível. Os controles continuam ativos.','warn',3000);}}
+      g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());video.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
+    }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo?.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera: '+(error?.message||'não foi possível iniciar')+'. Os controles continuam ativos.','warn',3000);}}
   }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');g.inputResets=[];g.aiming=false;root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');

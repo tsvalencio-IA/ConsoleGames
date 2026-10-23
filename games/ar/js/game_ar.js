@@ -27,7 +27,7 @@ const Game={
   this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
   this.eyeY=1.8;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
   this.fireHeld=false;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
-  this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
+  this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
   this.covers=[{x:-7,z:15,w:5,h:1.5,d:2},{x:8,z:27,w:6,h:2,d:2},{x:-12,z:43,w:5,h:2.3,d:3}];
   this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();}};
@@ -41,7 +41,7 @@ const Game={
   this.gun=gun;this.ammo=gun.mag;this.reserve=gun.reserve;this.reloadTime=0;this.career.weapon=gun.id;this.saveCareer();return true;
  },
  saveCareer(){try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
- reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;return true;},
+ reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;window.GameAudio?.effect('reload');return true;},
  spawnWave(){
   this.wave++;this.bannerTime=2.4;this.enemies=[];
   const count=this.mission.count+this.level.count+this.wave-1;
@@ -91,13 +91,13 @@ const Game={
  shoot(){
   if(this.state!=='PLAYING'||this.reloadTime>0||this.shotCooldown>0)return false;
   if(this.ammo<=0){this.reload();return false;}
-  this.ammo--;this.stats.shots++;this.shotCooldown=this.gun.interval;this.muzzle=.075;
+  window.GameAudio?.effect(this.gun.id);this.ammo--;this.stats.shots++;this.shotCooldown=this.gun.interval;this.muzzle=.075;
   const best=this.targetAtAim();
   if(best){best.hp-=this.gun.damage;best.flash=.12;this.stats.hits++;this.hitFlash=.13;if(best.hp<=0)this.defeat(best);}
   return true;
  },
  defeat(e){
-  if(!e.active||e.rewarded)return false;e.active=false;e.rewarded=true;this.stats.kills++;this.score+=e.kind==='tank'?350:100;
+  if(!e.active||e.rewarded)return false;e.active=false;e.rewarded=true;window.GameAudio?.effect(e.kind==='tank'?'explosion':'impact',e.kind==='tank'?1:.5,Math.sin(Math.atan2(e.x-this.player.x,e.z-this.player.z)-this.player.yaw));this.stats.kills++;this.score+=e.kind==='tank'?350:100;
   for(let i=0;i<9;i++)this.particles.push({x:e.x,y:e.y,z:e.z,life:.7,vx:(Math.random()-.5)*5,vy:Math.random()*3,vz:(Math.random()-.5)*5});return true;
  },
  finish(won){
@@ -120,6 +120,38 @@ const Game={
   this.autoWalkSide=side;
   const dx=(side?rx*side:fx)*2.8*dt,dz=(side?rz*side:fz)*2.8*dt;
   if(free(p.x+dx,p.z+dz)){p.x+=dx;p.z+=dz;this.autoWalking=true;}
+ },
+ updateEnemyTactics(e,dt){
+  if(e.kind!=='soldier')return;
+  const p=this.player,dx=p.x-e.x,dz=p.z-e.z,distance=Math.hypot(dx,dz)||1;
+  const free=(x,z)=>x>-27&&x<27&&z>-8&&z<71&&!this.covers.some(c=>Math.abs(x-c.x)<c.w/2+.6&&Math.abs(z-c.z)<c.d/2+.6);
+  // Decisions have a duration. Infantry commits to a flank/cover destination
+  // instead of vibrating sideways or following the player through a wall.
+  e.decision=Math.max(0,(e.decision||0)-dt);
+  if(!e.decision){
+   e.decision=2.2+(e.phase||0)%1;const side=Math.sin((e.phase||0)*8)>=0?1:-1;
+   const hurt=e.hp<100*this.level.health*.45,hidden=this.blocked(e.x,e.z,e.y);
+   e.tactic=hurt?'cover':hidden?'flank':distance>23?'advance':'suppress';
+   let target={x:e.x,z:e.z};
+   if(e.tactic==='cover'){
+    const c=this.covers.slice().sort((a,b)=>Math.hypot(a.x-e.x,a.z-e.z)-Math.hypot(b.x-e.x,b.z-e.z))[0];
+    if(c)target={x:c.x+side*(c.w/2+.9),z:c.z+(c.z>p.z?1:-1)*(c.d/2+.9)};
+   }else if(e.tactic==='flank'||e.tactic==='advance'){
+    const forward=e.tactic==='advance'?4:1.5;
+    target={x:clamp(e.x+dx/distance*forward-dz/distance*side*4.5,-26,26),z:clamp(e.z+dz/distance*forward+dx/distance*side*4.5,-7,70)};
+   }else target={x:clamp(e.x-dz/distance*side*1.4,-26,26),z:clamp(e.z+dx/distance*side*1.4,-7,70)};
+   e.destination=target;
+  }
+  const target=e.destination,tx=target.x-e.x,tz=target.z-e.z,n=Math.hypot(tx,tz);
+  const step=Math.min(n,dt*(this.difficulty==='hard'?1.8:this.difficulty==='easy'?.9:1.3));
+  let moved=0;
+  if(n>.12){const x=e.x+tx/n*step,z=e.z+tz/n*step;
+   if(free(x,z)){e.x=x;e.z=z;moved=step;}
+   else if(free(x,e.z)){e.x=x;moved=Math.abs(tx/n*step);}
+   else if(free(e.x,z)){e.z=z;moved=Math.abs(tz/n*step);}
+   else e.decision=0;
+  }
+  e.stride=(e.stride||0)+moved*5;e.moving=moved>.001;
  },
  step(dt){
   this.autoWalking=false;
@@ -163,7 +195,7 @@ const Game={
   for(const e of this.enemies){
    if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);e.aim-=dt;
    if(e.kind==='drone')e.y=5+Math.sin(this.elapsed*1.5+e.phase)*.8;
-   if(e.kind==='soldier')e.x=clamp(e.x+Math.sin(this.elapsed*.5+e.phase)*dt*.7,-26,26);
+   this.updateEnemyTactics(e,dt);
    if(e.aim<=0){
     if(!this.blocked(e.x,e.z,e.y)){const damage=this.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1);p.hp=Math.max(0,p.hp-damage);this.hurtFlash=.15;if(cover)this.stats.blocks++;}
     e.aim=this.level.aim+1.2;e.shot=.14;
@@ -171,6 +203,8 @@ const Game={
    e.shot=Math.max(0,(e.shot||0)-dt);
   }
   for(const f of this.particles){f.life-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.z+=f.vz*dt;}this.particles=this.particles.filter(f=>f.life>0);
+  const moving=this.autoWalking||(!cameraInput&&Math.hypot(mx,mz)>.15);
+  if(moving&&this.elapsed-this.lastStepSound>(cover?.55:.36)){this.lastStepSound=this.elapsed;window.GameAudio?.effect('step',.55);}
   if(p.hp<=0)this.finish(false);
  },
  update(ctx,w,h){

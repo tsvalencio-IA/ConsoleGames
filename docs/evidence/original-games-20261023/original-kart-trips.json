@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "flow": "autodrome-aurora",
+      "originalKart": true,
+      "worldPositionAndFamilyPreserved": true
+    },
+    {
+      "flow": "autodrome-costa",
+      "originalKart": true,
+      "worldPositionAndFamilyPreserved": true
+    }
+  ]
+}

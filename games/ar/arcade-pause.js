@@ -10,7 +10,7 @@ function init(){
   const modal=document.createElement("section");
   modal.id="arcade-pause-modal";modal.hidden=true;modal.setAttribute("role","dialog");
   modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","arcade-pause-title");
-  modal.innerHTML='<div class="arcade-pause-panel"><span class="arcade-pause-kicker">thIAguinho ARCADE</span><h2 id="arcade-pause-title">PARTIDA PAUSADA</h2><p>Descanse e volte para a aventura quando quiser.</p><div class="arcade-pause-actions"><button type="button" data-action="continue">▶ CONTINUAR</button><button type="button" data-action="phases">◈ ESCOLHER FASE</button><a href="../../arcade/" data-action="exit">⌂ VOLTAR AO CONSOLE</a></div><p class="arcade-pause-note">Seu progresso original permanece com o jogo.</p></div>';
+  modal.innerHTML='<div class="arcade-pause-panel"><span class="arcade-pause-kicker">thIAguinho ARCADE</span><h2 id="arcade-pause-title">PARTIDA PAUSADA</h2><p>Descanse e volte para a aventura quando quiser.</p><div class="arcade-pause-actions"><button type="button" data-action="continue">▶ CONTINUAR</button><button type="button" data-action="phases">◈ ESCOLHER FASE</button><button type="button" data-action="career">CARREIRA E DESAFIOS</button><div data-career-panel hidden></div><a href="../../arcade/" data-action="exit">⌂ VOLTAR AO CONSOLE</a></div><p class="arcade-pause-note">Seu progresso original permanece com o jogo.</p></div>';
   stage.appendChild(pause);document.body.appendChild(modal);
   let lastFocus=null;
   function recoverClock(){
@@ -32,6 +32,12 @@ function init(){
   const activate=event=>{
     if(modal.hidden)return;
     const action=event.target.closest("[data-action]")?.dataset.action;
+    if(action==='career'){
+      const panel=modal.querySelector('[data-career-panel]'),source=document.getElementById('studio-mastery-list');
+      if(source)panel.replaceChildren(...[...source.childNodes].map(node=>node.cloneNode(true)));
+      else panel.textContent='Os desafios aparecem após iniciar a partida.';
+      panel.hidden=!panel.hidden;
+    }
     if(action==="continue")close();
     else if(action==="phases"){
       close();sys.menu();
@@ -41,7 +47,7 @@ function init(){
     }
   };
   modal.addEventListener("click",activate);
-  modal.addEventListener("pointerdown",event=>{const action=event.target.closest('[data-action]')?.dataset.action;if((event.pointerType==='touch'||event.pointerType==='pen')&&(action==='continue'||action==='phases')){event.preventDefault();event.stopPropagation();activate(event)}},{passive:false});
+  modal.addEventListener("pointerdown",event=>{const action=event.target.closest('[data-action]')?.dataset.action;if((event.pointerType==='touch'||event.pointerType==='pen')&&(action==='continue'||action==='phases'||action==='career')){event.preventDefault();event.stopPropagation();activate(event)}},{passive:false});
   document.addEventListener("keydown",event=>{
     if(!modal.hidden&&event.key==="Escape"){event.preventDefault();close()}
     if(!modal.hidden&&event.key==="Tab"){

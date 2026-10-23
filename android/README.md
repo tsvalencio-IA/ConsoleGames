@@ -6,6 +6,8 @@ O aplicativo usa o pacote `br.com.thiaguinhosolucoes.arcade`, separado do OTTHI 
 
 ## Compilar e verificar
 
-Java 17, SDK 35 e Gradle 8.7. Na pasta `android`, execute `gradle assembleRelease assembleDebug assembleDebugAndroidTest lintRelease`. O workflow instala a versão de validação no Android 35 e abre o console em retrato e paisagem, sem acessar contas ou partidas reais.
+Java 17, SDK 35 e Gradle 8.7. Na pasta `android`, execute `gradle assembleProductionRelease assembleProductionDebug assembleProductionDebugAndroidTest lintProductionRelease`. O workflow instala a versão de validação no Android 35 e abre o console em retrato e paisagem, sem acessar contas ou partidas reais.
 
 O APK release é alinhado durante a compilação e assinado fora do CI público. Use `apksigner sign --ks SUA_CHAVE --out thIAguinho-ARCADE.apk app-release-unsigned.apk` e `apksigner verify --verbose thIAguinho-ARCADE.apk`. Mantenha a mesma chave em futuras atualizações. Chaves e senhas nunca devem ser commitadas.
+
+A variante `recovery` aponta para o mesmo servidor da revisão OT em `otthi-world-campanha-teste.vercel.app`. Compile com `gradle assembleRecoveryRelease assembleRecoveryDebug assembleRecoveryDebugAndroidTest lintRecoveryRelease`. Mantém o pacote e a assinatura de atualização; versão 1.1.0 (código 2). A variante `production` conserva o servidor GitHub Pages. O armazenamento do navegador é isolado por domínio; não há migração automática de dados entre esses dois servidores.

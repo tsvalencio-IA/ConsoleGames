@@ -12,6 +12,18 @@ OUTPUT = ROOT / 'dist-world'
 DIRECTORIES = ('games', 'arcade', 'covers', 'enhancements')
 
 
+def root_site_manifest(document):
+    """The Pages source keeps its established app identity under /ConsoleGames/.
+    Vercel serves this package at the domain root, so its own app URLs must be
+    rooted there. This never modifies the source manifest or another origin."""
+    result = dict(document)
+    for key in ('id', 'start_url', 'scope'):
+        value = result.get(key)
+        if isinstance(value, str) and value.startswith('/ConsoleGames/'):
+            result[key] = value[len('/ConsoleGames'):]
+    return result
+
+
 def package(output=OUTPUT):
     if output.exists():
         shutil.rmtree(output)
@@ -22,6 +34,9 @@ def package(output=OUTPUT):
     for name in ('config.js', 'game-config.js'):
         if (ROOT / name).is_file():
             shutil.copy2(ROOT / name, output / name)
+    manifest_path = output / 'arcade/manifest.webmanifest'
+    manifest_path.write_text(json.dumps(root_site_manifest(json.loads(
+        manifest_path.read_text('utf-8'))), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     (output / 'index.html').write_text('''<!doctype html><html lang="pt-BR"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>OTThi World</title>
 <meta http-equiv="refresh" content="0;url=games/otthi/">

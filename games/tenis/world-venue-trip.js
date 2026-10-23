@@ -1,7 +1,7 @@
 /* Same-origin activity trips. No account, permissions or world balance is changed. */
 (() => {
   'use strict';
-  const key='thia:world-venue:trip:v1',games={pingpong:'tennis',boxing:'box_pro'},ttl=6*60*60*1000;
+  const key='thia:world-venue:trip:v1',games={pingpong:'tennis',boxing:'box_pro','kart-aurora':'drive','kart-costa':'drive'},ttl=6*60*60*1000;
   function valid(t){
     if(!t||t.version!==1||games[t.id]!==t.gameId||typeof t.token!=='string'||t.token.length<16||t.token.length>100||!Number.isFinite(t.created)||Date.now()-t.created>ttl||t.created>Date.now()+60000)return false;
     try{const url=new URL(t.returnUrl);return url.origin===location.origin&&/\/games\/otthi\/(?:index\.html)?$/.test(url.pathname)&&t.recordKey==='thia:otthi:venues:v1:'+t.playerId;}catch{return false;}

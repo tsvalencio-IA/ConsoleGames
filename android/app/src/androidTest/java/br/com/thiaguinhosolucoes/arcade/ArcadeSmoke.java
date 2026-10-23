@@ -77,6 +77,17 @@ public final class ArcadeSmoke extends Instrumentation {
         try(FileOutputStream out=new FileOutputStream(new File(folder,name))){image.compress(Bitmap.CompressFormat.PNG,100,out);}
         image.recycle();
     }
+    private void tap(MainActivity activity,String selector) throws Exception {
+        String escaped=org.json.JSONObject.quote(selector);
+        waitFor(activity,"!!document.querySelector("+escaped+")");
+        String json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2];})()");
+        JSONArray css=new JSONArray(json);float[] point=new float[2];
+        runOnMainSync(() -> {int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);float scale=currentActivity.webView.getWidth()/(float)css.optDouble(0);point[0]=origin[0]+(float)css.optDouble(1)*scale;point[1]=origin[1]+(float)css.optDouble(2)*scale;});
+        long time=SystemClock.uptimeMillis();
+        MotionEvent down=MotionEvent.obtain(time,time,MotionEvent.ACTION_DOWN,point[0],point[1],0);down.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(down,true);down.recycle();
+        Thread.sleep(180);
+        MotionEvent up=MotionEvent.obtain(time,SystemClock.uptimeMillis(),MotionEvent.ACTION_UP,point[0],point[1],0);up.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(up,true);up.recycle();
+    }
     @Override public void onStart() {
         Bundle result=new Bundle();
         try {
@@ -95,7 +106,25 @@ public final class ArcadeSmoke extends Instrumentation {
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
             waitForAppWindow();waitForIdleSync();Thread.sleep(800);
             screenshot("android-landscape.png");
-            result.putString("stream","Android: installed, seven games, visible native button, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
+            String[][] games={{"kart","drive"},{"boxe","box_pro"},{"tenis","tennis"},{"ar","ar_truck_sim"},{"voo","usarmy_flight_sim"}};
+            for(String[] game:games){
+                tap(activity,"[data-game='"+game[0]+"'] [data-launch]");
+                waitFor(activity,"!!document.querySelector('[data-solo-start]')");tap(activity,"[data-solo-start]");
+                waitFor(activity,"!document.getElementById('phase-screen').classList.contains('hidden')");
+                tap(activity,"#phase-grid .mission-card:not(.locked)");tap(activity,"[data-mode='controls']");
+                waitFor(activity,"window.System?.activeGame?.id==='"+game[1]+"'");
+                waitFor(activity,"window.GameAudio?.diagnostics().state==='running'");
+                waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
+                if("ar".equals(game[0])){
+                    String shots=evaluate(activity,"window.System.activeGame.logic.stats.shots");
+                    tap(activity,"[data-control='fire']");
+                    waitFor(activity,"window.System.activeGame.logic.stats.shots>"+shots);
+                }
+                screenshot("android-native-"+game[0]+".png");
+                tap(activity,"#arcade-pause");tap(activity,"#arcade-pause-modal [data-action='exit']");
+                waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
+            }
+            result.putString("stream","Android: installed, seven games, original five engines entered with native touch, running audio contexts, WAR firing, console return, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
             finish(-1,result);
         } catch(Throwable error) {try{screenshot("android-failure.png");}catch(Exception ignored){}result.putString("stream",error.toString()+"\n");finish(0,result);}
     }

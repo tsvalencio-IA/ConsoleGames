@@ -65,3 +65,5 @@ html,body{max-width:100%;min-width:0;overflow-x:hidden}
 #overlay .console-daily-quest{width:min(100%,600px);max-height:35dvh;overflow-y:auto;overscroll-behavior:contain}
 @media(max-height:550px){#overlay .console-daily-quest{max-height:31vh;overflow-y:auto}.console-daily-quest{margin:5px auto}.quest-entry{padding:5px 8px}}
 @media(max-width:420px){.quest-entry{padding:6px 8px}.quest-head{margin-bottom:7px}}
+
+#quickBar #worldConsoleLink{display:flex;min-height:44px;text-align:center;white-space:nowrap;padding:8px 12px;font-size:12px}

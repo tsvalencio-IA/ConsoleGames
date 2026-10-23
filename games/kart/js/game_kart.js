@@ -61,7 +61,7 @@
             if (this.initialized) return;
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
-                this.ctx = new AudioContext(); this.masterGain = this.ctx.createGain(); this.masterGain.gain.value = 0.3; this.masterGain.connect(this.ctx.destination);
+                this.ctx = window.GameAudio?.context() || new AudioContext(); this.masterGain = this.ctx.createGain(); this.masterGain.gain.value = 0.3; this.masterGain.connect(this.ctx.destination);
                 const bufferSize = this.ctx.sampleRate; this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
                 const data = this.noiseBuffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 this.initialized = true;
@@ -183,6 +183,7 @@
         },
 
         cleanup: function() {
+            document.body?.classList?.remove('kart-racing');
             if (this.dbRef) try { this.dbRef.child('players').off(); } catch(e){}
             if (this.roomRef) try { 
                 this.roomRef.off(); 
@@ -1324,8 +1325,39 @@
             ctx.restore();
         },
 
+        renderRaceHUD: function(ctx,w,h){
+            const d=Logic,assist=(STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light).label;
+            const width=Math.max(150,Math.min(234,w-166)),x=12,y=10;
+            ctx.save();ctx.fillStyle='rgba(5,20,31,.84)';
+            if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,width,49,10);ctx.fill();}else ctx.fillRect(x,y,width,49);
+            ctx.textAlign='left';ctx.fillStyle='#eef7f2';ctx.font='bold 14px Arial';
+            ctx.fillText(d.finalRank+'º  ·  VOLTA '+d.lap+'/'+CONF.TOTAL_LAPS,x+10,y+18,width-20);
+            ctx.font='bold 10px Arial';ctx.fillStyle='#b9d8da';
+            ctx.fillText('VEL '+Math.floor(d.speed)+'  ·  AUX '+assist.toUpperCase(),x+10,y+34,width-20);
+            ctx.fillStyle='#223d4c';ctx.fillRect(x+10,y+40,width-20,3);
+            ctx.fillStyle=d.turboLock?'#7de6f1':'#efb76b';ctx.fillRect(x+10,y+40,(width-20)*d.nitro/100,3);
+            if(d.item){ctx.textAlign='center';ctx.font='22px Arial';ctx.fillStyle='#fff';ctx.fillText(d.item==='mushroom'?'🍄':d.item==='banana'?'🍌':'🐢',x+width-22,y+23);}
+            if(minimapPath.length){
+                const size=h<500?64:74,mx=12,my=72;ctx.fillStyle='rgba(5,20,31,.56)';ctx.fillRect(mx,my,size,size);
+                ctx.save();ctx.beginPath();ctx.rect(mx,my,size,size);ctx.clip();
+                ctx.translate(mx+size/2,my+size/2);const scale=Math.min((size-14)/minimapBounds.w,(size-14)/minimapBounds.h);
+                ctx.scale(scale,scale);ctx.translate(-(minimapBounds.minX+minimapBounds.maxX)/2,-(minimapBounds.minZ+minimapBounds.maxZ)/2);
+                ctx.strokeStyle='#b7d4d5';ctx.lineWidth=1.4/scale;ctx.beginPath();minimapPath.forEach((p,i)=>i?ctx.lineTo(p.x,p.z):ctx.moveTo(p.x,p.z));ctx.closePath();ctx.stroke();
+                const dot=(pos,color,r)=>{const p=minimapPath[Math.floor(pos/trackLength*minimapPath.length)%minimapPath.length];if(p){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.z,r/scale,0,Math.PI*2);ctx.fill();}};
+                for(const r of d.rivals)dot(r.pos,'#e1c788',1.8);dot(d.pos,'#91f2d1',2.8);ctx.restore();
+            }
+            hudMessages=hudMessages.filter(m=>m.life>0);const message=hudMessages.at(-1);
+            if(message){const cy=h<500?89:106,maxWidth=Math.min(360,w*.62);ctx.textAlign='center';ctx.font='bold 13px Arial';
+                const mw=Math.min(maxWidth,ctx.measureText(message.text).width+24);ctx.fillStyle='rgba(5,20,31,.82)';ctx.fillRect((w-mw)/2,cy-16,mw,27);ctx.fillStyle=message.color;ctx.fillText(message.text,w/2,cy+2,mw-16);}
+            for(const m of hudMessages)m.life--;
+            if(d.driftSparks>0){const ready=d.driftSparks>70;ctx.textAlign='center';ctx.font='bold 11px Arial';ctx.fillStyle=ready?'#9beee8':'#ebd5a5';ctx.fillText(ready?'SOLTE O DRIFT · IMPULSO PRONTO':'DRIFT · '+Math.min(100,Math.floor(d.driftSparks/70*100))+'%',w/2,h*.76,Math.min(320,w-20));}
+            if(d.trackingLost&&d.status==='RACING'){ctx.fillStyle='rgba(6,18,32,.88)';ctx.fillRect(w*.08,h*.40,w*.84,64);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 15px Arial';ctx.fillText('CÂMERA SEM PILOTO',w/2,h*.40+24,w*.8);ctx.font='12px Arial';ctx.fillText('Mostre as duas mãos para acelerar e dirigir.',w/2,h*.40+46,w*.8);}
+            ctx.restore();
+        },
         renderUI: function(ctx, w, h) {
             const d = Logic;
+            const racing=d.state==='RACE'&&d.raceState!=='FINISHED';document.body?.classList?.toggle('kart-racing',racing);
+            if(racing){this.renderRaceHUD(ctx,w,h);return;}
             hudMessages = hudMessages.filter(m => m.life > 0);
             // Compact notifications above the driving view, never over the kart.
             hudMessages.slice(-2).forEach((m,i)=>{

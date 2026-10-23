@@ -25,7 +25,7 @@
       costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1}
     }),
     activityVenues:Object.freeze({
-      boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-20,w:14,d:12,navX:46,navZ:-12,face:1,slug:'boxe'},
+      boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-56,w:14,d:12,navX:46,navZ:-48,face:1,slug:'boxe'},
       dance:{id:'dance',label:'Academia de Dança',activity:'Dança',icon:'🎵',x:-38,z:-18,w:12,d:12,navX:-38,navZ:-10,face:1},
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
@@ -115,13 +115,13 @@
       OV22:{x:-88,z:-132},
       OV23:{x:-48,z:-145},
       OV24:{x:-15,z:-130},OVN1:{x:0,z:132},
-      V_GYM_TURN:{x:46,z:0},VB_GATE:{x:46,z:-12},VD_GATE:{x:-38,z:-10},VP_GATE:{x:48,z:10},
+      V_GYM_TURN:{x:46,z:0},VB_TURN:{x:65,z:-48},VB_GATE:{x:46,z:-48},VD_GATE:{x:-38,z:-10},VP_GATE:{x:48,z:10},
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
       ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
-      ['H25E','V_GYM_TURN'],['V_GYM_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['H25W','VD_GATE'],
+      ['H25E','V_GYM_TURN'],['E65S','VB_TURN'],['VB_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['H25W','VD_GATE'],
       ['OV20','CQ_TURN'],['CQ_TURN','CQ_GATE'],['OV1','CA_TURN'],['CA_TURN','CA_GATE'],['OV10','CN_GATE'],
       ['VS','V65S'],['V65S','V18S'],['V18S','C'],['C','V18N'],['V18N','V58N'],['V58N','VN'],
       ['HW','H55W'],['H55W','H25W'],['H25W','C'],['C','H25E'],['H25E','H65E'],['H65E','H88E'],['H88E','HE'],
@@ -179,7 +179,7 @@
     paths:Object.freeze([
       {id:'costa-autodromo-acesso',x1:-300,z1:-150,x2:-300,z2:-156,w:3.2,destination:'circuit-costa'},
       {id:'ginasios-acesso',x1:25,z1:0,x2:46,z2:0,w:2.6,destination:'venue-boxing'},
-      {id:'academia-luta-acesso',x1:46,z1:0,x2:46,z2:-12,w:2.6,destination:'venue-boxing'},
+      {id:'academia-luta-acesso',x1:65,z1:-48,x2:46,z2:-48,w:2.6,destination:'venue-boxing'},
       {id:'academia-danca-acesso',x1:-25,z1:0,x2:-38,z2:-10,w:2.6,destination:'venue-dance'},
       {id:'ginasio-pingpong-acesso',x1:46,z1:0,x2:48,z2:10,w:2.6,destination:'venue-pingpong'},
       {id:'quartel-acesso-a',x1:-150,z1:-72,x2:-145,z2:-38,w:3.2,destination:'campaign-hq'},
@@ -230,7 +230,8 @@
       {id:'aurora-block-1',kind:'city',x:332,z:-65,w:23,d:22,margin:.5},
       {id:'aurora-block-0',kind:'city',x:268,z:-65,w:23,d:22,margin:.5},
       {id:'circuit-costa',kind:'kart',x:-300,z:-210,w:108,d:96,margin:.4},
-      {id:'venue-boxing',kind:'activity',x:46,z:-20,w:14,d:12,margin:.4},
+      {id:'venue-boxing',kind:'activity',x:46,z:-56,w:14,d:12,margin:.4},
+      {id:'workshop-yard',kind:'workshop-yard',x:43.9,z:-18,w:23,d:18,margin:0,allowedRoads:['avenida-central-ew']},
       {id:'venue-dance',kind:'activity',x:-38,z:-18,w:12,d:12,margin:.4},
       {id:'venue-pingpong',kind:'activity',x:48,z:18,w:14,d:12,margin:.4},
       {id:'campaign-hq',kind:'campaign',x:-120,z:-54,w:30,d:24,margin:.4},

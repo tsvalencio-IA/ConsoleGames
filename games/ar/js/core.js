@@ -6,11 +6,13 @@
 window.Sfx = {
     ctx: null,
     init: () => { 
-        window.AudioContext = window.AudioContext || window.webkitAudioContext; 
-        if (!window.Sfx.ctx) window.Sfx.ctx = new AudioContext(); 
-        if (window.Sfx.ctx.state === 'suspended') window.Sfx.ctx.resume();
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        if(!window.AudioContext)return;
+        if (!window.Sfx.ctx || window.Sfx.ctx.state === 'closed') window.Sfx.ctx = window.GameAudio?.context() || new AudioContext();
+        if (window.Sfx.ctx.state !== 'running') window.Sfx.ctx.resume().catch(()=>{});
     },
     play: (f, t, d, v=0.1) => {
+        if(!window.Sfx.ctx || window.Sfx.ctx.state !== 'running') window.Sfx.init();
         if(!window.Sfx.ctx) return;
         try {
             if(t==='noise'){
@@ -315,7 +317,7 @@ window.System = {
                     const sys=window.System;
                     if(sys.isStarting || sys.activeGame)return;
                     sys.isStarting=true;
-                    window.Sfx.click();
+                    window.Sfx.init();window.GameAudio?.unlock();window.Sfx.click();
                     // Explicit opt-in: touch/keyboard (default) or live camera.
                     const requested = window.ArcadeControls ? await window.ArcadeControls.choose(game) : 'controls';
                     if(!requested) {sys.isStarting=false;return;}
@@ -523,7 +525,8 @@ window.onload = async () => {
 
     if(window.ConsolePractice?.active)return;
     if(!window.AuthApp){document.getElementById('loading').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');const error=document.getElementById('auth-error');if(error){error.textContent='Conta online indisponível. Você pode jogar sozinho ou tentar mais tarde.';error.style.display='block';}return;}
-    window.AuthApp.onAuthStateChanged(async (user) => {
+    window.System.authUnsubscribe?.();
+    window.System.authUnsubscribe = window.AuthApp.onAuthStateChanged(async (user) => {
         if(window.ConsolePractice?.active)return;
         if (user) {
             window.System.playerId = user.uid;

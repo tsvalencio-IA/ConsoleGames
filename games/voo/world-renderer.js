@@ -327,14 +327,14 @@ class World{
   this.shadow(b,c.x,c.z,c.w*1.6,c.d*2);
  }
  soldier(b,e,time){
-  const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=time*4+(e.phase||0),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
+  const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=e.stride??(time*4+(e.phase||0)),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
   // Local articulated parts are rotated as one body: armour, face and weapon
   // always face the player, while knees/ankles keep the gait grounded.
   const part=(kind,ma,lx,y,lz,w,h,d,rx=0,rz=0)=>b.add(kind,ma,x+lx*cy+lz*sy,y,z-lx*sy+lz*cy,w,h,d,rx,yaw,rz);
   const box=(ma,lx,y,lz,w,h,d)=>part('box',ma,lx,y,lz,w,h,d),round=(ma,lx,y,lz,w,h,d)=>part('round',ma,lx,y,lz,w,h,d);
   const limb=(ma,a,c,width,depth=width)=>{const dx=c[0]-a[0],dy=c[1]-a[1],dz=c[2]-a[2],length=Math.hypot(dx,dy,dz);part('cylinder',ma,(a[0]+c[0])/2,(a[1]+c[1])/2,(a[2]+c[2])/2,width,length,depth,Math.atan2(dz,dy),-Math.asin(dx/length));};
   for(const side of [-1,1]){
-   const step=Math.sin(phase+side*Math.PI/2),lx=side*.18,knee=[lx,.54,step*.105],ankle=[lx,.19,-step*.12];
+   const step=(e.moving===false?.12:1)*Math.sin(phase+side*Math.PI/2),lx=side*.18,knee=[lx,.54,step*.105],ankle=[lx,.19,-step*.12];
    limb(f,[lx,.97-duck,0],knee,.27,.30);limb(f,knee,ankle,.23,.25);round(m.boot,lx,.55,knee[2]-.12,.13,.15,.075);
    box(m.boot,lx,.13+Math.max(0,step)*.025,ankle[2]-.065,.26,.20,.43);box(m.rubber,lx,.045,ankle[2]-.07,.27,.06,.44);
    box(m.sand,lx+.07*side,.78,.03,.12,.19,.22);

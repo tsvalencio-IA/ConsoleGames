@@ -52,7 +52,7 @@
     if(!state.settings.sound||engineAudio)return;
     try{
       const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)return;
-      const ctx=beep.ctx||(beep.ctx=new Ctx());
+      const ctx=beep.ctx||(beep.ctx=window.GameAudio?.context()||new Ctx());
       const osc=ctx.createOscillator(),gain=ctx.createGain();
       osc.type='sawtooth';osc.frequency.value=65;gain.gain.value=0;
       osc.connect(gain);gain.connect(ctx.destination);osc.start();
