@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/arcade/downloads/thIAguinho-ARCADE-OT.apk",
+      "headers": [
+        {"key": "Content-Disposition", "value": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\""},
+        {"key": "X-Content-Type-Options", "value": "nosniff"}
+      ]
+    },
+    {
+      "source": "/android/thIAguinho-ARCADE-OT.apk",
+      "headers": [
+        {"key": "Content-Disposition", "value": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\""},
+        {"key": "X-Content-Type-Options", "value": "nosniff"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/android/thIAguinho-ARCADE-OT.apk", "destination": "/arcade/downloads/thIAguinho-ARCADE-OT.apk"}
+  ]
+}

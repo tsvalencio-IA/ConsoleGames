@@ -45,3 +45,11 @@ O APK Android `recovery` 1.1.0 (código 2) abre o console desta revisão e reque
 Arquivo: `arcade/downloads/thIAguinho-ARCADE-OT.apk`, 57.991 bytes. SHA-256: `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`.
 
 O empacotamento do site oferece esse APK e verifica seu tamanho e hash antes de publicar. A variante `production` e seu APK conservam o endereço anterior. Dados locais de origens ou aplicativos diferentes não são migrados automaticamente.
+
+## Correção da entrega Android pelo link da conversa
+
+A captura enviada pelo usuário mostra `ERR_FAILED` ao abrir diretamente o endereço do APK em uma janela de navegador dentro de outro aplicativo. Na investigação, esse endereço respondeu HTTP 200 com o APK correto, mas com `Content-Disposition: inline`. Isso não reproduz nem explica sozinho a falha no aparelho: o fluxo de abertura pela conversa não havia sido validado.
+
+A entrada pública passa a ser `/arcade/instalar/`, uma página HTML com download por toque, instruções de instalação e uma opção explícita de abrir no Chrome no Android. O botão do console abre essa página. A hospedagem entrega o APK como anexo, tanto no endereço anterior quanto na nova rota `/android/thIAguinho-ARCADE-OT.apk`. Esta rota fica fora do filtro de requisições dos workers antigos do console. O worker v10 deixa a página de instalação e os downloads passarem diretamente ao navegador, evitando substituir uma falha de download pelo HTML do console em cache.
+
+O APK e sua assinatura permanecem idênticos aos verificados anteriormente. O empacotamento preserva o APK e a identidade original do GitHub Pages. O teste de entrega salva o arquivo após o toque/clique e confere nome, tamanho e SHA-256 em retrato, paisagem, desktop, sem JavaScript e com o worker atual e o comportamento do worker anterior. Ele também percorre console → página de instalação. Esses testes usam Chromium com emulação móvel; não certificam a janela específica do ChatGPT no aparelho físico do usuário.

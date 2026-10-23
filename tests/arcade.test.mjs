@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFileSync,existsSync} from "node:fs";
 import {createHash} from "node:crypto";
 import {execFileSync} from "node:child_process";
+import vm from "node:vm";
 const root=new URL("../",import.meta.url);
 const read=path=>readFileSync(new URL(path,root),"utf8");
 const oldManifest=JSON.parse(read("manifest.webmanifest"));
@@ -81,4 +82,14 @@ test("Android: botão de instalação referencia o APK íntegro com a versão pu
  assert(gradle.includes("versionName '"+release.version+"'"));
  assert(gradle.includes('versionCode '+release.versionCode));
  assert(read('arcade/downloads/SHA256SUMS.txt').includes(release.sha256+'  '+release.file));
+});
+
+test("Android: o service worker nunca troca um download ou instalador pelo HTML do console",()=>{
+ const events={};
+ vm.runInNewContext(sw,{self:{registration:{scope:'https://test.example/arcade/'},location:{origin:'https://test.example'},addEventListener:(name,handler)=>{events[name]=handler;}},URL});
+ for(const pathname of ['/arcade/downloads/thIAguinho-ARCADE-OT.apk','/android/thIAguinho-ARCADE-OT.apk','/arcade/instalar/']){
+  let intercepted=false;
+  events.fetch({request:{url:'https://test.example'+pathname,method:'GET',mode:'navigate'},respondWith:()=>{intercepted=true;}});
+  assert.equal(intercepted,false,pathname+' deve usar o download normal do navegador');
+ }
 });

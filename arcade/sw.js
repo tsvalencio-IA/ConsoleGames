@@ -1,7 +1,7 @@
 /* thIAguinho ARCADE: PWA autónomo. O service worker NÃO controla os sete jogos.
    Scope: /ConsoleGames/arcade/ - ID diferente do console anterior. */
 "use strict";
-const CACHE="thiaguinho-arcade-shell-v9";
+const CACHE="thiaguinho-arcade-shell-v10";
 const SHELL=["./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
@@ -14,6 +14,9 @@ self.addEventListener("fetch",event=>{
   if(request.method!=="GET")return;
   const url=new URL(request.url),scopePath=new URL(self.registration.scope).pathname;
   if(url.origin!==self.location.origin||!url.pathname.startsWith(scopePath))return;
+  // Leave installation and binary downloads to the browser. A failed APK request
+  // must never become the cached console HTML via the navigation fallback below.
+  if(url.pathname.startsWith(scopePath+"downloads/")||url.pathname.startsWith(scopePath+"instalar/"))return;
   if(request.mode==="navigate"){
     event.respondWith(fetch(request).then(response=>response.ok?response:Promise.reject(new Error("offline"))).catch(()=>caches.match("./index.html")));
     return;

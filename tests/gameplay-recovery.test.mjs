@@ -60,7 +60,7 @@ test('Vercel packaging gives the installed console a real root URL while preserv
   const consoleProgram="import runpy; m=runpy.run_path('tools/package-world-preview.py'); print(m['root_site_console'](open('arcade/index.html').read()))";
   const packagedHtml=execFileSync('python3',['-c',consoleProgram],{encoding:'utf8'});
   assert.equal(readFileSync('arcade/index.html','utf8'),consoleHtml);
-  if(packagedHtml!==consoleHtml+'\n')assert(packagedHtml.includes('href=\"./downloads/thIAguinho-ARCADE-OT.apk\" download'));
+  if(packagedHtml!==consoleHtml+'\n')assert(packagedHtml.includes('href=\"./instalar/\"'));
 
 });
 

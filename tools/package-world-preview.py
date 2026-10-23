@@ -25,11 +25,11 @@ def root_site_manifest(document):
     return result
 
 
-def root_site_console(document):
-    """Offer the signed package that opens this origin, preserving Pages."""
+def android_release():
+    """Validate the signed package before exposing any installation entry."""
     metadata = ROOT / 'arcade/downloads/release-ot.json'
     if not metadata.is_file():
-        return document
+        return None
     release = json.loads(metadata.read_text('utf-8'))
     filename = release['file']
     if filename != 'thIAguinho-ARCADE-OT.apk' or release['package'] != 'br.com.thiaguinhosolucoes.arcade':
@@ -37,10 +37,40 @@ def root_site_console(document):
     apk = (metadata.parent / filename).read_bytes()
     if len(apk) != release['bytes'] or hashlib.sha256(apk).hexdigest() != release['sha256']:
         raise RuntimeError('Android release integrity mismatch')
+    return release
+
+
+def root_site_console(document):
+    """Use a real HTML entry when a chat or an embedded browser opens the link."""
+    if android_release() is None:
+        return document
     original = 'href="./downloads/thIAguinho-ARCADE.apk" download'
     if document.count(original) != 1:
         raise RuntimeError('Android installation button was not found')
-    return document.replace(original, 'href="./downloads/' + filename + '" download')
+    return document.replace(original, 'href="./instalar/"')
+
+
+def root_site_installer(document):
+    """Keep Pages on its original release and this package on its own origin.
+
+    The public APK route also stays outside the old Arcade worker's fetch filter.
+    Existing installations need not clear their caches to download the update.
+    """
+    release = android_release()
+    if release is None:
+        return document
+    original = json.loads((ROOT / 'arcade/downloads/release.json').read_text('utf-8'))
+    replacements = {
+        'href="../downloads/' + original['file'] + '" download':
+            'href="../../android/' + release['file'] + '" download',
+        '<span id="release-version">' + original['version'] + '</span>':
+            '<span id="release-version">' + release['version'] + '</span>',
+    }
+    for before, after in replacements.items():
+        if document.count(before) != 1:
+            raise RuntimeError('Android installation page is inconsistent: ' + before)
+        document = document.replace(before, after)
+    return document
 
 
 def package(output=OUTPUT):
@@ -58,6 +88,8 @@ def package(output=OUTPUT):
         manifest_path.read_text('utf-8'))), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     console_path = output / 'arcade/index.html'
     console_path.write_text(root_site_console(console_path.read_text('utf-8')), encoding='utf-8')
+    installer_path = output / 'arcade/instalar/index.html'
+    installer_path.write_text(root_site_installer(installer_path.read_text('utf-8')), encoding='utf-8')
     (output / 'index.html').write_text('''<!doctype html><html lang="pt-BR"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>OTThi World</title>
 <meta http-equiv="refresh" content="0;url=games/otthi/">
@@ -67,7 +99,8 @@ def package(output=OUTPUT):
                 'games/ar/hand-controls.js', 'games/ar/hand-tracker-worker.js',
                 'games/ar/combat-controls.css', 'games/ar/vendor/hand-tracker/hand_landmarker.task',
                 'games/ar/vendor/hand-tracker/vision_wasm_internal.wasm',
-                'arcade/index.html', 'games/familia/3d/index.html']
+                'arcade/index.html', 'arcade/instalar/index.html',
+                'arcade/instalar/install.js', 'games/familia/3d/index.html']
     for path in required:
         if not (output / path).is_file():
             raise RuntimeError('Missing deployment resource: ' + path)

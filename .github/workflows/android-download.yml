@@ -1,0 +1,46 @@
+name: Verificar download Android
+on:
+  push:
+    paths:
+      - 'arcade/instalar/**'
+      - 'arcade/index.html'
+      - 'arcade/sw.js'
+      - 'arcade/downloads/**'
+      - 'tools/package-world-preview.py'
+      - 'vercel.json'
+      - 'tests/android-download-browser.mjs'
+      - '.github/workflows/android-download.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-download-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Validar identidade e empacotar o site
+        run: |
+          node --test tests/arcade.test.mjs tests/gameplay-recovery.test.mjs
+          python3 tools/package-world-preview.py
+      - name: Baixar por toque e conferir os bytes com e sem service worker
+        run: node tests/android-download-browser.mjs
+      - name: Salvar resultado e telas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-download-evidence
+          path: |
+            test-results/android-download/*.json
+            test-results/android-download/*.png
+          retention-days: 14
