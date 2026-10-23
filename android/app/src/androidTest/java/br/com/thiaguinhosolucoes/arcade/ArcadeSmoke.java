@@ -86,6 +86,10 @@ public final class ArcadeSmoke extends Instrumentation {
             runOnMainSync(() -> currentActivity.webView.postVisualStateCallback(SystemClock.uptimeMillis(),new android.webkit.WebView.VisualStateCallback(){@Override public void onComplete(long requestId){painted.countDown();}}));
             if(!painted.await(10,TimeUnit.SECONDS))throw new AssertionError("WebView did not present the touch target: "+selector);
         }
+        // Menus settle before touch; input injected during a native transition
+        // can be held by Android long enough to become an unintended long press.
+        boolean liveGame="true".equals(evaluate(activity,"!!window.System?.activeGame && !window.System.paused"));
+        if(!liveGame){waitForIdleSync();Thread.sleep(150);}
         // A running game continuously schedules work. Waiting for the Android
         // main Looper to become idle blocks input until the mission has ended.
         // Measure visible fixed controls directly, just as a player taps them.
