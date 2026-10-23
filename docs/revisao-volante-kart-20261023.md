@@ -19,3 +19,11 @@ Não foi encontrada outra remoção de comando nos motores alterados por aquela 
 - Um workflow específico guarda as telas e o resultado dessa navegação por câmera. O worker e as URLs de script foram atualizados para entregar os arquivos corrigidos sem apagar o progresso.
 
 Os ensaios usam emulação móvel e vídeo de referência. Não certificam a câmera física, a iluminação ou a precisão da mão do usuário, nem equivalência com jogos comerciais.
+
+## Entrega publicada
+
+Fonte `900726dcd3230e63367228ca1ed998cd7453eb12`, publicada no mesmo projeto e endereço do mundo aberto. Os 19 arquivos públicos conferidos correspondem exatamente aos arquivos locais testados, incluindo o motor do Kart, as cinco cópias de salvamento e seus workers/HTML. O APK permanece byte a byte idêntico: a correção é entregue pelo carregamento dos jogos.
+
+O workflow `40015900407` concluiu com sucesso os dois autódromos com MoveNet real, nos modos retrato e paisagem, e guardou o resultado no artefato `12529115320`. O workflow `40015900221` também passou, cobrindo câmera frontal do WAR, controles simultâneos e modos do mundo/voo. A conferência pública adicional do Aurora completou a navegação pela versão publicada; a execução adicional do Costa nesse ambiente foi interrompida pela ferramenta antes de produzir um resultado final. A cobertura completa dos dois permanece documentada no workflow e nos arquivos publicados conferidos por hash.
+
+Evidências permanentes: `evidence/original-games-20261023/kart-camera-autodromes.json`, `kart-wheel-public-delivery.json` e `kart-wheel-unit-tests.txt`.

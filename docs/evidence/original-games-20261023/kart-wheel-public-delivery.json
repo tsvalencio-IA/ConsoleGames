@@ -1,0 +1,119 @@
+{
+  "passed": true,
+  "files": [
+    {
+      "path": "/games/kart/index.html",
+      "status": 200,
+      "bytes": 25771,
+      "sha256": "7491a359064627866fd18274d11006b418477d856e47669da2ec4ce80752fd06"
+    },
+    {
+      "path": "/games/kart/local-practice.js",
+      "status": 200,
+      "bytes": 12512,
+      "sha256": "5de23b63d87f23b82bccc9546539e8cff1cf6a8c03c7efd54a58922c4b69821d"
+    },
+    {
+      "path": "/games/kart/sw.js",
+      "status": 200,
+      "bytes": 2654,
+      "sha256": "aa28a89f9e626028f45b7e6a30cb63d478cb54f1c0b6b9dfff4aec13849857a9"
+    },
+    {
+      "path": "/games/boxe/index.html",
+      "status": 200,
+      "bytes": 25847,
+      "sha256": "526d568aaf8009cbd4415a8cc84e8f9321d7a57975ee202bd7382e2dec3f8b3e"
+    },
+    {
+      "path": "/games/boxe/local-practice.js",
+      "status": 200,
+      "bytes": 12512,
+      "sha256": "5de23b63d87f23b82bccc9546539e8cff1cf6a8c03c7efd54a58922c4b69821d"
+    },
+    {
+      "path": "/games/boxe/sw.js",
+      "status": 200,
+      "bytes": 2707,
+      "sha256": "0f4d09ab709d4989592a0131ea4d524eadee85fe33236ed21c692acc3911978b"
+    },
+    {
+      "path": "/games/tenis/index.html",
+      "status": 200,
+      "bytes": 25756,
+      "sha256": "04659f30e06c5df7d8a59b6501a2f41fe16244a564021c678d60858ae785c095"
+    },
+    {
+      "path": "/games/tenis/local-practice.js",
+      "status": 200,
+      "bytes": 12512,
+      "sha256": "5de23b63d87f23b82bccc9546539e8cff1cf6a8c03c7efd54a58922c4b69821d"
+    },
+    {
+      "path": "/games/tenis/sw.js",
+      "status": 200,
+      "bytes": 2671,
+      "sha256": "0b6463c5f5d904f5dd76cad0b21676b4c9d7fa914cca5b7eed134301eca28148"
+    },
+    {
+      "path": "/games/ar/index.html",
+      "status": 200,
+      "bytes": 25975,
+      "sha256": "f8ebc84664c861987df66dda4e1ac71c6a73bc27eb170a33e1f9d71cf5a0b336"
+    },
+    {
+      "path": "/games/ar/local-practice.js",
+      "status": 200,
+      "bytes": 12512,
+      "sha256": "5de23b63d87f23b82bccc9546539e8cff1cf6a8c03c7efd54a58922c4b69821d"
+    },
+    {
+      "path": "/games/ar/sw.js",
+      "status": 200,
+      "bytes": 2919,
+      "sha256": "350f3993da139bf4d2af2edad97a5ac7ac4f53a8018218c0272d7b4364781b85"
+    },
+    {
+      "path": "/games/voo/index.html",
+      "status": 200,
+      "bytes": 26324,
+      "sha256": "1bb306bc6ce0bd88775a3ba5db74bb03d3d36e34bb14d272c83a9fe830d08730"
+    },
+    {
+      "path": "/games/voo/local-practice.js",
+      "status": 200,
+      "bytes": 12512,
+      "sha256": "5de23b63d87f23b82bccc9546539e8cff1cf6a8c03c7efd54a58922c4b69821d"
+    },
+    {
+      "path": "/games/voo/sw.js",
+      "status": 200,
+      "bytes": 2831,
+      "sha256": "6d08ad396fb44eb5ae9908254899b7adeee8eabc7075a5d8da7835fd23004e88"
+    },
+    {
+      "path": "/games/kart/js/game_kart.js",
+      "status": 200,
+      "bytes": 125664,
+      "sha256": "d8814e78c89b1cf09378030c13db5892f26be7b746d1e43f7b349c2811340149"
+    },
+    {
+      "path": "/games/otthi/app.js",
+      "status": 200,
+      "bytes": 1671971,
+      "sha256": "e6f9b527ad5b4b600cb01a00591b10fa9c2b844fcab79c876146f3160de407e3"
+    },
+    {
+      "path": "/games/otthi/release-manifest.json",
+      "status": 200,
+      "bytes": 3247,
+      "sha256": "ac779882399e9272ba8787e71fb44e0c05755180846e0be75d026d2938e32757"
+    },
+    {
+      "path": "/arcade/downloads/thIAguinho-ARCADE-OT.apk",
+      "status": 200,
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+    }
+  ]
+}
