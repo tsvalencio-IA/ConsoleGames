@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=thIAguinho ARCADE, OU=ConsoleGames
+Signer #1 certificate SHA-256 digest: 652e41d7ce6fd53bf75150c75bb4864d807c4ab90fb54a18f3ced21215e0fab1
+Signer #1 certificate SHA-1 digest: 6f868d0b41648acc0192dcc8c87c829741d6e94d
+Signer #1 certificate MD5 digest: ededf013cec6d65b7076051f65ac91da
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: 1fca4c4c38945fb02afaacc3736d01bd293c5f4788ecd0192551a4ca895322bf
+Signer #1 public key SHA-1 digest: d4634efd06c6fff706fc401ef736a34fe297eaa9
+Signer #1 public key MD5 digest: 421ceadc26eaa2590e7e5c498d69b691

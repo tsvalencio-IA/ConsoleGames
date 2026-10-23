@@ -1,0 +1,14 @@
+✔ workshop parking is protected and the boxing academy has its own reachable lot (237.001571ms)
+✔ both autodromes use a validated trip into the original Kart and apply its real result once (1.628724ms)
+✔ WAR infantry advances and flanks without entering physical cover or teleporting (3.80743ms)
+✔ all seven games ship the same audio unlock lifecycle (0.242498ms)
+✔ Vercel packaging gives the installed console a real root URL while preserving the Pages app identity (61.822322ms)
+✔ the build rejects inconsistent release metadata before producing a playable package (34.932163ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 429.470416

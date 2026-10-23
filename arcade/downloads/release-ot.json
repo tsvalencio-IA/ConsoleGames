@@ -1,0 +1,12 @@
+{
+  "name": "thIAguinho ARCADE",
+  "version": "1.1.0",
+  "versionCode": 2,
+  "package": "br.com.thiaguinhosolucoes.arcade",
+  "minAndroid": "7.0",
+  "file": "thIAguinho-ARCADE-OT.apk",
+  "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+  "bytes": 57991,
+  "requiresInternet": true,
+  "consoleUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/?android=1"
+}

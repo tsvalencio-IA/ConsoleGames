@@ -1,0 +1,71 @@
+Android press duration 294ms
+Android native touch #browse-btn css=[360,246.1328125,314.78515625,0,0,2,1] scale=2.0 native=492.26562,629.5703: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"browse-btn\",\"tag\":\"BUTTON\",\"x\":246.1328125,\"y\":314.78515625},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"browse-btn\",\"tag\":\"BUTTON\",\"x\":246.1328125,\"y\":314.78515625},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"browse-btn\",\"tag\":\"BUTTON\",\"x\":246,\"y\":315}]"
+Android press duration 417ms
+Android native touch [data-game='kart'] [data-launch] css=[640,165,180.0390625,0,0,2,1] scale=2.0 native=330.0,360.07812: "[]"
+Android press duration 153ms
+Android native touch [data-solo-start] css=[640,320,310,0,0,2,1] scale=2.0 native=640.0,620.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310}]"
+Android press duration 140ms
+Android native touch #phase-grid .mission-card:not(.locked) css=[640,320,118.203125,0,0,2,1] scale=2.0 native=640.0,236.40625: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118.203125},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118.203125},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118}]"
+Android press duration 139ms
+Android native touch [data-mode='controls'] css=[640,193.75,200.3984375,0,0,2,1] scale=2.0 native=387.5,400.79688: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":194,\"y\":200}]"
+Android started kart "{\"state\":\"MODE_SELECT\",\"audio\":{\"state\":\"running\",\"lastError\":\"\"},\"width\":640,\"scroll\":640}"
+Android press duration 209ms
+Android native touch #arcade-pause css=[640,603.2421875,63.5,0,0,2,1] scale=2.0 native=1206.4844,127.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"arcade-pause-modal\",\"tag\":\"SECTION\",\"x\":603,\"y\":63}]"
+Android press duration 130ms
+Android native touch #arcade-pause-modal [data-action='exit'] css=[640,320,298.796875,0,0,2,1] scale=2.0 native=640.0,597.59375: "[]"
+Android press duration 183ms
+Android native touch [data-game='boxe'] [data-launch] css=[640,475,180.0390625,0,0,2,1] scale=2.0 native=950.0,360.07812: "[]"
+Android press duration 137ms
+Android native touch [data-solo-start] css=[640,320,310,0,0,2,1] scale=2.0 native=640.0,620.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310}]"
+Android press duration 136ms
+Android native touch #phase-grid .mission-card:not(.locked) css=[640,320,118.203125,0,0,2,1] scale=2.0 native=640.0,236.40625: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118.203125},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118.203125},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":118}]"
+Android press duration 154ms
+Android native touch [data-mode='controls'] css=[640,193.75,200.3984375,0,0,2,1] scale=2.0 native=387.5,400.79688: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":194,\"y\":200}]"
+Android started boxe "{\"state\":\"CHAR_SELECT\",\"audio\":{\"state\":\"running\",\"lastError\":\"\"},\"width\":640,\"scroll\":640}"
+Android press duration 190ms
+Android native touch #arcade-pause css=[640,603.2421875,63.5,0,0,2,1] scale=2.0 native=1206.4844,127.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"arcade-pause-modal\",\"tag\":\"SECTION\",\"x\":603,\"y\":63}]"
+Android press duration 134ms
+Android native touch #arcade-pause-modal [data-action='exit'] css=[640,320,298.796875,0,0,2,1] scale=2.0 native=640.0,597.59375: "[]"
+Android press duration 536ms
+Android native touch [data-game='tenis'] [data-launch] css=[640,165,180.1328125,0,0,2,1] scale=2.0 native=330.0,360.26562: "[]"
+Android press duration 132ms
+Android native touch [data-solo-start] css=[640,320,310,0,0,2,1] scale=2.0 native=640.0,620.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310}]"
+Android press duration 158ms
+Android native touch #phase-grid .mission-card:not(.locked) css=[640,320,118.203125,0,0,2,1] scale=2.0 native=640.0,236.40625: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":118.203125},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":118.203125},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":118}]"
+Android press duration 129ms
+Android native touch [data-mode='controls'] css=[640,193.75,200.3984375,0,0,2,1] scale=2.0 native=387.5,400.79688: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":194,\"y\":200}]"
+Android started tenis "{\"state\":\"IDLE\",\"audio\":{\"state\":\"running\",\"lastError\":\"\"},\"width\":640,\"scroll\":640}"
+Android press duration 238ms
+Android native touch #arcade-pause css=[640,603.2421875,63.5,0,0,2,1] scale=2.0 native=1206.4844,127.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"arcade-pause-modal\",\"tag\":\"SECTION\",\"x\":603,\"y\":63}]"
+Android press duration 133ms
+Android native touch #arcade-pause-modal [data-action='exit'] css=[640,320,298.796875,0,0,2,1] scale=2.0 native=640.0,597.59375: "[]"
+Android press duration 167ms
+Android native touch [data-game='ar'] [data-launch] css=[640,475,180.1328125,0,0,2,1] scale=2.0 native=950.0,360.26562: "[]"
+Android press duration 185ms
+Android native touch [data-solo-start] css=[640,320,310,0,0,2,1] scale=2.0 native=640.0,620.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310}]"
+Android press duration 131ms
+Android native touch #phase-grid .mission-card:not(.locked) css=[640,320,181,0,0,2,1] scale=2.0 native=640.0,362.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":181},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":181},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"H2\",\"x\":320,\"y\":181}]"
+Android press duration 145ms
+Android native touch [data-mode='controls'] css=[640,193.75,215.796875,0,0,2,1] scale=2.0 native=387.5,431.59375: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"SMALL\",\"x\":193.75,\"y\":215.796875},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"SMALL\",\"x\":193.75,\"y\":215.796875},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"SMALL\",\"x\":194,\"y\":216}]"
+Android started ar "{\"state\":\"PLAYING\",\"audio\":{\"state\":\"running\",\"lastError\":\"\"},\"width\":640,\"scroll\":640}"
+Android press duration 217ms
+Android native touch [data-control='fire'] css=[640,572,313,0,0,2,1] scale=2.0 native=1144.0,626.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":572,\"y\":313},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":572,\"y\":313}]"
+Android press duration 248ms
+Android native touch #arcade-pause css=[640,596,73,0,0,2,1] scale=2.0 native=1192.0,146.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":596,\"y\":73},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":596,\"y\":73},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"arcade-pause-modal\",\"tag\":\"SECTION\",\"x\":596,\"y\":73}]"
+Android press duration 136ms
+Android native touch #arcade-pause-modal [data-action='exit'] css=[640,320,298.796875,0,0,2,1] scale=2.0 native=640.0,597.59375: "[]"
+Android press duration 240ms
+Android native touch [data-game='voo'] [data-launch] css=[640,165,180.2265625,0,0,2,1] scale=2.0 native=330.0,360.45312: "[]"
+Android press duration 257ms
+Android native touch [data-solo-start] css=[640,320,310,0,0,2,1] scale=2.0 native=640.0,620.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":320,\"y\":310}]"
+Android press duration 137ms
+Android native touch #phase-grid .mission-card:not(.locked) css=[640,320,181,0,0,2,1] scale=2.0 native=640.0,362.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":181},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":181},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"DIV\",\"x\":320,\"y\":181}]"
+Android press duration 143ms
+Android native touch [data-mode='controls'] css=[640,193.75,200.3984375,0,0,2,1] scale=2.0 native=387.5,400.79688: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":193.75,\"y\":200.3984375},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"\",\"tag\":\"BUTTON\",\"x\":194,\"y\":200}]"
+Android started voo "{\"state\":\"HANGAR\",\"audio\":{\"state\":\"running\",\"lastError\":\"\"},\"width\":640,\"scroll\":640}"
+Android press duration 245ms
+Android native touch #arcade-pause css=[640,603.2421875,63.5,0,0,2,1] scale=2.0 native=1206.4844,127.0: "[{\"type\":\"pointerdown\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"pointerup\",\"pointer\":\"touch\",\"id\":\"arcade-pause\",\"tag\":\"BUTTON\",\"x\":603.2421875,\"y\":63.5},{\"type\":\"click\",\"pointer\":\"touch\",\"id\":\"arcade-pause-modal\",\"tag\":\"SECTION\",\"x\":603,\"y\":63}]"
+Android press duration 136ms
+Android native touch #arcade-pause-modal [data-action='exit'] css=[640,320,298.796875,0,0,2,1] scale=2.0 native=640.0,597.59375: "[]"
+Android: installed, seven games, original five engines entered with native touch, running audio contexts, WAR firing, console return, portrait/landscape, HTTPS navigation, no unsolicited camera request.
+

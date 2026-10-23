@@ -40,4 +40,8 @@ Veja `evidence/original-games-20261023/`.
 
 Os ensaios de navegador usam emulação móvel. Eles não certificam o aparelho físico de Thiago, a precisão com sua mão/iluminação, a saída física de áudio nem partidas online entre dois dispositivos reais. Não houve uso de uma conta real ou alteração de regras Firebase. O reconhecimento funciona no dispositivo, sem envio de imagens para um serviço remoto.
 
-A variante Android `recovery` está preparada para abrir a mesma origem desta revisão; compilação, instalação e assinatura devem ser registradas antes de apresentar um novo APK como disponível. A variante `production` conserva o endereço anterior. Dados locais de origens ou aplicativos diferentes não são migrados automaticamente.
+O APK Android `recovery` 1.1.0 (código 2) abre o console desta revisão e requer internet para o carregamento inicial dos jogos. A compilação e o lint passaram; a instalação no Android 15/API 35 e a abertura dos cinco motores foram verificadas com eventos nativos de toque, áudio ativo, disparo no WAR, saída ao console e retrato/paisagem (execução 40005836055). O APK release sem assinatura dessa execução é byte a byte idêntico ao que recebeu a assinatura final; a assinatura V2/V3 foi verificada e mantém o certificado do aplicativo anterior.
+
+Arquivo: `arcade/downloads/thIAguinho-ARCADE-OT.apk`, 57.991 bytes. SHA-256: `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`.
+
+O empacotamento do site oferece esse APK e verifica seu tamanho e hash antes de publicar. A variante `production` e seu APK conservam o endereço anterior. Dados locais de origens ou aplicativos diferentes não são migrados automaticamente.

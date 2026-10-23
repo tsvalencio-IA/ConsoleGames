@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "source": "526d8f32708932e8ef67a966c959110d8467b01e",
+  "origin": "https://otthi-world-campanha-teste.vercel.app/",
+  "files": [
+    {
+      "path": "games/ar/js/game_ar.js",
+      "sha256": "4e5323c1761c410fbe776f6e3b7b72f524c295ae8cac3e1e4a73637ef236afec",
+      "bytes": 24919
+    },
+    {
+      "path": "games/ar/sw.js",
+      "sha256": "22bde0bc7fc24a2e933eb4801d7f037f01c2c71f52559cf312f7e2bf3388a023",
+      "bytes": 2919
+    },
+    {
+      "path": "games/familia/3d/index.html",
+      "sha256": "dd54117f46f4edfb38483ec06422b92e996d287e4c5faf8f076d7fa0cfa770b7",
+      "bytes": 59816
+    },
+    {
+      "path": "games/familia/3d/mascotes-3d.js",
+      "sha256": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
+      "bytes": 41544
+    },
+    {
+      "path": "games/familia/3d/troca-bateria.js",
+      "sha256": "01bb9419cca02088dae5af61557cab181c4d13f79e946a12cfa7b59ebdaeee33",
+      "bytes": 11175
+    },
+    {
+      "path": "games/familia/3d/acoes-visuais.js",
+      "sha256": "0f757fe9af564ffc6e7a8307d0633d84808932120462e6ce396ceb0bcae83d1e",
+      "bytes": 18931
+    },
+    {
+      "path": "games/familia/3d/console-world.js",
+      "sha256": "4e893fc2305aaa32a828475143c2f05ef828041041c69588a632844f695ac159",
+      "bytes": 2546
+    },
+    {
+      "path": "games/familia/3d/sw.js",
+      "sha256": "690e0de1d859b7ad66e128ddc30b7d3396c1d5a045b5f6fa4bbac6a1608a45dd",
+      "bytes": 1946
+    }
+  ]
+}

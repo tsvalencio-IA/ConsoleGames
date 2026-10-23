@@ -47,8 +47,11 @@ jobs:
             adb shell settings put secure immersive_mode_confirmations confirmed
             adb shell am force-stop com.android.launcher3
             adb shell input keyevent 4
-            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose arcade/downloads/thIAguinho-ARCADE.apk
-            adb install arcade/downloads/thIAguinho-ARCADE.apk
+            SIGNED_ARCADE_APK=arcade/downloads/thIAguinho-ARCADE.apk
+            if [ -f arcade/downloads/thIAguinho-ARCADE-OT.apk ]; then SIGNED_ARCADE_APK=arcade/downloads/thIAguinho-ARCADE-OT.apk; fi
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$SIGNED_ARCADE_APK" > android-delivery/signed-verification.txt
+            "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$SIGNED_ARCADE_APK" > android-delivery/signed-apk-manifest.txt
+            adb install "$SIGNED_ARCADE_APK"
             adb shell am start -W -n br.com.thiaguinhosolucoes.arcade/.MainActivity
             sleep 4
             adb shell pidof br.com.thiaguinhosolucoes.arcade

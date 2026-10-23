@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "runId": 40005836055,
+  "artifactId": 12524885621,
+  "testSource": "fc5a7f019ea88c1841fef5e69f474db8e8a4a011",
+  "runtimeSource": "526d8f32708932e8ef67a966c959110d8467b01e",
+  "platform": "Android 15/API 35 emulator",
+  "nativeTouch": true,
+  "originalEngines": [
+    "drive",
+    "box_pro",
+    "tennis",
+    "ar_truck_sim",
+    "usarmy_flight_sim"
+  ],
+  "audioContexts": "running",
+  "warFiring": true,
+  "consoleReturn": true,
+  "portraitLandscape": true,
+  "unsolicitedCamera": false,
+  "releaseMatchesVerifiedBuild": true,
+  "signedPackage": {
+    "name": "thIAguinho ARCADE",
+    "version": "1.1.0",
+    "versionCode": 2,
+    "package": "br.com.thiaguinhosolucoes.arcade",
+    "minAndroid": "7.0",
+    "file": "thIAguinho-ARCADE-OT.apk",
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+    "bytes": 57991,
+    "requiresInternet": true,
+    "consoleUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/?android=1"
+  }
+}
