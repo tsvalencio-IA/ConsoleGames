@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.18.0-original-games',
+    build: '705.18.1-family-lots',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

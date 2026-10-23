@@ -2,7 +2,7 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-tenis-";
-const CACHE=PREFIX+"pro-control-v19";
+const CACHE=PREFIX+"pro-control-v20";
 const FILES=["./world-venue-trip.js?v=20261023-3","./local-practice.js?v=20261023-3","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg",
 "./js/core.js","./js/game_tennis.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",

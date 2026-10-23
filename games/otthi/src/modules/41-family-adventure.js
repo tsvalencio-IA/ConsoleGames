@@ -46,6 +46,7 @@
     // A new free lot is selected without moving a road, house or existing activity.
     for(const x of [-38,-40,-34,-44,-32])for(const z of [-24,-28,-32,-16]){
       if(waterAt(x,z)||v704RoadAt(x,z,1,false))continue;
+      if(v704ProtectedRectangles().some(c=>c.id!=='thia-family-home'&&Math.abs(c.x-x)<c.w/2+6&&Math.abs(c.z-z)<c.d/2+8))continue;
       const overlap=(world.colliders||[]).some(c=>!c.disabled&&Math.abs(c.x-x)<c.w/2+6.0&&Math.abs(c.z-z)<c.d/2+5.0);
       if(!overlap&&!positionBlockedForPlayer(x,z+5,.5))return{x,z};
     }

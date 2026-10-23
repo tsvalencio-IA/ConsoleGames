@@ -14,7 +14,7 @@ async function scenario(position,portrait=false,desktop=false){
 }
 try{
  if(!process.env.WORLD_ONLY_RACE){console.log('STARTING DANCE');
-  if(!process.env.WORLD_SKIP_DANCE){const {c,p}=await scenario({x:-38,z:-10},true);await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='activity-venue-dance');{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}await p.locator('[data-dance-level="0"]').waitFor();assert(await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-dance-level="0"]').click();
+  if(!process.env.WORLD_SKIP_DANCE){const {c,p}=await scenario({x:-38,z:-50},true);await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='activity-venue-dance');{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}await p.locator('[data-dance-level="0"]').waitFor();assert(await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-dance-level="0"]').click();
   await p.screenshot({path:'test-results/world-activities/dance-portrait.png'});let pressed=0,paused=false;const keys=['ArrowLeft','ArrowUp','ArrowDown','ArrowRight'];
   for(let step=0;step<4000;step++){
    const d=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance);if(d?.done)break;assert(d);const note=d.notes.find(n=>n.at>=d.time-.12);
@@ -22,7 +22,7 @@ try{
    else await p.waitForTimeout(20);
    if(pressed===8&&!paused){await p.locator('[data-dance-pause]').click();const t=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance.time);await p.waitForTimeout(400);assert(Math.abs((await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance.time))-t)<.03);await p.locator('[data-dance-pause]').click();paused=true;}
   }
-  const d=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance);assert(d.done&&d.passed,JSON.stringify(d));assert(d.hits>=25);await p.screenshot({path:'test-results/world-activities/dance-result.png'});await p.locator('[data-dance-again]').click();assert(!await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-venue-close]').click();assert.equal(await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().paused),false);assert(Math.hypot((await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.x))+38,(await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.z))+10)<1);console.log('DANCE UI PASS',JSON.stringify({hits:d.hits,total:d.total,accuracy:d.accuracy,pressed,pause:true}));await c.close();}
+  const d=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance);assert(d.done&&d.passed,JSON.stringify(d));assert(d.hits>=25);await p.screenshot({path:'test-results/world-activities/dance-result.png'});await p.locator('[data-dance-again]').click();assert(!await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-venue-close]').click();assert.equal(await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().paused),false);assert(Math.hypot((await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.x))+38,(await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.z))+50)<1);console.log('DANCE UI PASS',JSON.stringify({hits:d.hits,total:d.total,accuracy:d.accuracy,pressed,pause:true}));await c.close();}
   for(const [id,pos,slug]of [['boxing',{x:46,z:-48},'boxe'],['pingpong',{x:48,z:10},'tenis']]){
    const {c,p}=await scenario(pos,false,true);await p.waitForFunction(id=>window.OTTHOS_TEST_API.getContext()?.id==='activity-venue-'+id,id);await p.screenshot({path:'test-results/world-activities/'+id+'-building.png'});{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}const frame=p.frameLocator('#worldVenueDialog iframe');await frame.locator('#phase-screen:not(.hidden)').waitFor({timeout:10000}).catch(async()=>{await frame.locator('#channel-grid .channel').first().click();});await frame.locator('.mission-card:not(.locked)').first().click();await frame.locator('[data-mode="controls"]').click();await frame.locator('#game-ui .hud-score-box').waitFor();await p.screenshot({path:'test-results/world-activities/'+id+'-original-game.png'});
    if(slug==='tenis'&&process.env.WORLD_VENUE_RESULT){
@@ -37,17 +37,31 @@ try{
    await p.locator('[data-venue-close]').click();const v=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics());assert.equal(v.active,null);assert(Math.hypot(v.position.x-pos.x,v.position.z-pos.z)<1);console.log('ORIGINAL GAME VENUE PASS',slug);await c.close();
   }
  }
- if(!process.env.WORLD_SKIP_RACE){console.log('STARTING AUTODROME');
-  const {c,p}=await scenario({x:300,z:-212});await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='kart-race-aurora');{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}await p.locator('#worldRaceAssist').selectOption('strong');await p.locator('#worldRaceDifficulty').selectOption('easy');await p.locator('#kartSoloV705').click();await p.waitForFunction(()=>window.OTTHI_SPORTS_V705.state().kart.active);await p.waitForFunction(()=>window.OTTHI_SPORTS_V705.state().kart.countdown<0,null,{timeout:40000});const still=await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart);await p.waitForTimeout(500);assert(Math.abs((await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart)).speed)<.05,'race cannot accelerate itself without a held accelerator');
-  await p.waitForFunction(()=>window.__worldQaAsphaltDraws>0,null,{timeout:10000});await p.screenshot({path:'test-results/world-activities/race-start.png'});
-  for(const sel of ['#missionCard','#skillsToggleBtn','.secondary-actions','#cameraControls','#worldCampaignBtn','#miniNav'])assert(!await p.locator(sel).isVisible(),sel+' must be hidden during a race');const fingers=await touchSession(c,p);const f=await fingers.start(p.locator('#runBtn'));let turbo=null;const started=Date.now();let done=false,lastLog=0;
-  try{for(let step=0;step<1000;step++){
-   const k=await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart);if(!k.active){done=true;break;}if(Date.now()-started>360000)break;
-   if(!turbo&&k.lap>=1)turbo=await fingers.start(p.locator('#specialBtn'));
-   if(Date.now()-lastLog>15000){lastLog=Date.now();console.log('RACE LIVE',JSON.stringify({kart:k,controls:await p.evaluate(()=>window.OTTHOS_TEST_API.mobilityControls()),body:await p.locator('body').getAttribute('class'),hud:await p.locator('.game-hud').isVisible()}));await p.screenshot({path:'test-results/world-activities/autodrome-landscape.png'});}
-   await p.waitForTimeout(350);
-  }}finally{if(turbo)await fingers.end(turbo);await fingers.end(f);}
-  const result=await p.evaluate(()=>window.OTTHI_SPORTS_V705.state().kart);assert(done&&result.lap===3,JSON.stringify(result));await p.screenshot({path:'test-results/world-activities/race-result.png'});console.log('RACE UI PASS',JSON.stringify({lap:result.lap,seconds:(Date.now()-started)/1000,simultaneousTouches:2,automaticThrottle:false}));await c.close();
+ if(!process.env.WORLD_SKIP_RACE){console.log('STARTING ORIGINAL KART AUTODROME');
+  const {c,p}=await scenario({x:300,z:-212});
+  await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='kart-race-aurora');
+  const entry=await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player);
+  {const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}
+  await p.waitForURL(url=>url.pathname.endsWith('/games/kart/')&&url.searchParams.get('venuePage')==='1');
+  await p.locator('#phase-screen:not(.hidden)').waitFor();await p.locator('#phase-grid .mission-card:not(.locked)').first().click();await p.locator('[data-mode="controls"]').click();
+  await p.waitForFunction(()=>window.System?.activeGame?.id==='drive');
+  const t=await touchSession(c,p);
+  let phase=await p.evaluate(()=>window.System.activeGame.logic.state);
+  if(phase==='MODE_SELECT'){const f=await t.start(p.locator('#game-canvas'),.5,.48);await t.end(f);}
+  await p.waitForFunction(()=>window.System.activeGame.logic.state==='LOBBY');
+  {const f=await t.start(p.locator('#game-canvas'),.5,.92);await t.end(f);}
+  await p.waitForFunction(()=>window.System.activeGame.logic.state==='RACE',null,{timeout:40000});
+  const before=await p.evaluate(()=>({pos:window.System.activeGame.logic.pos,speed:window.System.activeGame.logic.speed}));
+  assert(before.speed<.1,'Kart must wait for acceleration');
+  const f=await t.start(p.locator('.kart-input [data-control="go"]'));
+  await p.waitForFunction(pos=>window.System.activeGame.logic.pos>pos+3,before.pos);await t.end(f);
+  assert(await p.locator('.kart-input').isVisible());assert(await p.locator('#arcade-topline').isHidden());
+  await p.screenshot({path:'test-results/world-activities/autodrome-original-kart.png'});
+  await p.locator('[data-venue-return]').click();await p.waitForURL(url=>url.pathname.endsWith('/games/otthi/'));
+  await p.waitForFunction(()=>window.OTTHOS_TEST_API.getGame().running&&!window.WorldVenueTrip.current(),null,{timeout:90000});
+  const after=await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().player);
+  assert(Math.hypot(after.x-entry.x,after.z-entry.z)<1);
+  console.log('ORIGINAL KART AUTODROME PASS: original engine, real touch accelerator, clean HUD and preserved return');await c.close();
  }
  assert.equal(errors.length,0,errors.join('\n'));fs.writeFileSync('test-results/world-activities/result.json',JSON.stringify({passed:true,errors},null,2));
 }finally{await browser.close();}

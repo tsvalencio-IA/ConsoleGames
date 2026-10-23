@@ -1,0 +1,6 @@
+STARTING DANCE
+DANCE UI PASS {"hits":32,"total":32,"accuracy":1,"pressed":32,"pause":true}
+ORIGINAL GAME VENUE PASS boxe
+ORIGINAL GAME VENUE PASS tenis
+STARTING ORIGINAL KART AUTODROME
+ORIGINAL KART AUTODROME PASS: original engine, real touch accelerator, clean HUD and preserved return

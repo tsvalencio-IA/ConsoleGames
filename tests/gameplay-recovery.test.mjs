@@ -9,6 +9,7 @@ test('workshop parking is protected and the boxing academy has its own reachable
   const c=vm.createContext({window:{},state:{profile:{playerId:'recovery-qa'}},console});
   vm.runInContext(readFileSync('games/otthi/src/modules/05a-world-layout-v704.js','utf8'),c);
   const api=c.window.OTTHI_WORLD_LAYOUT_V704, l=api.layout, yard=l.structures.find(s=>s.id==='workshop-yard'), gym=l.activityVenues.boxing;
+  assert(api.reservedAt(-38,-18),'family house and garden are reserved before venues are built');assert(Math.abs(l.activityVenues.dance.z-l.points.familyHome.z)>20);
   assert(yard);assert(api.reservedAt(46,-20),'the previous overlap must remain reserved for parked cars');
   assert(Math.abs(gym.z-yard.z)>(gym.d+yard.d)/2+2);
   assert(api.staticAudit().passed,JSON.stringify(api.staticAudit().problems));
@@ -55,6 +56,12 @@ test('Vercel packaging gives the installed console a real root URL while preserv
   assert.equal(new URL(manifest.start_url,'https://test.example/arcade/').pathname,'/arcade/');
   assert.equal(readFileSync('arcade/manifest.webmanifest','utf8'),original);
   assert.equal(JSON.parse(original).id,'/ConsoleGames/arcade/');
+  const consoleHtml=readFileSync('arcade/index.html','utf8');
+  const consoleProgram="import runpy; m=runpy.run_path('tools/package-world-preview.py'); print(m['root_site_console'](open('arcade/index.html').read()))";
+  const packagedHtml=execFileSync('python3',['-c',consoleProgram],{encoding:'utf8'});
+  assert.equal(readFileSync('arcade/index.html','utf8'),consoleHtml);
+  if(packagedHtml!==consoleHtml+'\n')assert(packagedHtml.includes('href=\"./downloads/thIAguinho-ARCADE-OT.apk\" download'));
+
 });
 
 test('the build rejects inconsistent release metadata before producing a playable package',()=>{

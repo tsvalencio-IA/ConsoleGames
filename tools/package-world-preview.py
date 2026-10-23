@@ -6,6 +6,7 @@ No source is copied into another game's folder. Production Pages is untouched.
 from pathlib import Path
 import json
 import shutil
+import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'dist-world'
@@ -24,6 +25,24 @@ def root_site_manifest(document):
     return result
 
 
+def root_site_console(document):
+    """Offer the signed package that opens this origin, preserving Pages."""
+    metadata = ROOT / 'arcade/downloads/release-ot.json'
+    if not metadata.is_file():
+        return document
+    release = json.loads(metadata.read_text('utf-8'))
+    filename = release['file']
+    if filename != 'thIAguinho-ARCADE-OT.apk' or release['package'] != 'br.com.thiaguinhosolucoes.arcade':
+        raise RuntimeError('Unexpected Android package identity')
+    apk = (metadata.parent / filename).read_bytes()
+    if len(apk) != release['bytes'] or hashlib.sha256(apk).hexdigest() != release['sha256']:
+        raise RuntimeError('Android release integrity mismatch')
+    original = 'href="./downloads/thIAguinho-ARCADE.apk" download'
+    if document.count(original) != 1:
+        raise RuntimeError('Android installation button was not found')
+    return document.replace(original, 'href="./downloads/' + filename + '" download')
+
+
 def package(output=OUTPUT):
     if output.exists():
         shutil.rmtree(output)
@@ -37,6 +56,8 @@ def package(output=OUTPUT):
     manifest_path = output / 'arcade/manifest.webmanifest'
     manifest_path.write_text(json.dumps(root_site_manifest(json.loads(
         manifest_path.read_text('utf-8'))), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    console_path = output / 'arcade/index.html'
+    console_path.write_text(root_site_console(console_path.read_text('utf-8')), encoding='utf-8')
     (output / 'index.html').write_text('''<!doctype html><html lang="pt-BR"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>OTThi World</title>
 <meta http-equiv="refresh" content="0;url=games/otthi/">

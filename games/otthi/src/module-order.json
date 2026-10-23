@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.18.0-original-games",
+  "build": "705.18.1-family-lots",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "eb559244fb2493bef4842a2758269ddcd6e9836ab9475c0b0a5ee2d69b9d67da"
+      "sha256Body": "a2f316508ab0a225a7d0c860df4bc29a9668be2068c66672bc72cdd21a98d57a"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "6e9a0e4bfa9d478a0fd1790338867372c0eadba0ea16e099ab380054c3474f38"
+      "sha256Body": "3b549964a08c7f2cc0f788b61e70071b0adeb9b93549bca719b08c3c30212041"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -343,7 +343,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "5c2227800fb08ea1e26bb4aee6589da730d70a7f114eb4f135ad0469821ec37c"
+      "sha256Body": "f1c67f12256535b72a936c35c6c175a3e360e3c80e33ce240ff8e3bd4f32d756"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",

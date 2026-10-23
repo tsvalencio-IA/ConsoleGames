@@ -1,0 +1,140 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "slug": "kart",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "kart",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "kart",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "boxe",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "boxe",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "boxe",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "tenis",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "tenis",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "tenis",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "ar",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "ar",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "ar",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "voo",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "voo",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    },
+    {
+      "slug": "voo",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "headingVisible": true,
+      "replayReachable": true
+    }
+  ]
+}

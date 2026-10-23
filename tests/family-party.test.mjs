@@ -6,7 +6,7 @@ function family(){
  const c=vm.createContext({console,performance:{now:()=>100},URLSearchParams,Float32Array,setTimeout(){}});
  c.window={addEventListener(){},location:{search:''}};c.document={hidden:false};
  vm.runInContext(readFileSync('games/otthi/assets/vendor/three-r128.min.js','utf8'),c);
- vm.runInContext(`let authority=true;const state={avatar:{bodyStyle:'family-thiago'}},player={x:0,z:6,facing:0,vx:0,vz:0},input={};const world={colliders:[],ghosts:new Map()},worldGroup=new THREE.Group(),remotePresence=new Map();const lerp=(a,b,t)=>a+(b-a)*t,lerpAngle=lerp;const waterAt=()=>false,v704RoadAt=()=>false,positionBlockedForPlayer=()=>false,groundHeightAt=()=>0,worldLayoutPoint=()=>({x:0,z:0}),createHouse=()=>{},registerInteractable=()=>{},sharedWorldIsAuthority=()=>authority,sharedWorldOwnId=()=> 'party-test',saveState=()=>{},toast=()=>{},beep=()=>{},buildRoutePoints=(a,b)=>[b];`,c);
+ vm.runInContext(`let authority=true;const state={avatar:{bodyStyle:'family-thiago'}},player={x:0,z:6,facing:0,vx:0,vz:0},input={};const world={colliders:[],ghosts:new Map()},worldGroup=new THREE.Group(),remotePresence=new Map();const lerp=(a,b,t)=>a+(b-a)*t,lerpAngle=lerp;const waterAt=()=>false,v704RoadAt=()=>false,v704ProtectedRectangles=()=>[],positionBlockedForPlayer=()=>false,groundHeightAt=()=>0,worldLayoutPoint=()=>({x:0,z:0}),createHouse=()=>{},registerInteractable=()=>{},sharedWorldIsAuthority=()=>authority,sharedWorldOwnId=()=> 'party-test',saveState=()=>{},toast=()=>{},beep=()=>{},buildRoutePoints=(a,b)=>[b];`,c);
  vm.runInContext(readFileSync('games/otthi/family-mascots.js','utf8'),c);
  vm.runInContext(readFileSync('games/otthi/src/modules/41-family-adventure.js','utf8'),c);
  vm.runInContext('initFamilyAdventure()',c);
