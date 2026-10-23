@@ -64,18 +64,8 @@ public final class ArcadeSmoke extends Instrumentation {
         throw new AssertionError("A system window is covering the console");
     }
     private void openLibrary(MainActivity activity) throws Exception {
-        // Locate the real button in CSS pixels, then tap through Android input.
-        // This also works when the system WebView omits HTML text from its AX tree.
-        String json=evaluate(activity,"(()=>{const b=document.getElementById('browse-btn');b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2];})()");
-        JSONArray css=new JSONArray(json);float[] point=new float[2];
-        runOnMainSync(() -> {
-            int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);
-            float scale=currentActivity.webView.getWidth()/(float)css.optDouble(0);
-            point[0]=origin[0]+(float)css.optDouble(1)*scale;
-            point[1]=origin[1]+(float)css.optDouble(2)*scale;
-        });
-        waitForIdleSync();Thread.sleep(500);
-        nativeTap(point[0],point[1]);
+        // Use the same committed viewport and Android scale as every game tap.
+        tap(activity,"#browse-btn");
     }
     private void screenshot(String name) throws Exception {
         Bitmap image=getUiAutomation().takeScreenshot();
