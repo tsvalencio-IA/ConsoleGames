@@ -80,15 +80,17 @@ public final class ArcadeSmoke extends Instrumentation {
         checkpoint="tap "+selector;
         String escaped=org.json.JSONObject.quote(selector);
         waitFor(activity,"!!document.querySelector("+escaped+")");
-        String json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2,visualViewport?.offsetLeft||0,visualViewport?.offsetTop||0,devicePixelRatio,visualViewport?.scale||1];})()");
-        // CSS scrolling/layout can finish before Android has presented that
-        // frame. Wait for the real WebView compositor, then measure again.
-        CountDownLatch painted=new CountDownLatch(1);
-        runOnMainSync(() -> currentActivity.webView.postVisualStateCallback(SystemClock.uptimeMillis(),new android.webkit.WebView.VisualStateCallback(){@Override public void onComplete(long requestId){painted.countDown();}}));
-        if(!painted.await(10,TimeUnit.SECONDS))throw new AssertionError("WebView did not present the touch target: "+selector);
-        waitForIdleSync();Thread.sleep(200);
-        json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2,visualViewport?.offsetLeft||0,visualViewport?.offsetTop||0,devicePixelRatio,visualViewport?.scale||1];})()");
-        evaluate(activity,"(()=>{window.__androidTouches=[];if(!window.__androidTouchObserver){window.__androidTouchObserver=true;for(const n of ['pointerdown','pointerup','pointercancel','click'])document.addEventListener(n,e=>{window.__androidTouches.push({type:n,pointer:e.pointerType,id:e.target.id,tag:e.target.tagName,launch:e.target.closest('[data-launch]')?.dataset.launch,x:e.clientX,y:e.clientY});window.__androidTouches=window.__androidTouches.slice(-8)},true)}})()");
+        String needsScroll=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");const r=b.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight||r.left<0||r.right>innerWidth){b.scrollIntoView({block:'center',behavior:'instant'});return true;}return false;})()");
+        if("true".equals(needsScroll)){
+            CountDownLatch painted=new CountDownLatch(1);
+            runOnMainSync(() -> currentActivity.webView.postVisualStateCallback(SystemClock.uptimeMillis(),new android.webkit.WebView.VisualStateCallback(){@Override public void onComplete(long requestId){painted.countDown();}}));
+            if(!painted.await(10,TimeUnit.SECONDS))throw new AssertionError("WebView did not present the touch target: "+selector);
+        }
+        // A running game continuously schedules work. Waiting for the Android
+        // main Looper to become idle blocks input until the mission has ended.
+        // Measure visible fixed controls directly, just as a player taps them.
+        String json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");if(!b)return null;window.__androidTouches=[];if(!window.__androidTouchObserver){window.__androidTouchObserver=true;for(const n of ['pointerdown','pointerup','pointercancel','click'])document.addEventListener(n,e=>{window.__androidTouches.push({type:n,pointer:e.pointerType,id:e.target.id,tag:e.target.tagName,launch:e.target.closest('[data-launch]')?.dataset.launch,x:e.clientX,y:e.clientY});window.__androidTouches=window.__androidTouches.slice(-8)},true)}const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2,visualViewport?.offsetLeft||0,visualViewport?.offsetTop||0,devicePixelRatio,visualViewport?.scale||1];})()");
+        if(json==null||"null".equals(json))throw new AssertionError("Touch target disappeared before native input: "+selector);
         JSONArray css=new JSONArray(json);float[] point=new float[2];
         runOnMainSync(() -> {int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);float scale=currentActivity.webView.getScale();point[0]=origin[0]+(float)(css.optDouble(1)-css.optDouble(3))*scale;point[1]=origin[1]+(float)(css.optDouble(2)-css.optDouble(4))*scale;lastTouch=selector+" css="+css+" scale="+scale+" native="+point[0]+","+point[1];});
         nativeTap(point[0],point[1]);
