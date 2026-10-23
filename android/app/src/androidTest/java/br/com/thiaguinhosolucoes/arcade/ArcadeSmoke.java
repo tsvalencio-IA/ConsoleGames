@@ -23,13 +23,15 @@ public final class ArcadeSmoke extends Instrumentation {
     private String lastTouch="none";
     private String checkpoint="launch";
     private void nativeTap(float x,float y) throws Exception {
-        // Android's own input command builds the complete pointer stream,
-        // including device metadata, down/up and cancellation semantics.
-        String command="input touchscreen swipe "+Math.round(x)+" "+Math.round(y)+" "+Math.round(x)+" "+Math.round(y)+" 180";
-        try(android.os.ParcelFileDescriptor descriptor=getUiAutomation().executeShellCommand(command);
-            java.io.FileInputStream output=new java.io.FileInputStream(descriptor.getFileDescriptor())) {
-            byte[] buffer=new byte[256];while(output.read(buffer)!=-1){}
-        }
+        long time=SystemClock.uptimeMillis();
+        android.view.MotionEvent down=android.view.MotionEvent.obtain(time,time,android.view.MotionEvent.ACTION_DOWN,x,y,0);
+        down.setSource(android.view.InputDevice.SOURCE_TOUCHSCREEN);
+        if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Android rejected touch down");
+        down.recycle();Thread.sleep(180);
+        android.view.MotionEvent up=android.view.MotionEvent.obtain(time,SystemClock.uptimeMillis(),android.view.MotionEvent.ACTION_UP,x,y,0);
+        up.setSource(android.view.InputDevice.SOURCE_TOUCHSCREEN);
+        if(!getUiAutomation().injectInputEvent(up,true))throw new AssertionError("Android rejected touch up");
+        up.recycle();
     }
     private void report(String message) {Bundle status=new Bundle();status.putString("stream",message+"\n");sendStatus(0,status);}
     @Override public void callActivityOnResume(Activity activity) {
