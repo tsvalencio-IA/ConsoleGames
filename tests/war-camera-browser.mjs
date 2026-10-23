@@ -1,6 +1,6 @@
 /* Real local MediaPipe CPU/WASM inference, then front-camera gameplay.
  * Camera video is an official test image painted to a local captureStream. */
-import {chromium} from 'playwright';import assert from 'node:assert/strict';import {mkdirSync,writeFileSync} from 'node:fs';import {installConsoleStubs} from './helpers/console-context.mjs';
+import {chromium} from 'playwright';import assert from 'node:assert/strict';import {mkdirSync,writeFileSync} from 'node:fs';
 const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});mkdirSync('test-results/hand-camera',{recursive:true});
 try{
  const probe=await browser.newPage();await probe.goto('http://127.0.0.1:4173/tests/fixtures/hand/');
@@ -12,23 +12,26 @@ try{
    if(data.type==='result'){clearTimeout(timer);worker.terminate();const index=Math.max(0,data.handedness.findIndex(h=>h[0].categoryName==='Right'));const points=data.landmarks[index];if(!points){reject(Error('No actual hand detected'));return;}const xs=points.map(p=>p.x),ys=points.map(p=>p.y),x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;resolve({hands:data.landmarks.length,labels:data.handedness.map(h=>h[0].categoryName),crop:{x:Math.max(0,x-w*.22),y:Math.max(0,y-h*.20),w:Math.min(1,w*1.44),h:Math.min(1,h*1.40)}});}
   };worker.postMessage({type:'init'});});
  });assert(real.hands>=1);await probe.close();
- const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});await installConsoleStubs(context);
+ const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
  await context.addInitScript(crop=>{
-  window.__blankHand=false;window.__cameraConstraints=[];
+  window.__blankHand=false;window.__cameraConstraints=[];window.__handOffsetX=0;window.__handOffsetY=0;
   Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async constraints=>{
    window.__cameraConstraints.push(constraints);const image=new Image();image.src='/tests/fixtures/hand/woman_hands.jpg';await image.decode();const canvas=document.createElement('canvas');canvas.width=640;canvas.height=480;const ctx=canvas.getContext('2d');
-   let tick=0;const render=()=>{ctx.fillStyle='#dcdddd';ctx.fillRect(0,0,640,480);if(!window.__blankHand){const sw=image.naturalWidth*crop.w,sh=image.naturalHeight*crop.h,scale=Math.min(460/sw,400/sh);ctx.drawImage(image,image.naturalWidth*crop.x,image.naturalHeight*crop.y,sw,sh,(640-sw*scale)/2,(480-sh*scale)/2,sw*scale,sh*scale);}ctx.fillStyle=++tick%2?'#eeeeee':'#dddddd';ctx.fillRect(0,0,12,12);};render();setInterval(render,65);window.__handCanvas=canvas;return canvas.captureStream(15);
+   let tick=0;const render=()=>{ctx.fillStyle='#dcdddd';ctx.fillRect(0,0,640,480);if(!window.__blankHand){const sw=image.naturalWidth*crop.w,sh=image.naturalHeight*crop.h,scale=Math.min(460/sw,400/sh);ctx.drawImage(image,image.naturalWidth*crop.x,image.naturalHeight*crop.y,sw,sh,(640-sw*scale)/2+window.__handOffsetX,(480-sh*scale)/2+window.__handOffsetY,sw*scale,sh*scale);}ctx.fillStyle=++tick%2?'#eeeeee':'#dddddd';ctx.fillRect(0,0,12,12);};render();setInterval(render,65);window.__handCanvas=canvas;return canvas.captureStream(15);
   }}});
  },real.crop);
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin==='http://127.0.0.1:4173'?route.continue():route.request().resourceType()==='script'?route.fulfill({status:200,contentType:'application/javascript',body:'/* isolated service stub */'}):route.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
-  await page.goto('http://127.0.0.1:4173/games/ar/',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.Games?.some(g=>g.id==='ar_truck_sim')&&window.System?.canvas);await page.waitForFunction(()=>!document.getElementById('phase-screen')?.classList.contains('hidden'),null,{timeout:5000}).catch(async()=>{await page.locator('#channel-grid .channel').first().click();});
+  await page.goto('http://127.0.0.1:4173/games/ar/',{waitUntil:'domcontentloaded'});await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&window.System.canvas);await page.waitForFunction(()=>!document.getElementById('phase-screen')?.classList.contains('hidden'),null,{timeout:5000});
   await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('[data-mode="camera"]').click();await page.locator('.war-hand-camera.calibrating').waitFor();await page.screenshot({path:'test-results/hand-camera/calibration.png'});
   await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING'&&window.System.activeGame.logic.handAim?.fresh,null,{timeout:35000});
+  assert.equal(await page.locator('.combat-input [data-control="joystick"]').count(),0,'camera play has no movement joystick');assert.equal(await page.locator('.combat-input [data-control="aim"]').count(),0,'camera play has no aim joystick');
   assert.equal(await page.evaluate(()=>window.__cameraConstraints[0].video.facingMode.ideal),'user');assert.equal(await page.evaluate(()=>window.System.currentCameraMode),'user');assert(!await page.locator('.combat-input [data-control="fire"]').isVisible());assert(!await page.locator('.war-hand-camera canvas').isVisible(),'The player preview must disappear immediately after calibration');
   const walkingStart=await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;return {x:g.player.x,z:g.player.z};});
   await page.waitForFunction(start=>{const p=window.System.activeGame.logic.player;return Math.hypot(p.x-start.x,p.z-start.z)>1.2},walkingStart,{timeout:12000});
+  const facing=await page.evaluate(()=>{const p=window.System.activeGame.logic.player;window.__handOffsetX=-55;window.__handOffsetY=-35;return {yaw:p.yaw,pitch:p.pitch};});
+  await page.waitForFunction(b=>{const p=window.System.activeGame.logic.player;return p.yaw>b.yaw+.05&&p.pitch>b.pitch+.03},facing,{timeout:12000});await page.evaluate(()=>{window.__handOffsetX=window.__handOffsetY=0});await page.waitForFunction(()=>{const a=window.System.activeGame.logic.handAim;return Math.abs(a.x-.5)<.04&&Math.abs(a.y-.5)<.04},null,{timeout:10000});
   await page.evaluate(()=>{const g=window.System.activeGame.logic;g.player.x=g.player.z=0;g.spawnWave();g.covers=[];g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,y:1.8,z:28,aim:999,hp:1000});g.player.yaw=g.player.pitch=0;g.waveDelay=999;});
   await page.waitForFunction(()=>window.System.activeGame.logic.stats.hits>0,null,{timeout:12000});
   await page.screenshot({path:'test-results/hand-camera/right-hand-aim.png'});

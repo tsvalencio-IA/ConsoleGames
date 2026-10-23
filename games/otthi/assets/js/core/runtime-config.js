@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.17.0-world-cities',
+    build: '705.17.1-gameplay-recovery',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

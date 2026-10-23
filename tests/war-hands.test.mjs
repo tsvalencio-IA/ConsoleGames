@@ -44,8 +44,13 @@ test('WAR hand: the calibrated camera walks without touches, goes around physica
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};g.waveDelay=999;Object.assign(g.player,{x:-7,z:10});
  for(let i=0;i<400;i++){g.step(.016);assert(!g.covers.some(c=>Math.abs(g.player.x-c.x)<c.w/2+.35&&Math.abs(g.player.z-c.z)<c.d/2+.35),'Autowalk entered cover');}
  assert(g.player.z>20,'Camera walking got stuck in front of cover');assert(g.autoWalking);const p={...g.player};g.coverHeld=true;g.step(.2);assert.equal(g.player.x,p.x);assert.equal(g.player.z,p.z);g.coverHeld=false;
- g.manualStick={x:0,y:-1,active:true};g.step(.1);assert(g.player.z<p.z,'The joystick must override the automatic advance');g.manualStick={x:0,y:0,active:false};
+ g.manualStick={x:0,y:-1,active:true};g.step(.1);assert(g.autoWalking&&g.player.z>=p.z,'A stale hidden joystick cannot override camera-only automatic walking');g.manualStick={x:0,y:0,active:false};
  const stopped={...g.player};g.handAim.fresh=false;g.step(.2);assert.deepEqual({...g.player},stopped);g.handAim.fresh=true;g.state='VICTORY';g.resultTimer=10;g.step(.2);assert.deepEqual({...g.player},stopped);
+});
+test('WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.75,y:.25,fresh:true,present:true};g.waveDelay=999;g.covers=[];g.manualStick={x:-1,y:-1,active:true};g.aimStick={x:-1,y:-1,active:true};
+ g.step(.25);assert(g.player.yaw>0&&g.player.pitch>0);assert(g.autoWalking);assert.equal(g.aimRay().yaw,g.player.yaw);assert.equal(g.aimRay().pitch,g.player.pitch);
+ const facing={yaw:g.player.yaw,pitch:g.player.pitch};g.handAim.x=.5;g.handAim.y=.48;g.step(.2);assert.equal(g.player.yaw,facing.yaw);assert.equal(g.player.pitch,facing.pitch);
 });
 test('WAR hand: automatic walking stops at engagement range and manual mode stays stationary without input',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.step(.5);assert.equal(g.player.z,0);g.handSession={dispose(){}};g.handAim={x:.7,y:.3,fresh:true};g.enemies=[{active:true,x:3,z:9,y:1.15,kind:'soldier',aim:999,flash:0,phase:0}];g.step(.2);assert.equal(g.player.z,0);assert(!g.autoWalking);

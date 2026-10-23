@@ -1,9 +1,9 @@
-const REVISION = '817ba45eefdd3753';
-const CACHE = `otthi-v70616-${REVISION}`;
+const REVISION = '6963bbf28d00a0e3';
+const CACHE = `otthi-v70617-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.17.0-world-cities';
+const BUILD = '705.17.1-gameplay-recovery';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70616';
+const RELEASE_MANIFEST = './release-manifest.json?v=70617';
 
 const REQUIRED_SHELL = [
   './assets/vendor/GLTFLoader-r128.js?v=world1',
@@ -12,23 +12,23 @@ const REQUIRED_SHELL = [
   './assets/js/controls/world-hand-controls.js',
   './assets/js/world-venue-bridge.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70616',
-  './style.css?v=70616',
-  './assets/vendor/three-r128.min.js?v=70616',
-  './assets/js/core/runtime-config.js?v=70616',
-  './assets/js/core/safe-pointer.js?v=70616',
-  './assets/js/core/viewport-manager.js?v=70616',
-  './assets/js/save-db.js?v=70616',
-  './firebase-config.js?v=70616',
-  './assets/js/game-account.js?v=70616',
-  './assets/js/multiplayer-rtdb.js?v=70616',
-  './app.js?v=70616',
-  './assets/js/ui/shared-modal.js?v=70616',
-  './assets/js/core/performance-guardian.js?v=70616',
-  './assets/js/multiplayer/room-manager.js?v=70616',
-  './assets/js/education/adaptive-learning.js?v=70616',
-  './assets/js/safety/child-safety.js?v=70616',
-  './manifest.webmanifest?v=70616'
+  './index.html?v=70617',
+  './style.css?v=70617',
+  './assets/vendor/three-r128.min.js?v=70617',
+  './assets/js/core/runtime-config.js?v=70617',
+  './assets/js/core/safe-pointer.js?v=70617',
+  './assets/js/core/viewport-manager.js?v=70617',
+  './assets/js/save-db.js?v=70617',
+  './firebase-config.js?v=70617',
+  './assets/js/game-account.js?v=70617',
+  './assets/js/multiplayer-rtdb.js?v=70617',
+  './app.js?v=70617',
+  './assets/js/ui/shared-modal.js?v=70617',
+  './assets/js/core/performance-guardian.js?v=70617',
+  './assets/js/multiplayer/room-manager.js?v=70617',
+  './assets/js/education/adaptive-learning.js?v=70617',
+  './assets/js/safety/child-safety.js?v=70617',
+  './manifest.webmanifest?v=70617'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -150,8 +150,9 @@ async function cacheApplicationShell() {
 }
 
 self.addEventListener('install', event => {
+  // On upgrades the ready page acknowledges SKIP_WAITING. Activating while an
+  // old document is still parsing can mix its config with the new app bundle.
   event.waitUntil(cacheApplicationShell()
-    .then(() => self.skipWaiting())
     .catch(async error => {
       await caches.delete(CACHE);
       console.error('[OTTHI SW] Release incompleta; cache anterior preservado.', error);
@@ -192,7 +193,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70616') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70617') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })

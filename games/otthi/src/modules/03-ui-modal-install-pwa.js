@@ -163,6 +163,17 @@
   let otthiUpdateReloading = false;
   let otthiLastUpdateCheck = 0;
   let otthiServiceWorkerRegistration = null;
+  let otthiWorkerRegistrationPromise = null;
+  const OTTHI_REPAIR_KEY = 'otthi:startup-repair:'+location.pathname;
+  // Listen before any worker can activate, including while other page scripts load.
+  if ('serviceWorker' in navigator) {
+    let previousController=navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      const next=navigator.serviceWorker.controller;
+      if((previousController&&next!==previousController)||!window.OTTHI_RELEASE_COHERENT)reloadForOtthiUpdate('worker-'+OTTHI_GAME_WEB_BUILD);
+      previousController=next;
+    });
+  }
 
   function isOfficialOtthiGameAddress() {
     try {
@@ -186,6 +197,7 @@
     await persistBeforeOtthiReload();
     const target = new URL(location.href);
     target.searchParams.set('otthi_update', buildToken || String(Date.now()));
+    target.searchParams.set('otthi_probe', String(Date.now()));
     location.replace(target.href);
     return true;
   }
@@ -223,38 +235,58 @@
 
   async function registerOtthiGameUpdates() {
     if (!('serviceWorker' in navigator) || !isOfficialOtthiGameAddress()) return;
-    const hadController = !!navigator.serviceWorker.controller;
-    let controllerHandled = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (controllerHandled) return;
-      controllerHandled = true;
-      if (hadController) reloadForOtthiUpdate(`sw-${OTTHI_GAME_WEB_BUILD}`);
-    });
+    if(otthiWorkerRegistrationPromise)return otthiWorkerRegistrationPromise;
+    otthiWorkerRegistrationPromise=(async()=>{
     try {
       const registration = await navigator.serviceWorker.register('./sw.js', {
         scope: './',
         updateViaCache: 'none'
       });
       otthiServiceWorkerRegistration = registration;
-      if (registration.waiting) registration.waiting.postMessage({ type:'SKIP_WAITING' });
-      registration.addEventListener('updatefound', () => {
-        const worker = registration.installing;
-        if (!worker) return;
+      const watched=new WeakSet(),watch=worker=>{
+        if(!worker||watched.has(worker))return;watched.add(worker);
+        const ready=()=>{if(worker.state==='installed')worker.postMessage({type:'SKIP_WAITING'});};
         worker.addEventListener('statechange', () => {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-            worker.postMessage({ type:'SKIP_WAITING' });
-          }
+          ready();
         });
-      });
+        ready();
+      };
+      if (registration.waiting) registration.waiting.postMessage({ type:'SKIP_WAITING' });
+      watch(registration.installing);
+      registration.addEventListener('updatefound',()=>watch(registration.installing));
       await registration.update().catch(() => {});
       setTimeout(() => probeOtthiGameUpdate(true), 1800);
       setInterval(() => {
         registration.update().catch(() => {});
         probeOtthiGameUpdate(false);
       }, OTTHI_UPDATE_INTERVAL_MS);
+      return registration;
     } catch (error) {
+      otthiWorkerRegistrationPromise=null;
       console.warn('[OTTHI UPDATE] Service Worker indisponível:', error?.message || error);
     }
+    })();
+    return otthiWorkerRegistrationPromise;
+  }
+
+  async function repairOtthiStartup(manual=false){
+    const mark=OTTHI_GAME_WEB_BUILD+':'+OTTHI_RELEASE_REVISION;
+    let attempts=0;try{const previous=JSON.parse(sessionStorage.getItem(OTTHI_REPAIR_KEY)||'null');if(previous?.mark===mark)attempts=previous.attempts||0;}catch{}
+    if(manual)attempts=0;
+    const failed=()=>openModal('Não foi possível atualizar',`<div class="parent-gate"><h3>O jogo não terminou de carregar</h3><p>Seu progresso continua neste aparelho. Confira a conexão e tente novamente.</p><button class="btn primary xl" data-coherence-reload>Tentar novamente</button></div>`,root=>{$('[data-coherence-reload]',root).onclick=()=>repairOtthiStartup(true);});
+    if(attempts>=2||!navigator.onLine){failed();return;}
+    try{sessionStorage.setItem(OTTHI_REPAIR_KEY,JSON.stringify({mark,attempts:attempts+1}));}catch{}
+    openModal('Atualizando o jogo','<div class="parent-gate"><h3>Preparando a versão completa…</h3><p>Seu progresso está preservado. Aguarde alguns instantes.</p></div>');
+    try{
+      const registration=await registerOtthiGameUpdates();
+      const worker=registration?.installing||registration?.waiting;
+      if(worker&&worker.state!=='activated'&&worker.state!=='redundant')await new Promise(resolve=>{
+        const done=()=>{clearTimeout(timer);worker.removeEventListener('statechange',change);resolve();};
+        const change=()=>{if(worker.state==='activated'||worker.state==='redundant')done();};
+        const timer=setTimeout(done,20000);worker.addEventListener('statechange',change);change();
+      });
+      await reloadForOtthiUpdate('repair-'+OTTHI_RELEASE_REVISION);
+    }catch{failed();}
   }
 
   if ('serviceWorker' in navigator) {
@@ -271,11 +303,12 @@
   });
   updateInstallUI();
   if (!window.OTTHI_RELEASE_COHERENT) {
-    setTimeout(() => openModal('Atualização incompleta',`<div class="parent-gate"><span>🧩</span><h3>Os arquivos publicados pertencem a versões diferentes</h3><p>Seu progresso está preservado. Termine de enviar todos os arquivos V646 e toque em verificar novamente.</p><button class="btn primary xl" data-coherence-reload>Verificar novamente</button></div>`,root=>{
-      $('[data-coherence-reload]',root).onclick=()=>reloadForOtthiUpdate(`coherence-${Date.now()}`);
-    }), 0);
+    setTimeout(()=>repairOtthiStartup(),0);
   } else if (!navigator.onLine) {
     setTimeout(() => toast('Modo offline ativo. Seu progresso será sincronizado quando a internet voltar.','warn',3200), 400);
+  }
+  if(window.OTTHI_RELEASE_COHERENT){
+    try{sessionStorage.removeItem(OTTHI_REPAIR_KEY);const clean=new URL(location.href);if(clean.searchParams.has('otthi_probe')){clean.searchParams.delete('otthi_probe');history.replaceState(null,'',clean.href);}}catch{}
   }
 
 

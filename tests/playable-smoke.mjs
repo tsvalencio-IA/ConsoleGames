@@ -1,5 +1,5 @@
-/* Smoke funcional dos cinco jogos GAME com Firebase e câmera simulados.
-   Nenhum acesso remoto nem escrita em contas reais: somente navegador local. */
+/* Native five-game UI/physics. ARCADE_QA_GUEST=1 uses the real local-solo entry;
+   the legacy account fixture is optional. Remote services stay isolated. */
 import {chromium} from "playwright";
 import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
@@ -15,7 +15,7 @@ try{
   const viewport=device==="desktop-885"?{width:885,height:770}:device==="landscape-844"?{width:844,height:390}:{width:390,height:844};
   const mobile=device!=="desktop-885";
   const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1});
-  await context.addInitScript(()=>{
+  if(!process.env.ARCADE_QA_GUEST)await context.addInitScript(()=>{
    const permitted={drive:true,box_pro:true,tennis:true,ar_truck_sim:true,usarmy_flight_sim:true};
    const profile={username:"Jogador Teste",role:"player",xp:0,level:10,coins:8000,permissions:permitted,arSave:{upgrades:{engine:1,battery:1,radar:1,chassis:1,scout:false}}};
    const snapshot=(val)=>({val:()=>val,exists:()=>val!==null});
@@ -44,6 +44,7 @@ try{
       throw new Error("Câmera indisponível no smoke isolado");
    }}})}catch{}
   });
+  else await context.addInitScript(()=>{window.__cameraRequests=0;try{Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{window.__cameraRequests++;throw Error('Câmera negada no cenário de fallback');}}});}catch{}});
   await context.route(/^https?:\/\//,route=>{
     if(new URL(route.request().url()).origin===new URL(base).origin)route.continue();
     else if(route.request().resourceType()==="script")route.fulfill({status:200,contentType:"application/javascript",body:"/* test remote stub */"});
@@ -54,8 +55,9 @@ try{
   page.on("pageerror",error=>appErrors.push(error.stack || error.message));
   try{
     await page.goto(base+slug+"/",{waitUntil:"domcontentloaded",timeout:35000});
-    await page.waitForFunction(id=>window.Games?.some(game=>game.id===id)&&window.System?.canvas,id,{timeout:15000});
-    await page.waitForFunction(()=>!document.getElementById("menu-screen")?.classList.contains("hidden"),{timeout:15000});
+    if(process.env.ARCADE_QA_GUEST){await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&window.System.canvas);}
+    else{await page.waitForFunction(id=>window.Games?.some(game=>game.id===id)&&window.System?.canvas,id,{timeout:15000});
+    await page.waitForFunction(()=>!document.getElementById("menu-screen")?.classList.contains("hidden"),{timeout:15000});}
     await page.waitForFunction(()=>!document.getElementById("phase-screen")?.classList.contains("hidden"),{timeout:10000}).catch(async()=>{
       await page.locator("#channel-grid .channel").first().click({timeout:5000});
       await page.waitForFunction(()=>!document.getElementById("phase-screen")?.classList.contains("hidden"),{timeout:10000});

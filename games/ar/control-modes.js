@@ -167,7 +167,7 @@ const hub={
   const enabled=()=>hub.mode==='controls'&&window.System?.activeGame?.logic===logic&&!window.System.paused&&logic.state==='PLAYING'&&!root.hidden&&!$('#game-ui')?.classList.contains('hidden');
   const reset=()=>{const pointer=owner;owner=null;logic.lookPointerActive=false;try{if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer)}catch{}};
   const down=e=>{
-   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0))return;
+   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0)||e.clientX<surface.getBoundingClientRect().left+surface.getBoundingClientRect().width*.45)return;
    e.preventDefault();e.stopPropagation();owner=e.pointerId;lastX=e.clientX;lastY=e.clientY;logic.lookPointerActive=true;
    try{if(e.isTrusted)surface.setPointerCapture(e.pointerId)}catch{}
   };
@@ -192,7 +192,7 @@ const hub={
   ]);
   root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
-  {
+  if(hub.mode!=='camera'){
    const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
    stick.className='combat-stick move-stick';stick.dataset.control='joystick';stick.setAttribute('role','group');stick.setAttribute('aria-label','Joystick de movimento: andar e deslocar de lado');
    knob.className='combat-stick-knob';caption.textContent='MOVER';stick.append(knob,caption);root.append(stick);

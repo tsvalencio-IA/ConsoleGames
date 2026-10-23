@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.17.0-world-cities';
+  const OTTHI_GAME_WEB_BUILD = '705.17.1-gameplay-recovery';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -943,6 +943,17 @@
   let otthiUpdateReloading = false;
   let otthiLastUpdateCheck = 0;
   let otthiServiceWorkerRegistration = null;
+  let otthiWorkerRegistrationPromise = null;
+  const OTTHI_REPAIR_KEY = 'otthi:startup-repair:'+location.pathname;
+  // Listen before any worker can activate, including while other page scripts load.
+  if ('serviceWorker' in navigator) {
+    let previousController=navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      const next=navigator.serviceWorker.controller;
+      if((previousController&&next!==previousController)||!window.OTTHI_RELEASE_COHERENT)reloadForOtthiUpdate('worker-'+OTTHI_GAME_WEB_BUILD);
+      previousController=next;
+    });
+  }
 
   function isOfficialOtthiGameAddress() {
     try {
@@ -966,6 +977,7 @@
     await persistBeforeOtthiReload();
     const target = new URL(location.href);
     target.searchParams.set('otthi_update', buildToken || String(Date.now()));
+    target.searchParams.set('otthi_probe', String(Date.now()));
     location.replace(target.href);
     return true;
   }
@@ -1003,38 +1015,58 @@
 
   async function registerOtthiGameUpdates() {
     if (!('serviceWorker' in navigator) || !isOfficialOtthiGameAddress()) return;
-    const hadController = !!navigator.serviceWorker.controller;
-    let controllerHandled = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (controllerHandled) return;
-      controllerHandled = true;
-      if (hadController) reloadForOtthiUpdate(`sw-${OTTHI_GAME_WEB_BUILD}`);
-    });
+    if(otthiWorkerRegistrationPromise)return otthiWorkerRegistrationPromise;
+    otthiWorkerRegistrationPromise=(async()=>{
     try {
       const registration = await navigator.serviceWorker.register('./sw.js', {
         scope: './',
         updateViaCache: 'none'
       });
       otthiServiceWorkerRegistration = registration;
-      if (registration.waiting) registration.waiting.postMessage({ type:'SKIP_WAITING' });
-      registration.addEventListener('updatefound', () => {
-        const worker = registration.installing;
-        if (!worker) return;
+      const watched=new WeakSet(),watch=worker=>{
+        if(!worker||watched.has(worker))return;watched.add(worker);
+        const ready=()=>{if(worker.state==='installed')worker.postMessage({type:'SKIP_WAITING'});};
         worker.addEventListener('statechange', () => {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-            worker.postMessage({ type:'SKIP_WAITING' });
-          }
+          ready();
         });
-      });
+        ready();
+      };
+      if (registration.waiting) registration.waiting.postMessage({ type:'SKIP_WAITING' });
+      watch(registration.installing);
+      registration.addEventListener('updatefound',()=>watch(registration.installing));
       await registration.update().catch(() => {});
       setTimeout(() => probeOtthiGameUpdate(true), 1800);
       setInterval(() => {
         registration.update().catch(() => {});
         probeOtthiGameUpdate(false);
       }, OTTHI_UPDATE_INTERVAL_MS);
+      return registration;
     } catch (error) {
+      otthiWorkerRegistrationPromise=null;
       console.warn('[OTTHI UPDATE] Service Worker indisponível:', error?.message || error);
     }
+    })();
+    return otthiWorkerRegistrationPromise;
+  }
+
+  async function repairOtthiStartup(manual=false){
+    const mark=OTTHI_GAME_WEB_BUILD+':'+OTTHI_RELEASE_REVISION;
+    let attempts=0;try{const previous=JSON.parse(sessionStorage.getItem(OTTHI_REPAIR_KEY)||'null');if(previous?.mark===mark)attempts=previous.attempts||0;}catch{}
+    if(manual)attempts=0;
+    const failed=()=>openModal('Não foi possível atualizar',`<div class="parent-gate"><h3>O jogo não terminou de carregar</h3><p>Seu progresso continua neste aparelho. Confira a conexão e tente novamente.</p><button class="btn primary xl" data-coherence-reload>Tentar novamente</button></div>`,root=>{$('[data-coherence-reload]',root).onclick=()=>repairOtthiStartup(true);});
+    if(attempts>=2||!navigator.onLine){failed();return;}
+    try{sessionStorage.setItem(OTTHI_REPAIR_KEY,JSON.stringify({mark,attempts:attempts+1}));}catch{}
+    openModal('Atualizando o jogo','<div class="parent-gate"><h3>Preparando a versão completa…</h3><p>Seu progresso está preservado. Aguarde alguns instantes.</p></div>');
+    try{
+      const registration=await registerOtthiGameUpdates();
+      const worker=registration?.installing||registration?.waiting;
+      if(worker&&worker.state!=='activated'&&worker.state!=='redundant')await new Promise(resolve=>{
+        const done=()=>{clearTimeout(timer);worker.removeEventListener('statechange',change);resolve();};
+        const change=()=>{if(worker.state==='activated'||worker.state==='redundant')done();};
+        const timer=setTimeout(done,20000);worker.addEventListener('statechange',change);change();
+      });
+      await reloadForOtthiUpdate('repair-'+OTTHI_RELEASE_REVISION);
+    }catch{failed();}
   }
 
   if ('serviceWorker' in navigator) {
@@ -1051,11 +1083,12 @@
   });
   updateInstallUI();
   if (!window.OTTHI_RELEASE_COHERENT) {
-    setTimeout(() => openModal('Atualização incompleta',`<div class="parent-gate"><span>🧩</span><h3>Os arquivos publicados pertencem a versões diferentes</h3><p>Seu progresso está preservado. Termine de enviar todos os arquivos V646 e toque em verificar novamente.</p><button class="btn primary xl" data-coherence-reload>Verificar novamente</button></div>`,root=>{
-      $('[data-coherence-reload]',root).onclick=()=>reloadForOtthiUpdate(`coherence-${Date.now()}`);
-    }), 0);
+    setTimeout(()=>repairOtthiStartup(),0);
   } else if (!navigator.onLine) {
     setTimeout(() => toast('Modo offline ativo. Seu progresso será sincronizado quando a internet voltar.','warn',3200), 400);
+  }
+  if(window.OTTHI_RELEASE_COHERENT){
+    try{sessionStorage.removeItem(OTTHI_REPAIR_KEY);const clean=new URL(location.href);if(clean.searchParams.has('otthi_probe')){clean.searchParams.delete('otthi_probe');history.replaceState(null,'',clean.href);}}catch{}
   }
 
 
@@ -7688,7 +7721,11 @@
   }
   function gameLoop(){
     if(!running)return;raf=requestAnimationFrame(gameLoop);
-    const elapsed=Math.max(0,clock.getDelta());sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
+    const elapsed=Math.max(0,clock.getDelta());
+    // A full-screen activity owns the GPU and input clock until the player exits.
+    // Keeping the covered 3D city rendering competes with ping pong and rhythm.
+    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
+    sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
     // Fixed physics steps catch up with real time when a rendered frame is slow.
     // The cap prevents a long background pause from replaying minutes of input.
     const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);
@@ -9337,9 +9374,8 @@
   }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');g.inputResets=[];g.aiming=false;root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
-    root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><div class="ot-games-stick ot-games-aim" data-ot="aim" role="group" aria-label="Joystick de mira"><i></i><small>MIRAR</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
+    root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
     root.insertAdjacentHTML('beforeend','<div class="ot-games-targets" aria-hidden="true"></div><div class="ot-games-result" hidden><strong></strong><p></p><button data-ot="retry">JOGAR NOVAMENTE</button></div>');
-    root.querySelector('[data-ot="aim"]').remove();
     root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button>');
     document.body.append(root);root.querySelector('[data-ot="peace"]').onclick=otGamesLeave;root.querySelector('[data-ot="menu"]').onclick=otGamesChoose;root.querySelector('[data-ot="retry"]').onclick=()=>typeof worldCampaign!=='undefined'&&worldCampaign.mission?campaignRetry():otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty});
     root.querySelector('[data-ot="camera"]').onclick=otGamesStartCamera;
@@ -9361,7 +9397,7 @@
     const surface=typeof renderer!=='undefined'?renderer?.domElement:null;
     if(surface){
       let lookOwner=null,lastX=0,lastY=0;const end=()=>{lookOwner=null;g.looking=false};g.inputResets.push(end);
-      const down=e=>{if(g.active)e.stopPropagation();if(g.mode!=='ground'||g.handMode||paused||g.state!=='PLAYING'||lookOwner!==null||(e.pointerType==='mouse'&&e.button!==0))return;e.preventDefault();lookOwner=e.pointerId;lastX=e.clientX;lastY=e.clientY;g.looking=true;safePointerCapture(surface,e.pointerId)};
+      const down=e=>{if(g.active)e.stopPropagation();if(g.mode!=='ground'||g.handMode||paused||g.state!=='PLAYING'||lookOwner!==null||(e.pointerType==='mouse'&&e.button!==0)||e.clientX<surface.getBoundingClientRect().left+surface.getBoundingClientRect().width*.45)return;e.preventDefault();lookOwner=e.pointerId;lastX=e.clientX;lastY=e.clientY;g.looking=true;safePointerCapture(surface,e.pointerId)};
       const move=e=>{if(lookOwner!==e.pointerId)return;if(!g.active||g.handMode||paused||g.state!=='PLAYING'){end();return;}e.preventDefault();e.stopPropagation();const r=surface.getBoundingClientRect(),scale=1.6/(Math.min(r.width,r.height)*.88*(g.aiming?1.65:1));g.body.yaw-=(e.clientX-lastX)*scale;g.body.pitch=clamp(g.body.pitch-(e.clientY-lastY)*scale,-.85,.85);lastX=e.clientX;lastY=e.clientY;otGamesCamera(.016)};
       const release=e=>{if(lookOwner===e.pointerId)end()};surface.addEventListener('pointerdown',down);surface.addEventListener('pointermove',move);for(const type of ['pointerup','pointercancel','lostpointercapture'])surface.addEventListener(type,release);
       g.lookCleanup=()=>{end();surface.removeEventListener('pointerdown',down);surface.removeEventListener('pointermove',move);for(const type of ['pointerup','pointercancel','lostpointercapture'])surface.removeEventListener(type,release)};
@@ -9906,15 +9942,20 @@
     if(Math.hypot(player.x-v.navX,player.z-v.navZ)>4.5){setWaypoint('venue-'+id);toast('Siga o GPS até a entrada de '+v.label+'.','info',3000);return false;}
     closeModal();clearMovementInputs();savePlayerPosition(true);
     const ui=document.createElement('section');ui.id='worldVenueDialog';ui.setAttribute('role','dialog');ui.setAttribute('aria-modal','true');ui.setAttribute('aria-label',v.label);
-    ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main></main>';
+    ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main><p data-venue-loading role="status">Preparando '+v.activity+'…</p></main>';
     const s={id,venue:v,ui,wasPaused:paused,entry:{x:player.x,y:player.y,z:player.z},token:crypto.randomUUID?.()||String(Math.random()),recorded:false};worldVenues.session=s;paused=true;document.body.append(ui);document.body.classList.add('world-venue-active');ui.querySelector('[data-venue-close]').onclick=venueClose;ui.querySelector('button').focus();
     if(id==='dance'){venueDanceMenu(s);return true;}
     const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('Integração do resultado indisponível:',e.message);}});ui.querySelector('main').append(frame);
     const message=e=>{
-      const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.type!=='ot-venue-result'||d.token!==s.token||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
+      const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.token!==s.token)return;
+      if(d.type==='ot-venue-ready'){frame.contentWindow.postMessage({type:'ot-venue-start',token:s.token,name:state.profile.name},location.origin);return;}
+      if(d.type==='ot-venue-playing'){clearTimeout(s.loadTimer);ui.querySelector('[data-venue-loading]')?.remove();return;}
+      if(d.type==='ot-venue-close'){venueClose();return;}
+      if(d.type!=='ot-venue-result'||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
       s.recorded=true;const records=venueRecords(),record=records[id]||{played:0,wins:0,best:0};record.played++;if(d.won)record.wins++;record.best=Math.max(record.best,Math.max(0,Math.min(1000000,Math.floor(d.score))));records[id]=record;safeLocalSet(venueRecordKey(),JSON.stringify(records));
     };
-    window.addEventListener('message',message);s.cleanup=()=>window.removeEventListener('message',message);return true;
+    const watchLoad=()=>{clearTimeout(s.loadTimer);s.loadTimer=setTimeout(()=>{const status=ui.querySelector('[data-venue-loading]');if(!status||worldVenues.session!==s)return;status.textContent='A atividade ainda não terminou de carregar. ';const retry=document.createElement('button');retry.textContent='TENTAR NOVAMENTE';retry.onclick=()=>{status.textContent='Preparando '+v.activity+'…';const url=new URL(frame.src);url.searchParams.set('retry',Date.now());frame.src=url.href;watchLoad();};status.append(retry);},20000);};watchLoad();
+    window.addEventListener('message',message);s.cleanup=()=>{clearTimeout(s.loadTimer);window.removeEventListener('message',message);};return true;
   }
   function venueDanceMenu(s){
     const records=venueRecords(),dance=records.dance||{},names=['Primeiros passos','Ritmo da cidade','Festival OT'];s.ui.querySelector('main').innerHTML='<div class="venue-dance-menu"><h2>Dança · siga o ritmo</h2><p>Toque nas setas quando as notas chegarem à linha. No teclado: ← ↑ ↓ → ou D F J K. Duas notas juntas pedem dois toques.</p><p>Acerte pelo menos 60% para liberar a próxima música.</p>'+names.map((name,i)=>'<button data-dance-level="'+i+'" '+(i&&!(dance[i-1]?.passed)?'disabled':'')+'><b>'+name+'</b><small>'+[84,104,120][i]+' BPM · '+(dance[i]?.best||0)+' pontos</small></button>').join('')+'<p>As músicas são sintetizadas no jogo. O passeio fica pausado durante a atividade.</p></div>';

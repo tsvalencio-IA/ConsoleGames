@@ -1,20 +1,20 @@
 {
   "version": 705,
-  "build": "705.17.0-world-cities",
-  "revision": "817ba45eefdd3753",
+  "build": "705.17.1-gameplay-recovery",
+  "revision": "6963bbf28d00a0e3",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "04a734312832978f1fcde4bcfac92a137a3545b0ead1c7b9103c53586667a400",
+    "index.html": "9c20809aae94842497e65afb280353a71a179142f1257dd178f7e276162be3ce",
     "style.css": "3279a0bca9c568f6cd4ba34a441ddce738426c005304dce4fc018a2d2b741820",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "ce41c84653053d6736b157dc252aa3f7a723600b67cba9c526da27d0f868d919",
+    "assets/js/core/runtime-config.js": "68c877191cf738f0f2dcf19982d610449c149fafeb01f1093729d1c5ad337b34",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "731dd4af9a99875c1f70de0c45c19d9f9b95e3bab5709185075383263d07a382",
+    "app.js": "4e027e1c24912dd7b9df72aae131e285cb1c612c1627846b3b77b320c29f2864",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -29,7 +29,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "57b35658bd5ede9e1d40b3a0aaa0b8cb246f3714cdcfa022534471ed84c7e668",
-    "sw.js": "3a441dda8c3e9f73941d22aa51491b2015408205eba39364e184ed3abe34a720"
+    "VERSION.json": "705f5b290f3a50ba6e896efcddbe07353250a1ae2cf9c9eed15ebe53755fc5f9",
+    "sw.js": "669d2043b8b42603d4461d7ff8384e07f00feb87a26c7fedcd9f0f16142b91cc"
   }
 }

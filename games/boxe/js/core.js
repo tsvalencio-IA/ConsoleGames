@@ -107,6 +107,7 @@ window.Auth = {
     },
 
     logout: () => {
+        if(window.ConsolePractice?.active){window.ConsolePractice.leave();return;}
         window.Sfx.click();
         window.AuthApp.signOut();
     }
@@ -122,7 +123,9 @@ window.Profile = {
 
     loadFromFirebase: (uid) => {
         return new Promise((resolve) => {
+            if(window.ConsolePractice?.active||!window.DB){resolve();return;}
             window.DB.ref('users/' + uid).on('value', snap => {
+                if(window.ConsolePractice?.active){resolve();return;}
                 const data = snap.val();
                 if(data) {
                     window.Profile.username = data.username || 'Jogador';
@@ -140,7 +143,8 @@ window.Profile = {
         });
     },
 
-    save: () => { 
+    save: () => {
+        if(window.ConsolePractice?.active){window.ConsolePractice.save();return;}
         if(window.System.playerId && window.System.playerId.length > 20) {
             window.DB.ref('users/' + window.System.playerId).update({
                 xp: window.Profile.xp,
@@ -484,6 +488,7 @@ style.innerHTML = `@keyframes popMsg { 0% { transform: translate(-50%, -50%) sca
 document.head.appendChild(style);
 
 window.onload = async () => {
+    if(window.ConsolePractice?.active && window.System.canvas)return;
     window.System.canvas = document.getElementById('game-canvas'); window.System.video = document.getElementById('webcam');
     window.System.resize(); window.addEventListener('resize', window.System.resize);
 
@@ -491,6 +496,7 @@ window.onload = async () => {
     window.System.ensureDetector = async () => {
       if (window.System.detector) return window.System.detector;
       if (window.System.detectorPromise) return window.System.detectorPromise;
+      if ((typeof tf === 'undefined' || typeof poseDetection === 'undefined') && window.ConsoleMotionRuntime)await window.ConsoleMotionRuntime.load();
       if (typeof tf === 'undefined' || typeof poseDetection === 'undefined') return null;
       window.System.detectorPromise = (async () => {
         await tf.ready();
@@ -504,11 +510,15 @@ window.onload = async () => {
       return window.System.detectorPromise;
     };
 
+    if(window.ConsolePractice?.active)return;
+    if(!window.AuthApp){document.getElementById('loading').classList.add('hidden');document.getElementById('auth-screen').classList.remove('hidden');const error=document.getElementById('auth-error');if(error){error.textContent='Conta online indisponível. Você pode jogar sozinho ou tentar mais tarde.';error.style.display='block';}return;}
     window.AuthApp.onAuthStateChanged(async (user) => {
+        if(window.ConsolePractice?.active)return;
         if (user) {
             window.System.playerId = user.uid;
             document.getElementById('loading-text').innerText = "SINCRONIZANDO PERFIL...";
             await window.Profile.loadFromFirebase(user.uid);
+            if(window.ConsolePractice?.active)return;
             
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('auth-screen').classList.add('hidden');

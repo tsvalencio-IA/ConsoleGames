@@ -53,15 +53,20 @@
     if(Math.hypot(player.x-v.navX,player.z-v.navZ)>4.5){setWaypoint('venue-'+id);toast('Siga o GPS até a entrada de '+v.label+'.','info',3000);return false;}
     closeModal();clearMovementInputs();savePlayerPosition(true);
     const ui=document.createElement('section');ui.id='worldVenueDialog';ui.setAttribute('role','dialog');ui.setAttribute('aria-modal','true');ui.setAttribute('aria-label',v.label);
-    ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main></main>';
+    ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main><p data-venue-loading role="status">Preparando '+v.activity+'…</p></main>';
     const s={id,venue:v,ui,wasPaused:paused,entry:{x:player.x,y:player.y,z:player.z},token:crypto.randomUUID?.()||String(Math.random()),recorded:false};worldVenues.session=s;paused=true;document.body.append(ui);document.body.classList.add('world-venue-active');ui.querySelector('[data-venue-close]').onclick=venueClose;ui.querySelector('button').focus();
     if(id==='dance'){venueDanceMenu(s);return true;}
     const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('Integração do resultado indisponível:',e.message);}});ui.querySelector('main').append(frame);
     const message=e=>{
-      const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.type!=='ot-venue-result'||d.token!==s.token||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
+      const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.token!==s.token)return;
+      if(d.type==='ot-venue-ready'){frame.contentWindow.postMessage({type:'ot-venue-start',token:s.token,name:state.profile.name},location.origin);return;}
+      if(d.type==='ot-venue-playing'){clearTimeout(s.loadTimer);ui.querySelector('[data-venue-loading]')?.remove();return;}
+      if(d.type==='ot-venue-close'){venueClose();return;}
+      if(d.type!=='ot-venue-result'||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
       s.recorded=true;const records=venueRecords(),record=records[id]||{played:0,wins:0,best:0};record.played++;if(d.won)record.wins++;record.best=Math.max(record.best,Math.max(0,Math.min(1000000,Math.floor(d.score))));records[id]=record;safeLocalSet(venueRecordKey(),JSON.stringify(records));
     };
-    window.addEventListener('message',message);s.cleanup=()=>window.removeEventListener('message',message);return true;
+    const watchLoad=()=>{clearTimeout(s.loadTimer);s.loadTimer=setTimeout(()=>{const status=ui.querySelector('[data-venue-loading]');if(!status||worldVenues.session!==s)return;status.textContent='A atividade ainda não terminou de carregar. ';const retry=document.createElement('button');retry.textContent='TENTAR NOVAMENTE';retry.onclick=()=>{status.textContent='Preparando '+v.activity+'…';const url=new URL(frame.src);url.searchParams.set('retry',Date.now());frame.src=url.href;watchLoad();};status.append(retry);},20000);};watchLoad();
+    window.addEventListener('message',message);s.cleanup=()=>{clearTimeout(s.loadTimer);window.removeEventListener('message',message);};return true;
   }
   function venueDanceMenu(s){
     const records=venueRecords(),dance=records.dance||{},names=['Primeiros passos','Ritmo da cidade','Festival OT'];s.ui.querySelector('main').innerHTML='<div class="venue-dance-menu"><h2>Dança · siga o ritmo</h2><p>Toque nas setas quando as notas chegarem à linha. No teclado: ← ↑ ↓ → ou D F J K. Duas notas juntas pedem dois toques.</p><p>Acerte pelo menos 60% para liberar a próxima música.</p>'+names.map((name,i)=>'<button data-dance-level="'+i+'" '+(i&&!(dance[i-1]?.passed)?'disabled':'')+'><b>'+name+'</b><small>'+[84,104,120][i]+' BPM · '+(dance[i]?.best||0)+' pontos</small></button>').join('')+'<p>As músicas são sintetizadas no jogo. O passeio fica pausado durante a atividade.</p></div>';

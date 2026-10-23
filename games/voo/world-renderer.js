@@ -431,12 +431,16 @@ class World{
  render(ctx,w,h,cameraBackground=false){
   if(this.lost||this.disposed||w<=0||h<=0)return false;
   const g=this.game,flight=this.type==='flight',q=window.ArcadePlaySettings?.get().quality;
+  // A stale hand freezes simulation. Reuse that same battlefield image while
+  // the worker catches up instead of spending its CPU budget redrawing it.
+  if(g.handSession&&!g.handAim?.fresh&&this.frames){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
   const v=flight?(g.view||g.ship):{x:g.player.x,y:g.eyeY||1.8,z:g.player.z,yaw:g.player.yaw,pitch:g.player.pitch,roll:0};
   const focal=flight?800:(g.focalLength?.(w,h)||Math.min(w,h)*.88);
   const lv=this.lastView,jump=this.lastFocal!==focal||!lv||Math.hypot(v.x-lv.x,v.y-lv.y,v.z-lv.z)>(flight?75:1)||Math.abs(v.yaw-lv.yaw)>.12||Math.abs(v.pitch-lv.pitch)>.12;
   if(this.frames&&!jump&&clock()<this.nextRenderAt&&this.lastWidth===w&&this.lastHeight===h&&this.lastCamera===cameraBackground){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
   // Internal pixels are capped on phones, independently of the HUD canvas.
-  const begin=clock(),cap=q==='high'?1400000:800000;
+  const slowHands=!!g.handSession&&(this.software||g.handSession.lastComputeMs>180);
+  const begin=clock(),cap=slowHands?(this.software?80000:200000):q==='high'?1400000:800000;
   const factor=Math.min(this.renderScale,Math.sqrt(cap/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
   if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
   configureCamera(this.camera,v,w,h,focal,flight?.5:.48,flight?10:.15,flight?120000:1800);
@@ -458,7 +462,7 @@ class World{
   const duration=clock()-begin;this.lastWidth=w;this.lastHeight=h;this.lastCamera=cameraBackground;this.lastView={...v};this.lastFocal=focal;
   // Software GPUs share CPU time with input and physics. Leave several native
   // animation ticks between draws instead of stalling reloads and flight motion.
-  this.nextRenderAt=clock()+(this.software||g.handSession?33:0);
+  this.nextRenderAt=clock()+(slowHands?85:this.software||g.handSession?33:0);
   if(q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
   g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
   return true;

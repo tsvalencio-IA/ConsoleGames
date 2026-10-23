@@ -85,7 +85,11 @@
   }
   function gameLoop(){
     if(!running)return;raf=requestAnimationFrame(gameLoop);
-    const elapsed=Math.max(0,clock.getDelta());sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
+    const elapsed=Math.max(0,clock.getDelta());
+    // A full-screen activity owns the GPU and input clock until the player exits.
+    // Keeping the covered 3D city rendering competes with ping pong and rhythm.
+    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
+    sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
     // Fixed physics steps catch up with real time when a rendered frame is slow.
     // The cap prevents a long background pause from replaying minutes of input.
     const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);

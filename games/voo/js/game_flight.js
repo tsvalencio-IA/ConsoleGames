@@ -792,22 +792,18 @@
                     // A level pair must always yield zero, never atan2(0,-span)=π.
                     const rightIsOnRight=rx>lx;
                     const slope=(rightIsOnRight?ry-ly:ly-ry);
-                    let rollInput=Math.atan2(slope,Math.max(1,Math.abs(rx-lx)))*1.8;
-                    trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
-                    
-                    let avgY = (ry + ly) / 2;
-                    if (this.state === 'CALIBRATION') {
-                        this.pilot.baseY = this.pilot.baseY * 0.95 + avgY * 0.05;
-                        if (!this.pilot.baseY) this.pilot.baseY = avgY;
-                    } else {
-                        let deltaY = avgY - this.pilot.baseY;
-                        let safeH = h > 0 ? h : 100; 
-                        
-                        // FIX V35: PONTO DOCE DO YOKE. 0.09 é o balanço exato entre cansaço (0.15) e jitter (0.05)
-                        let pitchInput = -deltaY / (safeH * 0.09); 
-                        
-                        trgPitch = Math.max(-1.0, Math.min(1.0, pitchInput || 0)); 
+                    const avgX=(rx+lx)/(2*Math.max(1,w)),avgY=(ry+ly)/(2*Math.max(1,h));
+                    const bank=Math.atan2(slope/Math.max(1,h),Math.max(.001,Math.abs(rx-lx)/Math.max(1,w)));
+                    // Store sensor-space fractions, never screen pixels. Turning a
+                    // phone must not change the calibrated centre or invert pitch.
+                    if(!this.pilot.handNeutral)this.pilot.handNeutral={x:avgX,y:avgY,bank};
+                    const neutral=this.pilot.handNeutral;
+                    if(this.state==='CALIBRATION'){
+                        neutral.x+=(avgX-neutral.x)*.05;neutral.y+=(avgY-neutral.y)*.05;neutral.bank+=(bank-neutral.bank)*.05;
                     }
+                    const rollInput=(avgX-neutral.x)/.16+(bank-neutral.bank)*1.2;
+                    trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
+                    trgPitch=Math.max(-1,Math.min(1,-(avgY-neutral.y)/.09));
 
                     let handsDist = Math.hypot(rx - lx, ry - ly);
                     if (handsDist < w * 0.25 && this.state === 'PLAYING') {
@@ -821,6 +817,11 @@
                 }
             }
 
+            if(this.isHelicopter()&&window.ArcadeControls?.mode==='camera'){
+                // In camera play raised hands mean climb, not a nose-down cyclic.
+                this.pilot.throttle=inputDetected?Math.max(.08,Math.min(.92,.5+trgPitch*.42)):.5;
+                trgPitch=inputDetected&&this.state==='PLAYING'?.32:0;
+            }
             if (inputDetected) {
                 this.pilot.active = true;
                 this.pilot.targetRoll += (trgRoll - this.pilot.targetRoll) * 12 * dt;

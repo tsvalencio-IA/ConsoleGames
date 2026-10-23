@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.17.0-world-cities",
+  "build": "705.17.1-gameplay-recovery",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "eda659386c10ae28b2d2e01133e889d9e3ac590ae8191b951b8e30a8b941ccc6"
+      "sha256Body": "a7d089d0c4852ef9389741f209b8a2bb6625f30334480f76092c17ed00d7c9c4"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "d49232561be91aabe54e17ae6d1e18c9699c67ee5cf1848e731cbd811b8950ff"
+      "sha256Body": "0e159f2985cb5b95dc14b81925be648a95b92cf1cee1ba5cd3d58339ff302fd1"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "63ea65468f38ba71281bf7e38b9c662c8f87d021239ae80f63eb03d4005fcefa"
+      "sha256Body": "8b92ac3f2f68961ef467fe147ffda708bd188ad36fbcfbc779c3cf0ba7c0b6a0"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "e36a327f97740f24155bea64c95047a2634fb3d48fd10d7a1b4c216499fda516"
+      "sha256Body": "b84144ce55f9cdbd47ce4441d880c221458bad73c765f258c63f7f4d917ea041"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "4f22213978bf9ca4b5670353ae0740688d407de032cd42f0823e45fbd790ec69"
+      "sha256Body": "600a70ef3dae9461b5993fa62900a80737bc0cde0e553275e16655bf8f6582b4"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",

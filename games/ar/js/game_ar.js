@@ -71,6 +71,7 @@ const Game={
  },
  aimRay(){
   const p=this.player,a=this.handAim,view=this.viewSize;
+  if(this.handSession)return {yaw:p.yaw,pitch:p.pitch};
   if(!a||!view)return {yaw:p.yaw,pitch:p.pitch};
   const f=this.focalLength(view.w,view.h),x=(a.x*view.w-view.w/2)/f,y=(view.h*.48-a.y*view.h)/f;
   const cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),rz=cp-y*sp,dy=y*cp+sp;
@@ -129,13 +130,18 @@ const Game={
   if(this.state!=='PLAYING'){
    this.resultTimer-=dt;if(this.resultTimer<=0&&!this.resultSent){this.resultSent=true;window.System?.gameOver?.(this.score,this.state==='VICTORY',0);}return;
   }
-  const p=this.player,stick=this.manualStick,aim=this.aimStick,cover=this.coverHeld||this.keys.c;
+  const p=this.player,cameraInput=!!this.handSession,stick=cameraInput?null:this.manualStick,aim=cameraInput?null:this.aimStick,cover=this.coverHeld||this.keys.c;
   const sensitivity=window.ArcadePlaySettings?.get().sensitivity??1;
+  if(cameraInput&&this.handAim?.fresh){
+   const dx=this.handAim.x-.5,dy=.48-this.handAim.y;
+   if(Math.abs(dx)>.045)p.yaw=angle(p.yaw+Math.sign(dx)*(Math.abs(dx)-.045)*2.6*dt*sensitivity);
+   if(Math.abs(dy)>.05)p.pitch=clamp(p.pitch+Math.sign(dy)*(Math.abs(dy)-.05)*1.8*dt*sensitivity,-.8,.8);
+  }
   p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);
-  let mx=(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
+  let mx=cameraInput?0:(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=cameraInput?0:(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
   const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
-  p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
-  p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);
+  if(!cameraInput){p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
+  p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);}
   const speed=cover?1.9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
   if(this.handSession&&!stick?.active&&!mx&&!mz&&!cover)this.cameraWalk(dt);
   else if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){p.x=nx;p.z=nz;}
@@ -147,9 +153,7 @@ const Game={
    if(!target)this.handLock=null;
    else if(this.handLock?.target===target){this.handLock.time=Math.max(this.handLock.time+dt,Math.max(0,((this.handAim.timestamp||0)-this.handLock.firstSample)/1000));automatic=this.handLock.time>=.12;}
    else this.handLock={target,time:0,firstSample:this.handAim.timestamp||0};
-   // Turn the view at the horizontal edge, keeping pointing useful for 360°.
-   if(this.handAim?.fresh&&this.handAim.x>.88)p.yaw=angle(p.yaw+dt*.7);
-   if(this.handAim?.fresh&&this.handAim.x<.12)p.yaw=angle(p.yaw-dt*.7);
+   // The camera follows the hand; the weapon and reticle share its centre.
   }
   if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
   if(!this.enemies.some(e=>e.active)){
@@ -171,6 +175,8 @@ const Game={
  },
  update(ctx,w,h){
   const now=performance.now(),dt=clamp((now-this.lastTime)/1000,0,.05);this.lastTime=now;if(!this.player)return 0;
+  if(this.handSession?.controller)this.handAim=this.handSession.controller.read(now);
+  if(this.state==='HAND_CALIBRATION'){this.viewSize={w,h};ctx.fillStyle='#102737';ctx.fillRect(0,0,w,h);return this.score;}
   this.viewSize={w,h};this.step(dt);this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
  },
  project(x,y,z,w,h){
@@ -228,7 +234,7 @@ const Game={
   ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),textW);
   ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active).length,hx+11,hy+(compact?35:46),textW);
   const y=shortPortrait?hy+62:h*.72,panelW=Math.min(w*.60,320),infoX=shortPortrait?hx+11:w/2;ctx.fillStyle='rgba(5,20,29,.74)';if(!shortPortrait)ctx.fillRect((w-panelW)/2,y,panelW,50);ctx.textAlign=shortPortrait?'left':'center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,infoX,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,infoX,y+40,w*.55);ctx.textAlign='center';
-  const cx=this.handAim?this.handAim.x*w:w/2,cy=this.handAim?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
+  const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
   const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handAim?.fresh?(this.autoWalking?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO':'MÃO DIREITA • DISPARO AO ALINHAR NO ADVERSÁRIO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
