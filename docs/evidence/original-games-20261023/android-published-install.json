@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "publishedApkUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/downloads/thIAguinho-ARCADE-OT.apk",
+  "version": "1.1.0",
+  "versionCode": 2,
+  "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+  "bytes": 57991,
+  "publicDownloadSignatureVerified": {
+    "v2": true,
+    "v3": true
+  },
+  "android": {
+    "runId": 40007336941,
+    "jobId": 120598477008,
+    "artifactId": 12525436079,
+    "source": "5e852ddcafb6a3e1792e2a4e03654e6ff9afef44",
+    "jobs": [
+      {
+        "id": 120598477008,
+        "name": "apk",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 40007336941,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-java@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run android-actions/setup-android@v3",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run gradle/actions/setup-gradle@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Compilar aplicativo e teste Android",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Preparar APK sem chave privada no CI",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Habilitar aceleração do emulador",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Instalar e abrir no Android 35",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Guardar pacote para assinatura final e evidências",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Post Run gradle/actions/setup-gradle@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Post Run actions/setup-java@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "id": "dpl_Aspsjcyfx3HqngQjzQZJoxhJZ1qD",
+    "source": "2362ddc96818b1b4adb069e0d1c17480fed8cbfb",
+    "state": "READY",
+    "build": "705.18.1-family-lots"
+  },
+  "physicalDeviceVerification": {
+    "handTracking": false,
+    "physicalSpeakerOutput": false,
+    "twoDeviceMultiplayer": false
+  }
+}
