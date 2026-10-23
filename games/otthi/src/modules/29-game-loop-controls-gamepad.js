@@ -40,22 +40,24 @@
       $('[data-close-world-error]',root).onclick=closeModal;
     });
   }
-  function targetRenderFrameRate(){return perf.mobile?(qualityTier()==='low'?30:qualityTier()==='balanced'?45:60):60;}
+  function targetRenderFrameRate(){
+    if(typeof otGames!=='undefined'&&otGames.active&&otGames.handSession){
+      const now=performance.now();if(otGames.handSession.lastInferenceMs>180)otGames.cameraLowBudgetUntil=now+3000;
+      if(now<(otGames.cameraLowBudgetUntil||0))return 15;
+    }
+    return perf.mobile?(qualityTier()==='low'?30:qualityTier()==='balanced'?45:60):60;
+  }
   function targetSimulationFrameRate(){return paused?15:60;}
   function sampleRafCadence(rawDt){
     perf.rafSampleAcc+=rawDt;perf.rafFrames++;if(perf.rafSampleAcc>=1.5){perf.rafHz=perf.rafFrames/Math.max(.001,perf.rafSampleAcc);perf.rafSampleAcc=0;perf.rafFrames=0;}
   }
-  function gameLoop(){
-    if(!running)return;raf=requestAnimationFrame(gameLoop);
-    const rawDt=Math.min(.05,clock.getDelta());sampleRafCadence(rawDt);perf.loopAcc=Math.min(.12,perf.loopAcc+rawDt);
-    const simulationInterval=1/targetSimulationFrameRate();if(perf.loopAcc<simulationInterval*.92)return;
-    const dt=Math.min(.033,perf.loopAcc);perf.loopAcc=Math.max(0,perf.loopAcc-simulationInterval);samplePerformance(dt);
+  function stepWorldSimulation(dt){
     updatePlayUsage();
     if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
-      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);updateCamera(dt);if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
+      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);updateCamera(dt);if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();if(typeof updateWorldExpansion==='function')updateWorldExpansion();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
       if(typeof updateFamilyAdventure==='function')updateFamilyAdventure(dt);
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
@@ -80,13 +82,23 @@
       perf.modeAuditAcc+=dt;if(perf.modeAuditAcc>=.75){perf.modeAuditAcc=0;ensureViewportCoherence();auditPlayerMode('loop');}
       perf.panelAcc+=dt;if(perf.panelAcc>=1){perf.panelAcc=0;refreshTechnicalPanel();}
     }
-    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=dt;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
+  }
+  function gameLoop(){
+    if(!running)return;raf=requestAnimationFrame(gameLoop);
+    const elapsed=Math.max(0,clock.getDelta());sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
+    // Fixed physics steps catch up with real time when a rendered frame is slow.
+    // The cap prevents a long background pause from replaying minutes of input.
+    const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);
+    let steps=0;while(running&&perf.loopAcc>=simulationInterval&&steps<8){perf.loopAcc-=simulationInterval;stepWorldSimulation(simulationInterval);steps++;}
+    if(!running)return;
+    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
     const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.
     updateFamilyPlayableVisuals();
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
+    if(world.skyDome)world.skyDome.position.copy(camera.position);
     try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}
   }
 

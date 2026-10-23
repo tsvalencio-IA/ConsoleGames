@@ -12,8 +12,8 @@ try{
  await page.locator('#quickToggleBtn').click();await page.screenshot({path:'test-results/ot-games/native-menu.png'});await page.locator('#ot-games-button').click();await page.screenshot({path:'test-results/ot-games/modes.png'});await page.locator('[data-ot-armed]').uncheck();await page.locator('[data-ot-mode="helicopter"]').click();await page.waitForFunction(()=>window.OT_GAMES.diagnostics().mode==='helicopter',null,{timeout:15000});
  assert(await page.evaluate(()=>window.OT_GAMES.diagnostics().sameScene));assert(!await page.evaluate(()=>window.OT_GAMES.diagnostics().armed));assert.equal(await page.evaluate(()=>window.OT_GAMES.diagnostics().enemies.length),0);
  const a=await page.evaluate(()=>window.OT_GAMES.diagnostics());const loc=name=>page.locator('#ot-games-hud [data-ot="'+name+'"]');
- const cyclic=await fingers.start(loc('move'));await fingers.move(cyclic,loc('move'),.67,.22);const collective=await fingers.start(loc('collective'),.5,.22);const pedal=await fingers.start(loc('pedal-right'));await page.waitForFunction(before=>{const b=window.OT_GAMES.diagnostics().body;return b.y>before.y+1&&Math.hypot(b.x-before.x,b.z-before.z)>.7&&b.yaw>before.yaw},a.body,{timeout:15000});
- const moved=await page.evaluate(()=>window.OT_GAMES.diagnostics());assert(moved.body.y>a.body.y+1);assert(Math.hypot(moved.body.x-a.body.x,moved.body.z-a.body.z)>.7);assert(moved.body.yaw>a.body.yaw);
+ const cyclic=await fingers.start(loc('move'));await fingers.move(cyclic,loc('move'),.67,.22);const collective=await fingers.start(loc('collective'),.5,.22);const pedal=await fingers.start(loc('pedal-right'));await page.waitForFunction(before=>{const b=window.OT_GAMES.diagnostics().body;return b.y>before.y+1&&Math.hypot(b.x-before.x,b.z-before.z)>.7&&b.yaw<before.yaw},a.body,{timeout:15000});
+ const moved=await page.evaluate(()=>window.OT_GAMES.diagnostics());assert(moved.body.y>a.body.y+1);assert(Math.hypot(moved.body.x-a.body.x,moved.body.z-a.body.z)>.7);assert(moved.body.yaw<a.body.yaw);
  await fingers.end(cyclic);await fingers.end(collective);await fingers.end(pedal);await page.screenshot({path:'test-results/ot-games/helicopter-original-world.png'});
  assert.deepEqual(moved.peacePosition,before.position,'Flying must not move the saved walking character');
  await page.locator('[data-ot="peace"]').click();assert.equal(await page.evaluate(()=>window.OT_GAMES.diagnostics().active),false);assert.deepEqual(await page.evaluate(()=>window.OT_GAMES.diagnostics().peacePosition),before.position);
@@ -29,20 +29,20 @@ try{
 }finally{await browser.close();}
 
 async function playGroundMission(page,fingers){
- const aim=page.locator('#ot-games-hud [data-ot="aim"]'),fire=page.locator('#ot-games-hud [data-ot="fire"]');
- const a=await fingers.start(aim),f=await fingers.start(fire);let steps=0;
+ const aim=page.locator('#stage canvas'),fire=page.locator('#ot-games-hud [data-ot="fire"]');
+ const f=await fingers.start(fire);let a=null;let steps=0;
  try{
   while(steps++<1600){
    const d=await page.evaluate(()=>window.OT_GAMES.diagnostics());if(d.state!=='PLAYING'){assert.equal(d.state,'VICTORY',JSON.stringify(d));break;}
    const b=d.body,angle=v=>Math.atan2(Math.sin(v),Math.cos(v));
    const enemies=d.enemies.filter(e=>e.active&&e.lineOfSight).sort((a,c)=>Math.abs(angle(Math.atan2(a.x-b.x,a.z-b.z)-b.yaw))-Math.abs(angle(Math.atan2(c.x-b.x,c.z-b.z)-b.yaw)));
    assert(enemies.length>0,'Every live sector must have a reachable target');const e=enemies[0];
-   let x=Math.max(-1,Math.min(1,angle(Math.atan2(e.x-b.x,e.z-b.z)-b.yaw)*3)),y=Math.max(-1,Math.min(1,(Math.atan2(e.y-b.y,Math.hypot(e.x-b.x,e.z-b.z))-b.pitch)*4));
-   const n=Math.max(1,Math.hypot(x,y));x/=n;y/=n;const mag=Math.hypot(x,y),dead=mag?(.08+.92*mag)/mag:0;
-   await fingers.move(a,aim,.5+x*dead*.34,.5-y*dead*.34);
+   const box=await aim.boundingBox(),scale=1.6/(Math.min(box.width,box.height)*.88);
+   const dx=-angle(Math.atan2(e.x-b.x,e.z-b.z)-b.yaw)/scale,dy=-(Math.atan2(e.y-b.y,Math.hypot(e.x-b.x,e.z-b.z))-b.pitch)/scale;
+   a=await fingers.start(aim,.5,.4);await fingers.move(a,aim,.5+Math.max(-.25,Math.min(.25,dx/box.width)),.4+Math.max(-.20,Math.min(.20,dy/box.height)));await fingers.end(a);a=null;
    await page.waitForFunction(elapsed=>{const d=window.OT_GAMES.diagnostics();return d.elapsed>elapsed+.015||d.state!=='PLAYING'},d.elapsed,{timeout:10000});
   }
- }finally{await fingers.end(a);await fingers.end(f);}
+ }finally{if(a)await fingers.end(a);await fingers.end(f);}
  const d=await page.evaluate(()=>window.OT_GAMES.diagnostics());assert.equal(d.state,'VICTORY');assert.equal(d.kills,6);assert.equal(d.wave,2);assert(d.ammo<30);assert(d.body.hp>0);
  const career=await page.evaluate(()=>JSON.parse(localStorage.getItem('thia:ot-games:combat:v1:ot-games-test')));assert.equal(career.wins,2);assert.equal(career.lastMode,'ground');
  await page.locator('.ot-games-result').waitFor();await page.screenshot({path:'test-results/ot-games/mission-complete.png'});console.log('OT GAMES MISSION PASS: actual original map, two-touch aim/fire, 6 real kills, 2 sectors and saved win.',JSON.stringify({steps,hp:d.body.hp,elapsed:d.elapsed}));
@@ -55,7 +55,7 @@ async function playHelicopterMission(page,fingers){
   for(;steps<450;steps++){
    const d=await page.evaluate(()=>window.OT_GAMES.diagnostics());if(d.state!=='PLAYING'){assert.equal(d.state,'VICTORY',JSON.stringify(d));break;}
    const b=d.body,targets=d.enemies.filter(e=>e.active&&e.lineOfSight),error=e=>({yaw:angle(Math.atan2(e.x-b.x,e.z-b.z)-b.yaw),pitch:Math.atan2(e.y-b.y,Math.hypot(e.x-b.x,e.z-b.z))-b.pitch+.08});
-   targets.sort((a,c)=>Math.hypot(error(a).yaw,error(a).pitch)-Math.hypot(error(c).yaw,error(c).pitch));assert(targets.length);const e=targets[0],turn=error(e).yaw,next=Math.abs(turn)>.055?Math.sign(turn):0;
+   targets.sort((a,c)=>Math.hypot(error(a).yaw,error(a).pitch)-Math.hypot(error(c).yaw,error(c).pitch));assert(targets.length);const e=targets[0],turn=error(e).yaw,next=Math.abs(turn)>.055?-Math.sign(turn):0;
    if(next!==side){if(pedal)await fingers.end(pedal);pedal=null;if(next)pedal=await fingers.start(loc(next>0?'pedal-right':'pedal-left'));side=next;}
    const distance=Math.hypot(e.x-b.x,e.z-b.z),height=e.kind==='tank'?e.y+Math.max(6,distance*.38):e.y,value=b.y>height+.6?.3:b.y<height-.6?.7:.5,box=await loc('collective').boundingBox();
    await fingers.move(lever,loc('collective'),.5,(14+(1-value)*(box.height-28))/box.height);

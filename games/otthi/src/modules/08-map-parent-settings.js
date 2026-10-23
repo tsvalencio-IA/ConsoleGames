@@ -17,8 +17,8 @@
     return items;
   }
   function onlinePlayerMapLocations(){const presence=window.OTTHOS_RTDB?.getPresence?.()||{};return Object.entries(presence).filter(([,item])=>item&&Number.isFinite(Number(item.x))&&Number.isFinite(Number(item.z))).map(([uid,item])=>({id:`online-${String(uid).replace(/[^A-Za-z0-9_-]/g,'').slice(0,48)}`,name:item.name||'Jogador online',icon:'👤',group:'Jogadores online',x:Number(item.x),z:Number(item.z),navX:Number(item.x),navZ:Number(item.z),description:'Posição individual sincronizada deste participante no bairro atual.',actions:['Marcar no GPS','Encontrar o participante voluntariamente']}));}
-  function currentMapLocations(){const all=[...MAP_LOCATIONS,...(typeof campaignMapLocations==='function'?campaignMapLocations():[]),...(typeof familyMapLocations==='function'?familyMapLocations():[]),...(window.OTTHI_ROOM_WORLD?.mapHouseLocations?.()||[]),...missionMapLocations(),...(typeof coopMissionMapLocations==='function'?coopMissionMapLocations():[]),...onlinePlayerMapLocations()];const unique=new Map();for(const loc of all)if(loc?.id)unique.set(loc.id,loc);return[...unique.values()];}
-  function mapDistance(point){ return Math.round(Math.hypot(player.x-(point.navX??point.x),player.z-(point.navZ??point.z))); }
+  function currentMapLocations(){const all=[...MAP_LOCATIONS,...(typeof expansionMapLocations==='function'?expansionMapLocations():[]),...(typeof venueMapLocations==='function'?venueMapLocations():[]),...(typeof campaignMapLocations==='function'?campaignMapLocations():[]),...(typeof familyMapLocations==='function'?familyMapLocations():[]),...(window.OTTHI_ROOM_WORLD?.mapHouseLocations?.()||[]),...missionMapLocations(),...(typeof coopMissionMapLocations==='function'?coopMissionMapLocations():[]),...onlinePlayerMapLocations()];const unique=new Map();for(const loc of all)if(loc?.id)unique.set(loc.id,loc);return[...unique.values()];}
+  function mapDistance(point){ const focus=navigationFocus();return Math.round(Math.hypot(focus.x-(point.navX??point.x),focus.z-(point.navZ??point.z))); }
   let mapSelectedId='';
   const mapViewState={zoom:1,panX:0,panY:0};
   function mapMarkerPlacements(locations,playerPoint,mapWidth=0,mapHeight=0){
@@ -85,12 +85,13 @@
   }
   function setWaypoint(id){
     const point=currentMapLocations().find(p=>p.id===id);if(!point)return;
-    state.waypoint={id:point.id,name:point.name,x:point.x,z:point.z,navX:point.navX??point.x,navZ:point.navZ??point.z,arrived:false};world.routePath=buildRoutePoints(player,state.waypoint);
+    state.waypoint={id:point.id,name:point.name,x:point.x,z:point.z,navX:point.navX??point.x,navZ:point.navZ??point.z,arrived:false};world.routePath=navigationRoutePoints(navigationFocus(),state.waypoint);
     updateWaypointMarker();updateNavigation(0,true);saveState(true);closeModal();toast(`Destino marcado: ${point.name} • siga as setas azuis`,'good',2600);
   }
   function clearWaypoint(){ state.waypoint=null; updateWaypointMarker(); updateNavigation(0,true); saveState(true); closeModal(); toast('Destino removido.','good'); }
   function openMap(){
-    const pp=worldToMap(player.x,player.z),angleDeg=(Math.PI-(player.facing||0))*180/Math.PI,activeId=state.waypoint?.id||'',route=state.waypoint?(world.routePath.length?world.routePath:buildRoutePoints(player,state.waypoint)):[],routeInfo=state.waypoint?routeProgressInfo(route,player):null;
+    const focus=navigationFocus();
+    const pp=worldToMap(focus.x,focus.z),angleDeg=(Math.PI-(focus.facing||0))*180/Math.PI,activeId=state.waypoint?.id||'',route=state.waypoint?(world.routePath.length?world.routePath:navigationRoutePoints(focus,state.waypoint)):[],routeInfo=state.waypoint?routeProgressInfo(route,focus):null;
     const mapLocations=currentMapLocations();if(!mapSelectedId||(!mapLocations.some(x=>x.id===mapSelectedId)&&!mapClusterLookup[mapSelectedId]))mapSelectedId=activeId||'home';
     const visualNodes=mapVisualNodes(mapLocations,activeId,mapSelectedId),placements=mapMarkerPlacements(visualNodes,pp);
     const markers=placements.map(({loc,left,top})=>{const active=loc.id===activeId?' active':'',selected=loc.id===mapSelectedId?' selected':'',mission=loc.missionTarget?' mission-target':'',cluster=loc.mapCluster?' cluster':'',home=loc.id==='home'?' my-home':'';return `<button class="map-marker clean${active}${selected}${mission}${cluster}${home}" style="left:${left.toFixed(2)}%;top:${top.toFixed(2)}%" data-map-marker="${loc.id}" aria-label="${loc.id==='home'?'Minha casa':loc.name}" title="${loc.id==='home'?'Minha casa':loc.name}"><b>${loc.mapCluster?loc.clusterItems.length:loc.icon}</b><span>${loc.id==='home'?'MINHA CASA':loc.name}</span></button>`;}).join('');

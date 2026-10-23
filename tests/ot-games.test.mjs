@@ -48,7 +48,7 @@ test('OT Games: hand-camera right goes right, up looks up and manual stick never
  g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.77,y:.25,fresh:true,present:true,timestamp:100};
  g.aim.x=-1;g.aim.y=-1;g.move.x=g.move.y=0;
  const start={yaw:g.body.yaw,pitch:g.body.pitch};f.step(.1);
- assert(g.body.yaw>start.yaw,'right hand turns view right even if stale joystick points left');
+ assert(g.body.yaw<start.yaw,'right hand rotates the real Three camera toward screen-right even if the hidden joystick points left');
  assert(g.body.pitch>start.pitch,'raised hand lifts the viewpoint');
  assert.equal(g.autoWalking,true);
  const facing=g.body.yaw;g.handAim.x=.5;g.handAim.y=.48;f.step(.1);
@@ -57,5 +57,23 @@ test('OT Games: hand-camera right goes right, up looks up and manual stick never
 test('OT Games: camera-hand mode and manual joystick remain separate',async()=>{
  const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;
  g.handMode=false;g.handSession=null;g.aim.x=1;
- const yaw=g.body.yaw;f.step(.2);assert(g.body.yaw>yaw,'manual joystick still works when hand control is disabled');
+ const yaw=g.body.yaw;f.step(.2);assert(g.body.yaw<yaw,'manual joystick still works when hand control is disabled');
+});
+
+test('campaign aircraft: a plane remains parked without throttle, rolls on the runway, and only lifts after sufficient speed and a pull on the stick',async()=>{
+ const f=fixture();await f.api.enter('plane',{armed:false,groundLaunch:true,boarding:{x:-5,z:-165,yaw:Math.PI/2}});const g=f.g,p={...g.body};
+ g.move.y=1;for(let i=0;i<240;i++)f.step(1/60);assert.equal(g.onGround,true);assert.equal(g.body.x,p.x);assert.equal(g.body.y,1.3);assert.equal(g.airspeed,0);
+ g.move.y=0;g.collective=1;for(let i=0;i<165;i++)f.step(1/60);assert(g.body.x>p.x+15);assert(g.onGround,'a fast plane with a neutral stick remains on its wheels');
+ g.move.y=.7;for(let i=0;i<70;i++)f.step(1/60);assert.equal(g.onGround,false);assert(g.body.y>2);assert.equal(g.flightPhase,'airborne');
+ f.context.otGamesClearInput();assert.equal(g.collective,0,'releasing/pause cannot start a parked campaign plane');
+});
+test('campaign aircraft: landing a plane requires a real runway and matching attitude; a helicopter settles on the actual ground',async()=>{
+ const f=fixture();f.context.campaignLandingZone=(mode,b)=>Math.abs(b.z+165)<4.6&&Math.abs(b.x-27)<39&&Math.abs(Math.cos(b.yaw))<.3;
+ await f.api.enter('plane',{armed:false,groundLaunch:true,boarding:{x:-5,z:-165,yaw:Math.PI/2}});const g=f.g;g.onGround=false;g.airspeed=18;Object.assign(g.body,{x:0,y:1.35,z:-165,yaw:Math.PI/2,pitch:-.06,roll:0});f.step(.033);assert(g.onGround);g.collective=0;for(let i=0;i<180;i++)f.step(1/60);assert(g.airspeed<.01);assert(g.body.y===1.3);
+ f.api.peace();await f.api.enter('helicopter',{armed:false,groundLaunch:true,boarding:{x:50,z:-165,yaw:0}});g.collective=.8;for(let i=0;i<100;i++)f.step(1/60);assert(!g.onGround);assert(g.body.y>4);g.collective=.1;for(let i=0;i<350;i++)f.step(1/60);assert(g.onGround);assert.equal(g.body.y,1.6);
+});
+test('OT real camera: right-hand aim and right helicopter pedal turn toward a target visibly on the right of the screen',async()=>{
+ const f=fixture();await f.api.enter('ground',{armed:false});let g=f.g;g.body.yaw=0;f.context.otGamesCamera(.1);const target=new f.T.Vector3(g.body.x-8,g.body.y,g.body.z+25),before=target.clone().project(f.camera).x;assert(before>0);
+ g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.8,y:.48,fresh:true,present:true};for(let i=0;i<25;i++)f.step(.016);const after=target.clone().project(f.camera).x;assert(Math.abs(after)<Math.abs(before),'tracked right hand must move a right-side target toward the reticle, not farther right');
+ f.api.peace();await f.api.enter('helicopter',{armed:false});g=f.g;g.body.yaw=0;for(let i=0;i<30;i++)f.context.otGamesCamera(.1);const t=new f.T.Vector3(g.body.x-12,g.body.y,g.body.z+50),p=t.clone().project(f.camera).x;g.pedal=1;for(let i=0;i<15;i++)f.step(.016);assert(Math.abs(t.clone().project(f.camera).x)<Math.abs(p));
 });

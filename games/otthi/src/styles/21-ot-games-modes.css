@@ -36,3 +36,11 @@
 .ot-games-active #game>:not(#stage):not(#screenTint){visibility:hidden!important;pointer-events:none!important}
 
 .ot-games-active #stage{pointer-events:none}
+.ot-games-active #stage canvas{pointer-events:auto;touch-action:none}
+body[data-ot-game-mode="ground"] #ot-games-hud [data-ot="fire"]{bottom:16px;height:64px;border-radius:22px}
+#ot-games-hud [data-ot="ads"]{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:92px;width:92px}
+#ot-games-hud [data-ot="ads"].selected{background:#386f65;border-color:#b9f0cc}
+#ot-games-hud.ot-hands [data-ot="ads"]{display:none!important}
+#ot-games-hud.ot-hands [data-ot="camera"]{bottom:20px}
+
+body[data-ot-game-mode="plane"] .ot-games-collective::before{content:"POTÊNCIA";top:-18px}

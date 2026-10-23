@@ -331,6 +331,7 @@
   function currentVehicleRef(){if(activeVehicleRef)return activeVehicleRef;const byId=vehicleById(player.car.id);if(byId)return byId;if(world.activeVehicle)return world.activeVehicle;return player.car.id?null:(world.vehicle||null);}
   function applyVehicleAppearance(vehicle){
     const a=vehicle?.appearance||{},theme=normalizeToyTheme(vehicle?.theme||a.theme),bodyType=normalizeVehicleBodyType(vehicle?.bodyType||a.bodyType||vehicle?.kind);if(vehicleVisual)buildThemedVehicleGeometry(vehicleVisual,{theme,bodyType,appearance:a});
+    if(vehicle.racerAsset&&typeof worldRacerAttach==='function'&&worldRacerAttach(vehicleVisual,a.primary,vehicle.racerAsset))return;
     if(typeof applyServiceVehicleVisual==='function')applyServiceVehicleVisual(vehicle);
   }
   function persistParkedVehicle(vehicle){
@@ -339,7 +340,7 @@
   function createToyCar(x,z,options={}){
     const id=options.id||`city-car-${world.vehicles.length+1}`,existing=vehicleById(id);if(existing)return existing;
     const baseX=Number.isFinite(Number(x))?Number(x):0,baseZ=Number.isFinite(Number(z))?Number(z):0,baseHeading=Number(options.heading??0),origin=v704ClampWorldPoint(baseX,baseZ,.9),saved=state.vehicles?.parked?.[id]||{},heading=Number(saved.heading??baseHeading),group=new THREE.Group(),rawX=Number(saved.x??origin.x),rawZ=Number(saved.z??origin.z),spawn=v704ClampWorldPoint(Number.isFinite(rawX)?rawX:origin.x,Number.isFinite(rawZ)?rawZ:origin.z,.9);group.position.set(spawn.x,0,spawn.z);group.rotation.y=heading;group.userData.vehicleId=id;group.userData.vehicleSpawn={x:origin.x,z:origin.z,heading:baseHeading};worldGroup.add(group);
-    const theme=normalizeToyTheme(options.theme||'lego'),bodyType=normalizeVehicleBodyType(options.bodyType||options.kind),kind=String(options.kind||bodyType==='moto'?'moto':bodyType==='truck'?'truck':bodyType==='utility'?'utility':'car'),appearance={chassis:options.chassis??0x26384e,primary:options.primary??0xf28a22,primaryDark:options.primaryDark??options.primary??0xc85b16,secondary:options.secondary??0x0aa7b8,glass:options.glass??0x17364b,theme,bodyType};
+    const theme=normalizeToyTheme(options.theme||'lego'),bodyType=normalizeVehicleBodyType(options.bodyType||options.kind),kind=String(options.kind||(bodyType==='moto'?'moto':bodyType==='truck'?'truck':bodyType==='utility'?'utility':'car')),appearance={chassis:options.chassis??0x26384e,primary:options.primary??0xf28a22,primaryDark:options.primaryDark??options.primary??0xc85b16,secondary:options.secondary??0x0aa7b8,glass:options.glass??0x17364b,theme,bodyType};
     buildThemedVehicleGeometry(group,{theme,bodyType,appearance});const garageStored=!!state.vehicles?.garage?.stored?.[id],radius=Number(options.radius||(bodyType==='truck'?2.15:bodyType==='utility'?1.8:bodyType==='moto'?1.0:1.55)),vehicle={id,x:group.position.x,z:group.position.z,heading,spawnX:origin.x,spawnZ:origin.z,spawnHeading:baseHeading,group,label:options.label||'Veículo',kind,bodyType,theme,serviceType:options.serviceType||'',appearance,occupied:false,radius,garageStored};group.visible=!garageStored;world.vehicles.push(vehicle);if(!world.vehicle)world.vehicle=vehicle;
     registerInteractable({id:`vehicle-${id}`,type:'vehicle',icon:vehicleThemeIcon(kind),label:`Entrar: ${vehicle.label}`,radius:bodyType==='truck'?3.2:bodyType==='moto'?2.2:2.6,priority:155,getPos:()=>({x:vehicle.group.position.x,z:vehicle.group.position.z}),available:()=>!vehicle.occupied&&vehicle.group.visible,action:()=>enterVehicle(vehicle)});return vehicle;
   }
@@ -379,7 +380,7 @@
     const c=document.createElement('canvas');c.width=16;c.height=512;const ctx=c.getContext('2d'),g=ctx.createLinearGradient(0,0,0,512);
     g.addColorStop(0,'#087ee8');g.addColorStop(.34,'#42b9ff');g.addColorStop(.67,'#9de2ff');g.addColorStop(.88,'#d9f4ff');g.addColorStop(1,'#fff0bf');ctx.fillStyle=g;ctx.fillRect(0,0,16,512);
     const tex=new THREE.CanvasTexture(c);tex.magFilter=THREE.LinearFilter;tex.minFilter=THREE.LinearFilter;
-    const sky=new THREE.Mesh(new THREE.SphereGeometry(430,20,18),new THREE.MeshBasicMaterial({map:tex,side:THREE.BackSide,fog:false,depthWrite:false}));scene.add(sky);
+    const sky=new THREE.Mesh(new THREE.SphereGeometry(600,20,18),new THREE.MeshBasicMaterial({map:tex,side:THREE.BackSide,fog:false,depthWrite:false}));sky.frustumCulled=false;sky.renderOrder=-100;scene.add(sky);world.skyDome=sky;
     const glowCanvas=document.createElement('canvas');glowCanvas.width=glowCanvas.height=128;const gx=glowCanvas.getContext('2d'),rad=gx.createRadialGradient(64,64,12,64,64,64);rad.addColorStop(0,'rgba(255,250,207,1)');rad.addColorStop(.35,'rgba(255,230,128,.72)');rad.addColorStop(1,'rgba(255,214,88,0)');gx.fillStyle=rad;gx.fillRect(0,0,128,128);
     const sunTex=new THREE.CanvasTexture(glowCanvas),sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:sunTex,transparent:true,depthWrite:false,fog:false}));sunGlow.position.set(-145,126,-235);sunGlow.scale.set(72,72,1);scene.add(sunGlow);
     const sun=new THREE.Mesh(new THREE.CircleGeometry(13,24),new THREE.MeshBasicMaterial({color:0xfff4c4,depthWrite:false,fog:false}));sun.position.set(-145,126,-232);sun.lookAt(0,70,0);scene.add(sun);

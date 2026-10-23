@@ -39,10 +39,11 @@ function fixture(){
     openModal(){},$$(){return []},
     otGamesEnter:async(mode,opts)=>{
       otGames.active=true;otGames.mode=mode;otGames.armed=opts.armed;
-      otGames.body={x:player.x,y:mode==='ground'?1.8:28,z:player.z,yaw:0};
+      otGames.options=opts;otGames.onGround=!!opts.groundLaunch;otGames.groundLaunch=!!opts.groundLaunch;otGames.body={x:player.x,y:mode==='ground'?1.8:opts.groundLaunch?1.3:28,z:player.z,yaw:0,pitch:0,hp:100};
       otGames.kills=0;otGames.state='PLAYING';otGames.enemies=[];otGames.bullets=[];otGames.effects=[];
       return true;
     },
+    otGamesCamera(){},otGamesUpdateHUD(){},
     otGamesSpawnWave(){spawnCalls.push('wave');},
     otGamesSaveResult(won){nativeResults.push(won);},
     otGamesDisposeGroup(){},
@@ -87,21 +88,36 @@ test('no remote start is allowed, and abandoning combat awards no completion',as
   f.player.x=0;f.player.z=0;
   assert.equal(await f.api.start('helicopter'),false);
   f.player.x=27;f.player.z=-169;
+  assert.equal(await f.api.start('helicopter'),false,'base access alone does not board a distant aircraft');
+  assert.equal(f.waypoints.at(-1),'campaign-helicopter');
+  f.player.x=50;f.player.z=-165;
   assert.equal(await f.api.start('helicopter'),true);
   f.otGames.active=false;f.tick();
   assert.equal(f.api.diagnostics().phase,'idle');
   assert.equal(f.api.diagnostics().records['norte-helicopter'],undefined);
 });
 
-test('campaign MISSÕES button exists outside collapsed quickBar; all three locations appear as official map markers',()=>{
+test('campaign MISSÕES button exists outside collapsed quickBar; bases and both aircraft appear as official map markers',()=>{
   const f=fixture();f.tick();
   const button=f.game.children.find(x=>x.id==='worldCampaignBtn');
   assert(button,'MISSÕES must be visible in game HUD rather than the collapsed Vida menu');
   assert.equal(button.textContent,'MISSÕES');
   const all=Array.from(f.context.campaignMapLocations());
-  assert.equal(all.length,3);
-  assert.deepEqual(all.map(x=>x.id),['campaign-hq','campaign-airbase','campaign-north']);
+  assert.equal(all.length,5);
+  assert.deepEqual(all.map(x=>x.id),['campaign-hq','campaign-airbase','campaign-north','campaign-plane','campaign-helicopter']);
   assert(all.every(x=>x.missionTarget),'all bases must be visually marked on the map');
   f.api.navigate('airbase');
   assert.deepEqual(f.waypoints,['campaign-airbase'],'route button must call existing blue-arrow GPS system');
+});
+
+test('campaign save/continue retains real ground-launch controls, requires explicit resume, and cancellation clears the checkpoint without a victory',async()=>{
+ const f=fixture();f.tick();f.player.x=-5;f.player.z=-165;assert(await f.api.start('plane'));assert.equal(f.api.diagnostics().phase,'depart');assert(f.api.diagnostics().checkpoint);const key='thia:otthi:campaign:v1:test-player:session';
+ f.context.campaignAbort({preserve:true});f.otGames.active=false;assert.equal(f.api.diagnostics().phase,'idle');assert.equal(f.api.diagnostics().checkpoint,true);assert.equal(f.otGames.active,false,'a saved checkpoint never launches or opens a camera by itself');
+ assert(await f.api.resume());assert.equal(f.otGames.options.groundLaunch,true,'resumed plane must rebuild its visible throttle control');assert.equal(f.otGames.onGround,true);assert.equal(f.api.diagnostics().phase,'depart');assert.equal(f.otGames.body.y,1.3);
+ f.context.campaignAbort({preserve:false});f.otGames.active=false;assert.equal(f.api.diagnostics().phase,'idle');assert.equal(f.api.diagnostics().checkpoint,false);assert.equal(JSON.parse(f.saved.get(key)),null);assert.deepEqual(f.nativeResults,[]);
+});
+test('campaign ignores malformed, dead or out-of-range checkpoint bodies',async()=>{
+ const f=fixture();f.tick();const key='thia:otthi:campaign:v1:test-player:session';
+ for(const body of [{x:1,y:1.8,z:1,yaw:0,pitch:0,hp:0},{x:1,y:999,z:1,yaw:0,pitch:0,hp:100},{x:1,y:1.8,z:1,yaw:0,pitch:2,hp:100}]){f.saved.set(key,JSON.stringify({v:1,mode:'ground',phase:'travel',body}));assert.equal(f.api.diagnostics().checkpoint,false);assert.equal(await f.api.resume(),false);}
+ f.saved.set(key,JSON.stringify({v:1,mode:'ground',phase:'travel',body:{x:9999,y:1.8,z:1,yaw:0,pitch:0,hp:100}}));assert.equal(await f.api.resume(),false);assert.equal(f.otGames.active,false);
 });

@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.16.7.19-walk-missions',
+    build: '705.17.0-world-cities',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

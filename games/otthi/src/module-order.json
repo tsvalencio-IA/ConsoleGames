@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.16.7.19-walk-missions",
+  "build": "705.17.0-world-cities",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "cb012a5ee5ebbe99d30079d1f2c623ed478ddaa739048d9bce00100e816d147c"
+      "sha256Body": "eda659386c10ae28b2d2e01133e889d9e3ac590ae8191b951b8e30a8b941ccc6"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "9c9237335d852a023e007f174f8c69b9c77188f3f080b3446e2c46731d109115"
+      "sha256Body": "3a9ab85cfe10226ecef15908614b0edbe94c3888ea6b6264b683caa9741c4c91"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -70,14 +70,14 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "dfb96d511b5291852607b4ea6b01c0388c0ea5cb235d07d268f290a5dc92588d"
+      "sha256Body": "7471c9d5bc6781a7862f316e8dbc802504498f4b8a11b5c91be9b706836a7151"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "cd7c543ba30a3d10d32008a524eaed38e370eac74a6ea7b77313c214702405f1"
+      "sha256Body": "13ac4f561f8ef5ec4b8be4ab05ae758ae01229b047573f110e10f1ec338150b5"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -112,14 +112,14 @@
       "startLine": 2743,
       "endLine": 2991,
       "description": "Casas, interiores, NPCs, inimigos, cristais, veículos e academia",
-      "sha256Body": "4ceb05393dc878001db393a61dcd10a819e285437f3dce3f1979e5cc92bf19de"
+      "sha256Body": "2453aecf6cb53d742e235c4ae49dd89f086163b2705e0f9e0c2177bdcf416ded"
     },
     {
       "file": "src/modules/13a-sports-kart-v705.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "14e9264f0aa2fe79db17cd356a80f1a2d1543ba88270479e3548cb2ce990ed67"
+      "sha256Body": "9f1b6419f169ea5f3796d2aa8f7d8f5c09b86a691f675c9853d0033532a6afd6"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "3f22ee8d806268fe1c5ee53d80ebaa32fcf903726dcac025fb60c1f81dc454f0"
+      "sha256Body": "5e5ceb51d7b8fabdf655b7b76dae39acf20fd12580a2ca701bb15f359315c6ad"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -196,7 +196,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "32b0c739459c91666774f4097d6abdacd831dd28cfb5a1790f648cf18dd59b49"
+      "sha256Body": "ab31f442de88801874a828d6fec3253c0f2a4ba0a51e9e718096b4cf9c6ed8f5"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -224,7 +224,7 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "1064a1b354eb5b1a74d12cd3f8c3a9f1f896a22f3edb476e44621b4bbc5e6f77"
+      "sha256Body": "7a268d69fbd295734e8e15a92240b224c2633e6b1060f1cdb85be8f8d5cbc190"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
@@ -259,14 +259,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "766e4403b9c59696121d92fd41b751703ed6af21be9df7cb098db6c00481dafc"
+      "sha256Body": "63ea65468f38ba71281bf7e38b9c662c8f87d021239ae80f63eb03d4005fcefa"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "644ffc1dd15d334e4deb6fad4ee4f153481b96da93ab9cc5a336232b806a565a"
+      "sha256Body": "efaece4c15c16991651541216390aadcc7d89be2f45417428c778433c248e60d"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -301,7 +301,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "6c008e9dd3c65715562a00c807c27a6c6aa0ccd5ca7380efeccac937f66b87cd"
+      "sha256Body": "8ff3865ea397b30beb5f55af3d6508f7c02ae5d228a373a2f8873dc56ee203f6"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -350,14 +350,35 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "075a30942ddd3385f04516a7a44371c377e4edd7af5e37c608f3225101479a8c"
+      "sha256Body": "e36a327f97740f24155bea64c95047a2634fb3d48fd10d7a1b4c216499fda516"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "32e0337deaf796f0dd32eae9edb05645b30b8e7da69f1c46619ac1d1c0d41ee6"
+      "sha256Body": "968f522aadb27bdc27a721a85145e2598d078faa1b487ce1d86b0644d7e6aab8"
+    },
+    {
+      "file": "src/modules/44-world-rhythm.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Regras determinísticas da atividade de ritmo",
+      "sha256Body": "820e018e730c4654387e6b7d3d0623cc152fc646737eb8840ee860d51fa089ef"
+    },
+    {
+      "file": "src/modules/45-world-activity-venues.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Academias físicas, jogos originais e retorno ao bairro",
+      "sha256Body": "4f22213978bf9ca4b5670353ae0740688d407de032cd42f0823e45fbd790ec69"
+    },
+    {
+      "file": "src/modules/46-world-cities-and-racers.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Cidades, autódromos e veículos GLB no mundo unificado",
+      "sha256Body": "73ed9bfb350cb21ba87e5972de70ff66e106acb785943bfd9568d898bbcea2fe"
     }
   ],
   "styles": [
@@ -520,7 +541,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "5803a344940643bbd9a68887177c93029814c084ce2e9a930bc11e5dc3a1f9ac"
+      "sha256Body": "e8992514a0ec03a0e81e55496a8f8c4b6e9b9faaaf0f9729ea30be7432940532"
+    },
+    {
+      "file": "src/styles/22-world-activity-venues.css",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Atividades acessíveis nos locais do mundo",
+      "sha256Body": "06a898319cba07d34050968b372d027f778846f81e4fb5d7fab2ff1f2c7ad433"
+    },
+    {
+      "file": "src/styles/23-world-race-focus.css",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "HUD de corrida concentrado na pista",
+      "sha256Body": "eecf7deba8d29875d20ee48ef8f16211cbe409391183f6240a0fe60e3ad65304"
     }
   ]
 }

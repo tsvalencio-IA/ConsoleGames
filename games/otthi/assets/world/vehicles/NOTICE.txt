@@ -1,0 +1,6 @@
+OT World racer and coupe — original geometry authored for ConsoleGames.
+Source builder: tools/build-world-racers.mjs. No third-party character, vehicle,
+image or texture was used. Models are unbranded fictional vehicles.
+GLB 2.0; PBR materials; named paint/detail meshes and four independent wheel pivots.
+Rebuild with the repository's pinned Three.js r128. Loader license is included in
+assets/vendor/THREE-LICENSE.txt (MIT, Three.js authors).

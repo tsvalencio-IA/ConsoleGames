@@ -16,6 +16,7 @@
   function serviceVehicleIcon(kind='car'){return({police:'🚓',firefighter:'🚒',paramedic:'🚑',ambulance:'🚑',fire:'🚒',kart:'🏎️',moto:'🏍️',motorcycle:'🏍️',truck:'🚚',utility:'🚐'})[kind]||'🚗';}
   function applyServiceVehicleVisualToGroup(group,vehicle={}){
     if(!group)return false;clearServiceVehicleVisualFromGroup(group);const kind=String(vehicle.serviceType||vehicle.kind||'car');if(!['police','firefighter','fire','paramedic','ambulance','kart'].includes(kind))return false;
+    if(kind==='kart'&&typeof worldRacerAttach==='function'&&worldRacerAttach(group,vehicle.appearance?.primary,'racer'))return true;
     const layer=new THREE.Group();layer.name=`OTTHI_SERVICE_${kind.toUpperCase()}`;group.add(layer);group.userData.serviceLayer=layer;group.userData.serviceLights=[];
     const setScale=(x,y,z)=>{group.scale.set(x,y,z);group.userData.serviceBaseScale=[x,y,z];};
     const addLight=(x,color,emissive)=>{const mesh=box(.46,.16,.3,mat(color,{emissive,emissiveIntensity:.95,roughness:.2}),x,1.39,-.1,layer);group.userData.serviceLights.push(mesh);return mesh;};
