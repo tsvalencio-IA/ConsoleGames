@@ -81,12 +81,21 @@ public final class ArcadeSmoke extends Instrumentation {
         String escaped=org.json.JSONObject.quote(selector);
         waitFor(activity,"!!document.querySelector("+escaped+")");
         String json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2];})()");
+        // CSS scrolling/layout can finish before Android has presented that
+        // frame. Wait for the real WebView compositor, then measure again.
+        CountDownLatch painted=new CountDownLatch(1);
+        runOnMainSync(() -> currentActivity.webView.postVisualStateCallback(SystemClock.uptimeMillis(),new android.webkit.WebView.VisualStateCallback(){@Override public void onComplete(long requestId){painted.countDown();}}));
+        if(!painted.await(10,TimeUnit.SECONDS))throw new AssertionError("WebView did not present the touch target: "+selector);
+        waitForIdleSync();Thread.sleep(200);
+        json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2];})()");
+        evaluate(activity,"(()=>{window.__androidTouches=[];if(!window.__androidTouchObserver){window.__androidTouchObserver=true;for(const n of ['pointerdown','pointerup','pointercancel','click'])document.addEventListener(n,e=>{window.__androidTouches.push({type:n,id:e.target.id,tag:e.target.tagName,launch:e.target.closest('[data-launch]')?.dataset.launch,x:e.clientX,y:e.clientY});window.__androidTouches=window.__androidTouches.slice(-8)},true)}})()");
         JSONArray css=new JSONArray(json);float[] point=new float[2];
         runOnMainSync(() -> {int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);float scale=currentActivity.webView.getWidth()/(float)css.optDouble(0);point[0]=origin[0]+(float)css.optDouble(1)*scale;point[1]=origin[1]+(float)css.optDouble(2)*scale;});
         long time=SystemClock.uptimeMillis();
         MotionEvent down=MotionEvent.obtain(time,time,MotionEvent.ACTION_DOWN,point[0],point[1],0);down.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(down,true);down.recycle();
         Thread.sleep(180);
         MotionEvent up=MotionEvent.obtain(time,SystemClock.uptimeMillis(),MotionEvent.ACTION_UP,point[0],point[1],0);up.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(up,true);up.recycle();
+        Thread.sleep(200);System.out.println("Android native touch "+selector+": "+evaluate(activity,"JSON.stringify(window.__androidTouches||[])"));
     }
     @Override public void onStart() {
         Bundle result=new Bundle();
