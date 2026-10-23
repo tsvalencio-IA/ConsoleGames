@@ -196,6 +196,7 @@
 
         resetPhysics: function() {
             this.lastTime=performance.now();this.physicsAccumulator=0;this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
+            this.virtualWheel={x:0,y:0,r:60,opacity:0,isHigh:false};
             this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
             this.lap = 1; this.maxLapPos = 0; this.status = 'RACING'; this.finishTime = 0; this.finalRank = 0; this.score = 0; this.nitro = 100; this.spinAngle = 0; this.spinTimer = 0; this.lateralInertia = 0; this.vibration = 0; this.engineTimer = 0; this.inputActive = false; this.rivals = []; this.localBots = []; particles = []; hudMessages = []; this.remotePlayersData = {};
             this.matchCoins = 0; this.item = null; this.itemCooldown = 0; this.projectiles = [];
@@ -1325,6 +1326,18 @@
             ctx.restore();
         },
 
+        renderVirtualWheel: function(ctx){
+            const d=Logic;
+            if(window.ArcadeControls?.mode==='controls'||d.virtualWheel.opacity<=.01)return;
+            ctx.save(); ctx.globalAlpha = d.virtualWheel.opacity; ctx.translate(d.virtualWheel.x, d.virtualWheel.y);
+            if (d.virtualWheel.isHigh) { ctx.shadowBlur = 25; ctx.shadowColor = '#0ff'; }
+            ctx.rotate(d.steer * 0.6); ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, 0, Math.PI * 2); ctx.lineWidth = 18; ctx.strokeStyle = '#2d3436'; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, -Math.PI * 0.25, -Math.PI * 0.75, true); ctx.lineWidth = 18; ctx.strokeStyle = '#d63031'; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, Math.PI * 0.25, Math.PI * 0.75, false); ctx.strokeStyle = '#d63031'; ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-d.virtualWheel.r + 10, 0); ctx.lineTo(d.virtualWheel.r - 10, 0); ctx.moveTo(0, 0); ctx.lineTo(0, d.virtualWheel.r - 10); ctx.lineWidth = 12; ctx.strokeStyle = '#bdc3c7'; ctx.lineCap = 'round'; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2); ctx.fillStyle = '#2d3436'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#bdc3c7'; ctx.stroke();
+            ctx.fillStyle = '#d63031'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('GT', 0, 1); ctx.restore();
+        },
         renderRaceHUD: function(ctx,w,h){
             const d=Logic,assist=(STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light).label;
             const width=Math.max(150,Math.min(234,w-166)),x=12,y=10;
@@ -1357,7 +1370,7 @@
         renderUI: function(ctx, w, h) {
             const d = Logic;
             const racing=d.state==='RACE'&&d.raceState!=='FINISHED';document.body?.classList?.toggle('kart-racing',racing);
-            if(racing){this.renderRaceHUD(ctx,w,h);return;}
+            if(racing){this.renderVirtualWheel(ctx);this.renderRaceHUD(ctx,w,h);return;}
             hudMessages = hudMessages.filter(m => m.life > 0);
             // Compact notifications above the driving view, never over the kart.
             hudMessages.slice(-2).forEach((m,i)=>{
@@ -1452,16 +1465,7 @@
                 d.rivals.forEach(r => drawDot(r.pos, r.status==='FINISHED' ? '#0f0' : (r.color||'#ffee00'), 22)); drawDot(d.pos, '#ff0000', 26); ctx.restore();
             }
 
-            if (d.virtualWheel.opacity > 0.01) {
-                ctx.save(); ctx.globalAlpha = d.virtualWheel.opacity; ctx.translate(d.virtualWheel.x, d.virtualWheel.y);
-                if (d.virtualWheel.isHigh) { ctx.shadowBlur = 25; ctx.shadowColor = '#0ff'; }
-                ctx.rotate(d.steer * 0.6); ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, 0, Math.PI * 2); ctx.lineWidth = 18; ctx.strokeStyle = '#2d3436'; ctx.stroke();
-                ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, -Math.PI * 0.25, -Math.PI * 0.75, true); ctx.lineWidth = 18; ctx.strokeStyle = '#d63031'; ctx.stroke();
-                ctx.beginPath(); ctx.arc(0, 0, d.virtualWheel.r, Math.PI * 0.25, Math.PI * 0.75, false); ctx.strokeStyle = '#d63031'; ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(-d.virtualWheel.r + 10, 0); ctx.lineTo(d.virtualWheel.r - 10, 0); ctx.moveTo(0, 0); ctx.lineTo(0, d.virtualWheel.r - 10); ctx.lineWidth = 12; ctx.strokeStyle = '#bdc3c7'; ctx.lineCap = 'round'; ctx.stroke();
-                ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI * 2); ctx.fillStyle = '#2d3436'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#bdc3c7'; ctx.stroke();
-                ctx.fillStyle = '#d63031'; ctx.font = 'bold 10px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText("GT", 0, 1); ctx.restore();
-            }
+            this.renderVirtualWheel(ctx);
 
             // --- INJEÇÃO DO CHAT GPT: PASSO 5 (TELA FINAL COM MATEMÁTICA RESPONSIVA E COPAS) ---
             if (this.raceState === "FINISHED") {

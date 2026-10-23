@@ -1,0 +1,45 @@
+name: Volante por câmera nos autódromos
+on:
+  push:
+    paths:
+      - 'games/kart/**'
+      - 'enhancements/local-practice.js'
+      - 'tests/kart-camera-browser.mjs'
+      - 'tests/kart-drivability.test.mjs'
+      - 'tests/local-practice.test.mjs'
+      - 'tests/fixtures/hand/**'
+      - '.github/workflows/kart-camera.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: kart-camera-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  camera:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Verificar volante, direção e evolução salva
+        run: node --test tests/kart-drivability.test.mjs tests/local-practice.test.mjs tests/player-regressions.test.mjs
+      - name: Servir o mundo e os jogos originais
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/kart-camera-server.log 2>&1 &
+          sleep 2
+      - name: Entrar pelos dois autódromos e dirigir com MoveNet real
+        run: node tests/kart-camera-browser.mjs
+      - name: Guardar telas e resultado
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kart-camera-autodromes
+          path: test-results/kart-camera/
+          retention-days: 14

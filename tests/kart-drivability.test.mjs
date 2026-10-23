@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {engine} from './helpers/game-fixture.mjs';
+import {engine,canvas} from './helpers/game-fixture.mjs';
 function race(track=0,char=0,bots=false,settings={}){
  const {game:g}=engine('kart','game_kart',settings);g.currentFase={id:'arcade',mode:'RACE',targetRank:3};g.setupUI();g.resetPhysics();g.selectedChar=char;g.startRace(track);
  if(!bots){g.localBots=[];g.rivals=[];}
@@ -55,6 +55,17 @@ test('kart: turbo alone never drives without a camera pilot; tracking loss cance
  assert(g.speed>120);assert.equal(g.requestTurbo(),true);g.updatePhysics(390,844,pose);assert(g.turboLock);
  const speed=g.speed;step(g,1);assert(!g.turboLock);assert(g.trackingLost);assert(g.speed<speed);
  step(g,180);assert(g.speed<1,'Lost camera input must coast to a stop');
+});
+test('kart: the racing HUD draws the wheel at the detected wrists, including after the hands move',()=>{
+ const f=engine('kart','game_kart'),g=f.game;
+ g.currentFase={id:'arcade',mode:'RACE',targetRank:3};g.setupUI();g.resetPhysics();g.startRace(0);f.window.ArcadeControls.mode='camera';
+ for(const points of [[450,300,190,300],[400,340,140,260]]){
+  const pose={keypoints:[{name:'left_wrist',score:.9,x:points[0],y:points[1]},{name:'right_wrist',score:.9,x:points[2],y:points[3]}]};
+  g.updatePhysics(390,844,pose);const ctx=canvas();g.renderUI(ctx,390,844);
+  assert(g.inputActive);assert.equal(g.virtualWheel.opacity,1);
+  assert(ctx.operations.some(([op,x,y])=>op==='translate'&&x===g.virtualWheel.x&&y===g.virtualWheel.y),'The visible race must draw the wheel at the detected hand midpoint');
+  assert(ctx.operations.some(([op,x,y,r])=>op==='arc'&&x===0&&y===0&&r===g.virtualWheel.r),'The wheel must be drawn, not merely computed by physics');
+ }
 });
 test('kart: a brush against one rival applies one bounded impact until they separate',()=>{
  const g=race(1);g.speed=155;g.playerX=.2;g.arcadeManual.throttle=false;

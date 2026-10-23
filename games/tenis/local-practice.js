@@ -4,6 +4,7 @@
   const id=window.CONSOLE_GAME_ID;
   if(!['drive','box_pro','tennis','ar_truck_sim','usarmy_flight_sim'].includes(id))return;
   const key='thia:solo:v1:'+id,token=new URLSearchParams(location.search).get('otVenue');
+  const progressField=({drive:'kartSave',usarmy_flight_sim:'flightSave'})[id];
   const embeddedVenue=parent!==window&&!!token&&token.length<=100;
   const trip=parent===window?window.WorldVenueTrip?.current(token,id):null,pageVenue=!!token&&!!trip;
   const venue=embeddedVenue||pageVenue;
@@ -24,22 +25,30 @@
   let cloudDB=window.DB,entry=null,savedProfile=null,resultHooked=false;
   const $=s=>document.querySelector(s);
   const read=()=>{try{return JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{return {}}};
+  const restoreAccount=()=>{
+    if(!savedProfile)return;
+    Object.assign(window.Profile,savedProfile);
+    if(progressField&&!Object.prototype.hasOwnProperty.call(savedProfile,progressField))delete window.Profile[progressField];
+  };
   const practice=window.ConsolePractice={active:false,
     save(){
       if(!this.active||!window.Profile)return;
       const p=window.Profile;
-      try{localStorage.setItem(key,JSON.stringify({version:1,username:p.username,playerId:window.System?.playerId,xp:p.xp,level:p.level,coins:p.coins,arSave:p.arSave}));}catch{}
+      const record={version:1,username:p.username,playerId:window.System?.playerId,xp:p.xp,level:p.level,coins:p.coins,arSave:p.arSave};
+      if(progressField)record[progressField]=p[progressField];
+      try{localStorage.setItem(key,JSON.stringify(record));}catch{}
       p.updateUI?.();
     },
     async enter(name){
       if(this.active)return;
       const p=window.Profile,s=window.System,game=window.Games?.find(g=>g.id===id);
       if(!p||!s||!game){show('O jogo ainda está carregando. Tente novamente em instantes.');return;}
-      savedProfile=JSON.parse(JSON.stringify({username:p.username,role:p.role,xp:p.xp,level:p.level,coins:p.coins,permissions:p.permissions,arSave:p.arSave}));
+      savedProfile=JSON.parse(JSON.stringify({username:p.username,role:p.role,xp:p.xp,level:p.level,coins:p.coins,permissions:p.permissions,arSave:p.arSave,...(progressField?{[progressField]:p[progressField]}:{})}));
       cloudDB=window.DB||cloudDB;this.active=true;window.DB=null;
       const data=read();
       Object.assign(p,{username:String(name||data.username||'Jogador local').slice(0,32),role:'player',xp:Math.max(0,Number(data.xp)||0),level:Math.max(1,Math.min(100,Number(data.level)||1)),coins:Math.max(0,Number(data.coins)||0),permissions:{[id]:true}});
       p.arSave=data.arSave&&typeof data.arSave==='object'?data.arSave:{upgrades:{engine:1,battery:1,radar:1,chassis:1,scout:false}};
+      if(progressField)p[progressField]=data[progressField]&&typeof data[progressField]==='object'?JSON.parse(JSON.stringify(data[progressField])):null;
       await window.onload?.(); // Original canvas, detector and resize setup; auth is skipped only for this local session.
       s.playerId=/^local-[a-zA-Z0-9-]{16,80}$/.test(data.playerId||'')?data.playerId:'local-'+crypto.randomUUID();
       this.save();
@@ -54,7 +63,7 @@
     },
     account(){
       this.save();window.System?.stopGame();this.active=false;window.DB=cloudDB;
-      if(savedProfile)Object.assign(window.Profile,savedProfile);
+      restoreAccount();
       $('#solo-indicator')?.remove();
       for(const name of ['loading','phase-screen','menu-screen','game-ui','result-screen'])$('#'+name)?.classList.add('hidden');
       $('#auth-screen')?.classList.remove('hidden');window.onload?.();
@@ -63,7 +72,7 @@
       if(!this.active)return;
       if(pageVenue){this.save();window.System?.stopGame();returnToWorld();return;}
       this.save();window.System?.stopGame();this.active=false;window.DB=cloudDB;
-      if(savedProfile)Object.assign(window.Profile,savedProfile);
+      restoreAccount();
       $('#solo-indicator')?.remove();
       if(venue){venueMessage('ot-venue-close');return;}
       for(const name of ['phase-screen','menu-screen','game-ui','result-screen'])$('#'+name)?.classList.add('hidden');
