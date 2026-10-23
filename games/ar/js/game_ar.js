@@ -208,10 +208,15 @@ const Game={
   if(p.hp<=0)this.finish(false);
  },
  update(ctx,w,h){
-  const now=performance.now(),dt=clamp((now-this.lastTime)/1000,0,.05);this.lastTime=now;if(!this.player)return 0;
+  const now=performance.now(),dt=clamp((now-this.lastTime)/1000,0,.25);this.lastTime=now;if(!this.player)return 0;
   if(this.handSession?.controller)this.handAim=this.handSession.controller.read(now);
   if(this.state==='HAND_CALIBRATION'){this.viewSize={w,h};ctx.fillStyle='#102737';ctx.fillRect(0,0,w,h);return this.score;}
-  this.viewSize={w,h};this.step(dt);this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
+  // Rendering may be slower than input/weapon timing on mobile GPUs. Advance
+  // the actual elapsed interval in small collision-safe steps; dropping every
+  // interval above 50ms made a 1.65s reload take several seconds at low FPS.
+  this.viewSize={w,h};
+  for(let remaining=dt;remaining>1e-8;){const step=Math.min(remaining,1/60);this.step(step);remaining-=step;}
+  this.drawVirtualScene(ctx,w,h);this.drawHUD(ctx,w,h);return this.score;
  },
  project(x,y,z,w,h){
   const p=this.player,dx=x-p.x,dz=z-p.z,cy=Math.cos(p.yaw),sy=Math.sin(p.yaw),rx=dx*cy-dz*sy,rz=dx*sy+dz*cy,dy=y-this.eyeY,cp=Math.cos(p.pitch),sp=Math.sin(p.pitch),depth=rz*cp+dy*sp;

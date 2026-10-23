@@ -64,3 +64,21 @@ test('combat: the visible soldier head and legs acquire the target; pointing abo
  for(const height of [.18,1.15,2.12]){g.player.pitch=Math.atan2(height-g.eyeY,d);assert.equal(g.targetAtAim(),e,'The visible body must match aiming at height '+height);}
  g.player.pitch=Math.atan2(2.8-g.eyeY,d);assert.equal(g.targetAtAim(),null);
 });
+
+test('combat: slow rendered frames preserve real reload duration, movement and weapon cadence',()=>{
+ const counts=[];
+ for(const hz of [5,10,30,60]){
+  const {game:g,advance}=fresh();g.covers=[];g.waveDelay=999;g.ammo=1000;g.fireHeld=true;
+  for(let i=0;i<hz*6;i++){advance(1000/hz);g.update(canvas(),390,844);}
+  counts.push(g.stats.shots);
+  g.fireHeld=false;g.ammo=1;g.reserve=60;g.reload();
+  const start=g.elapsed;
+  for(let i=0;i<Math.ceil(hz*1.8);i++){advance(1000/hz);g.update(canvas(),390,844);}
+  assert.equal(g.ammo,30,'Reload must complete within 1.8 real seconds at '+hz+' FPS');
+  assert(g.elapsed-start>=1.79&&g.elapsed-start<2.01);
+  const before={...g.player};g.manualStick={x:0,y:1,active:true};
+  for(let i=0;i<hz;i++){advance(1000/hz);g.update(canvas(),390,844);}
+  assert(Math.abs(Math.hypot(g.player.x-before.x,g.player.z-before.z)-6.5)<1e-6,'Rendered FPS changed movement distance');
+ }
+ assert(Math.max(...counts)-Math.min(...counts)<=1,'Rendered FPS changed weapon cadence: '+counts);
+});

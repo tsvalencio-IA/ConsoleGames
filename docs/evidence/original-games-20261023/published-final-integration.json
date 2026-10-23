@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "flow": "world-to-console",
+      "sevenOriginalGames": true
+    },
+    {
+      "flow": "console-kart",
+      "originalEngine": "drive",
+      "audibleGraph": true,
+      "resumeAfterInterruption": true
+    },
+    {
+      "flow": "console-boxe",
+      "originalEngine": "box_pro",
+      "audibleGraph": true,
+      "resumeAfterInterruption": true
+    },
+    {
+      "flow": "console-tenis",
+      "originalEngine": "tennis",
+      "audibleGraph": true,
+      "resumeAfterInterruption": true
+    },
+    {
+      "flow": "console-ar",
+      "originalEngine": "ar_truck_sim",
+      "audibleGraph": true,
+      "resumeAfterInterruption": true,
+      "stableSoloIdentity": true
+    },
+    {
+      "flow": "console-voo",
+      "originalEngine": "usarmy_flight_sim",
+      "audibleGraph": true,
+      "resumeAfterInterruption": true
+    },
+    {
+      "flow": "console-family",
+      "originalWorld": true
+    },
+    {
+      "flow": "autodrome-aurora",
+      "originalKart": true,
+      "worldPositionAndFamilyPreserved": true
+    },
+    {
+      "flow": "autodrome-costa",
+      "originalKart": true,
+      "worldPositionAndFamilyPreserved": true
+    }
+  ]
+}

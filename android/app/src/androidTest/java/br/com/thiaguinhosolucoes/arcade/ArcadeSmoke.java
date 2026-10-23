@@ -23,15 +23,18 @@ public final class ArcadeSmoke extends Instrumentation {
     private String lastTouch="none";
     private String checkpoint="launch";
     private void nativeTap(float x,float y) throws Exception {
+        // Target this Activity's input stream. UiAutomation injection waits for
+        // window/surface animations and can turn a short press into a long press.
+        android.view.MotionEvent.PointerProperties pointer=new android.view.MotionEvent.PointerProperties();
+        pointer.id=0;pointer.toolType=android.view.MotionEvent.TOOL_TYPE_FINGER;
+        android.view.MotionEvent.PointerCoords coords=new android.view.MotionEvent.PointerCoords();
+        coords.x=x;coords.y=y;coords.pressure=1;coords.size=1;
         long time=SystemClock.uptimeMillis();
-        android.view.MotionEvent down=android.view.MotionEvent.obtain(time,time,android.view.MotionEvent.ACTION_DOWN,x,y,0);
-        down.setSource(android.view.InputDevice.SOURCE_TOUCHSCREEN);
-        if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Android rejected touch down");
-        down.recycle();Thread.sleep(180);
-        android.view.MotionEvent up=android.view.MotionEvent.obtain(time,SystemClock.uptimeMillis(),android.view.MotionEvent.ACTION_UP,x,y,0);
-        up.setSource(android.view.InputDevice.SOURCE_TOUCHSCREEN);
-        if(!getUiAutomation().injectInputEvent(up,true))throw new AssertionError("Android rejected touch up");
-        up.recycle();
+        android.view.MotionEvent down=android.view.MotionEvent.obtain(time,time,android.view.MotionEvent.ACTION_DOWN,1,new android.view.MotionEvent.PointerProperties[]{pointer},new android.view.MotionEvent.PointerCoords[]{coords},0,0,1,1,0,0,android.view.InputDevice.SOURCE_TOUCHSCREEN,0);
+        sendPointerSync(down);down.recycle();Thread.sleep(100);
+        android.view.MotionEvent up=android.view.MotionEvent.obtain(time,SystemClock.uptimeMillis(),android.view.MotionEvent.ACTION_UP,1,new android.view.MotionEvent.PointerProperties[]{pointer},new android.view.MotionEvent.PointerCoords[]{coords},0,0,1,1,0,0,android.view.InputDevice.SOURCE_TOUCHSCREEN,0);
+        sendPointerSync(up);up.recycle();
+        report("Android press duration "+(SystemClock.uptimeMillis()-time)+"ms");
     }
     private void report(String message) {Bundle status=new Bundle();status.putString("stream",message+"\n");sendStatus(0,status);}
     @Override public void callActivityOnResume(Activity activity) {

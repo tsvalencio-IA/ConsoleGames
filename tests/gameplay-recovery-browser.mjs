@@ -58,7 +58,7 @@ try{
    results.push({flow:'console-'+slug,originalEngine:id,audibleGraph:true,resumeAfterInterruption:true,stableSoloIdentity:slug==='ar'?true:undefined});
    console.log('PASS native entry/audio',slug);await p.locator('#arcade-pause').click();await p.locator('#arcade-pause-modal [data-action="career"]').click();assert(await p.locator('#arcade-pause-modal [data-career-panel]').isVisible());await p.locator('#arcade-pause-modal [data-action="exit"]').click();await p.waitForURL('**/arcade/');
   }
-  await p.locator('[data-game="familia"] [data-launch]').click();await p.locator('#start').click();
+  await p.locator('[data-game="familia"] [data-launch]').click();await p.locator('#start').click();await p.waitForFunction(()=>!!window.__THIA_TEST?.player,null,{timeout:45000});
   assert(await p.evaluate(()=>!!window.__THIA_TEST?.player));await p.locator('#menuBtn').click();await p.locator('.family-console-return').click();await p.waitForURL('**/arcade/');
   results.push({flow:'console-family',originalWorld:true});
   assert.deepEqual(errors,[]);await c.close();

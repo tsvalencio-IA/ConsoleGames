@@ -12,6 +12,7 @@ Esta revisão responde às regressões de jogabilidade e integração. Não repr
 - Há acesso ao console pelo menu Vida dentro do mundo. A saída salva a posição; os sete jogos mantêm seus motores e seus bancos originais.
 - O empacotamento da Vercel corrige `id`, `start_url` e `scope` da instalação do console. O manifesto de origem do GitHub Pages preserva a identidade existente.
 - O áudio é iniciado no gesto real do jogador, antes das operações assíncronas de escolha e câmera. Os sete jogos usam um contexto compartilhado por documento; efeitos nativos, motores e preferências são preservados.
+- No WAR, recarga, cadência de disparo e deslocamento preservam o tempo real mesmo com renderização a 5/10/30/60 quadros por segundo, com subdivisão física para respeitar colisões.
 - O WAR recebe efeitos distintos de arma/recarga/impacto, passos e decisões de avanço, flanco, supressão e cobertura da infantaria, respeitando colisões. O identificador do jogador solo persiste entre entradas, preservando a carreira futura.
 - O reconhecimento da mão mantém a proporção do vídeo de celulares em retrato. A GPU pode falhar durante a leitura mesmo após iniciar: há recuperação por CPU. Falhas depois da calibração ficam visíveis, com opção de recalibrar ou usar os controles. A imagem do jogador permanece escondida depois da calibração. Perder a mão interrompe avanço e disparo.
 - O painel de corrida reúne posição, volta, velocidade, auxílio e nitro, com um mapa menor e um aviso de cada vez. A carreira e os desafios continuam disponíveis pela pausa.
@@ -24,7 +25,7 @@ Esta revisão responde às regressões de jogabilidade e integração. Não repr
 Veja `evidence/original-games-20261023/`.
 
 - Fluxo completo mundo → console → cinco motores originais → família → dois autódromos, com saída e retorno. O áudio foi observado em um analisador do grafo real, inclusive após suspensão e novo toque; a carreira do WAR manteve a identificação solo após recarregar. A pausa continuou acessível e mostrou os três objetivos de carreira de cada jogo.
-- 183 testes unitários aprovados na suíte completa; os testes focalizados de kart e interface também passaram após o novo painel.
+- 184 testes unitários aprovados na suíte completa; os testes focalizados de kart e interface também passaram após o novo painel.
 - Sete cenários de jogabilidade dos cinco motores originais, com entrada solo real e serviços externos isolados: três tamanhos de tela para Kart, boxe, pingue-pongue, WAR e voo. Inclui corrida de três voltas, movimentos reais dos motores e toques simultâneos.
 - Reconhecimento real MediaPipe CPU/WASM, com imagem de teste convertida em vídeo local: calibração, prévia escondida, avanço, alinhamento de disparo, parada ao perder a mão e recuperação após falha injetada. Coberto no WAR original e no modo soldado do mundo.
 - Entrada de boxe em paisagem e tênis em retrato com toque real no navegador; recuperação de quadro de jogo com falha forçada de navegação; retorno ao mundo preservando os dados.
