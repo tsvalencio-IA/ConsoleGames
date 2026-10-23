@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.graphics.Bitmap;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.view.MotionEvent;
-import android.view.InputDevice;
 import android.os.SystemClock;
 import org.json.JSONArray;
 import java.io.File;
@@ -24,14 +22,14 @@ public final class ArcadeSmoke extends Instrumentation {
     private volatile MainActivity currentActivity;
     private String lastTouch="none";
     private String checkpoint="launch";
-    private MotionEvent finger(long downTime,int action,float x,float y) {
-        MotionEvent.PointerProperties pointer=new MotionEvent.PointerProperties();
-        pointer.id=0;pointer.toolType=MotionEvent.TOOL_TYPE_FINGER;
-        MotionEvent.PointerCoords coords=new MotionEvent.PointerCoords();
-        coords.x=x;coords.y=y;coords.pressure=action==MotionEvent.ACTION_UP?0:1;coords.size=.1f;
-        return MotionEvent.obtain(downTime,SystemClock.uptimeMillis(),action,1,
-            new MotionEvent.PointerProperties[]{pointer},new MotionEvent.PointerCoords[]{coords},
-            0,0,1,1,0,0,InputDevice.SOURCE_TOUCHSCREEN,0);
+    private void nativeTap(float x,float y) throws Exception {
+        // Android's own input command builds the complete pointer stream,
+        // including device metadata, down/up and cancellation semantics.
+        String command="input touchscreen swipe "+Math.round(x)+" "+Math.round(y)+" "+Math.round(x)+" "+Math.round(y)+" 180";
+        try(android.os.ParcelFileDescriptor descriptor=getUiAutomation().executeShellCommand(command);
+            java.io.FileInputStream output=new java.io.FileInputStream(descriptor.getFileDescriptor())) {
+            byte[] buffer=new byte[256];while(output.read(buffer)!=-1){}
+        }
     }
     private void report(String message) {Bundle status=new Bundle();status.putString("stream",message+"\n");sendStatus(0,status);}
     @Override public void callActivityOnResume(Activity activity) {
@@ -75,12 +73,7 @@ public final class ArcadeSmoke extends Instrumentation {
             point[1]=origin[1]+(float)css.optDouble(2)*scale;
         });
         waitForIdleSync();Thread.sleep(500);
-        long time=SystemClock.uptimeMillis();
-        MotionEvent down=finger(time,MotionEvent.ACTION_DOWN,point[0],point[1]);
-        if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch was rejected");
-        down.recycle();Thread.sleep(80);
-        MotionEvent up=finger(time,MotionEvent.ACTION_UP,point[0],point[1]);
-        getUiAutomation().injectInputEvent(up,true);up.recycle();
+        nativeTap(point[0],point[1]);
     }
     private void screenshot(String name) throws Exception {
         Bitmap image=getUiAutomation().takeScreenshot();
@@ -103,10 +96,7 @@ public final class ArcadeSmoke extends Instrumentation {
         evaluate(activity,"(()=>{window.__androidTouches=[];if(!window.__androidTouchObserver){window.__androidTouchObserver=true;for(const n of ['pointerdown','pointerup','pointercancel','click'])document.addEventListener(n,e=>{window.__androidTouches.push({type:n,pointer:e.pointerType,id:e.target.id,tag:e.target.tagName,launch:e.target.closest('[data-launch]')?.dataset.launch,x:e.clientX,y:e.clientY});window.__androidTouches=window.__androidTouches.slice(-8)},true)}})()");
         JSONArray css=new JSONArray(json);float[] point=new float[2];
         runOnMainSync(() -> {int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);float scale=currentActivity.webView.getScale();point[0]=origin[0]+(float)(css.optDouble(1)-css.optDouble(3))*scale;point[1]=origin[1]+(float)(css.optDouble(2)-css.optDouble(4))*scale;lastTouch=selector+" css="+css+" scale="+scale+" native="+point[0]+","+point[1];});
-        long time=SystemClock.uptimeMillis();
-        MotionEvent down=finger(time,MotionEvent.ACTION_DOWN,point[0],point[1]);if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch down rejected: "+lastTouch);down.recycle();
-        Thread.sleep(180);
-        MotionEvent up=finger(time,MotionEvent.ACTION_UP,point[0],point[1]);if(!getUiAutomation().injectInputEvent(up,true))throw new AssertionError("Native touch up rejected: "+lastTouch);up.recycle();
+        nativeTap(point[0],point[1]);
         Thread.sleep(200);Bundle debug=new Bundle();debug.putString("stream","Android native touch "+lastTouch+": "+evaluate(activity,"JSON.stringify(window.__androidTouches||[])")+"\n");sendStatus(0,debug);
     }
     @Override public void onStart() {
