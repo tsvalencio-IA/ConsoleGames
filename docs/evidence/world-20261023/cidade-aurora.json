@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "city": "aurora",
+  "drivable": true,
+  "touches": 2,
+  "familyPreserved": true,
+  "audits": {
+    "layout": {
+      "version": 704,
+      "passed": true,
+      "problems": [],
+      "roads": 15,
+      "highways": 9,
+      "structures": 46,
+      "zones": 23,
+      "paths": 24,
+      "signs": 16
+    },
+    "runtime": {
+      "version": 704,
+      "passed": true,
+      "problems": [],
+      "houses": 13,
+      "vehicles": 23,
+      "colliders": 129,
+      "hazards": 4,
+      "interactables": 300,
+      "at": 1792744998854
+    }
+  },
+  "manifest": {
+    "name": "OTTHI World",
+    "display": "standalone",
+    "start_url": "./?v=70615",
+    "errors": []
+  },
+  "serviceWorker": {
+    "controlled": true,
+    "registrations": [
+      {
+        "scope": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+        "active": "activated"
+      }
+    ]
+  },
+  "installability": {
+    "installabilityErrors": []
+  },
+  "errors": [],
+  "warnings": [
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "Firebase multiplayer: TypeError: Failed to fetch dynamically imported module: https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js",
+    "[GroupMarkerNotSet(crbug.com/242999)!:A0D0860834310000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader (about:flags#enable-unsafe-swiftshader) flag to opt in to lower security guarantees for trusted content.",
+    "[OTTHI V704] auditoria geométrica do mundo real [Object, Object, Object, Object, Object]",
+    "Firebase multiplayer: TypeError: Failed to fetch dynamically imported module: https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"
+  ]
+}

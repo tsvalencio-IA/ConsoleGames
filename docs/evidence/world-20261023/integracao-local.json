@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "errors": [],
+  "bad": [],
+  "expansion": {
+    "ready": true,
+    "bounds": {
+      "minX": -460,
+      "maxX": 460,
+      "minZ": -460,
+      "maxZ": 460
+    },
+    "cities": [
+      {
+        "id": "aurora",
+        "label": "Nova Aurora",
+        "x": 300,
+        "z": -40,
+        "color": 6524841
+      },
+      {
+        "id": "costa",
+        "label": "Costa Verde",
+        "x": -300,
+        "z": 110,
+        "color": 5809039
+      }
+    ],
+    "assets": [
+      "racer",
+      "coupe"
+    ],
+    "models": [
+      {
+        "id": "city-aurora-coupe-0",
+        "asset": "coupe",
+        "drivable": true
+      },
+      {
+        "id": "city-aurora-coupe-1",
+        "asset": "coupe",
+        "drivable": true
+      },
+      {
+        "id": "city-costa-coupe-0",
+        "asset": "coupe",
+        "drivable": true
+      },
+      {
+        "id": "city-costa-coupe-1",
+        "asset": "coupe",
+        "drivable": true
+      }
+    ],
+    "circuits": [
+      {
+        "id": "aurora",
+        "length": 325.79309648084654,
+        "width": 9,
+        "active": false
+      },
+      {
+        "id": "costa",
+        "length": 260.58306462846116,
+        "width": 9,
+        "active": false
+      }
+    ]
+  },
+  "venues": {
+    "ready": true,
+    "active": null,
+    "position": {
+      "x": -18,
+      "y": 0,
+      "z": 39
+    },
+    "records": {},
+    "dance": null,
+    "landmarks": [
+      {
+        "id": "boxing",
+        "attached": true,
+        "visible": true
+      },
+      {
+        "id": "dance",
+        "attached": true,
+        "visible": true
+      },
+      {
+        "id": "pingpong",
+        "attached": true,
+        "visible": true
+      }
+    ]
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 15,
+    "highways": 9,
+    "structures": 46,
+    "zones": 23,
+    "paths": 24,
+    "signs": 16
+  },
+  "runtime": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "houses": 13,
+    "vehicles": 23,
+    "colliders": 129,
+    "hazards": 4,
+    "interactables": 300,
+    "at": 1792714042282
+  }
+}
