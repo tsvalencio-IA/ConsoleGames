@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "label": "tenis-portrait",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": false,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "boxe-landscape",
+      "passed": true,
+      "originalGame": "box_pro",
+      "failedFrameRecovered": false,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    }
+  ]
+}

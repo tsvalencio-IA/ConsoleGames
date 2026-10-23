@@ -1,0 +1,30 @@
+{
+  "label": "failed-navigation",
+  "state": {
+    "build": "705.17.1-gameplay-recovery",
+    "loading": "A atividade ainda não terminou de carregar. TENTAR NOVAMENTE",
+    "active": "pingpong",
+    "frame": {
+      "error": "Failed to read a named property 'href' from 'Location': Blocked a frame with origin \"https://otthi-world-campanha-teste.vercel.app\" from accessing a cross-origin frame."
+    }
+  },
+  "events": [
+    {
+      "type": "frame",
+      "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/"
+    },
+    {
+      "type": "requestfailed",
+      "url": "https://otthi-world-campanha-teste.vercel.app/games/tenis/?otVenue=ab14a5c2-aff1-464b-92d4-cc22c036bc59",
+      "error": "net::ERR_CONNECTION_FAILED"
+    },
+    {
+      "type": "frame",
+      "url": "chrome-error://chromewebdata/"
+    },
+    {
+      "type": "error",
+      "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document."
+    }
+  ]
+}

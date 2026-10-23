@@ -1,0 +1,3 @@
+VENUE MOBILE PASS tenis-portrait
+VENUE MOBILE PASS boxe-landscape
+VENUE MOBILE PASS desktop-failed-frame

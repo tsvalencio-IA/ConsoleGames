@@ -1,5 +1,7 @@
 # Correção de jogabilidade e atualização — 23/10/2026
 
+> A abertura dos ginásios recebeu a correção posterior `705.17.2`, descrita em [Ginásios no celular](correcao-ginasios-mobile-20261023.md).
+
 [Abrir mundo unificado](https://otthi-world-campanha-teste.vercel.app/games/otthi/) · [Abrir console com os sete jogos](https://otthi-world-campanha-teste.vercel.app/arcade/)
 
 Esta revisão corrige a entrada nos ginásios, os comandos de mão e voo e a passagem entre versões instaladas. Inclui os cinco jogos GAME separados, o mundo unificado e a verificação do HQ original da família. Testes automáticos não representam uma nota de jogabilidade: esta entrega não é declarada “10/10”.
