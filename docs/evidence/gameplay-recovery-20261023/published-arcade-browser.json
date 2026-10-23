@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "slug": "kart",
+      "game": "drive",
+      "state": "MODE_SELECT",
+      "online": true,
+      "offline": true,
+      "realSolo": true,
+      "errors": []
+    },
+    {
+      "slug": "boxe",
+      "game": "box_pro",
+      "state": "CHAR_SELECT",
+      "online": true,
+      "offline": true,
+      "realSolo": true,
+      "errors": []
+    },
+    {
+      "slug": "tenis",
+      "game": "tennis",
+      "state": "SERVE",
+      "online": true,
+      "offline": true,
+      "realSolo": true,
+      "errors": []
+    },
+    {
+      "slug": "ar",
+      "game": "ar_truck_sim",
+      "state": "PLAYING",
+      "online": true,
+      "offline": true,
+      "realSolo": true,
+      "errors": []
+    },
+    {
+      "slug": "voo",
+      "game": "usarmy_flight_sim",
+      "state": "HANGAR",
+      "online": true,
+      "offline": true,
+      "realSolo": true,
+      "errors": []
+    }
+  ]
+}

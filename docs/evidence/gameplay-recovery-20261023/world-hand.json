@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "realModel": true,
+  "frontCamera": true,
+  "previewHidden": true,
+  "actualAutoWalk": true,
+  "rightTurnsRight": true,
+  "lostHandStops": true,
+  "manualFallback": true,
+  "streamsStopped": true,
+  "errors": [],
+  "bad": []
+}

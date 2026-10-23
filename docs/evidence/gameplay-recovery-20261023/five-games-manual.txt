@@ -1,0 +1,6 @@
+Kart real three-lap race: {"ticks":1638,"maxOffset":0.4236052786702425,"finished":true}
+{
+  "completed": 7,
+  "expected": 7,
+  "failures": []
+}

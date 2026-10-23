@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "sameScene": true,
+  "simultaneousTouches": 3,
+  "before": {
+    "x": -18,
+    "y": 0,
+    "z": 39
+  },
+  "after": {
+    "x": -18,
+    "y": 0,
+    "z": 39
+  },
+  "familyPreserved": true,
+  "groundMissionCompleted": true,
+  "helicopterMissionCompleted": true,
+  "errors": []
+}

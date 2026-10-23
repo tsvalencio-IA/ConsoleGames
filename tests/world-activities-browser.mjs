@@ -2,7 +2,7 @@ import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mj
 /* Local saved-position fixtures select a scenario. Play and scoring use real UI inputs. */
 import {chromium} from 'playwright';import assert from 'node:assert/strict';import fs from 'node:fs';import {touchSession} from './helpers/touch-session.mjs';
 const BASE=process.env.WORLD_QA_URL||'http://127.0.0.1:4173/games/otthi/';const ORIGIN=new URL(BASE).origin;fs.mkdirSync('test-results/world-activities',{recursive:true});
-const browser=await chromium.launch({...browserNetwork(BASE),headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});const errors=[];
+const browser=await chromium.launch({...browserNetwork(BASE),headless:true,args:[...(browserNetwork(BASE).proxy?['--ignore-certificate-errors']:[]),'--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});const errors=[];
 async function scenario(position,portrait=false){
  const c=await browser.newContext({...browserContextNetwork(BASE),viewport:portrait?{width:390,height:844}:{width:844,height:390},isMobile:true,hasTouch:true});
  await c.addInitScript(p=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,position:{...p,y:0,yaw:0},profile:{name:'QA Atividades',nameConfirmed:true,playerId:'world-activities'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},multiplayer:{room:'bairro-central'},familyAdventure:{party:{controller:'thiago',members:['thiago','luna','liz']},deliveries:{luna:0,liz:0},flags:{}}})),position);

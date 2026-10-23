@@ -1,5 +1,7 @@
 # Mundo unificado — entrega experimental de 23/10/2026
 
+> Histórico da versão `705.17.0`. A revisão atual de comandos, ginásios e atualização está em [Correções de jogabilidade](correcoes-jogabilidade-20261023.md).
+
 [**Abrir a versão publicada**](https://otthi-world-campanha-teste.vercel.app/games/otthi/)
 
 Esta entrega amplia o mundo original e conecta atividades físicas ao mesmo personagem, mapa, veículos e progresso. Não substitui o projeto por uma demonstração separada. Os jogos independentes não foram editados nesta revisão.

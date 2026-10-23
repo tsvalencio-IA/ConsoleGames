@@ -1,0 +1,3 @@
+OT HELICOPTER MISSION PASS: native collective/pedals, 6 actual kills and saved win. {"steps":6,"hp":85.50000000000033,"elapsed":23.933333333333255}
+OT GAMES MISSION PASS: actual original map, two-touch aim/fire, 6 real kills, 2 sectors and saved win. {"steps":6,"hp":93,"elapsed":20.466666666666786}
+OT GAMES PASS: original scene, 4 modes, peaceful flight, 3-touch helicopter, preserved walking position/family.

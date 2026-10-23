@@ -1,0 +1,122 @@
+{
+  "passed": true,
+  "sourceCommit": "708f267a92c2290ed5fe8a835a85c633607a7af3",
+  "assets": [
+    {
+      "path": "games/ar/index.html",
+      "sha256": "03cc97c4c9dfde9518399bd92f4156a6c9ff0a8c4dacd12bad807c311b4e03a5"
+    },
+    {
+      "path": "games/ar/js/core.js",
+      "sha256": "07a62da56a08eecea0c5eb2b696d14e9e8929f58e53311bb325924d8d3b6ee8e"
+    },
+    {
+      "path": "games/ar/local-practice.js",
+      "sha256": "1c88ac99f9383c3bd8bdf70baf3949538266d407e4707448ba7736156412c585"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "sha256": "2ec6cc4faaf61559d09e8c7c2b06bc2e1dc06b377e487dca402849b1b566dd08"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "sha256": "3c17013e674f68849bda935f748759cde73f46e851e128437da0dd3a7cd3fe19"
+    },
+    {
+      "path": "games/boxe/index.html",
+      "sha256": "0994f278e140620a6e9f0fd68a0b915b8fd622a895c9199caf46a2fe3fda9cd5"
+    },
+    {
+      "path": "games/boxe/js/core.js",
+      "sha256": "1fc82018ee21a4ded25c4bda7c265541742f4ba710b283c84fc79ac543ae0e2c"
+    },
+    {
+      "path": "games/boxe/local-practice.js",
+      "sha256": "1c88ac99f9383c3bd8bdf70baf3949538266d407e4707448ba7736156412c585"
+    },
+    {
+      "path": "games/boxe/sw.js",
+      "sha256": "dc77858fcfe424bee5b95a8d2bb4a2f566b28d65a06c4121ad3fea5af0aa9fa7"
+    },
+    {
+      "path": "games/boxe/control-modes.js",
+      "sha256": "73ed4b4f441a79a00e44593590664114d58c3ca9d1ef39ff558d64ee756dbc36"
+    },
+    {
+      "path": "games/kart/index.html",
+      "sha256": "314deee67f4b7ef4ab8f9d77dd19479bf535af4207abd316496738520cff5614"
+    },
+    {
+      "path": "games/kart/js/core.js",
+      "sha256": "cf99e5c6e83819ad9aee1bb834cc3a35525dd85964a2bfdb35c738957fb7a85a"
+    },
+    {
+      "path": "games/kart/local-practice.js",
+      "sha256": "1c88ac99f9383c3bd8bdf70baf3949538266d407e4707448ba7736156412c585"
+    },
+    {
+      "path": "games/kart/sw.js",
+      "sha256": "70758e9c7dbdec26cf099b08465fae32d6d270c75a623d1e3ad52b3a1388145c"
+    },
+    {
+      "path": "games/kart/control-modes.js",
+      "sha256": "6fbf0b82809c34503c89407619a4c2611c95c318c242923eda24c808646b8ae8"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "sha256": "bf81b2310d854997d636104953802154456343681944a4423a76cfbec90460b5"
+    },
+    {
+      "path": "games/tenis/js/core.js",
+      "sha256": "1fc82018ee21a4ded25c4bda7c265541742f4ba710b283c84fc79ac543ae0e2c"
+    },
+    {
+      "path": "games/tenis/local-practice.js",
+      "sha256": "1c88ac99f9383c3bd8bdf70baf3949538266d407e4707448ba7736156412c585"
+    },
+    {
+      "path": "games/tenis/sw.js",
+      "sha256": "d3bc13c0a8c95a4bef8116100ebe8d780cc37ec14817940d6598706ce174a160"
+    },
+    {
+      "path": "games/tenis/control-modes.js",
+      "sha256": "73ed4b4f441a79a00e44593590664114d58c3ca9d1ef39ff558d64ee756dbc36"
+    },
+    {
+      "path": "games/voo/index.html",
+      "sha256": "2376e0025674c72335d6fa8bc9e58672bc3c7d2a2f6ec685f9282e34a35c3398"
+    },
+    {
+      "path": "games/voo/js/core.js",
+      "sha256": "d6af7e98840a83ac567e5b1e88bb46e9e4e17c6bf7d3b266fb726d8c4033716c"
+    },
+    {
+      "path": "games/voo/local-practice.js",
+      "sha256": "1c88ac99f9383c3bd8bdf70baf3949538266d407e4707448ba7736156412c585"
+    },
+    {
+      "path": "games/voo/sw.js",
+      "sha256": "c7a6ab3ca241f02fe1837a7b2611eab9247e855319aebc920e1c1f58d1d28c4b"
+    },
+    {
+      "path": "games/voo/control-modes.js",
+      "sha256": "f53d49ebebfe0be3332c79ca17cc44864f6816df94d161403a638004cf0166ae"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "sha256": "858a430112f98edd31b0d4c1c284260a967cbfc1471da6909279e3f3cb3f4d54"
+    },
+    {
+      "path": "games/ar/world-renderer.js",
+      "sha256": "0f33e431c7f84ccf6c1ba7733411d26513fe43af380548cab660b7fe0fb6f2ba"
+    },
+    {
+      "path": "games/voo/js/game_flight.js",
+      "sha256": "8aacc1ed5a8dcdf09e61d5de38a361bb8f062a74df264887ed1a91c997adf21e"
+    },
+    {
+      "path": "games/voo/world-renderer.js",
+      "sha256": "0f33e431c7f84ccf6c1ba7733411d26513fe43af380548cab660b7fe0fb6f2ba"
+    }
+  ]
+}

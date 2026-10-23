@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "simultaneousTouches": 3,
+  "fetch": {
+    "luna": 1,
+    "liz": 1
+  },
+  "preservedAfterReload": true,
+  "errors": []
+}

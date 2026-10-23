@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "realModelHands": 2,
+  "labels": [
+    "Left",
+    "Right"
+  ],
+  "frontCamera": true,
+  "previewHiddenAfterCalibration": true,
+  "automaticWalking": true,
+  "trackingLossStopsWalking": true,
+  "actualAlignedHits": true,
+  "lossStopsFire": true,
+  "manualFallback": true,
+  "errors": []
+}

@@ -1,0 +1,1 @@
+WAR FRONT HAND PASS: real CPU/WASM detector, calibrated pointing, aligned auto-fire, lost-hand stop, manual fallback.
