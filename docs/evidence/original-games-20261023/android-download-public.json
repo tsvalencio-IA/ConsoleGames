@@ -1,0 +1,118 @@
+{
+  "verifiedAt": "2026-10-23T19:23:26.766301+00:00",
+  "sourceSha": "b222f868e5c12c5ff0d9e049e892665ad3053b6c",
+  "deployment": "dpl_FjXiZoJ6HxLPkujno638Q4ZwBKCG",
+  "url": "https://otthi-world-campanha-teste.vercel.app/arcade/instalar/",
+  "workflow": {
+    "runId": 40010740911,
+    "jobId": 120610155044,
+    "conclusion": "success"
+  },
+  "browser": {
+    "passed": true,
+    "base": "https://otthi-world-campanha-teste.vercel.app/arcade/instalar/",
+    "consoleEntry": true,
+    "results": [
+      {
+        "case": "android-portrait",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "android-landscape",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "desktop",
+        "gesture": "click",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "without-javascript",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "current-worker",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      }
+    ],
+    "limits": [
+      "Mobile Chromium emulation; the user phone and its in-app browser were not directly inspected."
+    ]
+  },
+  "http": {
+    "passed": true,
+    "results": [
+      {
+        "path": "/arcade/instalar/",
+        "status": 200,
+        "type": "text/html; charset=utf-8",
+        "disposition": "inline; filename=\"instalar\"",
+        "bytes": 3394,
+        "sha256": "4f266d483883a2aa1adc538524ad2458e9317f363daaefc20dbcf50397614160"
+      },
+      {
+        "path": "/arcade/instalar/install.js",
+        "status": 200,
+        "type": "application/javascript; charset=utf-8",
+        "disposition": "inline; filename=\"install.js\"",
+        "bytes": 828,
+        "sha256": "531778ee912f5480a548dd09afe84405d3dfaddef88920c84fbe03368baae42e"
+      },
+      {
+        "path": "/arcade/sw.js",
+        "status": 200,
+        "type": "application/javascript; charset=utf-8",
+        "disposition": "inline; filename=\"sw.js\"",
+        "bytes": 1839,
+        "sha256": "e08e05afe979e2d5d459d5bb83dd343ecc79dab44aee125538874289a7f76aaf"
+      },
+      {
+        "path": "/android/thIAguinho-ARCADE-OT.apk",
+        "status": 200,
+        "type": "application/vnd.android.package-archive",
+        "disposition": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\"",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+      },
+      {
+        "path": "/arcade/downloads/thIAguinho-ARCADE-OT.apk",
+        "status": 200,
+        "type": "application/vnd.android.package-archive",
+        "disposition": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\"",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+      },
+      {
+        "path": "/games/otthi/app.js",
+        "status": 200,
+        "type": "application/javascript; charset=utf-8",
+        "disposition": "inline; filename=\"app.js\"",
+        "bytes": 1671971,
+        "sha256": "e6f9b527ad5b4b600cb01a00591b10fa9c2b844fcab79c876146f3160de407e3"
+      },
+      {
+        "path": "/games/otthi/release-manifest.json",
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "disposition": "inline; filename=\"release-manifest.json\"",
+        "bytes": 3247,
+        "sha256": "ac779882399e9272ba8787e71fb44e0c05755180846e0be75d026d2938e32757"
+      }
+    ]
+  },
+  "apkUnchanged": true
+}
