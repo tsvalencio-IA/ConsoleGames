@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.17.1-gameplay-recovery",
+  "build": "705.17.2-venue-mobile",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a7d089d0c4852ef9389741f209b8a2bb6625f30334480f76092c17ed00d7c9c4"
+      "sha256Body": "3889a38a02a51f15ce1306d82789370393ea3a46e60cfed28e429892b4f81502"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "600a70ef3dae9461b5993fa62900a80737bc0cde0e553275e16655bf8f6582b4"
+      "sha256Body": "ccc8cb2b5fddf336e17858db37b9894c1a417bf588f489323c13046508cf8c1c"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",

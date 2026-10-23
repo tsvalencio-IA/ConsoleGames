@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.17.1-gameplay-recovery",
+  "build": "705.17.2-venue-mobile",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -271,7 +271,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70617,
+  "assetVersion": 70618,
   "revisionLabel": "Revisão de jogabilidade, atividades locais e atualização automática",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

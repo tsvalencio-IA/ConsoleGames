@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.17.1-gameplay-recovery';
+  const OTTHI_GAME_WEB_BUILD = '705.17.2-venue-mobile';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -9936,6 +9936,15 @@
     s.cleanup?.();try{s.frame?.contentWindow?.System?.stopGame();s.frame?.contentWindow?.Sfx?.ctx?.close?.();}catch{}
     s.ui.remove();worldVenues.session=null;paused=s.wasPaused;clearMovementInputs();document.body.classList.remove('world-venue-active');updateContext(true);
   }
+  async function venueLaunchPage(s){
+    if(worldVenues.session!==s||s.leaving)return;s.leaving=true;
+    const status=s.ui.querySelector('[data-venue-loading]');if(status)status.textContent='Abrindo '+s.venue.activity+'…';
+    savePlayerPosition(true);await saveState(true);
+    if(worldVenues.session!==s)return;
+    const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.id==='pingpong'?'tennis':'box_pro',label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
+    if(!trip){s.leaving=false;if(status)status.textContent='Não foi possível guardar o retorno. Volte ao mundo e tente novamente.';return;}
+    s.cleanup?.();const url=new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
+  }
   function venueOpen(id){
     const v=WORLD_ACTIVITY_VENUES[id];
     if(!v||!running||paused||worldVenues.session||otGames.active||currentHouse||player.vehicle||player.boating||player.transit.mode||activeRace||buildMode||SPORTS_V705.active||window.OTTHI_COOP?.active?.())return false;
@@ -9945,7 +9954,10 @@
     ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main><p data-venue-loading role="status">Preparando '+v.activity+'…</p></main>';
     const s={id,venue:v,ui,wasPaused:paused,entry:{x:player.x,y:player.y,z:player.z},token:crypto.randomUUID?.()||String(Math.random()),recorded:false};worldVenues.session=s;paused=true;document.body.append(ui);document.body.classList.add('world-venue-active');ui.querySelector('[data-venue-close]').onclick=venueClose;ui.querySelector('button').focus();
     if(id==='dance'){venueDanceMenu(s);return true;}
-    const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('Integração do resultado indisponível:',e.message);}});ui.querySelector('main').append(frame);
+    // On phones the original activity owns the page. The city is saved before
+    // leaving; it is not kept active behind a second browser document.
+    if((matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}
+    const frame=s.frame=document.createElement('iframe');frame.title=v.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.src=new URL('../'+v.slug+'/?otVenue='+encodeURIComponent(s.token),OTTHI_GAME_LIVE_BASE).href;frame.addEventListener('load',()=>{try{if(!frame.contentDocument?.documentElement){venueLaunchPage(s);return;}const script=frame.contentDocument.createElement('script');script.src=new URL('assets/js/world-venue-bridge.js',OTTHI_GAME_LIVE_BASE).href;frame.contentDocument.head.append(script);}catch(e){console.warn('A atividade não abriu no quadro:',e.message);venueLaunchPage(s);}});ui.querySelector('main').append(frame);
     const message=e=>{
       const d=e.data;if(worldVenues.session!==s||e.origin!==location.origin||e.source!==frame.contentWindow||d?.token!==s.token)return;
       if(d.type==='ot-venue-ready'){frame.contentWindow.postMessage({type:'ot-venue-start',token:s.token,name:state.profile.name},location.origin);return;}
@@ -9954,7 +9966,7 @@
       if(d.type!=='ot-venue-result'||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
       s.recorded=true;const records=venueRecords(),record=records[id]||{played:0,wins:0,best:0};record.played++;if(d.won)record.wins++;record.best=Math.max(record.best,Math.max(0,Math.min(1000000,Math.floor(d.score))));records[id]=record;safeLocalSet(venueRecordKey(),JSON.stringify(records));
     };
-    const watchLoad=()=>{clearTimeout(s.loadTimer);s.loadTimer=setTimeout(()=>{const status=ui.querySelector('[data-venue-loading]');if(!status||worldVenues.session!==s)return;status.textContent='A atividade ainda não terminou de carregar. ';const retry=document.createElement('button');retry.textContent='TENTAR NOVAMENTE';retry.onclick=()=>{status.textContent='Preparando '+v.activity+'…';const url=new URL(frame.src);url.searchParams.set('retry',Date.now());frame.src=url.href;watchLoad();};status.append(retry);},20000);};watchLoad();
+    const watchLoad=()=>{clearTimeout(s.loadTimer);s.loadTimer=setTimeout(()=>{if(ui.querySelector('[data-venue-loading]')&&worldVenues.session===s)venueLaunchPage(s);},15000);};watchLoad();
     window.addEventListener('message',message);s.cleanup=()=>{clearTimeout(s.loadTimer);window.removeEventListener('message',message);};return true;
   }
   function venueDanceMenu(s){
@@ -9994,6 +10006,15 @@
     s.danceTime=time;
   }
   window.OTTHI_VENUES={enter:venueOpen,leave:venueClose,locations:()=>venueMapLocations(),diagnostics:()=>({ready:worldVenues.ready,active:worldVenues.session?.id||null,position:{x:player.x,y:player.y,z:player.z},records:venueRecords(),dance:worldVenues.session?.chart?{...worldVenues.session.chart.snapshot(),time:worldVenues.session.danceTime()}:worldVenues.session?.lastDance||null,landmarks:worldVenues.landmarks.map(x=>({id:x.venue.id,attached:x.root.parent===worldGroup,visible:x.root.visible}))})};
+  function venueResumeTrip(){
+    const trip=window.WorldVenueTrip?.current();if(!trip||trip.playerId!==(state.profile.playerId||'local'))return;
+    if(!window.WorldVenueTrip.applyResult(trip.token))return;
+    if(worldVenues.session)venueClose();
+    window.WorldVenueTrip.finish(trip.token);const clean=new URL(location.href);clean.searchParams.delete('otVenueReturn');history.replaceState(null,'',clean.href);
+    if(!running)startGame(false);else{paused=false;clearMovementInputs();updateContext(true);}
+  }
+  window.addEventListener('pageshow',()=>dbReady.then(venueResumeTrip));
+  dbReady.then(venueResumeTrip);
 
   // ===== MODULE: 46-world-cities-and-racers.js =====
   const worldExpansion={ready:false,groups:[],assets:{},loading:false,cars:[],roads:[],lastLod:0};

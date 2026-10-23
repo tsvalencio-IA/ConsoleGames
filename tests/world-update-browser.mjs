@@ -5,7 +5,7 @@ import {createServer} from 'node:http';
 import {readFileSync,existsSync,mkdirSync,writeFileSync} from 'node:fs';
 import {resolve,extname} from 'node:path';
 import {execFileSync} from 'node:child_process';
-const root=process.cwd(),prefix='games/otthi/',oldSha='8554d2a9204abc5e8be2244d61a533281155de8f';
+const root=process.cwd(),prefix='games/otthi/',oldSha=process.env.WORLD_OLD_SHA||'8554d2a9204abc5e8be2244d61a533281155de8f';
 const oldFile=p=>execFileSync('git',['show',oldSha+':'+prefix+p],{maxBuffer:90000000});
 const oldManifest=JSON.parse(oldFile('release-manifest.json')),current=JSON.parse(readFileSync(prefix+'release-manifest.json'));
 const oldFiles=new Map([['release-manifest.json',oldFile('release-manifest.json')]]);

@@ -30,6 +30,7 @@ RELEASE_FILES = [
     'assets/world/vehicles/ot-coupe.glb',
     'assets/js/controls/world-hand-controls.js',
     'assets/js/world-venue-bridge.js',
+    'assets/js/world-venue-trip.js',
     'assets/js/ui/shared-modal.js',
     'assets/js/core/performance-guardian.js',
     'assets/js/multiplayer/room-manager.js',

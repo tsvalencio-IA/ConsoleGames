@@ -1,20 +1,20 @@
 {
   "version": 705,
-  "build": "705.17.1-gameplay-recovery",
-  "revision": "6963bbf28d00a0e3",
+  "build": "705.17.2-venue-mobile",
+  "revision": "151cececd6b1e772",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "9c20809aae94842497e65afb280353a71a179142f1257dd178f7e276162be3ce",
+    "index.html": "71d5c66b3cd5e8931a87d3cf737fba46c23ccc4cd00bbd75150bf5e85602c0dd",
     "style.css": "3279a0bca9c568f6cd4ba34a441ddce738426c005304dce4fc018a2d2b741820",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "68c877191cf738f0f2dcf19982d610449c149fafeb01f1093729d1c5ad337b34",
+    "assets/js/core/runtime-config.js": "3775adc9350d3e8ea6a506bea73a9a73b129ad0c92172bd7cf5b3bf31e511eff",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "37c97ff4ee9970c43642c4ef6db7e669b668fb694d16cbf9fc295edef84be8b7",
-    "app.js": "4e027e1c24912dd7b9df72aae131e285cb1c612c1627846b3b77b320c29f2864",
+    "app.js": "f42cd0fb915b9cf2376a2e430be09ad61a0bdecf6f6b6e7cdaf63ce7eb31589b",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -22,6 +22,7 @@
     "assets/world/vehicles/ot-coupe.glb": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862",
     "assets/js/controls/world-hand-controls.js": "b29eda8a6900eaa024a3d196175ae67cad72edb9a30c77ca53dff1eea15d5918",
     "assets/js/world-venue-bridge.js": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c",
+    "assets/js/world-venue-trip.js": "4aceec1802ba19f2eef1aa4f5d208fd53cba4500cf35e952cc1b9df572d1448f",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
     "assets/js/core/performance-guardian.js": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
     "assets/js/multiplayer/room-manager.js": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4",
@@ -29,7 +30,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "705f5b290f3a50ba6e896efcddbe07353250a1ae2cf9c9eed15ebe53755fc5f9",
-    "sw.js": "669d2043b8b42603d4461d7ff8384e07f00feb87a26c7fedcd9f0f16142b91cc"
+    "VERSION.json": "a891b47340680c70a193ca6046d0dc8dac4de70921a0f7a519295d37def1f96a",
+    "sw.js": "a53ef1e54e2288a19ac8e70323724bd1e255157925613d0cf8013491dcb48abb"
   }
 }

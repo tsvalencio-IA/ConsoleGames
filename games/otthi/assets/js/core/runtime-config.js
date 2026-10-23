@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.17.1-gameplay-recovery',
+    build: '705.17.2-venue-mobile',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

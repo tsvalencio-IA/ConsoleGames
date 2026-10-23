@@ -4,7 +4,14 @@
   const id=window.CONSOLE_GAME_ID;
   if(!['drive','box_pro','tennis','ar_truck_sim','usarmy_flight_sim'].includes(id))return;
   const key='thia:solo:v1:'+id,token=new URLSearchParams(location.search).get('otVenue');
-  const venue=parent!==window&&!!token&&token.length<=100;
+  const embeddedVenue=parent!==window&&!!token&&token.length<=100;
+  const trip=parent===window?window.WorldVenueTrip?.current(token,id):null,pageVenue=!!token&&!!trip;
+  const venue=embeddedVenue||pageVenue;
+  function venueMessage(type,data={}){
+    if(embeddedVenue)parent.postMessage({type,token,...data},location.origin);
+    else if(pageVenue&&type==='ot-venue-result')window.WorldVenueTrip.result(token,id,data.score,data.won);
+  }
+  function returnToWorld(){const url=window.WorldVenueTrip?.returnUrl(token)||new URL('../otthi/',location.href).href;location.replace(url);}
   window.ConsoleMotionRuntime={promise:null,load(){
     if(this.promise)return this.promise;
     this.promise=(async()=>{
@@ -42,14 +49,15 @@
         const label=document.createElement('span');label.id='solo-indicator';label.textContent='SOLO · PROGRESSO NESTE APARELHO';
         label.style.cssText='display:block;pointer-events:none;color:#c8ead7;margin:0 0 10px;font:700 11px system-ui;text-align:center';$('#phase-grid').before(label);
       }
-      if(venue)parent.postMessage({type:'ot-venue-playing',token},location.origin);
+      if(venue)venueMessage('ot-venue-playing');
     },
     leave(){
       if(!this.active)return;
+      if(pageVenue){this.save();window.System?.stopGame();returnToWorld();return;}
       this.save();window.System?.stopGame();this.active=false;window.DB=cloudDB;
       if(savedProfile)Object.assign(window.Profile,savedProfile);
       $('#solo-indicator')?.remove();
-      if(venue){parent.postMessage({type:'ot-venue-close',token},location.origin);return;}
+      if(venue){venueMessage('ot-venue-close');return;}
       for(const name of ['phase-screen','menu-screen','game-ui','result-screen'])$('#'+name)?.classList.add('hidden');
       $('#auth-screen')?.classList.remove('hidden');
       window.onload?.();
@@ -61,7 +69,7 @@
     window.System.gameOver=function(score,won=true,coins=0){
       const system=window.System,game=system.activeGame,valid=practice.active&&game?.id===id&&!system.resultLocked&&Number.isFinite(score);
       const result=original.call(system,score,won,coins);
-      if(valid){practice.save();if(venue)parent.postMessage({type:'ot-venue-result',token,score:Math.floor(score),won:!!won},location.origin);}
+      if(valid){practice.save();if(venue)venueMessage('ot-venue-result',{score:Math.floor(score),won:!!won});}
       return result;
     };
     // Tennis keeps its own final scoreboard instead of calling System.gameOver.
@@ -73,7 +81,7 @@
         const valid=practice.active&&!this.resultRecorded&&!this.isOnline&&window.System.activeGame?.logic===this&&
           Number.isFinite(this.score?.p1)&&Number.isFinite(this.score?.p2)&&Math.max(this.score.p1,this.score.p2)>=11&&Math.abs(this.score.p1-this.score.p2)>=2;
         const result=record.apply(this,args);
-        if(valid&&this.resultRecorded){practice.save();if(venue)parent.postMessage({type:'ot-venue-result',token,score:Math.floor(this.score.p1*100),won:this.score.p1>this.score.p2},location.origin);}
+        if(valid&&this.resultRecorded){practice.save();if(venue)venueMessage('ot-venue-result',{score:Math.floor(this.score.p1*100),won:this.score.p1>this.score.p2});}
         return result;
       };
     }
@@ -89,12 +97,25 @@
     if(message)entry.querySelector('[data-solo-text]').textContent=message;
   }
   window.addEventListener('console:backend-ready',()=>{cloudDB=window.DB;if(practice.active)window.DB=null;});
-  if(venue){
+  if(pageVenue){
+    const surface=document.createElement('main');surface.id='venue-game-surface';surface.style.cssText='position:fixed;inset:48px 0 0;transform:translateZ(0);overflow:hidden';
+    for(const node of [...document.body.children])if(!['SCRIPT','STYLE','LINK'].includes(node.tagName))surface.append(node);
+    document.body.prepend(surface);
+    const header=document.createElement('header');header.id='venue-trip-header';header.style.cssText='position:fixed;inset:0 0 auto;min-height:48px;box-sizing:border-box;z-index:20000;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 10px;background:#213e51;color:#f1f6ee;font:700 12px system-ui';
+    const title=document.createElement('span');title.textContent=trip.label;
+    const back=document.createElement('button');back.type='button';back.dataset.venueReturn='';back.textContent='VOLTAR AO MUNDO';back.style.cssText='min-height:40px;border:1px solid #8dc6bc;border-radius:9px;padding:6px 10px;background:#305e6a;color:#fff;font:800 11px system-ui';
+    back.onclick=()=>{practice.save();window.System?.stopGame();returnToWorld();};header.append(title,back);document.body.append(header);
+    document.querySelectorAll('.arcade-return').forEach(el=>el.hidden=true);
+    const resize=window.System.resize;window.System.resize=()=>{resize();const r=surface.getBoundingClientRect();if(window.System.canvas){window.System.canvas.width=Math.round(r.width);window.System.canvas.height=Math.round(r.height);}};
+    practice.enter(trip.name).catch(error=>show('Não foi possível preparar a atividade. Volte ao mundo e tente novamente.'));
+    window.addEventListener('pagehide',()=>{practice.save();window.System?.stopGame();});
+    window.addEventListener('pageshow',event=>{if(event.persisted){if(window.WorldVenueTrip?.current(token,id))location.reload();else returnToWorld();}});
+  }else if(embeddedVenue){
     window.addEventListener('message',e=>{
       if(e.source!==parent||e.origin!==location.origin||e.data?.token!==token)return;
       if(e.data.type==='ot-venue-start')practice.enter(e.data.name);
     });
-    parent.postMessage({type:'ot-venue-ready',token},location.origin);
+    venueMessage('ot-venue-ready');
   }else{
     show();
     // A real signed-in account keeps its original permissions and cloud progress.

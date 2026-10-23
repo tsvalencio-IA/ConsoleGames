@@ -3,8 +3,8 @@
 // Release 2026-10-22 war3: refresh touch look and ADS in the game shell while retaining cached local recognition models.
 "use strict";
 const PREFIX="thia-arcade-voo-";
-const CACHE=PREFIX+"pro-control-v17";
-const FILES=["./local-practice.js?v=20261023-1","./","./index.html","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js",
+const CACHE=PREFIX+"pro-control-v18";
+const FILES=["./local-practice.js?v=20261023-2","./","./index.html","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js",
 "./js/core.js","./js/game_flight.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",
