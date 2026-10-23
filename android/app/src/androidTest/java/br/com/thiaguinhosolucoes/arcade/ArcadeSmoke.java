@@ -23,6 +23,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class ArcadeSmoke extends Instrumentation {
     private volatile MainActivity currentActivity;
     private String lastTouch="none";
+    private String checkpoint="launch";
+    private MotionEvent finger(long downTime,int action,float x,float y) {
+        MotionEvent.PointerProperties pointer=new MotionEvent.PointerProperties();
+        pointer.id=0;pointer.toolType=MotionEvent.TOOL_TYPE_FINGER;
+        MotionEvent.PointerCoords coords=new MotionEvent.PointerCoords();
+        coords.x=x;coords.y=y;coords.pressure=action==MotionEvent.ACTION_UP?0:1;coords.size=.1f;
+        return MotionEvent.obtain(downTime,SystemClock.uptimeMillis(),action,1,
+            new MotionEvent.PointerProperties[]{pointer},new MotionEvent.PointerCoords[]{coords},
+            0,0,1,1,0,0,InputDevice.SOURCE_TOUCHSCREEN,0);
+    }
+    private void report(String message) {Bundle status=new Bundle();status.putString("stream",message+"\n");sendStatus(0,status);}
     @Override public void callActivityOnResume(Activity activity) {
         super.callActivityOnResume(activity);
         if(activity instanceof MainActivity)currentActivity=(MainActivity)activity;
@@ -65,12 +76,11 @@ public final class ArcadeSmoke extends Instrumentation {
         });
         waitForIdleSync();Thread.sleep(500);
         long time=SystemClock.uptimeMillis();
-        MotionEvent down=MotionEvent.obtain(time,time,MotionEvent.ACTION_DOWN,point[0],point[1],0);
-        down.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+        MotionEvent down=finger(time,MotionEvent.ACTION_DOWN,point[0],point[1]);
         if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch was rejected");
         down.recycle();Thread.sleep(80);
-        MotionEvent up=MotionEvent.obtain(time,SystemClock.uptimeMillis(),MotionEvent.ACTION_UP,point[0],point[1],0);
-        up.setSource(InputDevice.SOURCE_TOUCHSCREEN);getUiAutomation().injectInputEvent(up,true);up.recycle();
+        MotionEvent up=finger(time,MotionEvent.ACTION_UP,point[0],point[1]);
+        getUiAutomation().injectInputEvent(up,true);up.recycle();
     }
     private void screenshot(String name) throws Exception {
         Bitmap image=getUiAutomation().takeScreenshot();
@@ -79,6 +89,7 @@ public final class ArcadeSmoke extends Instrumentation {
         image.recycle();
     }
     private void tap(MainActivity activity,String selector) throws Exception {
+        checkpoint="tap "+selector;
         String escaped=org.json.JSONObject.quote(selector);
         waitFor(activity,"!!document.querySelector("+escaped+")");
         String json=evaluate(activity,"(()=>{const b=document.querySelector("+escaped+");b.scrollIntoView({block:'center',behavior:'instant'});const r=b.getBoundingClientRect();return [innerWidth,r.left+r.width/2,r.top+r.height/2,visualViewport?.offsetLeft||0,visualViewport?.offsetTop||0,devicePixelRatio,visualViewport?.scale||1];})()");
@@ -93,9 +104,9 @@ public final class ArcadeSmoke extends Instrumentation {
         JSONArray css=new JSONArray(json);float[] point=new float[2];
         runOnMainSync(() -> {int[] origin=new int[2];currentActivity.webView.getLocationOnScreen(origin);float scale=currentActivity.webView.getScale();point[0]=origin[0]+(float)(css.optDouble(1)-css.optDouble(3))*scale;point[1]=origin[1]+(float)(css.optDouble(2)-css.optDouble(4))*scale;lastTouch=selector+" css="+css+" scale="+scale+" native="+point[0]+","+point[1];});
         long time=SystemClock.uptimeMillis();
-        MotionEvent down=MotionEvent.obtain(time,time,MotionEvent.ACTION_DOWN,point[0],point[1],0);down.setSource(InputDevice.SOURCE_TOUCHSCREEN);if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch down rejected: "+lastTouch);down.recycle();
+        MotionEvent down=finger(time,MotionEvent.ACTION_DOWN,point[0],point[1]);if(!getUiAutomation().injectInputEvent(down,true))throw new AssertionError("Native touch down rejected: "+lastTouch);down.recycle();
         Thread.sleep(180);
-        MotionEvent up=MotionEvent.obtain(time,SystemClock.uptimeMillis(),MotionEvent.ACTION_UP,point[0],point[1],0);up.setSource(InputDevice.SOURCE_TOUCHSCREEN);if(!getUiAutomation().injectInputEvent(up,true))throw new AssertionError("Native touch up rejected: "+lastTouch);up.recycle();
+        MotionEvent up=finger(time,MotionEvent.ACTION_UP,point[0],point[1]);if(!getUiAutomation().injectInputEvent(up,true))throw new AssertionError("Native touch up rejected: "+lastTouch);up.recycle();
         Thread.sleep(200);Bundle debug=new Bundle();debug.putString("stream","Android native touch "+lastTouch+": "+evaluate(activity,"JSON.stringify(window.__androidTouches||[])")+"\n");sendStatus(0,debug);
     }
     @Override public void onStart() {
@@ -122,20 +133,23 @@ public final class ArcadeSmoke extends Instrumentation {
                 waitFor(activity,"!!document.querySelector('[data-solo-start]')");tap(activity,"[data-solo-start]");
                 waitFor(activity,"!document.getElementById('phase-screen').classList.contains('hidden')");
                 tap(activity,"#phase-grid .mission-card:not(.locked)");tap(activity,"[data-mode='controls']");
-                waitFor(activity,"window.System?.activeGame?.id==='"+game[1]+"'");
-                waitFor(activity,"window.GameAudio?.diagnostics().state==='running'");
-                waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
+                checkpoint="start "+game[0];
+                waitFor(activity,"window.System?.activeGame?.id==='"+game[1]+"' && !document.getElementById('game-ui').classList.contains('hidden')");
+                report("Android started "+game[0]+" "+evaluate(activity,"JSON.stringify({state:window.System.activeGame?.logic.state,audio:window.GameAudio?.diagnostics(),width:innerWidth,scroll:document.documentElement.scrollWidth})"));
                 if("ar".equals(game[0])){
-                    String shots=evaluate(activity,"window.System.activeGame.logic.stats.shots");
+                    // Fire before slow emulator inspection lets an unattended
+                    // mission finish. Do not alter enemies, damage or timing.
                     tap(activity,"[data-control='fire']");
-                    waitFor(activity,"window.System.activeGame.logic.stats.shots>"+shots);
+                    waitFor(activity,"window.System.activeGame?.logic.stats.shots>0");
                 }
+                checkpoint="audio/layout "+game[0];
+                waitFor(activity,"window.GameAudio?.diagnostics().state==='running' && document.documentElement.scrollWidth<=innerWidth+2");
                 screenshot("android-native-"+game[0]+".png");
                 tap(activity,"#arcade-pause");tap(activity,"#arcade-pause-modal [data-action='exit']");
                 waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
             }
             result.putString("stream","Android: installed, seven games, original five engines entered with native touch, running audio contexts, WAR firing, console return, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
             finish(-1,result);
-        } catch(Throwable error) {try{screenshot("android-failure.png");}catch(Exception ignored){}result.putString("stream",error.toString()+"\n");finish(0,result);}
+        } catch(Throwable error) {try{screenshot("android-failure.png");report("Android failure at "+checkpoint+" "+evaluate(currentActivity,"JSON.stringify({url:location.href,state:window.System?.activeGame?.logic.state,audio:window.GameAudio?.diagnostics(),lastEvents:window.__androidTouches})"));}catch(Exception ignored){}result.putString("stream",checkpoint+": "+android.util.Log.getStackTraceString(error)+"\n");finish(0,result);}
     }
 }
