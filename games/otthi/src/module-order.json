@@ -381,6 +381,13 @@
       "sha256Body": "e3e4086c7ce23733338ab1eb1022462dd30720f173f41d3864d4376eede6edf0"
     },
     {
+      "file": "assets/js/vehicles/brazilian-details.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Carrocerias brasileiras e picapes de cabine dupla",
+      "sha256Body": ""
+    },
+    {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,

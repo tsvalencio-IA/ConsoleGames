@@ -2,18 +2,19 @@
  * here; no third-party mesh or photograph is embedded. Forward is +Z. */
 // @otthi-module-body
 (()=>{'use strict';
-const catalog=Object.freeze({fusca:{label:'Fusca',color:0x2788d2},gol:{label:'Gol quadrado',color:0xc82e32},uno:{label:'Uno clássico',color:0xe8e4d6},kombi:{label:'Kombi clássica',color:0x40a7ac}}),caches=new WeakMap();
+const details=(typeof window!=='undefined'?window:globalThis).OTBrazilVehicleBodies;
+const catalog=Object.freeze({fusca:{label:'Fusca',color:0x2788d2},gol:{label:'Gol quadrado',color:0xc82e32},uno:{label:'Uno clássico',color:0xe8e4d6},kombi:{label:'Kombi clássica',color:0x40a7ac},...details?.catalog}),caches=new WeakMap(),definitions={};
 function build(T,key){
  const root=new T.Group();root.name='BR_'+key.toUpperCase();root.userData.model=key;root.userData.label=catalog[key].label;
  const buckets=new Map(),white=0xffffff,chrome=0xc8d4d9,dark=0x19242b,rubber=0x182027,glass=0x294653,cream=0xe5dfcd;
- const materials={paint:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.29,side:T.DoubleSide}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.36,roughness:.38}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.63,depthWrite:false,metalness:.13,roughness:.12,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.85,side:T.DoubleSide})};
+ const materials={paint:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.29,side:T.DoubleSide}),chrome:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.78,roughness:.20}),lens:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.16,roughness:.17}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.36,roughness:.38}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.63,depthWrite:false,metalness:.13,roughness:.12,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.85,side:T.DoubleSide})};
  function add(geometry,color,x=0,y=0,z=0,sx=1,sy=1,sz=1,kind='fixed',parent=null){const m=new T.Mesh(geometry,new T.MeshBasicMaterial({color}));m.position.set(x,y,z);m.scale.set(sx,sy,sz);if(parent)parent.add(m);else{if(!buckets.has(kind))buckets.set(kind,[]);buckets.get(kind).push(m);}return m;}
  const box=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.BoxGeometry(1,1,1),c,x,y,z,w,h,d,k,p);
  const ell=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.SphereGeometry(1,20,12),c,x,y,z,w,h,d,k,p);
  function quad(points,color,kind='fixed'){const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute([0,1,2,0,2,3].flatMap(i=>points[i]),3));g.computeVertexNormals();return add(g,color,0,0,0,1,1,1,kind);}
  function tube(points,r,color,kind='fixed'){return add(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),Math.max(8,points.length*4),r,6,false),color,0,0,0,1,1,1,kind);}
  function ring(x,y,z,r,c,tilt=0){const m=add(new T.TorusGeometry(r,.016,8,24),c,x,y,z);m.rotation.x=tilt;return m;}
- function wheel(i,x,z,r=.285){const g=new T.Group();g.name='wheel-'+i;g.rotation.order='YXZ';g.position.set(x,r+.018,z);root.add(g);const tire=add(new T.CylinderGeometry(r,r,.19,24),rubber,0,0,0,1,1,1,'fixed',g);tire.rotation.z=Math.PI/2;
+ function wheel(i,x,z,r=.285){const g=new T.Group();g.name='wheel-'+i;g.rotation.order='YXZ';g.position.set(x,r+.018,z);g.userData.radius=r;root.add(g);const tire=add(new T.CylinderGeometry(r,r,.19,24),rubber,0,0,0,1,1,1,'fixed',g);tire.rotation.z=Math.PI/2;
   const rim=add(new T.CylinderGeometry(r*.72,r*.72,.198,24),key==='fusca'||key==='kombi'?cream:0xadb8bb,0,0,0,1,1,1,'fixed',g);rim.rotation.z=Math.PI/2;
   const cap=ell(chrome,Math.sign(x)*.11,0,0,.035,r*.51,r*.51,'fixed',g);
   for(let n=0;n<5;n++){const a=n*Math.PI*2/5;ell(0x34424a,Math.sign(x)*.103,Math.sin(a)*r*.56,Math.cos(a)*r*.56,.007,.025,.025,'fixed',g);}return g;
@@ -52,6 +53,8 @@ function build(T,key){
   for(const side of[-1,1]){quad([[side*.025,.99,1.565],[side*.62,.99,1.51],[side*.60,1.38,1.385],[side*.025,1.38,1.42]],glass,'glass');for(let i=0;i<3;i++)quad([[side*.704,.96,.72-i*.73],[side*.704,.96,.15-i*.73],[side*.704,1.36,.15-i*.73],[side*.704,1.36,.72-i*.73]],glass,'glass');ell(chrome,side*.51,.64,1.58,.13,.13,.045);ell(0xefebda,side*.51,.64,1.62,.108,.108,.018);box(0xd79c41,side*.56,.91,1.575,.13,.045,.035);box(0xbd3b3e,side*.58,.62,-1.58,.11,.28,.035);tube([[side*.71,.90,-1.38],[side*.71,.90,1.24]],.012,chrome);box(dark,side*.715,.85,.40,.022,.025,.12);}
   quad([[-.54,1.02,-1.53],[.54,1.02,-1.53],[.54,1.34,-1.53],[-.54,1.34,-1.53]],glass,'glass');for(const end of[-1,1])box(chrome,0,.40,end*1.65,1.47,.10,.11);
   for(const[i,x,z]of[[0,-.65,1.0],[1,.65,1.0],[2,-.65,-.99],[3,.65,-.99]])wheel(i,x,z,.28);cabinSeats(true);
+ }else if(details?.catalog[key]){
+  details.build(T,key,{root,add,box,ell,quad,tube,ring,wheel,materials});
  }else{
   const uno=key==='uno',roof=uno?1.32:1.20,width=.68;
   const points=[[-1.48,.55],[-1.34,.77],[-.94,.79],[.24,.79],[.67,.79],[1.43,.72],[1.49,.46],[-1.48,.35]];
@@ -68,8 +71,8 @@ function build(T,key){
  }
  function merge(meshes,name,material,parent=root){if(!meshes.length)return;const p=[],n=[],c=[];for(const m of meshes){m.updateMatrix();const g=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();g.applyMatrix4(m.matrix);const a=g.attributes.position,b=g.attributes.normal,col=m.material.color.clone().convertSRGBToLinear();for(let i=0;i<a.count;i++){p.push(a.getX(i),a.getY(i),a.getZ(i));n.push(b.getX(i),b.getY(i),b.getZ(i));c.push(col.r,col.g,col.b);}g.dispose();m.geometry.dispose();m.material.dispose();m.parent?.remove(m);}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setAttribute('normal',new T.Float32BufferAttribute(n,3));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.computeBoundingSphere();const m=new T.Mesh(g,material);m.name=name;m.castShadow=name!=='glass';m.receiveShadow=true;parent.add(m);return m;}
  for(const[k,list]of buckets)merge(list,k,materials[k]);for(const g of root.children.filter(x=>x.name.startsWith('wheel-')))merge([...g.children],g.name+'-mesh',materials.fixed,g);
- root.userData.seatScale=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];return root;
+ root.userData.seatScale??=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats??=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];root.userData.roof??=key==='kombi'?1.64:key==='uno'?1.34:key==='gol'?1.23:1.38;root.userData.hoodY??=.84;root.userData.wheelRadius??=key==='kombi'?.28:key==='fusca'?.285:.275;root.userData.front??=key==='kombi'?1.69:key==='fusca'?1.73:1.57;root.userData.rear??=-root.userData.front;definitions[key]=root.userData;return root;
 }
 function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));const root=cache.get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
-(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create};
+(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,definition:key=>definitions[key]||null};
 })();
