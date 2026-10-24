@@ -252,7 +252,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "9f9f0ca2ebf973065d7d39d836b6b7a44b472fc9a2ba62ae4187b825bdd15160"
+      "sha256Body": "e28d865f2cfce7ae95819f03e7bb61ef2e4c7aead80f1d671d4a690851ab9e9f"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
@@ -406,7 +406,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "5e9f7144258f588146ad4972b7c85478a94c4b2c853417253a8ea97c2cec8283"
+      "sha256Body": "d7e660c5d9e6a0e2ab9544c34888ecd0e5f539546f9fc25efe8446d25c633bc8"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
