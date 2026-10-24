@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.20.0-brasil-family',
+    build: '705.21.0-frota-brasileira',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

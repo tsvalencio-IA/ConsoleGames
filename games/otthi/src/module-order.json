@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.20.0-brasil-family",
+  "build": "705.21.0-frota-brasileira",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "eb0a1392c960851683234d634e5d3e4cf7ded0bf3726183d1afa79ba57052eb9"
+      "sha256Body": "cba9f7d3d5356a376a437d30c6819bf1c59f438ad47d18a5c9140f0e206b2760"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -175,7 +175,7 @@
       "startLine": 3805,
       "endLine": 3948,
       "description": "Construção do mundo, recursos, baús, casas em nuvem e interiores",
-      "sha256Body": "ba1627991c3712d36a99a640bcd95814930d4fb4a8fd4c0b8f35f6c48cb27bef"
+      "sha256Body": "6ad79ba3cc7dc7c314fb7c3397f5f013c46bbaf2220a157d381b9e325111b9f8"
     },
     {
       "file": "src/modules/21-interactions-shop-social-races.js",
@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "8a59cf9e8cb38d8844341b9f1914adb3005347f7499c30c333aa77446f6e6b01"
+      "sha256Body": "4384ad9ad15961ef7925aa45c8488a4228ccfda582b68d5b17291c32f38b3924"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -301,7 +301,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "8ff3865ea397b30beb5f55af3d6508f7c02ae5d228a373a2f8873dc56ee203f6"
+      "sha256Body": "092201f84a887cca8f27a17af84b16cb09c8fc346933f2d96d2dca3934fa092f"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -385,28 +385,28 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias brasileiras e picapes de cabine dupla",
-      "sha256Body": ""
+      "sha256Body": "300422dddc74470d9bba1b6b5d3a39a64dad524d17c01fd89d4d786c7fd4fb4c"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "2cac092a6eed769a9a6aa654ae9fd2fcbf47d4e1e193151cb41269943fbb3e50"
+      "sha256Body": "6fbd9f5cdc38835c796e558a2da4b6fcb644514571cabc449c4f1459cfa6c565"
     },
     {
       "file": "src/modules/48-family-transport.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "fd97f114c5a92f7657d810be66955de4384b04360c27e6411a4a597d916037c4"
+      "sha256Body": "9b9272a09121725b157d8d5543a14b7506765943709d5d5605a59b3268d6e7ca"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "d8711831314d24b03771a903028e3d9c248f29dae834b6892ac3a7109944d6f6"
+      "sha256Body": "34e43dbddeeb96691b1bd82b8476b989083c4a9518c5e7940da032cac16254bd"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
