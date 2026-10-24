@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "scope": "isolated browser clients, not production Firebase or physical phones",
+  "results": [
+    {
+      "slug": "kart",
+      "passed": true,
+      "backend": "isolated local HTTP/SSE RTDB fixture",
+      "independentBrowserContexts": 2,
+      "sameAccount": true,
+      "distinctConnectionIds": true,
+      "nativeMenuEntry": true,
+      "nativeInput": true,
+      "hostDeparture": true,
+      "cameraCalls": [
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "slug": "tenis",
+      "passed": true,
+      "backend": "isolated local HTTP/SSE RTDB fixture",
+      "independentBrowserContexts": 2,
+      "sameAccount": true,
+      "distinctConnectionIds": true,
+      "nativeMenuEntry": true,
+      "nativeInput": true,
+      "hostDeparture": true,
+      "cameraCalls": [
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "slug": "ar",
+      "passed": true,
+      "backend": "isolated local HTTP/SSE RTDB fixture",
+      "independentBrowserContexts": 2,
+      "sameAccount": true,
+      "distinctConnectionIds": true,
+      "nativeMenuEntry": true,
+      "nativeInput": true,
+      "hostDeparture": true,
+      "cameraCalls": [
+        0,
+        0
+      ],
+      "errors": []
+    }
+  ]
+}

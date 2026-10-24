@@ -62,7 +62,7 @@ const hub={
    logic.isOnline=false;
    logic.useMouse=true;
    logic.handedness="right";
-   if(typeof logic.startGame==="function")logic.startGame();
+   if(logic.currentFase?.id!=="arcade"&&typeof logic.startGame==="function")logic.startGame();
    hub.showTip("ARRASTE PARA MOVER A RAQUETE • TOQUE PARA SACAR");
    return;
   }

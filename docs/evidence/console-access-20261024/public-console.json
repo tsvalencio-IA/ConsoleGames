@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/console.html",
+  "finalUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/index.html",
+  "cards": 7,
+  "health": {
+    "type": "ARCADE_HEALTH",
+    "version": 11
+  },
+  "files": [
+    {
+      "path": "console.html",
+      "status": 200,
+      "expected": "d5fca1455f9e68cc65b239dbb6aacbf4951dd93598794b6ad69ddcfb7d6a0c8d",
+      "actual": "d5fca1455f9e68cc65b239dbb6aacbf4951dd93598794b6ad69ddcfb7d6a0c8d"
+    },
+    {
+      "path": "arcade/app.js",
+      "status": 200,
+      "expected": "fc067cf6c48d408aa2f097e6983f3423d637c204eca4214822c46f4f93c8eab7",
+      "actual": "fc067cf6c48d408aa2f097e6983f3423d637c204eca4214822c46f4f93c8eab7"
+    },
+    {
+      "path": "arcade/sw.js",
+      "status": 200,
+      "expected": "d41e9c36236ebfa8b0dffb563c0fd6e4696d0e4081a56696705297dae5261d8d",
+      "actual": "d41e9c36236ebfa8b0dffb563c0fd6e4696d0e4081a56696705297dae5261d8d"
+    }
+  ],
+  "worldBuild": "705.22.1-venues-coachwork",
+  "worldRevision": "5e8f4018347fd162",
+  "errors": [],
+  "limits": [
+    "Fresh Chromium mobile emulation, not a physical Android."
+  ]
+}

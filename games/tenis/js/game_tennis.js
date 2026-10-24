@@ -47,7 +47,10 @@
         state: 'MODE_SELECT', timer: 0, idleTimer: 0, endTimer: 0, serveTimeout: 0, pose: null, handedness: null, polyfillDone: false, hitstop: 0, 
         calibTimer: 0, calibHandCandidate: null, calib: { tlX: 0, tlY: 0, brX: 640, brY: 480 },
         lastFrameTime: 0, activeAIProfile: JSON.parse(JSON.stringify(AI_PROFILES.PRO)), aiFrame: 0, aiRecalcCounter: 0, useMouse: false, mouseX: 320, mouseY: 240,
-        get playerId() { return (window.System && window.System.playerId) ? window.System.playerId : 'player_' + Math.floor(Math.random()*10000); },
+        get playerId(){return this.peerId||window.System?.playerId||'local';},
+        networkNow(){return Date.now()+(this.serverClockOffset||0);},
+        livePlayers(){return Object.keys(this.remotePlayersData||{}).filter(id=>!this.clockReady||id===this.playerId||this.networkNow()-Number(this.remotePlayersData[id].lastSeen||0)<15000).sort();},
+        networkWrite(task){try{return Promise.resolve(task()).catch(error=>{window.System?.msg('SALA INDISPONÍVEL • CONFIRA A CONTA E A CONEXÃO');console.warn('Ping pong network:',error?.code||'connection');});}catch{window.System?.msg('NÃO FOI POSSÍVEL CONECTAR À SALA');return Promise.resolve();}},
         isOnline: false, isHost: false, roomId: 'thiaguinho_pingpong_oficial', dbRef: null, roomRef: null, remotePlayersData: {}, lastSync: 0, maintenanceInterval: null,
         p1: { x: 0, y: -200, z: -CONF.TABLE_L/2 - 300, vx: 0, vy: 0, prevX: 0, prevY: 0, elbowX: 0, elbowY: 0, rawX: 0, rawY: 0 },
         p2: { x: 0, y: -200, z: CONF.TABLE_L/2 + 300, targetX: 0, targetY: -200, vx: 0, vz: 0 },
@@ -56,15 +59,17 @@
 
         init: function(faseData) {
             this.currentFase=faseData||{id:'arcade'};
-            this.cleanup(); this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(this.currentFase?.difficulty);
+            this.cleanup();this.peerId='';this.matchId='';this.lastSnapshot=null;this.serverClockOffset=0;this.clockReady=false;this.matchPlayers=[];this.state = 'MODE_SELECT'; this.handedness = null; this.useMouse = false; this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(this.currentFase?.difficulty);
             this.lastFrameTime = performance.now(); this.msgs = []; this.particles = []; this.loadCalib();
             if(window.System && window.System.msg) window.System.msg("THIAGUINHO WII - V15"); this.setupInput();
         },
 
         cleanup: function() {
-            if (this.dbRef) { try { this.dbRef.child('players/' + this.playerId).remove(); this.dbRef.off(); } catch(e){} }
-            if (this.roomRef) try { this.roomRef.off(); } catch(e){}
-            if (this.maintenanceInterval) clearInterval(this.maintenanceInterval);
+            const ref=this.roomRef,id=this.peerId;this.roomRef=this.dbRef=null;this.isOnline=this.isHost=false;
+            if(ref)try{for(const path of ['players','host','snapshot'])ref.child(path).off();if(id){const own=ref.child('players/'+id);Promise.resolve(own.remove()).catch(()=>{});Promise.resolve(own.onDisconnect().cancel()).catch(()=>{});}}catch{}
+            try{this.clockRef?.off();}catch{}this.clockRef=null;
+            if(this.maintenanceInterval)clearInterval(this.maintenanceInterval);this.maintenanceInterval=null;
+            if(this.roundTimeout)clearTimeout(this.roundTimeout);this.roundTimeout=null;
             if(window.System && window.System.canvas) { window.System.canvas.onpointerdown=window.System.canvas.onpointermove=window.System.canvas.onpointerup=window.System.canvas.onpointercancel=window.System.canvas.onlostpointercapture=null;window.System.canvas.onclick = null; window.System.canvas.onmousemove = null; window.System.canvas.ontouchstart = null; window.System.canvas.ontouchmove = null; }
         },
 
@@ -117,8 +122,8 @@
                 if (this.state === 'MODE_SELECT') {
                     if (my >= h * 0.25 && my <= h * 0.25 + 50) { this.requestCameraMode(false); } 
                     else if (my >= h * 0.40 && my <= h * 0.40 + 50) { this.isOnline = false; this.useMouse = true; this.handedness = 'right'; this.startGame(); } 
-                    else if (my >= h * 0.55 && my <= h * 0.55 + 50) { if (!window.DB) { window.System.msg('SEM FIREBASE'); return; } this.requestCameraMode(true); } 
-                    else if (my >= h * 0.70 && my <= h * 0.70 + 50) { this.isOnline = !!window.DB; this.useMouse = true; this.handedness = 'right'; if (!this.isOnline) { if(window.System.msg) window.System.msg("SEM INTERNET/FIREBASE"); return; } this.connectMultiplayer(); }
+                    else if (my >= h * 0.55 && my <= h * 0.55 + 50) { if (!window.DB) { window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE'); return; } this.requestCameraMode(true); }
+                    else if (my >= h * 0.70 && my <= h * 0.70 + 50) { this.isOnline = !!window.DB; this.useMouse = true; this.handedness = 'right'; if (!this.isOnline) { if(window.System.msg) window.System.msg("ENTRE NA CONTA PARA JOGAR ONLINE"); return; } this.connectMultiplayer(); }
                     this.calibTimer = 0; this.sfx('click');
                 } 
                 else if (this.state.startsWith('CALIB')) {
@@ -127,12 +132,13 @@
                     // actual wrist tracking until the two corners are confirmed.
                 }
                 else if (this.state === 'SERVE' && this.useMouse && this.server === 'p1') { this.p1.vx = 0; this.p1.vy = -100; this.executeAimAssistHit('p1', 0, 0, 200); }
-                else if (this.state === 'LOBBY') { if (this.isHost) { const pCount = Object.keys(this.remotePlayersData || {}).length; if (pCount >= 2) { this.roomRef.update({ gameState: 'STARTING' }); this.startGame(); this.sfx('coin'); } } }
-                else if (this.state === 'END') { this.init(); }
+                else if(this.state==='LOBBY'){if(this.startOnlineMatch())this.sfx('coin');}
+                else if(this.state==='END'){if(this.isOnline){this.state='LOBBY';this.isHost&&this.networkWrite(()=>this.roomRef.child('snapshot').remove());}else this.init(this.currentFase);}
             };
         },
 
         requestCameraMode: async function(online) {
+            if(online&&!window.DB){window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
             this.isOnline=online;
             const started=await window.System.switchCamera('user');
             if(started && window.System.ensureDetector)await window.System.ensureDetector();
@@ -148,50 +154,66 @@
             }
         },
 
-        connectMultiplayer: function() {
-            this.state = 'LOBBY';
-            try {
-                this.roomRef = window.DB.ref('rooms/' + this.roomId); this.dbRef = this.roomRef;
-                const myData = { name: 'Jogador', x: this.p1.x, y: this.p1.y, vx: this.p1.vx, vy: this.p1.vy, lastSeen: firebase.database.ServerValue.TIMESTAMP };
-                this.dbRef.child('players/' + this.playerId).set(myData); this.dbRef.child('players/' + this.playerId).onDisconnect().remove();
-
-                this.maintenanceInterval = setInterval(() => {
-                    if (!this.isHost || !this.remotePlayersData) return;
-                    const now = Date.now();
-                    Object.keys(this.remotePlayersData).forEach(pid => {
-                        if (pid === this.playerId) return;
-                        if (now - (this.remotePlayersData[pid].lastSeen || 0) > 15000) { this.dbRef.child('players/' + pid).remove(); this.addMsg("JOGADOR CAIU", "#f00"); }
-                    });
-                }, 2000);
-
-                this.roomRef.child('gameState').on('value', (snap) => { const st = snap.val(); if(st === 'STARTING' && this.state === 'LOBBY' && !this.isHost) this.startGame(); if(st === 'END' && this.state !== 'END') this.state = 'END'; });
-                this.roomRef.child('ball').on('value', (snap) => {
-                    if (this.isHost || !this.isOnline || !snap.exists()) return;
-                    const b = snap.val(); this.ball.x = -b.x; this.ball.y = b.y; this.ball.z = -b.z; this.ball.vx = -b.vx; this.ball.vy = b.vy; this.ball.vz = -b.vz; this.ball.spinX = -b.spinX; this.ball.spinY = -b.spinY; this.ball.active = b.active; this.ball.lastHitBy = b.lastHitBy === 'p1' ? 'p2' : (b.lastHitBy === 'p2' ? 'p1' : null);
-                });
-                this.roomRef.child('score').on('value', (snap) => { if (this.isHost || !this.isOnline || !snap.exists()) return; const s = snap.val(); this.score.p1 = s.p2; this.score.p2 = s.p1; });
-                this.dbRef.child('players').on('value', (snap) => {
-                    const data = snap.val(); if (!data) return;
-                    this.remotePlayersData = data; const ids = Object.keys(data).sort(); this.isHost = (ids[0] === this.playerId);
-                    const opId = ids.find(id => id !== this.playerId);
-                    if (opId) { const opData = data[opId]; this.p2.x = -opData.x; this.p2.y = opData.y; this.p2.vx = -opData.vx; this.p2.vy = opData.vy; }
-                });
-            } catch(e) { this.state = 'MODE_SELECT'; }
+        startOnlineMatch(){
+            const ids=this.livePlayers();if(!this.isHost||ids.length<2||!this.roomRef)return false;
+            this.matchPlayers=[this.playerId,ids.find(id=>id!==this.playerId)];this.matchId=this.playerId+'_'+(globalThis.crypto?.randomUUID?.()||this.networkNow()+'_'+Math.random());this.servedIntent={};
+            this.startGame();this.publishSnapshot();return true;
         },
-
-        syncMultiplayer: function() {
-            if (!this.dbRef || !this.isOnline) return;
-            const now = Date.now();
-            if (now - this.lastSync > 30) {
-                this.lastSync = now;
-                this.dbRef.child('players/' + this.playerId).update({ x: this.p1.x, y: this.p1.y, vx: this.p1.vx, vy: this.p1.vy, lastSeen: firebase.database.ServerValue.TIMESTAMP });
-                if (this.isHost) { this.roomRef.update({ ball: { x: this.ball.x||0, y: this.ball.y||-300, z: this.ball.z||0, vx: this.ball.vx||0, vy: this.ball.vy||0, vz: this.ball.vz||0, spinX: this.ball.spinX||0, spinY: this.ball.spinY||0, active: this.ball.active, lastHitBy: this.ball.lastHitBy }, score: this.score, gameState: this.state }); }
+        reconcileRoom(){
+            if(!this.roomRef||!this.rosterKnown||!this.hostKnown)return;
+            const ids=this.livePlayers(),ref=this.roomRef,wasHost=this.isHost;
+            this.isHost=ids.includes(this.roomHostId)&&this.roomHostId===this.playerId;
+            if(!ids.includes(this.roomHostId)&&ids[0]===this.playerId&&!this.claimingHost){this.claimingHost=true;this.networkWrite(()=>ref.child('host').transaction(old=>ids.includes(old)?old:this.playerId)).finally(()=>{this.claimingHost=false;});}
+            const opponent=this.matchPlayers?.length?this.matchPlayers.find(id=>id!==this.playerId):ids.find(id=>id!==this.playerId);
+            const op=this.remotePlayersData[opponent];this.opponentId=opponent;
+            if(op){this.p2.x=-Number(op.x||0);this.p2.y=Number(op.y??-200);this.p2.vx=-Number(op.vx||0);this.p2.vy=Number(op.vy||0);this.remoteUsesMouse=!!op.useMouse;}
+            if(this.matchId&&this.matchPlayers.some(id=>!ids.includes(id))){
+                this.matchId='';this.matchPlayers=[];this.state='LOBBY';this.ball.active=false;this.addMsg('OPONENTE DESCONECTOU • AGUARDANDO NOVA PARTIDA','#f1c40f');
+                if(this.isHost)this.networkWrite(()=>ref.child('snapshot').remove());
+            }else if(this.isHost&&!wasHost&&this.lastSnapshot){this.matchId='';this.matchPlayers=[];this.state='LOBBY';this.networkWrite(()=>ref.child('snapshot').remove());}
+            if(this.isHost&&this.state==='SERVE'&&this.server==='p2'&&op?.serve?.matchId===this.matchId&&op.serve.round===this.roundId&&this.servedIntent?.[opponent]!==op.serve.id){
+                this.servedIntent=this.servedIntent||{};this.servedIntent[opponent]=op.serve.id;this.executeAimAssistHit('p2',0,0,MathCore.clamp(Number(op.serve.speed)||80,0,400));this.publishSnapshot();
             }
+            if(!this.isHost&&this.lastSnapshot)this.applySnapshot(this.lastSnapshot);
+        },
+        applySnapshot(data){
+            if(!data||this.isHost||!this.isOnline||!data.players?.includes(this.playerId))return;
+            if(!data.players.every(id=>this.livePlayers().includes(id)))return;
+            const newMatch=this.matchId!==data.id;if(newMatch){this.startGame();this.matchId=data.id;this.resultRecorded=false;}
+            this.matchPlayers=data.players;this.roundId=data.round;this.state=data.state;this.server=data.server==='p1'?'p2':'p1';this.rallyCount=Number(data.rally)||0;
+            this.score={p1:Number(data.score?.p2)||0,p2:Number(data.score?.p1)||0};
+            const b=data.ball;if(b){Object.assign(this.ball,b,{x:-b.x,z:-b.z,vx:-b.vx,vz:-b.vz,spinX:-b.spinX,spinY:-b.spinY,lastHitBy:b.lastHitBy==='p1'?'p2':b.lastHitBy==='p2'?'p1':null,trail:[]});}
+        },
+        publishSnapshot(){
+            if(!this.isOnline||!this.isHost||!this.matchId||!this.roomRef)return;
+            const b=this.ball;this.networkWrite(()=>this.roomRef.child('snapshot').set({id:this.matchId,players:this.matchPlayers,round:this.roundId||0,state:this.state,server:this.server,score:{...this.score},rally:this.rallyCount||0,
+                ball:{x:b.x,y:b.y,z:b.z,vx:b.vx,vy:b.vy,vz:b.vz,spinX:b.spinX||0,spinY:b.spinY||0,active:!!b.active,lastHitBy:b.lastHitBy||null,bounceCount:b.bounceCount||0},at:firebase.database.ServerValue.TIMESTAMP}));
+        },
+        connectMultiplayer: function(){
+            if(!window.DB){this.isOnline=false;this.state='MODE_SELECT';window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
+            if(this.roomRef)return;this.isOnline=true;this.state='LOBBY';this.matchId='';this.matchPlayers=[];this.lastSnapshot=null;this.servedIntent={};this.lastSync=0;
+            this.peerId=String(window.System?.playerId||'player')+'_'+(globalThis.crypto?.randomUUID?.()||Math.random().toString(36).slice(2));
+            const ref=this.roomRef=window.DB.ref('rooms/'+this.roomId);this.dbRef=ref;this.hostKnown=this.rosterKnown=false;
+            const fail=error=>{if(this.roomRef===ref){window.System.msg('SALA INDISPONÍVEL • CONFIRA A CONTA E A CONEXÃO');console.warn('Ping pong room:',error?.code||'connection');}};
+            const watch=(path,callback)=>ref.child(path).on('value',snap=>{if(this.roomRef===ref)callback(snap);},fail);
+            this.clockRef=window.DB.ref('.info/serverTimeOffset');this.clockRef.on('value',snap=>{this.serverClockOffset=Number(snap.val())||0;this.clockReady=Number.isFinite(snap.val());this.reconcileRoom();},()=>{});
+            watch('host',snap=>{this.roomHostId=snap.val()||'';this.hostKnown=true;this.reconcileRoom();});
+            watch('players',snap=>{this.remotePlayersData=snap.val()||{};this.rosterKnown=true;this.reconcileRoom();});
+            watch('snapshot',snap=>{this.lastSnapshot=snap.val();if(this.lastSnapshot)this.applySnapshot(this.lastSnapshot);else if(this.state==='END'||this.state==='END_WAIT'){this.state='LOBBY';this.matchId='';this.matchPlayers=[];}});
+            const own=ref.child('players/'+this.playerId);this.networkWrite(async()=>{await own.onDisconnect().remove();if(this.roomRef!==ref)return;await own.set({name:window.Profile?.username||'Jogador',x:this.p1.x,y:this.p1.y,vx:0,vy:0,useMouse:this.useMouse,lastSeen:firebase.database.ServerValue.TIMESTAMP});});
+            this.maintenanceInterval=setInterval(()=>{
+                if(this.roomRef!==ref)return;this.networkWrite(()=>own.update({lastSeen:firebase.database.ServerValue.TIMESTAMP}));
+                if(this.isHost&&this.clockReady)for(const[id,p]of Object.entries(this.remotePlayersData))if(id!==this.playerId&&this.networkNow()-Number(p.lastSeen||0)>15000)this.networkWrite(()=>ref.child('players/'+id).remove());
+            },2000);
+        },
+        syncMultiplayer: function(){
+            if(!this.dbRef||!this.isOnline)return;
+            if(Date.now()-this.lastSync>50){this.lastSync=Date.now();this.networkWrite(()=>this.dbRef.child('players/'+this.playerId).update({x:this.p1.x,y:this.p1.y,vx:this.p1.vx,vy:this.p1.vy,useMouse:this.useMouse,lastSeen:firebase.database.ServerValue.TIMESTAMP}));this.publishSnapshot();}
         },
 
         startGame: function() {
             if (this.roundTimeout) { clearTimeout(this.roundTimeout); this.roundTimeout = null; }
-            this.state='STARTING';this.score={p1:0,p2:0};this.server='p1';this.physicsAccumulator=0;this.matchBestRally=0;this.resultRecorded=false;this.matchReward=null;
+            this.roundId=0;this.state='STARTING';this.score={p1:0,p2:0};this.server='p1';this.physicsAccumulator=0;this.matchBestRally=0;this.resultRecorded=false;this.matchReward=null;
             this.activeAIProfile = this.isOnline?JSON.parse(JSON.stringify(AI_PROFILES.PRO)):aiProfile(this.currentFase?.difficulty); this.resetRound();
         },
 
@@ -212,8 +234,8 @@
 
                 if (this.state === 'MODE_SELECT') { this.p1.x = Math.sin(now * 0.002) * 300; this.p2.x = Math.cos(now * 0.002) * 300; } 
                 else if (this.state !== 'LOBBY' && this.state !== 'END') {
-                    if (this.state === 'IDLE') { this.idleTimer += (dt === 0 ? 16 : dt); if (this.idleTimer > 1000) { this.state = 'SERVE'; this.idleTimer = 0; this.serveTimeout = 0; } } 
-                    else if (this.state === 'END_WAIT') { this.endTimer += (dt === 0 ? 16 : dt); if (this.endTimer > 2000) { this.state = 'END'; if (this.isOnline && this.isHost) this.roomRef.update({ gameState: 'END' }); this.endTimer = 0; } }
+                    if (this.state === 'IDLE'&&(!this.isOnline||this.isHost)) { this.idleTimer += (dt === 0 ? 16 : dt); if (this.idleTimer > 1000) { this.state = 'SERVE'; this.idleTimer = 0; this.serveTimeout = 0; } }
+                    else if (this.state === 'END_WAIT'&&(!this.isOnline||this.isHost)) { this.endTimer += (dt === 0 ? 16 : dt); if (this.endTimer > 2000) { this.state = 'END'; this.publishSnapshot(); this.endTimer = 0; } }
                     if (dt > 0) {
                         this.processPose(pose, w, h);
                         if (this.state.startsWith('CALIB')) this.updateAutoCalibration(dt);
@@ -357,10 +379,11 @@
         },
 
         executeAimAssistHit: function(who, offX=0, offY=0, handSpeed=0) {
+            if(this.isOnline&&!this.isHost){if(who==='p1'&&this.state==='SERVE'&&this.server==='p1'&&this.roomRef)this.networkWrite(()=>this.roomRef.child('players/'+this.playerId+'/serve').set({id:this.playerId+'_'+this.networkNow(),matchId:this.matchId,round:this.roundId,speed:MathCore.clamp(handSpeed,0,400)}));return;}
             const isP1 = who === 'p1'; const paddle = isP1 ? this.p1 : this.p2;
             let velX = Number.isFinite(paddle.vx) ? paddle.vx : 0; 
-            let velY = isP1 ? (Number.isFinite(paddle.vy) ? paddle.vy : 0) : (Number.isFinite(paddle.vz) ? paddle.vz * 0.15 : 0);
-            let safeSpeed = this.useMouse && isP1 ? Math.max(200, handSpeed * 3) : MathCore.clamp(handSpeed, 0, 400);
+            let velY = this.isOnline?Number(paddle.vy)||0:isP1 ? (Number.isFinite(paddle.vy) ? paddle.vy : 0) : (Number.isFinite(paddle.vz) ? paddle.vz * 0.15 : 0);
+            let safeSpeed = (isP1?this.useMouse:this.isOnline&&this.remoteUsesMouse) ? Math.max(200, handSpeed * 3) : MathCore.clamp(handSpeed, 0, 400);
 
             let rallyMultiplier = Math.min(2.5, 1.0 + (this.rallyCount * 0.12));
             let force = MathCore.clamp(80 + (safeSpeed * 0.4), 80, 250) * rallyMultiplier; 
@@ -407,7 +430,7 @@
 
             let pColor = isSmash ? '#ff4500' : (isP1 ? '#e74c3c' : '#3498db');
             this.spawnParticles(this.ball.x, this.ball.y, this.ball.z, isSmash ? 30 : 10, pColor); 
-            if (isP1 && (!this.isOnline || this.isHost)) this.calculateAITarget();
+            if(isP1&&!this.isOnline)this.calculateAITarget();
         },
 
         updatePhysicsClient: function() {
@@ -474,8 +497,8 @@
             if (this.ball.vz > 0 && this.ball.lastHitBy !== 'p2') {
                 if (this.ball.z > this.p2.z - 400 && this.ball.z < this.p2.z + 200) {
                     let dx = this.ball.x - this.p2.x; let dy = this.ball.y - this.p2.y;
-                    if (this.ball.y < this.p2.y - 400) { if (Math.random() < 0.90) return; }
-                    if (Math.sqrt(dx*dx + dy*dy) < CONF.PADDLE_HITBOX * 0.8) { let aiSpeed = 40 + Math.random() * 80 + (this.rallyCount * 5); this.executeAimAssistHit('p2', dx, dy, aiSpeed); }
+                    if(!this.isOnline&&this.ball.y<this.p2.y-400){if(Math.random()<.90)return;}
+                    const speed=Math.hypot(this.p2.vx||0,this.p2.vy||0);if(this.isOnline){const dist=Math.hypot(dx,dy);if(this.remoteUsesMouse&&dist<CONF.PADDLE_HITBOX)this.executeAimAssistHit('p2',dx,dy,speed+80);else if(!this.remoteUsesMouse&&((speed>25&&dist<CONF.PADDLE_HITBOX*1.5)||dist<CONF.PADDLE_HITBOX*.4))this.executeAimAssistHit('p2',dx,dy,speed>25?speed:5);}else if(Math.hypot(dx,dy)<CONF.PADDLE_HITBOX*.8)this.executeAimAssistHit('p2',dx,dy,40+Math.random()*80+this.rallyCount*5);
                 }
             }
         },
@@ -528,7 +551,7 @@
         recordResult:function(){if(this.resultRecorded)return;this.resultRecorded=true;if(!this.isOnline)this.matchReward=window.Profile?.addReward?.(this.score.p1*100,this.score.p1>this.score.p2,0)||null;},
 
         resetRound: function() {
-            this.state = 'IDLE'; this.idleTimer = 0; this.endTimer = 0; this.serveTimeout = 0;
+            this.roundId=(this.roundId||0)+1;this.state = 'IDLE'; this.idleTimer = 0; this.endTimer = 0; this.serveTimeout = 0;
             this.ball.active = false; this.ball.vx = 0; this.ball.vy = 0; this.ball.vz = 0; this.ball.x = 0; this.ball.y = -300; this.ball.z = 0;
             this.ball.lastHitBy = null; this.ball.bounceCount = 0; this.ball.trail = []; this.lastHitter = null; this.aiRecalcCounter = 0;
         },
@@ -574,7 +597,7 @@
         renderLobby: function(ctx, w, h) {
             ctx.fillStyle = "rgba(10,15,20,0.95)"; ctx.fillRect(0,0,w,h); ctx.fillStyle = "#fff"; ctx.textAlign="center"; 
             if (this.isHost) {
-                const pids = Object.keys(this.remotePlayersData || {}); const pCount = pids.length;
+                const pids=this.livePlayers();const pCount=pids.length;
                 ctx.font = "30px 'Russo One'"; ctx.fillText("SALA MULTIPLAYER", w/2, h*0.2);
                 ctx.font = "16px sans-serif"; ctx.fillStyle = "#ccc"; ctx.fillText(`JOGADORES CONECTADOS: ${pCount}/2`, w/2, h*0.3);
                 pids.forEach((pid, i) => { ctx.fillStyle = pid === this.playerId ? "#f1c40f" : "#3498db"; ctx.font = "bold 20px sans-serif"; ctx.fillText(pid === this.playerId ? "VOCÊ (HOST)" : "OPONENTE", w/2, h*0.4 + (i*40)); });

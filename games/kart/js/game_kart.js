@@ -153,6 +153,10 @@
     }
 
     const Logic = {
+        get networkId(){return this.peerId||window.System?.playerId||'local';},
+        networkNow(){return Date.now()+(this.serverClockOffset||0);},
+        liveHumans(data=this.remotePlayersData||{}){return Object.keys(data).filter(id=>!id.startsWith('bot_')&&(!this.clockReady||id===this.networkId||this.networkNow()-Number(data[id]?.lastSeen||0)<SAFETY.ZOMBIE_TIMEOUT)).sort();},
+        networkWrite(task){try{return Promise.resolve(task()).catch(error=>{window.System?.msg('Não foi possível atualizar a sala. Confira sua conexão e conta.');console.warn('Kart network:',error?.code||'connection');});}catch(error){window.System?.msg('Não foi possível conectar à sala.');return Promise.resolve();}},
         state: 'MODE_SELECT', raceState: 'LOBBY', roomId: 'mario_arena_titanium_v8', selectedChar: 0, selectedTrack: 0, isReady: false, isOnline: false, isHost: false,
         dbRef: null, roomRef: null, lastSync: 0, totalRacers: 0, remotePlayersData: {}, localBots: [], maintenanceInterval: null,
         speed: 0, pos: 0, playerX: 0, steer: 0, targetSteer: 0, cameraX: 0, nitro: 100, turboLock: false, gestureTimer: 0, spinAngle: 0, spinTimer: 0, lateralInertia: 0, vibration: 0, engineTimer: 0,
@@ -165,7 +169,7 @@
         garage: [{ modelId: 0 }], activeKartIdx: 0, shopTab: 'SHOP', shopCarouselIdx: 0,
 
         init: function(faseData) { 
-            this.cleanup(); this.state = 'MODE_SELECT'; this.setupUI(); this.resetPhysics(); KartAudio.init(); 
+            this.cleanup(); this.peerId='';this.lastStartedMatch='';this.clockReady=false;this.serverClockOffset=0;this.state = 'MODE_SELECT'; this.setupUI(); this.resetPhysics(); KartAudio.init();
             this.currentFase = faseData || { id: 'arcade', mode: 'RACE', targetRank: 3, trackId: 0, diff: 'MEDIUM' }; 
             this.cupPoints = 0; // Reset na Copa ao iniciar a Fase
 
@@ -184,14 +188,12 @@
 
         cleanup: function() {
             document.body?.classList?.remove('kart-racing');
-            if (this.dbRef) try { this.dbRef.child('players').off(); } catch(e){}
-            if (this.roomRef) try { 
-                this.roomRef.off(); 
-                this.roomRef.child('shared/hazards').off();
-            } catch(e){}
-            if (this.maintenanceInterval) clearInterval(this.maintenanceInterval);
-            if(nitroBtn) nitroBtn.remove(); if(resetBtn) resetBtn.remove();
-            KartAudio.stop(); window.System.canvas.onpointerdown = null;
+            const ref=this.roomRef,id=this.peerId;this.roomRef=this.dbRef=null;this.isOnline=this.isHost=false;
+            if(ref){try{for(const path of ['players','raceState','trackId','totalRacers','shared/hazards','host','matchId'])ref.child(path).off();if(id){const own=ref.child('players/'+id);Promise.resolve(own.remove()).catch(()=>{});Promise.resolve(own.onDisconnect().cancel()).catch(()=>{});}}catch{}}
+            try{this.clockRef?.off();}catch{}this.clockRef=null;
+            if(this.maintenanceInterval)clearInterval(this.maintenanceInterval);this.maintenanceInterval=null;if(this.finishTimer)clearTimeout(this.finishTimer);this.finishTimer=null;
+            if(nitroBtn)nitroBtn.remove();if(resetBtn)resetBtn.remove();
+            KartAudio.stop();window.System.canvas.onpointerdown=null;
         },
 
         resetPhysics: function() {
@@ -264,6 +266,7 @@
 
                 // --- SISTEMA DE PÓDIO E COPA (NOVO) ---
                 if (this.raceState === "FINISHED") {
+                    if(!this.isOnline||this.podiumAcceptedMatch!==this.lastStartedMatch){
                     if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + this.reward; if(window.Profile.save) window.Profile.save(); }
                     this.player.lap = 1;
                     this.player.finished = false;
@@ -273,15 +276,17 @@
                     let pts = [15, 12, 10, 8, 6, 4, 2, 1];
                     this.cupPoints = (this.cupPoints || 0) + (pts[this.finalRank - 1] || 1);
                     if (this.isOnline && this.dbRef) {
-                        this.dbRef.child('players/' + window.System.playerId).update({ cupPoints: this.cupPoints });
+                        this.dbRef.child('players/' + this.networkId).update({ cupPoints: this.cupPoints });
                     }
                     
+                    this.podiumAcceptedMatch=this.lastStartedMatch;
+                    }
                     let nextTrackId = this.selectedTrack + 1;
                     if (nextTrackId < TRACKS.length) {
                         // Próxima Corrida
                         if (this.isOnline) {
                             if (this.isHost) {
-                                this.roomRef.update({ trackId: nextTrackId, raceState: 'RACING', 'shared/hazards': null });
+                                this.beginOnlineRace(nextTrackId);
                             } else {
                                 this.pushMsg("AGUARDANDO HOST...", "#fff", 30);
                             }
@@ -328,9 +333,9 @@
                     if (yPct > 0.8) { 
                         if (this.isOnline) {
                             if (this.isHost) {
-                                const activePlayers = Object.values(this.remotePlayersData || {}).filter(p => (Date.now() - p.lastSeen < SAFETY.ZOMBIE_TIMEOUT));
+                                const activePlayers = this.liveHumans();
                                 if (activePlayers.length >= 2) { 
-                                    this.roomRef.update({ raceState: 'RACING', totalRacers: activePlayers.length, raceStartTime: firebase.database.ServerValue.TIMESTAMP, 'shared/hazards': null }); 
+                                    this.beginOnlineRace(this.selectedTrack);
                                 } else { 
                                     window.System.msg("PRECISA DE 2 JOGADORES!"); window.Sfx.play(150, 'sawtooth', 0.3, 0.1); 
                                 }
@@ -421,6 +426,7 @@
         },
 
         buildTrack: function(trackId) {
+            let seed=(Number(this.matchSeed)||trackId+1)>>>0;const random=()=>{if(!this.isOnline)return Math.random();seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
             segments = []; const trk = TRACKS[trackId]; this.skyColor = trk.sky; const mult = trk.curveMult;
             const addRoad = (len, curve) => { 
                 for(let i=0; i<len; i++) {
@@ -428,11 +434,11 @@
                     let globalIdx = segments.length; 
                     
                     let coinChance = (this.currentFase.mode === 'COIN_HUNT') ? 0.8 : 0.3;
-                    if (globalIdx % 8 === 0 && Math.random() < coinChance) { obsList.push({ id: 'c_'+globalIdx, type: 'coin', x: (Math.random() - 0.5) * 1.6, collected: false }); }
+                    if (globalIdx % 8 === 0 && random() < coinChance) { obsList.push({ id: 'c_'+globalIdx, type: 'coin', x: (random() - 0.5) * 1.6, collected: false }); }
                     
                     if (globalIdx > 50 && globalIdx % 35 === 0) {
-                        obsList.push({ id: 'bx_'+globalIdx, type: 'item_box', x: (Math.random() - 0.5) * 1.4, collected: false });
-                        if(Math.random() < 0.4) { obsList.push({ id: 'bx2_'+globalIdx, type: 'item_box', x: (Math.random() - 0.5) * 1.4, collected: false }); }
+                        obsList.push({ id: 'bx_'+globalIdx, type: 'item_box', x: (random() - 0.5) * 1.4, collected: false });
+                        if(random() < 0.4) { obsList.push({ id: 'bx2_'+globalIdx, type: 'item_box', x: (random() - 0.5) * 1.4, collected: false }); }
                     }
                     
                     segments.push({ curve: curve * mult, color: Math.floor(segments.length / CONF.RUMBLE_LENGTH) % 2 ? 'dark' : 'light', theme: trk.theme, obs: obsList }); 
@@ -444,69 +450,67 @@
             trackLength = segments.length * CONF.SEGMENT_LENGTH; buildMiniMap(segments);
         },
 
-        selectMode: function(mode) { this.resetPhysics(); this.isOnline = (mode === 'ONLINE' && !!window.DB); if (!this.isOnline) { this.rivals = []; } else { this.connectMultiplayer(); } this.state = 'LOBBY'; },
-
-        performHostMaintenance: function() {
-            if (!this.isHost || !this.remotePlayersData || !this.roomRef) return;
-            const now = Date.now();
-            Object.keys(this.remotePlayersData).forEach(pid => {
-                if (pid.startsWith('bot_') || pid === window.System.playerId) return;
-                const p = this.remotePlayersData[pid];
-                if (now - (p.lastSeen || 0) > SAFETY.ZOMBIE_TIMEOUT) { this.dbRef.child('players/' + pid).remove(); this.pushMsg("PLAYER CAIU", "#f00", 30); }
-            });
-            if (this.raceState === 'RACING') { this.roomRef.child('raceStartTime').once('value', snap => { const startT = snap.val(); if (startT && (now - startT > SAFETY.MAX_RACE_TIME)) { this.roomRef.update({ raceState: 'GAMEOVER' }); } }); }
+        selectMode: function(mode) {
+            if(mode==='ONLINE'&&!window.DB){window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
+            this.resetPhysics();this.isOnline=mode==='ONLINE';this.state='LOBBY';
+            if(this.isOnline)this.connectMultiplayer();else this.rivals=[];
         },
-
+        beginOnlineRace(trackId=this.selectedTrack){
+            const humans=this.liveHumans();if(!this.isHost||!this.roomRef||humans.length<2){window.System.msg('PRECISA DE 2 JOGADORES CONECTADOS');return false;}
+            if(this.state==='RACE'&&this.raceState==='FINISHED'&&(this.onlineParticipants||humans).some(id=>humans.includes(id)&&this.remotePlayersData[id]?.status!=='FINISHED')){window.System.msg('AGUARDE OS OUTROS JOGADORES TERMINAREM A CORRIDA');return false;}
+            const matchId=this.networkId+'_'+(globalThis.crypto?.randomUUID?.()||this.networkNow()+'_'+Math.random()),seed=Math.floor(Math.random()*4294967295);
+            this.networkWrite(()=>this.roomRef.update({raceState:'RACING',participants:humans,trackId,totalRacers:humans.length,raceStartTime:firebase.database.ServerValue.TIMESTAMP,matchId,seed,'shared/hazards':null}));return true;
+        },
+        performHostMaintenance: function() {
+            if(!this.isOnline||!this.roomRef)return;
+            this.networkWrite(()=>this.roomRef.child('players/'+this.networkId).update({ready:!!this.isReady,lastSeen:firebase.database.ServerValue.TIMESTAMP}));
+            if(!this.isHost||!this.clockReady)return;
+            const now=this.networkNow();if(this.serverRaceState==='RACING'&&this.onlineRaceStart&&now-this.onlineRaceStart>SAFETY.MAX_RACE_TIME)this.networkWrite(()=>this.roomRef.update({raceState:'GAMEOVER'}));for(const[pid,p]of Object.entries(this.remotePlayersData||{}))if(!pid.startsWith('bot_')&&pid!==this.networkId&&now-Number(p.lastSeen||0)>SAFETY.ZOMBIE_TIMEOUT)this.networkWrite(()=>this.roomRef.child('players/'+pid).remove());
+        },
+        reconcileOnlineRoster(){
+            if(!this.roomRef||!this.rosterKnown||!this.hostKnown)return;
+            const ref=this.roomRef,ids=this.liveHumans(),data=this.remotePlayersData||{};
+            const wasHost=this.isHost;this.isHost=ids.includes(this.roomHostId)&&this.roomHostId===this.networkId;
+            if(!ids.includes(this.roomHostId)&&ids[0]===this.networkId&&!this.claimingHost){this.claimingHost=true;this.networkWrite(()=>ref.child('host').transaction(old=>ids.includes(old)?old:this.networkId)).finally(()=>{this.claimingHost=false;});}
+            if(this.isHost&&!wasHost&&this.state==='RACE'&&!this.localBots.length)this.localBots=Object.entries(data).filter(([id])=>id.startsWith('bot_')).map(([id,b])=>({...b,id,ai_speedMult:1,ai_accelMult:1,ai_reaction:1,ai_lookAhead:30,ai_targetLane:Number(b.x)||0,ai_laneTimer:0,useItemTimer:0}));
+            const rivals=ids.filter(id=>id!==this.networkId).map(id=>({id,...data[id],isRemote:true,color:CHARACTERS[data[id].charId||0]?.color||'#fff'}));
+            this.rivals=this.isHost?[...rivals,...this.localBots]:[...rivals,...Object.entries(data).filter(([id])=>id.startsWith('bot_')).map(([id,b])=>({id,...b,isRemote:true,color:CHARACTERS[b.charId||0]?.color||'#fff'}))];
+            if(this.isHost&&ids.length===1&&this.serverRaceState==='RACING')this.networkWrite(()=>ref.update({raceState:'LOBBY',matchId:null,'shared/hazards':null}));
+        },
+        applyOnlineHazards(){
+            if(!segments.length)return;const data=this.pendingHazards||{};
+            for(const seg of segments)if(seg.obs)seg.obs=seg.obs.filter(o=>o.type!=='banana'||!o.owner||data[o.id]);
+            for(const[id,hz]of Object.entries(data)){const seg=getSegment(Number(hz.pos)/CONF.SEGMENT_LENGTH);if(!seg)continue;seg.obs=seg.obs||[];if(!seg.obs.some(o=>o.id===id))seg.obs.push({id,type:'banana',x:hz.x,collected:false,owner:hz.owner,time:hz.time});}
+        },
         connectMultiplayer: function() {
-            this.roomRef = window.DB.ref('rooms/' + this.roomId); this.dbRef = this.roomRef;
-            const myRef = this.dbRef.child('players/' + window.System.playerId);
-            myRef.set({ name: window.Profile?.username || 'Player', charId: this.selectedChar, ready: false, lastSeen: firebase.database.ServerValue.TIMESTAMP, status: 'LOBBY', pos: 0, lap: 1, finishTime: 0, cupPoints: this.cupPoints });
-            myRef.onDisconnect().remove();
-            this.maintenanceInterval = setInterval(() => this.performHostMaintenance(), SAFETY.MAINTENANCE_RATE);
-
-            this.roomRef.child('raceState').on('value', (snap) => {
-                const globalState = snap.val(); this.raceState = globalState; 
-                if(globalState === 'RACING' && (this.state === 'LOBBY' || this.state === 'WAITING' || this.state === 'KART_SHOP' || this.raceState === 'FINISHED')) { this.roomRef.child('trackId').once('value').then(tSnap => { this.startRace(tSnap.val() || 0); }); }
-                if(globalState === 'GAMEOVER' && (this.state === 'RACE' || this.state === 'SPECTATE')) { this.state = 'GAMEOVER'; window.Sfx.play(1000, 'sine', 1, 0.5); }
-                if(globalState === 'LOBBY' && (this.state === 'GAMEOVER' || this.state === 'RACE' || this.raceState === 'CUP_END')) { this.state = 'LOBBY'; this.resetPhysics(); window.System.msg("SALA REINICIADA"); }
+            if(!window.DB){this.state='MODE_SELECT';window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
+            this.peerId=String(window.System?.playerId||'player')+'_'+(globalThis.crypto?.randomUUID?.()||Math.random().toString(36).slice(2));
+            const ref=this.roomRef=window.DB.ref('rooms/'+this.roomId);this.dbRef=ref;this.hostKnown=this.rosterKnown=false;this.roomHostId='';this.lastSync=0;
+            const fail=error=>{if(this.roomRef!==ref)return;window.System.msg('SALA INDISPONÍVEL • CONFIRA A CONTA E A CONEXÃO');console.warn('Kart room:',error?.code||'connection');};
+            const watch=(path,callback)=>ref.child(path).on('value',snap=>{if(this.roomRef===ref)callback(snap);},fail);
+            this.clockRef=window.DB.ref('.info/serverTimeOffset');this.clockRef.on('value',snap=>{this.serverClockOffset=Number(snap.val())||0;this.clockReady=Number.isFinite(snap.val());this.reconcileOnlineRoster();},()=>{});
+            watch('host',snap=>{this.roomHostId=snap.val()||'';this.hostKnown=true;this.reconcileOnlineRoster();});
+            watch('players',snap=>{this.remotePlayersData=snap.val()||{};this.rosterKnown=true;this.reconcileOnlineRoster();});
+            const start=()=>{this.networkWrite(()=>ref.once('value').then(snap=>{if(this.roomRef!==ref)return;const h=snap.val()||{};if(h.raceState!=='RACING')return;const id=h.matchId||String(h.raceStartTime)+':'+h.trackId;if(this.lastStartedMatch===id)return;if(h.participants&&!h.participants.includes(this.networkId)){window.System.msg('CORRIDA EM ANDAMENTO • AGUARDE A PRÓXIMA LARGADA');return;}this.lastStartedMatch=id;this.onlineParticipants=h.participants||this.liveHumans();this.matchSeed=Number(h.seed)||1;this.onlineRaceStart=Number(h.raceStartTime)||this.networkNow();this.startRace(Number(h.trackId)||0);}));};
+            watch('raceState',snap=>{const state=snap.val(),previous=this.raceState;this.serverRaceState=state;
+                if(state==='RACING')start();
+                else if(state==='CUP_END')this.raceState='CUP_END';
+                else if(state==='GAMEOVER'&&(this.state==='RACE'||this.state==='SPECTATE'))this.state='GAMEOVER';
+                else if(state==='LOBBY'&&(this.state==='GAMEOVER'||this.state==='RACE'||previous==='CUP_END')){this.state='LOBBY';const roster=this.remotePlayersData;this.resetPhysics();this.remotePlayersData=roster;this.reconcileOnlineRoster();this.isReady=false;}
             });
-            this.roomRef.child('trackId').on('value', (snap) => { if(snap.exists() && !this.isHost) this.selectedTrack = snap.val(); });
-            
-            // --- SYNC DE HAZARDS (BANANAS) EM REDE ---
-            this.roomRef.child('shared/hazards').on('value', snap => {
-                let hData = snap.val() || {};
-                Object.keys(hData).forEach(hId => {
-                    let hz = hData[hId];
-                    if (hz.owner !== window.System.playerId) { 
-                        let seg = getSegment(hz.pos / CONF.SEGMENT_LENGTH);
-                        if (!seg.obs) seg.obs = [];
-                        if (!seg.obs.find(o => o.id === hId)) {
-                            seg.obs.push({ id: hId, type: 'banana', x: hz.x, collected: false, owner: hz.owner, time: hz.time });
-                        }
-                    }
-                });
-            });
-
-            this.dbRef.child('players').on('value', (snap) => {
-                const data = snap.val(); if (!data) return;
-                this.remotePlayersData = data; const now = Date.now(); const ids = Object.keys(data).sort();
-                if (ids[0] === window.System.playerId) {
-                    this.isHost = true;
-                    if (this.state === 'LOBBY') { this.roomRef.child('raceState').once('value', s => { if (s.val() === 'RACING' && ids.length < 2) { this.roomRef.update({ raceState: 'LOBBY', trackId: this.selectedTrack }); } }); }
-                } else { this.isHost = false; }
-                
-                const humanRivals = ids.filter(id => id !== window.System.playerId && !id.includes('bot_')).filter(id => (now - data[id].lastSeen < SAFETY.ZOMBIE_TIMEOUT + 5000)).map(id => ({ id, ...data[id], isRemote: true, color: CHARACTERS[data[id].charId || 0].color || '#fff' }));
-                if (this.isHost) { this.rivals = [...humanRivals, ...this.localBots]; } 
-                else { const serverBots = Object.keys(data).filter(k => k.startsWith('bot_')).map(k => ({ id: k, ...data[k], isRemote: true, color: CHARACTERS[data[k].charId !== undefined ? data[k].charId : 0].color || '#fff' })); this.rivals = [...humanRivals, ...serverBots]; }
-            });
-            this.roomRef.child('totalRacers').on('value', (snap) => { if(snap.exists()) this.totalRacers = snap.val(); });
+            watch('matchId',snap=>{if(snap.val())start();});
+            watch('trackId',snap=>{if(snap.exists()&&!this.isHost)this.selectedTrack=snap.val();});
+            watch('shared/hazards',snap=>{this.pendingHazards=snap.val()||{};this.applyOnlineHazards();});
+            watch('totalRacers',snap=>{if(snap.exists())this.totalRacers=snap.val();});
+            const own=ref.child('players/'+this.networkId);this.networkWrite(async()=>{await own.onDisconnect().remove();if(this.roomRef!==ref)return;await own.set({name:window.Profile?.username||'Jogador',charId:this.selectedChar,ready:false,lastSeen:firebase.database.ServerValue.TIMESTAMP,status:'LOBBY',pos:0,x:0,lap:1,finishTime:0,cupPoints:this.cupPoints});});
+            this.maintenanceInterval=setInterval(()=>this.performHostMaintenance(),Math.min(2000,SAFETY.MAINTENANCE_RATE));
         },
 
         toggleReady: function() { this.isReady = !this.isReady; window.Sfx.click(); if(!this.isOnline) { let trk = this.currentFase.id === 'arcade' ? this.selectedTrack : this.currentFase.trackId; this.startRace(trk); return; } this.state = this.isReady ? 'WAITING' : 'LOBBY'; this.syncLobby(); },
-        syncLobby: function() { if(this.dbRef) { this.dbRef.child('players/' + window.System.playerId).update({ charId: this.selectedChar, ready: this.isReady, lastSeen: firebase.database.ServerValue.TIMESTAMP }); } },
+        syncLobby: function() { if(this.dbRef)this.networkWrite(()=>this.dbRef.child('players/'+this.networkId).update({charId:this.selectedChar,ready:this.isReady,lastSeen:firebase.database.ServerValue.TIMESTAMP})); },
 
         startRace: function(trackId) {
-            this.lastTime=performance.now();this.physicsAccumulator=0;this.driftBoosts=0;
+            this.selectedTrack=trackId;this.lastTime=performance.now();this.physicsAccumulator=0;this.driftBoosts=0;
             // Every new race must clear the previous finish state. Otherwise the
             // render loop sees RACE but exits early from updatePhysics, leaving
             // touch steering and rival simulation apparently frozen.
@@ -515,7 +519,7 @@
             this.player.finished = false;
             this.totalLaps = CONF.TOTAL_LAPS;
             this.reward = 0;
-            this.state = 'RACE'; this.status = 'RACING'; this.buildTrack(trackId); 
+            this.state = 'RACE'; this.status = 'RACING'; this.buildTrack(trackId);this.applyOnlineHazards();
             nitroBtn.style.display = 'flex'; resetBtn.style.display = 'none'; 
             this.pushMsg("LARGADA!", "#0f0", 60); window.Sfx.play(600, 'square', 0.5, 0.2); KartAudio.start();
             this.pos = 0; this.lap = 1; this.maxLapPos = 0; this.speed = 0; this.finishTime = 0; this.localBots = []; this.collisionContacts = new Set();
@@ -576,9 +580,9 @@
                 this.lastSync = Date.now();
                 let myKartId = (this.useCustomKart && this.garage[this.activeKartIdx]) ? this.garage[this.activeKartIdx].modelId : 0;
                 
-                this.dbRef.child('players/' + window.System.playerId).update({ 
+                this.networkWrite(()=>this.dbRef.child('players/' + this.networkId).update({
                     pos: Math.floor(this.pos), x: this.playerX, speed: this.speed, steer: this.steer, lap: this.lap, status: this.status, finishTime: this.finishTime, charId: this.selectedChar, kartId: myKartId, lastSeen: firebase.database.ServerValue.TIMESTAMP 
-                });
+                }));
                 
                 if (this.isHost && this.localBots.length > 0) {
                     this.localBots.forEach((b, i) => { this.dbRef.child('players/bot_' + i).update({ pos: Math.floor(b.pos), x: b.x, speed: b.speed, lap: b.lap, status: b.status, finishTime: b.finishTime, charId: b.charId, name: b.name, kartId: b.kartId, lastSeen: firebase.database.ServerValue.TIMESTAMP }); });
@@ -601,14 +605,15 @@
             const ranks = this.getRankings();
             this.finalRank = ranks.findIndex(r => r.id === 'player') + 1;
             
+            if(this.isOnline&&this.status==='FINISHED'){this.raceState='FINISHED';return;}
             if (this.status === 'FINISHED' && this.state !== 'GAMEOVER' && this.state !== 'SPECTATE_WAIT') {
                 this.state = 'SPECTATE_WAIT'; 
                 let isWin = false;
                 if (this.currentFase.mode === 'RACE' && this.finalRank <= this.currentFase.targetRank) isWin = true;
                 if (this.currentFase.mode === 'COIN_HUNT' && this.matchCoins >= this.currentFase.targetCoins) isWin = true;
 
-                setTimeout(() => {
-                    this.state = 'GAMEOVER'; KartAudio.stop();
+                this.finishTimer=setTimeout(() => {
+                    this.finishTimer=null;this.state = 'GAMEOVER'; KartAudio.stop();
                     if(window.System.gameOver) { window.System.gameOver(this.score, isWin, this.matchCoins); } 
                     else { window.System.home(); }
                 }, 3000); 
@@ -773,7 +778,7 @@
                                     this.pushMsg("CAIXA PEGA!", "#fff", 30);
                                 } else if (o.type === 'banana') {
                                     // Imunidade de Dono da Banana (1.5 segundos após jogar)
-                                    if (o.owner === window.System.playerId && (Date.now() - o.time < 1500)) return;
+                                    if (o.owner === this.networkId && (Date.now() - o.time < 1500)) return;
 
                                     o.collected = true; d.spinTimer = 40; d.speed *= 0.2; window.Sfx.error(); window.Gfx.shakeScreen(20);
                                     this.pushMsg("ESCORREGOU!", "#f00", 40);
@@ -802,13 +807,13 @@
                     let segInfo = getSegment(dropPos / CONF.SEGMENT_LENGTH);
                     if (!segInfo.obs) segInfo.obs = [];
                     
-                    let hazId = 'b_' + window.System.playerId + '_' + Date.now();
-                    segInfo.obs.push({ id: hazId, type: 'banana', x: d.playerX, collected: false, owner: window.System.playerId, time: Date.now() });
+                    let hazId = 'b_' + this.networkId + '_' + Date.now();
+                    segInfo.obs.push({ id: hazId, type: 'banana', x: d.playerX, collected: false, owner: this.networkId, time: Date.now() });
                     window.Sfx.play(300, 'sine', 0.2, 0.2);
                     this.pushMsg("BANANA DROPADA!", "#f1c40f");
 
                     if (this.isOnline && this.roomRef) {
-                        this.roomRef.child('shared/hazards/' + hazId).set({ pos: dropPos, x: d.playerX, owner: window.System.playerId, time: Date.now() });
+                        this.roomRef.child('shared/hazards/' + hazId).set({ pos: dropPos, x: d.playerX, owner: this.networkId, time: Date.now() });
                     }
                 } 
                 else if (d.item === 'shell') {
@@ -969,7 +974,7 @@
                     if (r.spinTimer > 0) { r.spinTimer--; r.spinAngle += (Math.PI * 2) / 40; r.speed *= 0.95; } else { r.spinAngle = 0; }
                     r.pos += r.speed;
 
-                    if (r.pos >= trackLength) { r.pos -= trackLength; r.lap++; if (r.lap > CONF.TOTAL_LAPS) { r.status = 'FINISHED'; if (r.finishTime === 0) r.finishTime = Date.now(); r.speed = 0; r.lap = CONF.TOTAL_LAPS; } }
+                    if (r.pos >= trackLength) { r.pos -= trackLength; r.lap++; if (r.lap > CONF.TOTAL_LAPS) { r.status = 'FINISHED'; if (r.finishTime === 0) r.finishTime = this.networkNow(); r.speed = 0; r.lap = CONF.TOTAL_LAPS; } }
                 });
             }
 
@@ -1007,7 +1012,7 @@
                     }
 
                     if (d.lap > CONF.TOTAL_LAPS) {
-                        d.lap = CONF.TOTAL_LAPS; d.status = 'FINISHED'; if (d.finishTime === 0) d.finishTime = Date.now(); 
+                        d.lap = CONF.TOTAL_LAPS; d.status = 'FINISHED'; if (d.finishTime === 0) d.finishTime = this.networkNow();
                         nitroBtn.style.display = 'none';
                         this.pushMsg("CRUZOU A LINHA!", "#ff0", 60);
                     } else { window.Sfx.play(700, 'square', 0.3, 0.1); this.pushMsg(`VOLTA ${d.lap}/${CONF.TOTAL_LAPS}`, "#fff", 60); }
@@ -1521,7 +1526,7 @@
             let playersArr = [{ name: window.Profile?.username || 'VOCÊ', pts: this.cupPoints || 0 }];
             if (this.isOnline && this.remotePlayersData) {
                 Object.keys(this.remotePlayersData).forEach(uid => {
-                    if (uid !== window.System.playerId && !uid.startsWith('bot_')) {
+                    if (uid !== this.networkId && !uid.startsWith('bot_')) {
                         playersArr.push({ name: this.remotePlayersData[uid].name, pts: this.remotePlayersData[uid].cupPoints || 0 });
                     }
                 });
@@ -1730,19 +1735,19 @@
             if (resetBtn) resetBtn.style.display = (this.isOnline && this.isHost) ? 'flex' : 'none';
 
             if (this.isOnline) {
-                const pids = Object.keys(this.remotePlayersData || {}); let startY = h * 0.75; ctx.font = "12px Arial"; ctx.fillStyle = "#ccc"; ctx.fillText("JOGADORES NA SALA:", w/2, startY - 15);
+                const pids = this.liveHumans(); let startY = h * 0.75; ctx.font = "12px Arial"; ctx.fillStyle = "#ccc"; ctx.fillText("JOGADORES NA SALA:", w/2, startY - 15);
                 pids.forEach((pid, i) => {
                     const p = this.remotePlayersData[pid]; 
-                    if (Date.now() - (p.lastSeen || 0) > 30000) return; 
-                    const isMe = pid === window.System.playerId; const color = CHARACTERS[p.charId || 0].color;
+                    if (this.networkNow() - (p.lastSeen || 0) > 30000) return;
+                    const isMe = pid === this.networkId; const color = CHARACTERS[p.charId || 0].color;
                     ctx.fillStyle = color; ctx.beginPath(); ctx.arc(w/2 - 100, startY + (i*20), 6, 0, Math.PI*2); ctx.fill();
                     ctx.fillStyle = isMe ? "#fff" : "#aaa"; ctx.textAlign = "left"; ctx.fillText(`${CHARACTERS[p.charId||0].name} ${isMe ? '(VOCÊ)' : ''}`, w/2 - 80, startY + (i*20) + 4);
-                    if (i === 0) { ctx.fillStyle = "#f1c40f"; ctx.fillText("👑 HOST", w/2 + 50, startY + (i*20) + 4); } else if (p.ready) { ctx.fillStyle = "#2ecc71"; ctx.fillText("✔ PRONTO", w/2 + 50, startY + (i*20) + 4); }
+                    if (pid === this.roomHostId) { ctx.fillStyle = "#f1c40f"; ctx.fillText("👑 HOST", w/2 + 50, startY + (i*20) + 4); } else if (p.ready) { ctx.fillStyle = "#2ecc71"; ctx.fillText("✔ PRONTO", w/2 + 50, startY + (i*20) + 4); }
                 }); ctx.textAlign = "center";
             }
 
             if (this.isOnline && this.isHost) {
-                const canStart = Object.keys(this.remotePlayersData || {}).length >= 2;
+                const canStart = this.liveHumans().length >= 2;
                 ctx.fillStyle = canStart ? "#c0392b" : "#7f8c8d"; ctx.fillRect(w/2 - 160, h*0.85, 320, 60); ctx.fillStyle = "white"; ctx.font = "bold 22px 'Russo One'"; ctx.fillText(canStart ? "INICIAR CORRIDA" : "AGUARDANDO PLAYERS...", w/2, h*0.85 + 38);
             } else {
                 ctx.fillStyle = this.isReady ? "#e67e22" : "#27ae60"; ctx.fillRect(w/2 - 160, h*0.85, 320, 60); ctx.fillStyle = "white"; ctx.font = "bold 22px 'Russo One'"; ctx.fillText(this.isReady ? "AGUARDANDO HOST..." : "PRONTO!", w/2, h*0.85 + 38);

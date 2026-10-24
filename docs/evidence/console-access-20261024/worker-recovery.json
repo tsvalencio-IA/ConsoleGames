@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "baselineReproduced": "ERR_FAILED",
+  "repairedCards": 7,
+  "profilePreserved": true,
+  "favoritesPreserved": true,
+  "otherCachesPreserved": true,
+  "emptyCacheOfflineRecovery": true,
+  "redirectedCacheRecovery": true,
+  "errors": [],
+  "limits": [
+    "Chromium mobile emulation; not a physical Android or its original network."
+  ]
+}
