@@ -1,6 +1,6 @@
 /** OT Games: the original OT scene is shared by peace, ground and air modes.
- * Combat has its own body, entities and local career. The family/world save and
- * online peaceful room never receive combat coordinates or combat rewards. */
+ * Infantry keeps its own body, enemies and rewards. Aircraft travel publishes
+ * its actual pose for passengers; explicit disembarking saves the parked craft. */
 // @otthi-module-body
   const otGames={mode:'peace',active:false,armed:false,body:null,group:null,enemies:[],bullets:[],effects:[],keys:new Set(),move:{x:0,y:0},aim:{x:0,y:0},collective:.5,pedal:0,fire:false,cameraEpoch:0,handSession:null,handAim:null,state:'PLAYING',assets:null,elapsed:0,ui:null,entry:null,trafficHolds:new Map()};
   const otGameModes={peace:'Mundo de paz',ground:'WAR · a pé',plane:'Avião',helicopter:'Helicóptero'};
@@ -287,7 +287,7 @@
     }
     if(g.mode!=='ground'){
       const floor=groundHeightAt(b.x,b.z)+(g.mode==='plane'?1.3:1.6),landable=otGamesCanLand(g.mode,b);
-      if(g.mode==='helicopter'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist)g.collective=.5;}}
+      if(g.mode==='helicopter'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist){g.collective=.5;g.landingAssist=false;}}}
       if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<=0&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
       if(b.y<floor){b.y=floor;b.vy=0;if(g.armed&&!g.onGround)b.hp=Math.max(0,b.hp-18*dt);}
       b.y=clamp(b.y,floor,100);
@@ -361,7 +361,7 @@
     const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
     g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
     if(g.mode==='plane')g.ui.querySelector('[data-ot-status]').textContent='AVIÃO · '+Math.round(g.airspeed*3.6)+' km/h · '+(g.onGround?'NA PISTA':'EM VOO');
-    const leave=g.ui.querySelector('[data-ot="disembark"]');leave.disabled=!otGamesCanDisembark();const land=g.ui.querySelector('[data-ot="land"]');land.textContent=g.onGround?'NO SOLO':g.landingAssist?'CANCELAR POUSO':'POUSAR';land.setAttribute('aria-pressed',String(!!g.landingAssist));const crouch=g.ui.querySelector('[data-ot="crouch"]');crouch.textContent=g.crouched?'LEVANTAR':'ABAIXAR';crouch.setAttribute('aria-pressed',String(!!g.crouched));
+    const leave=g.ui.querySelector('[data-ot="disembark"]');leave.disabled=!otGamesCanDisembark();const crew=g.ui.querySelector('[data-ot="crew"]');if(crew){crew.hidden=typeof remotePresence==='undefined'||remotePresence.size===0;crew.disabled=!g.onGround;}const land=g.ui.querySelector('[data-ot="land"]');land.disabled=!!g.onGround;land.textContent=g.onGround?'NO SOLO':g.landingAssist?'CANCELAR POUSO':'POUSAR';land.setAttribute('aria-pressed',String(!!g.landingAssist));const crouch=g.ui.querySelector('[data-ot="crouch"]');crouch.textContent=g.crouched?'LEVANTAR':'ABAIXAR';crouch.setAttribute('aria-pressed',String(!!g.crouched));
     const ads=g.ui.querySelector('[data-ot="ads"]');ads.setAttribute('aria-pressed',String(!!g.aiming));ads.classList.toggle('selected',!!g.aiming);
   }
   function otGamesChoose(){

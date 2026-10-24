@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "26e6529b105542223b5ec5b19a4a5401c1fb984b4043cfae9d7857ca1c9d4b30"
+      "sha256Body": "ca3ab2a2143dff31c0342301d48f0a81b73dc8175f88c0e603fb57e8c08a6526"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -392,21 +392,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "b819639e84be5199bc7031c8eb385016870c7a5ab7d9163d5d408f693233aa71"
+      "sha256Body": "fd97f114c5a92f7657d810be66955de4384b04360c27e6411a4a597d916037c4"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "bfaa9ac39c74918edeb37ce20e3adb721387fced5a8a6336fb49ba028c84c7c7"
+      "sha256Body": "d8711831314d24b03771a903028e3d9c248f29dae834b6892ac3a7109944d6f6"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Trânsito utilizável e persistente no motor de veículos existente",
-      "sha256Body": "20718652b594caca143d4efb6489724320a45d675b722e0de694a48134dd862d"
+      "sha256Body": "d9b88b56f8e8fb4da009917365a933bebe49003c563cbb12d2e17930cf7ca3d5"
     },
     {
       "file": "src/modules/50-world-road-continuity.js",
@@ -420,7 +420,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Embarque e assentos de grupos online em carros, aviões e helicópteros",
-      "sha256Body": "dfbf216ca7f776588767c34eb9c7b22e0e9223a761a97c726af10b81f7bb0284"
+      "sha256Body": "1639da4d979164edaec758f4709cc8249e1d906ec9695456a96a3427d6c3194a"
     }
   ],
   "styles": [
@@ -583,7 +583,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "02ed0de78b959e75687cd6f0de916a61547ded29442b93385ea6d8247733080b"
+      "sha256Body": "3c59438881d53a5e02d2e948892f2be6df4fc7e2369ddc435cc9f7d2b264b496"
     },
     {
       "file": "src/styles/22-world-activity-venues.css",

@@ -51,7 +51,9 @@ body[data-ot-game-mode="plane"] .ot-games-collective::before{content:"POTÊNCIA"
 #ot-games-hud [data-ot="disembark"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:270px;min-width:124px;min-height:44px;pointer-events:auto}
 #ot-games-hud button:disabled{opacity:.42}
 body[data-ot-game-mode="plane"] .ot-games-collective::before{content:none!important}
-@media(max-height:460px){#ot-games-hud [data-ot="crouch"]{bottom:158px}#ot-games-hud [data-ot="land"]{right:222px;bottom:12px}#ot-games-hud [data-ot="disembark"]{right:222px;bottom:62px}}
+@media(max-height:460px){#ot-games-hud [data-ot="crouch"]{bottom:158px}#ot-games-hud [data-ot="land"]{right:184px;bottom:12px}#ot-games-hud [data-ot="disembark"]{right:184px;bottom:62px}}
 
 #ot-games-hud [data-ot="crew"]{position:absolute;left:calc(50% - 60px);bottom:20px;width:120px;min-height:44px}
 @media(max-height:460px){#ot-games-hud [data-ot="crew"]{left:135px;bottom:12px;width:112px}}
+
+@media(max-width:620px) and (max-height:460px){#ot-games-hud [data-ot="crew"]{bottom:118px}}
