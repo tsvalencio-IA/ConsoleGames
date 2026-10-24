@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "files": [
+    {
+      "path": "games/kart/index.html",
+      "status": 200,
+      "expected": "a05403d033208d29df0ed320a11e5248f6dd706c015410e33a8e37e368584199",
+      "actual": "a05403d033208d29df0ed320a11e5248f6dd706c015410e33a8e37e368584199"
+    },
+    {
+      "path": "games/kart/js/game_kart.js",
+      "status": 200,
+      "expected": "9cb85f003b8f2629ae76f49cef8d828586ef472600f6721e916259bd3005362b",
+      "actual": "9cb85f003b8f2629ae76f49cef8d828586ef472600f6721e916259bd3005362b"
+    },
+    {
+      "path": "games/kart/sw.js",
+      "status": 200,
+      "expected": "a650e11e4933ff4a60eda9addca0e581f292c222c885114ed0b5de2f0217878a",
+      "actual": "a650e11e4933ff4a60eda9addca0e581f292c222c885114ed0b5de2f0217878a"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "status": 200,
+      "expected": "d868abe5a14bcfbb529240354db8b87d39a229ed0d01c38216b9d309983e5bba",
+      "actual": "d868abe5a14bcfbb529240354db8b87d39a229ed0d01c38216b9d309983e5bba"
+    },
+    {
+      "path": "games/tenis/js/game_tennis.js",
+      "status": 200,
+      "expected": "48d3da66c74bbc98189d575b86f7a01d79de93455b712a1e8c548f8286fc9eec",
+      "actual": "48d3da66c74bbc98189d575b86f7a01d79de93455b712a1e8c548f8286fc9eec"
+    },
+    {
+      "path": "games/tenis/control-modes.js",
+      "status": 200,
+      "expected": "4dae81c4bedb2052be035bdcb11fbb9af7434a37fc8cd623930c9a531e59ddf0",
+      "actual": "4dae81c4bedb2052be035bdcb11fbb9af7434a37fc8cd623930c9a531e59ddf0"
+    },
+    {
+      "path": "games/tenis/sw.js",
+      "status": 200,
+      "expected": "b9c7977c20885fe7a2391cd4f19773c481270983938e7f30c05be30a04197896",
+      "actual": "b9c7977c20885fe7a2391cd4f19773c481270983938e7f30c05be30a04197896"
+    },
+    {
+      "path": "games/ar/index.html",
+      "status": 200,
+      "expected": "9d25e2b67ceb8836fe3eeee6122b1094cf92a6f77601fb90cf5971551b212194",
+      "actual": "9d25e2b67ceb8836fe3eeee6122b1094cf92a6f77601fb90cf5971551b212194"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "status": 200,
+      "expected": "36ae5991cb790867430fae9325eeac5abe38c1e94e7699c23f3f856f1e43ce0e",
+      "actual": "36ae5991cb790867430fae9325eeac5abe38c1e94e7699c23f3f856f1e43ce0e"
+    },
+    {
+      "path": "games/ar/multiplayer.js",
+      "status": 200,
+      "expected": "80d4042d21521a497dcb0933aa70726eeb13f1440438ed1e813fc1e8d23bea63",
+      "actual": "80d4042d21521a497dcb0933aa70726eeb13f1440438ed1e813fc1e8d23bea63"
+    },
+    {
+      "path": "games/ar/multiplayer.css",
+      "status": 200,
+      "expected": "c1d62027b7403ee41ed02073535c4516a647b84ea3a0d1d682573d6a8fc5fa4f",
+      "actual": "c1d62027b7403ee41ed02073535c4516a647b84ea3a0d1d682573d6a8fc5fa4f"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "status": 200,
+      "expected": "265063d16be51b66925ca938a15b391e23e0c0f59795e666a3b553400ec57950",
+      "actual": "265063d16be51b66925ca938a15b391e23e0c0f59795e666a3b553400ec57950"
+    },
+    {
+      "path": "games/voo/js/game_flight.js",
+      "status": 200,
+      "expected": "529b897ae0776b852af1c18bcc05fc47f1b79292cdbd767a3a8b346dea128b27",
+      "actual": "529b897ae0776b852af1c18bcc05fc47f1b79292cdbd767a3a8b346dea128b27"
+    }
+  ],
+  "games": [
+    {
+      "slug": "kart",
+      "phase": "arcade",
+      "index": 3,
+      "registered": true
+    },
+    {
+      "slug": "tenis",
+      "phase": "arcade",
+      "index": 3,
+      "registered": true
+    },
+    {
+      "slug": "ar",
+      "phase": "patrol_coop",
+      "index": 3,
+      "registered": true
+    }
+  ],
+  "worldRevision": "5e8f4018347fd162",
+  "errors": [],
+  "scope": "Static bytes and registered original game phases only. No production Firebase rooms or accounts used."
+}

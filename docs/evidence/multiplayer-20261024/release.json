@@ -1,0 +1,49 @@
+{
+  "sourceCommit": "559b4260e1f08c0bc4586339a347034b2e19c25b",
+  "sourceTree": "beac6f08eb42867627fe1a27a2216e6799837e1a",
+  "baseCommit": "44e04ce26ea02996f675b6f0abe269e38c4f16d0",
+  "deploymentId": "dpl_2VTLkEPX6CxH2Ky7fwSXKn52aMSi",
+  "url": "https://otthi-world-campanha-teste.vercel.app",
+  "state": "INITIALIZING",
+  "verifiedAt": "2026-10-24T22:46:53.451523+00:00",
+  "deploymentState": "READY",
+  "aliasError": null,
+  "nodeTests": {
+    "passed": 202,
+    "failed": 0
+  },
+  "twoBrowserClients": {
+    "games": [
+      "kart",
+      "tenis",
+      "ar"
+    ],
+    "backend": "isolated HTTP/SSE fixture",
+    "passed": true
+  },
+  "publicStaticCanary": {
+    "passed": true,
+    "sha256Files": 13,
+    "liveFirebaseRead": false
+  },
+  "consoleCanary": {
+    "passed": true,
+    "cards": 7,
+    "workerVersion": 11
+  },
+  "physicalAndroidTest": false,
+  "productionMultiplayerValidated": false,
+  "reason": "Automatic approval review rejected live Firebase room/session reads because of possible player identifiers/state. No alternate route or rule changes used.",
+  "preserved": {
+    "voo": {
+      "treeBefore": "3b26c902dc9995b4972daacea5ba35cff5ede9b4",
+      "treeAfter": "3b26c902dc9995b4972daacea5ba35cff5ede9b4",
+      "identical": true
+    },
+    "otthi": {
+      "treeBefore": "4961d8ef861d5d60e13b8044d8d2453010ffc564",
+      "treeAfter": "4961d8ef861d5d60e13b8044d8d2453010ffc564",
+      "identical": true
+    }
+  }
+}

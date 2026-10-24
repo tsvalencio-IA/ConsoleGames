@@ -34,3 +34,7 @@ Console com recuperação de acesso: https://otthi-world-campanha-teste.vercel.a
 ## Recuperação do console, já entregue antes desta correção
 
 Fonte `44e04ce26ea02996f675b6f0abe269e38c4f16d0`, deployment `dpl_8dxZB2UEFRVtxB6oXFQPYmFA9b2Z`. Teste reproduziu `ERR_FAILED` com worker v10 e cache vazio; a entrada `/console.html` ativou v11 e abriu os sete jogos. Perda de rede/cache agora retorna tela de recuperação. Perfil, favoritos e caches dos outros jogos preservados. Teste público confirmou os bytes, worker v11 e menu original. Evidências em `docs/evidence/console-access-20261024/`.
+
+## Publicação verificada
+
+Fonte `559b4260e1f08c0bc4586339a347034b2e19c25b`, árvore `beac6f08eb42867627fe1a27a2216e6799837e1a`, deployment `dpl_2VTLkEPX6CxH2Ky7fwSXKn52aMSi`, estado READY, domínio estável atribuído sem erro. O canário público confirmou SHA-256 de 13 arquivos, incluindo os três motores, o novo módulo/CSS do WAR e o motor do avião preservado. O console continuou abrindo sete jogos com worker v11. O canário bloqueou Firebase: confirma a entrega dos arquivos, não uma partida no servidor real. Metadados em `docs/evidence/multiplayer-20261024/release.json` e `public-static-delivery.json`.
