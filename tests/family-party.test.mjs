@@ -9,6 +9,7 @@ function family(){
  vm.runInContext(`let authority=true;const state={avatar:{bodyStyle:'family-thiago'}},player={x:0,z:6,facing:0,vx:0,vz:0},input={};const world={colliders:[],ghosts:new Map()},worldGroup=new THREE.Group(),remotePresence=new Map();const lerp=(a,b,t)=>a+(b-a)*t,lerpAngle=lerp;const waterAt=()=>false,v704RoadAt=()=>false,v704ProtectedRectangles=()=>[],positionBlockedForPlayer=()=>false,groundHeightAt=()=>0,worldLayoutPoint=()=>({x:0,z:0}),createHouse=()=>{},registerInteractable=()=>{},sharedWorldIsAuthority=()=>authority,sharedWorldOwnId=()=> 'party-test',saveState=()=>{},toast=()=>{},beep=()=>{},buildRoutePoints=(a,b)=>[b];`,c);
  vm.runInContext(readFileSync('games/otthi/family-mascots.js','utf8'),c);
  vm.runInContext(readFileSync('games/otthi/src/modules/41-family-adventure.js','utf8'),c);
+ vm.runInContext('const otGames={active:false};', c);vm.runInContext(readFileSync('games/otthi/src/modules/48-family-transport.js','utf8'),c);
  vm.runInContext('initFamilyAdventure()',c);
  return code=>vm.runInContext(code,c);
 }

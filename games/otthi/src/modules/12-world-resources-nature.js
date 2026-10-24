@@ -9,7 +9,8 @@
  */
 // @otthi-module-body
   function isInteractionAvailable(entry) {
-    if (entry.disabled) return false;
+    if (!entry || entry.disabled || (typeof entry.available==='function'&&!entry.available())) return false;
+    if(entry.vehicleOnly&&!player.vehicle)return false;
     if (currentHouse) return entry.houseId === currentHouse.id || entry.globalInside;
     return !entry.houseId;
   }

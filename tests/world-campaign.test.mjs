@@ -32,7 +32,7 @@ function fixture(){
   const context={
     window:{},document,THREE:three,worldGroup:new Group(),scene:new Group(),player,
     otGames,running:true,paused:false,state:{profile:{playerId:'test-player'}},cameraYaw:0,
-    groundHeightAt:()=>0,
+    v704WorldBounds:()=>({minX:-290,maxX:290,minZ:-290,maxZ:290}),groundHeightAt:()=>0,
     safeLocalGet:key=>saved.get(key)||null,
     safeLocalSet:(key,value)=>saved.set(key,value),
     toast:(...args)=>toastCalls.push(args),closeModal(){},setWaypoint(id){waypoints.push(id);},

@@ -105,7 +105,7 @@
       "startLine": 2514,
       "endLine": 2741,
       "description": "Interações do mundo, árvores, rochas, mina, poço, ruas, água e móveis",
-      "sha256Body": "36f3eb4b6edbdf6cc1dc4a767d78af0a7ebdbc4cdd07cfd1493de37f94a1af6e"
+      "sha256Body": "588b88cfd8e741a401a3626367be27cbe765acfe674c4033e96429e090510692"
     },
     {
       "file": "src/modules/13-houses-npcs-vehicles-base.js",
@@ -196,7 +196,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "953055e455dc04923d24e90b7d14a6dce3349047ce146933626ea4dd9ccde904"
+      "sha256Body": "37d806e5318821618d9502900b022aa722df1a48ddcb77b0ee70e7d181c970f1"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -238,28 +238,28 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Multiplayer Core V2: movimento interpolado, autoridade, eventos e partidas autoritativas",
-      "sha256Body": "46761409602779ed6a61f2fac0957b9929b7940c068fc47cd833dcb350cb4050"
+      "sha256Body": "218b9405f076ffaa2b1216795d08d7988bbc2df8829667934aed0c98a65852c7"
     },
     {
       "file": "src/modules/28-multiplayer-social-online.js",
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "537038433e557a60c590908d8b1c8ee939176275a4a3ff0666e5e1a1f2858302"
+      "sha256Body": "c956d4b51c4e522328cb2e988451177d097733ea3c541d3fa7f9a0eb8a3ca9a7"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "30bb2500d8de1cc8dce3d4ce069d1a039c4a2fc20e82a4733b9ee7060b9b1f46"
+      "sha256Body": "9f9f0ca2ebf973065d7d39d836b6b7a44b472fc9a2ba62ae4187b825bdd15160"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "bf277453cabd8ef370807b124df9bbe1d844d6af64edb14182d144fc261e00bd"
+      "sha256Body": "e4b2f8d3d3d9b1276c623bcadbef96c3facf6329f2a0f83322a39b57994460c7"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -343,21 +343,21 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "f1c67f12256535b72a936c35c6c175a3e360e3c80e33ce240ff8e3bd4f32d756"
+      "sha256Body": "80e7ccf4121aa56d39ac1f4ddd1e42a113912e6355ecb42fda2ae7d80af9fc27"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "82f47fae5016bb482cb455f2f494205536d03561db0aaa2dece7a4b30e3a71a3"
+      "sha256Body": "54154abfb51a9d33af6a6531e01fff08a099da7b316bfc9fcdb611812608d4bb"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "968f522aadb27bdc27a721a85145e2598d078faa1b487ce1d86b0644d7e6aab8"
+      "sha256Body": "2e0c04b35d8458849454d2134c0ef78d08366f8c29af7989bf280d921bdaf28f"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -379,6 +379,27 @@
       "endLine": 0,
       "description": "Cidades, autódromos e veículos GLB no mundo unificado",
       "sha256Body": "df8f5c1ba823336052d325f17a04f5c548b3ccb1333978999a6ffe725346e806"
+    },
+    {
+      "file": "assets/js/vehicles/brazilian-models.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Modelos originais brasileiros compartilhados",
+      "sha256Body": "2cac092a6eed769a9a6aa654ae9fd2fcbf47d4e1e193151cb41269943fbb3e50"
+    },
+    {
+      "file": "src/modules/48-family-transport.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Família embarcada nos veículos reais",
+      "sha256Body": "f289723f49cfa861f05d60da8351f5a326a3b036310f505970847e2ff9d4b328"
+    },
+    {
+      "file": "src/modules/49-brazilian-vehicles.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Frota brasileira integrada à oficina, física e multiplayer",
+      "sha256Body": "4078b8437c2427d8f2a7b1b5ce8758c8f6f484cfb359de87c61b76ae3dd966a2"
     }
   ],
   "styles": [
@@ -541,7 +562,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "e8992514a0ec03a0e81e55496a8f8c4b6e9b9faaaf0f9729ea30be7432940532"
+      "sha256Body": "cb6678f1ffa0191a17f938c7fa116f18e16bddd99ec18b2d53aba4831671e988"
     },
     {
       "file": "src/styles/22-world-activity-venues.css",

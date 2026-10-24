@@ -237,11 +237,12 @@
     if(!authority){const host=remotePresence.get(sharedWorldAuthorityId()),snapshot=(typeof multiplayerV2WorldSnapshot==='function'?multiplayerV2WorldSnapshot():null)||host?.sharedScene;familyApplySnapshot(snapshot?.f,dt);}
     else{
       if(familyWorld.restoreParty){familyWorld.restoreParty=false;if(!familyWorld.walkOwner)familyApplyCommand('party',familyProgress().party,sharedWorldOwnId(),player);}
-      const owner=familyOwnerPosition(familyWorld.walkOwner),follow=owner&&!owner.vehicle?owner:null;
+      const owner=familyOwnerPosition(familyWorld.walkOwner),follow=owner&&!familyRideForOwner(familyWorld.walkOwner)?owner:null;
       if(familyWorld.walkOwner&&!owner){familyWorld.walkOwner='';familyWorld.walkMembers=[];familyWorld.walkController='';}
       if(follow){const actual=familyCharacterId(owner.avatar?.bodyStyle||(familyWorld.walkOwner===sharedWorldOwnId()?state.avatar?.bodyStyle:''));if(actual!==familyWorld.walkController){familyWorld.walkController=actual;if(actual&&!familyWorld.walkMembers.includes(actual))familyWorld.walkMembers.push(actual);}}
       const companions=familyWorld.walkMembers.filter(id=>id!==familyWorld.walkController);
       for(const [index,a] of Object.values(familyWorld.actors).entries()){
+        if(familyRideForOwner(familyWorld.walkOwner)&&familyWorld.walkMembers.includes(a.id))continue;
         if(familyWorld.ball&&a.id===familyWorld.ball.dog)continue;
         if(follow&&a.id===familyWorld.walkController){a.x=follow.x;a.z=follow.z;a.heading=follow.facing??follow.r??0;a.moving=Math.hypot(follow.vx||0,follow.vz||0)>.2?1:0;continue;}
         const following=!!follow&&companions.includes(a.id),slot=companions.indexOf(a.id),heading=(follow?.facing??follow?.r??0),side=(slot-(companions.length-1)/2)*1.15;
@@ -255,17 +256,19 @@
         else if(b.stage==='return'){b.at={x:dog.x+Math.sin(dog.heading)*.4,y:groundHeightAt(dog.x,dog.z)+.55,z:dog.z+Math.cos(dog.heading)*.4};if(familyMove(dog,origin,5.1,dt)){familyWorld.ack={id:b.id,dog:b.dog,owner:b.owner};familyCollectAck(familyWorld.ack);familyWorld.ball=null;}}
       }
     }
+    updateFamilyCarry();updateFamilyRemoteAircraft(dt);
     const progress=familyProgress(),park=worldLayoutPoint('playground',{x:-28,z:-40});
     if(familyWorld.walkOwner===sharedWorldOwnId()&&Math.hypot(player.x-park.x,player.z-park.z)<12&&familyWorld.walkMembers.every(id=>Math.hypot(familyWorld.actors[id].x-park.x,familyWorld.actors[id].z-park.z)<14)&&!progress.flags.park){progress.flags.park=true;saveState();toast('Passeio em família concluído no parque!','good',2300);}
     const visible=Object.values(familyWorld.actors).some(a=>Math.hypot(player.x-a.x,player.z-a.z)<90);
     for(const a of Object.values(familyWorld.actors)){
       const controlled=familyWorld.walkOwner&&a.id===familyWorld.walkController&&performance.now()>Number(familyWorld.portraitUntil||0);
-      a.group.visible=visible&&!controlled;a.shadow.visible=visible&&!controlled;if(a.label){a.label.visible=visible&&!controlled&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible)continue;
+      a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible)continue;
       const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>familyWorld.clock;
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
       else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
+      if(a.ridePose&&!dog)for(const joint of a.joints){if(/^hip-?1$/.test(joint.name))joint.rot[0]=-1.25;if(/^knee-?1$/.test(joint.name))joint.rot[0]=1.25;if(/^ankle-?1$/.test(joint.name))joint.rot[0]=0;}
       for(let i=0;i<a.bones.length;i++){const rot=a.joints[i].rot;a.bones[i].rotation.set(rot[0],rot[1],rot[2],'YXZ');}
-      const y=groundHeightAt(a.x,a.z);a.group.position.set(a.x,y+(dog ? .012 : -.038),a.z);a.group.rotation.y=a.heading;a.shadow.position.set(a.x,y+.025,a.z);
+      const y=groundHeightAt(a.x,a.z);if(a.ridePose){const p=a.ridePose;a.group.position.set(p.x,p.y,p.z);a.group.quaternion.copy(p.q);a.group.scale.setScalar(a.scale*p.scale);}else{a.group.position.set(a.x,y+(dog ? .012 : -.038),a.z);a.group.rotation.set(0,a.heading,0);a.group.scale.setScalar(a.scale);}a.shadow.position.set(a.x,y+.025,a.z);
     }
     const b=familyWorld.ball;familyWorld.toyMesh.visible=!!b&&visible;
     if(b){const mesh=familyWorld.toyMesh;mesh.position.set(b.at.x,b.stage==='flight'?b.at.y+groundHeightAt(b.at.x,b.at.z):b.at.y,b.at.z);mesh.scale.set(b.kind==='disk'?1.5:b.kind==='bone'?1.6:1,b.kind==='disk'?.3:b.kind==='bone'?.6:1,1);mesh.rotation.y+=dt*7;}
@@ -308,4 +311,4 @@
     });
   }
   window.addEventListener('otthi:event-v2',event=>{const e=event.detail;if(e?.kind!=='family-command'||!sharedWorldIsAuthority()||!e.actorUid)return;familyApplyCommand(e.payload?.kind,e.payload||{},String(e.actorUid),remotePresence.get(String(e.actorUid)));});
-  window.OTTHI_FAMILY={remoteAvatars:()=>[...world.ghosts.entries()].map(([uid,g])=>({uid,id:g.userData.familyAvatar?.id||'',bones:g.userData.familyAvatar?.bones.length||0,visible:!!g.userData.familyAvatar?.group.visible&&g.visible,signature:g.userData.avatarSignature})),playerAvatar:()=>{const v=playerModel?.userData?.familyAvatar;return v?{id:v.id,bones:v.bones.length,meshVisible:v.mesh.visible&&v.group.visible&&playerModel.visible,baseHidden:!playerModel.userData.parts.body.parent.visible,position:playerGroup.position.toArray(),arm:v.byName.shoulder1.rotation.toArray(),leg:v.byName['hip1'].rotation.toArray(),toolInHand:!!toolVisual&&toolVisual.parent===v.byName.hand1}:null;},open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),party:{owner:familyWorld.walkOwner,controller:familyWorld.walkController,members:[...familyWorld.walkMembers]},authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
+  window.OTTHI_FAMILY={remoteAvatars:()=>[...world.ghosts.entries()].map(([uid,g])=>({uid,id:g.userData.familyAvatar?.id||'',bones:g.userData.familyAvatar?.bones.length||0,visible:!!g.userData.familyAvatar?.group.visible&&g.visible,signature:g.userData.avatarSignature})),playerAvatar:()=>{const v=playerModel?.userData?.familyAvatar;return v?{id:v.id,bones:v.bones.length,meshVisible:v.mesh.visible&&v.group.visible&&playerModel.visible,baseHidden:!playerModel.userData.parts.body.parent.visible,position:playerGroup.position.toArray(),arm:v.byName.shoulder1.rotation.toArray(),leg:v.byName['hip1'].rotation.toArray(),toolInHand:!!toolVisual&&toolVisual.parent===v.byName.hand1}:null;},open:openFamilyAdventure,cameraFrame:familyCameraFrame,throwToy:(dog='luna')=>familyCommand('throw',{dog}),startWalk:()=>familyCommand('walk'),snapshot:familySnapshot,diagnostics:()=>({ready:familyWorld.ready,home:familyWorld.location,actors:Object.values(familyWorld.actors).map(a=>({id:a.id,x:a.x,z:a.z,bones:a.bones.length,vertices:a.vertices,uniqueVertices:a.uniqueVertices,drawCalls:1})),progress:familyProgress(),party:{owner:familyWorld.walkOwner,controller:familyWorld.walkController,members:[...familyWorld.walkMembers]},ride:familyWorld.ride||null,seated:Object.values(familyWorld.actors).filter(a=>a.ridePose).map(a=>({id:a.id,visible:a.group.visible,position:a.group.position.toArray(),scale:a.group.scale.x,seat:a.ridePose.seat})),authority:sharedWorldIsAuthority(),ball:familyWorld.ball?.stage||null}),applySnapshot:familyApplySnapshot};
