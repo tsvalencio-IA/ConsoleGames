@@ -1,0 +1,1174 @@
+{
+  "passed": true,
+  "initial": {
+    "ready": true,
+    "garage": {
+      "x": 45,
+      "z": 45
+    },
+    "catalog": [
+      "fusca",
+      "gol",
+      "uno",
+      "kombi",
+      "golf",
+      "opala",
+      "chevette",
+      "s10",
+      "hilux",
+      "amarok",
+      "saveiro",
+      "constellation"
+    ],
+    "garageCatalog": [
+      {
+        "id": "garage-orange",
+        "label": "Volkswagen Gol quadrado",
+        "category": "small",
+        "price": 0
+      },
+      {
+        "id": "lego-moto",
+        "label": "LEGO • Moto",
+        "category": "moto",
+        "price": 220
+      },
+      {
+        "id": "home-green",
+        "label": "Volkswagen Kombi",
+        "category": "utility",
+        "price": 340
+      },
+      {
+        "id": "country-brown",
+        "label": "Volkswagen Constellation · carga",
+        "category": "truck",
+        "price": 480
+      },
+      {
+        "id": "market-blue",
+        "label": "Fiat Uno clássico",
+        "category": "small",
+        "price": 190
+      },
+      {
+        "id": "minecraft-moto",
+        "label": "Minecraft / Manycraft • Moto",
+        "category": "moto",
+        "price": 230
+      },
+      {
+        "id": "gym-yellow",
+        "label": "Toyota Hilux",
+        "category": "utility",
+        "price": 420
+      },
+      {
+        "id": "minecraft-truck",
+        "label": "Volkswagen Constellation · rodoviário",
+        "category": "truck",
+        "price": 560
+      },
+      {
+        "id": "city-white",
+        "label": "Volkswagen Golf",
+        "category": "small",
+        "price": 260
+      },
+      {
+        "id": "playmobil-moto",
+        "label": "Playmobil • Moto",
+        "category": "moto",
+        "price": 240
+      },
+      {
+        "id": "playmobil-utility",
+        "label": "Volkswagen Saveiro Cross",
+        "category": "utility",
+        "price": 390
+      },
+      {
+        "id": "forest-teal",
+        "label": "Volkswagen Constellation · trabalho",
+        "category": "truck",
+        "price": 520
+      },
+      {
+        "id": "workshop-red",
+        "label": "Chevrolet Chevette",
+        "category": "small",
+        "price": 430
+      },
+      {
+        "id": "mario-moto",
+        "label": "Mario World • Moto",
+        "category": "moto",
+        "price": 280
+      },
+      {
+        "id": "adventure-black",
+        "label": "Volkswagen Amarok",
+        "category": "utility",
+        "price": 520
+      },
+      {
+        "id": "royal-purple",
+        "label": "Volkswagen Constellation · especial",
+        "category": "truck",
+        "price": 700
+      },
+      {
+        "id": "br-fusca",
+        "label": "Volkswagen Fusca",
+        "category": "small",
+        "price": 210
+      },
+      {
+        "id": "br-opala",
+        "label": "Chevrolet Opala SS",
+        "category": "small",
+        "price": 540
+      },
+      {
+        "id": "br-s10",
+        "label": "Chevrolet S10",
+        "category": "utility",
+        "price": 480
+      }
+    ],
+    "cars": [
+      {
+        "id": "ottovias-service",
+        "model": "s10",
+        "label": "Chevrolet S10",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 56,
+        "z": -109.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "garage-orange",
+        "model": "gol",
+        "label": "Gol quadrado",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 51.5,
+        "z": 42.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "market-blue",
+        "model": "uno",
+        "label": "Uno clássico",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 49.742640687119284,
+        "z": 46.44264068711929,
+        "legacyVisible": 0
+      },
+      {
+        "id": "city-white",
+        "model": "golf",
+        "label": "Volkswagen Golf",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 45.5,
+        "z": 48.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "workshop-red",
+        "model": "chevette",
+        "label": "Chevrolet Chevette",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 41.257359312880716,
+        "z": 46.44264068711929,
+        "legacyVisible": 0
+      },
+      {
+        "id": "home-green",
+        "model": "kombi",
+        "label": "Kombi clássica",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 39.5,
+        "z": 42.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "gym-yellow",
+        "model": "hilux",
+        "label": "Toyota Hilux",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 41.25735931288071,
+        "z": 37.95735931288072,
+        "legacyVisible": 0
+      },
+      {
+        "id": "playmobil-utility",
+        "model": "saveiro",
+        "label": "Volkswagen Saveiro Cross",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 48.5,
+        "z": 37.00384757729337,
+        "legacyVisible": 0
+      },
+      {
+        "id": "adventure-black",
+        "model": "amarok",
+        "label": "Volkswagen Amarok",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 52.42820323027551,
+        "z": 38.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "br-fusca",
+        "model": "fusca",
+        "label": "Fusca",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 55.5,
+        "z": 42.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "br-opala",
+        "model": "opala",
+        "label": "Chevrolet Opala SS",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 54.16025403784439,
+        "z": 47.2,
+        "legacyVisible": 0
+      },
+      {
+        "id": "br-s10",
+        "model": "s10",
+        "label": "Chevrolet S10",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 38.428932188134524,
+        "z": 49.27106781186548,
+        "legacyVisible": 0
+      },
+      {
+        "id": "country-brown",
+        "model": "constellation",
+        "label": "Volkswagen Constellation",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 6,
+        "service": "",
+        "serviceLights": 0,
+        "x": 35.84074173710932,
+        "z": 44.788190451025216,
+        "legacyVisible": 0
+      },
+      {
+        "id": "forest-teal",
+        "model": "constellation",
+        "label": "Volkswagen Constellation",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 6,
+        "service": "",
+        "serviceLights": 0,
+        "x": 35.84074173710932,
+        "z": 39.6118095489748,
+        "legacyVisible": 0
+      },
+      {
+        "id": "minecraft-truck",
+        "model": "constellation",
+        "label": "Volkswagen Constellation",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 6,
+        "service": "",
+        "serviceLights": 0,
+        "x": 37.014718625761425,
+        "z": 33.714718625761435,
+        "legacyVisible": 0
+      },
+      {
+        "id": "royal-purple",
+        "model": "constellation",
+        "label": "Volkswagen Constellation",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 6,
+        "service": "",
+        "serviceLights": 0,
+        "x": 51.5,
+        "z": 31.80769515458674,
+        "legacyVisible": 0
+      },
+      {
+        "id": "city-aurora-coupe-0",
+        "model": "fusca",
+        "label": "Fusca azul",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 289,
+        "z": -49,
+        "legacyVisible": 0
+      },
+      {
+        "id": "city-aurora-coupe-1",
+        "model": "opala",
+        "label": "Chevrolet Opala SS",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": 311,
+        "z": -31,
+        "legacyVisible": 0
+      },
+      {
+        "id": "city-costa-coupe-0",
+        "model": "golf",
+        "label": "Volkswagen Golf",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": -311,
+        "z": 101,
+        "legacyVisible": 0
+      },
+      {
+        "id": "city-costa-coupe-1",
+        "model": "saveiro",
+        "label": "Volkswagen Saveiro Cross",
+        "occupied": false,
+        "visible": false,
+        "rendered": true,
+        "wheels": 4,
+        "service": "",
+        "serviceLights": 0,
+        "x": -289,
+        "z": 119,
+        "legacyVisible": 0
+      },
+      {
+        "id": "patrol-1",
+        "model": "hilux",
+        "label": "Toyota Hilux · Polícia",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 4,
+        "service": "police",
+        "serviceLights": 2,
+        "x": 65.80215577537355,
+        "z": -17.2222060188247,
+        "legacyVisible": 0
+      },
+      {
+        "id": "patrol-2",
+        "model": "hilux",
+        "label": "Toyota Hilux · Polícia",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 4,
+        "service": "police",
+        "serviceLights": 2,
+        "x": -54.95170045583245,
+        "z": 13.8965872656585,
+        "legacyVisible": 0
+      },
+      {
+        "id": "fire-01",
+        "model": "constellation",
+        "label": "Volkswagen Constellation · Bombeiros",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 6,
+        "service": "firefighter",
+        "serviceLights": 2,
+        "x": 65,
+        "z": -28,
+        "legacyVisible": 0
+      },
+      {
+        "id": "fire-02",
+        "model": "constellation",
+        "label": "Volkswagen Constellation · Bombeiros",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 6,
+        "service": "firefighter",
+        "serviceLights": 2,
+        "x": 65,
+        "z": -36,
+        "legacyVisible": 0
+      },
+      {
+        "id": "ambulance-1",
+        "model": "kombi",
+        "label": "Kombi clássica · Resgate",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 4,
+        "service": "paramedic",
+        "serviceLights": 2,
+        "x": 65,
+        "z": -44,
+        "legacyVisible": 0
+      },
+      {
+        "id": "ambulance-2",
+        "model": "kombi",
+        "label": "Kombi clássica · Resgate",
+        "occupied": false,
+        "visible": true,
+        "rendered": true,
+        "wheels": 4,
+        "service": "paramedic",
+        "serviceLights": 2,
+        "x": 65,
+        "z": -52,
+        "legacyVisible": 0
+      }
+    ],
+    "traffic": [
+      {
+        "id": "ottovias-azul",
+        "model": "fusca",
+        "color": 2590930,
+        "rendered": true
+      },
+      {
+        "id": "ottovias-amarelo",
+        "model": "gol",
+        "color": 15051830,
+        "rendered": true
+      },
+      {
+        "id": "ottovias-verde",
+        "model": "s10",
+        "color": 4168549,
+        "rendered": true
+      },
+      {
+        "id": "ottovias-vinho",
+        "model": "opala",
+        "color": 11028309,
+        "rendered": true
+      },
+      {
+        "id": "ottovias-prata",
+        "model": "golf",
+        "color": 11450818,
+        "rendered": true
+      },
+      {
+        "id": "ottovias-carga",
+        "model": "constellation",
+        "color": 2519437,
+        "rendered": true
+      },
+      {
+        "id": "aurora-0",
+        "model": "fusca",
+        "color": 2590930,
+        "rendered": true
+      },
+      {
+        "id": "aurora-1",
+        "model": "amarok",
+        "color": 6595512,
+        "rendered": true
+      },
+      {
+        "id": "aurora-2",
+        "model": "chevette",
+        "color": 14599022,
+        "rendered": true
+      },
+      {
+        "id": "costa-0",
+        "model": "hilux",
+        "color": 13664086,
+        "rendered": true
+      },
+      {
+        "id": "costa-1",
+        "model": "saveiro",
+        "color": 6595512,
+        "rendered": true
+      },
+      {
+        "id": "costa-2",
+        "model": "opala",
+        "color": 14599022,
+        "rendered": true
+      }
+    ],
+    "npcCars": [
+      {
+        "id": "ottovias-patrol",
+        "model": "s10",
+        "rendered": true
+      },
+      {
+        "id": "maya",
+        "model": "opala",
+        "rendered": true
+      },
+      {
+        "id": "davi",
+        "model": "fusca",
+        "rendered": true
+      }
+    ],
+    "display": [
+      {
+        "id": "market-blue",
+        "model": "uno",
+        "visible": true,
+        "x": 37.5,
+        "z": 39.25
+      },
+      {
+        "id": "city-white",
+        "model": "golf",
+        "visible": true,
+        "x": 33,
+        "z": 39.25
+      },
+      {
+        "id": "workshop-red",
+        "model": "chevette",
+        "visible": true,
+        "x": 28.5,
+        "z": 39.25
+      },
+      {
+        "id": "home-green",
+        "model": "kombi",
+        "visible": true,
+        "x": 37.5,
+        "z": 41.55
+      },
+      {
+        "id": "gym-yellow",
+        "model": "hilux",
+        "visible": true,
+        "x": 33,
+        "z": 41.55
+      },
+      {
+        "id": "playmobil-utility",
+        "model": "saveiro",
+        "visible": true,
+        "x": 28.5,
+        "z": 41.55
+      },
+      {
+        "id": "adventure-black",
+        "model": "amarok",
+        "visible": true,
+        "x": 37.5,
+        "z": 43.85
+      },
+      {
+        "id": "br-fusca",
+        "model": "fusca",
+        "visible": true,
+        "x": 33,
+        "z": 43.85
+      },
+      {
+        "id": "br-opala",
+        "model": "opala",
+        "visible": true,
+        "x": 28.5,
+        "z": 43.85
+      },
+      {
+        "id": "br-s10",
+        "model": "s10",
+        "visible": true,
+        "x": 37.5,
+        "z": 46.15
+      },
+      {
+        "id": "country-brown",
+        "model": "constellation",
+        "visible": true,
+        "x": 33,
+        "z": 46.15
+      },
+      {
+        "id": "forest-teal",
+        "model": "constellation",
+        "visible": true,
+        "x": 28.5,
+        "z": 46.15
+      },
+      {
+        "id": "minecraft-truck",
+        "model": "constellation",
+        "visible": true,
+        "x": 37.5,
+        "z": 48.45
+      },
+      {
+        "id": "royal-purple",
+        "model": "constellation",
+        "visible": true,
+        "x": 33,
+        "z": 48.45
+      },
+      {
+        "id": "lego-moto",
+        "visible": true,
+        "x": 28.5,
+        "z": 48.45
+      },
+      {
+        "id": "minecraft-moto",
+        "visible": true,
+        "x": 37.5,
+        "z": 50.75
+      },
+      {
+        "id": "playmobil-moto",
+        "visible": true,
+        "x": 33,
+        "z": 50.75
+      },
+      {
+        "id": "mario-moto",
+        "visible": true,
+        "x": 28.5,
+        "z": 50.75
+      }
+    ],
+    "remote": [],
+    "active": null
+  },
+  "results": [
+    {
+      "id": "garage-orange",
+      "model": "gol",
+      "paint": "f28a22",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.2881,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.2881,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.3981,
+            "y": 0.30500000000000005,
+            "z": -0.61
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.17810000000000004,
+            "y": 0.30500000000000005,
+            "z": -0.61
+          }
+        }
+      ],
+      "remoteModel": "gol"
+    },
+    {
+      "id": "market-blue",
+      "model": "uno",
+      "paint": "3b8f52",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.2838,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.2838,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.3938,
+            "y": 0.30500000000000005,
+            "z": -0.62
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.1738,
+            "y": 0.30500000000000005,
+            "z": -0.62
+          }
+        }
+      ],
+      "remoteModel": "uno"
+    },
+    {
+      "id": "city-white",
+      "model": "golf",
+      "paint": "f2f4f6",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.30745,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.30745,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.41745,
+            "y": 0.30500000000000005,
+            "z": -0.63
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.19745000000000001,
+            "y": 0.30500000000000005,
+            "z": -0.63
+          }
+        }
+      ],
+      "remoteModel": "golf"
+    },
+    {
+      "id": "workshop-red",
+      "model": "chevette",
+      "paint": "d83b35",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.28595000000000004,
+            "y": 0.29000000000000004,
+            "z": 0.02
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.28595000000000004,
+            "y": 0.29000000000000004,
+            "z": 0.02
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.39595,
+            "y": 0.30500000000000005,
+            "z": -0.57
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.17595000000000005,
+            "y": 0.30500000000000005,
+            "z": -0.57
+          }
+        }
+      ],
+      "remoteModel": "chevette"
+    },
+    {
+      "id": "home-green",
+      "model": "kombi",
+      "paint": "31a76a",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.30529999999999996,
+            "y": 0.38,
+            "z": 0.84
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.30529999999999996,
+            "y": 0.38,
+            "z": 0.84
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.41529999999999995,
+            "y": 0.395,
+            "z": -0.32999999999999996
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.19529999999999997,
+            "y": 0.395,
+            "z": -0.32999999999999996
+          }
+        }
+      ],
+      "remoteModel": "kombi"
+    },
+    {
+      "id": "gym-yellow",
+      "model": "hilux",
+      "paint": "6b7f45",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.34185,
+            "y": 0.41000000000000003,
+            "z": 0.21
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.34185,
+            "y": 0.41000000000000003,
+            "z": 0.21
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.45185,
+            "y": 0.42500000000000004,
+            "z": -0.39999999999999997
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.23185,
+            "y": 0.42500000000000004,
+            "z": -0.39999999999999997
+          }
+        }
+      ],
+      "remoteModel": "hilux"
+    },
+    {
+      "id": "playmobil-utility",
+      "model": "saveiro",
+      "paint": "f1d04b",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.30745,
+            "y": 0.41000000000000003,
+            "z": 0.08
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.30745,
+            "y": 0.41000000000000003,
+            "z": 0.08
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.41745,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.19745000000000001,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        }
+      ],
+      "remoteModel": "saveiro"
+    },
+    {
+      "id": "adventure-black",
+      "model": "amarok",
+      "paint": "2e3540",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.35474999999999995,
+            "y": 0.41000000000000003,
+            "z": 0.22
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.35474999999999995,
+            "y": 0.41000000000000003,
+            "z": 0.22
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.46474999999999994,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.24474999999999997,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        }
+      ],
+      "remoteModel": "amarok"
+    },
+    {
+      "id": "br-fusca",
+      "model": "fusca",
+      "paint": "2788d2",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.214,
+            "y": 0.32,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.214,
+            "y": 0.32,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.324,
+            "y": 0.335,
+            "z": -0.64
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.104,
+            "y": 0.335,
+            "z": -0.64
+          }
+        }
+      ],
+      "remoteModel": "fusca"
+    },
+    {
+      "id": "br-opala",
+      "model": "opala",
+      "paint": "397d49",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.32465,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.32465,
+            "y": 0.29000000000000004,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.43465,
+            "y": 0.30500000000000005,
+            "z": -0.63
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.21465,
+            "y": 0.30500000000000005,
+            "z": -0.63
+          }
+        }
+      ],
+      "remoteModel": "opala"
+    },
+    {
+      "id": "br-s10",
+      "model": "s10",
+      "paint": "1a5490",
+      "seated": [
+        {
+          "id": "thiago",
+          "seat": {
+            "x": -0.33325,
+            "y": 0.41000000000000003,
+            "z": 0.18
+          }
+        },
+        {
+          "id": "thamis",
+          "seat": {
+            "x": 0.33325,
+            "y": 0.41000000000000003,
+            "z": 0.18
+          }
+        },
+        {
+          "id": "luna",
+          "seat": {
+            "x": -0.44325,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        },
+        {
+          "id": "liz",
+          "seat": {
+            "x": -0.22325,
+            "y": 0.42500000000000004,
+            "z": -0.41
+          }
+        }
+      ],
+      "remoteModel": "s10"
+    }
+  ],
+  "road": {
+    "passed": true,
+    "samples": 2326,
+    "failures": []
+  },
+  "errors": [],
+  "limits": [
+    "Software-rendered mobile Chromium; online protocol playback, not two physical clients."
+  ]
+}

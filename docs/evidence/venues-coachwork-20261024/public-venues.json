@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "label": "tenis-portrait",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": false,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "tenis-portrait-retry",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": true,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    }
+  ]
+}

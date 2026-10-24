@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "label": "tenis-portrait",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": false,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "tenis-landscape",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": false,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "tenis-portrait-retry",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": true,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "boxe-landscape",
+      "passed": true,
+      "originalGame": "box_pro",
+      "failedFrameRecovered": false,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    },
+    {
+      "label": "desktop-failed-frame",
+      "passed": true,
+      "originalGame": "tennis",
+      "failedFrameRecovered": true,
+      "completedMatch": false,
+      "activityNavigations": 0,
+      "partyPreserved": true,
+      "balancePreserved": true,
+      "positionPreserved": true,
+      "errors": []
+    }
+  ]
+}

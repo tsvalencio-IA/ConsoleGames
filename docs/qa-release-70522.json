@@ -1,0 +1,146 @@
+{
+  "build": "705.22.1-venues-coachwork",
+  "revision": "5e8f4018347fd162",
+  "sourceCommit": "cc8eea25f780d834f61ccaee8f287bcd222215f8",
+  "sourceTree": "f11b192fd67965c5e4dc49a0bfdbd0db0e1c4f43",
+  "deployment": "dpl_7F82b3o4UjprD3qdDAj12nii4F1y",
+  "publicUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "unit": {
+    "passed": 194,
+    "failed": 0
+  },
+  "localVenues": {
+    "passed": true,
+    "results": [
+      {
+        "label": "tenis-portrait",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": false,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      },
+      {
+        "label": "tenis-landscape",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": false,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      },
+      {
+        "label": "tenis-portrait-retry",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": true,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      },
+      {
+        "label": "boxe-landscape",
+        "passed": true,
+        "originalGame": "box_pro",
+        "failedFrameRecovered": false,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      },
+      {
+        "label": "desktop-failed-frame",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": true,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      }
+    ]
+  },
+  "publicVenues": {
+    "passed": true,
+    "results": [
+      {
+        "label": "tenis-portrait",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": false,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      },
+      {
+        "label": "tenis-portrait-retry",
+        "passed": true,
+        "originalGame": "tennis",
+        "failedFrameRecovered": true,
+        "completedMatch": false,
+        "activityNavigations": 0,
+        "partyPreserved": true,
+        "balancePreserved": true,
+        "positionPreserved": true,
+        "errors": []
+      }
+    ]
+  },
+  "publicDelivery": {
+    "passed": true,
+    "matchedFiles": 33
+  },
+  "worldUpdate": {
+    "passed": true,
+    "build": "705.22.1-venues-coachwork",
+    "revision": "5e8f4018347fd162",
+    "results": [
+      {
+        "scenario": "stale-config",
+        "automaticRecovery": true,
+        "preserved": true
+      },
+      {
+        "scenario": "real-worker-upgrade",
+        "waitedForPageReady": true,
+        "preserved": true
+      },
+      {
+        "scenario": "offline-after-upgrade",
+        "coherent": true,
+        "preserved": true
+      }
+    ],
+    "errors": []
+  },
+  "fleet": {
+    "passengerModels": 11,
+    "renderedTypes": 12,
+    "ownedFixture": 19,
+    "passed": true,
+    "validatedAtRevision": "6758b172d6bb3545",
+    "unchangedInFinalAccountHeaderFix": true
+  },
+  "limits": [
+    "Chromium mobile emulation and software WebGL.",
+    "No physical Android installation or camera calibration.",
+    "Remote appearance protocol playback, not two-device online play."
+  ]
+}

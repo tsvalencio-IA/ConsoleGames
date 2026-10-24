@@ -1,0 +1,206 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.22.1-venues-coachwork",
+  "revision": "5e8f4018347fd162",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "expected": "7d0ad7b19b6c188d8f081d2b72a6fe4f42ce999b64c690f677c51a45f0aa37e6",
+      "actual": "7d0ad7b19b6c188d8f081d2b72a6fe4f42ce999b64c690f677c51a45f0aa37e6"
+    },
+    {
+      "path": "game-audio.js",
+      "status": 200,
+      "expected": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
+      "actual": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413"
+    },
+    {
+      "path": "console-world.js",
+      "status": 200,
+      "expected": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
+      "actual": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553"
+    },
+    {
+      "path": "console-world.css",
+      "status": 200,
+      "expected": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
+      "actual": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d"
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "expected": "52afa3f2978535368abd77a7f6dd08a73cec2bc023f027a956d14558ebc5e794",
+      "actual": "52afa3f2978535368abd77a7f6dd08a73cec2bc023f027a956d14558ebc5e794"
+    },
+    {
+      "path": "assets/vendor/three-r128.min.js",
+      "status": 200,
+      "expected": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+      "actual": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+    },
+    {
+      "path": "assets/js/core/runtime-config.js",
+      "status": 200,
+      "expected": "0b4caeaa591ebb3df4e1ba4f501d91c8a9297ec3cfb1eed42eae10e6da1f8ff2",
+      "actual": "0b4caeaa591ebb3df4e1ba4f501d91c8a9297ec3cfb1eed42eae10e6da1f8ff2"
+    },
+    {
+      "path": "assets/js/core/safe-pointer.js",
+      "status": 200,
+      "expected": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
+      "actual": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4"
+    },
+    {
+      "path": "assets/js/core/viewport-manager.js",
+      "status": 200,
+      "expected": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
+      "actual": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1"
+    },
+    {
+      "path": "assets/js/save-db.js",
+      "status": 200,
+      "expected": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
+      "actual": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d"
+    },
+    {
+      "path": "firebase-config.js",
+      "status": 200,
+      "expected": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
+      "actual": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+    },
+    {
+      "path": "assets/js/game-account.js",
+      "status": 200,
+      "expected": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
+      "actual": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5"
+    },
+    {
+      "path": "assets/js/multiplayer-rtdb.js",
+      "status": 200,
+      "expected": "6aef057501b197730552e91d14ff4a6e192c47bc95e6c987d702506d6654cc3e",
+      "actual": "6aef057501b197730552e91d14ff4a6e192c47bc95e6c987d702506d6654cc3e"
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "expected": "db64f5a63caaecd295ad627704a9a9ecce83dcbc6916fff53a2406bbbc5ffec4",
+      "actual": "db64f5a63caaecd295ad627704a9a9ecce83dcbc6916fff53a2406bbbc5ffec4"
+    },
+    {
+      "path": "family-mascots.js",
+      "status": 200,
+      "expected": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
+      "actual": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9"
+    },
+    {
+      "path": "assets/ot-games-airframes.json",
+      "status": 200,
+      "expected": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
+      "actual": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6"
+    },
+    {
+      "path": "assets/vendor/GLTFLoader-r128.js",
+      "status": 200,
+      "expected": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
+      "actual": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+    },
+    {
+      "path": "assets/world/vehicles/ot-racer.glb",
+      "status": 200,
+      "expected": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b",
+      "actual": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b"
+    },
+    {
+      "path": "assets/world/vehicles/ot-coupe.glb",
+      "status": 200,
+      "expected": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862",
+      "actual": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862"
+    },
+    {
+      "path": "assets/js/controls/world-hand-controls.js",
+      "status": 200,
+      "expected": "1e280131950f30bff0db5cb39873443e4a0818ae906b104e2b4a3787f5ac5413",
+      "actual": "1e280131950f30bff0db5cb39873443e4a0818ae906b104e2b4a3787f5ac5413"
+    },
+    {
+      "path": "assets/js/world-venue-bridge.js",
+      "status": 200,
+      "expected": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c",
+      "actual": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c"
+    },
+    {
+      "path": "assets/js/world-venue-trip.js",
+      "status": 200,
+      "expected": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7",
+      "actual": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7"
+    },
+    {
+      "path": "assets/js/ui/shared-modal.js",
+      "status": 200,
+      "expected": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
+      "actual": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a"
+    },
+    {
+      "path": "assets/js/core/performance-guardian.js",
+      "status": 200,
+      "expected": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
+      "actual": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f"
+    },
+    {
+      "path": "assets/js/multiplayer/room-manager.js",
+      "status": 200,
+      "expected": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4",
+      "actual": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4"
+    },
+    {
+      "path": "assets/js/education/adaptive-learning.js",
+      "status": 200,
+      "expected": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701",
+      "actual": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701"
+    },
+    {
+      "path": "assets/js/safety/child-safety.js",
+      "status": 200,
+      "expected": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
+      "actual": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "status": 200,
+      "expected": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
+      "actual": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075"
+    },
+    {
+      "path": "404.html",
+      "status": 200,
+      "expected": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
+      "actual": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8"
+    },
+    {
+      "path": "VERSION.json",
+      "status": 200,
+      "expected": "7adba0d11ad8435e5313f9a3eb995a5a0371b56d40937562af77cfb58d922206",
+      "actual": "7adba0d11ad8435e5313f9a3eb995a5a0371b56d40937562af77cfb58d922206"
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "expected": "07fdb892d5d2252bc4b39ce645dc3ce15b3e8f423dad85c40818d70351f5bbb3",
+      "actual": "07fdb892d5d2252bc4b39ce645dc3ce15b3e8f423dad85c40818d70351f5bbb3"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "status": 200,
+      "expected": "a3297d937d8f86503990d309e98ce60aa8051ae38eeb06d7f0d37b35cfed4dd6",
+      "actual": "a3297d937d8f86503990d309e98ce60aa8051ae38eeb06d7f0d37b35cfed4dd6"
+    },
+    {
+      "path": "games/tenis/local-practice.js",
+      "status": 200,
+      "expected": "154cd8322dabdedfe22c5c078a288a00585a6fd8603e39965eec126a5689db08",
+      "actual": "154cd8322dabdedfe22c5c078a288a00585a6fd8603e39965eec126a5689db08"
+    }
+  ]
+}
