@@ -80,7 +80,7 @@ def package(output=OUTPUT):
     ignored = shutil.ignore_patterns('__pycache__', '*.pyc', 'node_modules', '.git', 'test-results')
     for name in DIRECTORIES:
         shutil.copytree(ROOT / name, output / name, ignore=ignored)
-    for name in ('config.js', 'game-config.js'):
+    for name in ('config.js', 'game-config.js', 'console.html'):
         if (ROOT / name).is_file():
             shutil.copy2(ROOT / name, output / name)
     manifest_path = output / 'arcade/manifest.webmanifest'
@@ -100,7 +100,7 @@ def package(output=OUTPUT):
                 'games/ar/object-tracker.js', 'games/ar/object-tracker-worker.js',
                 'games/ar/combat-controls.css', 'games/ar/vendor/hand-tracker/hand_landmarker.task',
                 'games/ar/vendor/hand-tracker/vision_wasm_internal.wasm',
-                'arcade/index.html', 'arcade/instalar/index.html',
+                'arcade/index.html', 'console.html', 'arcade/instalar/index.html',
                 'arcade/instalar/install.js', 'games/familia/3d/index.html']
     for path in required:
         if not (output / path).is_file():

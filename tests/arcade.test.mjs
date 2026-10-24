@@ -42,7 +42,7 @@ test("instalação arcade usa um service worker com cache isolado",()=>{
   assert(!sw.includes('thiaguinho-console-static-v3'));
   assert(sw.includes("self.registration.scope"));
   assert(sw.includes("url.origin!==self.location.origin"));
-  assert(app.includes('navigator.serviceWorker.register("./sw.js")'));
+  assert(app.includes('navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"})'));
   assert(existsSync(new URL("arcade/sw.js",root)));
   execFileSync(process.execPath,["--check",new URL("arcade/app.js",root).pathname]);
   execFileSync(process.execPath,["--check",new URL("arcade/sw.js",root).pathname]);

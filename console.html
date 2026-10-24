@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101d30">
+<title>thIAguinho • Abrir console</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#21465a,#101d30 65%);color:#eff8f7;font:16px system-ui}main{width:min(100%,460px);line-height:1.6}small{color:#84dacf;font-weight:800;letter-spacing:.08em}h1{font-size:32px;line-height:1.2;margin:18px 0}p{color:#c7d9df}button,a{display:block;width:100%;padding:15px 18px;margin-top:12px;border-radius:12px;border:1px solid #77a9ab;background:#285263;color:#fff;font:750 15px system-ui;text-align:center;text-decoration:none}button{cursor:pointer}button:disabled{opacity:.6}button:focus-visible,a:focus-visible{outline:3px solid #e6ce80;outline-offset:4px}footer{font-size:12px;color:#a7bdc7;margin-top:32px}.progress{height:5px;background:#294250;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;width:35%;background:#7ed5c7;animation:loading 1.2s ease-in-out infinite alternate}@keyframes loading{to{transform:translateX(185%)}}@media(prefers-reduced-motion:reduce){.progress i{animation:none;width:100%}}[hidden]{display:none!important}
+</style>
+</head>
+<body><main><small>thIAguinho ARCADE</small><h1>Vamos abrir seus jogos.</h1><p id="console-entry-status" role="status">Preparando o console…</p><div class="progress" id="console-entry-progress"><i></i></div><button type="button" id="console-entry-retry" hidden>TENTAR NOVAMENTE</button><a href="./games/otthi/">VOLTAR AO MUNDO</a><footer>powered by thIAguinho Soluções Digitais</footer></main>
+<script>
+(()=>{'use strict';
+ const target=new URL('./arcade/index.html',location.href),scope=new URL('./arcade/',location.href),worker=new URL('./arcade/sw.js',location.href),status=document.getElementById('console-entry-status'),retry=document.getElementById('console-entry-retry'),progress=document.getElementById('console-entry-progress');
+ let busy=false;
+ const within=(promise,ms)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Console preparation timed out')),ms);Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});});
+ const health=active=>new Promise(resolve=>{if(!active){resolve(false);return;}const c=new MessageChannel(),timer=setTimeout(()=>{c.port1.close();resolve(false);},350);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();resolve(e.data?.type==='ARCADE_HEALTH'&&e.data.version>=11);};try{active.postMessage({type:'ARCADE_HEALTH'},[c.port2]);}catch{clearTimeout(timer);c.port1.close();resolve(false);}});
+ async function prepare(){
+  if(busy)return;busy=true;retry.hidden=true;progress.hidden=false;status.textContent='Preparando o console…';
+  try{
+   const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),15000);let html;
+   try{const r=await fetch(target.href,{cache:'no-store',credentials:'same-origin',signal:abort.signal});if(!r.ok)throw Error('Console HTTP '+r.status);html=await r.text();}finally{clearTimeout(timer);}
+   if(!html.includes('id="games-grid"'))throw Error('Console document unavailable');
+   if('serviceWorker' in navigator){
+    let ready=false;
+    try{const until=Date.now()+8000,r=await within(navigator.serviceWorker.register(worker.href,{scope:scope.href,updateViaCache:'none'}),8000);if(!r.installing&&!r.waiting)await within(r.update(),Math.max(1,until-Date.now()));while(Date.now()<until){if(await health(r.active)){ready=true;break;}await new Promise(resolve=>setTimeout(resolve,100));}}catch{}
+    if(!ready){try{const r=await within(navigator.serviceWorker.getRegistration(target.href),2000);if(r?.scope===scope.href)await within(r.unregister(),2000);}catch{}}
+   }
+   status.textContent='Abrindo seus jogos…';location.replace(target.href);
+  }catch{busy=false;progress.hidden=true;retry.hidden=false;status.textContent='Não foi possível abrir os jogos agora. Confira a conexão e toque para tentar novamente.';}
+ }
+ retry.onclick=prepare;prepare();
+})();
+</script>
+</body></html>

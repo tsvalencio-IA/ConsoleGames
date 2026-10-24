@@ -275,7 +275,7 @@
   });
   window.addEventListener("appinstalled",()=>{$("install-btn").hidden=true;deferredInstall=null});
   if("serviceWorker" in navigator && location.protocol==="https:"){
-    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}),{once:true});
+    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).then(registration=>registration.update()).catch(()=>{}),{once:true});
   }
   if(typeof navigator!=="undefined"&&/\bwv\b/.test(navigator.userAgent||"")){for(const id of ["android-apk-link","android-download-note"]){const node=$(id);if(node)node.hidden=true;}}
   updateAccountUI();render();
