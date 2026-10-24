@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "4384ad9ad15961ef7925aa45c8488a4228ccfda582b68d5b17291c32f38b3924"
+      "sha256Body": "f21e0c26ac3fe6410518bdecf7ce7b17d8dc2cb457c1f410f67e176eb3280eba"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -301,7 +301,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "092201f84a887cca8f27a17af84b16cb09c8fc346933f2d96d2dca3934fa092f"
+      "sha256Body": "8c9992cb179afbef1266b68206b48d97816f57bb6f674b4db04ee3c7c75b6e7d"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -399,14 +399,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "9b9272a09121725b157d8d5543a14b7506765943709d5d5605a59b3268d6e7ca"
+      "sha256Body": "20d2e8facd7540cbeb50840c7ca9f54cc3682f6be61e4dc572d34d3c33b434d7"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "34e43dbddeeb96691b1bd82b8476b989083c4a9518c5e7940da032cac16254bd"
+      "sha256Body": "5e9f7144258f588146ad4972b7c85478a94c4b2c853417253a8ea97c2cec8283"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",

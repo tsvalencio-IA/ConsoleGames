@@ -1,4 +1,4 @@
-const REVISION = 'decae1d39684a0e5';
+const REVISION = '4b6dacf09e0ee4b8';
 const CACHE = `otthi-v70622-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.21.0-frota-brasileira';
