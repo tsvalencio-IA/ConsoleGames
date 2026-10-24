@@ -54,11 +54,13 @@
     const url=new URL('../'+s.venue.slug+'/index.html',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);
     let request=null,timer=0,attempt=0,closed=false;
     const main=s.ui.querySelector('main'),status=s.ui.querySelector('[data-venue-loading]');
+    const account=document.createElement('button');account.type='button';account.dataset.venueAccount='';account.textContent='CONTA ONLINE';account.disabled=true;s.ui.querySelector('header').insertBefore(account,s.ui.querySelector('[data-venue-close]'));
+    account.onclick=async()=>{const practice=s.frame?.contentWindow?.ConsolePractice;if(!practice)return;account.disabled=true;try{if(practice.active)practice.account();else await practice.enter(state.profile.name);account.textContent=practice.active?'CONTA ONLINE':'JOGAR SOLO';}catch(error){status.textContent='Não foi possível trocar o modo. Tente novamente.';main.prepend(status);}finally{if(!closed)account.disabled=false;}};
     const failed=message=>{if(closed||worldVenues.session!==s)return;clearTimeout(timer);request?.abort();s.frame?.remove();s.frame=null;main.replaceChildren(status);status.textContent=message;const retry=document.createElement('button');retry.type='button';retry.dataset.venueRetry='';retry.textContent='TENTAR NOVAMENTE';retry.onclick=load;main.append(retry);};
     const receive=e=>{
       const d=e.data;if(closed||worldVenues.session!==s||e.origin!==location.origin||e.source!==s.frame?.contentWindow||d?.token!==s.token)return;
       if(d.type==='ot-venue-ready'){e.source.postMessage({type:'ot-venue-start',token:s.token,name:state.profile.name},location.origin);return;}
-      if(d.type==='ot-venue-playing'){clearTimeout(timer);status.remove();return;}
+      if(d.type==='ot-venue-playing'){clearTimeout(timer);status.remove();account.disabled=false;return;}
       if(d.type==='ot-venue-close'){venueClose();return;}
       if(d.type!=='ot-venue-result'||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
       s.recorded=true;const records=venueRecords(),record=records[s.id]||{played:0,wins:0,best:0};record.played++;if(d.won)record.wins++;record.best=Math.max(record.best,Math.max(0,Math.min(1000000,Math.floor(d.score))));records[s.id]=record;safeLocalSet(venueRecordKey(),JSON.stringify(records));
@@ -68,7 +70,7 @@
     window.addEventListener('message',receive);window.addEventListener('popstate',pop);
     history.pushState({...history.state,otVenueDialog:s.token},'');s.historyEntry=true;
     async function load(){
-      const current=++attempt;request?.abort();request=new AbortController();main.replaceChildren(status);status.textContent='Carregando '+s.venue.activity+'…';
+      const current=++attempt;request?.abort();request=new AbortController();account.disabled=true;account.textContent='CONTA ONLINE';main.replaceChildren(status);status.textContent='Carregando '+s.venue.activity+'…';
       clearTimeout(timer);timer=setTimeout(()=>failed('A atividade não respondeu. Seu passeio continua salvo. Tente novamente.'),25000);
       try{
         const response=await fetch(url.href,{cache:'no-store',credentials:'same-origin',signal:request.signal});

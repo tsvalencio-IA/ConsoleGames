@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.22.0-venues-coachwork",
+  "build": "705.22.1-venues-coachwork",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "dd27f1d00c5da3d77a126e41f7966c25bcf207f6f5202bfb2cda10ef42d08d21"
+      "sha256Body": "85ee85e96c0648163f9ca449abbfe25a4d3f71a95cdd3a266782bf8a6633f0be"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "c8a1e6e76c64d79ba34db5acbb813f8b016453e4a5181f31555c2c252be2d590"
+      "sha256Body": "1dcb00dbec9fb494ce9244359667fb2e9637dc02dea4604a4d426a685e30baf0"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -604,7 +604,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atividades acessíveis nos locais do mundo",
-      "sha256Body": "06a898319cba07d34050968b372d027f778846f81e4fb5d7fab2ff1f2c7ad433"
+      "sha256Body": "05fda5c30006d09e80c3a8494fcc7ebc31efdc69799bbb1b0b839f6fb579f60c"
     },
     {
       "file": "src/styles/23-world-race-focus.css",

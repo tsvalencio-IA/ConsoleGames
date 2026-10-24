@@ -1,23 +1,23 @@
 {
   "version": 705,
-  "build": "705.22.0-venues-coachwork",
-  "revision": "6758b172d6bb3545",
+  "build": "705.22.1-venues-coachwork",
+  "revision": "5e8f4018347fd162",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "e6c684fb19dd595cee023dceb01dfe0d5cfd53378c834396278903da2a28e9e1",
+    "index.html": "7d0ad7b19b6c188d8f081d2b72a6fe4f42ce999b64c690f677c51a45f0aa37e6",
     "game-audio.js": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
     "console-world.js": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
     "console-world.css": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
-    "style.css": "f4aabc2902ce42e8df797aead9aeb9dbfc31675e6dfd6d6805e9af971cff771a",
+    "style.css": "52afa3f2978535368abd77a7f6dd08a73cec2bc023f027a956d14558ebc5e794",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "a513e5acbfd77685a8296d9302da01c4ef6dc97a12601fd4c671634043a409f3",
+    "assets/js/core/runtime-config.js": "0b4caeaa591ebb3df4e1ba4f501d91c8a9297ec3cfb1eed42eae10e6da1f8ff2",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "6aef057501b197730552e91d14ff4a6e192c47bc95e6c987d702506d6654cc3e",
-    "app.js": "86c673c3f394eab335929fe2ea0cbf862e2fc74f7f4325c99c4473c7513b15a3",
+    "app.js": "db64f5a63caaecd295ad627704a9a9ecce83dcbc6916fff53a2406bbbc5ffec4",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -33,7 +33,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "6359b7491cbecbebb8e344497495dc347f41cabbcba1a9825dae0465eec5a66d",
-    "sw.js": "316c9a9732d41c7c1a45f6fdef2ec58049bc050ef5aba192bb8b2ead1801e781"
+    "VERSION.json": "7adba0d11ad8435e5313f9a3eb995a5a0371b56d40937562af77cfb58d922206",
+    "sw.js": "07fdb892d5d2252bc4b39ce645dc3ce15b3e8f423dad85c40818d70351f5bbb3"
   }
 }
