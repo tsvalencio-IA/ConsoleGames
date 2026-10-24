@@ -29,3 +29,7 @@ Os modelos são representações 3D autorais, com escala adaptada ao mundo exist
 - A exposição mantém o piso anterior; os veículos são posicionados com outra orientação para acomodar as picapes.
 
 Testes usam Chromium com renderização por software. A reprodução do protocolo não equivale a uma partida entre dois celulares. Não houve certificação de câmera, desempenho ou instalação física no Android nesta revisão. Evidência compacta: `qa-release-70521.json`.
+
+## Publicação conferida
+
+Publicado no endereço existente em 24/10/2026: deployment `dpl_GiKgaWx5gDtJkt1LUqHH5bLYVjbB`, fonte `ddf90262d18d73a75da96039755b6a3ed74c515f`, revisão `2ac04597f68cb49b`. A conferência pública comparou os 31 arquivos protegidos com os arquivos testados. S10, Amarok e Fusca foram retirados da garagem por toque, inclusive substituindo um carro quando as três vagas estavam ocupadas; os quatro personagens embarcaram. A auditoria pública conferiu 2.326 pontos das vias e não houve erro JavaScript. O APK existente manteve seus bytes e hash; não foi feita uma nova instalação física.

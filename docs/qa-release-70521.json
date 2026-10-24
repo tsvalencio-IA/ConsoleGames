@@ -54,11 +54,44 @@
     "offline-after-upgrade"
   ],
   "javascriptErrors": [],
-  "publication": "pending",
+  "publication": {
+    "status": "verified",
+    "at": "2026-10-24T13:43:11.269094-03:00",
+    "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+    "protectedFilesMatched": 31,
+    "touchCases": [
+      {
+        "id": "br-s10",
+        "model": "s10",
+        "seated": 4
+      },
+      {
+        "id": "adventure-black",
+        "model": "amarok",
+        "seated": 4
+      },
+      {
+        "id": "br-fusca",
+        "model": "fusca",
+        "seated": 4
+      }
+    ],
+    "roadSamples": 2326,
+    "javascriptErrors": [],
+    "apk": {
+      "status": 200,
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "contentType": "application/vnd.android.package-archive",
+      "disposition": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\""
+    }
+  },
   "limits": [
     "Modelos autorais em escala de jogo, sem certificação dimensional de fábrica.",
     "Chromium móvel com renderização por software; desempenho em celular físico não certificado.",
     "Aparências online verificadas por reprodução do protocolo; não são dois aparelhos reais.",
     "Nenhuma nova instalação física do APK foi executada."
-  ]
+  ],
+  "sourceCommit": "ddf90262d18d73a75da96039755b6a3ed74c515f",
+  "deployment": "dpl_GiKgaWx5gDtJkt1LUqHH5bLYVjbB"
 }
