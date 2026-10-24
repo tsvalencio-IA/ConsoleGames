@@ -1,11 +1,12 @@
 /* Original game meshes inspired by Brazilian classics. Geometry is authored
  * here; no third-party mesh or photograph is embedded. Forward is +Z. */
+// @otthi-module-body
 (()=>{'use strict';
 const catalog=Object.freeze({fusca:{label:'Fusca',color:0x2788d2},gol:{label:'Gol quadrado',color:0xc82e32},uno:{label:'Uno clássico',color:0xe8e4d6},kombi:{label:'Kombi clássica',color:0x40a7ac}}),caches=new WeakMap();
 function build(T,key){
  const root=new T.Group();root.name='BR_'+key.toUpperCase();root.userData.model=key;root.userData.label=catalog[key].label;
- const buckets=new Map(),white=0xffffff,chrome=0xc8d4d9,dark=0x19242b,rubber=0x182027,glass=0x5d8796,cream=0xe5dfcd;
- const materials={paint:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.29}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.36,roughness:.38}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.40,depthWrite:false,metalness:.13,roughness:.12,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.85,side:T.DoubleSide})};
+ const buckets=new Map(),white=0xffffff,chrome=0xc8d4d9,dark=0x19242b,rubber=0x182027,glass=0x294653,cream=0xe5dfcd;
+ const materials={paint:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.29,side:T.DoubleSide}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.36,roughness:.38}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.63,depthWrite:false,metalness:.13,roughness:.12,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.85,side:T.DoubleSide})};
  function add(geometry,color,x=0,y=0,z=0,sx=1,sy=1,sz=1,kind='fixed',parent=null){const m=new T.Mesh(geometry,new T.MeshBasicMaterial({color}));m.position.set(x,y,z);m.scale.set(sx,sy,sz);if(parent)parent.add(m);else{if(!buckets.has(kind))buckets.set(kind,[]);buckets.get(kind).push(m);}return m;}
  const box=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.BoxGeometry(1,1,1),c,x,y,z,w,h,d,k,p);
  const ell=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.SphereGeometry(1,20,12),c,x,y,z,w,h,d,k,p);
@@ -34,11 +35,12 @@ function build(T,key){
   for(const side of[-1,1]){
    box(rubber,side*.61,.29,0,.20,.06,1.26);tube([[side*.72,.32,-.63],[side*.72,.32,.63]],.014,chrome);
    for(const z of[-1.02,1.02]){const pos=[],idx=[];for(let a=0;a<=30;a++)for(let b=0;b<=12;b++){const t=a*Math.PI/30,s=-Math.PI/2+b*Math.PI/12;pos.push(side*(.585+Math.cos(s)*.175),.305+Math.sin(t)*(.38+Math.sin(s)*.095),z+Math.cos(t)*(.43+Math.sin(s)*.095));if(a<30&&b<12){const n=a*13+b;idx.push(n,n+13,n+14,n,n+14,n+1);}}const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();const f=add(geo,white,0,0,0,1,1,1,'paint');f.material.side=T.DoubleSide;}
-   ell(chrome,side*.60,.66,1.31,.15,.15,.052);const lens=ell(0xf2eed8,side*.60,.66,1.357,.122,.122,.022);lens.rotation.x=-.18;
+   ring(side*.60,.66,1.31,.13,chrome,-.18);const lens=ell(0xf2eed8,side*.60,.66,1.357,.122,.122,.022);lens.rotation.x=-.18;
    ell(0xe0a14a,side*.61,.795,.995,.063,.033,.105);ell(0xb43132,side*.61,.55,-1.34,.078,.13,.038);
    box(chrome,side*.553,.68,.12,.055,.025,.13);ell(chrome,side*.65,.91,.44,.085,.055,.032);tube([[side*.54,.83,.43],[side*.63,.87,.44]],.010,chrome);
    tube([[side*.52,.74,.52],[side*.553,.72,.38],[side*.555,.40,.37],[side*.55,.36,-.58],[side*.544,.71,-.66]],.006,0x566772);
   }
+  quad([[-.12,.28,1.60],[.12,.28,1.60],[.12,.515,1.60],[-.12,.515,1.60]],white,'paint');
   for(const end of[-1,1]){tube([[-.72,.405,end*1.48],[-.55,.41,end*1.63],[0,.41,end*1.69],[.55,.41,end*1.63],[.72,.405,end*1.48]],.034,chrome);for(const side of[-1,1])box(chrome,side*.43,.45,end*1.65,.045,.19,.045);box(dark,0,.42,end*1.70,.31,.13,.018);}
   for(const side of[-1,1])tube([[side*.12,.555,1.57],[side*.32,.705,1.24],[side*.39,.84,.87],[side*.35,.96,.71]],.006,0x6992ac);
   for(let i=0;i<8;i++){const z=-1.40+i*.032;const y=sample(z).h+.006;tube([[-.22,y,z],[.22,y,z]],.007,dark);}
@@ -46,15 +48,17 @@ function build(T,key){
   cabinSeats();
  }else if(key==='kombi'){
   // Rounded lower bus body, split windscreen and two-tone roof, not a cube van.
-  const lower=ell(white,0,.61,0,.73,.37,1.64,'paint');box(white,0,.55,0,1.39,.44,2.95,'paint');box(cream,0,1.12,-.12,1.38,.75,2.79);ell(cream,0,1.49,-.12,.72,.16,1.42);
-  for(const side of[-1,1]){quad([[side*.025,.99,1.37],[side*.61,.99,1.31],[side*.58,1.38,1.24],[side*.025,1.40,1.31]],glass,'glass');for(let i=0;i<3;i++)quad([[side*.704,.96,.72-i*.73],[side*.704,.96,.15-i*.73],[side*.704,1.36,.15-i*.73],[side*.704,1.36,.72-i*.73]],glass,'glass');ell(chrome,side*.51,.64,1.50,.13,.13,.045);ell(0xefebda,side*.51,.64,1.54,.108,.108,.018);box(0xd79c41,side*.56,.91,1.41,.13,.045,.035);box(0xbd3b3e,side*.58,.62,-1.58,.11,.28,.035);tube([[side*.71,.90,-1.38],[side*.71,.90,1.24]],.012,chrome);box(dark,side*.715,.85,.40,.022,.025,.12);}
+  const footprint=new T.Shape();footprint.moveTo(-.54,-1.56);footprint.lineTo(.54,-1.56);footprint.quadraticCurveTo(.72,-1.56,.72,-1.38);footprint.lineTo(.72,1.38);footprint.quadraticCurveTo(.72,1.56,.54,1.56);footprint.lineTo(-.54,1.56);footprint.quadraticCurveTo(-.72,1.56,-.72,1.38);footprint.lineTo(-.72,-1.38);footprint.quadraticCurveTo(-.72,-1.56,-.54,-1.56);const busGeo=new T.ExtrudeGeometry(footprint,{depth:.67,bevelEnabled:false,curveSegments:8});busGeo.rotateX(-Math.PI/2);busGeo.translate(0,.30,0);add(busGeo,white,0,0,0,1,1,1,'paint');box(cream,0,.94,-.10,1.39,.10,2.81);for(const side of[-1,1]){box(cream,side*.69,1.42,-.12,.065,.085,2.81);for(const z of[1.40,.76,.07,-.66,-1.37])box(cream,side*.69,1.18,z,.065,.47,z===.07||z===-.66?.16:.085);}box(cream,0,1.44,1.39,1.40,.09,.10);for(const x of[-.64,.64])box(cream,x,1.18,-1.53,.11,.48,.055);box(cream,0,1.38,-1.53,1.37,.075,.055);box(cream,0,1.49,-.04,1.43,.12,2.96);ell(cream,0,1.55,-.04,.715,.06,1.48);
+  for(const side of[-1,1]){quad([[side*.025,.99,1.565],[side*.62,.99,1.51],[side*.60,1.38,1.385],[side*.025,1.38,1.42]],glass,'glass');for(let i=0;i<3;i++)quad([[side*.704,.96,.72-i*.73],[side*.704,.96,.15-i*.73],[side*.704,1.36,.15-i*.73],[side*.704,1.36,.72-i*.73]],glass,'glass');ell(chrome,side*.51,.64,1.58,.13,.13,.045);ell(0xefebda,side*.51,.64,1.62,.108,.108,.018);box(0xd79c41,side*.56,.91,1.575,.13,.045,.035);box(0xbd3b3e,side*.58,.62,-1.58,.11,.28,.035);tube([[side*.71,.90,-1.38],[side*.71,.90,1.24]],.012,chrome);box(dark,side*.715,.85,.40,.022,.025,.12);}
   quad([[-.54,1.02,-1.53],[.54,1.02,-1.53],[.54,1.34,-1.53],[-.54,1.34,-1.53]],glass,'glass');for(const end of[-1,1])box(chrome,0,.40,end*1.65,1.47,.10,.11);
   for(const[i,x,z]of[[0,-.65,1.0],[1,.65,1.0],[2,-.65,-.99],[3,.65,-.99]])wheel(i,x,z,.28);cabinSeats(true);
  }else{
   const uno=key==='uno',roof=uno?1.32:1.20,width=.68;
-  const points=[[-1.48,.55],[-1.34,.77],[-.94,roof],[.24,roof],[.67,.83],[1.43,.72],[1.49,.46],[-1.48,.35]];
-  const shape=new T.Shape();points.forEach(([z,y],i)=>i?shape.lineTo(z,y):shape.moveTo(z,y));shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:width*2,bevelEnabled:true,bevelSize:.035,bevelThickness:.035,bevelSegments:2,steps:1});geo.rotateY(Math.PI/2);geo.translate(-width,0,0);add(geo,white,0,0,0,1,1,1,'paint');
-  // Windows are surfaces slightly outside the painted pillar shell.
+  const points=[[-1.48,.55],[-1.34,.77],[-.94,.79],[.24,.79],[.67,.79],[1.43,.72],[1.49,.46],[-1.48,.35]];
+  const shape=new T.Shape();points.forEach(([z,y],i)=>i?shape.lineTo(z,y):shape.moveTo(z,y));shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:width*2,bevelEnabled:true,bevelSize:.035,bevelThickness:.035,bevelSegments:2,steps:1});geo.rotateY(-Math.PI/2);geo.translate(width,0,0);add(geo,white,0,0,0,1,1,1,'paint');
+  box(white,0,roof,-.35,1.27,.065,1.22,'paint');
+  for(const side of[-1,1]){const x=side*(width+.015);tube([[x,.81,.65],[side*.61,roof,.24],[side*.61,roof,-.94],[x,.81,-1.34]],.035,white,'paint');box(white,x,(roof+.8)/2,-.105,.045,roof-.8,.05,'paint');box(white,x,.805,-.35,.035,.05,1.93,'paint');}
+  // Real open cabin: glazing has no painted solid wall behind it.
   for(const side of[-1,1]){const x=side*(width+.038);quad([[x,.84,.55],[x,.84,-.08],[x,roof-.09,-.08],[x,roof-.09,.19]],glass,'glass');quad([[x,.84,-.13],[x,.84,-1.23],[x,roof-.09,-.89],[x,roof-.09,-.13]],glass,'glass');tube([[x,.77,1.27],[x,.77,-1.33]],.018,dark);box(dark,x,.79,-.03,.02,.035,.14);ell(dark,side*.77,.94,.39,.075,.05,.043);box(dark,side*.31,.95,.73,.30,.02,.02);}
   quad([[-.59,.88,.67],[.59,.88,.67],[.59,roof-.07,.25],[-.59,roof-.07,.25]],glass,'glass');quad([[-.56,.84,-1.38],[.56,.84,-1.38],[.56,roof-.08,-.96],[-.56,roof-.08,-.96]],glass,'glass');
   for(const side of[-1,1]){box(0xeae8d4,side*.46,.66,1.465,.32,uno?.125:.17,.028);box(0xdba65b,side*.645,.64,1.455,.09,.12,.028);box(0xb52d31,side*.55,uno?.71:.66,-1.515,uno?.13:.30,uno?.31:.15,.026);box(dark,side*.65,.36,0,.09,.10,1.45);}
@@ -64,7 +68,7 @@ function build(T,key){
  }
  function merge(meshes,name,material,parent=root){if(!meshes.length)return;const p=[],n=[],c=[];for(const m of meshes){m.updateMatrix();const g=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();g.applyMatrix4(m.matrix);const a=g.attributes.position,b=g.attributes.normal,col=m.material.color.clone().convertSRGBToLinear();for(let i=0;i<a.count;i++){p.push(a.getX(i),a.getY(i),a.getZ(i));n.push(b.getX(i),b.getY(i),b.getZ(i));c.push(col.r,col.g,col.b);}g.dispose();m.geometry.dispose();m.material.dispose();m.parent?.remove(m);}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setAttribute('normal',new T.Float32BufferAttribute(n,3));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.computeBoundingSphere();const m=new T.Mesh(g,material);m.name=name;m.castShadow=name!=='glass';m.receiveShadow=true;parent.add(m);return m;}
  for(const[k,list]of buckets)merge(list,k,materials[k]);for(const g of root.children.filter(x=>x.name.startsWith('wheel-')))merge([...g.children],g.name+'-mesh',materials.fixed,g);
- root.userData.seatScale=.36;root.userData.seats=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];return root;
+ root.userData.seatScale=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];return root;
 }
 function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));const root=cache.get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
 (typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create};
