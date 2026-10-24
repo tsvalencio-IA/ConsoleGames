@@ -3,27 +3,38 @@
 // @otthi-module-body
 (()=>{'use strict';
 const details=(typeof window!=='undefined'?window:globalThis).OTBrazilVehicleBodies;
+const coachwork=(typeof window!=='undefined'?window:globalThis).OTBrazilCoachwork,reflections=new WeakMap();
+function reflection(T){
+ if(typeof document==='undefined')return null;if(reflections.has(T))return reflections.get(T);
+ const faces=[];for(let face=0;face<6;face++){const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const c=canvas.getContext('2d'),g=c.createLinearGradient(0,0,0,128);g.addColorStop(0,face===3?'#585c5a':'#d9e6ef');g.addColorStop(.42,face===2?'#ecf3f6':'#c3d4dd');g.addColorStop(.52,'#81979e');g.addColorStop(.57,'#a2aaa8');g.addColorStop(1,'#555c5c');c.fillStyle=g;c.fillRect(0,0,128,128);if(face!==2&&face!==3){c.fillStyle='#d7e3e8';c.fillRect(0,24,128,8);c.fillStyle='#536b76';for(let x=0;x<128;x+=22)c.fillRect(x,54-(x%3)*3,11+(x%7),17);}faces.push(canvas);}
+ const texture=new T.CubeTexture(faces);texture.encoding=T.sRGBEncoding;texture.needsUpdate=true;reflections.set(T,texture);return texture;
+}
 const catalog=Object.freeze({fusca:{label:'Fusca',color:0x2788d2},gol:{label:'Gol quadrado',color:0xc82e32},uno:{label:'Uno clássico',color:0xe8e4d6},kombi:{label:'Kombi clássica',color:0x40a7ac},...details?.catalog}),caches=new WeakMap(),definitions={};
 function build(T,key){
  const root=new T.Group();root.name='BR_'+key.toUpperCase();root.userData.model=key;root.userData.label=catalog[key].label;
  const buckets=new Map(),white=0xffffff,chrome=0xc8d4d9,dark=0x19242b,rubber=0x182027,glass=0x294653,cream=0xe5dfcd;
- const materials={paint:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.29,side:T.DoubleSide}),chrome:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.78,roughness:.20}),lens:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.16,roughness:.17}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.36,roughness:.38}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.63,depthWrite:false,metalness:.13,roughness:.12,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.85,side:T.DoubleSide})};
+ const env=reflection(T),materials={paint:new T.MeshPhysicalMaterial({color:white,vertexColors:true,metalness:.38,roughness:.28,clearcoat:.62,clearcoatRoughness:.18,envMap:env,envMapIntensity:.55,side:T.DoubleSide}),chrome:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.86,roughness:.18,envMap:env,envMapIntensity:.85,side:T.DoubleSide}),lampglass:new T.MeshPhysicalMaterial({color:white,vertexColors:true,transparent:true,opacity:.25,depthWrite:false,roughness:.09,clearcoat:.7,envMap:env,envMapIntensity:.65,side:T.DoubleSide}),lens:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.32,roughness:.14,envMap:env,envMapIntensity:.50,side:T.DoubleSide}),fixed:new T.MeshStandardMaterial({color:white,vertexColors:true,metalness:.25,roughness:.46,side:T.DoubleSide}),glass:new T.MeshStandardMaterial({color:white,vertexColors:true,transparent:true,opacity:.58,depthWrite:false,metalness:.36,roughness:.10,envMap:env,envMapIntensity:.70,side:T.DoubleSide}),interior:new T.MeshStandardMaterial({color:white,vertexColors:true,roughness:.91,side:T.DoubleSide})};
  function add(geometry,color,x=0,y=0,z=0,sx=1,sy=1,sz=1,kind='fixed',parent=null){const m=new T.Mesh(geometry,new T.MeshBasicMaterial({color}));m.position.set(x,y,z);m.scale.set(sx,sy,sz);if(parent)parent.add(m);else{if(!buckets.has(kind))buckets.set(kind,[]);buckets.get(kind).push(m);}return m;}
  const box=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.BoxGeometry(1,1,1),c,x,y,z,w,h,d,k,p);
  const ell=(c,x,y,z,w,h,d,k='fixed',p=null)=>add(new T.SphereGeometry(1,20,12),c,x,y,z,w,h,d,k,p);
  function quad(points,color,kind='fixed'){const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute([0,1,2,0,2,3].flatMap(i=>points[i]),3));g.computeVertexNormals();return add(g,color,0,0,0,1,1,1,kind);}
  function tube(points,r,color,kind='fixed'){return add(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),Math.max(8,points.length*4),r,6,false),color,0,0,0,1,1,1,kind);}
  function ring(x,y,z,r,c,tilt=0){const m=add(new T.TorusGeometry(r,.016,8,24),c,x,y,z);m.rotation.x=tilt;return m;}
- function wheel(i,x,z,r=.285){const g=new T.Group();g.name='wheel-'+i;g.rotation.order='YXZ';g.position.set(x,r+.018,z);g.userData.radius=r;root.add(g);const tire=add(new T.CylinderGeometry(r,r,.19,24),rubber,0,0,0,1,1,1,'fixed',g);tire.rotation.z=Math.PI/2;
-  const rim=add(new T.CylinderGeometry(r*.72,r*.72,.198,24),key==='fusca'||key==='kombi'?cream:0xadb8bb,0,0,0,1,1,1,'fixed',g);rim.rotation.z=Math.PI/2;
-  const cap=ell(chrome,Math.sign(x)*.11,0,0,.035,r*.51,r*.51,'fixed',g);
-  for(let n=0;n<5;n++){const a=n*Math.PI*2/5;ell(0x34424a,Math.sign(x)*.103,Math.sin(a)*r*.56,Math.cos(a)*r*.56,.007,.025,.025,'fixed',g);}return g;
+ function wheel(i,x,z,r=.285){const g=new T.Group();g.name='wheel-'+i;g.rotation.order='YXZ';g.position.set(x,r+.018,z);g.userData.radius=r;root.add(g);const sign=Math.sign(x),classic=['fusca','kombi','chevette','gol','uno'].includes(key);
+  const tire=add(new T.TorusGeometry(r*.80,r*.20,10,32),rubber,0,0,0,1,1,1.5,'fixed',g);tire.rotation.y=Math.PI/2;
+  const darkRim=add(new T.CylinderGeometry(r*.66,r*.66,.145,32),0x303a40,0,0,0,1,1,1,'fixed',g);darkRim.rotation.z=Math.PI/2;
+  const lip=add(new T.TorusGeometry(r*.68,r*.036,6,32),classic&&key!=='chevette'?cream:chrome,sign*.097,0,0,1,1,1,'fixed',g);lip.rotation.y=Math.PI/2;
+  if(classic){const face=add(new T.CylinderGeometry(r*.60,r*.60,.010,32),key==='fusca'||key==='kombi'?cream:0xa8b1b3,sign*.088,0,0,1,1,1,'fixed',g);face.rotation.z=Math.PI/2;ell(chrome,sign*.107,0,0,.026,r*.34,r*.34,'fixed',g);for(let n=0;n<8;n++){const a=n*Math.PI/4;ell(0x27333a,sign*.096,Math.sin(a)*r*.48,Math.cos(a)*r*.48,.004,.020,.027,'fixed',g);}}
+  else{const spokes=['hilux','s10','saveiro'].includes(key)?6:5;for(let n=0;n<spokes;n++){const a=n*Math.PI*2/spokes,m=box(0xb6c1c8,sign*.098,Math.sin(a)*r*.39,Math.cos(a)*r*.39,.025,r*.49,r*.10,'fixed',g);m.rotation.x=Math.PI/2-a;for(const delta of[-.035,.035])if(['golf','amarok'].includes(key)){const twin=box(0x7f8d95,sign*.096,Math.sin(a+delta)*r*.41,Math.cos(a+delta)*r*.41,.026,r*.45,r*.036,'fixed',g);twin.rotation.x=Math.PI/2-a;}}ell(chrome,sign*.11,0,0,.017,r*.18,r*.18,'fixed',g);for(let n=0;n<5;n++){const a=n*Math.PI*2/5;ell(0x26343b,sign*.13,Math.sin(a)*r*.115,Math.cos(a)*r*.115,.005,.010,.010,'fixed',g);}}
+  return g;
  }
  function cabinSeats(bus=false){for(const side of[-1,1]){box(0x514d43,side*.255,.43,.02,.38,.14,.42,'interior');const back=box(0x514d43,side*.255,.65,-.19,.38,.43,.09,'interior');back.rotation.x=-.1;box(0x484b49,side*.255,.43,-.70,.38,.14,.39,'interior');box(0x484b49,side*.255,.64,-.89,.38,.39,.09,'interior');}
   box(key==='fusca'?white:dark,0,.73,.42,1,.12,.16,key==='fusca'?'paint':'interior');const sw=ring(-.255,.79,.23,.115,dark,-.45);tube([[-.255,.79,.23],[-.255,.70,.38]],.015,dark,'interior');
   ell(0xe7dfc7,-.255,.76,.334,.065,.062,.008,'interior');ell(0x313c42,-.255,.76,.342,.052,.050,.007,'interior');
  }
- if(key==='fusca'){
+ if(coachwork?.build(T,key,{root,add,box,ell,quad,tube,ring,wheel,materials})){
+  // The authored panels above share the existing animation and merge pipeline.
+ }else if(key==='fusca'){
   const stations=[[-1.60,.16,.54],[-1.44,.37,.66],[-1.20,.48,.82],[-1.02,.515,1.01],[-.76,.54,1.24],[-.40,.55,1.36],[0,.55,1.37],[.32,.54,1.29],[.56,.52,1.12],[.74,.50,.91],[1.06,.44,.78],[1.40,.33,.64],[1.60,.12,.52]];
   function sample(z){let i=0;while(i<stations.length-2&&z>stations[i+1][0])i++;const a=stations[i],b=stations[i+1],t=(z-a[0])/(b[0]-a[0]),s=t*t*(3-2*t);return{w:a[1]+(b[1]-a[1])*s,h:a[2]+(b[2]-a[2])*s};}
   const groups={paint:[],glass:[]},N=96,A=40;
@@ -33,6 +44,9 @@ function build(T,key){
   // Lower sill is separate from the curved upper shell, leaving real windows.
   for(let i=0;i<stations.length-1;i++){const a=stations[i],b=stations[i+1];for(const side of[-1,1])quad([[side*a[1],.28,a[0]],[side*b[1],.28,b[0]],[side*b[1],Math.min(.70,b[2]-.045),b[0]],[side*a[1],Math.min(.70,a[2]-.045),a[0]]],white,'paint');}
   box(dark,0,.26,0,1,.10,2.7);
+  // The Beetle's front apron closes the space between its separate fenders.
+  // Keep it ahead of the rotating wheels and beneath the curved bonnet.
+  const apron=[],apronIdx=[];for(let i=0;i<=24;i++)for(let j=0;j<=8;j++){const x=-.575+1.15*i/24,t=j/8;apron.push(x,.30+.26*t-.035*(x/.575)**2,1.55-.105*(x/.575)**2+.025*Math.sin(t*Math.PI));if(i<24&&j<8){const n=i*9+j;apronIdx.push(n,n+9,n+10,n,n+10,n+1);}}const apronGeo=new T.BufferGeometry();apronGeo.setAttribute('position',new T.Float32BufferAttribute(apron,3));apronGeo.setIndex(apronIdx);apronGeo.computeVertexNormals();add(apronGeo,white,0,0,0,1,1,1,'paint');
   for(const side of[-1,1]){
    box(rubber,side*.61,.29,0,.20,.06,1.26);tube([[side*.72,.32,-.63],[side*.72,.32,.63]],.014,chrome);
    for(const z of[-1.02,1.02]){const pos=[],idx=[];for(let a=0;a<=30;a++)for(let b=0;b<=12;b++){const t=a*Math.PI/30,s=-Math.PI/2+b*Math.PI/12;pos.push(side*(.585+Math.cos(s)*.175),.305+Math.sin(t)*(.38+Math.sin(s)*.095),z+Math.cos(t)*(.43+Math.sin(s)*.095));if(a<30&&b<12){const n=a*13+b;idx.push(n,n+13,n+14,n,n+14,n+1);}}const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();const f=add(geo,white,0,0,0,1,1,1,'paint');f.material.side=T.DoubleSide;}
@@ -70,6 +84,7 @@ function build(T,key){
   for(const[i,x,z]of[[0,-.65,.94],[1,.65,.94],[2,-.65,-.96],[3,.65,-.96]])wheel(i,x,z,.275);cabinSeats();
  }
  function merge(meshes,name,material,parent=root){if(!meshes.length)return;const p=[],n=[],c=[];for(const m of meshes){m.updateMatrix();const g=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();g.applyMatrix4(m.matrix);const a=g.attributes.position,b=g.attributes.normal,col=m.material.color.clone().convertSRGBToLinear();for(let i=0;i<a.count;i++){p.push(a.getX(i),a.getY(i),a.getZ(i));n.push(b.getX(i),b.getY(i),b.getZ(i));c.push(col.r,col.g,col.b);}g.dispose();m.geometry.dispose();m.material.dispose();m.parent?.remove(m);}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setAttribute('normal',new T.Float32BufferAttribute(n,3));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.computeBoundingSphere();const m=new T.Mesh(g,material);m.name=name;m.castShadow=name!=='glass';m.receiveShadow=true;parent.add(m);return m;}
+ if(key==='fusca'){root.scale.x=.84;root.userData.seats=[{x:-.214,y:.32,z:.03},{x:.214,y:.32,z:.03},{x:-.214,y:.32,z:-.64},{x:.214,y:.32,z:-.64}];root.userData.coachwork='beetle-apron-v2';}
  for(const[k,list]of buckets)merge(list,k,materials[k]);for(const g of root.children.filter(x=>x.name.startsWith('wheel-')))merge([...g.children],g.name+'-mesh',materials.fixed,g);
  root.userData.seatScale??=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats??=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];root.userData.roof??=key==='kombi'?1.64:key==='uno'?1.34:key==='gol'?1.23:1.38;root.userData.hoodY??=.84;root.userData.wheelRadius??=key==='kombi'?.28:key==='fusca'?.285:.275;root.userData.front??=key==='kombi'?1.69:key==='fusca'?1.73:1.57;root.userData.rear??=-root.userData.front;definitions[key]=root.userData;return root;
 }

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.21.0-frota-brasileira",
+  "build": "705.22.0-venues-coachwork",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "cba9f7d3d5356a376a437d30c6819bf1c59f438ad47d18a5c9140f0e206b2760"
+      "sha256Body": "dd27f1d00c5da3d77a126e41f7966c25bcf207f6f5202bfb2cda10ef42d08d21"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "d02396295c4e8d48ccfe8a9cf731dbbefb982b29d4284f82e228c11c15b1c53d"
+      "sha256Body": "c8a1e6e76c64d79ba34db5acbb813f8b016453e4a5181f31555c2c252be2d590"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -388,11 +388,18 @@
       "sha256Body": "d806730319810c8e28a66b6faccd4652cdb2ab61325b576ad9a9604a4befcfea"
     },
     {
+      "file": "assets/js/vehicles/brazilian-coachwork.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
+      "sha256Body": "d631bc3ed429f79bcd11bd5e9de30fd177fe9dde806eab1bd2b2d42fc441eb42"
+    },
+    {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "6fbd9f5cdc38835c796e558a2da4b6fcb644514571cabc449c4f1459cfa6c565"
+      "sha256Body": "c7f2496afc8f4f3e1fdcac9ea103b6902c29d978a9766f91837a961e48d17213"
     },
     {
       "file": "src/modules/48-family-transport.js",

@@ -3,13 +3,14 @@
   'use strict';
   const id=window.CONSOLE_GAME_ID;
   if(!['drive','box_pro','tennis','ar_truck_sim','usarmy_flight_sim'].includes(id))return;
-  const key='thia:solo:v1:'+id,token=new URLSearchParams(location.search).get('otVenue');
+  const venueOrigin=location.protocol==='about:'?new URL(document.baseURI).origin:location.origin;
+  const key='thia:solo:v1:'+id,token=new URLSearchParams(location.search).get('otVenue')||(parent!==window?window.frameElement?.dataset.otVenue:null);
   const progressField=({drive:'kartSave',usarmy_flight_sim:'flightSave'})[id];
   const embeddedVenue=parent!==window&&!!token&&token.length<=100;
   const trip=parent===window?window.WorldVenueTrip?.current(token,id):null,pageVenue=!!token&&!!trip;
   const venue=embeddedVenue||pageVenue;
   function venueMessage(type,data={}){
-    if(embeddedVenue)parent.postMessage({type,token,...data},location.origin);
+    if(embeddedVenue)parent.postMessage({type,token,...data},venueOrigin);
     else if(pageVenue&&type==='ot-venue-result')window.WorldVenueTrip.result(token,id,data.score,data.won);
   }
   function returnToWorld(){const url=window.WorldVenueTrip?.returnUrl(token)||new URL('../otthi/',location.href).href;location.replace(url);}
@@ -132,7 +133,7 @@
     window.addEventListener('pageshow',event=>{if(event.persisted){if(window.WorldVenueTrip?.current(token,id))location.reload();else returnToWorld();}});
   }else if(embeddedVenue){
     window.addEventListener('message',e=>{
-      if(e.source!==parent||e.origin!==location.origin||e.data?.token!==token)return;
+      if(e.source!==parent||e.origin!==venueOrigin||e.data?.token!==token)return;
       if(e.data.type==='ot-venue-start')practice.enter(e.data.name);
     });
     venueMessage('ot-venue-ready');
@@ -142,7 +143,7 @@
     const watch=setInterval(()=>{if(practice.active){clearInterval(watch);return;}if(window.AuthApp?.currentUser&&!$('#menu-screen')?.classList.contains('hidden')){entry?.remove();entry=null;clearInterval(watch);}},200);
     window.addEventListener('pagehide',()=>clearInterval(watch),{once:true});
   }
-  if('serviceWorker' in navigator){
+  if('serviceWorker' in navigator&&location.protocol!=='about:'){
     let previousController=navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener('controllerchange',()=>{
       const controller=navigator.serviceWorker.controller;

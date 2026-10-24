@@ -1,9 +1,9 @@
-const REVISION = '2ac04597f68cb49b';
-const CACHE = `otthi-v70622-${REVISION}`;
+const REVISION = '6758b172d6bb3545';
+const CACHE = `otthi-v70623-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.21.0-frota-brasileira';
+const BUILD = '705.22.0-venues-coachwork';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70622';
+const RELEASE_MANIFEST = './release-manifest.json?v=70623';
 
 const REQUIRED_SHELL = [
   './game-audio.js?v=20261023-3',
@@ -16,23 +16,23 @@ const REQUIRED_SHELL = [
   './assets/js/world-venue-bridge.js',
   './assets/js/world-venue-trip.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70622',
-  './style.css?v=70622',
-  './assets/vendor/three-r128.min.js?v=70622',
-  './assets/js/core/runtime-config.js?v=70622',
-  './assets/js/core/safe-pointer.js?v=70622',
-  './assets/js/core/viewport-manager.js?v=70622',
-  './assets/js/save-db.js?v=70622',
-  './firebase-config.js?v=70622',
-  './assets/js/game-account.js?v=70622',
-  './assets/js/multiplayer-rtdb.js?v=70622',
-  './app.js?v=70622',
-  './assets/js/ui/shared-modal.js?v=70622',
-  './assets/js/core/performance-guardian.js?v=70622',
-  './assets/js/multiplayer/room-manager.js?v=70622',
-  './assets/js/education/adaptive-learning.js?v=70622',
-  './assets/js/safety/child-safety.js?v=70622',
-  './manifest.webmanifest?v=70622'
+  './index.html?v=70623',
+  './style.css?v=70623',
+  './assets/vendor/three-r128.min.js?v=70623',
+  './assets/js/core/runtime-config.js?v=70623',
+  './assets/js/core/safe-pointer.js?v=70623',
+  './assets/js/core/viewport-manager.js?v=70623',
+  './assets/js/save-db.js?v=70623',
+  './firebase-config.js?v=70623',
+  './assets/js/game-account.js?v=70623',
+  './assets/js/multiplayer-rtdb.js?v=70623',
+  './app.js?v=70623',
+  './assets/js/ui/shared-modal.js?v=70623',
+  './assets/js/core/performance-guardian.js?v=70623',
+  './assets/js/multiplayer/room-manager.js?v=70623',
+  './assets/js/education/adaptive-learning.js?v=70623',
+  './assets/js/safety/child-safety.js?v=70623',
+  './manifest.webmanifest?v=70623'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -197,7 +197,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70622') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70623') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })
@@ -256,6 +256,9 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   const sameOrigin = url.origin === self.location.origin;
   if (!sameOrigin) return;
+  // The world worker also sees requests made by its embedded activities. Their
+  // HTML and assets must never be replaced by the world's offline index.
+  if (!url.pathname.startsWith(new URL(self.registration.scope).pathname)) return;
 
   const navigation = event.request.mode === 'navigate';
   const code = /\.(?:js|css|html|webmanifest|json)$/.test(url.pathname) || url.pathname.endsWith('/');

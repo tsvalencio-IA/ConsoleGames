@@ -44,8 +44,44 @@
   function venueRecords(){try{return JSON.parse(safeLocalGet(venueRecordKey())||'{}')||{};}catch{return {};}}
   function venueClose(){
     const s=worldVenues.session;if(!s)return;
-    s.cleanup?.();try{s.frame?.contentWindow?.System?.stopGame();s.frame?.contentWindow?.Sfx?.ctx?.close?.();}catch{}
+    s.cleanup?.();try{s.frame?.contentWindow?.ConsolePractice?.save();s.frame?.contentWindow?.System?.stopGame();s.frame?.contentWindow?.Sfx?.ctx?.close?.();}catch{}
     s.ui.remove();worldVenues.session=null;paused=s.wasPaused;clearMovementInputs();document.body.classList.remove('world-venue-active');updateContext(true);
+    if(s.historyEntry&&history.state?.otVenueDialog===s.token)history.back();
+  }
+  // Keep the original 2D game in this tab. A failed activity request must leave
+  // the city and its return button available, rather than a browser error page.
+  function venueOpenDocument(s){
+    const url=new URL('../'+s.venue.slug+'/index.html',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);
+    let request=null,timer=0,attempt=0,closed=false;
+    const main=s.ui.querySelector('main'),status=s.ui.querySelector('[data-venue-loading]');
+    const failed=message=>{if(closed||worldVenues.session!==s)return;clearTimeout(timer);request?.abort();s.frame?.remove();s.frame=null;main.replaceChildren(status);status.textContent=message;const retry=document.createElement('button');retry.type='button';retry.dataset.venueRetry='';retry.textContent='TENTAR NOVAMENTE';retry.onclick=load;main.append(retry);};
+    const receive=e=>{
+      const d=e.data;if(closed||worldVenues.session!==s||e.origin!==location.origin||e.source!==s.frame?.contentWindow||d?.token!==s.token)return;
+      if(d.type==='ot-venue-ready'){e.source.postMessage({type:'ot-venue-start',token:s.token,name:state.profile.name},location.origin);return;}
+      if(d.type==='ot-venue-playing'){clearTimeout(timer);status.remove();return;}
+      if(d.type==='ot-venue-close'){venueClose();return;}
+      if(d.type!=='ot-venue-result'||s.recorded||!Number.isFinite(d.score)||typeof d.won!=='boolean')return;
+      s.recorded=true;const records=venueRecords(),record=records[s.id]||{played:0,wins:0,best:0};record.played++;if(d.won)record.wins++;record.best=Math.max(record.best,Math.max(0,Math.min(1000000,Math.floor(d.score))));records[s.id]=record;safeLocalSet(venueRecordKey(),JSON.stringify(records));
+    };
+    const pop=()=>{if(history.state?.otVenueDialog!==s.token){s.historyEntry=false;venueClose();}};
+    s.cleanup=()=>{closed=true;attempt++;clearTimeout(timer);request?.abort();window.removeEventListener('message',receive);window.removeEventListener('popstate',pop);};
+    window.addEventListener('message',receive);window.addEventListener('popstate',pop);
+    history.pushState({...history.state,otVenueDialog:s.token},'');s.historyEntry=true;
+    async function load(){
+      const current=++attempt;request?.abort();request=new AbortController();main.replaceChildren(status);status.textContent='Carregando '+s.venue.activity+'…';
+      clearTimeout(timer);timer=setTimeout(()=>failed('A atividade não respondeu. Seu passeio continua salvo. Tente novamente.'),25000);
+      try{
+        const response=await fetch(url.href,{cache:'no-store',credentials:'same-origin',signal:request.signal});
+        if(!response.ok)throw Error('HTTP '+response.status);
+        const html=await response.text();if(closed||current!==attempt||worldVenues.session!==s)return;
+        const doc=new DOMParser().parseFromString(html,'text/html');
+        if(!doc.querySelector('script[src*="js/game_tennis.js"]')||!html.includes('CONSOLE_GAME_ID="tennis"'))throw Error('Documento de atividade inválido');
+        // Relative scripts, sprites and audio still belong to the original game.
+        doc.querySelectorAll('base').forEach(x=>x.remove());const base=doc.createElement('base');base.href=new URL('./',url).href;doc.head.prepend(base);
+        const frame=s.frame=document.createElement('iframe');frame.title=s.venue.activity+' · jogo original';frame.allow='camera; fullscreen; autoplay';frame.dataset.otVenue=s.token;frame.srcdoc='<!doctype html>'+doc.documentElement.outerHTML;main.append(frame);
+      }catch(error){if(!closed&&current===attempt)failed('Não foi possível carregar o pingue-pongue. Seu passeio continua salvo. Tente novamente.');}
+    }
+    load();
   }
   async function venueLaunchPage(s){
     if(worldVenues.session!==s||s.leaving)return;s.leaving=true;
@@ -65,6 +101,7 @@
     ui.innerHTML='<header><b>'+v.icon+' '+v.label+'</b><button type="button" data-venue-close>VOLTAR AO MUNDO</button></header><main><p data-venue-loading role="status">Preparando '+v.activity+'…</p></main>';
     const s={id,venue:v,ui,wasPaused:paused,entry:{x:player.x,y:player.y,z:player.z},token:crypto.randomUUID?.()||String(Math.random()),recorded:false};worldVenues.session=s;paused=true;document.body.append(ui);document.body.classList.add('world-venue-active');ui.querySelector('[data-venue-close]').onclick=venueClose;ui.querySelector('button').focus();
     if(id==='dance'){venueDanceMenu(s);return true;}
+    if(id==='pingpong'){venueOpenDocument(s);return true;}
     // On phones the original activity owns the page. The city is saved before
     // leaving; it is not kept active behind a second browser document.
     if(v.gameId==='drive'||(matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0)&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900){venueLaunchPage(s);return true;}

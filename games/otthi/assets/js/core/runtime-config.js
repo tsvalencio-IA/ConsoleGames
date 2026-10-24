@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.21.0-frota-brasileira',
+    build: '705.22.0-venues-coachwork',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
