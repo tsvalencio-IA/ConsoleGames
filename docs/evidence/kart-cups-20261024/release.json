@@ -1,0 +1,36 @@
+{
+  "sourceCommit": "b427ca4d1053a4ee0e145f7cd19e9f0df7a52eb9",
+  "sourceTree": "c372304a6d1007e423da93b37c331bd5b027bd8e",
+  "baseCommit": "45c7bebd39cbe70faa0f3d4c59e089f2aefe990e",
+  "deploymentId": "dpl_CG8nHMD9s8nNMALVPvHbFwVR9trn",
+  "url": "otthi-world-campanha-teste-98tepqyi3-thiaguinho-s-projects.vercel.app",
+  "state": "READY",
+  "verifiedAt": "2026-10-24T23:40:33.818703+00:00",
+  "aliasError": null,
+  "publicUrl": "https://otthi-world-campanha-teste.vercel.app/games/kart/",
+  "nodeTests": {
+    "passed": 215,
+    "failed": 0
+  },
+  "publicDelivery": {
+    "passed": true,
+    "sha256Files": 16,
+    "kartCacheVersion": 23,
+    "consoleCards": 7,
+    "consoleWorkerVersion": 11,
+    "worldRevision": "5e8f4018347fd162"
+  },
+  "localTwoClientCup": {
+    "passed": true,
+    "phase": "f1",
+    "stages": 3,
+    "allFourPhaseOnlineEntries": true,
+    "originalPhysicsAccelerated": true,
+    "sameStandings": true,
+    "handsFreeItems": true,
+    "cameraInput": "synthetic video and poses"
+  },
+  "liveFirebaseTest": false,
+  "physicalPhoneTest": false,
+  "limitation": "Automatic review blocked live Firebase room reads because of possible player identifiers/state. Only isolated room-contract tests and static public delivery verified."
+}

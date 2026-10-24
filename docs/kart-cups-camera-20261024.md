@@ -28,3 +28,7 @@ O online só era selecionável no modo livre: copas e missões forçavam o solo.
 O backend desses ensaios é um fixture do contrato RTDB, não o Firebase real. A revisão automática anterior bloqueou a consulta às salas reais por possível acesso a identificadores/estado de jogadores; não houve contorno desse bloqueio ou alteração de regras de segurança. Portanto, essas evidências não confirmam regras/conectividade do Firebase de produção nem uma partida em dois celulares físicos. A detecção visual de mãos no aparelho real não foi ensaiada; os testes de câmera fornecem poses/vídeo sintéticos ao motor original.
 
 Os recibos de bônus/checkpoint protegem repetição na execução/mesma aba. Não representam um backend antifraude ou uma garantia global de transação financeira entre aparelhos. Contas, permissões, configuração Firebase e históricos existentes foram preservados.
+
+## Publicação conferida
+
+Fonte `b427ca4d1053a4ee0e145f7cd19e9f0df7a52eb9`, árvore `c372304a6d1007e423da93b37c331bd5b027bd8e`, deployment `dpl_CG8nHMD9s8nNMALVPvHbFwVR9trn`, estado READY e domínio estável atribuído sem erro. O teste público verificou SHA-256 de 16 arquivos, as quatro fases do kart, cache v23 ativo, e manteve o mundo na revisão `5e8f4018347fd162`. O console segue com sete jogos e worker v11. Esta conferência pública usa serviços externos bloqueados: não é prova de uma sala Firebase real. Evidências `public-static.json` e `release.json`.
