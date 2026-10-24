@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "tests": 215,
+  "failed": 0,
+  "command": "node --test tests/*.test.mjs",
+  "scope": "Node suite; real Firebase and physical devices not tested",
+  "preserved": {
+    "voo": {
+      "gitTree": "3b26c902dc9995b4972daacea5ba35cff5ede9b4",
+      "unchanged": true
+    },
+    "ar": {
+      "gitTree": "ab23d8eebf7025791535b1da00cde8b96854d88e",
+      "unchanged": true
+    },
+    "tenis": {
+      "gitTree": "d554146746b15153a30c0b173c8681167759aef1",
+      "unchanged": true
+    },
+    "otthi": {
+      "gitTree": "4961d8ef861d5d60e13b8044d8d2453010ffc564",
+      "unchanged": true
+    },
+    "boxe": {
+      "gitTree": "525df2220c19736d68c983e45362f191bfeafeca",
+      "unchanged": true
+    }
+  }
+}

@@ -214,6 +214,7 @@
     lastActive=id;
     // Kart keeps only its native lap/rank/speed HUD while racing.
     UI.top.hidden=id==="drive";UI.target.hidden=id==="drive";
+    if(id==='drive'){const outcome=g.logic?.onlineCupOutcome;if(outcome?.complete&&data.lastOnlineCup!==outcome.id){data.lastOnlineCup=outcome.id;gameStarted=true;record(outcome.score,outcome.won);}}
     // Native tennis doesn't call System.gameOver; end state + real score are trusted.
     if(id==="tennis"){
       const obj=g.logic;

@@ -43,10 +43,10 @@ function reset(){selectTier();session={time:0,fast:0,nitro:0,locks:0,safeReturn:
 function updateGoals(g,dt){
  const p=last||{},v={state:g.state,nitro:!!g.turboLock,locked:!!g.combat?.locked,deliveries:Number(g.expedition?.deliveries)||0};
  const active=['RACE','FIGHT','RALLY','SERVE','PLAYING','PLAY_REAR_AR','WAITING_PICKUP'].includes(g.state);if(active)session.time+=dt;
- const chosen=window.ArcadePlaySettings?.get().difficulty;const campaign=g.currentFase?.id&&g.currentFase.id!=='arcade';const hard=gameId==='drive'&&campaign?g.currentFase.diff==='HARD':gameId==='box_pro'&&campaign?g.currentFase.id==='f3':gameId==='tennis'&&g.currentFase?.difficulty?g.currentFase.difficulty==='hard':chosen==='hard';let metrics={time:session.time};
+ const chosen=window.ArcadePlaySettings?.get().difficulty;const campaign=g.currentFase?.id&&g.currentFase.id!=='arcade';const hard=gameId==='drive'&&g.isOnline?g.onlineCup?.difficulty==='HARD':gameId==='drive'&&campaign?g.currentFase.diff==='HARD':gameId==='box_pro'&&campaign?g.currentFase.id==='f3':gameId==='tennis'&&g.currentFase?.difficulty?g.currentFase.difficulty==='hard':chosen==='hard';let metrics={time:session.time};
  if(gameId==='drive'){
   if(g.speed>=150&&active)session.fast+=dt;if(v.nitro&&!p.nitro)session.nitro++;
-  const finished=g.status==='FINISHED',won=finished&&g.finalRank===1;
+  const finished=g.status==='FINISHED'&&(!g.isOnline||g.onlineResultConfirmed),won=finished&&g.finalRank===1;
   Object.assign(metrics,{lap:Math.max(0,g.lap-1),laps:Math.max(0,g.lap-1),fast:session.fast,nitro:session.nitro,podium:Number(finished&&g.finalRank<=3),win:Number(won),hardWin:Number(won&&hard),boosts:g.driftBoosts||0});
  }else if(gameId==='box_pro')Object.assign(metrics,g.boutStats||{},{win:Number(g.matchWon),hardWin:Number(g.matchWon&&(hard||g.currentFase?.id==='f3')),healthyWin:Number(g.matchWon&&g.p1?.hp>=50)});
  else if(gameId==='tennis'){

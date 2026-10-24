@@ -6,12 +6,12 @@ const tennis=(db,client)=>{const f=networkEngine('tenis','game_tennis',db,{clien
 test('kart: two devices on one account remain distinct, ignore bots in election, share race seed and cleanly transfer host',async()=>{
  const db=new RealtimeFixture();await db.write('rooms/mario_arena_titanium_v8/players/bot_0',{lastSeen:db.clock,pos:500});
  const a=kart(db,'kart-a');await db.settle();const b=kart(db,'kart-b');await db.settle();const clients=[a,b],host=clients.find(f=>f.game.isHost),guest=clients.find(f=>!f.game.isHost);
- assert(host&&guest);assert.notEqual(a.game.networkId,b.game.networkId);assert.equal(a.game.liveHumans().length,2);assert.equal(db.read('rooms/mario_arena_titanium_v8/host'),host.game.networkId);
+ assert(host&&guest);assert.notEqual(a.game.networkId,b.game.networkId);assert.equal(a.game.liveHumans().length,2);assert.equal(db.read(host.game.networkPath+'/host'),host.game.networkId);
  for(let i=0;i<12;i++){db.clock+=2000;a.heartbeat();b.heartbeat();await db.settle();}assert.equal(a.game.liveHumans().length,2,'waiting in lobby must not expire presence');
  assert(host.game.beginOnlineRace(1));await db.settle();assert.equal(a.game.state,'RACE');assert.equal(b.game.state,'RACE');assert.equal(a.game.matchSeed,b.game.matchSeed);assert.equal(a.game.selectedTrack,b.game.selectedTrack);
- host.game.pos=1234;host.game.playerX=.3;host.game.syncMultiplayer();await db.settle();assert.equal(guest.game.rivals.find(r=>r.id===host.game.networkId).pos,1234);
- const previous=b.game.lastStartedMatch;assert(host.game.beginOnlineRace(2));await db.settle();assert.notEqual(b.game.lastStartedMatch,previous);assert.equal(b.game.selectedTrack,2);
- host.game.cleanup();await db.settle();assert(guest.game.isHost,'a real peer takes over after host leaves');assert.equal(db.read('rooms/mario_arena_titanium_v8/players/'+host.game.peerId),null);
+ host.game.pos=1234;host.game.playerX=.3;host.game.syncMultiplayer(true);await db.settle();assert.equal(guest.game.rivals.find(r=>r.id===host.game.networkId).pos,1234);
+ const previous=b.game.lastStartedMatch;assert.equal(host.game.beginOnlineRace(2),false,'the host cannot skip an unfinished stage');await db.settle();assert.equal(b.game.lastStartedMatch,previous);assert.equal(b.game.selectedTrack,1);
+ host.game.cleanup();await db.settle();assert(guest.game.isHost,'a real peer takes over after host leaves');assert.equal(db.read(host.game.networkPath+'/players/'+host.game.peerId),null);
  assert.equal(host.window.System.playerId,'same-account');assert.equal(host.window.Profile.coins,1234);guest.game.cleanup();await db.settle();assert.equal(db.listeners.size,0);
 });
 test('tennis: atomic match snapshot mirrors ball, score and serving side; guest serve and real paddle hit are authoritative',async()=>{
@@ -46,11 +46,12 @@ test('WAR co-op: camera calibration gates ready state and a disconnect returns t
  g.game.handSession.controller.state='ready';g.game.state='PLAYING';g.game.net.sendPose();await db.settle();assert(h.game.net.start());await db.settle();assert.equal(g.game.state,'PLAYING');
  const hostId=h.game.net.id;await db.disconnect(h.client);await db.settle();assert(g.game.net.isHost);assert.equal(g.game.state,'NET_LOBBY');assert.equal(db.read('rooms/thiaguinho_war_patrol_normal/players/'+hostId),null);const replacement=war(db,'war-replacement');await db.settle();g.game.ammo=1;g.game.stats.shots=12;assert(g.game.net.start());await db.settle();assert.equal(g.game.ammo,g.game.gun.mag);assert.equal(g.game.stats.shots,0);assert.equal(replacement.game.ammo,replacement.game.gun.mag);assert.equal(g.game.career.wins,0);g.game.cleanup();replacement.game.cleanup();h.game.cleanup();
 });
-test('kart: finish stays in the online cup, waits for other humans and accepts podium reward once',async()=>{
+test('kart: finish waits for other humans, both confirm each stage and rewards apply once',async()=>{
  const db=new RealtimeFixture(),a=kart(db,'cup-a');await db.settle();const b=kart(db,'cup-b');await db.settle();const host=[a,b].find(f=>f.game.isHost),guest=[a,b].find(f=>!f.game.isHost),h=host.game,g=guest.game;
- h.beginOnlineRace(0);await db.settle();h.status='FINISHED';h.finalRank=1;h.reward=1250;h.checkRaceStatus();h.syncMultiplayer();await db.settle();assert.equal(h.state,'RACE');assert.equal(h.raceState,'FINISHED');assert(!h.finishTimer,'online finish must not call home/gameOver after three seconds');
- const click={clientX:195,clientY:580};host.window.System.canvas.onpointerdown(click);await db.settle();const coins=host.window.Profile.coins,points=h.cupPoints;assert.equal(h.selectedTrack,0);host.window.System.canvas.onpointerdown(click);await db.settle();assert.equal(host.window.Profile.coins,coins);assert.equal(h.cupPoints,points);
- g.status='FINISHED';g.checkRaceStatus();g.syncMultiplayer();await db.settle();host.window.System.canvas.onpointerdown(click);await db.settle();assert.equal(h.selectedTrack,1);assert.equal(g.selectedTrack,1);assert.equal(host.window.Profile.coins,coins);a.game.cleanup();b.game.cleanup();
+ h.beginOnlineRace(0);await db.settle();h.status='FINISHED';h.finishTime=db.clock;h.checkRaceStatus();await db.settle();assert.equal(h.state,'RACE');assert(!h.finishTimer);assert.equal(h.confirmOnlineStage(),false);assert.equal(h.onlineCup.state,'RACING');
+ g.status='FINISHED';g.finishTime=db.clock+100;g.checkRaceStatus();await db.settle();assert.equal(h.onlineCup.state,'RESULTS');const coins=host.window.Profile.coins,points=h.cupPoints;assert(points>0);
+ h.confirmOnlineStage();await db.settle();h.confirmOnlineStage();await db.settle();assert.equal(h.selectedTrack,0);assert.equal(h.cupPoints,points);assert.equal(host.window.Profile.coins,coins);
+ g.confirmOnlineStage();await db.settle();assert.equal(h.selectedTrack,1);assert.equal(g.selectedTrack,1);assert.equal(host.window.Profile.coins,coins);a.game.cleanup();b.game.cleanup();
 });
 test('online entry never becomes a silent solo match or hides denied room writes',async()=>{
  for(const [slug,file,phase]of [['kart','game_kart',{id:'arcade',mode:'RACE'}],['tenis','game_tennis',{id:'arcade'}],['ar','game_ar',{id:'patrol_coop',missionId:'patrol',online:true}]]){

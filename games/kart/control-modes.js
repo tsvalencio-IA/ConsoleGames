@@ -101,7 +101,7 @@ const hub={
    document.body.append(root);hub.buttons=root;
    const watch=setInterval(()=>{
      const s=window.System;
-     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && hub.mode==="controls" && (kind!=="kart-input" || (s.activeGame.logic?.state==="RACE" && s.activeGame.logic?.status==="RACING" && !s.paused));
+     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && hub.mode==="controls" && (kind!=="kart-input" || (s.activeGame.logic?.state==="RACE" && s.activeGame.logic?.status==="RACING" && !s.activeGame.logic.networkPaused && !s.paused));
      root.hidden=!visible;
      if(!s?.activeGame){clearInterval(watch);root.remove();hub.buttons=null;}
    },200);
@@ -113,27 +113,16 @@ const hub={
    return root;
  },
  kartCameraItem(logic){
-  // Camera steering stays independent: an explicit touch is the only way to spend the held item.
-  const manual={itemQueued:false};
-  logic.arcadeManual=manual;
-  const button=document.createElement("button");button.type="button";
-  button.setAttribute("aria-label","Usar item guardado somente ao tocar");
-  button.style.cssText="position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:410;min-width:116px;min-height:56px;border-radius:14px;border:2px solid #bcd9c5;background:#214b56f2;color:#fff;font:800 12px system-ui;touch-action:manipulation";
-  const use=e=>{e.preventDefault();e.stopPropagation();if(logic.state==="RACE"&&logic.status==="RACING"&&logic.item)manual.itemQueued=true;};
-  button.addEventListener("pointerdown",use,{passive:false});document.body.append(button);
-  const update=()=>{
-    const visible=!!(window.System?.activeGame?.id==="drive"&&hub.mode==="camera"&&logic.state==="RACE"&&logic.status==="RACING"&&!window.System.paused);
-    button.hidden=!visible;button.disabled=!logic.item;
-    if(visible)button.textContent=logic.item?"USAR "+String(logic.item).toUpperCase():"SEM ITEM";
-  };
-  const timer=setInterval(update,120);update();
-  hub.releases.push(()=>{clearInterval(timer);button.remove();if(logic.arcadeManual===manual)logic.arcadeManual=null;});
+  // Race input stays completely hands-free. A deliberate right-hand hold uses
+  // the item; both raised hands retain the existing turbo gesture.
+  logic.arcadeManual=null;
+  hub.showTip('ITEM: LEVANTE SÓ A MÃO DIREITA POR 0,6s • DUAS MÃOS ALTAS: TURBO');
  },
  kartControls(logic){
   // Dedicated on-screen controls. The physics engine reads these states each frame.
   const manual={left:false,right:false,throttle:false,brake:false,drift:false,rear:false,itemQueued:false};
   logic.arcadeManual=manual;
-  const active=()=>logic.state==="RACE"&&logic.status==="RACING";
+  const active=()=>logic.state==="RACE"&&logic.status==="RACING"&&!logic.networkPaused;
   const buttons=[
     {id:"left",text:"◀",label:"Virar à esquerda",down:()=>manual.left=true,up:()=>manual.left=false},
     {id:"right",text:"▶",label:"Virar à direita",down:()=>manual.right=true,up:()=>manual.right=false},
