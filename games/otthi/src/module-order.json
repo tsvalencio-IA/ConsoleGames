@@ -70,14 +70,14 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "ab333246069be5ba5d32001b173d9bede7d7bbaaa28317d193b461f2208af717"
+      "sha256Body": "f0c3606a26fc9455599c338dad0e239b7eb3e576105f95016525e2c464e8abb4"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "13ac4f561f8ef5ec4b8be4ab05ae758ae01229b047573f110e10f1ec338150b5"
+      "sha256Body": "225b307f3bb9ce85d40ea73a6310e59a84f026faa36c51a44463535fa010e884"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "2e66ea487d9e2d3ca6c659b8f7617b652c585dea48d9349c5b99bf308880396d"
+      "sha256Body": "f65bb4417f32ed16174c69af498162dc7ae1ad6350718aa24767175d0736ccfa"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -350,7 +350,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "54154abfb51a9d33af6a6531e01fff08a099da7b316bfc9fcdb611812608d4bb"
+      "sha256Body": "26e6529b105542223b5ec5b19a4a5401c1fb984b4043cfae9d7857ca1c9d4b30"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -392,14 +392,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "f289723f49cfa861f05d60da8351f5a326a3b036310f505970847e2ff9d4b328"
+      "sha256Body": "b819639e84be5199bc7031c8eb385016870c7a5ab7d9163d5d408f693233aa71"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "eabc04b1e56dfd3d5dd26e08414dcb8887d140d992be3c994553c53b8443288b"
+      "sha256Body": "bfaa9ac39c74918edeb37ce20e3adb721387fced5a8a6336fb49ba028c84c7c7"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -413,7 +413,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Continuidade viária e ponte da Costa sobre água preservada",
-      "sha256Body": "7c2fe532f2fb9cef24cc6091b47f4648293e162b2bb99f099b1a9a97ef6c4298"
+      "sha256Body": "95eafe4cc000aae92c502d65c2e51aa80752dadc3d72ce9e97da5f26db4c4d22"
+    },
+    {
+      "file": "src/modules/51-online-travel-party.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Embarque e assentos de grupos online em carros, aviões e helicópteros",
+      "sha256Body": "dfbf216ca7f776588767c34eb9c7b22e0e9223a761a97c726af10b81f7bb0284"
     }
   ],
   "styles": [
@@ -576,7 +583,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "33c1a59c8cf568baef4e4c3865f505f7e63148f0ece705427e10b7f20f5150dd"
+      "sha256Body": "02ed0de78b959e75687cd6f0de916a61547ded29442b93385ea6d8247733080b"
     },
     {
       "file": "src/styles/22-world-activity-venues.css",

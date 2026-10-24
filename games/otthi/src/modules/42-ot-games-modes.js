@@ -170,7 +170,7 @@
   function otGamesDisembark(){
     const g=otGames;if(!otGamesCanDisembark()){toast('Pouse em um local livre e pare para sair da aeronave.','warn',2500);return false;}
     const b=g.body,bounds=v704WorldBounds(),distance=g.mode==='plane'?6.5:5;let point;
-    for(const turn of[Math.PI/2,-Math.PI/2,Math.PI,0])for(const extra of[0,2,4]){const x=b.x+Math.sin(b.yaw+turn)*(distance+extra),z=b.z+Math.cos(b.yaw+turn)*(distance+extra);if(x<bounds.minX+1||x>bounds.maxX-1||z<bounds.minZ+1||z>bounds.maxZ-1||waterAt(x,z)||positionBlockedForPlayer(x,z,.45,{ignoreTraffic:true}))continue;point={x,z,y:groundHeightAt(x,z)};break;}
+    exitSearch:for(const turn of[Math.PI/2,-Math.PI/2,Math.PI,0])for(const extra of[0,2,4]){const x=b.x+Math.sin(b.yaw+turn)*(distance+extra),z=b.z+Math.cos(b.yaw+turn)*(distance+extra);if(x<bounds.minX+1||x>bounds.maxX-1||z<bounds.minZ+1||z>bounds.maxZ-1||waterAt(x,z)||positionBlockedForPlayer(x,z,.45,{ignoreTraffic:true}))continue;point={x,z,y:groundHeightAt(x,z)};break exitSearch;}
     if(!point){toast('Não há espaço seguro para desembarcar aqui.','warn',2400);return false;}
     campaignParkAircraft(g.mode,b);campaignPersist();otGamesLeave({exitPoint:point,preserveCampaign:true});updateFamilyCarry();toast('Aeronave estacionada. Aproxime-se dela para entrar novamente.','good',3300);return true;
   }

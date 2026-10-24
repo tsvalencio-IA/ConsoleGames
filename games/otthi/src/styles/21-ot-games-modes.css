@@ -52,3 +52,6 @@ body[data-ot-game-mode="plane"] .ot-games-collective::before{content:"POTÊNCIA"
 #ot-games-hud button:disabled{opacity:.42}
 body[data-ot-game-mode="plane"] .ot-games-collective::before{content:none!important}
 @media(max-height:460px){#ot-games-hud [data-ot="crouch"]{bottom:158px}#ot-games-hud [data-ot="land"]{right:222px;bottom:12px}#ot-games-hud [data-ot="disembark"]{right:222px;bottom:62px}}
+
+#ot-games-hud [data-ot="crew"]{position:absolute;left:calc(50% - 60px);bottom:20px;width:120px;min-height:44px}
+@media(max-height:460px){#ot-games-hud [data-ot="crew"]{left:135px;bottom:12px;width:112px}}
