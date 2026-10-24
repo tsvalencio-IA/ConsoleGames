@@ -47,8 +47,8 @@ body[data-ot-game-mode="plane"] .ot-games-collective::before{content:"POTÊNCIA"
 
 /* One-shot actions accept simultaneous native touch pointers. */
 #ot-games-hud [data-ot="crouch"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:183px;min-width:96px;min-height:44px;pointer-events:auto}
-#ot-games-hud [data-ot="land"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:193px;min-width:104px;min-height:44px;pointer-events:auto}
-#ot-games-hud [data-ot="disembark"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:244px;min-width:124px;min-height:44px;pointer-events:auto}
+#ot-games-hud [data-ot="land"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:218px;min-width:104px;min-height:44px;pointer-events:auto}
+#ot-games-hud [data-ot="disembark"]{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:270px;min-width:124px;min-height:44px;pointer-events:auto}
 #ot-games-hud button:disabled{opacity:.42}
-body[data-ot-game-mode="plane"] .ot-games-collective small::before{content:none!important}
-@media(max-height:460px){#ot-games-hud [data-ot="crouch"]{bottom:158px}#ot-games-hud [data-ot="land"]{right:141px;bottom:12px}#ot-games-hud [data-ot="disembark"]{right:141px;bottom:62px}}
+body[data-ot-game-mode="plane"] .ot-games-collective::before{content:none!important}
+@media(max-height:460px){#ot-games-hud [data-ot="crouch"]{bottom:158px}#ot-games-hud [data-ot="land"]{right:222px;bottom:12px}#ot-games-hud [data-ot="disembark"]{right:222px;bottom:62px}}

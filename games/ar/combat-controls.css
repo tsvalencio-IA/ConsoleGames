@@ -36,3 +36,5 @@
 /* Keep video decoding in the Android render tree; the user preview is only
    drawn in the calibration panel, then removed from view. */
 video.war-camera-source{display:block!important;position:fixed!important;left:0!important;bottom:0!important;top:auto!important;width:2px!important;height:2px!important;opacity:.001!important;pointer-events:none!important;z-index:0!important;transform:none!important}
+
+.war-hand-sources{display:none;gap:6px}.calibrating .war-hand-sources{display:flex;grid-column:1/-1}.war-hand-sources button,[data-hand="capture"]{min-height:44px;padding:8px 12px;border:1px solid #9ee8c6;background:#153e4e;color:#effff4;border-radius:9px;font:700 12px system-ui;touch-action:none}.war-hand-sources button[aria-pressed="true"]{background:#2a735f}[data-hand="capture"]{grid-column:1/-1}.calibrating canvas{touch-action:none;cursor:crosshair}.input-game-controls.combat-input [data-control="hand"]{max-width:100px;font-size:10px}

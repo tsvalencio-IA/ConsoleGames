@@ -25,7 +25,7 @@ test('WAR hand: two-hand grip stabilizes the same weapon without changing unlock
 });
 test('WAR hand: only an actual visible aligned adversary enables automatic shots, and hand loss stops damage and ammunition immediately',()=>{
  const f=engine('ar','game_ar'),g=f.game;g.init({id:'patrol'});g.spawnWave();g.covers=[];for(const e of g.enemies)e.aim=999;const e=g.enemies[1];g.player.yaw=Math.atan2(e.x,e.z);g.player.pitch=Math.atan2(e.y-1.8,Math.hypot(e.x,e.z));g.viewSize={w:390,h:844};g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true};
- for(let i=0;i<20;i++)g.step(.016);assert(g.stats.shots>0&&g.stats.hits>0);const shots=g.stats.shots;g.handAim.fresh=false;for(let i=0;i<100;i++)g.step(.016);assert.equal(g.stats.shots,shots);
+ for(let i=0;i<20;i++){g.handAim.timestamp=1000+i*100;g.step(.016);}assert(g.stats.shots>0&&g.stats.hits>0);const shots=g.stats.shots;g.handAim.fresh=false;for(let i=0;i<100;i++)g.step(.016);assert.equal(g.stats.shots,shots);
  g.handAim={x:.9,y:.2,fresh:true};for(let i=0;i<40;i++)g.step(.016);assert.equal(g.stats.shots,shots);
 });
 test('WAR hand: inverse sight projection selects the same world target in portrait and landscape',()=>{
@@ -50,7 +50,7 @@ test('WAR hand: the calibrated camera walks without touches, goes around physica
 test('WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.75,y:.25,fresh:true,present:true};g.waveDelay=999;g.covers=[];g.manualStick={x:-1,y:-1,active:true};g.aimStick={x:-1,y:-1,active:true};
  g.step(.25);assert(g.player.yaw>0&&g.player.pitch>0);assert(g.autoWalking);assert.equal(g.aimRay().yaw,g.player.yaw);assert.equal(g.aimRay().pitch,g.player.pitch);
- const facing={yaw:g.player.yaw,pitch:g.player.pitch};g.handAim.x=.5;g.handAim.y=.48;g.step(.2);assert.equal(g.player.yaw,facing.yaw);assert.equal(g.player.pitch,facing.pitch);
+ const facing={yaw:g.player.yaw,pitch:g.player.pitch};for(let i=0;i<60;i++)g.step(1/60);assert.equal(g.player.yaw,facing.yaw);assert.equal(g.player.pitch,facing.pitch);g.handAim.x=.5;g.handAim.y=.48;g.step(.2);assert(Math.abs(g.player.yaw)<.001);assert(Math.abs(g.player.pitch)<.001);
 });
 test('WAR hand: automatic walking stops at engagement range and manual mode stays stationary without input',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.step(.5);assert.equal(g.player.z,0);g.handSession={dispose(){}};g.handAim={x:.7,y:.3,fresh:true};g.enemies=[{active:true,x:3,z:9,y:1.15,kind:'soldier',aim:999,flash:0,phase:0}];g.step(.2);assert.equal(g.player.z,0);assert(!g.autoWalking);

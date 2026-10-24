@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.18.1-family-lots",
+  "build": "705.20.0-brasil-family",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a2f316508ab0a225a7d0c860df4bc29a9668be2068c66672bc72cdd21a98d57a"
+      "sha256Body": "eb0a1392c960851683234d634e5d3e4cf7ded0bf3726183d1afa79ba57052eb9"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "3b549964a08c7f2cc0f788b61e70071b0adeb9b93549bca719b08c3c30212041"
+      "sha256Body": "f25283924bc89d81266ba85b8ee90a139c209030c00a3860e7450bf48b01a20b"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "7471c9d5bc6781a7862f316e8dbc802504498f4b8a11b5c91be9b706836a7151"
+      "sha256Body": "ab333246069be5ba5d32001b173d9bede7d7bbaaa28317d193b461f2208af717"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "5e5ceb51d7b8fabdf655b7b76dae39acf20fd12580a2ca701bb15f359315c6ad"
+      "sha256Body": "3e983d7bf6b8762f9a4435d91748faea3c239c0e73a6bcb1a10b696cf06398de"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "fcb1dc7c8b9ac1582d0617db48f2708940c11ddceb43ecfc885949552af71630"
+      "sha256Body": "3c7ab3b0995b774e785eb1119a91439051784e86fdcb375f64890b4c35eb7d37"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "c956d4b51c4e522328cb2e988451177d097733ea3c541d3fa7f9a0eb8a3ca9a7"
+      "sha256Body": "8a59cf9e8cb38d8844341b9f1914adb3005347f7499c30c333aa77446f6e6b01"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "e4b2f8d3d3d9b1276c623bcadbef96c3facf6329f2a0f83322a39b57994460c7"
+      "sha256Body": "2e66ea487d9e2d3ca6c659b8f7617b652c585dea48d9349c5b99bf308880396d"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -336,7 +336,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "e1a8c7deefc42586a23f77d830ea098ba9081c3c6c9e0ef010d8b6e233a61e98"
+      "sha256Body": "b389dee26a424c58749d9f66897955c2b641cde9b1902aae433a254588e897b5"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -378,7 +378,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Cidades, autódromos e veículos GLB no mundo unificado",
-      "sha256Body": "df8f5c1ba823336052d325f17a04f5c548b3ccb1333978999a6ffe725346e806"
+      "sha256Body": "e3e4086c7ce23733338ab1eb1022462dd30720f173f41d3864d4376eede6edf0"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
@@ -399,7 +399,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "4078b8437c2427d8f2a7b1b5ce8758c8f6f484cfb359de87c61b76ae3dd966a2"
+      "sha256Body": "eabc04b1e56dfd3d5dd26e08414dcb8887d140d992be3c994553c53b8443288b"
+    },
+    {
+      "file": "src/modules/47-world-vehicle-taking.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Trânsito utilizável e persistente no motor de veículos existente",
+      "sha256Body": "20718652b594caca143d4efb6489724320a45d675b722e0de694a48134dd862d"
+    },
+    {
+      "file": "src/modules/50-world-road-continuity.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Continuidade viária e ponte da Costa sobre água preservada",
+      "sha256Body": "7c2fe532f2fb9cef24cc6091b47f4648293e162b2bb99f099b1a9a97ef6c4298"
     }
   ],
   "styles": [
@@ -562,7 +576,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games accessible selector and simultaneous touch controls",
-      "sha256Body": "cb6678f1ffa0191a17f938c7fa116f18e16bddd99ec18b2d53aba4831671e988"
+      "sha256Body": "33c1a59c8cf568baef4e4c3865f505f7e63148f0ece705427e10b7f20f5150dd"
     },
     {
       "file": "src/styles/22-world-activity-venues.css",

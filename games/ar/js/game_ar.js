@@ -25,12 +25,12 @@ const Game={
   this.careerKey='thia:ar-combat:v1:'+(window.System?.playerId||'local');
   let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
   this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
-  this.eyeY=1.8;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
+  this.eyeY=1.8;this.crouched=false;this.handViewAnchor=null;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
   this.fireHeld=false;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
   this.covers=[{x:-7,z:15,w:5,h:1.5,d:2},{x:8,z:27,w:6,h:2,d:2},{x:-12,z:43,w:5,h:2.3,d:3}];
-  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();}};
+  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
   this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
   if(window.ArcadeControls?.mode==='camera'&&window.WarHandControl){this.state='HAND_CALIBRATION';this.handSession=window.WarHandControl.start(this);}
@@ -61,6 +61,7 @@ const Game={
    return t<=end&&t>0.001&&t<.99&&(this.eyeY+(y-this.eyeY)*t)<c.h;
   });
  },
+ toggleCrouch(){this.crouched=!this.crouched;this.eyeY=this.crouched?1.05:1.8;return this.crouched;},
  setAiming(value){this.aiming=!!value&&this.state==='PLAYING'&&!this.handSession&&!window.System?.paused;return this.aiming;},
  focalLength(w,h){return Math.min(w,h)*.88*(this.aiming?1.65:1);},
  lookBy(dx,dy,w,h){
@@ -158,16 +159,14 @@ const Game={
   if(this.state==='HAND_CALIBRATION')return;
   if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
-  this.eyeY=(this.coverHeld||this.keys.c)?1.05:1.8;
+  this.eyeY=(this.coverHeld||this.crouched)?1.05:1.8;
   if(this.state!=='PLAYING'){
    this.resultTimer-=dt;if(this.resultTimer<=0&&!this.resultSent){this.resultSent=true;window.System?.gameOver?.(this.score,this.state==='VICTORY',0);}return;
   }
-  const p=this.player,cameraInput=!!this.handSession,stick=cameraInput?null:this.manualStick,aim=cameraInput?null:this.aimStick,cover=this.coverHeld||this.keys.c;
+  const p=this.player,cameraInput=!!this.handSession,stick=cameraInput?null:this.manualStick,aim=cameraInput?null:this.aimStick,cover=this.coverHeld||this.crouched;
   const sensitivity=window.ArcadePlaySettings?.get().sensitivity??1;
   if(cameraInput&&this.handAim?.fresh){
-   const dx=this.handAim.x-.5,dy=.48-this.handAim.y;
-   if(Math.abs(dx)>.045)p.yaw=angle(p.yaw+Math.sign(dx)*(Math.abs(dx)-.045)*2.6*dt*sensitivity);
-   if(Math.abs(dy)>.05)p.pitch=clamp(p.pitch+Math.sign(dy)*(Math.abs(dy)-.05)*1.8*dt*sensitivity,-.8,.8);
+   const a=this.handAim,calibration=a.calibration||0;if(!this.handViewAnchor||this.handViewAnchor.calibration!==calibration)this.handViewAnchor={yaw:p.yaw,pitch:p.pitch,calibration};p.yaw=angle(this.handViewAnchor.yaw+(a.x-.5)*1.7*sensitivity);p.pitch=clamp(this.handViewAnchor.pitch+(.48-a.y)*1.7*sensitivity,-.8,.8);
   }
   p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);
   let mx=cameraInput?0:(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=cameraInput?0:(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
@@ -183,7 +182,7 @@ const Game={
   if(this.handSession){
    const target=this.handAim?.fresh?this.targetAtAim():null;
    if(!target)this.handLock=null;
-   else if(this.handLock?.target===target){this.handLock.time=Math.max(this.handLock.time+dt,Math.max(0,((this.handAim.timestamp||0)-this.handLock.firstSample)/1000));automatic=this.handLock.time>=.12;}
+   else if(this.handLock?.target===target){this.handLock.time=Math.max(this.handLock.time+dt,Math.max(0,((this.handAim.timestamp||0)-this.handLock.firstSample)/1000));automatic=this.handLock.time>=.12&&(this.handAim.timestamp||0)>this.handLock.firstSample;}
    else this.handLock={target,time:0,firstSample:this.handAim.timestamp||0};
    // The camera follows the hand; the weapon and reticle share its centre.
   }

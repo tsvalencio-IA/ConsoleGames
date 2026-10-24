@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.18.1-family-lots",
+  "build": "705.20.0-brasil-family",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -271,7 +271,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70620,
+  "assetVersion": 70621,
   "revisionLabel": "Revisão de jogabilidade, atividades locais e atualização automática",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

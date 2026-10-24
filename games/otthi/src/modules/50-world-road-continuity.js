@@ -1,0 +1,14 @@
+/** Continuous road surface at every LOD; the Costa crossing remains above water. */
+// @otthi-module-body
+  const worldRoadContinuity={ready:false,root:null};
+  function createWorldRoadContinuity(){
+    if(worldRoadContinuity.ready||!worldExpansion.ready)return;const root=new THREE.Group();root.name='OTTHI_CONTINUOUS_ROAD_SURFACE';worldGroup.add(root);const vertices=[];
+    const segment=(a,b,width)=>{const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz);if(!length)return;const nx=dz/length*width/2,nz=-dx/length*width/2,count=Math.ceil(length/3);for(let i=0;i<count;i++){const t=i/count,u=(i+1)/count,p=[{x:a.x+dx*t+nx,z:a.z+dz*t+nz},{x:a.x+dx*u+nx,z:a.z+dz*u+nz},{x:a.x+dx*u-nx,z:a.z+dz*u-nz},{x:a.x+dx*t-nx,z:a.z+dz*t-nz}];for(const n of[0,2,1,0,3,2])vertices.push(p[n].x,professionalTerrainHeightAt(p[n].x,p[n].z)+.075,p[n].z);}};
+    for(const seg of v704HighwaySegments())segment(seg.a,seg.b,seg.width+.2);for(const r of WORLD_LAYOUT_V704.roads){const x=r.w>r.d;segment({x:r.x-(x?r.w/2:0),z:r.z-(x?0:r.d/2)},{x:r.x+(x?r.w/2:0),z:r.z+(x?0:r.d/2)},Math.min(r.w,r.d));}
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geo.computeVertexNormals();const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x343b43,roughness:.9,side:THREE.DoubleSide}));mesh.frustumCulled=false;mesh.receiveShadow=true;mesh.userData.criticalSurface=true;root.add(mesh);
+    for(const b of WORLD_LAYOUT_V704.roadBridges){for(const side of[-1,1]){const material=new THREE.MeshStandardMaterial({color:0x92a4aa,roughness:.65,metalness:.25}),rail=new THREE.Mesh(new THREE.BoxGeometry(b.deckLength,.12,.12),material);rail.position.set(b.x,b.deckHeight+.7,b.z+side*(b.width/2+.2));root.add(rail);for(const x of[-b.deckLength/2,b.deckLength/2]){const post=new THREE.Mesh(new THREE.BoxGeometry(.18,.8,.18),material);post.position.set(b.x+x,b.deckHeight+.35,b.z+side*(b.width/2+.2));root.add(post);}}}
+    worldRoadContinuity.ready=true;worldRoadContinuity.root=root;
+  }
+  function worldDrivableAudit(){const failures=[];let samples=0;const check=(x,z,id)=>{samples++;if(positionBlockedForPlayer(x,z,.45,{ignoreTraffic:true}))failures.push({id,x,z,water:!!waterAt(x,z),height:groundHeightAt(x,z)});};for(const seg of v704HighwaySegments()){const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z,n=Math.ceil(Math.hypot(dx,dz)/4),len=Math.hypot(dx,dz)||1;for(let i=0;i<=n;i++)for(const side of[-1,1])check(seg.a.x+dx*i/n+dz/len*side*seg.width*.245,seg.a.z+dz*i/n-dx/len*side*seg.width*.245,seg.id);}return{passed:failures.length===0,samples,failures};}
+  const roadContinuityOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){roadContinuityOldExpansion();createWorldRoadContinuity();};
+  window.OTTHI_ROAD_CONTINUITY={diagnostics:()=>({ready:worldRoadContinuity.ready,bridges:WORLD_LAYOUT_V704.roadBridges.map(b=>({...b}))}),driveAudit:worldDrivableAudit};

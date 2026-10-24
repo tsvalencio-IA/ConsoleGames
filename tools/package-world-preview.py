@@ -97,6 +97,7 @@ def package(output=OUTPUT):
 <body><a href="games/otthi/">Entrar no OTThi World</a><p>Powered by thIAguinho Soluções Digitais</p></body></html>''', encoding='utf-8')
     required = ['games/otthi/app.js', 'games/otthi/release-manifest.json',
                 'games/ar/hand-controls.js', 'games/ar/hand-tracker-worker.js',
+                'games/ar/object-tracker.js', 'games/ar/object-tracker-worker.js',
                 'games/ar/combat-controls.css', 'games/ar/vendor/hand-tracker/hand_landmarker.task',
                 'games/ar/vendor/hand-tracker/vision_wasm_internal.wasm',
                 'arcade/index.html', 'arcade/instalar/index.html',

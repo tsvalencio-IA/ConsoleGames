@@ -1,0 +1,25 @@
+/* Local similarity tracking for an object explicitly selected by the player.
+ * No upload, background detection or automatic replacement of a lost object. */
+(()=>{'use strict';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function gray(rgba,w,h){const out=new Float32Array(w*h);for(let i=0,j=0;i<out.length;i++,j+=4)out[i]=rgba[j]*.299+rgba[j+1]*.587+rgba[j+2]*.114;return out;}
+function value(im,w,h,x,y){if(x<1||y<1||x>=w-2||y>=h-2)return NaN;const a=Math.floor(x),b=Math.floor(y),u=x-a,v=y-b,i=b*w+a;return im[i]*(1-u)*(1-v)+im[i+1]*u*(1-v)+im[i+w]*(1-u)*v+im[i+w+1]*u*v;}
+function descriptor(im,w,h,cx,cy,angle=0,scale=1,size=7,step=1){const out=[],r=(size-1)/2,c=Math.cos(angle)*scale,s=Math.sin(angle)*scale;let sum=0;for(let y=-r;y<=r;y++)for(let x=-r;x<=r;x++){const v=value(im,w,h,cx+c*x*step-s*y*step,cy+s*x*step+c*y*step);if(!Number.isFinite(v))return null;out.push(v);sum+=v;}const mean=sum/out.length;let mag=0;for(let i=0;i<out.length;i++){out[i]-=mean;mag+=out[i]*out[i];}if(mag<out.length*16)return null;mag=Math.sqrt(mag);return out.map(v=>v/mag);}
+function dot(a,b){if(!a||!b)return -1;let n=0;for(let i=0;i<a.length;i++)n+=a[i]*b[i];return n;}
+class ObjectTracker{
+ constructor(){this.ready=false;this.lost=false;this.bad=0;this.matches=0;}
+ initialize(rgba,w,h,roi){this.ready=false;this.lost=false;this.bad=0;this.matches=0;this.w=w;this.h=h;const im=gray(rgba,w,h),r={x:clamp(roi.x,8,w-32),y:clamp(roi.y,8,h-32),w:clamp(roi.w,24,Math.min(160,w-16)),h:clamp(roi.h,24,Math.min(160,h-16))};r.w=Math.min(r.w,w-r.x-8);r.h=Math.min(r.h,h-r.y-8);this.roi=r;this.reference={x:r.x+r.w/2,y:r.y+r.h/2,angle:0,scale:1};this.pose={...this.reference};this.step=Math.max(2,Math.min(r.w,r.h)/13);this.template=descriptor(im,w,h,this.pose.x,this.pose.y,0,1,11,this.step);if(!this.template)throw Error('Escolha uma região com detalhes visíveis no objeto.');
+  const candidates=[];for(let y=Math.ceil(r.y+5);y<r.y+r.h-5;y+=2)for(let x=Math.ceil(r.x+5);x<r.x+r.w-5;x+=2){let a=0,b=0,c=0;for(let yy=-2;yy<=2;yy++)for(let xx=-2;xx<=2;xx++){const i=(y+yy)*w+x+xx,gx=(im[i+1]-im[i-1])*.5,gy=(im[i+w]-im[i-w])*.5;a+=gx*gx;b+=gy*gy;c+=gx*gy;}const score=(a+b-Math.sqrt((a-b)*(a-b)+4*c*c))/2;if(score>130)candidates.push({x,y,score});}
+  candidates.sort((a,b)=>b.score-a.score);this.features=[];for(const p of candidates){if(this.features.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<7))continue;const patch=descriptor(im,w,h,p.x,p.y);if(patch)this.features.push({x:p.x,y:p.y,patch});if(this.features.length===28)break;}if(this.features.length<7)throw Error('Objeto sem detalhes suficientes. Selecione botões, desenho ou cantos bem iluminados.');this.ready=true;this.matches=this.features.length;return this.result(1);
+ }
+ result(confidence){const p=this.pose;return{x:p.x/this.w,y:p.y/this.h,dx:Math.sin(p.angle),dy:Math.cos(p.angle),scale:Math.max(this.roi.w,this.roi.h)/this.w*p.scale,angle:p.angle,confidence,matches:this.matches,roi:{...this.roi},source:'object'};}
+ track(rgba){if(!this.ready||this.lost)return null;const im=gray(rgba,this.w,this.h),old=this.pose,score=p=>dot(this.template,descriptor(im,this.w,this.h,p.x,p.y,p.angle,p.scale,11,this.step));let best={...old},quality=score(best);
+  if(quality<.985){for(const da of[-.08,0,.08])for(const ds of[.96,1,1.04])for(let dy=-30;dy<=30;dy+=3)for(let dx=-30;dx<=30;dx+=3){const p={x:old.x+dx,y:old.y+dy,angle:old.angle+da,scale:old.scale*ds};if(p.scale<.55||p.scale>1.8)continue;const q=score(p);if(q>quality){best=p;quality=q;}}const near={...best};for(const da of[-.03,0,.03])for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const p={...near,x:near.x+dx,y:near.y+dy,angle:near.angle+da},q=score(p);if(q>quality){best=p;quality=q;}}}
+  const c=Math.cos(best.angle)*best.scale,s=Math.sin(best.angle)*best.scale,matched=[];if(quality>=.65)for(const p of this.features){const x=best.x+c*(p.x-this.reference.x)-s*(p.y-this.reference.y),y=best.y+s*(p.x-this.reference.x)+c*(p.y-this.reference.y);let q=-1,m;for(let dy=-4;dy<=4;dy+=2)for(let dx=-4;dx<=4;dx+=2){const corr=dot(p.patch,descriptor(im,this.w,this.h,x+dx,y+dy,best.angle,best.scale));if(corr>q){q=corr;m={dx,dy};}}if(q>=.78)matched.push(m);}
+  this.matches=matched.length;const min=Math.max(6,Math.ceil(this.features.length*.55));if(matched.length<min||Math.hypot(best.x-old.x,best.y-old.y)>35||Math.abs(best.angle-old.angle)>.4){this.bad++;this.matches=0;if(this.bad>=3)this.lost=true;return null;}
+  const median=key=>matched.map(p=>p[key]).sort((a,b)=>a-b)[Math.floor(matched.length/2)],mx=median('dx'),my=median('dy'),inliers=matched.filter(p=>Math.hypot(p.dx-mx,p.dy-my)<=2.6);if(inliers.length<min){this.bad++;this.matches=0;if(this.bad>=3)this.lost=true;return null;}
+  this.bad=0;this.matches=inliers.length;best.x+=mx;best.y+=my;this.pose=best;return this.result(quality);
+ }
+}
+if(typeof module!=='undefined'&&module.exports)module.exports={ObjectTracker};else globalThis.WarObjectTracker=ObjectTracker;
+})();

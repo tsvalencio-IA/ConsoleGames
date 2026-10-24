@@ -131,9 +131,9 @@
       if((player.vehicle||player.boating)&&!input.cameraDrag){const heading=player.vehicle?player.car.heading:player.boat.heading;cameraYaw=lerpAngle(cameraYaw,Math.PI-heading,Math.min(1,dt*3.2));}
       const speedKick=clamp(Math.abs(player.vehicle?player.car.speed:speed)/9,0,1.6),pitch=clamp(cameraPitch,-.55,1.35);
       const followScale=playerModel?.userData?.familyAvatar&&!player.vehicle&&!player.boating?.72:1;
-      const dist=clamp((portrait?12.5:10.2)*followScale+(player.vehicle?3.4:player.boating?2.2:0)+speedKick*1.6+cameraZoom,5.3,27);
-      const normalized=(pitch+.55)/1.9,height=clamp(((portrait?2.35:1.75)+normalized*(portrait?11.8:10.4))*followScale+(player.vehicle?.55:player.boating?.32:0)+cameraZoom*.12,1.35,15.8);
-      const forwardLook=lerp(7.0,1.6,normalized),visualHeight=1.35*followScale*playerScaleValue()*(player.crouched?.72:1)+(player.swimming?-.2:0);
+      const dist=clamp((player.vehicle?(portrait?10.2:8.8):(portrait?12.5:10.2)*followScale+(player.boating?2.2:0))+speedKick*1.6+cameraZoom,5.3,27);
+      const normalized=(pitch+.55)/1.9,height=clamp(player.vehicle?2.4+normalized*3.8+cameraZoom*.12:((portrait?2.35:1.75)+normalized*(portrait?11.8:10.4))*followScale+(player.boating?.32:0)+cameraZoom*.12,1.35,15.8);
+      const forwardLook=player.vehicle?lerp(3.4,1,normalized):lerp(7.0,1.6,normalized),visualHeight=1.35*followScale*playerScaleValue()*(player.crouched?.72:1)+(player.swimming?-.2:0);
       desiredPos=new THREE.Vector3(player.x-Math.sin(cameraYaw)*dist,player.y+height,player.z+Math.cos(cameraYaw)*dist);look=new THREE.Vector3(player.x+Math.sin(cameraYaw)*forwardLook,player.y+visualHeight+lerp(.9,-.25,normalized),player.z-Math.cos(cameraYaw)*forwardLook);
       camera.fov=(portrait?55:58)+speedKick*(player.vehicle?7:player.boating?4:2)+lerp(4,-2,normalized);
     }

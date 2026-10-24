@@ -19,7 +19,7 @@
   }
 
   function professionalTerrainHeightAt(x,z){
-    if(!Number.isFinite(x)||!Number.isFinite(z))return 0;
+    if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
     const mountainPoint=worldLayoutPoint('mountain',{x:-88,z:104}),nx=(x-mountainPoint.x)/24,nz=(z-mountainPoint.z)/20,r=Math.hypot(nx,nz);let mountain=0;
     if(r<1.12&&z>82){const dome=Math.pow(Math.max(0,1-r/1.12),1.55)*15.5;const ridges=(Math.sin(x*.22)+Math.cos(z*.18))*1.05*Math.max(0,1-r);mountain=Math.max(0,dome+ridges);}
