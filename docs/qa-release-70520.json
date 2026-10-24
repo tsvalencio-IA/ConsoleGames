@@ -1,0 +1,81 @@
+{
+  "verifiedAt": "2026-10-24T11:20:15.211218+00:00",
+  "sourceCommit": "14fc2794cb76c518b43be947fe8b2ca01fa9907a",
+  "deployment": "dpl_D56WKBknmwjubnWfQ7tURFxWGZ7x",
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.20.0-brasil-family",
+  "revision": "b7dfeb96cda887fb",
+  "publicProtectedFilesVerified": 31,
+  "publicNativeAssetsAlsoVerified": [
+    "games/ar/object-tracker.js",
+    "games/ar/object-tracker-worker.js",
+    "games/ar/hand-controls.js",
+    "games/ar/js/game_ar.js",
+    "games/ar/control-modes.js",
+    "games/ar/combat-controls.css",
+    "games/kart/js/game_kart.js"
+  ],
+  "rulesTests": {
+    "passed": 191,
+    "failed": 0
+  },
+  "drivableRoadSamples": 2326,
+  "publicFamilyMembersSeated": 4,
+  "publicJavaScriptErrors": [],
+  "installabilityErrors": [],
+  "apk": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+    "url": "https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk"
+  },
+  "publicDownloads": {
+    "passed": true,
+    "base": "https://otthi-world-campanha-teste.vercel.app/arcade/instalar/",
+    "consoleEntry": true,
+    "results": [
+      {
+        "case": "android-portrait",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "android-landscape",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "desktop",
+        "gesture": "click",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "without-javascript",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      },
+      {
+        "case": "current-worker",
+        "gesture": "touch",
+        "bytes": 57991,
+        "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+        "passed": true
+      }
+    ],
+    "limits": [
+      "Mobile Chromium emulation; the user phone and its in-app browser were not directly inspected."
+    ]
+  },
+  "limits": [
+    "Câmera física de celular não certificada por estes testes.",
+    "Multiplayer testado por reprodução do protocolo; falta uma partida entre dois aparelhos reais.",
+    "Download do APK conferido; instalação física não executada."
+  ]
+}

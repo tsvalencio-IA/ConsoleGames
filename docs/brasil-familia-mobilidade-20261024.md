@@ -29,3 +29,7 @@ Build `705.20.0-brasil-family`, 24/10/2026. Esta revisão mantém o motor dos jo
 ## Limites da evidência
 
 Os testes de câmera usam vídeos controlados; não certificam iluminação, precisão ou desempenho de uma câmera física. O teste online reproduz mensagens e poses no cliente e não substitui uma partida entre dois celulares com Firebase. O APK existente é o invólucro assinado que recebe esta atualização web; foi testado o download, não uma nova instalação física. Esta revisão não atribui notas ou porcentagens de semelhança com jogos comerciais.
+
+## Publicação conferida
+
+Publicado no endereço existente em 24/10/2026, deployment `dpl_D56WKBknmwjubnWfQ7tURFxWGZ7x`, fonte `14fc2794cb76c518b43be947fe8b2ca01fa9907a`, revisão `b7dfeb96cda887fb`. A conferência pública comparou os 31 arquivos protegidos, mais os controles do WAR e o kart original, com os arquivos testados. O Fusca abriu por toque com os quatro personagens e o navegador não reportou erros de instalação. O download público entregou o APK de 57.991 bytes com o SHA-256 esperado. A evidência compacta está em `qa-release-70520.json`.
