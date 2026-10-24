@@ -37,6 +37,9 @@ function build(T,key,h){
  }
  function plate(y,z,rear=false){rounded(0xe8e8df,0,y,z,.30,.105,.014,'fixed',.009);box(0x254a8a,0,y+.04,z+(rear?-.008:.008),.285,.014,.005);for(let i=0;i<7;i++)box(0x283239,-.106+i*.035,y-.006,z+(rear?-.009:.009),.012,.037,.004);}
  function roundLamp(x,y,z,r,c=lens){ell(black,x,y,z,r*1.17,r*1.17,.026);ell(chrome,x,y,z+.013,r*1.07,r*1.07,.022,'chrome');ell(c,x,y,z+.03,r,r,.022,'lens');ring(x,y,z+.049,r*.87,chrome);}
+ function lampCluster(a,x,y,z,w,h){
+  const outlines={golf:[[-.50,-.35],[.24,-.50],[.49,-.26],[.50,.14],[.26,.48],[-.46,.46]],s10:[[-.50,-.45],[.40,-.45],[.52,-.15],[.46,.44],[-.49,.44]],hilux:[[-.50,-.40],[.35,-.48],[.56,-.06],[.34,.56],[-.44,.35]],amarok:[[-.50,-.45],[.48,-.45],[.50,.38],[.28,.49],[-.50,.40]],saveiro:[[-.51,-.28],[.28,-.48],[.53,-.18],[.47,.51],[-.47,.24]]},points=outlines[key],q=new T.Shape();points.forEach(([px,py],i)=>i?q.lineTo(a*px*w,py*h):q.moveTo(a*px*w,py*h));q.closePath();const geo=new T.ExtrudeGeometry(q,{depth:.014,bevelEnabled:true,bevelSize:.004,bevelThickness:.004,bevelSegments:2,curveSegments:3});add(geo,0x8dabb7,x,y,z,1,1,1,'chrome');
+ }
  if(s.truck){
   rounded(white,0,.80,.97,1.71,.92,1.33,'paint',.10);rounded(white,0,1.88,.97,1.68,.13,1.31,'paint',.07);rounded(white,0,1.57,.35,1.66,.64,.09,'paint',.04);
   quad([[-.70,1.28,1.67],[.70,1.28,1.67],[.66,1.80,1.60],[-.66,1.80,1.60]],glass,'glass');box(dark,0,.78,1.66,1.54,.40,.05);for(let j=0;j<5;j++)box(chrome,0,.63+j*.067,1.699,1.42,.015,.014,'chrome');logo('vw',.82,1.72,.09);
@@ -48,7 +51,7 @@ function build(T,key,h){
   plate(.44,1.83);Object.assign(root.userData,{seats:[{x:-.29,y:.75,z:1},{x:.29,y:.75,z:1},{x:0,y:.75,z:.5}],seatScale:.38,roof:1.98,hoodY:.98,wheelRadius:.34,front:1.85,rear:-2.02});return;
  }
  const half=s.length/2,w=s.width/2,r=p.r,roofW=w*(p.classic?.83:.86),belt=p.belt,roof=s.roof;
- const edge=z=>{const n=Math.max(0,(Math.abs(z)/half-.72)/.28);return w*(1-(z>0&&!p.classic?.14:.075)*n*n);};
+ const edge=z=>{const n=Math.max(0,(Math.abs(z)/half-.72)/.28);return w*(1-(z>0&&!p.classic?.025:.075)*n*n);};
  const top=z=>z>p.front?belt-(z-p.front)/(half-p.front)*(p.classic?.075:.10):z<p.rear&&!s.pickup?belt-(p.rear-z)/(half+p.rear)*.025:belt;
  const bottom=z=>{let y=s.pickup?.34:.25;for(const a of[p.fa,p.ra]){const d=z-a,ar=r+.047;if(Math.abs(d)<ar)y=Math.max(y,r+.018+Math.sqrt(Math.max(0,ar*ar-d*d)));}return y;};
  const side=[],upper=[],push=(v,a,b,c,d)=>v.push(...a,...b,...c,...a,...c,...d),N=96;
@@ -60,6 +63,7 @@ function build(T,key,h){
  box(dark,0,.25,0,s.width*.86,.09,s.length*.88);for(const a of[-1,1]){const z=a*half,e=edge(z);quad([[-e,.28,z],[e,.28,z],[e,top(z),z],[-e,top(z),z]],white,'paint');}
  for(const sign of[-1,1])for(const a of[p.fa,p.ra]){const pts=[];for(let n=0;n<=20;n++){const t=Math.PI*n/20,z=a+Math.cos(t)*(r+.05);pts.push([sign*(edge(z)+.006),r+.018+Math.sin(t)*(r+.05),z]);}tube(pts,s.pickup?.023:.014,s.pickup?0x343c3f:white,s.pickup?'fixed':'paint');}
  rounded(white,0,roof-.018,(p.rf+p.rr)/2,roofW*2,.055,p.rf-p.rr,'paint',.025);
+ for(let i=0;i<8;i++)for(let j=0;j<8;j++){const z=p.rr+(p.rf-p.rr)*i/8,nz=p.rr+(p.rf-p.rr)*(i+1)/8,a=-1+j/4,b=-1+(j+1)/4;quad([[a*roofW,roof+.032*(1-a*a),z],[a*roofW,roof+.032*(1-a*a),nz],[b*roofW,roof+.032*(1-b*b),nz],[b*roofW,roof+.032*(1-b*b),z]],white,'paint');}
  const bz=p.classic?-.37:-.20;
  for(const a of[-1,1]){const sx=a*(w+.006),tx=a*roofW;
   straight([[sx,belt+.015,p.front],[tx,roof,p.rf],[tx,roof,p.rr],[sx,belt+.015,p.rear]],.026,white,'paint');straight([[sx,belt+.022,p.front],[sx,belt+.022,p.rear]],.014,black);
@@ -83,15 +87,16 @@ function build(T,key,h){
  const by=s.pickup?.43:.34,frontZ=half+.04,ly=belt-.10;
  for(const a of[-1,1]){const z=a*(half+.018);rounded(p.classic?chrome:white,0,by,z,s.width+.045,p.classic?.095:.20,.13,p.classic?'chrome':'paint',.03);if(!p.classic)rounded(dark,0,by-.045,z+a*.065,s.width*.84,.085,.025,'fixed',.018);}
  if(p.classic){rounded(dark,0,ly,frontZ,s.width*.83,.21,.028,'fixed',.024);for(let i=0;i<6;i++)box(chrome,0,ly-.087+i*.034,frontZ+.020,s.width*.79,.008,.012,'chrome');for(const a of[-1,1])roundLamp(a*w*.72,ly,frontZ+.022,key==='opala'?.112:.103);logo('chevrolet',ly,frontZ+.045);
-  if(key==='opala'){for(const a of[-1,1])for(const x of[.32,.56]){ell(0xb33430,a*x,ly-.035,-half-.044,.09,.09,.022,'lens');ring(a*x,ly-.035,-half-.063,.094,chrome);}for(const x of[-.29,.29])quad([[x-.085,belt+.018,p.front+.03],[x+.085,belt+.018,p.front+.03],[x+.11,top(half-.05)+.016,half-.05],[x-.11,top(half-.05)+.016,half-.05]],black);}
+  if(key==='opala'){for(const a of[-1,1])for(const x of[.32,.56]){ell(0xb33430,a*x,ly-.035,-half-.044,.09,.09,.022,'lens');ring(a*x,ly-.035,-half-.063,.094,chrome);}for(const x of[-.29,.29])for(let i=0;i<20;i++){const z=p.front+.03+(half-p.front-.08)*i/20,nz=p.front+.03+(half-p.front-.08)*(i+1)/20,pt=(xx,zz)=>[xx,top(zz)+.048*(1-(xx/edge(zz))**2)+.004,zz];quad([pt(x-.09,z),pt(x-.09,nz),pt(x+.09,nz),pt(x+.09,z)],black);}}
   else for(const a of[-1,1]){rounded(0xb42b29,a*w*.71,belt-.12,-half-.034,.22,.135,.025,'lens',.025);quad([[a*(w+.009),belt-.04,p.front-.20],[a*(w+.009),belt-.04,-half+.10],[a*(w+.009),belt-.085,-half+.10],[a*(w+.009),belt-.085,p.front-.20]],black);}
  }else{
   const gw=key==='golf'?.45:key==='saveiro'?.56:key==='s10'?.77:.70,bars=key==='hilux'?3:key==='s10'?4:2;
   rounded(dark,0,ly,frontZ,gw,.19,.028,'fixed',.018);for(let i=0;i<bars;i++)box(chrome,0,ly-.066+i*.13/(bars-1),frontZ+.020,gw-.035,.015,.012,'chrome');if(key==='s10')box(chrome,0,ly,frontZ+.024,s.width*.92,.035,.015,'chrome');logo(key==='s10'?'chevrolet':key==='hilux'?'toyota':'vw',ly,frontZ+.037,key==='golf'?.059:.067);
-  for(const a of[-1,1]){const x=a*w*.73,ww=key==='golf'?.33:key==='saveiro'?.34:.38,hh=key==='golf'?.16:key==='hilux'?.19:.17;rounded(0x5a686d,x,ly,frontZ+.012,ww+.035,hh+.025,.025,'chrome',key==='golf'?.065:.025);rounded(lens,x,ly,frontZ+.035,ww,hh,.019,'lens',key==='golf'?.060:.018);for(let j=0;j<2;j++){const px=x+a*(j?-.073:.066);ell(chrome,px,ly,frontZ+.047,j?.061:.053,j?.061:.053,.006,'chrome');ell(0xf9fcf1,px,ly,frontZ+.054,j?.039:.033,j?.039:.033,.004,'lens');}box(0xd3aa59,x+a*ww*.40,ly-.008,frontZ+.051,.032,hh*.70,.009,'lens');if(key!=='golf')roundLamp(a*w*.73,by-.026,frontZ+.052,.049);rounded(0xb92d30,a*(w-.07),belt-.12,-half-.038,s.pickup?.10:.20,s.pickup?.31:.23,.027,'lens',.018);if(s.pickup)rounded(0xe4ded0,a*(w-.07),belt-.11,-half-.057,.07,.055,.010,'lens',.008);}
+  for(const a of[-1,1]){const x=a*w*.69,ww=key==='golf'?.33:key==='saveiro'?.34:.38,hh=key==='golf'?.16:key==='hilux'?.19:.17;lampCluster(a,x,ly,frontZ+.025,ww,hh);for(let j=0;j<2;j++){const px=x+a*(j?-.073:.066);ell(chrome,px,ly,frontZ+.047,j?.061:.053,j?.061:.053,.006,'chrome');ell(0xf9fcf1,px,ly,frontZ+.054,j?.039:.033,j?.039:.033,.004,'lens');}box(0xd3aa59,x+a*ww*.40,ly-.008,frontZ+.051,.032,hh*.60,.009,'lens');if(key!=='golf')roundLamp(a*w*.73,by-.026,frontZ+.052,.049);rounded(0xb92d30,a*(w-.07),belt-.12,-half-.038,s.pickup?.10:.20,s.pickup?.31:.23,.027,'lens',.018);if(s.pickup)rounded(0xe4ded0,a*(w-.07),belt-.11,-half-.057,.07,.055,.010,'lens',.008);}
+  if(key==='saveiro'){rounded(dark,0,by-.015,frontZ+.082,.80,.11,.016,'fixed',.022);box(chrome,0,by-.095,frontZ+.095,.79,.018,.04,'chrome');}else if(key==='amarok')for(const a of[-1,1])rounded(dark,a*.34,by-.025,frontZ+.082,.19,.13,.016,'fixed',.025);
   if(['hilux','amarok','s10'].includes(key))for(const a of[-1,1])straight([[a*(w+.05),.28,p.fa-.44],[a*(w+.05),.28,p.ra+.43]],.034,chrome,'chrome');
  }
- plate(by+.015,frontZ+.092);plate(by+.04,-half-.094,true);for(const[i,x,z]of[[0,-w*.96,p.fa],[1,w*.96,p.fa],[2,-w*.96,p.ra],[3,w*.96,p.ra]])wheel(i,x,z,r);
+ plate(by+.015,frontZ+.092);plate(by+.04,-half-.094,true);for(const[i,x,z]of[[0,-w*.88,p.fa],[1,w*.88,p.fa],[2,-w*.88,p.ra],[3,w*.88,p.ra]])wheel(i,x,z,r);
  Object.assign(root.userData,{seats:[{x:-seatX,y:seatY-.11,z:p.seat+.02},{x:seatX,y:seatY-.11,z:p.seat+.02},{x:-seatX,y:seatY-.11,z:p.back+.02},{x:seatX,y:seatY-.11,z:p.back+.02}],seatScale:s.pickup?.35:.33,roof:roof+.03,hoodY:belt+.04,wheelRadius:r,front:frontZ+.11,rear:-half-.11,pickup:!!s.pickup});
 }
 (typeof window!=='undefined'?window:globalThis).OTBrazilVehicleBodies={catalog,build};

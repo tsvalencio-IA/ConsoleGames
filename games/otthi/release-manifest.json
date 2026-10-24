@@ -1,23 +1,23 @@
 {
   "version": 705,
-  "build": "705.20.0-brasil-family",
-  "revision": "b7dfeb96cda887fb",
+  "build": "705.21.0-frota-brasileira",
+  "revision": "2ac04597f68cb49b",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "f8673a5e2c4744e025c2e36293f75a523ca0f505bda741f3b84f8df2c6c81c61",
+    "index.html": "a46abc0fbe87489d419b6f287b1ebbba145b4d57bf28019f44dd0de2bd24ff66",
     "game-audio.js": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
     "console-world.js": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
     "console-world.css": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
     "style.css": "f4aabc2902ce42e8df797aead9aeb9dbfc31675e6dfd6d6805e9af971cff771a",
     "assets/vendor/three-r128.min.js": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
-    "assets/js/core/runtime-config.js": "41ea04066bfc7f5282df43a88f31d39007915c2f4433302d78a90c6df6c9328c",
+    "assets/js/core/runtime-config.js": "8ce1a92dfb0d6ea25e51c0250abdfb136f041054a36eddc92c683f71a1ec8b35",
     "assets/js/core/safe-pointer.js": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
     "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
     "assets/js/multiplayer-rtdb.js": "6aef057501b197730552e91d14ff4a6e192c47bc95e6c987d702506d6654cc3e",
-    "app.js": "ac428aa06c45df4db6fa5dd6d3605fb444590e69d511e3dbb87a2179c8c91cae",
+    "app.js": "496160123a8cbac3da2404dc4642f462c5604cb2d09b7c60510d6a606891cce2",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -33,7 +33,7 @@
     "assets/js/safety/child-safety.js": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
-    "VERSION.json": "9892cc63d18234b204666e942508ae0b78b0a83b0c0edc68b13ad2cacec52321",
-    "sw.js": "e19b30fbb7655a4ca1f2225bba037aa2594e2cfbde203943e7c527d3314f5add"
+    "VERSION.json": "183f00d8309063d852419437f937e5c09e03b9a9d6677f82415d29f1556c6389",
+    "sw.js": "36801eaa017501dfb691400cad5bb6cf8d009a1e61069638e1d0e63ac74068bd"
   }
 }

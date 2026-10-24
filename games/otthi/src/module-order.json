@@ -301,7 +301,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "8c9992cb179afbef1266b68206b48d97816f57bb6f674b4db04ee3c7c75b6e7d"
+      "sha256Body": "bfeae14100ac0e9aa35513b5ddf3cd425162a606e9f57f0ff2d2b62a570d101e"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -385,7 +385,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias brasileiras e picapes de cabine dupla",
-      "sha256Body": "300422dddc74470d9bba1b6b5d3a39a64dad524d17c01fd89d4d786c7fd4fb4c"
+      "sha256Body": "d806730319810c8e28a66b6faccd4652cdb2ab61325b576ad9a9604a4befcfea"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
@@ -406,7 +406,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "d7e660c5d9e6a0e2ab9544c34888ecd0e5f539546f9fc25efe8446d25c633bc8"
+      "sha256Body": "577b158f5c6a671880f4149ac0b2424db873925f3b21cfd0da00e04d7e371e6b"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",

@@ -1,0 +1,64 @@
+{
+  "verifiedAt": "2026-10-24T16:18:57.946520+00:00",
+  "build": "705.21.0-frota-brasileira",
+  "revision": "2ac04597f68cb49b",
+  "rules": {
+    "passed": 194,
+    "failed": 0
+  },
+  "passengerModels": [
+    "gol",
+    "uno",
+    "golf",
+    "chevette",
+    "kombi",
+    "hilux",
+    "saveiro",
+    "amarok",
+    "fusca",
+    "opala",
+    "s10"
+  ],
+  "meshModels": 12,
+  "drawCallsPerModel": {
+    "fusca": 9,
+    "gol": 9,
+    "uno": 9,
+    "kombi": 9,
+    "golf": 11,
+    "opala": 11,
+    "chevette": 11,
+    "s10": 11,
+    "hilux": 11,
+    "amarok": 11,
+    "saveiro": 11,
+    "constellation": 13
+  },
+  "carsInspected": 26,
+  "trafficActors": 12,
+  "npcCars": 3,
+  "garageCatalog": 19,
+  "ownedFixtureVehicles": 19,
+  "collectionVehicles": 18,
+  "legacyCarBodiesVisible": 0,
+  "touchGarageAndFamily": true,
+  "distinctRemotePaintsPreserveLocalSave": true,
+  "persistenceAfterReload": true,
+  "roadSamples": 2326,
+  "roadAuditPassed": true,
+  "aircraftAndTrafficTakeover": true,
+  "upgradeFrom": "705.20.0-brasil-family",
+  "upgradeScenarios": [
+    "stale-config",
+    "real-worker-upgrade",
+    "offline-after-upgrade"
+  ],
+  "javascriptErrors": [],
+  "publication": "pending",
+  "limits": [
+    "Modelos autorais em escala de jogo, sem certificação dimensional de fábrica.",
+    "Chromium móvel com renderização por software; desempenho em celular físico não certificado.",
+    "Aparências online verificadas por reprodução do protocolo; não são dois aparelhos reais.",
+    "Nenhuma nova instalação física do APK foi executada."
+  ]
+}
