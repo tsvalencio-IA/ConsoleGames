@@ -16,3 +16,7 @@ Referências consultadas:
 - https://onibus.marcopolo.com.br/produtos/marcopolo-g8/paradiso-g8-1800-dd — dois andares.
 
 São malhas autorais para o jogo, sem alegação de CAD de fábrica, digitalização ou equivalência percentual. Validar frente, traseira e perfil antes de publicar. Preservar IDs, garagem, pinturas salvas, família, oficina, passageiros online e condução anterior. A correção de gesto e senha já foi publicada separadamente em 57c9cf612dccdcb6f991f9b5e2135f8a7fd1590e.
+
+Ampliação pedida em 25/10: Chevrolet Veraneio, Blazer, Ford Pampa e Escort, VW T-Cross e Jetta, Peugeot 206, Corolla 2007 e 2021 como gerações separadas, New Civic 2011, BMW X1 e M3, Ferrari e Porsche. As perguntas opcionais sobre Ferrari/Porsche vieram sem resposta: usar referências nomeadas Ferrari 458 Italia e Porsche 911 Carrera, sem inventar preferência prévia.
+
+Segundo checkpoint: fonte de Mobylette, Factor 125, Titan 150, Hornet, XRE 300, BMW GS, bicicleta, Ciferal Dinossauro, Attivi elétrico, Paradiso DD e carretas Scania com articulação escrita. Ainda não integra a versão publicada e ainda precisa de integração, testes e inspeção visual.
