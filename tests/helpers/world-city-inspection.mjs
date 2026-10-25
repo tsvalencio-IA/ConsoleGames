@@ -5,6 +5,7 @@ export async function installCityInspection(page){
  const file=fs.readFileSync('games/otthi/app.js','utf8'),end=file.lastIndexOf('})();');
  const hook=`
  let cityQaRender=null,cityQaMs=0;const cityQaRealNow=performance.now.bind(performance),cityQaDateNow=Date.now.bind(Date);Object.defineProperty(performance,'now',{value:()=>cityQaRealNow()+cityQaMs});Date.now=()=>cityQaDateNow()+cityQaMs;
+ const cityQaTransactions=[],cityQaPurchase=cityPurchase;cityPurchase=function(id,item){const before={coins:state.profile.coins,food:Number(state.inventory.food||0)},ok=cityQaPurchase(id,item),after={coins:state.profile.coins,food:Number(state.inventory.food||0)};cityQaTransactions.push({id,item,ok,before,after});return ok;};
  window.__CITY_QA={
  cap:()=>{if(cityQaRender)return true;if(!renderer)return false;cityQaRender=renderer.render.bind(renderer);renderer.render=()=>{};return true;},
  combat:()=>otGames,
@@ -13,7 +14,7 @@ export async function installCityInspection(page){
  roadAt:(x,z)=>pointOnRoad(x,z,.05),
  trafficTick:(seconds=10)=>{const before=state.cityServices.emergencyCalls||0,events=[];for(let t=0;t<seconds;t+=.05){cityQaMs+=50;const old=captureTrafficPositions();updateTransitWorld(.05);updateOttoviasTraffic(.05);updatePoliceSystem(.05);updateFireService(.05);updateNPCs(.05);resolveTrafficOverlaps(old);updateTrafficIncidents(.05);updateCityCoastLife();if(world.activeIncident&&!events.some(e=>e.id===world.activeIncident.id))events.push({id:world.activeIncident.id,x:world.activeIncident.x,z:world.activeIncident.z,actors:world.activeIncident.actorStates.map(s=>s.ref.id)});}return{before,after:state.cityServices.emergencyCalls||0,events};},
  render:(x=0,z=0,span=170,tilt=0)=>{const a=renderer.domElement.width/renderer.domElement.height,c=new THREE.OrthographicCamera(-span*a/2,span*a/2,span/2,-span/2,.1,1800);c.position.set(x,230,z+tilt);c.lookAt(x,0,z);c.updateProjectionMatrix();(cityQaRender||renderer.render.bind(renderer))(scene,c);},
- purchase:(id,item)=>cityPurchase(id,item),state:()=>state
+ transactions:()=>cityQaTransactions,purchase:(id,item)=>cityPurchase(id,item),state:()=>state
  };`;
  await page.route('**/app.js*',r=>r.fulfill({contentType:'application/javascript',body:file.slice(0,end)+hook+file.slice(end)}));
 }
