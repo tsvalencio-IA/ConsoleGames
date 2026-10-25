@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "files": [
+    {
+      "path": "assets/world/vehicles/ferrari-458.glb",
+      "status": 200,
+      "size": 1681572,
+      "sha256": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e"
+    },
+    {
+      "path": "assets/vendor/draco/draco_wasm_wrapper.js",
+      "status": 200,
+      "size": 53604,
+      "sha256": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846"
+    },
+    {
+      "path": "assets/vendor/draco/draco_decoder.wasm",
+      "status": 200,
+      "size": 194983,
+      "sha256": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e"
+    },
+    {
+      "path": "assets/js/vehicles/brazilian-imports.js",
+      "status": 200,
+      "size": 4637,
+      "sha256": "f2d63958739ba55397ce2a3d3b8de0840854950458f57c3daaca97cf5feb87c7"
+    }
+  ],
+  "decoded": true,
+  "worker": true,
+  "limits": [
+    "Local service worker and optional model reload; not a physical installed Android test."
+  ]
+}

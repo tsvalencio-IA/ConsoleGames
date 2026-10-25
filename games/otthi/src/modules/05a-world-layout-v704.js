@@ -30,6 +30,7 @@
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
     roads:Object.freeze([
+      {id:'acesso-colecao-ot',x:-194,z:-55,w:80,d:9,kind:'street'},
       {id:'aurora-centro-ew',x:300,z:-40,w:120,d:9,kind:'street'},
       {id:'aurora-centro-ns',x:300,z:-40,w:9,d:100,kind:'street'},
       {id:'costa-centro-ew',x:-300,z:110,w:120,d:9,kind:'street'},
@@ -46,7 +47,7 @@
       {id:'acesso-castelo-fazenda',x:84,z:38,w:32,d:7,kind:'street'},
       {id:'acesso-kart',x:80,z:-65,w:30,d:9,kind:'street'}
     ]),
-    roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65}]),
+    roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
       {id:'ottovias-aurora-link',name:'Estrada Nova Aurora',width:10,shoulder:1.2,closed:false,points:[{x:158,z:-10},{x:205,z:-10},{x:240,z:-40}]},
       {id:'ottovias-aurora-city',name:'Avenida Circular de Aurora',width:10,shoulder:1.2,closed:true,points:[{x:240,z:-40},{x:240,z:-90},{x:300,z:-90},{x:360,z:-90},{x:360,z:-40},{x:360,z:10},{x:300,z:10},{x:240,z:10}]},
@@ -134,7 +135,7 @@
     ]),
     points:Object.freeze({
       familyHome:{x:-38,z:-24},
-      spawn:{x:-18,z:39},home:{x:-18,z:34},homeGarage:{x:-31,z:46},blue:{x:-30,z:17},pink:{x:24,z:17},shop:{x:-22,z:-18},workshop:{x:22,z:-18},
+      spawn:{x:-18,z:39},home:{x:-18,z:34},homeGarage:{x:-31,z:46},fleetCollection:{x:-266,z:-55},blue:{x:-30,z:17},pink:{x:24,z:17},shop:{x:-22,z:-18},workshop:{x:22,z:-18},
       school:{x:-68,z:-18},schoolEast:{x:82,z:24},police:{x:78,z:-18},policeWest:{x:-68,z:22},fireStation:{x:96,z:-18},
       well:{x:38,z:10},foundry:{x:43,z:-35},mine:{x:-92,z:-92},cabin:{x:-88,z:-42},
       camp:{x:-78,z:-62},hunt:{x:-101,z:-78},lake:{x:-88,z:54},lakeNorth:{x:-104,z:69},pier:{x:-67,z:54},metroLake:{x:-45,z:56},
@@ -154,6 +155,7 @@
       ottoviasFootbridge:{x:0,z:43}
     }),
     zones:Object.freeze({
+      fleetCollection:{id:'fleetCollection',name:'Centro da Coleção OT',x:-266,z:-55,w:68,d:74},
       urban:{id:'urban',name:'Centro urbano',x:0,z:0,w:118,d:104},
       residential:{id:'residential',name:'Bairros residenciais',x:-2,z:27,w:92,d:38},
       services:{id:'services',name:'Escolas e serviços',x:78,z:-18,w:70,d:106},
@@ -241,6 +243,7 @@
       {id:'campaign-airbase',kind:'campaign',x:27,z:-172,w:83,d:30,margin:.2},
       {id:'campaign-north',kind:'campaign',x:85,z:115,w:16,d:10,margin:.2},
       {id:'home',kind:'house',point:'home',w:9,d:7,margin:1.2,access:'spawn'},
+      {id:'fleet-collection',kind:'garage',point:'fleetCollection',w:68,d:74,margin:.5,allowedRoads:['acesso-colecao-ot']},
       {id:'home-garage',kind:'garage',point:'homeGarage',w:10,d:10,margin:.8,access:'garagem-residencial'},
       {id:'blue',kind:'house',point:'blue',w:9,d:7,margin:1.2},
       {id:'pink',kind:'house',point:'pink',w:9,d:7,margin:1.2},

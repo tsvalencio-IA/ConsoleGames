@@ -13,7 +13,7 @@
     if(group){group.userData.serviceLayer=null;group.userData.serviceLights=[];group.userData.serviceBaseScale=[1,1,1];group.scale.set(1,1,1);}
   }
   function clearServiceVehicleVisual(){clearServiceVehicleVisualFromGroup(vehicleVisual);}
-  function serviceVehicleIcon(kind='car'){return({police:'🚓',firefighter:'🚒',paramedic:'🚑',ambulance:'🚑',fire:'🚒',kart:'🏎️',moto:'🏍️',motorcycle:'🏍️',truck:'🚚',utility:'🚐'})[kind]||'🚗';}
+  function serviceVehicleIcon(kind='car'){return({police:'🚓',firefighter:'🚒',paramedic:'🚑',ambulance:'🚑',fire:'🚒',kart:'🏎️',moto:'🏍️',motorcycle:'🏍️',bicycle:'🚲',bike:'🚲',bus:'🚌',truck:'🚚',utility:'🚐'})[kind]||'🚗';}
   function applyServiceVehicleVisualToGroup(group,vehicle={}){
     if(!group)return false;clearServiceVehicleVisualFromGroup(group);const kind=String(vehicle.serviceType||vehicle.kind||'car');if(!['police','firefighter','fire','paramedic','ambulance','kart'].includes(kind))return false;
     if(kind==='kart'&&typeof worldRacerAttach==='function'&&worldRacerAttach(group,vehicle.appearance?.primary,'racer'))return true;
@@ -121,7 +121,7 @@
   function vehiclePassengerSeatCapacity(bodyType='',kind=''){
     const cleanBody=typeof normalizeVehicleBodyType==='function'?normalizeVehicleBodyType(bodyType):String(bodyType||'small'),cleanKind=String(kind||'').toLowerCase();if(cleanBody==='moto'||['moto','motorcycle','bicycle','bike','skate'].includes(cleanKind))return 1;if(cleanBody==='truck'||['firefighter','fire'].includes(cleanKind))return 2;return 3;
   }
-  function currentVehiclePassengerSeatCapacity(){const vehicle=typeof currentVehicleRef==='function'?currentVehicleRef():null,body=vehicle?.group?.userData?.bodyType||vehicle?.bodyType||vehicle?.kind||player.car.kind;return vehiclePassengerSeatCapacity(body,player.car.kind);}
+  function currentVehiclePassengerSeatCapacity(){const vehicle=typeof currentVehicleRef==='function'?currentVehicleRef():null,body=vehicle?.group?.userData?.bodyType||vehicle?.bodyType||vehicle?.kind||player.car.kind;return vehiclePassengerSeatCapacity(body,player.car.kind,vehicle?.brazilModel);}
   function hostedVehiclePassengerUids(){
     if(!player.vehicle||player.car.passengerOf)return[];const own=String(window.OTTHOS_RTDB?.uid||state.profile?.playerId||''),out=normalizeVehiclePassengerUids([...(player.car.passengerUids||[]),player.car.passengerUid]);if(own&&typeof remotePresence!=='undefined')for(const[uid,presence]of remotePresence){if(presence?.vehicle&&presence.vehicleRole==='passenger'&&String(presence.vehiclePassengerOf||'')===own&&!out.includes(String(uid)))out.push(String(uid));}const capacity=currentVehiclePassengerSeatCapacity(),allowed=Math.max(0,capacity-familyVehicleSeatsUsed()-(player.car.passengerBotId?1:0));let used=0;player.car.passengerUids=normalizeVehiclePassengerUids(out).sort().filter(uid=>{const n=vehiclePassengerGroupSeats(uid);if(used+n>allowed)return false;used+=n;return true;});player.car.passengerUid=player.car.passengerUids[0]||'';return[...player.car.passengerUids];
   }

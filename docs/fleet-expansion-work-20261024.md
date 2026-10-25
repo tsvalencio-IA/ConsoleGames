@@ -1,0 +1,34 @@
+# Histórico de implementação da frota
+
+Estado final e evidências em `docs/fleet-expansion-20261025.md`. Os checkpoints abaixo descrevem estados intermediários.
+
+Solicitação: preservar o Fusca azul aprovado; tornar o Gol quadrado um GTI com rodas orbitais e melhorar o Opala SS. Acrescentar Golf TSI 1.4 Turbo 2014 (manter Golf IV anterior), Passat GTS Pointer, Tempra, Maverick, Landau e Palio Fire Economy Celebration 2011. O usuário confirmou XRE 300 para a transcrição “sred”. As demais motos são Mobylette, Hornet, Yamaha Factor 125, Honda Titan 150 e BMW GS; incluir bicicleta. Ônibus Ciferal Dinossauro, elétrico urbano, dois andares; carretas e tanque de combustível.
+
+Estado deste checkpoint: fontes das seis novas carrocerias de passeio e detalhe orbital escritos; ainda falta validar seus renders, integração à concessionária/trânsito, motos, bicicletas, ônibus e carretas. NÃO é uma entrega concluída. Os arquivos compilados ainda correspondem à publicação anterior e serão reconstruídos após a integração.
+
+Referências consultadas:
+- https://www.vwnews.com.br/news/305 — Gol histórico.
+- https://www.vwnews.com.br/news/1721 — rodas orbitais e GTI.
+- https://www.vwnews.com.br/news/314 — Passat GTS Pointer.
+- https://www.vw.com.br/idhub/content/dam/onehub_pkw/importers/br/literatura-de-bordo/manual-golf/my-2014_142-5r1-gt7-66.pdf — Golf MY2014.
+- https://www.media.stellantis.com/br-pt/fiat/press/fiat-automoveis-traz-novidades-em-sua-linha-2011 — linha Palio Fire Economy MY2011.
+- https://cdn.planetcarsz.com/carros/2015/01/10186/2011-fiat-palio-fire-economy-capa.jpg — foto de referência frontal do Palio, efetivamente vista.
+- https://www.media.stellantis.com/br-pt/fiat/tempra-1991-1998-my-legado — Tempra.
+- https://www.chevrolet.com.br/carros-vintage — referência Opala SS; separar restomod contemporâneo do exemplar original.
+- https://onibus.marcopolo.com.br/produtos/marcopolo-g8/paradiso-g8-1800-dd — dois andares.
+
+São malhas autorais para o jogo, sem alegação de CAD de fábrica, digitalização ou equivalência percentual. Validar frente, traseira e perfil antes de publicar. Preservar IDs, garagem, pinturas salvas, família, oficina, passageiros online e condução anterior. A correção de gesto e senha já foi publicada separadamente em 57c9cf612dccdcb6f991f9b5e2135f8a7fd1590e.
+
+Ampliação pedida em 25/10: Chevrolet Veraneio, Blazer, Ford Pampa e Escort, VW T-Cross e Jetta, Peugeot 206, Corolla 2007 e 2021 como gerações separadas, New Civic 2011, BMW X1 e M3, Ferrari e Porsche. As perguntas opcionais sobre Ferrari/Porsche vieram sem resposta: usar referências nomeadas Ferrari 458 Italia e Porsche 911 Carrera, sem inventar preferência prévia.
+
+Segundo checkpoint: fonte de Mobylette, Factor 125, Titan 150, Hornet, XRE 300, BMW GS, bicicleta, Ciferal Dinossauro, Attivi elétrico, Paradiso DD e carretas Scania com articulação escrita. Ainda não integra a versão publicada e ainda precisa de integração, testes e inspeção visual.
+
+Checkpoint integrado: 44 modelos registrados, 47 entradas de garagem planejadas. Seis modelos iniciais e os 14 novos carros têm perfis e frentes/traseiras próprios. As fontes de motos, bicicletas, ônibus e carretas passam pelo construtor de modelos e pela integração inicial de garagem. A galeria técnica de três vistas passou em 44 modelos, rodas e limites finitos; máximo 24 chamadas de desenho por veículo. A geometria de pintura do Fusca foi comparada com a publicação de acesso/senha e permaneceu idêntica.
+
+A inspeção visual NÃO aprovou a primeira tentativa como fiel: vários carros estavam quadrados e semelhantes; corrigidas curvaturas de capô/cabine e frestas de ônibus; motos receberam carcaças e faróis distintos. Ainda NÃO publicar a expansão como final. Falta validar condução, capacidade real dos bancos, estacionamento de veículos longos, ônibus urbanos, articulação, persistência e aparência online. A revisão visual continua. Nova investigação: Ferrari 458 Italia, autor vicent091036, arquivo público do Three.js r128, apontado como CC-BY 4.0 em https://github.com/mrdoob/three.js/issues/23089 ; asset já baixado somente para estudo, ainda não integrado. Não buscar modelos de jogos comerciais extraídos sem licença.
+
+Checkpoint de integração: incluídos carregador local GLTF/Draco e Ferrari 458 Italia licenciada com crédito, Centro da Coleção separado da casa/oficina e acesso viário próprio, capacidade de bancos por modelo, animação de pedais e articulação com persistência, colisões de ônibus/carretas, ônibus de linhas com letreiros mantidos e novos carros no trânsito. Refazendo o Porsche com carroceria contínua de cupê. Os 218 testes Node passaram antes das últimas mudanças; a galeria passou nos 44 modelos, máximo 24 chamadas de desenho. Falta completar a verificação do mundo real do jogo, nova inspeção visual e repetir os checks após os ajustes finais. Ainda NÃO publicado.
+
+Checkpoint de validação de 25/10: corrigida referência incorreta à função de física detectada na inicialização; ponte de acesso sobre o canal aprovada na auditoria rodoviária; inicialização de veículos armazenados distante agora sob demanda. A XRE passou em retirada, direção, saída, aparência remota e restauração; o erro anterior do teste comparava posições enquanto o veículo se movia. Carros anteriores com família de quatro passaram nos onze fluxos antes da correção isolada da ponte. A rodada de todos os 47 veículos está em execução. O worker real recarregou a Ferrari GLTF/Draco offline, com SHA-256 idêntico nos quatro assets. Os 218 testes Node passaram; repetir ao final das últimas alterações. Versão candidata 705.25.0-brazilian-collection / cache70625, ainda não publicada.
+
+A rodada nativa cobre agora 47 opções distintas: 42 no primeiro lote e cinco pesados na retomada focada após corrigir a espera por visibilidade distante no teste. Bancos, família, convidados e passageiro remoto passaram. Relatório final e evidências foram incluídos; publicação segue a mesma identidade de release.

@@ -5,7 +5,7 @@
   function familyCompanionSeatCount(party){if(!party||!Array.isArray(party.members))return 0;const ids=FAMILY_MEMBERS.filter(id=>party.members.includes(id)&&id!==party.controller);return ids.filter(id=>id==='thiago'||id==='thamis').length+Math.ceil(ids.filter(id=>id==='luna'||id==='liz').length/2);}
   function familyVehicleSeatsUsed(){return player.vehicle&&!player.car.passengerOf?familyCompanionSeatCount(familyCarryParty()):0;}
   function vehiclePassengerGroupSeats(uid){return 1+familyCompanionSeatCount(String(uid)===String(sharedWorldOwnId())?familyCarryParty():remotePresence.get(String(uid))?.familyParty);}
-  function familyCanBoardVehicle(v){if(familyCompanionSeatCount(familyCarryParty())<=vehiclePassengerSeatCapacity(v?.bodyType,v?.kind))return true;toast('Escolha um carro com espaço para levar o grupo inteiro.','warn',3000);return false;}
+  function familyCanBoardVehicle(v){if(familyCompanionSeatCount(familyCarryParty())<=vehiclePassengerSeatCapacity(v?.bodyType,v?.kind,v?.brazilModel))return true;toast('Escolha um carro com espaço para levar o grupo inteiro.','warn',3000);return false;}
   function familyBoatHasRoom(uid=''){return player.boating&&!player.boat.passengerOf&&!player.boat.passengerUid&&!player.boat.passengerBotId&&familyCompanionSeatCount(familyCarryParty())+(uid?vehiclePassengerGroupSeats(uid):1)<=3;}
   function familyBoatSeatOffset(i=-1){return[{x:-.4,y:.28,z:.72},{x:.4,y:.28,z:.72},{x:-.4,y:.28,z:-.65},{x:.4,y:.28,z:-.65}][Math.max(0,Math.min(3,i+1))];}
   function familyRideForOwner(uid){

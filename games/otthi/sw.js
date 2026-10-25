@@ -1,9 +1,9 @@
-const REVISION = '9eb229030955e7e3';
-const CACHE = `otthi-v70624-${REVISION}`;
+const REVISION = 'd25afb1c422c765c';
+const CACHE = `otthi-v70625-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.22.1-venues-coachwork';
+const BUILD = '705.25.0-brazilian-collection';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70624';
+const RELEASE_MANIFEST = './release-manifest.json?v=70625';
 
 const REQUIRED_SHELL = [
   './assets/js/ui/account-access.js?v=20261024-head1',
@@ -11,29 +11,30 @@ const REQUIRED_SHELL = [
   './console-world.js',
   './console-world.css',
   './assets/vendor/GLTFLoader-r128.js?v=world1',
+  './assets/vendor/DRACOLoader-r128.js?v=fleet1',
   './assets/world/vehicles/ot-racer.glb',
   './assets/world/vehicles/ot-coupe.glb',
   './assets/js/controls/world-hand-controls.js',
   './assets/js/world-venue-bridge.js',
   './assets/js/world-venue-trip.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70624',
-  './style.css?v=70624',
-  './assets/vendor/three-r128.min.js?v=70624',
-  './assets/js/core/runtime-config.js?v=70624',
-  './assets/js/core/safe-pointer.js?v=70624',
-  './assets/js/core/viewport-manager.js?v=70624',
-  './assets/js/save-db.js?v=70624',
-  './firebase-config.js?v=70624',
-  './assets/js/game-account.js?v=70624',
-  './assets/js/multiplayer-rtdb.js?v=70624',
-  './app.js?v=70624',
-  './assets/js/ui/shared-modal.js?v=70624',
-  './assets/js/core/performance-guardian.js?v=70624',
-  './assets/js/multiplayer/room-manager.js?v=70624',
-  './assets/js/education/adaptive-learning.js?v=70624',
-  './assets/js/safety/child-safety.js?v=70624',
-  './manifest.webmanifest?v=70624'
+  './index.html?v=70625',
+  './style.css?v=70625',
+  './assets/vendor/three-r128.min.js?v=70625',
+  './assets/js/core/runtime-config.js?v=70625',
+  './assets/js/core/safe-pointer.js?v=70625',
+  './assets/js/core/viewport-manager.js?v=70625',
+  './assets/js/save-db.js?v=70625',
+  './firebase-config.js?v=70625',
+  './assets/js/game-account.js?v=70625',
+  './assets/js/multiplayer-rtdb.js?v=70625',
+  './app.js?v=70625',
+  './assets/js/ui/shared-modal.js?v=70625',
+  './assets/js/core/performance-guardian.js?v=70625',
+  './assets/js/multiplayer/room-manager.js?v=70625',
+  './assets/js/education/adaptive-learning.js?v=70625',
+  './assets/js/safety/child-safety.js?v=70625',
+  './manifest.webmanifest?v=70625'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -198,7 +199,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70624') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70625') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "build": "705.25.0-brazilian-collection",
+  "distinctGarageFlows": 47,
+  "firstNativeBatch": 42,
+  "nativeHeavyResumption": 5,
+  "singleUninterrupted47RunClaimed": false,
+  "fixtureFix": "The first batch waited for a distant heavy to be visible before moving to the depot; culling correctly hid it. Resumption checks withdrawal state before approaching the heavy.",
+  "galleryModels": 44,
+  "maxVehicleDrawCalls": 24,
+  "approvedFuscaGeometryPreserved": true,
+  "generalNode": {
+    "tests": 221,
+    "passed": 221,
+    "failed": 0
+  },
+  "focusedNode": {
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "threeAlreadyIncludedInGeneralRun": true
+  },
+  "limits": [
+    "Local browser fixtures and online protocol playback. No live Firebase session, physical camera, physical Android installation, sustained phone FPS, or new APK is claimed.",
+    "Authored models are stylized visual interpretations; the detailed Ferrari has third-party attribution."
+  ]
+}

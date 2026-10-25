@@ -18,7 +18,7 @@ try{
  },{base:BASE,expected,apk});
  assert.equal(delivery.release.build,expected.build);assert.equal(delivery.release.revision,expected.revision);for(const f of delivery.files){assert.equal(f.status,200,f.path);assert.equal(f.actual,f.expected,f.path);}assert.equal(delivery.apk.bytes,apk.bytes);assert.equal(delivery.apk.sha256,apk.sha256);assert.match(delivery.apk.disposition,/attachment/);
  await p.locator('#playBtn').tap();await p.waitForFunction(()=>window.OTTHI_BRAZIL_FLEET?.diagnostics().ready&&window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:90000});
- const initial=await p.evaluate(()=>window.OTTHI_BRAZIL_FLEET.diagnostics());assert.equal(initial.catalog.length,12);assert(initial.cars.every(v=>v.rendered&&v.legacyVisible===0));assert.equal(initial.cars.find(v=>v.id==='city-aurora-coupe-0').model,'fusca');
+ const initial=await p.evaluate(()=>window.OTTHI_BRAZIL_FLEET.diagnostics());assert.equal(initial.catalog.length,44);assert(initial.cars.every(v=>v.rendered&&v.legacyVisible===0));assert.equal(initial.cars.find(v=>v.id==='city-aurora-coupe-0').model,'fusca');
  const cases=[];
  for(const[id,model]of[['br-s10','s10'],['adventure-black','amarok'],['br-fusca','fusca']]){
   await p.evaluate(g=>window.OTTHOS_TEST_API.teleport(g.x+5.4,g.z),initial.garage);await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='player-home-garage');await p.locator('#actionBtn').tap();await p.locator('[data-garage-place="'+id+'"]').tap();await p.locator('#modalClose').tap();await p.waitForFunction(()=>document.getElementById('modal').hidden);

@@ -1,0 +1,391 @@
+{
+  "flows": [
+    {
+      "id": "garage-orange",
+      "model": "gol"
+    },
+    {
+      "id": "market-blue",
+      "model": "uno"
+    },
+    {
+      "id": "city-white",
+      "model": "golf"
+    },
+    {
+      "id": "workshop-red",
+      "model": "chevette"
+    },
+    {
+      "id": "home-green",
+      "model": "kombi"
+    },
+    {
+      "id": "gym-yellow",
+      "model": "hilux"
+    },
+    {
+      "id": "playmobil-utility",
+      "model": "saveiro"
+    },
+    {
+      "id": "adventure-black",
+      "model": "amarok"
+    },
+    {
+      "id": "br-fusca",
+      "model": "fusca"
+    },
+    {
+      "id": "br-opala",
+      "model": "opala"
+    },
+    {
+      "id": "br-s10",
+      "model": "s10"
+    },
+    {
+      "id": "country-brown",
+      "model": "constellation"
+    },
+    {
+      "id": "forest-teal",
+      "model": "constellation"
+    },
+    {
+      "id": "minecraft-truck",
+      "model": "constellation"
+    },
+    {
+      "id": "royal-purple",
+      "model": "constellation"
+    },
+    {
+      "id": "lego-moto",
+      "model": "factor"
+    },
+    {
+      "id": "minecraft-moto",
+      "model": "xre"
+    },
+    {
+      "id": "playmobil-moto",
+      "model": "titan"
+    },
+    {
+      "id": "mario-moto",
+      "model": "hornet"
+    },
+    {
+      "id": "br-veraneio",
+      "model": "veraneio"
+    },
+    {
+      "id": "br-blazer",
+      "model": "blazer"
+    },
+    {
+      "id": "br-pampa",
+      "model": "pampa"
+    },
+    {
+      "id": "br-escort",
+      "model": "escort"
+    },
+    {
+      "id": "br-tcross",
+      "model": "tcross"
+    },
+    {
+      "id": "br-peugeot206",
+      "model": "peugeot206"
+    },
+    {
+      "id": "br-jetta",
+      "model": "jetta"
+    },
+    {
+      "id": "br-corolla2007",
+      "model": "corolla2007"
+    },
+    {
+      "id": "br-corolla2021",
+      "model": "corolla2021"
+    },
+    {
+      "id": "br-civic2011",
+      "model": "civic2011"
+    },
+    {
+      "id": "br-bmwx1",
+      "model": "bmwx1"
+    },
+    {
+      "id": "br-bmwm3",
+      "model": "bmwm3"
+    },
+    {
+      "id": "br-ferrari458",
+      "model": "ferrari458"
+    },
+    {
+      "id": "br-porsche911",
+      "model": "porsche911"
+    },
+    {
+      "id": "br-golf7",
+      "model": "golf7"
+    },
+    {
+      "id": "br-palio",
+      "model": "palio"
+    },
+    {
+      "id": "br-passat",
+      "model": "passat"
+    },
+    {
+      "id": "br-tempra",
+      "model": "tempra"
+    },
+    {
+      "id": "br-maverick",
+      "model": "maverick"
+    },
+    {
+      "id": "br-landau",
+      "model": "landau"
+    },
+    {
+      "id": "br-mobylette",
+      "model": "mobylette"
+    },
+    {
+      "id": "br-bmwgs",
+      "model": "bmwgs"
+    },
+    {
+      "id": "br-bicycle",
+      "model": "bicycle"
+    }
+  ],
+  "count": 42,
+  "fixtureFailure": "Waited for far-away heavy vehicle to be visible before teleporting; culling correctly hid it.",
+  "vehicleSaves": {
+    "garage-orange": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "workshop-red": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "royal-purple": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "city-white": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-palio": {
+      "x": 45.61,
+      "z": 47.83,
+      "heading": 1.233
+    },
+    "market-blue": {
+      "x": 36.47,
+      "z": 48.09,
+      "heading": 1.352
+    },
+    "home-green": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "gym-yellow": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "playmobil-utility": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "adventure-black": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-fusca": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-opala": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-s10": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "country-brown": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "forest-teal": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "minecraft-truck": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "lego-moto": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "minecraft-moto": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "playmobil-moto": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "mario-moto": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-veraneio": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-blazer": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-pampa": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-escort": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-tcross": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-peugeot206": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-jetta": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-corolla2007": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-corolla2021": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-civic2011": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-bmwx1": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-bmwm3": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-ferrari458": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-porsche911": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-golf7": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-passat": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-tempra": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-maverick": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-landau": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-mobylette": {
+      "x": 40.32,
+      "z": 43.63,
+      "heading": 1.255
+    },
+    "br-bmwgs": {
+      "x": 45.61,
+      "z": 45.03,
+      "heading": 1.233
+    },
+    "br-bicycle": {
+      "x": 37.66,
+      "z": 42.92,
+      "heading": 1.302
+    },
+    "br-dinossauro": {
+      "x": -249,
+      "z": -43,
+      "heading": 1.571
+    }
+  }
+}

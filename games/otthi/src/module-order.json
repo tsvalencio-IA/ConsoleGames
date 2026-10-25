@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.22.1-venues-coachwork",
+  "build": "705.25.0-brazilian-collection",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "85ee85e96c0648163f9ca449abbfe25a4d3f71a95cdd3a266782bf8a6633f0be"
+      "sha256Body": "b0147ae4b63cc5aea3561caeea6fc78df2ecf71b3be184334498403a89cd5141"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "f25283924bc89d81266ba85b8ee90a139c209030c00a3860e7450bf48b01a20b"
+      "sha256Body": "ecf37ae26d562ce54cc1ddefa9c5cb952ddc540a623a59efe43adb5446e2a335"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -140,7 +140,7 @@
       "startLine": 3087,
       "endLine": 3308,
       "description": "Ônibus, rotas viárias, paradas, metrô e painel de transporte",
-      "sha256Body": "704ddc6057dc7b7322c02094ad2363a97782c7a92d8b47ed5a1a2d370ef07e83"
+      "sha256Body": "2a43f9554f8d0833a77635626fd131c1ed194d09d9c5386b0de2b6c5fb017b59"
     },
     {
       "file": "src/modules/16-emergency-services.js",
@@ -196,7 +196,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "37d806e5318821618d9502900b022aa722df1a48ddcb77b0ee70e7d181c970f1"
+      "sha256Body": "8255f2e7f76e6d8e7713f23003f83d24472eae80864a38f20243910d6cb31d7c"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -217,14 +217,14 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "ae40f679aa827423ec1311bfbaa01178c0752f7d1717aaa72c9dcb563b002199"
+      "sha256Body": "29455b3ad62a54eaf52be5d57cfc6254ed0500052396f2437e54d7b34bcd1a5d"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "7a268d69fbd295734e8e15a92240b224c2633e6b1060f1cdb85be8f8d5cbc190"
+      "sha256Body": "1022a90b9e9ac20eba179cd2bd674fb693842ebb8d9b95c4362ca1bf7071d46f"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "f21e0c26ac3fe6410518bdecf7ce7b17d8dc2cb457c1f410f67e176eb3280eba"
+      "sha256Body": "ab16f82725fb70cdc1e92caa221247c104e43621f4de83c74745b0848b86860d"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -297,11 +297,25 @@
       "sha256Body": "9738993dc27cc6b48be41fb05e2e5e036a1495559a8b02470ec3b3fbe0c25e68"
     },
     {
+      "file": "assets/js/vehicles/brazilian-imports.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Carregamento opcional e atribuído da Ferrari 458 detalhada",
+      "sha256Body": "a63e64265dec6ca058022ca7f09c82568c76573807a76734c6ef516875c3ab52"
+    },
+    {
+      "file": "assets/js/vehicles/brazilian-expansion.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Frota ampliada: carros históricos, motos, bicicletas, ônibus e carretas",
+      "sha256Body": "c224a8e73b211985d672b37928eaf527fd97585f5c73c62eddcc0d5628668ea0"
+    },
+    {
       "file": "src/modules/36-modular-build-machines.js",
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "bfeae14100ac0e9aa35513b5ddf3cd425162a606e9f57f0ff2d2b62a570d101e"
+      "sha256Body": "55f96d30204b80a8fb7870bd446fb9e45888afb30049286b8db9bef86e5b1081"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -392,28 +406,35 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
-      "sha256Body": "d631bc3ed429f79bcd11bd5e9de30fd177fe9dde806eab1bd2b2d42fc441eb42"
+      "sha256Body": "17ea38aa406b1a7e58e68090267733bae452780e656f7f1bc2b996d50e271e6f"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "c7f2496afc8f4f3e1fdcac9ea103b6902c29d978a9766f91837a961e48d17213"
+      "sha256Body": "1bf544d9b49add1fc79aeae7d1135284042aa251d7831a2ecd2618274873b99e"
     },
     {
       "file": "src/modules/48-family-transport.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "20d2e8facd7540cbeb50840c7ca9f54cc3682f6be61e4dc572d34d3c33b434d7"
+      "sha256Body": "1e17f68d49cc60b65678bd3ac55c6a177e789cf1ca1e9ec6d0cf95d6d09b272d"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "577b158f5c6a671880f4149ac0b2424db873925f3b21cfd0da00e04d7e371e6b"
+      "sha256Body": "3566bb3384c668660f04ce5b96aa97f502f989baa4fe15b2cb873fe14ee85959"
+    },
+    {
+      "file": "src/modules/50-fleet-collection.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
+      "sha256Body": "0c1b44ebcf887bee27f228de5bce958845bd4a568a56c40174ab0a5a37a07917"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
