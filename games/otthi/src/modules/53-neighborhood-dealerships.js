@@ -31,7 +31,7 @@
     if(neighborhoodDealers.ready||!worldGroup||!worldExpansion.ready)return;
     for(const dealer of OTTHI_DEALERS){
       const root=new THREE.Group();root.name='OTTHI_'+dealer.id.toUpperCase();root.position.set(dealer.x,0,dealer.z);const concrete=campaignMaterial(0xd4d9d5,.05,'concrete'),trim=campaignMaterial(dealer.color,.25),metal=campaignMaterial(0x29434d,.3),glass=new THREE.MeshStandardMaterial({color:0x8ab9c6,transparent:true,opacity:.25,roughness:.15,metalness:.1});
-      const box=(m,x,y,z,w,h,d)=>campaignBox(root,m,x,y,z,w,h,d);box(concrete,0,.09,0,dealer.w,.18,dealer.d);box(trim,0,.20,0,dealer.w-1,.05,dealer.d-1);
+      const box=(m,x,y,z,w,h,d)=>campaignBox(root,m,x,y,z,w,h,d);box(concrete,0,.09,0,dealer.w,.18,dealer.d);box(campaignMaterial(0xd7dcda,.12),0,.20,0,dealer.w-1,.05,dealer.d-1);for(const dz of[-dealer.d/2+.65,dealer.d/2-.65])box(trim,0,.23,dz,dealer.w-1,.025,.5);
       const entrySide=dealer.category==='bikes'?-1:1,backX=-entrySide*(dealer.w/2-.2);
       box(concrete,backX,1.25,0,.35,2.5,dealer.d);registerCollider(dealer.x+backX,dealer.z,.35,dealer.d,{dealer:dealer.id});
       for(const dz of[-dealer.d/2+.2,dealer.d/2-.2]){box(metal,0,2.9,dz,dealer.w,.22,.28);box(glass,0,1.45,dz,dealer.w,2.6,.08);registerCollider(dealer.x,dealer.z+dz,dealer.w,.12,{dealer:dealer.id});for(const dx of[-dealer.w/2+1,0,dealer.w/2-1])box(metal,dx,1.45,dz,.18,2.9,.18);}
@@ -41,7 +41,7 @@
       const deskX=entrySide*(dealer.w/2-3);box(concrete,deskX,.55,0,1.2,1.1,3.6);box(trim,deskX,1.15,0,1.4,.14,3.9);registerCollider(dealer.x+deskX,dealer.z,1.4,3.9,{dealer:dealer.id});
       campaignBatch(root);worldGroup.add(root);
       const stock=neighborhoodDealerStock(dealer),displays=stock.map((entry,index)=>{const point=dealerDisplayPoint(dealer,index),host=new THREE.Group();host.name='SHOWROOM_'+entry.id;host.position.set(point.x,.23,point.z);host.rotation.y=point.heading;worldGroup.add(host);host.visible=false;
-        const pad=new THREE.Mesh(sharedBoxGeometry(dealer.category==='trucks'?13:dealer.category==='bikes'?2.1:5.2,.10,dealer.category==='trucks'?4.2:dealer.category==='bikes'?2.5:2.8),concrete);pad.position.set(point.x,.22,point.z);worldGroup.add(pad);
+        const pad=new THREE.Mesh(sharedBoxGeometry(dealer.category==='trucks'?13:dealer.category==='bikes'?2.1:5.2,.10,dealer.category==='trucks'?4.2:dealer.category==='bikes'?2.5:2.8),campaignMaterial(0x697b80,.18));pad.position.set(point.x,.22,point.z);worldGroup.add(pad);
         const plate=new THREE.Mesh(new THREE.PlaneGeometry(dealer.category==='trucks'?4.2:3.0,.62),new THREE.MeshBasicMaterial({map:signTexture(entry.label+' · '+entry.price+' moedas','#133a4a','#ffffff'),side:THREE.DoubleSide}));plate.position.set(point.x,.9,point.z+(dealer.category==='trucks'?3.2:dealer.category==='bikes'?2.0:1.9));worldGroup.add(plate);
         const record={entry,point,host,pad,plate,ready:false};registerInteractable({id:'showroom-'+entry.id,type:'shop',icon:entry.icon,label:'Ver '+entry.label,x:plate.position.x,z:plate.position.z,radius:2.1,priority:310,available:()=>host.visible&&record.ready,action:()=>openDealerVehicle(dealer.id,entry.id)});
         return record;});

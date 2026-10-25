@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.25.0-brazilian-collection",
+  "build": "705.25.1-neighborhood",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "b0147ae4b63cc5aea3561caeea6fc78df2ecf71b3be184334498403a89cd5141"
+      "sha256Body": "3ace0324da3f4d79e8d11d794bc2700c57a3a8388bfc7462b1af51b794c83e4d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "cabac0a5c1a519701ef667b07bdffd91b6fcba60f17cd0908d6c2dca25831225"
+      "sha256Body": "94d5e7e78338b6e9a023cb770f0b713e492dcd181bc764061c1833b82a23ed1d"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -182,7 +182,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "da5d888e165ac437198bfd81108a3d1204fd0d58b420c94e0827f13031e4eed3"
+      "sha256Body": "46a2123d544c65105769095e14518785bafdc02535f8d63019081e1f77b99635"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "ab16f82725fb70cdc1e92caa221247c104e43621f4de83c74745b0848b86860d"
+      "sha256Body": "2cf091155052855dbf3f3f134846d4b4e788c10a462850819087e065e21a4961"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -280,7 +280,7 @@
       "startLine": 5680,
       "endLine": 5801,
       "description": "Fundação OTTHI World, PBR local, diagnóstico e painel das cinco etapas",
-      "sha256Body": "1c35a53c37a444d5475123e398c332aceb37d7d72726ff1568f673e6e0319ab7"
+      "sha256Body": "211ea9bac0f0afe3c37215c9f4e49d79f4645532ae8ae4c15979c3216b7c7133"
     },
     {
       "file": "src/modules/34-avatar-studio-professional-v3.js",
@@ -315,7 +315,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "ade29cd9da6aa153053c4c70d88a952996d6e9f867ab005fde0d260031b291cf"
+      "sha256Body": "54cbd1c5cacdcc771d29dcd3a03ae8bc62db6c2cd145b52bb4f2c17ab9a04eef"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -413,7 +413,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "1bf544d9b49add1fc79aeae7d1135284042aa251d7831a2ecd2618274873b99e"
+      "sha256Body": "3ec9afc98a13c6bc9fe9fc4494bc9c9219594d4aaa2b58b010917ce15726a01e"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "ec8ebe200ceb20033dc3171c1a973b3d209869f5d8ea7d979f89cfea039c55d1"
+      "sha256Body": "9ce76dfd8680a23b1471e808ba079494ab8dac19981fc0dcd3ed3d6e01a054ea"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -459,17 +459,17 @@
     },
     {
       "file": "src/modules/52-neighborhood-riders.js",
-      "sha256Body": "38219267d5555b78c13179d6a50b4315ee6f0e9471c05def54bdc157b05ba010"
+      "sha256Body": "fd08496f103c2b58cd6a315a443e0972f12a671ce0a041e42edd6b1ba18dbaec"
     },
     {
       "file": "src/modules/53-neighborhood-dealerships.js",
       "description": "Concessionárias físicas, exposição e compras nativas",
-      "sha256Body": "b8a46708eba38abcbce586a2081618f09ea0057a54c62a6fd56a334dabd5fe12"
+      "sha256Body": "f992d44afd533041a03276996a4b0878c967913db347cbae8f6048c9270ac913"
     },
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "b0a5737414ab9ff110e7af74f35f839b12f9c2f50d152a070094fab33ff00026"
+      "sha256Body": "3a7596b3c2e80912451cf34460913df498c0ead9d512a64adf2ceb1b757311f1"
     }
   ],
   "styles": [

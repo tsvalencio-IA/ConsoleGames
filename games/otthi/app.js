@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.25.0-brazilian-collection';
+  const OTTHI_GAME_WEB_BUILD = '705.25.1-neighborhood';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -851,6 +851,11 @@
     } catch {}
   }
 
+  // AÇÃO opens on pointerdown. Its release must not activate a showroom
+  // card that appears beneath the same finger in the newly opened modal.
+  let modalGestureStartedOutside=false;
+  document.addEventListener('pointerdown',()=>{modalGestureStartedOutside=els.modal.hidden;},true);
+  els.modal.addEventListener('click',event=>{if(modalGestureStartedOutside&&event.detail!==0){modalGestureStartedOutside=false;event.preventDefault();event.stopImmediatePropagation();}},true);
   function openModal(title, html, onReady) {
     state.ui.quickOpen = false;
     if (els.quickBar) els.quickBar.hidden = true;
@@ -5621,7 +5626,7 @@
   function workshopVehicleCanResumeLift(vehicle){const record=state.vehicles?.workshopComponents?.[String(vehicle?.id||'')]||{};if(!vehicle?.group||vehicle.workshopYardStatus||record.yardStatus||workshopServiceRecordClosed(record))return false;return Number(record.serviceOpenedAt||0)>0;}
   function workshopRecoverInvalidParkedVehicle(vehicle){
     if(!vehicle?.group)return false;workshopDetachVehicleTransform(vehicle);workshopRestoreAssemblyVisuals(vehicle,true);workshopClearVehicleYardMeta(vehicle);let point=null,stored=false;
-    if(workshopIsCurrentUserVehicle(vehicle)&&typeof ensurePlayerGarageState==='function'){const garage=ensurePlayerGarageState(),slot=typeof garageVehicleSlot==='function'?garageVehicleSlot(String(vehicle.id),garage):'';if(slot&&typeof playerGarageSlot==='function'){point=playerGarageSlot(Number(slot));garage.stored[String(vehicle.id)]=false;}else{const display=typeof garageDisplaySlot==='function'?garageDisplaySlot(String(vehicle.id),garage):'';if(display&&typeof playerGarageDisplaySlot==='function'){point=playerGarageDisplaySlot(Number(display));garage.stored[String(vehicle.id)]=true;stored=true;}}}
+    if(workshopIsCurrentUserVehicle(vehicle)&&typeof ensurePlayerGarageState==='function'){const garage=ensurePlayerGarageState(),slot=typeof garageVehicleSlot==='function'?garageVehicleSlot(String(vehicle.id),garage):'';if(slot&&typeof playerGarageSlot==='function'){point=playerGarageSlot(slot,String(vehicle.id));garage.stored[String(vehicle.id)]=false;}else{const display=typeof garageDisplaySlot==='function'?garageDisplaySlot(String(vehicle.id),garage):'';if(display&&typeof playerGarageDisplaySlot==='function'){point=playerGarageDisplaySlot(Number(display),String(vehicle.id));garage.stored[String(vehicle.id)]=true;stored=true;}}}
     if(!point){const savedSpawn=vehicle.group.userData?.vehicleSpawn||{},x=Number(vehicle.spawnX??savedSpawn.x),z=Number(vehicle.spawnZ??savedSpawn.z),heading=Number(vehicle.spawnHeading??savedSpawn.heading??0);if(!Number.isFinite(x)||!Number.isFinite(z))return false;point={x,z,heading};}
     const heading=Number(point.heading||0);vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.set(0,heading,0);vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=heading;vehicle.occupied=false;if(typeof setGarageVehicleStored==='function'&&workshopIsCurrentUserVehicle(vehicle))setGarageVehicleStored(vehicle,stored);else vehicle.group.visible=!stored;persistParkedVehicle(vehicle);return true;
   }
@@ -7565,7 +7570,7 @@
     const label=new THREE.Sprite(new THREE.SpriteMaterial({map:multiplayerNameTexture(name),transparent:true,depthWrite:false,depthTest:false}));label.position.set(0,3.05,0);label.scale.set(2.75,.69,1);label.renderOrder=999;g.add(label);g.userData.nameLabel=label;g.userData.displayName=sanitizePlayerName(name)||'Jogador';g.userData.avatar=avatar;g.userData.carVisual=car;g.userData.carServiceLayers={police:null,firefighter:null,paramedic:null};g.userData.vehicleKind='car';g.userData.parkedCarVisual=parkedCar;g.userData.parkedCarGeometry=parkedGeometry;g.userData.parkedCarWheels=parkedGeometry.userData.wheels||[];g.userData.parkedCarPartsRoot=parkedCarPartsRoot;g.userData.parkedCarParts=parkedCarParts;g.userData.parkedCarLabel=parkedCarLabel;g.userData.parkedCarLabelSig='';g.userData.parkedCarYardStatus='';g.userData.boatVisual=boat;g.userData.phase=Math.random()*6.28;buildRemoteAvatarVisual(g,remoteAvatar);scene.add(g);return g;
   }
   function multiplayerGarageFleetSnapshot(excludeId=''){
-    const owned=Array.isArray(state.vehicles?.owned)?state.vehicles.owned:[],garage=state.vehicles?.garage||{},out=[];for(const rawId of owned.slice(0,16)){const id=String(rawId||'');if(!id||id===String(excludeId||'')||(player.vehicle&&String(player.car?.id||'')===id))continue;const vehicle=typeof vehicleById==='function'?vehicleById(id):null,actualSlot=typeof garageVehicleSlot==='function'?garageVehicleSlot(id,garage):'',displaySlot=typeof garageDisplaySlot==='function'?garageDisplaySlot(id,garage):'',stored=!!garage.stored?.[id],workshop=!!vehicle?.workshopYardStatus||String(world.workshopLift?.vehicleId||'')===id;let x,z,y=0,r=0,status='';if(workshop&&vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);status=String(vehicle.workshopYardStatus||'workshop');}else if(actualSlot&&!stored&&vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);}else if(displaySlot&&typeof playerGarageDisplaySlot==='function'){const point=playerGarageDisplaySlot(Number(displaySlot));x=point.x;z=point.z;r=point.heading||0;y=typeof groundHeightAt==='function'?groundHeightAt(x,z):0;status='garage';}else if(vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);}else continue;const appearance=multiplayerVehicleDescriptor(vehicle,id),primary=appearance.appearance.primary,secondary=appearance.appearance.secondary,bodyType=appearance.bodyType;out.push({id,x:+x.toFixed(2),y:+y.toFixed(2),z:+z.toFixed(2),r:+r.toFixed(3),status,label:String(vehicle?.label||id).slice(0,32),primary,secondary,bodyType,kind:appearance.kind,appearance,appearanceSig:multiplayerVehicleSignature(appearance)});}return out;
+    const owned=Array.isArray(state.vehicles?.owned)?state.vehicles.owned:[],garage=state.vehicles?.garage||{},out=[];for(const rawId of owned.slice(0,16)){const id=String(rawId||'');if(!id||id===String(excludeId||'')||(player.vehicle&&String(player.car?.id||'')===id))continue;const vehicle=typeof vehicleById==='function'?vehicleById(id):null,actualSlot=typeof garageVehicleSlot==='function'?garageVehicleSlot(id,garage):'',displaySlot=typeof garageDisplaySlot==='function'?garageDisplaySlot(id,garage):'',stored=!!garage.stored?.[id],workshop=!!vehicle?.workshopYardStatus||String(world.workshopLift?.vehicleId||'')===id;let x,z,y=0,r=0,status='';if(workshop&&vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);status=String(vehicle.workshopYardStatus||'workshop');}else if(actualSlot&&!stored&&vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);}else if(displaySlot&&typeof playerGarageDisplaySlot==='function'){const point=playerGarageDisplaySlot(Number(displaySlot),id);x=point.x;z=point.z;r=point.heading||0;y=typeof groundHeightAt==='function'?groundHeightAt(x,z):0;status='garage';}else if(vehicle?.group){x=Number(vehicle.group.position.x);y=Number(vehicle.group.position.y);z=Number(vehicle.group.position.z);r=Number(vehicle.group.rotation.y||vehicle.heading||0);}else continue;const appearance=multiplayerVehicleDescriptor(vehicle,id),primary=appearance.appearance.primary,secondary=appearance.appearance.secondary,bodyType=appearance.bodyType;out.push({id,x:+x.toFixed(2),y:+y.toFixed(2),z:+z.toFixed(2),r:+r.toFixed(3),status,label:String(vehicle?.label||id).slice(0,32),primary,secondary,bodyType,kind:appearance.kind,appearance,appearanceSig:multiplayerVehicleSignature(appearance)});}return out;
   }
   function multiplayerGarageFleetSignature(fleet=[]){return fleet.map(v=>`${v.id}:${v.x}:${v.y}:${v.z}:${v.r}:${v.status}:${v.appearanceSig||multiplayerVehicleSignature(v.appearance||{})}`).join('|');}
   function ensureGhostGarageFleetVisuals(ghost,count){const list=ghost.userData.garageFleetVisuals||(ghost.userData.garageFleetVisuals=[]);while(list.length<count){const visual=new THREE.Group();visual.visible=false;scene.add(visual);list.push(visual);}return list;}
@@ -8067,7 +8072,7 @@
   function ensureOtthiWorldState(){
     state.settings={...(state.settings||{}),worldRender:state.settings?.worldRender!==false,worldDetails:state.settings?.worldDetails!==false,worldDayCycle:!!state.settings?.worldDayCycle,worldOutlines:state.settings?.worldOutlines!=='off'};
     state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3',bodyStyle:state.avatar?.bodyStyle||'lego',face:state.avatar?.face||'face-happy-01',hair:state.avatar?.hair||'hair-short-01',torso:state.avatar?.torso||'world-jacket-01',legs:state.avatar?.legs||'world-pants-01',shoes:state.avatar?.shoes||'world-sneakers-01'});
-    state.vehicles={...(state.vehicles||{}),owned:[...new Set(['garage-orange',...(state.vehicles?.owned||[])])],primaryId:state.vehicles?.primaryId||'garage-orange',parked:{...(state.vehicles?.parked||{})},modularParts:{...(state.vehicles?.modularParts||{})},partDurability:{...(state.vehicles?.partDurability||{})},garage:{slots:{'1':'garage-orange',...(state.vehicles?.garage?.slots||{})},stored:{...(state.vehicles?.garage?.stored||{})},purchasedAt:{'garage-orange':0,...(state.vehicles?.garage?.purchasedAt||{})}}};
+    state.vehicles={...(state.vehicles||{}),owned:[...new Set(['garage-orange',...(state.vehicles?.owned||[])])],primaryId:state.vehicles?.primaryId||'garage-orange',parked:{...(state.vehicles?.parked||{})},modularParts:{...(state.vehicles?.modularParts||{})},partDurability:{...(state.vehicles?.partDurability||{})},garage:{...(state.vehicles?.garage||{}),slots:{'1':'garage-orange',...(state.vehicles?.garage?.slots||{})},stored:{...(state.vehicles?.garage?.stored||{})},purchasedAt:{'garage-orange':0,...(state.vehicles?.garage?.purchasedAt||{})}}};
     state.adventures={...(state.adventures||{}),hero:{selectedPower:state.adventures?.hero?.selectedPower||'energyPulse',unlocked:Array.isArray(state.adventures?.hero?.unlocked)?state.adventures.hero.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(state.adventures?.hero?.mastery||{})},challengeBest:Number(state.adventures?.hero?.challengeBest||0),challengeWins:Number(state.adventures?.hero?.challengeWins||0),energy:Number.isFinite(state.adventures?.hero?.energy)?clamp(state.adventures.hero.energy,0,100):100,lastUse:Number(state.adventures?.hero?.lastUse||0)}};
     return state;
   }
@@ -8657,7 +8662,7 @@ function build(T,key,H){
     for(const dx of[-6.9,6.9])for(const dz of[-4.15,4.15])premiumBox(.24,2.8,.24,materials.emergencyMetal,p.x+dx,1.4,p.z+dz,g);
     for(const n of PLAYER_GARAGE_HOME_SLOTS){const slot=playerGarageSlot(n),west=Number(n)>3;premiumBox(5.7,.025,.065,0xf6d44a,slot.x,.20,slot.z-1.28,g);const num=new THREE.Mesh(new THREE.PlaneGeometry(.65,.65),new THREE.MeshStandardMaterial({map:signTexture(n,'#505961','#ffffff'),roughness:.7}));num.rotation.x=-Math.PI/2;num.position.set(slot.x,.205,slot.z);g.add(num);}
     premiumBox(14.7,.12,4.25,materials.road,p.x+12.25,.04,p.z,g);const sign=new THREE.Mesh(new THREE.PlaneGeometry(4.7,.65),new THREE.MeshStandardMaterial({map:signTexture('MINHA GARAGEM · 6 VAGAS','#173b59','#ffffff'),side:THREE.DoubleSide,roughness:.62}));sign.position.set(p.x+7.2,2.8,p.z);sign.rotation.y=Math.PI/2;g.add(sign);
-    registerInteractable({id:'player-home-garage',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x+7.8,z:p.z,radius:4.4,priority:350,action:openPlayerGarage});registerInteractable({id:'player-home-garage-west',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x-7.8,z:p.z,radius:3,priority:350,action:openPlayerGarage});world.playerGarage={group:g,x:p.x,z:p.z,capacity:6};syncOwnedGarageDisplayFleet();return world.playerGarage;
+    registerInteractable({id:'player-home-garage',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x+7.8,z:p.z,radius:2.1,priority:350,action:openPlayerGarage});registerInteractable({id:'player-home-garage-west',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x-7.8,z:p.z,radius:2.1,priority:350,action:openPlayerGarage});world.playerGarage={group:g,x:p.x,z:p.z,capacity:6};syncOwnedGarageDisplayFleet();return world.playerGarage;
   }
   function updateParkedVehicleVisibility(){if(!world?.vehicles)return;const range=qualityTier()==='low'?48:qualityTier()==='high'?92:68;for(const vehicle of world.vehicles){if(!vehicle?.group||vehicle.occupied||player.vehicle&&player.car.id===vehicle.id)continue;if(vehicle.garageStored||state.vehicles?.garage?.stored?.[vehicle.id]){vehicle.group.visible=false;continue;}vehicle.group.visible=Math.hypot(otGamesFocus().x-vehicle.group.position.x,otGamesFocus().z-vehicle.group.position.z)<=range;}syncOwnedGarageDisplayFleet();}
   function worldVehicleMapLocations(){
@@ -10862,7 +10867,7 @@ function build(T,key){
  function merge(meshes,name,material,parent=root){if(!meshes.length)return;const p=[],n=[],c=[];for(const m of meshes){m.updateMatrix();const g=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();g.applyMatrix4(m.matrix);const a=g.attributes.position,b=g.attributes.normal,col=m.material.color.clone().convertSRGBToLinear();for(let i=0;i<a.count;i++){p.push(a.getX(i),a.getY(i),a.getZ(i));n.push(b.getX(i),b.getY(i),b.getZ(i));c.push(col.r,col.g,col.b);}g.dispose();m.geometry.dispose();m.material.dispose();m.parent?.remove(m);}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setAttribute('normal',new T.Float32BufferAttribute(n,3));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.computeBoundingSphere();const m=new T.Mesh(g,material);m.name=name;m.castShadow=name!=='glass';m.receiveShadow=true;parent.add(m);return m;}
  if(key==='fusca'){root.scale.x=.84;root.userData.seats=[{x:-.214,y:.32,z:.03},{x:.214,y:.32,z:.03},{x:-.214,y:.32,z:-.64},{x:.214,y:.32,z:-.64}];root.userData.coachwork='beetle-apron-v2';}
  for(const[k,list]of buckets){const isTrailer=k.startsWith('trailer-'),kind=isTrailer?k.slice(8):k;merge(list,kind,materials[kind],isTrailer?root.getObjectByName('articulated-trailer'):root);}const wheels=[];root.traverse(x=>{if(/^wheel-\d+$/.test(x.name))wheels.push(x);});for(const g of wheels)merge([...g.children],g.name+'-mesh',materials.fixed,g);
- root.userData.seatScale??=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats??=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];root.userData.roof??=key==='kombi'?1.64:key==='uno'?1.34:key==='gol'?1.23:1.38;root.userData.hoodY??=.84;root.userData.wheelRadius??=key==='kombi'?.28:key==='fusca'?.285:.275;root.userData.front??=key==='kombi'?1.69:key==='fusca'?1.73:1.57;root.userData.rear??=-root.userData.front;definitions[key]=root.userData;return root;
+ root.userData.seatScale??=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats??=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];root.userData.roof??=key==='kombi'?1.64:key==='uno'?1.34:key==='gol'?1.23:1.38;root.userData.hoodY??=.84;root.userData.wheelRadius??=key==='kombi'?.28:key==='fusca'?.285:.275;root.userData.front??=key==='kombi'?1.69:key==='fusca'?1.73:1.57;root.userData.rear??=-root.userData.front;root.updateWorldMatrix(true,true);const bodyBounds=new T.Box3().setFromObject(root);root.userData.halfWidth=Math.max(.12,Math.max(Math.abs(bodyBounds.min.x),Math.abs(bodyBounds.max.x)));definitions[key]=root.userData;return root;
 }
 function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));const root=cache.get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
 (typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,definition:key=>definitions[key]||null};
@@ -11006,7 +11011,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   const brazilPreviousCapacity=vehiclePassengerSeatCapacity;
   vehiclePassengerSeatCapacity=function(body='',kind='',model=''){const seats=window.OTBrazilVehicles?.definition(model)?.seats;if(seats?.length)return Math.max(0,seats.length-1);const spec=window.OTBrazilExpansion.catalog[model];if(spec?.singleSeat)return 0;if(spec?.twoSeats)return 1;if(spec?.bus)return 5;return brazilPreviousCapacity(body,kind);};
   function brazilSpecialFootprint(v){const model=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=model?.userData;if(!data?.bus&&!data?.articulated)return null;return{front:Number(data.front),rear:Number(data.rear),halfWidth:data.bus?1.03:1.02,trailerAngle:model.getObjectByName('articulated-trailer')?.rotation.y||0};}
-  function brazilParkedContains(v,x,z,margin=.0){const f=brazilSpecialFootprint(v);if(!f)return null;const group=v?.group||v,heading=Number(group.rotation.y||0),dx=x-group.position.x,dz=z-group.position.z,lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
+  function brazilParkedContains(v,x,z,margin=.0){const root=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=root?.userData,f=brazilSpecialFootprint(v)||(data?{front:data.front,rear:data.rear,halfWidth:data.halfWidth||.76,trailerAngle:0}:null);if(!f)return null;const group=v?.group||v,heading=Number(group.rotation.y||0),dx=x-group.position.x,dz=z-group.position.z,lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
     if(!f.trailerAngle)return Math.abs(lx)<f.halfWidth+margin&&lz<f.front+margin&&lz>f.rear-margin;
     if(Math.abs(lx)<1.02+margin&&lz<1.64+margin&&lz>-2.3-margin)return true;const tz=lz+1.50,a=f.trailerAngle,tx=lx*Math.cos(a)-tz*Math.sin(a),zz=lx*Math.sin(a)+tz*Math.cos(a);return Math.abs(tx)<1.02+margin&&zz<.6+margin&&zz>-7.75-margin;
   }
@@ -11113,7 +11118,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   window.OTTHOS_TEST_API.admitPassenger=uid=>addHostedVehiclePassenger(uid);
 
   // ===== MODULE: 52-neighborhood-riders.js =====
-  const neighborhoodRider={local:null,hip:new WeakMap()};
+  const neighborhoodRider={local:null,hip:new WeakMap(),height:new WeakMap()};
   function motorcycleModel(key){return !!window.OTBrazilExpansion.catalog[key]?.twoWheeler;}
   function riderHipHeight(avatar,ghost){
     if(neighborhoodRider.hip.has(avatar))return neighborhoodRider.hip.get(avatar);
@@ -11121,6 +11126,11 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
     if(visual?.byName){const hips=['hip-1','hip1'].map(n=>visual.byName[n]).filter(Boolean);if(hips.length){avatar.updateWorldMatrix(true,true);y=hips.reduce((sum,b)=>sum+avatar.worldToLocal(b.getWorldPosition(new THREE.Vector3())).y,0)/hips.length;}}
     neighborhoodRider.hip.set(avatar,y);return y;
   }
+  function neighborhoodAvatarHeight(avatar){
+    if(neighborhoodRider.height.has(avatar))return neighborhoodRider.height.get(avatar);
+    avatar.updateWorldMatrix(true,true);const size=new THREE.Box3().setFromObject(avatar).getSize(new THREE.Vector3()),height=Math.max(.1,size.y/(avatar.scale.y||1));neighborhoodRider.height.set(avatar,height);return height;
+  }
+  function motorcycleAvatarScale(avatar){return clamp(1.4/neighborhoodAvatarHeight(avatar),.24,1.15);}
   function poseMotorcycleAvatar(ghost,driver=true){
     const family=ghost.userData.familyAvatar,limbs=ghost.userData.limbs||{};
     if(family){
@@ -11145,20 +11155,20 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
       if(!r||r.signature!==signature||r.host.parent!==ride.parent){
         clearMotorcycleRider();const host=new THREE.Group(),body=new THREE.Group();host.name='OTTHI_LOCAL_MOTORCYCLE_RIDER';host.userData.avatar=body;host.add(body);ride.parent.add(host);buildRemoteAvatarVisual(host,avatar);r=neighborhoodRider.local={host,avatar:body,signature,model:ride.model};
       }
-      const seat=brazilSeatOffset(ride.model,ride.seat),scale=brazilSeatScale(ride.model);r.host.position.set(seat.x,seat.y,seat.z);r.host.visible=true;r.avatar.visible=true;r.avatar.scale.setScalar(scale);poseMotorcycleAvatar(r.host,ride.seat<0);r.avatar.position.y=-riderHipHeight(r.avatar,r.host)*scale;
+      const seat=brazilSeatOffset(ride.model,ride.seat),scale=motorcycleAvatarScale(r.avatar);r.host.position.set(seat.x,seat.y,seat.z);r.host.visible=true;r.avatar.visible=true;r.avatar.scale.setScalar(scale);poseMotorcycleAvatar(r.host,ride.seat<0);r.avatar.position.y=-riderHipHeight(r.avatar,r.host)*scale;
       // The family controller already has a ride actor. Display the selected
       // avatar once, with its pelvis on the seat rather than floating above it.
       if(familyCarry.ride?.owner===sharedWorldOwnId()){const actor=familyWorld.actors[familyCarry.ride.controller];if(actor?.ridePose){actor.group.visible=false;if(actor.label)actor.label.visible=false;}}
     }
     for(const[uid,ghost]of world.ghosts){
       const target=ghost.userData.target||{},vehicle=target.vehicleRole==='passenger'?multiplayerVehicleHostPresence(target.vehiclePassengerOf):target,key=vehicle?.vehicleAppearance?.brazilModel;if(!target.vehicle||!motorcycleModel(key)||!ghost.userData.avatar)continue;
-      const driver=target.vehicleRole!=='passenger',index=driver?-1:multiplayerVehiclePassengerSeatIndex(target.vehiclePassengerOf,uid),seat=brazilSeatOffset(key,index),avatar=ghost.userData.avatar,scale=brazilSeatScale(key);poseMotorcycleAvatar(ghost,driver);avatar.position.y=seat.y-riderHipHeight(avatar,ghost)*scale;
+      const driver=target.vehicleRole!=='passenger',index=driver?-1:multiplayerVehiclePassengerSeatIndex(target.vehiclePassengerOf,uid),seat=brazilSeatOffset(key,index),avatar=ghost.userData.avatar,scale=motorcycleAvatarScale(avatar);avatar.scale.setScalar(scale);poseMotorcycleAvatar(ghost,driver);avatar.position.y=seat.y-riderHipHeight(avatar,ghost)*scale;
       if(familyCarry.ride?.owner===uid){const actor=familyWorld.actors[familyCarry.ride.controller];if(actor?.ridePose)actor.group.visible=false;}
     }
   }
   const neighborhoodPreviousFamilyVisuals=updateFamilyPlayableVisuals;
   updateFamilyPlayableVisuals=function(){neighborhoodPreviousFamilyVisuals();updateMotorcycleRiders();};
-  window.OTTHI_MOTORCYCLE_RIDER={diagnostics:()=>{const r=neighborhoodRider.local;return{active:!!r,model:r?.model||'',visible:!!r?.host.visible&&!!r?.host.parent&&!!r?.avatar.visible,theme:r?.avatar.userData.toyTheme||'',meshes:r?(()=>{let n=0;r.avatar.traverse(o=>{if(o.isMesh)n++;});return n;})():0,position:r?.host.getWorldPosition(new THREE.Vector3()).toArray()||null,walkingAvatarVisible:playerModel?.visible!==false};}};
+  window.OTTHI_MOTORCYCLE_RIDER={diagnostics:()=>{const r=neighborhoodRider.local;return{active:!!r,model:r?.model||'',scale:r?.avatar.scale.x||0,visible:!!r?.host.visible&&!!r?.host.parent&&!!r?.avatar.visible,theme:r?.avatar.userData.toyTheme||'',meshes:r?(()=>{let n=0;r.avatar.traverse(o=>{if(o.isMesh)n++;});return n;})():0,position:r?.host.getWorldPosition(new THREE.Vector3()).toArray()||null,walkingAvatarVisible:playerModel?.visible!==false};}};
 
   // ===== MODULE: 53-neighborhood-dealerships.js =====
   const OTTHI_DEALERS=Object.freeze([
@@ -11192,7 +11202,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
     if(neighborhoodDealers.ready||!worldGroup||!worldExpansion.ready)return;
     for(const dealer of OTTHI_DEALERS){
       const root=new THREE.Group();root.name='OTTHI_'+dealer.id.toUpperCase();root.position.set(dealer.x,0,dealer.z);const concrete=campaignMaterial(0xd4d9d5,.05,'concrete'),trim=campaignMaterial(dealer.color,.25),metal=campaignMaterial(0x29434d,.3),glass=new THREE.MeshStandardMaterial({color:0x8ab9c6,transparent:true,opacity:.25,roughness:.15,metalness:.1});
-      const box=(m,x,y,z,w,h,d)=>campaignBox(root,m,x,y,z,w,h,d);box(concrete,0,.09,0,dealer.w,.18,dealer.d);box(trim,0,.20,0,dealer.w-1,.05,dealer.d-1);
+      const box=(m,x,y,z,w,h,d)=>campaignBox(root,m,x,y,z,w,h,d);box(concrete,0,.09,0,dealer.w,.18,dealer.d);box(campaignMaterial(0xd7dcda,.12),0,.20,0,dealer.w-1,.05,dealer.d-1);for(const dz of[-dealer.d/2+.65,dealer.d/2-.65])box(trim,0,.23,dz,dealer.w-1,.025,.5);
       const entrySide=dealer.category==='bikes'?-1:1,backX=-entrySide*(dealer.w/2-.2);
       box(concrete,backX,1.25,0,.35,2.5,dealer.d);registerCollider(dealer.x+backX,dealer.z,.35,dealer.d,{dealer:dealer.id});
       for(const dz of[-dealer.d/2+.2,dealer.d/2-.2]){box(metal,0,2.9,dz,dealer.w,.22,.28);box(glass,0,1.45,dz,dealer.w,2.6,.08);registerCollider(dealer.x,dealer.z+dz,dealer.w,.12,{dealer:dealer.id});for(const dx of[-dealer.w/2+1,0,dealer.w/2-1])box(metal,dx,1.45,dz,.18,2.9,.18);}
@@ -11202,7 +11212,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
       const deskX=entrySide*(dealer.w/2-3);box(concrete,deskX,.55,0,1.2,1.1,3.6);box(trim,deskX,1.15,0,1.4,.14,3.9);registerCollider(dealer.x+deskX,dealer.z,1.4,3.9,{dealer:dealer.id});
       campaignBatch(root);worldGroup.add(root);
       const stock=neighborhoodDealerStock(dealer),displays=stock.map((entry,index)=>{const point=dealerDisplayPoint(dealer,index),host=new THREE.Group();host.name='SHOWROOM_'+entry.id;host.position.set(point.x,.23,point.z);host.rotation.y=point.heading;worldGroup.add(host);host.visible=false;
-        const pad=new THREE.Mesh(sharedBoxGeometry(dealer.category==='trucks'?13:dealer.category==='bikes'?2.1:5.2,.10,dealer.category==='trucks'?4.2:dealer.category==='bikes'?2.5:2.8),concrete);pad.position.set(point.x,.22,point.z);worldGroup.add(pad);
+        const pad=new THREE.Mesh(sharedBoxGeometry(dealer.category==='trucks'?13:dealer.category==='bikes'?2.1:5.2,.10,dealer.category==='trucks'?4.2:dealer.category==='bikes'?2.5:2.8),campaignMaterial(0x697b80,.18));pad.position.set(point.x,.22,point.z);worldGroup.add(pad);
         const plate=new THREE.Mesh(new THREE.PlaneGeometry(dealer.category==='trucks'?4.2:3.0,.62),new THREE.MeshBasicMaterial({map:signTexture(entry.label+' · '+entry.price+' moedas','#133a4a','#ffffff'),side:THREE.DoubleSide}));plate.position.set(point.x,.9,point.z+(dealer.category==='trucks'?3.2:dealer.category==='bikes'?2.0:1.9));worldGroup.add(plate);
         const record={entry,point,host,pad,plate,ready:false};registerInteractable({id:'showroom-'+entry.id,type:'shop',icon:entry.icon,label:'Ver '+entry.label,x:plate.position.x,z:plate.position.z,radius:2.1,priority:310,available:()=>host.visible&&record.ready,action:()=>openDealerVehicle(dealer.id,entry.id)});
         return record;});
@@ -11267,7 +11277,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
     const descriptor=multiplayerAvatarDescriptor(),host=new THREE.Group(),body=new THREE.Group();host.name='OTTHI_HOME_SEATED_AVATAR';host.userData.avatar=body;host.add(body);worldGroup.add(host);buildRemoteAvatarVisual(host,descriptor);
     // The furniture and the approved family rigs use different world scales.
     // Keep family members at their normal walking size, pelvis on the cushion.
-    const original=playerModel?.userData.familyAvatar,scale=original?.group?.scale.x||1;body.scale.setScalar(scale);host.position.set(data.objects.sofa.x,.81,data.objects.sofa.z+.08);body.position.y=-riderHipHeight(body,host)*scale;
+    const scale=clamp(1.65/neighborhoodAvatarHeight(body),.3,1.3);body.scale.setScalar(scale);host.position.set(data.objects.sofa.x,.81,data.objects.sofa.z+.08);body.position.y=-riderHipHeight(body,host)*scale;
     neighborhoodHome.seat={host,house,until:performance.now()+30000,x:player.x,z:player.z,signature:multiplayerAvatarSignature(descriptor)};player.sitUntil=performance.now()+30000;return result;
   };
   function updateNeighborhoodHomeSeat(){

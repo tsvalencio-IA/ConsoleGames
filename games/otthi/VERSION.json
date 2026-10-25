@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.25.0-brazilian-collection",
+  "build": "705.25.1-neighborhood",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R25.1 amplia a garagem residencial para seis vagas, separa três vagas de pesados, cria três concessionárias físicas com 44 modelos, integra as ações das casas aos recursos existentes e mostra o avatar pilotando motos.",
     "Pingue-pongue no ginásio mantém o mundo aberto e carrega o motor original numa atividade isolada, com retorno pelo botão ou Voltar do Android, falha recuperável e sem renderização simultânea da cidade.",
     "Carrocerias brasileiras recebem painéis curvos, vidros abaulados, frentes por geração, rodas próprias, caçambas abertas e acabamento refletivo compartilhado; Fusca azul, pintura, garagem e família são preservados.",
     "R16.8.1 corrige a qualidade automática móvel: RAM/núcleos reportados pelo navegador deixam de rebaixar a identidade visual; o modo automático inicia equilibrado e reduz primeiro apenas o custo de renderização.",
@@ -274,8 +275,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70625,
-  "revisionLabel": "Revisão de jogabilidade, atividades locais e atualização automática",
+  "assetVersion": 70626,
+  "revisionLabel": "Garagens, concessionárias e vida nas casas",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

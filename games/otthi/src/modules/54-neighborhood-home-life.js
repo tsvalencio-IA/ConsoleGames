@@ -41,7 +41,7 @@
     const descriptor=multiplayerAvatarDescriptor(),host=new THREE.Group(),body=new THREE.Group();host.name='OTTHI_HOME_SEATED_AVATAR';host.userData.avatar=body;host.add(body);worldGroup.add(host);buildRemoteAvatarVisual(host,descriptor);
     // The furniture and the approved family rigs use different world scales.
     // Keep family members at their normal walking size, pelvis on the cushion.
-    const original=playerModel?.userData.familyAvatar,scale=original?.group?.scale.x||1;body.scale.setScalar(scale);host.position.set(data.objects.sofa.x,.81,data.objects.sofa.z+.08);body.position.y=-riderHipHeight(body,host)*scale;
+    const scale=clamp(1.65/neighborhoodAvatarHeight(body),.3,1.3);body.scale.setScalar(scale);host.position.set(data.objects.sofa.x,.81,data.objects.sofa.z+.08);body.position.y=-riderHipHeight(body,host)*scale;
     neighborhoodHome.seat={host,house,until:performance.now()+30000,x:player.x,z:player.z,signature:multiplayerAvatarSignature(descriptor)};player.sitUntil=performance.now()+30000;return result;
   };
   function updateNeighborhoodHomeSeat(){

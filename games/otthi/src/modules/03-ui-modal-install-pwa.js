@@ -70,6 +70,11 @@
     } catch {}
   }
 
+  // AÇÃO opens on pointerdown. Its release must not activate a showroom
+  // card that appears beneath the same finger in the newly opened modal.
+  let modalGestureStartedOutside=false;
+  document.addEventListener('pointerdown',()=>{modalGestureStartedOutside=els.modal.hidden;},true);
+  els.modal.addEventListener('click',event=>{if(modalGestureStartedOutside&&event.detail!==0){modalGestureStartedOutside=false;event.preventDefault();event.stopImmediatePropagation();}},true);
   function openModal(title, html, onReady) {
     state.ui.quickOpen = false;
     if (els.quickBar) els.quickBar.hidden = true;
