@@ -47,7 +47,7 @@
       {id:'acesso-castelo-fazenda',x:84,z:38,w:32,d:7,kind:'street'},
       {id:'acesso-kart',x:80,z:-65,w:30,d:9,kind:'street'}
     ]),
-    roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65}]),
+    roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
       {id:'ottovias-aurora-link',name:'Estrada Nova Aurora',width:10,shoulder:1.2,closed:false,points:[{x:158,z:-10},{x:205,z:-10},{x:240,z:-40}]},
       {id:'ottovias-aurora-city',name:'Avenida Circular de Aurora',width:10,shoulder:1.2,closed:true,points:[{x:240,z:-40},{x:240,z:-90},{x:300,z:-90},{x:360,z:-90},{x:360,z:-40},{x:360,z:10},{x:300,z:10},{x:240,z:10}]},

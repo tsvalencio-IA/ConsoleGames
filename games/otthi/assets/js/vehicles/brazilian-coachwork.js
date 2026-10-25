@@ -5,7 +5,7 @@
 const specs={
  veraneio:{l:4.55,w:1.68,h:1.57,b:.94,r:.316,fa:1.28,ra:-1.34,front:.91,rf:.57,rr:-1.77,rear:-2.14,bp:-.12,seat:.27,back:-.65,doors:4,crown:.048,nose:.09,classic:true,wagon:true},
  blazer:{l:3.70,w:1.50,h:1.42,b:.90,r:.303,fa:1.16,ra:-1.14,front:.67,rf:.26,rr:-1.40,rear:-1.73,bp:-.26,seat:.20,back:-.61,doors:4,crown:.055,nose:.11,wagon:true},
- pampa:{l:3.56,w:1.34,h:1.16,b:.75,r:.260,fa:1.08,ra:-1.09,front:.69,rf:.23,rr:-.40,rear:-.55,bp:-.30,seat:.06,back:-.32,doors:2,crown:.028,nose:.055,pickup:true},
+ pampa:{l:3.56,w:1.34,h:1.16,b:.75,r:.260,fa:1.08,ra:-1.09,front:.69,rf:.23,rr:-.40,rear:-.55,bp:-.30,seat:.06,back:-.32,doors:2,crown:.028,nose:.055,pickup:true,twoSeats:true},
  escort:{l:3.27,w:1.37,h:1.16,b:.74,r:.265,fa:1.01,ra:-1.01,front:.60,rf:.19,rr:-.79,rear:-1.45,bp:-.27,seat:.02,back:-.64,doors:2,crown:.024,nose:.08},
  tcross:{l:3.36,w:1.45,h:1.33,b:.89,r:.290,fa:1.09,ra:-1.08,front:.66,rf:.20,rr:-1.11,rear:-1.50,bp:-.27,seat:.18,back:-.61,doors:4,crown:.039,nose:.075,wagon:true},
  peugeot206:{l:3.08,w:1.34,h:1.18,b:.74,r:.258,fa:.99,ra:-1.00,front:.68,rf:.06,rr:-.91,rear:-1.29,bp:-.29,seat:.03,back:-.63,doors:4,crown:.074,nose:.22},
@@ -157,7 +157,16 @@ function build(T,key,h){
     const gx=isBMW?.16:0,gw=isBMW?(key==='bmwx1'?.25:.23):key==='corolla2021'?.36:key==='peugeot206'?.25:.48,gh=isBMW?.18:key==='tcross'?.15:.13;
     for(const a of(isBMW?[-1,1]:[0])){rb(chrome,a*gx,ly,nose+.021,gw+.02,gh+.02,.018,'chrome',isBMW?.04:.015);rb(black,a*gx,ly,nose+.037,gw,gh,.011,'fixed',isBMW?.03:.012);if(isBMW)for(let n=0;n<7;n++)box(0x56666d,a*gx-gw*.37+n*gw*.12,ly,nose+.048,.006,gh*.88,.005);else for(let n=0;n<2;n++)box(chrome,0,ly-.035+n*.065,nose+.048,gw*.95,.009,.006,'chrome');}
     if(key==='pampa'||key==='escort')ford(ly,nose+.068);else if(key==='blazer')badge('chevrolet',ly,nose+.065);else if(isBMW)bmw(Y+.04,nose-.04);else if(isToyota)badge('toyota',ly,nose+.062,.044);else if(key==='civic2011'){for(const a of[-1,1])line([[a*.033,ly+.038,nose+.063],[a*.025,ly-.038,nose+.063]],.006,chrome,'chrome');line([[-.029,ly,nose+.063],[.029,ly,nose+.063]],.006,chrome,'chrome');}else if(key==='peugeot206')lettering('PEUGEOT',0,Y+.031,nose+.052,.23,.035);else badge('vw',ly,nose+.065,.045);
-    for(const a of[-1,1]){const d=polyLamp(a,head[0],ly,nose+.031,head[1],head[2],head[3]);for(const dx of[-.072,.068]){const rr=head[2]*(isBMW?.29:.32);ell(chrome,d.x+a*dx,d.y,d.z+.007,rr,rr,.006,'chrome');ell(0x829fae,d.x+a*dx,d.y,d.z+.014,rr*.73,rr*.73,.004,'lens');if(isBMW)ring(d.x+a*dx,d.y,d.z+.020,rr*.91,0xc5dae1);}if(['corolla2021','civic2011','tcross'].includes(key))line([[a*.33,ly-.035,nose+.069],[a*.63,ly-.025,nose+.069]],.006,0xd1e0df,'chrome');}
+    for(const a of[-1,1]){
+     if(key==='peugeot206'){
+      // The 206's cat-eye lamps run back into the front wings.
+      for(const[kind,c,offset]of[['fixed',black,.008],['lens',0xa8c1cc,.015]])patch(24,8,(u,v)=>{const z=L-.035-u*.39,x=a*(.40+u*.18+(v-.5)*(.25-.11*u)),y=top(z)+p.crown*(1-(x/width(z))**2)+offset;return[x,y,z];},c,kind);
+      line([[a*.42,.70,L-.10],[a*.57,.75,L-.36]],.010,0xc9d9df,'chrome');
+     }else{const d=polyLamp(a,head[0],ly,nose+.031,head[1],head[2],head[3]);
+      if(['corolla2021','civic2011','tcross','jetta'].includes(key)){rb(0x738e9a,d.x,d.y,d.z+.010,head[1]*.83,head[2]*.49,.006,'lens',.009);line([[a*.33,ly-.035,nose+.069],[a*.63,ly-.025,nose+.069]],.006,0xd1e0df,'chrome');}
+      else for(const dx of[-.072,.068]){const rr=head[2]*(isBMW?.29:.27);ell(chrome,d.x+a*dx,d.y,d.z+.007,rr,rr,.006,'chrome');ell(0x829fae,d.x+a*dx,d.y,d.z+.014,rr*.73,rr*.73,.004,'lens');if(isBMW)ring(d.x+a*dx,d.y,d.z+.020,rr*.91,0xc5dae1);}
+     }
+    }
    }
    const lowerH=key==='corolla2021'?.24:key==='peugeot206'?.18:.10,lowerW=key==='corolla2021'?1.0:key==='civic2011'?.89:.71;rb(black,0,key==='corolla2021'?.36:.30,nose+.041,lowerW,lowerH,.026,'fixed',.030);for(let j=0;j<3;j++)box(0x40505a,0,.27+j*.034,nose+.061,lowerW*.92,.008,.005);
    for(const a of[-1,1]){if(key!=='pampa'){rb(black,a*W*.73,.31,nose+.049,.18,.11,.018,'fixed',.028);roundLight(a*W*.73,.31,nose+.069,key==='escort'?.037:.027);}
@@ -199,7 +208,7 @@ function build(T,key,h){
    rb(black,0,ly,nose,key==='palio'?.44:.48,key==='palio'?.145:.105,.022,'fixed',key==='palio'?.02:.007);
    box(chrome,0,ly,nose+.035,key==='palio'?.43:.49,.015,.011,'chrome');if(fiat)roundFiat(ly,nose+.052);else badge('vw',ly,nose+.046,.047);
    for(const a of[-1,1]){
-    if(key==='palio')cluster(a,.35,.205,'golf');
+    if(key==='palio'){const pts=[[-.50,-.42],[.48,-.32],[.48,.35],[-.31,.46]],q=new T.Shape();pts.forEach(([x,y],i)=>i?q.lineTo(a*x*.34,y*.19):q.moveTo(a*x*.34,y*.19));q.closePath();const geo=new T.ExtrudeGeometry(q,{depth:.014,bevelEnabled:true,bevelSize:.006,bevelThickness:.004,bevelSegments:2});add(geo,black,a*.46,ly,nose+.025,1,1,1,'fixed');add(geo.clone(),0xa7c0cc,a*.46,ly,nose+.041,.90,.86,1,'lampglass');rb(0x7f9fae,a*.45,ly,nose+.048,.25,.125,.008,'lens',.025);for(const x of[-.04,.04])line([[a*.45+x,ly-.050,nose+.059],[a*.45+x,ly+.050,nose+.059]],.003,chrome,'chrome');}
     else{
      const pts=[[-.50,-.37],[.31,-.41],[.50,-.17],[.49,.38],[-.36,.48]],shape=new T.Shape();pts.forEach(([x,y],i)=>i?shape.lineTo(a*x*.38,y*.17):shape.moveTo(a*x*.38,y*.17));shape.closePath();const geo=new T.ExtrudeGeometry(shape,{depth:.016,bevelEnabled:true,bevelSize:.005,bevelThickness:.004,bevelSegments:2});add(geo,0x18252e,a*.49,ly,nose+.023,1,1,1,'fixed');for(const dx of[-.075,.070]){rb(chrome,a*(.49+dx),ly,nose+.048,.11,.10,.006,'chrome',.022);rb(0x8eaab9,a*(.49+dx),ly,nose+.054,.087,.079,.005,'lens',.020);}line([[a*.31,ly-.065,nose+.062],[a*.61,ly-.065,nose+.062],[a*.65,ly+.045,nose+.062]],.007,0xc9d5d7,'chrome');
     }
