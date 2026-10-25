@@ -275,16 +275,16 @@
     <!-- TELA DE LOGIN / REGISTRO -->
     <div id="auth-screen" class="wii-container hidden" style="justify-content: center;">
         <div class="wii-title" style="margin-bottom: 20px;">thIAguinho <span>ARCADE</span></div>
-        <div class="auth-box">
+        <form id="auth-form" class="auth-box" autocomplete="on" onsubmit="event.preventDefault();window.Auth.login()">
             <h2 style="text-align: center; font-family: 'Russo One'; color: #444; font-size: 1.2rem;">IDENTIFICAÇÃO</h2>
-            <input type="text" id="auth-user" class="wii-input" placeholder="Seu Nome (Ex: joaozinho)" autocomplete="username">
-            <input type="password" id="auth-pass" class="wii-input" placeholder="Senha secreta" autocomplete="current-password">
+            <input name="username" required aria-label="Nome da conta" type="text" id="auth-user" class="wii-input" placeholder="Seu Nome (Ex: joaozinho)" autocomplete="username">
+            <input name="password" required minlength="6" aria-label="Senha" type="password" id="auth-pass" class="wii-input" placeholder="Senha secreta" autocomplete="current-password">
             <div class="auth-buttons">
-                <button class="wii-oval-btn auth-btn" onclick="window.Auth.login()">ENTRAR</button>
-                <button class="wii-oval-btn auth-btn" style="background: #2ecc71; color: white; border-color: #27ae60;" onclick="window.Auth.register()">CRIAR</button>
+                <button class="wii-oval-btn auth-btn" type="submit">ENTRAR</button>
+                <button class="wii-oval-btn auth-btn" type="button" style="background: #2ecc71; color: white; border-color: #27ae60;" onclick="window.Auth.register()">CRIAR</button>
             </div>
             <p id="auth-error" style="color: #e74c3c; font-size: 0.8rem; text-align: center; margin-top: 5px; display: none;"></p>
-        </div>
+        </form>
         <div class="signature-badge">Powered by <span>thIAguinho Soluções</span></div>
     </div>
 
@@ -395,7 +395,8 @@
     <script>window.CONSOLE_GAME_ID="usarmy_flight_sim";</script>
     <!-- CARREGANDO O CORE, ADMIN E OS JOGOS -->
     <script src="./game-audio.js?v=20261023-3"></script>
-<script src="js/core.js?v=20261023-3"></script>
+<script src="./account-access.js?v=20261024-head1"></script>
+<script src="js/core.js?v=20261024-head1"></script>
     <script src="js/admin.js"></script>
 
     <script src="js/game_run.js"></script>

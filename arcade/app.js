@@ -250,7 +250,10 @@
     busy(true);setFeedback("");
     try {
       await ensureFirebase();
+      const access=window.GameAccountAccess?.capture($("login-form"));
+      await access?.prepare(auth);
       await auth.signInWithEmailAndPassword(email,password);
+      access?.complete();
       $("password").value="";
       setFeedback("Acesso autorizado. Verificando seus dados OTThi...");
     }catch(e){

@@ -6,6 +6,7 @@ const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70624';
 
 const REQUIRED_SHELL = [
+  './assets/js/ui/account-access.js?v=20261024-head1',
   './game-audio.js?v=20261023-3',
   './console-world.js',
   './console-world.css',

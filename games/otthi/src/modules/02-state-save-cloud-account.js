@@ -237,19 +237,19 @@
     if(force)return run();
     accountSaveTimer=setTimeout(run,2400);return true;
   }
-  async function createGameAccount(displayName,username,password){
+  async function createGameAccount(displayName,username,password,remember=true){
     if(!window.OTTHOS_ACCOUNT)throw new Error('Proteção de conta indisponível neste navegador.');
     const cleanName=sanitizePlayerName(displayName);if(cleanName.length<3)throw new Error('Escolha um nome de jogador com pelo menos 3 caracteres.');
     const credentials=await window.OTTHOS_ACCOUNT.deriveCredentials(username,password),connection=await ensureAccountConnection();
     if(!connection.ok)throw new Error(connection.error);
     const authResult=await connection.backend.createPlayerAccount?.(credentials.username,password,cleanName);
     if(!authResult?.ok)throw new Error(authResult?.error||'Não foi possível criar a conta protegida.');
-    applyPlayerName(cleanName);accountSession=window.OTTHOS_ACCOUNT.rememberSession(credentials);
+    applyPlayerName(cleanName);accountSession=window.OTTHOS_ACCOUNT.rememberSession(credentials,remember);
     state.account={linked:true,accountId:credentials.accountId,username:credentials.username,lastCloudSync:0};
     await commitState();const saved=await syncGameAccount(true);if(!saved)throw new Error('A conta foi criada, mas a primeira cópia online não terminou. Tente sincronizar novamente.');
     updatePlayerNameUI();return true;
   }
-  async function loginGameAccount(username,password){
+  async function loginGameAccount(username,password,remember=true){
     if(!window.OTTHOS_ACCOUNT)throw new Error('Proteção de conta indisponível neste navegador.');
     window.__OTTHI_ACCOUNT_RECOVERING=true;
     window.dispatchEvent(new CustomEvent('otthi:account-state-loading'));
@@ -262,7 +262,7 @@
       if(!result?.ok)throw new Error(result?.error||'Não foi possível consultar a conta.');
       if(!result.exists)throw new Error('A conta existe, mas ainda não possui uma cópia de progresso. Entre no aparelho onde ela foi criada e toque em “Sincronizar agora”.');
       const recovered=await window.OTTHOS_ACCOUNT.decryptState(result.record,credentials);
-      accountSession=window.OTTHOS_ACCOUNT.rememberSession(credentials);
+      accountSession=window.OTTHOS_ACCOUNT.rememberSession(credentials,remember);
       state=normalizeState(recovered);state.account={...(state.account||{}),linked:true,accountId:credentials.accountId,username:credentials.username,lastCloudSync:Date.now()};
       state.profile.nameConfirmed=!!sanitizePlayerName(state.profile.name);
       safeLocalSet(STORAGE_KEY,JSON.stringify(state));await window.OTTHOS_DB?.save?.(state);window.OTTHOS_RTDB?.setDisplayName?.(publicPlayerName());
@@ -279,10 +279,11 @@
   }
   function openAccountForm(mode='create',required=false,onReady=null){
     const creating=mode==='create';
-    openModal(creating?'Criar conta do jogo':'Entrar na conta',`<div class="account-form"><div class="account-shield">🔐</div><p>${creating?'Um responsável pode ajudar. A senha não é gravada; ela protege o progresso antes de enviá-lo.':'Use o mesmo usuário e senha cadastrados no outro aparelho.'}</p>${creating?'<label class="field"><span>Nome que aparece no jogo</span><input data-account-display maxlength="18" autocomplete="nickname" value="'+escapeHtml(state.profile.name||'')+'" placeholder="Ex.: Luna"></label>':''}<label class="field"><span>Usuário da conta</span><input data-account-user maxlength="20" autocapitalize="none" autocomplete="username" spellcheck="false" placeholder="Ex.: luna_azul"></label><label class="field"><span>Senha</span><input data-account-password type="password" maxlength="64" autocomplete="${creating?'new-password':'current-password'}" placeholder="Mínimo de 6 caracteres"></label>${creating?'<label class="field"><span>Repita a senha</span><input data-account-confirm type="password" maxlength="64" autocomplete="new-password"></label>':''}<p class="account-error" data-account-error hidden></p><button class="btn primary xl" data-account-submit>${creating?'Criar e proteger progresso':'Entrar e recuperar progresso'}</button><button class="btn" data-account-back>Voltar</button></div>`,root=>{
+    openModal(creating?'Criar conta do jogo':'Entrar na conta',`<form class="account-form" data-account-form autocomplete="on"><div class="account-shield">🔐</div><p>${creating?'Um responsável pode ajudar. A senha não é gravada; ela protege o progresso antes de enviá-lo.':'Use o mesmo usuário e senha cadastrados no outro aparelho.'}</p>${creating?'<label class="field"><span>Nome que aparece no jogo</span><input data-account-display maxlength="18" autocomplete="nickname" value="'+escapeHtml(state.profile.name||'')+'" placeholder="Ex.: Luna"></label>':''}<label class="field"><span>Usuário da conta</span><input name="username" required data-account-user maxlength="20" autocapitalize="none" autocomplete="username" spellcheck="false" placeholder="Ex.: luna_azul"></label><label class="field"><span>Senha</span><input name="password" required minlength="6" data-account-password type="password" maxlength="64" autocomplete="${creating?'new-password':'current-password'}" placeholder="Mínimo de 6 caracteres"></label>${creating?'<label class="field"><span>Repita a senha</span><input name="confirm-password" required minlength="6" data-account-confirm type="password" maxlength="64" autocomplete="new-password"></label>':''}<p class="account-error" data-account-error hidden></p><button type="submit" class="btn primary xl" data-account-submit>${creating?'Criar e proteger progresso':'Entrar e recuperar progresso'}</button><button type="button" class="btn" data-account-back>Voltar</button></form>`,root=>{
       const submit=$('[data-account-submit]',root),error=$('[data-account-error]',root),user=$('[data-account-user]',root),password=$('[data-account-password]',root);
+      const form=$('[data-account-form]',root);window.GameAccountAccess?.mount(form,user,password,'world');
       const showError=message=>{error.textContent=message;error.hidden=false;submit.disabled=false;submit.textContent=creating?'Criar e proteger progresso':'Entrar e recuperar progresso';};
-      submit.onclick=async()=>{error.hidden=true;const pass=password.value;if(creating&&pass!==$('[data-account-confirm]',root).value){showError('As duas senhas precisam ser iguais.');return;}submit.disabled=true;submit.textContent=creating?'Criando conta...':'Recuperando...';try{if(creating)await createGameAccount($('[data-account-display]',root).value,user.value,pass);else await loginGameAccount(user.value,pass);closeModal();toast(creating?'Conta criada e progresso protegido.':'Progresso recuperado com sucesso.','good',2600);if(typeof onReady==='function')onReady();else if(!creating)setTimeout(()=>location.reload(),550);}catch(e){showError(e.message||'Não foi possível concluir.');}};
+      form.onsubmit=async event=>{event.preventDefault();if(submit.disabled)return;error.hidden=true;const pass=password.value;if(creating&&pass!==$('[data-account-confirm]',root).value){showError('As duas senhas precisam ser iguais.');return;}submit.disabled=true;submit.textContent=creating?'Criando conta...':'Recuperando...';try{const access=window.GameAccountAccess?.capture(form);await window.OTTHOS_RTDB?.setAccountPersistence?.(access?.remember!==false);if(creating)await createGameAccount($('[data-account-display]',root).value,user.value,pass,access?.remember!==false);else await loginGameAccount(user.value,pass,access?.remember!==false);access?.complete();closeModal();toast(creating?'Conta criada e progresso protegido.':'Progresso recuperado com sucesso.','good',2600);if(typeof onReady==='function')onReady();else if(!creating)setTimeout(()=>location.reload(),550);}catch(e){showError(e.message||'Não foi possível concluir.');}};
       $('[data-account-back]',root).onclick=()=>openAccountCenter(required,onReady);setTimeout(()=>user.focus(),80);
     });
   }

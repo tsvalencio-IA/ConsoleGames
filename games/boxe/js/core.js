@@ -67,7 +67,10 @@ window.Auth = {
         
         try {
             document.getElementById('loading').classList.remove('hidden');
+            const access=window.GameAccountAccess?.capture(document.getElementById('auth-form'));
+            await access?.prepare(window.AuthApp);
             await window.AuthApp.signInWithEmailAndPassword(window.Auth.getFakeEmail(user), pass);
+            access?.complete();
         } catch(e) {
             document.getElementById('loading').classList.add('hidden');
             window.Auth.showError("Credenciais inválidas. Tenta de novo!");
@@ -82,6 +85,8 @@ window.Auth = {
         
         try {
             document.getElementById('loading').classList.remove('hidden');
+            const access=window.GameAccountAccess?.capture(document.getElementById('auth-form'));
+            await access?.prepare(window.AuthApp);
             const cred = await window.AuthApp.createUserWithEmailAndPassword(window.Auth.getFakeEmail(user), pass);
             
             const role = 'player'; // Acesso administrativo não pode ser autoconcedido no cadastro.
@@ -102,6 +107,7 @@ window.Auth = {
             }
 
             await window.DB.ref('users/' + cred.user.uid).set(initialProfile);
+            access?.complete();
         } catch(e) {
             document.getElementById('loading').classList.add('hidden');
             window.Auth.showError("Nome já existe ou ocorreu um erro.");

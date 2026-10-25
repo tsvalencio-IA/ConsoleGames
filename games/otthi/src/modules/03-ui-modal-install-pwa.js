@@ -82,6 +82,7 @@
     els.modal.hidden = false;
     document.body.classList.add('modal-open');
     els.game?.setAttribute('aria-hidden', 'true');
+    window.GameAccountAccess?.enhance(els.modalBody);
     if (onReady) onReady(els.modalBody);
     requestAnimationFrame(()=>{els.modalBody.scrollTop=0;scheduleStableResize(0,true);});
   }

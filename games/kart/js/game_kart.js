@@ -953,7 +953,7 @@
                             if (d.gestureTimer > 25 && d.nitro >= 20 && !d.turboLock) { d.inputActive=true;d.trackingLost=false;d.requestTurbo(); }
                         } else { d.gestureTimer = 0; d.virtualWheel.isHigh = false; }
 
-                        // A deliberate right-hand hold uses one item. Steering alone and the two-hand turbo never spend an item.
+                        // A deliberate hand-on-head hold uses one item. Steering alone and the two-hand turbo never spend an item.
                     }
                 }
                 // No camera mode: use the exact touch/keyboard state, not simulated poses.
@@ -1535,7 +1535,7 @@
                 const mw=Math.min(maxWidth,ctx.measureText(message.text).width+24);ctx.fillStyle='rgba(5,20,31,.82)';ctx.fillRect((w-mw)/2,cy-16,mw,27);ctx.fillStyle=message.color;ctx.fillText(message.text,w/2,cy+2,mw-16);}
             for(const m of hudMessages)m.life--;
             if(d.driftSparks>0){const ready=d.driftSparks>70;ctx.textAlign='center';ctx.font='bold 11px Arial';ctx.fillStyle=ready?'#9beee8':'#ebd5a5';ctx.fillText(ready?'SOLTE O DRIFT · IMPULSO PRONTO':'DRIFT · '+Math.min(100,Math.floor(d.driftSparks/70*100))+'%',w/2,h*.76,Math.min(320,w-20));}
-            if(window.ArcadeControls?.mode==='camera'&&d.item){ctx.fillStyle='#e5f7eb';ctx.textAlign='center';ctx.font='bold 12px Arial';const progress=d.cameraItemGesture?.progress||0;ctx.fillText(progress?'USANDO ITEM · '+Math.round(progress*100)+'%':d.cameraItemGesture?.consumed?'VOLTE A MÃO AO VOLANTE PARA USAR OUTRO ITEM':!d.cameraItemGesture?.armed?'MANTENHA AS DUAS MÃOS NO VOLANTE PARA PREPARAR':'ITEM: LEVANTE SÓ A MÃO DIREITA POR 0,6s',w/2,h<500?h*.79:h*.84,w-24);}
+            if(window.ArcadeControls?.mode==='camera'&&d.item){ctx.fillStyle='#e5f7eb';ctx.textAlign='center';ctx.font='bold 12px Arial';const progress=d.cameraItemGesture?.progress||0;ctx.fillText(progress?'USANDO ITEM · '+Math.round(progress*100)+'%':d.cameraItemGesture?.consumed?'VOLTE A MÃO AO VOLANTE PARA USAR OUTRO ITEM':!d.cameraItemGesture?.armed?'MANTENHA AS DUAS MÃOS NO VOLANTE PARA PREPARAR':'ITEM: LEVE UMA MÃO À CABEÇA POR 0,35s',w/2,h<500?h*.79:h*.84,w-24);}
             if(d.trackingLost&&d.status==='RACING'){ctx.fillStyle='rgba(6,18,32,.88)';ctx.fillRect(w*.08,h*.40,w*.84,64);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 15px Arial';ctx.fillText('CÂMERA SEM PILOTO',w/2,h*.40+24,w*.8);ctx.font='12px Arial';ctx.fillText('Mostre as duas mãos para acelerar e dirigir.',w/2,h*.40+46,w*.8);}
             ctx.restore();
         },
@@ -1608,7 +1608,7 @@
             ctx.fillStyle = '#111'; ctx.fillRect(w/2 - 110, 20, 220, 20); ctx.fillStyle = d.turboLock ? '#0ff' : (d.nitro > 25 ? '#f90' : '#f33'); ctx.fillRect(w/2 - 108, 22, (216) * (d.nitro/100), 16);
             ctx.save();ctx.textAlign='center';ctx.font='bold 11px Arial';ctx.fillStyle='#fff';
             ctx.fillText('DIREÇÃO: '+(STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light).label.toUpperCase(),w/2,49);
-            if(window.ArcadeControls?.mode==='camera'&&d.item){ctx.fillStyle='#e5f7eb';ctx.textAlign='center';ctx.font='bold 12px Arial';const progress=d.cameraItemGesture?.progress||0;ctx.fillText(progress?'USANDO ITEM · '+Math.round(progress*100)+'%':d.cameraItemGesture?.consumed?'VOLTE A MÃO AO VOLANTE PARA USAR OUTRO ITEM':!d.cameraItemGesture?.armed?'MANTENHA AS DUAS MÃOS NO VOLANTE PARA PREPARAR':'ITEM: LEVANTE SÓ A MÃO DIREITA POR 0,6s',w/2,h<500?h*.79:h*.84,w-24);}
+            if(window.ArcadeControls?.mode==='camera'&&d.item){ctx.fillStyle='#e5f7eb';ctx.textAlign='center';ctx.font='bold 12px Arial';const progress=d.cameraItemGesture?.progress||0;ctx.fillText(progress?'USANDO ITEM · '+Math.round(progress*100)+'%':d.cameraItemGesture?.consumed?'VOLTE A MÃO AO VOLANTE PARA USAR OUTRO ITEM':!d.cameraItemGesture?.armed?'MANTENHA AS DUAS MÃOS NO VOLANTE PARA PREPARAR':'ITEM: LEVE UMA MÃO À CABEÇA POR 0,35s',w/2,h<500?h*.79:h*.84,w-24);}
             if(d.trackingLost&&d.status==='RACING'){
                 ctx.fillStyle='rgba(6,18,32,.88)';ctx.fillRect(w*.08,h*.40,w*.84,70);ctx.fillStyle='#fff';ctx.font='bold 15px Arial';
                 ctx.fillText('CÂMERA SEM PILOTO',w/2,h*.40+25);ctx.font='12px Arial';ctx.fillText('Mostre as duas mãos para acelerar e dirigir.',w/2,h*.40+48,w*.8);
@@ -1710,22 +1710,24 @@
         },
         readCameraItemGesture(pose,videoH){
             const now=performance.now(),g=this.cameraItemGesture||(this.cameraItemGesture={armed:false,neutralSince:null,raisedSince:null,lastAt:null,lastFrame:null,progress:0,holding:false});
-            const point=name=>pose?.keypoints?.find(k=>k.name===name&&k.score>=.4),nose=point('nose'),left=point('left_wrist'),right=point('right_wrist');
+            const point=name=>pose?.keypoints?.find(k=>k.name===name&&k.score>=.25),nose=point('nose'),left=point('left_wrist'),right=point('right_wrist');
             const videoFrame=window.System?.video?.currentTime,frame=Number.isFinite(videoFrame)?videoFrame:now;
             const gap=g.lastAt===null?0:now-g.lastAt;
             const lost=!nose||!left||!right||gap>900;
             if(lost){g.armed=false;g.neutralSince=g.raisedSince=null;g.progress=0;g.holding=false;g.lastAt=now;return false;}
             if(frame===g.lastFrame)return false;g.lastFrame=frame;g.lastAt=now;
-            const margin=videoH*.045,neutral=left.y>nose.y+margin&&right.y>nose.y+margin;
+            const margin=videoH*.20,neutral=left.y>nose.y+margin&&right.y>nose.y+margin;
             if(neutral){g.holding=false;g.consumed=false;g.raisedSince=null;g.progress=0;if(g.neutralSince===null)g.neutralSince=now;if(now-g.neutralSince>=180&&this.itemCooldown<=0)g.armed=true;return false;}
             g.neutralSince=null;
-            const raised=right.y<nose.y-videoH*.12&&left.y>nose.y+videoH*.12;
+            // Require a hand near the head in both axes, accepting either mirror label.
+            const nearHead=hand=>Math.hypot((hand.x-nose.x)/(videoH*.25),(hand.y-nose.y+videoH*.035)/(videoH*.23))<=1;
+            const raised=(nearHead(right)&&left.y>nose.y+margin)||(nearHead(left)&&right.y>nose.y+margin);
             if(!raised){g.raisedSince=null;g.progress=0;g.holding=false;g.armed=false;return false;}
             if(g.consumed){g.holding=true;return false;}
             if(!g.armed){g.holding=false;return false;}
             if(!this.item){g.steer=this.targetSteer;g.holding=true;g.consumed=true;g.armed=false;return false;}
             if(g.raisedSince===null){g.raisedSince=now;g.samples=0;g.steer=this.targetSteer;g.item=this.item;}
-            g.holding=true;g.samples++;g.progress=Math.max(0,Math.min(1,(now-g.raisedSince)/550,g.samples/3));
+            g.holding=true;g.samples++;g.progress=Math.max(0,Math.min(1,(now-g.raisedSince)/350,g.samples/3));
             if(this.item!==g.item){g.armed=false;g.holding=false;g.progress=0;return false;}
             if(g.progress<1)return false;
             g.armed=false;g.progress=0;g.holding=true;g.consumed=true;g.raisedSince=null;return true;

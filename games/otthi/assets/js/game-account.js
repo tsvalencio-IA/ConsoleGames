@@ -127,7 +127,7 @@
     }
   }
 
-  function rememberSession(session) {
+  function rememberSession(session, remember = true) {
     const safe = {
       schema: 1,
       accountId: String(session?.accountId || ''),
@@ -137,13 +137,15 @@
     if (!/^[a-f0-9]{64}$/.test(safe.accountId) || !safe.key || safe.username.length < 3) {
       throw new Error('Não foi possível guardar a sessão desta conta.');
     }
-    localStorage.setItem(SESSION_KEY, JSON.stringify(safe));
+    const storage = remember ? localStorage : sessionStorage;
+    storage.setItem(SESSION_KEY, JSON.stringify(safe));
+    try { (remember ? sessionStorage : localStorage).removeItem(SESSION_KEY); } catch {}
     return safe;
   }
 
   function getSession() {
     try {
-      const value = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+      const value = JSON.parse((typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(SESSION_KEY) : null) || localStorage.getItem(SESSION_KEY) || 'null');
       if (!value || !/^[a-f0-9]{64}$/.test(String(value.accountId || '')) || !value.key) return null;
       return value;
     } catch {
@@ -153,6 +155,7 @@
 
   function clearSession() {
     try { localStorage.removeItem(SESSION_KEY); } catch {}
+    try { sessionStorage.removeItem(SESSION_KEY); } catch {}
   }
 
   window.OTTHOS_ACCOUNT = {

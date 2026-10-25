@@ -113,10 +113,10 @@ const hub={
    return root;
  },
  kartCameraItem(logic){
-  // Race input stays completely hands-free. A deliberate right-hand hold uses
+  // Race input stays completely hands-free. A deliberate hand-on-head hold uses
   // the item; both raised hands retain the existing turbo gesture.
   logic.arcadeManual=null;
-  hub.showTip('ITEM: LEVANTE SÓ A MÃO DIREITA POR 0,6s • DUAS MÃOS ALTAS: TURBO');
+  hub.showTip('ITEM: LEVE UMA MÃO À CABEÇA POR 0,35s • DUAS MÃOS ALTAS: TURBO');
  },
  kartControls(logic){
   // Dedicated on-screen controls. The physics engine reads these states each frame.

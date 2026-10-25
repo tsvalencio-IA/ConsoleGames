@@ -1,7 +1,7 @@
 /* Offline apenas para a INTERFACE DO CONSOLE; jogos externos exigem sua rede original. */
 "use strict";
-const CACHE="thiaguinho-console-static-v7";
-const APP_SHELL=["./","./index.html","./styles.css","./app.js","./firebase-config.js","./manifest.webmanifest","./icons/icon.svg","./covers/otthi.svg","./covers/familia.svg","./covers/kart.svg","./covers/boxe.svg","./covers/tenis.svg","./covers/ar.svg","./covers/voo.svg"];
+const CACHE="thiaguinho-console-static-v8";
+const APP_SHELL=["./account-access.js","./","./index.html","./styles.css","./app.js","./firebase-config.js","./manifest.webmanifest","./icons/icon.svg","./covers/otthi.svg","./covers/familia.svg","./covers/kart.svg","./covers/boxe.svg","./covers/tenis.svg","./covers/ar.svg","./covers/voo.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
 });
