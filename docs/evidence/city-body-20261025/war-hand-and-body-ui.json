@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "realModelHands": 2,
+  "labels": [
+    "Left",
+    "Right"
+  ],
+  "frontCamera": true,
+  "previewHiddenAfterCalibration": true,
+  "neutralStanceStaysStill": true,
+  "bodyReplayStepsCrouchAndLoss": true,
+  "trackingLossStopsMovement": true,
+  "actualAlignedHits": true,
+  "lossStopsFire": true,
+  "manualFallback": true,
+  "runtimeErrorRecovery": true,
+  "errors": [],
+  "limits": [
+    "Actual CPU hand model on official sample footage; body UI uses explicit synthetic replay. Physical Android tracking not certified."
+  ]
+}

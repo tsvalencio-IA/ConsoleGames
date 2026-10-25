@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "source": "deterministic-pixel-camera",
+  "bodyReplayStepsAndCrouch": true,
+  "start": {
+    "active": true,
+    "mode": "ground",
+    "armed": false,
+    "state": "PLAYING",
+    "elapsed": 5.199999999999987,
+    "onGround": false,
+    "crouched": false,
+    "canDisembark": false,
+    "landingAssist": false,
+    "flightPhase": "airborne",
+    "airspeed": 0,
+    "collective": 0.5,
+    "aiming": false,
+    "looking": false,
+    "handMode": true,
+    "handTracker": {
+      "inferenceMs": 163.5,
+      "state": "ready"
+    },
+    "handAim": {
+      "x": 0.5,
+      "y": 0.47999999999999987,
+      "fresh": false,
+      "present": true
+    },
+    "autoWalking": false,
+    "lock": null,
+    "kills": 0,
+    "wave": 0,
+    "goal": 8,
+    "ammo": 30,
+    "body": {
+      "x": -18,
+      "y": 1.8,
+      "z": 39,
+      "yaw": 3.141592653589793,
+      "pitch": 2.4424906541753446e-16,
+      "roll": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "hp": 100
+    },
+    "peacePosition": {
+      "x": -18,
+      "y": 0,
+      "z": 39
+    },
+    "enemies": [],
+    "sameScene": true,
+    "trafficActors": 72,
+    "weapon": true,
+    "renderCalls": 0
+  },
+  "moved": {
+    "active": true,
+    "mode": "ground",
+    "armed": false,
+    "state": "PLAYING",
+    "elapsed": 5.949999999999984,
+    "onGround": false,
+    "crouched": false,
+    "canDisembark": false,
+    "landingAssist": false,
+    "flightPhase": "airborne",
+    "airspeed": 0,
+    "collective": 0.5,
+    "aiming": false,
+    "looking": false,
+    "handMode": true,
+    "handTracker": {
+      "inferenceMs": 159.19999999995343,
+      "state": "ready"
+    },
+    "handAim": {
+      "x": 0.6040623990779546,
+      "y": 0.4125000654629482,
+      "fresh": false,
+      "present": true
+    },
+    "autoWalking": false,
+    "lock": null,
+    "kills": 0,
+    "wave": 0,
+    "goal": 8,
+    "ammo": 30,
+    "body": {
+      "x": -18,
+      "y": 1.8,
+      "z": 39,
+      "yaw": 2.96468657515727,
+      "pitch": 0.1484998559815139,
+      "roll": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "hp": 100
+    },
+    "peacePosition": {
+      "x": -18,
+      "y": 0,
+      "z": 39
+    },
+    "enemies": [],
+    "sameScene": true,
+    "trafficActors": 72,
+    "weapon": true,
+    "renderCalls": 0
+  },
+  "steady": {
+    "active": true,
+    "mode": "ground",
+    "armed": false,
+    "state": "PLAYING",
+    "elapsed": 6.249999999999983,
+    "onGround": false,
+    "crouched": false,
+    "canDisembark": false,
+    "landingAssist": false,
+    "flightPhase": "airborne",
+    "airspeed": 0,
+    "collective": 0.5,
+    "aiming": false,
+    "looking": false,
+    "handMode": true,
+    "handTracker": {
+      "inferenceMs": 156.19999999995343,
+      "state": "ready"
+    },
+    "handAim": {
+      "x": 0.6040624990010357,
+      "y": 0.41250000064797665,
+      "fresh": false,
+      "present": true
+    },
+    "autoWalking": false,
+    "lock": null,
+    "kills": 0,
+    "wave": 0,
+    "goal": 8,
+    "ammo": 30,
+    "body": {
+      "x": -18,
+      "y": 1.8,
+      "z": 39,
+      "yaw": 2.9646864052880324,
+      "pitch": 0.14849999857445134,
+      "roll": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "hp": 100
+    },
+    "peacePosition": {
+      "x": -18,
+      "y": 0,
+      "z": 39
+    },
+    "enemies": [],
+    "sameScene": true,
+    "trafficActors": 72,
+    "weapon": true,
+    "renderCalls": 0
+  },
+  "errors": []
+}
