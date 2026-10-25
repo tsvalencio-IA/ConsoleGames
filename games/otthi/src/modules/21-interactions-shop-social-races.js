@@ -396,6 +396,7 @@
     if(message)toast(message,'good');addXP(Math.max(2,amount*2));addReputation(Math.max(1,Math.floor(amount/2)));evaluateMissions();saveState();
   }
   function talkToNPC(npc){
+    if(npc?.commerceShop)return openCityShop(npc.commerceShop);
     if(npc.id==='maya'&&state.flags.deliveryActive&&player.vehicle&&distance2D(player,npc)<3.5){state.flags.deliveryActive=false;state.inventory.package=0;setFlag('deliveryDone');if(state.career.activeJob?.id==='delivery')completeActiveJob();else{addCoins(120);addReputation(30);}toast('Entrega concluída para Maya!','good',2400);}
     if(npc.id==='tia-thamis'){window.OTTHI_TIA_THAMIS?.open?.('welcome');return;}
     if(npc.id==='tio-thiago'){openTioThiagoHub();return;}

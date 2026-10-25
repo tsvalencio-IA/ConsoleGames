@@ -22,7 +22,7 @@
   }
   function updateNpcSociety(dt){
     updateNpcSociety.acc=(updateNpcSociety.acc||0)+dt;if(updateNpcSociety.acc<9)return;updateNpcSociety.acc=0;if(!world.npcs.length)return;
-    const candidates=world.npcs.filter(n=>!n.stationary&&!n.ottoviasRole);if(!candidates.length)return;const npc=candidates[Math.floor(Math.random()*candidates.length)],roll=Math.random();
+    const candidates=world.npcs.filter(n=>!n.stationary&&!n.ottoviasRole&&!n.cityCommercial);if(!candidates.length)return;const npc=candidates[Math.floor(Math.random()*candidates.length)],roll=Math.random();
     if(roll<.22){const gift=Math.random()<.5?'food':'coins';if(gift==='food'){state.inventory.food=(state.inventory.food||0)+1;npcSpeech(npc,'Trouxe uma comida para você!');}else{state.profile.coins+=8;npcSpeech(npc,'Ganhei algumas moedas e dividi com você!');}saveState();updateHUD();}
     else if(roll<.44){npcSpeech(npc,'Quer apostar uma corrida comigo?');npc.userDataChallengeUntil=performance.now()+12000;}
     else if(roll<.66){const other=candidates.find(n=>n!==npc);if(other){state.npcSociety.friendships[`${npc.id}-${other.id}`]=(state.npcSociety.friendships[`${npc.id}-${other.id}`]||0)+1;npcSpeech(npc,`Conversei com ${other.name} na praça.`);}}
@@ -44,6 +44,7 @@
   function updateNPCs(dt){
     const now=performance.now();
     for(const npc of world.npcs){
+      if(npc.cityCommercial&&npc.commerceRoute&&!npc.following&&!npc.passengerMode&&!npc.pendingRide&&!npc.coopRaceMode)continue;
       const escort=typeof coopNpcEscortTarget==='function'?coopNpcEscortTarget(npc):null;
       const playerDistance=distance2D(player,npc.group.position),near=playerDistance<3.2,oldX=npc.group.position.x,oldZ=npc.group.position.z,b=v705NpcBrain(npc),culled=npc.group.visible===false&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode,background=playerDistance>(perf.mobile?62:88)&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode&&!npc.mobility&&!near;
       if(culled&&!npc.mobility)continue;if(background){npc._perfSkipSeq=(Number(npc._perfSkipSeq||0)+1)%3;if(npc._perfSkipSeq!==0)continue;}

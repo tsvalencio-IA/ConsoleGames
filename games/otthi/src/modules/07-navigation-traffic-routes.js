@@ -47,11 +47,11 @@
     if(world.trafficSnapshot&&now-(world.trafficSnapshotAt||0)<48)return world.trafficSnapshot;
     const actors=[];
     for(const bus of world.buses||[])if(bus.group?.visible)actors.push({id:`bus-${bus.id}`,type:'bus',group:bus.group,radius:3.05,speed:Math.abs(bus.currentSpeed||0),ref:bus});
-    for(const car of world.policeCars||[])if(car.group?.visible)actors.push({id:`police-${car.id}`,type:'police',group:car.group,radius:1.8,speed:Math.abs(car.currentSpeed||car.speed||0),ref:car});
-    for(const truck of world.fireTrucks||[])if(truck.group?.visible)actors.push({id:`fire-${truck.id}`,type:'fire',group:truck.group,radius:2.5,speed:Math.abs(truck.currentSpeed||truck.speed||0),ref:truck});
-    for(const ambulance of world.ambulances||[])if(ambulance.group?.visible)actors.push({id:`ambulance-${ambulance.id}`,type:'ambulance',group:ambulance.group,radius:2.1,speed:Math.abs(ambulance.currentSpeed||ambulance.speed||0),ref:ambulance});
+    for(const car of world.policeCars||[])if(car.group?.visible)actors.push({id:`police-${car.id}`,type:'police',group:car.group,radius:1.8,speed:Math.abs(car.currentSpeed||0),ref:car});
+    for(const truck of world.fireTrucks||[])if(truck.group?.visible)actors.push({id:`fire-${truck.id}`,type:'fire',group:truck.group,radius:2.5,speed:Math.abs(truck.currentSpeed||0),ref:truck});
+    for(const ambulance of world.ambulances||[])if(ambulance.group?.visible)actors.push({id:`ambulance-${ambulance.id}`,type:'ambulance',group:ambulance.group,radius:2.1,speed:Math.abs(ambulance.currentSpeed||0),ref:ambulance});
     for(const vehicle of world.ottoviasTraffic||[])if(!vehicle.taken&&vehicle.group)actors.push({id:`ottovias-${vehicle.id}`,type:vehicle.type||'car',group:vehicle.group,radius:Number(vehicle.radius||1.45),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
-    for(const npc of world.npcs||[])if(npc.mobility?.group?.visible&&npc.mobility.type!=='walk')actors.push({id:`npc-${npc.id}`,type:npc.mobility.type,group:npc.mobility.group,radius:npc.mobility.radius||1.25,speed:Math.abs(npc.mobility.currentSpeed||npc.mobility.speed||0),ref:npc.mobility});
+    for(const npc of world.npcs||[])if(npc.mobility?.group?.visible&&npc.mobility.type!=='walk')actors.push({id:`npc-${npc.id}`,type:npc.mobility.type,group:npc.mobility.group,radius:npc.mobility.radius||1.25,speed:Math.abs(npc.mobility.currentSpeed||0),ref:npc.mobility});
     const cells=new Map(),cellSize=12;for(const actor of actors){const key=`${Math.floor(actor.group.position.x/cellSize)}:${Math.floor(actor.group.position.z/cellSize)}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(actor);}world.trafficSpatialCells=cells;world.trafficCellSize=cellSize;world.trafficSnapshot=actors;world.trafficSnapshotAt=now;return actors;
   }
   function nearbyTrafficActors(x,z,radius=18){trafficActorList();const cells=world.trafficSpatialCells;if(!cells)return world.trafficSnapshot||[];const size=world.trafficCellSize||12,minX=Math.floor((x-radius)/size),maxX=Math.floor((x+radius)/size),minZ=Math.floor((z-radius)/size),maxZ=Math.floor((z+radius)/size),near=[];for(let cx=minX;cx<=maxX;cx++)for(let cz=minZ;cz<=maxZ;cz++)for(const actor of cells.get(`${cx}:${cz}`)||[])near.push(actor);return near;}
@@ -102,7 +102,7 @@
       }
       if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1)factor=0;
     }
-    return clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead)),0,1);
+    return clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function resolveTrafficOverlaps(before){

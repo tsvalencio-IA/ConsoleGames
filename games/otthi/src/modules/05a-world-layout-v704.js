@@ -6,7 +6,8 @@
 // @otthi-module-body
   const WORLD_LAYOUT_V704=Object.freeze({
     version:704,
-    bounds:Object.freeze({minX:-460,maxX:460,minZ:-460,maxZ:460}),
+    bounds:Object.freeze({minX:-460,maxX:460,minZ:-460,maxZ:900}),
+    coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
       hq:{id:'hq',label:'Quartel-General',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
       airbase:{id:'airbase',label:'Base Aérea',x:27,z:-169,radius:36,navX:27,navZ:-159},
@@ -30,6 +31,8 @@
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
     roads:Object.freeze([
+      {id:'ligacao-sul-centro',x:32.5,z:-72,w:65,d:9,kind:'street'},
+      {id:'costa-orla-avenida',x:-310,z:475,w:180,d:10,kind:'street'},
       {id:'district-spine',x:-308,z:-25,w:9,d:130,kind:'street'},
       {id:'district-alameda',x:-266.5,z:-21,w:83,d:6,kind:'street'},
       {id:'district-collection-link',x:-225,z:-38,w:6,d:34,kind:'street'},
@@ -53,6 +56,7 @@
     ]),
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
+      {id:'ottovias-costa-orla-city',name:'Avenida da Orla',width:10,shoulder:1.4,closed:true,points:[{x:-300,z:160},{x:-300,z:475},{x:-360,z:475},{x:-360,z:160}]},
       {id:'ottovias-aurora-link',name:'Estrada Nova Aurora',width:10,shoulder:1.2,closed:false,points:[{x:158,z:-10},{x:205,z:-10},{x:240,z:-40}]},
       {id:'ottovias-aurora-city',name:'Avenida Circular de Aurora',width:10,shoulder:1.2,closed:true,points:[{x:240,z:-40},{x:240,z:-90},{x:300,z:-90},{x:360,z:-90},{x:360,z:-40},{x:360,z:10},{x:300,z:10},{x:240,z:10}]},
       {id:'ottovias-aurora-race',name:'Estrada do Autódromo Aurora',width:10,shoulder:1.2,closed:false,points:[{x:300,z:-90},{x:300,z:-208}]},
@@ -88,6 +92,7 @@
       })
     ]),
     nodes:Object.freeze({
+      CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
       A_LINK:{x:205,z:-10},A_W:{x:240,z:-40},A_C:{x:300,z:-40},A_E:{x:360,z:-40},A_NW:{x:240,z:-90},A_N:{x:300,z:-90},A_NE:{x:360,z:-90},A_SW:{x:240,z:10},A_S:{x:300,z:10},A_SE:{x:360,z:10},A_RACE:{x:300,z:-212},
       CV_LINK:{x:-210,z:25},CV_NE:{x:-240,z:60},CV_E:{x:-240,z:110},CV_SE:{x:-240,z:160},CV_S:{x:-300,z:160},CV_SW:{x:-360,z:160},CV_W:{x:-360,z:110},CV_NW:{x:-360,z:60},CV_N:{x:-300,z:60},CV_C:{x:-300,z:110},CV_RW:{x:-400,z:20},CV_RB:{x:-400,z:-150},CV_RA:{x:-300,z:-150},CV_RACE:{x:-300,z:-156},
@@ -128,7 +133,7 @@
     edges:Object.freeze([
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
-      ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
+      ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_S','COAST_E'],['COAST_E','COAST_W'],['COAST_W','CV_SW'],['COAST_E','COAST_E_END'],['COAST_W','COAST_W_END'],['COAST_E','COAST_GATE'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
       ['H25E','V_GYM_TURN'],['E65S','VB_TURN'],['VB_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['W55S','VD_TURN'],['VD_TURN','VD_GATE'],
       ['OV20','CQ_TURN'],['CQ_TURN','CQ_GATE'],['OV1','CA_TURN'],['CA_TURN','CA_GATE'],['OV10','CN_GATE'],
       ['VS','V65S'],['V65S','V18S'],['V18S','C'],['C','V18N'],['V18N','V58N'],['V58N','VN'],
@@ -136,7 +141,7 @@
       ['W105S','W55S'],['W55S','H55W'],['H55W','W28N'],['W28N','W56N'],['W56N','W80N'],['W80N','BUILD78'],
       ['E105S','E65S'],['E65S','E18S'],['E18S','E0'],['E0','H65E'],['E0','C38'],['C38','E58N'],
       ['V58N','N34'],['N34','N68'],['N68','E58N'],['C38','CASTLE38'],
-      ['V65S','E65S'],['E65S','K65'],['K65','K80'],['K80','K94'],
+      ['V65S','CS0'],['CS0','CSE'],['CSE','E65S'],['E65S','K65'],['K65','K80'],['K80','K94'],
       ['VS','OV0'],['VN','OVN1'],['OVN1','OV12'],['OV0','OV1'],['OV1','OV2'],['OV2','OV3'],['OV3','OV4'],['OV4','OV5'],['OV5','OV6'],['OV6','OV7'],['OV7','OV8'],['OV8','OV9'],['OV9','OV10'],['OV10','OV11'],['OV11','OV12'],['OV12','OV13'],['OV13','OV14'],['OV14','OV15'],['OV15','OV16'],['OV16','OV17'],['OV17','OV18'],['OV18','OV19'],['OV19','OV20'],['OV20','OV21'],['OV21','OV22'],['OV22','OV23'],['OV23','OV24'],['OV24','OV0']
     ]),
     points:Object.freeze({
