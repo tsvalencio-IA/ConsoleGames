@@ -52,18 +52,14 @@ test('WAR hand: an interrupted stream expires pending target acquisition and nee
  c.maxAge=430;c.consume(result(hand()),1300);g.handAim=c.read(1592);g.step(.016);assert(g.handLock);g.handAim=c.read(2600);assert.equal(g.handAim.fresh,false);assert.equal(g.handAim.present,false);g.step(.1);assert.equal(g.handLock,null);
  c.consume(result(hand()),2700);g.handAim=c.read(2992);g.step(.016);assert.equal(g.stats.shots,0);c.consume(result(hand()),3100);g.handAim=c.read(3392);g.step(.016);assert.equal(g.stats.shots,1);
 });
-test('WAR hand: the calibrated camera walks without touches, goes around physical cover and stops for cover, tracking loss and the result',()=>{
- const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};g.waveDelay=999;Object.assign(g.player,{x:-7,z:10});
- for(let i=0;i<400;i++){g.step(.016);assert(!g.covers.some(c=>Math.abs(g.player.x-c.x)<c.w/2+.35&&Math.abs(g.player.z-c.z)<c.d/2+.35),'Autowalk entered cover');}
- assert(g.player.z>20,'Camera walking got stuck in front of cover');assert(g.autoWalking);const p={...g.player};g.coverHeld=true;g.step(.2);assert.equal(g.player.x,p.x);assert.equal(g.player.z,p.z);g.coverHeld=false;
- g.manualStick={x:0,y:-1,active:true};g.step(.1);assert(g.autoWalking&&g.player.z>=p.z,'A stale hidden joystick cannot override camera-only automatic walking');g.manualStick={x:0,y:0,active:false};
- const stopped={...g.player};g.handAim.fresh=false;g.step(.2);assert.deepEqual({...g.player},stopped);g.handAim.fresh=true;g.state='VICTORY';g.resultTimer=10;g.step(.2);assert.deepEqual({...g.player},stopped);
+test('WAR hand: neutral camera stays still, fresh body steps move, cover collides, and lost tracking stops movement',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};g.waveDelay=999;g.covers=[];const start={...g.player};g.step(.2);assert.deepEqual({...g.player},start);g.bodyPose={fresh:true,moveX:1,moveZ:0,crouched:false};g.manualStick={x:-1,y:-1,active:true};g.step(.2);assert(g.player.x>start.x);assert.equal(g.player.z,start.z);assert(g.autoWalking);g.bodyPose.crouched=true;g.bodyPose.moveX=0;g.step(.2);assert.equal(g.eyeY,1.05);g.bodyPose.fresh=false;const stopped={...g.player};g.step(.2);assert.deepEqual({...g.player},stopped);g.bodyPose.fresh=true;g.bodyPose.moveZ=1;g.handAim.fresh=false;g.step(.2);assert.deepEqual({...g.player},stopped);g.handAim.fresh=true;g.state='VICTORY';g.resultTimer=10;g.step(.2);assert.deepEqual({...g.player},stopped);g.state='PLAYING';g.bodyPose.crouched=false;g.covers=[{x:g.player.x,z:g.player.z+1.5,w:4,d:1}];for(let i=0;i<120;i++)g.step(.016);assert(!g.covers.some(c=>Math.abs(g.player.x-c.x)<c.w/2+.35&&Math.abs(g.player.z-c.z)<c.d/2+.35));
 });
 test('WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.75,y:.25,fresh:true,present:true};g.waveDelay=999;g.covers=[];g.manualStick={x:-1,y:-1,active:true};g.aimStick={x:-1,y:-1,active:true};
- g.step(.25);assert(g.player.yaw>0&&g.player.pitch>0);assert(g.autoWalking);assert.equal(g.aimRay().yaw,g.player.yaw);assert.equal(g.aimRay().pitch,g.player.pitch);
+ g.step(.25);assert(g.player.yaw>0&&g.player.pitch>0);assert(!g.autoWalking);assert.equal(g.aimRay().yaw,g.player.yaw);assert.equal(g.aimRay().pitch,g.player.pitch);
  const facing={yaw:g.player.yaw,pitch:g.player.pitch};for(let i=0;i<60;i++)g.step(1/60);assert.equal(g.player.yaw,facing.yaw);assert.equal(g.player.pitch,facing.pitch);g.handAim.x=.5;g.handAim.y=.48;g.step(.2);assert(Math.abs(g.player.yaw)<.001);assert(Math.abs(g.player.pitch)<.001);
 });
-test('WAR hand: automatic walking stops at engagement range and manual mode stays stationary without input',()=>{
+test('WAR hand: neutral hand aiming and manual mode stay stationary without movement input',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.step(.5);assert.equal(g.player.z,0);g.handSession={dispose(){}};g.handAim={x:.7,y:.3,fresh:true};g.enemies=[{active:true,x:3,z:9,y:1.15,kind:'soldier',aim:999,flash:0,phase:0}];g.step(.2);assert.equal(g.player.z,0);assert(!g.autoWalking);
 });

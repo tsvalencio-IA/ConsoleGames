@@ -35,6 +35,10 @@ jobs:
           sleep 2
       - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
         run: node tests/war-camera-browser.mjs
+      - name: Inferência real do corpo e controle por objeto nos dois mundos
+        run: |
+          node tests/war-body-model-browser.mjs
+          node tests/war-object-browser.mjs
       - name: Arrastar a câmera e jogar com toques simultâneos no WAR
         if: ${{ always() && !cancelled() }}
         run: node tests/war-touch-browser.mjs
@@ -49,6 +53,8 @@ jobs:
           path: |
             test-results/hand-camera/
             test-results/war-touch/
+            test-results/war-body/
+            test-results/war-object/
             test-results/ot-games/
           if-no-files-found: ignore
           retention-days: 14

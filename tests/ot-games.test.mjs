@@ -24,14 +24,14 @@ test('OT Games: a modal, vehicle or active co-op mission prevents entering a sec
  const f=fixture();f.context.paused=true;assert.equal(await f.api.enter('plane'),false);f.context.paused=false;f.player.vehicle=true;assert.equal(await f.api.enter('plane'),false);f.player.vehicle=false;f.context.window.OTTHI_COOP.active=()=>({id:'active'});assert.equal(await f.api.enter('ground'),false);assert(!f.g.active);assert.equal(f.scene.children.length,0);
 });
 test('OT Games: a late camera permission cannot attach a ground hand controller to a new aircraft session',async()=>{
- const f=fixture();let resolve,stopped=0,controllers=0;f.context.navigator={mediaDevices:{getUserMedia:()=>new Promise(r=>resolve=r)}};f.context.window.WarHandControl={start(){controllers++;return {dispose(){}}}};await f.api.enter('ground');const pending=f.context.otGamesStartCamera();await Promise.resolve();f.api.peace();await f.api.enter('helicopter',{armed:false});resolve({getTracks:()=>[{stop:()=>stopped++}]});await pending;assert.equal(controllers,0);assert.equal(stopped,1);assert.equal(f.g.mode,'helicopter');assert.equal(f.g.state,'PLAYING');assert.equal(f.g.handSession,null);
+ const f=fixture();let resolve,stopped=0,controllers=0;f.context.navigator={mediaDevices:{getUserMedia:()=>new Promise(r=>resolve=r)}};f.context.window.WarBodyControl={};f.context.window.WarHandControl={start(){controllers++;return {dispose(){}}}};await f.api.enter('ground');const pending=f.context.otGamesStartCamera();await Promise.resolve();f.api.peace();await f.api.enter('helicopter',{armed:false});resolve({getTracks:()=>[{stop:()=>stopped++}]});await pending;assert.equal(controllers,0);assert.equal(stopped,1);assert.equal(f.g.mode,'helicopter');assert.equal(f.g.state,'PLAYING');assert.equal(f.g.handSession,null);
 });
 test('OT Games: each sector spawns nearby, separated targets with an unobstructed shot instead of scattering them behind houses across town',async()=>{
  const f=fixture();f.context.world.colliders=[{x:-18,z:18,w:12,d:6,h:8}];await f.api.enter('ground',{armed:true,difficulty:'easy'});const g=f.g;assert(g.enemies.length>0);assert.equal(g.state,'PLAYING');
  for(const e of g.enemies){assert(Math.hypot(e.x-g.body.x,e.z-g.body.z)<45);assert(!f.context.otGamesBlocked(g.body,e));for(const other of g.enemies)if(other!==e)assert(Math.hypot(e.x-other.x,e.z-other.z)>=6);}
 });
-test('OT Games: front-camera ground mode advances without a joystick and freezes on calibration, lost tracking and completed missions',async()=>{
- const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};const p={...g.body};f.step(.5);assert(Math.hypot(g.body.x-p.x,g.body.z-p.z)>1);assert(g.autoWalking);
+test('OT Games: front-camera ground mode moves from body steps without a joystick and freezes on calibration, lost tracking and completed missions',async()=>{
+ const f=fixture();await f.api.enter('ground',{armed:false});const g=f.g;g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};const p={...g.body};f.step(.5);assert.deepEqual({...g.body},p);g.bodyPose={fresh:true,moveX:0,moveZ:1,crouched:false};f.step(.5);assert(Math.hypot(g.body.x-p.x,g.body.z-p.z)>1);assert(g.autoWalking);
  for(const state of ['HAND_CALIBRATION','VICTORY']){g.state=state;const stopped={...g.body};f.step(.5);assert.deepEqual({...g.body},stopped);}
  g.state='PLAYING';g.handAim.fresh=false;const stopped={...g.body};f.step(.5);assert.deepEqual({...g.body},stopped);assert(!g.autoWalking);
 });
@@ -50,7 +50,7 @@ test('OT Games: hand-camera right goes right, up looks up and manual stick never
  const start={yaw:g.body.yaw,pitch:g.body.pitch};f.step(.1);
  assert(g.body.yaw<start.yaw,'right hand rotates the real Three camera toward screen-right even if the hidden joystick points left');
  assert(g.body.pitch>start.pitch,'raised hand lifts the viewpoint');
- assert.equal(g.autoWalking,true);
+ assert.equal(g.autoWalking,false);
  const facing=g.body.yaw;for(let i=0;i<60;i++)f.step(1/60);assert(Math.abs(g.body.yaw-facing)<.001,'holding a deflected hand must keep the same view rather than rotate continuously');g.handAim.x=.5;g.handAim.y=.48;f.step(.1);assert(Math.abs(g.body.yaw-start.yaw)<.001,'returning the hand to calibration centre restores the anchored view');
 });
 test('OT Games: camera-hand mode and manual joystick remain separate',async()=>{

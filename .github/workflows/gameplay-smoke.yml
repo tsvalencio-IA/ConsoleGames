@@ -35,11 +35,14 @@ jobs:
       - name: Validar dança por corpo e inferência real sem câmera de usuário
         run: |
           node tests/dance-pose-model-browser.mjs
+          node tests/dance-music-browser.mjs
           node tests/world-body-dance-browser.mjs
       - name: Validar frota completa e tráfego aéreo NPC
         run: |
           node tests/world-traffic-air-browser.mjs
           node tests/air-traffic-models-browser.mjs
+      - name: Conferir pavimento, comércio, ondas e três minutos de trânsito
+        run: node tests/world-city-coast-browser.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         run: node tests/playable-smoke.mjs
       - name: Jogar com a Família no OTThi e preservar o HQ
@@ -54,6 +57,8 @@ jobs:
             test-results/playable/
             test-results/world-body-dance/
             test-results/dance-pose-model/
+            test-results/dance-music/
+            test-results/city-coast/
             test-results/world-traffic-air/
             test-results/air-traffic-models/
           if-no-files-found: ignore

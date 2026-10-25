@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.25.2-traffic-dance',
+    build: '705.25.3-city-coast-body',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

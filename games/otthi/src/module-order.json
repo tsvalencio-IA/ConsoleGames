@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.25.2-traffic-dance",
+  "build": "705.25.3-city-coast-body",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "9294f10e939641200c09d4bc539898aef70f582ea1991a8d1dc3848b049b7184"
+      "sha256Body": "9a05d2b7728486e6fe9c05f84155d6223d22526140fbd827d590152fbf7135fe"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "48a8d93809a20eede858019aef6c427ca785fc8cf778038b557b96f5ad08e3f5"
+      "sha256Body": "bbcf5cdf698d0d861894e47ee3068632807947c91543682097951d31e7381dfd"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "3f940bd265363c32f4085be95c0ef7308716e5284b5460828525e6dd090362be"
+      "sha256Body": "b41164460adb0ffd2b7f149d89b72ecd18dbe46eabd7b8889d63646d5ffabd0f"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -455,7 +455,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Continuidade viária e ponte da Costa sobre água preservada",
-      "sha256Body": "fb6c120e0081dab4360240a4ce31f9ad4a395e788232dd291d96d9f075c81cab"
+      "sha256Body": "1c2ef05d37368bc89813cf2918f6d91fe173a19fc6f0679c6d6c84616ef29118"
     },
     {
       "file": "src/modules/51-online-travel-party.js",
