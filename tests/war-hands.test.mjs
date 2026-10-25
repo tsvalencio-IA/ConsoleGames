@@ -40,6 +40,18 @@ test('WAR hand: two confirmed aligned observations acquire the target even when 
  g.handAim.fresh=false;g.step(.05);assert(g.handLock);g.handAim.fresh=true;g.handAim.timestamp=1420;g.step(.016);assert.equal(g.stats.shots,1);
  g.handAim.fresh=false;g.handAim.present=false;g.step(.05);assert.equal(g.handLock,null);g.handAim.fresh=true;g.handAim.present=true;g.handAim.timestamp=1900;g.step(.016);assert.equal(g.stats.shots,1);
 });
+test('WAR hand: inference latency pauses actions without discarding the first aligned observation before the next valid frame',()=>{
+ const c=calibrated(),{game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.spawnWave();g.covers=[];g.viewSize={w:844,h:390};g.handSession={dispose(){}};g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,y:1.8,z:28,aim:999,hp:1000});
+ c.maxAge=430;c.consume(result(hand()),1300);g.handAim=c.read(1592);g.step(.016);assert(g.handLock);assert.equal(g.stats.shots,0);
+ const position={x:g.player.x,z:g.player.z};g.handAim=c.read(1740);assert.equal(g.handAim.fresh,false);g.step(.1);assert.equal(g.stats.shots,0);assert.deepEqual({x:g.player.x,z:g.player.z},position);assert(g.handLock,'waiting for inference must retain the first aligned observation');
+ c.consume(result(hand()),1700);g.handAim=c.read(1992);g.step(.016);assert.equal(g.stats.shots,1);assert.equal(g.stats.hits,1);
+ c.consume({landmarks:[],handedness:[]},2100);g.handAim=c.read(2100);g.step(.1);assert.equal(g.handLock,null);assert.equal(g.stats.shots,1);
+});
+test('WAR hand: an interrupted stream expires pending target acquisition and needs two new aligned observations',()=>{
+ const c=calibrated(),{game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.spawnWave();g.covers=[];g.viewSize={w:844,h:390};g.handSession={dispose(){}};g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,y:1.8,z:28,aim:999,hp:1000});
+ c.maxAge=430;c.consume(result(hand()),1300);g.handAim=c.read(1592);g.step(.016);assert(g.handLock);g.handAim=c.read(2600);assert.equal(g.handAim.fresh,false);assert.equal(g.handAim.present,false);g.step(.1);assert.equal(g.handLock,null);
+ c.consume(result(hand()),2700);g.handAim=c.read(2992);g.step(.016);assert.equal(g.stats.shots,0);c.consume(result(hand()),3100);g.handAim=c.read(3392);g.step(.016);assert.equal(g.stats.shots,1);
+});
 test('WAR hand: the calibrated camera walks without touches, goes around physical cover and stops for cover, tracking loss and the result',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.handSession={dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true};g.waveDelay=999;Object.assign(g.player,{x:-7,z:10});
  for(let i=0;i<400;i++){g.step(.016);assert(!g.covers.some(c=>Math.abs(g.player.x-c.x)<c.w/2+.35&&Math.abs(g.player.z-c.z)<c.d/2+.35),'Autowalk entered cover');}

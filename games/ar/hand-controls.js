@@ -29,7 +29,16 @@ class AimController{
   const tx=clamp(.5+(n.x-f.x)*1.85-(f.dx-n.dx)*orientation,.04,.96),ty=clamp(.48+(f.y-n.y)*1.8+(f.dy-n.dy)*orientation,.08,.88);
   this.aim.x+=(tx-this.aim.x)*smooth;this.aim.y+=(ty-this.aim.y)*smooth;this.last=f;this.lastSeen=now;Object.assign(this.aim,{fresh:true,present:true,timestamp:now,twoHands,roll:Number(f.angle)||0,calibration:this.calibration});return this.aim;
  }
- read(now){if(now-this.lastSeen>this.maxAge){this.aim.fresh=false;this.aim.present=false;}return this.aim;}
+ read(now){
+  const age=now-this.lastSeen;
+  if(age>this.maxAge)this.aim.fresh=false;
+  // A delayed inference is not an observation that the hand disappeared.
+  // Actions still stop as soon as fresh expires. Keep only the pending target
+  // briefly, so two valid observations can acquire it on a slower device.
+  // An actual empty result, blur or a longer stream interruption clears it.
+  if(age>Math.max(900,this.maxAge*2))this.aim.present=false;
+  return this.aim;
+ }
 }
 const connections=[[0,1,2,3,4],[0,5,6,7,8],[5,9,10,11,12],[9,13,14,15,16],[13,17,18,19,20],[0,17]];
 class CameraSession{
@@ -106,7 +115,7 @@ class CameraSession{
   if(this.ready&&!this.error){
    if(this.source==='object'&&this.controller.state==='calibrating')this.status.textContent=this.captureAt>now?'Captura em '+Math.ceil((this.captureAt-now)/1000)+'… segure o objeto.':this.needCapture?this.captureMessage||'Toque no objeto e depois em CAPTURAR.':this.controller.samples.length?'Mantenha o objeto parado para calibrar…':'Reconhecendo os detalhes selecionados…';
    else if(this.controller.state==='calibrating')this.status.textContent=this.controller.samples.length?'Segure a mão direita parada… '+Math.min(100,Math.round((now-(this.controller.samples[0]?.time||now))/10))+'%':'Mostre somente a mão direita para calibrar.';
-   else this.status.textContent=this.game.handAim.fresh?(this.source==='object'?'OBJETO · TIRO AO MIRAR NO ALVO':this.game.handAim.twoHands?'DUAS MÃOS · MIRA ESTABILIZADA':'MÃO DIREITA · TIRO AO MIRAR NO ALVO'):'MÃO NÃO ENCONTRADA · TIRO PAUSADO';
+   else this.status.textContent=this.game.handAim.fresh?(this.source==='object'?'OBJETO · TIRO AO MIRAR NO ALVO':this.game.handAim.twoHands?'DUAS MÃOS · MIRA ESTABILIZADA':'MÃO DIREITA · TIRO AO MIRAR NO ALVO'):this.game.handAim.present?'RASTREAMENTO PAUSADO · TIRO PAUSADO':'MÃO NÃO ENCONTRADA · TIRO PAUSADO';
    this.root.classList.toggle('hand-lost',!this.game.handAim.fresh);
   }
  }

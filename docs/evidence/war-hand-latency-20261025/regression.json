@@ -1,0 +1,14 @@
+{
+  "originalRun": 40163190590,
+  "originalCommit": "5c37c2e93ee1d91b54a5ce87c684f6d7a30b72ef",
+  "failure": "WAR auto-fire did not acquire an aligned target within 12 seconds; valid hand frames were separated by inference latency.",
+  "originalRegressionTest": "failed: waiting for inference must retain the first aligned observation",
+  "focusedAfterFix": {
+    "passed": 16,
+    "failed": 0
+  },
+  "freshnessLimitUnchanged": true,
+  "staleAimStillStopsWalkingAndFire": true,
+  "actualMissingHandClearsImmediately": true,
+  "interruptedStreamClearsPendingAcquisition": true
+}
