@@ -1,0 +1,4 @@
+MediaPipe's public pose landmark example image, used only for CPU model inference QA.
+Source: https://storage.googleapis.com/mediapipe-assets/pose.jpg
+Documentation: https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker/web_js
+Retrieved 2026-10-25. No user camera image or biometric data is stored in this fixture.

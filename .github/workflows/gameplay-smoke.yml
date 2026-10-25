@@ -32,6 +32,14 @@ jobs:
           sleep 2
       - name: Verificar motores, câmera e personagens
         run: node --test tests/*.test.mjs
+      - name: Validar dança por corpo e inferência real sem câmera de usuário
+        run: |
+          node tests/dance-pose-model-browser.mjs
+          node tests/world-body-dance-browser.mjs
+      - name: Validar frota completa e tráfego aéreo NPC
+        run: |
+          node tests/world-traffic-air-browser.mjs
+          node tests/air-traffic-models-browser.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         run: node tests/playable-smoke.mjs
       - name: Jogar com a Família no OTThi e preservar o HQ
@@ -42,6 +50,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gameplay-browser-artifacts
-          path: test-results/playable/
+          path: |
+            test-results/playable/
+            test-results/world-body-dance/
+            test-results/dance-pose-model/
+            test-results/world-traffic-air/
+            test-results/air-traffic-models/
           if-no-files-found: ignore
           retention-days: 14

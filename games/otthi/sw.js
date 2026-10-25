@@ -1,11 +1,14 @@
-const REVISION = '574855b20778cad8';
-const CACHE = `otthi-v70626-${REVISION}`;
+const REVISION = '1967072d4189838d';
+const CACHE = `otthi-v70627-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.25.1-neighborhood';
+const BUILD = '705.25.2-traffic-dance';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70626';
+const RELEASE_MANIFEST = './release-manifest.json?v=70627';
 
 const REQUIRED_SHELL = [
+  './assets/js/controls/dance-pose-controller.js?v=body1',
+  './assets/js/controls/dance-pose-worker.js',
+  './assets/js/controls/dance-stage.js?v=body1',
   './assets/js/ui/account-access.js?v=20261024-head1',
   './game-audio.js?v=20261023-3',
   './console-world.js',
@@ -18,23 +21,23 @@ const REQUIRED_SHELL = [
   './assets/js/world-venue-bridge.js',
   './assets/js/world-venue-trip.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70626',
-  './style.css?v=70626',
-  './assets/vendor/three-r128.min.js?v=70626',
-  './assets/js/core/runtime-config.js?v=70626',
-  './assets/js/core/safe-pointer.js?v=70626',
-  './assets/js/core/viewport-manager.js?v=70626',
-  './assets/js/save-db.js?v=70626',
-  './firebase-config.js?v=70626',
-  './assets/js/game-account.js?v=70626',
-  './assets/js/multiplayer-rtdb.js?v=70626',
-  './app.js?v=70626',
-  './assets/js/ui/shared-modal.js?v=70626',
-  './assets/js/core/performance-guardian.js?v=70626',
-  './assets/js/multiplayer/room-manager.js?v=70626',
-  './assets/js/education/adaptive-learning.js?v=70626',
-  './assets/js/safety/child-safety.js?v=70626',
-  './manifest.webmanifest?v=70626'
+  './index.html?v=70627',
+  './style.css?v=70627',
+  './assets/vendor/three-r128.min.js?v=70627',
+  './assets/js/core/runtime-config.js?v=70627',
+  './assets/js/core/safe-pointer.js?v=70627',
+  './assets/js/core/viewport-manager.js?v=70627',
+  './assets/js/save-db.js?v=70627',
+  './firebase-config.js?v=70627',
+  './assets/js/game-account.js?v=70627',
+  './assets/js/multiplayer-rtdb.js?v=70627',
+  './app.js?v=70627',
+  './assets/js/ui/shared-modal.js?v=70627',
+  './assets/js/core/performance-guardian.js?v=70627',
+  './assets/js/multiplayer/room-manager.js?v=70627',
+  './assets/js/education/adaptive-learning.js?v=70627',
+  './assets/js/safety/child-safety.js?v=70627',
+  './manifest.webmanifest?v=70627'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -199,7 +202,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70626') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70627') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })
@@ -249,7 +252,11 @@ async function cacheFirst(request) {
   const cached = await cache.match(request, { ignoreSearch:false });
   if (cached) return cached;
   const response = await fetch(request);
-  if (response && (response.ok || response.type === 'opaque')) await cache.put(request, response.clone());
+  if (response && response.ok) {
+    const manifest = await activeReleaseManifest(cache);
+    if (Object.prototype.hasOwnProperty.call(manifest.files || {}, releasePath(request))) await verifyResponse(response, request, manifest);
+    await cache.put(request, response.clone());
+  }
   return response;
 }
 

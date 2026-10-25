@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.25.1-neighborhood",
+  "build": "705.25.2-traffic-dance",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3ace0324da3f4d79e8d11d794bc2700c57a3a8388bfc7462b1af51b794c83e4d"
+      "sha256Body": "9294f10e939641200c09d4bc539898aef70f582ea1991a8d1dc3848b049b7184"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "f0c3606a26fc9455599c338dad0e239b7eb3e576105f95016525e2c464e8abb4"
+      "sha256Body": "da2f0e3804f4a44adfdb8464e615aff2c3dfcfa23ad31cd08cc1781d6f5b3275"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "3e983d7bf6b8762f9a4435d91748faea3c239c0e73a6bcb1a10b696cf06398de"
+      "sha256Body": "6b0e61b800825e4669552464b5293bd77c95d4e934f9fc4ff22bc409bd35ad1d"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -252,7 +252,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "e28d865f2cfce7ae95819f03e7bb61ef2e4c7aead80f1d671d4a690851ab9e9f"
+      "sha256Body": "a97161b3ee74a89e8ed49d5bc8b00842e71396212e352910a579c471b0cf8aa8"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
@@ -308,7 +308,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota ampliada: carros históricos, motos, bicicletas, ônibus e carretas",
-      "sha256Body": "c224a8e73b211985d672b37928eaf527fd97585f5c73c62eddcc0d5628668ea0"
+      "sha256Body": "091031dc12f8c7ca1386ca8e222a0c6eae44b5b0df9e027418896cfbd76924e0"
     },
     {
       "file": "src/modules/36-modular-build-machines.js",
@@ -378,14 +378,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "820e018e730c4654387e6b7d3d0623cc152fc646737eb8840ee860d51fa089ef"
+      "sha256Body": "3b23c61e3da2ad09cdf6049d3ae376c4dee98d64ed916d333be823fb5dbec058"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "1dcb00dbec9fb494ce9244359667fb2e9637dc02dea4604a4d426a685e30baf0"
+      "sha256Body": "afccf947ac0e2211f918df531f9064b50cc381338f1c946cfbcd1e2ab22bc834"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -399,21 +399,28 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias brasileiras e picapes de cabine dupla",
-      "sha256Body": "d806730319810c8e28a66b6faccd4652cdb2ab61325b576ad9a9604a4befcfea"
+      "sha256Body": "a92a6b7eae36f093dbe0e041e7aa0588e97b3baad7da97b37368e936b94d7770"
+    },
+    {
+      "file": "assets/js/vehicles/brazilian-precision.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
+      "sha256Body": "99e6f070eeda302d0a875447653441dea24469c32e1266809d41cebad05d69aa"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
-      "sha256Body": "17ea38aa406b1a7e58e68090267733bae452780e656f7f1bc2b996d50e271e6f"
+      "sha256Body": "ce7bc5dcdbfde4acdc4539f6b6af00610b849dfeb0c24d7004bd4d88e579cf36"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "3ec9afc98a13c6bc9fe9fc4494bc9c9219594d4aaa2b58b010917ce15726a01e"
+      "sha256Body": "d9f763d7f3174919113ef5d467921ad36fdafd8d2858961f38a63bfaab70b55d"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -434,7 +441,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "9ce76dfd8680a23b1471e808ba079494ab8dac19981fc0dcd3ed3d6e01a054ea"
+      "sha256Body": "9a3c43a347858599ca30763470a54ef1d48b466c51ecc7fb375446c935da3f2d"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -470,6 +477,13 @@
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
       "sha256Body": "3a7596b3c2e80912451cf34460913df498c0ead9d512a64adf2ceb1b757311f1"
+    },
+    {
+      "file": "src/modules/55-world-traffic-and-air.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Frota completa brasileira e tráfego aéreo civil NPC",
+      "sha256Body": "e61223f64b9e8e65d95534f56b426bccefe51ac51a44e61bb3b91db25f2734c8"
     }
   ],
   "styles": [
@@ -639,7 +653,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atividades acessíveis nos locais do mundo",
-      "sha256Body": "05fda5c30006d09e80c3a8494fcc7ebc31efdc69799bbb1b0b839f6fb579f60c"
+      "sha256Body": "a5a4ed387ffb56c485dc2b3bb07457bb6557add3cf15d923416bf77a7e49a8f9"
     },
     {
       "file": "src/styles/23-world-race-focus.css",

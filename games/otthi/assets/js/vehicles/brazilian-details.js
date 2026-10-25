@@ -46,7 +46,7 @@ function build(T,key,h){
   rounded(0xc9d0cf,0,.43,1.73,1.79,.25,.17,'fixed',.045);
   for(const a of[-1,1]){rounded(lens,a*.64,.45,1.826,.31,.16,.025,'lens',.025);for(const z of[.41,1.57])straight([[a*.83,1.20,z],[a*.77,1.83,z]],.045,white,'paint');quad([[a*.86,1.25,.46],[a*.86,1.25,1.48],[a*.77,1.80,1.48],[a*.77,1.80,.46]],glass,'glass');straight([[a*.86,1.66,1.32],[a*1.02,1.66,1.36],[a*1.02,1.27,1.36]],.017,dark);rounded(dark,a*1.02,1.46,1.36,.075,.28,.16);for(let n=0;n<2;n++)box(chrome,a*.88,.32+n*.15,.71,.17,.045,.40,'chrome');}
   box(dark,0,.30,-.25,1.34,.16,3.7);box(0x67523e,0,.65,-.94,1.69,.12,1.88);for(const a of[-1,1]){box(0x81694b,a*.83,.95,-.94,.06,.50,1.90);for(let n=0;n<4;n++)box(chrome,a*.871,.95,-1.78+n*.55,.035,.55,.045,'chrome');box(0xb93234,a*.65,.45,-2.017,.20,.09,.025,'lens');}box(0x81694b,0,.94,-1.91,1.69,.50,.07);box(dark,0,.40,-2.00,1.77,.11,.09);
-  for(const x of[-.29,.29]){rounded(dark,x,.97,1,.42,.14,.43,'interior',.05);rounded(dark,x,1.18,.75,.42,.43,.10,'interior',.04);}ring(-.29,1.25,1.35,.13,dark,-.50);
+  for(const x of[-.29,.29]){rounded(dark,x,.97,1,.42,.14,.43,'interior',.05);rounded(dark,x,1.18,.75,.42,.43,.10,'interior',.04);}ring(.29,1.25,1.35,.13,dark,-.50);
   for(const[i,x,z]of[[0,-.82,1.04],[1,.82,1.04],[2,-.82,-1.10],[3,.82,-1.10],[4,-.82,-1.62],[5,.82,-1.62]])wheel(i,x,z,.34);
   plate(.44,1.83);Object.assign(root.userData,{seats:[{x:-.29,y:.75,z:1},{x:.29,y:.75,z:1},{x:0,y:.75,z:.5}],seatScale:.38,roof:1.98,hoodY:.98,wheelRadius:.34,front:1.85,rear:-2.02});return;
  }
@@ -79,7 +79,7 @@ function build(T,key,h){
  windshield(true);windshield(false);for(const x of[-.34,.13])straight([[x,belt+.059,p.front+.01],[x+.20,belt+.13,p.front-.095]],.007,black);
  const seatX=w*.43,seatY=s.pickup?.52:.39;
  for(const z of[p.seat,p.back])for(const a of[-1,1]){rounded(0x363b3c,a*seatX,seatY+.10,z,.36,.13,.36,'interior',.04);const back=rounded(0x3e4343,a*seatX,seatY+.30,z-.20,.35,.41,.095,'interior',.035);back.rotation.x=-.08;rounded(0x252c2e,a*seatX,seatY+.56,z-.23,.21,.13,.075,'interior',.025);}
- rounded(dark,0,belt-.09,p.front-.09,s.width*.83,.13,.20,'interior',.025);ring(-seatX,belt+.01,p.front-.29,.105,dark,-.52);straight([[-seatX,belt+.01,p.front-.29],[-seatX,belt-.11,p.front-.08]],.014,dark,'interior');
+ rounded(dark,0,belt-.09,p.front-.09,s.width*.83,.13,.20,'interior',.025);ring(seatX,belt+.01,p.front-.29,.105,dark,-.52);straight([[seatX,belt+.01,p.front-.29],[seatX,belt-.11,p.front-.08]],.014,dark,'interior');
  if(s.pickup){const back=-half+.055,front=p.rear-.055,d=front-back,cy=belt-.25;box(0x303637,0,cy-.10,(front+back)/2,s.width-.15,.07,d);for(let x=-w+.15;x<w-.08;x+=.13)box(0x454b4b,x,cy-.058,(front+back)/2,.025,.018,d-.09);
   for(const a of[-1,1]){box(white,a*(w-.042),belt-.16,(front+back)/2,.07,.30,d,'paint');rounded(black,a*(w-.042),belt+.012,(front+back)/2,.092,.035,d);rounded(0x2d3335,a*(w-.17),cy+.015,p.ra,.23,.25,.61,'fixed',.065);}rounded(white,0,belt-.15,-half+.035,s.width-.06,.32,.07,'paint',.025);rounded(dark,0,belt-.055,-half-.009,.24,.04,.016,'fixed',.009);
   if(key==='saveiro')for(const a of[-1,1]){straight([[a*(w-.1),belt+.02,p.rear-.12],[a*(w-.1),roof-.035,p.rear-.04],[a*(w-.1),roof-.035,p.rear-.31],[a*(w-.1),belt+.02,p.rear-.57]],.025,0x313b3d);rounded(0x353d3e,a*(w+.016),.30,-.04,.10,.08,1.73,'fixed',.018);}

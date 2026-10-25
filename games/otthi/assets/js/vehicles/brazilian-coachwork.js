@@ -38,6 +38,7 @@ const specs={
 function build(T,key,h){
  const p=specs[key];if(!p)return false;
  if(key==='porsche911')return build911(T,h);
+ if((key==='palio'||key==='tcross')&&globalThis.OTBrazilPrecision)return globalThis.OTBrazilPrecision.build(T,key,h);
  const {root,add,box,ell,tube,ring,wheel,quad}=h,W=p.w/2,L=p.l/2,white=0xffffff,black=0x11191e,chrome=0xbac5ce,cream=0xe9e6d9,glass=0x527b8a;
  const Y=p.b,roof=p.h,roofW=W*(p.bus?.96:['palio','peugeot206','civic2011'].includes(key)?.79:['golf','golf7','corolla2007','corolla2021','bmwx1','bmwm3','porsche911','ferrari458'].includes(key)?.82:p.pickup?.86:.87),low=p.pickup?.33:.24;
  // Shared indexed patches preserve averaged normals across the curved metal.
@@ -96,7 +97,7 @@ function build(T,key,h){
  }
  const seatX=W*.43,seatY=p.pickup?.46:p.bus?.43:.34;
  for(const z of(p.twoSeats?[p.seat]:[p.seat,p.back]))for(const a of[-1,1]){rb(0x272c30,a*seatX,seatY+.07,z,.36,.13,.37,'interior',.04);rb(0x343a3e,a*seatX,seatY+.29,z-.20,.35,.41,.10,'interior',.045);if(!p.classic)rb(0x20282e,a*seatX,seatY+.52,z-.22,.21,.12,.075,'interior',.025);}
- rb(0x202a2e,0,Y-.10,p.front-.08,p.w*.86,.15,.19,'interior',.025);ring(-seatX,Y-.005,p.front-.26,.100,black,-.45);
+ rb(0x202a2e,0,Y-.10,p.front-.08,p.w*.86,.15,.19,'interior',.025);ring(seatX,Y-.005,p.front-.26,.100,black,-.45);
  for(const x of[-.31,.16])line([[x,Y+.044,p.front+.012],[x+.17,Y+.12,p.front-.08]],.006,black);
  if(p.pickup){const rear=-L+.04,front=p.rear-.035,d=front-rear;
   box(0x20282d,0,Y-.30,(rear+front)/2,p.w-.13,.07,d);for(let x=-W+.16;x<W-.08;x+=.12)box(0x353e44,x,Y-.254,(rear+front)/2,.018,.018,d-.07);
@@ -299,7 +300,7 @@ function build911(T,H){
  box(black,0,.22,0,1.30,.07,2.9);box(black,0,.30,1.81,.48,.09,.018);box(0xe4e8e3,0,.31,1.822,.32,.077,.008);box(0xe4e8e3,0,.40,-1.819,.32,.077,.008);
  for(const[i,x,z]of[[0,-.704,1.10],[1,.704,1.10],[2,-.737,-1.06],[3,.737,-1.06]])wheel(i,x,z,.291);
  for(const a of[-1,1]){box(0x252c30,a*.27,.34,-.10,.34,.12,.39,'interior');const back=box(0x293239,a*.27,.55,-.31,.32,.43,.11,'interior');back.rotation.x=-.14;ell(0x252c30,a*.27,.79,-.35,.10,.075,.04,'interior');box(0x2c3439,a*.25,.39,-.79,.30,.11,.28,'interior');}
- box(0x202b30,0,.61,.53,1.04,.12,.18,'interior');ring(-.27,.65,.34,.105,black,-.45);
+ box(0x202b30,0,.61,.53,1.04,.12,.18,'interior');ring(.27,.65,.34,.105,black,-.45);
  Object.assign(root.userData,{coachwork:'911-continuous-coupe-v1',seats:[{x:-.27,y:.27,z:-.08},{x:.27,y:.27,z:-.08},{x:-.25,y:.30,z:-.78},{x:.25,y:.30,z:-.78}],seatScale:.27,roof:1.11,hoodY:.56,wheelRadius:.291,front:1.84,rear:-1.87});return true;
 }
 (typeof window!=='undefined'?window:globalThis).OTBrazilCoachwork={build,specs};

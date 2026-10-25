@@ -14,15 +14,7 @@ async function scenario(position,portrait=false,desktop=false){
 }
 try{
  if(!process.env.WORLD_ONLY_RACE){console.log('STARTING DANCE');
-  if(!process.env.WORLD_SKIP_DANCE){const {c,p}=await scenario({x:-38,z:-50},true);await p.waitForFunction(()=>window.OTTHOS_TEST_API.getContext()?.id==='activity-venue-dance');{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}await p.locator('[data-dance-level="0"]').waitFor();assert(await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-dance-level="0"]').click();
-  await p.screenshot({path:'test-results/world-activities/dance-portrait.png'});let pressed=0,paused=false;const keys=['ArrowLeft','ArrowUp','ArrowDown','ArrowRight'];
-  for(let step=0;step<4000;step++){
-   const d=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance);if(d?.done)break;assert(d);const note=d.notes.find(n=>n.at>=d.time-.12);
-   if(note&&d.time>=note.at-.035){await p.keyboard.press(keys[note.lane]);pressed++;}
-   else await p.waitForTimeout(20);
-   if(pressed===8&&!paused){await p.locator('[data-dance-pause]').click();const t=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance.time);await p.waitForTimeout(400);assert(Math.abs((await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance.time))-t)<.03);await p.locator('[data-dance-pause]').click();paused=true;}
-  }
-  const d=await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().dance);assert(d.done&&d.passed,JSON.stringify(d));assert(d.hits>=25);await p.screenshot({path:'test-results/world-activities/dance-result.png'});await p.locator('[data-dance-again]').click();assert(!await p.locator('[data-dance-level="1"]').isDisabled());await p.locator('[data-venue-close]').click();assert.equal(await p.evaluate(()=>window.OTTHOS_TEST_API.getGame().paused),false);assert(Math.hypot((await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.x))+38,(await p.evaluate(()=>window.OTTHI_VENUES.diagnostics().position.z))+50)<1);console.log('DANCE UI PASS',JSON.stringify({hits:d.hits,total:d.total,accuracy:d.accuracy,pressed,pause:true}));await c.close();}
+  if(!process.env.WORLD_SKIP_DANCE)await import('./world-body-dance-browser.mjs');
   for(const [id,pos,slug]of [['boxing',{x:46,z:-48},'boxe'],['pingpong',{x:48,z:10},'tenis']]){
    const {c,p}=await scenario(pos,false,true);await p.waitForFunction(id=>window.OTTHOS_TEST_API.getContext()?.id==='activity-venue-'+id,id);await p.screenshot({path:'test-results/world-activities/'+id+'-building.png'});{const t=await touchSession(c,p),finger=await t.start(p.locator('#actionBtn'));await t.end(finger);}const frame=p.frameLocator('#worldVenueDialog iframe');await frame.locator('#phase-screen:not(.hidden)').waitFor({timeout:10000}).catch(async()=>{await frame.locator('#channel-grid .channel').first().click();});await frame.locator('.mission-card:not(.locked)').first().click();await frame.locator('[data-mode="controls"]').click();await frame.locator('#game-ui .hud-score-box').waitFor();await p.screenshot({path:'test-results/world-activities/'+id+'-original-game.png'});
    if(slug==='tenis'&&process.env.WORLD_VENUE_RESULT){
