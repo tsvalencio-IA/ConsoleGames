@@ -42,8 +42,10 @@ jobs:
           node tests/world-traffic-air-browser.mjs
           node tests/air-traffic-models-browser.mjs
       - name: Conferir pavimento, comércio, ondas e três minutos de trânsito
+        if: ${{ always() && !cancelled() }}
         run: node tests/world-city-coast-browser.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
+        if: ${{ always() && !cancelled() }}
         run: node tests/playable-smoke.mjs
       - name: Jogar com a Família no OTThi e preservar o HQ
         if: ${{ always() && !cancelled() }}
