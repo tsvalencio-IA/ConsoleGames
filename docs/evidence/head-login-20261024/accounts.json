@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "slug": "kart",
+      "showHide": true,
+      "failedLoginDoesNotStore": true,
+      "rememberedLogin": true,
+      "transientLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "tenis",
+      "showHide": true,
+      "failedLoginDoesNotStore": true,
+      "rememberedLogin": true,
+      "transientLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "ar",
+      "showHide": true,
+      "failedLoginDoesNotStore": true,
+      "rememberedLogin": true,
+      "transientLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "boxe",
+      "showHide": true,
+      "failedLoginDoesNotStore": true,
+      "rememberedLogin": true,
+      "transientLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "voo",
+      "showHide": true,
+      "failedLoginDoesNotStore": true,
+      "rememberedLogin": true,
+      "transientLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "console",
+      "showHide": true,
+      "rememberedLogin": true,
+      "noPlaintextStorage": true
+    },
+    {
+      "slug": "world",
+      "nativeCreateForm": true,
+      "showHidePasswordAndConfirmation": true,
+      "saveAccessChoice": true,
+      "noPlaintextStorage": true
+    }
+  ],
+  "limits": [
+    "Synthetic auth and password manager; no real Firebase or physical Android tested."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "scope": "Independent Chromium clients, local HTTP/SSE RTDB fixture, synthetic camera poses/video. No live Firebase or physical phones.",
+  "results": [
+    {
+      "phase": "f1",
+      "passed": true,
+      "fullCupStages": 3,
+      "originalPhysicsAccelerated": true,
+      "physicsTicks": 5200,
+      "identicalStandings": true,
+      "cameraSyntheticInput": true,
+      "handsFreeItem": true,
+      "handOnHeadGesture": true,
+      "heldGestureDoesNotRepeat": true,
+      "realHardwareCamera": false
+    },
+    {
+      "phase": "f2",
+      "passed": true,
+      "nativeOnlineSelector": true,
+      "twoClientsInSamePhase": true
+    },
+    {
+      "phase": "f3",
+      "passed": true,
+      "nativeOnlineSelector": true,
+      "twoClientsInSamePhase": true
+    },
+    {
+      "phase": "arcade",
+      "passed": true,
+      "nativeOnlineSelector": true,
+      "twoClientsInSamePhase": true
+    }
+  ]
+}

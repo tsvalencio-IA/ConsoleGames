@@ -1,10 +1,10 @@
 {
   "version": 705,
   "build": "705.22.1-venues-coachwork",
-  "revision": "5e8f4018347fd162",
+  "revision": "9eb229030955e7e3",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "7d0ad7b19b6c188d8f081d2b72a6fe4f42ce999b64c690f677c51a45f0aa37e6",
+    "index.html": "052a4495db0c9b8796eb10a453577647b971535f183b839ecd45904c9c84cbd6",
     "game-audio.js": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
     "console-world.js": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
     "console-world.css": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
@@ -15,9 +15,9 @@
     "assets/js/core/viewport-manager.js": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
     "assets/js/save-db.js": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
     "firebase-config.js": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
-    "assets/js/game-account.js": "1a67a8c4d209e2bec1f91512d655d05698d369ab14ed602385b51f6ae8db9be5",
-    "assets/js/multiplayer-rtdb.js": "6aef057501b197730552e91d14ff4a6e192c47bc95e6c987d702506d6654cc3e",
-    "app.js": "db64f5a63caaecd295ad627704a9a9ecce83dcbc6916fff53a2406bbbc5ffec4",
+    "assets/js/game-account.js": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09",
+    "assets/js/multiplayer-rtdb.js": "36e234e320575c92e9913add49adbd5c547ff94c11c9c884d2d54260a4dc413c",
+    "app.js": "5807aecc2e614ad16c0319cb73693f75c0c38a56927042ab57a38158d8e218f9",
     "family-mascots.js": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
     "assets/ot-games-airframes.json": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
     "assets/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -27,6 +27,7 @@
     "assets/js/world-venue-bridge.js": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c",
     "assets/js/world-venue-trip.js": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7",
     "assets/js/ui/shared-modal.js": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
+    "assets/js/ui/account-access.js": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff",
     "assets/js/core/performance-guardian.js": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
     "assets/js/multiplayer/room-manager.js": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4",
     "assets/js/education/adaptive-learning.js": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701",
@@ -34,6 +35,6 @@
     "manifest.webmanifest": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
     "404.html": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
     "VERSION.json": "7adba0d11ad8435e5313f9a3eb995a5a0371b56d40937562af77cfb58d922206",
-    "sw.js": "07fdb892d5d2252bc4b39ce645dc3ce15b3e8f423dad85c40818d70351f5bbb3"
+    "sw.js": "1bac1b57b8c109c0cfa0b5bd3dd1fc586b5af6e640c3b8fb6ee2b3c7d7603450"
   }
 }

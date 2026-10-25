@@ -1,0 +1,9 @@
+# Item do kart e acesso à conta — 24/10/2026
+
+O item no modo câmera volta a ser usado levando uma mão à cabeça. O reconhecimento verifica proximidade nos dois eixos, aceita ambas as mãos para evitar confusão com a câmera espelhada, confirma por 350 ms em pelo menos três observações distintas e exige voltar ao volante antes de novo uso. Mantém a direção durante o gesto. Duas mãos altas continuam sendo turbo. Vídeo parado, perda de rastreamento, movimento breve e braço longe da cabeça não usam item.
+
+As cinco telas de login dos jogos e os consoles têm Mostrar/Ocultar senha, formulário compatível com preenchimento automático e Salvar acesso neste aparelho. Autenticação salva usa persistência local, desmarcada usa sessão. Após autenticação confirmada, senhas podem ser guardadas pelo gerenciador do navegador quando suportado; o aplicativo não grava a senha em localStorage, sessionStorage, URLs ou registros. Formulários do mundo usam o mesmo componente. A chave do progresso criptografado acompanha a escolha de sessão persistente ou temporária. Contas, permissões, moedas e conteúdo original permanecem no backend original.
+
+Validação local: 218 testes Node passaram. Sete telas de conta passaram no Chromium mobile com autenticação e gerenciador simulados: falha não guarda senha, sucesso permite salvamento, opção desmarcada usa sessão, Mostrar/Ocultar preserva texto e nenhuma senha aparece no armazenamento do aplicativo. O mundo teve o formulário e a sessão criptografada verificados. Copa original completa em duas sessões isoladas passou com o gesto na cabeça no pipeline original de câmera, usando vídeo e poses sintéticos.
+
+Limites: não foram usados jogadores, salas ou contas reais do Firebase. Câmera física, preenchimento e gerenciador de senhas no Android real não foram confirmados. O navegador decide se oferece salvar a senha; WebViews sem API de credenciais continuam usando a sessão escolhida. Nenhum novo APK foi construído.

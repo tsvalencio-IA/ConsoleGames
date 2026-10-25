@@ -28,14 +28,14 @@
       "startLine": 490,
       "endLine": 756,
       "description": "Estado, save local, IndexedDB, nuvem e conta",
-      "sha256Body": "412359d293bfb56a0628346bc561ee357553d95975eddf40ddcef42c28010bde"
+      "sha256Body": "9f9e791b7348c9131320ec91e77a1a09a3e376a5a6a381387dbd39c53f07082c"
     },
     {
       "file": "src/modules/03-ui-modal-install-pwa.js",
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "344f18c4f5c6939c58cf9f6bb2734fb495a259878019a3e2acf96af7a0e9a076"
+      "sha256Body": "cabac0a5c1a519701ef667b07bdffd91b6fcba60f17cd0908d6c2dca25831225"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
