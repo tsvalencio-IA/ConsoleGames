@@ -1,0 +1,54 @@
+{
+  "purchases": [
+    {
+      "dealer": "dealer-cars",
+      "id": "br-palio",
+      "price": 1185
+    },
+    {
+      "dealer": "dealer-bikes",
+      "id": "br-bmwgs",
+      "price": 705
+    },
+    {
+      "dealer": "dealer-trucks",
+      "id": "br-fuel",
+      "price": 950
+    }
+  ],
+  "road": {
+    "passed": true,
+    "samples": 2510,
+    "failures": []
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 20,
+    "highways": 9,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "passed": true,
+  "errors": [],
+  "dealers": [
+    {
+      "id": "dealer-cars",
+      "count": 31
+    },
+    {
+      "id": "dealer-bikes",
+      "count": 7
+    },
+    {
+      "id": "dealer-trucks",
+      "count": 6
+    }
+  ],
+  "limits": [
+    "Software mobile Chromium, rendering capped only in the functional fixture; no physical Android or live player data."
+  ]
+}

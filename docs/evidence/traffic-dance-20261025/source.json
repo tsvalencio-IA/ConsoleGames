@@ -1,0 +1,14 @@
+{
+  "sourceSha": "bafbd7dc074e6fefa8eeb6c5e66a5d8a7c56bd78",
+  "tree": "08806be81c8974f782953579fb16a87366c773c2",
+  "build": "705.25.2-traffic-dance",
+  "assetVersion": 70627,
+  "revision": "c0413aa13ad37ff0",
+  "nodeTests": 234,
+  "nativeVehicleFlows": 47,
+  "trafficModelsMoving": 44,
+  "aircraft": 7,
+  "physicalAndroid": false,
+  "livePlayerDataAccessed": false,
+  "physicalTwoDeviceMultiplayer": false
+}

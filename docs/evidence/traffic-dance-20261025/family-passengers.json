@@ -1,0 +1,168 @@
+{
+  "passed": true,
+  "family": {
+    "ready": true,
+    "home": {
+      "x": -38,
+      "z": -24
+    },
+    "actors": [
+      {
+        "id": "thiago",
+        "x": -246.07,
+        "z": -43.52,
+        "bones": 24,
+        "vertices": 164562,
+        "uniqueVertices": 31956,
+        "drawCalls": 1
+      },
+      {
+        "id": "thamis",
+        "x": -246.63,
+        "z": -42.48,
+        "bones": 25,
+        "vertices": 226968,
+        "uniqueVertices": 43480,
+        "drawCalls": 1
+      },
+      {
+        "id": "luna",
+        "x": -249.8,
+        "z": -43.41,
+        "bones": 13,
+        "vertices": 205176,
+        "uniqueVertices": 46812,
+        "drawCalls": 1
+      },
+      {
+        "id": "liz",
+        "x": -249.8,
+        "z": -43.63,
+        "bones": 13,
+        "vertices": 209400,
+        "uniqueVertices": 47082,
+        "drawCalls": 1
+      }
+    ],
+    "progress": {
+      "party": {
+        "controller": "thiago",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ]
+      },
+      "toy": "ball",
+      "deliveries": {
+        "luna": 0,
+        "liz": 0
+      },
+      "flags": {}
+    },
+    "party": {
+      "owner": "transport-qa",
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "thamis",
+        "luna",
+        "liz"
+      ]
+    },
+    "ride": {
+      "owner": "transport-qa",
+      "kind": "car",
+      "mode": "",
+      "id": "br-attivi",
+      "members": [
+        "thiago",
+        "thamis",
+        "luna",
+        "liz"
+      ],
+      "controller": "thiago",
+      "hostUid": "transport-qa"
+    },
+    "seated": [
+      {
+        "id": "thiago",
+        "visible": true,
+        "position": [
+          -246.07,
+          0.8799999999999999,
+          -43.52
+        ],
+        "scale": 0.2432,
+        "seat": {
+          "x": 0.52,
+          "y": 0.88,
+          "z": 2.9299999999999997
+        }
+      },
+      {
+        "id": "thamis",
+        "visible": true,
+        "position": [
+          -246.63,
+          0.8799999999999999,
+          -42.48
+        ],
+        "scale": 0.2521984,
+        "seat": {
+          "x": -0.52,
+          "y": 0.88,
+          "z": 2.37
+        }
+      },
+      {
+        "id": "luna",
+        "visible": true,
+        "position": [
+          -249.8,
+          0.9450000000000001,
+          -43.41
+        ],
+        "scale": 0.26599999999999996,
+        "seat": {
+          "x": 0.41000000000000003,
+          "y": 0.9450000000000001,
+          "z": -0.8
+        }
+      },
+      {
+        "id": "liz",
+        "visible": true,
+        "position": [
+          -249.8,
+          0.9450000000000001,
+          -43.63
+        ],
+        "scale": 0.26599999999999996,
+        "seat": {
+          "x": 0.63,
+          "y": 0.9450000000000001,
+          "z": -0.8
+        }
+      }
+    ],
+    "authority": true,
+    "ball": null
+  },
+  "admitted": [
+    true,
+    true,
+    true,
+    false
+  ],
+  "remoteSeat": {
+    "x": -0.52,
+    "y": 0.93,
+    "z": -2
+  },
+  "errors": [],
+  "limits": [
+    "Local online-protocol playback and mobile Chromium, not two physical devices."
+  ]
+}

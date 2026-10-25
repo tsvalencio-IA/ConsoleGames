@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "result": {
+    "mode": "body-camera",
+    "phase": "done",
+    "level": 0,
+    "bpm": 84,
+    "time": 22.86939999999944,
+    "end": 22.857142857142858,
+    "score": 980,
+    "hits": 8,
+    "misses": 0,
+    "combo": 8,
+    "bestCombo": 8,
+    "total": 8,
+    "accuracy": 1,
+    "done": true,
+    "calibrated": true,
+    "calibration": 1,
+    "index": 8,
+    "move": "right",
+    "label": "PASSO PARA A DIREITA",
+    "next": "",
+    "progress": 0.004289999999803876,
+    "feedback": "Música concluída",
+    "countdownUntil": 53677.40000000037,
+    "lastPoseAt": 70588.40000000037,
+    "passed": true
+  },
+  "trackingLossPauses": true,
+  "manualPause": true,
+  "cameraFacingMode": "user",
+  "tracksStopped": true,
+  "errors": [],
+  "limits": [
+    "Synthetic pose replay on fake Chromium video device; physical calibration and mobile latency not certified."
+  ]
+}
