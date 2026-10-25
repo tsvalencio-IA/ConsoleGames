@@ -10,5 +10,11 @@
   "aircraft": 7,
   "physicalAndroid": false,
   "livePlayerDataAccessed": false,
-  "physicalTwoDeviceMultiplayer": false
+  "physicalTwoDeviceMultiplayer": false,
+  "publicValidated": true,
+  "protectedFiles": 48,
+  "publicUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "productionDeployment": "dpl_9iKi4B8Jdjqfu3E6tdQtyGTxW1Mv",
+  "installer": "https://otthi-world-campanha-teste.vercel.app/arcade/instalar/",
+  "existingApkSha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
 }

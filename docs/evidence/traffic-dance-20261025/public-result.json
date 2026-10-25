@@ -1,0 +1,73 @@
+{
+  "revision": "c0413aa13ad37ff0",
+  "build": "705.25.2-traffic-dance",
+  "protectedFiles": 48,
+  "dealers": [
+    {
+      "id": "dealer-cars",
+      "models": 31
+    },
+    {
+      "id": "dealer-bikes",
+      "models": 7
+    },
+    {
+      "id": "dealer-trucks",
+      "models": 6
+    }
+  ],
+  "garageWithdrawal": true,
+  "oldTruckVariantsPreserved": true,
+  "homeActions": 9,
+  "trafficModels": 44,
+  "civilianAircraft": [
+    {
+      "id": "passeio-norte",
+      "kind": "light",
+      "livery": "tour"
+    },
+    {
+      "id": "passeio-costa",
+      "kind": "light",
+      "livery": "tour"
+    },
+    {
+      "id": "carga-oeste",
+      "kind": "cargo",
+      "livery": "cargo"
+    },
+    {
+      "id": "carga-leste",
+      "kind": "cargo",
+      "livery": "cargo"
+    },
+    {
+      "id": "heli-passeio-centro",
+      "kind": "helicopter",
+      "livery": "tour"
+    },
+    {
+      "id": "heli-passeio-costa",
+      "kind": "helicopter",
+      "livery": "tour"
+    },
+    {
+      "id": "heli-ottovias",
+      "kind": "helicopter",
+      "livery": "ottovias"
+    }
+  ],
+  "bodyDanceMenu": true,
+  "installerPage": true,
+  "serviceWorkerControlled": true,
+  "installability": {
+    "installabilityErrors": []
+  },
+  "existingApkBytes": 57991,
+  "existingApkSha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+  "errors": [],
+  "passed": true,
+  "limits": [
+    "Published mobile Chromium and isolated local save; physical Android, camera and live two-device multiplayer not tested; APK download is the existing wrapper."
+  ]
+}

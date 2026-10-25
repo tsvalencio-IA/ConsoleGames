@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "worker": "production CPU worker",
+  "imageLandmarks": 33,
+  "worldLandmarks": 33,
+  "inferenceMs": 265.09999999962747,
+  "limits": [
+    "Official static sample, not physical Android/user camera."
+  ]
+}
