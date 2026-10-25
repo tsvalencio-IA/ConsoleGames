@@ -161,6 +161,7 @@ const Game={
   if(this.state==='HAND_CALIBRATION'||this.state==='NET_LOBBY')return;
   if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
+  if(this.handSession)this.crouched=!!(this.bodyPose?.fresh&&this.bodyPose.crouched);
   this.eyeY=(this.coverHeld||this.crouched)?1.05:1.8;
   if(this.state!=='PLAYING'){
    this.resultTimer-=dt;if(this.resultTimer<=0&&!this.resultSent){this.resultSent=true;window.System?.gameOver?.(this.score,this.state==='VICTORY',0);}return;
@@ -169,16 +170,16 @@ const Game={
   const p=this.player,cameraInput=!!this.handSession,stick=cameraInput?null:this.manualStick,aim=cameraInput?null:this.aimStick,cover=this.coverHeld||this.crouched;
   const sensitivity=window.ArcadePlaySettings?.get().sensitivity??1;
   if(cameraInput&&this.handAim?.fresh){
-   const a=this.handAim,calibration=a.calibration||0;if(!this.handViewAnchor||this.handViewAnchor.calibration!==calibration)this.handViewAnchor={yaw:p.yaw,pitch:p.pitch,calibration};p.yaw=angle(this.handViewAnchor.yaw+(a.x-.5)*1.7*sensitivity);p.pitch=clamp(this.handViewAnchor.pitch+(.48-a.y)*1.7*sensitivity,-.8,.8);
+   const a=this.handAim,calibration=a.calibration||0;if(!this.handViewAnchor||this.handViewAnchor.calibration!==calibration)this.handViewAnchor={yaw:p.yaw,pitch:p.pitch,calibration};const offset=a.x-.5,body=this.bodyPose?.fresh?this.bodyPose:null;p.yaw=angle(this.handViewAnchor.yaw+(offset*1.7+Math.sign(offset)*Math.pow(Math.max(0,Math.abs(offset)-.30)/.20,2)*2.2)*sensitivity+(body?.turnYaw||0)*.65+(body?.lean||0)*.30);p.pitch=clamp(this.handViewAnchor.pitch+(.48-a.y)*2.2*sensitivity,-1.05,1.05);
   }
-  p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);
-  let mx=cameraInput?0:(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=cameraInput?0:(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
+  if(!cameraInput){p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);}
+  let mx=cameraInput?(this.bodyPose?.fresh?this.bodyPose.moveX:0):(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=cameraInput?(this.bodyPose?.fresh?this.bodyPose.moveZ:0):(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
   const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
   if(!cameraInput){p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
   p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);}
   const speed=cover?1.9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
-  if(this.handSession&&!stick?.active&&!mx&&!mz&&!cover)this.cameraWalk(dt);
-  else if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){p.x=nx;p.z=nz;}
+
+  if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){this.autoWalking=Math.hypot(nx-p.x,nz-p.z)>.0001;p.x=nx;p.z=nz;}
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
   if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
   let automatic=false;
@@ -281,7 +282,7 @@ const Game={
   const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
-  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handAim?.fresh?(this.autoWalking?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO':'MÃO DIREITA • DISPARO AO ALINHAR NO ADVERSÁRIO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
+  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handAim?.fresh?(this.bodyPose?.fresh?'CORPO E MÃOS • POSTURA, VISÃO E MIRA':'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
   const nearest=this.enemies.filter(e=>e.active&&!e.ally).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   if(nearest){const bearing=angle(Math.atan2(nearest.x-this.player.x,nearest.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?'ALVO À DIREITA →':'← ALVO À ESQUERDA',w/2,statusY+20,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}

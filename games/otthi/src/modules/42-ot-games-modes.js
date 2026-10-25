@@ -182,6 +182,7 @@
     const epoch=++g.cameraEpoch,current=()=>g.active&&g.mode==='ground'&&g.cameraEpoch===epoch;let stream;
     try{
       if(!document.querySelector('[data-ot-hand-style]')){const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('../ar/combat-controls.css?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;link.dataset.otHandStyle='true';document.head.append(link);}
+      if(!window.WarBodyControl)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('assets/js/controls/world-body-controls.js?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;script.onload=resolve;script.onerror=reject;document.head.append(script);});
       if(!window.WarHandControl)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=new URL('assets/js/controls/world-hand-controls.js?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;script.onload=resolve;script.onerror=reject;document.head.append(script);});
       if(!current())return;
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
@@ -258,18 +259,10 @@
       }
       if(g.handMode&&g.handSession&&g.handAim?.fresh){
         const a=g.handAim,calibration=a.calibration||0;if(!g.handViewAnchor||g.handViewAnchor.calibration!==calibration)g.handViewAnchor={yaw:b.yaw,pitch:b.pitch,calibration};
-        b.yaw=g.handViewAnchor.yaw-(a.x-.5)*1.7;b.pitch=clamp(g.handViewAnchor.pitch+(.48-a.y)*1.7,-.85,.85);
+        const offset=a.x-.5,body=g.bodyPose?.fresh?g.bodyPose:null;b.yaw=g.handViewAnchor.yaw-(offset*1.7+Math.sign(offset)*Math.pow(Math.max(0,Math.abs(offset)-.30)/.20,2)*2.2)-(body?.turnYaw||0)*.65-(body?.lean||0)*.30;b.pitch=clamp(g.handViewAnchor.pitch+(.48-a.y)*2.2,-1.05,1.05);
       }
       let mx=x,my=y,speed=g.crouched?2.2:5;const free=(px,pz)=>!positionBlockedForPlayer(px,pz,.45,{ignoreTraffic:true});
-      if(g.handMode&&g.handSession&&!g.crouched&&!x&&!y){
-        speed=2.8;const near=g.enemies.some(e=>e.active&&Math.hypot(e.x-b.x,e.z-b.z)<11);
-        if(!near&&!g.lock){
-          const fx=Math.sin(b.yaw),fz=Math.cos(b.yaw),rx=-Math.cos(b.yaw),rz=Math.sin(b.yaw);
-          if(free(b.x+fx*1.8,b.z+fz*1.8))g.autoWalkSide=0;
-          else if(!g.autoWalkSide){const score=s=>[1,2,3,4].filter(d=>free(b.x+rx*s*d+fx*1.8,b.z+rz*s*d+fz*1.8)).length;g.autoWalkSide=score(1)>=score(-1)?1:-1;}
-          mx=g.autoWalkSide;my=mx?0:1;
-        }
-      }
+      if(g.handMode&&g.handSession){const body=g.bodyPose?.fresh?g.bodyPose:null;mx=body?.moveX||0;my=body?.moveZ||0;g.crouched=!!body?.crouched;speed=g.crouched?2.2:5;}
       const n=Math.max(1,Math.hypot(mx,my)),nx=b.x+(-Math.cos(b.yaw)*mx+Math.sin(b.yaw)*my)/n*speed*dt,nz=b.z+(Math.sin(b.yaw)*mx+Math.cos(b.yaw)*my)/n*speed*dt;
       if(free(nx,nz)){b.x=nx;b.z=nz;g.autoWalking=!!g.handSession&&!!(mx||my);}b.y=groundHeightAt(b.x,b.z)+(g.crouched?1.05:1.8);
     }else if(g.mode==='helicopter'){
@@ -349,7 +342,7 @@
     g.ui.querySelector('.ot-games-mission').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA · '+g.kills+'/'+g.goal+' ALVOS':g.state==='DEFEAT'?'MISSÃO ENCERRADA · VOLTE AO MENU PARA TENTAR NOVAMENTE':g.notice||(g.armed?'MISSÃO SOLO · SETOR '+g.wave+' · '+g.kills+'/'+g.goal+' ALVOS · '+g.level.label:'Explore o mesmo bairro por cima. Voltar à paz retorna à sua família.');
     if(g.noticeUntil&&g.elapsed>g.noticeUntil){g.notice='';g.noticeUntil=0;}
     const live=g.enemies.filter(e=>e.active),next=live.slice().sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
-    if(next&&g.state==='PLAYING'){const bearing=Math.atan2(Math.sin(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw),Math.cos(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw)),pitch=Math.atan2(next.y-g.body.y,Math.hypot(next.x-g.body.x,next.z-g.body.z))-g.body.pitch;let hint=Math.abs(bearing)>.5?(bearing>0?'VIRE À DIREITA →':'← VIRE À ESQUERDA'):Math.abs(pitch)>.22?(pitch>0?'ALVO ACIMA ↑':'ALVO ABAIXO ↓'):'';if(g.handSession&&!g.handAim?.fresh)hint='MOSTRE A MÃO · AVANÇO E TIRO PAUSADOS';else if(g.autoWalking)hint='AVANÇO AUTOMÁTICO · MIRE COM A MÃO';if(hint)g.ui.querySelector('.ot-games-mission').textContent+=' · '+hint;}
+    if(next&&g.state==='PLAYING'){const bearing=Math.atan2(Math.sin(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw),Math.cos(Math.atan2(next.x-g.body.x,next.z-g.body.z)-g.body.yaw)),pitch=Math.atan2(next.y-g.body.y,Math.hypot(next.x-g.body.x,next.z-g.body.z))-g.body.pitch;let hint=Math.abs(bearing)>.5?(bearing>0?'VIRE À DIREITA →':'← VIRE À ESQUERDA'):Math.abs(pitch)>.22?(pitch>0?'ALVO ACIMA ↑':'ALVO ABAIXO ↓'):'';if(g.handSession&&!g.handAim?.fresh)hint='MOSTRE A MÃO · MOVIMENTO E TIRO PAUSADOS';else if(g.autoWalking)hint='PASSOS DO CORPO · MIRA PELA MÃO';if(hint)g.ui.querySelector('.ot-games-mission').textContent+=' · '+hint;}
     const reticle=g.ui.querySelector('.ot-games-reticle');reticle.hidden=!g.armed;reticle.classList.toggle('locked',!!g.lock&&g.lock.time>.3);reticle.style.left='50%';reticle.style.top='50%';
     const targets=g.ui.querySelector('.ot-games-targets'),primary=g.lock?.target||next;
     for(const marker of targets.children)if(!live.some(e=>e.id===marker.dataset.target))marker.remove();
