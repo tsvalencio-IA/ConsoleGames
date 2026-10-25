@@ -9,7 +9,7 @@
  */
 // @otthi-module-body
   function rectOverlap(a,b,pad=0){return Math.abs(a.x-b.x)<(a.w+b.w)/2+pad&&Math.abs(a.z-b.z)<(a.d+b.d)/2+pad;}
-  function insideWater(x,z,h){return Math.abs(x-h.x)<=h.w/2&&Math.abs(z-h.z)<=h.d/2;}
+  function insideWater(x,z,h){if(h.ocean)return x>=h.x-h.w/2&&x<=h.x+h.w/2&&z>=513+Math.sin(x*.017)*1.4&&z<=h.z+h.d/2;return Math.abs(x-h.x)<=h.w/2&&Math.abs(z-h.z)<=h.d/2;}
   function waterAt(x,z){return(world.hazards||[]).find(h=>h.type==='water'&&insideWater(x,z,h));}
   function isInsideLakeNavigable(x,z){const water=waterAt(x,z);return !!water?.reservoir;}
   function isNearFishingArea(){const pier=worldLayoutPoint('pier',{x:-67,z:54}),lake=worldLayoutRect('lake')||{x:-88,z:54,w:50,d:22};return player.boating||Math.hypot(player.x-pier.x,player.z-pier.z)<9||Math.abs(player.z-(lake.z-lake.d/2))<4&&Math.abs(player.x-lake.x)<lake.w/2-2||Math.abs(player.z-(lake.z+lake.d/2))<4&&Math.abs(player.x-lake.x)<lake.w/2-2;}

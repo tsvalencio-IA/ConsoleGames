@@ -128,23 +128,11 @@
     const mx=(x1+x2)/2,mz=(z1+z2)/2,w=Math.abs(x2-x1)||.15,d=Math.abs(z2-z1)||.15;box(w+.2,.13,d+.2,materials.wood,mx,.73,mz);
   }
   function createRoad(x,z,w,d){
-    stableBox(w,.1,d,materials.road,x,.055,z,worldGroup,1);
-    const horizontal=w>=d,curbColor=0xe6e8ec,lineMaterial=renderMat(0xffd83d,{roughness:.68,emissive:0x5d4100,emissiveIntensity:.06}),edgeMaterial=renderMat(0xffffff,{roughness:.74});
-    const curbDark=renderMat(0x9ca7b3,{roughness:.88});
-    if(horizontal){
-      stableBox(w+2.6,.13,1.65,materials.sidewalk,x,.065,z-d/2-1.0,worldGroup,1);stableBox(w+2.6,.13,1.65,materials.sidewalk,x,.065,z+d/2+1.0,worldGroup,1);
-      stableBox(w+2.8,.13,.22,curbDark,x,.16,z-d/2-.26,worldGroup,2);stableBox(w+2.8,.13,.22,curbDark,x,.16,z+d/2+.26,worldGroup,2);
-      stableBox(w+2.6,.035,.14,curbColor,x,.235,z-d/2-.18,worldGroup,3);stableBox(w+2.6,.035,.14,curbColor,x,.235,z+d/2+.18,worldGroup,3);
-      for(let lx=-w/2+3;lx<w/2-1.5;lx+=6)stableBox(2.35,.022,.34,lineMaterial,x+lx,.132,z,worldGroup,3);
-      stableBox(w,.02,.13,edgeMaterial,x,.132,z-d/2+.78,worldGroup,3);stableBox(w,.02,.13,edgeMaterial,x,.132,z+d/2-.78,worldGroup,3);
-    }else{
-      stableBox(1.65,.13,d+2.6,materials.sidewalk,x-w/2-1.0,.065,z,worldGroup,1);stableBox(1.65,.13,d+2.6,materials.sidewalk,x+w/2+1.0,.065,z,worldGroup,1);
-      stableBox(.22,.13,d+2.8,curbDark,x-w/2-.26,.16,z,worldGroup,2);stableBox(.22,.13,d+2.8,curbDark,x+w/2+.26,.16,z,worldGroup,2);
-      stableBox(.14,.035,d+2.6,curbColor,x-w/2-.18,.235,z,worldGroup,3);stableBox(.14,.035,d+2.6,curbColor,x+w/2+.18,.235,z,worldGroup,3);
-      for(let lz=-d/2+3;lz<d/2-1.5;lz+=6)stableBox(.34,.022,2.35,lineMaterial,x,.132,z+lz,worldGroup,3);
-      stableBox(.13,.02,d,edgeMaterial,x-w/2+.78,.132,z,worldGroup,3);stableBox(.13,.02,d,edgeMaterial,x+w/2-.78,.132,z,worldGroup,3);
-    }
+    const horizontal=w>=d,width=Math.min(w,d),len=Math.max(w,d),paving=materials.sidewalk,curb=renderMat(0xd3d8d6,{roughness:.9});
+    const foreign=(px,pz,margin)=>{for(const r of WORLD_LAYOUT_V704.roads){if(r.x===x&&r.z===z&&r.w===w&&r.d===d)continue;if(Math.abs(px-r.x)<r.w/2+margin&&Math.abs(pz-r.z)<r.d/2+margin)return true;}for(const r of v704HighwaySegments()){if(r.highway?.usesExistingRoad)continue;const q=projectPointToSegment({x:px,z:pz},r.a,r.b);if(Math.hypot(px-q.x,pz-q.z)<r.width/2+margin)return true;}return false;};
+    for(const side of[-1,1]){let start=null;const emit=end=>{if(start===null)return;const span=end-start,mid=(end+start)/2,px=x+(horizontal?mid:side*(width/2+.85)),pz=z+(horizontal?side*(width/2+.85):mid),h=professionalTerrainHeightAt(px,pz);stableBox(horizontal?span:1.55,.10,horizontal?1.55:span,paving,px,h+.07,pz,worldGroup,1);stableBox(horizontal?span:.23,.15,horizontal?.23:span,curb,x+(horizontal?mid:side*(width/2+.12)),h+.10,z+(horizontal?side*(width/2+.12):mid),worldGroup,1);start=null;};for(let t=-len/2;t<len/2;t+=1.6){const mid=t+Math.min(1.6,len/2-t)/2,px=x+(horizontal?mid:side*(width/2+.85)),pz=z+(horizontal?side*(width/2+.85):mid);if(foreign(px,pz,.55))emit(t);else if(start===null)start=t;}emit(len/2);}
   }
+
   function createWater(x,z,w,d,options={}){const water=stableBox(w,.12,d,materials.water,x,.04,z,worldGroup,1);water.material.depthWrite=false;water.userData={...(water.userData||{}),waterId:options.id||'',reservoir:!!options.reservoir};if(options.shore!==false)for(let px=x-w/2+2;px<x+w/2;px+=4){stableBox(3.2,.18,.7,0x9fadb8,px,.09,z-d/2-.35,worldGroup,2);stableBox(3.2,.18,.7,0x9fadb8,px,.09,z+d/2+.35,worldGroup,2);}world.hazards.push({type:'water',id:options.id||'',reservoir:!!options.reservoir,x,z,w,d});return water;}
   function createReservoirBasin(main,north){
     if(!main||!north)return null;const root=new THREE.Group();root.name='OTTHI_RESERVOIR_SINGLE_CONNECTED';worldGroup.add(root);const bank=renderMat(0xc9b77f,{roughness:.96}),stone=renderMat(0x73808a,{roughness:.92});

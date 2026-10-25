@@ -24,7 +24,7 @@ export async function multiplayerServer(){
    else if(q.op==='disconnect-remove')await ref.onDisconnect().remove();else if(q.op==='disconnect-cancel')await ref.onDisconnect().cancel();
    res.writeHead(200,{'Content-Type':'application/json'});res.end(JSON.stringify({value:result}));return;
   }
-  let path=resolve(root,'.'+decodeURIComponent(u.pathname));if(!path.startsWith(root+'/')){res.writeHead(403);res.end();return;}const info=await stat(path);if(info.isDirectory())path=resolve(path,'index.html');res.writeHead(200,{'Content-Type':mime[extname(path)]||'application/octet-stream','Cache-Control':'no-store'});res.end(await readFile(path));
+  let path=resolve(root,'.'+decodeURIComponent(u.pathname));if(!path.startsWith(root+'/')){res.writeHead(403);res.end();return;}const info=await stat(path);if(info.isDirectory())path=resolve(path,'index.html');const file=await readFile(path);res.writeHead(200,{'Content-Type':mime[extname(path)]||'application/octet-stream','Cache-Control':'no-store'});res.end(file);
  }catch(error){res.writeHead(error.code==='ENOENT'?404:500);res.end(error.message);}});
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));return {db,origin:'http://127.0.0.1:'+server.address().port,async close(){for(const r of connections.values())r.end();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}};
 }

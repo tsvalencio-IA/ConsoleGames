@@ -71,7 +71,7 @@
       if(perf.uiAcc>=uiRate){const step=perf.uiAcc;perf.uiAcc=0;updateCareerMissions();if(typeof updateCoopMissions==='function')updateCoopMissions(step);updateNeeds(step);updateNavigation(step);}
 
       perf.trafficAcc+=dt;const trafficRate=tier==='high'?1/24:tier==='balanced'?1/15:1/10;
-      if(perf.trafficAcc>=trafficRate){const trafficStep=Math.min(.1,perf.trafficAcc);perf.trafficAcc=0;if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){const trafficBefore=captureTrafficPositions();updateTransitWorld(trafficStep);perf.trafficTicks++;updatePoliceSystem(trafficStep);updateFireService(trafficStep);updateTrafficIncidents(trafficStep);resolveTrafficOverlaps(trafficBefore);}}
+      if(perf.trafficAcc>=trafficRate){const trafficStep=Math.min(.1,perf.trafficAcc);perf.trafficAcc=0;if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){const trafficBefore=captureTrafficPositions();updateTransitWorld(trafficStep);perf.trafficTicks++;updatePoliceSystem(trafficStep);updateFireService(trafficStep);resolveTrafficOverlaps(trafficBefore);updateTrafficIncidents(trafficStep);}}
 
       perf.aiAcc+=dt;const aiRate=tier==='high'?1/20:tier==='balanced'?1/14:1/9;
       if(perf.aiAcc>=aiRate){const step=Math.min(.11,perf.aiAcc);perf.aiAcc=0;if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){updateNPCs(step);perf.aiTicks++;updateNpcSociety(step);}if(!(typeof otGames!=='undefined'&&otGames.active))updateEnemies(step);updateMultiplayer(step);updateLifeActivities(step);if(!(typeof otGames!=='undefined'&&otGames.active))updateAdventure(step);}

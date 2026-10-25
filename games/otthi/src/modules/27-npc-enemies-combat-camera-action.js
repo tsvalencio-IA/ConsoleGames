@@ -22,7 +22,7 @@
   }
   function updateNpcSociety(dt){
     updateNpcSociety.acc=(updateNpcSociety.acc||0)+dt;if(updateNpcSociety.acc<9)return;updateNpcSociety.acc=0;if(!world.npcs.length)return;
-    const candidates=world.npcs.filter(n=>!n.stationary&&!n.ottoviasRole);if(!candidates.length)return;const npc=candidates[Math.floor(Math.random()*candidates.length)],roll=Math.random();
+    const candidates=world.npcs.filter(n=>!n.stationary&&!n.ottoviasRole&&!n.cityCommercial);if(!candidates.length)return;const npc=candidates[Math.floor(Math.random()*candidates.length)],roll=Math.random();
     if(roll<.22){const gift=Math.random()<.5?'food':'coins';if(gift==='food'){state.inventory.food=(state.inventory.food||0)+1;npcSpeech(npc,'Trouxe uma comida para você!');}else{state.profile.coins+=8;npcSpeech(npc,'Ganhei algumas moedas e dividi com você!');}saveState();updateHUD();}
     else if(roll<.44){npcSpeech(npc,'Quer apostar uma corrida comigo?');npc.userDataChallengeUntil=performance.now()+12000;}
     else if(roll<.66){const other=candidates.find(n=>n!==npc);if(other){state.npcSociety.friendships[`${npc.id}-${other.id}`]=(state.npcSociety.friendships[`${npc.id}-${other.id}`]||0)+1;npcSpeech(npc,`Conversei com ${other.name} na praça.`);}}
@@ -44,6 +44,7 @@
   function updateNPCs(dt){
     const now=performance.now();
     for(const npc of world.npcs){
+      if(npc.cityCommercial&&npc.commerceRoute&&!npc.following&&!npc.passengerMode&&!npc.pendingRide&&!npc.coopRaceMode)continue;
       const escort=typeof coopNpcEscortTarget==='function'?coopNpcEscortTarget(npc):null;
       const playerDistance=distance2D(player,npc.group.position),near=playerDistance<3.2,oldX=npc.group.position.x,oldZ=npc.group.position.z,b=v705NpcBrain(npc),culled=npc.group.visible===false&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode,background=playerDistance>(perf.mobile?62:88)&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode&&!npc.mobility&&!near;
       if(culled&&!npc.mobility)continue;if(background){npc._perfSkipSeq=(Number(npc._perfSkipSeq||0)+1)%3;if(npc._perfSkipSeq!==0)continue;}
@@ -51,7 +52,7 @@
       else if(npc.fishingActivity){npc.group.position.x=npc.baseX;npc.group.position.z=npc.baseZ;npc.group.rotation.y=npc.fishingActivity.heading;}
       else if(npc.coopRaceMode){/* posição sincronizada pela missão cooperativa */}
       else if(npc.stationary){npc.group.position.x=npc.baseX;npc.group.position.z=npc.baseZ;npc.group.rotation.y=Number(npc.stationaryHeading||npc.group.rotation.y||0);}
-      else if(npc.mobility){const route=npc.mobility.route,target=route[npc.mobility.index],dx=target.x-npc.group.position.x,dz=target.z-npc.group.position.z,d=Math.hypot(dx,dz);if(performance.now()<Number(npc.mobility.trafficHoldUntil||0)){npc.mobility.currentSpeed=0;}else if(d<.2)npc.mobility.index=(npc.mobility.index+1)%route.length;else{const heading=Math.atan2(dx,dz),factor=trafficSpeedFactor(npc.mobility,heading,6),targetSpeed=npc.mobility.speed*factor;npc.mobility.currentSpeed=lerp(Number(npc.mobility.currentSpeed||0),targetSpeed,Math.min(1,dt*4));const step=Math.min(d,npc.mobility.currentSpeed*dt),previous={x:npc.group.position.x,z:npc.group.position.z};if(step>.0001){npc.group.position.x+=dx/d*step;npc.group.position.z+=dz/d*step;snapTrafficToRoad(npc.group,previous);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,heading,Math.min(1,dt*5));for(const wheel of npc.mobility.wheels)wheel.rotation.x-=step*3;}}}
+      else if(npc.mobility){const route=npc.mobility.route,target=route[npc.mobility.index],dx=target.x-npc.group.position.x,dz=target.z-npc.group.position.z,d=Math.hypot(dx,dz);if(performance.now()<Number(npc.mobility.trafficHoldUntil||0)){npc.mobility.currentSpeed=0;}else if(d<.2)npc.mobility.index=(npc.mobility.index+1)%route.length;else{const heading=Math.atan2(dx,dz),factor=trafficSpeedFactor(npc.mobility,heading,6),targetSpeed=npc.mobility.speed*factor;npc.mobility.currentSpeed=factor<.035?0:lerp(Number(npc.mobility.currentSpeed||0),targetSpeed,Math.min(1,dt*4));const step=Math.min(d,npc.mobility.currentSpeed*dt),previous={x:npc.group.position.x,z:npc.group.position.z};if(step>.0001){npc.group.position.x+=dx/d*step;npc.group.position.z+=dz/d*step;snapTrafficToRoad(npc.group,previous);npc.group.rotation.y=lerpAngle(npc.group.rotation.y,heading,Math.min(1,dt*5));for(const wheel of npc.mobility.wheels)wheel.rotation.x-=step*3;}}}
       else{
         if(now>Number(b.nextThink||0)){b.nextThink=now+260+Math.random()*260;v705NpcThink(npc);}
         if(escort?.paused){b.state='follow-wait';}

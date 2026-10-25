@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.25.2-traffic-dance",
+  "build": "705.25.3-city-coast-body",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "9294f10e939641200c09d4bc539898aef70f582ea1991a8d1dc3848b049b7184"
+      "sha256Body": "9a05d2b7728486e6fe9c05f84155d6223d22526140fbd827d590152fbf7135fe"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "14911a07033de8c04336b02f78b0b2709c58b6436e5ede85a08b29f0151595ad"
+      "sha256Body": "3f61ddab464a798411fc4dff4b241ceaf7caea802b67a9c0e012b30c04bc6360"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "da2f0e3804f4a44adfdb8464e615aff2c3dfcfa23ad31cd08cc1781d6f5b3275"
+      "sha256Body": "597477f0b8f21ede967c8e018764c9bd2e6dacc2c970d961a7859b158df3bc65"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -105,7 +105,7 @@
       "startLine": 2514,
       "endLine": 2741,
       "description": "Interações do mundo, árvores, rochas, mina, poço, ruas, água e móveis",
-      "sha256Body": "588b88cfd8e741a401a3626367be27cbe765acfe674c4033e96429e090510692"
+      "sha256Body": "604283cbc1fad16173895f5232608639f4eb2e797d470f7fbb913d157c3a0bdf"
     },
     {
       "file": "src/modules/13-houses-npcs-vehicles-base.js",
@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "6b0e61b800825e4669552464b5293bd77c95d4e934f9fc4ff22bc409bd35ad1d"
+      "sha256Body": "8d8ffe7ea6f2e10ffcccc5a7cf4b0dd199b2c7fe99d95db8c1f4106f27e2bea2"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -147,7 +147,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "f36e97f0ed4caa78b9690948d8d0fe15d496d1434030854345e258a576ab903a"
+      "sha256Body": "e28ac5d2d85302906d0cf6a098e7e089eb97a97a16244fce1cc920477ee38612"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -161,7 +161,7 @@
       "startLine": 3559,
       "endLine": 3717,
       "description": "Água, câmera e animação da pesca, barco e física náutica",
-      "sha256Body": "5b77704574fce311b1d053747df322d229319024a720469de1f94d60a09a25b6"
+      "sha256Body": "df1bb027c63217f56df0f948111c550530ff4ab837edca2b510b7b644d47869b"
     },
     {
       "file": "src/modules/19-campfire-hunting-house-extensions.js",
@@ -182,7 +182,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "46a2123d544c65105769095e14518785bafdc02535f8d63019081e1f77b99635"
+      "sha256Body": "d0f9460192a14d913a16ac670c7b46c1a7113ac5f6ccce140a47c932d56a5949"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -231,7 +231,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "3c7ab3b0995b774e785eb1119a91439051784e86fdcb375f64890b4c35eb7d37"
+      "sha256Body": "bbcf5cdf698d0d861894e47ee3068632807947c91543682097951d31e7381dfd"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -259,7 +259,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "f65bb4417f32ed16174c69af498162dc7ae1ad6350718aa24767175d0736ccfa"
+      "sha256Body": "b41164460adb0ffd2b7f149d89b72ecd18dbe46eabd7b8889d63646d5ffabd0f"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -364,7 +364,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "ca3ab2a2143dff31c0342301d48f0a81b73dc8175f88c0e603fb57e8c08a6526"
+      "sha256Body": "86a58ed42286bb4ef49170517a0fb24ccff80bd90047f7a165b282a9f8f3bf60"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -378,14 +378,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "abeb4dbef847b808fac15440c3bb0e4b51053ae06a8f030d70a47ecb4e6a45d4"
+      "sha256Body": "246425837315dbabdfa60292086b8ca86dcfbc66a60d73ad760fbb1e2ab40522"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "ebc3fbf655c31ef208b476794a3dfb2e1966cc0c93e835def415cb3a7801bce0"
+      "sha256Body": "975521d2fad43b5774d18166a030c1bb8870635592302ca804efeb1a2384cda0"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -455,7 +455,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Continuidade viária e ponte da Costa sobre água preservada",
-      "sha256Body": "95eafe4cc000aae92c502d65c2e51aa80752dadc3d72ce9e97da5f26db4c4d22"
+      "sha256Body": "1c2ef05d37368bc89813cf2918f6d91fe173a19fc6f0679c6d6c84616ef29118"
     },
     {
       "file": "src/modules/51-online-travel-party.js",
@@ -484,6 +484,11 @@
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
       "sha256Body": "e61223f64b9e8e65d95534f56b426bccefe51ac51a44e61bb3b91db25f2734c8"
+    },
+    {
+      "file": "src/modules/56-city-coast-life.js",
+      "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
+      "sha256Body": "e6ae8276757293503bfdb2123d041fea55976076ea96ff38e5e09d4e54b53219"
     }
   ],
   "styles": [
