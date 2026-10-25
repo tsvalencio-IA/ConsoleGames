@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {installConsoleStubs} from './helpers/console-context.mjs';
 import {touchSession} from './helpers/touch-session.mjs';
-const origin='http://127.0.0.1:4173';
+const origin=process.env.CONSOLE_QA_ORIGIN||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
 mkdirSync('test-results/war-touch',{recursive:true});const results=[];
 try{
@@ -39,7 +39,7 @@ try{
    const captured=await fingers.start(scene,.6,.45);await fingers.move(captured,fire,.5,.5);assert.equal((await read()).fire,false);await fingers.cancel();assert.equal((await read()).look,false);
    await fingers.start(move,.75,.25);await fingers.start(scene,.6,.45);await fingers.start(fire);const pause=await fingers.start(page.locator('#arcade-pause'));await fingers.end(pause);await page.locator('#arcade-pause-modal').waitFor({state:'visible'});
    state=await read();assert(!state.move&&!state.look&&!state.fire&&!state.aiming,'Pause must release every independent input');const pausedYaw=state.yaw;await fingers.cancel();await page.locator('[data-action="continue"]').tap();await page.waitForFunction(()=>!window.System.paused,null,{timeout:3000});assert.equal((await read()).yaw,pausedYaw);
-   await fingers.start(move,.75,.25);await fingers.start(scene,.6,.45);await fingers.start(fire);await page.setViewportSize({width:viewport.height,height:viewport.width});await page.waitForTimeout(120);state=await read();assert(!state.move&&!state.look&&!state.fire,'Orientation changes must release active touches');await fingers.cancel();
+   await fingers.start(move,.75,.25);await fingers.start(scene,.6,.45);await fingers.start(fire);await page.setViewportSize({width:viewport.height,height:viewport.width});await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return !g.manualStick.active&&!g.lookPointerActive&&!g.fireHeld;},null,{timeout:3000});state=await read();assert(!state.move&&!state.look&&!state.fire,'Orientation changes must release active touches');await fingers.cancel();
    await page.setViewportSize(viewport);await page.waitForTimeout(120);
    assert.deepEqual(errors,[]);results.push({viewport,passed:true,simultaneousPointers:4,dragLook:true,ads:true,noDrift:true,pauseReleases:true,resizeReleases:true});console.log('WAR touch layout passed:',viewport.width+'x'+viewport.height);
   }catch(e){await page.screenshot({path:`test-results/war-touch/${viewport.width}x${viewport.height}-failure.png`});console.error(await read());throw e}finally{await context.close()}

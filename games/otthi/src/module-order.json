@@ -378,14 +378,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "3b23c61e3da2ad09cdf6049d3ae376c4dee98d64ed916d333be823fb5dbec058"
+      "sha256Body": "abeb4dbef847b808fac15440c3bb0e4b51053ae06a8f030d70a47ecb4e6a45d4"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "afccf947ac0e2211f918df531f9064b50cc381338f1c946cfbcd1e2ab22bc834"
+      "sha256Body": "ebc3fbf655c31ef208b476794a3dfb2e1966cc0c93e835def415cb3a7801bce0"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "3566bb3384c668660f04ce5b96aa97f502f989baa4fe15b2cb873fe14ee85959"
+      "sha256Body": "94a7f0d0fc4608177229701e2187174e89cdaff64ecb7613ac33bec0c7e73c1d"
     },
     {
       "file": "src/modules/50-fleet-collection.js",
@@ -448,7 +448,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Trânsito utilizável e persistente no motor de veículos existente",
-      "sha256Body": "d9b88b56f8e8fb4da009917365a933bebe49003c563cbb12d2e17930cf7ca3d5"
+      "sha256Body": "979ee99892357ec413bb5fa23c95e1005cdd1ceb9f5137772713107d95f3bfd8"
     },
     {
       "file": "src/modules/50-world-road-continuity.js",

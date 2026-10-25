@@ -30,13 +30,13 @@
   class WorldDanceBody {
     static moves=Object.freeze({up:'OS DOIS BRAÇOS PARA CIMA',open:'ABRA OS BRAÇOS',left:'PASSO PARA A ESQUERDA',right:'PASSO PARA A DIREITA',leftUp:'BRAÇO ESQUERDO PARA CIMA',rightUp:'BRAÇO DIREITO PARA CIMA',cross:'CRUZE OS BRAÇOS',squat:'AGACHE E VOLTE',leanLeft:'INCLINE PARA A ESQUERDA',leanRight:'INCLINE PARA A DIREITA'});
     constructor(level=0){this.level=Math.max(0,Math.min(2,Math.floor(level)));this.bpm=[84,104,120][this.level];this.beat=60000/this.bpm;this.duration=this.beat*4;const lists=[['up','left','open','right','leftUp','rightUp','left','right'],['open','left','up','right','cross','squat','leftUp','rightUp','left','right','up','open'],['up','left','right','cross','squat','open','leanLeft','leanRight','leftUp','rightUp','left','right','squat','cross','up','open']];this.phrases=lists[this.level].map(move=>({move,hit:false,miss:false,quality:0}));this.phase='calibration';this.calibration=[];this.baseline=null;this.lastPoseAt=0;this.lastTick=0;this.activeMs=0;this.countdownUntil=0;this.score=0;this.hits=0;this.misses=0;this.combo=0;this.bestCombo=0;this.weight=0;this.hold=0;this.holdSamples=0;this.recovery=0;this.index=0;this.originFeatures=null;this.feedback='Afaste-se: cabeça, mãos e pés precisam aparecer.';this.stable=0;this.done=false;this.lastFrameId=-1;this.features=null;this.lastInputAt=0;this.manual=false;}
-    static body(landmarks){
+    static body(landmarks,worldLandmarks=null){
       if(!Array.isArray(landmarks)||landmarks.length<33)return null;
       const need=[0,11,12,15,16,23,24,25,26,27,28];if(need.some(i=>!landmarks[i]||!Number.isFinite(landmarks[i].x)||!Number.isFinite(landmarks[i].y)||(landmarks[i].visibility??1)<.50))return null;
       const p=i=>({x:1-landmarks[i].x,y:landmarks[i].y}),head=p(0),ls=p(11),rs=p(12),lw=p(15),rw=p(16),lh=p(23),rh=p(24),la=p(27),ra=p(28),lk=p(25),rk=p(26),hip={x:(lh.x+rh.x)/2,y:(lh.y+rh.y)/2},shoulder={x:(ls.x+rs.x)/2,y:(ls.y+rs.y)/2},foot={x:(la.x+ra.x)/2,y:Math.max(la.y,ra.y)},width=Math.hypot(ls.x-rs.x,ls.y-rs.y),height=foot.y-head.y;
       if(width<.085||width>.65||height<.42||height>.96||head.y<.015||foot.y>.99||[ls,rs,la,ra].some(p=>p.x<.025||p.x>.975))return null;
       const angle=(a,b,c)=>{const ax=a.x-b.x,ay=a.y-b.y,bx=c.x-b.x,by=c.y-b.y;return Math.acos(Math.max(-1,Math.min(1,(ax*bx+ay*by)/(Math.hypot(ax,ay)*Math.hypot(bx,by)||1))))*180/Math.PI;};
-      return{head,ls,rs,lw,rw,lh,rh,la,ra,lk,rk,hip,shoulder,foot,width,height,kneeL:angle(lh,lk,la),kneeR:angle(rh,rk,ra)};
+      const angle3=(ia,ib,ic)=>{const a=worldLandmarks[ia],b=worldLandmarks[ib],c=worldLandmarks[ic],v=[a.x-b.x,a.y-b.y,a.z-b.z],w=[c.x-b.x,c.y-b.y,c.z-b.z];return Math.acos(Math.max(-1,Math.min(1,v.reduce((s,n,i)=>s+n*w[i],0)/(Math.hypot(...v)*Math.hypot(...w)||1))))*180/Math.PI;},has3=worldLandmarks?.length===33&&[23,24,25,26,27,28].every(i=>['x','y','z'].every(k=>Number.isFinite(worldLandmarks[i]?.[k])));return{head,ls,rs,lw,rw,lh,rh,la,ra,lk,rk,hip,shoulder,foot,width,height,kneeL:has3?angle3(23,25,27):angle(lh,lk,la),kneeR:has3?angle3(24,26,28):angle(rh,rk,ra)};
     }
     extract(body){const b=this.baseline,w=b.width;return{leftUp:(body.shoulder.y-body.lw.y)/w,rightUp:(body.shoulder.y-body.rw.y)/w,leftOut:(body.shoulder.x-body.lw.x)/w,rightOut:(body.rw.x-body.shoulder.x)/w,step:(body.hip.x-b.hip.x)/w,footShift:((body.la.x+body.ra.x)/2-b.foot.x)/w,lean:(body.shoulder.x-body.hip.x)/w,drop:(body.hip.y-b.hip.y)/w,knee:Math.min(body.kneeL,body.kneeR),cross:(body.lw.x-body.rw.x)/w,handY:((body.lw.y+body.rw.y)/2-body.shoulder.y)/w,lwX:(body.lw.x-b.hip.x)/w,lwY:(body.lw.y-b.hip.y)/w,rwX:(body.rw.x-b.hip.x)/w,rwY:(body.rw.y-b.hip.y)/w};}
     match(move,f){const high=[.30,.40,.48][this.level],min=(...v)=>Math.max(0,Math.min(1,...v)),up=v=>(v-high+.3)/.4;
@@ -51,9 +51,9 @@
       const next=Math.min(this.phrases.length,Math.floor(this.activeMs/this.duration));while(this.index<next){const item=this.phrases[this.index];if(!item.hit){item.miss=true;this.misses++;this.combo=0;}this.index++;this.hold=0;this.holdSamples=0;this.originFeatures=this.features;}
       if(this.index>=this.phrases.length){this.done=true;this.phase='done';this.feedback='Música concluída';}
     }
-    observe(landmarks,capturedAt,now=capturedAt,frameId=capturedAt){
+    observe(landmarks,capturedAt,now=capturedAt,frameId=capturedAt,worldLandmarks=null){
       this.tick(now);if(this.done||capturedAt<=this.lastInputAt||frameId===this.lastFrameId||now-capturedAt>650||capturedAt>now+30)return false;this.lastInputAt=capturedAt;this.lastFrameId=frameId;
-      const body=WorldDanceBody.body(landmarks);if(!body){this.hold=0;this.holdSamples=0;this.recovery=0;if(this.phase==='calibration'){this.calibration=[];this.stable=0;this.feedback='Mostre o corpo inteiro, da cabeça aos pés, de frente para a câmera.';}return false;}
+      const body=WorldDanceBody.body(landmarks,worldLandmarks);if(!body){this.hold=0;this.holdSamples=0;this.recovery=0;if(this.phase==='calibration'){this.calibration=[];this.stable=0;this.feedback='Mostre o corpo inteiro, da cabeça aos pés, de frente para a câmera.';}return false;}
       const previousAt=this.lastPoseAt;this.lastPoseAt=now;this.body=body;
       if(this.phase==='calibration'){
         if(body.kneeL<155||body.kneeR<155||body.lw.y<body.shoulder.y||body.rw.y<body.shoulder.y){this.calibration=[];this.stable=0;this.feedback='Fique em pé, braços relaxados, e olhe para a câmera.';return false;}

@@ -1,4 +1,4 @@
-# Trânsito, dança e precisão visual — em implementação
+# Trânsito, dança e precisão visual — build705.25.2
 
 Base de produção: bbf7b0db1dc8a08828ad5478f9ffc54a879bd009, revisão574855b20778cad8. Preservar contas, regras Firebase, saves, 47 entradas da garagem, seis vagas, lojas, casas e jogos originais já aprovados.
 
@@ -22,7 +22,7 @@ A dança usa câmera frontal mediante toque na aula, MediaPipe Pose Landmarker L
 
 ## Validação local executada
 
--230 testes Node passaram antes dos três novos cenários de trânsito; os três cenários adicionais também passaram.
+-233 testes Node passaram em conjunto; o caso adicional de articulação3D dos joelhos também passou.
 -44 modelos renderizados em três vistas, máximo25 chamadas de desenho por modelo, geometria pintada do Fusca idêntica à base de produção.
 -Mundo real local:44/44 modelos criados e movidos durante a janela de observação; sete aeronaves movimentando-se com rotores finitos e altitude mínima.
 -Inferência real do modeloCPU no worker de produção:33 pontos em imagem de exemplo oficial do MediaPipe.319ms no Chromium com renderização de software deste ambiente, sem pretensão de representar um celular.
@@ -39,3 +39,16 @@ Os testes de câmera física no Android, desempenho prolongado no aparelho e mul
 - Palio legado: https://www.media.stellantis.com/br-pt/fiat/palio-1996-2013-my-legado
 - VW T-Cross original/Sense: https://newsroom-br.itd.vw.com.br/news/1117
 - Fotos de referência analisadas, não incorporadas no jogo: https://2.bp.blogspot.com/_joBSfovwfM0/TAAskkcx0vI/AAAAAAAABqs/kV6r0tDtGJA/s1600/palio%2Bfire%2Beconomy.jpg ; https://1.bp.blogspot.com/_aE4K_DXYxYI/TAGy9svHisI/AAAAAAAAFg8/QCH0OZJkoEg/s1600/palio_fire_economy_03_960_640.jpg ; https://www.webmotors.com.br/wp-content/uploads/2020/09/11125451/vw-t-cross4.jpeg
+
+## Verificações finais de integração
+
+-A aula também recuperou uma permissão negada e se adaptou a retrato/paisagem sem rolagem horizontal. Câmera preserva a proporção de captura, e os ângulos dos joelhos usam os marcos3D do modelo real quando disponíveis.
+-O worker real iniciou novamente sem rede, usando o modelo e o SDK baixados sob o service worker de produção.33 marcos de imagem e33 marcos de mundo presentes.
+-Garagens, três concessionárias, compra,44 veículos expostos, nove ações de casa, persistência e continuidade das vias passaram no fluxo de toque local. As verificações aguardam a alteração assíncrona real de estado após o toque.
+-Família completa e três convidados no ônibus, rejeição do quarto convidado, capacidade da bicicleta e de carros de dois lugares, e passageiro na última posição do ônibus passaram no replay local.
+-Atualização real do worker anterior, recuperação de configuração antiga e abertura offline preservaram perfil e save.
+-Assumir bicicleta, Hornet, ônibus Attivi e carreta-tanque em movimento passou pelo botão de ação. Tipo, ID, controle e modelo permanecem os correspondentes à origem.
+-A Ferrari licenciada já tem volante geométrico à esquerda: centro calculado nas transformações do GLB emX=+0.27619 após a conversão para frente+Z. Sua malha original foi mantida.
+
+-A verificação de toque do WAR passou em390×844,844×390 e320×568, com quatro dedos simultâneos, câmera por arraste, mira, disparo, pausa e rotação; mouse e teclado também passaram. O teste aguarda a entrega do evento real de redimensionamento em vez de presumir que ele ocorreu após120ms. O código do WAR permanece igual ao da produção anterior.
+-As duas carretas passaram com atualização real entre entrada, curva, frenagem e inspeção da articulação. O teste de animação agora aguarda os quadros efetivos do jogo, em vez de uma espera fixa de160ms.
