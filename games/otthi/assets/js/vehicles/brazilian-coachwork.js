@@ -3,6 +3,21 @@
 // @otthi-module-body
 (()=>{'use strict';
 const specs={
+ veraneio:{l:4.55,w:1.68,h:1.57,b:.94,r:.316,fa:1.28,ra:-1.34,front:.91,rf:.57,rr:-1.77,rear:-2.14,bp:-.12,seat:.27,back:-.65,doors:4,crown:.048,nose:.09,classic:true,wagon:true},
+ blazer:{l:3.70,w:1.50,h:1.42,b:.90,r:.303,fa:1.16,ra:-1.14,front:.67,rf:.26,rr:-1.40,rear:-1.73,bp:-.26,seat:.20,back:-.61,doors:4,crown:.055,nose:.11,wagon:true},
+ pampa:{l:3.56,w:1.34,h:1.16,b:.75,r:.260,fa:1.08,ra:-1.09,front:.69,rf:.23,rr:-.40,rear:-.55,bp:-.30,seat:.06,back:-.32,doors:2,crown:.028,nose:.055,pickup:true},
+ escort:{l:3.27,w:1.37,h:1.16,b:.74,r:.265,fa:1.01,ra:-1.01,front:.60,rf:.19,rr:-.79,rear:-1.45,bp:-.27,seat:.02,back:-.64,doors:2,crown:.024,nose:.08},
+ tcross:{l:3.36,w:1.45,h:1.33,b:.89,r:.290,fa:1.09,ra:-1.08,front:.66,rf:.20,rr:-1.11,rear:-1.50,bp:-.27,seat:.18,back:-.61,doors:4,crown:.039,nose:.075,wagon:true},
+ peugeot206:{l:3.08,w:1.34,h:1.18,b:.74,r:.258,fa:.99,ra:-1.00,front:.68,rf:.06,rr:-.91,rear:-1.29,bp:-.29,seat:.03,back:-.63,doors:4,crown:.074,nose:.22},
+ jetta:{l:3.72,w:1.43,h:1.19,b:.77,r:.279,fa:1.10,ra:-1.11,front:.72,rf:.23,rr:-.79,rear:-1.26,bp:-.28,seat:.04,back:-.66,doors:4,crown:.029,nose:.065},
+ corolla2007:{l:3.62,w:1.36,h:1.20,b:.77,r:.268,fa:1.06,ra:-1.06,front:.67,rf:.16,rr:-.73,rear:-1.22,bp:-.28,seat:.04,back:-.65,doors:4,crown:.063,nose:.15},
+ corolla2021:{l:3.70,w:1.43,h:1.16,b:.74,r:.279,fa:1.11,ra:-1.11,front:.74,rf:.21,rr:-.81,rear:-1.31,bp:-.30,seat:.03,back:-.66,doors:4,crown:.038,nose:.12},
+ civic2011:{l:3.64,w:1.42,h:1.15,b:.73,r:.277,fa:1.12,ra:-1.12,front:.89,rf:-.02,rr:-.76,rear:-1.20,bp:-.36,seat:.02,back:-.65,doors:4,crown:.056,nose:.18},
+ bmwx1:{l:3.59,w:1.51,h:1.33,b:.87,r:.294,fa:1.12,ra:-1.12,front:.72,rf:.24,rr:-1.19,rear:-1.57,bp:-.27,seat:.16,back:-.61,doors:4,crown:.052,nose:.08,wagon:true},
+ bmwm3:{l:3.74,w:1.52,h:1.15,b:.74,r:.289,fa:1.13,ra:-1.12,front:.73,rf:.22,rr:-.72,rear:-1.25,bp:-.28,seat:.03,back:-.65,doors:4,crown:.041,nose:.10},
+ ferrari458:{l:3.62,w:1.59,h:1.00,b:.60,r:.296,fa:1.14,ra:-1.14,front:1.02,rf:.37,rr:-.48,rear:-.98,bp:-.37,seat:-.05,back:-.50,doors:2,crown:.069,nose:.18,midEngine:true,sports:true,twoSeats:true},
+ porsche911:{l:3.61,w:1.48,h:1.04,b:.65,r:.288,fa:1.09,ra:-1.04,front:.91,rf:.27,rr:-.60,rear:-1.22,bp:-.30,seat:-.03,back:-.70,doors:2,crown:.081,nose:.23,sports:true},
+
  golf7:{l:3.49,w:1.475,h:1.19,b:.77,r:.284,fa:1.08,ra:-1.08,front:.63,rf:.16,rr:-1.08,rear:-1.55,bp:-.30,seat:.04,back:-.65,doors:4,crown:.032,nose:.09},
  palio:{l:3.14,w:1.34,h:1.18,b:.75,r:.258,fa:.98,ra:-.98,front:.55,rf:.13,rr:-.96,rear:-1.38,bp:-.30,seat:.03,back:-.63,doors:4,crown:.055,nose:.17},
  passat:{l:3.54,w:1.34,h:1.12,b:.70,r:.260,fa:1.04,ra:-1.04,front:.62,rf:.18,rr:-.69,rear:-1.60,bp:-.33,seat:.01,back:-.65,doors:2,crown:.015,nose:.045,classic:true},
@@ -23,7 +38,7 @@ const specs={
 function build(T,key,h){
  const p=specs[key];if(!p)return false;
  const {root,add,box,ell,tube,ring,wheel,quad}=h,W=p.w/2,L=p.l/2,white=0xffffff,black=0x11191e,chrome=0xbac5ce,cream=0xe9e6d9,glass=0x527b8a;
- const Y=p.b,roof=p.h,roofW=W*(p.bus?.96:key==='golf'?.83:p.pickup?.86:.87),low=p.pickup?.33:.24;
+ const Y=p.b,roof=p.h,roofW=W*(p.bus?.96:['palio','peugeot206','civic2011'].includes(key)?.79:['golf','golf7','corolla2007','corolla2021','bmwx1','bmwm3','porsche911','ferrari458'].includes(key)?.82:p.pickup?.86:.87),low=p.pickup?.33:.24;
  // Shared indexed patches preserve averaged normals across the curved metal.
  function patch(n,m,point,c=white,k='paint'){
   const a=[],idx=[];for(let i=0;i<=n;i++)for(let j=0;j<=m;j++)a.push(...point(i/n,j/m));
@@ -39,7 +54,7 @@ function build(T,key,h){
  const width=z=>{const q=Math.max(0,(Math.abs(z)/L-.77)/.23),corner=1-Math.sqrt(Math.max(0,1-q*q));return W*(1-p.nose*.40*corner)+(p.pickup&&!p.bus?.013*Math.exp(-(((z-p.ra)/.39)**2)):0);};
  const top=z=>Y-(z>p.front?(z-p.front)/(L-p.front||1)*(p.bus?0:key==='golf'?.10:p.pickup?.065:.075):z<p.rear&&!p.pickup?.025*(p.rear-z)/(L+p.rear):0);
  const bottom=z=>{let y=low;for(const az of[p.fa,p.ra]){const d=z-az,r=p.r+.038;if(Math.abs(d)<r)y=Math.max(y,p.r+.014+Math.sqrt(r*r-d*d));}return y;};
- const sidePoint=(a,z,t)=>{const bulge=(p.pickup?.021:.010)*(Math.exp(-(((z-p.fa)/.37)**2))+Math.exp(-(((z-p.ra)/.37)**2)));return[a*(width(z)-.035*(1-t)**2+bulge*Math.sin(Math.PI*t)),bottom(z)+(top(z)-bottom(z))*t,z];};
+ const sidePoint=(a,z,t)=>{const bulge=(p.pickup?.021:.010)*(Math.exp(-(((z-p.fa)/.37)**2))+Math.exp(-(((z-p.ra)/.37)**2)));return[a*(width(z)-(!p.classic?.070:.035)*(1-t)**2+(!p.classic?.035:0)*Math.sin(Math.PI*t)+bulge*Math.sin(Math.PI*t)),bottom(z)+(top(z)-bottom(z))*t,z];};
  for(const a of[-1,1])patch(112,8,(u,t)=>sidePoint(a,-L+p.l*u,t));
  // Bonnet and boot are bowed across their full width, with rounded noses.
  function deck(z0,z1){if(z1-z0<.02)return;patch(32,20,(u,v)=>{const z=z0+(z1-z0)*u,x=v*2-1;return[x*width(z),top(z)+p.crown*(1-x*x),z];});}
@@ -51,18 +66,18 @@ function build(T,key,h){
   const pts=[];for(let i=0;i<=28;i++){const t=i*Math.PI/28,z=az+Math.cos(t)*(p.r+.04);pts.push([a*(width(z)+.008),p.r+.014+Math.sin(t)*(p.r+.04),z]);}line(pts,p.pickup?.018:.010,p.pickup?0x293137:white,p.pickup?'fixed':'paint');
  }
  // A crowned roof joins the glazing through actual A/B/C pillars.
- patch(20,24,(u,v)=>{const z=p.rr+(p.rf-p.rr)*u,x=v*2-1;return[x*roofW,roof-.048*x*x+.018*Math.sin(u*Math.PI),z];},p.vinyl?0x202326:p.bus?cream:white,p.vinyl||p.bus?'fixed':'paint');
+ patch(20,24,(u,v)=>{const z=p.rr+(p.rf-p.rr)*u,x=v*2-1;return[x*roofW,roof-(p.classic?.048:.090)*x*x-(p.classic?0:.025)*(u*2-1)**2+.023*Math.sin(u*Math.PI),z];},p.vinyl?0x202326:p.bus?cream:white,p.vinyl||p.bus?'fixed':'paint');
  function glassEnd(front){const z=front?p.front:p.rear,tz=front?p.rf:p.rr,bw=width(z)*.94,tw=roofW*.97;
-  const point=(u,t)=>{const x=u*2-1;return[x*(bw+(tw-bw)*t),Y+.035+(roof-.035-Y)*t-.028*x*x*t,z+(tz-z)*t+(front?1:-1)*.032*(1-x*x)*Math.sin(t*Math.PI)];};
+  const point=(u,t)=>{const x=u*2-1;return[x*(bw+(tw-bw)*t),Y+.035+(roof-(p.classic?.035:.025)-Y)*t-(p.classic?.028:.090)*x*x*t,z+(tz-z)*t+(front?1:-1)*.032*(1-x*x)*Math.sin(t*Math.PI)];};
   patch(20,10,point,glass,'glass');for(const u of[0,1])line(Array.from({length:11},(_,i)=>point(u,i/10)),p.bus?.022:.020,p.bus?cream:white,p.bus?'fixed':'paint');for(const t of[0,1])line(Array.from({length:21},(_,i)=>point(i/20,t)),.011,black);
   if(p.bus)line([point(.5,0),point(.5,1)],.018,cream);
  }
  glassEnd(true);glassEnd(false);
- const sideGlassPoint=(a,bz,tz,t)=>[a*(width(bz)*.962*(1-t)+roofW*t),Y+.035+(roof-.074-Y)*t,bz+(tz-bz)*t];
+ const sideGlassPoint=(a,bz,tz,t)=>[a*(width(bz)*.962*(1-t)+roofW*t),Y+.035+(roof-(p.classic?.074:.115)-Y)*t,bz+(tz-bz)*t];
  for(const a of[-1,1]){
-  const segments=p.bus?[[1.48,.81,1.30,.81],[.72,.10,.72,.10],[.01,-.67,.01,-.67],[-.76,-1.48,-.76,-1.35]]:[[p.front-.035,p.bp+.04,p.rf-.025,p.bp+.04],[p.bp-.04,p.rear+.045,p.bp-.04,p.rr+.045]];
+  const segments=p.wagon?[[p.front-.035,p.bp+.04,p.rf-.025,p.bp+.04],[p.bp-.04,p.rr+.30,p.bp-.04,p.rr+.20],[p.rr+.20,p.rear+.045,p.rr+.12,p.rr+.045]]:p.bus?[[1.48,.81,1.30,.81],[.72,.10,.72,.10],[.01,-.67,.01,-.67],[-.76,-1.48,-.76,-1.35]]:[[p.front-.035,p.bp+.04,p.rf-.025,p.bp+.04],[p.bp-.04,p.rear+.045,p.bp-.04,p.rr+.045]];
   for(const [f,b,tf,tb]of segments){patch(14,8,(u,t)=>sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,t),glass,'glass');for(const u of[0,1])line([sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,0),sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,1)],p.bus?.021:.013,p.bus?cream:black);}
-  line([[a*width(p.front)*.963,Y+.025,p.front],[a*roofW,roof-.04,p.rf],[a*roofW,roof-.04,p.rr],[a*width(p.rear)*.963,Y+.025,p.rear]],p.bus?.028:.024,p.bus?cream:white,p.bus?'fixed':'paint');
+  line([[a*width(p.front)*.963,Y+.025,p.front],[a*roofW,roof-(p.classic?.04:.115),p.rf],[a*roofW,roof-(p.classic?.04:.115),p.rr],[a*width(p.rear)*.963,Y+.025,p.rear]],p.bus?.028:.024,p.bus?cream:white,p.bus?'fixed':'paint');
   // Painted shoulder joins the metal body to the bottom of each window.
   patch(40,3,(u,v)=>{const z=p.rear+(p.front-p.rear)*u;return[a*width(z)*(1-.038*v),top(z)+.028*v,z];},p.bus?cream:white,p.bus?'fixed':'paint');
   if(p.bus){for(const z of[.77,.05,-.71])line([[a*W,Y+.01,z],[a*roofW,roof-.04,z]],.025,cream);line([[a*(W+.009),Y,-1.45],[a*(W+.009),Y,1.48]],.011,cream);}
@@ -79,7 +94,7 @@ function build(T,key,h){
   if(p.classic||['golf','uno','saveiro'].includes(key))line(strip,key==='golf'?.012:.008,key==='opala'||key==='chevette'?chrome:0x293337,key==='opala'||key==='chevette'?'chrome':'fixed');
  }
  const seatX=W*.43,seatY=p.pickup?.46:p.bus?.43:.34;
- for(const z of[p.seat,p.back])for(const a of[-1,1]){rb(0x272c30,a*seatX,seatY+.07,z,.36,.13,.37,'interior',.04);rb(0x343a3e,a*seatX,seatY+.29,z-.20,.35,.41,.10,'interior',.045);if(!p.classic)rb(0x20282e,a*seatX,seatY+.52,z-.22,.21,.12,.075,'interior',.025);}
+ for(const z of(p.twoSeats?[p.seat]:[p.seat,p.back]))for(const a of[-1,1]){rb(0x272c30,a*seatX,seatY+.07,z,.36,.13,.37,'interior',.04);rb(0x343a3e,a*seatX,seatY+.29,z-.20,.35,.41,.10,'interior',.045);if(!p.classic)rb(0x20282e,a*seatX,seatY+.52,z-.22,.21,.12,.075,'interior',.025);}
  rb(0x202a2e,0,Y-.10,p.front-.08,p.w*.86,.15,.19,'interior',.025);ring(-seatX,Y-.005,p.front-.26,.100,black,-.45);
  for(const x of[-.31,.16])line([[x,Y+.044,p.front+.012],[x+.17,Y+.12,p.front-.08]],.006,black);
  if(p.pickup){const rear=-L+.04,front=p.rear-.035,d=front-rear;
@@ -116,6 +131,47 @@ function build(T,key,h){
   if(typeof document==='undefined')return;const canvas=document.createElement('canvas');canvas.width=512;canvas.height=96;const c=canvas.getContext('2d');c.clearRect(0,0,512,96);c.font='700 70px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle=color;c.fillText(text,256,50,500);const texture=new T.CanvasTexture(canvas);texture.encoding=T.sRGBEncoding;const mesh=new T.Mesh(new T.PlaneGeometry(w,hh),new T.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.15,side:T.DoubleSide,roughness:.35,metalness:.5,depthWrite:false}));mesh.name='badge-'+text;mesh.position.set(x,y,z);mesh.rotation.y=angle;root.add(mesh);
  }
  const additions=['golf7','palio','passat','tempra','maverick','landau'];
+ const moreCars=['veraneio','blazer','pampa','escort','tcross','peugeot206','jetta','corolla2007','corolla2021','civic2011','bmwx1','bmwm3','ferrari458','porsche911'];
+ if(moreCars.includes(key)){
+  function polyLamp(a,x,y,z,ww,hh,points){const q=new T.Shape();points.forEach(([u,v],i)=>i?q.lineTo(a*u*ww,v*hh):q.moveTo(a*u*ww,v*hh));q.closePath();const geo=new T.ExtrudeGeometry(q,{depth:.014,bevelEnabled:true,bevelSize:.005,bevelThickness:.004,bevelSegments:2});add(geo,black,a*x,y,z,1,1,1,'fixed');add(geo.clone(),0xb5c9d5,a*x,y,z+.021,.91,.87,1,'lampglass');return{geo,x:a*x,y,z:z+.026};}
+  function ford(y,z){const oval=ring(0,y,z,.058,chrome);oval.scale.set(1.7,.72,.35);ell(0x214a7a,0,y,z+.008,.088,.038,.006,'lens');lettering('Ford',0,y,z+.020,.12,.041);}
+  function bmw(y,z){ell(chrome,0,y,z,.043,.043,.007,'chrome');ell(black,0,y,z+.010,.036,.036,.005);const points=[[-.020,.02],[0,.02],[0,0],[-.020,0]];for(const flip of[-1,1])quad(points.map(([x,v])=>[flip*x,y+flip*v,z+.018]),0x2c7cb4,'lens');}
+  const rect=[[-.50,-.45],[.50,-.45],[.50,.45],[-.50,.45]],swept=[[-.50,-.29],[.30,-.48],[.50,-.18],[.42,.42],[-.36,.47]];
+  const isBMW=key==='bmwx1'||key==='bmwm3',isToyota=key.startsWith('corolla');
+  if(p.sports){
+   if(key==='porsche911'){
+    for(const a of[-1,1]){const x=a*W*.76,y=Y+.07,z=nose-.10;ell(black,x,y,z,.122,.143,.030);ell(chrome,x,y,z+.017,.109,.129,.019,'chrome');ell(0x93b1c0,x,y,z+.036,.094,.113,.009,'lens');ring(x,y,z+.044,.076,chrome);roundedNose(a);}
+    function roundedNose(a){rb(black,a*.48,.33,nose+.036,.33,.10,.025,'fixed',.035);line([[a*.30,.52,nose+.045],[a*.61,.50,nose+.035]],.007,0xd5e0e0,'chrome');}
+    rb(black,0,Y-.025,-L-.026,p.w*.91,.045,.016,'fixed',.009);line([[-W*.88,Y-.018,-L-.041],[W*.88,Y-.018,-L-.041]],.008,0xbf3340,'lens');for(let j=0;j<13;j++){const x=-.39+j*.065;line([[x,Y+.04,-L+.17],[x,Y+.085,-L+.48]],.007,black);}lettering('PORSCHE',0,Y-.11,-L-.04,.61,.05,Math.PI);for(const a of[-1,1])cylinderExit(a*.48,.25,-L-.05,.042);
+   }else{
+    for(const a of[-1,1]){patch(22,8,(u,v)=>{const z=L-.10-u*.52,x=a*(W*.81-u*.055+(v-.5)*.13);return[x,top(z)+p.crown*(1-(x/width(z))**2)+.013,z];},black,'fixed');for(let j=0;j<7;j++){const z=L-.16-j*.061,x=a*(W*.80-j*.006);ell(0xd3e2e5,x,top(z)+.022,z,.017,.009,.014,'lens');}rb(black,a*.50,.29,nose+.03,.40,.13,.018,'fixed',.035);ell(black,a*.58,Y+.03,-L-.03,.093,.093,.02);ell(0xb12e3a,a*.58,Y+.03,-L-.048,.075,.075,.012,'lens');quad([[a*(W+.01),.34,-.78],[a*(W+.01),.53,-.66],[a*(W+.01),.59,-.20],[a*(W+.01),.32,-.32]],black);}
+    patch(18,14,(u,v)=>{const z=-L+.16+u*.62,x=(v*2-1)*.43;return[x,Y+.067,z];},0x2d4c58,'glass');for(const x of[-.23,0,.23])box(0x303d43,x,Y+.01,-L+.43,.045,.06,.49,'interior');rb(black,0,.34,-L-.04,p.w*.89,.16,.045,'fixed',.026);for(const x of[-.11,0,.11])cylinderExit(x,.27,-L-.075,.038);lettering('FERRARI',0,Y+.08,-L-.055,.40,.045,Math.PI);
+   }
+   function cylinderExit(x,y,z,r){const m=add(new T.CylinderGeometry(r,r,.10,20),chrome,x,y,z,1,1,1,'chrome');m.rotation.x=Math.PI/2;ell(black,x,y,z-.052,r*.75,r*.75,.004);}
+   rb(black,0,.23,nose+.055,p.w*.94,.034,.12,'fixed',.02);plate(.36,nose+.078);plate(.44,-L-.074,true);
+  }else{
+   const head={veraneio:[.55,.26,.23,rect],blazer:[.53,.31,.20,rect],pampa:[.47,.30,.14,rect],escort:[.46,.32,.14,swept],tcross:[.50,.36,.14,rect],peugeot206:[.48,.35,.25,swept],jetta:[.49,.36,.14,swept],corolla2007:[.46,.36,.19,swept],corolla2021:[.51,.38,.105,swept],civic2011:[.49,.39,.13,swept],bmwx1:[.53,.35,.16,swept],bmwm3:[.54,.36,.14,swept]}[key];
+   if(key==='veraneio'){rb(black,0,ly,nose,p.w*.94,.27,.028,'fixed',.035);for(const a of[-1,1])for(const xx of[.49,.70])roundLight(a*xx,ly,nose+.023,.092);for(let j=0;j<7;j++)box(chrome,0,ly-.10+j*.032,nose+.032,.73,.009,.013,'chrome');badge('chevrolet',ly,nose+.055);}
+   else{
+    const gx=isBMW?.16:0,gw=isBMW?(key==='bmwx1'?.25:.23):key==='corolla2021'?.36:key==='peugeot206'?.25:.48,gh=isBMW?.18:key==='tcross'?.15:.13;
+    for(const a of(isBMW?[-1,1]:[0])){rb(chrome,a*gx,ly,nose+.021,gw+.02,gh+.02,.018,'chrome',isBMW?.04:.015);rb(black,a*gx,ly,nose+.037,gw,gh,.011,'fixed',isBMW?.03:.012);if(isBMW)for(let n=0;n<7;n++)box(0x56666d,a*gx-gw*.37+n*gw*.12,ly,nose+.048,.006,gh*.88,.005);else for(let n=0;n<2;n++)box(chrome,0,ly-.035+n*.065,nose+.048,gw*.95,.009,.006,'chrome');}
+    if(key==='pampa'||key==='escort')ford(ly,nose+.068);else if(key==='blazer')badge('chevrolet',ly,nose+.065);else if(isBMW)bmw(Y+.04,nose-.04);else if(isToyota)badge('toyota',ly,nose+.062,.044);else if(key==='civic2011'){for(const a of[-1,1])line([[a*.033,ly+.038,nose+.063],[a*.025,ly-.038,nose+.063]],.006,chrome,'chrome');line([[-.029,ly,nose+.063],[.029,ly,nose+.063]],.006,chrome,'chrome');}else if(key==='peugeot206')lettering('PEUGEOT',0,Y+.031,nose+.052,.23,.035);else badge('vw',ly,nose+.065,.045);
+    for(const a of[-1,1]){const d=polyLamp(a,head[0],ly,nose+.031,head[1],head[2],head[3]);for(const dx of[-.072,.068]){const rr=head[2]*(isBMW?.29:.32);ell(chrome,d.x+a*dx,d.y,d.z+.007,rr,rr,.006,'chrome');ell(0x829fae,d.x+a*dx,d.y,d.z+.014,rr*.73,rr*.73,.004,'lens');if(isBMW)ring(d.x+a*dx,d.y,d.z+.020,rr*.91,0xc5dae1);}if(['corolla2021','civic2011','tcross'].includes(key))line([[a*.33,ly-.035,nose+.069],[a*.63,ly-.025,nose+.069]],.006,0xd1e0df,'chrome');}
+   }
+   const lowerH=key==='corolla2021'?.24:key==='peugeot206'?.18:.10,lowerW=key==='corolla2021'?1.0:key==='civic2011'?.89:.71;rb(black,0,key==='corolla2021'?.36:.30,nose+.041,lowerW,lowerH,.026,'fixed',.030);for(let j=0;j<3;j++)box(0x40505a,0,.27+j*.034,nose+.061,lowerW*.92,.008,.005);
+   for(const a of[-1,1]){if(key!=='pampa'){rb(black,a*W*.73,.31,nose+.049,.18,.11,.018,'fixed',.028);roundLight(a*W*.73,.31,nose+.069,key==='escort'?.037:.027);}
+    const ww=p.wagon?.14:key==='peugeot206'?.17:key==='corolla2007'?.25:.29,hh=p.wagon?.32:key==='peugeot206'?.26:key==='civic2011'?.19:.17,x=a*(W-ww*.58-.03),y=p.wagon?Y+.02:Y-.06;
+    rb(black,x,y,-L-.024,ww+.02,hh+.02,.025,'fixed',.035);rb(0xa72d39,x,y+.01,-L-.043,ww,hh*.83,.010,'lens',.028);rb(0xbcc9ca,x,y-.025,-L-.052,ww*.88,hh*.17,.009,'lens',.005);
+    if(['jetta','corolla2021','bmwm3','civic2011'].includes(key)){const lx=x-a*(ww*.75);rb(0x9a2a35,lx,y+.01,-L-.04,ww*.54,hh*.51,.010,'lens',.01);}
+   }
+   if(key==='tcross'){rb(black,0,Y-.02,-L-.028,p.w*.92,.10,.020,'fixed',.012);line([[-W*.88,Y-.035,-L-.045],[W*.88,Y-.035,-L-.045]],.007,0xb83543,'lens');}
+   if(p.wagon)for(const a of[-1,1]){line([[a*W*.72,roof+.045,p.rf-.10],[a*W*.72,roof+.045,p.rr+.07]],.013,0x3a4b55);for(const z of[p.rf-.15,p.rr+.10])line([[a*W*.72,roof-.005,z],[a*W*.72,roof+.045,z]],.013,0x3a4b55);}
+   if(key==='escort'){rb(black,0,Y+.11,-L+.09,p.w*.95,.045,.20,'fixed',.018);for(const a of[-1,1])line([[a*(W+.01),.36,-L+.13],[a*(W+.01),.36,L-.13]],.035,black);}
+   if(key==='bmwm3'){ell(white,0,Y+.027,1.06,.34,.035,.46,'paint');for(const a of[-1,1])for(const dx of[-.055,.055]){const tail=add(new T.CylinderGeometry(.031,.031,.09,16),chrome,a*.49+dx,.25,-L-.08,1,1,1,'chrome');tail.rotation.x=Math.PI/2;}}
+   lettering(({veraneio:'VERANEIO',blazer:'BLAZER',pampa:'PAMPA',escort:'ESCORT XR3',tcross:'T-CROSS',peugeot206:'206',jetta:'JETTA',corolla2007:'COROLLA',corolla2021:'COROLLA',civic2011:'CIVIC',bmwx1:'X1',bmwm3:'M3'})[key],.34,Y+.10,-L-.044,.39,.050,Math.PI);
+   plate(.40,nose+.076);plate(.41,-L-.076,true);
+  }
+ }else
  if(additions.includes(key)){
   const modern=key==='golf7'||key==='palio',fiat=key==='palio'||key==='tempra';
   const roundFiat=(y,z)=>{const b=ring(0,y,z,.050,chrome);ell(0x9a2834,0,y,z+.007,.043,.043,.007,'lens');lettering('FIAT',0,y,z+.019,.067,.025);};
@@ -197,7 +253,11 @@ function build(T,key,h){
  // Bonnet seams and a rear hatch line make each surface read as coachwork.
  for(const a of[-1,1]){const pts=[];for(let i=0;i<=24;i++){const z=p.front+.03+(L-p.front-.10)*i/24,x=a*width(z)*.77;pts.push([x,top(z)+p.crown*(1-.77**2)+.0015,z]);}line(pts,.0025,0x40515a);}
  for(const[i,x,z]of[[0,-W*.91,p.fa],[1,W*.91,p.fa],[2,-W*.91,p.ra],[3,W*.91,p.ra]])wheel(i,x,z,p.r);
- Object.assign(root.userData,{coachwork:'curved-panels-v2',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}],seatScale:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
+ if(!p.classic&&!p.bus){
+  const roundness=['palio','peugeot206','corolla2007','porsche911'].includes(key)?.19:p.sports?.16:.095,nearWhite=0xffffff;
+  root.userData.surfaceWarp={front:p.front,rear:p.rear,length:p.l,width:p.w,roundness};
+ }
+ Object.assign(root.userData,{coachwork:'curved-panels-v2',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
  return true;
 }
 (typeof window!=='undefined'?window:globalThis).OTBrazilCoachwork={build,specs};

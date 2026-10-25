@@ -62,6 +62,7 @@
     lights:Object.freeze([['warm','Clássicas'],['white','Brancas'],['energy','Energia']])
   });
   const OTTHI_WORLD_CIVIL_VEHICLE_PRESETS=Object.freeze({
+    ...window.OTBrazilExpansion.presets,
     'garage-orange':Object.freeze({theme:'brasil',bodyType:'small',kind:'car',body:'classic',hood:'flat',roof:'standard',wheels:'city',rear:'none',lights:'warm',primary:'#f28a22',secondary:'#0aa7b8',accent:'#f5d84d'}),
     'market-blue':Object.freeze({theme:'brasil',bodyType:'small',kind:'car',body:'classic',hood:'flat',roof:'standard',wheels:'city',rear:'none',lights:'warm',primary:'#3b8f52',secondary:'#456b9a',accent:'#c8e6c9'}),
     'city-white':Object.freeze({theme:'brasil',bodyType:'small',kind:'car',body:'classic',hood:'flat',roof:'standard',wheels:'city',rear:'none',lights:'warm',primary:'#f2f4f6',secondary:'#2f7fd8',accent:'#f6cf45'}),
@@ -83,20 +84,21 @@
     'br-s10':Object.freeze({theme:'brasil',bodyType:'utility',kind:'utility',primary:'#36779b'})
   });
   const OTTHI_PLAYER_VEHICLE_CATALOG=Object.freeze([
-    Object.freeze({id:'garage-orange',theme:'Brasil',category:'small',label:'Volkswagen Gol quadrado',icon:'🚗',price:0,description:'Hatch brasileiro clássico com sua carroceria própria.'}),
-    Object.freeze({id:'lego-moto',theme:'lego',category:'moto',label:'LEGO • Moto',icon:'🏍️',price:220,description:'Moto compacta de brinquedo LEGO.'}),
+    ...window.OTBrazilExpansion.garage,
+    Object.freeze({id:'garage-orange',theme:'Brasil',category:'small',label:'Volkswagen Gol GTI · rodas orbitais',icon:'🚗',price:0,description:'Gol GTI quadrado, saias cinza, faróis de neblina e rodas orbitais.'}),
+    Object.freeze({id:'lego-moto',theme:'Brasil',category:'moto',label:'Yamaha Factor 125',icon:'🏍️',price:220,description:'Moto urbana de tanque, motor e rodas raiadas próprios.'}),
     Object.freeze({id:'home-green',theme:'Brasil',category:'utility',label:'Volkswagen Kombi',icon:'🚐',price:340,description:'Kombi de dois tons para viagens, missões e entregas.'}),
     Object.freeze({id:'country-brown',theme:'Brasil',category:'truck',label:'Volkswagen Constellation · carga',icon:'🚚',price:480,description:'Caminhão brasileiro de cabine avançada e seis rodas.'}),
     Object.freeze({id:'market-blue',theme:'Brasil',category:'small',label:'Fiat Uno clássico',icon:'🚗',price:190,description:'Compacto brasileiro de teto alto e lanternas verticais.'}),
-    Object.freeze({id:'minecraft-moto',theme:'minecraft',category:'moto',label:'Minecraft / Manycraft • Moto',icon:'🏍️',price:230,description:'Moto em blocos e peças voxel.'}),
+    Object.freeze({id:'minecraft-moto',theme:'Brasil',category:'moto',label:'Honda XRE 300',icon:'🏍️',price:230,description:'Trail de para-lama alto, rodas raiadas e posição elevada.'}),
     Object.freeze({id:'gym-yellow',theme:'Brasil',category:'utility',label:'Toyota Hilux',icon:'🚙',price:420,description:'Picape de cabine dupla, caçamba aberta e estribos.'}),
     Object.freeze({id:'minecraft-truck',theme:'Brasil',category:'truck',label:'Volkswagen Constellation · rodoviário',icon:'🚚',price:560,description:'Caminhão brasileiro para viagens pela rodovia.'}),
     Object.freeze({id:'city-white',theme:'Brasil',category:'small',label:'Volkswagen Golf',icon:'🚗',price:260,description:'Golf IV com faróis de dupla óptica e cabine envidraçada.'}),
-    Object.freeze({id:'playmobil-moto',theme:'playmobil',category:'moto',label:'Playmobil • Moto',icon:'🏍️',price:240,description:'Moto Playmobil compacta.'}),
+    Object.freeze({id:'playmobil-moto',theme:'Brasil',category:'moto',label:'Honda CG Titan 150',icon:'🏍️',price:240,description:'Moto urbana de motor monocilíndrico e banco longo.'}),
     Object.freeze({id:'playmobil-utility',theme:'Brasil',category:'utility',label:'Volkswagen Saveiro Cross',icon:'🚐',price:390,description:'Saveiro de cabine dupla com caçamba e santo-antônio.'}),
     Object.freeze({id:'forest-teal',theme:'Brasil',category:'truck',label:'Volkswagen Constellation · trabalho',icon:'🚚',price:520,description:'Caminhão brasileiro para cargas e trabalhos.'}),
     Object.freeze({id:'workshop-red',theme:'Brasil',category:'small',label:'Chevrolet Chevette',icon:'🏎️',price:430,description:'Chevette de duas portas, faróis redondos e porta-malas separado.'}),
-    Object.freeze({id:'mario-moto',theme:'mario-world',category:'moto',label:'Mario World • Moto',icon:'🏍️',price:280,description:'Moto rápida com proporções de Mario World.'}),
+    Object.freeze({id:'mario-moto',theme:'Brasil',category:'moto',label:'Honda CB 600F Hornet',icon:'🏍️',price:280,description:'Naked com motor de quatro cilindros e escapes curvos.'}),
     Object.freeze({id:'adventure-black',theme:'Brasil',category:'utility',label:'Volkswagen Amarok',icon:'🚙',price:520,description:'Amarok de cabine dupla com grade horizontal e caçamba aberta.'}),
     Object.freeze({id:'royal-purple',theme:'Brasil',category:'truck',label:'Volkswagen Constellation · especial',icon:'🚚',price:700,description:'Caminhão brasileiro personalizável na oficina.'}),
     Object.freeze({id:'br-fusca',theme:'Brasil',category:'small',label:'Volkswagen Fusca',icon:'🚙',price:210,description:'Fusca brasileiro de carroceria curva e faróis redondos.'}),
@@ -154,7 +156,7 @@
   function garageVehicleSlot(id,currentGarage=null){const garage=currentGarage||ensurePlayerGarageState();return Object.keys(garage.slots).find(slot=>garage.slots[slot]===id)||'';}
   function garageDisplaySlot(id,currentGarage=null){const garage=currentGarage||ensurePlayerGarageState();return Object.keys(garage.displaySlots||{}).find(slot=>garage.displaySlots[slot]===id)||'';}
   function catalogColorNumber(value,fallback){const parsed=parseInt(String(value||'').replace('#',''),16);return Number.isFinite(parsed)?parsed:fallback;}
-  function ensureCatalogVehicle(id,slot=1){let vehicle=vehicleById(id);if(vehicle)return vehicle;const entry=playerVehicleCatalogEntry(id),parts=defaultWorldVehicleParts(id),point=playerGarageSlot(Math.min(3,Number(slot)||1));if(!entry)return null;vehicle=createToyCar(point.x,point.z,{id,label:entry.label,primary:catalogColorNumber(parts.primary,0xf28a22),secondary:catalogColorNumber(parts.secondary,0x0aa7b8),heading:point.heading,theme:parts.theme,bodyType:parts.bodyType,kind:parts.kind});return vehicle;}
+  function ensureCatalogVehicle(id,slot=1){let vehicle=vehicleById(id);if(vehicle)return vehicle;const entry=playerVehicleCatalogEntry(id),parts=defaultWorldVehicleParts(id),point=playerGarageSlot(Math.min(3,Number(slot)||1));if(!entry)return null;vehicle=createToyCar(point.x,point.z,{id,label:entry.label,primary:catalogColorNumber(parts.primary,0xf28a22),secondary:catalogColorNumber(parts.secondary,0x0aa7b8),heading:point.heading,theme:parts.theme,bodyType:parts.bodyType,kind:parts.kind,brazilModel:entry.model||window.OTBrazilExpansion.legacy[id]||''});return vehicle;}
   function setGarageVehicleStored(vehicle,stored){if(!vehicle)return;vehicle.garageStored=!!stored;if(!vehicle.occupied&&vehicle.group)vehicle.group.visible=!stored;}
   function ensureGarageDisplayClone(id,vehicle){if(!world||!worldGroup||!vehicle?.group?.clone)return null;world.playerGarageDisplayFleet=world.playerGarageDisplayFleet||new Map();let clone=world.playerGarageDisplayFleet.get(id);if(clone)return clone;clone=vehicle.group.clone(true);clone.userData={...(clone.userData||{}),garageCollectionDisplay:true,vehicleId:id};clone.traverse?.(node=>{if(node.material){if(Array.isArray(node.material))node.material=node.material.map(m=>m?.clone?.()||m);else node.material=node.material.clone?.()||node.material;}});worldGroup.add(clone);world.playerGarageDisplayFleet.set(id,clone);return clone;}
   function syncOwnedGarageDisplayFleet(){const garage=ensurePlayerGarageState(),range=qualityTier()==='low'?52:qualityTier()==='high'?96:72,center=worldLayoutPoint('homeGarage',{x:-31,z:46}),near=Math.hypot(player.x-center.x,player.z-center.z)<=range;for(const id of state.vehicles.owned){const active=player.vehicle&&String(player.car.id||'')===String(id),vehicle=ensureCatalogVehicle(id,Number(garageVehicleSlot(id,garage)||1)),actualSlot=garageVehicleSlot(id,garage),atWorkshop=!!vehicle?.workshopYardStatus||String(world.workshopLift?.vehicleId||'')===String(id),displaySlot=garageDisplaySlot(id,garage);let clone=world.playerGarageDisplayFleet?.get(id)||null;if(active||actualSlot||atWorkshop){if(clone)clone.visible=false;continue;}if(!displaySlot||!vehicle)continue;clone=ensureGarageDisplayClone(id,vehicle);if(!clone)continue;const point=playerGarageDisplaySlot(Number(displaySlot));clone.position.set(point.x,groundHeightAt(point.x,point.z),point.z);clone.rotation.y=point.heading;clone.visible=near;}return true;}
