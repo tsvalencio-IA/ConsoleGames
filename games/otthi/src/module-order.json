@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "ecf37ae26d562ce54cc1ddefa9c5cb952ddc540a623a59efe43adb5446e2a335"
+      "sha256Body": "14911a07033de8c04336b02f78b0b2709c58b6436e5ede85a08b29f0151595ad"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -112,7 +112,7 @@
       "startLine": 2743,
       "endLine": 2991,
       "description": "Casas, interiores, NPCs, inimigos, cristais, veículos e academia",
-      "sha256Body": "2453aecf6cb53d742e235c4ae49dd89f086163b2705e0f9e0c2177bdcf416ded"
+      "sha256Body": "95e2b3554f4504ee785a1bf6d1119e40c4eaa6b4a706608b545661f4a76cac1d"
     },
     {
       "file": "src/modules/13a-sports-kart-v705.js",
@@ -224,7 +224,7 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "1022a90b9e9ac20eba179cd2bd674fb693842ebb8d9b95c4362ca1bf7071d46f"
+      "sha256Body": "c8eb746dc78c359f5c71147b23093c502a4e87488ccd87e5691ede8ad8942ea2"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
@@ -315,7 +315,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "55f96d30204b80a8fb7870bd446fb9e45888afb30049286b8db9bef86e5b1081"
+      "sha256Body": "ade29cd9da6aa153053c4c70d88a952996d6e9f867ab005fde0d260031b291cf"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -357,7 +357,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "80e7ccf4121aa56d39ac1f4ddd1e42a113912e6355ecb42fda2ae7d80af9fc27"
+      "sha256Body": "d456c35dea573abf2d5fc12ec9647cfd06f06ecfb77e05e00ef41ba6878c0084"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "0c1b44ebcf887bee27f228de5bce958845bd4a568a56c40174ab0a5a37a07917"
+      "sha256Body": "ec8ebe200ceb20033dc3171c1a973b3d209869f5d8ea7d979f89cfea039c55d1"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -456,6 +456,20 @@
       "endLine": 0,
       "description": "Embarque e assentos de grupos online em carros, aviões e helicópteros",
       "sha256Body": "1639da4d979164edaec758f4709cc8249e1d906ec9695456a96a3427d6c3194a"
+    },
+    {
+      "file": "src/modules/52-neighborhood-riders.js",
+      "sha256Body": "38219267d5555b78c13179d6a50b4315ee6f0e9471c05def54bdc157b05ba010"
+    },
+    {
+      "file": "src/modules/53-neighborhood-dealerships.js",
+      "description": "Concessionárias físicas, exposição e compras nativas",
+      "sha256Body": "b8a46708eba38abcbce586a2081618f09ea0057a54c62a6fd56a334dabd5fe12"
+    },
+    {
+      "file": "src/modules/54-neighborhood-home-life.js",
+      "description": "Casas com circulação livre, ações nativas e avatar sentado",
+      "sha256Body": "b0a5737414ab9ff110e7af74f35f839b12f9c2f50d152a070094fab33ff00026"
     }
   ],
   "styles": [

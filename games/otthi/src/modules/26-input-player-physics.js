@@ -49,6 +49,7 @@
     input.x=lerp(input.x,input.targetX,Math.min(1,dt*34));
     input.z=lerp(input.z,input.targetZ,Math.min(1,dt*34));
     const mag=Math.hypot(input.x,input.z);let ix=input.x,iz=input.z;if(mag>1){ix/=mag;iz/=mag;}if(fishingSession||fishingVisual?.active){ix=0;iz=0;input.x=input.z=input.targetX=input.targetZ=0;}
+    if(neighborhoodHome.seat&&mag>.14)clearHomeSeat();
     if(player.transit.mode){player.vx=player.vz=0;input.x=input.z=input.targetX=input.targetZ=0;playerGroup.position.set(player.x,player.y,player.z);playerGroup.rotation.y=player.facing;contactShadow.position.set(player.x,groundHeightAt(player.x,player.z)+.025,player.z);if(player.transit.mode==='bus')animatePlayer(dt);updateContext();return;}
 
     if(player.boating){

@@ -30,6 +30,10 @@
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
     roads:Object.freeze([
+      {id:'district-spine',x:-308,z:-25,w:9,d:130,kind:'street'},
+      {id:'district-alameda',x:-266.5,z:-21,w:83,d:6,kind:'street'},
+      {id:'district-collection-link',x:-225,z:-38,w:6,d:34,kind:'street'},
+      {id:'district-motos-entry',x:-301,z:26,w:14,d:6,kind:'street'},
       {id:'acesso-colecao-ot',x:-194,z:-55,w:80,d:9,kind:'street'},
       {id:'aurora-centro-ew',x:300,z:-40,w:120,d:9,kind:'street'},
       {id:'aurora-centro-ns',x:300,z:-40,w:9,d:100,kind:'street'},
@@ -84,6 +88,7 @@
       })
     ]),
     nodes:Object.freeze({
+      DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
       A_LINK:{x:205,z:-10},A_W:{x:240,z:-40},A_C:{x:300,z:-40},A_E:{x:360,z:-40},A_NW:{x:240,z:-90},A_N:{x:300,z:-90},A_NE:{x:360,z:-90},A_SW:{x:240,z:10},A_S:{x:300,z:10},A_SE:{x:360,z:10},A_RACE:{x:300,z:-212},
       CV_LINK:{x:-210,z:25},CV_NE:{x:-240,z:60},CV_E:{x:-240,z:110},CV_SE:{x:-240,z:160},CV_S:{x:-300,z:160},CV_SW:{x:-360,z:160},CV_W:{x:-360,z:110},CV_NW:{x:-360,z:60},CV_N:{x:-300,z:60},CV_C:{x:-300,z:110},CV_RW:{x:-400,z:20},CV_RB:{x:-400,z:-150},CV_RA:{x:-300,z:-150},CV_RACE:{x:-300,z:-156},
       VS:{x:0,z:-105},V65S:{x:0,z:-65},V18S:{x:0,z:-18},C:{x:0,z:0},V18N:{x:0,z:18},V58N:{x:0,z:58},VN:{x:0,z:105},
@@ -121,6 +126,7 @@
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
+      ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
       ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
       ['H25E','V_GYM_TURN'],['E65S','VB_TURN'],['VB_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['W55S','VD_TURN'],['VD_TURN','VD_GATE'],
@@ -243,8 +249,11 @@
       {id:'campaign-airbase',kind:'campaign',x:27,z:-172,w:83,d:30,margin:.2},
       {id:'campaign-north',kind:'campaign',x:85,z:115,w:16,d:10,margin:.2},
       {id:'home',kind:'house',point:'home',w:9,d:7,margin:1.2,access:'spawn'},
-      {id:'fleet-collection',kind:'garage',point:'fleetCollection',w:68,d:74,margin:.5,allowedRoads:['acesso-colecao-ot']},
-      {id:'home-garage',kind:'garage',point:'homeGarage',w:10,d:10,margin:.8,access:'garagem-residencial'},
+      {id:'dealer-cars',kind:'dealer',x:-345,z:11,w:60,d:36,margin:.3},
+      {id:'dealer-bikes',kind:'dealer',x:-270,z:26,w:48,d:34,margin:.3,allowedRoads:['district-motos-entry']},
+      {id:'dealer-trucks',kind:'dealer',x:-350,z:-54,w:70,d:64,margin:.3},
+      {id:'fleet-collection',kind:'garage',point:'fleetCollection',w:68,d:74,margin:.5,allowedRoads:['acesso-colecao-ot','district-alameda']},
+      {id:'home-garage',kind:'garage',point:'homeGarage',w:14.4,d:9.2,margin:.8,access:'garagem-residencial'},
       {id:'blue',kind:'house',point:'blue',w:9,d:7,margin:1.2},
       {id:'pink',kind:'house',point:'pink',w:9,d:7,margin:1.2},
       {id:'shop',kind:'house',point:'shop',w:9,d:7,margin:1.2},
@@ -282,7 +291,7 @@
   ]);
   function otthiHomeIdentity(){const cloudUid=typeof window!=='undefined'?window.OTTHOS_RTDB?.uid:'';const localState=typeof state!=='undefined'?state:null;return String(cloudUid||localState?.profile?.playerId||localState?.profile?.name||'local-home');}
   function otthiHomeLotIndex(){let hash=2166136261;for(const char of otthiHomeIdentity()){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return(hash>>>0)%OTTHI_PERSONAL_HOME_LOTS.length;}
-  function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*21:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
+  function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*23:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
   function v704PersonalHomeLotAt(x,z,margin=0){return OTTHI_PERSONAL_HOME_LOTS.some(lot=>Math.abs(Number(x)-lot.x)<=5.2+margin&&Math.abs(Number(z)-lot.z)<=4.3+margin);}
   function worldLayoutPoint(id,fallback={x:0,z:0}){const personal=otthiPersonalHomeLot();if(id==='home')return{...personal.home};if(id==='spawn')return{...personal.spawn};if(id==='homeGarage')return{...personal.garage};const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
   function worldLayoutRect(id){const zone=WORLD_LAYOUT_V704.zones[id];return zone?{...zone}:null;}

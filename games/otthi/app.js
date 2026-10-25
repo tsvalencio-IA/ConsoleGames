@@ -1642,6 +1642,10 @@
       pingpong:{id:'pingpong',label:'Ginásio de Pingue-pongue',activity:'Pingue-pongue',icon:'🏓',x:48,z:18,w:14,d:12,navX:48,navZ:10,face:-1,slug:'tenis'}
     }),
     roads:Object.freeze([
+      {id:'district-spine',x:-308,z:-25,w:9,d:130,kind:'street'},
+      {id:'district-alameda',x:-266.5,z:-21,w:83,d:6,kind:'street'},
+      {id:'district-collection-link',x:-225,z:-38,w:6,d:34,kind:'street'},
+      {id:'district-motos-entry',x:-301,z:26,w:14,d:6,kind:'street'},
       {id:'acesso-colecao-ot',x:-194,z:-55,w:80,d:9,kind:'street'},
       {id:'aurora-centro-ew',x:300,z:-40,w:120,d:9,kind:'street'},
       {id:'aurora-centro-ns',x:300,z:-40,w:9,d:100,kind:'street'},
@@ -1696,6 +1700,7 @@
       })
     ]),
     nodes:Object.freeze({
+      DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
       A_LINK:{x:205,z:-10},A_W:{x:240,z:-40},A_C:{x:300,z:-40},A_E:{x:360,z:-40},A_NW:{x:240,z:-90},A_N:{x:300,z:-90},A_NE:{x:360,z:-90},A_SW:{x:240,z:10},A_S:{x:300,z:10},A_SE:{x:360,z:10},A_RACE:{x:300,z:-212},
       CV_LINK:{x:-210,z:25},CV_NE:{x:-240,z:60},CV_E:{x:-240,z:110},CV_SE:{x:-240,z:160},CV_S:{x:-300,z:160},CV_SW:{x:-360,z:160},CV_W:{x:-360,z:110},CV_NW:{x:-360,z:60},CV_N:{x:-300,z:60},CV_C:{x:-300,z:110},CV_RW:{x:-400,z:20},CV_RB:{x:-400,z:-150},CV_RA:{x:-300,z:-150},CV_RACE:{x:-300,z:-156},
       VS:{x:0,z:-105},V65S:{x:0,z:-65},V18S:{x:0,z:-18},C:{x:0,z:0},V18N:{x:0,z:18},V58N:{x:0,z:58},VN:{x:0,z:105},
@@ -1733,6 +1738,7 @@
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
+      ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
       ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
       ['H25E','V_GYM_TURN'],['E65S','VB_TURN'],['VB_TURN','VB_GATE'],['V_GYM_TURN','VP_GATE'],['W55S','VD_TURN'],['VD_TURN','VD_GATE'],
@@ -1855,8 +1861,11 @@
       {id:'campaign-airbase',kind:'campaign',x:27,z:-172,w:83,d:30,margin:.2},
       {id:'campaign-north',kind:'campaign',x:85,z:115,w:16,d:10,margin:.2},
       {id:'home',kind:'house',point:'home',w:9,d:7,margin:1.2,access:'spawn'},
-      {id:'fleet-collection',kind:'garage',point:'fleetCollection',w:68,d:74,margin:.5,allowedRoads:['acesso-colecao-ot']},
-      {id:'home-garage',kind:'garage',point:'homeGarage',w:10,d:10,margin:.8,access:'garagem-residencial'},
+      {id:'dealer-cars',kind:'dealer',x:-345,z:11,w:60,d:36,margin:.3},
+      {id:'dealer-bikes',kind:'dealer',x:-270,z:26,w:48,d:34,margin:.3,allowedRoads:['district-motos-entry']},
+      {id:'dealer-trucks',kind:'dealer',x:-350,z:-54,w:70,d:64,margin:.3},
+      {id:'fleet-collection',kind:'garage',point:'fleetCollection',w:68,d:74,margin:.5,allowedRoads:['acesso-colecao-ot','district-alameda']},
+      {id:'home-garage',kind:'garage',point:'homeGarage',w:14.4,d:9.2,margin:.8,access:'garagem-residencial'},
       {id:'blue',kind:'house',point:'blue',w:9,d:7,margin:1.2},
       {id:'pink',kind:'house',point:'pink',w:9,d:7,margin:1.2},
       {id:'shop',kind:'house',point:'shop',w:9,d:7,margin:1.2},
@@ -1894,7 +1903,7 @@
   ]);
   function otthiHomeIdentity(){const cloudUid=typeof window!=='undefined'?window.OTTHOS_RTDB?.uid:'';const localState=typeof state!=='undefined'?state:null;return String(cloudUid||localState?.profile?.playerId||localState?.profile?.name||'local-home');}
   function otthiHomeLotIndex(){let hash=2166136261;for(const char of otthiHomeIdentity()){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return(hash>>>0)%OTTHI_PERSONAL_HOME_LOTS.length;}
-  function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*21:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
+  function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*23:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
   function v704PersonalHomeLotAt(x,z,margin=0){return OTTHI_PERSONAL_HOME_LOTS.some(lot=>Math.abs(Number(x)-lot.x)<=5.2+margin&&Math.abs(Number(z)-lot.z)<=4.3+margin);}
   function worldLayoutPoint(id,fallback={x:0,z:0}){const personal=otthiPersonalHomeLot();if(id==='home')return{...personal.home};if(id==='spawn')return{...personal.spawn};if(id==='homeGarage')return{...personal.garage};const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
   function worldLayoutRect(id){const zone=WORLD_LAYOUT_V704.zones[id];return zone?{...zone}:null;}
@@ -3704,21 +3713,7 @@
 
   function addHouseInterior(house, type='home') {
     if(type==='home'){
-      const bed=createFurniture(house,'bed',-2.85,-1.95,0,'Dormir');
-      const sofa=createFurniture(house,'sofa',.85,-1.95,0x8b5cf6,'Sentar no sofá');
-      const tv=createFurniture(house,'tv',2.85,-.25,0,'Assistir televisão');
-      const fridge=createFurniture(house,'fridge',-3.05,1.55,0,'Abrir geladeira');
-      const stove=createFurniture(house,'stove',-1.65,1.55,0,'Cozinhar');
-      const sink=createFurniture(house,'sink',-.25,1.55,0,'Beber água');
-      const shower=createFurniture(house,'shower',3.1,1.6,0,'Tomar banho');
-      const chest=createFurniture(house,'chest',3.15,-2.05,0,'Abrir baú');
-      const wardrobe=createFurniture(house,'wardrobe',2.95,.65,0,'Trocar roupa');
-      createFurniture(house,'table',-1.6,.15,0,'Mesa de refeições');createFurniture(house,'plant',1.65,.55,0,'Planta da casa');
-      premiumBox(3.5,.04,2.2,0xd6a65d,house.x-1.7,.18,house.z+1.45,worldGroup,0x765228);
-      premiumBox(3.2,.04,2.0,0x7057b7,house.x+1.1,.18,house.z-1.85,worldGroup,0x3f2c65);
-      premiumBox(8.1,.12,.18,0x63b4e8,house.x,.78,house.z-3.08);premiumBox(.18,2.0,.18,0x63b4e8,house.x-3.9,1.05,house.z-2.95);premiumBox(.18,2.0,.18,0x63b4e8,house.x+3.9,1.05,house.z-2.95);
-      const lampA=addGlow(house.x-2.1,2.25,house.z-.1,0xffc66e,5),lampB=addGlow(house.x+2.1,2.25,house.z-.1,0xffc66e,5);house.interiorObjects.push(lampA,lampB);
-      registerActivity(house,bed,'bed');registerActivity(house,sofa,'sofa');registerActivity(house,tv,'tv');registerActivity(house,fridge,'fridge');registerActivity(house,stove,'stove');registerActivity(house,sink,'sink');registerActivity(house,shower,'shower');registerActivity(house,chest,'chest');registerActivity(house,wardrobe,'wardrobe');
+      addNeighborhoodHomeInterior(house);
     } else if(type==='shop'){
       premiumBox(8.2,.08,6.2,materials.marketFloor,house.x,.16,house.z);premiumBox(8.1,1.15,.12,materials.marketWall,house.x,.72,house.z-3.08);
       const table=createFurniture(house,'table',0,2.05,0,'Comprar itens');registerActivity(house,table,'shop');
@@ -6953,6 +6948,7 @@
     input.x=lerp(input.x,input.targetX,Math.min(1,dt*34));
     input.z=lerp(input.z,input.targetZ,Math.min(1,dt*34));
     const mag=Math.hypot(input.x,input.z);let ix=input.x,iz=input.z;if(mag>1){ix/=mag;iz/=mag;}if(fishingSession||fishingVisual?.active){ix=0;iz=0;input.x=input.z=input.targetX=input.targetZ=0;}
+    if(neighborhoodHome.seat&&mag>.14)clearHomeSeat();
     if(player.transit.mode){player.vx=player.vz=0;input.x=input.z=input.targetX=input.targetZ=0;playerGroup.position.set(player.x,player.y,player.z);playerGroup.rotation.y=player.facing;contactShadow.position.set(player.x,groundHeightAt(player.x,player.z)+.025,player.z);if(player.transit.mode==='bus')animatePlayer(dt);updateContext();return;}
 
     if(player.boating){
@@ -8608,42 +8604,64 @@ function build(T,key,H){
   }
   const legacyCreateToyCar=createToyCar;
   createToyCar=function createToyCarWorld(x,z,options={}){const vehicle=legacyCreateToyCar(x,z,options);applyWorldVehicleModulesToGroup(vehicle?.group,vehicle?.id);return vehicle;};
+  const PLAYER_GARAGE_HOME_SLOTS=Object.freeze(['1','2','3','4','5','6']),PLAYER_GARAGE_HEAVY_SLOTS=Object.freeze(['H1','H2','H3']),PLAYER_GARAGE_ALL_SLOTS=Object.freeze([...PLAYER_GARAGE_HOME_SLOTS,...PLAYER_GARAGE_HEAVY_SLOTS]);
   const PLAYER_GARAGE_MAX_SLOTS=64,PLAYER_GARAGE_DISPLAY_FIRST_SLOT=4,PLAYER_GARAGE_DISPLAY_LAST_SLOT=PLAYER_GARAGE_DISPLAY_FIRST_SLOT+PLAYER_GARAGE_MAX_SLOTS-1;
   function applyWorldVehicleModulesToGroup(group,vehicleId){if(!group||!vehicleId)return false;const parts=worldVehicleParts(vehicleId),durability=Number(state.vehicles.partDurability[vehicleId]??100);return applyWorldVehiclePartsToGroup(group,parts,durability,vehicleId);}
 
   function playerGarageDisplaySlotIds(){return Array.from({length:PLAYER_GARAGE_MAX_SLOTS},(_,i)=>String(PLAYER_GARAGE_DISPLAY_FIRST_SLOT+i));}
-  function ensurePlayerGarageState(){ensureOtthiWorldState();state.vehicles.owned=[...new Set(['garage-orange',...(state.vehicles.owned||[])].map(String).filter(Boolean))];state.vehicles.primaryId=state.vehicles.owned.includes(state.vehicles.primaryId)?state.vehicles.primaryId:'garage-orange';const current=state.vehicles.garage||{};current.slots={'1':'garage-orange',...(current.slots||{})};current.stored={...(current.stored||{})};current.purchasedAt={'garage-orange':0,...(current.purchasedAt||{})};state.vehicles.garage=current;for(const slot of['1','2','3'])if(!state.vehicles.owned.includes(String(current.slots[slot]||'')))current.slots[slot]='';const allowed=playerGarageDisplaySlotIds(),old=current.displaySlots&&typeof current.displaySlots==='object'?current.displaySlots:{},displaySlots={},used=new Set(),inUse=new Set(Object.values(current.slots).filter(Boolean));for(const slot of allowed){const id=String(old[slot]||'');if(id&&state.vehicles.owned.includes(id)&&!inUse.has(id)&&!used.has(id)){displaySlots[slot]=id;used.add(id);}}const legacyIds=Object.entries(old).sort((a,b)=>Number(a[0])-Number(b[0])).map(([,id])=>String(id||'')).filter(id=>id&&state.vehicles.owned.includes(id));for(const id of[...legacyIds,...state.vehicles.owned]){if(used.has(id)||inUse.has(id))continue;const free=allowed.find(slot=>!displaySlots[slot]);if(!free)break;displaySlots[free]=id;used.add(id);}current.displaySlots=displaySlots;return current;}
-  function playerGarageSlot(number=1){const center=worldLayoutPoint('homeGarage',{x:-31,z:46}),index=clamp(Math.round(Number(number)||1),1,3);return{x:center.x+.5,z:center.z+(index-2)*2.8,heading:Math.PI/2,slot:String(index)};}
+  function ensurePlayerGarageState(){ensureOtthiWorldState();state.vehicles.owned=[...new Set(['garage-orange',...(state.vehicles.owned||[])].map(String).filter(Boolean))];state.vehicles.primaryId=state.vehicles.owned.includes(state.vehicles.primaryId)?state.vehicles.primaryId:'garage-orange';const current=state.vehicles.garage||{};current.slots={'1':'garage-orange',...(current.slots||{})};current.stored={...(current.stored||{})};current.purchasedAt={'garage-orange':0,...(current.purchasedAt||{})};state.vehicles.garage=current;for(const slot of PLAYER_GARAGE_ALL_SLOTS)if(!state.vehicles.owned.includes(String(current.slots[slot]||'')))current.slots[slot]='';for(const slot of PLAYER_GARAGE_HOME_SLOTS){const id=current.slots[slot];if(id&&brazilDepotVehicle(id)){const free=PLAYER_GARAGE_HEAVY_SLOTS.find(k=>!current.slots[k]);if(free){current.slots[free]=id;current.slots[slot]='';}else{current.stored[id]=true;current.slots[slot]='';}}}const seenSlots=new Set();for(const key of PLAYER_GARAGE_ALL_SLOTS){const id=current.slots[key];if(id&&seenSlots.has(id))current.slots[key]='';else if(id)seenSlots.add(id);}const allowed=playerGarageDisplaySlotIds(),old=current.displaySlots&&typeof current.displaySlots==='object'?current.displaySlots:{},displaySlots={},used=new Set(),inUse=new Set(Object.values(current.slots).filter(Boolean));for(const slot of allowed){const id=String(old[slot]||'');if(id&&state.vehicles.owned.includes(id)&&!inUse.has(id)&&!used.has(id)){displaySlots[slot]=id;used.add(id);}}const legacyIds=Object.entries(old).sort((a,b)=>Number(a[0])-Number(b[0])).map(([,id])=>String(id||'')).filter(id=>id&&state.vehicles.owned.includes(id));for(const id of[...legacyIds,...state.vehicles.owned]){if(used.has(id)||inUse.has(id))continue;const free=allowed.find(slot=>!displaySlots[slot]);if(!free)break;displaySlots[free]=id;used.add(id);}current.displaySlots=displaySlots;if(Number(current.layoutVersion||0)<2){const center=worldLayoutPoint('homeGarage',{x:-31,z:46});for(const key of PLAYER_GARAGE_ALL_SLOTS){const id=current.slots[key],parked=state.vehicles.parked?.[id];if(!id||!parked||current.stored[id]||Math.abs(parked.x-center.x)>8||Math.abs(parked.z-center.z)>5)continue;const p=playerGarageSlot(key,id);parked.x=p.x;parked.z=p.z;parked.heading=p.heading;const car=vehicleById(id);if(car&&!car.occupied){car.group.position.set(p.x,groundHeightAt(p.x,p.z),p.z);car.group.rotation.y=p.heading;car.x=p.x;car.z=p.z;car.heading=p.heading;}}current.layoutVersion=2;}return current;}
+  function playerGarageSlot(number=1){const center=worldLayoutPoint('homeGarage',{x:-31,z:46}),index=clamp(Math.round(Number(number)||1),1,6),west=index>3;return{x:center.x+(west?-3:3),z:center.z+((index-1)%3-1)*2.8,heading:west?-Math.PI/2:Math.PI/2,slot:String(index)};}
   function playerGarageDisplaySlot(number=PLAYER_GARAGE_DISPLAY_FIRST_SLOT){const center=worldLayoutPoint('homeGarage',{x:-31,z:46}),raw=Math.round(Number(number)||PLAYER_GARAGE_DISPLAY_FIRST_SLOT);if(raw<=3)return playerGarageSlot(raw);const index=clamp(raw,PLAYER_GARAGE_DISPLAY_FIRST_SLOT,PLAYER_GARAGE_DISPLAY_LAST_SLOT),n=index-PLAYER_GARAGE_DISPLAY_FIRST_SLOT,col=n%3,row=Math.floor(n/3);return{x:center.x-7.5-col*4.5,z:center.z-5.75+row*2.3,heading:Math.PI/2,slot:String(index)};}
   function playerVehicleCatalogEntry(id){return OTTHI_PLAYER_VEHICLE_CATALOG.find(item=>item.id===id)||null;}
   function garageVehicleSlot(id,currentGarage=null){const garage=currentGarage||ensurePlayerGarageState();return Object.keys(garage.slots).find(slot=>garage.slots[slot]===id)||'';}
   function garageDisplaySlot(id,currentGarage=null){const garage=currentGarage||ensurePlayerGarageState();return Object.keys(garage.displaySlots||{}).find(slot=>garage.displaySlots[slot]===id)||'';}
   function catalogColorNumber(value,fallback){const parsed=parseInt(String(value||'').replace('#',''),16);return Number.isFinite(parsed)?parsed:fallback;}
-  function ensureCatalogVehicle(id,slot=1){let vehicle=vehicleById(id);if(vehicle)return vehicle;const requested=playerVehicleCatalogEntry(id)?.model;if(window.OTBrazilImports?.requires(requested)&&!window.OTBrazilImports.ready(requested)){requestBrazilModel(requested);return null;}const entry=playerVehicleCatalogEntry(id),parts=defaultWorldVehicleParts(id),point=playerGarageSlot(Math.min(3,Number(slot)||1),id);if(!entry)return null;vehicle=createToyCar(point.x,point.z,{id,label:entry.label,primary:catalogColorNumber(parts.primary,0xf28a22),secondary:catalogColorNumber(parts.secondary,0x0aa7b8),heading:point.heading,theme:parts.theme,bodyType:parts.bodyType,kind:parts.kind,brazilModel:entry.model||window.OTBrazilExpansion.legacy[id]||''});return vehicle;}
+  function ensureCatalogVehicle(id,slot=1){let vehicle=vehicleById(id);if(vehicle)return vehicle;const requested=playerVehicleCatalogEntry(id)?.model;if(window.OTBrazilImports?.requires(requested)&&!window.OTBrazilImports.ready(requested)){requestBrazilModel(requested);return null;}const entry=playerVehicleCatalogEntry(id),parts=defaultWorldVehicleParts(id),point=playerGarageSlot(slot,id);if(!entry)return null;vehicle=createToyCar(point.x,point.z,{id,label:entry.label,primary:catalogColorNumber(parts.primary,0xf28a22),secondary:catalogColorNumber(parts.secondary,0x0aa7b8),heading:point.heading,theme:parts.theme,bodyType:parts.bodyType,kind:parts.kind,brazilModel:entry.model||window.OTBrazilExpansion.legacy[id]||''});return vehicle;}
   function setGarageVehicleStored(vehicle,stored){if(!vehicle)return;vehicle.garageStored=!!stored;if(!vehicle.occupied&&vehicle.group)vehicle.group.visible=!stored;}
-  function ensureGarageDisplayClone(id,vehicle){if(!world||!worldGroup||!vehicle?.group?.clone)return null;world.playerGarageDisplayFleet=world.playerGarageDisplayFleet||new Map();let clone=world.playerGarageDisplayFleet.get(id);if(clone)return clone;clone=vehicle.group.clone(true);clone.userData={...(clone.userData||{}),garageCollectionDisplay:true,vehicleId:id};clone.traverse?.(node=>{if(node.material){if(Array.isArray(node.material))node.material=node.material.map(m=>m?.clone?.()||m);else node.material=node.material.clone?.()||node.material;}});worldGroup.add(clone);world.playerGarageDisplayFleet.set(id,clone);return clone;}
+  function ensureGarageDisplayClone(id,vehicle){if(!world||!worldGroup||!vehicle?.group?.clone)return null;world.playerGarageDisplayFleet=world.playerGarageDisplayFleet||new Map();let clone=world.playerGarageDisplayFleet.get(id);if(clone)return clone;clone=vehicle.group.clone(true);clone.userData={...(clone.userData||{}),garageCollectionDisplay:true,vehicleId:id};clone.traverse?.(node=>{if(node.material){if(Array.isArray(node.material))node.material=node.material.map(m=>m?.clone?.()||m);else node.material=node.material.clone?.()||node.material;}});worldGroup.add(clone);world.playerGarageDisplayFleet.set(id,clone);registerInteractable({id:'collection-drive-'+id,type:'garage',icon:'🔑',label:'Retirar '+(playerVehicleCatalogEntry(id)?.label||id),x:0,z:0,radius:2.2,priority:355,available:()=>!!clone.visible,action:()=>takeCollectionVehicle(id)});return clone;}
   function syncOwnedGarageDisplayFleet(){
     const garage=ensurePlayerGarageState(),range=qualityTier()==='low'?52:qualityTier()==='high'?96:72,center=worldLayoutPoint('homeGarage',{x:-31,z:46}),near=Math.hypot(player.x-center.x,player.z-center.z)<=range;let prepared=0;
     for(const id of state.vehicles.owned){
       const active=player.vehicle&&String(player.car.id||'')===String(id),actualSlot=garageVehicleSlot(id,garage),displaySlot=garageDisplaySlot(id,garage),point=displaySlot?playerGarageDisplaySlot(Number(displaySlot),id):null,visible=!!point&&(point.depot?Math.hypot(player.x-point.x,player.z-point.z)<=range:near);let vehicle=vehicleById(id),clone=world.playerGarageDisplayFleet?.get(id)||null;
       // Stored collection vehicles are constructed only near their actual lot.
       // Loading two per refresh keeps a large saved collection responsive.
-      if(!vehicle&&(active||actualSlot||visible&&prepared<2)){vehicle=ensureCatalogVehicle(id,Number(actualSlot||1));if(vehicle)prepared++;}
+      if(!vehicle&&(active||actualSlot||visible&&prepared<2)){vehicle=ensureCatalogVehicle(id,actualSlot||1);if(vehicle)prepared++;}
       const atWorkshop=!!vehicle?.workshopYardStatus||String(world.workshopLift?.vehicleId||'')===String(id);
-      if(active||actualSlot||atWorkshop||!visible){if(clone)clone.visible=false;continue;}
-      if(!displaySlot||!vehicle)continue;clone=ensureGarageDisplayClone(id,vehicle);if(!clone)continue;clone.position.set(point.x,groundHeightAt(point.x,point.z),point.z);clone.rotation.y=point.heading;clone.visible=true;
+      if(active||actualSlot||atWorkshop||!garage.stored[id]||!visible){if(clone)clone.visible=false;continue;}
+      if(!displaySlot||!vehicle)continue;clone=ensureGarageDisplayClone(id,vehicle);if(!clone)continue;clone.position.set(point.x,groundHeightAt(point.x,point.z),point.z);clone.rotation.y=point.heading;clone.visible=true;const access=world.interactables.find(i=>i.id==='collection-drive-'+id);if(access){access.x=point.x;access.z=point.z+1.6;}
     }return true;
   }
-  function storeOwnedVehicle(id,silent=false){const garage=ensurePlayerGarageState(),vehicle=vehicleById(id);if(!state.vehicles.owned.includes(id))return false;if(player.vehicle&&player.car.id===id){toast('Use SAIR antes de guardar este veículo.','warn',2200);return false;}for(const slot of['1','2','3'])if(garage.slots[slot]===id)garage.slots[slot]='';garage.stored[id]=true;setGarageVehicleStored(vehicle,true);syncOwnedGarageDisplayFleet();saveState(true);if(!silent)toast(`${playerVehicleCatalogEntry(id)?.label||vehicle?.label||'Veículo'} guardado na coleção da garagem.`,'good',1800);return true;}
-  function placeOwnedVehicleInGarage(id){const requested=playerVehicleCatalogEntry(id)?.model;if(window.OTBrazilImports?.requires(requested)&&!window.OTBrazilImports.ready(requested)){toast('Preparando o render detalhado da Ferrari…','good',2200);requestBrazilModel(requested).then(ok=>{if(ok&&state.vehicles.owned.includes(id)){placeOwnedVehicleInGarage(id);if(!els.modal.hidden&&els.modalTitle.textContent==='Minha Garagem')openPlayerGarage();}});return false;}let garage=ensurePlayerGarageState();if(!state.vehicles.owned.includes(id))return false;if(player.vehicle&&player.car.id===id){toast('Use SAIR antes de estacionar este veículo.','warn',2200);return false;}let slot=garageVehicleSlot(id,garage)||['1','2','3'].find(key=>!garage.slots[key])||'1',displaced=garage.slots[slot];if(displaced&&displaced!==id){if(!storeOwnedVehicle(displaced,true))return false;garage=ensurePlayerGarageState();}for(const key of['1','2','3'])if(garage.slots[key]===id)garage.slots[key]='';garage.slots[slot]=id;garage.stored[id]=false;const vehicle=ensureCatalogVehicle(id,Number(slot));if(!vehicle)return false;const point=playerGarageSlot(slot,id);vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.y=point.heading;vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=point.heading;setGarageVehicleStored(vehicle,false);persistParkedVehicle(vehicle);state.vehicles.lastUsedId=id;syncOwnedGarageDisplayFleet();saveState(true);updateContext(true);toast(`${playerVehicleCatalogEntry(id)?.label||vehicle.label} ${point.depot?'está no Centro da Coleção OT':'está na vaga '+slot}.`,'good',1900);return true;}
-  async function buyPlayerVehicle(id){const entry=playerVehicleCatalogEntry(id);if(!entry||state.vehicles.owned.includes(id))return false;if(state.profile.coins<entry.price){toast(`Você precisa de ${entry.price} moedas para este veículo.`,'warn',2400);return false;}const ok=await confirmModal('Comprar veículo',`${entry.label} por ${entry.price} moedas?`,'Comprar','Cancelar');if(!ok)return false;addCoins(-entry.price);state.vehicles.owned.push(id);state.vehicles.owned=[...new Set(state.vehicles.owned)];state.vehicles.garage.purchasedAt[id]=Date.now();state.vehicles.garage.stored[id]=true;ensurePlayerGarageState();placeOwnedVehicleInGarage(id);addXP(30);saveState(true);toast(`${entry.label} agora pertence à sua garagem.`,'good',2300);return true;}
+  function storeOwnedVehicle(id,silent=false){const garage=ensurePlayerGarageState(),vehicle=vehicleById(id);if(!state.vehicles.owned.includes(id))return false;if(player.vehicle&&player.car.id===id){toast('Use SAIR antes de guardar este veículo.','warn',2200);return false;}for(const slot of PLAYER_GARAGE_ALL_SLOTS)if(garage.slots[slot]===id)garage.slots[slot]='';garage.stored[id]=true;setGarageVehicleStored(vehicle,true);syncOwnedGarageDisplayFleet();saveState(true);if(!silent)toast(`${playerVehicleCatalogEntry(id)?.label||vehicle?.label||'Veículo'} guardado na coleção da garagem.`,'good',1800);return true;}
+  function placeOwnedVehicleInGarage(id){const requested=playerVehicleCatalogEntry(id)?.model;if(window.OTBrazilImports?.requires(requested)&&!window.OTBrazilImports.ready(requested)){toast('Preparando o render detalhado da Ferrari…','good',2200);requestBrazilModel(requested).then(ok=>{if(ok&&state.vehicles.owned.includes(id)){placeOwnedVehicleInGarage(id);if(!els.modal.hidden&&els.modalTitle.textContent==='Minha Garagem')openPlayerGarage();}});return false;}let garage=ensurePlayerGarageState();if(!state.vehicles.owned.includes(id))return false;if(player.vehicle&&player.car.id===id){toast('Use SAIR antes de estacionar este veículo.','warn',2200);return false;}let slot=garageVehicleSlot(id,garage)||(brazilDepotVehicle(id)?PLAYER_GARAGE_HEAVY_SLOTS:PLAYER_GARAGE_HOME_SLOTS).find(key=>!garage.slots[key])||(brazilDepotVehicle(id)?'H1':'1'),displaced=garage.slots[slot];if(displaced&&displaced!==id){if(!storeOwnedVehicle(displaced,true))return false;garage=ensurePlayerGarageState();}for(const key of PLAYER_GARAGE_ALL_SLOTS)if(garage.slots[key]===id)garage.slots[key]='';garage.slots[slot]=id;garage.stored[id]=false;const vehicle=ensureCatalogVehicle(id,slot);if(!vehicle)return false;const point=playerGarageSlot(slot,id);vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.y=point.heading;vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=point.heading;setGarageVehicleStored(vehicle,false);persistParkedVehicle(vehicle);state.vehicles.lastUsedId=id;syncOwnedGarageDisplayFleet();saveState(true);updateContext(true);toast(`${playerVehicleCatalogEntry(id)?.label||vehicle.label} ${point.depot?'está no Centro da Coleção OT':'está na vaga '+slot}.`,'good',1900);return true;}
+  async function buyPlayerVehicle(id){const entry=playerVehicleCatalogEntry(id);if(!entry||state.vehicles.owned.includes(id))return false;if(state.profile.coins<entry.price){toast(`Você precisa de ${entry.price} moedas para este veículo.`,'warn',2400);return false;}const ok=await confirmModal('Comprar veículo',`${entry.label} por ${entry.price} moedas?`,'Comprar','Cancelar');if(!ok||state.vehicles.owned.includes(id))return false;if(state.profile.coins<entry.price){toast('Saldo alterado. A compra não foi cobrada.','warn',2200);return false;}addCoins(-entry.price);state.vehicles.owned.push(id);state.vehicles.owned=[...new Set(state.vehicles.owned)];state.vehicles.garage.purchasedAt[id]=Date.now();state.vehicles.garage.stored[id]=true;ensurePlayerGarageState();placeOwnedVehicleInGarage(id);addXP(30);saveState(true);toast(`${entry.label} agora pertence à sua garagem.`,'good',2300);return true;}
   function setPrimaryPlayerVehicle(id){ensurePlayerGarageState();if(!state.vehicles.owned.includes(id))return false;state.vehicles.primaryId=id;state.vehicles.lastUsedId=id;saveState(true);toast(`${playerVehicleCatalogEntry(id)?.label||'Veículo'} definido como principal.`,'good',1700);return true;}
-  function openPlayerGarage(){syncOwnedGarageDisplayFleet();const garage=ensurePlayerGarageState(),owned=OTTHI_PLAYER_VEHICLE_CATALOG.filter(item=>state.vehicles.owned.includes(item.id)),available=OTTHI_PLAYER_VEHICLE_CATALOG.filter(item=>!state.vehicles.owned.includes(item.id)),ownedCards=owned.map(item=>{const vehicle=vehicleById(item.id),slot=garageVehicleSlot(item.id,garage),stored=!!garage.stored[item.id],primary=state.vehicles.primaryId===item.id,durability=Math.round(Number(state.vehicles.partDurability[item.id]??100)),workshopStatus=vehicle?.workshopYardStatus,where=workshopStatus?`Oficina • ${workshopStatus==='ready'?'Pronto':workshopStatus==='unrepairable'?'Sem conserto':'Em reparo'}`:stored?(!!item.model||brazilDepotVehicle(item.id)||Number(garageDisplaySlot(item.id,garage))>21?'Centro da Coleção OT':'Coleção • garagem'):slot?`Vaga ${slot}`:vehicle?'Em circulação':'Disponível';return `<article class="choice garage-owned-card"><b>${item.icon} ${escapeHtml(item.label)} ${primary?'⭐':''}</b><span>${where} • integridade ${durability}%</span><small>${escapeHtml(item.description)} • ${escapeHtml(item.theme||'')} • ${escapeHtml(item.category||'')}</small><div class="modal-actions"><button class="btn primary compact" data-garage-place="${item.id}">${stored?'Retirar':'Trazer para garagem'}</button>${stored?'':`<button class="btn compact" data-garage-store="${item.id}">Guardar</button>`}<button class="btn compact" data-garage-primary="${item.id}" ${primary?'disabled':''}>Principal</button><button class="btn compact" data-garage-customize="${item.id}">Personalizar</button></div></article>`;}).join(''),shopCards=available.map(item=>`<button class="choice" data-garage-buy="${item.id}"><b>${item.icon} ${escapeHtml(item.label)}</b><span>${item.price} moedas • ${escapeHtml(item.category||'')}</span><small>${escapeHtml(item.description)}</small></button>`).join('');openModal('Minha Garagem',`<div class="otthi-garage-status"><span>🏠</span><div><b>${owned.length} veículo(s) em sua coleção</b><small>A coleção ampliada tem um centro junto à rodovia. Ônibus e carretas são retirados no pátio de pesados; os carros continuam na garagem de casa.</small></div></div><div class="modal-actions"><button class="btn good" data-garage-gps>📍 Garagem de casa</button><button class="btn" data-collection-gps>🚘 Centro da Coleção OT</button></div><section class="avatar-section"><h3>Meus veículos</h3><div class="choice-grid">${ownedCards}</div></section>${available.length?`<section class="avatar-section"><h3>Concessionária</h3><div class="choice-grid">${shopCards}</div></section>`:''}<p><a href="./assets/vehicles-credits.html" target="_blank" rel="noopener">Créditos dos modelos 3D</a></p>`,root=>{$$('[data-garage-place]',root).forEach(button=>button.onclick=()=>{if(placeOwnedVehicleInGarage(button.dataset.garagePlace))openPlayerGarage();});$$('[data-garage-store]',root).forEach(button=>button.onclick=()=>{if(storeOwnedVehicle(button.dataset.garageStore))openPlayerGarage();});$$('[data-garage-primary]',root).forEach(button=>button.onclick=()=>{if(setPrimaryPlayerVehicle(button.dataset.garagePrimary))openPlayerGarage();});$$('[data-garage-customize]',root).forEach(button=>button.onclick=()=>openWorldModularGarage(button.dataset.garageCustomize));$$('[data-garage-buy]',root).forEach(button=>button.onclick=async()=>{if(await buyPlayerVehicle(button.dataset.garageBuy))openPlayerGarage();});$('[data-garage-gps]',root).onclick=()=>setWaypoint('my-garage');$('[data-collection-gps]',root).onclick=()=>setWaypoint('brazil-collection');});}
-  function createPlayerGarageWorld(){if(world?.playerGarage)return world.playerGarage;ensurePlayerGarageState();const p=worldLayoutPoint('homeGarage',{x:-31,z:46}),g=new THREE.Group();g.name='OTTHI_PLAYER_HOME_GARAGE';worldGroup.add(g);premiumBox(9.6,.18,9.2,materials.concrete,p.x,.09,p.z,g);premiumBox(.38,2.9,9.2,materials.stone,p.x-4.65,1.45,p.z,g);premiumBox(9.3,2.9,.38,materials.stone,p.x,1.45,p.z-4.45,g);premiumBox(9.3,2.9,.38,materials.stone,p.x,1.45,p.z+4.45,g);for(const z of[p.z-2.8,p.z,p.z+2.8])premiumBox(7.8,.045,.08,0xf6d44a,p.x+.55,.22,z,g);for(const z of[p.z-4.15,p.z+4.15])premiumBox(9.6,.22,.35,materials.emergencyMetal,p.x,3.05,z,g);for(const x of[p.x-4.45,p.x+3.8])for(const z of[p.z-4.15,p.z+4.15])premiumBox(.28,3.05,.28,materials.emergencyMetal,x,1.53,z,g);premiumBox(14.7,.12,4.25,materials.road,p.x+12.25,.04,p.z,g);premiumBox(4.8,.72,.22,0x173b59,p.x+4.72,2.62,p.z,g);const sign=new THREE.Mesh(new THREE.PlaneGeometry(3.7,.55),new THREE.MeshStandardMaterial({map:signTexture('MINHA GARAGEM','#173b59','#ffffff'),side:THREE.DoubleSide,roughness:.62}));sign.position.set(p.x+4.86,2.62,p.z);sign.rotation.y=Math.PI/2;g.add(sign);registerCollider(p.x-4.65,p.z,.38,9.2,{garage:'home'});registerCollider(p.x,p.z-4.45,9.3,.38,{garage:'home'});registerCollider(p.x,p.z+4.45,9.3,.38,{garage:'home'});
-    const collection=new THREE.Group();collection.name='OTTHI_PLAYER_GARAGE_COLLECTION';worldGroup.add(collection);premiumBox(14.3,.09,14.2,0x454b50,p.x-12.0,.045,p.z,collection);for(let i=PLAYER_GARAGE_DISPLAY_FIRST_SLOT;i<=21;i++){const slot=playerGarageDisplaySlot(i);premiumBox(4.30,.024,.065,0xf6d44a,slot.x,.10,slot.z-1.10,collection);premiumBox(.065,.024,2.16,0xf6d44a,slot.x-2.20,.10,slot.z,collection);premiumBox(.065,.024,2.16,0xf6d44a,slot.x+2.20,.10,slot.z,collection);}const collectionSign=new THREE.Mesh(new THREE.PlaneGeometry(4.2,.62),new THREE.MeshStandardMaterial({map:signTexture('GARAGEM • COLEÇÃO COMPLETA','#173b59','#ffffff'),side:THREE.DoubleSide,roughness:.58}));collectionSign.position.set(p.x-12.0,1.65,p.z-6.95);collection.add(collectionSign);registerInteractable({id:'player-home-garage',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x+5.4,z:p.z,radius:3.8,priority:350,action:openPlayerGarage});registerInteractable({id:'player-home-garage-collection',type:'garage',icon:'🚗',label:'Ver coleção de veículos',x:p.x-7.0,z:p.z,radius:4.0,priority:345,action:openPlayerGarage});world.playerGarage={group:g,collection,x:p.x,z:p.z};syncOwnedGarageDisplayFleet();return world.playerGarage;}
+  function takeCollectionVehicle(id){
+    const garage=ensurePlayerGarageState();if(!state.vehicles.owned.includes(id)||!garage.stored[id]||player.vehicle||currentHouse)return false;
+    const point=playerGarageDisplaySlot(garageDisplaySlot(id,garage)||4,id);if(Math.hypot(player.x-point.x,player.z-point.z)>5)return false;
+    const vehicle=ensureCatalogVehicle(id);if(!vehicle)return false;for(const key of PLAYER_GARAGE_ALL_SLOTS)if(garage.slots[key]===id)garage.slots[key]='';garage.stored[id]=false;
+    vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.y=point.heading;vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=point.heading;setGarageVehicleStored(vehicle,false);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;persistParkedVehicle(vehicle);saveState(true);return enterVehicle(vehicle);
+  }
+  function openPlayerGarage(){
+    syncOwnedGarageDisplayFleet();const garage=ensurePlayerGarageState(),owned=OTTHI_PLAYER_VEHICLE_CATALOG.filter(item=>state.vehicles.owned.includes(item.id));
+    const cards=owned.map(item=>{const slot=garageVehicleSlot(item.id,garage),stored=!!garage.stored[item.id],primary=state.vehicles.primaryId===item.id,vehicle=vehicleById(item.id),where=vehicle?.workshopYardStatus?'Em atendimento na oficina':stored?'Guardado no Centro da Coleção':slot?(slot.startsWith('H')?'Pátio de pesados · '+slot:'Casa · vaga '+slot):'Estacionado no mundo';
+      return `<article class="choice garage-owned-card" data-owned-search="${escapeHtml(item.label.toLocaleLowerCase('pt-BR'))}" data-owned-kind="${neighborhoodVehicleCategory(item)}"><b>${item.icon} ${escapeHtml(item.label)} ${primary?'⭐':''}</b><span>${where} · integridade ${Math.round(state.vehicles.partDurability[item.id]??100)}%</span><small>${escapeHtml(item.description)}</small><div class="modal-actions"><button class="btn primary compact" data-garage-place="${item.id}">${stored?'Retirar':'Trazer para garagem'}</button>${stored?'':`<button class="btn compact" data-garage-store="${item.id}">Guardar</button>`}<button class="btn compact" data-garage-primary="${item.id}" ${primary?'disabled':''}>Principal</button><button class="btn compact" data-garage-customize="${item.id}">Personalizar</button></div></article>`;}).join('');
+    openModal('Minha Garagem',`<div class="dialogue-box"><b>${owned.length} veículos na sua coleção</b><p>6 vagas em casa + 3 vagas para pesados no Centro da Coleção. Retire qualquer veículo da sua lista. Quando as vagas estiverem cheias, o veículo anterior volta para a coleção.</p><small>No pátio, aproxime-se do veículo exposto e use AÇÃO para sair dirigindo.</small></div><label class="field">Buscar veículo<input type="search" data-owned-query placeholder="Nome ou modelo"></label><label class="field">Categoria<select data-owned-filter><option value="all">Todos os meus veículos</option value="cars">Carros</option><option value="bikes">Motos e bicicleta</option><option value="trucks">Caminhões e ônibus</option></select></label><div class="modal-actions"><button class="btn good" data-garage-gps>📍 Garagem de casa</button><button class="btn" data-collection-gps>Centro da Coleção</button></div><div class="choice-grid">${cards}</div><p data-owned-empty hidden>Nenhum veículo encontrado nesta busca.</p><h3>Visitar concessionárias</h3><div class="modal-actions">${OTTHI_DEALERS.map(d=>`<button class="btn" data-dealer-gps="${d.id}">${d.icon} ${d.title}</button>`).join('')}</div><p><a href="./assets/vehicles-credits.html" target="_blank" rel="noopener">Créditos dos modelos 3D</a></p>`,root=>{
+      const filter=()=>{let count=0;const q=$('[data-owned-query]',root).value.toLocaleLowerCase('pt-BR'),kind=$('[data-owned-filter]',root).value;$$('[data-owned-search]',root).forEach(c=>{c.hidden=!c.dataset.ownedSearch.includes(q)||(kind!=='all'&&c.dataset.ownedKind!==kind);if(!c.hidden)count++;});$('[data-owned-empty]',root).hidden=count>0;};$('[data-owned-query]',root).oninput=filter;$('[data-owned-filter]',root).onchange=filter;
+      $$('[data-garage-place]',root).forEach(b=>b.onclick=()=>{if(placeOwnedVehicleInGarage(b.dataset.garagePlace))openPlayerGarage();});$$('[data-garage-store]',root).forEach(b=>b.onclick=()=>{if(storeOwnedVehicle(b.dataset.garageStore))openPlayerGarage();});$$('[data-garage-primary]',root).forEach(b=>b.onclick=()=>{if(setPrimaryPlayerVehicle(b.dataset.garagePrimary))openPlayerGarage();});$$('[data-garage-customize]',root).forEach(b=>b.onclick=()=>openWorldModularGarage(b.dataset.garageCustomize));$('[data-garage-gps]',root).onclick=()=>setWaypoint('my-garage');$('[data-collection-gps]',root).onclick=()=>setWaypoint('brazil-collection');$$('[data-dealer-gps]',root).forEach(b=>b.onclick=()=>setWaypoint(b.dataset.dealerGps));
+    });
+  }
+  function createPlayerGarageWorld(){
+    if(world?.playerGarage)return world.playerGarage;ensurePlayerGarageState();const p=worldLayoutPoint('homeGarage',{x:-31,z:46}),g=new THREE.Group();g.name='OTTHI_PLAYER_HOME_GARAGE';worldGroup.add(g);
+    premiumBox(14.4,.18,9.2,materials.concrete,p.x,.09,p.z,g);
+    for(const dz of[-4.45,4.45]){premiumBox(14.4,2.6,.3,materials.stone,p.x,1.3,p.z+dz,g);registerCollider(p.x,p.z+dz,14.4,.3,{garage:'home'});premiumBox(14.4,.20,.35,materials.emergencyMetal,p.x,2.85,p.z+dz,g);}
+    for(const dx of[-6.9,6.9])for(const dz of[-4.15,4.15])premiumBox(.24,2.8,.24,materials.emergencyMetal,p.x+dx,1.4,p.z+dz,g);
+    for(const n of PLAYER_GARAGE_HOME_SLOTS){const slot=playerGarageSlot(n),west=Number(n)>3;premiumBox(5.7,.025,.065,0xf6d44a,slot.x,.20,slot.z-1.28,g);const num=new THREE.Mesh(new THREE.PlaneGeometry(.65,.65),new THREE.MeshStandardMaterial({map:signTexture(n,'#505961','#ffffff'),roughness:.7}));num.rotation.x=-Math.PI/2;num.position.set(slot.x,.205,slot.z);g.add(num);}
+    premiumBox(14.7,.12,4.25,materials.road,p.x+12.25,.04,p.z,g);const sign=new THREE.Mesh(new THREE.PlaneGeometry(4.7,.65),new THREE.MeshStandardMaterial({map:signTexture('MINHA GARAGEM · 6 VAGAS','#173b59','#ffffff'),side:THREE.DoubleSide,roughness:.62}));sign.position.set(p.x+7.2,2.8,p.z);sign.rotation.y=Math.PI/2;g.add(sign);
+    registerInteractable({id:'player-home-garage',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x+7.8,z:p.z,radius:4.4,priority:350,action:openPlayerGarage});registerInteractable({id:'player-home-garage-west',type:'garage',icon:'🏠',label:'Abrir Minha Garagem',x:p.x-7.8,z:p.z,radius:3,priority:350,action:openPlayerGarage});world.playerGarage={group:g,x:p.x,z:p.z,capacity:6};syncOwnedGarageDisplayFleet();return world.playerGarage;
+  }
   function updateParkedVehicleVisibility(){if(!world?.vehicles)return;const range=qualityTier()==='low'?48:qualityTier()==='high'?92:68;for(const vehicle of world.vehicles){if(!vehicle?.group||vehicle.occupied||player.vehicle&&player.car.id===vehicle.id)continue;if(vehicle.garageStored||state.vehicles?.garage?.stored?.[vehicle.id]){vehicle.group.visible=false;continue;}vehicle.group.visible=Math.hypot(otGamesFocus().x-vehicle.group.position.x,otGamesFocus().z-vehicle.group.position.z)<=range;}syncOwnedGarageDisplayFleet();}
   function worldVehicleMapLocations(){
-    const garage=worldLayoutPoint('homeGarage',{x:-31,z:46}),records=[{id:'my-garage',name:'Minha Garagem',icon:'🏠',group:'Minha casa',x:garage.x+5.4,z:garage.z,navX:garage.x+5.4,navZ:garage.z,description:'Garagem particular para guardar, retirar, comprar e personalizar seus veículos.',actions:['Marcar no GPS','Gerenciar veículos','Escolher veículo principal']}],seen=new Set(),add=(vehicle,type='car')=>{if(!vehicle?.id||seen.has(`${type}:${vehicle.id}`))return;const localCar=player.vehicle&&player.car.id===vehicle.id,localBoat=player.boating&&type==='boat',group=vehicle.group;if(group?.visible===false&&!localCar&&!localBoat)return;const x=Number(localCar||localBoat?player.x:group?.position?.x??vehicle.x??0),z=Number(localCar||localBoat?player.z:group?.position?.z??vehicle.z??0),kind=String(vehicle.serviceType||vehicle.kind||type),icon=type==='bus'?'🚌':type==='boat'?'🛶':kind==='police'?'🚓':kind==='firefighter'||kind==='fire'?'🚒':kind==='paramedic'||kind==='ambulance'?'🚑':'🚗',name=type==='bus'?`${vehicle.route?.number||''} ${vehicle.route?.name||'Ônibus'}`.trim():(vehicle.label||vehicle.route?.name||(type==='boat'?'Barco do Lago':'Veículo')),groupName=type==='bus'?'Transporte':type==='boat'?'Água e Natureza':['police','firefighter','fire','paramedic','ambulance'].includes(kind)?'Veículos de serviço':'Veículos';seen.add(`${type}:${vehicle.id}`);records.push({id:`world-vehicle-${type}-${vehicle.id}`,name,icon,group:groupName,x,z,navX:x,navZ:z,description:`Localização atual de ${name}.`,actions:['Marcar no GPS','Caminhar até o veículo','Usar AÇÃO para entrar']});};
+    const garage=worldLayoutPoint('homeGarage',{x:-31,z:46}),records=[{id:'my-garage',name:'Minha Garagem',icon:'🏠',group:'Minha casa',x:garage.x+7.8,z:garage.z,navX:garage.x+7.8,navZ:garage.z,description:'Garagem particular para guardar, retirar, comprar e personalizar seus veículos.',actions:['Marcar no GPS','Gerenciar veículos','Escolher veículo principal']}],seen=new Set(),add=(vehicle,type='car')=>{if(!vehicle?.id||seen.has(`${type}:${vehicle.id}`))return;const localCar=player.vehicle&&player.car.id===vehicle.id,localBoat=player.boating&&type==='boat',group=vehicle.group;if(group?.visible===false&&!localCar&&!localBoat)return;const x=Number(localCar||localBoat?player.x:group?.position?.x??vehicle.x??0),z=Number(localCar||localBoat?player.z:group?.position?.z??vehicle.z??0),kind=String(vehicle.serviceType||vehicle.kind||type),icon=type==='bus'?'🚌':type==='boat'?'🛶':kind==='police'?'🚓':kind==='firefighter'||kind==='fire'?'🚒':kind==='paramedic'||kind==='ambulance'?'🚑':'🚗',name=type==='bus'?`${vehicle.route?.number||''} ${vehicle.route?.name||'Ônibus'}`.trim():(vehicle.label||vehicle.route?.name||(type==='boat'?'Barco do Lago':'Veículo')),groupName=type==='bus'?'Transporte':type==='boat'?'Água e Natureza':['police','firefighter','fire','paramedic','ambulance'].includes(kind)?'Veículos de serviço':'Veículos';seen.add(`${type}:${vehicle.id}`);records.push({id:`world-vehicle-${type}-${vehicle.id}`,name,icon,group:groupName,x,z,navX:x,navZ:z,description:`Localização atual de ${name}.`,actions:['Marcar no GPS','Caminhar até o veículo','Usar AÇÃO para entrar']});};
     for(const vehicle of world?.vehicles||[])add(vehicle,'car');for(const bus of world?.buses||[])add(bus,'bus');for(const vehicle of world?.policeCars||[])add(vehicle,'service');for(const vehicle of world?.fireTrucks||[])add(vehicle,'service');for(const vehicle of world?.ambulances||[])add(vehicle,'service');if(world?.boat)add(world.boat,'boat');return records;
   }
   const legacyCurrentMapLocations=currentMapLocations;
@@ -9167,7 +9185,7 @@ function build(T,key,H){
   function familyCloneAvatar(id,parent,baseY=0){
     const source=familyWorld.actors[id];if(!source||!parent)return null;
     const group=source.group.clone(true),byName={};let mesh;
-    group.visible=true;group.position.set(0,0,0);group.rotation.set(0,0,0);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
+    group.visible=true;group.position.set(0,0,0);group.rotation.set(0,0,0);group.scale.setScalar(source.scale);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
     group.traverse(o=>{if(o.isBone)byName[o.name.split(':')[1]]=o;if(o.isSkinnedMesh)mesh=o;});
     const bones=source.bones.map(b=>byName[b.name.split(':')[1]]);
     mesh.bind(new THREE.Skeleton(bones,source.mesh.skeleton.boneInverses.map(m=>m.clone())),source.mesh.bindMatrix.clone());
@@ -10964,24 +10982,24 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
 
   // ===== MODULE: 50-fleet-collection.js =====
   const brazilCollection={ready:false,group:null,pose:new WeakMap(),lastAt:0,center:{x:-266,z:-55},pickupX:-249};
-  function brazilDepotVehicle(id){const entry=playerVehicleCatalogEntry(id),key=entry?.model||window.OTBrazilExpansion.legacy[id]||'';return !!(window.OTBrazilExpansion.catalog[key]?.bus||window.OTBrazilExpansion.catalog[key]?.articulated);}
-  function brazilDepotPickup(number=1){const i=clamp(Math.round(Number(number)||1),1,3);return{x:brazilCollection.pickupX,z:-43+(i-1)*8,heading:Math.PI/2,slot:String(i),depot:true};}
+  function brazilDepotVehicle(id){const entry=playerVehicleCatalogEntry(id),key=entry?.model||window.OTBrazilExpansion.legacy[id]||'';return key==='constellation'||!!(window.OTBrazilExpansion.catalog[key]?.bus||window.OTBrazilExpansion.catalog[key]?.articulated);}
+  function brazilDepotPickup(number=1){const i=clamp(Math.round(Number(String(number).replace('H',''))||1),1,3);return{x:brazilCollection.pickupX,z:-43+(i-1)*8,heading:Math.PI/2,slot:'H'+i,depot:true};}
   function brazilCollectionPoint(slot,id=''){
-    const heavy=window.OTBrazilExpansion.garage.filter(e=>brazilDepotVehicle(e.id)),hi=heavy.findIndex(e=>e.id===id);if(hi>=0)return{x:-280,z:-83+hi*6.8,heading:Math.PI/2,slot:String(slot),depot:true};
+    const heavy=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>brazilDepotVehicle(e.id)),hi=heavy.findIndex(e=>e.id===id);if(hi>=0)return{x:-280,z:-83+hi*6.8,heading:Math.PI/2,slot:String(slot),depot:true};
     const fresh=window.OTBrazilExpansion.garage.filter(e=>!brazilDepotVehicle(e.id)),fi=fresh.findIndex(e=>e.id===id),old=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>!e.model),oi=old.findIndex(e=>e.id===id),n=id?(fi>=0?fi:fresh.length+Math.max(0,oi)):Math.max(0,Number(slot)-22);return{x:-268+(n%6)*5.1,z:-83+Math.floor(n/6)*3.7,heading:Math.PI/2,slot:String(slot),depot:true};
   }
   const brazilPreviousGarageSlot=playerGarageSlot,brazilPreviousDisplaySlot=playerGarageDisplaySlot;
   playerGarageSlot=function(number=1,id=''){return brazilDepotVehicle(id)?brazilDepotPickup(number):brazilPreviousGarageSlot(number);};
-  playerGarageDisplaySlot=function(number=4,id=''){return !!playerVehicleCatalogEntry(id)?.model||brazilDepotVehicle(id)||Number(number)>21?brazilCollectionPoint(number,id):brazilPreviousDisplaySlot(number);};
+  playerGarageDisplaySlot=function(number=4,id=''){return brazilCollectionPoint(number,id);};
   function createBrazilCollection(){
     if(brazilCollection.ready||!worldGroup||!worldExpansion.ready)return;
     const c=brazilCollection.center,g=new THREE.Group();g.name='OTTHI_FLEET_COLLECTION';worldGroup.add(g);brazilCollection.group=g;
-    premiumBox(68,.08,74,0x4a5157,c.x,.04,c.z,g);for(const[x,z,w,d]of[[c.x-33.9,c.z,.14,74],[c.x,c.z-36.9,68,.14],[c.x,c.z+36.9,68,.14]]){premiumBox(w,.48,d,0xc5cbd0,x,.26,z,g);registerCollider(x,z,w,d,{fleetCollection:true});}
+    premiumBox(68,.08,74,0x4a5157,c.x,.04,c.z,g);for(const[x,z,w,d]of[[c.x-33.9,-58.5,.14,67],[c.x,c.z-36.9,68,.14],[c.x,c.z+36.9,68,.14]]){premiumBox(w,.48,d,0xc5cbd0,x,.26,z,g);registerCollider(x,z,w,d,{fleetCollection:true});}
     for(let slot=22;slot<68;slot++){const p=brazilCollectionPoint(slot);premiumBox(4.80,.015,.06,0xe8cf72,p.x,.09,p.z-1.45,g);premiumBox(.06,.015,2.85,0xe8cf72,p.x-2.44,.09,p.z,g);}
-    const heavy=window.OTBrazilExpansion.garage.filter(e=>brazilDepotVehicle(e.id));for(let i=0;i<heavy.length;i++){const p=brazilCollectionPoint(4,heavy[i].id);premiumBox(13.0,.015,.06,0xe8cf72,p.x-3.7,.09,p.z-2.3,g);}
+    const heavy=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>brazilDepotVehicle(e.id));for(let i=0;i<heavy.length;i++){const p=brazilCollectionPoint(4,heavy[i].id);premiumBox(13.0,.015,.06,0xe8cf72,p.x-3.7,.09,p.z-2.3,g);}
     for(let n=1;n<=3;n++){const p=brazilDepotPickup(n);premiumBox(13.0,.015,.08,0xa6d0c2,p.x-3.7,.09,p.z-2.5,g);}
     const sign=new THREE.Mesh(new THREE.PlaneGeometry(8.8,1.15),new THREE.MeshStandardMaterial({map:signTexture('CENTRO DA COLEÇÃO OT','#1b3c51','#e5f0ea'),side:THREE.DoubleSide,roughness:.65}));sign.position.set(-232,2.6,-55);sign.rotation.y=Math.PI/2;g.add(sign);
-    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Abrir coleção e concessionária',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
+    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Abrir minha coleção',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
   }
   const brazilPreviousLocations=expansionMapLocations;
   expansionMapLocations=function(){return [...brazilPreviousLocations(),{id:'brazil-collection',name:'Centro da Coleção OT',icon:'🚘',group:'Veículos',x:-235,z:-55,navX:-229,navZ:-55,description:'Coleção ampliada e pátio para retirar ônibus e carretas, com acesso à rodovia.'}];};
@@ -11093,5 +11111,175 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   window.OTTHOS_TEST_API.boardPassenger=uid=>enterVehicleAsPassenger(uid,remotePresence.get(uid)?.vehicleId||'');
 
   window.OTTHOS_TEST_API.admitPassenger=uid=>addHostedVehiclePassenger(uid);
+
+  // ===== MODULE: 52-neighborhood-riders.js =====
+  const neighborhoodRider={local:null,hip:new WeakMap()};
+  function motorcycleModel(key){return !!window.OTBrazilExpansion.catalog[key]?.twoWheeler;}
+  function riderHipHeight(avatar,ghost){
+    if(neighborhoodRider.hip.has(avatar))return neighborhoodRider.hip.get(avatar);
+    const visual=ghost.userData.familyAvatar;let y=.92;
+    if(visual?.byName){const hips=['hip-1','hip1'].map(n=>visual.byName[n]).filter(Boolean);if(hips.length){avatar.updateWorldMatrix(true,true);y=hips.reduce((sum,b)=>sum+avatar.worldToLocal(b.getWorldPosition(new THREE.Vector3())).y,0)/hips.length;}}
+    neighborhoodRider.hip.set(avatar,y);return y;
+  }
+  function poseMotorcycleAvatar(ghost,driver=true){
+    const family=ghost.userData.familyAvatar,limbs=ghost.userData.limbs||{};
+    if(family){
+      familyAnimateAvatar(family,limbs,{sitting:true,time:familyWorld.clock});
+      for(const side of[-1,1]){const shoulder=family.byName['shoulder'+side],elbow=family.byName['elbow'+side];if(shoulder){shoulder.rotation.x=driver?-1.04:-.28;shoulder.rotation.z=side*(driver?-.13:.05);}if(elbow)elbow.rotation.x=driver?-.28:-.12;}
+    }else{
+      for(const name of['leftArm','rightArm'])if(limbs[name]){limbs[name].rotation.x=driver?-1.12:-.28;limbs[name].rotation.z=(name==='leftArm'?1:-1)*(driver?.11:.035);}
+      for(const name of['leftLeg','rightLeg'])if(limbs[name])limbs[name].rotation.x=-1.02;
+    }
+  }
+  function clearMotorcycleRider(){const r=neighborhoodRider.local;if(!r)return;disposeGhostAvatar(r.avatar);r.host.remove(r.avatar);r.host.parent?.remove(r.host);neighborhoodRider.local=null;}
+  function localMotorcycleRide(){
+    if(!player.vehicle)return null;
+    if(player.car.passengerOf){const ghost=world.ghosts.get(player.car.passengerOf),target=ghost?.userData.target,key=target?.vehicleAppearance?.brazilModel;if(!motorcycleModel(key))return null;return{model:key,parent:ghost.userData.carVisual?.userData.brazilRoot,seat:multiplayerVehiclePassengerSeatIndex(player.car.passengerOf,sharedWorldOwnId()),owner:player.car.passengerOf};}
+    const model=currentVehicleRef()?.brazilModel;if(!motorcycleModel(model))return null;return{model,parent:vehicleVisual.userData.brazilRoot,seat:-1,owner:sharedWorldOwnId()};
+  }
+  function updateMotorcycleRiders(){
+    const ride=localMotorcycleRide();
+    if(!ride?.parent){clearMotorcycleRider();}
+    else{
+      const avatar=multiplayerAvatarDescriptor(),signature=[ride.owner,ride.model,ride.seat,multiplayerAvatarSignature(avatar),familyWorld.ready].join('|');let r=neighborhoodRider.local;
+      if(!r||r.signature!==signature||r.host.parent!==ride.parent){
+        clearMotorcycleRider();const host=new THREE.Group(),body=new THREE.Group();host.name='OTTHI_LOCAL_MOTORCYCLE_RIDER';host.userData.avatar=body;host.add(body);ride.parent.add(host);buildRemoteAvatarVisual(host,avatar);r=neighborhoodRider.local={host,avatar:body,signature,model:ride.model};
+      }
+      const seat=brazilSeatOffset(ride.model,ride.seat),scale=brazilSeatScale(ride.model);r.host.position.set(seat.x,seat.y,seat.z);r.host.visible=true;r.avatar.visible=true;r.avatar.scale.setScalar(scale);poseMotorcycleAvatar(r.host,ride.seat<0);r.avatar.position.y=-riderHipHeight(r.avatar,r.host)*scale;
+      // The family controller already has a ride actor. Display the selected
+      // avatar once, with its pelvis on the seat rather than floating above it.
+      if(familyCarry.ride?.owner===sharedWorldOwnId()){const actor=familyWorld.actors[familyCarry.ride.controller];if(actor?.ridePose){actor.group.visible=false;if(actor.label)actor.label.visible=false;}}
+    }
+    for(const[uid,ghost]of world.ghosts){
+      const target=ghost.userData.target||{},vehicle=target.vehicleRole==='passenger'?multiplayerVehicleHostPresence(target.vehiclePassengerOf):target,key=vehicle?.vehicleAppearance?.brazilModel;if(!target.vehicle||!motorcycleModel(key)||!ghost.userData.avatar)continue;
+      const driver=target.vehicleRole!=='passenger',index=driver?-1:multiplayerVehiclePassengerSeatIndex(target.vehiclePassengerOf,uid),seat=brazilSeatOffset(key,index),avatar=ghost.userData.avatar,scale=brazilSeatScale(key);poseMotorcycleAvatar(ghost,driver);avatar.position.y=seat.y-riderHipHeight(avatar,ghost)*scale;
+      if(familyCarry.ride?.owner===uid){const actor=familyWorld.actors[familyCarry.ride.controller];if(actor?.ridePose)actor.group.visible=false;}
+    }
+  }
+  const neighborhoodPreviousFamilyVisuals=updateFamilyPlayableVisuals;
+  updateFamilyPlayableVisuals=function(){neighborhoodPreviousFamilyVisuals();updateMotorcycleRiders();};
+  window.OTTHI_MOTORCYCLE_RIDER={diagnostics:()=>{const r=neighborhoodRider.local;return{active:!!r,model:r?.model||'',visible:!!r?.host.visible&&!!r?.host.parent&&!!r?.avatar.visible,theme:r?.avatar.userData.toyTheme||'',meshes:r?(()=>{let n=0;r.avatar.traverse(o=>{if(o.isMesh)n++;});return n;})():0,position:r?.host.getWorldPosition(new THREE.Vector3()).toArray()||null,walkingAvatarVisible:playerModel?.visible!==false};}};
+
+  // ===== MODULE: 53-neighborhood-dealerships.js =====
+  const OTTHI_DEALERS=Object.freeze([
+    Object.freeze({id:'dealer-cars',title:'OT Carros',icon:'🚗',category:'cars',x:-345,z:11,w:60,d:36,entryX:-311,entryZ:11,color:0x226899}),
+    Object.freeze({id:'dealer-bikes',title:'OT Motos',icon:'🏍️',category:'bikes',x:-270,z:26,w:48,d:34,entryX:-296,entryZ:26,color:0xb84e32}),
+    Object.freeze({id:'dealer-trucks',title:'OT Caminhões',icon:'🚛',category:'trucks',x:-350,z:-54,w:70,d:64,entryX:-313,entryZ:-54,color:0x27846e})
+  ]);
+  const neighborhoodDealers={ready:false,stores:[],lastAt:0,purchasePending:false};
+  function neighborhoodVehicleModel(entry){return entry.model||brazilModelKey(entry.id,entry.category);}
+  function neighborhoodVehicleCategory(entry){const key=neighborhoodVehicleModel(entry);return motorcycleModel(key)?'bikes':key==='constellation'||brazilDepotVehicle(entry.id)?'trucks':'cars';}
+  function neighborhoodDealerStock(dealer){const models=new Set();return OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>{const key=neighborhoodVehicleModel(e);if(neighborhoodVehicleCategory(e)!==dealer.category||models.has(key))return false;models.add(key);return true;});}
+  function dealerDisplayPoint(dealer,index){
+    if(dealer.category==='cars')return{x:-369+(index%6)*9,z:-1+Math.floor(index/6)*5,heading:Math.PI/2};
+    if(dealer.category==='bikes')return{x:-284+(index%4)*7,z:18+Math.floor(index/4)*14,heading:0};
+    return{x:-369+(index%2)*27,z:-74+Math.floor(index/2)*20,heading:Math.PI/2};
+  }
+  function dealerVehicleCard(entry){const owned=state.vehicles.owned.includes(entry.id);return `<button class="choice" data-dealer-vehicle="${entry.id}" data-stock-name="${escapeHtml(entry.label.toLocaleLowerCase('pt-BR'))}"><b>${entry.icon} ${escapeHtml(entry.label)}</b><span>${owned?'Na sua garagem':entry.price+' moedas'}</span><small>${escapeHtml(entry.description)}</small></button>`;}
+  function openDealer(dealerId){
+    const dealer=OTTHI_DEALERS.find(d=>d.id===dealerId);if(!dealer)return;
+    openModal(dealer.title,`<div class="shop-wallet"><span>Saldo</span><b>${state.profile.coins} moedas</b></div><p>Aproxime-se dos veículos expostos para consultar cada modelo. A compra é entregue na sua garagem; ônibus e carretas ficam no pátio de pesados.</p><label class="field">Buscar modelo<input type="search" data-stock-query placeholder="Nome do veículo"></label><div class="choice-grid">${neighborhoodDealerStock(dealer).map(dealerVehicleCard).join('')}</div><div class="modal-actions"><button class="btn" data-dealer-garage>Minha Garagem</button></div>`,root=>{
+      $('[data-stock-query]',root).oninput=e=>{const q=e.target.value.toLocaleLowerCase('pt-BR');$$('[data-stock-name]',root).forEach(b=>b.hidden=!b.dataset.stockName.includes(q));};$$('[data-dealer-vehicle]',root).forEach(b=>b.onclick=()=>openDealerVehicle(dealerId,b.dataset.dealerVehicle));$('[data-dealer-garage]',root).onclick=openPlayerGarage;
+    });
+  }
+  function openDealerVehicle(dealerId,id){
+    const entry=playerVehicleCatalogEntry(id);if(!entry)return;const owned=state.vehicles.owned.includes(id);
+    openModal(entry.label,`<p>${escapeHtml(entry.description)}</p><div class="shop-wallet"><span>${owned?'Veículo próprio':'Preço'}</span><b>${owned?'Na sua coleção':entry.price+' moedas'}</b></div><p>Saldo: ${state.profile.coins} moedas</p><div class="modal-actions">${owned?'<button class="btn primary" data-dealer-own>Retirar pela garagem</button>':'<button class="btn good" data-dealer-purchase>Comprar este veículo</button>'}<button class="btn" data-dealer-back>Voltar à loja</button></div>`,root=>{
+      $('[data-dealer-back]',root).onclick=()=>openDealer(dealerId);$('[data-dealer-own]',root)?.addEventListener('click',openPlayerGarage);$('[data-dealer-purchase]',root)?.addEventListener('click',async()=>{if(neighborhoodDealers.purchasePending)return;neighborhoodDealers.purchasePending=true;try{await buyPlayerVehicle(id);openDealerVehicle(dealerId,id);}finally{neighborhoodDealers.purchasePending=false;}});
+    });
+  }
+  function createNeighborhoodDealers(){
+    if(neighborhoodDealers.ready||!worldGroup||!worldExpansion.ready)return;
+    for(const dealer of OTTHI_DEALERS){
+      const root=new THREE.Group();root.name='OTTHI_'+dealer.id.toUpperCase();root.position.set(dealer.x,0,dealer.z);const concrete=campaignMaterial(0xd4d9d5,.05,'concrete'),trim=campaignMaterial(dealer.color,.25),metal=campaignMaterial(0x29434d,.3),glass=new THREE.MeshStandardMaterial({color:0x8ab9c6,transparent:true,opacity:.25,roughness:.15,metalness:.1});
+      const box=(m,x,y,z,w,h,d)=>campaignBox(root,m,x,y,z,w,h,d);box(concrete,0,.09,0,dealer.w,.18,dealer.d);box(trim,0,.20,0,dealer.w-1,.05,dealer.d-1);
+      const entrySide=dealer.category==='bikes'?-1:1,backX=-entrySide*(dealer.w/2-.2);
+      box(concrete,backX,1.25,0,.35,2.5,dealer.d);registerCollider(dealer.x+backX,dealer.z,.35,dealer.d,{dealer:dealer.id});
+      for(const dz of[-dealer.d/2+.2,dealer.d/2-.2]){box(metal,0,2.9,dz,dealer.w,.22,.28);box(glass,0,1.45,dz,dealer.w,2.6,.08);registerCollider(dealer.x,dealer.z+dz,dealer.w,.12,{dealer:dealer.id});for(const dx of[-dealer.w/2+1,0,dealer.w/2-1])box(metal,dx,1.45,dz,.18,2.9,.18);}
+      // Narrow canopies keep the vehicles visible from the normal game camera.
+      for(const dz of[-dealer.d/2+1.5,dealer.d/2-1.5])box(concrete,0,3.1,dz,dealer.w,.24,3);
+      const sign=campaignSign(root,dealer.title.toUpperCase(),dealer.category==='cars'?'CLÁSSICOS · ESPORTIVOS · PICAPES':dealer.category==='bikes'?'URBANAS · TRAIL · BICICLETAS':'CARGA · RODOVIÁRIOS · ÔNIBUS',4.5);sign.position.x=entrySide*(dealer.w/2-.3);sign.rotation.y=entrySide*Math.PI/2;sign.scale.set(.85,.7,1);
+      const deskX=entrySide*(dealer.w/2-3);box(concrete,deskX,.55,0,1.2,1.1,3.6);box(trim,deskX,1.15,0,1.4,.14,3.9);registerCollider(dealer.x+deskX,dealer.z,1.4,3.9,{dealer:dealer.id});
+      campaignBatch(root);worldGroup.add(root);
+      const stock=neighborhoodDealerStock(dealer),displays=stock.map((entry,index)=>{const point=dealerDisplayPoint(dealer,index),host=new THREE.Group();host.name='SHOWROOM_'+entry.id;host.position.set(point.x,.23,point.z);host.rotation.y=point.heading;worldGroup.add(host);host.visible=false;
+        const pad=new THREE.Mesh(sharedBoxGeometry(dealer.category==='trucks'?13:dealer.category==='bikes'?2.1:5.2,.10,dealer.category==='trucks'?4.2:dealer.category==='bikes'?2.5:2.8),concrete);pad.position.set(point.x,.22,point.z);worldGroup.add(pad);
+        const plate=new THREE.Mesh(new THREE.PlaneGeometry(dealer.category==='trucks'?4.2:3.0,.62),new THREE.MeshBasicMaterial({map:signTexture(entry.label+' · '+entry.price+' moedas','#133a4a','#ffffff'),side:THREE.DoubleSide}));plate.position.set(point.x,.9,point.z+(dealer.category==='trucks'?3.2:dealer.category==='bikes'?2.0:1.9));worldGroup.add(plate);
+        const record={entry,point,host,pad,plate,ready:false};registerInteractable({id:'showroom-'+entry.id,type:'shop',icon:entry.icon,label:'Ver '+entry.label,x:plate.position.x,z:plate.position.z,radius:2.1,priority:310,available:()=>host.visible&&record.ready,action:()=>openDealerVehicle(dealer.id,entry.id)});
+        return record;});
+      registerInteractable({id:dealer.id,type:'shop',icon:dealer.icon,label:'Entrar em '+dealer.title,x:dealer.entryX,z:dealer.entryZ,radius:4,priority:345,action:()=>openDealer(dealer.id)});neighborhoodDealers.stores.push({dealer,root,displays});
+    }
+    neighborhoodDealers.ready=true;world.navCache?.clear?.();
+  }
+  function updateNeighborhoodDealers(){
+    createNeighborhoodDealers();const now=performance.now();if(now-neighborhoodDealers.lastAt<120)return;neighborhoodDealers.lastAt=now;const focus=otGamesFocus();let budget=2;
+    for(const store of neighborhoodDealers.stores){const near=Math.hypot(focus.x-store.dealer.x,focus.z-store.dealer.z)<100;store.root.visible=near;
+      for(const display of store.displays){const visible=near&&Math.hypot(focus.x-display.point.x,focus.z-display.point.z)<(qualityTier()==='low'?48:72);display.pad.visible=display.plate.visible=visible;display.host.visible=visible;
+        if(!visible||display.ready||budget<=0)continue;const model=neighborhoodVehicleModel(display.entry);if(window.OTBrazilImports.requires(model)&&!window.OTBrazilImports.ready(model)){requestBrazilModel(model);continue;}
+        display.host.add(window.OTBrazilVehicles.create(THREE,model,window.OTBrazilVehicles.catalog[model].color));display.ready=true;display.host.updateWorldMatrix(true,true);const bounds=new THREE.Box3().setFromObject(display.host),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3());registerCollider(center.x,center.z,size.x,size.z,{dealerExhibit:display.entry.id});budget--;
+      }
+    }
+  }
+  const neighborhoodPreviousExpansionUpdate=updateWorldExpansion;
+  updateWorldExpansion=function(){neighborhoodPreviousExpansionUpdate();updateNeighborhoodDealers();};
+  const neighborhoodPreviousLocations=expansionMapLocations;
+  expansionMapLocations=function(){return [...neighborhoodPreviousLocations(),...OTTHI_DEALERS.map(d=>({id:d.id,name:d.title,icon:d.icon,group:'Concessionárias',x:d.x,z:d.z,navX:d.entryX,navZ:d.entryZ,description:'Veículos expostos com preços, compra e entrega na sua garagem.'}))];};
+  window.OTTHI_NEIGHBORHOOD={diagnostics:()=>({ready:neighborhoodDealers.ready,garage:{homeSlots:PLAYER_GARAGE_HOME_SLOTS,heavySlots:PLAYER_GARAGE_HEAVY_SLOTS,slots:{...state.vehicles.garage?.slots},owned:[...state.vehicles.owned]},dealers:neighborhoodDealers.stores.map(s=>({...s.dealer,stock:s.displays.map(d=>({id:d.entry.id,model:neighborhoodVehicleModel(d.entry),price:d.entry.price,...d.point,ready:d.ready,visible:d.host.visible,meshes:d.ready?(()=>{let n=0;d.host.traverse(o=>{if(o.isMesh)n++;});return n;})():0}))}))})};
+
+  // ===== MODULE: 54-neighborhood-home-life.js =====
+  const neighborhoodHome={houses:new Map(),seat:null};
+  const NEIGHBORHOOD_HOME_ACTIONS=Object.freeze([
+    ['bed','Dormir','Recupera energia e salva'],['sofa','Descansar no sofá','Aumenta diversão'],['tv','Assistir TV','Aumenta diversão'],['fridge','Abrir geladeira','Comer usando seu estoque'],['stove','Cozinhar','Prepara uma refeição com 1 comida'],['sink','Beber água','Cuida da higiene'],['shower','Tomar banho','Recupera higiene'],['chest','Abrir baú','Guardar e retirar itens'],['wardrobe','Trocar roupa','Personalizar o personagem']
+  ]);
+  function addNeighborhoodHomeInterior(house){
+    const objects={},g=new THREE.Group();g.name='HOME_DETAILS_'+house.id;worldGroup.add(g);house.interiorObjects.push(g);
+    const add=(type,x,z,color,label,rotation=0)=>{const item=createFurniture(house,type,x,z,color,label);item.group.rotation.y=rotation;objects[type]=item;return item;};
+    add('bed',-2.7,-2.4,0,'Dormir');add('sofa',.75,-2.45,0x507d89,'Sentar no sofá');add('tv',3.35,-1.3,0,'Assistir televisão',-Math.PI/2);
+    add('fridge',-3.55,1.85,0,'Abrir geladeira',Math.PI/2);add('stove',-3.55,.6,0,'Cozinhar',Math.PI/2);add('sink',-3.55,-.75,0,'Beber água',Math.PI/2);
+    add('shower',3.35,2.05,0,'Tomar banho');add('wardrobe',3.4,.5,0,'Trocar roupa',-Math.PI/2);add('chest',-.65,-.85,0,'Abrir baú');add('table',-1,1.55,0,'Mesa de refeições');add('plant',1.9,2.55,0,'Planta da casa');
+    house.entryX=house.x+.8;house.entryZ=house.z+1.6;
+    const dims={bed:[2.25,1.25],sofa:[2.55,.95],tv:[.62,1.75],fridge:[.82,.94],stove:[.86,1.12],sink:[.78,1.25],shower:[1.15,1.15],wardrobe:[.68,1.55],chest:[1.25,.82],table:[1.6,1.05]};
+    for(const[type,item]of Object.entries(objects)){const d=dims[type];if(d)registerCollider(item.x,item.z,d[0],d[1],{homeFurniture:house.id,furniture:type,height:type==='bed'?.8:1.4});}
+    const points={bed:[-1.35,-2.1],sofa:[.75,-1.45],tv:[2.3,-1.3],fridge:[-2.5,1.85],stove:[-2.5,.6],sink:[-2.5,-.75],shower:[2.2,2.05],wardrobe:[2.25,.5],chest:[-.65,.05]};
+    for(const[type,label]of NEIGHBORHOOD_HOME_ACTIONS){const p=points[type];registerInteractable({id:type+'-'+house.id,type:'activity',activity:type,icon:activityIcon(type),label,x:house.x+p[0],z:house.z+p[1],radius:1.05,priority:150,houseId:house.id,action:()=>useActivity(type,house)});}
+    const box=(w,h,d,c,x,y,z)=>premiumBox(w,h,d,c,house.x+x,y,house.z+z,g);
+    box(3.6,.025,1.5,0xb1a28b,-2.4,.19,-2.4);box(3.4,.025,1.8,0x8caeb0,.75,.19,-2.05);box(2.4,.025,2.3,0xc4aa82,-1,.19,1.55);box(1.6,.025,1.6,0xc9dede,3.15,.19,2.05);
+    box(.07,.7,4.5,0x8cb5af,-4.05,1.4,.65);for(let i=0;i<8;i++)box(.08,.018,4.5,0xdce8de,-4.0,1.10+i*.09,.65);
+    box(.12,.70,1.8,0xe5e5da,2.6,.5,2.45);box(.12,.07,1.85,0x677e82,2.6,.87,2.45);
+    for(const x of[-.05,1.5])box(.45,.42,.19,0xe4bf8c,x,1.08,-2.67);
+    box(1.0,.05,.72,0xeee5d2,-1,1.02,1.55);box(.26,.18,.26,0x39816b,-1,1.13,1.55);
+    for(const[x,z]of[[-1.3,-2.9],[2.1,-2.9]]){box(.12,1.3,.12,0x8c9da0,x,.85,z);const shade=new THREE.Mesh(new THREE.CylinderGeometry(.24,.34,.35,12),renderMat(0xffe5b0,{emissive:0x5b3715,emissiveIntensity:.22}));shade.position.set(house.x+x,1.65,house.z+z);g.add(shade);}
+    const picture=new THREE.Mesh(new THREE.PlaneGeometry(1.5,.85),new THREE.MeshStandardMaterial({map:signTexture('LAR · FAMÍLIA OT','#294a62','#ead9b4'),roughness:.75}));picture.position.set(house.x+.75,2.1,house.z-3.12);g.add(picture);
+    const glow=addGlow(house.x,2.25,house.z,0xffd09b,5);house.interiorObjects.push(glow);
+    registerInteractable({id:'home-actions-'+house.id,type:'activity',icon:'🏠',label:'Ações da casa',x:house.x+.8,z:house.z+1.6,radius:1.1,priority:175,houseId:house.id,action:()=>openNeighborhoodHome(house)});
+    neighborhoodHome.houses.set(house.id,{house,objects,points});
+  }
+  function openNeighborhoodHome(house){
+    if(currentHouse!==house)return;
+    openModal(house.name||'Minha casa',`<div class="resource-summary"><span>Energia ${Math.round(state.needs.energy)}%</span><span>Fome ${Math.round(state.needs.hunger)}%</span><span>Higiene ${Math.round(state.needs.hygiene)}%</span><span>Diversão ${Math.round(state.needs.fun)}%</span></div><div class="choice-grid">${NEIGHBORHOOD_HOME_ACTIONS.map(([id,title,description])=>`<button class="choice" data-home-action="${id}"><b>${activityIcon(id)} ${title}</b><small>${description}</small></button>`).join('')}</div><div class="modal-actions"><button class="btn" data-home-garage>Minha Garagem</button><button class="btn primary" data-home-console>Jogos do console</button><button class="btn" data-home-leave>Sair de casa</button></div>`,root=>{
+      $$('[data-home-action]',root).forEach(b=>b.onclick=()=>{if(currentHouse!==house)return;const data=neighborhoodHome.houses.get(house.id),point=data?.points[b.dataset.homeAction];closeModal();if(point){player.x=house.x+point[0];player.z=house.z+point[1];player.vx=player.vz=0;}useActivity(b.dataset.homeAction,house);});$('[data-home-garage]',root).onclick=openPlayerGarage;$('[data-home-console]',root).onclick=()=>window.OTTHI_NAVIGATION?.toConsole?.();$('[data-home-leave]',root).onclick=()=>{closeModal();exitHouse();};
+    });
+  }
+  function clearHomeSeat(){const r=neighborhoodHome.seat;if(!r)return;disposeGhostAvatar(r.host.userData.avatar);r.host.parent?.remove(r.host);neighborhoodHome.seat=null;player.sitUntil=0;}
+  const neighborhoodOriginalActivity=useActivity;
+  useActivity=function(type,house){
+    clearHomeSeat();const result=neighborhoodOriginalActivity(type,house);
+    const data=neighborhoodHome.houses.get(house?.id);if(!data||currentHouse!==house||!['sofa','tv'].includes(type))return result;
+    const descriptor=multiplayerAvatarDescriptor(),host=new THREE.Group(),body=new THREE.Group();host.name='OTTHI_HOME_SEATED_AVATAR';host.userData.avatar=body;host.add(body);worldGroup.add(host);buildRemoteAvatarVisual(host,descriptor);
+    // The furniture and the approved family rigs use different world scales.
+    // Keep family members at their normal walking size, pelvis on the cushion.
+    const original=playerModel?.userData.familyAvatar,scale=original?.group?.scale.x||1;body.scale.setScalar(scale);host.position.set(data.objects.sofa.x,.81,data.objects.sofa.z+.08);body.position.y=-riderHipHeight(body,host)*scale;
+    neighborhoodHome.seat={host,house,until:performance.now()+30000,x:player.x,z:player.z,signature:multiplayerAvatarSignature(descriptor)};player.sitUntil=performance.now()+30000;return result;
+  };
+  function updateNeighborhoodHomeSeat(){
+    const r=neighborhoodHome.seat;if(!r)return;
+    if(currentHouse!==r.house||performance.now()>r.until||Math.hypot(player.x-r.x,player.z-r.z)>.16||!player.grounded||player.vehicle||multiplayerAvatarSignature(multiplayerAvatarDescriptor())!==r.signature){clearHomeSeat();return;}
+    const family=r.host.userData.familyAvatar,limbs=r.host.userData.limbs||{};if(family)familyAnimateAvatar(family,limbs,{sitting:true,time:animTime});else{for(const name of['leftLeg','rightLeg'])if(limbs[name])limbs[name].rotation.x=-Math.PI/2;for(const name of['leftArm','rightArm'])if(limbs[name])limbs[name].rotation.x=-.35;}
+    playerModel.visible=false;if(avatarLayer)avatarLayer.visible=false;
+  }
+  const neighborhoodOriginalPlayableVisuals=updateFamilyPlayableVisuals;
+  updateFamilyPlayableVisuals=function(){neighborhoodOriginalPlayableVisuals();updateNeighborhoodHomeSeat();};
+  const neighborhoodOriginalExitHouse=exitHouse;
+  exitHouse=function(){clearHomeSeat();return neighborhoodOriginalExitHouse();};
+  window.OTTHI_HOME_LIFE={diagnostics:()=>({houses:[...neighborhoodHome.houses.values()].map(d=>({id:d.house.id,x:d.house.x,z:d.house.z,entry:{x:d.house.entryX,z:d.house.entryZ},actions:Object.entries(d.points).map(([type,p])=>({type,x:d.house.x+p[0],z:d.house.z+p[1]})),furniture:Object.entries(d.objects).map(([type,o])=>({type,x:o.x,z:o.z,rotation:o.group.rotation.y}))})),current:currentHouse?.id||'',needs:{...state.needs},inventory:{food:state.inventory.food,water:state.inventory.water},seated:!!neighborhoodHome.seat,seatVisible:!!neighborhoodHome.seat?.host.visible})};
 
 })();

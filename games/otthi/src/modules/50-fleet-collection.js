@@ -1,24 +1,24 @@
 /** Extended collection, appropriate parking, seating and transport animation. */
 // @otthi-module-body
   const brazilCollection={ready:false,group:null,pose:new WeakMap(),lastAt:0,center:{x:-266,z:-55},pickupX:-249};
-  function brazilDepotVehicle(id){const entry=playerVehicleCatalogEntry(id),key=entry?.model||window.OTBrazilExpansion.legacy[id]||'';return !!(window.OTBrazilExpansion.catalog[key]?.bus||window.OTBrazilExpansion.catalog[key]?.articulated);}
-  function brazilDepotPickup(number=1){const i=clamp(Math.round(Number(number)||1),1,3);return{x:brazilCollection.pickupX,z:-43+(i-1)*8,heading:Math.PI/2,slot:String(i),depot:true};}
+  function brazilDepotVehicle(id){const entry=playerVehicleCatalogEntry(id),key=entry?.model||window.OTBrazilExpansion.legacy[id]||'';return key==='constellation'||!!(window.OTBrazilExpansion.catalog[key]?.bus||window.OTBrazilExpansion.catalog[key]?.articulated);}
+  function brazilDepotPickup(number=1){const i=clamp(Math.round(Number(String(number).replace('H',''))||1),1,3);return{x:brazilCollection.pickupX,z:-43+(i-1)*8,heading:Math.PI/2,slot:'H'+i,depot:true};}
   function brazilCollectionPoint(slot,id=''){
-    const heavy=window.OTBrazilExpansion.garage.filter(e=>brazilDepotVehicle(e.id)),hi=heavy.findIndex(e=>e.id===id);if(hi>=0)return{x:-280,z:-83+hi*6.8,heading:Math.PI/2,slot:String(slot),depot:true};
+    const heavy=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>brazilDepotVehicle(e.id)),hi=heavy.findIndex(e=>e.id===id);if(hi>=0)return{x:-280,z:-83+hi*6.8,heading:Math.PI/2,slot:String(slot),depot:true};
     const fresh=window.OTBrazilExpansion.garage.filter(e=>!brazilDepotVehicle(e.id)),fi=fresh.findIndex(e=>e.id===id),old=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>!e.model),oi=old.findIndex(e=>e.id===id),n=id?(fi>=0?fi:fresh.length+Math.max(0,oi)):Math.max(0,Number(slot)-22);return{x:-268+(n%6)*5.1,z:-83+Math.floor(n/6)*3.7,heading:Math.PI/2,slot:String(slot),depot:true};
   }
   const brazilPreviousGarageSlot=playerGarageSlot,brazilPreviousDisplaySlot=playerGarageDisplaySlot;
   playerGarageSlot=function(number=1,id=''){return brazilDepotVehicle(id)?brazilDepotPickup(number):brazilPreviousGarageSlot(number);};
-  playerGarageDisplaySlot=function(number=4,id=''){return !!playerVehicleCatalogEntry(id)?.model||brazilDepotVehicle(id)||Number(number)>21?brazilCollectionPoint(number,id):brazilPreviousDisplaySlot(number);};
+  playerGarageDisplaySlot=function(number=4,id=''){return brazilCollectionPoint(number,id);};
   function createBrazilCollection(){
     if(brazilCollection.ready||!worldGroup||!worldExpansion.ready)return;
     const c=brazilCollection.center,g=new THREE.Group();g.name='OTTHI_FLEET_COLLECTION';worldGroup.add(g);brazilCollection.group=g;
-    premiumBox(68,.08,74,0x4a5157,c.x,.04,c.z,g);for(const[x,z,w,d]of[[c.x-33.9,c.z,.14,74],[c.x,c.z-36.9,68,.14],[c.x,c.z+36.9,68,.14]]){premiumBox(w,.48,d,0xc5cbd0,x,.26,z,g);registerCollider(x,z,w,d,{fleetCollection:true});}
+    premiumBox(68,.08,74,0x4a5157,c.x,.04,c.z,g);for(const[x,z,w,d]of[[c.x-33.9,-58.5,.14,67],[c.x,c.z-36.9,68,.14],[c.x,c.z+36.9,68,.14]]){premiumBox(w,.48,d,0xc5cbd0,x,.26,z,g);registerCollider(x,z,w,d,{fleetCollection:true});}
     for(let slot=22;slot<68;slot++){const p=brazilCollectionPoint(slot);premiumBox(4.80,.015,.06,0xe8cf72,p.x,.09,p.z-1.45,g);premiumBox(.06,.015,2.85,0xe8cf72,p.x-2.44,.09,p.z,g);}
-    const heavy=window.OTBrazilExpansion.garage.filter(e=>brazilDepotVehicle(e.id));for(let i=0;i<heavy.length;i++){const p=brazilCollectionPoint(4,heavy[i].id);premiumBox(13.0,.015,.06,0xe8cf72,p.x-3.7,.09,p.z-2.3,g);}
+    const heavy=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>brazilDepotVehicle(e.id));for(let i=0;i<heavy.length;i++){const p=brazilCollectionPoint(4,heavy[i].id);premiumBox(13.0,.015,.06,0xe8cf72,p.x-3.7,.09,p.z-2.3,g);}
     for(let n=1;n<=3;n++){const p=brazilDepotPickup(n);premiumBox(13.0,.015,.08,0xa6d0c2,p.x-3.7,.09,p.z-2.5,g);}
     const sign=new THREE.Mesh(new THREE.PlaneGeometry(8.8,1.15),new THREE.MeshStandardMaterial({map:signTexture('CENTRO DA COLEÇÃO OT','#1b3c51','#e5f0ea'),side:THREE.DoubleSide,roughness:.65}));sign.position.set(-232,2.6,-55);sign.rotation.y=Math.PI/2;g.add(sign);
-    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Abrir coleção e concessionária',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
+    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Abrir minha coleção',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
   }
   const brazilPreviousLocations=expansionMapLocations;
   expansionMapLocations=function(){return [...brazilPreviousLocations(),{id:'brazil-collection',name:'Centro da Coleção OT',icon:'🚘',group:'Veículos',x:-235,z:-55,navX:-229,navZ:-55,description:'Coleção ampliada e pátio para retirar ônibus e carretas, com acesso à rodovia.'}];};

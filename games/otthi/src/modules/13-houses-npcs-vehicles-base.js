@@ -105,21 +105,7 @@
 
   function addHouseInterior(house, type='home') {
     if(type==='home'){
-      const bed=createFurniture(house,'bed',-2.85,-1.95,0,'Dormir');
-      const sofa=createFurniture(house,'sofa',.85,-1.95,0x8b5cf6,'Sentar no sofá');
-      const tv=createFurniture(house,'tv',2.85,-.25,0,'Assistir televisão');
-      const fridge=createFurniture(house,'fridge',-3.05,1.55,0,'Abrir geladeira');
-      const stove=createFurniture(house,'stove',-1.65,1.55,0,'Cozinhar');
-      const sink=createFurniture(house,'sink',-.25,1.55,0,'Beber água');
-      const shower=createFurniture(house,'shower',3.1,1.6,0,'Tomar banho');
-      const chest=createFurniture(house,'chest',3.15,-2.05,0,'Abrir baú');
-      const wardrobe=createFurniture(house,'wardrobe',2.95,.65,0,'Trocar roupa');
-      createFurniture(house,'table',-1.6,.15,0,'Mesa de refeições');createFurniture(house,'plant',1.65,.55,0,'Planta da casa');
-      premiumBox(3.5,.04,2.2,0xd6a65d,house.x-1.7,.18,house.z+1.45,worldGroup,0x765228);
-      premiumBox(3.2,.04,2.0,0x7057b7,house.x+1.1,.18,house.z-1.85,worldGroup,0x3f2c65);
-      premiumBox(8.1,.12,.18,0x63b4e8,house.x,.78,house.z-3.08);premiumBox(.18,2.0,.18,0x63b4e8,house.x-3.9,1.05,house.z-2.95);premiumBox(.18,2.0,.18,0x63b4e8,house.x+3.9,1.05,house.z-2.95);
-      const lampA=addGlow(house.x-2.1,2.25,house.z-.1,0xffc66e,5),lampB=addGlow(house.x+2.1,2.25,house.z-.1,0xffc66e,5);house.interiorObjects.push(lampA,lampB);
-      registerActivity(house,bed,'bed');registerActivity(house,sofa,'sofa');registerActivity(house,tv,'tv');registerActivity(house,fridge,'fridge');registerActivity(house,stove,'stove');registerActivity(house,sink,'sink');registerActivity(house,shower,'shower');registerActivity(house,chest,'chest');registerActivity(house,wardrobe,'wardrobe');
+      addNeighborhoodHomeInterior(house);
     } else if(type==='shop'){
       premiumBox(8.2,.08,6.2,materials.marketFloor,house.x,.16,house.z);premiumBox(8.1,1.15,.12,materials.marketWall,house.x,.72,house.z-3.08);
       const table=createFurniture(house,'table',0,2.05,0,'Comprar itens');registerActivity(house,table,'shop');

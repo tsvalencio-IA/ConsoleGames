@@ -95,7 +95,7 @@
   function familyCloneAvatar(id,parent,baseY=0){
     const source=familyWorld.actors[id];if(!source||!parent)return null;
     const group=source.group.clone(true),byName={};let mesh;
-    group.visible=true;group.position.set(0,0,0);group.rotation.set(0,0,0);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
+    group.visible=true;group.position.set(0,0,0);group.rotation.set(0,0,0);group.scale.setScalar(source.scale);group.name='OTTHI_PLAYABLE_'+id.toUpperCase();group.userData.familyAvatarSharedResources=true;
     group.traverse(o=>{if(o.isBone)byName[o.name.split(':')[1]]=o;if(o.isSkinnedMesh)mesh=o;});
     const bones=source.bones.map(b=>byName[b.name.split(':')[1]]);
     mesh.bind(new THREE.Skeleton(bones,source.mesh.skeleton.boneInverses.map(m=>m.clone())),source.mesh.bindMatrix.clone());
