@@ -37,6 +37,7 @@ const specs={
 };
 function build(T,key,h){
  const p=specs[key];if(!p)return false;
+ if(key==='porsche911')return build911(T,h);
  const {root,add,box,ell,tube,ring,wheel,quad}=h,W=p.w/2,L=p.l/2,white=0xffffff,black=0x11191e,chrome=0xbac5ce,cream=0xe9e6d9,glass=0x527b8a;
  const Y=p.b,roof=p.h,roofW=W*(p.bus?.96:['palio','peugeot206','civic2011'].includes(key)?.79:['golf','golf7','corolla2007','corolla2021','bmwx1','bmwm3','porsche911','ferrari458'].includes(key)?.82:p.pickup?.86:.87),low=p.pickup?.33:.24;
  // Shared indexed patches preserve averaged normals across the curved metal.
@@ -259,6 +260,38 @@ function build(T,key,h){
  }
  Object.assign(root.userData,{coachwork:'curved-panels-v2',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
  return true;
+}
+// The 911 uses a continuous coupe shell rather than the sedan cabin template.
+function build911(T,H){
+ const{root,add,box,ell,tube,ring,wheel}=H,white=0xffffff,black=0x172127,chrome=0xb9c6cc,glass=0x365967;
+ const stations=[[-1.80,.52,.53,.49],[-1.67,.72,.65,.58],[-1.42,.79,.79,.62],[-1.15,.79,.91,.64],[-.88,.74,1.045,.64],[-.55,.70,1.095,.64],[-.20,.68,1.10,.63],[.10,.66,1.08,.63],[.32,.65,1.00,.62],[.60,.68,.83,.60],[.86,.72,.63,.58],[1.14,.75,.55,.53],[1.48,.72,.48,.46],[1.72,.60,.44,.42],[1.80,.45,.38,.37]];
+ function sample(z){let i=0;while(i<stations.length-2&&z>stations[i+1][0])i++;const a=stations[i],b=stations[i+1],u=(z-a[0])/(b[0]-a[0]),t=u*u*(3-2*u);return{w:a[1]+(b[1]-a[1])*t,h:a[2]+(b[2]-a[2])*t,b:a[3]+(b[3]-a[3])*t};}
+ const point=(z,a)=>{const s=sample(z);return[s.w*Math.sin(a),s.b+(s.h-s.b)*Math.cos(a),z];};
+ const parts={paint:[],glass:[]},N=132,A=56;
+ for(let i=0;i<N;i++)for(let j=0;j<A;j++){const z=-1.80+3.60*i/N,nz=-1.80+3.60*(i+1)/N,a=-Math.PI/2+Math.PI*j/A,na=-Math.PI/2+Math.PI*(j+1)/A,mid=(z+nz)/2,angle=Math.abs((a+na)/2),side=mid>-.89&&mid<.48&&angle>.85&&angle<1.43&&Math.abs(mid+.30)>.018,wind=mid>.36&&mid<.80&&angle<.84,rear=mid>-1.39&&mid<-.91&&angle<.89,kind=side||wind||rear?'glass':'paint';parts[kind].push(...[point(z,a),point(nz,a),point(nz,na),point(z,a),point(nz,na),point(z,na)].flat());}
+ for(const kind of['paint','glass']){const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(parts[kind],3));g.computeVertexNormals();add(g,kind==='paint'?white:glass,0,0,0,1,1,1,kind);}
+ const lower=z=>{let lo=.23;for(const az of[1.10,-1.06]){const d=z-az,r=.327;if(Math.abs(d)<r)lo=Math.max(lo,.30+Math.sqrt(r*r-d*d));}return lo;};
+ for(const a of[-1,1]){const pos=[],idx=[];for(let i=0;i<=132;i++){const z=-1.80+i*3.6/132,s=sample(z),lo=lower(z),hi=Math.max(lo,s.b);for(let j=0;j<=5;j++){const t=j/5;pos.push(a*(s.w-.035*(1-t)**2),lo+(hi-lo)*t,z);if(i<132&&j<5){const q=i*6+j;idx.push(q,q+6,q+7,q,q+7,q+1);}}}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();add(g,white,0,0,0,1,1,1,'paint');
+  for(const az of[1.10,-1.06]){const pts=[];for(let i=0;i<=28;i++){const t=i*Math.PI/28,z=az+Math.cos(t)*.326;pts.push([a*(sample(z).w+.006),.30+Math.sin(t)*.326,z]);}tube(pts,.011,white,'paint');}
+  const sill=[];for(let i=0;i<=26;i++){const z=-.68+i*1.42/26;sill.push([a*(sample(z).w+.010),.26,z]);}tube(sill,.024,white,'paint');
+  const frontFender=ell(white,a*.565,.545,1.18,.19,.17,.39,'paint');frontFender.rotation.x=-.20;
+  const housing=ell(black,a*.57,.615,1.43,.125,.030,.158);housing.rotation.x=.56;const lamp=ell(0xa5bec9,a*.57,.637,1.445,.111,.023,.141,'lens');lamp.rotation.x=.56;
+  for(const d of[-1,1]){const led=ell(0xd7e7e8,a*.57+d*.043,.649,1.464,.019,.012,.027,'lens');led.rotation.x=.56;}
+  box(black,a*.48,.335,1.735,.35,.095,.025);tube([[a*.31,.43,1.747],[a*.62,.43,1.70]],.009,0xc3d5d9,'chrome');
+  tube([[a*.68,.60,.48],[a*.70,.29,.43],[a*.73,.28,-.62],[a*.74,.62,-.68]],.0038,0x35434b);box(chrome,a*.725,.58,-.46,.024,.025,.14,'chrome');
+  tube([[a*.64,.66,.43],[a*.76,.70,.37]],.016,black);ell(white,a*.78,.72,.35,.095,.048,.082,'paint');ell(0x8eabb6,a*.78,.72,.285,.074,.032,.005,'chrome');
+  tube([[a*.22,.28,-1.81],[a*.54,.28,-1.78]],.031,black);const exhaust=add(new T.CylinderGeometry(.038,.038,.10,20),chrome,a*.48,.26,-1.81,1,1,1,'chrome');exhaust.rotation.x=Math.PI/2;
+ }
+ // Rounded nose, rear valance and rear light bar close the shell.
+ for(const end of[-1,1]){const z=end*1.80,s=sample(z),pos=[],idx=[];for(let i=0;i<=32;i++)for(let j=0;j<=8;j++){const x=-1+i/16,t=j/8;pos.push(x*s.w,.23+(s.b+(s.h-s.b)*Math.sqrt(1-x*x)-.23)*t,z);if(i<32&&j<8){const n=i*9+j;idx.push(n,n+9,n+10,n,n+10,n+1);}}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();add(g,white,0,0,0,1,1,1,'paint');}
+ tube([[-.66,.56,-1.69],[-.43,.57,-1.80],[0,.57,-1.82],[.43,.57,-1.80],[.66,.56,-1.69]],.020,black);tube([[-.64,.568,-1.70],[-.42,.578,-1.814],[0,.578,-1.836],[.42,.578,-1.814],[.64,.568,-1.70]],.008,0xb52c3a,'lens');
+ for(let i=0;i<14;i++){const x=-.39+i*.06,z=-1.48,y=sample(z).h+.011;tube([[x,y,z-.09],[x,y+.04,z+.15]],.008,black);}
+ for(const a of[-1,1]){tube([[a*.34,.58,.81],[a*.36,.53,1.14],[a*.32,.48,1.60]],.003,0x46565e);}
+ box(black,0,.22,0,1.30,.07,2.9);box(black,0,.30,1.81,.48,.09,.018);box(0xe4e8e3,0,.31,1.822,.32,.077,.008);box(0xe4e8e3,0,.40,-1.819,.32,.077,.008);
+ for(const[i,x,z]of[[0,-.704,1.10],[1,.704,1.10],[2,-.737,-1.06],[3,.737,-1.06]])wheel(i,x,z,.291);
+ for(const a of[-1,1]){box(0x252c30,a*.27,.34,-.10,.34,.12,.39,'interior');const back=box(0x293239,a*.27,.55,-.31,.32,.43,.11,'interior');back.rotation.x=-.14;ell(0x252c30,a*.27,.79,-.35,.10,.075,.04,'interior');box(0x2c3439,a*.25,.39,-.79,.30,.11,.28,'interior');}
+ box(0x202b30,0,.61,.53,1.04,.12,.18,'interior');ring(-.27,.65,.34,.105,black,-.45);
+ Object.assign(root.userData,{coachwork:'911-continuous-coupe-v1',seats:[{x:-.27,y:.27,z:-.08},{x:.27,y:.27,z:-.08},{x:-.25,y:.30,z:-.78},{x:.25,y:.30,z:-.78}],seatScale:.27,roof:1.11,hoodY:.56,wheelRadius:.291,front:1.84,rear:-1.87});return true;
 }
 (typeof window!=='undefined'?window:globalThis).OTBrazilCoachwork={build,specs};
 })();

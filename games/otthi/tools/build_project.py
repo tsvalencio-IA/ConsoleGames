@@ -29,6 +29,7 @@ RELEASE_FILES = [
     'family-mascots.js',
     'assets/ot-games-airframes.json',
     'assets/vendor/GLTFLoader-r128.js',
+    'assets/vendor/DRACOLoader-r128.js',
     'assets/world/vehicles/ot-racer.glb',
     'assets/world/vehicles/ot-coupe.glb',
     'assets/js/controls/world-hand-controls.js',

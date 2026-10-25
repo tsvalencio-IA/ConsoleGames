@@ -96,7 +96,7 @@
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;
       if(Math.abs(x-c.x)<=c.w/2+radius&&Math.abs(z-c.z)<=c.d/2+radius)return true;
     }
-    if(!options.ignoreParkedVehicles){for(const v of world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;if(Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius)return true;}}
+    if(!options.ignoreParkedVehicles){for(const v of world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;const precise=typeof brazilParkedContains==='function'?brazilParkedContains(v,x,z,radius):null;if(precise===null?Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius:precise)return true;}}
     if(!options.ignoreTraffic){
       for(const actor of trafficActorList()){
         if(options.ignoreActor&&actor.ref===options.ignoreActor)continue;
@@ -150,10 +150,10 @@
   }
   function vehicleHitsCollider(x,z){
     const h=player.car.heading,fx=Math.sin(h),fz=Math.cos(h),rx=Math.cos(h),rz=-Math.sin(h),active=currentVehicleRef();
-    const probes=[[0,0,.38],[fx*1.12,fz*1.12,.34],[-fx*1.08,-fz*1.08,.34],[fx*.88+rx*.72,fz*.88+rz*.72,.30],[fx*.88-rx*.72,fz*.88-rz*.72,.30],[-fx*.84+rx*.72,-fz*.84+rz*.72,.30],[-fx*.84-rx*.72,-fz*.84-rz*.72,.30]];
+    const probes=(typeof brazilDriveProbes==='function'?brazilDriveProbes(active,h):null)||[[0,0,.38],[fx*1.12,fz*1.12,.34],[-fx*1.08,-fz*1.08,.34],[fx*.88+rx*.72,fz*.88+rz*.72,.30],[fx*.88-rx*.72,fz*.88-rz*.72,.30],[-fx*.84+rx*.72,-fz*.84+rz*.72,.30],[-fx*.84-rx*.72,-fz*.84-rz*.72,.30]];
     const hitBox=c=>probes.some(([ox,oz,pad])=>Math.abs(x+ox-c.x)<=c.w/2+pad&&Math.abs(z+oz-c.z)<=c.d/2+pad);
     if(world.colliders.some(c=>!c.disabled&&!(c.houseId&&currentHouse&&c.houseId===currentHouse.id)&&hitBox(c)))return true;
-    for(const v of world.vehicles||[]){if(v===active||!v.group?.visible)continue;if(Math.hypot(x-v.group.position.x,z-v.group.position.z)<2.05)return true;}
+    for(const v of world.vehicles||[]){if(v===active||!v.group?.visible)continue;const special=typeof brazilSpecialFootprint==='function'&&(brazilSpecialFootprint(active)||brazilSpecialFootprint(v));if(special?probes.some(([ox,oz,pad])=>{const hit=brazilParkedContains(v,x+ox,z+oz,pad);return hit===null?Math.hypot(x+ox-v.group.position.x,z+oz-v.group.position.z)<1.18+pad:hit;}):Math.hypot(x-v.group.position.x,z-v.group.position.z)<2.05)return true;}
     for(const ghost of world.ghosts?.values?.()||[]){const target=ghost?.userData?.target;if(!target?.vehicle||target.vehicleRole==='passenger'||ghost.userData?.carVisual?.visible===false)continue;if(Math.hypot(x-ghost.position.x,z-ghost.position.z)<2.15)return true;}
     for(const actor of trafficActorList()){if(actor.ref===active)continue;if(Math.hypot(x-actor.group.position.x,z-actor.group.position.z)<(actor.radius||1.5)+1.0)return true;}
     return false;

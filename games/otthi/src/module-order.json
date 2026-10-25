@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "f25283924bc89d81266ba85b8ee90a139c209030c00a3860e7450bf48b01a20b"
+      "sha256Body": "f8a8ff4c857accf956841b4f62d2b894a1c05c952ee0ba3e9e7046615ee59b63"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -140,7 +140,7 @@
       "startLine": 3087,
       "endLine": 3308,
       "description": "Ônibus, rotas viárias, paradas, metrô e painel de transporte",
-      "sha256Body": "704ddc6057dc7b7322c02094ad2363a97782c7a92d8b47ed5a1a2d370ef07e83"
+      "sha256Body": "2a43f9554f8d0833a77635626fd131c1ed194d09d9c5386b0de2b6c5fb017b59"
     },
     {
       "file": "src/modules/16-emergency-services.js",
@@ -196,7 +196,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "37d806e5318821618d9502900b022aa722df1a48ddcb77b0ee70e7d181c970f1"
+      "sha256Body": "d263224ccc313283cc052aafea84ff74731f7bdc7576cd6f72b13edee86885a9"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -217,7 +217,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "ae40f679aa827423ec1311bfbaa01178c0752f7d1717aaa72c9dcb563b002199"
+      "sha256Body": "29455b3ad62a54eaf52be5d57cfc6254ed0500052396f2437e54d7b34bcd1a5d"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -297,18 +297,25 @@
       "sha256Body": "9738993dc27cc6b48be41fb05e2e5e036a1495559a8b02470ec3b3fbe0c25e68"
     },
     {
+      "file": "assets/js/vehicles/brazilian-imports.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Carregamento opcional e atribuído da Ferrari 458 detalhada",
+      "sha256Body": "0dca1fd229fd6eff5286372ca55ca4013418d32aba44c03091cbcfd5f7ddba77"
+    },
+    {
       "file": "assets/js/vehicles/brazilian-expansion.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota ampliada: carros históricos, motos, bicicletas, ônibus e carretas",
-      "sha256Body": "49cd6d1f73ad8899835a6fc990cae5b240e686c99aa31f0f74a4fca7cbafadd7"
+      "sha256Body": "d66230823756fd73d9c7cb8ead7d328145522913f7dab117a390e66cdb61e094"
     },
     {
       "file": "src/modules/36-modular-build-machines.js",
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "0676a70d789df7d9e1d112254ff3b69fe6814300f6d809503d6824d1227c65fc"
+      "sha256Body": "87bc50c0af8b77095bf913643996e84de8711eb49617e6883c9b991ac2cd1379"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -399,28 +406,35 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
-      "sha256Body": "a73623be693970403a888281edc875d62cd38cc92b91779e0af50d46f103aad5"
+      "sha256Body": "4558b67b13f1072a5ce9ff533519f3e66b5347ef65934625ed3f05fc4cdbe2bb"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "a51df6d753d3ee462020b011bdba03615884aabddc4f2bd4ff1e3bfddb409482"
+      "sha256Body": "c48db237e28f0fb691409259c08768d759d0e8d3f7288e13f424a049991bf97a"
     },
     {
       "file": "src/modules/48-family-transport.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "20d2e8facd7540cbeb50840c7ca9f54cc3682f6be61e4dc572d34d3c33b434d7"
+      "sha256Body": "1e17f68d49cc60b65678bd3ac55c6a177e789cf1ca1e9ec6d0cf95d6d09b272d"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "d599b632249b905982e239e3f169744372f33f30375ed1af6f609c2f795ba8e3"
+      "sha256Body": "7df71d92dfe4500c791bc5a53d8c0f9125d97b14ec33da509c4171e904e1ec9e"
+    },
+    {
+      "file": "src/modules/50-fleet-collection.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
+      "sha256Body": "543dc5e303082892c516e7180d63cade3f8fc02cfca38e4ac0eb0e5a04394a7e"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",

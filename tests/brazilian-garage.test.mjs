@@ -2,6 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';import vm f
 const source=readFileSync('games/otthi/src/modules/36-modular-build-machines.js','utf8');
 function garage(){
  const c=vm.createContext({console});vm.runInContext(`
+ const window={};function brazilDepotVehicle(){return false;}function brazilCollectionPoint(){return{};}
  const state={vehicles:{owned:['a','b','c','d'],garage:{slots:{'1':'a','2':'b','3':'c'},stored:{a:false,b:false,c:false,d:true}}}},player={vehicle:false,car:{id:''}};
  const cars=new Map(state.vehicles.owned.map(id=>[id,{id,garageStored:id==='d',group:{visible:id!=='d',position:{set(x,y,z){Object.assign(this,{x,y,z});}},rotation:{y:0}}}]));
  function ensurePlayerGarageState(){state.vehicles.garage=JSON.parse(JSON.stringify(state.vehicles.garage));return state.vehicles.garage;}

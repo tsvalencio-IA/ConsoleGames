@@ -1,4 +1,4 @@
-const REVISION = '9eb229030955e7e3';
+const REVISION = '9aa4cd09fc04b237';
 const CACHE = `otthi-v70624-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.22.1-venues-coachwork';
@@ -11,6 +11,7 @@ const REQUIRED_SHELL = [
   './console-world.js',
   './console-world.css',
   './assets/vendor/GLTFLoader-r128.js?v=world1',
+  './assets/vendor/DRACOLoader-r128.js?v=fleet1',
   './assets/world/vehicles/ot-racer.glb',
   './assets/world/vehicles/ot-coupe.glb',
   './assets/js/controls/world-hand-controls.js',
