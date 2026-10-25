@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-25",
+  "build": "705.25.3-city-coast-body",
+  "revision": "7fe523ee9efe2394",
+  "source": "b5a72da3f467a0ae085993d1bf6127bab71b1b08",
+  "tree": "e1d814639f1d96b72ece5fbe3ee7e1bf1f6b7121",
+  "productTree": "0903f285a78ff98444f73c2182cd9d250df5774e",
+  "deployment": "dpl_3SAXdSsEoRRgupq9KwqjF1dAgfav",
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "ci": {
+    "gameplay": {
+      "run": 40229883503,
+      "job": 121279130002,
+      "source": "b5a72da3f467a0ae085993d1bf6127bab71b1b08",
+      "conclusion": "success"
+    },
+    "cameraAndWorld": {
+      "run": 40227687533,
+      "source": "542e411ce92ad34d6789520db7bda6819622c4a6",
+      "conclusion": "success"
+    },
+    "renderer": {
+      "run": 40227687492,
+      "source": "542e411ce92ad34d6789520db7bda6819622c4a6",
+      "conclusion": "success"
+    },
+    "android": {
+      "run": 40227687415,
+      "source": "542e411ce92ad34d6789520db7bda6819622c4a6",
+      "conclusion": "success"
+    },
+    "note": "Later commits change only test automation; the complete games subtree is identical to the camera/renderer/Android validated product."
+  },
+  "unitTests": 240,
+  "productionFilesVerified": 58,
+  "physicalDeviceTested": false,
+  "liveFirebaseRoomsRead": false
+}

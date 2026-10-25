@@ -1,0 +1,57 @@
+{
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "source": "b5a72da3f467a0ae085993d1bf6127bab71b1b08",
+  "limits": [
+    "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
+  ],
+  "build": "705.25.3-city-coast-body",
+  "revision": "7fe523ee9efe2394",
+  "protectedFiles": 50,
+  "warAssets": 8,
+  "roads": {
+    "passed": true,
+    "samples": 3022,
+    "failures": []
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 22,
+    "highways": 10,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "nativePurchase": {
+    "purchases": 1,
+    "displayedPrice": 14
+  },
+  "animatedSea": true,
+  "familyAndFuscaPreserved": true,
+  "serviceWorkerControlled": true,
+  "installability": {
+    "installabilityErrors": []
+  },
+  "realWorkers": {
+    "body": {
+      "points": 33,
+      "world": 33,
+      "inferenceMs": 320
+    },
+    "hand": {
+      "hands": 2,
+      "points": 21,
+      "inferenceMs": 303.29999999981374
+    }
+  },
+  "apkUrl": "https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk",
+  "existingApk": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "installerStatus": 200,
+  "errors": [],
+  "passed": true
+}
