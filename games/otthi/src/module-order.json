@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "2cf091155052855dbf3f3f134846d4b4e788c10a462850819087e065e21a4961"
+      "sha256Body": "775f9e8c21b34ee6b77e99c501507ced8604ead22a294e0089b1c03600e0be3e"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -315,7 +315,7 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "54cbd1c5cacdcc771d29dcd3a03ae8bc62db6c2cd145b52bb4f2c17ab9a04eef"
+      "sha256Body": "72b23134924b3498603f6ed2d2d8bdec02d61301fe64fbd320b5f13c84c5ac3b"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
@@ -464,7 +464,7 @@
     {
       "file": "src/modules/53-neighborhood-dealerships.js",
       "description": "Concessionárias físicas, exposição e compras nativas",
-      "sha256Body": "f992d44afd533041a03276996a4b0878c967913db347cbae8f6048c9270ac913"
+      "sha256Body": "9fa4fd3e39593c91a2f74a908d995b0a940a5a5eb5d202ccbdb3b93a3bde0a03"
     },
     {
       "file": "src/modules/54-neighborhood-home-life.js",

@@ -1,0 +1,1855 @@
+{
+  "passed": true,
+  "collection": {
+    "ready": true,
+    "center": {
+      "x": -266,
+      "z": -55
+    },
+    "entries": 47,
+    "models": 44,
+    "buses": [
+      {
+        "id": "bus-solar-1",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-solar-2",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-verde-1",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-verde-2",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-escolar-1",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-circular-1",
+        "model": "attivi",
+        "routeBoard": true
+      },
+      {
+        "id": "bus-turismo-1",
+        "model": "attivi",
+        "routeBoard": true
+      }
+    ],
+    "parking": [
+      {
+        "id": "br-veraneio",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "22",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-blazer",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "23",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-pampa",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "24",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-escort",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "25",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-tcross",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "26",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-peugeot206",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "27",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-jetta",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "28",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-corolla2007",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "29",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-corolla2021",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "30",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-civic2011",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "31",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-bmwx1",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "32",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-bmwm3",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -79.3,
+          "heading": 1.5707963267948966,
+          "slot": "33",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-ferrari458",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "34",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-porsche911",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "35",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-golf7",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "36",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-palio",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "22",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-passat",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "37",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-tempra",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -75.6,
+          "heading": 1.5707963267948966,
+          "slot": "38",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-maverick",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "39",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-landau",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "40",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-mobylette",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "41",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-bmwgs",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "42",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-bicycle",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "43",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-dinossauro",
+        "pickup": {
+          "x": -249,
+          "z": -43,
+          "heading": 1.5707963267948966,
+          "slot": "H1",
+          "depot": true
+        },
+        "display": {
+          "x": -280,
+          "z": -83,
+          "heading": 1.5707963267948966,
+          "slot": "44",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-attivi",
+        "pickup": {
+          "x": -249,
+          "z": -43,
+          "heading": 1.5707963267948966,
+          "slot": "H1",
+          "depot": true
+        },
+        "display": {
+          "x": -280,
+          "z": -76.2,
+          "heading": 1.5707963267948966,
+          "slot": "45",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-doubledeck",
+        "pickup": {
+          "x": -249,
+          "z": -43,
+          "heading": 1.5707963267948966,
+          "slot": "H1",
+          "depot": true
+        },
+        "display": {
+          "x": -280,
+          "z": -69.4,
+          "heading": 1.5707963267948966,
+          "slot": "46",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-semi",
+        "pickup": {
+          "x": -249,
+          "z": -43,
+          "heading": 1.5707963267948966,
+          "slot": "H1",
+          "depot": true
+        },
+        "display": {
+          "x": -280,
+          "z": -62.6,
+          "heading": 1.5707963267948966,
+          "slot": "47",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-fuel",
+        "pickup": {
+          "x": -249,
+          "z": -43,
+          "heading": 1.5707963267948966,
+          "slot": "H1",
+          "depot": true
+        },
+        "display": {
+          "x": -280,
+          "z": -55.8,
+          "heading": 1.5707963267948966,
+          "slot": "48",
+          "depot": true
+        }
+      },
+      {
+        "id": "garage-orange",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -71.9,
+          "heading": 1.5707963267948966,
+          "slot": "22",
+          "depot": true
+        }
+      },
+      {
+        "id": "lego-moto",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "18",
+          "depot": true
+        }
+      },
+      {
+        "id": "home-green",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "7",
+          "depot": true
+        }
+      },
+      {
+        "id": "country-brown",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "14",
+          "depot": true
+        }
+      },
+      {
+        "id": "market-blue",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "4",
+          "depot": true
+        }
+      },
+      {
+        "id": "minecraft-moto",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "19",
+          "depot": true
+        }
+      },
+      {
+        "id": "gym-yellow",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -68.2,
+          "heading": 1.5707963267948966,
+          "slot": "8",
+          "depot": true
+        }
+      },
+      {
+        "id": "minecraft-truck",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "16",
+          "depot": true
+        }
+      },
+      {
+        "id": "city-white",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "5",
+          "depot": true
+        }
+      },
+      {
+        "id": "playmobil-moto",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "20",
+          "depot": true
+        }
+      },
+      {
+        "id": "playmobil-utility",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "9",
+          "depot": true
+        }
+      },
+      {
+        "id": "forest-teal",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "15",
+          "depot": true
+        }
+      },
+      {
+        "id": "workshop-red",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -64.5,
+          "heading": 1.5707963267948966,
+          "slot": "6",
+          "depot": true
+        }
+      },
+      {
+        "id": "mario-moto",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -268,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "21",
+          "depot": true
+        }
+      },
+      {
+        "id": "adventure-black",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -262.9,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "10",
+          "depot": true
+        }
+      },
+      {
+        "id": "royal-purple",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -257.8,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "17",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-fusca",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -252.7,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "11",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-opala",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -247.6,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "12",
+          "depot": true
+        }
+      },
+      {
+        "id": "br-s10",
+        "pickup": {
+          "x": 36,
+          "z": 42,
+          "heading": 1.5707963267948966,
+          "slot": "1"
+        },
+        "display": {
+          "x": -242.5,
+          "z": -60.8,
+          "heading": 1.5707963267948966,
+          "slot": "13",
+          "depot": true
+        }
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "garage-orange",
+      "model": "gol",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "market-blue",
+      "model": "uno",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 2.1171924968423426,
+        "speed": 0.025768813759794985,
+        "x": 38.1112019824683,
+        "z": 48.15915482370141,
+        "impacts": 1
+      },
+      "parked": {
+        "x": 38.11,
+        "z": 48.16,
+        "heading": 1.387
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "city-white",
+      "model": "golf",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 2.117192496842346,
+        "speed": 0.025768813759794985,
+        "x": 27.888798017531695,
+        "z": 41.84084517629859,
+        "impacts": 1
+      },
+      "parked": {
+        "x": 27.89,
+        "z": 41.84,
+        "heading": -1.754
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "workshop-red",
+      "model": "chevette",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.522342192698794,
+        "speed": 13.842959869963586,
+        "x": 21.625343402884777,
+        "z": 43.420302772728725,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 17.89,
+        "z": 42.17,
+        "heading": -1.909
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "home-green",
+      "model": "kombi",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.522342192698794,
+        "speed": 13.842959869963586,
+        "x": 21.625343402884777,
+        "z": 46.420302772728725,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 17.89,
+        "z": 45.17,
+        "heading": -1.909
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "gym-yellow",
+      "model": "hilux",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "playmobil-utility",
+      "model": "saveiro",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "adventure-black",
+      "model": "amarok",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-fusca",
+      "model": "fusca",
+      "wheels": 4,
+      "seats": 4,
+      "render": "beetle-apron-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-opala",
+      "model": "opala",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-s10",
+      "model": "s10",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.2,
+        "z": 44.86,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "country-brown",
+      "model": "constellation",
+      "wheels": 6,
+      "seats": 3,
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "forest-teal",
+      "model": "constellation",
+      "wheels": 6,
+      "seats": 3,
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "minecraft-truck",
+      "model": "constellation",
+      "wheels": 6,
+      "seats": 3,
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "royal-purple",
+      "model": "constellation",
+      "wheels": 6,
+      "seats": 3,
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "lego-moto",
+      "model": "factor",
+      "wheels": 2,
+      "seats": 2,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "minecraft-moto",
+      "model": "xre",
+      "wheels": 2,
+      "seats": 2,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "playmobil-moto",
+      "model": "titan",
+      "wheels": 2,
+      "seats": 2,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "mario-moto",
+      "model": "hornet",
+      "wheels": 2,
+      "seats": 2,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-veraneio",
+      "model": "veraneio",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-blazer",
+      "model": "blazer",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-pampa",
+      "model": "pampa",
+      "wheels": 4,
+      "seats": 2,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-escort",
+      "model": "escort",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-tcross",
+      "model": "tcross",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-peugeot206",
+      "model": "peugeot206",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-jetta",
+      "model": "jetta",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-corolla2007",
+      "model": "corolla2007",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-corolla2021",
+      "model": "corolla2021",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-civic2011",
+      "model": "civic2011",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-bmwx1",
+      "model": "bmwx1",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-bmwm3",
+      "model": "bmwm3",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-ferrari458",
+      "model": "ferrari458",
+      "wheels": 4,
+      "seats": 2,
+      "render": "licensed-458-vicent091036",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.2,
+        "z": 44.86,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-porsche911",
+      "model": "porsche911",
+      "wheels": 4,
+      "seats": 4,
+      "render": "911-continuous-coupe-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-golf7",
+      "model": "golf7",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-palio",
+      "model": "palio",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 46.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 47.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-passat",
+      "model": "passat",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-tempra",
+      "model": "tempra",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-maverick",
+      "model": "maverick",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.15,
+        "z": 44.84,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-landau",
+      "model": "landau",
+      "wheels": 4,
+      "seats": 4,
+      "render": "curved-panels-v2",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-mobylette",
+      "model": "mobylette",
+      "wheels": 2,
+      "seats": 1,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 4.95557094975013,
+        "speed": 9.070468720308204,
+        "x": 40.884355202566844,
+        "z": 42.837112712342616,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 42.82,
+        "z": 43.43,
+        "heading": 1.255
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-bmwgs",
+      "model": "bmwgs",
+      "wheels": 2,
+      "seats": 2,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 8.52234219269879,
+        "speed": 13.842959869963586,
+        "x": 44.37465659711522,
+        "z": 43.579697227271275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 48.11,
+        "z": 44.83,
+        "heading": 1.233
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-bicycle",
+      "model": "bicycle",
+      "wheels": 2,
+      "seats": 1,
+      "render": "brazil-two-wheel-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 3.1185697948595297,
+        "speed": 6.263584426296315,
+        "x": 39.08626724480704,
+        "z": 42.44769639158851,
+        "impacts": 0
+      },
+      "parked": {
+        "x": 40.16,
+        "z": 42.72,
+        "heading": 1.302
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-dinossauro",
+      "model": "dinossauro",
+      "wheels": 4,
+      "seats": 6,
+      "render": "brazil-coach-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 4.060026551685188,
+        "speed": 7.728460343525751,
+        "x": -244.96309257808895,
+        "z": -42.56734070296806,
+        "impacts": 0
+      },
+      "parked": {
+        "x": -242.95,
+        "z": -42.17,
+        "heading": 1.362
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-attivi",
+      "model": "attivi",
+      "wheels": 4,
+      "seats": 6,
+      "render": "brazil-coach-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 4.516240601112423,
+        "speed": 8.414167150947751,
+        "x": -244.5098200474245,
+        "z": -34.51552795681744,
+        "impacts": 0
+      },
+      "parked": {
+        "x": -242.75,
+        "z": -34.17,
+        "heading": 1.361
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-doubledeck",
+      "model": "doubledeck",
+      "wheels": 6,
+      "seats": 6,
+      "render": "brazil-coach-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 3.5960733834235383,
+        "speed": 7.012050745516957,
+        "x": -245.41713630697018,
+        "z": -26.692052705587592,
+        "impacts": 0
+      },
+      "parked": {
+        "x": -244.1,
+        "z": -26.49,
+        "heading": 1.399
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-semi",
+      "model": "semi",
+      "wheels": 12,
+      "seats": 3,
+      "render": "brazil-articulated-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 3.122914312387473,
+        "speed": 6.263584426296315,
+        "x": -245.88452563454427,
+        "z": -42.78456258286275,
+        "impacts": 0
+      },
+      "parked": {
+        "x": -244.78,
+        "z": -42.65,
+        "heading": 1.43,
+        "trailerAngle": 0.0476
+      },
+      "remotePaintIndependent": true
+    },
+    {
+      "id": "br-fuel",
+      "model": "fuel",
+      "wheels": 12,
+      "seats": 3,
+      "render": "brazil-articulated-v1",
+      "motion": {
+        "frames": 70,
+        "seconds": 1.1666666666666667,
+        "distance": 2.8347863339519046,
+        "speed": 5.7985322371625685,
+        "x": -246.17186505618997,
+        "z": -42.80592192611958,
+        "impacts": 0
+      },
+      "parked": {
+        "x": -244.95,
+        "z": -42.65,
+        "heading": 1.431,
+        "trailerAngle": 0.067
+      },
+      "remotePaintIndependent": true
+    }
+  ],
+  "road": {
+    "passed": true,
+    "samples": 2510,
+    "failures": []
+  },
+  "errors": [],
+  "renderFpsCap": null,
+  "nativeActions": true,
+  "renderOff": true,
+  "limits": [
+    "Software-rendered mobile Chromium; optional scene render cap accelerates functional UI checks and is not an FPS benchmark; local save and online protocol playback only. No physical camera, mobile or live multiplayer claim.",
+    "The 47-vehicle simulation uses native action handlers with scene drawing disabled after initial boot. The 44 showroom models and motorcycle rider images are checked separately with real rendering."
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "style": "minecraft",
+      "id": "lego-moto",
+      "rider": {
+        "active": true,
+        "model": "factor",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -20.12,
+          0.665,
+          45
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.4217256727224,
+        "speed": 12.534741650356983,
+        "x": -203.6331006961958,
+        "z": -54.16265068763408,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "playmobil-moto",
+      "rider": {
+        "active": true,
+        "model": "titan",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -20.12,
+          0.665,
+          47.8
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.4217256727224,
+        "speed": 12.534741650356983,
+        "x": -203.6331006961958,
+        "z": -54.16265068763408,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "mario-moto",
+      "rider": {
+        "active": true,
+        "model": "hornet",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -25.88,
+          0.665,
+          42.2
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.421725672722427,
+        "speed": 12.534741650356983,
+        "x": -216.36689930380422,
+        "z": -55.83734931236592,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "minecraft-moto",
+      "rider": {
+        "active": true,
+        "model": "xre",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -25.88,
+          0.805,
+          45
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.421725672722427,
+        "speed": 12.534741650356983,
+        "x": -216.36689930380422,
+        "z": -55.83734931236592,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "br-mobylette",
+      "rider": {
+        "active": true,
+        "model": "mobylette",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -25.88,
+          0.625,
+          47.8
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 3.6513963514077203,
+        "speed": 8.029241711618957,
+        "x": -213.6266277834432,
+        "z": -55.4245777142425,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "br-bmwgs",
+      "rider": {
+        "active": true,
+        "model": "bmwgs",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -20.12,
+          0.805,
+          42.2
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.4217256727224,
+        "speed": 12.534741650356983,
+        "x": -203.6331006961958,
+        "z": -54.16265068763408,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "minecraft",
+      "id": "br-bicycle",
+      "rider": {
+        "active": true,
+        "model": "bicycle",
+        "scale": 0.4142011841623761,
+        "visible": true,
+        "theme": "minecraft",
+        "meshes": 11,
+        "position": [
+          -20.26,
+          0.795,
+          42.2
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 2.264737546860893,
+        "speed": 5.483164452564657,
+        "x": -207.7461591649983,
+        "z": -54.77810442401822,
+        "impacts": 0
+      }
+    },
+    {
+      "style": "family-thiago",
+      "id": "lego-moto",
+      "rider": {
+        "active": true,
+        "model": "factor",
+        "scale": 0.7622834668737715,
+        "visible": true,
+        "theme": "family-thiago",
+        "meshes": 1,
+        "position": [
+          -20.12,
+          0.665,
+          45
+        ],
+        "walkingAvatarVisible": false
+      },
+      "motion": {
+        "frames": 60,
+        "seconds": 1,
+        "distance": 6.4217256727224,
+        "speed": 12.534741650356983,
+        "x": -203.6331006961958,
+        "z": -54.16265068763408,
+        "impacts": 0
+      }
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Mobile Chromium and local saves; no physical Android camera or live Firebase session."
+  ]
+}

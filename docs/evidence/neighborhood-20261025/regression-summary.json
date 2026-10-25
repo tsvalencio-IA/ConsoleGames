@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "nodeTests": 226,
+  "nativeVehicleFlows": 47,
+  "garageEntries": 47,
+  "physicalShowroomModels": 44,
+  "riderCases": 8,
+  "roadSamples": 2510,
+  "build": "705.25.1-neighborhood",
+  "assetVersion": 70626,
+  "revision": "574855b20778cad8",
+  "limits": [
+    "Local saved profiles, software Chromium and protocol playback. No physical Android, physical camera or live Firebase room was used."
+  ]
+}

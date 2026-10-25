@@ -8,6 +8,7 @@
   const neighborhoodDealers={ready:false,stores:[],lastAt:0,purchasePending:false};
   function neighborhoodVehicleModel(entry){return entry.model||brazilModelKey(entry.id,entry.category);}
   function neighborhoodVehicleCategory(entry){const key=neighborhoodVehicleModel(entry);return motorcycleModel(key)?'bikes':key==='constellation'||brazilDepotVehicle(entry.id)?'trucks':'cars';}
+  function neighborhoodDealerEntries(dealer){return OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>neighborhoodVehicleCategory(e)===dealer.category);}
   function neighborhoodDealerStock(dealer){const models=new Set();return OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>{const key=neighborhoodVehicleModel(e);if(neighborhoodVehicleCategory(e)!==dealer.category||models.has(key))return false;models.add(key);return true;});}
   function dealerDisplayPoint(dealer,index){
     if(dealer.category==='cars')return{x:-369+(index%6)*9,z:-1+Math.floor(index/6)*5,heading:Math.PI/2};
@@ -17,7 +18,7 @@
   function dealerVehicleCard(entry){const owned=state.vehicles.owned.includes(entry.id);return `<button class="choice" data-dealer-vehicle="${entry.id}" data-stock-name="${escapeHtml(entry.label.toLocaleLowerCase('pt-BR'))}"><b>${entry.icon} ${escapeHtml(entry.label)}</b><span>${owned?'Na sua garagem':entry.price+' moedas'}</span><small>${escapeHtml(entry.description)}</small></button>`;}
   function openDealer(dealerId){
     const dealer=OTTHI_DEALERS.find(d=>d.id===dealerId);if(!dealer)return;
-    openModal(dealer.title,`<div class="shop-wallet"><span>Saldo</span><b>${state.profile.coins} moedas</b></div><p>Aproxime-se dos veículos expostos para consultar cada modelo. A compra é entregue na sua garagem; ônibus e carretas ficam no pátio de pesados.</p><label class="field">Buscar modelo<input type="search" data-stock-query placeholder="Nome do veículo"></label><div class="choice-grid">${neighborhoodDealerStock(dealer).map(dealerVehicleCard).join('')}</div><div class="modal-actions"><button class="btn" data-dealer-garage>Minha Garagem</button></div>`,root=>{
+    openModal(dealer.title,`<div class="shop-wallet"><span>Saldo</span><b>${state.profile.coins} moedas</b></div><p>Aproxime-se dos veículos expostos para consultar cada modelo. A compra é entregue na sua garagem; ônibus e carretas ficam no pátio de pesados.</p><label class="field">Buscar modelo<input type="search" data-stock-query placeholder="Nome do veículo"></label><div class="choice-grid">${neighborhoodDealerEntries(dealer).map(dealerVehicleCard).join('')}</div><div class="modal-actions"><button class="btn" data-dealer-garage>Minha Garagem</button></div>`,root=>{
       $('[data-stock-query]',root).oninput=e=>{const q=e.target.value.toLocaleLowerCase('pt-BR');$$('[data-stock-name]',root).forEach(b=>b.hidden=!b.dataset.stockName.includes(q));};$$('[data-dealer-vehicle]',root).forEach(b=>b.onclick=()=>openDealerVehicle(dealerId,b.dataset.dealerVehicle));$('[data-dealer-garage]',root).onclick=openPlayerGarage;
     });
   }
@@ -49,8 +50,14 @@
     }
     neighborhoodDealers.ready=true;world.navCache?.clear?.();
   }
+  function neighborhoodVehicleApproachPoint(vehicle){
+    const group=vehicle.group,d=group.userData.brazilRoot?.userData;if(!d)return{x:group.position.x,z:group.position.z};const a=group.rotation.y,c=Math.cos(a),sn=Math.sin(a),dx=player.x-group.position.x,dz=player.z-group.position.z,lx=clamp(dx*c-dz*sn,-(d.halfWidth||.76),d.halfWidth||.76),lz=clamp(dx*sn+dz*c,d.rear,d.front);return{x:group.position.x+lx*c+lz*sn,z:group.position.z-lx*sn+lz*c};
+  }
+  function updateNeighborhoodVehicleAccess(){
+    for(const v of brazilAllVehicles()){if(v.group.userData.neighborhoodAccess||!v.group.userData.brazilRoot)continue;const action=world.interactables.find(i=>i.id==='vehicle-'+v.id);if(!action)continue;action.getPos=()=>neighborhoodVehicleApproachPoint(v);action.radius=1.5;v.group.userData.neighborhoodAccess=true;}
+  }
   function updateNeighborhoodDealers(){
-    createNeighborhoodDealers();const now=performance.now();if(now-neighborhoodDealers.lastAt<120)return;neighborhoodDealers.lastAt=now;const focus=otGamesFocus();let budget=2;
+    createNeighborhoodDealers();updateNeighborhoodVehicleAccess();const now=performance.now();if(now-neighborhoodDealers.lastAt<120)return;neighborhoodDealers.lastAt=now;const focus=otGamesFocus();let budget=2;
     for(const store of neighborhoodDealers.stores){const near=Math.hypot(focus.x-store.dealer.x,focus.z-store.dealer.z)<100;store.root.visible=near;
       for(const display of store.displays){const visible=near&&Math.hypot(focus.x-display.point.x,focus.z-display.point.z)<(qualityTier()==='low'?48:72);display.pad.visible=display.plate.visible=visible;display.host.visible=visible;
         if(!visible||display.ready||budget<=0)continue;const model=neighborhoodVehicleModel(display.entry);if(window.OTBrazilImports.requires(model)&&!window.OTBrazilImports.ready(model)){requestBrazilModel(model);continue;}
