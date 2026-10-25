@@ -1,0 +1,11 @@
+{
+  "source": "bbf7b0db1dc8a08828ad5478f9ffc54a879bd009",
+  "tree": "92526a3f276acbec33638eef935b6d99def323ab",
+  "deployment": "dpl_GmcSpJ8LHCAZfNCFoaAeYcHxMptb",
+  "status": "READY",
+  "project": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.25.1-neighborhood",
+  "revision": "574855b20778cad8",
+  "aliasError": null
+}

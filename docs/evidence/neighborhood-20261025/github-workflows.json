@@ -1,0 +1,19 @@
+{
+  "source": "bbf7b0db1dc8a08828ad5478f9ffc54a879bd009",
+  "runs": [
+    {
+      "id": 40185752079,
+      "name": "Câmera frontal e modos no mundo OT",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40185752079"
+    },
+    {
+      "id": 40185752150,
+      "name": "Validar gameplay real no Chromium",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40185752150"
+    }
+  ]
+}
