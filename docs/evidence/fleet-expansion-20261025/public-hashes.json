@@ -1,0 +1,261 @@
+[
+  {
+    "path": "index.html",
+    "status": 200,
+    "bytes": 15281,
+    "expected": "9d2f850edeeebfe4d6496a8ea7247d666cb865e091affe0d7ae521af4b5804cf",
+    "actual": "9d2f850edeeebfe4d6496a8ea7247d666cb865e091affe0d7ae521af4b5804cf"
+  },
+  {
+    "path": "game-audio.js",
+    "status": 200,
+    "bytes": 4385,
+    "expected": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
+    "actual": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413"
+  },
+  {
+    "path": "console-world.js",
+    "status": 200,
+    "bytes": 3265,
+    "expected": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
+    "actual": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553"
+  },
+  {
+    "path": "console-world.css",
+    "status": 200,
+    "bytes": 5811,
+    "expected": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
+    "actual": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d"
+  },
+  {
+    "path": "style.css",
+    "status": 200,
+    "bytes": 307455,
+    "expected": "52afa3f2978535368abd77a7f6dd08a73cec2bc023f027a956d14558ebc5e794",
+    "actual": "52afa3f2978535368abd77a7f6dd08a73cec2bc023f027a956d14558ebc5e794"
+  },
+  {
+    "path": "assets/vendor/three-r128.min.js",
+    "status": 200,
+    "bytes": 603445,
+    "expected": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+    "actual": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+  },
+  {
+    "path": "assets/js/core/runtime-config.js",
+    "status": 200,
+    "bytes": 2019,
+    "expected": "15e214bd6bca5730a2a8cb8618e9dcd7932cb4abd40e42fc799f09b2cfabb636",
+    "actual": "15e214bd6bca5730a2a8cb8618e9dcd7932cb4abd40e42fc799f09b2cfabb636"
+  },
+  {
+    "path": "assets/js/core/safe-pointer.js",
+    "status": 200,
+    "bytes": 641,
+    "expected": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4",
+    "actual": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4"
+  },
+  {
+    "path": "assets/js/core/viewport-manager.js",
+    "status": 200,
+    "bytes": 1669,
+    "expected": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1",
+    "actual": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1"
+  },
+  {
+    "path": "assets/js/save-db.js",
+    "status": 200,
+    "bytes": 4917,
+    "expected": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
+    "actual": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d"
+  },
+  {
+    "path": "firebase-config.js",
+    "status": 200,
+    "bytes": 541,
+    "expected": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
+    "actual": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+  },
+  {
+    "path": "assets/js/game-account.js",
+    "status": 200,
+    "bytes": 5742,
+    "expected": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09",
+    "actual": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09"
+  },
+  {
+    "path": "assets/js/multiplayer-rtdb.js",
+    "status": 200,
+    "bytes": 111729,
+    "expected": "667d6cbb117fd61c701b33cecc10ed7c5ed4e398c2d62ec78a99e085d13da5fb",
+    "actual": "667d6cbb117fd61c701b33cecc10ed7c5ed4e398c2d62ec78a99e085d13da5fb"
+  },
+  {
+    "path": "app.js",
+    "status": 200,
+    "bytes": 1857696,
+    "expected": "c5be4d07cbe04243c0446b9764a99558333ce296a2db76d25f1f3898206c515d",
+    "actual": "c5be4d07cbe04243c0446b9764a99558333ce296a2db76d25f1f3898206c515d"
+  },
+  {
+    "path": "family-mascots.js",
+    "status": 200,
+    "bytes": 41544,
+    "expected": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9",
+    "actual": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9"
+  },
+  {
+    "path": "assets/ot-games-airframes.json",
+    "status": 200,
+    "bytes": 93092,
+    "expected": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6",
+    "actual": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6"
+  },
+  {
+    "path": "assets/vendor/GLTFLoader-r128.js",
+    "status": 200,
+    "bytes": 96550,
+    "expected": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
+    "actual": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+  },
+  {
+    "path": "assets/vendor/DRACOLoader-r128.js",
+    "status": 200,
+    "bytes": 13453,
+    "expected": "bbd4a1bb08f05d9c8df1b411644a1fc31a32fdcd36489e5bcdfe6c4fa2b8e4e9",
+    "actual": "bbd4a1bb08f05d9c8df1b411644a1fc31a32fdcd36489e5bcdfe6c4fa2b8e4e9"
+  },
+  {
+    "path": "assets/vendor/draco/draco_wasm_wrapper.js",
+    "status": 200,
+    "bytes": 53604,
+    "expected": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846",
+    "actual": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846"
+  },
+  {
+    "path": "assets/vendor/draco/draco_decoder.wasm",
+    "status": 200,
+    "bytes": 194983,
+    "expected": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e",
+    "actual": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e"
+  },
+  {
+    "path": "assets/world/vehicles/ferrari-458.glb",
+    "status": 200,
+    "bytes": 1681572,
+    "expected": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e",
+    "actual": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e"
+  },
+  {
+    "path": "assets/vehicles-credits.html",
+    "status": 200,
+    "bytes": 1411,
+    "expected": "5be05f32d2fb989a67c6c51aa624a660dfb7eacdbd671f7f44a2f141dc32e75f",
+    "actual": "5be05f32d2fb989a67c6c51aa624a660dfb7eacdbd671f7f44a2f141dc32e75f"
+  },
+  {
+    "path": "assets/world/vehicles/ot-racer.glb",
+    "status": 200,
+    "bytes": 537260,
+    "expected": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b",
+    "actual": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b"
+  },
+  {
+    "path": "assets/world/vehicles/ot-coupe.glb",
+    "status": 200,
+    "bytes": 560592,
+    "expected": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862",
+    "actual": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862"
+  },
+  {
+    "path": "assets/js/controls/world-hand-controls.js",
+    "status": 200,
+    "bytes": 16658,
+    "expected": "1e280131950f30bff0db5cb39873443e4a0818ae906b104e2b4a3787f5ac5413",
+    "actual": "1e280131950f30bff0db5cb39873443e4a0818ae906b104e2b4a3787f5ac5413"
+  },
+  {
+    "path": "assets/js/world-venue-bridge.js",
+    "status": 200,
+    "bytes": 864,
+    "expected": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c",
+    "actual": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c"
+  },
+  {
+    "path": "assets/js/world-venue-trip.js",
+    "status": 200,
+    "bytes": 2234,
+    "expected": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7",
+    "actual": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7"
+  },
+  {
+    "path": "assets/js/ui/shared-modal.js",
+    "status": 200,
+    "bytes": 973,
+    "expected": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a",
+    "actual": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a"
+  },
+  {
+    "path": "assets/js/ui/account-access.js",
+    "status": 200,
+    "bytes": 5412,
+    "expected": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff",
+    "actual": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff"
+  },
+  {
+    "path": "assets/js/core/performance-guardian.js",
+    "status": 200,
+    "bytes": 2478,
+    "expected": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f",
+    "actual": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f"
+  },
+  {
+    "path": "assets/js/multiplayer/room-manager.js",
+    "status": 200,
+    "bytes": 7304,
+    "expected": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4",
+    "actual": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4"
+  },
+  {
+    "path": "assets/js/education/adaptive-learning.js",
+    "status": 200,
+    "bytes": 7627,
+    "expected": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701",
+    "actual": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701"
+  },
+  {
+    "path": "assets/js/safety/child-safety.js",
+    "status": 200,
+    "bytes": 1693,
+    "expected": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6",
+    "actual": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6"
+  },
+  {
+    "path": "manifest.webmanifest",
+    "status": 200,
+    "bytes": 782,
+    "expected": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075",
+    "actual": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075"
+  },
+  {
+    "path": "404.html",
+    "status": 200,
+    "bytes": 265,
+    "expected": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8",
+    "actual": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8"
+  },
+  {
+    "path": "VERSION.json",
+    "status": 200,
+    "bytes": 34518,
+    "expected": "c0d8ac2ed5b851973201083713685db3b4ee5e55b49429770975ced4828a18c8",
+    "actual": "c0d8ac2ed5b851973201083713685db3b4ee5e55b49429770975ced4828a18c8"
+  },
+  {
+    "path": "sw.js",
+    "status": 200,
+    "bytes": 10859,
+    "expected": "8b3acafc90e57f2dea817627898f261bffef93a8b9e233bcc3e9c79939e77a05",
+    "actual": "8b3acafc90e57f2dea817627898f261bffef93a8b9e233bcc3e9c79939e77a05"
+  }
+]

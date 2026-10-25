@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.25.0-brazilian-collection",
+  "revision": "d25afb1c422c765c",
+  "protectedFiles": 37,
+  "apk": {
+    "status": 200,
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+    "contentType": "application/vnd.android.package-archive",
+    "disposition": "attachment; filename=\"thIAguinho-ARCADE-OT.apk\""
+  },
+  "cases": [
+    {
+      "id": "br-s10",
+      "model": "s10",
+      "seated": 4
+    },
+    {
+      "id": "adventure-black",
+      "model": "amarok",
+      "seated": 4
+    },
+    {
+      "id": "br-fusca",
+      "model": "fusca",
+      "seated": 4
+    }
+  ],
+  "road": {
+    "passed": true,
+    "samples": 2368,
+    "failures": []
+  },
+  "errors": [],
+  "limits": [
+    "Chromium mobile emulation; no physical Android installation or two-device online session."
+  ]
+}
