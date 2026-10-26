@@ -9,11 +9,11 @@
     const add=(type,x,z,color,label,rotation=0)=>{const item=createFurniture(house,type,x,z,color,label);item.group.rotation.y=rotation;objects[type]=item;return item;};
     add('bed',-2.7,-2.4,0,'Dormir');add('sofa',.75,-2.45,0x507d89,'Sentar no sofá');add('tv',3.35,-1.3,0,'Assistir televisão',-Math.PI/2);
     add('fridge',-3.55,1.85,0,'Abrir geladeira',Math.PI/2);add('stove',-3.55,.6,0,'Cozinhar',Math.PI/2);add('sink',-3.55,-.75,0,'Beber água',Math.PI/2);
-    add('shower',3.35,2.05,0,'Tomar banho');add('wardrobe',3.4,.5,0,'Trocar roupa',-Math.PI/2);add('chest',-.65,-.85,0,'Abrir baú');add('table',-1,1.55,0,'Mesa de refeições');add('plant',1.9,2.55,0,'Planta da casa');
+    add('shower',3.35,2.05,0,'Tomar banho');add('wardrobe',3.4,.5,0,'Trocar roupa',-Math.PI/2);add('chest',-.65,-.10,0,'Abrir baú');add('table',-1,1.55,0,'Mesa de refeições');add('plant',1.9,2.55,0,'Planta da casa');
     house.entryX=house.x+.8;house.entryZ=house.z+1.6;
     const dims={bed:[2.25,1.25],sofa:[2.55,.95],tv:[.62,1.75],fridge:[.82,.94],stove:[.86,1.12],sink:[.78,1.25],shower:[1.15,1.15],wardrobe:[.68,1.55],chest:[1.25,.82],table:[1.6,1.05]};
     for(const[type,item]of Object.entries(objects)){const d=dims[type];if(d)registerCollider(item.x,item.z,d[0],d[1],{homeFurniture:house.id,furniture:type,height:type==='bed'?.8:1.4});}
-    const points={bed:[-1.35,-2.1],sofa:[.75,-1.45],tv:[2.3,-1.3],fridge:[-2.5,1.85],stove:[-2.5,.6],sink:[-2.5,-.75],shower:[2.2,2.05],wardrobe:[2.25,.5],chest:[-.65,.05]};
+    const points={bed:[-1.08,-2.1],sofa:[.75,-1.45],tv:[2.3,-1.3],fridge:[-2.5,1.85],stove:[-2.5,.6],sink:[-2.5,-.75],shower:[2.2,2.05],wardrobe:[2.25,.5],chest:[.55,-.10]};
     for(const[type,label]of NEIGHBORHOOD_HOME_ACTIONS){const p=points[type];registerInteractable({id:type+'-'+house.id,type:'activity',activity:type,icon:activityIcon(type),label,x:house.x+p[0],z:house.z+p[1],radius:1.05,priority:150,houseId:house.id,action:()=>useActivity(type,house)});}
     const box=(w,h,d,c,x,y,z)=>premiumBox(w,h,d,c,house.x+x,y,house.z+z,g);
     box(3.6,.025,1.5,0xb1a28b,-2.4,.19,-2.4);box(3.4,.025,1.8,0x8caeb0,.75,.19,-2.05);box(2.4,.025,2.3,0xc4aa82,-1,.19,1.55);box(1.6,.025,1.6,0xc9dede,3.15,.19,2.05);
@@ -25,6 +25,7 @@
     const picture=new THREE.Mesh(new THREE.PlaneGeometry(1.5,.85),new THREE.MeshStandardMaterial({map:signTexture('LAR · FAMÍLIA OT','#294a62','#ead9b4'),roughness:.75}));picture.position.set(house.x+.75,2.1,house.z-3.12);g.add(picture);
     const glow=addGlow(house.x,2.25,house.z,0xffd09b,5);house.interiorObjects.push(glow);
     registerInteractable({id:'home-actions-'+house.id,type:'activity',icon:'🏠',label:'Ações da casa',x:house.x+.8,z:house.z+1.6,radius:1.1,priority:175,houseId:house.id,action:()=>openNeighborhoodHome(house)});
+    box(.48,.09,.52,0x8d795b,.12,.48,1.55);box(.07,.55,.52,0x8d795b,.38,.76,1.55);for(const dx of[-.16,.16])for(const dz of[-.18,.18])box(.05,.43,.05,0x5b625d,.12+dx,.25,1.55+dz);
     neighborhoodHome.houses.set(house.id,{house,objects,points});
   }
   function openNeighborhoodHome(house){
