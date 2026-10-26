@@ -105,7 +105,7 @@
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     if(world.skyDome)world.skyDome.position.copy(camera.position);
-    try{renderer.render(scene,camera);}finally{playerGroup.visible=localVisible;}
+    const restoreHome=prepareHomeRender();try{renderer.render(scene,camera);}finally{restoreHome?.();playerGroup.visible=localVisible;}
   }
 
   function setupControls(){

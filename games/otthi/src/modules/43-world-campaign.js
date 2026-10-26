@@ -197,11 +197,11 @@
   }
   async function campaignRetry(){const mode=worldCampaign.mission?.mode;if(!mode)return false;otGamesLeave();return campaignStart(mode);}
   function campaignMapLocations(){
-    return [...Object.values(WORLD_CAMPAIGN_SITES),...Object.keys(WORLD_CAMPAIGN_AIRCRAFT).map(campaignAircraftPose)].map(site=>({
+    return [...Object.values(WORLD_CAMPAIGN_SITES),...['plane','helicopter'].map(campaignAircraftPose)].map(site=>({
       id:'campaign-'+site.id,name:site.label,
       icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':site.id==='plane'?'✈️':site.id==='helicopter'?'🚁':'🎯',
       group:'Bases e campanhas',x:site.x,z:site.z,navX:site.navX??site.x,navZ:site.navZ??site.z,
-      missionTarget:true,
+      missionTarget:!!worldCampaign.mission&&worldCampaign.route?.id===site.id,
       description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Visite os hangares, a pista e o heliponto. Os veículos estacionados podem ser pilotados livremente.':site.id==='plane'||site.id==='helicopter'?'Aproxime-se da aeronave e toque em AÇÃO para embarcar e pilotar. Pouse e pare para sair.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
       actions:['Marcar a rota azul no GPS','Viajar até o destino','Abrir MISSÕES ao chegar']
     }));

@@ -28,6 +28,19 @@
     box(.48,.09,.52,0x8d795b,.12,.48,1.55);box(.07,.55,.52,0x8d795b,.38,.76,1.55);for(const dx of[-.16,.16])for(const dz of[-.18,.18])box(.05,.43,.05,0x5b625d,.12+dx,.25,1.55+dz);
     neighborhoodHome.houses.set(house.id,{house,objects,points});
   }
+  // Track ownership for a true room cutaway. Merely clipping bounds leaves
+  // slices of parked cars or nearby billboards protruding into the living room.
+  const homeOriginalCreateHouse=createHouse;
+  createHouse=function(...args){const before=new Set(worldGroup.children),house=homeOriginalCreateHouse(...args);house.renderObjects=new Set(worldGroup.children.filter(o=>!before.has(o)));return house;};
+  const homeOriginalAddInterior=addHouseInterior;
+  addHouseInterior=function(house,...args){const before=new Set(worldGroup.children),result=homeOriginalAddInterior(house,...args);house.renderObjects??=new Set();for(const o of worldGroup.children)if(!before.has(o))house.renderObjects.add(o);return result;};
+  function prepareHomeRender(){
+    const h=currentHouse;if(!h||cameraMode!=='interior'||!h.renderObjects)return null;const keep=new Set(h.renderObjects),hidden=[];
+    if(characterActivities.visual?.host)keep.add(characterActivities.visual.host);if(neighborhoodHome.seat?.host)keep.add(neighborhoodHome.seat.host);keep.add(playerGroup);if(contactShadow)keep.add(contactShadow);
+    for(const a of Object.values(familyWorld.actors||{}))if(Math.abs(a.x-h.x)<h.w/2&&Math.abs(a.z-h.z)<h.d/2){keep.add(a.group);if(a.shadow)keep.add(a.shadow);if(a.label)keep.add(a.label);}
+    for(const o of worldGroup.children)if(o.visible&&!keep.has(o)){hidden.push(o);o.visible=false;}
+    return()=>{for(const o of hidden)o.visible=true;};
+  }
   function openNeighborhoodHome(house){
     if(currentHouse!==house)return;
     openModal(house.name||'Minha casa',`<div class="resource-summary"><span>Energia ${Math.round(state.needs.energy)}%</span><span>Fome ${Math.round(state.needs.hunger)}%</span><span>Higiene ${Math.round(state.needs.hygiene)}%</span><span>Diversão ${Math.round(state.needs.fun)}%</span></div><div class="choice-grid">${NEIGHBORHOOD_HOME_ACTIONS.map(([id,title,description])=>`<button class="choice" data-home-action="${id}"><b>${activityIcon(id)} ${title}</b><small>${description}</small></button>`).join('')}</div><div class="modal-actions"><button class="btn" data-home-garage>Minha Garagem</button><button class="btn primary" data-home-console>Jogos do console</button><button class="btn" data-home-leave>Sair de casa</button></div>`,root=>{

@@ -11,7 +11,7 @@
   function mapLocationDetails(loc){if(loc?.description||loc?.actions)return{description:loc.description||'Destino relacionado à missão ativa.',actions:Array.isArray(loc.actions)?loc.actions:['Seguir o GPS','Concluir a etapa']};const d=MAP_LOCATION_DETAILS[loc.id]||MAP_LOCATION_DETAILS.default;return{description:d[0],actions:d[1]};}
   function worldToMap(x,z){const b=v704WorldBounds(),w=Math.max(1,b.maxX-b.minX),d=Math.max(1,b.maxZ-b.minZ);return{left:clamp((x-b.minX)/w*100,2.5,97.5),top:clamp((b.maxZ-z)/d*100,2.5,97.5)};}
   function missionMapLocations(){
-    const job=state.career?.activeJob,items=[];
+    const job=state.career?.activeJob,items=[],chapter=typeof chapterNextDestination==='function'?chapterNextDestination():null;if(chapter)items.push(chapter);
     if(job&&typeof serviceVehicleMapLocation==='function'){const vehicleTarget=serviceVehicleMapLocation(job);if(vehicleTarget)items.push(vehicleTarget);}
     const waypoint=state.waypoint;if(waypoint&&!MAP_LOCATIONS.some(loc=>loc.id===waypoint.id)&&!items.some(loc=>loc.id===waypoint.id)){const mission=!!job||/^(service-|assist-|fire-|delivery-)/.test(String(waypoint.id||''));items.push({id:waypoint.id,name:waypoint.name||'Destino da missão',icon:String(waypoint.icon||(/service-/.test(waypoint.id)?'🚨':/fire-/.test(waypoint.id)?'🔥':/assist-/.test(waypoint.id)?'⚠️':'📍')),group:mission?'Missão ativa':'Destino atual',x:Number(waypoint.x||0),z:Number(waypoint.z||0),navX:Number(waypoint.navX??waypoint.x??0),navZ:Number(waypoint.navZ??waypoint.z??0),missionTarget:mission,description:mission?'Este é o ponto exato exigido pela missão. A rota azul e as setas do mundo levam até ele.':'Destino atualmente marcado no GPS.',actions:['Seguir a rota azul','Observar as setas no chão']});}
     return items;

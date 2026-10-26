@@ -18,7 +18,7 @@ function fixture(){
     MeshStandardMaterial:Material,MeshBasicMaterial:Material,CanvasTexture:class{constructor(c){this.canvas=c}},DoubleSide:2};
   const element=tag=>({
     tag,style:{},hidden:false,children:[],innerHTML:'',textContent:'',attrs:{},
-    classList:{add(){}},addEventListener(){},setAttribute(k,v){this.attrs[k]=v;},
+    classList:{add(){},toggle(){}},addEventListener(){},setAttribute(k,v){this.attrs[k]=v;},
     append(o){this.children.push(o);},prepend(o){this.children.unshift(o);},
     querySelector(){return {textContent:'',hidden:false}},getContext(){return {
       fillRect(){},strokeRect(){},fillText(){},set font(v){},set fillStyle(v){},set strokeStyle(v){},set textAlign(v){},set lineWidth(v){}

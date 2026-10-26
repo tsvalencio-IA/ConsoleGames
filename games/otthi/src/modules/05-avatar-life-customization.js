@@ -76,7 +76,7 @@
       steps: [
         ['enteredHome', 'Entre na sua casa.'],
         ['slept', 'Durma na cama para recuperar energia.'],
-        ['ateMeal', 'Prepare e coma uma refeição.'],
+        ['ateMeal', 'Cozinhe uma refeição ou coma à mesa.'],
         ['talkedNeighbor', 'Converse com Nino na praça.']
       ]
     },
@@ -89,7 +89,7 @@
       ]
     },
     {
-      id: 'builder', title: 'Construtor do vale', chapter: 'CAPÍTULO 3 — MINECRAFT KIDS', reward: { coins: 220, medal: 'Construtor do Vale' },
+      id: 'builder', title: 'Construtor do vale', chapter: 'CAPÍTULO 3 — CONSTRUÇÃO', reward: { coins: 220, medal: 'Construtor do Vale' },
       steps: [
         ['hasMaterials', 'Colete 3 madeiras e 2 pedras.'],
         ['bridgeFixed', 'Conserte a ponte quebrada.'],
@@ -105,7 +105,7 @@
       ]
     },
     {
-      id: 'city', title: 'Cidade em movimento', chapter: 'CAPÍTULO 5 — SECOND LIFE KIDS', reward: { coins: 350, medal: 'Estrela da Cidade' },
+      id: 'city', title: 'Cidade em movimento', chapter: 'CAPÍTULO 5 — VIDA NA CIDADE', reward: { coins: 350, medal: 'Estrela da Cidade' },
       steps: [
         ['gotVehicle', 'Pegue o carrinho na garagem.'],
         ['deliveryDone', 'Faça a entrega para Maya.'],

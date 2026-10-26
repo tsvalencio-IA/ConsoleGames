@@ -53,7 +53,7 @@
     const SAFETY = { ZOMBIE_TIMEOUT: 15000, MAX_RACE_TIME: 300000, MAINTENANCE_RATE: 2000 };
     const PHYSICS = { gripAsphalt: 0.98, gripZebra: 0.85, gripOffroad: 0.35, centrifugalForce: 0.16, momentumTransfer: 1.6, steerSensitivity: 0.0555, lateralInertiaDecay: 0.95 };
 
-    const KartAudio={initialized:false,isPlaying:false,voice:null,init(){this.initialized=!!window.GameAudio;window.GameAudio?.unlock();},start(){if(this.isPlaying)return;this.init();this.voice=window.GameAudio?.vehicleVoice('kart','kart');this.isPlaying=!!this.voice;},stop(){this.voice?.dispose();this.voice=null;this.isPlaying=false;},update(speed,maxSpeed,driftIntensity,isOffroad,isTurbo){this.voice?.update(Math.abs(speed)/Math.max(1,maxSpeed)*24,speed>0?.8:0,isTurbo,!window.System?.paused);},crash(){window.GameAudio?.effect('impact');}};
+    const KartAudio={initialized:false,isPlaying:false,voice:null,init(){this.initialized=!!window.GameAudio?.vehicleVoice;window.GameAudio?.unlock?.();},start(){if(this.isPlaying)return;this.init();this.voice=window.GameAudio?.vehicleVoice?.('kart','kart');this.isPlaying=!!this.voice;},stop(){this.voice?.dispose();this.voice=null;this.isPlaying=false;},update(speed,maxSpeed,driftIntensity,isOffroad,isTurbo){this.voice?.update(Math.abs(speed)/Math.max(1,maxSpeed)*24,speed>0?.8:0,isTurbo,!window.System?.paused);},crash(){window.GameAudio?.effect?.('impact');}};
 
     let segments = []; let trackLength = 0; let minimapPath = []; let minimapBounds = {minX:0, maxX:0, minZ:0, maxZ:0, w:1, h:1};
     let hudMessages = []; let particles = []; let nitroBtn = null; let resetBtn = null; 

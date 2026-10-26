@@ -265,7 +265,7 @@
       if(g.landingAssist){g.collective=g.onGround?.5:.34;g.move.x=g.move.y=0;g.pedal=0;}
       const collective=clamp(g.collective+(k.has('KeyE')?.2:0)-(k.has('KeyQ')?.2:0),0,1);b.vy+=((collective-.5)*18-b.vy)*blend;b.x+=b.vx*dt;b.y+=b.vy*dt;b.z+=b.vz*dt;b.roll+=(x*.34-b.roll)*blend;b.pitch+=(-y*.18-b.pitch)*blend;
     }else if(g.onGround){
-      const desired=g.collective*35;g.airspeed+=clamp(desired-g.airspeed,-7*dt,6*dt);b.yaw-=x*dt*.7;b.roll=0;b.pitch*=Math.exp(-dt*5);b.vx=Math.sin(b.yaw)*g.airspeed;b.vz=Math.cos(b.yaw)*g.airspeed;b.vy=0;b.x+=b.vx*dt;b.z+=b.vz*dt;b.y=groundHeightAt(b.x,b.z)+1.3;
+      const desired=g.collective*35;g.airspeed+=clamp(desired-g.airspeed,-7*dt,6*dt);b.yaw-=x*dt*.7;b.roll=0;b.pitch*=Math.exp(-dt*5);b.vx=Math.sin(b.yaw)*g.airspeed;b.vz=Math.cos(b.yaw)*g.airspeed;b.vy=0;b.x+=b.vx*dt;b.z+=b.vz*dt;b.y=groundHeightAt(b.x,b.z)+campaignAircraftHeight(g.aircraftId||g.mode);
       g.flightPhase=g.airspeed>1?'runway':'ready';
       if(g.airspeed>=15&&y>.12){g.onGround=false;g.flightPhase='airborne';b.pitch=.10;}
     }else{

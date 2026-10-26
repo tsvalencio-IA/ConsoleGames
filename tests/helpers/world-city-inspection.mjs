@@ -9,7 +9,7 @@ export async function installCityInspection(page){
  window.__CITY_QA={
  cap:(fps=0)=>{if(cityQaRender)return true;if(!renderer)return false;cityQaRender=renderer.render.bind(renderer);let last=-Infinity;renderer.render=(...args)=>{if(fps<=0)return;const now=cityQaRealNow();if(now-last<1000/fps)return;last=now;cityQaRender(...args);};return true;},
  boatGhost:uid=>{const g=world.ghosts.get(uid),b=g?.userData.boatVisual;return b?{visible:b.visible,craft:b.userData.craftKey,model:b.userData.seaModel?.name,position:g.position.toArray()}:null;},
- renderNative:()=>{(cityQaRender||renderer.render.bind(renderer))(scene,camera);},
+ renderNative:()=>{const restore=prepareHomeRender();try{(cityQaRender||renderer.render.bind(renderer))(scene,camera);}finally{restore?.();}},
  combat:()=>otGames,
  sample:()=>({incidents:state.cityServices.emergencyCalls||0,activeIncident:world.activeIncident?{id:world.activeIncident.id,x:world.activeIncident.x,z:world.activeIncident.z,actors:world.activeIncident.actorStates.map(s=>s.ref.id)}:null,traffic:trafficActorList().map(a=>({id:a.id,x:a.group.position.x,z:a.group.position.z,speed:a.speed,heading:a.group.rotation.y,road:pointOnRoad(a.group.position.x,a.group.position.z,.05)}))}),
  routes:()=>trafficActorList().map(a=>({id:a.id,closed:(world.ottoviasTraffic||[]).includes(a.ref)||(world.buses||[]).includes(a.ref)||(world.policeCars||[]).includes(a.ref)&&!a.ref.incidentTargetId&&!a.ref.npcTarget||(world.npcs||[]).some(n=>n.mobility===a.ref),path:a.group.userData.roadPath||a.ref.route?.points||a.ref.route||[]})),
