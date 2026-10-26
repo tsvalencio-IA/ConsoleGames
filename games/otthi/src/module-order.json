@@ -77,7 +77,7 @@
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "32f7ca43a993613c55717cc333d7f9c94f42e96007019f56c9d5b372d5dfc9e8"
+      "sha256Body": "13bce1899878c541b5056e9b347b1bcd28c9883326b4130d718bc4828344fc73"
     },
     {
       "file": "src/modules/08a-world-atlas.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "c0b40accbf8d41e1f3773d3599d80822bd992c6b3ed0241483d459ab78fe73d0"
+      "sha256Body": "710e1603a8a9677123c7c64d1851752e9c9a6be3dcf5e0546d1e3ebbe2400030"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "d617a9b170e4bf91817ed06a02df89f30fd788d248859288920020de01c7e015"
+      "sha256Body": "8938c290d73aa9d1745b1b2977c8a463a27a0cb6b1197e3081dee37dbae1095d"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -516,14 +516,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rotinas físicas de moradores e restaurantes",
-      "sha256Body": "d0ad86a654d047c679db585d702a48418b5b8ca34911917b45e5b9eb69242163"
+      "sha256Body": "359999766b57ecef1135f464b9c29b6a991d28580f0a6e3e9e48334c453e9c1f"
     },
     {
       "file": "src/modules/60-airport-mountain-balloon.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Aeroporto civil, várias aeronaves pilotáveis e balão nas montanhas",
-      "sha256Body": "b21a434661428ace72dcbbc815e7e6decb057ae957cf19e71bf410762d58c346"
+      "sha256Body": "febb5493500894cec5252e7cd0df18276f0d4c4cfedfad126b31f6385faac8a8"
     }
   ],
   "styles": [
@@ -707,7 +707,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
-      "sha256Body": "918c0601f732e47fd9b2fdf7d9043aa08499bde9cf0ef0500ecb4611437afea6"
+      "sha256Body": "095bfa92b617bd5bd31b5df0371eb8846cf3bbfdd332cfbc1e52325c1106ede3"
     }
   ]
 }

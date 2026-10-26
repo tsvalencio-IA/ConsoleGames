@@ -22,7 +22,7 @@
     root.scale.setScalar(mode==='helicopter'?.075:.10);return root;
   }
   function otGamesWeapon(){
-    if(window.OTCombatArt){const root=new THREE.Group(),gun=OTCombatArt.rifle(true);gun.rotation.y=Math.PI;root.add(gun);root.userData.flash=gun.userData.flash;root.userData.modelVersion=OTCombatArt.version;root.traverse(o=>{if(o.isMesh){o.material.depthTest=false;o.material.depthWrite=false;o.renderOrder=990;}});return root;}
+    if(window.OTCombatArt){const root=new THREE.Group(),gun=OTCombatArt.rifle(true);gun.rotation.y=Math.PI;root.scale.setScalar(.62);root.add(gun);root.userData.flash=gun.userData.flash;root.userData.modelVersion=OTCombatArt.version;root.traverse(o=>{if(o.isMesh){o.material.depthTest=false;o.material.depthWrite=false;o.renderOrder=990;}});return root;}
     const root=new THREE.Group(),parts=new THREE.Group();root.add(parts);
     const box=(color,x,y,z,w,h,d)=>otGamesMesh('box',color,x,y,z,w,h,d,parts);
     box('#304650',0,0,-.18,.13,.12,.6);box('#607b80',0,.075,-.2,.09,.03,.4);box('#19313c',0,-.10,-.02,.08,.2,.1);box('#354e56',0,-.13,-.23,.085,.20,.11);box('#47636c',0,0,.12,.14,.17,.25);box('#172c37',0,.10,-.28,.025,.06,.025);box('#203743',0,.04,-.56,.04,.04,.3);
@@ -150,7 +150,7 @@
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
     playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
     if(options.exitPoint){player.x=options.exitPoint.x;player.y=options.exitPoint.y;player.z=options.exitPoint.z;player.facing=g.body.yaw;player.vx=player.vy=player.vz=0;player.grounded=true;rememberSafePlayerPosition(true);savePlayerPosition(true);saveState(true);}
-    g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
+    g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];if(typeof campaignSyncAircraft==='function')campaignSyncAircraft();if(world.routeGuide)world.routeGuide.visible=!!state.waypoint;if(world.waypointMarker)world.waypointMarker.visible=!!state.waypoint;document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
   function otGamesBindPress(el,fn){let pressedAt=-Infinity;el?.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(el.disabled)return;pressedAt=performance.now();fn(e);});el?.addEventListener('click',e=>{e.preventDefault();if(!el.disabled&&performance.now()-pressedAt>650)fn(e);});}
   function otGamesCanLand(mode,b){
@@ -233,7 +233,7 @@
     else{const distance=g.mode==='balloon'?(innerHeight>innerWidth?27:22):g.aircraftId==='plane-cargo'?23:g.mode==='helicopter'?10:14,position=new THREE.Vector3(b.x,b.y,b.z).addScaledVector(forward,-distance);position.y+=g.mode==='balloon'?9:3.2;camera.position.lerp(position,1-Math.exp(-dt*9));camera.up.set(0,1,0);camera.lookAt(new THREE.Vector3(b.x,b.y+(g.mode==='balloon'?4.4:0),b.z).addScaledVector(forward,g.mode==='balloon'?3:28));camera.fov=66;}
     camera.updateProjectionMatrix();
     if(g.weapon){
-      const kick=Math.max(0,g.cooldown/.15);const offset=new THREE.Vector3(g.aiming?0:.18,(g.aiming?-.105:-.17)-(g.reload>0?.16:0),g.aiming?-.49:-.55+kick*.025).applyQuaternion(camera.quaternion);g.weapon.position.copy(camera.position).add(offset);
+      const kick=Math.max(0,g.cooldown/.15);const offset=new THREE.Vector3(g.aiming?0:.18,(g.aiming?-.056:-.21)-(g.reload>0?.16:0),g.aiming?-.98:-.82+kick*.014).applyQuaternion(camera.quaternion);g.weapon.position.copy(camera.position).add(offset);
       // In camera-hand mode the camera itself follows the fingers; gun and reticle
       // stay aligned with the camera centre. Never apply a second angular offset.
       g.weapon.quaternion.copy(camera.quaternion);

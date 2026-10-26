@@ -1,0 +1,1012 @@
+{
+  "passed": true,
+  "road": {
+    "passed": true,
+    "samples": 3022,
+    "failures": []
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 22,
+    "highways": 10,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "audit": {
+    "samples": 23544,
+    "offRoad": []
+  },
+  "simulation": {
+    "before": 0,
+    "after": 1,
+    "events": []
+  },
+  "transactions": [
+    {
+      "id": "shop-aurora-0",
+      "cost": 14
+    },
+    {
+      "id": "shop-aurora-1",
+      "cost": 20
+    },
+    {
+      "id": "shop-aurora-3",
+      "cost": 20
+    },
+    {
+      "id": "shop-costa-0",
+      "cost": 14
+    },
+    {
+      "id": "shop-costa-1",
+      "cost": 20
+    },
+    {
+      "id": "shop-costa-3",
+      "cost": 20
+    },
+    {
+      "id": "shop-coast-0",
+      "cost": 14
+    }
+  ],
+  "vehiclesMoved": 73,
+  "citizensMoving": 12,
+  "initial": {
+    "ready": true,
+    "shops": [
+      {
+        "id": "shop-aurora-0",
+        "label": "OT BURGER · Nova Aurora",
+        "kind": "fastfood",
+        "face": 1,
+        "x": 268,
+        "z": -57.92,
+        "navX": 268,
+        "navZ": -53.400000000000006,
+        "description": "Lanches preparados na hora e opções para levar."
+      },
+      {
+        "id": "shop-aurora-1",
+        "label": "MERCADO OT · Nova Aurora",
+        "kind": "market",
+        "face": 1,
+        "x": 332,
+        "z": -57.92,
+        "navX": 332,
+        "navZ": -53.400000000000006,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-aurora-2",
+        "label": "CAFÉ DA PRAÇA · Nova Aurora",
+        "kind": "cafe",
+        "face": -1,
+        "x": 268,
+        "z": -22.08,
+        "navX": 268,
+        "navZ": -26.599999999999998,
+        "description": "Uma pausa para comer na praça."
+      },
+      {
+        "id": "shop-aurora-3",
+        "label": "CONVENIÊNCIA · Nova Aurora",
+        "kind": "market",
+        "face": -1,
+        "x": 332,
+        "z": -22.08,
+        "navX": 332,
+        "navZ": -26.599999999999998,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-costa-0",
+        "label": "OT BURGER · Costa Verde",
+        "kind": "fastfood",
+        "face": 1,
+        "x": -332,
+        "z": 92.08,
+        "navX": -332,
+        "navZ": 96.6,
+        "description": "Lanches preparados na hora e opções para levar."
+      },
+      {
+        "id": "shop-costa-1",
+        "label": "MERCADO OT · Costa Verde",
+        "kind": "market",
+        "face": 1,
+        "x": -268,
+        "z": 92.08,
+        "navX": -268,
+        "navZ": 96.6,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-costa-2",
+        "label": "CAFÉ DA PRAÇA · Costa Verde",
+        "kind": "cafe",
+        "face": -1,
+        "x": -332,
+        "z": 127.92,
+        "navX": -332,
+        "navZ": 123.4,
+        "description": "Uma pausa para comer na praça."
+      },
+      {
+        "id": "shop-costa-3",
+        "label": "CONVENIÊNCIA · Costa Verde",
+        "kind": "market",
+        "face": -1,
+        "x": -268,
+        "z": 127.92,
+        "navX": -268,
+        "navZ": 123.4,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-coast-0",
+        "label": "OT BURGER PRAIA",
+        "kind": "fastfood",
+        "x": -346,
+        "z": 491.2,
+        "navX": -346,
+        "navZ": 488.2,
+        "description": "Uma pausa na orla: faça seu pedido no balcão."
+      },
+      {
+        "id": "shop-coast-1",
+        "label": "QUIOSQUE DA PRAIA",
+        "kind": "cafe",
+        "x": -258,
+        "z": 491.2,
+        "navX": -258,
+        "navZ": 488.2,
+        "description": "Uma pausa na orla: faça seu pedido no balcão."
+      }
+    ],
+    "signals": [
+      {
+        "id": "centro",
+        "x": 0,
+        "z": 0,
+        "ew": 18,
+        "ns": 18,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "centro-oeste",
+        "x": -55,
+        "z": 0,
+        "ew": 18,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "centro-leste",
+        "x": 65,
+        "z": 0,
+        "ew": 18,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "sul-central",
+        "x": 0,
+        "z": -72,
+        "ew": 9,
+        "ns": 18,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "sul-leste",
+        "x": 65,
+        "z": -72,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "norte-central",
+        "x": 0,
+        "z": 58,
+        "ew": 9,
+        "ns": 18,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "norte-leste",
+        "x": 68,
+        "z": 58,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "aurora-centro",
+        "x": 300,
+        "z": -40,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      },
+      {
+        "id": "costa-centro",
+        "x": -300,
+        "z": 110,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "red",
+          "ew": "green"
+        }
+      }
+    ],
+    "citizens": [
+      {
+        "id": "merchant-aurora-0",
+        "x": 272,
+        "z": -56.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-0",
+        "x": 267.4341591239132,
+        "z": -50.5791183975318,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-1",
+        "x": 336,
+        "z": -56.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-1",
+        "x": 330.4003342178151,
+        "z": -50.67423633783826,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-2",
+        "x": 272,
+        "z": -23.029999999999998,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-2",
+        "x": 265.3702317822754,
+        "z": -29.216804182017768,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-3",
+        "x": 336,
+        "z": -23.029999999999998,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-3",
+        "x": 328.34507264730905,
+        "z": -29.090815517584094,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-0",
+        "x": -328,
+        "z": 93.03,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-0",
+        "x": -334.02843102761926,
+        "z": 98.84125340847928,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-1",
+        "x": -264,
+        "z": 93.03,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-1",
+        "x": -270.12091597057076,
+        "z": 99.16549796839922,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-2",
+        "x": -328,
+        "z": 126.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-2",
+        "x": -335.1517455904993,
+        "z": 120.9472338078941,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-3",
+        "x": -264,
+        "z": 126.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-3",
+        "x": -272.1781642041169,
+        "z": 121.07637037472105,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-0",
+        "x": -315.01487728443874,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-1",
+        "x": -313.9648772844388,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-2",
+        "x": -312.91487728443883,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-3",
+        "x": -311.8648772844388,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-vendor-0",
+        "x": -346,
+        "z": 490.9,
+        "walking": false
+      },
+      {
+        "id": "coast-diner-0",
+        "x": -351.35,
+        "z": 495.5,
+        "walking": false
+      },
+      {
+        "id": "coast-vendor-1",
+        "x": -258,
+        "z": 490.9,
+        "walking": false
+      },
+      {
+        "id": "coast-diner-1",
+        "x": -263.35,
+        "z": 495.5,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-0",
+        "x": -397,
+        "z": 502,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-1",
+        "x": -366,
+        "z": 506,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-2",
+        "x": -335,
+        "z": 502,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-3",
+        "x": -304,
+        "z": 506,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-4",
+        "x": -273,
+        "z": 502,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-5",
+        "x": -242,
+        "z": 506,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-0",
+        "x": -398.75,
+        "z": 502.4,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-1",
+        "x": -356.75,
+        "z": 502.4,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-2",
+        "x": -314.75,
+        "z": 502.4,
+        "walking": false
+      },
+      {
+        "id": "beach-swimmer-0",
+        "x": -375,
+        "z": 522,
+        "walking": false
+      },
+      {
+        "id": "beach-swimmer-1",
+        "x": -343,
+        "z": 522,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-0",
+        "x": 11,
+        "z": 179,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-1",
+        "x": 27,
+        "z": 176,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-2",
+        "x": 10,
+        "z": -154,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-3",
+        "x": 37,
+        "z": -154,
+        "walking": false
+      },
+      {
+        "id": "airport-agent",
+        "x": 90,
+        "z": -188.5,
+        "walking": false
+      },
+      {
+        "id": "airport-traveller",
+        "x": 83,
+        "z": -182,
+        "walking": false
+      }
+    ],
+    "purchases": 0,
+    "sea": {
+      "ready": true,
+      "shaderReady": false,
+      "time": 0
+    },
+    "bounds": {
+      "minX": -460,
+      "maxX": 460,
+      "minZ": -460,
+      "maxZ": 900
+    }
+  },
+  "after": {
+    "ready": true,
+    "shops": [
+      {
+        "id": "shop-aurora-0",
+        "label": "OT BURGER · Nova Aurora",
+        "kind": "fastfood",
+        "face": 1,
+        "x": 268,
+        "z": -57.92,
+        "navX": 268,
+        "navZ": -53.400000000000006,
+        "description": "Lanches preparados na hora e opções para levar."
+      },
+      {
+        "id": "shop-aurora-1",
+        "label": "MERCADO OT · Nova Aurora",
+        "kind": "market",
+        "face": 1,
+        "x": 332,
+        "z": -57.92,
+        "navX": 332,
+        "navZ": -53.400000000000006,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-aurora-2",
+        "label": "CAFÉ DA PRAÇA · Nova Aurora",
+        "kind": "cafe",
+        "face": -1,
+        "x": 268,
+        "z": -22.08,
+        "navX": 268,
+        "navZ": -26.599999999999998,
+        "description": "Uma pausa para comer na praça."
+      },
+      {
+        "id": "shop-aurora-3",
+        "label": "CONVENIÊNCIA · Nova Aurora",
+        "kind": "market",
+        "face": -1,
+        "x": 332,
+        "z": -22.08,
+        "navX": 332,
+        "navZ": -26.599999999999998,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-costa-0",
+        "label": "OT BURGER · Costa Verde",
+        "kind": "fastfood",
+        "face": 1,
+        "x": -332,
+        "z": 92.08,
+        "navX": -332,
+        "navZ": 96.6,
+        "description": "Lanches preparados na hora e opções para levar."
+      },
+      {
+        "id": "shop-costa-1",
+        "label": "MERCADO OT · Costa Verde",
+        "kind": "market",
+        "face": 1,
+        "x": -268,
+        "z": 92.08,
+        "navX": -268,
+        "navZ": 96.6,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-costa-2",
+        "label": "CAFÉ DA PRAÇA · Costa Verde",
+        "kind": "cafe",
+        "face": -1,
+        "x": -332,
+        "z": 127.92,
+        "navX": -332,
+        "navZ": 123.4,
+        "description": "Uma pausa para comer na praça."
+      },
+      {
+        "id": "shop-costa-3",
+        "label": "CONVENIÊNCIA · Costa Verde",
+        "kind": "market",
+        "face": -1,
+        "x": -268,
+        "z": 127.92,
+        "navX": -268,
+        "navZ": 123.4,
+        "description": "Abasteça a mochila para continuar a viagem."
+      },
+      {
+        "id": "shop-coast-0",
+        "label": "OT BURGER PRAIA",
+        "kind": "fastfood",
+        "x": -346,
+        "z": 491.2,
+        "navX": -346,
+        "navZ": 488.2,
+        "description": "Uma pausa na orla: faça seu pedido no balcão."
+      },
+      {
+        "id": "shop-coast-1",
+        "label": "QUIOSQUE DA PRAIA",
+        "kind": "cafe",
+        "x": -258,
+        "z": 491.2,
+        "navX": -258,
+        "navZ": 488.2,
+        "description": "Uma pausa na orla: faça seu pedido no balcão."
+      }
+    ],
+    "signals": [
+      {
+        "id": "centro",
+        "x": 0,
+        "z": 0,
+        "ew": 18,
+        "ns": 18,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "centro-oeste",
+        "x": -55,
+        "z": 0,
+        "ew": 18,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "centro-leste",
+        "x": 65,
+        "z": 0,
+        "ew": 18,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "sul-central",
+        "x": 0,
+        "z": -72,
+        "ew": 9,
+        "ns": 18,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "sul-leste",
+        "x": 65,
+        "z": -72,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "norte-central",
+        "x": 0,
+        "z": 58,
+        "ew": 9,
+        "ns": 18,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "norte-leste",
+        "x": 68,
+        "z": 58,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "aurora-centro",
+        "x": 300,
+        "z": -40,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      },
+      {
+        "id": "costa-centro",
+        "x": -300,
+        "z": 110,
+        "ew": 9,
+        "ns": 9,
+        "phase": {
+          "ns": "green",
+          "ew": "red"
+        }
+      }
+    ],
+    "citizens": [
+      {
+        "id": "merchant-aurora-0",
+        "x": 272,
+        "z": -56.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-0",
+        "x": 265.3622745098037,
+        "z": -49.2,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-1",
+        "x": 336,
+        "z": -56.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-1",
+        "x": 328.29850196078405,
+        "z": -49.2,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-2",
+        "x": 272,
+        "z": -23.029999999999998,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-2",
+        "x": 262.1709568627448,
+        "z": -30.8,
+        "walking": true
+      },
+      {
+        "id": "merchant-aurora-3",
+        "x": 336,
+        "z": -23.029999999999998,
+        "walking": false
+      },
+      {
+        "id": "shopper-aurora-3",
+        "x": 325.10718431372516,
+        "z": -30.8,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-0",
+        "x": -328,
+        "z": 93.03,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-0",
+        "x": -327.78223685656815,
+        "z": 100.74007306960138,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-1",
+        "x": -264,
+        "z": 93.03,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-1",
+        "x": -262.5214912377121,
+        "z": 100.73388923594341,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-2",
+        "x": -328,
+        "z": 126.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-2",
+        "x": -329.0429824754242,
+        "z": 119.25374309674065,
+        "walking": true
+      },
+      {
+        "id": "merchant-costa-3",
+        "x": -264,
+        "z": 126.97,
+        "walking": false
+      },
+      {
+        "id": "shopper-costa-3",
+        "x": -266.30372809428025,
+        "z": 119.24755926308268,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-0",
+        "x": -239.57587371659793,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-1",
+        "x": -240.91141176470924,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-2",
+        "x": -242.1342901960818,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-walker-3",
+        "x": -243.35716862745434,
+        "z": 483.6,
+        "walking": true
+      },
+      {
+        "id": "coast-vendor-0",
+        "x": -346,
+        "z": 490.9,
+        "walking": false
+      },
+      {
+        "id": "coast-diner-0",
+        "x": -353.2906202450115,
+        "z": 487.9566557822519,
+        "walking": false
+      },
+      {
+        "id": "coast-vendor-1",
+        "x": -258,
+        "z": 490.9,
+        "walking": false
+      },
+      {
+        "id": "coast-diner-1",
+        "x": -265.2906202450115,
+        "z": 487.9566557822519,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-0",
+        "x": -395.8284108863649,
+        "z": 502.5021096201293,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-1",
+        "x": -358,
+        "z": 509,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-2",
+        "x": -335.742867209135,
+        "z": 502.44392270341956,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-3",
+        "x": -300.4852326590947,
+        "z": 507.50632886038795,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-4",
+        "x": -267.1860083968777,
+        "z": 507.6883949618734,
+        "walking": false
+      },
+      {
+        "id": "beach-visitor-5",
+        "x": -242,
+        "z": 506,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-0",
+        "x": -396,
+        "z": 499,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-1",
+        "x": -354,
+        "z": 499,
+        "walking": false
+      },
+      {
+        "id": "beach-rest-2",
+        "x": -312,
+        "z": 499,
+        "walking": false
+      },
+      {
+        "id": "beach-swimmer-0",
+        "x": -367.15510914174763,
+        "z": 524.3534672574758,
+        "walking": false
+      },
+      {
+        "id": "beach-swimmer-1",
+        "x": -335.15510914174763,
+        "z": 524.3534672574758,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-0",
+        "x": 15,
+        "z": 181,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-1",
+        "x": 31,
+        "z": 178,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-2",
+        "x": 14,
+        "z": -152,
+        "walking": false
+      },
+      {
+        "id": "travel-resident-3",
+        "x": 41,
+        "z": -152,
+        "walking": false
+      },
+      {
+        "id": "airport-agent",
+        "x": 90.81474016206303,
+        "z": -188.0926299189685,
+        "walking": false
+      },
+      {
+        "id": "airport-traveller",
+        "x": 83.81135186141006,
+        "z": -181.59432406929497,
+        "walking": false
+      }
+    ],
+    "purchases": 7,
+    "sea": {
+      "ready": true,
+      "shaderReady": true,
+      "time": 636.8970000743866
+    },
+    "bounds": {
+      "minX": -460,
+      "maxX": 460,
+      "minZ": -460,
+      "maxZ": 900
+    }
+  },
+  "errors": [],
+  "limits": [
+    "Native systems with an accelerated local inspection clock. No physical camera, mobile FPS or live multiplayer certification."
+  ]
+}

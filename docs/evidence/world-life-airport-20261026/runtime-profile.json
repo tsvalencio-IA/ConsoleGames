@@ -1,0 +1,544 @@
+[
+  {
+    "at": [
+      0,
+      0
+    ],
+    "sim": [
+      [
+        "updateOttoviasHighway",
+        {
+          "ms": 72.59999999962747,
+          "calls": 90
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "ms": 33.799999996088445,
+          "calls": 90
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "ms": 21.399999999441206,
+          "calls": 5
+        }
+      ],
+      [
+        "resolveTrafficOverlaps",
+        {
+          "ms": 12.199999997392297,
+          "calls": 13
+        }
+      ],
+      [
+        "updateTrafficIncidents",
+        {
+          "ms": 9.700000001117587,
+          "calls": 13
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "ms": 9.69999999832362,
+          "calls": 9180
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "ms": 7.70000000204891,
+          "calls": 90
+        }
+      ],
+      [
+        "updateNPCs",
+        {
+          "ms": 4.600000001490116,
+          "calls": 13
+        }
+      ],
+      [
+        "updateWorldCampaign",
+        {
+          "ms": 2.799999998882413,
+          "calls": 90
+        }
+      ],
+      [
+        "updateTransitWorld",
+        {
+          "ms": 1.900000000372529,
+          "calls": 13
+        }
+      ],
+      [
+        "updateNavigation",
+        {
+          "ms": 1.800000000745058,
+          "calls": 11
+        }
+      ],
+      [
+        "updateMultiplayer",
+        {
+          "ms": 1.599999999627471,
+          "calls": 13
+        }
+      ],
+      [
+        "updateCamera",
+        {
+          "ms": 1.1000000014901161,
+          "calls": 90
+        }
+      ],
+      [
+        "updatePoliceSystem",
+        {
+          "ms": 0.599999999627471,
+          "calls": 13
+        }
+      ],
+      [
+        "updateWorldResidents",
+        {
+          "ms": 0.40000000037252903,
+          "calls": 90
+        }
+      ],
+      [
+        "updateLifeActivities",
+        {
+          "ms": 0.39999999944120646,
+          "calls": 13
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "ms": 0.2999999998137355,
+          "calls": 90
+        }
+      ],
+      [
+        "updateTrafficVehicleTaking",
+        {
+          "ms": 0.20000000018626451,
+          "calls": 90
+        }
+      ],
+      [
+        "updateWorldSportsV704",
+        {
+          "ms": 0.19999999925494194,
+          "calls": 90
+        }
+      ],
+      [
+        "updateWorldVenues",
+        {
+          "ms": 0.10000000055879354,
+          "calls": 90
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "ms": 0.10000000055879354,
+          "calls": 1
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "ms": 0.09999999962747097,
+          "calls": 90
+        }
+      ],
+      [
+        "updateNpcSociety",
+        {
+          "ms": 0.09999999962747097,
+          "calls": 13
+        }
+      ],
+      [
+        "updateFireService",
+        {
+          "ms": 0,
+          "calls": 13
+        }
+      ],
+      [
+        "updateAdventure",
+        {
+          "ms": 0,
+          "calls": 13
+        }
+      ],
+      [
+        "updateClouds",
+        {
+          "ms": 0,
+          "calls": 7
+        }
+      ]
+    ],
+    "draw": [
+      [
+        "Group:MeshStandardMaterial",
+        388
+      ],
+      [
+        "BoxGeometry:MeshStandardMaterial",
+        64
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:40601/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+        33
+      ],
+      [
+        "OTTHOS_PLAYER",
+        31
+      ],
+      [
+        "CAMPAIGN_airbase",
+        28
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/world/textures/stone-basecolor.png",
+        16
+      ],
+      [
+        "ACTIVITY_VENUE_boxing",
+        15
+      ],
+      [
+        "OT_CIVIL_AIRPORT",
+        14
+      ],
+      [
+        "CAMPAIGN_PARKED_AIRCRAFT",
+        13
+      ],
+      [
+        "Group:LineBasicMaterial",
+        11
+      ],
+      [
+        "ACTIVITY_VENUE_dance",
+        9
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/world/textures/wood-basecolor.png",
+        8
+      ],
+      [
+        "OTTHI_OTTOVIAS_OPERATIONS",
+        7
+      ],
+      [
+        "ACTIVITY_VENUE_pingpong",
+        7
+      ],
+      [
+        "CAMPAIGN_hq",
+        6
+      ],
+      [
+        "CAMPAIGN_north",
+        6
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/textures/roof-v628.png",
+        4
+      ],
+      [
+        "Group:MeshPhysicalMaterial",
+        4
+      ]
+    ],
+    "metrics": {
+      "calls": 730,
+      "triangles": 459318,
+      "geometries": 528,
+      "textures": 86,
+      "npcs": 75
+    }
+  },
+  {
+    "at": [
+      -320,
+      500
+    ],
+    "sim": [
+      [
+        "updateOttoviasHighway",
+        {
+          "ms": 70.00000000186265,
+          "calls": 90
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "ms": 44.999999998137355,
+          "calls": 90
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "ms": 26.200000000186265,
+          "calls": 5
+        }
+      ],
+      [
+        "updateWorldResidents",
+        {
+          "ms": 13.399999995715916,
+          "calls": 90
+        }
+      ],
+      [
+        "resolveTrafficOverlaps",
+        {
+          "ms": 12.999999999068677,
+          "calls": 13
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "ms": 10.499999999068677,
+          "calls": 9180
+        }
+      ],
+      [
+        "updateTrafficIncidents",
+        {
+          "ms": 7.599999999627471,
+          "calls": 13
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "ms": 7.100000004284084,
+          "calls": 90
+        }
+      ],
+      [
+        "updateWorldCampaign",
+        {
+          "ms": 2.900000002235174,
+          "calls": 90
+        }
+      ],
+      [
+        "updateNPCs",
+        {
+          "ms": 2.4000000013038516,
+          "calls": 13
+        }
+      ],
+      [
+        "updateNavigation",
+        {
+          "ms": 2,
+          "calls": 11
+        }
+      ],
+      [
+        "updateMultiplayer",
+        {
+          "ms": 2,
+          "calls": 13
+        }
+      ],
+      [
+        "updateTransitWorld",
+        {
+          "ms": 1.6000000005587935,
+          "calls": 13
+        }
+      ],
+      [
+        "updateCamera",
+        {
+          "ms": 0.7999999988824129,
+          "calls": 90
+        }
+      ],
+      [
+        "updatePoliceSystem",
+        {
+          "ms": 0.5999999986961484,
+          "calls": 13
+        }
+      ],
+      [
+        "updateTrafficVehicleTaking",
+        {
+          "ms": 0.39999999944120646,
+          "calls": 90
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "ms": 0.30000000074505806,
+          "calls": 90
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "ms": 0.2999999988824129,
+          "calls": 90
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "ms": 0.10000000055879354,
+          "calls": 1
+        }
+      ],
+      [
+        "updateWorldVenues",
+        {
+          "ms": 0.09999999962747097,
+          "calls": 90
+        }
+      ],
+      [
+        "updateClouds",
+        {
+          "ms": 0.09999999962747097,
+          "calls": 7
+        }
+      ],
+      [
+        "updateLifeActivities",
+        {
+          "ms": 0.09999999962747097,
+          "calls": 13
+        }
+      ],
+      [
+        "updateWorldSportsV704",
+        {
+          "ms": 0,
+          "calls": 90
+        }
+      ],
+      [
+        "updateFireService",
+        {
+          "ms": 0,
+          "calls": 13
+        }
+      ],
+      [
+        "updateNpcSociety",
+        {
+          "ms": 0,
+          "calls": 13
+        }
+      ],
+      [
+        "updateAdventure",
+        {
+          "ms": 0,
+          "calls": 13
+        }
+      ]
+    ],
+    "draw": [
+      [
+        "Group:MeshStandardMaterial",
+        1362
+      ],
+      [
+        "BoxGeometry:MeshStandardMaterial",
+        156
+      ],
+      [
+        "OTTHI_FLEET_COLLECTION",
+        105
+      ],
+      [
+        "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+        56
+      ],
+      [
+        "OTTHI_RESERVOIR_SINGLE_CONNECTED",
+        50
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:40601/games/otthi/assets/world/textures/wood-basecolor.png",
+        47
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/textures/roof-v628.png",
+        41
+      ],
+      [
+        "OTTHOS_PLAYER",
+        31
+      ],
+      [
+        "COSTA_VERDE_BEACH",
+        26
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/world/textures/wood-basecolor.png",
+        25
+      ],
+      [
+        "OTTHI_PLAYER_HOME_GARAGE",
+        23
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/world/textures/stone-basecolor.png",
+        22
+      ],
+      [
+        "CylinderGeometry:MeshStandardMaterial",
+        22
+      ],
+      [
+        "OTTHI_CONTINUOUS_ROAD_SURFACE",
+        16
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:40601/games/otthi/assets/textures/brick-v628.png",
+        15
+      ],
+      [
+        "Group:MeshPhysicalMaterial",
+        15
+      ],
+      [
+        "OTTHI_V702_LAKE_DEPTH",
+        11
+      ],
+      [
+        "Group:http://127.0.0.1:40601/games/otthi/assets/textures/brick-v628.png",
+        10
+      ]
+    ],
+    "metrics": {
+      "calls": 2216,
+      "triangles": 792760,
+      "geometries": 1071,
+      "textures": 227,
+      "npcs": 75
+    }
+  }
+]

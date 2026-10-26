@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "action": "bed",
+      "result": {
+        "completed": 1,
+        "lastAction": "bed",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "shower",
+      "result": {
+        "completed": 2,
+        "lastAction": "shower",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "stove",
+      "result": {
+        "completed": 3,
+        "lastAction": "cook",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "fridge",
+      "result": {
+        "completed": 4,
+        "lastAction": "eat",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "sofa",
+      "result": {
+        "completed": 5,
+        "lastAction": "sofa",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "tv",
+      "result": {
+        "completed": 6,
+        "lastAction": "tv",
+        "visible": false,
+        "session": null
+      }
+    },
+    {
+      "action": "sink",
+      "result": {
+        "completed": 7,
+        "lastAction": "sink",
+        "visible": false,
+        "session": null
+      }
+    }
+  ],
+  "errors": []
+}

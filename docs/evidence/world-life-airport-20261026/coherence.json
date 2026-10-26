@@ -1,0 +1,1027 @@
+{
+  "passed": true,
+  "profiles": {
+    "published": [
+      {
+        "name": "city",
+        "calls": 770,
+        "triangles": 461244,
+        "geometries": 500,
+        "textures": 75,
+        "npcs": 54,
+        "simulation": {
+          "frames": 90,
+          "ms": 3935.9000000003725
+        }
+      },
+      {
+        "name": "north",
+        "calls": 2207,
+        "triangles": 869990,
+        "geometries": 1157,
+        "textures": 193,
+        "npcs": 54,
+        "simulation": {
+          "frames": 90,
+          "ms": 4687.700000000186
+        }
+      },
+      {
+        "name": "beach",
+        "calls": 3417,
+        "triangles": 997136,
+        "geometries": 1442,
+        "textures": 247,
+        "npcs": 54,
+        "simulation": {
+          "frames": 90,
+          "ms": 4286.199999999255
+        }
+      }
+    ],
+    "working": [
+      {
+        "name": "city",
+        "calls": 636,
+        "triangles": 458542,
+        "geometries": 461,
+        "textures": 81,
+        "npcs": 75,
+        "simulation": {
+          "frames": 90,
+          "ms": 226.40000000037253
+        }
+      },
+      {
+        "name": "north",
+        "calls": 1613,
+        "triangles": 870290,
+        "geometries": 891,
+        "textures": 192,
+        "npcs": 75,
+        "simulation": {
+          "frames": 90,
+          "ms": 263.69999999925494
+        }
+      },
+      {
+        "name": "beach",
+        "calls": 2236,
+        "triangles": 1064490,
+        "geometries": 1177,
+        "textures": 246,
+        "npcs": 75,
+        "simulation": {
+          "frames": 90,
+          "ms": 252.5
+        }
+      }
+    ]
+  },
+  "before": {
+    "ready": true,
+    "total": 75,
+    "actors": [
+      {
+        "id": "merchant-aurora-0",
+        "name": "Rafaela",
+        "x": 272,
+        "y": 0,
+        "z": -56.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-0",
+        "name": "Clara",
+        "x": 270.6474505876313,
+        "y": 0,
+        "z": -51.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-1",
+        "name": "Pedro",
+        "x": 336,
+        "y": 0,
+        "z": -56.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-1",
+        "name": "Lucas",
+        "x": 335.6974505876313,
+        "y": 0,
+        "z": -51.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-2",
+        "name": "Bia",
+        "x": 272,
+        "y": 0,
+        "z": -23.029999999999998,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-2",
+        "name": "Marta",
+        "x": 272.74744990907095,
+        "y": 0,
+        "z": -28.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-3",
+        "name": "Davi",
+        "x": 336,
+        "y": 0,
+        "z": -23.029999999999998,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-3",
+        "name": "Caio",
+        "x": 337.79744990907096,
+        "y": 0,
+        "z": -28.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-0",
+        "name": "Rafaela",
+        "x": -328,
+        "y": 0,
+        "z": 93.03,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-0",
+        "name": "Clara",
+        "x": -330.4025494123687,
+        "y": 0,
+        "z": 98.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-1",
+        "name": "Pedro",
+        "x": -264,
+        "y": 0,
+        "z": 93.03,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-1",
+        "name": "Lucas",
+        "x": -265.3525494123687,
+        "y": 0,
+        "z": 98.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-2",
+        "name": "Bia",
+        "x": -328,
+        "y": 0,
+        "z": 126.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-2",
+        "name": "Marta",
+        "x": -328.3025494123687,
+        "y": 0,
+        "z": 121.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-3",
+        "name": "Davi",
+        "x": -264,
+        "y": 0,
+        "z": 126.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-3",
+        "name": "Caio",
+        "x": -263.2525494123687,
+        "y": 0,
+        "z": 121.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-0",
+        "name": "Ana",
+        "x": -222.70516595558888,
+        "y": 0,
+        "z": 483.34368173113654,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-1",
+        "name": "Leo",
+        "x": -222.56022054880125,
+        "y": 0,
+        "z": 484.42366652643125,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-2",
+        "name": "Nina",
+        "x": -222.55995404179413,
+        "y": 0,
+        "z": 485.46603514933713,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-3",
+        "name": "Bruno",
+        "x": -223.14250705416518,
+        "y": 0,
+        "z": 486.36359314078254,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-vendor-0",
+        "name": "Marcos",
+        "x": -346,
+        "y": 0,
+        "z": 490.9,
+        "action": "work",
+        "visible": true,
+        "stop": null
+      },
+      {
+        "id": "coast-diner-0",
+        "name": "Patrícia",
+        "x": -351.35,
+        "y": -0.15959999999999996,
+        "z": 495.5,
+        "action": "eat",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "coast-vendor-1",
+        "name": "Cecília",
+        "x": -258,
+        "y": 0,
+        "z": 490.9,
+        "action": "work",
+        "visible": true,
+        "stop": null
+      },
+      {
+        "id": "coast-diner-1",
+        "name": "Eduardo",
+        "x": -263.35,
+        "y": -0.15959999999999996,
+        "z": 495.5,
+        "action": "eat",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-0",
+        "name": "Lara",
+        "x": -397,
+        "y": 0,
+        "z": 502,
+        "action": "talk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-1",
+        "name": "André",
+        "x": -366,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-2",
+        "name": "Renata",
+        "x": -335,
+        "y": 0,
+        "z": 502,
+        "action": "talk",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-3",
+        "name": "Felipe",
+        "x": -304,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-4",
+        "name": "Sofia",
+        "x": -273,
+        "y": 0,
+        "z": 502,
+        "action": "talk",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-5",
+        "name": "Rafael",
+        "x": -242,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-0",
+        "name": "Helena",
+        "x": -398.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-1",
+        "name": "Caio",
+        "x": -356.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-2",
+        "name": "Denise",
+        "x": -314.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-swimmer-0",
+        "name": "Julia",
+        "x": -375,
+        "y": -0.06,
+        "z": 522,
+        "action": "swim",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-swimmer-1",
+        "name": "Vinícius",
+        "x": -343,
+        "y": -0.06,
+        "z": 522,
+        "action": "swim",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-0",
+        "name": "Luís",
+        "x": 11,
+        "y": 0,
+        "z": 179,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-1",
+        "name": "Fernanda",
+        "x": 27,
+        "y": 0,
+        "z": 176,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-2",
+        "name": "Joana",
+        "x": 10,
+        "y": 0,
+        "z": -154,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-3",
+        "name": "Henrique",
+        "x": 37,
+        "y": 0,
+        "z": -154,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "airport-agent",
+        "name": "Camila",
+        "x": 90,
+        "y": 0,
+        "z": -188.5,
+        "action": "serve",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "airport-traveller",
+        "name": "Rafael",
+        "x": 83,
+        "y": 0,
+        "z": -182,
+        "action": "sit",
+        "visible": false,
+        "stop": 0
+      }
+    ]
+  },
+  "after": {
+    "ready": true,
+    "total": 75,
+    "actors": [
+      {
+        "id": "merchant-aurora-0",
+        "name": "Rafaela",
+        "x": 272,
+        "y": 0,
+        "z": -56.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-0",
+        "name": "Clara",
+        "x": 270.6474505876313,
+        "y": 0,
+        "z": -51.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-1",
+        "name": "Pedro",
+        "x": 336,
+        "y": 0,
+        "z": -56.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-1",
+        "name": "Lucas",
+        "x": 335.6974505876313,
+        "y": 0,
+        "z": -51.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-2",
+        "name": "Bia",
+        "x": 272,
+        "y": 0,
+        "z": -23.029999999999998,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-2",
+        "name": "Marta",
+        "x": 272.74744990907095,
+        "y": 0,
+        "z": -28.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-aurora-3",
+        "name": "Davi",
+        "x": 336,
+        "y": 0,
+        "z": -23.029999999999998,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-aurora-3",
+        "name": "Caio",
+        "x": 337.79744990907096,
+        "y": 0,
+        "z": -28.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-0",
+        "name": "Rafaela",
+        "x": -328,
+        "y": 0,
+        "z": 93.03,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-0",
+        "name": "Clara",
+        "x": -330.4025494123687,
+        "y": 0,
+        "z": 98.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-1",
+        "name": "Pedro",
+        "x": -264,
+        "y": 0,
+        "z": 93.03,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-1",
+        "name": "Lucas",
+        "x": -265.3525494123687,
+        "y": 0,
+        "z": 98.2,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-2",
+        "name": "Bia",
+        "x": -328,
+        "y": 0,
+        "z": 126.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-2",
+        "name": "Marta",
+        "x": -328.3025494123687,
+        "y": 0,
+        "z": 121.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "merchant-costa-3",
+        "name": "Davi",
+        "x": -264,
+        "y": 0,
+        "z": 126.97,
+        "action": "work",
+        "visible": false,
+        "stop": null
+      },
+      {
+        "id": "shopper-costa-3",
+        "name": "Caio",
+        "x": -263.2525494123687,
+        "y": 0,
+        "z": 121.8,
+        "action": "work",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-0",
+        "name": "Ana",
+        "x": -229.74380775294313,
+        "y": 0,
+        "z": 483.218640840724,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-1",
+        "name": "Leo",
+        "x": -229.5995054270039,
+        "y": 0,
+        "z": 484.33564870266355,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-2",
+        "name": "Nina",
+        "x": -229.5997890297124,
+        "y": 0,
+        "z": 485.44888420544976,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-walker-3",
+        "name": "Bruno",
+        "x": -230.18190002586744,
+        "y": 0,
+        "z": 486.419143175606,
+        "action": "walk",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "coast-vendor-0",
+        "name": "Marcos",
+        "x": -346,
+        "y": 0,
+        "z": 490.9,
+        "action": "work",
+        "visible": true,
+        "stop": null
+      },
+      {
+        "id": "coast-diner-0",
+        "name": "Patrícia",
+        "x": -351.35,
+        "y": -0.15959999999999996,
+        "z": 495.5,
+        "action": "eat",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "coast-vendor-1",
+        "name": "Cecília",
+        "x": -258,
+        "y": 0,
+        "z": 490.9,
+        "action": "work",
+        "visible": true,
+        "stop": null
+      },
+      {
+        "id": "coast-diner-1",
+        "name": "Eduardo",
+        "x": -263.35,
+        "y": -0.15959999999999996,
+        "z": 495.5,
+        "action": "eat",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-0",
+        "name": "Lara",
+        "x": -396.434044352173,
+        "y": 0,
+        "z": 502.242552420497,
+        "action": "walk",
+        "visible": false,
+        "stop": 1
+      },
+      {
+        "id": "beach-visitor-1",
+        "name": "André",
+        "x": -366,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-2",
+        "name": "Renata",
+        "x": -335,
+        "y": 0,
+        "z": 502,
+        "action": "talk",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-3",
+        "name": "Felipe",
+        "x": -304,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-4",
+        "name": "Sofia",
+        "x": -273,
+        "y": 0,
+        "z": 502,
+        "action": "talk",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-visitor-5",
+        "name": "Rafael",
+        "x": -242,
+        "y": 0,
+        "z": 506,
+        "action": "stretch",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-0",
+        "name": "Helena",
+        "x": -398.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-1",
+        "name": "Caio",
+        "x": -356.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-rest-2",
+        "name": "Denise",
+        "x": -314.75,
+        "y": -0.43959999999999994,
+        "z": 502.4,
+        "action": "sit",
+        "visible": true,
+        "stop": 0
+      },
+      {
+        "id": "beach-swimmer-0",
+        "name": "Julia",
+        "x": -374.6529795368643,
+        "y": -0.06,
+        "z": 522.1041061389404,
+        "action": "swim",
+        "visible": true,
+        "stop": 1
+      },
+      {
+        "id": "beach-swimmer-1",
+        "name": "Vinícius",
+        "x": -342.6529795368643,
+        "y": -0.06,
+        "z": 522.1041061389404,
+        "action": "swim",
+        "visible": true,
+        "stop": 1
+      },
+      {
+        "id": "travel-resident-0",
+        "name": "Luís",
+        "x": 11,
+        "y": 0,
+        "z": 179,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-1",
+        "name": "Fernanda",
+        "x": 27,
+        "y": 0,
+        "z": 176,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-2",
+        "name": "Joana",
+        "x": 10,
+        "y": 0,
+        "z": -154,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "travel-resident-3",
+        "name": "Henrique",
+        "x": 37,
+        "y": 0,
+        "z": -154,
+        "action": "look",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "airport-agent",
+        "name": "Camila",
+        "x": 90,
+        "y": 0,
+        "z": -188.5,
+        "action": "serve",
+        "visible": false,
+        "stop": 0
+      },
+      {
+        "id": "airport-traveller",
+        "name": "Rafael",
+        "x": 83,
+        "y": 0,
+        "z": -182,
+        "action": "sit",
+        "visible": false,
+        "stop": 0
+      }
+    ]
+  },
+  "combat": {
+    "active": true,
+    "mode": "ground",
+    "armed": true,
+    "state": "PLAYING",
+    "elapsed": 3.983333333333324,
+    "onGround": false,
+    "crouched": false,
+    "canDisembark": false,
+    "landingAssist": false,
+    "flightPhase": "airborne",
+    "aircraftId": "ground",
+    "airspeed": 0,
+    "collective": 0.5,
+    "aiming": true,
+    "looking": false,
+    "handMode": false,
+    "handTracker": null,
+    "handAim": null,
+    "autoWalking": false,
+    "lock": null,
+    "kills": 0,
+    "wave": 1,
+    "goal": 8,
+    "ammo": 30,
+    "body": {
+      "x": 1.1123875092255113e-15,
+      "y": 1.8,
+      "z": -9.083333333333329,
+      "yaw": 3.141592653589793,
+      "pitch": 0,
+      "roll": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "hp": 100
+    },
+    "peacePosition": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "covers": 3,
+    "enemies": [
+      {
+        "id": "ot-enemy-10",
+        "tactic": "flank",
+        "kind": "soldier",
+        "active": true,
+        "hp": 100,
+        "x": 1.978751163231427,
+        "y": 1.15,
+        "z": -19.74582814264051,
+        "lineOfSight": true
+      },
+      {
+        "id": "ot-enemy-11",
+        "tactic": "flank",
+        "kind": "soldier",
+        "active": true,
+        "hp": 100,
+        "x": 3.098411437615706,
+        "y": 1.15,
+        "z": -21.387200210323112,
+        "lineOfSight": true
+      },
+      {
+        "id": "ot-enemy-12",
+        "tactic": "flank",
+        "kind": "soldier",
+        "active": true,
+        "hp": 100,
+        "x": -8.168794293450398,
+        "y": 1.15,
+        "z": -17.10921564592433,
+        "lineOfSight": true
+      },
+      {
+        "id": "ot-enemy-13",
+        "tactic": "",
+        "kind": "drone",
+        "active": true,
+        "hp": 80,
+        "x": -13.138151706494503,
+        "y": 8.04332187577874,
+        "z": -21.26943745699767,
+        "lineOfSight": true
+      }
+    ],
+    "sameScene": true,
+    "trafficActors": 76,
+    "weapon": true,
+    "artVersion": "20261026-combat2",
+    "infantryVersions": [
+      "20261026-combat2",
+      "20261026-combat2",
+      "20261026-combat2"
+    ],
+    "engine": null,
+    "renderCalls": 404
+  },
+  "audio": {
+    "state": "running",
+    "lastError": "",
+    "recordings": 8,
+    "playedSamples": 1,
+    "activeEngines": 0,
+    "activeShots": 1,
+    "lastRecordingError": ""
+  },
+  "errors": [],
+  "limits": [
+    "Draw calls and CPU simulation in isolated software-rendered Chromium. These numbers do not certify mobile hardware FPS, physical sound quality or camera fidelity."
+  ]
+}

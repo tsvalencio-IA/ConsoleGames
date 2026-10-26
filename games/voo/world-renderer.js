@@ -218,7 +218,7 @@ class World{
   b.round(m.fabric,-.095,-.2,-.87,.09,.1,.16);b.round(m.fabric,.08,-.25,-.38,.1,.13,.12);b.finish();this.weaponBatch=b;
   this.weapon.position.set(.23,-.25,-.18);this.weapon.rotation.set(.06,-.1,-.07);
   this.flash=new T.Mesh(new T.SphereGeometry(1,8,5),new T.MeshBasicMaterial({color:'#ffdb82',transparent:true,opacity:.9}));this.flash.position.set(0,.02,-1.34);this.flash.scale.set(.07,.07,.14);this.weapon.add(this.flash);this.materials.push(this.flash.material);
-  if(window.OTCombatArt){this.weaponBatch.dispose();this.weapon.remove(this.flash);this.flash.material.dispose();const rifle=OTCombatArt.rifle(true);rifle.rotation.y=Math.PI;this.weapon.add(rifle);this.flash=rifle.userData.flash;this.combatWeaponV2=true;}
+  if(window.OTCombatArt){this.weaponBatch.dispose();this.weapon.remove(this.flash);this.flash.material.dispose();const rifle=OTCombatArt.rifle(true);rifle.rotation.y=Math.PI;rifle.scale.setScalar(.62);this.weapon.add(rifle);this.flash=rifle.userData.flash;this.combatWeaponV2=true;}
  }
  terrainHeight(x,z){
   let flatten=1;for(const c of this.game.battleCities||[])flatten=Math.min(flatten,smooth(2700,6200,Math.hypot(x-c.x,z-c.z)));
@@ -456,7 +456,7 @@ class World{
   for(const o of this.scene.children)if(o.isMesh&&o!==this.sky&&!o.isInstancedMesh&&o!==this.terrain)o.visible=!cameraBackground;
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
-  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.49:-.55):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=-.166+.022*h/edge+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
+  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.98:-.82):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=(this.combatWeaponV2?-.056:-.166+.022*h/edge)+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
   if(this.frameCanvas){
    if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
    this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);

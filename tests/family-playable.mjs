@@ -3,7 +3,7 @@ import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {touchSession} from './helpers/touch-session.mjs';
-const base='http://127.0.0.1:4173/';
+const base=process.env.FAMILY_QA_BASE||'http://127.0.0.1:4173/';
 mkdirSync('test-results/playable',{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 try{

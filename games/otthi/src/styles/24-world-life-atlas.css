@@ -13,3 +13,5 @@ body[data-ot-game-mode="balloon"] .ot-games-collective::before{content:'CENTRO Â
 @media(max-height:480px){.ot-games-active #ot-games-hud .ot-games-mission{top:94px;left:145px;right:145px;font-size:11px;padding:5px}}
 
 .ot-games-targets span.attacking{border-color:#ff8d69;color:#fff1c4;background:#6b3026db}
+
+@media(max-width:650px) and (orientation:portrait){.world-atlas{grid-template-rows:minmax(270px,42dvh) minmax(230px,1fr)}.atlas-toolbar{display:grid;grid-template-columns:1fr 1.2fr 44px 44px}.atlas-toolbar [data-atlas-player]{grid-area:1/1}.atlas-toolbar [data-atlas-world]{grid-area:1/2}.atlas-toolbar [data-atlas-minus]{grid-area:1/3}.atlas-toolbar [data-atlas-plus]{grid-area:1/4}.atlas-toolbar select{grid-column:1/-1;grid-row:2;width:100%;min-width:0}.atlas-sidebar .atlas-search{order:-4}.atlas-sidebar>select{order:-3}.atlas-list{order:-2;max-height:120px;flex-shrink:0}.atlas-selection{order:-1}.atlas-route-now{display:none}}

@@ -3,8 +3,8 @@
 // Release 2026-10-26: continuous inference budget within the same 550 ms cap.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v28";
-const FILES=["./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
+const CACHE=PREFIX+"pro-control-v29";
+const FILES=["./recorded-audio.js?v=20261026-recorded1","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261026-combat2","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
 "./multiplayer.js","./multiplayer.css","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./object-tracker.js","./object-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",

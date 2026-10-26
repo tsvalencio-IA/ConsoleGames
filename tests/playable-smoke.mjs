@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
 import {join} from "node:path";
 import {touchSession} from "./helpers/touch-session.mjs";
-const base="http://127.0.0.1:4173/games/";
+const base=process.env.ARCADE_QA_BASE||"http://127.0.0.1:4173/games/";
 const allScenarios=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
 const catalog=allScenarios.filter(([slug])=>!process.env.ARCADE_QA_GAMES||process.env.ARCADE_QA_GAMES.split(',').includes(slug));
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
