@@ -496,6 +496,13 @@
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
       "sha256Body": "0aa914577efc57871466926db0427b7cc3294b6a84cceca4a3618a964d489eab"
+    },
+    {
+      "file": "src/modules/58-character-activities.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Ações visíveis e interrompíveis dos personagens",
+      "sha256Body": ""
     }
   ],
   "styles": [
