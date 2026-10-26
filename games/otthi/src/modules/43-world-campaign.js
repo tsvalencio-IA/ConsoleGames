@@ -124,7 +124,7 @@
       '#campaignRoute small{display:block;font:600 10px/1.3 system-ui;color:#c2ded1}',
       '#campaignRoute[hidden]{display:none!important}',
       '.ot-games-active #ot-games-hud header{top:max(53px,env(safe-area-inset-top,0px) + 44px)}',
-      '.ot-games-active #ot-games-hud .ot-games-mission{display:none!important}',
+      '.ot-games-active.campaign-operation-active #ot-games-hud .ot-games-mission{display:none!important}',
       '@media(max-height:460px){#campaignRoute{width:min(310px,calc(100vw - 155px));top:3px;padding:3px 5px;font-size:10px}#campaignRoute small{font-size:9px}.ot-games-active #ot-games-hud header{top:37px;padding:2px}}'
     ].join('\n');document.head.append(css);
   }
@@ -261,7 +261,7 @@
     otGamesLeave();toast('Missão concluída e retorno registrado.','success',4200);
   }
   function updateWorldCampaign(dt){
-    campaignEnsure();if(!worldCampaign.initialized||paused)return;
+    campaignEnsure();document.body.classList.toggle('campaign-operation-active',!!worldCampaign.mission);if(!worldCampaign.initialized||paused)return;
     const focus=otGames.active?otGames.body:player;
     for(const item of worldCampaign.landmarks)item.root.visible=campaignDist(focus,item.site)<240;
     campaignSyncAircraft();
