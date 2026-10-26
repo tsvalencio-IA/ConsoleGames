@@ -1,11 +1,13 @@
-# Destinos, marina e câmera — evidência da versão final
+# Publicação verificada — OT World
 
-Fonte: f2469a15c61118333674572055a5701236608aad
+[Entrar no jogo](https://otthi-world-campanha-teste.vercel.app/games/otthi/) · [Instalador Android](https://otthi-world-campanha-teste.vercel.app/arcade/instalar/)
 
-Build: 705.26.2-cam-fluida. Revisão: c4126b3d705770c7. O código desta branch acompanha essa fonte; os relatórios ficam separados da branch publicada.
+Fonte: 15107ce8de4dda581312b36e03fe1f3bf1e75fce. Build 705.26.2-cam-fluida; revisão c4126b3d705770c7. Deployment dpl_pY5yZTkuonvpWXDc78PJGEEhaYzr, production READY.
 
-242 testes de regras passaram. O teste do pacote final passou com 58 hashes, cinco rotas, embarque físico em avião/helicóptero/lancha, WAR, neve, ondas, modelos CPU reais e integridade do APK existente. A navegação da lancha, retorno ao píer, reembarque, família e recarga do estacionamento passaram pela interface nativa. A reprodução de câmera usa pixels de teste e corpo sintético declarado, sem webcam. Os testes de objeto passaram no WAR independente e no mundo.
+Os três jobs da rodada 40334518158 passaram: 242 testes de regras, dança por corpo/música, sete experiências originais e família, frota/tráfego/pavimento/comércio/ondas e embarque/estacionamento. A câmera passou na rodada 40332040541, no mesmo subtree `games` 8328ede48d4bae8ba13bbf2d33e8a120c207bca0. A última alteração de fonte modifica somente o prazo de uma manobra de ré no teste e sua execução independente; as medições anteriores mostram a lancha retornando a 3,4 m/s, sem erros.
 
-A rodada inicial no servidor revelou uma janela de validade insuficiente entre inferências de cerca de 185 ms. A correção considera o ciclo seguinte, com teto absoluto de 550 ms e interrupção imediata na perda real de mão/objeto. Há testes específicos para continuidade e limite. O reembarque das lanchas também foi alinhado à distância permitida no desembarque. O teste de recarga agora preserva o save, e aguarda a parada real da embarcação.
+`public-result.json` confirma 58 hashes, cinco rotas no GPS, embarque de avião/helicóptero/lancha, neve, WAR, compra nativa, família/Fusca, ondas, modelos CPU reais de mãos/corpo, PWA e integridade do APK existente. `native-ci-result.json` é a evidência da interface no servidor, incluindo voo/pouso do helicóptero, navegação da lancha, bloqueio de saída em alto-mar, retorno, reembarque e recarga do estacionamento. O código da branch de evidências acompanha a fonte publicada.
 
-`package-check.json` usa a distribuição local. A publicação será registrada em `public-result.json` após a checagem do domínio. Carros continuam modelos autorais aproximados: não há aprovação de fidelidade fotográfica da frota. Sem certificação de Android físico, câmera física, alto-falantes ou dois aparelhos online. Não houve acesso a salas reais nem mudança de regras Firebase.
+O ajuste de câmera cobre inferências consecutivas mantendo o teto absoluto de 550 ms; perda real de mão/objeto interrompe comandos e disparo. O alcance de embarque da lancha é compatível com o desembarque. A praia tem um identificador de GPS estável e a neve fica acima do gramado. Aviões e helicópteros seguem a posição em que foram estacionados.
+
+Carros continuam modelos autorais aproximados. As correções de faróis, proporções e vidros não constituem aprovação de fidelidade fotográfica de toda a frota. Sem certificação em Android físico, câmera física, alto-falantes ou dois aparelhos online. Nenhuma sala real foi lida e nenhuma regra Firebase foi alterada. O APK assinado existente foi verificado, sem novo pacote Android.

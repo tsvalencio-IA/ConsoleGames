@@ -1,0 +1,232 @@
+{
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "source": "15107ce8de4dda581312b36e03fe1f3bf1e75fce",
+  "limits": [
+    "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
+  ],
+  "build": "705.26.2-cam-fluida",
+  "revision": "c4126b3d705770c7",
+  "protectedFiles": 50,
+  "warAssets": 8,
+  "roads": {
+    "passed": true,
+    "samples": 3022,
+    "failures": []
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 22,
+    "highways": 10,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "nativePurchase": {
+    "purchases": 1,
+    "displayedPrice": 14
+  },
+  "animatedSea": true,
+  "familyAndFuscaPreserved": true,
+  "destinations": {
+    "ready": true,
+    "locations": [
+      {
+        "id": "marina-costa",
+        "name": "Marina · embarque nas lanchas",
+        "label": "Marina · embarque nas lanchas",
+        "icon": "🚤",
+        "group": "Praias e navegação",
+        "x": -220,
+        "z": 502,
+        "navX": -220,
+        "navZ": 502,
+        "description": "Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.",
+        "actions": [
+          "Seguir até a marina",
+          "Embarcar pelo botão AÇÃO",
+          "Pilotar, retornar e estacionar"
+        ]
+      },
+      {
+        "id": "snow-lookout",
+        "name": "Neve · mirante e chalés",
+        "label": "Neve · mirante e chalés",
+        "icon": "❄️",
+        "group": "Natureza",
+        "x": 20,
+        "z": 180,
+        "navX": 20,
+        "navZ": 180,
+        "description": "Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.",
+        "actions": [
+          "Seguir o GPS pela Ligação Norte",
+          "Chegar ao mirante"
+        ]
+      },
+      {
+        "id": "marina-sea-azul",
+        "name": "Lancha Azul · esportiva",
+        "label": "Lancha Azul · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227,
+        "z": 528,
+        "navX": -220,
+        "navZ": 528,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-familia",
+        "name": "Lancha Família · passeio",
+        "label": "Lancha Família · passeio",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227,
+        "z": 542,
+        "navX": -220,
+        "navZ": 542,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-coral",
+        "name": "Lancha Coral · esportiva",
+        "label": "Lancha Coral · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -213,
+        "z": 535,
+        "navX": -220,
+        "navZ": 535,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      }
+    ],
+    "aircraft": [
+      {
+        "mode": "plane",
+        "id": "plane",
+        "label": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "yaw": 1.5707963267948966,
+        "radius": 6
+      },
+      {
+        "mode": "helicopter",
+        "id": "helicopter",
+        "label": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "yaw": 0,
+        "radius": 6
+      }
+    ],
+    "marina": {
+      "minX": -224,
+      "maxX": -216,
+      "minZ": 506,
+      "maxZ": 549,
+      "exitX": -220,
+      "touchDistance": 5.8
+    },
+    "snow": {
+      "groundVisible": true,
+      "falling": false
+    },
+    "boats": [
+      {
+        "id": "lake-boat",
+        "label": "Barco de pesca",
+        "seaGoing": false,
+        "x": -70,
+        "z": 54,
+        "heading": 0,
+        "maxSpeed": 8.8,
+        "visible": true
+      },
+      {
+        "id": "sea-azul",
+        "label": "Lancha Azul · esportiva",
+        "seaGoing": true,
+        "x": -227,
+        "z": 528,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 22,
+        "visible": true
+      },
+      {
+        "id": "sea-familia",
+        "label": "Lancha Família · passeio",
+        "seaGoing": true,
+        "x": -227,
+        "z": 542,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 17,
+        "visible": true
+      },
+      {
+        "id": "sea-coral",
+        "label": "Lancha Coral · esportiva",
+        "seaGoing": true,
+        "x": -213,
+        "z": 535,
+        "heading": 1.5707963267948966,
+        "maxSpeed": 20,
+        "visible": true
+      }
+    ],
+    "activeBoat": null
+  },
+  "gps": [
+    "campaign-plane",
+    "campaign-helicopter",
+    "marina-costa",
+    "coast-view",
+    "snow-lookout"
+  ],
+  "boarded": [
+    "plane",
+    "helicopter",
+    "sea-familia"
+  ],
+  "snowfall": true,
+  "warEntry": true,
+  "serviceWorkerControlled": true,
+  "installability": {
+    "installabilityErrors": []
+  },
+  "realWorkers": {
+    "body": {
+      "points": 33,
+      "world": 33,
+      "inferenceMs": 433.90000000037253
+    },
+    "hand": {
+      "hands": 2,
+      "points": 21,
+      "inferenceMs": 350.20000000018626
+    }
+  },
+  "apkUrl": "https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk",
+  "existingApk": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "installerStatus": 200,
+  "errors": [],
+  "passed": true
+}

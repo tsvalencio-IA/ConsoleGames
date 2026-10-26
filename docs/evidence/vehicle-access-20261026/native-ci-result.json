@@ -1,0 +1,373 @@
+{
+  "passed": true,
+  "routes": [
+    {
+      "id": "campaign-plane",
+      "waypoint": {
+        "id": "campaign-plane",
+        "name": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "navX": -5,
+        "navZ": -165,
+        "arrived": false
+      }
+    },
+    {
+      "id": "campaign-helicopter",
+      "waypoint": {
+        "id": "campaign-helicopter",
+        "name": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "navX": 50,
+        "navZ": -165,
+        "arrived": false
+      }
+    },
+    {
+      "id": "marina-costa",
+      "waypoint": {
+        "id": "marina-costa",
+        "name": "Marina · embarque nas lanchas",
+        "x": -220,
+        "z": 502,
+        "navX": -220,
+        "navZ": 502,
+        "arrived": false
+      }
+    },
+    {
+      "id": "coast-view",
+      "waypoint": {
+        "id": "coast-view",
+        "name": "Praia da Costa Verde",
+        "x": -310,
+        "z": 493,
+        "navX": -300,
+        "navZ": 484,
+        "arrived": false
+      }
+    },
+    {
+      "id": "snow-lookout",
+      "waypoint": {
+        "id": "snow-lookout",
+        "name": "Neve · mirante e chalés",
+        "x": 20,
+        "z": 180,
+        "navX": 20,
+        "navZ": 180,
+        "arrived": false
+      }
+    }
+  ],
+  "aircraft": [
+    {
+      "mode": "helicopter",
+      "landed": {
+        "active": true,
+        "mode": "helicopter",
+        "armed": false,
+        "state": "PLAYING",
+        "elapsed": 7.766666666666644,
+        "onGround": true,
+        "crouched": false,
+        "canDisembark": true,
+        "landingAssist": false,
+        "flightPhase": "landed",
+        "airspeed": 0,
+        "collective": 0.5,
+        "aiming": false,
+        "looking": false,
+        "handMode": false,
+        "handTracker": null,
+        "handAim": null,
+        "autoWalking": false,
+        "lock": null,
+        "kills": 0,
+        "wave": 0,
+        "goal": 8,
+        "ammo": 30,
+        "body": {
+          "x": 50,
+          "y": 1.6,
+          "z": -165,
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hp": 100
+        },
+        "peacePosition": {
+          "x": 54,
+          "y": 0,
+          "z": -165
+        },
+        "enemies": [],
+        "sameScene": true,
+        "trafficActors": 69,
+        "weapon": false,
+        "renderCalls": 0
+      },
+      "saved": {
+        "mode": "helicopter",
+        "id": "helicopter",
+        "label": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "yaw": 0,
+        "radius": 6,
+        "hp": 100,
+        "parkedAt": 1793022855507
+      }
+    },
+    {
+      "mode": "plane",
+      "landed": {
+        "active": true,
+        "mode": "plane",
+        "armed": false,
+        "state": "PLAYING",
+        "elapsed": 0.6500000000000004,
+        "onGround": true,
+        "crouched": false,
+        "canDisembark": true,
+        "landingAssist": false,
+        "flightPhase": "ready",
+        "airspeed": 0,
+        "collective": 0,
+        "aiming": false,
+        "looking": false,
+        "handMode": false,
+        "handTracker": null,
+        "handAim": null,
+        "autoWalking": false,
+        "lock": null,
+        "kills": 0,
+        "wave": 0,
+        "goal": 8,
+        "ammo": 30,
+        "body": {
+          "x": -5,
+          "y": 1.3,
+          "z": -165,
+          "yaw": 1.5707963267948966,
+          "pitch": 0,
+          "roll": 0,
+          "vx": 0,
+          "vy": 0,
+          "vz": 0,
+          "hp": 100
+        },
+        "peacePosition": {
+          "x": -5,
+          "y": 0,
+          "z": -161
+        },
+        "enemies": [],
+        "sameScene": true,
+        "trafficActors": 69,
+        "weapon": false,
+        "renderCalls": 0
+      },
+      "saved": {
+        "mode": "plane",
+        "id": "plane",
+        "label": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "hp": 100,
+        "parkedAt": 1793022859797
+      }
+    }
+  ],
+  "parkedBoat": {
+    "id": "sea-azul",
+    "label": "Lancha Azul · esportiva",
+    "seaGoing": true,
+    "x": -227.45775316983242,
+    "z": 528,
+    "heading": -1.5707963267948966,
+    "maxSpeed": 22,
+    "visible": true
+  },
+  "restored": {
+    "ready": true,
+    "locations": [
+      {
+        "id": "marina-costa",
+        "name": "Marina · embarque nas lanchas",
+        "label": "Marina · embarque nas lanchas",
+        "icon": "🚤",
+        "group": "Praias e navegação",
+        "x": -220,
+        "z": 502,
+        "navX": -220,
+        "navZ": 502,
+        "description": "Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.",
+        "actions": [
+          "Seguir até a marina",
+          "Embarcar pelo botão AÇÃO",
+          "Pilotar, retornar e estacionar"
+        ]
+      },
+      {
+        "id": "snow-lookout",
+        "name": "Neve · mirante e chalés",
+        "label": "Neve · mirante e chalés",
+        "icon": "❄️",
+        "group": "Natureza",
+        "x": 20,
+        "z": 180,
+        "navX": 20,
+        "navZ": 180,
+        "description": "Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.",
+        "actions": [
+          "Seguir o GPS pela Ligação Norte",
+          "Chegar ao mirante"
+        ]
+      },
+      {
+        "id": "marina-sea-azul",
+        "name": "Lancha Azul · esportiva",
+        "label": "Lancha Azul · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227.45775316983242,
+        "z": 528,
+        "navX": -220,
+        "navZ": 528,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-familia",
+        "name": "Lancha Família · passeio",
+        "label": "Lancha Família · passeio",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227,
+        "z": 542,
+        "navX": -220,
+        "navZ": 542,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-coral",
+        "name": "Lancha Coral · esportiva",
+        "label": "Lancha Coral · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -212.9,
+        "z": 535.01,
+        "navX": -220,
+        "navZ": 535.01,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      }
+    ],
+    "aircraft": [
+      {
+        "mode": "plane",
+        "id": "plane",
+        "label": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "hp": 100,
+        "parkedAt": 1793022859797
+      },
+      {
+        "mode": "helicopter",
+        "id": "helicopter",
+        "label": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "yaw": 0,
+        "radius": 6,
+        "hp": 100,
+        "parkedAt": 1793022855507
+      }
+    ],
+    "marina": {
+      "minX": -224,
+      "maxX": -216,
+      "minZ": 506,
+      "maxZ": 549,
+      "exitX": -220,
+      "touchDistance": 5.8
+    },
+    "snow": {
+      "groundVisible": true,
+      "falling": false
+    },
+    "boats": [
+      {
+        "id": "lake-boat",
+        "label": "Barco de pesca",
+        "seaGoing": false,
+        "x": -70,
+        "z": 54,
+        "heading": 0,
+        "maxSpeed": 8.8,
+        "visible": true
+      },
+      {
+        "id": "sea-azul",
+        "label": "Lancha Azul · esportiva",
+        "seaGoing": true,
+        "x": -227.45775316983242,
+        "z": 528,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 22,
+        "visible": false
+      },
+      {
+        "id": "sea-familia",
+        "label": "Lancha Família · passeio",
+        "seaGoing": true,
+        "x": -227,
+        "z": 542,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 17,
+        "visible": false
+      },
+      {
+        "id": "sea-coral",
+        "label": "Lancha Coral · esportiva",
+        "seaGoing": true,
+        "x": -212.9,
+        "z": 535.01,
+        "heading": 1.571,
+        "maxSpeed": 20,
+        "visible": false
+      }
+    ],
+    "activeBoat": null
+  },
+  "errors": [],
+  "limits": [
+    "Isolated Chromium native UI; static camera/body models not exercised here. No physical Android or live multiplayer claim."
+  ],
+  "verificationSource": {
+    "commit": "15107ce8de4dda581312b36e03fe1f3bf1e75fce",
+    "run": 40334518158,
+    "job": 121612394194
+  }
+}

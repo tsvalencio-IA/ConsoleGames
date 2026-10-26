@@ -1,0 +1,82 @@
+{
+  "source": "15107ce8de4dda581312b36e03fe1f3bf1e75fce",
+  "tree": "97984157a8cc7e82c49f350865f8ba2442b1f10b",
+  "gamesTree": "8328ede48d4bae8ba13bbf2d33e8a120c207bca0",
+  "build": "705.26.2-cam-fluida",
+  "revision": "c4126b3d705770c7",
+  "deployment": "dpl_pY5yZTkuonvpWXDc78PJGEEhaYzr",
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "target": "production",
+  "state": "READY",
+  "ci": {
+    "gameplay": {
+      "run": 40334518158,
+      "jobs": [
+        {
+          "id": 121612393850,
+          "name": "mundo",
+          "conclusion": "success"
+        },
+        {
+          "id": 121612394194,
+          "name": "embarque",
+          "conclusion": "success"
+        },
+        {
+          "id": 121612394506,
+          "name": "jogabilidade",
+          "conclusion": "success"
+        }
+      ],
+      "unitTests": 242
+    },
+    "camera": {
+      "run": 40332040541,
+      "job": 121603667898,
+      "conclusion": "success",
+      "source": "f2469a15c61118333674572055a5701236608aad",
+      "sameGamesTree": true
+    }
+  },
+  "public": {
+    "passed": true,
+    "source": "15107ce8de4dda581312b36e03fe1f3bf1e75fce",
+    "build": "705.26.2-cam-fluida",
+    "revision": "c4126b3d705770c7",
+    "routes": [
+      "campaign-plane",
+      "campaign-helicopter",
+      "marina-costa",
+      "coast-view",
+      "snow-lookout"
+    ],
+    "boarded": [
+      "plane",
+      "helicopter",
+      "sea-familia"
+    ],
+    "war": true,
+    "snow": true,
+    "pwa": true,
+    "body": {
+      "points": 33,
+      "world": 33,
+      "inferenceMs": 433.90000000037253
+    },
+    "hand": {
+      "hands": 2,
+      "points": 21,
+      "inferenceMs": 350.20000000018626
+    },
+    "apk": {
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+    },
+    "errors": []
+  },
+  "limits": [
+    "No physical Android/camera/speakers or live two-device multiplayer certification.",
+    "Vehicle fidelity remains approximate; all 44 models are not certified photographic replicas.",
+    "No new APK was built; the existing signed wrapper opens the updated web application."
+  ]
+}
