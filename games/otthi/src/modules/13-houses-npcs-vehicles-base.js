@@ -222,7 +222,15 @@
       for(const leg of[leftLeg,rightLeg]){npcThemeCylinder(leg,.13,.65,pants,0,-.31,0,14);npcThemeBox(leg,.34,.16,.48,0x5b341e,0,-.7,.1);}
       npcThemeSphere(headRoot,.105,skin,0,-.01,.455,1.35,1,1);npcThemeBox(headRoot,.19,.045,.024,0x2b1712,-.08,-.14,.448);npcThemeBox(headRoot,.19,.045,.024,0x2b1712,.08,-.14,.448);for(const x of[-.14,.14])npcThemeSphere(headRoot,.046,black,x,.07,.445,1,1.05,.72);npcThemeSphere(headRoot,.48,primary,0,.35,-.02,1.18,.34,1.18);npcThemeBox(headRoot,.62,.09,.3,primary,0,.31,.34);const emblem=npcThemeSphere(headRoot,.105,white,0,.39,.405,1,.9,.35);const letter=new THREE.Mesh(new THREE.PlaneGeometry(.11,.11),new THREE.MeshStandardMaterial({map:signTexture(marioLuigi?'L':'M','#ffffff',marioLuigi?'#2e9d4d':'#d83b35'),transparent:true,side:THREE.DoubleSide,roughness:.5}));letter.position.set(0,.39,.444);headRoot.add(letter);
     }
-    for(const root of[npc.group,headRoot,bodyRoot])root.traverse?.(o=>{if(o.isMesh&&o.visible)addVoxelOutline(o,0x132238,.18);});return npc;
+    for(const root of[npc.group,headRoot,bodyRoot])root.traverse?.(o=>{if(o.isMesh&&o.visible)addVoxelOutline(o,0x132238,.18);});batchNpcVisuals(npc);return npc;
+  }
+  function batchNpcVisuals(npc){
+    // Geometry and joint pivots stay intact. Rigid pieces of each joint share a draw.
+    for(const root of[...(npc.userData?.toyThemeRoots||[]),...Object.values(npc.limbs||{})]){
+      const meshes=root.children.filter(o=>o.isMesh&&o.visible&&o.material?.visible!==false&&!o.material?.map&&!o.material?.transparent);if(meshes.length<2)continue;
+      const positions=[],normals=[],colors=[];for(const mesh of meshes){mesh.updateMatrix();const g=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry.clone();g.applyMatrix4(mesh.matrix);const p=g.attributes.position,n=g.attributes.normal,c=mesh.material.color;for(let i=0;i<p.count;i++){positions.push(p.getX(i),p.getY(i),p.getZ(i));normals.push(n.getX(i),n.getY(i),n.getZ(i));colors.push(c.r,c.g,c.b);}g.dispose();root.remove(mesh);}
+      const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));g.computeBoundingSphere();const mesh=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.74,metalness:.02}));mesh.name='NPC_ARTICULATED_BATCH';mesh.castShadow=mesh.receiveShadow=true;root.add(mesh);addVoxelOutline(mesh,0x132238,.18);
+    }
   }
   function clearThemedVehicleGeometry(group){if(!group)return;for(const child of[...group.children]){group.remove(child);try{disposeDetachedVisual?.(child);}catch{}}group.userData.wheels=[];group.userData.frontWheels=[];}
   function buildThemedVehicleGeometry(group,options={}){
