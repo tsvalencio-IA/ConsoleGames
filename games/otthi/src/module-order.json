@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "885091df817b32ab7ab9ba5aa8dded7aaaaf4389646b2dbd1a92739908e7949b"
+      "sha256Body": "1d201ba72eca73e6aa1eeed80004e15f4629fbf72314db359b7cf3915ecae60e"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "8de5c2fc89d09b90759c328e21a7cee6bad99dde813d0b75fba1b7e91c2d9f82"
+      "sha256Body": "319593c805974d8f2bf9c5f9722212f542ecea590da97d23ba5aa7c402c63947"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -483,7 +483,7 @@
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "9a44da420dcd7919dce18d933836dd98f1048e6e0e20926a28270890e414c5c1"
+      "sha256Body": "9c11dd8c5a63e728314dacc60a81d8613af9f65e17f141f7b30c78800add1b68"
     },
     {
       "file": "src/modules/55-world-traffic-and-air.js",
@@ -509,7 +509,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Ações visíveis e interrompíveis dos personagens",
-      "sha256Body": "058487d68ae4913b34a0dc1365774b9682f2fa3dcebcf89a7b3ed439a23a66d9"
+      "sha256Body": "c154b1935fbb2729fdfbff3f85ac96ce9aa44ea277a2d876f818f9fbd2fe5875"
+    },
+    {
+      "file": "src/modules/59-world-residents.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Rotinas físicas de moradores e restaurantes",
+      "sha256Body": ""
     }
   ],
   "styles": [

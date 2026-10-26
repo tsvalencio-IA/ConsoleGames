@@ -44,6 +44,7 @@
   function updateNPCs(dt){
     const now=performance.now();
     for(const npc of world.npcs){
+      if(npc.cityLifeManaged&&!npc.following&&!npc.passengerMode&&!npc.pendingRide&&!npc.coopRaceMode)continue;
       if(npc.cityCommercial&&npc.commerceRoute&&!npc.following&&!npc.passengerMode&&!npc.pendingRide&&!npc.coopRaceMode)continue;
       const escort=typeof coopNpcEscortTarget==='function'?coopNpcEscortTarget(npc):null;
       const playerDistance=distance2D(player,npc.group.position),near=playerDistance<3.2,oldX=npc.group.position.x,oldZ=npc.group.position.z,b=v705NpcBrain(npc),culled=npc.group.visible===false&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode,background=playerDistance>(perf.mobile?62:88)&&!npc.passengerMode&&!npc.following&&!npc.coopRaceMode&&!npc.mobility&&!near;
