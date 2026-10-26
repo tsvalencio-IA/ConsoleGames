@@ -156,10 +156,9 @@
   function otGamesCanLand(mode,b){
     if(!b||waterAt(b.x,b.z))return false;const radius=mode==='plane'?2.4:mode==='balloon'?1.3:1.4,base=groundHeightAt(b.x,b.z);
     for(const [dx,dz]of[[0,0],[radius,0],[-radius,0],[0,radius],[0,-radius]]){const x=b.x+dx,z=b.z+dz;if(waterAt(x,z)||Math.abs(groundHeightAt(x,z)-base)>.35||positionBlockedForPlayer(x,z,.3,{ignoreTraffic:true}))return false;}
-    if(mode==='helicopter'||mode==='balloon')return true;if(typeof campaignLandingZone==='function'&&campaignLandingZone(mode,b))return true;
-    const aligned=(dx,dz)=>Math.abs(Math.sin(b.yaw)*dx+Math.cos(b.yaw)*dz)/Math.hypot(dx,dz)>.98;
-    if(WORLD_LAYOUT_V704.roads.some(r=>{const horizontal=r.w>r.d;return Math.max(r.w,r.d)>=60&&Math.min(r.w,r.d)>=8&&v704PointInRect(b,r,-2)&&aligned(horizontal?1:0,horizontal?0:1);}))return true;
-    return v704HighwaySegments().some(seg=>{const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z;return Math.hypot(dx,dz)>=60&&seg.width>=8&&aligned(dx,dz)&&v704DistanceToSegment(b,seg.a,seg.b).distance<seg.width/2-2;});
+    // Any clear, level ground is usable. Traffic is allowed to be obstructed by
+    // an aircraft; the road service handles that obstruction after disembarking.
+    return true;
   }
   function otGamesLandingAction(){const g=otGames;if(!g.active||g.mode==='ground')return;g.landingAssist=!g.landingAssist;g.move.x=g.move.y=0;g.pedal=0;if(g.mode==='plane'){g.collective=g.onGround?0:.18;toast('Reduza, alinhe-se à pista e desça suavemente. Após tocar o solo, reduza a potência até parar.','info',4200);}else if(!g.landingAssist)g.collective=.5;}
   function otGamesCanDisembark(){const g=otGames;return g.active&&g.mode!=='ground'&&g.onGround&&Math.hypot(g.body.vx||0,g.body.vz||0)<1.5&&Math.abs(g.body.vy||0)<1&&otGamesCanLand(g.mode,g.body);}
@@ -197,9 +196,10 @@
     root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
     root.insertAdjacentHTML('beforeend','<div class="ot-games-targets" aria-hidden="true"></div><div class="ot-games-result" hidden><strong></strong><p></p><button data-ot="retry">JOGAR NOVAMENTE</button></div>');
     root.insertAdjacentHTML('beforeend','<button data-ot="crouch" aria-pressed="false">ABAIXAR</button><button data-ot="land">POUSAR</button><button data-ot="disembark">SAIR DA AERONAVE</button>');
-    root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button>');
+    root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button><button data-ot="map">MAPA / GPS</button>');
     document.body.append(root);otGamesBindPress(root.querySelector('[data-ot="peace"]'),()=>otGamesLeave());otGamesBindPress(root.querySelector('[data-ot="menu"]'),otGamesChoose);otGamesBindPress(root.querySelector('[data-ot="retry"]'),()=>typeof worldCampaign!=='undefined'&&worldCampaign.mission?campaignRetry():otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty}));
     otGamesBindPress(root.querySelector('[data-ot="camera"]'),otGamesStartCamera);
+    otGamesBindPress(root.querySelector('[data-ot="map"]'),()=>{otGamesClearInput();openMap();});
     otGamesBindPress(root.querySelector('[data-ot="crouch"]'),otGamesToggleCrouch);otGamesBindPress(root.querySelector('[data-ot="land"]'),otGamesLandingAction);otGamesBindPress(root.querySelector('[data-ot="disembark"]'),otGamesDisembark);
     root.querySelector('[data-ot="crouch"]').hidden=g.mode!=='ground';for(const name of ['land','disembark'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode==='ground';
     for(const name of ['ads','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='ground';
@@ -242,7 +242,7 @@
     return true;
   }
   function updateOtGames(dt){
-    const g=otGames;if(!g.active)return;if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
+    const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){otGamesClearInput();otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
     if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
@@ -285,7 +285,7 @@
     if(g.mode!=='ground'){
       const floor=groundHeightAt(b.x,b.z)+campaignAircraftHeight(g.aircraftId||g.mode),landable=otGamesCanLand(g.mode,b);
       if(g.mode==='helicopter'||g.mode==='balloon'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist){g.collective=.5;g.landingAssist=false;}}}
-      if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<=0&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
+      if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<-.05&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
       if(b.y<floor){b.y=floor;b.vy=0;if(g.armed&&!g.onGround)b.hp=Math.max(0,b.hp-18*dt);}
       b.y=clamp(b.y,floor,100);
       if(g.obstacles.some(box=>box.containsPoint(new THREE.Vector3(b.x,b.y,b.z)))){b.x=before.x;b.z=before.z;b.vx=b.vz=0;if(g.armed)b.hp=Math.max(0,b.hp-28*dt);}

@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.26.3-vida-aeroporto';
+  const OTTHI_GAME_WEB_BUILD = '705.26.5-frota-serra-garagem';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -1624,7 +1624,8 @@
   // ===== MODULE: 05a-world-layout-v704.js =====
   const WORLD_LAYOUT_V704=Object.freeze({
     version:704,
-    bounds:Object.freeze({minX:-460,maxX:460,minZ:-460,maxZ:900}),
+    bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
+    mountainRanges:Object.freeze([{"id":"snow-west","x":-118,"z":300,"rx":64,"rz":66,"height":62,"snow":true},{"id":"snow-central","x":-53,"z":371,"rx":66,"rz":75,"height":93,"snow":true},{"id":"snow-east","x":84,"z":376,"rx":63,"rz":73,"height":108,"snow":true},{"id":"snow-ridge","x":147,"z":305,"rx":66,"rz":76,"height":76,"snow":true},{"id":"serra-one","x":287,"z":325,"rx":77,"rz":86,"height":70,"snow":false},{"id":"serra-two","x":369,"z":394,"rx":86,"rz":77,"height":112,"snow":true},{"id":"serra-three","x":491,"z":359,"rx":78,"rz":80,"height":98,"snow":true},{"id":"serra-four","x":581,"z":452,"rx":83,"rz":53,"height":90,"snow":true},{"id":"serra-five","x":692,"z":438,"rx":92,"rz":62,"height":124,"snow":true},{"id":"forest-hill","x":-630,"z":232,"rx":108,"rz":115,"height":55,"snow":false},{"id":"forest-peak","x":-746,"z":325,"rx":76,"rz":107,"height":85,"snow":false}]),
     coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
       hq:{id:'hq',label:'Quartel-General',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
@@ -1674,6 +1675,12 @@
     ]),
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
+      {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
+      {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
+      {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
+      {"id":"ottovias-forest-link","name":"Estrada da Mata Grande","width":10,"shoulder":1.2,"closed":false,"points":[{"x":-360,"z":60,"y":0},{"x":-460,"z":60,"y":0},{"x":-550,"z":100,"y":0},{"x":-650,"z":40,"y":0},{"x":-700,"z":-100,"y":0},{"x":-610,"z":-220,"y":0},{"x":-480,"z":-170,"y":0},{"x":-400,"z":-150,"y":0}]},
+      {"id":"ottovias-outer-link","name":"Rodovia dos Horizontes","width":10,"shoulder":1.2,"closed":false,"points":[{"x":360,"z":-40,"y":0},{"x":500,"z":-40,"y":0},{"x":620,"z":-160,"y":0},{"x":680,"z":-400,"y":0},{"x":360,"z":-400,"y":0},{"x":-200,"z":-400,"y":0},{"x":-480,"z":-320,"y":0},{"x":-610,"z":-220,"y":0}]},
+      {"id":"ottovias-airport-access","name":"Acesso Viário do Aeroporto","width":10,"shoulder":1.2,"closed":false,"points":[{"x":132,"z":-130,"y":0},{"x":171,"z":-150,"y":0},{"x":171,"z":-193,"y":0},{"x":171,"z":-216,"y":0}]},
       {id:'ottovias-costa-orla-city',name:'Avenida da Orla',width:10,shoulder:1.4,closed:true,points:[{x:-300,z:160},{x:-300,z:475},{x:-360,z:475},{x:-360,z:160}]},
       {id:'ottovias-aurora-link',name:'Estrada Nova Aurora',width:10,shoulder:1.2,closed:false,points:[{x:158,z:-10},{x:205,z:-10},{x:240,z:-40}]},
       {id:'ottovias-aurora-city',name:'Avenida Circular de Aurora',width:10,shoulder:1.2,closed:true,points:[{x:240,z:-40},{x:240,z:-90},{x:300,z:-90},{x:360,z:-90},{x:360,z:-40},{x:360,z:10},{x:300,z:10},{x:240,z:10}]},
@@ -1710,6 +1717,7 @@
       })
     ]),
     nodes:Object.freeze({
+      "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
       A_LINK:{x:205,z:-10},A_W:{x:240,z:-40},A_C:{x:300,z:-40},A_E:{x:360,z:-40},A_NW:{x:240,z:-90},A_N:{x:300,z:-90},A_NE:{x:360,z:-90},A_SW:{x:240,z:10},A_S:{x:300,z:10},A_SE:{x:360,z:10},A_RACE:{x:300,z:-212},
@@ -1749,6 +1757,7 @@
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
+      ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
       ['OV18','CV_LINK'],['CV_LINK','CV_NE'],['CV_NE','CV_E'],['CV_E','CV_SE'],['CV_SE','CV_S'],['CV_S','CV_SW'],['CV_SW','CV_W'],['CV_W','CV_NW'],['CV_NW','CV_N'],['CV_N','CV_NE'],['CV_N','CV_C'],['CV_C','CV_S'],['CV_W','CV_C'],['CV_C','CV_E'],['CV_S','COAST_E'],['COAST_E','COAST_W'],['COAST_W','CV_SW'],['COAST_E','COAST_E_END'],['COAST_W','COAST_W_END'],['COAST_E','COAST_GATE'],['CV_NW','CV_RW'],['CV_RW','CV_RB'],['CV_RB','CV_RA'],['CV_RA','CV_RACE'],
@@ -2630,12 +2639,12 @@
 
   // ===== MODULE: 08a-world-atlas.js =====
  openMap=function(){
-  const focus=navigationFocus(),locations=currentMapLocations(),active=state.waypoint?.id||'',view={x:focus.x,z:focus.z,span:240};let selected=locations.find(l=>l.id===active)||locations.find(l=>l.id==='home');
-  const regions=[{name:'Vila OT',x:0,z:0,span:270},...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({name:c.label,...c,span:160})),{name:'Praia e marina',x:-310,z:496,span:235},{name:'Serra e neve',x:15,z:180,span:310},{name:'Aeroporto',x:27,z:-180,span:180}],groups=[...new Set(locations.map(l=>l.group).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  openModal('Mapa e GPS',`<div class="world-atlas"><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Principais destinos</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Pontos nas coordenadas reais. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
-   els.modal.classList.add('map-modal','atlas-modal');const svg=root.querySelector('svg'),list=root.querySelector('.atlas-list'),detail=root.querySelector('.atlas-selection'),search=root.querySelector('[data-atlas-search]'),category=root.querySelector('[data-atlas-group]');let clusters=new Map(),lastW=240,lastH=240;
+  const focus=navigationFocus(),locations=currentMapLocations(),active=state.waypoint?.id||'',view={x:focus.x,z:focus.z,span:240};let selected=locations.find(l=>l.id===(state.waypoint?.id||''))||locations.find(l=>l.id==='home');
+  const regions=[{name:'Vila OT',x:0,z:0,span:270},...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({name:c.label,...c,span:160})),{name:'Praia e marina',x:-310,z:496,span:235},{name:'Cordilheira e neve',x:360,z:350,span:920},{name:'Aeroporto',x:27,z:-180,span:180}],groups=[...new Set(locations.map(l=>l.group).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  openModal('Mapa e GPS',`<div class="world-atlas" data-atlas-tab="map"><div class="atlas-route-bar"><span><small>GPS</small><b data-atlas-destination>${escapeHtml(state.waypoint?.name||'Sem destino ativo')}</b></span><button data-atlas-cancel ${state.waypoint?'':'disabled'}>Cancelar rota</button></div><nav class="atlas-tabs" aria-label="Painéis do mapa"><button data-atlas-tab-button="map" aria-pressed="true">MAPA</button><button data-atlas-tab-button="places" aria-pressed="false">DESTINOS</button></nav><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Principais destinos</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Pontos nas coordenadas reais. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
+   els.modal.classList.add('map-modal','atlas-modal');const svg=root.querySelector('svg'),list=root.querySelector('.atlas-list'),detail=root.querySelector('.atlas-selection'),search=root.querySelector('[data-atlas-search]'),category=root.querySelector('[data-atlas-group]');let clusters=new Map(),lastW=240,lastH=240;const shell=root.querySelector('.world-atlas');root.querySelector('[data-atlas-cancel]').onclick=()=>{clearWaypoint();worldCampaign.route=null;root.querySelector('[data-atlas-destination]').textContent='Sem destino ativo';root.querySelector('[data-atlas-cancel]').disabled=true;draw();};root.querySelectorAll('[data-atlas-tab-button]').forEach(b=>b.onclick=()=>{shell.dataset.atlasTab=b.dataset.atlasTabButton;root.querySelectorAll('[data-atlas-tab-button]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));requestAnimationFrame(draw);});
    const code=l=>l?.id==='home'?'CASA':/plane|airbase/.test(l?.id)?'AV':/helicopter/.test(l?.id)?'HE':/marina|boat/.test(l?.id)?'LA':/coast-view/.test(l?.id)?'PR':/snow/.test(l?.id)?'NE':/shop/.test(l?.id)?'LO':/campaign-hq/.test(l?.id)?'QG':/circuit|kart/.test(l?.id)?'KT':/pingpong/.test(l?.id)?'PP':/dance/.test(l?.id)?'DA':/boxing/.test(l?.id)?'BX':/garage|dealer/.test(l?.id)?'GA':'•';
-   const essential=l=>['chapter-next','home','shop','workshop','campaign-hq','campaign-airbase','coast-view','marina-costa','snow-lookout','airport-terminal','mountain-balloon'].includes(l.id)||/^(venue-|circuit-|city-)/.test(l.id)||l.id===active;
+   const essential=l=>['chapter-next','home','shop','workshop','campaign-hq','campaign-airbase','coast-view','marina-costa','snow-lookout','airport-terminal','mountain-balloon'].includes(l.id)||/^(venue-|circuit-|city-)/.test(l.id)||l.id===(state.waypoint?.id||'');
    const norm=t=>String(t||'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();const filtered=()=>{const q=norm(search.value);return locations.filter(l=>(q||!category.value||(category.value==='essential'?essential(l):l.group===category.value))&&(!q||norm(l.name+' '+l.group).includes(q)));};
    const selection=()=>{if(!selected)return;const d=mapLocationDetails(selected);detail.innerHTML=`<small>${escapeHtml(selected.group||'Destino')}</small><h3>${escapeHtml(selected.name)}</h3><p>${escapeHtml(d.description)}</p><footer><span>${mapDistance(selected)} m de você</span><button data-route-selected="${escapeHtml(selected.id)}">TRAÇAR ROTA</button></footer>`;detail.querySelector('button').onclick=()=>setWaypoint(selected.id);};
    const draw=()=>{
@@ -2646,8 +2655,8 @@
     for(const road of WORLD_LAYOUT_V704.roads)s+=square(road.x,road.z,road.w+2,road.d+2,'#e9e5d6')+square(road.x,road.z,road.w,road.d,'#65717a');for(const road of WORLD_LAYOUT_V704.highways){const p=road.points.map(p=>`${p.x},${-p.z}`);if(road.closed)p.push(p[0]);s+=`<polyline points="${p.join(' ')}" fill="none" stroke="#e6dfc7" stroke-width="${road.width+3}" stroke-linejoin="round"/><polyline points="${p.join(' ')}" fill="none" stroke="#4a5d69" stroke-width="${road.width}" stroke-linejoin="round"/>`;}
     if(w<520)for(const house of world.houses)s+=square(house.x,house.z,9,7,'#b49a7c');for(const l of[{name:'VILA OT',x:3,z:93},...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({name:c.label.toUpperCase(),x:c.x,z:c.z+48})),{name:'PRAIA DA COSTA VERDE',x:-310,z:509},{name:'MAR',x:-80,z:640},{name:'SERRA · NEVE',x:15,z:188}])s+=`<text x="${l.x}" y="${-l.z}" text-anchor="middle" font-family="system-ui" font-size="${13*px}" font-weight="750" fill="#304956" stroke="#e8eddf" stroke-width="${3*px}" paint-order="stroke">${l.name}</text>`;
     if(state.waypoint){const route=world.routePath.length?world.routePath:navigationRoutePoints(focus,state.waypoint),p=route.map(p=>`${p.x},${-p.z}`).join(' ');s+=`<polyline points="${p}" fill="none" stroke="white" stroke-width="${7*px}"/><polyline points="${p}" fill="none" stroke="#087be0" stroke-width="${4*px}" stroke-linejoin="round"/>`;}
-    const points=filtered().filter(l=>l.x>=left-r&&l.x<=left+w+r&&-l.z>=top-r&&-l.z<=top+h+r),cells=new Map(),nodes=[];clusters=new Map();for(const l of points){if(l.id===selected?.id||l.id===active){nodes.push({x:l.x,z:l.z,loc:l});continue;}const k=Math.floor((l.x-left)/(40*px))+':'+Math.floor((-l.z-top)/(40*px));if(!cells.has(k))cells.set(k,[]);cells.get(k).push(l);}for(const items of cells.values())if(items.length===1)nodes.push({x:items[0].x,z:items[0].z,loc:items[0]});else{const n={id:'cluster-'+clusters.size,x:items.reduce((s,l)=>s+l.x,0)/items.length,z:items.reduce((s,l)=>s+l.z,0)/items.length,items};clusters.set(n.id,n);nodes.push(n);}
-    for(const n of nodes){const l=n.loc,id=l?.id||n.id,selectedNow=l?.id===selected?.id,color=l?.id===active?'#087be0':selectedNow?'#c66b2e':'#214e59',name=l?.name||n.items.length+' lugares';s+=`<g data-map-marker="${escapeHtml(id)}" role="button" tabindex="0" aria-label="${escapeHtml(name)}" style="cursor:pointer"><title>${escapeHtml(name)}</title><circle cx="${n.x}" cy="${-n.z}" r="${r}" fill="${color}" stroke="#fffdf0" stroke-width="${2*px}"/><text x="${n.x}" y="${-n.z+4*px}" text-anchor="middle" font-family="system-ui" font-size="${(code(l)==='CASA'?8:11)*px}" font-weight="800" fill="white">${n.items?n.items.length:code(l)}</text></g>`;if(l&&(selectedNow||l.id===active))s+=`<text x="${n.x}" y="${-n.z-20*px}" text-anchor="middle" font-family="system-ui" font-size="${12*px}" font-weight="800" fill="#173c48" stroke="#fffdf0" stroke-width="${4*px}" paint-order="stroke">${escapeHtml(l.name)}</text>`;}
+    const points=filtered().filter(l=>l.x>=left-r&&l.x<=left+w+r&&-l.z>=top-r&&-l.z<=top+h+r),cells=new Map(),nodes=[];clusters=new Map();for(const l of points){if(l.id===selected?.id||l.id===(state.waypoint?.id||'')){nodes.push({x:l.x,z:l.z,loc:l});continue;}const k=Math.floor((l.x-left)/(40*px))+':'+Math.floor((-l.z-top)/(40*px));if(!cells.has(k))cells.set(k,[]);cells.get(k).push(l);}for(const items of cells.values())if(items.length===1)nodes.push({x:items[0].x,z:items[0].z,loc:items[0]});else{const n={id:'cluster-'+clusters.size,x:items.reduce((s,l)=>s+l.x,0)/items.length,z:items.reduce((s,l)=>s+l.z,0)/items.length,items};clusters.set(n.id,n);nodes.push(n);}
+    for(const n of nodes){const l=n.loc,id=l?.id||n.id,selectedNow=l?.id===selected?.id,color=l?.id===active?'#087be0':selectedNow?'#c66b2e':'#214e59',name=l?.name||n.items.length+' lugares';s+=`<g data-map-marker="${escapeHtml(id)}" role="button" tabindex="0" aria-label="${escapeHtml(name)}" style="cursor:pointer"><title>${escapeHtml(name)}</title><circle cx="${n.x}" cy="${-n.z}" r="${r}" fill="${color}" stroke="#fffdf0" stroke-width="${2*px}"/><text x="${n.x}" y="${-n.z+4*px}" text-anchor="middle" font-family="system-ui" font-size="${(code(l)==='CASA'?8:11)*px}" font-weight="800" fill="white">${n.items?n.items.length:code(l)}</text></g>`;if(l&&(selectedNow||l.id===(state.waypoint?.id||'')))s+=`<text x="${n.x}" y="${-n.z-20*px}" text-anchor="middle" font-family="system-ui" font-size="${12*px}" font-weight="800" fill="#173c48" stroke="#fffdf0" stroke-width="${4*px}" paint-order="stroke">${escapeHtml(l.name)}</text>`;}
     s+=`<g transform="translate(${focus.x},${-focus.z})"><circle r="${10*px}" fill="#167cdb" stroke="white" stroke-width="${3*px}"/><path d="M0 ${-18*px}L${7*px} ${-8*px}L${-7*px} ${-8*px}Z" fill="#173c48" transform="rotate(${(Math.PI-(focus.facing||0))*180/Math.PI})"/></g><text x="${left+16*px}" y="${top+24*px}" font-family="system-ui" font-size="${15*px}" font-weight="900" fill="#173c48">N ↑</text>`;svg.innerHTML=s;root.querySelector('[data-atlas-scale]').textContent=Math.round(w)+' m de largura';
    };
    const select=id=>{const cluster=clusters.get(id);if(cluster){view.x=cluster.x;view.z=cluster.z;view.span=Math.max(55,view.span*.42);draw();return;}const l=locations.find(l=>l.id===id);if(l){selected=l;mapSelectedId=id;view.x=l.x;view.z=l.z;view.span=Math.min(220,view.span);selection();draw();}};
@@ -4845,8 +4854,8 @@
     if(!alert||alert.phase!=='pursuit')return false;const now=performance.now();alert.phase='officer-exiting';alert.phaseAt=now;alert.officer=createRoadsidePoliceOfficer(car);alert.officerSpeech='';alert.officerSpeechAt=0;setPoliceRoadsideDoor(car,0);car.currentSpeed=0;clearPolicePursuit(car);clearMovementInputs();if(player.vehicle){player.car.speed=0;player.vx=0;player.vz=0;}updateSafetyPanel('Viatura posicionada • porta abrindo');toast('🚓 Pare no local: a viatura encostou e o policial vai descer.','warn',2400);return true;
   }
   function animatePoliceOfficerExit(alert,car,now){
-    const officer=alert?.officer;if(!officer?.group)return false;const elapsed=now-Number(alert.phaseAt||now),doorProgress=clamp(elapsed/420,0,1);setPoliceRoadsideDoor(car,doorProgress);if(elapsed<180){officer.group.visible=false;return true;}officer.group.visible=true;
-    const exitProgress=policeRoadsideEase(clamp((elapsed-180)/980,0,1)),firstLeg=clamp(exitProgress/.56,0,1),secondLeg=clamp((exitProgress-.56)/.44,0,1),from=firstLeg<1?officer.inside:officer.threshold,to=firstLeg<1?officer.threshold:officer.outside,t=firstLeg<1?policeRoadsideEase(firstLeg):policeRoadsideEase(secondLeg),x=lerp(from.x,to.x,t),z=lerp(from.z,to.z,t),ground=groundHeightAt(x,z);officer.group.position.set(x,ground+.06+Math.sin(exitProgress*Math.PI)*.08,z);officer.group.rotation.y=lerpAngle(officer.group.rotation.y,officer.outside.heading,Math.min(1,.12+exitProgress*.3));officer.group.scale.set(lerp(.86,.92,exitProgress),lerp(.7,.92,exitProgress),lerp(.86,.92,exitProgress));
+    const officer=alert?.officer;if(!officer?.group)return false;const elapsed=now-Number(alert.phaseAt||now),doorProgress=clamp(elapsed/260,0,1);setPoliceRoadsideDoor(car,doorProgress);if(elapsed<100){officer.group.visible=false;return true;}officer.group.visible=true;
+    const exitProgress=policeRoadsideEase(clamp((elapsed-100)/560,0,1)),firstLeg=clamp(exitProgress/.56,0,1),secondLeg=clamp((exitProgress-.56)/.44,0,1),from=firstLeg<1?officer.inside:officer.threshold,to=firstLeg<1?officer.threshold:officer.outside,t=firstLeg<1?policeRoadsideEase(firstLeg):policeRoadsideEase(secondLeg),x=lerp(from.x,to.x,t),z=lerp(from.z,to.z,t),ground=groundHeightAt(x,z);officer.group.position.set(x,ground+.06+Math.sin(exitProgress*Math.PI)*.08,z);officer.group.rotation.y=lerpAngle(officer.group.rotation.y,officer.outside.heading,Math.min(1,.12+exitProgress*.3));officer.group.scale.set(lerp(.86,.92,exitProgress),lerp(.7,.92,exitProgress),lerp(.86,.92,exitProgress));
     const step=Math.sin(now*.019)*.42*Math.sin(exitProgress*Math.PI);officer.leftLeg.rotation.x=step;officer.rightLeg.rotation.x=-step;officer.leftArm.rotation.x=-step*.7;officer.rightArm.rotation.x=step*.7;return exitProgress>=.999;
   }
   function roadsidePoliceSpeech(alert,text='',type='warn'){
@@ -4861,15 +4870,15 @@
     setPoliceRoadsideDoor(car,1-clamp((now-alert.phaseAt)/520,0,1));
     const heading=Number(player.vehicle?player.car.heading:player.facing||0),sideX=Math.cos(heading),sideZ=-Math.sin(heading),backX=-Math.sin(heading),backZ=-Math.cos(heading),targetX=player.x+sideX*1.55+backX*.15,targetZ=player.z+sideZ*1.55+backZ*.15,dx=targetX-officer.group.position.x,dz=targetZ-officer.group.position.z,distance=Math.hypot(dx,dz);
     if(alert.phase==='approaching'){
-      const move=Math.min(distance,dt*2.75);if(distance>.02){officer.group.position.x+=dx/distance*move;officer.group.position.z+=dz/distance*move;officer.group.position.y=groundHeightAt(officer.group.position.x,officer.group.position.z);officer.group.rotation.y=lerpAngle(officer.group.rotation.y,Math.atan2(dx,dz),Math.min(1,dt*8));}
+      const move=Math.min(distance,dt*4.1);if(distance>.02){officer.group.position.x+=dx/distance*move;officer.group.position.z+=dz/distance*move;officer.group.position.y=groundHeightAt(officer.group.position.x,officer.group.position.z);officer.group.rotation.y=lerpAngle(officer.group.rotation.y,Math.atan2(dx,dz),Math.min(1,dt*8));}
       const walk=Math.sin(now*.016)*.52;officer.leftLeg.rotation.x=walk;officer.rightLeg.rotation.x=-walk;officer.leftArm.rotation.x=-walk*.72;officer.rightArm.rotation.x=walk*.72;
       if(distance<.22){alert.phase='officer-speaking';alert.phaseAt=now;officer.leftLeg.rotation.x=officer.rightLeg.rotation.x=0;officer.leftArm.rotation.x=0;roadsidePoliceSpeech(alert);}
       return true;
     }
     if(alert.phase==='officer-speaking'){
-      officer.group.rotation.y=lerpAngle(officer.group.rotation.y,Math.atan2(player.x-officer.group.position.x,player.z-officer.group.position.z),Math.min(1,dt*7));officer.rightArm.rotation.z=-.2+Math.sin(now*.01)*.12;officer.rightArm.rotation.x=-.34;if(now-alert.phaseAt>2600){alert.phase='ticket-writing';alert.phaseAt=now;officer.rightArm.rotation.z=0;updateSafetyPanel(alert.reason==='toll-evasion'?'Policial registrando a multa':'Policial registrando a orientação');}return true;
+      officer.group.rotation.y=lerpAngle(officer.group.rotation.y,Math.atan2(player.x-officer.group.position.x,player.z-officer.group.position.z),Math.min(1,dt*7));officer.rightArm.rotation.z=-.2+Math.sin(now*.01)*.12;officer.rightArm.rotation.x=-.34;if(now-alert.phaseAt>1000){alert.phase='ticket-writing';alert.phaseAt=now;officer.rightArm.rotation.z=0;updateSafetyPanel(alert.reason==='toll-evasion'?'Policial registrando a multa':'Policial registrando a orientação');}return true;
     }
-    if(alert.phase==='ticket-writing'){officer.rightArm.rotation.x=-.62+Math.sin(now*.012)*.08;if(now-alert.phaseAt>1450)finishSafetyStop(alert);return true;}return true;
+    if(alert.phase==='ticket-writing'){officer.rightArm.rotation.x=-.62+Math.sin(now*.012)*.08;if(now-alert.phaseAt>650)finishSafetyStop(alert);return true;}return true;
   }
   function finishSafetyStop(alert=world.policeAlert){
     if(!alert||alert.finished)return;alert.finished=true;world.policeAlert=null;state.safety.safeStops=(state.safety.safeStops||0)+1;const car=world.policeCars.find(item=>item.id===alert.carId);clearPolicePursuit(car);removeRoadsidePoliceOfficer(alert);const penalty=alert.reason==='toll-evasion'?applyTollEvasionFine(alert):null;
@@ -4890,7 +4899,7 @@
     for(const car of world.policeCars){
       const active=alert&&car===alertCar;car.red.material.emissiveIntensity=(active||car.npcTarget||car.incidentTargetId)?(.45+Math.sin(now*.018)*.45):.16;car.cyan.material.emissiveIntensity=(active||car.npcTarget||car.incidentTargetId)?(.45+Math.sin(now*.018+Math.PI)*.45):.16;
       if(car.occupied)continue;if(car.incidentTargetId)continue;if(car.missionReservedFor){returnServiceVehicleHome(car,dt);continue;}
-      if(active){if(alert.phase!=='pursuit'){updatePoliceRoadsideStop(alert,car,dt);continue;}const distance=movePolicePursuit(car,player,dt,alert.reason==='toll-evasion'?14.2:12.8),stopped=!player.vehicle||Math.abs(player.car.speed)<1.15;alert.slowSince=stopped?(alert.slowSince||now):0;updateSafetyPanel(stopped?'Muito bem • aguarde a viatura encostar':alert.reason==='toll-evasion'?'Evasão de pedágio • reduza e encoste':'Encoste com calma • solte o acelerador');if(distance<2.15||(alert.slowSince&&now-alert.slowSince>1100&&distance<8)||now-alert.startedAt>18000)beginPoliceRoadsideStop(alert,car);}
+      if(active){if(alert.phase!=='pursuit'){updatePoliceRoadsideStop(alert,car,dt);continue;}const distance=movePolicePursuit(car,player,dt,alert.reason==='toll-evasion'?18:16),stopped=!player.vehicle||Math.abs(player.car.speed)<1.15;alert.slowSince=stopped?(alert.slowSince||now):0;updateSafetyPanel(stopped?'Muito bem • aguarde a viatura encostar':alert.reason==='toll-evasion'?'Evasão de pedágio • reduza e encoste':'Encoste com calma • solte o acelerador');if(distance<2.15||(alert.slowSince&&now-alert.slowSince>450&&distance<8)||now-alert.startedAt>18000)beginPoliceRoadsideStop(alert,car);}
       else if(car.npcTarget){const npc=world.npcs.find(item=>item.id===car.npcTarget);if(!npc||now>car.npcChaseUntil){if(npc)npcSpeech(npc,'Vou reduzir a velocidade e dirigir com cuidado.');car.npcTarget='';}else if(movePoliceToward(car,npc.group.position,dt,10.2)<2.25){npc.policeCooldown=now+45000;npcSpeech(npc,'Entendi, patrulha! Segurança primeiro.');car.npcTarget='';}}
       else updatePolicePatrol(car,dt);
     }
@@ -9090,6 +9099,8 @@ function build(T,key,H){
     return state;
   }
 
+  const extendedTerrainRoads=v704HighwaySegments().filter(s=>s.a.y!==undefined||s.b.y!==undefined);
+  function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(1-r,1.18),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
   function professionalTerrainHeightAt(x,z){
     if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
@@ -9097,7 +9108,11 @@ function build(T,key,H){
     if(r<1.12&&z>82){const dome=Math.pow(Math.max(0,1-r/1.12),1.55)*15.5;const ridges=(Math.sin(x*.22)+Math.cos(z*.18))*1.05*Math.max(0,1-r);mountain=Math.max(0,dome+ridges);}
     // Colinas do deserto, baixas o suficiente para não cobrir prédios ou vias.
     let dune=0;if(x>70&&z>-61&&z<-24){const a=Math.max(0,1-Math.hypot((x-91)/25,(z+42)/20));dune=Math.max(0,Math.sin((x+z)*.12)*.45+.55)*a*2.1;}
-    const height=Math.max(0,mountain,dune),launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
+    let height=Math.max(0,mountain,dune,mountainRangeHeightAt(x,z));
+    // Raised mountain passes and the terrain share exactly the same height.
+    let nearest=null;for(const seg of extendedTerrainRoads){const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
+    if(nearest){const edge=nearest.seg.width/2+nearest.seg.shoulder+1.4,t=clamp((nearest.distance-edge)/24,0,1),grade=lerp(Number(nearest.seg.a.y||0),Number(nearest.seg.b.y||0),nearest.t);height=lerp(grade,height,t*t*(3-2*t));}
+    const launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
   }
   function v702TextureMaterial(pack,color,options={}){
     const repeat=options.repeat||[6,6],material=new THREE.MeshStandardMaterial({color,roughness:options.roughness??.86,metalness:options.metalness??0,transparent:!!options.transparent,opacity:options.opacity??1,side:options.side||THREE.FrontSide});
@@ -9655,10 +9670,9 @@ function build(T,key,H){
   function otGamesCanLand(mode,b){
     if(!b||waterAt(b.x,b.z))return false;const radius=mode==='plane'?2.4:mode==='balloon'?1.3:1.4,base=groundHeightAt(b.x,b.z);
     for(const [dx,dz]of[[0,0],[radius,0],[-radius,0],[0,radius],[0,-radius]]){const x=b.x+dx,z=b.z+dz;if(waterAt(x,z)||Math.abs(groundHeightAt(x,z)-base)>.35||positionBlockedForPlayer(x,z,.3,{ignoreTraffic:true}))return false;}
-    if(mode==='helicopter'||mode==='balloon')return true;if(typeof campaignLandingZone==='function'&&campaignLandingZone(mode,b))return true;
-    const aligned=(dx,dz)=>Math.abs(Math.sin(b.yaw)*dx+Math.cos(b.yaw)*dz)/Math.hypot(dx,dz)>.98;
-    if(WORLD_LAYOUT_V704.roads.some(r=>{const horizontal=r.w>r.d;return Math.max(r.w,r.d)>=60&&Math.min(r.w,r.d)>=8&&v704PointInRect(b,r,-2)&&aligned(horizontal?1:0,horizontal?0:1);}))return true;
-    return v704HighwaySegments().some(seg=>{const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z;return Math.hypot(dx,dz)>=60&&seg.width>=8&&aligned(dx,dz)&&v704DistanceToSegment(b,seg.a,seg.b).distance<seg.width/2-2;});
+    // Any clear, level ground is usable. Traffic is allowed to be obstructed by
+    // an aircraft; the road service handles that obstruction after disembarking.
+    return true;
   }
   function otGamesLandingAction(){const g=otGames;if(!g.active||g.mode==='ground')return;g.landingAssist=!g.landingAssist;g.move.x=g.move.y=0;g.pedal=0;if(g.mode==='plane'){g.collective=g.onGround?0:.18;toast('Reduza, alinhe-se à pista e desça suavemente. Após tocar o solo, reduza a potência até parar.','info',4200);}else if(!g.landingAssist)g.collective=.5;}
   function otGamesCanDisembark(){const g=otGames;return g.active&&g.mode!=='ground'&&g.onGround&&Math.hypot(g.body.vx||0,g.body.vz||0)<1.5&&Math.abs(g.body.vy||0)<1&&otGamesCanLand(g.mode,g.body);}
@@ -9696,9 +9710,10 @@ function build(T,key,H){
     root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
     root.insertAdjacentHTML('beforeend','<div class="ot-games-targets" aria-hidden="true"></div><div class="ot-games-result" hidden><strong></strong><p></p><button data-ot="retry">JOGAR NOVAMENTE</button></div>');
     root.insertAdjacentHTML('beforeend','<button data-ot="crouch" aria-pressed="false">ABAIXAR</button><button data-ot="land">POUSAR</button><button data-ot="disembark">SAIR DA AERONAVE</button>');
-    root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button>');
+    root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button><button data-ot="map">MAPA / GPS</button>');
     document.body.append(root);otGamesBindPress(root.querySelector('[data-ot="peace"]'),()=>otGamesLeave());otGamesBindPress(root.querySelector('[data-ot="menu"]'),otGamesChoose);otGamesBindPress(root.querySelector('[data-ot="retry"]'),()=>typeof worldCampaign!=='undefined'&&worldCampaign.mission?campaignRetry():otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty}));
     otGamesBindPress(root.querySelector('[data-ot="camera"]'),otGamesStartCamera);
+    otGamesBindPress(root.querySelector('[data-ot="map"]'),()=>{otGamesClearInput();openMap();});
     otGamesBindPress(root.querySelector('[data-ot="crouch"]'),otGamesToggleCrouch);otGamesBindPress(root.querySelector('[data-ot="land"]'),otGamesLandingAction);otGamesBindPress(root.querySelector('[data-ot="disembark"]'),otGamesDisembark);
     root.querySelector('[data-ot="crouch"]').hidden=g.mode!=='ground';for(const name of ['land','disembark'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode==='ground';
     for(const name of ['ads','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='ground';
@@ -9741,7 +9756,7 @@ function build(T,key,H){
     return true;
   }
   function updateOtGames(dt){
-    const g=otGames;if(!g.active)return;if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
+    const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){otGamesClearInput();otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
     if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
@@ -9784,7 +9799,7 @@ function build(T,key,H){
     if(g.mode!=='ground'){
       const floor=groundHeightAt(b.x,b.z)+campaignAircraftHeight(g.aircraftId||g.mode),landable=otGamesCanLand(g.mode,b);
       if(g.mode==='helicopter'||g.mode==='balloon'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist){g.collective=.5;g.landingAssist=false;}}}
-      if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<=0&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
+      if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<-.05&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
       if(b.y<floor){b.y=floor;b.vy=0;if(g.armed&&!g.onGround)b.hp=Math.max(0,b.hp-18*dt);}
       b.y=clamp(b.y,floor,100);
       if(g.obstacles.some(box=>box.containsPoint(new THREE.Vector3(b.x,b.y,b.z)))){b.x=before.x;b.z=before.z;b.vx=b.vz=0;if(g.armed)b.hp=Math.max(0,b.hp-28*dt);}
@@ -9900,7 +9915,7 @@ function build(T,key,H){
   };
   function campaignAircraftPose(id){const base=WORLD_CAMPAIGN_AIRCRAFT[id];if(!base)return null;const p=state.vehicles?.aircraft?.[id],bounds=v704WorldBounds();return p&&[p.x,p.z,p.yaw].every(Number.isFinite)&&p.x>bounds.minX+2&&p.x<bounds.maxX-2&&p.z>bounds.minZ+2&&p.z<bounds.maxZ-2?{...base,...p}:{...base};}
   function campaignAircraftHeight(id){return WORLD_CAMPAIGN_AIRCRAFT[id]?.height??(id==='plane'?1.3:1.6);}
-  function campaignCreateAircraft(id){const spec=WORLD_CAMPAIGN_AIRCRAFT[id];return spec?.model==='balloon'?createMountainBalloon():spec?.model?createCivilianAirframe(spec.model,spec.livery):otGamesAirframe(id);}
+  function campaignCreateAircraft(id){const spec=WORLD_CAMPAIGN_AIRCRAFT[id];return spec?.model==='balloon'?createMountainBalloon():spec?.model?createCivilianAirframe(spec.model,spec.livery):otGamesAirframe(spec?.mode||id);}
   function campaignParkAircraft(id,b){if(!WORLD_CAMPAIGN_AIRCRAFT[id])return false;state.vehicles.aircraft=state.vehicles.aircraft||{};state.vehicles.aircraft[id]={x:b.x,z:b.z,yaw:b.yaw,hp:Math.max(1,Math.min(100,b.hp)),parkedAt:Date.now()};saveState(true);campaignSyncAircraft();return true;}
   function campaignSyncAircraft(){for(const mesh of worldCampaign.aircraft?.children||[]){const p=campaignAircraftPose(mesh.name);mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mesh.name),p.z);mesh.rotation.y=p.yaw;mesh.visible=!(otGames.active&&(otGames.aircraftId||otGames.mode)===mesh.name)&&campaignDist(otGamesFocus(),p)<(otGames.active?380:185);}}
   async function campaignBoardAircraft(id){const p=campaignAircraftPose(id);if(!p||!running||paused||otGames.active||player.vehicle||player.boating||player.transit.mode||campaignDist(player,p)>p.radius)return false;const mode=p.mode||id,pending=campaignPending();if(pending&&pending.mode===mode&&pending.onGround&&campaignDist(pending.body,p)<3)return campaignResume();return otGamesEnter(mode,{armed:false,difficulty:'normal',groundLaunch:true,boarding:p});}
@@ -11758,11 +11773,11 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   function updateWorldDestinations(){
     if(!worldDestinations.ready){if(!cityCoast.ready||!world.boats)return;createMarina();createSnowDestination();worldDestinations.ready=true;}
     const focus=otGamesFocus(),now=performance.now(),dt=Math.min(.15,(now-worldDestinations.lastAt)/1000);worldDestinations.lastAt=now;
-    const snow=focus.z>147&&focus.z<227&&focus.x>-160&&focus.x<180;worldDestinations.flakes.visible=snow;
+    const snow=focus.z>147&&focus.z<480&&focus.x>-220&&focus.x<200;worldDestinations.flakes.visible=snow;
     if(snow){const a=worldDestinations.flakes.geometry.attributes.position;worldDestinations.flakes.position.set(focus.x,Math.max(0,groundHeightAt(focus.x,focus.z)),focus.z);for(let i=0;i<a.count;i++){let y=a.getY(i)-dt*(.7+i%5*.11);if(y<0)y+=14;a.setY(i,y);}a.needsUpdate=true;}
     for(const boat of world.boats.values())if(boat.seaGoing){const remote=[...remotePresence.values()].some(p=>p.boating&&p.boatId===boat.id&&p.boatRole!=='passenger'),local=player.boating&&state.boats.activeBoatId===boat.id;boat.group.visible=!remote&&Math.hypot(focus.x-boat.group.position.x,focus.z-boat.group.position.z)<260;if(!local&&!remote){boat.group.position.y=.10+Math.sin(now*.0014+boat.group.position.x)*.025;boat.group.rotation.z=Math.sin(now*.0012+boat.group.position.z)*.008;}else if(local){boat.group.rotation.z=player.boat.steerVisual*clamp(Math.abs(player.boat.speed)/22,0,1)*.11;boat.group.userData.seaPropeller.rotation.z+=dt*player.boat.speed*8;}}
     const button=document.getElementById('worldCampaignBtn');if(button&&button.textContent!=='MUNDO / GPS'){button.textContent='MUNDO / GPS';button.setAttribute('aria-label','Abrir destinos, aviões, helicóptero, lanchas, praia, neve e WAR Combate');}
-    if(now-Number(worldDestinations.signAt||0)>1000){worldDestinations.signAt=now;for(const p of window.OTTHI_CAMPAIGN.parked()){let sign=worldDestinations.airSigns.get(p.mode);if(!sign){const root=new THREE.Group();root.name='BOARDING_SIGN_'+p.mode;worldGroup.add(root);citySign(root,p.mode==='plane'?'AVIÃO · EMBARQUE':'HELICÓPTERO · EMBARQUE',0,3.1,0,6,-1,'#245060',.65);worldDestinations.airSigns.set(p.mode,root);sign=root;}sign.position.set(p.x,groundHeightAt(p.x,p.z),p.z+5.7);sign.visible=!otGames.active&&Math.hypot(focus.x-p.x,focus.z-p.z)<100;}}
+    if(now-Number(worldDestinations.signAt||0)>1000){worldDestinations.signAt=now;for(const p of window.OTTHI_CAMPAIGN.parked()){let sign=worldDestinations.airSigns.get(p.id);if(!sign){const root=new THREE.Group();root.name='BOARDING_SIGN_'+p.id;worldGroup.add(root);citySign(root,(p.mode==='balloon'?'BALÃO':p.label)+' · EMBARQUE',0,3.1,0,6,-1,'#245060',.65);worldDestinations.airSigns.set(p.id,root);sign=root;}sign.position.set(p.x,groundHeightAt(p.x,p.z),p.z+5.7);sign.visible=!otGames.active&&Math.hypot(focus.x-p.x,focus.z-p.z)<100;}}
   }
   const previousDestinationExpansion=updateWorldExpansion;updateWorldExpansion=function(){previousDestinationExpansion();updateWorldDestinations();};
   const previousDestinationLocations=expansionMapLocations;expansionMapLocations=function(){return[...previousDestinationLocations(),...worldExploreLocations()];};
@@ -11910,5 +11925,321 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
  const airportOldExplore=worldExploreLocations;worldExploreLocations=function(){return[...airportOldExplore(),...airportMapLocations()];};
  const airportOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){airportOldExpansion();if(!worldAirport.ready&&cityCoast.ready&&worldResidents.ready){createCivilAirport();createBalloonLaunch();worldAirport.ready=true;world.navCache?.clear?.();}if(worldAirport.ready){const p=otGamesFocus();worldAirport.root.visible=Math.hypot(p.x-90,p.z+186)<320;worldAirport.balloonSite.visible=Math.hypot(p.x+66,p.z-89)<230;}};
  window.OT_WORLD_AIRPORT={open:openAirportDepartures,diagnostics:()=>({ready:worldAirport.ready,terminal:{x:90,z:-175},balloonLaunch:{x:-66,z:89},fleet:Object.values(WORLD_CAMPAIGN_AIRCRAFT).map(spec=>({...campaignAircraftPose(spec.id),mode:spec.mode||spec.id,model:spec.model||spec.id,visible:!!worldCampaign.aircraft?.getObjectByName(spec.id)?.visible})),activeId:otGames.active?otGames.aircraftId||otGames.mode:null})};
+
+  // ===== MODULE: 61-world-air-operations.js =====
+ class WorldAirFleet {
+  constructor(bases,saved={},now=Date.now()){
+   this.bases=bases;this.data={v:1,revision:0,slots:{},craft:{},...saved};
+   this.data.slots={...(saved.slots||{})};this.data.craft={...(saved.craft||{})};
+   for(const [id,base]of Object.entries(bases)){
+    this.data.slots[id]||={current:id,generation:0,spawnAt:0};
+    this.data.craft[id]||={id,base:id,x:base.x,z:base.z,yaw:base.yaw,status:'parked',parkedAt:now,pilot:'',departedAt:0};
+   }
+  }
+  spec(id){const c=this.data.craft[id],base=c&&this.bases[c.base];return base?{...base,id,baseId:c.base}:null;}
+  claim(id,uid,now){const c=this.data.craft[id];if(!c||c.status!=='parked'||!uid)return false;c.status='piloted';c.pilot=uid;c.claimAt=now;c.seenAt=now;c.departedAt=0;delete c.job;this.data.revision++;return true;}
+  depart(id,uid,now){const c=this.data.craft[id];if(!c||c.pilot!==uid||c.departedAt)return false;c.departedAt=now;const s=this.data.slots[c.base];if(s.current===id){s.current='';s.spawnAt=now+180000;}this.data.revision++;return true;}
+  park(id,uid,pose,now){const c=this.data.craft[id];if(!c||c.pilot!==uid||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,hp:Math.max(1,Math.min(100,Number(pose.hp)||100)),status:'parked',pilot:'',parkedAt:now});delete c.y;delete c.job;this.data.revision++;return true;}
+  tick(now){const born=[];for(const [baseId,s]of Object.entries(this.data.slots)){
+   if(s.current||!s.spawnAt||now<s.spawnAt)continue;
+   // A returning pilot may have parked on the pad during the three minutes.
+   const base=this.bases[baseId],present=Object.values(this.data.craft).find(c=>c.base===baseId&&c.status==='parked'&&Math.hypot(c.x-base.x,c.z-base.z)<3);
+   if(present){s.current=present.id;s.spawnAt=0;continue;}
+   const id=baseId+'-r'+(++s.generation);this.data.craft[id]={id,base:baseId,x:base.x,z:base.z,yaw:base.yaw,status:'parked',parkedAt:now,pilot:'',departedAt:0};s.current=id;s.spawnAt=0;born.push(id);this.data.revision++;
+  }return born;}
+ }
+ const airOperations={ready:false,fleet:null,bases:null,lastAt:0,lastSave:0,revision:-1,meshes:new Map(),colliders:new Map(),recovery:new Map(),pending:new Map(),nonce:0,background:[]};
+ function airNow(){return Number(window.OTTHOS_RTDB?.serverNowMs?.()||Date.now());}
+ function airOnline(){return !!window.OTTHOS_RTDB?.connected?.()&&typeof multiplayerV2Enabled==='function'&&multiplayerV2Enabled();}
+ function airEnsure(){
+  if(airOperations.ready||!worldCampaign.aircraft)return airOperations.ready;
+  airOperations.bases=Object.fromEntries(Object.entries(WORLD_CAMPAIGN_AIRCRAFT).map(([id,p])=>[id,{...p,mode:p.mode||id,height:p.height??(id==='plane'?1.3:1.6)}]));
+  const saved=state.vehicles.airOperations||{},migrated={...saved,craft:{...(saved.craft||{})}};
+  for(const [id,p]of Object.entries(state.vehicles.aircraft||{}))if(airOperations.bases[id]&&!migrated.craft[id])migrated.craft[id]={id,base:id,...p,status:'parked',pilot:'',departedAt:0};
+  airOperations.fleet=new WorldAirFleet(airOperations.bases,migrated,airNow());state.vehicles.airOperations=airOperations.fleet.data;
+  for(const child of worldCampaign.aircraft.children)airOperations.meshes.set(child.name,child);
+  airOperations.ready=true;airMaterialize();return true;
+ }
+ function airAvailable(id){const c=airOperations.fleet?.data.craft[id];return !c||c.status==='parked';}
+ function airMaterialize(){
+  if(!airOperations.ready)return;const f=airOperations.fleet;
+  for(const [id,c]of Object.entries(f.data.craft)){
+   const spec=f.spec(id);if(!spec)continue;WORLD_CAMPAIGN_AIRCRAFT[id]=spec;
+   if(!airOperations.meshes.has(id)){const m=campaignCreateAircraft(id);m.name=id;worldCampaign.aircraft.add(m);airOperations.meshes.set(id,m);registerInteractable({id:'board-aircraft-'+id,type:'vehicle',icon:spec.mode==='balloon'?'🎈':spec.mode==='plane'?'✈️':'🚁',label:'Embarcar: '+spec.label,radius:spec.radius,priority:185,getPos:()=>campaignAircraftPose(id),available:()=>!otGames.active&&!player.vehicle&&!player.boating&&!player.transit.mode&&airAvailable(id),action:()=>campaignBoardAircraft(id)});}
+  }
+  for(const a of world.interactables)if(a.id?.startsWith('board-aircraft-')&&!a.airFleetBound){const available=a.available,id=a.id.slice(15);a.available=()=>available()&&airAvailable(id);a.airFleetBound=true;}
+ }
+ const airOriginalPose=campaignAircraftPose;
+ campaignAircraftPose=function(id){const c=airOperations.fleet?.data.craft[id],spec=airOperations.fleet?.spec(id);return c&&spec?{...spec,...c}:airOriginalPose(id);};
+ function airObstacle(id,c){
+  const spec=airOperations.fleet.spec(id),mode=spec.mode||spec.id,cargo=spec.model==='cargo',halfW=mode==='balloon'?1.2:mode==='plane'?(cargo?5.9:3):2,halfL=mode==='plane'?(cargo?5:2.8):mode==='balloon'?1.1:3.5,s=Math.sin(c.yaw),co=Math.cos(c.yaw);
+  return{id,x:c.x,z:c.z,w:halfW,l:halfL,s,c:co,baseY:groundHeightAt(c.x,c.z)};
+ }
+ function airSyncObstacles(){
+  if(!airOperations.ready)return;const blocked=new Set();
+  for(const [id,c]of Object.entries(airOperations.fleet.data.craft)){
+   const solid=c.status==='parked'||c.status==='recovering'&&c.job&&airRecoveryPose(c.job,airNow()).phase!=='carry'&&airRecoveryPose(c.job,airNow()).phase!=='lower';
+   if(!solid)continue;blocked.add(id);const o=airObstacle(id,c);let collider=airOperations.colliders.get(id);
+   if(!collider){collider={aircraftId:id,height:1.6};world.colliders.push(collider);airOperations.colliders.set(id,collider);}
+   Object.assign(collider,{x:o.x,z:o.z,w:Math.abs(o.c)*o.w*2+Math.abs(o.s)*o.l*2,d:Math.abs(o.s)*o.w*2+Math.abs(o.c)*o.l*2});
+  }
+  for(const [id,c]of airOperations.colliders)if(!blocked.has(id)){world.colliders=world.colliders.filter(v=>v!==c);airOperations.colliders.delete(id);}
+ }
+ const airOriginalSync=campaignSyncAircraft;
+ campaignSyncAircraft=function(){
+  if(!airOperations.ready)return airOriginalSync();const focus=otGamesFocus();
+  for(const [id,m]of airOperations.meshes){const c=airOperations.fleet.data.craft[id];if(!c){m.visible=false;continue;}const spec=airOperations.fleet.spec(id),pose=c.status==='recovering'&&c.job?airRecoveryPose(c.job,airNow()):null;
+   const flown=c.status==='npc'&&c.npc?airNpcBalloonPose(c,airNow()):null,p=pose?.craft||flown||c;
+   m.position.set(p.x,p.y??groundHeightAt(p.x,p.z)+campaignAircraftHeight(id),p.z);m.rotation.set(0,p.yaw??c.yaw,0);m.visible=c.status!=='piloted'&&Math.hypot(focus.x-p.x,focus.z-p.z)<(otGames.active?500:260);
+   for(const r of m.userData.rotors||[])r.group.rotation[r.axis]=(airNow()/1000*r.speed)%(Math.PI*2);
+   if(m.userData.flame)m.userData.flame.visible=c.status==='npc';
+  }
+ };
+ function airClaimLocal(id,uid){return airOperations.fleet.claim(id,uid,airNow());}
+ function airRequestClaim(id){
+  if(!airOnline()||sharedWorldIsAuthority())return Promise.resolve(airClaimLocal(id,sharedWorldOwnId()));
+  const token=sharedWorldOwnId()+':'+(++airOperations.nonce),start=performance.now();
+  return new Promise(resolve=>{const finish=ok=>{clearInterval(timer);airOperations.pending.delete(token);resolve(ok);},timer=setInterval(()=>{const c=airOperations.fleet?.data.craft[id];if(c?.status==='piloted'&&c.pilot===sharedWorldOwnId())finish(true);else if(performance.now()-start>6500)finish(false);},80);airOperations.pending.set(token,{id,finish});window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'claim',id,token}).then(r=>{if(!r?.ok)finish(false);}).catch(()=>finish(false));});
+ }
+ const airOriginalBoard=campaignBoardAircraft;
+ campaignBoardAircraft=async function(id){
+  if(!airEnsure()||!airAvailable(id))return false;const c=campaignAircraftPose(id);
+  if(!c||!running||paused||otGames.active||player.vehicle||player.boating||currentHouse||campaignDist(player,c)>c.radius)return false;
+  if(!await airRequestClaim(id)){toast('Esta aeronave foi reservada por outro piloto. Há outras no aeroporto.','info',2800);return false;}
+  airSyncObstacles();const result=await airOriginalBoard(id);if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:c});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
+ };
+ const airOriginalPark=campaignParkAircraft;
+ campaignParkAircraft=function(id,b){
+  const result=airOriginalPark(id,b);if(!airEnsure())return result;
+  if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),b,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,z:b.z,yaw:b.yaw,hp:b.hp}}).catch(()=>{});
+  airSyncObstacles();campaignSyncAircraft();saveState(true);return result;
+ };
+ function airReceiveCommand(event){
+  if(!airEnsure()||!sharedWorldIsAuthority())return;const e=event.detail||{},p=e.payload||{},uid=String(e.actorUid||''),c=airOperations.fleet.data.craft[p.id],presence=remotePresence.get(uid);if(e.kind!=='air-fleet'||!c||!presence)return;
+  if(p.action==='claim'&&Math.hypot(Number(presence.x)-c.x,Number(presence.z)-c.z)<Number(airOperations.fleet.spec(c.id).radius||6)+5)airClaimLocal(c.id,uid);
+  if(p.action==='park'&&c.pilot===uid&&p.pose&&[p.pose.x,p.pose.z,p.pose.yaw].every(Number.isFinite)){
+   const r=presence.familyRide;if(r?.id===c.id&&r.onGround&&Math.hypot(p.pose.x-r.x,p.pose.z-r.z)<12)airOperations.fleet.park(c.id,uid,p.pose,airNow());
+  }
+  airSyncObstacles();sharedWorldRuntime.captureAt=0;
+ }
+ window.addEventListener('otthi:event-v2',airReceiveCommand);
+ function airRecoveryPose(job,now){
+  const elapsed=Math.max(0,(now-job.at)/1000),a=job.from,b=job.to,h=job.ground+campaignAircraftHeight(job.id),approach=Math.max(8,Math.hypot(a.x-96,a.z+164)/22),travel=Math.max(7,Math.hypot(a.x-b.x,a.z-b.z)/22),smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
+  let heli,craft={...a,y:h},technician=null,phase='dispatch';
+  if(elapsed<approach){const t=smooth(elapsed/approach);heli={x:lerp(96,a.x,t),z:lerp(-164,a.z,t),y:job.cruise+2};}
+  else if(elapsed<approach+7){phase='technician';const t=smooth((elapsed-approach)/7);heli={...a,y:job.cruise};technician={x:a.x+3,z:a.z,y:lerp(job.cruise-2,job.ground,t)};}
+  else if(elapsed<approach+12){phase='rigging';heli={...a,y:job.cruise};technician={x:a.x+3-Math.min(2,(elapsed-approach-7)*.5),z:a.z,y:job.ground};}
+  else if(elapsed<approach+18){phase='carry';const t=smooth((elapsed-approach-12)/6);heli={...a,y:job.cruise+8};craft={...a,y:lerp(h,job.cruise-8,t)};}
+  else if(elapsed<approach+18+travel){phase='carry';const t=smooth((elapsed-approach-18)/travel);heli={x:lerp(a.x,b.x,t),z:lerp(a.z,b.z,t),y:job.cruise+8};craft={...heli,y:job.cruise-8,yaw:job.from.yaw};}
+  else {phase='lower';const t=smooth((elapsed-approach-18-travel)/6);heli={...b,y:job.cruise+8};craft={...b,y:lerp(job.cruise-8,job.targetGround+campaignAircraftHeight(job.id),t)};if(t>=1)phase='done';}
+  return{phase,heli:{...heli,yaw:Math.atan2(b.x-a.x,b.z-a.z)},craft,technician};
+ }
+ function airRecoveryDestination(c){
+  const base=airOperations.bases[c.base],occupied=Object.values(airOperations.fleet.data.craft).filter(p=>p.id!==c.id&&p.status!=='piloted');
+  if(!occupied.some(p=>Math.hypot(p.x-base.x,p.z-base.z)<8))return {...base};
+  if(base.mode==='balloon')for(const [dx,dz]of[[16,0],[0,22],[23,17],[-7,25]]){const x=base.x+dx,z=base.z+dz;if(!occupied.some(p=>Math.hypot(p.x-x,p.z-z)<10)&&!positionBlockedForPlayer(x,z,1.3,{ignoreTraffic:true})&&Math.abs(groundHeightAt(x+2,z)-groundHeightAt(x-2,z))<.4)return{x,z,yaw:0};}
+  // Apron reserve rows keep returns away from occupied departure pads and runway.
+  for(const z of[-244,-259,-274])for(const x of[25,46,67,88,109,130,151])if(!occupied.some(p=>Math.hypot(p.x-x,p.z-z)<13))return{x,z,yaw:Math.PI/2};
+  return{x:178,z:-245,yaw:0};
+ }
+ function airStartRecovery(c,now){
+  const to=airRecoveryDestination(c),from={x:c.x,z:c.z,yaw:c.yaw};c.job={id:c.id,at:now,from,to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z),cruise:Math.max(48,groundHeightAt(c.x,c.z)+35,groundHeightAt(to.x,to.z)+35)};c.status='recovering';c.pilot='';airOperations.fleet.data.revision++;
+ }
+ function airRecoveryVisual(c,now){
+  if(!c.job)return;let v=airOperations.recovery.get(c.id);if(!v){const heli=createCivilianAirframe('helicopter','ottovias');heli.name='OT_VIAS_AIR_RECOVERY_'+c.id;worldGroup.add(heli);const cable=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,1,5),campaignMaterial(0x3b4549,.5));worldGroup.add(cable);const person=createRoadsidePoliceOfficer(null);person.group.name='OT_VIAS_AIR_TECHNICIAN';person.group.traverse(o=>{if(o.isMesh&&o.material?.color){o.material=o.material.clone();o.material.color.setHex(0xb6b54e);}});v={heli,cable,person};airOperations.recovery.set(c.id,v);}
+  const p=airRecoveryPose(c.job,now),focus=otGamesFocus(),visible=Math.hypot(focus.x-p.heli.x,focus.z-p.heli.z)<500;v.heli.visible=visible;v.heli.position.set(p.heli.x,p.heli.y,p.heli.z);v.heli.rotation.y=p.heli.yaw;for(const r of v.heli.userData.rotors||[])r.group.rotation[r.axis]=now/1000*r.speed;
+  v.person.group.visible=!!p.technician&&visible;if(p.technician){v.person.group.position.set(p.technician.x,p.technician.y,p.technician.z);v.person.rightArm.rotation.x=-.8+Math.sin(now*.01)*.15;v.person.leftArm.rotation.x=-.6;}
+  const endpoint=p.technician||p.craft,length=Math.max(.1,p.heli.y-endpoint.y);v.cable.position.set(p.heli.x,p.heli.y-length/2,p.heli.z);v.cable.scale.y=length;v.cable.visible=visible&&p.phase!=='dispatch'&&p.phase!=='done';
+ }
+ function airNpcBalloonPose(c,now){const t=(now-c.npc.at)/1000,from=c.npc.from,to=c.npc.to,d=Math.hypot(to.x-from.x,to.z-from.z),duration=Math.max(38,d/3.6),f=clamp(t/duration,0,1),q=f*f*(3-2*f),alt=Math.min(1,t/12,(duration-t)/12)*28;return{x:lerp(from.x,to.x,q),z:lerp(from.z,to.z,q),y:lerp(c.npc.ground,c.npc.targetGround,q)+campaignAircraftHeight(c.id)+Math.max(0,alt),yaw:Math.atan2(to.x-from.x,to.z-from.z),done:t>=duration};}
+ function airNpcPilot(c){let p=airOperations.recovery.get(c.id);if(!p){const person=createRoadsidePoliceOfficer(null);person.group.name='OT_BALLOON_NPC_PILOT';person.group.scale.setScalar(.65);p={person};airOperations.recovery.set(c.id,p);}return p.person.group;}
+ function airApplyReplica(){
+  if(!airOnline()||sharedWorldIsAuthority())return;const host=remotePresence.get(sharedWorldAuthorityId()),snapshot=multiplayerV2WorldSnapshot()||host?.sharedScene,a=snapshot?.a;if(a?.v!==1||!a.craft||!a.slots)return;
+  const snapshotKey=[snapshot.authorityUid,snapshot.epoch,snapshot.seq,snapshot.at,a.revision].join(':');if(airOperations.lastSnapshotKey===snapshotKey)return;const incoming=Object.values(a.craft).every(c=>c&&airOperations.bases[c.base]&&[c.x,c.z,c.yaw].every(Number.isFinite)&&Math.abs(c.x)<2000&&Math.abs(c.z)<2000);if(!incoming)return;airOperations.lastSnapshotKey=snapshotKey;
+  airOperations.fleet.data=JSON.parse(JSON.stringify(a));state.vehicles.airOperations=airOperations.fleet.data;airMaterialize();
+ }
+ function updateWorldAirOperations(){
+  if(!airEnsure())return;const now=airNow(),dt=Math.max(0,Math.min(.1,(now-(airOperations.lastAt||now))/1000));airOperations.lastAt=now;airApplyReplica();const f=airOperations.fleet,own=sharedWorldOwnId(),authority=!airOnline()||sharedWorldIsAuthority();
+  if(authority){
+   for(const c of Object.values(f.data.craft)){
+    if(c.status==='piloted'){
+     const local=c.pilot===own&&otGames.active&&otGames.aircraftId===c.id,remote=remotePresence.get(c.pilot),r=local?{...otGames.body,onGround:otGames.onGround}:remote?.familyRide;
+     if(r&&(!r.id||r.id===c.id)){c.x=r.x;c.z=r.z;c.y=r.y;c.yaw=r.yaw;c.seenAt=now;if(!r.onGround)f.depart(c.id,c.pilot,now);}
+     else if(now-Number(c.seenAt||c.claimAt)>15000){c.status='parked';c.pilot='';c.parkedAt=now-20000;if(Number(c.y)>10)airStartRecovery(c,now);f.data.revision++;}
+    }else if(c.status==='parked'){
+     const nearLocal=otGames.active&&otGames.aircraftId===c.id||!otGames.active&&Math.hypot(player.x-c.x,player.z-c.z)<8,nearRemote=[...remotePresence.values()].some(p=>Math.hypot(Number(p.x)-c.x,Number(p.z)-c.z)<8),spec=f.spec(c.id),base=f.bases[c.base],away=Math.hypot(c.x-base.x,c.z-base.z)>10;
+     if(away&&!nearLocal&&!nearRemote){if(spec.mode==='balloon'&&now-c.parkedAt>45000){const to=airRecoveryDestination(c);c.npc={at:now,from:{x:c.x,z:c.z},to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z)};c.status='npc';f.data.revision++;}
+      else if(spec.mode!=='balloon'&&v704RoadAt(c.x,c.z,4)&&now-c.parkedAt>15000)airStartRecovery(c,now);}
+    }else if(c.status==='recovering'&&airRecoveryPose(c.job,now).phase==='done'){const pose=c.job.to;Object.assign(c,{...pose,status:'parked',parkedAt:now});delete c.job;f.data.revision++;}
+    else if(c.status==='npc'){const pose=airNpcBalloonPose(c,now);if(pose.done){Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,status:'parked',parkedAt:now});delete c.npc;f.data.revision++;}}
+   }
+   f.tick(now);airMaterialize();
+  }
+  for(const [id,v]of airOperations.recovery){const c=f.data.craft[id];if(c?.status!=='recovering'){v.heli&&(v.heli.visible=false);v.cable&&(v.cable.visible=false);}if(c?.status!=='npc'&&c?.status!=='recovering')v.person.group.visible=false;}
+  for(const c of Object.values(f.data.craft))if(c.status==='recovering')airRecoveryVisual(c,now);else if(c.status==='npc'){const p=airNpcBalloonPose(c,now),npc=airNpcPilot(c);npc.position.set(p.x,p.y-.7,p.z);npc.rotation.y=p.yaw;npc.visible=Math.hypot(otGamesFocus().x-p.x,otGamesFocus().z-p.z)<250;}
+  airSyncObstacles();campaignSyncAircraft();
+  if(f.data.revision!==airOperations.revision&&now-airOperations.lastSave>1200){airOperations.revision=f.data.revision;airOperations.lastSave=now;state.vehicles.airOperations=f.data;saveState();sharedWorldRuntime.captureAt=0;}
+ }
+ const airOldTrafficFactor=trafficSpeedFactor;
+ trafficSpeedFactor=function(actor,heading,lookAhead=7){let factor=airOldTrafficFactor(actor,heading,lookAhead);if(!airOperations.ready||factor===0)return factor;const body=trafficBody(actor,heading);
+  for(const c of Object.values(airOperations.fleet.data.craft)){
+   if(c.status!=='parked'&&c.status!=='recovering')continue;if(c.job&&['carry','lower','done'].includes(airRecoveryPose(c.job,airNow()).phase))continue;const obstacle=airObstacle(c.id,c),dx=obstacle.x-body.x,dz=obstacle.z-body.z,forward=dx*body.s+dz*body.c,lateral=Math.abs(dx*body.c-dz*body.s),dot=body.s*obstacle.s+body.c*obstacle.c,side=body.w+Math.abs(dot)*obstacle.w+Math.sqrt(Math.max(0,1-dot*dot))*obstacle.l+.5;
+   if(forward>-.2&&lateral<side){const length=Math.abs(dot)*obstacle.l+Math.sqrt(Math.max(0,1-dot*dot))*obstacle.w,clearance=forward-body.l-length-1;factor=Math.min(factor,clamp(clearance/Math.max(2,lookAhead*.7),0,1));}
+  }return factor;
+ };
+ const airOldCapture=sharedWorldCaptureScene;sharedWorldCaptureScene=function(...args){const s=airOldCapture(...args);if(airOperations.ready)s.a=airOperations.fleet.data;return s;};
+ const airOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){airOldExpansion();updateWorldAirOperations();};
+ const airOldDepartures=openAirportDepartures;openAirportDepartures=function(){if(!airEnsure())return airOldDepartures();const f=airOperations.fleet,now=airNow();openModal('Aeroporto OT · embarque',`<p>A base repõe cada aeronave três minutos após a decolagem. A aeronave usada continua no mundo. Aproxime-se do embarque disponível e use AÇÃO.</p><div class="choice-grid">${Object.entries(f.data.slots).filter(([id])=>f.bases[id].mode!=='balloon').map(([id,s])=>{const available=!!s.current&&airAvailable(s.current),seconds=Math.max(0,Math.ceil((s.spawnAt-now)/1000));return `<button class="choice" data-airport-craft="${escapeHtml(s.current||id)}" ${available?'':'disabled'}><b>${escapeHtml(f.bases[id].label)}</b><span>${available?'EMBARQUE DISPONÍVEL':seconds?'Reposição em '+seconds+' segundos':'Aeronave reservada'}</span></button>`;}).join('')}</div>`,root=>root.querySelectorAll('[data-airport-craft]').forEach(b=>b.onclick=()=>setWaypoint('campaign-'+b.dataset.airportCraft)));};
+ window.OT_WORLD_AIR_OPERATIONS={diagnostics:()=>({ready:airOperations.ready,authority:sharedWorldIsAuthority(),fleet:airOperations.fleet?JSON.parse(JSON.stringify(airOperations.fleet.data)):null,recovery:[...airOperations.recovery].filter(([,v])=>v.heli?.visible).map(([id])=>({id,phase:airRecoveryPose(airOperations.fleet.data.craft[id].job,airNow()).phase})),obstructions:airOperations.colliders.size})};
+
+  // ===== MODULE: 62-personal-garage-delivery.js =====
+ const personalGarage={room:null,lastDelivery:null};
+ const garageOldCatalogEntry=playerVehicleCatalogEntry;
+ playerVehicleCatalogEntry=function(id){const instance=state.vehicles?.instances?.[id],base=garageOldCatalogEntry(instance?.catalogId||id);return base?{...base,id,model:base.model||window.OTBrazilExpansion.legacy[base.id]||brazilModelKey(base.id,base.category),catalogId:base.id,unit:instance?.unit||1}:null;};
+ const garageOldDefaults=defaultWorldVehicleParts;
+ defaultWorldVehicleParts=function(id=''){return garageOldDefaults(state.vehicles?.instances?.[id]?.catalogId||id);};
+ function garageOwnedEntries(){return state.vehicles.owned.map(playerVehicleCatalogEntry).filter(Boolean);}
+ function garageUnitId(catalogId){const units=garageOwnedEntries().filter(e=>e.catalogId===catalogId),used=new Set(units.map(e=>e.unit));let unit=1;while(used.has(unit))unit++;return{unit,id:unit===1?catalogId:'unit-'+catalogId+'-'+unit};}
+ function garageDeliveryPoint(dealerId,id){
+  const dealer=OTTHI_DEALERS.find(d=>d.id===dealerId);if(!dealer)return null;const heavy=brazilDepotVehicle(id),candidates=dealer.category==='cars'?Array.from({length:5},(_,i)=>({x:-326-i*9,z:38,heading:Math.PI/2})):dealer.category==='bikes'?Array.from({length:5},(_,i)=>({x:-287+i*6,z:49,heading:0})):Array.from({length:3},(_,i)=>({x:-339-i*20,z:-97,heading:Math.PI/2}));
+  for(const p of candidates){const r=heavy?5:2.8;if(world.vehicles.some(v=>v.id!==id&&!v.garageStored&&Math.hypot(v.group.position.x-p.x,v.group.position.z-p.z)<r+2))continue;if(world.colliders.some(c=>!c.disabled&&Math.abs(c.x-p.x)<c.w/2+(heavy?7:2)&&Math.abs(c.z-p.z)<c.d/2+1.3))continue;return p;}return null;
+ }
+ async function garageDeliver(id,dealerId){
+  const e=playerVehicleCatalogEntry(id),dealer=OTTHI_DEALERS.find(d=>d.id===dealerId);if(!e||!dealer||Math.hypot(player.x-dealer.x,player.z-dealer.z)>90||player.vehicle||currentHouse||otGames.active)return false;
+  const vehicle=vehicleById(id);if(vehicle?.occupied||vehicle?.workshopYardStatus){toast('Este veículo está em uso ou em atendimento. Escolha outra unidade.','info',2800);return false;}
+  if(!await requestBrazilModel(e.model))return false;const point=garageDeliveryPoint(dealerId,id);if(!point){toast('As vagas de entrega estão ocupadas. Retire um veículo para liberar a próxima entrega.','info',3000);return false;}
+  const car=ensureCatalogVehicle(id);if(!car)return false;const g=ensurePlayerGarageState();for(const slot of Object.keys(g.slots))if(g.slots[slot]===id)g.slots[slot]='';g.stored[id]=false;
+  car.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);car.group.rotation.y=point.heading;car.x=point.x;car.z=point.z;car.heading=point.heading;car.manualIgnition=true;state.vehicles.manualIgnition||={};state.vehicles.manualIgnition[id]=true;setGarageVehicleStored(car,false);world.playerGarageDisplayFleet?.get(id)&&(world.playerGarageDisplayFleet.get(id).visible=false);persistParkedVehicle(car);state.vehicles.lastUsedId=id;personalGarage.lastDelivery={id,dealerId,...point};saveState(true);return true;
+ }
+ const garageOldBuy=buyPlayerVehicle;
+ buyPlayerVehicle=async function(catalogId,options={}){
+  if(!options.dealerId)return garageOldBuy(catalogId);
+  const base=garageOldCatalogEntry(catalogId),dealer=OTTHI_DEALERS.find(d=>d.id===options.dealerId);if(!base||!dealer||Math.hypot(player.x-dealer.x,player.z-dealer.z)>90||player.vehicle)return false;
+  const unit=garageUnitId(catalogId);if(unit.unit>10){toast('Você já tem dez unidades deste modelo.','info',2300);return false;}
+  if(state.profile.coins<base.price){toast('Você precisa de '+base.price+' moedas.','warn',2400);return false;}
+  const accepted=await confirmModal('Comprar e retirar aqui',`${base.label} · unidade ${unit.unit} · ${base.price} moedas. A entrega será no pátio desta loja.`,'Comprar','Cancelar');if(!accepted)return false;
+  if(!await requestBrazilModel(playerVehicleCatalogEntry(catalogId)?.model))return false;
+  // Revalidate after confirmation and asset loading; no charge on failed delivery.
+  const next=garageUnitId(catalogId);if(next.id!==unit.id||state.profile.coins<base.price||!garageDeliveryPoint(dealer.id,catalogId))return false;
+  ensurePlayerGarageState();state.vehicles.instances||={};if(unit.unit>1)state.vehicles.instances[unit.id]={catalogId,unit:unit.unit,purchasedAt:Date.now()};state.vehicles.owned.push(unit.id);state.vehicles.garage.purchasedAt[unit.id]=Date.now();state.vehicles.garage.stored[unit.id]=true;
+  if(!await garageDeliver(unit.id,dealer.id)){state.vehicles.owned=state.vehicles.owned.filter(id=>id!==unit.id);delete state.vehicles.instances[unit.id];delete state.vehicles.garage.purchasedAt[unit.id];delete state.vehicles.garage.stored[unit.id];return false;}
+  addCoins(-base.price);addXP(30);saveState(true);return unit.id;
+ };
+ function garageDeliveryDialog(id,dealerId){const e=playerVehicleCatalogEntry(id);if(!e)return;openModal(e.label+' · pronto para sair',`<p>Unidade ${e.unit} entregue no pátio da concessionária. Entre e ligue o motor para sair com ela.</p><div class="modal-actions"><button class="btn primary" data-delivery-drive>ENTRAR NO VEÍCULO</button><button class="btn" data-delivery-back>Continuar na loja</button></div>`,root=>{
+  root.querySelector('[data-delivery-drive]').onclick=()=>{const v=vehicleById(id);if(!v||v.occupied)return;closeModal();if(enterVehicle(v)){player.car.ignition=false;stopEngineSound();garageSyncIgnition();}};root.querySelector('[data-delivery-back]').onclick=()=>openDealer(dealerId);
+ });}
+ openDealerVehicle=function(dealerId,id){
+  const base=garageOldCatalogEntry(id),dealer=OTTHI_DEALERS.find(d=>d.id===dealerId);if(!base||!dealer)return;const own=garageOwnedEntries().filter(e=>e.catalogId===id),free=own.filter(e=>!vehicleById(e.id)?.occupied&&!vehicleById(e.id)?.workshopYardStatus);
+  openModal(base.label,`<p>${escapeHtml(base.description)}</p><div class="shop-wallet"><span>Preço por unidade</span><b>${base.price} moedas</b></div><p>Saldo: ${state.profile.coins} moedas · ${own.length}/10 unidades próprias.</p><p>Retirada nesta loja: entre no veículo entregue e saia dirigindo.</p><div class="modal-actions"><button class="btn good" data-dealer-purchase ${own.length>=10?'disabled':''}>${own.length?'Comprar outra unidade':'Comprar e retirar aqui'}</button>${free.map(e=>`<button class="btn" data-dealer-retire="${e.id}">Retirar minha unidade ${e.unit}</button>`).join('')}<button class="btn" data-dealer-back>Voltar à loja</button></div>`,root=>{
+   root.querySelector('[data-dealer-back]').onclick=()=>openDealer(dealerId);root.querySelectorAll('[data-dealer-retire]').forEach(b=>b.onclick=async()=>{if(await garageDeliver(b.dataset.dealerRetire,dealerId))garageDeliveryDialog(b.dataset.dealerRetire,dealerId);});root.querySelector('[data-dealer-purchase]').onclick=async()=>{if(neighborhoodDealers.purchasePending)return;neighborhoodDealers.purchasePending=true;try{const bought=await buyPlayerVehicle(id,{dealerId});if(bought)garageDeliveryDialog(bought,dealerId);else if(els.modal.hidden)openDealerVehicle(dealerId,id);}finally{neighborhoodDealers.purchasePending=false;}};
+  });
+ };
+ const garageOldOpenDealer=openDealer;openDealer=function(id){garageOldOpenDealer(id);const p=els.modalBody.querySelector('p');if(p)p.textContent='Veículos expostos e entrega no pátio desta loja. Compre uma unidade, entre e saia dirigindo. Você pode ter até dez unidades de cada modelo.';};
+
+ function garageRoomBay(index,heavy=false){
+  if(heavy){const i=index%6;return{x:-22+(i%3)*22,z:i<3?-18:18,heading:i<3?0:Math.PI,w:3,l:10};}
+  const i=index%20,col=i%10,row=Math.floor(i/10);return{x:-27+col*6,z:row?8:-8,heading:row?Math.PI:0,w:1.8,l:2.1};
+ }
+ function garageRoomFloors(entries){const out=[];for(const [heavy,capacity]of[[false,20],[true,6]]){const rows=entries.filter(e=>brazilDepotVehicle(e.id)===heavy);for(let i=0;i<rows.length;i+=capacity)out.push({heavy,entries:rows.slice(i,i+capacity)});}return out.length?out:[{heavy:false,entries:[]}];}
+ function garageParkedEntries(){return garageOwnedEntries().filter(e=>state.vehicles.garage.stored[e.id]&&!vehicleById(e.id)?.workshopYardStatus);}
+ function garageStoreHere(id){const g=ensurePlayerGarageState(),v=vehicleById(id);if(!state.vehicles.owned.includes(id)||v?.workshopYardStatus)return false;if(player.vehicle){if(player.car.id!==id||player.car.passengerOf)return false;exitVehicle(true);}for(const key of Object.keys(g.slots))if(g.slots[key]===id)g.slots[key]='';g.stored[id]=true;setGarageVehicleStored(v,true);saveState(true);return true;}
+ const garageOldDisplays=syncOwnedGarageDisplayFleet;syncOwnedGarageDisplayFleet=function(){garageOldDisplays();for(const [id,clone]of world.playerGarageDisplayFleet||[])if(state.vehicles.garage.stored[id])clone.visible=false;};
+ function openPersonalGarageRoom(floor=0){
+  const door=worldLayoutPoint('homeGarage');if(!running||paused||worldVenues.session||otGames.active||currentHouse||player.boating||Math.hypot(player.x-door.x,player.z-door.z)>14)return false;
+  if(player.vehicle&&!garageStoreHere(player.car.id))return false;closeModal();clearMovementInputs();savePlayerPosition(true);ensurePlayerGarageState();
+  const g=ensurePlayerGarageState();for(const key of Object.keys(g.slots)){const id=g.slots[key],v=vehicleById(id);if(id&&v&&!v.occupied&&!v.workshopYardStatus&&Math.hypot(v.group.position.x-door.x,v.group.position.z-door.z)<13){g.stored[id]=true;g.slots[key]='';setGarageVehicleStored(v,true);}}g.privateLayout=1;saveState(true);
+  const parked=garageParkedEntries(),floorPlan=garageRoomFloors(parked),floors=floorPlan.length;floor=clamp(floor,0,floors-1);const heavyFloor=floorPlan[floor].heavy,depth=heavyFloor?72:48,edge=depth/2;
+  const ui=document.createElement('section');ui.id='privateGarageRoom';ui.setAttribute('role','dialog');ui.setAttribute('aria-label','Interior da minha garagem');ui.innerHTML=`<header><b>MINHA GARAGEM · PISO ${floor+1}/${floors}</b><button data-garage-room-exit>VOLTAR À CASA</button></header><div data-garage-viewport></div><div class="garage-room-info" role="status">Caminhe até um veículo. Use ENTRAR, LIGAR MOTOR e dirija até a saída.</div><div class="garage-room-controls"><div data-garage-stick aria-label="Joystick esquerdo"><i></i></div><div class="garage-room-actions"><button data-garage-board disabled>ENTRAR</button><button data-garage-engine hidden>LIGAR MOTOR</button><button data-garage-gas hidden>ACELERAR</button><button data-garage-brake hidden>FREAR / RÉ</button></div></div><footer><button data-garage-floor-prev ${floor===0?'disabled':''}>PISO ANTERIOR</button><span>${parked.length} unidades estacionadas</span><button data-garage-floor-next ${floor===floors-1?'disabled':''}>PRÓXIMO PISO</button></footer>`;
+  const s={id:'private-garage',venue:{id:'private-garage'},ui,wasPaused:paused,entry:{x:player.x,y:player.y,z:player.z},floor,parked,car:null,engine:false,speed:0,move:{x:0,z:0},gas:false,brake:false,body:{x:0,z:edge-5,yaw:Math.PI},cameraYaw:0,cameraPitch:.65};worldVenues.session=s;personalGarage.room=s;paused=true;document.body.classList.add('world-venue-active');document.body.append(ui);
+  const viewport=ui.querySelector('[data-garage-viewport]'),render=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});render.setPixelRatio(Math.min(devicePixelRatio||1,1.5));render.outputEncoding=THREE.sRGBEncoding;render.toneMapping=THREE.ACESFilmicToneMapping;viewport.append(render.domElement);const room=new THREE.Scene();room.background=new THREE.Color(0x1b2930);room.fog=new THREE.Fog(0x1b2930,55,115);room.add(new THREE.HemisphereLight(0xe5edeb,0x474137,1.1));const light=new THREE.DirectionalLight(0xfff0d3,1.2);light.position.set(12,25,10);room.add(light);const cam=new THREE.PerspectiveCamera(55,1,.1,160),geo=[],mats=[];
+  const material=(c,more={})=>{const m=new THREE.MeshStandardMaterial({color:c,roughness:.65,...more});mats.push(m);return m;},concrete=material(0x899694),dark=material(0x35515d),white=material(0xe6e5ce),yellow=material(0xe5bd63),box=(mat,x,y,z,w,h,d)=>{const g=new THREE.BoxGeometry(w,h,d);geo.push(g);const o=new THREE.Mesh(g,mat);o.position.set(x,y,z);room.add(o);return o;};
+  box(concrete,0,-.12,0,68,.2,depth);for(const x of[-34,34])box(dark,x,2.4,0,.3,5,depth);box(dark,0,2.4,-edge,68,5,.3);for(const x of[-22,22])box(dark,x,2.4,edge,24,5,.3);box(yellow,0,.025,edge-5,.12,.025,9);for(const side of[-1,1])for(let i=0;i<8;i++)box(yellow,side*(1.1+i*.25),.03,edge-2+i*.12,.12,.02,.65);
+  const sign=(text,x,y,z,w=5,h=.6)=>{const texture=signTexture(text,'#1f3e4b','#f2e8ca'),mat=material(0xffffff,{map:texture,side:THREE.DoubleSide});const g=new THREE.PlaneGeometry(w,h);geo.push(g);const m=new THREE.Mesh(g,mat);m.position.set(x,y,z);room.add(m);return m;};sign('SAÍDA · LIGAR MOTOR',0,3.6,edge-.2,8,.9);sign('ELEVADOR · PISO '+(floor+1),0,3.6,-edge+.2,8,.9);
+  for(const z of[-edge+5,0,edge-6])for(const x of[-24,-12,0,12,24]){box(dark,x,2.5,z,.27,5,.27);box(white,x,4.6,z,4,.07,.15);}for(const z of[-5,5])box(yellow,0,.025,z,60,.02,.08);
+  const batch=floorPlan[floor].entries,vehicles=[];let loadIndex=0,closed=false,raf=0,last=performance.now(),width=0,height=0,nearest=null;
+  for(const [i,e]of batch.entries()){const bay=garageRoomBay(i,brazilDepotVehicle(e.id));for(const dx of[-2.3,2.3])box(white,bay.x+dx,.035,bay.z,.08,.02,6.5);sign(e.label+' · #'+e.unit,bay.x,2.0,bay.z+(bay.z<0?-3.5:3.5),5,.46).rotation.y=bay.z>0?Math.PI:0;vehicles.push({entry:e,bay,group:null});}
+  const party=familyCarryParty(),avatars=[];for(const id of party.members){const host=new THREE.Group();room.add(host);const avatar=familyCloneAvatar(id,host);if(avatar)avatars.push({id,host,avatar});}
+  const close=()=>{venueClose();personalGarage.room=null;};ui.querySelector('[data-garage-room-exit]').onclick=close;
+  for(const [selector,delta]of[['[data-garage-floor-prev]',-1],['[data-garage-floor-next]',1]])ui.querySelector(selector).onclick=()=>{if(s.car){ui.querySelector('.garage-room-info').textContent='Saia do veículo antes de usar o elevador.';return;}close();openPersonalGarageRoom(floor+delta);};
+  const board=ui.querySelector('[data-garage-board]'),engine=ui.querySelector('[data-garage-engine]'),gas=ui.querySelector('[data-garage-gas]'),brake=ui.querySelector('[data-garage-brake]');
+  const syncControls=()=>{board.textContent=s.car?'SAIR DO VEÍCULO':'ENTRAR';engine.hidden=gas.hidden=brake.hidden=!s.car;engine.textContent=s.engine?'DESLIGAR MOTOR':'LIGAR MOTOR';};
+  board.onclick=()=>{if(s.car){s.speed=0;s.engine=false;s.car.group.position.set(s.body.x,.02,s.body.z);s.car.group.rotation.y=s.body.yaw;s.car.bay={...s.car.bay,x:s.body.x,z:s.body.z,heading:s.body.yaw};s.body.x+=Math.cos(s.body.yaw)*2;s.body.z-=Math.sin(s.body.yaw)*2;s.car=null;s.voice?.dispose();s.voice=null;}else if(nearest?.group){s.car=nearest;s.cameraYaw=nearest.group.rotation.y+Math.PI;s.body={x:nearest.group.position.x,z:nearest.group.position.z,yaw:nearest.group.rotation.y};}syncControls();};
+  engine.onclick=()=>{if(!s.car)return;s.engine=!s.engine;if(s.engine&&state.settings.sound)s.voice=window.GameAudio?.vehicleVoice(s.car.entry.model,'car');else{s.voice?.dispose();s.voice=null;}syncControls();};
+  const pressed=(el,key)=>{let owner=null;el.onpointerdown=e=>{if(owner!==null)return;e.preventDefault();owner=e.pointerId;safePointerCapture(el,e.pointerId);s[key]=true;};for(const name of['pointerup','pointercancel','lostpointercapture'])el.addEventListener(name,e=>{if(owner===e.pointerId){owner=null;s[key]=false;}});};pressed(gas,'gas');pressed(brake,'brake');
+  const stick=ui.querySelector('[data-garage-stick]');let stickOwner=null;const move=e=>{if(e.pointerId!==stickOwner)return;e.preventDefault();const r=stick.getBoundingClientRect(),x=(e.clientX-r.x-r.width/2)/(r.width*.36),z=(e.clientY-r.y-r.height/2)/(r.height*.36),n=Math.max(1,Math.hypot(x,z));s.move.x=x/n;s.move.z=z/n;stick.querySelector('i').style.transform=`translate(${s.move.x*30}px,${s.move.z*30}px)`;};stick.onpointerdown=e=>{if(stickOwner!==null)return;stickOwner=e.pointerId;safePointerCapture(stick,e.pointerId);move(e);};stick.onpointermove=move;for(const name of['pointerup','pointercancel','lostpointercapture'])stick.addEventListener(name,e=>{if(e.pointerId===stickOwner){stickOwner=null;s.move.x=s.move.z=0;stick.querySelector('i').style.transform='';}});
+  let look=null;viewport.onpointerdown=e=>{if(e.clientX<innerWidth*.45)return;look={id:e.pointerId,x:e.clientX,y:e.clientY};safePointerCapture(viewport,e.pointerId);};viewport.onpointermove=e=>{if(look?.id!==e.pointerId)return;s.lookUntil=performance.now()+1800;s.cameraYaw-=(e.clientX-look.x)*.007;s.cameraPitch=clamp(s.cameraPitch+(e.clientY-look.y)*.004,.2,1.1);look.x=e.clientX;look.y=e.clientY;};for(const name of['pointerup','pointercancel','lostpointercapture'])viewport.addEventListener(name,e=>{if(look?.id===e.pointerId)look=null;});
+  const keys=new Set(),key=e=>{if(!worldVenues.session||worldVenues.session!==s)return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','KeyW','KeyA','KeyS','KeyD','KeyE','Escape'].includes(e.code)){e.preventDefault();e.stopImmediatePropagation();if(e.type==='keydown'){keys.add(e.code);if(!e.repeat&&e.code==='KeyE')board.click();if(e.code==='Escape')close();}else keys.delete(e.code);}};window.addEventListener('keydown',key,true);window.addEventListener('keyup',key,true);
+  const reset=()=>{s.gas=s.brake=false;s.move.x=s.move.z=0;keys.clear();s.speed=0;};window.addEventListener('blur',reset);const frame=now=>{
+   if(closed)return;raf=requestAnimationFrame(frame);const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;if(document.hidden){reset();return;}const r=viewport.getBoundingClientRect();if(width!==r.width||height!==r.height){width=r.width;height=r.height;render.setSize(Math.max(1,width),Math.max(1,height),false);cam.aspect=width/Math.max(1,height);cam.updateProjectionMatrix();}
+   if(loadIndex<vehicles.length){const v=vehicles[loadIndex],model=v.entry.model;if(!window.OTBrazilImports?.requires(model)||window.OTBrazilImports.ready(model)){const paint=state.vehicles.brazilColors?.[v.entry.id]||defaultWorldVehicleParts(v.entry.id).primary;v.group=window.OTBrazilVehicles.create(THREE,model,parseInt(String(paint).replace('#',''),16));v.group.position.set(v.bay.x,.02,v.bay.z);v.group.rotation.y=v.bay.heading;room.add(v.group);loadIndex++;}else requestBrazilModel(model);}
+   const ix=clamp(s.move.x+Number(keys.has('KeyD')||keys.has('ArrowRight'))-Number(keys.has('KeyA')||keys.has('ArrowLeft')),-1,1),iz=clamp(s.move.z+Number(keys.has('KeyS')||keys.has('ArrowDown'))-Number(keys.has('KeyW')||keys.has('ArrowUp')),-1,1);let nx=s.body.x,nz=s.body.z;
+   if(s.car){const accel=s.gas||keys.has('KeyW')||keys.has('ArrowUp'),back=s.brake||keys.has('KeyS')||keys.has('ArrowDown'),target=s.engine?(accel?6:back?-3:0):0;s.speed+=clamp(target-s.speed,-dt*5,dt*4);s.body.yaw-=ix*dt*1.1*clamp(s.speed/3,-1,1);nx+=Math.sin(s.body.yaw)*s.speed*dt;nz+=Math.cos(s.body.yaw)*s.speed*dt;s.voice?.update(s.speed,accel?1:0,false,true);}
+   else{const angle=s.cameraYaw,speed=3.3,dx=ix*Math.cos(angle)+iz*Math.sin(angle),dz=-ix*Math.sin(angle)+iz*Math.cos(angle);nx+=dx*dt*speed;nz+=dz*dt*speed;if(Math.hypot(dx,dz)>.1)s.body.yaw=Math.atan2(dx,dz);}
+   const radius=s.car?1.1:.35,blocked=Math.abs(nx)>32-radius||nz<-edge+2+radius||nz>edge-1&&Math.abs(nx)>9||vehicles.some(v=>v!==s.car&&v.group&&Math.abs(nx-v.bay.x)<v.bay.w+radius&&Math.abs(nz-v.bay.z)<v.bay.l+radius);
+   if(!blocked){s.body.x=nx;s.body.z=nz;}else if(s.car)s.speed=0;
+   if(s.car){s.car.group.position.set(s.body.x,.02,s.body.z);s.car.group.rotation.y=s.body.yaw;for(const w of s.car.group.children.filter(o=>o.name.startsWith('wheel-')))w.rotation.x-=s.speed*dt*3;
+    if(s.body.z>edge&&Math.abs(s.body.x)<8){const id=s.car.entry.id;close();garageDriveOut(id);return;}}
+   nearest=vehicles.filter(v=>v.group).sort((a,b)=>Math.hypot(a.bay.x-s.body.x,a.bay.z-s.body.z)-Math.hypot(b.bay.x-s.body.x,b.bay.z-s.body.z))[0];if(nearest&&Math.hypot(nearest.bay.x-s.body.x,nearest.bay.z-s.body.z)>4.8)nearest=null;board.disabled=!s.car&&!nearest;
+   const info=ui.querySelector('.garage-room-info');info.textContent=s.car?(s.engine?'Motor ligado · dirija até a saída amarela':'Ligue o motor para sair dirigindo'):nearest?nearest.entry.label+' · unidade '+nearest.entry.unit+' · ENTRAR':`${parked.length} veículos nos pisos da garagem · caminhe até uma vaga`;
+   for(const [i,a]of avatars.entries()){if(s.car){const seat=brazilSeatOffset(s.car.entry.model,i-1),scale=brazilSeatScale(s.car.entry.model);a.host.position.copy(s.car.group.position);a.host.rotation.y=s.body.yaw;a.avatar.group.position.set(seat.x,seat.y,seat.z);a.avatar.group.scale.setScalar(a.avatar.source.scale*scale);}
+    else{a.host.position.set(s.body.x+(i?Math.cos(s.body.yaw)*i:0),0,s.body.z-(i?Math.sin(s.body.yaw)*i:0));a.host.rotation.y=s.body.yaw;a.avatar.group.scale.setScalar(a.avatar.source.scale);a.avatar.group.position.set(0,.006-a.avatar.mesh.geometry.boundingBox.min.y*a.avatar.source.scale,0);}}
+   if(s.car&&!look&&now>(s.lookUntil||0))s.cameraYaw=lerpAngle(s.cameraYaw,s.body.yaw+Math.PI,Math.min(1,dt*3));const distance=s.car?10:7,y=1.2;cam.position.set(s.body.x+Math.sin(s.cameraYaw)*distance*Math.cos(s.cameraPitch),y+Math.sin(s.cameraPitch)*distance,s.body.z+Math.cos(s.cameraYaw)*distance*Math.cos(s.cameraPitch));cam.lookAt(s.body.x,y,s.body.z);render.render(room,cam);
+  };
+  s.cleanup=()=>{if(closed)return;closed=true;cancelAnimationFrame(raf);reset();s.voice?.dispose();window.removeEventListener('keydown',key,true);window.removeEventListener('keyup',key,true);window.removeEventListener('blur',reset);for(const a of avatars)releaseFamilyAvatarVisual(a.avatar.group);for(const g of geo)g.dispose();for(const m of mats){m.map?.dispose();m.dispose();}render.dispose();personalGarage.room=null;};raf=requestAnimationFrame(frame);return true;
+ }
+ function garageDriveOut(id){
+  const e=playerVehicleCatalogEntry(id),door=worldLayoutPoint('homeGarage'),v=ensureCatalogVehicle(id);if(!e||!v)return false;const g=ensurePlayerGarageState();g.stored[id]=false;for(const k of Object.keys(g.slots))if(g.slots[k]===id)g.slots[k]='';
+  const point={x:door.x+9.7,z:door.z,heading:Math.PI/2};v.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);v.group.rotation.y=point.heading;v.x=point.x;v.z=point.z;setGarageVehicleStored(v,false);persistParkedVehicle(v);saveState(true);return enterVehicle(v);
+ }
+ function garageSyncIgnition(){
+  if(player.vehicle&&state.vehicles.manualIgnition?.[player.car.id]&&currentVehicleRef())currentVehicleRef().manualIgnition=true;let b=document.getElementById('vehicleEngineSwitch');if(!b){b=document.createElement('button');b.id='vehicleEngineSwitch';b.type='button';b.className='btn';document.body.append(b);b.onclick=()=>{if(!player.vehicle||player.car.passengerOf)return;player.car.ignition=player.car.ignition===false;if(player.car.ignition)startEngineSound();else stopEngineSound();garageSyncIgnition();};}
+  b.hidden=!player.vehicle||!!player.car.passengerOf||!currentVehicleRef()?.manualIgnition||!!worldVenues.session;b.textContent=player.car.ignition===false?'LIGAR MOTOR':'DESLIGAR MOTOR';b.setAttribute('aria-pressed',String(player.car.ignition!==false));
+ }
+ const garageOldEngineUpdate=updateEngineSound;updateEngineSound=function(...args){if(player.vehicle&&currentVehicleRef()?.manualIgnition&&player.car.ignition===false){stopEngineSound();return;}return garageOldEngineUpdate(...args);};
+ const garageOldPhysics=updateVehiclePhysics;updateVehiclePhysics=function(dt,...args){if(currentVehicleRef()?.manualIgnition&&player.car.ignition===false){player.car.speed=0;player.vx=player.vz=0;return;}return garageOldPhysics(dt,...args);};
+ const garageOldVehicleEnter=enterVehicle;enterVehicle=function(v=world.vehicle){const ok=garageOldVehicleEnter(v);if(ok)player.car.ignition=true;return ok;};
+ const garageOldOnlineFleet=multiplayerGarageFleetSnapshot;multiplayerGarageFleetSnapshot=function(...args){return garageOldOnlineFleet(...args).filter(e=>e.status!=='garage');};
+ const garageOldOpen=openPlayerGarage;openPlayerGarage=function(){const p=worldLayoutPoint('homeGarage');if(Math.hypot(player.x-p.x,player.z-p.z)<14&&!currentHouse)return openPersonalGarageRoom();const entries=garageOwnedEntries();openModal('Minha garagem',`<p>${entries.length} unidades próprias. A entrada da garagem fica ao lado da sua casa. Cada unidade tem sua vaga física; os pisos são acessíveis pelo elevador.</p><button class="btn primary" data-private-garage-gps>IR À GARAGEM DA CASA</button><div class="choice-grid">${entries.map(e=>`<article class="choice"><b>${escapeHtml(e.label)} · #${e.unit}</b><span>${state.vehicles.garage.stored[e.id]?'Estacionado na garagem':'Em uso / estacionado no mundo'}</span></article>`).join('')}</div>`,root=>root.querySelector('[data-private-garage-gps]').onclick=()=>setWaypoint('my-garage'));};
+ const garageOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){garageOldExpansion();garageSyncIgnition();if(!world.playerGarage)return;for(const i of world.interactables)if(i.id==='player-home-garage'||i.id==='player-home-garage-west'){i.label='Entrar na minha garagem';i.action=()=>openPersonalGarageRoom();}const sign=world.playerGarage.group?.children.find(o=>o.geometry?.type==='PlaneGeometry'&&o.position.y>2);if(sign&&!sign.userData.privateGarage){sign.material.map?.dispose();sign.material.map=signTexture('MINHA GARAGEM · ENTRADA','#173b59','#ffffff');sign.material.needsUpdate=true;sign.userData.privateGarage=true;}};
+ window.OT_PERSONAL_GARAGE={diagnostics:()=>({active:!!personalGarage.room,floor:personalGarage.room?.floor,inside:personalGarage.room?{...personalGarage.room.body,vehicle:personalGarage.room.car?.entry.id,engine:personalGarage.room.engine}:null,units:garageOwnedEntries().map(e=>({id:e.id,catalogId:e.catalogId,model:e.model,unit:e.unit,stored:!!state.vehicles.garage.stored[e.id]})),lastDelivery:personalGarage.lastDelivery})};
+
+  // ===== MODULE: 63-cordillera-forest.js =====
+ const cordillera={ready:false,chunks:[],balloons:[],lastAt:0};
+ const SNOW_TRAIL=Object.freeze([{id:'snow-trail-0',name:'Entrada dos Picos Nevados',x:0,z:260},{id:'snow-trail-1',name:'Passo da Neve',x:50,z:330},{id:'snow-trail-2',name:'Mirante da Cordilheira',x:10,z:410},{id:'snow-trail-3',name:'Refúgio Oeste',x:-110,z:410},{id:'snow-trail-4',name:'Retorno aos chalés',x:20,z:180}]);
+ function cordilleraChunk(cx,cz,size=92){
+  const segments=30,geometry=new THREE.PlaneGeometry(size,size,segments,segments);geometry.rotateX(-Math.PI/2);const positions=geometry.attributes.position,colors=[];let peak=0;
+  for(let i=0;i<positions.count;i++){const x=cx+positions.getX(i),z=cz+positions.getZ(i),y=professionalTerrainHeightAt(x,z);positions.setY(i,y-.025);peak=Math.max(peak,y);const range=(WORLD_LAYOUT_V704.mountainRanges||[]).filter(p=>Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz)<1.05).sort((a,b)=>b.height-a.height)[0],snow=range?.snow||x<190&&z>235;
+   const color=new THREE.Color(snow?(y>28?0xe6edf0:y>9?0xc1d1d1:0xabc3b8):y>54?0x929c97:y>22?0x718376:0x6a9861).convertSRGBToLinear();const grain=.92+Math.sin(x*.53+Math.cos(z*.39))*.07;color.multiplyScalar(grain);colors.push(color.r,color.g,color.b);}
+  geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.95,side:THREE.DoubleSide});const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(cx,0,cz);mesh.receiveShadow=true;mesh.name='OT_CORDILLERA_'+cx+'_'+cz;worldGroup.add(mesh);cordillera.chunks.push({mesh,x:cx,z:cz,peak});
+ }
+ function createCordilleraForest(){
+  const places=[];let seed=733177;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  for(let i=0;i<1300;i++){const snow=i<350,x=snow?-205+random()*410:-810+random()*340,z=snow?235+random()*245:-490+random()*960;if(v704ReservedAt(x,z,6)||waterAt(x,z))continue;const y=professionalTerrainHeightAt(x,z);if(snow&&y>66)continue;places.push({x,z,y,scale:(snow?.8:1)+random()*1.0,snow});}
+  const trunkMat=campaignMaterial(0x665442),pineMat=campaignMaterial(0x3e6a54),snowMat=campaignMaterial(0xc9dcda),trunk=new THREE.InstancedMesh(new THREE.CylinderGeometry(.12,.20,2.0,6),trunkMat,places.length),tops=new THREE.InstancedMesh(new THREE.ConeGeometry(1.5,4.2,9),pineMat,places.length),caps=new THREE.InstancedMesh(new THREE.ConeGeometry(1.0,2.4,8),snowMat,places.filter(p=>p.snow).length),o=new THREE.Object3D();let si=0;
+  for(const [i,p]of places.entries()){o.position.set(p.x,p.y+p.scale,p.z);o.scale.setScalar(p.scale);o.rotation.y=random()*Math.PI*2;o.updateMatrix();trunk.setMatrixAt(i,o.matrix);o.position.y=p.y+3.5*p.scale;o.updateMatrix();tops.setMatrixAt(i,o.matrix);if(p.snow){o.position.y=p.y+4.05*p.scale;o.updateMatrix();caps.setMatrixAt(si++,o.matrix);}}
+  for(const m of[trunk,tops,caps]){m.name='OT_EXTENDED_FOREST';m.instanceMatrix.needsUpdate=true;m.frustumCulled=false;worldGroup.add(m);}cordillera.trees=places.length;
+ }
+ function startSnowTrail(){state.worldExploration||={};const old=state.worldExploration.snowTrail;if(!old||old.done)state.worldExploration.snowTrail={step:0,startedAt:Date.now(),done:false};const trip=state.worldExploration.snowTrail;setWaypoint(SNOW_TRAIL[trip.step].id);saveState(true);toast('Trilha iniciada. Visite cada mirante por terra e retorne aos chalés.','good',3500);}
+ function createCordillera(){
+  if(cordillera.ready||!worldAirport.ready)return;
+  for(let x=-184;x<=736;x+=92)for(let z=230;z<=414;z+=92){if((WORLD_LAYOUT_V704.mountainRanges||[]).some(p=>Math.abs(p.x-x)<p.rx+65&&Math.abs(p.z-z)<p.rz+65))cordilleraChunk(x,z);}
+  for(let x=-782;x<-490;x+=92)for(let z=184;z<=460;z+=92)cordilleraChunk(x,z);createCordilleraForest();
+  for(const p of SNOW_TRAIL.slice(0,4)){const root=new THREE.Group();worldGroup.add(root);const y=professionalTerrainHeightAt(p.x,p.z),wood=campaignMaterial(0x84694f),snow=campaignMaterial(0xdce8e7);for(const side of[-1,1]){campaignBox(root,wood,p.x+side*9,y+.65,p.z,2,.12,.65);campaignBox(root,wood,p.x+side*9,y+1,p.z+.28,2,.6,.12);}citySign(root,p.name,p.x+9,y+2.6,p.z-2,7,1,'#315566',.60);campaignBatch(root);
+   registerInteractable({id:p.id+'-info',type:'viewpoint',icon:'❄️',label:p.name+' · trilha',x:p.x+9,z:p.z,radius:3,priority:135,action:()=>openModal('Trilha dos Picos Nevados','<p>Uma viagem por cinco etapas: entrada da serra, passo da neve, mirante, refúgio e retorno aos chalés. Faça o percurso caminhando ou dirigindo.</p><button class="btn primary" data-snow-start>INICIAR / CONTINUAR TRILHA</button>',root=>root.querySelector('[data-snow-start]').onclick=startSnowTrail)});
+  }
+  for(const [i,x,z]of[[0,-2,254],[1,40,325],[2,0,405],[3,-117,405]])addResident('snow-hiker-'+i,['Ana','Pedro','Luiza','Miguel'][i],[{x,z,action:'look',duration:12},{x:x+4,z:z+2,action:'walk'},{x:x+5,z:z+4,action:'stretch',duration:8}],0x6e8294+i*0x111009);
+  for(let i=0;i<3;i++){const group=createMountainBalloon();group.name='NPC_MOUNTAIN_BALLOON_'+i;worldGroup.add(group);const pilot=createRoadsidePoliceOfficer(null);pilot.group.parent?.remove(pilot.group);group.add(pilot.group);pilot.group.position.set(0,-.8,0);pilot.group.scale.setScalar(.60);pilot.group.visible=true;const avatar=null;cordillera.balloons.push({group,x:240+i*125,z:270+(i%2)*95,phase:i*73,avatar});}
+  cordillera.ready=true;world.navCache?.clear?.();
+ }
+ function updateCordillera(){
+  createCordillera();if(!cordillera.ready)return;const focus=otGamesFocus(),now=airNow()/1000;
+  for(const c of cordillera.chunks)c.mesh.visible=Math.hypot(focus.x-c.x,focus.z-c.z)<(otGames.active?920:550);
+  for(const b of cordillera.balloons){const cycle=180,t=(now+b.phase)%cycle,angle=Math.max(0,(t-15)/140)*Math.PI*2,cruising=t>=15&&t<155,land=t>=155?Math.max(0,(170-t)/15):Math.min(1,t/15),x=b.x+(cruising?Math.sin(angle)*52:0),z=b.z+(cruising?(1-Math.cos(angle))*28:0),base=professionalTerrainHeightAt(x,z);b.group.position.set(x,base+1.05+Math.max(0,land)*40,z);b.group.rotation.y=angle;b.group.visible=Math.hypot(focus.x-x,focus.z-z)<(otGames.active?750:480);b.group.userData.flame.visible=t<155;}
+  const trip=state.worldExploration?.snowTrail;if(trip&&!trip.done){const p=SNOW_TRAIL[trip.step];if(p&&state.waypoint?.id===p.id&&!otGames.active&&!player.boating&&Math.hypot(player.x-p.x,player.z-p.z)<4&&Math.abs(player.y-groundHeightAt(player.x,player.z))<3){trip.step++;addXP(15);if(trip.step>=SNOW_TRAIL.length){trip.done=true;trip.finishedAt=Date.now();addCoins(60);awardMedal('Picos Nevados');clearWaypoint();toast('Trilha concluída: cinco etapas e retorno aos chalés. +60 moedas.','good',4000);}else{setWaypoint(SNOW_TRAIL[trip.step].id);toast('Etapa concluída. Próximo: '+SNOW_TRAIL[trip.step].name,'good',3000);}saveState(true);}}
+  if(scene.fog){scene.fog.near=otGames.active?380:210;scene.fog.far=otGames.active?1150:650;}
+ }
+ const cordilleraOldExpand=updateWorldExpansion;updateWorldExpansion=function(){cordilleraOldExpand();updateCordillera();};
+ const cordilleraOldExplore=worldExploreLocations;worldExploreLocations=function(){return[...cordilleraOldExplore(),...SNOW_TRAIL.map(p=>({...p,label:p.name,icon:'❄️',group:'Cordilheira e neve',navX:p.x,navZ:p.z,description:'Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.',actions:['Seguir pela estrada dos Picos Nevados','Visitar o mirante','Concluir a trilha por etapas']})),{id:'forest-great',name:'Mata Grande · estrada e montanhas',label:'Mata Grande',icon:'🌲',group:'Natureza',x:-630,z:170,navX:-550,navZ:100,description:'Mata ampliada, colinas e uma estrada conectada à Costa Verde e à Rodovia dos Horizontes.'}];};
+ window.OT_WORLD_CORDILLERA={diagnostics:()=>({ready:cordillera.ready,bounds:{...v704WorldBounds()},trees:cordillera.trees,ranges:(WORLD_LAYOUT_V704.mountainRanges||[]).map(p=>({...p,actualPeak:professionalTerrainHeightAt(p.x,p.z)})),terrainChunks:cordillera.chunks.length,npcBalloons:cordillera.balloons.map(b=>({position:b.group.position.toArray(),visible:b.group.visible})),trail:state.worldExploration?.snowTrail||null})};
 
 })();

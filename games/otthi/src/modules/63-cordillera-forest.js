@@ -1,0 +1,41 @@
+/** New connected mountain passes, snowy cordillera and a large forest.
+ * Terrain, roads, map and walking all consume the authoritative height function.
+ */
+// @otthi-module-body
+ const cordillera={ready:false,chunks:[],balloons:[],lastAt:0};
+ const SNOW_TRAIL=Object.freeze([{id:'snow-trail-0',name:'Entrada dos Picos Nevados',x:0,z:260},{id:'snow-trail-1',name:'Passo da Neve',x:50,z:330},{id:'snow-trail-2',name:'Mirante da Cordilheira',x:10,z:410},{id:'snow-trail-3',name:'Refúgio Oeste',x:-110,z:410},{id:'snow-trail-4',name:'Retorno aos chalés',x:20,z:180}]);
+ function cordilleraChunk(cx,cz,size=92){
+  const segments=30,geometry=new THREE.PlaneGeometry(size,size,segments,segments);geometry.rotateX(-Math.PI/2);const positions=geometry.attributes.position,colors=[];let peak=0;
+  for(let i=0;i<positions.count;i++){const x=cx+positions.getX(i),z=cz+positions.getZ(i),y=professionalTerrainHeightAt(x,z);positions.setY(i,y-.025);peak=Math.max(peak,y);const range=(WORLD_LAYOUT_V704.mountainRanges||[]).filter(p=>Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz)<1.05).sort((a,b)=>b.height-a.height)[0],snow=range?.snow||x<190&&z>235;
+   const color=new THREE.Color(snow?(y>28?0xe6edf0:y>9?0xc1d1d1:0xabc3b8):y>54?0x929c97:y>22?0x718376:0x6a9861).convertSRGBToLinear();const grain=.92+Math.sin(x*.53+Math.cos(z*.39))*.07;color.multiplyScalar(grain);colors.push(color.r,color.g,color.b);}
+  geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.95,side:THREE.DoubleSide});const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(cx,0,cz);mesh.receiveShadow=true;mesh.name='OT_CORDILLERA_'+cx+'_'+cz;worldGroup.add(mesh);cordillera.chunks.push({mesh,x:cx,z:cz,peak});
+ }
+ function createCordilleraForest(){
+  const places=[];let seed=733177;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  for(let i=0;i<1300;i++){const snow=i<350,x=snow?-205+random()*410:-810+random()*340,z=snow?235+random()*245:-490+random()*960;if(v704ReservedAt(x,z,6)||waterAt(x,z))continue;const y=professionalTerrainHeightAt(x,z);if(snow&&y>66)continue;places.push({x,z,y,scale:(snow?.8:1)+random()*1.0,snow});}
+  const trunkMat=campaignMaterial(0x665442),pineMat=campaignMaterial(0x3e6a54),snowMat=campaignMaterial(0xc9dcda),trunk=new THREE.InstancedMesh(new THREE.CylinderGeometry(.12,.20,2.0,6),trunkMat,places.length),tops=new THREE.InstancedMesh(new THREE.ConeGeometry(1.5,4.2,9),pineMat,places.length),caps=new THREE.InstancedMesh(new THREE.ConeGeometry(1.0,2.4,8),snowMat,places.filter(p=>p.snow).length),o=new THREE.Object3D();let si=0;
+  for(const [i,p]of places.entries()){o.position.set(p.x,p.y+p.scale,p.z);o.scale.setScalar(p.scale);o.rotation.y=random()*Math.PI*2;o.updateMatrix();trunk.setMatrixAt(i,o.matrix);o.position.y=p.y+3.5*p.scale;o.updateMatrix();tops.setMatrixAt(i,o.matrix);if(p.snow){o.position.y=p.y+4.05*p.scale;o.updateMatrix();caps.setMatrixAt(si++,o.matrix);}}
+  for(const m of[trunk,tops,caps]){m.name='OT_EXTENDED_FOREST';m.instanceMatrix.needsUpdate=true;m.frustumCulled=false;worldGroup.add(m);}cordillera.trees=places.length;
+ }
+ function startSnowTrail(){state.worldExploration||={};const old=state.worldExploration.snowTrail;if(!old||old.done)state.worldExploration.snowTrail={step:0,startedAt:Date.now(),done:false};const trip=state.worldExploration.snowTrail;setWaypoint(SNOW_TRAIL[trip.step].id);saveState(true);toast('Trilha iniciada. Visite cada mirante por terra e retorne aos chalés.','good',3500);}
+ function createCordillera(){
+  if(cordillera.ready||!worldAirport.ready)return;
+  for(let x=-184;x<=736;x+=92)for(let z=230;z<=414;z+=92){if((WORLD_LAYOUT_V704.mountainRanges||[]).some(p=>Math.abs(p.x-x)<p.rx+65&&Math.abs(p.z-z)<p.rz+65))cordilleraChunk(x,z);}
+  for(let x=-782;x<-490;x+=92)for(let z=184;z<=460;z+=92)cordilleraChunk(x,z);createCordilleraForest();
+  for(const p of SNOW_TRAIL.slice(0,4)){const root=new THREE.Group();worldGroup.add(root);const y=professionalTerrainHeightAt(p.x,p.z),wood=campaignMaterial(0x84694f),snow=campaignMaterial(0xdce8e7);for(const side of[-1,1]){campaignBox(root,wood,p.x+side*9,y+.65,p.z,2,.12,.65);campaignBox(root,wood,p.x+side*9,y+1,p.z+.28,2,.6,.12);}citySign(root,p.name,p.x+9,y+2.6,p.z-2,7,1,'#315566',.60);campaignBatch(root);
+   registerInteractable({id:p.id+'-info',type:'viewpoint',icon:'❄️',label:p.name+' · trilha',x:p.x+9,z:p.z,radius:3,priority:135,action:()=>openModal('Trilha dos Picos Nevados','<p>Uma viagem por cinco etapas: entrada da serra, passo da neve, mirante, refúgio e retorno aos chalés. Faça o percurso caminhando ou dirigindo.</p><button class="btn primary" data-snow-start>INICIAR / CONTINUAR TRILHA</button>',root=>root.querySelector('[data-snow-start]').onclick=startSnowTrail)});
+  }
+  for(const [i,x,z]of[[0,-2,254],[1,40,325],[2,0,405],[3,-117,405]])addResident('snow-hiker-'+i,['Ana','Pedro','Luiza','Miguel'][i],[{x,z,action:'look',duration:12},{x:x+4,z:z+2,action:'walk'},{x:x+5,z:z+4,action:'stretch',duration:8}],0x6e8294+i*0x111009);
+  for(let i=0;i<3;i++){const group=createMountainBalloon();group.name='NPC_MOUNTAIN_BALLOON_'+i;worldGroup.add(group);const pilot=createRoadsidePoliceOfficer(null);pilot.group.parent?.remove(pilot.group);group.add(pilot.group);pilot.group.position.set(0,-.8,0);pilot.group.scale.setScalar(.60);pilot.group.visible=true;const avatar=null;cordillera.balloons.push({group,x:240+i*125,z:270+(i%2)*95,phase:i*73,avatar});}
+  cordillera.ready=true;world.navCache?.clear?.();
+ }
+ function updateCordillera(){
+  createCordillera();if(!cordillera.ready)return;const focus=otGamesFocus(),now=airNow()/1000;
+  for(const c of cordillera.chunks)c.mesh.visible=Math.hypot(focus.x-c.x,focus.z-c.z)<(otGames.active?920:550);
+  for(const b of cordillera.balloons){const cycle=180,t=(now+b.phase)%cycle,angle=Math.max(0,(t-15)/140)*Math.PI*2,cruising=t>=15&&t<155,land=t>=155?Math.max(0,(170-t)/15):Math.min(1,t/15),x=b.x+(cruising?Math.sin(angle)*52:0),z=b.z+(cruising?(1-Math.cos(angle))*28:0),base=professionalTerrainHeightAt(x,z);b.group.position.set(x,base+1.05+Math.max(0,land)*40,z);b.group.rotation.y=angle;b.group.visible=Math.hypot(focus.x-x,focus.z-z)<(otGames.active?750:480);b.group.userData.flame.visible=t<155;}
+  const trip=state.worldExploration?.snowTrail;if(trip&&!trip.done){const p=SNOW_TRAIL[trip.step];if(p&&state.waypoint?.id===p.id&&!otGames.active&&!player.boating&&Math.hypot(player.x-p.x,player.z-p.z)<4&&Math.abs(player.y-groundHeightAt(player.x,player.z))<3){trip.step++;addXP(15);if(trip.step>=SNOW_TRAIL.length){trip.done=true;trip.finishedAt=Date.now();addCoins(60);awardMedal('Picos Nevados');clearWaypoint();toast('Trilha concluída: cinco etapas e retorno aos chalés. +60 moedas.','good',4000);}else{setWaypoint(SNOW_TRAIL[trip.step].id);toast('Etapa concluída. Próximo: '+SNOW_TRAIL[trip.step].name,'good',3000);}saveState(true);}}
+  if(scene.fog){scene.fog.near=otGames.active?380:210;scene.fog.far=otGames.active?1150:650;}
+ }
+ const cordilleraOldExpand=updateWorldExpansion;updateWorldExpansion=function(){cordilleraOldExpand();updateCordillera();};
+ const cordilleraOldExplore=worldExploreLocations;worldExploreLocations=function(){return[...cordilleraOldExplore(),...SNOW_TRAIL.map(p=>({...p,label:p.name,icon:'❄️',group:'Cordilheira e neve',navX:p.x,navZ:p.z,description:'Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.',actions:['Seguir pela estrada dos Picos Nevados','Visitar o mirante','Concluir a trilha por etapas']})),{id:'forest-great',name:'Mata Grande · estrada e montanhas',label:'Mata Grande',icon:'🌲',group:'Natureza',x:-630,z:170,navX:-550,navZ:100,description:'Mata ampliada, colinas e uma estrada conectada à Costa Verde e à Rodovia dos Horizontes.'}];};
+ window.OT_WORLD_CORDILLERA={diagnostics:()=>({ready:cordillera.ready,bounds:{...v704WorldBounds()},trees:cordillera.trees,ranges:(WORLD_LAYOUT_V704.mountainRanges||[]).map(p=>({...p,actualPeak:professionalTerrainHeightAt(p.x,p.z)})),terrainChunks:cordillera.chunks.length,npcBalloons:cordillera.balloons.map(b=>({position:b.group.position.toArray(),visible:b.group.visible})),trail:state.worldExploration?.snowTrail||null})};

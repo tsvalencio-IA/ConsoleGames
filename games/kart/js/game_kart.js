@@ -621,7 +621,7 @@
         syncLobby: function() { if(this.dbRef)this.networkWrite(()=>this.dbRef.child('players/'+this.networkId).update({charId:this.selectedChar,ready:this.isReady,lastSeen:firebase.database.ServerValue.TIMESTAMP})); },
 
         startRace: function(trackId) {
-            if(this.isOnline){const roster=this.remotePlayersData;this.resetPhysics();this.remotePlayersData=roster;}
+            const roster=this.remotePlayersData;this.resetPhysics();if(this.isOnline)this.remotePlayersData=roster;
             this.selectedTrack=trackId;this.lastTime=performance.now();this.physicsAccumulator=0;this.driftBoosts=0;
             // Every new race must clear the previous finish state. Otherwise the
             // render loop sees RACE but exits early from updatePhysics, leaving

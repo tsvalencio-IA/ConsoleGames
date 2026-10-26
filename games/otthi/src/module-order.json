@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.26.3-vida-aeroporto",
+  "build": "705.26.5-frota-serra-garagem",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "5772e5b006f2b469142ff26b02bca32d588832e51914fc1d04048a865adde177"
+      "sha256Body": "b74bcc19531863ee1a92520101cd7dce20c738b2e9dff2a9268a49e3f17a1bda"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "27c47045de54b6d784eae3c8d41273a47a39ad91997668cba9e4f8e77b55f67b"
+      "sha256Body": "e06887bd29c939110938c2d8351fc45a0dec2e75ce24734e00aac0fd2651352c"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -84,7 +84,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "2cf9cb113ef49f7f897d96af61107730dcd3856a5ff6edd5ba85326088405ed2"
+      "sha256Body": "f002e105202aa921dee1b8e5ca37407d4f01003c29c920f701aa4f6b73ef7f32"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "901dcbe6854f3b69954f8981725f2a33b1bdd61c7fdaeeeb3f0a46dbccd3a0d1"
+      "sha256Body": "95a5d82b5216a4dc94d35d73af30419ce78a75503d88a2d48b6b7f9761ad7e9e"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "176b719bacb136db61fb6f3a715881e34933f8713a8992ec0d9b69d89999d385"
+      "sha256Body": "b19e9be1cd36acb49efc617d93e1e88734d2f8b2b3343c056418a4b7e3268107"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "8938c290d73aa9d1745b1b2977c8a463a27a0cb6b1197e3081dee37dbae1095d"
+      "sha256Body": "b3afd481b89531476a4e73c482da3bced8130ca5bdd5fccb87762390e33b6d27"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "3819d947e57526a2bc7d3a937b678bda39bd013882ca079d71080adf692ae65e"
+      "sha256Body": "ab33b2f64e553c6bfeae8e270106662511ef01c49ca1f9d921618cb28dccf645"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -502,7 +502,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "ec159b748f3b68c736dbece239fcb9172d8439bf62c96f14622e1fb5129a65d3"
+      "sha256Body": "13d5aed1289358f29bfd5799b22219092777af702d8cf50e0e13e35b876a04c8"
     },
     {
       "file": "src/modules/58-character-activities.js",
@@ -524,6 +524,27 @@
       "endLine": 0,
       "description": "Aeroporto civil, várias aeronaves pilotáveis e balão nas montanhas",
       "sha256Body": "febb5493500894cec5252e7cd0df18276f0d4c4cfedfad126b31f6385faac8a8"
+    },
+    {
+      "file": "src/modules/61-world-air-operations.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
+      "sha256Body": "a077bda7c9878f0d496df63138fb0c81b1d8fe03acc4a2bc6813b4925889d615"
+    },
+    {
+      "file": "src/modules/62-personal-garage-delivery.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Garagem física particular e retirada na concessionária",
+      "sha256Body": "9be5636c6e2b9eb99c59b862484fb51c666f5b0c5a36ebb8633c4f0c2199fdc1"
+    },
+    {
+      "file": "src/modules/63-cordillera-forest.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Cordilheira, neve, mata e trilha conectadas ao mundo",
+      "sha256Body": "9c9fbddb86deda649994ec7fc51c7cef825e6d15ce2d24a6ffa8184a43e19dbd"
     }
   ],
   "styles": [
@@ -707,7 +728,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
-      "sha256Body": "095bfa92b617bd5bd31b5df0371eb8846cf3bbfdd332cfbc1e52325c1106ede3"
+      "sha256Body": "c16249e05a3d6977ad334259820515737dba249f9e01866aca2c77d8913aa1ae"
     }
   ]
 }

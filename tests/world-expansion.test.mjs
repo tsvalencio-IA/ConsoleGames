@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import fs from 'node:fs';
 function layout(id='world-qa'){const c=vm.createContext({window:{},state:{profile:{playerId:id}},console});vm.runInContext(fs.readFileSync('games/otthi/src/modules/05a-world-layout-v704.js','utf8'),c);return c.window.OTTHI_WORLD_LAYOUT_V704;}
 test('expanded world: both cities, both circuits and all activity entrances belong to one reachable road graph without crossing protected structures',()=>{
- const api=layout(),l=api.layout;assert(api.staticAudit().passed);assert.equal((l.bounds.maxX-l.bounds.minX)*(l.bounds.maxZ-l.bounds.minZ),1251200);assert.equal(Object.keys(l.cities).length,2);assert.equal(Object.keys(l.circuits).length,2);
+ const api=layout(),l=api.layout;assert(api.staticAudit().passed);assert.equal((l.bounds.maxX-l.bounds.minX)*(l.bounds.maxZ-l.bounds.minZ),3060000);assert.equal(Object.keys(l.cities).length,2);assert.equal(Object.keys(l.circuits).length,2);
  const visited=new Set(['C']);for(let pass=0;pass<l.edges.length;pass++)for(const [a,b]of l.edges){if(visited.has(a))visited.add(b);if(visited.has(b))visited.add(a);}
  for(const id of ['A_C','CV_C','A_RACE','CV_RACE','VB_GATE','VD_GATE','VP_GATE','CQ_GATE','CA_GATE','CN_GATE','COAST_GATE'])assert(visited.has(id),id+' must connect to the original village');
  for(const v of Object.values(l.activityVenues))assert(!api.roadAt(v.x,v.z,0,true),'gym remains off the carriageway');

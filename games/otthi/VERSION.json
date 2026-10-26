@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.26.3-vida-aeroporto",
+  "build": "705.26.5-frota-serra-garagem",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R26.5 adiciona frota aérea individual com reposição em três minutos após decolar, recolhimento visível OT Vias, mapa acessível no voo, cordilheira e mata ampliadas, entrega na concessionária e garagem visitável por pisos com unidades independentes.",
     "R25.3 combina postura corporal e mão/objeto na mira do WAR original e do mundo aberto, sem marcha constante; inclui agachamento, passos deliberados e calibração opcional local do brinquedo.",
     "R25.3 cria músicas instrumentais originais de 108/120/132 BPM, sequências de quatro repetições com retorno corporal e pausa sincronizada ao perder o corpo.",
     "R25.3 conecta o acesso sul e a orla, unifica a pavimentação com textura e rampas, evita calçadas/defensas nas junções e integra semáforos e faixas de pedestres.",
@@ -280,8 +281,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70631,
-  "revisionLabel": "Cidades, praia, corpo e mãos no WAR, música e coreografia",
+  "assetVersion": 70633,
+  "revisionLabel": "Frota aérea, cordilheira, mapa móvel e garagem física",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

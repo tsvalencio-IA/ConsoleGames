@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.26.3-vida-aeroporto',
+    build: '705.26.5-frota-serra-garagem',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
