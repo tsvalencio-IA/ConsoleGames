@@ -3,9 +3,9 @@
   const worldDestinations={ready:false,marina:null,flakes:null,lastAt:0,airSigns:new Map()};
   const MARINA_DOCK=Object.freeze({minX:-224,maxX:-216,minZ:506,maxZ:549,exitX:-220,touchDistance:5.8});
   const SEA_CRAFT=Object.freeze([
-    {id:'sea-azul',label:'Lancha Azul · esportiva',x:-227,z:528,heading:0,color:0x237db6,maxSpeed:22},
-    {id:'sea-familia',label:'Lancha Família · passeio',x:-227,z:542,heading:0,color:0x348c7c,maxSpeed:17},
-    {id:'sea-coral',label:'Lancha Coral · esportiva',x:-213,z:535,heading:0,color:0xbf6549,maxSpeed:20}
+    {id:'sea-azul',label:'Lancha Azul · esportiva',x:-227,z:528,heading:-Math.PI/2,color:0x237db6,maxSpeed:22},
+    {id:'sea-familia',label:'Lancha Família · passeio',x:-227,z:542,heading:-Math.PI/2,color:0x348c7c,maxSpeed:17},
+    {id:'sea-coral',label:'Lancha Coral · esportiva',x:-213,z:535,heading:Math.PI/2,color:0xbf6549,maxSpeed:20}
   ]);
   function createSeaCraftModel(spec){
     const root=new THREE.Group();root.name='SPEEDBOAT_'+spec.id;
@@ -48,6 +48,21 @@
     }
     world.navCache?.clear?.();
   }
+  function seaNavigationBlocked(x,z,heading){
+    const mine={x,z,w:1.08,l:2.68,s:Math.sin(heading),c:Math.cos(heading)},pier={x:-220,z:524,w:4,l:25,s:0,c:1};
+    if(trafficBodiesOverlap(mine,pier,.06))return true;
+    for(const b of world.boats?.values()||[]){if(b===world.boat||!b.seaGoing)continue;const host=[...remotePresence.values()].find(p=>p.boating&&p.boatId===b.id&&p.boatRole!=='passenger'),pose=host?{x:host.x,z:host.z,heading:host.r}:b.group.position,angle=host?Number(host.r||0):b.heading;
+      if(trafficBodiesOverlap(mine,{x:pose.x,z:pose.z,w:1.08,l:2.68,s:Math.sin(angle),c:Math.cos(angle)},.08))return true;
+    }return false;
+  }
+  function styleGhostBoat(ghost,target){
+    const group=ghost?.userData.boatVisual;if(!group)return;
+    const spec=SEA_CRAFT.find(b=>b.id===target.boatId),key=spec?.id||'lake-boat';if(group.userData.craftKey===key)return;
+    group.userData.lakeParts??=group.children.slice();if(group.userData.seaModel){otGamesDisposeGroup(group.userData.seaModel);group.userData.seaModel=null;}
+    for(const part of group.userData.lakeParts)part.visible=!spec;
+    if(spec){const model=createSeaCraftModel(spec);group.add(model);group.userData.seaModel=model;}
+    group.position.y=spec?-.08:-.68;group.userData.craftKey=key;
+  }
   const marinaGroundHeight=groundHeightAt;
   groundHeightAt=function(x,z){if(x>=MARINA_DOCK.minX&&x<=MARINA_DOCK.maxX&&z>=499&&z<=549)return .48;return marinaGroundHeight(x,z);};
   const originalFamilyBoatSeat=familyBoatSeatOffset;
@@ -87,7 +102,7 @@
   function updateWorldDestinations(){
     if(!worldDestinations.ready){if(!cityCoast.ready||!world.boats)return;createMarina();createSnowDestination();worldDestinations.ready=true;}
     const focus=otGamesFocus(),now=performance.now(),dt=Math.min(.15,(now-worldDestinations.lastAt)/1000);worldDestinations.lastAt=now;
-    const snow=focus.z>147&&focus.z<198&&focus.x>-160&&focus.x<180;worldDestinations.flakes.visible=snow;
+    const snow=focus.z>147&&focus.z<227&&focus.x>-160&&focus.x<180;worldDestinations.flakes.visible=snow;
     if(snow){const a=worldDestinations.flakes.geometry.attributes.position;worldDestinations.flakes.position.set(focus.x,Math.max(0,groundHeightAt(focus.x,focus.z)),focus.z);for(let i=0;i<a.count;i++){let y=a.getY(i)-dt*(.7+i%5*.11);if(y<0)y+=14;a.setY(i,y);}a.needsUpdate=true;}
     for(const boat of world.boats.values())if(boat.seaGoing){const remote=[...remotePresence.values()].some(p=>p.boating&&p.boatId===boat.id&&p.boatRole!=='passenger'),local=player.boating&&state.boats.activeBoatId===boat.id;boat.group.visible=!remote&&Math.hypot(focus.x-boat.group.position.x,focus.z-boat.group.position.z)<260;if(!local&&!remote){boat.group.position.y=.10+Math.sin(now*.0014+boat.group.position.x)*.025;boat.group.rotation.z=Math.sin(now*.0012+boat.group.position.z)*.008;}else if(local){boat.group.rotation.z=player.boat.steerVisual*clamp(Math.abs(player.boat.speed)/22,0,1)*.11;boat.group.userData.seaPropeller.rotation.z+=dt*player.boat.speed*8;}}
     const button=document.getElementById('worldCampaignBtn');if(button&&button.textContent!=='MUNDO / GPS'){button.textContent='MUNDO / GPS';button.setAttribute('aria-label','Abrir destinos, aviões, helicóptero, lanchas, praia, neve e WAR Combate');}

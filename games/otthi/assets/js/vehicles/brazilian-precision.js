@@ -59,11 +59,15 @@ function build(T,key,H){
   rb(black,0,.28,-L-.014,1.35,.16,.04,'fixed',.03);rb(0x7c8c94,0,.232,-L-.041,.92,.043,.018,'chrome',.012);for(const a of[-1,1])rb(0x9b2d35,a*.56,.35,-L-.035,.20,.037,.012,'lens',.012);
   plate(.495,L+.058);plate(.475,-L-.044,true);name('200 TSI',-.47,.64,-L-.04,.21,.035,true);
  }else{
-  // Fire's droplet clusters extend back onto the bonnet; three separate optics.
+  // The Fire's teardrop lens wraps back into the fender. Reflectors sit behind
+  // one shaped lens, instead of three spheres protruding above the bonnet.
   for(const a of[-1,1]){
-   const lamp=(u,v)=>{const angle=Math.PI*2*u,rr=1-v*.96,xx=Math.cos(angle),yy=Math.sin(angle),x=a*(.464+xx*.186*rr),y=.664+yy*.092*rr+.018*xx*rr,z=L+.040-.026*xx*rr+.020*(1-rr*rr);return[x,y,z];};
-   surface(48,10,lamp,0x344550,'fixed');surface(48,10,(u,v)=>{const p=lamp(u,.06+.94*v);p[2]+=.009;return p;},0xa7bdc7,'lampglass');
-   for(const[i,x]of[.352,.472,.582].entries()){const rr=i===2?.030:.049,y=.658+(i===2?.022:0),z=L+.065;ell(chrome,a*x,y,z,rr,rr,.008,'chrome');ell(0x718a95,a*x,y,z+.010,rr*.73,rr*.73,.005,'lens');ring(a*x,y,z+.015,rr*.91,chrome);}
+   const contour=new T.CatmullRomCurve3([[.270,.657,L+.040],[.333,.696,L+.028],[.503,.708,L-.028],[.596,.685,L-.123],[.602,.627,L-.082],[.551,.597,L+.018],[.405,.600,L+.057],[.293,.617,L+.060]].map(p=>new T.Vector3(...p)),true,'catmullrom',.20),center=new T.Vector3(.443,.649,L+.030);
+   const lamp=(u,v,inset=0)=>{const edge=contour.getPoint(u),p=edge.lerp(center,v);return[a*p.x,p.y,p.z+inset+.010*Math.sin(v*Math.PI)];};
+   surface(64,12,(u,v)=>lamp(u,v),0x263a44,'fixed');
+   surface(64,12,(u,v)=>lamp(u,.055+v*.945,.009),0xb4c5ca,'lampglass');
+   for(const[i,x]of[.356,.459,.558].entries()){const rr=i===2?.018:.038,y=i===2?.656:.645,z=L+(i===2?-.010:.041);ell(chrome,a*x,y,z,rr,rr,.004,'chrome');ell(i===2?0xc19b59:0x617f8e,a*x,y,z+.005,rr*.70,rr*.70,.003,'lens');}
+   line(Array.from({length:65},(_,i)=>lamp(i/64,0,.010)),.005,black);
    rb(black,a*.52,.317,L+.017,.24,.144,.032,'fixed',.04);ell(chrome,a*.54,.316,L+.041,.039,.038,.008,'chrome');ell(0x96acb4,a*.54,.316,L+.052,.029,.028,.006,'lens');
    // Smoky vertical lamps sit beside the rounded hatch shoulders.
    const z=-L+.052;rb(black,a*.555,.842,z,.135,.362,.034,'fixed',.048);rb(0x6a323b,a*.555,.850,z-.023,.110,.327,.012,'lens',.037);rb(0xaf3341,a*.555,.940,z-.031,.091,.112,.007,'lens',.025);rb(0xb6c5c7,a*.555,.834,z-.033,.092,.051,.007,'lens',.010);rb(0xa2323b,a*.555,.748,z-.031,.090,.09,.007,'lens',.022);

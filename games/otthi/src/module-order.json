@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.25.3-city-coast-body",
+  "build": "705.26.1-destinos-marina",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "9a05d2b7728486e6fe9c05f84155d6223d22526140fbd827d590152fbf7135fe"
+      "sha256Body": "271ca0d6d348399e90182f54720a48e2e212144051ccbbf8188bce93b9174e40"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "a8cb2a0aa4a45d54e64b3f9f0be15cc8efe0d5761415dfbbb93800806430301e"
+      "sha256Body": "a250df91cb7c2dfad9361cf526074d1e199497f36e2b103a8ea449c9c306f414"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -161,7 +161,7 @@
       "startLine": 3559,
       "endLine": 3717,
       "description": "Água, câmera e animação da pesca, barco e física náutica",
-      "sha256Body": "c6f438d1390152314f30c569850ed2d88d9e89bbe2a4e32f6c8f12f3050f4112"
+      "sha256Body": "490a24e8fabdc3e449305b8fcfcb2bf3f7209b959850fd68744f238fabf1831f"
     },
     {
       "file": "src/modules/19-campfire-hunting-house-extensions.js",
@@ -245,7 +245,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "775f9e8c21b34ee6b77e99c501507ced8604ead22a294e0089b1c03600e0be3e"
+      "sha256Body": "8343a6be7c50843214eec60ce5ee67c369d1783efb49a88507b7aaa8eb2cafdd"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -406,21 +406,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
-      "sha256Body": "99e6f070eeda302d0a875447653441dea24469c32e1266809d41cebad05d69aa"
+      "sha256Body": "e3dd83f93158ea265b213632e51211f7298f1d609bb8dfb6c7429262d1384ee7"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
-      "sha256Body": "ce7bc5dcdbfde4acdc4539f6b6af00610b849dfeb0c24d7004bd4d88e579cf36"
+      "sha256Body": "d790596050f750aa8e4f8f795a2b85cc5336b62d01c8769a1284927d013111a6"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "d9f763d7f3174919113ef5d467921ad36fdafd8d2858961f38a63bfaab70b55d"
+      "sha256Body": "c69ecb4f95d6945ebaf002a0f9b1c811464f224e48f44eeeee89da9c39c74647"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -488,14 +488,14 @@
     {
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
-      "sha256Body": "e6ae8276757293503bfdb2123d041fea55976076ea96ff38e5e09d4e54b53219"
+      "sha256Body": "8e60a096182678e126e217222ff7d99aa9cfdf48974b5267fe28df780bf1f476"
     },
     {
       "file": "src/modules/57-world-destinations-marina.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "4189377d9d4faf3c119a4398495ffd0da167705a149b0361d26e5783e31649be"
+      "sha256Body": "9e5ac63a7d603cef6b1691482a8b0e15575132ab0c33b49d88c5bb08901767cd"
     }
   ],
   "styles": [

@@ -44,6 +44,9 @@ jobs:
       - name: Conferir pavimento, comércio, ondas e três minutos de trânsito
         if: ${{ always() && !cancelled() }}
         run: node tests/world-city-coast-browser.mjs
+      - name: Embarcar, pilotar, estacionar, encontrar praia e neve e abrir WAR
+        if: ${{ always() && !cancelled() }}
+        run: node tests/world-destinations-browser.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         if: ${{ always() && !cancelled() }}
         run: node tests/playable-smoke.mjs
@@ -61,6 +64,7 @@ jobs:
             test-results/dance-pose-model/
             test-results/dance-music/
             test-results/city-coast/
+            test-results/world-destinations/
             test-results/world-traffic-air/
             test-results/air-traffic-models/
           if-no-files-found: ignore
