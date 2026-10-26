@@ -8,6 +8,15 @@ const {AimController}=window.WarHandControl;
 function hand(x=.5,y=.5){const p=Array.from({length:21},()=>({x,y,z:0}));p[0]={x,y:y+.12};p[5]={x:x-.035,y};p[9]={x,y:y-.02};p[17]={x:x+.05,y};return p;}
 const result=(points,label='Left')=>({landmarks:[points],handedness:[[{categoryName:label,score:.95}]]});
 function calibrated(){const c=new AimController();for(let t=0;t<=1100;t+=100)c.consume(result(hand()),t);assert.equal(c.state,'ready');return c;}
+test('WAR hand: a 185 ms inference remains continuous between valid camera results',()=>{
+ const c=calibrated();c.setLatency(185);
+ for(let capture=1300;capture<=2100;capture+=200){c.consume(result(hand()),capture);for(let now=capture+185;now<capture+385;now+=16)assert(c.read(now).fresh,'valid pointing must remain usable until the next result');}
+ assert(!c.read(2651).fresh,'an interrupted stream must expire at the absolute 550 ms limit');
+});
+test('WAR hand: adaptive latency never permits a frame older than 550 ms or an absent hand',()=>{
+ const c=calibrated();for(const latency of[0,80,185,300,900,Infinity,NaN]){const budget=c.setLatency(latency);assert(budget>=300&&budget<=550);c.consume(result(hand()),3000);assert(!c.read(3551).fresh);}
+ c.setLatency(300);c.consume(result(hand()),4000);assert(c.read(4200).fresh);c.consume({landmarks:[],handedness:[]},4201);assert(!c.read(4201).fresh);assert(!c.aim.present);
+});
 test('WAR hand: calibration needs a single stable hand and binds the presented right hand independently of mirror labels',()=>{
  const c=new AimController(),two={landmarks:[hand(.3),hand(.7)],handedness:[[{categoryName:'Left',score:.95}],[{categoryName:'Right',score:.95}]]};for(let t=0;t<2000;t+=100)c.consume(two,t);assert.equal(c.state,'calibrating');assert.equal(c.samples.length,0);
  for(let t=2000;t<3200;t+=100)c.consume(result(hand()),t);assert.equal(c.state,'ready');assert.equal(c.label,'Left');

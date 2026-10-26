@@ -10,13 +10,12 @@ on:
 concurrency:
   group: consolegames-gameplay-validation
   cancel-in-progress: true
-
 permissions:
   contents: read
 jobs:
   jogabilidade:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,16 +36,6 @@ jobs:
           node tests/dance-pose-model-browser.mjs
           node tests/dance-music-browser.mjs
           node tests/world-body-dance-browser.mjs
-      - name: Validar frota completa e tráfego aéreo NPC
-        run: |
-          node tests/world-traffic-air-browser.mjs
-          node tests/air-traffic-models-browser.mjs
-      - name: Conferir pavimento, comércio, ondas e três minutos de trânsito
-        if: ${{ always() && !cancelled() }}
-        run: node tests/world-city-coast-browser.mjs
-      - name: Embarcar, pilotar, estacionar, encontrar praia e neve e abrir WAR
-        if: ${{ always() && !cancelled() }}
-        run: node tests/world-destinations-browser.mjs
       - name: Entrar, iniciar e pausar cada um dos cinco jogos
         if: ${{ always() && !cancelled() }}
         run: node tests/playable-smoke.mjs
@@ -63,6 +52,40 @@ jobs:
             test-results/world-body-dance/
             test-results/dance-pose-model/
             test-results/dance-music/
+          if-no-files-found: ignore
+          retention-days: 14
+  mundo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Servir mundo
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/world-server.log 2>&1 &
+          sleep 2
+      - name: Validar frota completa e tráfego aéreo NPC
+        run: |
+          node tests/world-traffic-air-browser.mjs
+          node tests/air-traffic-models-browser.mjs
+      - name: Conferir pavimento, comércio, ondas e três minutos de trânsito
+        if: ${{ always() && !cancelled() }}
+        run: node tests/world-city-coast-browser.mjs
+      - name: Embarcar, pilotar, estacionar, encontrar praia e neve e abrir WAR
+        if: ${{ always() && !cancelled() }}
+        run: node tests/world-destinations-browser.mjs
+      - name: Salvar evidências do mundo
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-destinations-browser-artifacts
+          path: |
             test-results/city-coast/
             test-results/world-destinations/
             test-results/world-traffic-air/

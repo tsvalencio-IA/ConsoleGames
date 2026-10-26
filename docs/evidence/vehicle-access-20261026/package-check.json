@@ -1,11 +1,11 @@
 {
-  "url": "http://127.0.0.1:38903/games/otthi/",
-  "source": "",
+  "url": "http://127.0.0.1:44669/games/otthi/",
+  "source": "f2469a15c61118333674572055a5701236608aad",
   "limits": [
     "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
   ],
-  "build": "705.26.1-destinos-marina",
-  "revision": "a5d8397ced44908a",
+  "build": "705.26.2-cam-fluida",
+  "revision": "c4126b3d705770c7",
   "protectedFiles": 50,
   "warAssets": 8,
   "roads": {
@@ -213,15 +213,15 @@
     "body": {
       "points": 33,
       "world": 33,
-      "inferenceMs": 481.09999999962747
+      "inferenceMs": 436.29999999981374
     },
     "hand": {
       "hands": 2,
       "points": 21,
-      "inferenceMs": 338.39999999990687
+      "inferenceMs": 296.79999999981374
     }
   },
-  "apkUrl": "http://127.0.0.1:38903/arcade/downloads/thIAguinho-ARCADE-OT.apk",
+  "apkUrl": "http://127.0.0.1:44669/arcade/downloads/thIAguinho-ARCADE-OT.apk",
   "existingApk": {
     "bytes": 57991,
     "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"

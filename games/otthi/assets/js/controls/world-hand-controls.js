@@ -13,6 +13,11 @@ const feature=points=>{
 };
 class AimController{
  constructor(){this.calibration=0;this.reset();}
+ setLatency(ms){const latency=Number.isFinite(ms)?Math.max(0,ms):0;
+  // lastSeen is capture time. Keep one inference cycle plus the next result
+  // continuous, while retaining the existing absolute 550 ms freshness cap.
+  this.maxAge=Math.min(550,Math.max(300,latency*2+100));return this.maxAge;
+ }
  reset(){this.calibration++;this.maxAge=300;this.state='calibrating';this.samples=[];this.neutral=null;this.label=null;this.last=null;this.lastSeen=-Infinity;this.aim={x:.5,y:.48,fresh:false,present:false,timestamp:0,twoHands:false,calibration:this.calibration,roll:0,source:'hand'};this.gripSince=0;}
  consume(result,now){const candidates=(result.landmarks||[]).map((p,i)=>({f:feature(p),label:result.handedness?.[i]?.[0]?.categoryName,score:result.handedness?.[i]?.[0]?.score??0})).filter(h=>h.f&&h.score>=.6);return this.consumeCandidates(candidates,now,'hand');}
  consumeObject(object,now){return this.consumeCandidates(object?[{f:object,label:'SelectedObject',score:object.confidence}]:[],now,'object');}
@@ -72,13 +77,13 @@ class CameraSession{
     if(data.type==='object'){
      if(data.template&&this.root.querySelector('[data-hand-remember]').checked){try{localStorage.setItem('ot_war_toy_template_v1',JSON.stringify(data.template));this.savedToy=true;this.root.querySelector('[data-hand="reuse"]').hidden=false;}catch{this.captureMessage='Não foi possível lembrar o brinquedo neste navegador.';}}
      this.busy=false;this.lastInferenceMs=performance.now()-data.timestamp;this.frameSent=0;this.lastObject={matches:data.matches,lost:!!data.lost,object:data.object};if(this.inflightSerial!==this.serial||document.hidden||this.paused()||!this.focused)return;
-     this.controller.maxAge=Math.min(550,Math.max(300,this.lastInferenceMs*1.2+80));if(performance.now()-data.timestamp>this.controller.maxAge){this.release();return;}
+     this.controller.setLatency(this.lastInferenceMs);if(performance.now()-data.timestamp>this.controller.maxAge){this.release();return;}
      this.acceptAim(this.controller.consumeObject(data.object,data.timestamp));if(data.lost){this.recalibrate();this.captureMessage='Objeto perdido. Selecione e capture novamente.';}
     }
     if(data.type==='result'&&source==='hand'){
      this.busy=false;this.lastInferenceMs=performance.now()-data.timestamp;this.lastComputeMs=data.inferenceMs;this.frameSent=0;this.lastHandCount=data.landmarks?.length||0;if(this.inflightSerial!==this.serial||document.hidden||this.paused()||!this.focused)return;
      // Inference latency must not turn an old camera image into a valid shot.
-     this.controller.maxAge=Math.min(550,Math.max(300,this.lastInferenceMs*1.2+80));
+     this.controller.setLatency(this.lastInferenceMs);
      if(performance.now()-data.timestamp>(this.controller.state==='calibrating'?1800:this.controller.maxAge)){this.release();return;}
      const aim=this.controller.consume(data,data.timestamp);this.landmarks=data.landmarks;this.acceptAim(aim);
      if(this.controller.state==='ready'&&this.game.state==='HAND_CALIBRATION'){

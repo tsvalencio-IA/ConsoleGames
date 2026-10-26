@@ -130,7 +130,7 @@
     if(!canEnterMobility(PLAYER_MODES.BOAT_DRIVER)&&!player.vehicle)return false;
     if(player.vehicle)exitVehicle(true);
     if(player.transit.mode||!selected||otGames.active)return false;
-    const p=selected.group.position;if(Math.hypot(player.x-p.x,player.z-p.z)>3.6){toast('Chegue perto da embarcação pelo píer.','warn');return false;}
+    const p=selected.group.position;if(Math.hypot(player.x-p.x,player.z-p.z)>(selected.boardRadius||3.6)){toast('Chegue perto da embarcação pelo píer.','warn');return false;}
     const lock=await window.OTTHOS_RTDB?.claimBoat?.(selected.id);if(lock&&lock.ok===false){toast(lock.error||'A embarcação já está sendo usada por outro jogador.','warn',2800);return false;}world.boat=selected;
     input.mobilityAccelerate=false;input.mobilityBrake=false;player.boating=true;player.boat.passengerOf='';player.boat.passengerUid='';player.boat.passengerBotId='';player.boat.heading=world.boat.heading||0;player.boat.speed=0;player.boat.steerVisual=0;player.x=p.x;player.z=p.z;player.y=.18;player.vx=player.vz=0;state.boats.activeBoatId=world.boat.id;state.boats.passengerOf='';const companion=nearestRideCompanion(9);if(companion)boardNpcPassenger(companion,'boat');updateBoatPanel();updateVehicleControlsUI();auditPlayerMode('board-boat-driver');toast('Barco pronto. Use o manche para navegar.','good',2300);saveState(true);return true;
   }

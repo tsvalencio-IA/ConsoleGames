@@ -4,7 +4,7 @@
   'use strict';
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.26.1-destinos-marina';
+  const OTTHI_GAME_WEB_BUILD = '705.26.2-cam-fluida';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -5123,7 +5123,7 @@
     if(!canEnterMobility(PLAYER_MODES.BOAT_DRIVER)&&!player.vehicle)return false;
     if(player.vehicle)exitVehicle(true);
     if(player.transit.mode||!selected||otGames.active)return false;
-    const p=selected.group.position;if(Math.hypot(player.x-p.x,player.z-p.z)>3.6){toast('Chegue perto da embarcação pelo píer.','warn');return false;}
+    const p=selected.group.position;if(Math.hypot(player.x-p.x,player.z-p.z)>(selected.boardRadius||3.6)){toast('Chegue perto da embarcação pelo píer.','warn');return false;}
     const lock=await window.OTTHOS_RTDB?.claimBoat?.(selected.id);if(lock&&lock.ok===false){toast(lock.error||'A embarcação já está sendo usada por outro jogador.','warn',2800);return false;}world.boat=selected;
     input.mobilityAccelerate=false;input.mobilityBrake=false;player.boating=true;player.boat.passengerOf='';player.boat.passengerUid='';player.boat.passengerBotId='';player.boat.heading=world.boat.heading||0;player.boat.speed=0;player.boat.steerVisual=0;player.x=p.x;player.z=p.z;player.y=.18;player.vx=player.vz=0;state.boats.activeBoatId=world.boat.id;state.boats.passengerOf='';const companion=nearestRideCompanion(9);if(companion)boardNpcPassenger(companion,'boat');updateBoatPanel();updateVehicleControlsUI();auditPlayerMode('board-boat-driver');toast('Barco pronto. Use o manche para navegar.','good',2300);saveState(true);return true;
   }
@@ -11597,9 +11597,9 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
     for(const spec of SEA_CRAFT){
       const group=createSeaCraftModel(spec),saved=state.boats.parked?.[spec.id],bounds=v704WorldBounds();
       const valid=saved&&[saved.x,saved.z,saved.heading].every(Number.isFinite)&&saved.x>bounds.minX+4&&saved.x<bounds.maxX-4&&saved.z<bounds.maxZ-4&&waterAt(saved.x,saved.z)?.ocean;
-      const pose=valid?saved:spec,boat={...spec,heading:pose.heading,seaGoing:true,dock:MARINA_DOCK,group};
+      const pose=valid?saved:spec,boat={...spec,heading:pose.heading,seaGoing:true,boardRadius:6.2,dock:MARINA_DOCK,group};
       group.position.set(pose.x,.1,pose.z);group.rotation.y=pose.heading;worldGroup.add(group);world.boats.set(spec.id,boat);
-      registerInteractable({id:'board-'+spec.id,type:'boat',icon:'🚤',label:'Pilotar '+spec.label,radius:3.6,priority:240,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!player.boating&&!player.vehicle&&!otGames.active,action:()=>enterBoat(boat)});
+      registerInteractable({id:'board-'+spec.id,type:'boat',icon:'🚤',label:'Pilotar '+spec.label,radius:boat.boardRadius,priority:240,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!player.boating&&!player.vehicle&&!otGames.active,action:()=>enterBoat(boat)});
     }
     world.navCache?.clear?.();
   }

@@ -121,7 +121,7 @@
         "yaw": 0,
         "radius": 6,
         "hp": 100,
-        "parkedAt": 1793019316211
+        "parkedAt": 1793021298899
       }
     },
     {
@@ -182,7 +182,7 @@
         "yaw": 1.5707963267948966,
         "radius": 6,
         "hp": 100,
-        "parkedAt": 1793019324364
+        "parkedAt": 1793021307147
       }
     }
   ],
@@ -190,7 +190,7 @@
     "id": "sea-azul",
     "label": "Lancha Azul · esportiva",
     "seaGoing": true,
-    "x": -227.28242442438165,
+    "x": -227.6664229870188,
     "z": 528,
     "heading": -1.5707963267948966,
     "maxSpeed": 22,
@@ -238,7 +238,7 @@
         "label": "Lancha Azul · esportiva",
         "icon": "🚤",
         "group": "Embarcações",
-        "x": -227.28242442438165,
+        "x": -227.6664229870188,
         "z": 528,
         "navX": -220,
         "navZ": 528,
@@ -270,10 +270,10 @@
         "label": "Lancha Coral · esportiva",
         "icon": "🚤",
         "group": "Embarcações",
-        "x": -204,
-        "z": 539.89,
+        "x": -212.85,
+        "z": 535.01,
         "navX": -220,
-        "navZ": 539.89,
+        "navZ": 535.01,
         "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
         "actions": [
           "Caminhar pelo píer",
@@ -291,7 +291,7 @@
         "yaw": 1.5707963267948966,
         "radius": 6,
         "hp": 100,
-        "parkedAt": 1793019324364
+        "parkedAt": 1793021307147
       },
       {
         "mode": "helicopter",
@@ -302,7 +302,7 @@
         "yaw": 0,
         "radius": 6,
         "hp": 100,
-        "parkedAt": 1793019316211
+        "parkedAt": 1793021298899
       }
     ],
     "marina": {
@@ -332,7 +332,7 @@
         "id": "sea-azul",
         "label": "Lancha Azul · esportiva",
         "seaGoing": true,
-        "x": -227.28242442438165,
+        "x": -227.6664229870188,
         "z": 528,
         "heading": -1.5707963267948966,
         "maxSpeed": 22,
@@ -352,8 +352,8 @@
         "id": "sea-coral",
         "label": "Lancha Coral · esportiva",
         "seaGoing": true,
-        "x": -204,
-        "z": 539.89,
+        "x": -212.85,
+        "z": 535.01,
         "heading": 1.571,
         "maxSpeed": 20,
         "visible": false

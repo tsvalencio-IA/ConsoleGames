@@ -1,9 +1,9 @@
-const REVISION = 'a5d8397ced44908a';
-const CACHE = `otthi-v70629-${REVISION}`;
+const REVISION = 'c4126b3d705770c7';
+const CACHE = `otthi-v70630-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.26.1-destinos-marina';
+const BUILD = '705.26.2-cam-fluida';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70629';
+const RELEASE_MANIFEST = './release-manifest.json?v=70630';
 
 const REQUIRED_SHELL = [
   './assets/js/controls/dance-pose-controller.js?v=body1',
@@ -23,23 +23,23 @@ const REQUIRED_SHELL = [
   './assets/js/world-venue-bridge.js',
   './assets/js/world-venue-trip.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70629',
-  './style.css?v=70629',
-  './assets/vendor/three-r128.min.js?v=70629',
-  './assets/js/core/runtime-config.js?v=70629',
-  './assets/js/core/safe-pointer.js?v=70629',
-  './assets/js/core/viewport-manager.js?v=70629',
-  './assets/js/save-db.js?v=70629',
-  './firebase-config.js?v=70629',
-  './assets/js/game-account.js?v=70629',
-  './assets/js/multiplayer-rtdb.js?v=70629',
-  './app.js?v=70629',
-  './assets/js/ui/shared-modal.js?v=70629',
-  './assets/js/core/performance-guardian.js?v=70629',
-  './assets/js/multiplayer/room-manager.js?v=70629',
-  './assets/js/education/adaptive-learning.js?v=70629',
-  './assets/js/safety/child-safety.js?v=70629',
-  './manifest.webmanifest?v=70629'
+  './index.html?v=70630',
+  './style.css?v=70630',
+  './assets/vendor/three-r128.min.js?v=70630',
+  './assets/js/core/runtime-config.js?v=70630',
+  './assets/js/core/safe-pointer.js?v=70630',
+  './assets/js/core/viewport-manager.js?v=70630',
+  './assets/js/save-db.js?v=70630',
+  './firebase-config.js?v=70630',
+  './assets/js/game-account.js?v=70630',
+  './assets/js/multiplayer-rtdb.js?v=70630',
+  './app.js?v=70630',
+  './assets/js/ui/shared-modal.js?v=70630',
+  './assets/js/core/performance-guardian.js?v=70630',
+  './assets/js/multiplayer/room-manager.js?v=70630',
+  './assets/js/education/adaptive-learning.js?v=70630',
+  './assets/js/safety/child-safety.js?v=70630',
+  './manifest.webmanifest?v=70630'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -204,7 +204,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70629') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70630') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })
