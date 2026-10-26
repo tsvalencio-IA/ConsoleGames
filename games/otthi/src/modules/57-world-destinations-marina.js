@@ -42,9 +42,9 @@
     for(const spec of SEA_CRAFT){
       const group=createSeaCraftModel(spec),saved=state.boats.parked?.[spec.id],bounds=v704WorldBounds();
       const valid=saved&&[saved.x,saved.z,saved.heading].every(Number.isFinite)&&saved.x>bounds.minX+4&&saved.x<bounds.maxX-4&&saved.z<bounds.maxZ-4&&waterAt(saved.x,saved.z)?.ocean;
-      const pose=valid?saved:spec,boat={...spec,heading:pose.heading,seaGoing:true,dock:MARINA_DOCK,group};
+      const pose=valid?saved:spec,boat={...spec,heading:pose.heading,seaGoing:true,boardRadius:6.2,dock:MARINA_DOCK,group};
       group.position.set(pose.x,.1,pose.z);group.rotation.y=pose.heading;worldGroup.add(group);world.boats.set(spec.id,boat);
-      registerInteractable({id:'board-'+spec.id,type:'boat',icon:'🚤',label:'Pilotar '+spec.label,radius:3.6,priority:240,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!player.boating&&!player.vehicle&&!otGames.active,action:()=>enterBoat(boat)});
+      registerInteractable({id:'board-'+spec.id,type:'boat',icon:'🚤',label:'Pilotar '+spec.label,radius:boat.boardRadius,priority:240,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!player.boating&&!player.vehicle&&!otGames.active,action:()=>enterBoat(boat)});
     }
     world.navCache?.clear?.();
   }

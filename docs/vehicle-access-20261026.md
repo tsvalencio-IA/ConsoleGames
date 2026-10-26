@@ -13,9 +13,11 @@ Problema: a praia não podia ser selecionada pelo atalho devido ao identificador
 
 Os carros continuam sendo modelos autorais aproximados: estas correções não os transformam em CAD de fábrica nem constituem aprovação de fidelidade de toda a frota. Referências consultadas: [Golf VII, Volkswagen Classic](https://www.volkswagen-newsroom.com/en/golf-7-20122019-20035), [linha Fiat 2011, acervo oficial](https://www.media.stellantis.com/br-pt/fiat/press/fiat-automoveis-traz-novidades-em-sua-linha-2011). Nenhuma fotografia de referência foi redistribuída.
 
+O rastreamento também foi ajustado: o orçamento considera a captura e a próxima inferência, com o mesmo teto absoluto de 550 ms. Isso evita intervalos falsos de perda entre resultados válidos. A perda real do objeto/mão continua interrompendo os comandos e o disparo.
+
 ## Verificação
 
-- 240 testes de regras passaram.
+- 242 testes de regras passaram.
 - Galeria dos 44 modelos: geometrias válidas, contagem de rodas/assentos e até 25 chamadas de desenho; geometria de pintura do Fusca igual à publicada antes desta alteração.
 - `world-destinations-browser.mjs`: cartões de GPS, embarque pelo AÇÃO, voo/pouso do helicóptero, avião estacionado, lancha conduzida por teclas, bloqueio de desembarque no mar, retorno ao píer, reembarque, família e recarga do save. Reprodução local do protocolo online verifica o modelo da lancha e o acompanhamento do passageiro.
 - `public-destinations-browser.mjs`: compara hashes da versão publicada, opera a interface mobile, confere embarque e destinos, entrada do WAR, neve, ondas, PWA, modelos reais de mãos/corpo com imagens estáticas oficiais e integridade do instalador existente.

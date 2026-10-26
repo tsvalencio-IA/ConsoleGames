@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.26.1-destinos-marina',
+    build: '705.26.2-cam-fluida',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

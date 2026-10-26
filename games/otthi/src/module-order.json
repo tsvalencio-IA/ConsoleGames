@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.26.1-destinos-marina",
+  "build": "705.26.2-cam-fluida",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "271ca0d6d348399e90182f54720a48e2e212144051ccbbf8188bce93b9174e40"
+      "sha256Body": "3d64c14b4266cfad8d7a2cf8a6ce960ac9fb244bf67bc06ad70adf3cd823fd9e"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -161,7 +161,7 @@
       "startLine": 3559,
       "endLine": 3717,
       "description": "Água, câmera e animação da pesca, barco e física náutica",
-      "sha256Body": "490a24e8fabdc3e449305b8fcfcb2bf3f7209b959850fd68744f238fabf1831f"
+      "sha256Body": "3efe185c1f8674b9d9301ef33fa4acdf0c73b441c04943df17549d7ac2de2d9b"
     },
     {
       "file": "src/modules/19-campfire-hunting-house-extensions.js",
@@ -495,7 +495,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "12f814b0620b54b012be54ed4deb37d194d0a62cad7a30a7b8e2ddeedd252535"
+      "sha256Body": "0aa914577efc57871466926db0427b7cc3294b6a84cceca4a3618a964d489eab"
     }
   ],
   "styles": [

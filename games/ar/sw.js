@@ -1,9 +1,9 @@
 /* thIAguinho ARCADE — ar: cache privado, versão atual primeiro.
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
-// Release 2026-10-25: preserve bounded aim acquisition while on-device inference catches up.
+// Release 2026-10-26: continuous inference budget within the same 550 ms cap.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v27";
+const CACHE=PREFIX+"pro-control-v28";
 const FILES=["./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
 "./multiplayer.js","./multiplayer.css","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./object-tracker.js","./object-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
