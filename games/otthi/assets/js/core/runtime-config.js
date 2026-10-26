@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.26.2-cam-fluida',
+    build: '705.26.3-vida-aeroporto',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

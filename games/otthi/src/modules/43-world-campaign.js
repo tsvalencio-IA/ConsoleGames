@@ -22,11 +22,11 @@
   function campaignAircraftHeight(id){return WORLD_CAMPAIGN_AIRCRAFT[id]?.height??(id==='plane'?1.3:1.6);}
   function campaignCreateAircraft(id){const spec=WORLD_CAMPAIGN_AIRCRAFT[id];return spec?.model==='balloon'?createMountainBalloon():spec?.model?createCivilianAirframe(spec.model,spec.livery):otGamesAirframe(id);}
   function campaignParkAircraft(id,b){if(!WORLD_CAMPAIGN_AIRCRAFT[id])return false;state.vehicles.aircraft=state.vehicles.aircraft||{};state.vehicles.aircraft[id]={x:b.x,z:b.z,yaw:b.yaw,hp:Math.max(1,Math.min(100,b.hp)),parkedAt:Date.now()};saveState(true);campaignSyncAircraft();return true;}
-  function campaignSyncAircraft(){for(const mesh of worldCampaign.aircraft?.children||[]){const p=campaignAircraftPose(mesh.name);mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mesh.name),p.z);mesh.rotation.y=p.yaw;mesh.visible=!(otGames.active&&(otGames.aircraftId||otGames.mode)===mesh.name);}}
+  function campaignSyncAircraft(){for(const mesh of worldCampaign.aircraft?.children||[]){const p=campaignAircraftPose(mesh.name);mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mesh.name),p.z);mesh.rotation.y=p.yaw;mesh.visible=!(otGames.active&&(otGames.aircraftId||otGames.mode)===mesh.name)&&campaignDist(otGamesFocus(),p)<(otGames.active?380:185);}}
   async function campaignBoardAircraft(id){const p=campaignAircraftPose(id);if(!p||!running||paused||otGames.active||player.vehicle||player.boating||player.transit.mode||campaignDist(player,p)>p.radius)return false;const mode=p.mode||id,pending=campaignPending();if(pending&&pending.mode===mode&&pending.onGround&&campaignDist(pending.body,p)<3)return campaignResume();return otGamesEnter(mode,{armed:false,difficulty:'normal',groundLaunch:true,boarding:p});}
   function campaignLandingZone(mode,b){
     const a=WORLD_CAMPAIGN_SITES.airbase;
-    return mode==='plane'?Math.abs(b.x-a.x)<39&&Math.abs(b.z-(a.z+4))<4.6&&Math.abs(Math.cos(b.yaw))<.3:campaignDist(b,WORLD_CAMPAIGN_AIRCRAFT.helicopter)<8;
+    return mode==='plane'?((Math.abs(b.x-a.x)<39&&Math.abs(b.z-(a.z+4))<4.6)||(b.x>26&&b.x<156&&Math.abs(b.z+216)<5.5))&&Math.abs(Math.cos(b.yaw))<.3:campaignDist(b,WORLD_CAMPAIGN_AIRCRAFT.helicopter)<8;
   }
   function campaignDist(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
   function campaignHome(mode){return mode==='ground'?WORLD_CAMPAIGN_SITES.hq:WORLD_CAMPAIGN_SITES.airbase;}

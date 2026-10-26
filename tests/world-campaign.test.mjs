@@ -105,7 +105,7 @@ test('campaign MISSÕES button exists outside collapsed quickBar; bases and both
   const all=Array.from(f.context.campaignMapLocations());
   assert.equal(all.length,5);
   assert.deepEqual(all.map(x=>x.id),['campaign-hq','campaign-airbase','campaign-north','campaign-plane','campaign-helicopter']);
-  assert(all.every(x=>x.missionTarget),'all bases must be visually marked on the map');
+  assert(all.every(x=>Number.isFinite(x.x)&&Number.isFinite(x.z)),'all bases retain geographic map markers');assert(all.every(x=>!x.missionTarget),'idle bases must not look like simultaneous active mission targets');
   f.api.navigate('airbase');
   assert.deepEqual(f.waypoints,['campaign-airbase'],'route button must call existing blue-arrow GPS system');
 });

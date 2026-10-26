@@ -54,7 +54,14 @@
   function isDrivingServiceVehicle(kind){return!!(player.vehicle&&!player.car.passengerOf&&String(player.car.kind||'')===kind);}
   function onServiceVehicleBoarded(vehicle){const job=currentServiceMissionJob(),kind=String(vehicle?.serviceType||'');if(!job||serviceKindForJob(job)!==kind)return;job.serviceVehicleId=vehicle.id;job.serviceVehicleBoarded=true;job.serviceVehicleArrived=false;if(job.cooperative){if(typeof onCoopServiceVehicleBoarded==='function')onCoopServiceVehicleBoarded(vehicle,job);}else{setMissionState(job,MISSION_STATES.TRAVELLING,'service-vehicle-boarded');focusActiveJob();}saveState(true);}
   function onServiceVehicleExited(vehicle){const job=currentServiceMissionJob();if(!job||job.serviceVehicleId!==vehicle?.id)return;job.lastVehicleExitAt=Date.now();saveState();}
-  function returnServiceVehicleHome(vehicle,dt){if(!vehicle?.home||vehicle.occupied)return;const distance=moveServiceVehicle(vehicle,vehicle.home,dt);if(distance<.8){vehicle.group.position.set(vehicle.home.x,.02,vehicle.home.z);vehicle.group.rotation.y=vehicle.home.heading||vehicle.group.rotation.y;vehicle.currentSpeed=0;vehicle.serviceRoute=[];vehicle.serviceRouteIndex=0;}}
+  function returnServiceVehicleHome(vehicle,dt){
+    if(!vehicle?.home||vehicle.occupied)return;
+    // Parked service vehicles used to calculate a complete world route, then
+    // clear that route on every traffic tick. Check arrival before pathfinding.
+    let distance=Math.hypot(vehicle.group.position.x-vehicle.home.x,vehicle.group.position.z-vehicle.home.z);
+    if(distance>=.8)distance=moveServiceVehicle(vehicle,vehicle.home,dt);
+    if(distance<.8){vehicle.group.position.set(vehicle.home.x,.02,vehicle.home.z);if(Number.isFinite(vehicle.home.heading))vehicle.group.rotation.y=vehicle.home.heading;vehicle.currentSpeed=0;vehicle.serviceRoute=[];vehicle.serviceRouteIndex=0;(vehicle.group.userData??={}).roadPath=[{x:vehicle.home.x,z:vehicle.home.z}];}
+  }
   function createFireIncidentSite(site){
     const group=new THREE.Group();group.position.set(site.x,0,site.z);group.visible=false;worldGroup.add(group);const flames=[];
     for(let i=0;i<6;i++){const flame=new THREE.Mesh(new THREE.ConeGeometry(.32+i%2*.1,.8+i%3*.18,7),renderMat(i%2?0xffcf3d:0xff5b35,{emissive:i%2?0xff8a00:0xc31b08,emissiveIntensity:1.5,roughness:.18}));flame.position.set((i%3-1)*.38,.45+Math.floor(i/3)*.2,(i<3?-.22:.22));group.add(flame);flames.push(flame);}const smoke=[];for(let i=0;i<4;i++){const puff=new THREE.Mesh(new THREE.DodecahedronGeometry(.32+i*.07,0),mat(0x66717d,{transparent:true,opacity:.34,roughness:1}));puff.position.set((i%2?-.18:.18),1.2+i*.35,0);group.add(puff);smoke.push(puff);}const fire={...site,group,flames,smoke,active:false,startedAt:0,playerHelping:false,truckHelping:false};world.fires.push(fire);registerInteractable({id:`fire-${site.id}`,type:'fire',icon:'🧯',label:`Ajudar: ${site.name}`,radius:4.2,priority:245,getPos:()=>({x:site.x,z:site.z}),action:()=>helpExtinguishFire(fire)});return fire;

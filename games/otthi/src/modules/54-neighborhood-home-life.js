@@ -34,8 +34,12 @@
   createHouse=function(...args){const before=new Set(worldGroup.children),house=homeOriginalCreateHouse(...args);house.renderObjects=new Set(worldGroup.children.filter(o=>!before.has(o)));return house;};
   const homeOriginalAddInterior=addHouseInterior;
   addHouseInterior=function(house,...args){const before=new Set(worldGroup.children),result=homeOriginalAddInterior(house,...args);house.renderObjects??=new Set();for(const o of worldGroup.children)if(!before.has(o))house.renderObjects.add(o);return result;};
+  function updateHouseInteriorVisibility(){
+    for(const house of world.houses||[]){const show=currentHouse===house||house.publicBuilding&&Math.hypot(player.x-house.x,player.z-house.z)<28;for(const item of house.interiorObjects||[]){if(item.isLight)item.visible=show&&visualQualityProfile(qualityTier()).glows;else item.visible=show;}}
+  }
+  const homeOriginalLOD=updateVisualLOD;updateVisualLOD=function(...args){homeOriginalLOD(...args);updateHouseInteriorVisibility();};
   function prepareHomeRender(){
-    const h=currentHouse;if(!h||cameraMode!=='interior'||!h.renderObjects)return null;const keep=new Set(h.renderObjects),hidden=[];
+    updateHouseInteriorVisibility();const h=currentHouse;if(!h||cameraMode!=='interior'||!h.renderObjects)return null;const keep=new Set(h.renderObjects),hidden=[];
     if(characterActivities.visual?.host)keep.add(characterActivities.visual.host);if(neighborhoodHome.seat?.host)keep.add(neighborhoodHome.seat.host);keep.add(playerGroup);if(contactShadow)keep.add(contactShadow);
     for(const a of Object.values(familyWorld.actors||{}))if(Math.abs(a.x-h.x)<h.w/2&&Math.abs(a.z-h.z)<h.d/2){keep.add(a.group);if(a.shadow)keep.add(a.shadow);if(a.label)keep.add(a.label);}
     for(const o of worldGroup.children)if(o.visible&&!keep.has(o)){hidden.push(o);o.visible=false;}

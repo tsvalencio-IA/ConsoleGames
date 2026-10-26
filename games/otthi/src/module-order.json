@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.26.2-cam-fluida",
+  "build": "705.26.3-vida-aeroporto",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3d64c14b4266cfad8d7a2cf8a6ce960ac9fb244bf67bc06ad70adf3cd823fd9e"
+      "sha256Body": "5772e5b006f2b469142ff26b02bca32d588832e51914fc1d04048a865adde177"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -49,21 +49,21 @@
       "startLine": 1173,
       "endLine": 1314,
       "description": "Avatar, roupas, uniformes, vida, moldes e ajuda",
-      "sha256Body": "0f3a8dadd171705cfbdc2b0f4483c54fde3ebe80e5a4c4e7605e32ee6b619ddd"
+      "sha256Body": "bdee4b8f0a7bfbc015cbae344bb20def61842b1d2bcd3058ccfcc7c4e8b88bba"
     },
     {
       "file": "src/modules/05a-world-layout-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "3f61ddab464a798411fc4dff4b241ceaf7caea802b67a9c0e012b30c04bc6360"
+      "sha256Body": "27c47045de54b6d784eae3c8d41273a47a39ad91997668cba9e4f8e77b55f67b"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
       "startLine": 1316,
       "endLine": 1454,
       "description": "Missões, objetivos, perfil, HUD, inventário e ferramentas",
-      "sha256Body": "6ba2e934982e3d106801341994a29edf1b02295570c911c5fa1912e5de159a8a"
+      "sha256Body": "0e122e411aef5685062d7c4702c85c034c833d8d036cb0e944ed660bdbf11fd2"
     },
     {
       "file": "src/modules/07-navigation-traffic-routes.js",
@@ -77,14 +77,14 @@
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "225b307f3bb9ce85d40ea73a6310e59a84f026faa36c51a44463535fa010e884"
+      "sha256Body": "32f7ca43a993613c55717cc333d7f9c94f42e96007019f56c9d5b372d5dfc9e8"
     },
     {
       "file": "src/modules/08a-world-atlas.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "6173c900cb2b7bf9f0b687c8a151df22af14df24f5794bd12c02f13cbe4186a2"
+      "sha256Body": "2cf9cb113ef49f7f897d96af61107730dcd3856a5ff6edd5ba85326088405ed2"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -133,14 +133,14 @@
       "startLine": 2993,
       "endLine": 3085,
       "description": "Cogumelos, portais, praça, distrito e decoração urbana",
-      "sha256Body": "44559ad6efdc06725a2a80ca29edbffb91b8eacd80da18fc74ae5ca64c308ea0"
+      "sha256Body": "320cdc1ea78504d553c6c03a262265ffba1a70cdc57aaedfedc80e00a372598a"
     },
     {
       "file": "src/modules/14a-ottovias-highway-v7054.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "a250df91cb7c2dfad9361cf526074d1e199497f36e2b103a8ea449c9c306f414"
+      "sha256Body": "c6c3ec9dd8ba57afbcc04074f8fdeadc57082e44d56723128b501d75565ff526"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "e28ac5d2d85302906d0cf6a098e7e089eb97a97a16244fce1cc920477ee38612"
+      "sha256Body": "901dcbe6854f3b69954f8981725f2a33b1bdd61c7fdaeeeb3f0a46dbccd3a0d1"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "56c9abfa9988ba9240789828a881b9f9870cefdf7cc4f3561a4875818ca71e65"
+      "sha256Body": "c0b40accbf8d41e1f3773d3599d80822bd992c6b3ed0241483d459ab78fe73d0"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "cc882bf8638309d76c43573ed0545719e87d8d841ce66a08d8728084da63600b"
+      "sha256Body": "d617a9b170e4bf91817ed06a02df89f30fd788d248859288920020de01c7e015"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "4a152048f42b50b9f015112ceb377c8da9681cd168616f14e92d4a73b109a915"
+      "sha256Body": "3819d947e57526a2bc7d3a937b678bda39bd013882ca079d71080adf692ae65e"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -483,7 +483,7 @@
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "9c11dd8c5a63e728314dacc60a81d8613af9f65e17f141f7b30c78800add1b68"
+      "sha256Body": "a9d8796ceb647ea07e6f9c569b91afb55874a73528b3e765abc7164a8046d739"
     },
     {
       "file": "src/modules/55-world-traffic-and-air.js",
@@ -707,7 +707,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
-      "sha256Body": "cac2ba181e789f4684b4317383d1277b7b268462a1e1dbe0e06769c90cab0261"
+      "sha256Body": "918c0601f732e47fd9b2fdf7d9043aa08499bde9cf0ef0500ecb4611437afea6"
     }
   ]
 }
