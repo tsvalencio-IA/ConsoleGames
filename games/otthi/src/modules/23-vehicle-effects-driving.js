@@ -48,23 +48,11 @@
     }
   }
   let engineAudio=null,driftSoundCooldown=0,vehicleImpactCount=0;
-  function startEngineSound(){
-    if(!state.settings.sound||engineAudio)return;
-    try{
-      const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)return;
-      const ctx=beep.ctx||(beep.ctx=window.GameAudio?.context()||new Ctx());
-      const osc=ctx.createOscillator(),gain=ctx.createGain();
-      osc.type='sawtooth';osc.frequency.value=65;gain.gain.value=0;
-      osc.connect(gain);gain.connect(ctx.destination);osc.start();
-      engineAudio={ctx,osc,gain};gain.gain.linearRampToValueAtTime(.018,ctx.currentTime+.18);
-    }catch(_){}
-  }
-  function stopEngineSound(){
-    if(!engineAudio)return;
-    try{engineAudio.gain.gain.linearRampToValueAtTime(0,engineAudio.ctx.currentTime+.12);engineAudio.osc.stop(engineAudio.ctx.currentTime+.16);}catch(_){}
-    engineAudio=null;
-  }
+  function startEngineSound(){if(!state.settings.sound||engineAudio)return;const model=player.boating?'boat':currentVehicleRef()?.brazilModel||player.car.id||'',kind=player.boating?'boat':player.car.kind||'car',voice=window.GameAudio?.vehicleVoice(model,kind);if(voice)engineAudio={voice,signature:model+'|'+kind};}
+  function stopEngineSound(){engineAudio?.voice.dispose();engineAudio=null;}
+  function updateEngineSound(speed,kind,model){if(!state.settings.sound){stopEngineSound();return;}if(engineAudio&&engineAudio.signature!==model+'|'+kind)stopEngineSound();if(!engineAudio)startEngineSound();engineAudio?.voice.update(speed,input.mobilityAccelerate?1:input.mobilityBrake?0:Math.abs(Number(input.z||0)),performance.now()<Number(player.car.turboUntil||0),!paused);}
   function updateVehicleFX(dt){
+    if(player.boating&&!player.boat.passengerOf){updateEngineSound(player.boat.speed,'boat','boat');return;}
     if(!player.vehicle){if(engineAudio)stopEngineSound();return;}
     if(player.car.passengerOf){if(engineAudio)stopEngineSound();if(els.vehicleBadge)els.vehicleBadge.textContent=`${serviceVehicleIcon(player.car.kind)} Passageiro — AÇÃO para sair`;return;}
     const car=player.car,wheels=vehicleVisual.userData.wheels,fronts=vehicleVisual.userData.frontWheels;
@@ -81,12 +69,7 @@
       driftSoundCooldown-=dt;if(driftSoundCooldown<=0){driftSoundCooldown=.5;beep(180,55,'sawtooth');}
     }
     const serviceKind=String(car.kind||'car'),serviceIcon=serviceVehicleIcon(serviceKind),siren=!!car.sirenActive,turbo=performance.now()<Number(car.turboUntil||0);for(const [index,light] of (vehicleVisual.userData.serviceLights||[]).entries())light.material.emissiveIntensity=siren?(.32+(Math.floor(performance.now()/180)+index)%2*1.2):.08;if(siren&&performance.now()>Number(car.sirenBeepAt||0)){car.sirenBeepAt=performance.now()+620;beep(serviceKind==='paramedic'?740:serviceKind==='police'?610:520,135,'square');setTimeout(()=>{if(player.vehicle&&player.car.sirenActive)beep(serviceKind==='paramedic'?560:760,120,'square');},175);}if(els.vehicleBadge)els.vehicleBadge.textContent=`${serviceIcon} ${car.label||'Veículo'} • ${Math.round(Math.abs(car.speed)*6)} km/h${turbo?' • TURBO':siren?' • SIRENE':''} — SAIR sempre disponível`;
-    if(!state.settings.sound&&engineAudio)stopEngineSound();
-    else if(state.settings.sound&&!engineAudio)startEngineSound();
-    else if(state.settings.sound&&engineAudio){
-      const freq=68+Math.abs(car.speed)*11.5;
-      try{engineAudio.osc.frequency.setTargetAtTime(freq,engineAudio.ctx.currentTime,.05);}catch(_){}
-    }
+    updateEngineSound(car.speed,car.kind||'car',currentVehicleRef()?.brazilModel||car.id||'');
   }
 
   function mobilityDriverActive(){return(player.vehicle&&!player.car.passengerOf)||(player.boating&&!player.boat.passengerOf);}

@@ -61,7 +61,7 @@
       if(typeof updateFamilyCarry==='function')updateFamilyCarry();
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
-      if(player.vehicle)updateVehicleFX(dt);
+      if(player.vehicle||player.boating||engineAudio)updateVehicleFX(dt);
       if(typeof updateWorkshopMechanicActions==='function')updateWorkshopMechanicActions(dt);if(typeof updateSharedWorldReplica==='function')updateSharedWorldReplica(dt);
       if(typeof fxParticles!=='undefined'&&fxParticles.length)updateFX(dt);
       if(world.fireballs?.length)updateFireballs(dt);
