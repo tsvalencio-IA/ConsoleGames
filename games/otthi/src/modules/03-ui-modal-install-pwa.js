@@ -76,6 +76,7 @@
   document.addEventListener('pointerdown',()=>{modalGestureStartedOutside=els.modal.hidden;},true);
   els.modal.addEventListener('click',event=>{if(modalGestureStartedOutside&&event.detail!==0){modalGestureStartedOutside=false;event.preventDefault();event.stopImmediatePropagation();}},true);
   function openModal(title, html, onReady) {
+    els.modal.classList.remove('atlas-modal');
     state.ui.quickOpen = false;
     if (els.quickBar) els.quickBar.hidden = true;
     els.quickToggleBtn?.classList.remove('active');
@@ -97,7 +98,7 @@
     else if (typeof fishingVisual !== 'undefined' && fishingVisual?.active) stopFishingVisual();
     const resumePausedGame = pauseMenuOpen;
     els.modal.hidden = true;
-    els.modal.classList.remove('map-modal','fishing-modal');
+    els.modal.classList.remove('map-modal','atlas-modal','fishing-modal');
     els.modalBody.innerHTML = '';
     document.body.classList.remove('modal-open');
     els.game?.removeAttribute('aria-hidden');

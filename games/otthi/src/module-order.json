@@ -80,6 +80,13 @@
       "sha256Body": "225b307f3bb9ce85d40ea73a6310e59a84f026faa36c51a44463535fa010e884"
     },
     {
+      "file": "src/modules/08a-world-atlas.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Atlas geográfico e GPS",
+      "sha256Body": ""
+    },
+    {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
       "startLine": 1808,
       "endLine": 2074,
@@ -680,6 +687,13 @@
       "endLine": 0,
       "description": "HUD de corrida concentrado na pista",
       "sha256Body": "eecf7deba8d29875d20ee48ef8f16211cbe409391183f6240a0fe60e3ad65304"
+    },
+    {
+      "file": "src/styles/24-world-life-atlas.css",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Atlas e ações visíveis dos personagens",
+      "sha256Body": ""
     }
   ]
 }
