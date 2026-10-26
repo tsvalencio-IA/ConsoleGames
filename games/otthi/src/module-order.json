@@ -133,7 +133,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "8d8ffe7ea6f2e10ffcccc5a7cf4b0dd199b2c7fe99d95db8c1f4106f27e2bea2"
+      "sha256Body": "a8cb2a0aa4a45d54e64b3f9f0be15cc8efe0d5761415dfbbb93800806430301e"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -161,7 +161,7 @@
       "startLine": 3559,
       "endLine": 3717,
       "description": "Água, câmera e animação da pesca, barco e física náutica",
-      "sha256Body": "df1bb027c63217f56df0f948111c550530ff4ab837edca2b510b7b644d47869b"
+      "sha256Body": "c6f438d1390152314f30c569850ed2d88d9e89bbe2a4e32f6c8f12f3050f4112"
     },
     {
       "file": "src/modules/19-campfire-hunting-house-extensions.js",
@@ -364,14 +364,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "86a58ed42286bb4ef49170517a0fb24ccff80bd90047f7a165b282a9f8f3bf60"
+      "sha256Body": "885091df817b32ab7ab9ba5aa8dded7aaaaf4389646b2dbd1a92739908e7949b"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "2e0c04b35d8458849454d2134c0ef78d08366f8c29af7989bf280d921bdaf28f"
+      "sha256Body": "8de5c2fc89d09b90759c328e21a7cee6bad99dde813d0b75fba1b7e91c2d9f82"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -489,6 +489,13 @@
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
       "sha256Body": "e6ae8276757293503bfdb2123d041fea55976076ea96ff38e5e09d4e54b53219"
+    },
+    {
+      "file": "src/modules/57-world-destinations-marina.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
+      "sha256Body": "4189377d9d4faf3c119a4398495ffd0da167705a149b0361d26e5783e31649be"
     }
   ],
   "styles": [
