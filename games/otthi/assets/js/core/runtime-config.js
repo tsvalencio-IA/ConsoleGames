@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.25.3-city-coast-body',
+    build: '705.26.1-destinos-marina',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

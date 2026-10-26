@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.25.3-city-coast-body",
+  "build": "705.26.1-destinos-marina",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -280,7 +280,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70628,
+  "assetVersion": 70629,
   "revisionLabel": "Cidades, praia, corpo e mãos no WAR, música e coreografia",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

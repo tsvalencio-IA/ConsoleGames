@@ -192,7 +192,7 @@
       icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':site.id==='plane'?'✈️':site.id==='helicopter'?'🚁':'🎯',
       group:'Bases e campanhas',x:site.x,z:site.z,navX:site.navX??site.x,navZ:site.navZ??site.z,
       missionTarget:true,
-      description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Partida de operações com avião ou helicóptero para o Setor Norte.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
+      description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Visite os hangares, a pista e o heliponto. Os veículos estacionados podem ser pilotados livremente.':site.id==='plane'||site.id==='helicopter'?'Aproxime-se da aeronave e toque em AÇÃO para embarcar e pilotar. Pouse e pare para sair.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
       actions:['Marcar a rota azul no GPS','Viajar até o destino','Abrir MISSÕES ao chegar']
     }));
   }
@@ -215,8 +215,8 @@
     }).join('');
     const completed=Object.values(history).reduce((a,b)=>a+Math.max(0,Number(b)||0),0);
     const pending=campaignPending();
-    openModal('WORLD · Bases e campanhas','<p>Viaje até o quartel ou aeroporto para iniciar uma operação. Cumpra o objetivo no norte e volte à base. Os jogos originais continuam disponíveis no console.</p>'+(pending&&!otGames.active?'<button class="btn primary" data-campaign-resume>CONTINUAR OPERAÇÃO · '+otGameModes[pending.mode]+'</button>':'')+cards+(typeof venueDirectoryHtml==='function'?venueDirectoryHtml():'')+'<p>Operações concluídas: '+completed+'</p>',root=>{
-      if(typeof venueBindDirectory==='function')venueBindDirectory(root);
+    openModal('Mundo · destinos e missões',(typeof worldExploreDirectoryHtml==='function'?worldExploreDirectoryHtml():'')+'<p>Viaje até o quartel ou aeroporto para iniciar uma operação. Cumpra o objetivo no norte e volte à base. Os jogos originais continuam disponíveis no console.</p>'+(pending&&!otGames.active?'<button class="btn primary" data-campaign-resume>CONTINUAR OPERAÇÃO · '+otGameModes[pending.mode]+'</button>':'')+cards+(typeof venueDirectoryHtml==='function'?venueDirectoryHtml():'')+'<p>Operações concluídas: '+completed+'</p>',root=>{
+      if(typeof venueBindDirectory==='function')venueBindDirectory(root);if(typeof worldExploreBindDirectory==='function')worldExploreBindDirectory(root);
       root.querySelector('[data-campaign-resume]')?.addEventListener('click',campaignResume);
       $$('[data-campaign-nav]',root).forEach(el=>el.onclick=()=>campaignNavigate(WORLD_CAMPAIGN_SITES[el.dataset.campaignNav]));
       $$('[data-campaign-start]',root).forEach(el=>el.onclick=()=>campaignStart(el.dataset.campaignStart));

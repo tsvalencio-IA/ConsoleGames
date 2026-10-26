@@ -18,16 +18,16 @@ const specs={
  ferrari458:{l:3.62,w:1.59,h:1.00,b:.60,r:.296,fa:1.14,ra:-1.14,front:1.02,rf:.37,rr:-.48,rear:-.98,bp:-.37,seat:-.05,back:-.50,doors:2,crown:.069,nose:.18,midEngine:true,sports:true,twoSeats:true},
  porsche911:{l:3.61,w:1.48,h:1.04,b:.65,r:.288,fa:1.09,ra:-1.04,front:.91,rf:.27,rr:-.60,rear:-1.22,bp:-.30,seat:-.03,back:-.70,doors:2,crown:.081,nose:.23,sports:true},
 
- golf7:{l:3.49,w:1.475,h:1.19,b:.77,r:.284,fa:1.08,ra:-1.08,front:.63,rf:.16,rr:-1.08,rear:-1.55,bp:-.30,seat:.04,back:-.65,doors:4,crown:.032,nose:.09},
+ golf7:{l:3.49,w:1.475,h:1.19,b:.72,r:.284,fa:1.08,ra:-1.08,front:.63,rf:.16,rr:-1.08,rear:-1.55,bp:-.30,seat:.04,back:-.65,doors:4,crown:.032,nose:.09},
  palio:{l:3.14,w:1.34,h:1.18,b:.75,r:.258,fa:.98,ra:-.98,front:.55,rf:.13,rr:-.96,rear:-1.38,bp:-.30,seat:.03,back:-.63,doors:4,crown:.055,nose:.17},
  passat:{l:3.54,w:1.34,h:1.12,b:.70,r:.260,fa:1.04,ra:-1.04,front:.62,rf:.18,rr:-.69,rear:-1.60,bp:-.33,seat:.01,back:-.65,doors:2,crown:.015,nose:.045,classic:true},
  tempra:{l:3.49,w:1.36,h:1.16,b:.76,r:.267,fa:1.04,ra:-1.04,front:.66,rf:.18,rr:-.70,rear:-1.20,bp:-.28,seat:.04,back:-.65,doors:4,crown:.018,nose:.06},
  maverick:{l:3.68,w:1.44,h:1.13,b:.69,r:.282,fa:1.12,ra:-1.10,front:.65,rf:.16,rr:-.58,rear:-1.09,bp:-.36,seat:.01,back:-.65,doors:2,crown:.066,nose:.08,classic:true},
  landau:{l:4.33,w:1.59,h:1.16,b:.75,r:.291,fa:1.28,ra:-1.28,front:.91,rf:.36,rr:-.69,rear:-1.27,bp:-.20,seat:.15,back:-.64,doors:4,crown:.019,nose:.022,classic:true,vinyl:true},
- gol:{l:3.12,w:1.34,h:1.17,b:.70,r:.257,fa:.98,ra:-.99,front:.55,rf:.19,rr:-.81,rear:-1.34,bp:-.27,seat:.01,back:-.63,classic:true,doors:2,crown:.025,nose:.055},
+ gol:{l:3.12,w:1.34,h:1.17,b:.68,r:.257,fa:.98,ra:-.99,front:.55,rf:.19,rr:-.81,rear:-1.34,bp:-.27,seat:.01,back:-.63,classic:true,doors:2,crown:.025,nose:.055},
  uno:{l:3.05,w:1.32,h:1.25,b:.74,r:.255,fa:.94,ra:-.98,front:.53,rf:.22,rr:-1.12,rear:-1.40,bp:-.30,seat:.01,back:-.64,doors:2,crown:.034,nose:.055},
- golf:{l:3.34,w:1.43,h:1.22,b:.78,r:.276,fa:1.03,ra:-1.02,front:.58,rf:.16,rr:-1.10,rear:-1.61,bp:-.28,seat:.01,back:-.65,doors:4,crown:.057,nose:.12},
- opala:{l:3.87,w:1.51,h:1.18,b:.73,r:.282,fa:1.15,ra:-1.15,front:.66,rf:.16,rr:-.66,rear:-1.30,bp:-.40,seat:.01,back:-.65,classic:true,doors:2,crown:.047,nose:.07},
+ golf:{l:3.34,w:1.43,h:1.22,b:.73,r:.276,fa:1.03,ra:-1.02,front:.58,rf:.16,rr:-1.10,rear:-1.61,bp:-.28,seat:.01,back:-.65,doors:4,crown:.057,nose:.12},
+ opala:{l:3.87,w:1.51,h:1.18,b:.71,r:.282,fa:1.15,ra:-1.15,front:.66,rf:.16,rr:-.66,rear:-1.30,bp:-.40,seat:.01,back:-.65,classic:true,doors:2,crown:.047,nose:.07},
  chevette:{l:3.26,w:1.33,h:1.15,b:.71,r:.258,fa:.98,ra:-.98,front:.54,rf:.13,rr:-.64,rear:-1.08,bp:-.31,seat:0,back:-.59,classic:true,doors:2,crown:.052,nose:.12},
  s10:{l:3.94,w:1.55,h:1.39,b:.90,r:.316,fa:1.22,ra:-1.21,front:.71,rf:.26,rr:-.62,rear:-.77,bp:-.25,seat:.16,back:-.43,doors:4,pickup:true,crown:.047,nose:.12},
  hilux:{l:3.94,w:1.59,h:1.45,b:.94,r:.329,fa:1.20,ra:-1.18,front:.74,rf:.28,rr:-.61,rear:-.79,bp:-.25,seat:.19,back:-.42,doors:4,pickup:true,crown:.074,nose:.15},
@@ -114,7 +114,9 @@ function build(T,key,h){
   else{line([[-r*.65,y+r*.46,z],[0,y-r*.08,z],[r*.65,y+r*.46,z]],.0055,chrome,'chrome');line([[-r*.65,y+r*.05,z],[-r*.37,y-r*.49,z],[0,y-r*.13,z],[r*.37,y-r*.49,z],[r*.65,y+r*.05,z]],.0055,chrome,'chrome');}
  }
  function plate(y,z,rear=false){rb(0xe2e5e3,0,y,z,.32,.108,.012,'fixed',.009);box(0x1c4d83,0,y+.040,z+(rear?-.008:.008),.30,.017,.003);for(let i=0;i<7;i++){const x=-.109+i*.035;box(0x223139,x,y-.010,z+(rear?-.009:.009),.014,.034,.002);}}
- const nose=L+.018,ly=Y-.087;
+ // Lamp centres follow the actual curved bonnet at the nose. The old Y-.087
+ // placed lenses above the falling bonnet, making them float outside the body.
+ const nose=L+.018,ly=top(L)+p.crown*.5-(key==='opala'||key==='chevette'||key==='maverick'?.105:.080);
  // A curved bumper wraps into the fenders, rather than a rectangular block.
  function bumper(e,y,hh,c,k){const bw=W+.012,depth=.10;patch(36,12,(u,v)=>{const x=(u*2-1)*bw,angle=v*Math.PI*2,z=e*(L+.015+depth*.45*Math.cos(angle)-.10*(Math.abs(x)/bw)**6);return[x,y+hh/2*Math.sin(angle),z];},c,k);}
  for(const e of[-1,1]){
@@ -268,7 +270,7 @@ function build(T,key,h){
   const roundness=['palio','peugeot206','corolla2007','porsche911'].includes(key)?.19:p.sports?.16:.095,nearWhite=0xffffff;
   root.userData.surfaceWarp={front:p.front,rear:p.rear,length:p.l,width:p.w,roundness};
  }
- Object.assign(root.userData,{coachwork:'curved-panels-v2',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
+ Object.assign(root.userData,{coachwork:'bonnet-aligned-panels-v3',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
  return true;
 }
 // The 911 uses a continuous coupe shell rather than the sedan cabin template.
