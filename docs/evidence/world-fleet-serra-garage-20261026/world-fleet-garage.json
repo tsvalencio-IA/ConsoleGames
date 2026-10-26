@@ -1,0 +1,890 @@
+{
+  "passed": true,
+  "replenishment": {
+    "before": {
+      "ready": true,
+      "authority": true,
+      "fleet": {
+        "v": 1,
+        "revision": 2,
+        "slots": {
+          "plane": {
+            "current": "plane",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "helicopter": {
+            "current": "helicopter",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "heli-tour": {
+            "current": "heli-tour",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "heli-ottovias": {
+            "current": "",
+            "generation": 0,
+            "spawnAt": 1793058995398
+          },
+          "heli-rescue": {
+            "current": "heli-rescue",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-tour": {
+            "current": "plane-tour",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-cargo": {
+            "current": "plane-cargo",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-ottovias": {
+            "current": "plane-ottovias",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "balloon": {
+            "current": "balloon",
+            "generation": 0,
+            "spawnAt": 0
+          }
+        },
+        "craft": {
+          "plane": {
+            "id": "plane",
+            "base": "plane",
+            "x": -5,
+            "z": -165,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "helicopter": {
+            "id": "helicopter",
+            "base": "helicopter",
+            "x": 50,
+            "z": -165,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "heli-tour": {
+            "id": "heli-tour",
+            "base": "heli-tour",
+            "x": 75,
+            "z": -164,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "heli-ottovias": {
+            "id": "heli-ottovias",
+            "base": "heli-ottovias",
+            "x": 96,
+            "z": -164,
+            "yaw": 0,
+            "status": "piloted",
+            "parkedAt": 1793058814781,
+            "pilot": "fleet-local",
+            "departedAt": 1793058815398,
+            "claimAt": 1793058815344,
+            "seenAt": 1793058995397,
+            "y": 15.675141074880495
+          },
+          "heli-rescue": {
+            "id": "heli-rescue",
+            "base": "heli-rescue",
+            "x": 117,
+            "z": -164,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-tour": {
+            "id": "plane-tour",
+            "base": "plane-tour",
+            "x": 80,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-cargo": {
+            "id": "plane-cargo",
+            "base": "plane-cargo",
+            "x": 120,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-ottovias": {
+            "id": "plane-ottovias",
+            "base": "plane-ottovias",
+            "x": 143,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "balloon": {
+            "id": "balloon",
+            "base": "balloon",
+            "x": -66,
+            "z": 89,
+            "yaw": 3.141592653589793,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          }
+        }
+      },
+      "recovery": [],
+      "obstructions": 8
+    },
+    "after": {
+      "ready": true,
+      "authority": true,
+      "fleet": {
+        "v": 1,
+        "revision": 3,
+        "slots": {
+          "plane": {
+            "current": "plane",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "helicopter": {
+            "current": "helicopter",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "heli-tour": {
+            "current": "heli-tour",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "heli-ottovias": {
+            "current": "heli-ottovias-r1",
+            "generation": 1,
+            "spawnAt": 0
+          },
+          "heli-rescue": {
+            "current": "heli-rescue",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-tour": {
+            "current": "plane-tour",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-cargo": {
+            "current": "plane-cargo",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "plane-ottovias": {
+            "current": "plane-ottovias",
+            "generation": 0,
+            "spawnAt": 0
+          },
+          "balloon": {
+            "current": "balloon",
+            "generation": 0,
+            "spawnAt": 0
+          }
+        },
+        "craft": {
+          "plane": {
+            "id": "plane",
+            "base": "plane",
+            "x": -5,
+            "z": -165,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "helicopter": {
+            "id": "helicopter",
+            "base": "helicopter",
+            "x": 50,
+            "z": -165,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "heli-tour": {
+            "id": "heli-tour",
+            "base": "heli-tour",
+            "x": 75,
+            "z": -164,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "heli-ottovias": {
+            "id": "heli-ottovias",
+            "base": "heli-ottovias",
+            "x": 96,
+            "z": -164,
+            "yaw": 0,
+            "status": "piloted",
+            "parkedAt": 1793058814781,
+            "pilot": "fleet-local",
+            "departedAt": 1793058815398,
+            "claimAt": 1793058815344,
+            "seenAt": 1793058995406,
+            "y": 15.675141074880495
+          },
+          "heli-rescue": {
+            "id": "heli-rescue",
+            "base": "heli-rescue",
+            "x": 117,
+            "z": -164,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-tour": {
+            "id": "plane-tour",
+            "base": "plane-tour",
+            "x": 80,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-cargo": {
+            "id": "plane-cargo",
+            "base": "plane-cargo",
+            "x": 120,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "plane-ottovias": {
+            "id": "plane-ottovias",
+            "base": "plane-ottovias",
+            "x": 143,
+            "z": -216,
+            "yaw": 1.5707963267948966,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "balloon": {
+            "id": "balloon",
+            "base": "balloon",
+            "x": -66,
+            "z": 89,
+            "yaw": 3.141592653589793,
+            "status": "parked",
+            "parkedAt": 1793058814781,
+            "pilot": "",
+            "departedAt": 0
+          },
+          "heli-ottovias-r1": {
+            "id": "heli-ottovias-r1",
+            "base": "heli-ottovias",
+            "x": 96,
+            "z": -164,
+            "yaw": 0,
+            "status": "parked",
+            "parkedAt": 1793058995406,
+            "pilot": "",
+            "departedAt": 0
+          }
+        }
+      },
+      "recovery": [],
+      "obstructions": 9
+    }
+  },
+  "recovery": {
+    "ready": true,
+    "authority": true,
+    "fleet": {
+      "v": 1,
+      "revision": 6,
+      "slots": {
+        "plane": {
+          "current": "plane",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "helicopter": {
+          "current": "helicopter",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "heli-tour": {
+          "current": "heli-tour",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "heli-ottovias": {
+          "current": "heli-ottovias-r1",
+          "generation": 1,
+          "spawnAt": 0
+        },
+        "heli-rescue": {
+          "current": "heli-rescue",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "plane-tour": {
+          "current": "plane-tour",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "plane-cargo": {
+          "current": "plane-cargo",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "plane-ottovias": {
+          "current": "plane-ottovias",
+          "generation": 0,
+          "spawnAt": 0
+        },
+        "balloon": {
+          "current": "balloon",
+          "generation": 0,
+          "spawnAt": 0
+        }
+      },
+      "craft": {
+        "plane": {
+          "id": "plane",
+          "base": "plane",
+          "x": -5,
+          "z": -165,
+          "yaw": 1.5707963267948966,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "helicopter": {
+          "id": "helicopter",
+          "base": "helicopter",
+          "x": 50,
+          "z": -165,
+          "yaw": 0,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "heli-tour": {
+          "id": "heli-tour",
+          "base": "heli-tour",
+          "x": 75,
+          "z": -164,
+          "yaw": 0,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "heli-ottovias": {
+          "id": "heli-ottovias",
+          "base": "heli-ottovias",
+          "x": 25,
+          "z": -244,
+          "yaw": 1.5707963267948966,
+          "status": "parked",
+          "parkedAt": 1793059279047,
+          "pilot": "",
+          "departedAt": 1793058815398,
+          "claimAt": 1793058815344,
+          "seenAt": 1793058998684,
+          "hp": 100
+        },
+        "heli-rescue": {
+          "id": "heli-rescue",
+          "base": "heli-rescue",
+          "x": 117,
+          "z": -164,
+          "yaw": 0,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "plane-tour": {
+          "id": "plane-tour",
+          "base": "plane-tour",
+          "x": 80,
+          "z": -216,
+          "yaw": 1.5707963267948966,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "plane-cargo": {
+          "id": "plane-cargo",
+          "base": "plane-cargo",
+          "x": 120,
+          "z": -216,
+          "yaw": 1.5707963267948966,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "plane-ottovias": {
+          "id": "plane-ottovias",
+          "base": "plane-ottovias",
+          "x": 143,
+          "z": -216,
+          "yaw": 1.5707963267948966,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "balloon": {
+          "id": "balloon",
+          "base": "balloon",
+          "x": -66,
+          "z": 89,
+          "yaw": 3.141592653589793,
+          "status": "parked",
+          "parkedAt": 1793058814781,
+          "pilot": "",
+          "departedAt": 0
+        },
+        "heli-ottovias-r1": {
+          "id": "heli-ottovias-r1",
+          "base": "heli-ottovias",
+          "x": 96,
+          "z": -164,
+          "yaw": 0,
+          "status": "parked",
+          "parkedAt": 1793058995406,
+          "pilot": "",
+          "departedAt": 0
+        }
+      }
+    },
+    "recovery": [],
+    "obstructions": 10
+  },
+  "npcBalloon": {
+    "fleet": {
+      "id": "balloon",
+      "base": "balloon",
+      "x": -31.592533088792063,
+      "z": 118.62865206242905,
+      "yaw": 0,
+      "status": "npc",
+      "parkedAt": 1793059279086,
+      "pilot": "",
+      "departedAt": 1793059269086,
+      "npc": {
+        "at": 1793059330086,
+        "cruise": 30.5,
+        "from": {
+          "x": -30,
+          "z": 120
+        },
+        "to": {
+          "id": "balloon",
+          "mode": "balloon",
+          "model": "balloon",
+          "label": "Balão das montanhas",
+          "x": -66,
+          "z": 89,
+          "yaw": 3.141592653589793,
+          "radius": 5,
+          "height": 1.05,
+          "groundY": 0.5
+        },
+        "ground": 0,
+        "targetGround": 0.5,
+        "spawnMarked": true
+      }
+    },
+    "position": [
+      -31.592533088792063,
+      31.55,
+      118.62865206242905
+    ]
+  },
+  "firstDelivery": {
+    "units": {
+      "active": false,
+      "inside": null,
+      "units": [
+        {
+          "id": "garage-orange",
+          "catalogId": "garage-orange",
+          "model": "gol",
+          "unit": 1,
+          "stored": false
+        },
+        {
+          "id": "unit-br-palio-1-c7653f587c0e4e2d8f54d16af9ee02fc",
+          "catalogId": "br-palio",
+          "model": "palio",
+          "unit": 1,
+          "stored": false
+        }
+      ],
+      "lastDelivery": {
+        "id": "unit-br-palio-1-c7653f587c0e4e2d8f54d16af9ee02fc",
+        "dealerId": "dealer-cars",
+        "x": -326,
+        "z": 38,
+        "heading": 1.5707963267948966
+      }
+    },
+    "player": {
+      "x": -326,
+      "y": 0,
+      "z": 38,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "facing": 1.5707963267948966,
+      "grounded": true,
+      "vehicle": true,
+      "sitUntil": 0,
+      "lastGrounded": 560600.5,
+      "lastSafeX": -311,
+      "lastSafeY": 0,
+      "lastSafeZ": 11,
+      "lastSafeAt": 559930.7999999998,
+      "invalidSince": 0,
+      "jumpBuffer": 0,
+      "airJumpAvailable": true,
+      "lastJumpWasAir": false,
+      "attackUntil": 0,
+      "damageUntil": 0,
+      "shieldUntil": 0,
+      "skillDashUntil": 0,
+      "scaleMode": "normal",
+      "crouched": false,
+      "spinUntil": 0,
+      "preVehicleAbilities": {
+        "scaleMode": "normal",
+        "crouched": false
+      },
+      "hornUntil": 0,
+      "emoteUntil": 0,
+      "emoteType": "",
+      "emoteSeq": 0,
+      "boating": false,
+      "transit": {
+        "mode": "",
+        "busId": "",
+        "requestStop": false,
+        "metroUntil": 0
+      },
+      "boat": {
+        "heading": 0,
+        "speed": 0,
+        "steerVisual": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "car": {
+        "id": "unit-br-palio-1-c7653f587c0e4e2d8f54d16af9ee02fc",
+        "kind": "car",
+        "label": "Fiat Palio Fire Economy Celebration 2011",
+        "heading": 1.5707963267948966,
+        "speed": 0,
+        "steerVisual": 0,
+        "drift": 0,
+        "_prevSpeed": 0,
+        "turboUntil": 0,
+        "sirenActive": false,
+        "utilityCooldownUntil": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerUids": [],
+        "passengerBotId": "",
+        "hostMissingAt": 0,
+        "broken": false,
+        "ignition": true
+      },
+      "recoveryReason": "",
+      "swimming": false,
+      "nextRecoveryScanAt": 559977.1000000006
+    }
+  },
+  "units": [
+    {
+      "id": "unit-br-palio-1-c7653f587c0e4e2d8f54d16af9ee02fc",
+      "catalogId": "br-palio",
+      "model": "palio",
+      "unit": 1,
+      "stored": true
+    },
+    {
+      "id": "unit-br-palio-2-5a378c8878884227a1b38a73c656c2c3",
+      "catalogId": "br-palio",
+      "model": "palio",
+      "unit": 2,
+      "stored": false
+    }
+  ],
+  "terrain": {
+    "ranges": {
+      "ready": true,
+      "bounds": {
+        "minX": -850,
+        "maxX": 850,
+        "minZ": -700,
+        "maxZ": 1100
+      },
+      "trees": 1153,
+      "ranges": [
+        {
+          "id": "snow-west",
+          "x": -118,
+          "z": 300,
+          "rx": 64,
+          "rz": 66,
+          "height": 62,
+          "snow": true,
+          "actualPeak": 62
+        },
+        {
+          "id": "snow-central",
+          "x": -53,
+          "z": 371,
+          "rx": 66,
+          "rz": 75,
+          "height": 93,
+          "snow": true,
+          "actualPeak": 93
+        },
+        {
+          "id": "snow-east",
+          "x": 84,
+          "z": 376,
+          "rx": 63,
+          "rz": 73,
+          "height": 108,
+          "snow": true,
+          "actualPeak": 108
+        },
+        {
+          "id": "snow-ridge",
+          "x": 147,
+          "z": 305,
+          "rx": 66,
+          "rz": 76,
+          "height": 76,
+          "snow": true,
+          "actualPeak": 76
+        },
+        {
+          "id": "serra-one",
+          "x": 287,
+          "z": 325,
+          "rx": 77,
+          "rz": 86,
+          "height": 70,
+          "snow": false,
+          "actualPeak": 70
+        },
+        {
+          "id": "serra-two",
+          "x": 369,
+          "z": 394,
+          "rx": 86,
+          "rz": 77,
+          "height": 112,
+          "snow": true,
+          "actualPeak": 112
+        },
+        {
+          "id": "serra-three",
+          "x": 491,
+          "z": 359,
+          "rx": 78,
+          "rz": 80,
+          "height": 98,
+          "snow": true,
+          "actualPeak": 98
+        },
+        {
+          "id": "serra-four",
+          "x": 581,
+          "z": 452,
+          "rx": 83,
+          "rz": 53,
+          "height": 90,
+          "snow": true,
+          "actualPeak": 89.50566531481482
+        },
+        {
+          "id": "serra-five",
+          "x": 692,
+          "z": 438,
+          "rx": 92,
+          "rz": 62,
+          "height": 124,
+          "snow": true,
+          "actualPeak": 124
+        },
+        {
+          "id": "forest-hill",
+          "x": -630,
+          "z": 232,
+          "rx": 108,
+          "rz": 115,
+          "height": 55,
+          "snow": false,
+          "actualPeak": 55
+        },
+        {
+          "id": "forest-peak",
+          "x": -746,
+          "z": 325,
+          "rx": 76,
+          "rz": 107,
+          "height": 85,
+          "snow": false,
+          "actualPeak": 85
+        }
+      ],
+      "terrainChunks": 47,
+      "regionalTraffic": [
+        {
+          "id": "regional-0",
+          "model": "gol",
+          "x": 557.1556997708299,
+          "y": 40.07039816777401,
+          "z": 431.6843518682042
+        },
+        {
+          "id": "regional-1",
+          "model": "hilux",
+          "x": -70.67172395181383,
+          "y": 30.644973960660046,
+          "z": 411.99672720828437
+        },
+        {
+          "id": "regional-2",
+          "model": "palio",
+          "x": -676.3537130186446,
+          "y": 0.03,
+          "z": -128.07062428801956
+        },
+        {
+          "id": "regional-3",
+          "model": "kombi",
+          "x": 190.5574807646022,
+          "y": 0.03,
+          "z": -397.70313603273644
+        },
+        {
+          "id": "regional-4",
+          "model": "golf7",
+          "x": 656.2698968174863,
+          "y": 27.009663609551147,
+          "z": 355.09988409907135
+        },
+        {
+          "id": "regional-5",
+          "model": "saveiro",
+          "x": -13.447872356493912,
+          "y": 34.45936406523729,
+          "z": 412.06147839444515
+        },
+        {
+          "id": "regional-6",
+          "model": "s10",
+          "x": -615.1110639426514,
+          "y": 0.03,
+          "z": -210.04666885484025
+        },
+        {
+          "id": "regional-7",
+          "model": "corolla2021",
+          "x": 332.84313317012715,
+          "y": 0.03,
+          "z": -397.70050261778005
+        }
+      ],
+      "npcBalloons": [
+        {
+          "position": [
+            240,
+            90.0300964795664,
+            270
+          ],
+          "visible": true
+        },
+        {
+          "position": [
+            415.1986275555893,
+            190.05,
+            400.30598837836266
+          ],
+          "visible": false
+        },
+        {
+          "position": [
+            442.076994388525,
+            199.05,
+            287.131803325101
+          ],
+          "visible": false
+        }
+      ],
+      "trail": null
+    },
+    "route": {
+      "passed": true,
+      "samples": 5754,
+      "failures": []
+    }
+  },
+  "errors": [],
+  "limits": [
+    "Local Chromium, real native controls and physics; accelerated wall clock for timers. No physical Android or live production multiplayer exercise."
+  ]
+}

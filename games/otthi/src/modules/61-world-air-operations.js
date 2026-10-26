@@ -14,7 +14,7 @@
   spec(id){const c=this.data.craft[id],base=c&&this.bases[c.base];return base?{...base,id,baseId:c.base}:null;}
   claim(id,uid,now){const c=this.data.craft[id];if(!c||c.status!=='parked'||!uid)return false;c.status='piloted';c.pilot=uid;c.claimAt=now;c.seenAt=now;c.departedAt=0;delete c.job;this.data.revision++;return true;}
   depart(id,uid,now){const c=this.data.craft[id];if(!c||c.pilot!==uid||c.departedAt)return false;c.departedAt=now;const s=this.data.slots[c.base];if(s.current===id){s.current='';s.spawnAt=now+180000;}this.data.revision++;return true;}
-  park(id,uid,pose,now){const c=this.data.craft[id];if(!c||c.pilot!==uid||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,hp:Math.max(1,Math.min(100,Number(pose.hp)||100)),status:'parked',pilot:'',parkedAt:now});delete c.y;delete c.job;this.data.revision++;return true;}
+  park(id,uid,pose,now){const c=this.data.craft[id];if(!c||c.pilot!==uid||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,hp:Math.max(1,Math.min(100,Number(pose.hp)||100)),status:'parked',pilot:'',parkedAt:now});delete c.y;delete c.job;const slot=this.data.slots[c.base],base=this.bases[c.base];if(!slot.current&&Math.hypot(c.x-base.x,c.z-base.z)<3){slot.current=c.id;slot.spawnAt=0;}this.data.revision++;return true;}
   tick(now){const born=[];for(const [baseId,s]of Object.entries(this.data.slots)){
    if(s.current||!s.spawnAt||now<s.spawnAt)continue;
    // A returning pilot may have parked on the pad during the three minutes.
@@ -60,6 +60,7 @@
    Object.assign(collider,{x:o.x,z:o.z,w:Math.abs(o.c)*o.w*2+Math.abs(o.s)*o.l*2,d:Math.abs(o.s)*o.w*2+Math.abs(o.c)*o.l*2});
   }
   for(const [id,c]of airOperations.colliders)if(!blocked.has(id)){world.colliders=world.colliders.filter(v=>v!==c);airOperations.colliders.delete(id);}
+  if(otGames.active&&otGames.obstacles){const key=otGames.group?.uuid+'|'+[...airOperations.colliders].map(([id,c])=>[id,c.x,c.z,c.w,c.d].join(',')).join(';');if(key!==airOperations.obstacleSig){airOperations.obstacleSig=key;otGames.obstacles=otGames.obstacles.filter(b=>!b.aircraftId);for(const c of airOperations.colliders.values()){const y=professionalTerrainHeightAt(c.x,c.z),b=new THREE.Box3(new THREE.Vector3(c.x-c.w/2,y,c.z-c.d/2),new THREE.Vector3(c.x+c.w/2,y+c.height,c.z+c.d/2));b.aircraftId=c.aircraftId;otGames.obstacles.push(b);}}}
  }
  const airOriginalSync=campaignSyncAircraft;
  campaignSyncAircraft=function(){
@@ -146,16 +147,16 @@
      else if(now-Number(c.seenAt||c.claimAt)>15000){c.status='parked';c.pilot='';c.parkedAt=now-20000;if(Number(c.y)>10)airStartRecovery(c,now);f.data.revision++;}
     }else if(c.status==='parked'){
      const nearLocal=otGames.active&&otGames.aircraftId===c.id||!otGames.active&&Math.hypot(player.x-c.x,player.z-c.z)<8,nearRemote=[...remotePresence.values()].some(p=>Math.hypot(Number(p.x)-c.x,Number(p.z)-c.z)<8),spec=f.spec(c.id),base=f.bases[c.base],away=Math.hypot(c.x-base.x,c.z-base.z)>10;
-     if(away&&!nearLocal&&!nearRemote){if(spec.mode==='balloon'&&now-c.parkedAt>45000){const to=airRecoveryDestination(c);c.npc={at:now+5000,cruise:airSafeCruise(c,to,30),from:{x:c.x,z:c.z},to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z)};c.status='npc';f.data.revision++;}
-      else if(spec.mode!=='balloon'&&v704RoadAt(c.x,c.z,4)&&now-c.parkedAt>15000)airStartRecovery(c,now);}
+     if(!nearLocal&&!nearRemote){if(spec.mode==='balloon'&&c.departedAt&&now-c.parkedAt>45000){const to=away?airRecoveryDestination(c):{x:base.x+35,z:base.z+23};c.npc={at:now+5000,cruise:airSafeCruise(c,to,30),from:{x:c.x,z:c.z},to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z)};c.status='npc';f.data.revision++;}
+      else if(away&&spec.mode!=='balloon'&&v704RoadAt(c.x,c.z,4)&&now-c.parkedAt>15000)airStartRecovery(c,now);}
     }else if(c.status==='recovering'&&airRecoveryPose(c.job,now).phase==='done'){const pose=c.job.to;Object.assign(c,{...pose,status:'parked',parkedAt:now});delete c.job;f.data.revision++;}
-    else if(c.status==='npc'){const pose=airNpcBalloonPose(c,now);if(pose.done){Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,status:'parked',parkedAt:now});delete c.npc;f.data.revision++;}}
+    else if(c.status==='npc'){const pose=airNpcBalloonPose(c,now),slot=f.data.slots[c.base];if(!c.npc.spawnMarked&&now>c.npc.at){if(slot.current===c.id){slot.current='';slot.spawnAt=now+180000;}c.npc.spawnMarked=true;f.data.revision++;}c.x=pose.x;c.z=pose.z;if(pose.done){Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,status:'parked',parkedAt:now});delete c.npc;if(!slot.current&&Math.hypot(c.x-f.bases[c.base].x,c.z-f.bases[c.base].z)<3){slot.current=c.id;slot.spawnAt=0;}f.data.revision++;}}
    }
    f.tick(now);airMaterialize();
   }
   for(const [id,v]of airOperations.recovery){const c=f.data.craft[id];if(c?.status!=='recovering'){v.heli&&(v.heli.visible=false);v.cable&&(v.cable.visible=false);}if(c?.status!=='npc'&&c?.status!=='recovering')v.person.group.visible=false;}
   for(const c of Object.values(f.data.craft))if(c.status==='recovering')airRecoveryVisual(c,now);else if(c.status==='npc'){const p=airNpcBalloonPose(c,now),npc=airNpcPilot(c);const approach=3*(1-clamp((now-(c.npc.at-5000))/5000,0,1));npc.position.set(p.x+approach,p.y-.7,p.z);npc.rotation.y=p.yaw;npc.visible=Math.hypot(otGamesFocus().x-p.x,otGamesFocus().z-p.z)<250;}
-  airSyncObstacles();campaignSyncAircraft();
+  airSyncObstacles();campaignSyncAircraft();state.vehicles.airOperations=f.data;
   if(f.data.revision!==airOperations.revision&&now-airOperations.lastSave>1200){airOperations.revision=f.data.revision;airOperations.lastSave=now;state.vehicles.airOperations=f.data;saveState();sharedWorldRuntime.captureAt=0;}
  }
  const airOldTrafficFactor=trafficSpeedFactor;

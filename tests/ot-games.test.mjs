@@ -77,3 +77,6 @@ test('OT real camera: right-hand aim and right helicopter pedal turn toward a ta
  g.handMode=true;g.handSession={dispose(){}};g.handAim={x:.8,y:.48,fresh:true,present:true};for(let i=0;i<25;i++)f.step(.016);const after=target.clone().project(f.camera).x;assert(Math.abs(after)<Math.abs(before),'tracked right hand must move a right-side target toward the reticle, not farther right');
  f.api.peace();await f.api.enter('helicopter',{armed:false});g=f.g;g.body.yaw=0;for(let i=0;i<30;i++)f.context.otGamesCamera(.1);const t=new f.T.Vector3(g.body.x-12,g.body.y,g.body.z+50),p=t.clone().project(f.camera).x;g.pedal=1;for(let i=0;i<15;i++)f.step(.016);assert(Math.abs(t.clone().project(f.camera).x)<Math.abs(p));
 });
+test('open-world flight: a helicopter can climb above the new snowy mountain peaks',async()=>{
+ const f=fixture();f.context.groundHeightAt=()=>124;f.context.professionalTerrainHeightAt=()=>124;await f.api.enter('helicopter',{armed:false});f.g.body.y=126;f.g.collective=.9;for(let i=0;i<1800;i++)f.step(1/60);assert(f.g.body.y>200);assert(f.g.body.y<400);assert(!f.g.onGround);
+});

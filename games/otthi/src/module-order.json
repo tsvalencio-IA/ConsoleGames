@@ -28,7 +28,7 @@
       "startLine": 490,
       "endLine": 756,
       "description": "Estado, save local, IndexedDB, nuvem e conta",
-      "sha256Body": "9f9e791b7348c9131320ec91e77a1a09a3e376a5a6a381387dbd39c53f07082c"
+      "sha256Body": "d38e747e16c8a3f5ac51ae7ac67d0e5125fb771db747f5c59cfadc2b30c0dc6d"
     },
     {
       "file": "src/modules/03-ui-modal-install-pwa.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "c3a6bc16c6f771d94e7ba4f703323ba4b8397aa0ffcab10d31b6b05bb90c66dd"
+      "sha256Body": "eb069ebd3a41ce6c61f95170a1c4c75069a28c915f9c73b2091cfb9176b4db91"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -448,7 +448,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "9a3c43a347858599ca30763470a54ef1d48b466c51ecc7fb375446c935da3f2d"
+      "sha256Body": "d8cd87890d642d7a018f3cf58e25d0496e38d6697b70f35944fb224465997492"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -502,7 +502,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "13d5aed1289358f29bfd5799b22219092777af702d8cf50e0e13e35b876a04c8"
+      "sha256Body": "bef932daa33984e78f0c8b2758891ff8269d41c3449deadd34ebdd578768f691"
     },
     {
       "file": "src/modules/58-character-activities.js",
@@ -530,14 +530,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "03bf1b8667eeb33f393afd58bf3378dd7513ddc66c7e641a665ed3118cc123bc"
+      "sha256Body": "6434aab8b203af5d3921c8658861cc6648a1c23440183e8c786890acf7731409"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "a403331afa481d8254655b226caa545a6dcf1b6d0dcbb895b51e1d5fc8991375"
+      "sha256Body": "1cb23c96e5104ba9cd5c8d6d5bc9b54271969f7f58fdd6494f5a8b24d3ba114a"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",

@@ -138,7 +138,7 @@
     g.groundLaunch=!!options.groundLaunch&&mode!=='ground';g.onGround=g.groundLaunch;g.airspeed=mode==='plane'&&!g.groundLaunch?27:0;g.collective=g.groundLaunch&&mode==='plane'?0:.5;g.landingAssist=false;g.crouched=false;g.handViewAnchor=null;g.flightPhase=g.groundLaunch?'ready':'airborne';
     const boarding=options.boarding;if(g.groundLaunch&&boarding){safe.x=boarding.x;safe.z=boarding.z;safe.y=groundHeightAt(safe.x,safe.z);}
     g.body={x:safe.x,y:safe.y+(mode==='ground'?1.8:g.groundLaunch?campaignAircraftHeight(g.aircraftId):mode==='helicopter'?18:32),z:safe.z,yaw:boarding?.yaw??Math.PI-cameraYaw,pitch:0,roll:0,vx:0,vy:0,vz:0,hp:100};
-    g.obstacles=(world.colliders||[]).filter(c=>!c.disabled).map(c=>new THREE.Box3(new THREE.Vector3(c.x-c.w/2,professionalTerrainHeightAt?.(c.x,c.z)||0,c.z-c.d/2),new THREE.Vector3(c.x+c.w/2,(professionalTerrainHeightAt?.(c.x,c.z)||0)+Number(c.height||c.h||6),c.z+c.d/2)));
+    g.obstacles=(world.colliders||[]).filter(c=>!c.disabled).map(c=>{const box=new THREE.Box3(new THREE.Vector3(c.x-c.w/2,professionalTerrainHeightAt?.(c.x,c.z)||0,c.z-c.d/2),new THREE.Vector3(c.x+c.w/2,(professionalTerrainHeightAt?.(c.x,c.z)||0)+Number(c.height||c.h||6),c.z+c.d/2));if(c.aircraftId)box.aircraftId=c.aircraftId;return box;});
     for(const house of world.houses||[])if(house.group)g.obstacles.push(new THREE.Box3().setFromObject(house.group));
     if(mode!=='ground'){g.aircraft=options.boarding?campaignCreateAircraft(g.aircraftId):otGamesAirframe(mode);g.group.add(g.aircraft);g.weapon=null;}else{g.aircraft=null;g.weapon=otGamesWeapon();g.group.add(g.weapon);}
     playerGroup.visible=false;if(contactShadow)contactShadow.visible=false;if(toolVisual)toolVisual.visible=false;

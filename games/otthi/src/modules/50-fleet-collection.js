@@ -17,11 +17,11 @@
     for(let slot=22;slot<68;slot++){const p=brazilCollectionPoint(slot);premiumBox(4.80,.015,.06,0xe8cf72,p.x,.09,p.z-1.45,g);premiumBox(.06,.015,2.85,0xe8cf72,p.x-2.44,.09,p.z,g);}
     const heavy=OTTHI_PLAYER_VEHICLE_CATALOG.filter(e=>brazilDepotVehicle(e.id));for(let i=0;i<heavy.length;i++){const p=brazilCollectionPoint(4,heavy[i].id);premiumBox(13.0,.015,.06,0xe8cf72,p.x-3.7,.09,p.z-2.3,g);}
     for(let n=1;n<=3;n++){const p=brazilDepotPickup(n);premiumBox(13.0,.015,.08,0xa6d0c2,p.x-3.7,.09,p.z-2.5,g);}
-    const sign=new THREE.Mesh(new THREE.PlaneGeometry(8.8,1.15),new THREE.MeshStandardMaterial({map:signTexture('CENTRO DA COLEÇÃO OT','#1b3c51','#e5f0ea'),side:THREE.DoubleSide,roughness:.65}));sign.position.set(-232,2.6,-55);sign.rotation.y=Math.PI/2;g.add(sign);
-    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Abrir minha coleção',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
+    const sign=new THREE.Mesh(new THREE.PlaneGeometry(8.8,1.15),new THREE.MeshStandardMaterial({map:signTexture('PÁTIO OT · TRANSPORTES','#1b3c51','#e5f0ea'),side:THREE.DoubleSide,roughness:.65}));sign.position.set(-232,2.6,-55);sign.rotation.y=Math.PI/2;g.add(sign);
+    registerInteractable({id:'brazil-collection',type:'garage',icon:'🚘',label:'Garagem de transportes',x:-235,z:-55,radius:4,priority:345,action:openPlayerGarage});brazilCollection.ready=true;
   }
   const brazilPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return [...brazilPreviousLocations(),{id:'brazil-collection',name:'Centro da Coleção OT',icon:'🚘',group:'Veículos',x:-235,z:-55,navX:-229,navZ:-55,description:'Coleção ampliada e pátio para retirar ônibus e carretas, com acesso à rodovia.'}];};
+  expansionMapLocations=function(){return [...brazilPreviousLocations(),{id:'brazil-collection',name:'Pátio OT · transportes',icon:'🚘',group:'Veículos',x:-235,z:-55,navX:-229,navZ:-55,description:'Pátio público de transportes com acesso à rodovia e à concessionária de caminhões. A sua garagem particular fica ao lado de casa.'}];};
   const brazilPreviousCapacity=vehiclePassengerSeatCapacity;
   vehiclePassengerSeatCapacity=function(body='',kind='',model=''){const seats=window.OTBrazilVehicles?.definition(model)?.seats;if(seats?.length)return Math.max(0,seats.length-1);const spec=window.OTBrazilExpansion.catalog[model];if(spec?.singleSeat)return 0;if(spec?.twoSeats)return 1;if(spec?.bus)return 5;return brazilPreviousCapacity(body,kind);};
   function brazilSpecialFootprint(v){const model=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=model?.userData;if(!data?.bus&&!data?.articulated)return null;return{front:Number(data.front),rear:Number(data.rear),halfWidth:data.bus?1.03:1.02,trailerAngle:model.getObjectByName('articulated-trailer')?.rotation.y||0};}
