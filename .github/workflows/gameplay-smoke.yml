@@ -110,3 +110,37 @@ jobs:
           path: test-results/world-destinations/
           if-no-files-found: ignore
           retention-days: 14
+  frota-garagem-serra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Conferir geração determinística do aplicativo
+        run: |
+          python3 games/otthi/tools/build_project.py
+          git diff --exit-code -- games/otthi/app.js games/otthi/style.css games/otthi/release-manifest.json
+      - name: Embarcar nos helicópteros, aviões e balão com a família
+        run: node tests/world-airport-balloon-browser.mjs
+      - name: Repor a frota e testar dois pilotos e troca de autoridade
+        run: node tests/world-air-fleet-multiplayer-browser.mjs
+      - name: Usar mapa móvel, pousar na rua, recolher aeronave e sair da concessionária e garagem
+        if: ${{ always() && !cancelled() }}
+        run: node tests/world-fleet-garage-browser.mjs
+      - name: Salvar evidências da frota, mapa e garagem
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-garage-cordillera-browser-artifacts
+          path: |
+            test-results/world-airport/
+            test-results/air-fleet-multiplayer/
+            test-results/world-fleet-garage/
+          if-no-files-found: ignore
+          retention-days: 14

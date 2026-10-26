@@ -18,8 +18,9 @@
   tick(now){const born=[];for(const [baseId,s]of Object.entries(this.data.slots)){
    if(s.current||!s.spawnAt||now<s.spawnAt)continue;
    // A returning pilot may have parked on the pad during the three minutes.
-   const base=this.bases[baseId],present=Object.values(this.data.craft).find(c=>c.base===baseId&&c.status==='parked'&&Math.hypot(c.x-base.x,c.z-base.z)<3);
-   if(present){s.current=present.id;s.spawnAt=0;continue;}
+   const base=this.bases[baseId],present=Object.values(this.data.craft).find(c=>c.status==='parked'&&Math.hypot(c.x-base.x,c.z-base.z)<3);
+   if(present){if(present.base===baseId){s.current=present.id;s.spawnAt=0;}continue;}
+   if(Object.values(this.data.craft).some(c=>c.status==='piloted'&&Math.hypot(c.x-base.x,c.z-base.z)<8&&Number.isFinite(c.y)&&c.y<(base.groundY||0)+(base.height||1.6)+8))continue;
    const id=baseId+'-r'+(++s.generation);this.data.craft[id]={id,base:baseId,x:base.x,z:base.z,yaw:base.yaw,status:'parked',parkedAt:now,pilot:'',departedAt:0};s.current=id;s.spawnAt=0;born.push(id);this.data.revision++;
   }return born;}
  }
@@ -28,7 +29,7 @@
  function airOnline(){return !!window.OTTHOS_RTDB?.connected?.()&&typeof multiplayerV2Enabled==='function'&&multiplayerV2Enabled();}
  function airEnsure(){
   if(airOperations.ready||!worldCampaign.aircraft)return airOperations.ready;
-  airOperations.bases=Object.fromEntries(Object.entries(WORLD_CAMPAIGN_AIRCRAFT).map(([id,p])=>[id,{...p,mode:p.mode||id,height:p.height??(id==='plane'?1.3:1.6)}]));
+  airOperations.bases=Object.fromEntries(Object.entries(WORLD_CAMPAIGN_AIRCRAFT).map(([id,p])=>[id,{...p,mode:p.mode||id,height:p.height??(id==='plane'?1.3:1.6),groundY:groundHeightAt(p.x,p.z)}]));
   const saved=state.vehicles.airOperations||{},migrated={...saved,craft:{...(saved.craft||{})}};
   for(const [id,p]of Object.entries(state.vehicles.aircraft||{}))if(airOperations.bases[id]&&!migrated.craft[id])migrated.craft[id]={id,base:id,...p,status:'parked',pilot:'',departedAt:0};
   airOperations.fleet=new WorldAirFleet(airOperations.bases,migrated,airNow());state.vehicles.airOperations=airOperations.fleet.data;
@@ -81,7 +82,7 @@
   if(!airEnsure()||!airAvailable(id))return false;const c=campaignAircraftPose(id);
   if(!c||!running||paused||otGames.active||player.vehicle||player.boating||currentHouse||campaignDist(player,c)>c.radius)return false;
   if(!await airRequestClaim(id)){toast('Esta aeronave foi reservada por outro piloto. Há outras no aeroporto.','info',2800);return false;}
-  airSyncObstacles();const result=await airOriginalBoard(id);if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:c});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
+  airSyncObstacles();let result=false;try{result=await airOriginalBoard(id);}catch(error){toast('Não foi possível preparar esta aeronave. Tente embarcar novamente.','warn',2800);}if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'release',id}).catch(()=>{});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
  };
  const airOriginalPark=campaignParkAircraft;
  campaignParkAircraft=function(id,b){
@@ -91,6 +92,7 @@
  };
  function airReceiveCommand(event){
   if(!airEnsure()||!sharedWorldIsAuthority())return;const e=event.detail||{},p=e.payload||{},uid=String(e.actorUid||''),c=airOperations.fleet.data.craft[p.id],presence=remotePresence.get(uid);if(e.kind!=='air-fleet'||!c||!presence)return;
+  if(p.action==='release'&&c.pilot===uid&&!c.departedAt)airOperations.fleet.park(c.id,uid,c,airNow());
   if(p.action==='claim'&&Math.hypot(Number(presence.x)-c.x,Number(presence.z)-c.z)<Number(airOperations.fleet.spec(c.id).radius||6)+5)airClaimLocal(c.id,uid);
   if(p.action==='park'&&c.pilot===uid&&p.pose&&[p.pose.x,p.pose.z,p.pose.yaw].every(Number.isFinite)){
    const r=presence.familyRide;if(r?.id===c.id&&r.onGround&&Math.hypot(p.pose.x-r.x,p.pose.z-r.z)<12)airOperations.fleet.park(c.id,uid,p.pose,airNow());
@@ -117,8 +119,9 @@
   for(const z of[-244,-259,-274])for(const x of[25,46,67,88,109,130,151])if(!occupied.some(p=>Math.hypot(p.x-x,p.z-z)<13))return{x,z,yaw:Math.PI/2};
   return{x:178,z:-245,yaw:0};
  }
+ function airSafeCruise(from,to,clearance=40){let h=clearance;for(let i=0;i<=32;i++){const t=i/32;h=Math.max(h,professionalTerrainHeightAt(lerp(from.x,to.x,t),lerp(from.z,to.z,t))+clearance);}return h;}
  function airStartRecovery(c,now){
-  const to=airRecoveryDestination(c),from={x:c.x,z:c.z,yaw:c.yaw};c.job={id:c.id,at:now,from,to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z),cruise:Math.max(48,groundHeightAt(c.x,c.z)+35,groundHeightAt(to.x,to.z)+35)};c.status='recovering';c.pilot='';airOperations.fleet.data.revision++;
+  const to=airRecoveryDestination(c),from={x:c.x,z:c.z,yaw:c.yaw};c.job={id:c.id,at:now,from,to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z),cruise:Math.max(airSafeCruise(from,to),airSafeCruise({x:96,z:-164},from))};c.status='recovering';c.pilot='';airOperations.fleet.data.revision++;
  }
  function airRecoveryVisual(c,now){
   if(!c.job)return;let v=airOperations.recovery.get(c.id);if(!v){const heli=createCivilianAirframe('helicopter','ottovias');heli.name='OT_VIAS_AIR_RECOVERY_'+c.id;worldGroup.add(heli);const cable=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,1,5),campaignMaterial(0x3b4549,.5));worldGroup.add(cable);const person=createRoadsidePoliceOfficer(null);person.group.name='OT_VIAS_AIR_TECHNICIAN';person.group.traverse(o=>{if(o.isMesh&&o.material?.color){o.material=o.material.clone();o.material.color.setHex(0xb6b54e);}});v={heli,cable,person};airOperations.recovery.set(c.id,v);}
@@ -126,7 +129,7 @@
   v.person.group.visible=!!p.technician&&visible;if(p.technician){v.person.group.position.set(p.technician.x,p.technician.y,p.technician.z);v.person.rightArm.rotation.x=-.8+Math.sin(now*.01)*.15;v.person.leftArm.rotation.x=-.6;}
   const endpoint=p.technician||p.craft,length=Math.max(.1,p.heli.y-endpoint.y);v.cable.position.set(p.heli.x,p.heli.y-length/2,p.heli.z);v.cable.scale.y=length;v.cable.visible=visible&&p.phase!=='dispatch'&&p.phase!=='done';
  }
- function airNpcBalloonPose(c,now){const t=(now-c.npc.at)/1000,from=c.npc.from,to=c.npc.to,d=Math.hypot(to.x-from.x,to.z-from.z),duration=Math.max(38,d/3.6),f=clamp(t/duration,0,1),q=f*f*(3-2*f),alt=Math.min(1,t/12,(duration-t)/12)*28;return{x:lerp(from.x,to.x,q),z:lerp(from.z,to.z,q),y:lerp(c.npc.ground,c.npc.targetGround,q)+campaignAircraftHeight(c.id)+Math.max(0,alt),yaw:Math.atan2(to.x-from.x,to.z-from.z),done:t>=duration};}
+ function airNpcBalloonPose(c,now){const t=Math.max(0,(now-c.npc.at)/1000),from=c.npc.from,to=c.npc.to,d=Math.hypot(to.x-from.x,to.z-from.z),travel=Math.max(25,d/3.6),f=clamp((t-12)/travel,0,1),q=f*f*(3-2*f),cruise=c.npc.cruise||Math.max(c.npc.ground,c.npc.targetGround)+35,alt=t<12?lerp(c.npc.ground,cruise,t/12):t<12+travel?cruise:lerp(cruise,c.npc.targetGround,clamp((t-12-travel)/12,0,1));return{x:lerp(from.x,to.x,q),z:lerp(from.z,to.z,q),y:campaignAircraftHeight(c.id)+alt,yaw:Math.atan2(to.x-from.x,to.z-from.z),done:t>=travel+24};}
  function airNpcPilot(c){let p=airOperations.recovery.get(c.id);if(!p){const person=createRoadsidePoliceOfficer(null);person.group.name='OT_BALLOON_NPC_PILOT';person.group.scale.setScalar(.65);p={person};airOperations.recovery.set(c.id,p);}return p.person.group;}
  function airApplyReplica(){
   if(!airOnline()||sharedWorldIsAuthority())return;const host=remotePresence.get(sharedWorldAuthorityId()),snapshot=multiplayerV2WorldSnapshot()||host?.sharedScene,a=snapshot?.a;if(a?.v!==1||!a.craft||!a.slots)return;
@@ -143,7 +146,7 @@
      else if(now-Number(c.seenAt||c.claimAt)>15000){c.status='parked';c.pilot='';c.parkedAt=now-20000;if(Number(c.y)>10)airStartRecovery(c,now);f.data.revision++;}
     }else if(c.status==='parked'){
      const nearLocal=otGames.active&&otGames.aircraftId===c.id||!otGames.active&&Math.hypot(player.x-c.x,player.z-c.z)<8,nearRemote=[...remotePresence.values()].some(p=>Math.hypot(Number(p.x)-c.x,Number(p.z)-c.z)<8),spec=f.spec(c.id),base=f.bases[c.base],away=Math.hypot(c.x-base.x,c.z-base.z)>10;
-     if(away&&!nearLocal&&!nearRemote){if(spec.mode==='balloon'&&now-c.parkedAt>45000){const to=airRecoveryDestination(c);c.npc={at:now,from:{x:c.x,z:c.z},to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z)};c.status='npc';f.data.revision++;}
+     if(away&&!nearLocal&&!nearRemote){if(spec.mode==='balloon'&&now-c.parkedAt>45000){const to=airRecoveryDestination(c);c.npc={at:now+5000,cruise:airSafeCruise(c,to,30),from:{x:c.x,z:c.z},to,ground:groundHeightAt(c.x,c.z),targetGround:groundHeightAt(to.x,to.z)};c.status='npc';f.data.revision++;}
       else if(spec.mode!=='balloon'&&v704RoadAt(c.x,c.z,4)&&now-c.parkedAt>15000)airStartRecovery(c,now);}
     }else if(c.status==='recovering'&&airRecoveryPose(c.job,now).phase==='done'){const pose=c.job.to;Object.assign(c,{...pose,status:'parked',parkedAt:now});delete c.job;f.data.revision++;}
     else if(c.status==='npc'){const pose=airNpcBalloonPose(c,now);if(pose.done){Object.assign(c,{x:pose.x,z:pose.z,yaw:pose.yaw,status:'parked',parkedAt:now});delete c.npc;f.data.revision++;}}
@@ -151,7 +154,7 @@
    f.tick(now);airMaterialize();
   }
   for(const [id,v]of airOperations.recovery){const c=f.data.craft[id];if(c?.status!=='recovering'){v.heli&&(v.heli.visible=false);v.cable&&(v.cable.visible=false);}if(c?.status!=='npc'&&c?.status!=='recovering')v.person.group.visible=false;}
-  for(const c of Object.values(f.data.craft))if(c.status==='recovering')airRecoveryVisual(c,now);else if(c.status==='npc'){const p=airNpcBalloonPose(c,now),npc=airNpcPilot(c);npc.position.set(p.x,p.y-.7,p.z);npc.rotation.y=p.yaw;npc.visible=Math.hypot(otGamesFocus().x-p.x,otGamesFocus().z-p.z)<250;}
+  for(const c of Object.values(f.data.craft))if(c.status==='recovering')airRecoveryVisual(c,now);else if(c.status==='npc'){const p=airNpcBalloonPose(c,now),npc=airNpcPilot(c);const approach=3*(1-clamp((now-(c.npc.at-5000))/5000,0,1));npc.position.set(p.x+approach,p.y-.7,p.z);npc.rotation.y=p.yaw;npc.visible=Math.hypot(otGamesFocus().x-p.x,otGamesFocus().z-p.z)<250;}
   airSyncObstacles();campaignSyncAircraft();
   if(f.data.revision!==airOperations.revision&&now-airOperations.lastSave>1200){airOperations.revision=f.data.revision;airOperations.lastSave=now;state.vehicles.airOperations=f.data;saveState();sharedWorldRuntime.captureAt=0;}
  }

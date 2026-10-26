@@ -12,7 +12,11 @@ function build(T,key,H){
  // Full curved side panels, with open wheel arches and soft shoulder sections.
  for(const a of[-1,1])surface(144,10,(u,t)=>{const z=-L+P.l*u,lo=edgeBottom(z),hi=z>P.front?hood(z):belt(z),x=width(z)-.045*(1-t)**2+.022*Math.sin(t*Math.PI);return[a*x,lo+(hi-lo)*t,z];});
  surface(42,28,(u,v)=>{const z=P.front+(L-P.front)*u,x=(v*2-1)*width(z);return[x,hood(z)+(suv?.025:.051)*(1-(x/width(z))**2),z];});
- for(const e of[-1,1])surface(32,10,(u,t)=>{const x=(u*2-1)*width(e*L),corner=.070*Math.pow(Math.abs(x)/W,5),top=e===1?hood(L):belt(-L);return[x,.23+(top-.23)*t,e*(L-corner+.06*Math.sin(t*Math.PI)-.045*Math.pow(Math.abs(x)/W,5))];});
+ // End caps share the exact side/deck perimeter. The former corner offset
+ // pulled their outer edges away from the wings and left visible open holes.
+ for(const e of[-1,1])surface(40,12,(u,t)=>{const x=(u*2-1)*width(e*L),cross=1-(x/width(e*L))**2,top=(e===1?hood(L):belt(-L))+(suv?.025:.051)*cross;return[x,.23+(top-.23)*t,e*(L+.035*Math.sin(t*Math.PI)*cross)];});
+ // Continuous hatch deck between the rear glazing and the tail panel.
+ surface(28,24,(u,v)=>{const z=-L+(P.rear+L)*u,x=(v*2-1)*width(z),edge=belt(-L)+(belt(P.rear)+.022-belt(-L))*u;return[x,edge+(suv?.025:.040)*(1-(x/width(z))**2),z];});
  box(black,0,.213,0,P.w*.85,.07,P.l*.89);
  // A small hatch has a curved, lower roof; the SUV has an upright C pillar.
  const roofW=W*(suv?.85:.80),roofAt=(z,x)=>P.h-(suv?.037:.063)*(x/roofW)**2-(suv?.020:.040)*Math.pow((z-(P.rf+P.rr)/2)/((P.rf-P.rr)/2),2);
@@ -30,8 +34,11 @@ function build(T,key,H){
   for(const[f,b,tf,tb]of panes){surface(20,12,(u,t)=>p(f+(b-f)*u,t,tf+(tb-tf)*u),glass,'glass');for(const u of[0,1])line(Array.from({length:13},(_,j)=>p(f+(b-f)*u,j/12,tf+(tb-tf)*u)),.013,black);}
   const sill=[];for(let i=0;i<=36;i++){const z=P.rear+(P.front-P.rear)*i/36;sill.push(p(z,0));}line(sill,.013,black);
   line([[a*width(P.front)*.96,P.b+.025,P.front],[a*roofW,roofAt(P.rf,roofW),P.rf],[a*roofW,roofAt(P.rr,roofW),P.rr],[a*width(P.rear)*.955,belt(P.rear)+.025,P.rear]],suv?.026:.035,paint,'paint');
-  // Curved C-pillar fills the corner behind the rear door, rather than a box.
-  surface(14,10,(u,t)=>{const z=P.rear+.015+u*(suv?.07:.085);return p(z,t,P.rr+.015+u*.035);});
+  // The full rear quarter supports the vertical lamps and meets the roof.
+  // It stays outside the rear window instead of covering its transparent pane.
+  surface(24,18,(u,t)=>{const bottomZ=-L+(P.rear+.075+L)*u,topZ=-L+.11+(P.rr+.015+L-.11)*u,topY=(suv?.935:1.028)+(roofAt(P.rr,roofW)-.020-(suv?.935:1.028))*u,z=bottomZ+(topZ-bottomZ)*t,x=width(bottomZ)*(1-t)+roofW*t;return[a*x,belt(bottomZ)+.015+(topY-belt(bottomZ)-.015)*t,z];});
+  // Upright painted return around each tail lamp, joined to the hatch deck.
+  surface(14,14,(u,t)=>{const x=a*(width(-L)-.17*u),base=belt(-L),top=(suv?.91:1.035)-.13*u;return[x,base+(top-base)*t,-L+.014+.095*t*(1-u)];});
   for(const z of[P.front-.10,bp,P.rear+.14])line([[a*(width(z)+.004),belt(z)-.025,z],[a*(width(z)-.009),.29,z]],.0037,0x435158);
   const doorLine=[];for(let i=0;i<=24;i++){const z=P.rear+.14+(P.front-P.rear-.24)*i/24;doorLine.push([a*(width(z)-.007),.274,z]);}line(doorLine,.0037,0x435158);
   for(const z of[bp+.15,P.rear+.26])rb(suv?paint:black,a*(width(z)+.016),belt(z)-.090,z,.024,.032,.125,suv?'paint':'fixed',.011);
@@ -78,7 +85,7 @@ function build(T,key,H){
   rb(paint,0,.601,-L+.005,1.02,.20,.049,'paint',.05);rb(black,0,.635,-L-.026,.14,.033,.018,'fixed',.012);plate(.466,L+.052);plate(.457,-L-.038,true);name('Palio',.39,.695,-L-.027,.20,.049,true);name('FIRE ECONOMY',-.36,.696,-L-.027,.26,.032,true);name('Celebration',-.36,.648,-L-.027,.24,.032,true);
  }
  for(const[i,x,z]of[[0,-W+.035,P.fa],[1,W-.035,P.fa],[2,-W+.035,P.ra],[3,W-.035,P.ra]])wheel(i,x,z,P.r);
- root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:'model-specific-20261025',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
+ root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:'model-specific-20261026-closed-shell',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
 }
 globalThis.OTBrazilPrecision={build};
 })();

@@ -8,6 +8,9 @@ function race(track=0,char=0,bots=false,settings={}){
  return g;
 }
 const step=(g,n)=>{for(let i=0;i<n;i++)g.updatePhysics(390,844,null)};
+test('kart: starting another offline race clears prior steering and drift without changing the selected driver',()=>{
+ const g=race(0,2,false);g.playerX=.8;g.steer=1;g.lateralInertia=.07;g.speed=80;g.pos=1500;g.startRace(0);assert.equal(g.playerX,0);assert.equal(g.steer,0);assert.equal(g.lateralInertia,0);assert.equal(g.speed,0);assert.equal(g.selectedChar,2);
+});
 test('kart: a 100ms steering tap stops promptly when released, for all eight drivers',()=>{
  for(let char=0;char<8;char++)for(const side of ['left','right']){
   const g=race(1,char);g.speed=155;g.arcadeManual[side]=true;step(g,6);const held=g.playerX;

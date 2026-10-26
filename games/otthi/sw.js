@@ -1,4 +1,4 @@
-const REVISION = '4ac88dc0a9591b36';
+const REVISION = '9849fbe149cb0b0a';
 const CACHE = `otthi-v70633-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.26.5-frota-serra-garagem';

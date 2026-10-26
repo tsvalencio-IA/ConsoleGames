@@ -16,6 +16,7 @@
     'heli-rescue':{id:'heli-rescue',mode:'helicopter',model:'helicopter',livery:'rescue',label:'Helicóptero de resgate',x:117,z:-164,yaw:0,radius:6,height:1.0},
     'plane-tour':{id:'plane-tour',mode:'plane',model:'light',livery:'tour',label:'Avião de passeio',x:80,z:-216,yaw:Math.PI/2,radius:6,height:.92},
     'plane-cargo':{id:'plane-cargo',mode:'plane',model:'cargo',livery:'cargo',label:'Avião de carga',x:120,z:-216,yaw:Math.PI/2,radius:7,height:1.6},
+    'plane-ottovias':{id:'plane-ottovias',mode:'plane',model:'light',livery:'ottovias',label:'Avião OTTOVIAS',x:143,z:-216,yaw:Math.PI/2,radius:6,height:.92},
     balloon:{id:'balloon',mode:'balloon',model:'balloon',label:'Balão das montanhas',x:-66,z:89,yaw:Math.PI,radius:5,height:1.05}
   };
   function campaignAircraftPose(id){const base=WORLD_CAMPAIGN_AIRCRAFT[id];if(!base)return null;const p=state.vehicles?.aircraft?.[id],bounds=v704WorldBounds();return p&&[p.x,p.z,p.yaw].every(Number.isFinite)&&p.x>bounds.minX+2&&p.x<bounds.maxX-2&&p.z>bounds.minZ+2&&p.z<bounds.maxZ-2?{...base,...p}:{...base};}
@@ -166,7 +167,7 @@
     try{return JSON.parse(safeLocalGet(worldCampaign.recordKey)||'{}')||{};}catch{return{};}
   }
   function campaignPending(){
-    try{const p=JSON.parse(safeLocalGet(worldCampaign.recordKey+':session')||'null');return p?.v===1&&['ground','plane','helicopter'].includes(p.mode)&&['depart','travel','combat','return'].includes(p.phase)&&p.body&&['x','y','z','yaw','pitch','hp'].every(k=>Number.isFinite(p.body[k]))&&p.body.hp>0&&p.body.hp<=100&&p.body.y>=0&&p.body.y<=100&&Math.abs(p.body.pitch)<=.85?p:null;}catch{return null;}
+    try{const p=JSON.parse(safeLocalGet(worldCampaign.recordKey+':session')||'null');return p?.v===1&&['ground','plane','helicopter'].includes(p.mode)&&['depart','travel','combat','return'].includes(p.phase)&&p.body&&['x','y','z','yaw','pitch','hp'].every(k=>Number.isFinite(p.body[k]))&&p.body.hp>0&&p.body.hp<=100&&p.body.y>=0&&p.body.y<=650&&Math.abs(p.body.pitch)<=.85?p:null;}catch{return null;}
   }
   function campaignPersist(){
     const m=worldCampaign.mission,g=otGames;if(!m||m.recorded||!g.active||!g.body)return;

@@ -16,6 +16,12 @@ test('air operations: a pilot who returned to the base does not get another craf
 test('air operations: a guest cannot park another pilot’s unit or inject a nonfinite position',()=>{
  const a=new c.Fleet(base,{},1000);a.claim('heli','owner',1500);assert.equal(a.park('heli','guest',{x:96,z:-164,yaw:0},2000),false);assert.equal(a.park('heli','owner',{x:NaN,z:2,yaw:0},2000),false);assert.equal(a.data.craft.heli.pilot,'owner');
 });
+test('air operations: base replenishment waits for a low-hovering aircraft to clear the pad and resumes without resetting the timer',()=>{
+ const f=new c.Fleet(base,{},1000);f.claim('heli','a',1500);f.depart('heli','a',2000);f.data.craft.heli.y=2;assert.equal(f.tick(182000).length,0);assert.equal(f.data.slots.heli.spawnAt,182000);f.data.craft.heli.y=20;assert.equal(f.tick(182001)[0],'heli-r1');
+});
+test('air operations: a returned aircraft can depart again and start a new replenishment cycle',()=>{
+ const f=new c.Fleet(base,{},1000);f.claim('heli','a',1500);f.depart('heli','a',2000);f.park('heli','a',{x:96,z:-164,yaw:0},5000);f.tick(182000);f.claim('heli','b',183000);assert(f.depart('heli','b',184000));assert.equal(f.data.slots.heli.spawnAt,364000);
+});
 test('air operations: the V2 publisher actually carries fleet state without weakening existing database rules',()=>{
  const connector=fs.readFileSync('games/otthi/assets/js/multiplayer-rtdb.js','utf8');assert(connector.includes('a:snapshot?.a||null'));const rules=JSON.parse(fs.readFileSync('games/otthi/firebase-database.rules.json','utf8'));assert(rules.rules);
  assert(source.includes("window.addEventListener('otthi:event-v2',airReceiveCommand)"));assert(source.includes("c.pilot===uid"));assert(source.includes("e.kind!=='air-fleet'"));

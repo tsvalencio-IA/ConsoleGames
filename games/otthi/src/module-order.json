@@ -84,7 +84,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "f002e105202aa921dee1b8e5ca37407d4f01003c29c920f701aa4f6b73ef7f32"
+      "sha256Body": "8c565db1f7fcb7cb65f315c11416c40dea3d02b0b12fc2fbdc69b9ea1fcbf859"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "b19e9be1cd36acb49efc617d93e1e88734d2f8b2b3343c056418a4b7e3268107"
+      "sha256Body": "94ad3dac9969c0fcd949e97173622c638f335b00fb7914518e0ccfbbc4c5b319"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -371,28 +371,28 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "b3afd481b89531476a4e73c482da3bced8130ca5bdd5fccb87762390e33b6d27"
+      "sha256Body": "c3a6bc16c6f771d94e7ba4f703323ba4b8397aa0ffcab10d31b6b05bb90c66dd"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "ab33b2f64e553c6bfeae8e270106662511ef01c49ca1f9d921618cb28dccf645"
+      "sha256Body": "66349dc03a5bff48e3438287041e2d3645815339b54c104828ad98b7a86658c1"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "246425837315dbabdfa60292086b8ca86dcfbc66a60d73ad760fbb1e2ab40522"
+      "sha256Body": "00d2f5a05bf6263bcb421b9e3fca70b5e2ce90ff27421f13a1d29ec61e6c2b96"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "975521d2fad43b5774d18166a030c1bb8870635592302ca804efeb1a2384cda0"
+      "sha256Body": "c24175133dfd4d94bd2e8360a401ca8d70df2be4c32be14b612ad7318e2cc5e7"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -413,7 +413,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
-      "sha256Body": "e3dd83f93158ea265b213632e51211f7298f1d609bb8dfb6c7429262d1384ee7"
+      "sha256Body": "b5fecdf71d42868c34ac293189facd8af5e71c108248852a4d7f789b89a6425b"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
@@ -490,7 +490,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
-      "sha256Body": "8b1f197a9d1698cac451d5572ce15f30a3349d2cf5925e1975764e521192d953"
+      "sha256Body": "0e419c0aa9780a828267896c0727e51285ef00510156138ec87d7910072c53d3"
     },
     {
       "file": "src/modules/56-city-coast-life.js",
@@ -530,21 +530,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "a077bda7c9878f0d496df63138fb0c81b1d8fe03acc4a2bc6813b4925889d615"
+      "sha256Body": "03bf1b8667eeb33f393afd58bf3378dd7513ddc66c7e641a665ed3118cc123bc"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "9be5636c6e2b9eb99c59b862484fb51c666f5b0c5a36ebb8633c4f0c2199fdc1"
+      "sha256Body": "a403331afa481d8254655b226caa545a6dcf1b6d0dcbb895b51e1d5fc8991375"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Cordilheira, neve, mata e trilha conectadas ao mundo",
-      "sha256Body": "9c9fbddb86deda649994ec7fc51c7cef825e6d15ce2d24a6ffa8184a43e19dbd"
+      "sha256Body": "21885b1a41bb6975699a51800dd131f8f70a6fc7e3bd4e9fe5eaee46cebf8055"
     }
   ],
   "styles": [
@@ -714,7 +714,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atividades acessíveis nos locais do mundo",
-      "sha256Body": "a5a4ed387ffb56c485dc2b3bb07457bb6557add3cf15d923416bf77a7e49a8f9"
+      "sha256Body": "163151a36bb8b219909f7ef874875afc7b454bc93ed28f234d5572da812d930f"
     },
     {
       "file": "src/styles/23-world-race-focus.css",
@@ -728,7 +728,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
-      "sha256Body": "c16249e05a3d6977ad334259820515737dba249f9e01866aca2c77d8913aa1ae"
+      "sha256Body": "92b34cd4a663bbe5b1fd8c59f810ca4a886bd9d6d32d140e96402e65d65131bc"
     }
   ]
 }

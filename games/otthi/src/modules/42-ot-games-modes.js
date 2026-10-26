@@ -199,7 +199,7 @@
     root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button><button data-ot="map">MAPA / GPS</button>');
     document.body.append(root);otGamesBindPress(root.querySelector('[data-ot="peace"]'),()=>otGamesLeave());otGamesBindPress(root.querySelector('[data-ot="menu"]'),otGamesChoose);otGamesBindPress(root.querySelector('[data-ot="retry"]'),()=>typeof worldCampaign!=='undefined'&&worldCampaign.mission?campaignRetry():otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty}));
     otGamesBindPress(root.querySelector('[data-ot="camera"]'),otGamesStartCamera);
-    otGamesBindPress(root.querySelector('[data-ot="map"]'),()=>{otGamesClearInput();openMap();});
+    otGamesBindPress(root.querySelector('[data-ot="map"]'),()=>{const power=g.collective;otGamesClearInput();g.collective=power;openMap();});
     otGamesBindPress(root.querySelector('[data-ot="crouch"]'),otGamesToggleCrouch);otGamesBindPress(root.querySelector('[data-ot="land"]'),otGamesLandingAction);otGamesBindPress(root.querySelector('[data-ot="disembark"]'),otGamesDisembark);
     root.querySelector('[data-ot="crouch"]').hidden=g.mode!=='ground';for(const name of ['land','disembark'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode==='ground';
     for(const name of ['ads','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='ground';
@@ -242,7 +242,7 @@
     return true;
   }
   function updateOtGames(dt){
-    const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){otGamesClearInput();otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
+    const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){const power=g.collective;otGamesClearInput();g.collective=power;otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
     if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
@@ -287,7 +287,7 @@
       if(g.mode==='helicopter'||g.mode==='balloon'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist){g.collective=.5;g.landingAssist=false;}}}
       if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<-.05&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
       if(b.y<floor){b.y=floor;b.vy=0;if(g.armed&&!g.onGround)b.hp=Math.max(0,b.hp-18*dt);}
-      b.y=clamp(b.y,floor,100);
+      b.y=clamp(b.y,floor,Math.max(320,floor+120));
       if(g.obstacles.some(box=>box.containsPoint(new THREE.Vector3(b.x,b.y,b.z)))){b.x=before.x;b.z=before.z;b.vx=b.vz=0;if(g.armed)b.hp=Math.max(0,b.hp-28*dt);}
       if(b.x<bounds.minX+4||b.x>bounds.maxX-4||b.z<bounds.minZ+4||b.z>bounds.maxZ-4){g.notice='LIMITE DO MAPA · VIRE PARA O BAIRRO';b.yaw+=dt*1.4;}else g.notice='';
       if(g.aircraft){g.aircraft.position.set(b.x,b.y,b.z);g.aircraft.rotation.order='YXZ';g.aircraft.rotation.set(-b.pitch,b.yaw,b.roll);for(const r of g.aircraft.userData.rotors||[])r.group.rotation[r.axis]=g.elapsed*r.speed;const flame=g.aircraft.userData.flame;if(flame){flame.visible=g.collective>.52;flame.scale.y=.65+g.collective*.7;}const rotor=g.aircraft.getObjectByName('rotor'),tail=g.aircraft.getObjectByName('tail');if(rotor)rotor.rotation.y=g.elapsed*35;if(tail)tail.rotation.x=g.elapsed*65;}
