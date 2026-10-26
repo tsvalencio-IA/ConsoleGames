@@ -87,6 +87,8 @@
   ];}
   function worldExploreDirectoryHtml(){
     const destinations=[
+      ['airport-terminal','✈️','Aeroporto OT · terminal e helipontos','Aviões de passeio e carga; helicópteros de passeio, resgate e OTTOVIAS.'],
+      ['mountain-balloon','🎈','Balão nas montanhas','Embarque na cesta, suba, explore a serra e pouse para sair.'],
       ['campaign-plane','✈️','Avião · embarcar e pilotar','Base Aérea. Aproxime-se da aeronave e toque em AÇÃO.'],
       ['campaign-helicopter','🚁','Helicóptero · embarcar e pilotar','Pouse, pare e use SAIR DA AERONAVE. Ela fica estacionada.'],
       ['marina-costa','🚤','Lanchas · Marina da Costa Verde','Três lanchas no píer da praia. Pilotagem livre no mar.'],

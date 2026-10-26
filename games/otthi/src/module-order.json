@@ -84,7 +84,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "f63739df7b752c7286dea0b39a05d6d942eb596c69ea612cdc563f0aad1d68ee"
+      "sha256Body": "6173c900cb2b7bf9f0b687c8a151df22af14df24f5794bd12c02f13cbe4186a2"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -119,7 +119,7 @@
       "startLine": 2743,
       "endLine": 2991,
       "description": "Casas, interiores, NPCs, inimigos, cristais, veículos e academia",
-      "sha256Body": "95e2b3554f4504ee785a1bf6d1119e40c4eaa6b4a706608b545661f4a76cac1d"
+      "sha256Body": "ddb289e35ba6164b7e6ebda001ce4448bc75ce115c37a7c09a75a8a99283e78f"
     },
     {
       "file": "src/modules/13a-sports-kart-v705.js",
@@ -238,7 +238,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "bbcf5cdf698d0d861894e47ee3068632807947c91543682097951d31e7381dfd"
+      "sha256Body": "deb5b94415b66ca290df926bff87ba87896953d934ade3890cd85faf5692bc0c"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "b389dee26a424c58749d9f66897955c2b641cde9b1902aae433a254588e897b5"
+      "sha256Body": "176b719bacb136db61fb6f3a715881e34933f8713a8992ec0d9b69d89999d385"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "1d201ba72eca73e6aa1eeed80004e15f4629fbf72314db359b7cf3915ecae60e"
+      "sha256Body": "cc882bf8638309d76c43573ed0545719e87d8d841ce66a08d8728084da63600b"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "319593c805974d8f2bf9c5f9722212f542ecea590da97d23ba5aa7c402c63947"
+      "sha256Body": "4a152048f42b50b9f015112ceb377c8da9681cd168616f14e92d4a73b109a915"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "1e17f68d49cc60b65678bd3ac55c6a177e789cf1ca1e9ec6d0cf95d6d09b272d"
+      "sha256Body": "e537ae62032e61a379dcc6d3aa78bcd2da2ae6857b7bd69423a5bf17c4518c09"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
@@ -469,7 +469,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Embarque e assentos de grupos online em carros, aviões e helicópteros",
-      "sha256Body": "1639da4d979164edaec758f4709cc8249e1d906ec9695456a96a3427d6c3194a"
+      "sha256Body": "b750385b88274ba00602bda832b0062032153dbe92121a04bea2c84c5be6e1a9"
     },
     {
       "file": "src/modules/52-neighborhood-riders.js",
@@ -490,33 +490,40 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
-      "sha256Body": "e61223f64b9e8e65d95534f56b426bccefe51ac51a44e61bb3b91db25f2734c8"
+      "sha256Body": "8b1f197a9d1698cac451d5572ce15f30a3349d2cf5925e1975764e521192d953"
     },
     {
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
-      "sha256Body": "8e60a096182678e126e217222ff7d99aa9cfdf48974b5267fe28df780bf1f476"
+      "sha256Body": "f8db83b4f0ee2125fb224734697fc8bdf7e41317d48d5f4def136bbe3a8acfa7"
     },
     {
       "file": "src/modules/57-world-destinations-marina.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "0aa914577efc57871466926db0427b7cc3294b6a84cceca4a3618a964d489eab"
+      "sha256Body": "ec159b748f3b68c736dbece239fcb9172d8439bf62c96f14622e1fb5129a65d3"
     },
     {
       "file": "src/modules/58-character-activities.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Ações visíveis e interrompíveis dos personagens",
-      "sha256Body": "c154b1935fbb2729fdfbff3f85ac96ce9aa44ea277a2d876f818f9fbd2fe5875"
+      "sha256Body": "4a1b76647a7dd3fc287e59266a0a6f806b0278edabe95260935dda225c2c9b8b"
     },
     {
       "file": "src/modules/59-world-residents.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Rotinas físicas de moradores e restaurantes",
-      "sha256Body": ""
+      "sha256Body": "d0ad86a654d047c679db585d702a48418b5b8ca34911917b45e5b9eb69242163"
+    },
+    {
+      "file": "src/modules/60-airport-mountain-balloon.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Aeroporto civil, várias aeronaves pilotáveis e balão nas montanhas",
+      "sha256Body": "b21a434661428ace72dcbbc815e7e6decb057ae957cf19e71bf410762d58c346"
     }
   ],
   "styles": [

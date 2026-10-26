@@ -9,11 +9,21 @@
     north:{id:'north',label:'Operação Norte',x:85,z:115,radius:30,navX:85,navZ:109}
   });
   const worldCampaign={initialized:false,landmarks:[],mission:null,route:null,routeUi:null,time:0,recordKey:''};
-  const WORLD_CAMPAIGN_AIRCRAFT=typeof WORLD_LAYOUT_V704!=='undefined'?WORLD_LAYOUT_V704.campaignAircraft:{plane:{id:'plane',label:'Embarque no avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},helicopter:{id:'helicopter',label:'Embarque no helicóptero',x:50,z:-165,yaw:0,radius:6}};
-  function campaignAircraftPose(mode){const base=WORLD_CAMPAIGN_AIRCRAFT[mode],p=state.vehicles?.aircraft?.[mode],bounds=v704WorldBounds();return p&&[p.x,p.z,p.yaw].every(Number.isFinite)&&p.x>bounds.minX+2&&p.x<bounds.maxX-2&&p.z>bounds.minZ+2&&p.z<bounds.maxZ-2?{...base,...p}:{...base};}
-  function campaignParkAircraft(mode,b){if(!['plane','helicopter'].includes(mode))return false;state.vehicles.aircraft=state.vehicles.aircraft||{};state.vehicles.aircraft[mode]={x:b.x,z:b.z,yaw:b.yaw,hp:Math.max(1,Math.min(100,b.hp)),parkedAt:Date.now()};saveState(true);campaignSyncAircraft();return true;}
-  function campaignSyncAircraft(){for(const mesh of worldCampaign.aircraft?.children||[]){const p=campaignAircraftPose(mesh.name);mesh.position.set(p.x,groundHeightAt(p.x,p.z)+(mesh.name==='plane'?1.3:1.6),p.z);mesh.rotation.y=p.yaw;mesh.visible=!(otGames.active&&otGames.mode===mesh.name);}}
-  async function campaignBoardAircraft(mode){const p=campaignAircraftPose(mode);if(!running||paused||otGames.active||player.vehicle||player.boating||player.transit.mode||campaignDist(player,p)>p.radius)return false;const pending=campaignPending();if(pending&&pending.mode===mode&&pending.onGround&&campaignDist(pending.body,p)<3)return campaignResume();return otGamesEnter(mode,{armed:false,difficulty:'normal',groundLaunch:true,boarding:p});}
+  const WORLD_CAMPAIGN_AIRCRAFT={
+    ...((typeof WORLD_LAYOUT_V704!=='undefined'&&WORLD_LAYOUT_V704.campaignAircraft)||{plane:{id:'plane',label:'Avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},helicopter:{id:'helicopter',label:'Helicóptero',x:50,z:-165,yaw:0,radius:6}}),
+    'heli-tour':{id:'heli-tour',mode:'helicopter',model:'helicopter',livery:'tour',label:'Helicóptero de passeio',x:75,z:-164,yaw:0,radius:6,height:1.0},
+    'heli-ottovias':{id:'heli-ottovias',mode:'helicopter',model:'helicopter',livery:'ottovias',label:'Helicóptero OTTOVIAS',x:96,z:-164,yaw:0,radius:6,height:1.0},
+    'heli-rescue':{id:'heli-rescue',mode:'helicopter',model:'helicopter',livery:'rescue',label:'Helicóptero de resgate',x:117,z:-164,yaw:0,radius:6,height:1.0},
+    'plane-tour':{id:'plane-tour',mode:'plane',model:'light',livery:'tour',label:'Avião de passeio',x:80,z:-216,yaw:Math.PI/2,radius:6,height:.92},
+    'plane-cargo':{id:'plane-cargo',mode:'plane',model:'cargo',livery:'cargo',label:'Avião de carga',x:120,z:-216,yaw:Math.PI/2,radius:7,height:1.6},
+    balloon:{id:'balloon',mode:'balloon',model:'balloon',label:'Balão das montanhas',x:-66,z:89,yaw:Math.PI,radius:5,height:1.05}
+  };
+  function campaignAircraftPose(id){const base=WORLD_CAMPAIGN_AIRCRAFT[id];if(!base)return null;const p=state.vehicles?.aircraft?.[id],bounds=v704WorldBounds();return p&&[p.x,p.z,p.yaw].every(Number.isFinite)&&p.x>bounds.minX+2&&p.x<bounds.maxX-2&&p.z>bounds.minZ+2&&p.z<bounds.maxZ-2?{...base,...p}:{...base};}
+  function campaignAircraftHeight(id){return WORLD_CAMPAIGN_AIRCRAFT[id]?.height??(id==='plane'?1.3:1.6);}
+  function campaignCreateAircraft(id){const spec=WORLD_CAMPAIGN_AIRCRAFT[id];return spec?.model==='balloon'?createMountainBalloon():spec?.model?createCivilianAirframe(spec.model,spec.livery):otGamesAirframe(id);}
+  function campaignParkAircraft(id,b){if(!WORLD_CAMPAIGN_AIRCRAFT[id])return false;state.vehicles.aircraft=state.vehicles.aircraft||{};state.vehicles.aircraft[id]={x:b.x,z:b.z,yaw:b.yaw,hp:Math.max(1,Math.min(100,b.hp)),parkedAt:Date.now()};saveState(true);campaignSyncAircraft();return true;}
+  function campaignSyncAircraft(){for(const mesh of worldCampaign.aircraft?.children||[]){const p=campaignAircraftPose(mesh.name);mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mesh.name),p.z);mesh.rotation.y=p.yaw;mesh.visible=!(otGames.active&&(otGames.aircraftId||otGames.mode)===mesh.name);}}
+  async function campaignBoardAircraft(id){const p=campaignAircraftPose(id);if(!p||!running||paused||otGames.active||player.vehicle||player.boating||player.transit.mode||campaignDist(player,p)>p.radius)return false;const mode=p.mode||id,pending=campaignPending();if(pending&&pending.mode===mode&&pending.onGround&&campaignDist(pending.body,p)<3)return campaignResume();return otGamesEnter(mode,{armed:false,difficulty:'normal',groundLaunch:true,boarding:p});}
   function campaignLandingZone(mode,b){
     const a=WORLD_CAMPAIGN_SITES.airbase;
     return mode==='plane'?Math.abs(b.x-a.x)<39&&Math.abs(b.z-(a.z+4))<4.6&&Math.abs(Math.cos(b.yaw))<.3:campaignDist(b,WORLD_CAMPAIGN_AIRCRAFT.helicopter)<8;
@@ -106,9 +116,9 @@
     try{
       if(!otGames.assets){const response=await fetch(new URL('assets/ot-games-airframes.json',OTTHI_GAME_LIVE_BASE));if(!response.ok)throw Error('airframes');otGames.assets=await response.json();}
       const root=new THREE.Group();root.name='CAMPAIGN_PARKED_AIRCRAFT';worldCampaign.aircraft=root;
-      for(const mode of Object.keys(WORLD_CAMPAIGN_AIRCRAFT)){const p=campaignAircraftPose(mode),mesh=otGamesAirframe(mode);mesh.name=mode;mesh.position.set(p.x,groundHeightAt(p.x,p.z)+(mode==='plane'?1.3:1.6),p.z);mesh.rotation.y=p.yaw;root.add(mesh);}
+      for(const mode of Object.keys(WORLD_CAMPAIGN_AIRCRAFT)){const p=campaignAircraftPose(mode),mesh=campaignCreateAircraft(mode);mesh.name=mode;mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mode),p.z);mesh.rotation.y=p.yaw;root.add(mesh);}
       worldGroup.add(root);
-      for(const mode of Object.keys(WORLD_CAMPAIGN_AIRCRAFT))registerInteractable({id:'board-aircraft-'+mode,type:'vehicle',icon:mode==='plane'?'✈️':'🚁',label:mode==='plane'?'Entrar no avião':'Entrar no helicóptero',radius:6,priority:185,getPos:()=>campaignAircraftPose(mode),available:()=>!otGames.active&&!player.vehicle&&!player.boating&&!player.transit.mode,action:()=>campaignBoardAircraft(mode)});
+      for(const mode of Object.keys(WORLD_CAMPAIGN_AIRCRAFT))registerInteractable({id:'board-aircraft-'+mode,type:'vehicle',icon:mode==='balloon'?'🎈':(WORLD_CAMPAIGN_AIRCRAFT[mode].mode||mode)==='plane'?'✈️':'🚁',label:'Embarcar: '+WORLD_CAMPAIGN_AIRCRAFT[mode].label,radius:WORLD_CAMPAIGN_AIRCRAFT[mode].radius,priority:185,getPos:()=>campaignAircraftPose(mode),available:()=>!otGames.active&&!player.vehicle&&!player.boating&&!player.transit.mode,action:()=>campaignBoardAircraft(mode)});
     }catch(e){console.warn('Aeronaves estacionadas indisponíveis:',e.message);}
     finally{worldCampaign.loadingAircraft=false;}
   }
@@ -302,7 +312,7 @@
     }else view.hidden=true;
   }
   window.OTTHI_CAMPAIGN={
-    open:campaignOpen,start:campaignStart,resume:campaignResume,board:campaignBoardAircraft,parked:()=>Object.keys(WORLD_CAMPAIGN_AIRCRAFT).map(mode=>({mode,...campaignAircraftPose(mode)})),cancel:()=>otGamesLeave(),
+    open:campaignOpen,start:campaignStart,resume:campaignResume,board:campaignBoardAircraft,parked:()=>Object.keys(WORLD_CAMPAIGN_AIRCRAFT).map(id=>({mode:WORLD_CAMPAIGN_AIRCRAFT[id].mode||id,...campaignAircraftPose(id)})),cancel:()=>otGamesLeave(),
     navigate:id=>WORLD_CAMPAIGN_SITES[id]?campaignNavigate(WORLD_CAMPAIGN_SITES[id]):false,
     sites:()=>Object.values(WORLD_CAMPAIGN_SITES).map(s=>({...s})),
     diagnostics:()=>({initialized:worldCampaign.initialized,phase:worldCampaign.mission?.phase||'idle',

@@ -103,7 +103,15 @@
     for(let i=world.fireballs.length-1;i>=0;i--){const f=world.fireballs[i];f.life-=dt;f.x+=f.vx*dt;f.z+=f.vz*dt;f.mesh.position.set(f.x,f.y,f.z);f.mesh.rotation.x+=dt*7;f.mesh.rotation.y+=dt*9;let hit=false;for(const e of world.enemies){if(!e.dead&&Math.hypot(f.x-e.group.position.x,f.z-e.group.position.z)<1.1){damageEnemy(e,1);hit=true;break;}}if(hit||f.life<=0){worldGroup.remove(f.mesh);world.fireballs.splice(i,1);}}
   }
 
+  let interiorClipHouse=null;
+  function updateInteriorClipping(){
+    const h=currentHouse&&cameraMode==='interior'?currentHouse:null;if(interiorClipHouse===h)return;interiorClipHouse=h;
+    // A cutaway must also clip outdoor signs/traffic between camera and room.
+    // Global world-space planes keep the actual furnishings and actors intact.
+    renderer.clippingPlanes=h?[new THREE.Plane(new THREE.Vector3(1,0,0),-h.x+h.w/2+.18),new THREE.Plane(new THREE.Vector3(-1,0,0),h.x+h.w/2+.18),new THREE.Plane(new THREE.Vector3(0,0,1),-h.z+h.d/2+.18),new THREE.Plane(new THREE.Vector3(0,0,-1),h.z+h.d/2+.18),new THREE.Plane(new THREE.Vector3(0,-1,0),3.05)]:[];
+  }
   function updateCamera(dt){
+    updateInteriorClipping();
     if(typeof otGames!=='undefined'&&otGames.active){otGamesCamera(dt);return;}
     let desiredPos,look;
     const workshopView=world.workshopInspectionCamera,lift=world.workshopLift;if(workshopView?.active&&lift?.vehicleId){const ground=groundHeightAt(lift.x,lift.z),pitch=clamp(cameraPitch,-.55,1.35),normalized=(pitch+.55)/1.9,dist=clamp(6.2+cameraZoom,3.4,13.5),height=lerp(.48,7.35,normalized),focusY=ground+Number(lift.height||0)+.82;desiredPos=new THREE.Vector3(lift.x-Math.sin(cameraYaw)*dist,ground+height,lift.z+Math.cos(cameraYaw)*dist);look=new THREE.Vector3(lift.x,focusY,lift.z);camera.fov=lerp(60,48,normalized);}
@@ -127,7 +135,7 @@
     }
     if(!desiredPos&&currentHouse&&cameraMode==='interior'){
       const h=currentHouse;const portrait=innerHeight>innerWidth;const orbit=clamp(cameraYaw,-1.18,1.18);const dist=clamp((portrait?8.2:7.2)+cameraZoom,5.2,12.5);const height=clamp((portrait?5.6:4.6)+cameraPitch*2.4+cameraZoom*.18,3.8,8.8);
-      desiredPos=new THREE.Vector3(player.x-Math.sin(orbit)*dist,player.y+height,player.z+Math.cos(orbit)*dist);look=new THREE.Vector3(player.x,player.y+1.15,player.z);camera.fov=portrait?54:50;
+      const cx=lerp(h.x,player.x,.20),cz=lerp(h.z,player.z,.20);desiredPos=new THREE.Vector3(cx-Math.sin(orbit)*dist,player.y+height,cz+Math.cos(orbit)*dist);look=new THREE.Vector3(cx,player.y+.75,cz);camera.fov=portrait?58:56;
     }else if(!desiredPos){
       const portrait=innerHeight>innerWidth;const speed=Math.hypot(player.vx,player.vz);
       if((player.vehicle||player.boating)&&!input.cameraDrag){const heading=player.vehicle?player.car.heading:player.boat.heading;cameraYaw=lerpAngle(cameraYaw,Math.PI-heading,Math.min(1,dt*3.2));}
