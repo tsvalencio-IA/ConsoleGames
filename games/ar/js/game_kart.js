@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 25809)
-Total output lines: 1489
-
 // =============================================================================
 // KART LEGENDS: TITANIUM MASTER FINAL V23 (COMBATE REALISTA, ECONOMIA E FÍSICA)
 // ARQUITETO: SENIOR GAME ENGINE ARCHITECT
@@ -607,7 +604,255 @@ Total output lines: 1489
             }
 
             const absX = Math.abs(d.playerX); let currentGrip = PHYSICS.gripAsphalt; let currentDrag = CONF.FRICTION; d.vibration = 0;
-  …3809 tokens truncated…> 2) r.ai_targetLane = -0.8; else if (futureSeg.curve < -2) r.ai_targetLane = 0.8; 
+            const carScaleGlobal = w * 0.0022;
+            const partY = (h * 0.80) + (15 * carScaleGlobal) + 5; 
+            
+            let offroadDrag = CONF.OFFROAD_DECEL;
+            if (activeKart.type === 'monster') offroadDrag = 0.95;
+            if (activeKart.type === 'tractor') offroadDrag = 0.96;
+            if (activeKart.type === 'tank') offroadDrag = 0.97; 
+
+            if (char.tireLevel > 1) { offroadDrag += (char.tireLevel - 1) * 0.015; }
+            if (offroadDrag > CONF.FRICTION) offroadDrag = CONF.FRICTION;
+
+            if (absX > 1.45) { 
+                currentGrip = PHYSICS.gripOffroad; currentDrag = offroadDrag; d.vibration = 5; 
+                if (char.suspensionLevel > 1) d.vibration -= (char.suspensionLevel - 1) * 1.5; 
+                if(d.speed > 50) d.speed *= 0.98; if(d.speed > 10) this.spawnParticle(w/2 + (Math.random()-0.5)*40, partY, 'dust'); 
+            } else if (absX > 1.0) { currentGrip = PHYSICS.gripZebra; d.vibration = 2; }
+
+            let max = CONF.MAX_SPEED * char.speedInfo;
+            if (d.turboLock) {
+                max = CONF.TURBO_MAX_SPEED; d.nitro -= 0.5; this.spawnParticle(w/2 - 15, partY, 'turbo'); this.spawnParticle(w/2 + 15, partY, 'turbo');
+                if (d.nitro <= 0) { d.nitro = 0; d.turboLock = false; window.Sfx.play(200, 'sawtooth', 0.5, 0.2); } 
+            } else { d.nitro = Math.min(100, d.nitro + 0.15); }
+
+            const isAccelerating = (d.inputActive || d.turboLock);
+            if(d.status === 'RACING' && d.spinTimer <= 0 && isAccelerating) { d.speed += (max - d.speed) * char.accel; } else if (d.status !== 'FINISHED') { d.speed *= 0.96; }
+            d.speed *= currentDrag;
+
+            if (d.spinTimer > 0) { 
+                d.spinTimer--; 
+                d.spinAngle += (Math.PI * 2) / 40; 
+                d.speed *= 0.95; 
+                d.bounce *= 0.85; 
+            } else {
+                d.spinAngle = 0; 
+                d.bounce = (Math.random() - 0.5) * d.vibration; 
+            }
+
+            if (Math.abs(d.targetSteer) > 0.5 && d.speed > 100 && absX < 1.3 && d.spinTimer <= 0) {
+                d.driftSparks = Math.min((d.driftSparks || 0) + 1, 100);
+                if (Math.random() > 0.3) this.spawnParticle(w/2 + (d.targetSteer > 0 ? -30 : 30), partY, d.driftSparks > 70 ? 'drift_blue' : 'drift_yellow');
+            } else if (d.driftSparks > 0) {
+                if (d.driftSparks > 70) { d.speed = Math.min(CONF.TURBO_MAX_SPEED, d.speed + 60); window.Sfx.play(600, 'square', 0.2, 0.2); d.vibration = 8; this.pushMsg("DRIFT BOOST!", "#0ff", 30); }
+                d.driftSparks = 0;
+            }
+
+            let inVacuo = false;
+            d.rivals.forEach(r => {
+                const distZ = ((Number(r.lap) * trackLength) + Number(r.pos)) - ((d.lap * trackLength) + d.pos);
+                if (distZ > 80 && distZ < 600 && Math.abs(r.x - d.playerX) < 0.3 && r.status === 'RACING') inVacuo = true;
+            });
+            if (inVacuo && d.speed > 90) {
+                d.slipstreamTimer = (d.slipstreamTimer || 0) + 1;
+                if (d.slipstreamTimer > 20) { d.speed += 3.5; if (Math.random() > 0.4) this.spawnParticle(w/2 + (Math.random()-0.5)*200, h/2 + Math.random()*150, 'wind'); }
+            } else { d.slipstreamTimer = 0; }
+
+            // --- MAGNETISMO E HITBOX AUMENTADA ---
+            const pickupHitbox = 4.5; 
+            for (let i = 0; i <= 1; i++) {
+                const segInfo = getSegment((d.pos / CONF.SEGMENT_LENGTH) + i);
+                if (segInfo.obs) {
+                    segInfo.obs.forEach(o => {
+                        if (!o.collected) {
+                            let dist = Math.abs(d.playerX - o.x);
+                            
+                            // Efeito Magnético: Atrai o item pro jogador se estiver proximo
+                            if (dist < 4.5 && o.type !== 'banana') {
+                                o.x += (d.playerX - o.x) * 0.15; 
+                                dist = Math.abs(d.playerX - o.x);
+                            }
+
+                            if (dist < pickupHitbox) {
+                                if (o.type === 'coin') {
+                                    o.collected = true; d.matchCoins++; d.score += 50; window.Sfx.coin(); 
+                                    if (window.Profile) { window.Profile.coins = (window.Profile.coins || 0) + 1000; if(window.Profile.save) window.Profile.save(); }
+                                } else if (o.type === 'item_box' && !d.item) {
+                                    o.collected = true; window.Sfx.play(1000, 'sine', 0.1);
+                                    const possibleItems = ['mushroom', 'banana', 'shell'];
+                                    d.item = possibleItems[Math.floor(Math.random() * possibleItems.length)];
+                                    this.pushMsg("CAIXA PEGA!", "#fff", 30);
+                                } else if (o.type === 'banana') {
+                                    // Imunidade de Dono da Banana (1.5 segundos após jogar)
+                                    if (o.owner === window.System.playerId && (Date.now() - o.time < 1500)) return;
+
+                                    o.collected = true; d.spinTimer = 40; d.speed *= 0.2; window.Sfx.error(); window.Gfx.shakeScreen(20);
+                                    this.pushMsg("ESCORREGOU!", "#f00", 40);
+                                    
+                                    // Remove the hazard globally
+                                    if (this.isOnline && this.roomRef && o.id) {
+                                        this.roomRef.child('shared/hazards/' + o.id).remove();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            if (itemTriggered && d.item && d.itemCooldown <= 0 && d.status === 'RACING') {
+                if (d.item === 'mushroom') {
+                    d.speed = Math.min(CONF.TURBO_MAX_SPEED + 50, d.speed + 150);
+                    window.Gfx.shakeScreen(15); window.Sfx.play(800, 'square', 0.3, 0.2);
+                    this.pushMsg("COGUMELO BOOST!", "#f1c40f");
+                } 
+                else if (d.item === 'banana') {
+                    // Joga a banana pra trás
+                    let dropPos = d.pos - (CONF.SEGMENT_LENGTH * 2);
+                    if (dropPos < 0) dropPos += trackLength;
+                    let segInfo = getSegment(dropPos / CONF.SEGMENT_LENGTH);
+                    if (!segInfo.obs) segInfo.obs = [];
+                    
+                    let hazId = 'b_' + window.System.playerId + '_' + Date.now();
+                    segInfo.obs.push({ id: hazId, type: 'banana', x: d.playerX, collected: false, owner: window.System.playerId, time: Date.now() });
+                    window.Sfx.play(300, 'sine', 0.2, 0.2);
+                    this.pushMsg("BANANA DROPADA!", "#f1c40f");
+
+                    if (this.isOnline && this.roomRef) {
+                        this.roomRef.child('shared/hazards/' + hazId).set({ pos: dropPos, x: d.playerX, owner: window.System.playerId, time: Date.now() });
+                    }
+                } 
+                else if (d.item === 'shell') {
+                    let ranks = this.getRankings();
+                    let myIdx = ranks.findIndex(r => r.id === 'player');
+                    let targetIdx = myIdx - 1; 
+                    if (myIdx === 0) targetIdx = ranks.length - 1; 
+                    let targetId = ranks[targetIdx] ? ranks[targetIdx].id : null;
+
+                    d.projectiles.push({ pos: d.pos + 200, x: d.playerX, speed: Math.max(d.speed, 200) + 150, active: true, life: 400, owner: 'player', targetId: targetId });
+                    window.Sfx.play(600, 'sawtooth', 0.2, 0.2);
+                    this.pushMsg("CASCO LANÇADO!", "#2ecc71"); // Adeus míssel
+                }
+                d.item = null; d.itemCooldown = 60; 
+            }
+            if (d.itemCooldown > 0) d.itemCooldown--;
+
+            d.projectiles.forEach(p => {
+                if (!p.active) return;
+                p.pos += p.speed; p.life--;
+                if (p.pos >= trackLength) p.pos -= trackLength; 
+                if (p.life <= 0) p.active = false;
+
+                let targetObj = null;
+                if (p.targetId === 'player') {
+                    targetObj = { x: d.playerX, pos: d.pos, kartType: activeKart.type, isMe: true };
+                } else {
+                    let bot = this.localBots.find(b => b.id === p.targetId);
+                    if (bot) { targetObj = { x: bot.x, pos: bot.pos, kartType: KART_MODELS[bot.kartId || 0].type, isBot: true, ref: bot }; } 
+                    else {
+                        let remote = this.rivals.find(rv => rv.id === p.targetId);
+                        if (remote) targetObj = { x: remote.x, pos: remote.pos, kartType: KART_MODELS[remote.kartId || 0].type, isRemote: true };
+                    }
+                }
+
+                if (targetObj) {
+                    p.x += (targetObj.x - p.x) * 0.08; 
+                    
+                    let distZ = Math.abs(p.pos - targetObj.pos);
+                    if (distZ > trackLength / 2) distZ = trackLength - distZ; 
+                    
+                    if (distZ < 250 && Math.abs(p.x - targetObj.x) < 1.0) { 
+                        p.active = false; 
+                        
+                        if (targetObj.kartType === 'tank' || targetObj.kartType === 'plane') {
+                            if (targetObj.isMe) { window.Sfx.play(400, 'square', 0.1, 0.1); this.pushMsg("DEFESA BLINDADA!", "#3498db", 40); }
+                        } else {
+                            if (targetObj.isMe) {
+                                d.speed *= 0.2; d.spinTimer = 40; 
+                                let baseBounce = char.weight > 1.4 ? -40 : -80; 
+                                if (char.suspensionLevel > 1) baseBounce *= (1 - (char.suspensionLevel - 1) * 0.25);
+                                d.bounce = baseBounce; 
+                                window.Sfx.error(); window.Gfx.shakeScreen(30); this.pushMsg("ATINGIDO!", "#f00", 50);
+                                this.spawnParticle(w/2, h*0.8, 'explosion'); 
+                            } else if (targetObj.isBot) {
+                                targetObj.ref.speed *= 0.2; targetObj.ref.spinTimer = 40; window.Sfx.play(200, 'square', 0.2, 0.2); 
+                                this.spawnParticle(w/2 + (targetObj.x - d.playerX)*w/2, h*0.6, 'explosion');
+                            }
+                        }
+                    }
+                }
+            });
+
+            KartAudio.update(d.speed, CONF.MAX_SPEED, d.lateralInertia, absX > 1.45, d.turboLock);
+
+            d.cameraX += (d.playerX - d.cameraX) * CONF.CAMERA_LERP;
+            const ratio = d.speed / CONF.MAX_SPEED;
+            const turnForce = d.steer * char.turnInfo * currentGrip * ratio;
+            d.lateralInertia = (d.lateralInertia * PHYSICS.lateralInertiaDecay) + (turnForce) * 0.08;
+            d.playerX += d.lateralInertia;
+            if(Math.abs(d.lateralInertia) > 0.12 && d.speed > 60 && absX < 1.4) { this.spawnParticle(w/2 - 30, partY, 'smoke'); this.spawnParticle(w/2 + 30, partY, 'smoke'); }
+
+            if (this.localBots.length > 0 && d.state !== 'GAMEOVER') {
+                const diff = AI_DIFFICULTY_SETTINGS[this.currentFase.diff || CURRENT_DIFFICULTY];
+                let playerTotalDist = (d.lap * trackLength) + d.pos;
+
+                this.localBots.forEach(r => {
+                    if (r.status === 'FINISHED') return;
+                    const rChar = CHARACTERS[r.charId || 0]; 
+                    let botTotalDist = (r.lap * trackLength) + r.pos;
+                    let distBehind = playerTotalDist - botTotalDist;
+                    
+                    let dynamicRubberBand = 1.0;
+                    if (distBehind > 300 && diff.rubberBand > 0) { dynamicRubberBand = 1.0 + (Math.min(distBehind, 4000) / 4000) * diff.rubberBand; }
+
+                    const futureSeg = getSegment((r.pos + (r.ai_lookAhead * CONF.SEGMENT_LENGTH)) / CONF.SEGMENT_LENGTH);
+                    let targetSpeed = CONF.MAX_SPEED * rChar.speedInfo * r.ai_speedMult * dynamicRubberBand;
+                    if (Math.abs(futureSeg.curve) > 2) targetSpeed *= 0.85; else if (Math.abs(futureSeg.curve) > 1) targetSpeed *= 0.95;
+                    
+                    const botSeg = getSegment(r.pos / CONF.SEGMENT_LENGTH);
+                    if (botSeg.obs) {
+                        botSeg.obs.forEach(o => {
+                            if (!o.collected && Math.abs(r.x - o.x) < pickupHitbox) {
+                                if (o.type === 'coin') { o.collected = true; } 
+                                else if (o.type === 'item_box' && !r.item) {
+                                    o.collected = true;
+                                    r.item = ['mushroom', 'banana', 'shell'][Math.floor(Math.random() * 3)];
+                                    r.useItemTimer = 60 + Math.floor(Math.random() * 120); 
+                                } else if (o.type === 'banana') { o.collected = true; r.speed *= 0.2; r.spinTimer = 40; }
+                            }
+                        });
+                    }
+
+                    if (r.item === 'shell') {
+                        let botTarget = d.rivals.concat([{pos: d.pos, x: d.playerX}]).find(x => x.pos > r.pos && x.pos - r.pos < 1000);
+                        if (botTarget) { r.ai_targetLane = botTarget.x; if (Math.abs(r.x - botTarget.x) < 0.5) r.useItemTimer = 1; }
+                    }
+
+                    if (r.item && r.useItemTimer > 0) {
+                        r.useItemTimer--;
+                        if (r.useItemTimer <= 0) {
+                            if (r.item === 'mushroom') { r.speed = Math.min(CONF.TURBO_MAX_SPEED + 50, r.speed + 150); } 
+                            else if (r.item === 'banana') { botSeg.obs.push({ type: 'banana', x: r.x, collected: false }); } 
+                            else if (r.item === 'shell') {
+                                let ranks = this.getRankings();
+                                let myIdx = ranks.findIndex(rx => rx.id === r.id);
+                                let targetIdx = myIdx - 1;
+                                if (myIdx === 0) targetIdx = ranks.length - 1;
+                                let targetId = ranks[targetIdx] ? ranks[targetIdx].id : null;
+                                d.projectiles.push({ pos: r.pos + 200, x: r.x, speed: Math.max(r.speed, 200) + 150, active: true, life: 400, owner: r.id, targetId: targetId });
+                            }
+                            r.item = null;
+                        }
+                    }
+
+                    r.ai_laneTimer++;
+                    if (r.ai_laneTimer > 80) { 
+                        r.ai_laneTimer = 0; 
+                        if (distBehind < 0 && distBehind > -500 && Math.random() < 0.8) { r.ai_targetLane = d.playerX; } 
+                        else if (Math.random() < 0.4) { r.ai_targetLane = [-0.7, 0, 0.7][Math.floor(Math.random() * 3)]; }
+                    }
+                    if (futureSeg.curve > 2) r.ai_targetLane = -0.8; else if (futureSeg.curve < -2) r.ai_targetLane = 0.8; 
 
                     if (Math.random() < diff.errorRate * 0.15) { r.ai_targetLane = (Math.random() > 0.5 ? 1.6 : -1.6); }
 

@@ -53,50 +53,7 @@
     const SAFETY = { ZOMBIE_TIMEOUT: 15000, MAX_RACE_TIME: 300000, MAINTENANCE_RATE: 2000 };
     const PHYSICS = { gripAsphalt: 0.98, gripZebra: 0.85, gripOffroad: 0.35, centrifugalForce: 0.16, momentumTransfer: 1.6, steerSensitivity: 0.0555, lateralInertiaDecay: 0.95 };
 
-    const KartAudio = {
-        ctx: null, masterGain: null, osc1: null, osc2: null, engineGain: null, noiseBuffer: null, noiseSource: null, noiseFilter: null, noiseGain: null, initialized: false, isPlaying: false,
-        init: function() {
-            if (this.initialized) return;
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                this.ctx = new AudioContext(); this.masterGain = this.ctx.createGain(); this.masterGain.gain.value = 0.3; this.masterGain.connect(this.ctx.destination);
-                const bufferSize = this.ctx.sampleRate; this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                const data = this.noiseBuffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-                this.initialized = true;
-            } catch (e) { }
-        },
-        start: function() {
-            if (!this.initialized || this.isPlaying) return;
-            this.ctx.resume(); const t = this.ctx.currentTime;
-            this.osc1 = this.ctx.createOscillator(); this.osc1.type = 'sawtooth'; this.osc2 = this.ctx.createOscillator(); this.osc2.type = 'triangle'; 
-            this.engineGain = this.ctx.createGain(); this.engineGain.gain.value = 0;
-            this.osc1.connect(this.engineGain); this.osc2.connect(this.engineGain); this.engineGain.connect(this.masterGain); this.osc1.start(t); this.osc2.start(t);
-            this.noiseSource = this.ctx.createBufferSource(); this.noiseSource.buffer = this.noiseBuffer; this.noiseSource.loop = true;
-            this.noiseFilter = this.ctx.createBiquadFilter(); this.noiseFilter.type = 'bandpass'; this.noiseGain = this.ctx.createGain(); this.noiseGain.gain.value = 0;
-            this.noiseSource.connect(this.noiseFilter); this.noiseFilter.connect(this.noiseGain); this.noiseGain.connect(this.masterGain); this.noiseSource.start(t); this.isPlaying = true;
-        },
-        stop: function() {
-            if (!this.isPlaying) return;
-            try { const t = this.ctx.currentTime + 0.1; this.osc1.stop(t); this.osc2.stop(t); this.noiseSource.stop(t); setTimeout(() => { this.osc1.disconnect(); this.osc2.disconnect(); this.engineGain.disconnect(); this.noiseSource.disconnect(); this.noiseFilter.disconnect(); this.noiseGain.disconnect(); }, 200); } catch(e){}
-            this.isPlaying = false;
-        },
-        update: function(speed, maxSpeed, driftIntensity, isOffroad, isTurbo) {
-            if (!this.isPlaying) return;
-            const ratio = Math.abs(speed) / maxSpeed; const now = this.ctx.currentTime;
-            const baseFreq = 60 + (ratio * 240); this.osc1.frequency.setTargetAtTime(baseFreq, now, 0.1); this.osc2.frequency.setTargetAtTime(baseFreq * 0.5, now, 0.1);
-            const idleWobble = (speed < 5) ? (Math.sin(now * 20) * 0.05) : 0; this.engineGain.gain.setTargetAtTime(0.1 + (ratio * 0.1) + idleWobble, now, 0.1);
-            if (isTurbo) { this.osc1.frequency.setTargetAtTime(baseFreq * 1.5, now, 0.2); this.engineGain.gain.setTargetAtTime(0.3, now, 0.1); }
-            let targetNoiseVol = 0; let targetFilterFreq = 800; let targetQ = 1;
-            if (isOffroad) { targetNoiseVol = Math.min(0.4, ratio * 0.5); targetFilterFreq = 400; targetQ = 0.5; } else if (Math.abs(driftIntensity) > 0.15 && speed > 50) { targetNoiseVol = Math.min(0.3, (Math.abs(driftIntensity) - 0.15) * 2.0); targetFilterFreq = 1200 + (ratio * 500); targetQ = 5; }
-            this.noiseGain.gain.setTargetAtTime(targetNoiseVol, now, 0.1); this.noiseFilter.frequency.setTargetAtTime(targetFilterFreq, now, 0.1); this.noiseFilter.Q.setTargetAtTime(targetQ, now, 0.1);
-        },
-        crash: function() {
-            if(!this.initialized) return;
-            const t = this.ctx.currentTime; const osc = this.ctx.createOscillator(); const g = this.ctx.createGain();
-            osc.frequency.setValueAtTime(100, t); osc.frequency.exponentialRampToValueAtTime(10, t + 0.3); g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
-            osc.type = 'square'; osc.connect(g); g.connect(this.masterGain); osc.start(t); osc.stop(t + 0.3);
-        }
-    };
+    const KartAudio={initialized:false,isPlaying:false,voice:null,init(){this.initialized=!!window.GameAudio;window.GameAudio?.unlock();},start(){if(this.isPlaying)return;this.init();this.voice=window.GameAudio?.vehicleVoice('kart','kart');this.isPlaying=!!this.voice;},stop(){this.voice?.dispose();this.voice=null;this.isPlaying=false;},update(speed,maxSpeed,driftIntensity,isOffroad,isTurbo){this.voice?.update(Math.abs(speed)/Math.max(1,maxSpeed)*24,speed>0?.8:0,isTurbo,!window.System?.paused);},crash(){window.GameAudio?.effect('impact');}};
 
     let segments = []; let trackLength = 0; let minimapPath = []; let minimapBounds = {minX:0, maxX:0, minZ:0, maxZ:0, w:1, h:1};
     let hudMessages = []; let particles = []; let nitroBtn = null; let resetBtn = null; 

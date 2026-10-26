@@ -1,0 +1,86 @@
+{
+  "version": "20261026-recorded1",
+  "processing": "Mono24k Vorbis, trim, DC removal, peak normalization, HP35/LP9500, fade. Runtime loop seam. Vehicle variants are authored mixes, not factory recordings of named models.",
+  "assets": [
+    {
+      "file": "rifle-1.ogg",
+      "source": "https://opengameart.org/content/the-free-firearm-sound-library#AR-15/D_32P.wav",
+      "sourceStart": 0.69375,
+      "sourceEnd": 1.8437083333333333,
+      "license": "CC0-1.0",
+      "author": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "sha256": "1d7a9cfde08f0961c2911c564943e790408f1dcbfe11d176011be15ed0d1e882",
+      "duration": 1.1499583333333334
+    },
+    {
+      "file": "rifle-2.ogg",
+      "source": "https://opengameart.org/content/the-free-firearm-sound-library#AR-15/D_24P.wav",
+      "sourceStart": 0.538875,
+      "sourceEnd": 1.6888333333333334,
+      "license": "CC0-1.0",
+      "author": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "sha256": "78cf51dddfe0d4708cbecbcbb6f6356dfd925e318d6f5b6d69e1ce8efc212566",
+      "duration": 1.1499583333333334
+    },
+    {
+      "file": "smg-1.ogg",
+      "source": "https://opengameart.org/content/the-free-firearm-sound-library#Carl Gustav M45/G_31P.wav",
+      "sourceStart": 0.3002916666666667,
+      "sourceEnd": 1.1002916666666667,
+      "license": "CC0-1.0",
+      "author": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "sha256": "4fff463934c531a4937e33f6a00d68237dc4c298ecfd2a8275e2f5cfb0dc5a6f",
+      "duration": 0.8
+    },
+    {
+      "file": "smg-2.ogg",
+      "source": "https://opengameart.org/content/the-free-firearm-sound-library#Carl Gustav M45/G_20P.wav",
+      "sourceStart": 0.33775,
+      "sourceEnd": 1.13775,
+      "license": "CC0-1.0",
+      "author": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "sha256": "3aff1692d06b81821f2f439762bd4328c70df80a89d5a2179d76d3b157ac4b71",
+      "duration": 0.8
+    },
+    {
+      "file": "marksman.ogg",
+      "source": "https://opengameart.org/content/the-free-firearm-sound-library#Tikka/W_24P.wav",
+      "sourceStart": 0.744625,
+      "sourceEnd": 2.344625,
+      "license": "CC0-1.0",
+      "author": "Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney",
+      "sha256": "aecf54452b8f184daacf31a4ea1841ec3c5c3ce63052a70290c473fc6ab3bcb2",
+      "duration": 1.6
+    },
+    {
+      "file": "engine-car.ogg",
+      "source": "https://opengameart.org/content/racing-car-engine-sound-loops",
+      "sourceStart": 0,
+      "sourceEnd": 0.8640833333333333,
+      "license": "CC0-1.0",
+      "author": "domasx2 / public-domain pdsounds recording",
+      "sha256": "5070bc90d5fef688fa0c80b89608f3db66f3f92bf8ba1e93faae2b4d40c483ba",
+      "duration": 3.4563333333333333
+    },
+    {
+      "file": "engine-moto.ogg",
+      "source": "https://opengameart.org/content/engines-startup-idle-rev#090912-003.mp3",
+      "sourceStart": 8,
+      "sourceEnd": 11.5,
+      "license": "CC-BY-SA-3.0",
+      "author": "dklon",
+      "sha256": "226367abe821281b4c6fd3af1f33da11da247aa2d857df6210be7befc6af5694",
+      "duration": 3.5
+    },
+    {
+      "file": "engine-heli.ogg",
+      "source": "https://opengameart.org/content/helicopter-sfx",
+      "sourceStart": 14.05125,
+      "sourceEnd": 18.05125,
+      "license": "CC0-1.0",
+      "author": "WuxiaScrub",
+      "sha256": "f01229d16719d83c8391070c2faa64b7ed4969934106424657058128e2edef6a",
+      "duration": 4.0
+    }
+  ]
+}

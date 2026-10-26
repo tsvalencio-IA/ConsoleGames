@@ -1,0 +1,6 @@
+Recorded game audio
+Free Firearm Sound Library: Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney. CC0. https://opengameart.org/content/the-free-firearm-sound-library
+Car loop: domasx2 / public-domain pdsounds source. CC0. https://opengameart.org/content/racing-car-engine-sound-loops
+Helicopter: WuxiaScrub. CC0. https://opengameart.org/content/helicopter-sfx
+Motorcycle: dklon, CC BY-SA 3.0. This trimmed/equalized adaptation engine-moto.ogg remains CC BY-SA 3.0: https://creativecommons.org/licenses/by-sa/3.0/ and https://opengameart.org/content/engines-startup-idle-rev
+Vehicle sounds are designed mixes, not model-specific factory recordings.

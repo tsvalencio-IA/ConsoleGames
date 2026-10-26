@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "94d5e7e78338b6e9a023cb770f0b713e492dcd181bc764061c1833b82a23ed1d"
+      "sha256Body": "90ce656bfddfc3157466bb18a3a149017351ec407a4f5e13578f73f5749d98a7"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -84,7 +84,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": ""
+      "sha256Body": "f63739df7b752c7286dea0b39a05d6d942eb596c69ea612cdc563f0aad1d68ee"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -203,7 +203,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "8255f2e7f76e6d8e7713f23003f83d24472eae80864a38f20243910d6cb31d7c"
+      "sha256Body": "46c0a5135ffcba0af02d20a0d03270a2d982aeab031e0efd1d3702972780429d"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -231,7 +231,7 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "c8eb746dc78c359f5c71147b23093c502a4e87488ccd87e5691ede8ad8942ea2"
+      "sha256Body": "7fbeeb90a2df837a7b9fb3360e16a5ad0851c3b5947604c8550f2a84a8c0ad41"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "b41164460adb0ffd2b7f149d89b72ecd18dbe46eabd7b8889d63646d5ffabd0f"
+      "sha256Body": "56c9abfa9988ba9240789828a881b9f9870cefdf7cc4f3561a4875818ca71e65"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -483,7 +483,7 @@
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "3a7596b3c2e80912451cf34460913df498c0ead9d512a64adf2ceb1b757311f1"
+      "sha256Body": "9a44da420dcd7919dce18d933836dd98f1048e6e0e20926a28270890e414c5c1"
     },
     {
       "file": "src/modules/55-world-traffic-and-air.js",
@@ -509,7 +509,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Ações visíveis e interrompíveis dos personagens",
-      "sha256Body": ""
+      "sha256Body": "058487d68ae4913b34a0dc1365774b9682f2fa3dcebcf89a7b3ed439a23a66d9"
     }
   ],
   "styles": [
@@ -693,7 +693,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
-      "sha256Body": ""
+      "sha256Body": "cac2ba181e789f4684b4317383d1277b7b268462a1e1dbe0e06769c90cab0261"
     }
   ]
 }
