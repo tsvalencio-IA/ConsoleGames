@@ -1,6 +1,6 @@
 {
-  "version": "20261026-recorded1",
-  "processing": "Mono24k Vorbis, trim, DC removal, peak normalization, HP35/LP9500, fade. Runtime loop seam. Vehicle variants are authored mixes, not factory recordings of named models.",
+  "version": "20261027-continuous2",
+  "processing": "Mono24k Vorbis, trim, DC removal, peak normalization, HP35/LP9500, fade. Runtime loop seam. Vehicle variants are authored mixes, not factory recordings of named models. Car: repeated discontinuous seams repaired from shipped recording; continuous overlap and playback gain envelopes.",
   "assets": [
     {
       "file": "rifle-1.ogg",
@@ -59,8 +59,16 @@
       "sourceEnd": 0.8640833333333333,
       "license": "CC0-1.0",
       "author": "domasx2 / public-domain pdsounds recording",
-      "sha256": "5070bc90d5fef688fa0c80b89608f3db66f3f92bf8ba1e93faae2b4d40c483ba",
-      "duration": 3.4563333333333333
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa",
+      "duration": 3.069,
+      "repair": {
+        "revision": "20261027-continuous2",
+        "inputSHA256": "5070bc90d5fef688fa0c80b89608f3db66f3f92bf8ba1e93faae2b4d40c483ba",
+        "selectedStart": 0.04,
+        "selectedEnd": 0.6315,
+        "crossfadeSeconds": 0.08,
+        "method": "Uninterrupted original region, phase-matched overlap; no loop fade to silence."
+      }
     },
     {
       "file": "engine-moto.ogg",

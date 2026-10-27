@@ -4,6 +4,21 @@ const pose=(left=300,right=300,nose=130)=>({keypoints:[{name:'left_wrist',score:
 function headPose(side='right'){const p=pose(),hand=p.keypoints.find(k=>k.name===side+'_wrist');hand.x=side==='right'?285:355;hand.y=105;return p;}
 function frame(f,p,ms=1000/30){f.advance(ms);const before=f.game.item;f.game.updatePhysics(390,844,p);if(before&&f.game.item===null)(f.uses||=[]).push(before);}
 function neutral(f){for(let i=0;i<8;i++)frame(f,pose());}
+test('camera item: a real gradual lift from the wheel to either side of the head spends one item',()=>{
+ for(const side of ['left','right']){
+  const f=fixture(),g=f.game;g.item='banana';neutral(f);
+  for(let i=1;i<=15;i++){const p=pose(),w=p.keypoints.find(k=>k.name===side+'_wrist'),target=headPose(side).keypoints.find(k=>k.name===side+'_wrist');w.x+=(target.x-w.x)*i/15;w.y+=(target.y-w.y)*i/15;frame(f,p);}
+  for(let i=0;i<18;i++)frame(f,headPose(side));
+  assert.equal(g.item,null,'A gradual '+side+' hand lift must use the item');assert.equal(f.uses.length,1);
+  g.item='mushroom';for(let i=0;i<40;i++)frame(f,headPose(side));assert.equal(g.item,'mushroom','One hold must not consume another item');
+ }
+});
+test('camera item: an unfinished lift expires without spending the item',()=>{
+ const f=fixture(),g=f.game;g.item='banana';neutral(f);
+ for(let i=0;i<65;i++)frame(f,pose(300,190));
+ for(let i=0;i<20;i++)frame(f,headPose());assert.equal(g.item,'banana');
+ neutral(f);for(let i=0;i<20;i++)frame(f,headPose());assert.equal(g.item,null);
+});
 test('camera item: a deliberate hand on the head consumes one item without touch and preserves wheel direction until return',()=>{
  const f=fixture(),g=f.game;g.item='mushroom';neutral(f);const steer=g.targetSteer;for(let i=0;i<10;i++)frame(f,headPose());assert.equal(g.item,'mushroom','a brief steering/hand movement cannot spend an item');for(let i=0;i<12;i++)frame(f,headPose());assert.equal(g.item,null);assert.equal(g.targetSteer,steer);assert.equal(g.itemCooldown>0,true);
  g.item='banana';for(let i=0;i<90;i++)frame(f,headPose());assert.equal(g.item,'banana','holding the same gesture cannot spend another item');neutral(f);for(let i=0;i<20;i++)frame(f,headPose());assert.equal(f.uses.length,2);assert(g.itemCooldown>0);assert(!g.turboLock);

@@ -113,7 +113,12 @@
             if (this.ready) return;
             try { this.ctx = window.GameAudio?.context() || new (window.AudioContext || window.webkitAudioContext)(); this.ready = true; } catch(e) {}
         },
-        startEngine: function() {
+        startEngine: function(model='falcon',kind='jet') {
+            const signature=model+'|'+kind;
+            if(window.GameAudio?.vehicleVoice){
+                if(this.engineVoice&&this.engineSignature===signature)return;
+                this.stop();this.engineSignature=signature;this.engineVoice=window.GameAudio.vehicleVoice(model,kind);return;
+            }
             if (!this.ready || this.engineSrc || !this.ctx) return;
             if (this.ctx.state === 'suspended') this.ctx.resume();
             const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 2, this.ctx.sampleRate);
@@ -122,7 +127,7 @@
             this.engineSrc = this.ctx.createBufferSource();
             this.engineSrc.buffer = buf; this.engineSrc.loop = true;
             const filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400;
-            const gain = this.ctx.createGain(); gain.gain.value = 0.15;this.engineGain=gain;this.engineFilter=filter;
+            const gain = this.ctx.createGain(); gain.gain.value = 0;this.engineGain=gain;this.engineFilter=filter;
             this.engineSrc.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
             this.engineSrc.start();
         },
@@ -176,7 +181,14 @@
                 o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t + 0.3);
             }
         },
-        stop: function() { if (this.engineSrc) { try { this.engineSrc.stop(); } catch(e){} this.engineSrc = null; } }
+        stop: function() {
+            this.engineVoice?.dispose();this.engineVoice=null;this.engineSignature='';
+            if(this.engineSrc){const source=this.engineSrc,gain=this.engineGain,filter=this.engineFilter,t=this.ctx.currentTime;
+                gain.gain.cancelAndHoldAtTime?.(t);gain.gain.linearRampToValueAtTime(0,t+.045);
+                source.onended=()=>{source.disconnect();gain.disconnect();filter.disconnect();};
+                try{source.stop(t+.06);}catch{}this.engineSrc=null;this.engineGain=null;this.engineFilter=null;
+            }
+        }
     };
 
     // -----------------------------------------------------------------
@@ -1296,10 +1308,13 @@
             ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,h*.19,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(labels[school.stage]||'',w/2,h*.19+21,w*.82);ctx.restore();
         },
         updateAudio: function(){
+            const active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden;
+            if(active)GameSfx.startEngine(this.airframe,this.isHelicopter()?'helicopter':'jet');
+            if(GameSfx.engineVoice){GameSfx.engineVoice.update(Math.abs(this.ship.speed||0)/10,this.pilot.throttle||0,!!this.ship.afterburner,active);return;}
             if(!GameSfx.ctx||!GameSfx.engineGain)return;
-            const opts=window.ArcadePlaySettings?.get()||{},active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden,t=GameSfx.ctx.currentTime,power=this.pilot.throttle||0;
-            const rotor=this.isHelicopter(),pulse=rotor?.62+.38*Math.pow(Math.sin(t*45),2):1;
-            GameSfx.engineGain.gain.setTargetAtTime(active?(.065+power*.1+(this.ship.afterburner ? .035 : 0))*pulse*(opts.engineVolume??1):0,t,rotor?.012:.1);
+            const opts=window.ArcadePlaySettings?.get()||{},t=GameSfx.ctx.currentTime,power=this.pilot.throttle||0;
+            const rotor=this.isHelicopter();
+            GameSfx.engineGain.gain.setTargetAtTime(active?(.065+power*.1+(this.ship.afterburner ? .035 : 0))*(opts.engineVolume??1):0,t,.1);
             GameSfx.engineFilter.frequency.setTargetAtTime(rotor?260+power*260:220+power*700+Math.min(1500,this.ship.speed*1.3),t,.16);
         },
         _updateView: function(w,h){

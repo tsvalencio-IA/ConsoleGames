@@ -38,3 +38,10 @@ test('civil world: ground combat cannot be started and an armed flight request s
 test('civil world: modal and occupied vehicles prevent a conflicting entry, while the current cooperative world can use a balloon',async()=>{
  const f=fixture();f.context.paused=true;assert.equal(await f.api.enter('plane'),false);f.context.paused=false;f.player.vehicle=true;assert.equal(await f.api.enter('plane'),false);f.player.vehicle=false;f.context.window.OTTHI_COOP.active=()=>({id:'active'});assert(await f.api.enter('balloon',{boarding:{id:'balloon',x:0,z:0,yaw:0}}));assert.equal(f.g.armed,false);
 });
+
+test('aerial camera: improves distant depth precision and restores the walking clip plane',async()=>{
+ for(const mode of ['plane','helicopter','balloon']){
+  const f=fixture(),before=f.camera.near;await f.api.enter(mode,{armed:false,...(mode==='balloon'?{boarding:{id:'balloon',x:0,z:0,yaw:0}}:{})});
+  f.context.otGamesCamera(.016);assert(f.camera.near>=1,'Flight camera depth precision must improve without shrinking the scene');f.api.peace();assert.equal(f.camera.near,before,'Walking close objects must retain the original camera');
+ }
+});

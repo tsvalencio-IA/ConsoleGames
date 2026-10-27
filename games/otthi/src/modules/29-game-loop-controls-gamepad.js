@@ -98,6 +98,9 @@
     if(!running)return;
     if(otGames.active&&otGames.handSession?.busy&&performance.now()-Number(otGames.handSession.frameSent||0)<700)return;
     const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
+    // Resizing clears WebGL. Commit it in the same task as the replacement
+    // frame, and never clear the canvas merely for an unchanged viewport.
+    applyPendingRenderBuffer();
     const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.

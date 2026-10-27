@@ -63,10 +63,11 @@
       if(ctx.state !== 'running')ctx.resume().catch(()=>{});
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = type; osc.frequency.value = freq; gain.gain.value = .025;
-      osc.connect(gain); gain.connect(ctx.destination); osc.start();
-      gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration / 1000);
-      osc.stop(ctx.currentTime + duration / 1000);
+      const t=ctx.currentTime,end=t+Math.max(.02,duration/1000);
+      osc.type=type;osc.frequency.value=freq;gain.gain.value=0;
+      osc.connect(gain);gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.025,t+.006);gain.gain.linearRampToValueAtTime(0,end);
+      osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(t);osc.stop(end+.005);
     } catch {}
   }
 

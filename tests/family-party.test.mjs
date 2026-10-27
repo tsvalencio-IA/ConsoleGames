@@ -24,6 +24,21 @@ test('family: Thiago + Luna + Liz follow as a real group; Thamis remains at home
  assert(result.accepted);assert.deepEqual(Array.from(result.party.walkMembers),['thiago','luna','liz']);assert.equal(result.party.walkController,'thiago');
  assert(result.dogs.every(d=>d<4),'Selected companions must keep up');assert(result.dogMoved>2);assert(result.homeDistance<1);assert.equal(result.controlledDuplicate,false);
 });
+test('family: every selected companion stays in the rendered aircraft after long travel from boarding',()=>{
+ for(const mode of ['plane','helicopter','balloon'])for(const members of [['thiago','thamis','luna','liz'],['thiago','luna','liz']]){
+  const run=family();
+  const result=run(`familyApplyCommand('party',{controller:'thiago',members:${JSON.stringify(members)}},'party-test',player);
+   for(const a of Object.values(familyWorld.actors))if(!familyWorld.walkMembers.includes(a.id)){a.x=-400;a.z=-400;}
+   otGames.active=true;otGames.mode=${JSON.stringify(mode)};otGames.aircraftId=${JSON.stringify(mode)};
+   let error=0;
+   for(let i=0;i<12;i++){
+    otGames.body={x:200+i*35,y:120+i*1.2,z:300+i*3,yaw:i*.02,pitch:.12,roll:.17};updateFamilyAdventure(1/60);
+    for(const id of familyWorld.walkMembers){const a=familyWorld.actors[id],p=a.ridePose;error=Math.max(error,a.group.position.distanceTo(new THREE.Vector3(p.x,p.y,p.z)));}
+   }
+   ({error,heights:familyWorld.walkMembers.map(id=>familyWorld.actors[id].group.position.y),visible:familyWorld.walkMembers.every(id=>familyWorld.actors[id].group.visible)});`);
+  assert(result.visible,mode);assert(result.error<1e-8,mode+' must render the actual seat position on every frame');assert(result.heights.every(y=>y>100),mode+' passengers fell toward the terrain');
+ }
+});
 test('family: all, solo and arbitrary subsets retain the controller and reject unknown names',()=>{
  const run=family();
  for(const [value,want]of [[{controller:'thamis',members:['thiago','thamis','luna','liz']},['thiago','thamis','luna','liz']],[{controller:'thamis',members:[]},['thamis']],[{controller:'thiago',members:['liz','invalid','liz']},['thiago','liz']]]){

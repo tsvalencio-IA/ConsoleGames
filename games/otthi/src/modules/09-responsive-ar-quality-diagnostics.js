@@ -248,7 +248,7 @@
   function applyAdaptiveRenderSettings(force=false){
     if(!renderer)return;
     const tier=qualityTier(),dpr=Math.min(devicePixelRatio||1,targetDpr());
-    if(force||!running||Math.abs(perf.appliedDpr-dpr)>.035){renderer.setPixelRatio(dpr);perf.appliedDpr=dpr;}
+    if(force||!running||Math.abs(perf.appliedDpr-dpr)>.035){const size=viewportMetrics();queueRenderBuffer(size.w,size.h,dpr);}
     renderer.shadowMap.enabled=tier==='high'&&!perf.mobile;
     // No automático móvel a iluminação-base não muda: o governor reduz custo por resolução, não por "empobrecer" a cena.
     renderer.toneMappingExposure=requestedQuality()==='auto'&&perf.mobile?.94:tier==='high'?.98:tier==='balanced'?.94:.92;
