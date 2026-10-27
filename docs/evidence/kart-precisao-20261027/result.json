@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "unitTests": 260,
+  "nativeRaces": [
+    {
+      "ticks": 2031,
+      "maxOffset": 0.439053282784385,
+      "finished": true,
+      "startedAt": 10994.200000000186,
+      "elapsedMs": 53051.5,
+      "layout": "portrait"
+    },
+    {
+      "ticks": 2096,
+      "maxOffset": 0.4368940846117892,
+      "finished": true,
+      "startedAt": 13047.700000000186,
+      "elapsedMs": 53477.19999999972,
+      "layout": "landscape-844"
+    },
+    {
+      "ticks": 1984,
+      "maxOffset": 0.4414944853495471,
+      "finished": true,
+      "startedAt": 9808.30000000028,
+      "elapsedMs": 52171.69999999972,
+      "layout": "desktop-885"
+    }
+  ],
+  "seededStartingGrids": 192,
+  "fullThreeStageCupTwoClients": true,
+  "cameraAutodromes": [
+    "aurora",
+    "costa"
+  ],
+  "kartScriptSHA256": "b94dd560a56eafc00cdcd406ce533455ff15670b70689df3ff7a891c08746419",
+  "limits": [
+    "Chromium and synthetic camera video; no physical Android camera, speaker, sustained FPS or two real phones certified.",
+    "Multiplayer uses an isolated local HTTP/SSE fixture; no production Firebase accounts or rules modified."
+  ]
+}

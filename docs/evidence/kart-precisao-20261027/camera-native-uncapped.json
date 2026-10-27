@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:4173/games/otthi/",
+  "candidateAssets": true,
+  "results": [
+    {
+      "autodrome": "aurora",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "realModel": "4.22.0",
+      "backend": "webgl",
+      "frontCamera": true,
+      "manualButtonsAbsent": true,
+      "visibleWheelFollowsHands": true,
+      "before": {
+        "x": 482.11968994140625,
+        "y": 186.88648986816406
+      },
+      "moved": {
+        "x": 409.4912414550781,
+        "y": 171.91842651367188
+      },
+      "trackingLossStopsKart": true,
+      "handsCanReturn": true,
+      "worldAndFamilyPreserved": true,
+      "errors": []
+    },
+    {
+      "autodrome": "costa",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "realModel": "4.22.0",
+      "backend": "webgl",
+      "frontCamera": true,
+      "manualButtonsAbsent": true,
+      "visibleWheelFollowsHands": true,
+      "before": {
+        "x": 222.34788513183594,
+        "y": 435.1326904296875
+      },
+      "moved": {
+        "x": 192.924072265625,
+        "y": 407.4855651855469
+      },
+      "trackingLossStopsKart": true,
+      "handsCanReturn": true,
+      "worldAndFamilyPreserved": true,
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Reference image used as a video source; no physical user camera, lighting or hand precision certified."
+  ]
+}

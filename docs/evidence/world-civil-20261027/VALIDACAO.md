@@ -10,6 +10,8 @@ Na verificação anterior, as sete aeronaves civis/balão executaram embarque co
 
 O smoke dos jogos originais encontrou timeout na corrida completa do kart e uma falha de deriva após soltar o toque. Os arquivos do kart original não foram alterados nesta revisão. Não há declaração de que todos os jogos estejam 9,5/10.
 
+Atualização posterior: a revisão `docs/kart-precisao-20261027.md` trata a colisão indevida e repete as corridas completas. A evidência desta pasta continua sendo o registro histórico da R27.1.
+
 
 ## Publicação conferida
 

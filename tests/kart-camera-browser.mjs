@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mjs';
 import {touchSession} from './helpers/touch-session.mjs';
+import {installCityInspection} from './helpers/world-city-inspection.mjs';
 const base=process.env.KART_QA_URL||'http://127.0.0.1:4173/games/otthi/';
 const qaNetworkURL=['127.0.0.1','localhost'].includes(new URL(base).hostname)?'https://cdn.jsdelivr.net/':base;
 const origin=new URL(base).origin,output='test-results/kart-camera';fs.mkdirSync(output,{recursive:true});
@@ -52,8 +53,14 @@ try{
    return route.abort('blockedbyclient');
   });
   const page=await context.newPage(),errors=[],fingers=await touchSession(context,page);page.on('pageerror',e=>errors.push(e.message));
+  if(process.env.KART_QA_CAP_WORLD)await installCityInspection(page,{capDuringBoot:true});
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.OTTHI_RELEASE_COHERENT);await page.locator('#playBtn').tap();
+   await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running,null,{timeout:90000});
+   // A first-run civilian save may start at its home. Travel setup must not
+   // depend on that spawn; entry, input choice and the detector remain native.
+   await page.evaluate(({x,z})=>window.OTTHOS_TEST_API.teleport(x,z),spec);
+   console.log('WORLD ENTRY READY',spec.id);
    await page.waitForFunction(id=>window.OTTHOS_TEST_API?.getContext()?.id==='kart-race-'+id,spec.id,{timeout:90000});
    const finger=await fingers.start(page.locator('#actionBtn'));await fingers.end(finger);await page.waitForURL(url=>url.pathname.endsWith('/games/kart/')&&url.searchParams.get('venuePage')==='1');
    await page.locator('#phase-screen:not(.hidden)').waitFor();assert.equal(await page.evaluate(()=>window.__cameraRequests.length),0);
@@ -66,6 +73,7 @@ try{
    await page.waitForFunction(()=>window.System.activeGame.logic.state==='RACE'&&window.System.activeGame.logic.inputActive&&window.__wheelPaints>2,null,{timeout:45000});
    assert.equal(await page.locator('.kart-input:visible').count(),0,'Camera steering must not be replaced by manual buttons');
    const before=await page.evaluate(()=>({...window.__lastWheelPaint,paints:window.__wheelPaints,model:tf.version_core,backend:tf.getBackend(),wheel:window.System.activeGame.logic.virtualWheel,position:window.System.activeGame.logic.pos}));
+   console.log('REAL CAMERA WHEEL READY',spec.id,before.model,before.backend);
    assert(before.alpha>.9);assert(before.wheel.r>20);assert(before.position>0);await page.screenshot({path:output+'/'+spec.id+'-hands-wheel.png'});
    await page.evaluate(()=>{window.__handOffsetX=45;window.__handOffsetY=-20;});
    await page.waitForFunction(b=>window.__lastWheelPaint.x<b.x-12&&window.__lastWheelPaint.y<b.y-5,before,{timeout:18000});
@@ -79,8 +87,8 @@ try{
    const state=await page.evaluate(()=>{const s=window.OTTHOS_TEST_API.getState();return {coins:s.profile.coins,xp:s.profile.xp,members:s.familyAdventure.party.members};});
    assert.equal(state.coins,4321);assert.equal(state.xp,1234);assert.deepEqual(state.members,['thiago','luna','liz']);assert.deepEqual(errors,[]);
    results.push({autodrome:spec.id,viewport:{width:spec.width,height:spec.height},realModel:before.model,backend:before.backend,frontCamera:true,manualButtonsAbsent:true,visibleWheelFollowsHands:true,before:{x:before.x,y:before.y},moved:{x:moved.x,y:moved.y},trackingLossStopsKart:true,handsCanReturn:true,worldAndFamilyPreserved:true,errors});console.log('PASS world → '+spec.id+' → real MoveNet camera/wheel → world');
-  }catch(error){await page.screenshot({path:output+'/'+spec.id+'-failure.png'});console.error(await page.evaluate(()=>({url:location.href,game:window.System?.activeGame?.id,mode:window.ArcadeControls?.mode,state:window.System?.activeGame?.logic.state,wheel:window.System?.activeGame?.logic.virtualWheel,paint:window.__lastWheelPaint,requests:window.__cameraRequests?.length,model:window.tf?.version_core,errors})));throw error;}
+  }catch(error){await page.screenshot({path:output+'/'+spec.id+'-failure.png'}).catch(()=>{});console.error({cameraError:String(error),pageErrors:errors,diagnostic:await page.evaluate(()=>({url:location.href,game:window.System?.activeGame?.id,mode:window.ArcadeControls?.mode,state:window.System?.activeGame?.logic.state,wheel:window.System?.activeGame?.logic.virtualWheel,paint:window.__lastWheelPaint,requests:window.__cameraRequests?.length,model:window.tf?.version_core})).catch(()=>null)});throw error;}
   finally{await context.close();}
  }
- fs.writeFileSync(output+'/result.json',JSON.stringify({passed:true,base,candidateAssets:!!process.env.KART_QA_CANDIDATE,results,limits:['Reference image used as a video source; no physical user camera, lighting or hand precision certified.']},null,2));
+ fs.writeFileSync(output+'/result.json',JSON.stringify({passed:true,base,candidateAssets:!!process.env.KART_QA_CANDIDATE,worldRenderingCapped:!!process.env.KART_QA_CAP_WORLD,results,limits:['Reference image used as a video source; no physical user camera, lighting or hand precision certified.','When enabled, only the world WebGL rendering is capped; kart rendering, MoveNet, gameplay and venue entry/return remain native.']},null,2));
 }finally{await browser.close();}

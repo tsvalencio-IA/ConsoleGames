@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:4173/games/otthi/",
+  "candidateAssets": true,
+  "worldRenderingCapped": true,
+  "results": [
+    {
+      "autodrome": "aurora",
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "realModel": "4.22.0",
+      "backend": "webgl",
+      "frontCamera": true,
+      "manualButtonsAbsent": true,
+      "visibleWheelFollowsHands": true,
+      "before": {
+        "x": 484.56256103515625,
+        "y": 190.4135284423828
+      },
+      "moved": {
+        "x": 410.5328674316406,
+        "y": 172.1415557861328
+      },
+      "trackingLossStopsKart": true,
+      "handsCanReturn": true,
+      "worldAndFamilyPreserved": true,
+      "errors": []
+    },
+    {
+      "autodrome": "costa",
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "realModel": "4.22.0",
+      "backend": "webgl",
+      "frontCamera": true,
+      "manualButtonsAbsent": true,
+      "visibleWheelFollowsHands": true,
+      "before": {
+        "x": 219.8632354736328,
+        "y": 444.8750305175781
+      },
+      "moved": {
+        "x": 188.99530029296875,
+        "y": 405.36260986328125
+      },
+      "trackingLossStopsKart": true,
+      "handsCanReturn": true,
+      "worldAndFamilyPreserved": true,
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Reference image used as a video source; no physical user camera, lighting or hand precision certified.",
+    "When enabled, only the world WebGL rendering is capped; kart rendering, MoveNet, gameplay and venue entry/return remain native."
+  ]
+}

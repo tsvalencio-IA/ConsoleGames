@@ -1,0 +1,60 @@
+✔ kart: starting another offline race clears prior steering and drift without changing the selected driver (7.447171ms)
+✔ kart: a 100ms steering tap stops promptly when released, for all eight drivers (53.998878ms)
+✔ kart: curves require steering; help levels reduce drift without locking the centre (22.552517ms)
+✔ kart: active steering completes all three tracks for all eight drivers, with help off (532.818292ms)
+✔ kart: turbo alone never drives without a camera pilot; tracking loss cancels boost (10.008021ms)
+✔ kart: the racing HUD draws the wheel at the detected wrists, including after the hands move (5.624224ms)
+✔ kart: a brush against one rival applies one bounded impact until they separate (8.775405ms)
+✖ kart: passing a visibly separate rival never causes a phantom collision (4.622172ms)
+✖ kart: released steering remains stable across varied starting grids (9.804898ms)
+✔ kart: grass can be escaped with the opposite direction, and braking cancels turbo (12.327916ms)
+✔ kart: opponents accelerate to racing speed instead of remaining near the starting grid (8.042418ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 9
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 800.723906
+
+✖ failing tests:
+
+test at tests/kart-drivability.test.mjs:80:1
+✖ kart: passing a visibly separate rival never causes a phantom collision (4.622172ms)
+  AssertionError [ERR_ASSERTION]: Separate lanes cannot collide
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/a10cbbfeaf34/ConsoleGames-kart/tests/kart-drivability.test.mjs:85:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/kart-drivability.test.mjs:90:1
+✖ kart: released steering remains stable across varied starting grids (9.804898ms)
+  AssertionError [ERR_ASSERTION]: Starting traffic pushes a released kart across the lane: {"initialSeed":193,"char":0,"side":"left","released":-0.1093889688673753,"final":-0.2859908388446549}
+      at TestContext.<anonymous> (file:///workspace/scratch/a10cbbfeaf34/ConsoleGames-kart/tests/kart-drivability.test.mjs:97:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

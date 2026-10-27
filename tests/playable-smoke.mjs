@@ -5,17 +5,19 @@ import assert from "node:assert/strict";
 import {mkdirSync} from "node:fs";
 import {join} from "node:path";
 import {touchSession} from "./helpers/touch-session.mjs";
+import {browserNetwork,browserContextNetwork} from "./helpers/browser-network.mjs";
 const base=process.env.ARCADE_QA_BASE||"http://127.0.0.1:4173/games/";
 const allScenarios=[["kart","drive"],["kart","drive","landscape-844"],["kart","drive","desktop-885"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
-const catalog=allScenarios.filter(([slug])=>!process.env.ARCADE_QA_GAMES||process.env.ARCADE_QA_GAMES.split(',').includes(slug));
-const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
+const catalog=allScenarios.filter(([slug,,device])=>(!process.env.ARCADE_QA_GAMES||process.env.ARCADE_QA_GAMES.split(',').includes(slug))&&(!process.env.ARCADE_QA_LAYOUTS||process.env.ARCADE_QA_LAYOUTS.split(',').includes(device||'portrait')));
+assert(catalog.length>0,'No native gameplay scenario selected');
+const browser=await chromium.launch({...browserNetwork(base),executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions',"--use-gl=angle","--use-angle=swiftshader","--no-sandbox"]});
 mkdirSync("test-results/playable",{recursive:true});
 let completed=0,failures=[];
 try{
  for(const [slug,id,device] of catalog){
   const viewport=device==="desktop-885"?{width:885,height:770}:device==="landscape-844"?{width:844,height:390}:{width:390,height:844};
   const mobile=device!=="desktop-885";
-  const context=await browser.newContext({viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1});
+  const context=await browser.newContext({...browserContextNetwork(base),viewport,isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1});
   if(!process.env.ARCADE_QA_GUEST)await context.addInitScript(()=>{
    const permitted={drive:true,box_pro:true,tennis:true,ar_truck_sim:true,usarmy_flight_sim:true};
    const profile={username:"Jogador Teste",role:"player",xp:0,level:10,coins:8000,permissions:permitted,arSave:{upgrades:{engine:1,battery:1,radar:1,chassis:1,scout:false}}};
