@@ -54,6 +54,10 @@
 
     const SAFETY = { ZOMBIE_TIMEOUT: 15000, MAX_RACE_TIME: 300000, MAINTENANCE_RATE: 2000 };
     const PHYSICS = { gripAsphalt: 0.98, gripZebra: 0.85, gripOffroad: 0.55, steerSensitivity: 0.30, lateralSpeed: 0.026, maxLateralSpeed: 0.040 };
+    // Body/wheel extents in drawKartSprite coordinates, converted by the same
+    // sprite-to-road scale as renderWorld. Shadows are not collision surfaces.
+    const KART_BODY_HALF_WIDTH = [62, 71, 68, 34, 55, 45, 60];
+    const kartHalfWidth = modelId => (KART_BODY_HALF_WIDTH[modelId] || KART_BODY_HALF_WIDTH[0]) * .0022 * 1.55 / 1.5;
 
     const KartAudio={initialized:false,isPlaying:false,voice:null,init(){this.initialized=!!window.GameAudio?.vehicleVoice;window.GameAudio?.unlock?.();},start(){if(this.isPlaying)return;this.init();this.voice=window.GameAudio?.vehicleVoice?.('kart','kart');this.isPlaying=!!this.voice;},stop(){this.voice?.dispose();this.voice=null;this.isPlaying=false;},update(speed,maxSpeed,driftIntensity,isOffroad,isTurbo){this.voice?.update(Math.abs(speed)/Math.max(1,maxSpeed)*24,speed>0?.8:0,isTurbo,!window.System?.paused);},crash(){window.GameAudio?.effect?.('impact');}};
 
@@ -1105,8 +1109,12 @@
             const previousContacts = d.collisionContacts || new Set();
             d.rivals.forEach(r => {
                 const distZ = Math.abs(((d.lap * trackLength) + d.pos) - ((Number(r.lap) * trackLength) + Number(r.pos)));
-                if (distZ < 250 && Math.abs(r.x - d.playerX) < 0.8 && r.status === 'RACING' && d.status === 'RACING') {
-                    const contactId = r.id || r;
+                const contactId = r.id || r;
+                const contactWidth = kartHalfWidth(activeKart.id) + kartHalfWidth(r.kartId || 0);
+                // A little separation is required before another impact. This
+                // prevents edge jitter from applying the same bump repeatedly.
+                const separation = previousContacts.has(contactId) ? .025 : 0;
+                if (distZ < 250 && Math.abs(r.x - d.playerX) < contactWidth + separation && r.status === 'RACING' && d.status === 'RACING') {
                     contacts.add(contactId);
                     if (previousContacts.has(contactId)) return;
                     const pushForce = .018 * Math.max(.5, Math.min(1.7, ((CHARACTERS[r.charId] || CHARACTERS[0]).weight / char.weight)));

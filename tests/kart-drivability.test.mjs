@@ -77,6 +77,35 @@ test('kart: a brush against one rival applies one bounded impact until they sepa
  assert(Math.abs(g.playerX)<.4,'Persistent overlap must not push the player onto the grass');
  assert(Math.abs(g.lateralInertia)<.0001);
 });
+test('kart: passing a visibly separate rival never causes a phantom collision',()=>{
+ for(const side of [-1,1]){
+  const g=race(1);g.speed=155;g.rivals=[{id:'other-lane',lap:1,pos:0,x:side*.5,charId:3,status:'RACING'}];
+  const reference=race(1);reference.speed=155;
+  step(g,1);step(reference,1);
+  assert.equal(g.collisionContacts.size,0,'Separate lanes cannot collide');
+  assert.equal(g.speed,reference.speed,'Passing in another lane must not brake the kart');
+  assert.equal(g.lateralInertia,reference.lateralInertia,'Passing in another lane must not push the kart');
+ }
+});
+test('kart: released steering remains stable across varied starting grids',()=>{
+ for(const initialSeed of [193,405,430,478,557,561,805,844,936,964,978,1537])for(let char=0;char<8;char++)for(const side of ['left','right']){
+  let seed=initialSeed;
+  const {game:g}=engine('kart','game_kart',{}, {random:()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}});
+  g.currentFase={id:'f1',mode:'RACE',targetRank:3};g.setupUI();g.selectedChar=char;g.startRace(1);
+  g.arcadeManual={throttle:true,left:side==='left',right:side==='right'};
+  step(g,6);const released=g.playerX;g.arcadeManual[side]=false;step(g,40);
+  assert(Math.abs(g.playerX-released)<.14,'Starting traffic pushes a released kart across the lane: '+JSON.stringify({initialSeed,char,side,released,final:g.playerX}));
+  assert.equal(g.targetSteer,0,'Released input must reach the native physics');
+ }
+});
+test('kart: grazing one rival cannot replay an impact until the bodies separate',()=>{
+ const g=race(1),r={id:'grazing',lap:1,pos:0,x:0,charId:0,status:'RACING'};g.rivals=[r];
+ const frame=gap=>{g.playerX=0;g.steer=0;g.lateralInertia=0;g.speed=155;r.pos=g.pos;r.x=gap;step(g,1);return g.lateralInertia;};
+ assert(frame(.26)<-.01,'An actual touch must still have an impact');
+ for(const gap of [.29,.27,.30,.26])assert.equal(frame(gap),0,'Small separation jitter must not replay the same impact');
+ assert.equal(frame(.36),0);assert.equal(g.collisionContacts.size,0);
+ assert(frame(.26)<-.01,'A new touch after a clear separation must have an impact');
+});
 test('kart: grass can be escaped with the opposite direction, and braking cancels turbo',()=>{
  for(const side of [-1,1]){
   const g=race();g.playerX=side*1.75;g.speed=64;g.arcadeManual[side>0?'left':'right']=true;

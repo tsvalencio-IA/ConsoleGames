@@ -443,7 +443,7 @@ try{
     await page.locator('#arcade-pause-modal [data-action="continue"]').click();
     assert.equal(await page.evaluate(()=>window.System.paused),false,"Motor não retomou");
     assert.equal(await page.evaluate(()=>window.System.activeGame?.id),id);
-    if(slug==='kart'&&!device){
+    if(slug==='kart'){
       // Complete a race through the actual controls, using simple lane targets.
       // No direct writes to playerX, speed or lap counters in this race.
       await page.evaluate(()=>{
@@ -451,21 +451,21 @@ try{
         const original=g.updatePhysics,held={left:false,right:false};
         const button=id=>document.querySelector('.kart-input [data-control="'+id+'"]');
         const set=(id,on)=>{if(held[id]===on)return;held[id]=on;button(id).dispatchEvent(new PointerEvent(on?'pointerdown':'pointerup',{pointerId:id==='left'?31:32}));};
-        g.__lapDrive={ticks:0,maxOffset:0,finished:false};
+        g.__lapDrive={ticks:0,maxOffset:0,finished:false,startedAt:performance.now()};
         button('go').dispatchEvent(new PointerEvent('pointerdown',{pointerId:30}));
         g.updatePhysics=function(...args){
           const target=.35*Math.sin(g.__lapDrive.ticks/110);
           set('left',g.playerX>target+.07);set('right',g.playerX<target-.07);
           const result=original.apply(this,args),data=g.__lapDrive;
           data.ticks++;data.maxOffset=Math.max(data.maxOffset,Math.abs(g.playerX));
-          if(g.status==='FINISHED'){data.finished=true;set('left',false);set('right',false);button('go').dispatchEvent(new PointerEvent('pointerup',{pointerId:30}));g.updatePhysics=original;}
+          if(g.status==='FINISHED'){data.finished=true;data.elapsedMs=performance.now()-data.startedAt;set('left',false);set('right',false);button('go').dispatchEvent(new PointerEvent('pointerup',{pointerId:30}));g.updatePhysics=original;}
           return result;
         };
       });
       await page.waitForFunction(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive?.finished,null,{timeout:90000});
       const laps=await page.evaluate(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive);
       assert(laps.ticks>500&&laps.maxOffset<1,'Complete race leaves asphalt: '+JSON.stringify(laps));
-      console.log('Kart real three-lap race:',JSON.stringify(laps));
+      console.log('Kart real three-lap race ('+(device||'portrait')+'):',JSON.stringify(laps));
       await page.screenshot({path:join('test-results/playable','kart-complete-race.png')});
     }
     // Explicit camera consent followed by a denied permission must fall back,
@@ -503,7 +503,11 @@ try{
     completed++;
   }catch(error){
     await page.screenshot({path:join("test-results/playable",slug+"-"+(device||"mobile")+"-failure.png")}).catch(()=>{});
-    const diagnostic=await page.evaluate(()=>({stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch},video:window.System?.video?{ready:window.System.video.readyState,paused:window.System.video.paused,mode:window.ArcadeControls?.mode}:null,arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state})).catch(()=>null);
+    const diagnostic=await page.evaluate(()=>{
+      const g=window.Games?.find(x=>x.id==='drive')?.logic;
+      return {stage:{loading:document.getElementById("loading")?.className,phase:document.getElementById("phase-screen")?.className,menu:document.getElementById("menu-screen")?.className},system:{active:window.System?.activeGame?.id,starting:window.System?.isStarting,epoch:window.System?.loopEpoch,paused:window.System?.paused},video:window.System?.video?{ready:window.System.video.readyState,paused:window.System.video.paused,mode:window.ArcadeControls?.mode}:null,arGame:(window.Games||[]).find(x=>x.id==="ar_truck_sim")?.logic?.state,
+        kart:g?{state:g.state,status:g.status,raceState:g.raceState,lap:g.lap,player:g.player,pos:g.pos,speed:g.speed,x:g.playerX,steer:g.steer,target:g.targetSteer,inertia:g.lateralInertia,manual:g.arcadeManual,inputActive:g.inputActive,spin:g.spinTimer,networkPaused:g.networkPaused,track:g.selectedTrack,settings:window.ArcadePlaySettings?.get(),tap:g.__shortTap,race:g.__lapDrive}:null};
+    }).catch(()=>null);
     failures.push({slug,device,message:String(error.stack||error),diagnostic,pageErrors:appErrors.slice(0,6)});
   }
   await context.close();
