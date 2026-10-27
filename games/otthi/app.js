@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.27.1-mundo-familia';
+  const OTTHI_GAME_WEB_BUILD = '705.27.2-audio-mobilidade';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -847,10 +847,11 @@
       if(ctx.state !== 'running')ctx.resume().catch(()=>{});
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = type; osc.frequency.value = freq; gain.gain.value = .025;
-      osc.connect(gain); gain.connect(ctx.destination); osc.start();
-      gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration / 1000);
-      osc.stop(ctx.currentTime + duration / 1000);
+      const t=ctx.currentTime,end=t+Math.max(.02,duration/1000);
+      osc.type=type;osc.frequency.value=freq;gain.gain.value=0;
+      osc.connect(gain);gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.025,t+.006);gain.gain.linearRampToValueAtTime(0,end);
+      osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(t);osc.stop(end+.005);
     } catch {}
   }
 
@@ -2940,7 +2941,7 @@
   function applyAdaptiveRenderSettings(force=false){
     if(!renderer)return;
     const tier=qualityTier(),dpr=Math.min(devicePixelRatio||1,targetDpr());
-    if(force||!running||Math.abs(perf.appliedDpr-dpr)>.035){renderer.setPixelRatio(dpr);perf.appliedDpr=dpr;}
+    if(force||!running||Math.abs(perf.appliedDpr-dpr)>.035){const size=viewportMetrics();queueRenderBuffer(size.w,size.h,dpr);}
     renderer.shadowMap.enabled=tier==='high'&&!perf.mobile;
     // No automático móvel a iluminação-base não muda: o governor reduz custo por resolução, não por "empobrecer" a cena.
     renderer.toneMappingExposure=requestedQuality()==='auto'&&perf.mobile?.94:tier==='high'?.98:tier==='balanced'?.94:.92;
@@ -6863,10 +6864,17 @@
     const layoutHeight=Math.round(de.clientHeight||innerHeight||h),keyboard=Math.max(0,layoutHeight-h)>120;
     return{w:Math.max(280,w),h:Math.max(220,h),landscape,offsetTop,offsetLeft,keyboard};
   }
+  function applyPendingRenderBuffer(){
+    const next=perf.pendingRenderBuffer;if(!renderer||!next)return false;perf.pendingRenderBuffer=null;
+    const changed=Math.abs(renderer.getPixelRatio()-next.dpr)>.001||renderer.domElement.width!==Math.floor(next.w*next.dpr)||renderer.domElement.height!==Math.floor(next.h*next.dpr);
+    if(changed)renderer.setDrawingBufferSize(next.w,next.h,next.dpr);
+    perf.lastRenderW=next.w;perf.lastRenderH=next.h;perf.appliedDpr=next.dpr;return changed;
+  }
+  function queueRenderBuffer(w,h,dpr){perf.pendingRenderBuffer={w,h,dpr};if(!running)applyPendingRenderBuffer();}
   function resize(force=false){
     const metrics=viewportMetrics(),w=metrics.w,h=metrics.h,landscape=metrics.landscape,portrait=!landscape;
     const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;
-    if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,targetDpr()));renderer.setSize(w,h,false);perf.lastRenderW=w;perf.lastRenderH=h;}
+    if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();queueRenderBuffer(w,h,Math.min(devicePixelRatio||1,targetDpr()));}
     const short=landscape&&h<560,ultraShort=landscape&&h<410,narrow=portrait&&w<390,tiny=h<620||w<350,compact=short||narrow||w<700;
     if(orientationChanged){clearMovementInputs();state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;els.game?.classList.remove('needs-expanded');els.missionCard?.classList.remove('expanded');document.body.classList.add('ui-orientation-changing');setTimeout(()=>document.body.classList.remove('ui-orientation-changing'),360);}
     const action=landscape?clamp(Math.min(h*.112,w*.075),ultraShort?38:42,58):clamp(Math.min(w*(narrow?.145:.155),h*.105),48,64);
@@ -7854,6 +7862,9 @@
     if(!running)return;
     if(otGames.active&&otGames.handSession?.busy&&performance.now()-Number(otGames.handSession.frameSent||0)<700)return;
     const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
+    // Resizing clears WebGL. Commit it in the same task as the replacement
+    // frame, and never clear the canvas merely for an unchanged viewport.
+    applyPendingRenderBuffer();
     const renderW=Math.max(1,perf.lastRenderW||els.stage?.clientWidth||innerWidth),renderH=Math.max(1,perf.lastRenderH||els.stage?.clientHeight||innerHeight);renderer.setScissorTest(false);renderer.setViewport(0,0,renderW,renderH);renderer.autoClear=true;
     // The optional family portrait frames the four actors without the local
     // avatar covering their faces; restore visibility immediately after drawing.
@@ -9476,7 +9487,7 @@ function build(T,key,H){
     const visible=Object.values(familyWorld.actors).some(a=>Math.hypot(player.x-a.x,player.z-a.z)<90);
     for(const a of Object.values(familyWorld.actors)){
       const controlled=familyWorld.walkOwner&&a.id===familyWorld.walkController&&performance.now()>Number(familyWorld.portraitUntil||0);
-      a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible)continue;
+      a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible&&!a.ridePose)continue;
       const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>familyWorld.clock;
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
       else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
@@ -9660,7 +9671,7 @@ function build(T,key,H){
     if(!otGames.assets){otGames.starting=true;let response;try{response=await fetch(new URL('assets/ot-games-airframes.json',OTTHI_GAME_LIVE_BASE));}finally{otGames.starting=false;}if(!response.ok)throw Error('Não foi possível carregar os veículos.');otGames.assets=await response.json();}
     const g=otGames;g.engineVoice?.dispose();g.engineVoice=['ground','balloon'].includes(mode)?null:window.GameAudio?.vehicleVoice(mode,mode);g.mode=mode;g.aircraftId=options.boarding?.id||mode;g.armed=mode!=='balloon'&&options.armed!==false;g.difficulty=['easy','normal','hard'].includes(options.difficulty)?options.difficulty:'normal';g.level={easy:{label:'INICIANTE',goal:6,damage:7,enemyRate:3.8},normal:{label:'NORMAL',goal:8,damage:10,enemyRate:2.9},hard:{label:'VETERANO',goal:10,damage:15,enemyRate:2.1}}[g.difficulty];
     state.ui.quickOpen=false;syncMobilePanels();
-    g.entry={camera:camera.position.clone(),rotation:camera.quaternion.clone(),fov:camera.fov,playerVisible:playerGroup.visible,shadowVisible:contactShadow?.visible,toolVisible:toolVisual?.visible,position:{x:player.x,y:player.y,z:player.z},cameraYaw,cameraPitch,cameraZoom};
+    g.entry={camera:camera.position.clone(),rotation:camera.quaternion.clone(),fov:camera.fov,near:camera.near,playerVisible:playerGroup.visible,shadowVisible:contactShadow?.visible,toolVisible:toolVisual?.visible,position:{x:player.x,y:player.y,z:player.z},cameraYaw,cameraPitch,cameraZoom};
     savePlayerPosition(true);clearMovementInputs();otGamesClearInput();g.active=true;g.state='PLAYING';g.handMode=false;g.kills=0;g.goal=g.level.goal;g.wave=0;g.ammo=30;g.reserve=180;g.reload=0;g.cooldown=0;g.elapsed=0;g.resultSaved=false;g.notice='';g.lock=null;g.enemies=[];g.bullets=[];g.effects=[];
     g.noticeUntil=0;g.autoWalkSide=0;g.autoWalking=false;g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_CIVIL_FLIGHT';scene.add(g.group);
     const safe=safePointNear(player.x,player.z,{ignoreTraffic:true,allowWater:false,radius:.5});
@@ -9677,7 +9688,7 @@ function build(T,key,H){
   function otGamesLeave(options={}){
     const g=otGames;if(!g.active)return;g.engineVoice?.dispose();g.engineVoice=null;if(g.coverColliders)world.colliders=world.colliders.filter(c=>!g.coverColliders.includes(c));g.coverColliders=[];g.coverPoints=[];if(typeof campaignAbort==='function')campaignAbort({preserve:options?.preserveCampaign===true});g.cameraEpoch++;g.handSession?.dispose();g.handSession=null;g.handAim=null;g.cameraVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.cameraVideo?.remove();g.cameraVideo=null;otGamesClearInput();g.lookCleanup?.();g.lookCleanup=null;g.inputResets=[];g.ui?.remove();g.ui=null;otGamesDisposeGroup(g.group);g.group=null;
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
-    playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
+    playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.near=g.entry.near??.05;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
     if(options.exitPoint){player.x=options.exitPoint.x;player.y=options.exitPoint.y;player.z=options.exitPoint.z;player.facing=g.body.yaw;player.vx=player.vy=player.vz=0;player.grounded=true;rememberSafePlayerPosition(true);savePlayerPosition(true);saveState(true);}
     g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];if(typeof campaignSyncAircraft==='function')campaignSyncAircraft();if(world.routeGuide)world.routeGuide.visible=!!state.waypoint;if(world.waypointMarker)world.waypointMarker.visible=!!state.waypoint;document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
@@ -9760,7 +9771,7 @@ function build(T,key,H){
     const g=otGames;if(!g.active)return false;const b=g.body,forward=new THREE.Vector3(Math.sin(b.yaw)*Math.cos(b.pitch),Math.sin(b.pitch),Math.cos(b.yaw)*Math.cos(b.pitch));
     if(g.mode==='ground'){camera.position.set(b.x,b.y,b.z);camera.up.set(0,1,0);camera.lookAt(new THREE.Vector3(b.x,b.y,b.z).add(forward));camera.fov=g.aiming?46:70;}
     else{const distance=g.mode==='balloon'?(innerHeight>innerWidth?27:22):g.aircraftId==='plane-cargo'?23:g.mode==='helicopter'?10:14,position=new THREE.Vector3(b.x,b.y,b.z).addScaledVector(forward,-distance);position.y+=g.mode==='balloon'?9:3.2;camera.position.lerp(position,1-Math.exp(-dt*9));camera.up.set(0,1,0);camera.lookAt(new THREE.Vector3(b.x,b.y+(g.mode==='balloon'?4.4:0),b.z).addScaledVector(forward,g.mode==='balloon'?3:28));camera.fov=66;}
-    camera.updateProjectionMatrix();
+    camera.near=g.mode==='ground'?.05:1.5;camera.updateProjectionMatrix();
     if(g.weapon){
       const kick=Math.max(0,g.cooldown/.15);const offset=new THREE.Vector3(g.aiming?0:.18,(g.aiming?-.056:-.21)-(g.reload>0?.16:0),g.aiming?-.98:-.82+kick*.014).applyQuaternion(camera.quaternion);g.weapon.position.copy(camera.position).add(offset);
       // In camera-hand mode the camera itself follows the fingers; gun and reticle
@@ -12371,7 +12382,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   for(const side of[-1.3,1.3]){const points=Array.from({length:65},(_,i)=>{const p=civilCablePoint(i/64,side);return new THREE.Vector3(p.x,p.y+4.2,p.z);}),curve=new THREE.CatmullRomCurve3(points),mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,128,.045,6,false),steel);root.add(mesh);}
   for(const t of[.25,.57,.82]){const p=civilCablePoint(t),ground=groundHeightAt(p.x,p.z),h=p.y+4.1-ground;campaignCylinder(root,steel,p.x,ground+h/2,p.z,.16,h);const head=campaignBox(root,steel,p.x,p.y+4.05,p.z,3.8,.22,.28);head.rotation.y=p.yaw;}
   for(const station of Object.values({base:CIVIL_CABLE.base,top:CIVIL_CABLE.top})){const{x,z}=station,y=groundHeightAt(x,z);campaignBox(root,stone,x,y-.35,z,13,.7,11);campaignBox(root,wood,x,y+.01,z,12,.02,10);for(const dx of[-5.5,5.5])for(const dz of[-4.5,4.5])campaignCylinder(root,steel,x+dx,y+2.7,z+dz,.12,5.4);campaignBox(root,roof,x,y+5.6,z,14,.25,12);citySign(root,station.label,x,y+3.8,z+5.9,9,1,'#355d65',.65);
-   civilBench(root,x-4,z+2);registerInteractable({id:'cable-board-'+station.id,type:'transit',icon:'🚡',label:'Teleférico · '+station.label,x:x+3.2,z:z+3.4,radius:2.7,priority:240,available:()=>!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse&&!civilCommunity.ride,action:()=>civilCableMenu(station.id)});
+   civilBench(root,x-4,z+2);registerInteractable({id:'cable-board-'+station.id,type:'transit',icon:'🚡',label:'Teleférico · '+station.label,actionLabel:'Embarcar',x,z,radius:6.5,priority:1400,available:()=>!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse&&!civilCommunity.ride,action:()=>civilCableMenu(station.id)});
   }
   for(let i=0;i<2;i++)civilCommunity.cabins.push({group:civilCableCabin(i),index:i});
   civilTarget('cable-base','Equipe do teleférico',216.5,243,{icon:'🚡'});civilTarget('cable-top','Mirante do teleférico',153.5,313,{icon:'🚡'});civilTarget('mountain-visitor','Visitante do mirante',140.5,309,{icon:'🧭'});
@@ -12416,7 +12427,7 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=cach
   civilCommunity.sky?.position.copy(camera.position);
  }
  const civilExpansionBefore=updateWorldExpansion;updateWorldExpansion=function(){civilExpansionBefore();updateCivilCommunity();updateCivilMissions();};
- const civilExploreBefore=worldExploreLocations;worldExploreLocations=function(){return[...civilExploreBefore(),...civilCommunity.houses.map(h=>({id:h.id,name:h.name,label:h.name,x:h.x,z:h.z,navX:h.x,navZ:h.z+5,icon:'🏡',group:'Casas e vizinhos',description:'Casa visitável com cozinha, quarto, sala, jardim e ações do personagem.'})),{id:'cable-base',name:'Teleférico · Estação Vale',x:210,z:235,navX:216.5,navZ:243,icon:'🚡',group:'Montanhas',description:'Embarque na cabine para subir ao mirante da cordilheira.'},{id:'cable-top',name:'Teleférico · Estação Mirante',x:147,z:305,navX:153.5,navZ:313,icon:'🚡',group:'Montanhas',description:'Mirante, visitantes e retorno pelo teleférico.'},...['balloon-coast','balloon-snow','balloon-serra'].map(id=>{const p=campaignAircraftPose(id);return{id:'campaign-'+id,name:p.label,label:p.label,icon:'🎈',group:'Balões',...p,navX:p.x+4,navZ:p.z};})];};
+ const civilExploreBefore=worldExploreLocations;worldExploreLocations=function(){return[...civilExploreBefore(),...civilCommunity.houses.map(h=>({id:h.id,name:h.name,label:h.name,x:h.x,z:h.z,navX:h.x,navZ:h.z+5,icon:'🏡',group:'Casas e vizinhos',description:'Casa visitável com cozinha, quarto, sala, jardim e ações do personagem.'})),{id:'cable-base',name:'Teleférico · Estação Vale',x:210,z:235,navX:213.2,navZ:238.4,icon:'🚡',group:'Montanhas',description:'Embarque na cabine para subir ao mirante da cordilheira.'},{id:'cable-top',name:'Teleférico · Estação Mirante',x:147,z:305,navX:150.2,navZ:308.4,icon:'🚡',group:'Montanhas',description:'Mirante, visitantes e retorno pelo teleférico.'},...['balloon-coast','balloon-snow','balloon-serra'].map(id=>{const p=campaignAircraftPose(id);return{id:'campaign-'+id,name:p.label,label:p.label,icon:'🎈',group:'Balões',...p,navX:p.x+4,navZ:p.z};})];};
  Object.assign(CHARACTER_ACTIVITIES,{garden:['Regando o jardim',4],sandcastle:['Construindo castelo de areia',4.5],civil:['Ajudando no objetivo',2.7]});
  window.OT_CIVIL_COMMUNITY={diagnostics:()=>({ready:civilCommunity.ready,houses:civilCommunity.houses.map(h=>({id:h.id,x:h.x,z:h.z,interactive:neighborhoodHome.houses.has(h.id)})),targets:[...civilCommunity.targets.values()].map(p=>({...p})),cable:{stations:CIVIL_CABLE,cabins:civilCommunity.cabins.map(c=>({id:c.index,...civilCableTiming(c.index),position:c.group.position.toArray()})),ride:civilCommunity.ride,waiting:civilCommunity.waiting},balloons:cordillera.balloons.length,sky:!!civilCommunity.sky,environment:!!scene?.environment,sledders:civilCommunity.sledders.map(s=>({id:s.npc.id,position:s.npc.group.position.toArray()}))})};
 

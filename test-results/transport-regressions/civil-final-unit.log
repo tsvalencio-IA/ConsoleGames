@@ -1,0 +1,19 @@
+✔ civil world: seven civilian stories complete in solo and co-op at every difficulty, with each player doing their work (5.920727ms)
+✔ civil world: wrong stage, duplicate objects, readiness bypasses and early acknowledgements never advance objectives (0.367585ms)
+✔ civil world: reload preserves actual pending work and completed objective tokens (0.385752ms)
+✔ civil world: cloud merge retains disjoint actions and receipts without counting one object twice (0.933369ms)
+✔ cable: acknowledged destination arrival credits a private solo ride and safely alights (1.878106ms)
+✔ cable: a reconnect after seat expiry can alight at a station without inventing quest credit (0.608228ms)
+✔ cable: a rejected acknowledgement or midair button cannot release a seat or credit a trip (1.012388ms)
+✔ cable: cancelling before departure releases the seat without counting an ascent (0.51029ms)
+✔ workshop: bootstrap saves preserve the existing two boxes until their actual vehicles are restored (0.832186ms)
+✔ render: repeated viewport notifications never clear an unchanged canvas (2.924635ms)
+✔ render: drawing-buffer changes wait for the replacement frame and use the latest viewport (1.25819ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.627855

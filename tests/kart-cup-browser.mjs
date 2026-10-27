@@ -2,7 +2,7 @@
  * Camera input uses an explicit synthetic video/pose fixture, never real users. */
 import {chromium} from 'playwright';import assert from 'node:assert/strict';import {mkdirSync,writeFileSync} from 'node:fs';
 import {multiplayerServer,installMultiplayerFixture} from './helpers/multiplayer-browser-fixture.mjs';
-const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-background-timer-throttling','--disable-renderer-backgrounding','--disable-backgrounding-occluded-windows']}),results=[],out='test-results/kart-cups';mkdirSync(out,{recursive:true});
+const server=await multiplayerServer(),browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-background-timer-throttling','--disable-renderer-backgrounding','--disable-backgrounding-occluded-windows']}),results=[],out='test-results/kart-cups';mkdirSync(out,{recursive:true});
 try{
  for(const phase of ['f1','f2','f3','arcade']){
   const contexts=[],pages=[],errors=[];console.log('CUP MENU',phase);
@@ -30,10 +30,16 @@ try{
     const camera=pages[0];await camera.bringToFront();await camera.waitForFunction(()=>System.activeGame.logic.inputActive&&System.activeGame.logic.pos>50);assert.equal(await camera.locator('[aria-label="Usar item guardado somente ao tocar"]').count(),0);
     assert.equal(await camera.evaluate(()=>__kartCameraConstraints.video.facingMode.ideal),'user');
     await camera.evaluate(()=>{window.__fixtureItemUses=[];const g=System.activeGame.logic,original=g.updatePhysics;g.updatePhysics=function(...args){const item=this.item;const out=original.apply(this,args);if(item&&this.item===null&&this.itemCooldown>0)__fixtureItemUses.push(item);return out;};});
-    await camera.waitForFunction(()=>System.activeGame.logic.cameraItemGesture?.armed);await camera.evaluate(()=>{System.activeGame.logic.item='mushroom';Object.assign(__kartPose.keypoints.find(p=>p.name==='right_wrist'),{x:285,y:105});});await camera.waitForFunction(()=>__fixtureItemUses.length===1);
+    await camera.waitForFunction(()=>System.activeGame.logic.cameraItemGesture?.armed);
+    await camera.evaluate(async()=>{System.activeGame.logic.item='mushroom';const hand=__kartPose.keypoints.find(p=>p.name==='right_wrist');for(let frame=1;frame<=15;frame++){hand.x=190+95*frame/15;hand.y=300-195*frame/15;await new Promise(resolve=>setTimeout(resolve,33));}});
+    await camera.waitForFunction(()=>__fixtureItemUses.length===1);
     await camera.evaluate(()=>System.activeGame.logic.item='banana');await camera.waitForTimeout(1200);assert.equal(await camera.evaluate(()=>System.activeGame.logic.item),'banana','one hold must not spend a second item');assert.equal(await camera.evaluate(()=>__fixtureItemUses.length),1);
     await camera.evaluate(()=>Object.assign(__kartPose.keypoints.find(p=>p.name==='right_wrist'),{x:190,y:300}));await camera.waitForFunction(()=>System.activeGame.logic.cameraItemGesture?.armed);await camera.evaluate(()=>Object.assign(__kartPose.keypoints.find(p=>p.name==='right_wrist'),{x:285,y:105}));await camera.waitForFunction(()=>__fixtureItemUses.length===2);await camera.evaluate(()=>Object.assign(__kartPose.keypoints.find(p=>p.name==='right_wrist'),{x:190,y:300}));
-    console.log('HAND ON HEAD ITEMS PASS');
+    console.log('GRADUAL HAND ON HEAD ITEMS PASS');
+    const manual=pages[1];await manual.bringToFront();await manual.waitForFunction(()=>System.activeGame.logic.status==='RACING'&&!System.activeGame.logic.networkPaused);
+    await manual.evaluate(()=>{System.activeGame.logic.item='banana';System.activeGame.logic.itemCooldown=0;});
+    await manual.locator('[aria-label="Usar item: banana"]').tap();await manual.waitForFunction(()=>System.activeGame.logic.item===null&&System.activeGame.logic.itemCooldown>0);
+    console.log('NATIVE TOUCH ITEM PASS');
     // Accelerate the clock of simulation by running the original 60 Hz physics
     // in batches. No finish flags, laps, position, scores or standings are set.
     // Profile persistence is disabled only inside this fixture; native coin
@@ -63,7 +69,7 @@ try{
     }
     await Promise.all(pages.map(p=>p.evaluate(()=>System.paused=false)));await Promise.all(pages.map(p=>p.waitForFunction(()=>System.activeGame.logic.onlineCupOutcome.complete)));
     const standings=await host.evaluate(()=>System.activeGame.logic.onlineCup.standings);assert.deepEqual(await guest.evaluate(()=>System.activeGame.logic.onlineCup.standings),standings);assert.equal(standings.length,6);
-    for(let i=0;i<2;i++)await pages[i].screenshot({path:`${out}/podium-${i+1}.png`});results.push({phase,passed:true,fullCupStages:3,originalPhysicsAccelerated:true,physicsTicks:totalTicks,identicalStandings:true,cameraSyntheticInput:true,handsFreeItem:true,handOnHeadGesture:true,heldGestureDoesNotRepeat:true,realHardwareCamera:false});
+    for(let i=0;i<2;i++)await pages[i].screenshot({path:`${out}/podium-${i+1}.png`});results.push({phase,passed:true,fullCupStages:3,originalPhysicsAccelerated:true,physicsTicks:totalTicks,identicalStandings:true,cameraSyntheticInput:true,handsFreeItem:true,handOnHeadGesture:true,gradualHandLift:true,manualTouchItem:true,heldGestureDoesNotRepeat:true,realHardwareCamera:false});
    }else results.push({phase,passed:true,nativeOnlineSelector:true,twoClientsInSamePhase:true});
    assert.deepEqual(errors,[]);for(const p of pages)await p.evaluate(()=>System.activeGame.logic.cleanup());
   }catch(error){for(let i=0;i<pages.length;i++){console.error('CUP DEBUG',phase,i,await pages[i].evaluate(()=>{const g=System.activeGame?.logic;return {state:g?.state,cup:g?.onlineCup,host:g?.isHost,paused:g?.networkPaused,gesture:g?.cameraItemGesture,item:g?.item,cooldown:g?.itemCooldown,uses:window.__fixtureItemUses,pose:window.__kartPose,video:{time:System.video?.currentTime,ready:System.video?.readyState,h:System.video?.videoHeight}};}).catch(()=>null));await pages[i].screenshot({path:`${out}/${phase}-failure-${i}.png`}).catch(()=>{});}throw error;}finally{for(const c of contexts)await c.close();}

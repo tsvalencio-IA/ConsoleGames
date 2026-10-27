@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.27.1-mundo-familia",
+  "build": "705.27.2-audio-mobilidade",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "b3b6c01e9d17e256d7170d0aca6c1ab8fd6697221f2b78a4b3d8247ad58fc4c1"
+      "sha256Body": "08ee60d12391497e27b49052c79a87b94b1bb104dce78aec51ad203f9910ac5d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "90ce656bfddfc3157466bb18a3a149017351ec407a4f5e13578f73f5749d98a7"
+      "sha256Body": "85f64c62eaecbc0dd7f5dbdd390bcd070fe8d7a04f7f2ff37665aed8cc00671a"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "4832b637d42ca2cba5b5e9a65344b8ab246235ca0526e78d19cb4ede2a6216fd"
+      "sha256Body": "f3d7111c87bf56253c854b67f0875eb574d651dcf42e049179834b949b747dd1"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -224,7 +224,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "29455b3ad62a54eaf52be5d57cfc6254ed0500052396f2437e54d7b34bcd1a5d"
+      "sha256Body": "5512d50f1dc75391cc573802b002d4f0ab6fa73f6975bc7b38b472c57b717157"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "86a3d756b93db75d59d6e8bf040fee4f435e80d428e4fd8d7b00f73d17d46aa8"
+      "sha256Body": "18482ed11f6c2aa83c230bad4f01aea3de0bda18ee7a7f09158f4524ef9572bd"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -364,14 +364,14 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "d456c35dea573abf2d5fc12ec9647cfd06f06ecfb77e05e00ef41ba6878c0084"
+      "sha256Body": "8216a09579b25341f2f82da635d0ae798dfb17a7bb4f58760a6901b837fe27a3"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "236114d24fd4b849f44764d0495062af9da9a1224e0c0d93ed0d5f46418e4863"
+      "sha256Body": "a4d489613a00de9611173387658cab3b8dd2956ea26b453f770fc448f95be966"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -557,7 +557,7 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "2c129b2a78767426985e109a0db31867f1656b59d10ce829083d96e1ac62a794",
+      "sha256Body": "1ce66e28af94fdeeb918b27b64b6ea38e5c5ba64b71fb30e8c18b1424313ad27",
       "startLine": 0,
       "endLine": 0
     },

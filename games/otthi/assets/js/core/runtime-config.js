@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.27.1-mundo-familia',
+    build: '705.27.2-audio-mobilidade',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

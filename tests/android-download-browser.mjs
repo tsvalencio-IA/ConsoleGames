@@ -37,7 +37,7 @@ if(!base){
   base='http://127.0.0.1:'+server.address().port+'/arcade/instalar/';
 }
 const origin=new URL(base).origin;
-const browser=await chromium.launch({...browserNetwork(base),headless:true,args:[...(browserNetwork(base).proxy?['--ignore-certificate-errors']:[]),'--no-sandbox','--disable-dev-shm-usage']});
+const browser=await chromium.launch({...browserNetwork(base),executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:[...(browserNetwork(base).proxy?['--ignore-certificate-errors']:[]),'--no-sandbox','--disable-dev-shm-usage']});
 const results=[];
 try{
   for(const spec of [

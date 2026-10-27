@@ -2,8 +2,8 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-kart-";
-const CACHE=PREFIX+"pro-control-v27";
-const FILES=["./recorded-audio.js?v=20261026-recorded1","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/CREDITS.txt","./audio/sources.json","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./world-venue-trip.js","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg",
+const CACHE=PREFIX+"pro-control-v28";
+const FILES=["./recorded-audio.js?v=20261027-transport2","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/CREDITS.txt","./audio/sources.json","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./world-venue-trip.js","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg",
 "./js/core.js","./js/game_kart.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",

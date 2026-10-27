@@ -3,8 +3,8 @@
 // Release 2026-10-22 war3: refresh touch look and ADS in the game shell while retaining cached local recognition models.
 "use strict";
 const PREFIX="thia-arcade-voo-";
-const CACHE=PREFIX+"pro-control-v23";
-const FILES=["./recorded-audio.js?v=20261026-recorded1","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/CREDITS.txt","./audio/sources.json","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js",
+const CACHE=PREFIX+"pro-control-v24";
+const FILES=["./recorded-audio.js?v=20261027-transport2","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/CREDITS.txt","./audio/sources.json","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js",
 "./js/core.js","./js/game_flight.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",

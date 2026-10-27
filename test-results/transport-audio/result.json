@@ -1,0 +1,5767 @@
+{
+  "baseline": null,
+  "browser": "138.0.7204.0",
+  "models": 51,
+  "results": [
+    {
+      "scope": "world",
+      "model": "palio",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "golf7",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-turbo",
+        "cyl": 4,
+        "idle": 850,
+        "max": 6500,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2558124363422394,
+        "step": 0.06272102892398834,
+        "rms": 0.05938373370778588,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2558124363422394,
+        "step": 0.057856880128383636,
+        "rms": 0.08230422517086441,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "fusca",
+      "kind": "car",
+      "profile": {
+        "id": "classic",
+        "variant": "boxer-ar",
+        "cyl": 4,
+        "idle": 800,
+        "max": 4500,
+        "ratios": [
+          0,
+          6,
+          11,
+          18,
+          28
+        ],
+        "tone": 1150
+      },
+      "wave": {
+        "peak": 0.6183825731277466,
+        "step": 0.004540368914604187,
+        "rms": 0.28876300935622384,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.22578033804893494,
+        "step": 0.11682810191996396,
+        "rms": 0.06075811344554972,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.22578033804893494,
+        "step": 0.055623702704906464,
+        "rms": 0.08514595791754132,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "kombi",
+      "kind": "car",
+      "profile": {
+        "id": "classic",
+        "variant": "boxer-ar",
+        "cyl": 4,
+        "idle": 800,
+        "max": 4500,
+        "ratios": [
+          0,
+          6,
+          11,
+          18,
+          28
+        ],
+        "tone": 1150
+      },
+      "wave": {
+        "peak": 0.6183825731277466,
+        "step": 0.004540368914604187,
+        "rms": 0.28876300935622384,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.22578033804893494,
+        "step": 0.11682810191996396,
+        "rms": 0.06075811344554972,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.22578033804893494,
+        "step": 0.055623702704906464,
+        "rms": 0.08514595791754132,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "opala",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "seis-em-linha",
+        "cyl": 6,
+        "idle": 700,
+        "max": 5600,
+        "ratios": [
+          0,
+          8,
+          15,
+          24,
+          36
+        ],
+        "tone": 1200
+      },
+      "wave": {
+        "peak": 0.6697326302528381,
+        "step": 0.009593531489372253,
+        "rms": 0.2859436111081402,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.26145341992378235,
+        "step": 0.060231178998947144,
+        "rms": 0.061448773137973846,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.26145341992378235,
+        "step": 0.047795578837394714,
+        "rms": 0.08563326290984004,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "maverick",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "v8-clÃ¡ssico",
+        "cyl": 8,
+        "idle": 680,
+        "max": 5200,
+        "ratios": [
+          0,
+          8,
+          15,
+          24,
+          36
+        ],
+        "tone": 1250
+      },
+      "wave": {
+        "peak": 0.681516170501709,
+        "step": 0.0119294673204422,
+        "rms": 0.28649365368083074,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2672043442726135,
+        "step": 0.08175883442163467,
+        "rms": 0.06191754820097862,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2672043442726135,
+        "step": 0.0638776570558548,
+        "rms": 0.08629374169331709,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "ferrari458",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "v8-esportivo",
+        "cyl": 8,
+        "idle": 1000,
+        "max": 8500,
+        "ratios": [
+          0,
+          10,
+          17,
+          24,
+          32,
+          43,
+          58
+        ],
+        "tone": 2200
+      },
+      "wave": {
+        "peak": 0.68044114112854,
+        "step": 0.012870952486991882,
+        "rms": 0.28594343351087737,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.27404820919036865,
+        "step": 0.05351311550475657,
+        "rms": 0.06164991918508897,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.27404820919036865,
+        "step": 0.047499336302280426,
+        "rms": 0.0862899065440917,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "porsche911",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "boxer-seis",
+        "cyl": 6,
+        "idle": 900,
+        "max": 7200,
+        "ratios": [
+          0,
+          10,
+          18,
+          27,
+          38,
+          52
+        ],
+        "tone": 1700
+      },
+      "wave": {
+        "peak": 0.630317211151123,
+        "step": 0.006911873817443848,
+        "rms": 0.28872821034229007,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24006445705890656,
+        "step": 0.17643003165721893,
+        "rms": 0.06117908934554369,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24006445705890656,
+        "step": 0.04561982303857803,
+        "rms": 0.08545640807282508,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "hilux",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-quatro",
+        "cyl": 4,
+        "idle": 750,
+        "max": 3800,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1050
+      },
+      "wave": {
+        "peak": 0.6958962082862854,
+        "step": 0.008085429668426514,
+        "rms": 0.28257922141188396,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.05868188038978297,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.08118588049265157,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "amarok",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-quatro",
+        "cyl": 4,
+        "idle": 750,
+        "max": 3800,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1050
+      },
+      "wave": {
+        "peak": 0.6958962082862854,
+        "step": 0.008085429668426514,
+        "rms": 0.28257922141188396,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.05868188038978297,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.08118588049265157,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "s10",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-quatro",
+        "cyl": 4,
+        "idle": 750,
+        "max": 3800,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1050
+      },
+      "wave": {
+        "peak": 0.6958962082862854,
+        "step": 0.008085429668426514,
+        "rms": 0.28257922141188396,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.05868188038978297,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.25742799043655396,
+        "step": 0.057691097259521484,
+        "rms": 0.08118588049265157,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "dinossauro",
+      "kind": "bus",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-seis",
+        "cyl": 6,
+        "idle": 600,
+        "max": 2600,
+        "ratios": [
+          0,
+          4,
+          7,
+          11,
+          16,
+          23,
+          32
+        ],
+        "tone": 850
+      },
+      "wave": {
+        "peak": 0.7077032923698425,
+        "step": 0.012362092733383179,
+        "rms": 0.2825312635592015,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2693607807159424,
+        "step": 0.1295468509197235,
+        "rms": 0.058377824729741214,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2693607807159424,
+        "step": 0.06123515963554382,
+        "rms": 0.08044933262014495,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "doubledeck",
+      "kind": "bus",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-seis",
+        "cyl": 6,
+        "idle": 600,
+        "max": 2600,
+        "ratios": [
+          0,
+          4,
+          7,
+          11,
+          16,
+          23,
+          32
+        ],
+        "tone": 850
+      },
+      "wave": {
+        "peak": 0.7077032923698425,
+        "step": 0.012362092733383179,
+        "rms": 0.2825312635592015,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2693607807159424,
+        "step": 0.1295468509197235,
+        "rms": 0.058377824729741214,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2693607807159424,
+        "step": 0.06123515963554382,
+        "rms": 0.08044933262014495,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "semi",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-seis",
+        "cyl": 6,
+        "idle": 600,
+        "max": 2600,
+        "ratios": [
+          0,
+          4,
+          7,
+          11,
+          16,
+          23,
+          32
+        ],
+        "tone": 850
+      },
+      "wave": {
+        "peak": 0.7077032923698425,
+        "step": 0.012362092733383179,
+        "rms": 0.2825312635592015,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2693607807159424,
+        "step": 0.1295468509197235,
+        "rms": 0.058377824729741214,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2693607807159424,
+        "step": 0.06123515963554382,
+        "rms": 0.08044933262014495,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "fuel",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-seis",
+        "cyl": 6,
+        "idle": 600,
+        "max": 2600,
+        "ratios": [
+          0,
+          4,
+          7,
+          11,
+          16,
+          23,
+          32
+        ],
+        "tone": 850
+      },
+      "wave": {
+        "peak": 0.7077032923698425,
+        "step": 0.012362092733383179,
+        "rms": 0.2825312635592015,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2693607807159424,
+        "step": 0.1295468509197235,
+        "rms": 0.058377824729741214,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2693607807159424,
+        "step": 0.06123515963554382,
+        "rms": 0.08044933262014495,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "attivi",
+      "kind": "bus",
+      "profile": {
+        "id": "electric",
+        "variant": "elÃ©trico",
+        "cyl": 0,
+        "max": 6500,
+        "idle": 0
+      },
+      "wave": {
+        "peak": 0.9676538109779358,
+        "step": 0.29103773832321167,
+        "rms": 0.2512845040030405,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.04298105835914612,
+        "step": 0.004809741054486949,
+        "rms": 0.005108287973854637,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.04298105835914612,
+        "step": 0.004809741054486949,
+        "rms": 0.008771646015054148,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "police",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "firefighter",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "variant": "diesel-seis",
+        "cyl": 6,
+        "idle": 600,
+        "max": 2600,
+        "ratios": [
+          0,
+          4,
+          7,
+          11,
+          16,
+          23,
+          32
+        ],
+        "tone": 850
+      },
+      "wave": {
+        "peak": 0.7077032923698425,
+        "step": 0.012362092733383179,
+        "rms": 0.2825312635592015,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2693607807159424,
+        "step": 0.1295468509197235,
+        "rms": 0.058377824729741214,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2693607807159424,
+        "step": 0.06123515963554382,
+        "rms": 0.08044933262014495,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "mobylette",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "mobilete-2t",
+        "cyl": 1,
+        "twoStroke": true,
+        "idle": 1500,
+        "max": 6500,
+        "ratios": [
+          0,
+          13,
+          25
+        ],
+        "tone": 1500
+      },
+      "wave": {
+        "peak": 0.8283029794692993,
+        "step": 0.005584031343460083,
+        "rms": 0.260602860958039,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.33426594734191895,
+        "step": 0.04370373487472534,
+        "rms": 0.05753965189058531,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.33426594734191895,
+        "step": 0.04370373487472534,
+        "rms": 0.08215859719383971,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "factor",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "monocilÃ­ndrica-125-150",
+        "cyl": 1,
+        "idle": 1400,
+        "max": 8000,
+        "ratios": [
+          0,
+          4.5,
+          8.5,
+          13,
+          18,
+          25
+        ],
+        "tone": 1300
+      },
+      "wave": {
+        "peak": 0.8283029794692993,
+        "step": 0.005584031343460083,
+        "rms": 0.260602860958039,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.3127180337905884,
+        "step": 0.07581139355897903,
+        "rms": 0.054343183224000134,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.3127180337905884,
+        "step": 0.043341778218746185,
+        "rms": 0.07557054383202845,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "titan",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "monocilÃ­ndrica-125-150",
+        "cyl": 1,
+        "idle": 1400,
+        "max": 8000,
+        "ratios": [
+          0,
+          4.5,
+          8.5,
+          13,
+          18,
+          25
+        ],
+        "tone": 1300
+      },
+      "wave": {
+        "peak": 0.8283029794692993,
+        "step": 0.005584031343460083,
+        "rms": 0.260602860958039,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.3127180337905884,
+        "step": 0.07581139355897903,
+        "rms": 0.054343183224000134,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.3127180337905884,
+        "step": 0.043341778218746185,
+        "rms": 0.07557054383202845,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "hornet",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "quatro-cilindros-600",
+        "cyl": 4,
+        "idle": 1300,
+        "max": 10500,
+        "ratios": [
+          0,
+          7,
+          12,
+          18,
+          25,
+          34,
+          44
+        ],
+        "tone": 2100
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24711304903030396,
+        "step": 0.12678895890712738,
+        "rms": 0.05930593179307208,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24711304903030396,
+        "step": 0.08209459483623505,
+        "rms": 0.08251123017218497,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "xre",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "monocilÃ­ndrica-125-150",
+        "cyl": 1,
+        "idle": 1400,
+        "max": 8000,
+        "ratios": [
+          0,
+          4.5,
+          8.5,
+          13,
+          18,
+          25
+        ],
+        "tone": 1300
+      },
+      "wave": {
+        "peak": 0.8283029794692993,
+        "step": 0.005584031343460083,
+        "rms": 0.260602860958039,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.3127180337905884,
+        "step": 0.07581139355897903,
+        "rms": 0.054343183224000134,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.3127180337905884,
+        "step": 0.043341778218746185,
+        "rms": 0.07557054383202845,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "bmwgs",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "boxer-duplo",
+        "cyl": 2,
+        "idle": 1150,
+        "max": 7500,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          24,
+          33,
+          43
+        ],
+        "tone": 1350
+      },
+      "wave": {
+        "peak": 0.707131564617157,
+        "step": 0.004545420408248901,
+        "rms": 0.2801452245410183,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2561209797859192,
+        "step": 0.09600640833377838,
+        "rms": 0.05798784440890408,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2561209797859192,
+        "step": 0.05316232889890671,
+        "rms": 0.08041684569558337,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "kart",
+      "kind": "kart",
+      "profile": {
+        "id": "motorcycle",
+        "variant": "kart",
+        "cyl": 1,
+        "idle": 1800,
+        "max": 8500,
+        "ratios": [
+          0,
+          32
+        ],
+        "tone": 1700
+      },
+      "wave": {
+        "peak": 0.8283029794692993,
+        "step": 0.005584031343460083,
+        "rms": 0.260602860958039,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.3022579252719879,
+        "step": 0.06680124625563622,
+        "rms": 0.05760249625199033,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.3022579252719879,
+        "step": 0.023087218403816223,
+        "rms": 0.08297124652206304,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "boat",
+      "kind": "boat",
+      "profile": {
+        "id": "marine",
+        "variant": "motor-de-popa",
+        "cyl": 3,
+        "idle": 800,
+        "max": 5600,
+        "ratios": [
+          0,
+          28
+        ],
+        "tone": 1100
+      },
+      "wave": {
+        "peak": 0.6420795321464539,
+        "step": 0.00473303347826004,
+        "rms": 0.2862295422780723,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24752876162528992,
+        "step": 0.11261963052675128,
+        "rms": 0.06351778173863203,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24752876162528992,
+        "step": 0.016021504998207092,
+        "rms": 0.09153291315207539,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "plane",
+      "kind": "plane",
+      "profile": {
+        "id": "airplane",
+        "variant": "hÃ©lice",
+        "cyl": 6,
+        "idle": 750,
+        "max": 2700,
+        "ratios": [
+          0,
+          42
+        ],
+        "tone": 950
+      },
+      "wave": {
+        "peak": 0.6697326302528381,
+        "step": 0.009593531489372253,
+        "rms": 0.2859436111081402,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2601640820503235,
+        "step": 0.04412669688463211,
+        "rms": 0.06359571261441224,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2601640820503235,
+        "step": 0.014311686158180237,
+        "rms": 0.09157655786408955,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "cargo",
+      "kind": "plane",
+      "profile": {
+        "id": "airplane",
+        "variant": "hÃ©lice",
+        "cyl": 6,
+        "idle": 750,
+        "max": 2700,
+        "ratios": [
+          0,
+          42
+        ],
+        "tone": 950
+      },
+      "wave": {
+        "peak": 0.6697326302528381,
+        "step": 0.009593531489372253,
+        "rms": 0.2859436111081402,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2601640820503235,
+        "step": 0.04412669688463211,
+        "rms": 0.06359571261441224,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2601640820503235,
+        "step": 0.014311686158180237,
+        "rms": 0.09157655786408955,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "falcon",
+      "kind": "jet",
+      "profile": {
+        "id": "jet",
+        "variant": "turbina",
+        "cyl": 0,
+        "idle": 0,
+        "max": 0,
+        "ratios": [
+          0,
+          120
+        ],
+        "tone": 1800
+      },
+      "wave": {
+        "peak": 0.9676538109779358,
+        "step": 0.29103773832321167,
+        "rms": 0.2512845040030405,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.31832069158554077,
+        "step": 0.11928752972744405,
+        "rms": 0.05280900080950911,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.31832069158554077,
+        "step": 0.04491213336586952,
+        "rms": 0.07899147583032709,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "helicopter",
+      "kind": "helicopter",
+      "profile": {
+        "id": "helicopter",
+        "variant": "rotor",
+        "cyl": 4,
+        "idle": 360,
+        "max": 410,
+        "rotor": true
+      },
+      "wave": {
+        "peak": 0.5917294025421143,
+        "step": 0.0037518590688705444,
+        "rms": 0.2906263412243397,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.16486647725105286,
+        "step": 0.04571150988340378,
+        "rms": 0.05567918105688474,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.16486647725105286,
+        "step": 0.03217462822794914,
+        "rms": 0.06698289362000497,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "metro",
+      "kind": "electric",
+      "profile": {
+        "id": "electric",
+        "variant": "elÃ©trico",
+        "cyl": 0,
+        "max": 6500,
+        "idle": 0
+      },
+      "wave": {
+        "peak": 0.9676538109779358,
+        "step": 0.29103773832321167,
+        "rms": 0.2512845040030405,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.04298105835914612,
+        "step": 0.004809741054486949,
+        "rms": 0.005108287973854637,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.04298105835914612,
+        "step": 0.004809741054486949,
+        "rms": 0.008771646015054148,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "balloon",
+      "kind": "balloon",
+      "profile": {
+        "id": "balloon",
+        "variant": "queimador",
+        "cyl": 0
+      },
+      "wave": {
+        "peak": 0.9676538109779358,
+        "step": 0.29103773832321167,
+        "rms": 0.2512845040030405,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.12589652836322784,
+        "step": 0.04838046617805958,
+        "rms": 0.016840093626420184,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.12589652836322784,
+        "step": 0.018843624740839005,
+        "rms": 0.026214299941381632,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "bicycle",
+      "kind": "bicycle",
+      "profile": {
+        "id": "silent",
+        "variant": "bicicleta",
+        "cyl": 0
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "skate",
+      "kind": "skate",
+      "profile": {
+        "id": "silent",
+        "variant": "bicicleta",
+        "cyl": 0
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "veraneio",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "blazer",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "pampa",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "escort",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "tcross",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-turbo",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "peugeot206",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "jetta",
+      "kind": "car",
+      "profile": {
+        "id": "jet",
+        "variant": "turbina",
+        "cyl": 0,
+        "idle": 0,
+        "max": 0,
+        "ratios": [
+          0,
+          120
+        ],
+        "tone": 1800
+      },
+      "wave": {
+        "peak": 0.9676538109779358,
+        "step": 0.29103773832321167,
+        "rms": 0.2512845040030405,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.31832069158554077,
+        "step": 0.11928752972744405,
+        "rms": 0.05280900080950911,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.31832069158554077,
+        "step": 0.04491213336586952,
+        "rms": 0.07899147583032709,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "corolla2007",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "corolla2021",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "civic2011",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "bmwx1",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "bmwm3",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "seis-esportivo",
+        "cyl": 6,
+        "idle": 850,
+        "max": 7600,
+        "ratios": [
+          0,
+          10,
+          18,
+          27,
+          38,
+          52
+        ],
+        "tone": 1800
+      },
+      "wave": {
+        "peak": 0.6697326302528381,
+        "step": 0.009593531489372253,
+        "rms": 0.2859436111081402,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.26593711972236633,
+        "step": 0.10989036387763917,
+        "rms": 0.061042206276534616,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.26593711972236633,
+        "step": 0.05668668448925018,
+        "rms": 0.0852344400455569,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "passat",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "tempra",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "landau",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "variant": "v8-clÃ¡ssico",
+        "cyl": 8,
+        "idle": 680,
+        "max": 5200,
+        "ratios": [
+          0,
+          8,
+          15,
+          24,
+          36
+        ],
+        "tone": 1250
+      },
+      "wave": {
+        "peak": 0.681516170501709,
+        "step": 0.0119294673204422,
+        "rms": 0.28649365368083074,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.2672043442726135,
+        "step": 0.08175883442163467,
+        "rms": 0.06191754820097862,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.2672043442726135,
+        "step": 0.0638776570558548,
+        "rms": 0.08629374169331709,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "gol",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "world",
+      "model": "uno",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "variant": "quatro-brasileiro",
+        "cyl": 4,
+        "idle": 850,
+        "max": 5700,
+        "ratios": [
+          0,
+          6,
+          11,
+          17,
+          25,
+          35
+        ],
+        "tone": 1400
+      },
+      "wave": {
+        "peak": 0.6565650105476379,
+        "step": 0.006313100457191467,
+        "rms": 0.28599346443497803,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.24426016211509705,
+        "step": 0.15783930895850062,
+        "rms": 0.05919924883017755,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.24426016211509705,
+        "step": 0.050915345549583435,
+        "rms": 0.08200228864695772,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "engineVersion": "combustion-20261027-smooth2",
+        "activeEngines": 0,
+        "variants": []
+      }
+    },
+    {
+      "scope": "console",
+      "model": "palio",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "golf7",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "fusca",
+      "kind": "car",
+      "profile": {
+        "id": "classic",
+        "sample": "engine-car",
+        "pitch": 0.82
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18541783094406128,
+        "step": 0.1040786299854517,
+        "rms": 0.06769392046943107,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18541783094406128,
+        "step": 0.006872233003377914,
+        "rms": 0.09633854613222584,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "kombi",
+      "kind": "car",
+      "profile": {
+        "id": "classic",
+        "sample": "engine-car",
+        "pitch": 0.82
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18541783094406128,
+        "step": 0.1040786299854517,
+        "rms": 0.06769392046943107,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18541783094406128,
+        "step": 0.006872233003377914,
+        "rms": 0.09633854613222584,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "opala",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "sample": "engine-car",
+        "pitch": 0.74
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1854168325662613,
+        "step": 0.09020694368518889,
+        "rms": 0.06767462837652034,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1854168325662613,
+        "step": 0.0017599491402506828,
+        "rms": 0.09636198045642753,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "maverick",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "sample": "engine-car",
+        "pitch": 0.74
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1854168325662613,
+        "step": 0.09020694368518889,
+        "rms": 0.06767462837652034,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1854168325662613,
+        "step": 0.0017599491402506828,
+        "rms": 0.09636198045642753,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "ferrari458",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "sample": "engine-car",
+        "pitch": 0.74
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1854168325662613,
+        "step": 0.09020694368518889,
+        "rms": 0.06767462837652034,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1854168325662613,
+        "step": 0.0017599491402506828,
+        "rms": 0.09636198045642753,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "porsche911",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "hilux",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "amarok",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "s10",
+      "kind": "car",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "dinossauro",
+      "kind": "bus",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "doubledeck",
+      "kind": "bus",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "semi",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "fuel",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "attivi",
+      "kind": "bus",
+      "profile": {
+        "id": "electric",
+        "synth": true,
+        "pitch": 1
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0.0734657272696495,
+        "step": 0.0446367128752172,
+        "rms": 0.03152929689794317,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.0734657272696495,
+        "step": 0.0021635445300489664,
+        "rms": 0.04829721315512855,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "police",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "firefighter",
+      "kind": "truck",
+      "profile": {
+        "id": "heavy",
+        "sample": "engine-car",
+        "pitch": 0.65
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18560193479061127,
+        "step": 0.0520360954105854,
+        "rms": 0.06774584584121962,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18560193479061127,
+        "step": 0.011464551091194153,
+        "rms": 0.09641246707993954,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "mobylette",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 0.85
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.16785605251789093,
+        "step": 0.03690790943801403,
+        "rms": 0.017249348466713423,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.16785605251789093,
+        "step": 0.03690790943801403,
+        "rms": 0.026290964453252137,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "factor",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.017870656226394527,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.0256002586283499,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "titan",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.017870656226394527,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.0256002586283499,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "hornet",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.017870656226394527,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.0256002586283499,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "xre",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.017870656226394527,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.0256002586283499,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "bmwgs",
+      "kind": "moto",
+      "profile": {
+        "id": "motorcycle",
+        "sample": "engine-moto",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.017870656226394527,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15831728279590607,
+        "step": 0.032429955899715424,
+        "rms": 0.0256002586283499,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "kart",
+      "kind": "kart",
+      "profile": {
+        "id": "kart",
+        "sample": "engine-moto",
+        "pitch": 1.06
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.15828262269496918,
+        "step": 0.030952418921515346,
+        "rms": 0.017692238323140007,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.15828262269496918,
+        "step": 0.030952418921515346,
+        "rms": 0.025903202942888687,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "boat",
+      "kind": "boat",
+      "profile": {
+        "id": "boat",
+        "sample": "engine-car",
+        "pitch": 0.68,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.18519404530525208,
+        "step": 0.03313414007425308,
+        "rms": 0.0676966463241933,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.18519404530525208,
+        "step": 0.020204678177833557,
+        "rms": 0.09655430974576527,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "plane",
+      "kind": "plane",
+      "profile": {
+        "id": "propeller",
+        "sample": "engine-moto",
+        "pitch": 0.72,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.16140590608119965,
+        "step": 0.03683249873574823,
+        "rms": 0.01849660828742507,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.16140590608119965,
+        "step": 0.03683249873574823,
+        "rms": 0.027831602694084766,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "cargo",
+      "kind": "plane",
+      "profile": {
+        "id": "propeller",
+        "sample": "engine-moto",
+        "pitch": 0.72,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.6913531422615051,
+        "step": 0.32327692583203316,
+        "rms": 0.11026306799988174,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.16140590608119965,
+        "step": 0.03683249873574823,
+        "rms": 0.01849660828742507,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.16140590608119965,
+        "step": 0.03683249873574823,
+        "rms": 0.027831602694084766,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "falcon",
+      "kind": "jet",
+      "profile": {
+        "id": "jet",
+        "synth": true,
+        "pitch": 1,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.45016396045684814,
+        "step": 0.8975248038768768,
+        "rms": 0.2594111471520641,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1329125016927719,
+        "step": 0.04974561557173729,
+        "rms": 0.025858161900299895,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1329125016927719,
+        "step": 0.0232616001740098,
+        "rms": 0.0360640250264852,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "helicopter",
+      "kind": "helicopter",
+      "profile": {
+        "id": "helicopter",
+        "sample": "engine-heli",
+        "pitch": 1,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.7135183215141296,
+        "step": 0.10431516170501709,
+        "rms": 0.11930632112629364,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1392829865217209,
+        "step": 0.10707330075092614,
+        "rms": 0.020200455550317426,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.13688072562217712,
+        "step": 0.011809051036834717,
+        "rms": 0.024042806737765862,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "metro",
+      "kind": "electric",
+      "profile": {
+        "id": "electric",
+        "synth": true,
+        "pitch": 1
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0.0734657272696495,
+        "step": 0.0446367128752172,
+        "rms": 0.03152929689794317,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.0734657272696495,
+        "step": 0.0021635445300489664,
+        "rms": 0.04829721315512855,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "balloon",
+      "kind": "balloon",
+      "profile": {
+        "id": "silent",
+        "sample": null,
+        "pitch": 1
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "bicycle",
+      "kind": "bicycle",
+      "profile": {
+        "id": "silent",
+        "sample": null,
+        "pitch": 1
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "skate",
+      "kind": "skate",
+      "profile": {
+        "id": "silent",
+        "sample": null,
+        "pitch": 1
+      },
+      "wave": null,
+      "signal": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "veraneio",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "blazer",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "pampa",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "escort",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "tcross",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "peugeot206",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "jetta",
+      "kind": "car",
+      "profile": {
+        "id": "jet",
+        "synth": true,
+        "pitch": 1,
+        "continuous": true
+      },
+      "wave": {
+        "peak": 0.4514635503292084,
+        "step": 0.8963196873664856,
+        "rms": 0.2600045958648289,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1424570530653,
+        "step": 0.0683927834033966,
+        "rms": 0.026003884220295075,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1424570530653,
+        "step": 0.027380406885640696,
+        "rms": 0.03618449227655555,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "corolla2007",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "corolla2021",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "civic2011",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "bmwx1",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "bmwm3",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "sample": "engine-car",
+        "pitch": 0.74
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1854168325662613,
+        "step": 0.09020694368518889,
+        "rms": 0.06767462837652034,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1854168325662613,
+        "step": 0.0017599491402506828,
+        "rms": 0.09636198045642753,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "passat",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "tempra",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "landau",
+      "kind": "car",
+      "profile": {
+        "id": "sport",
+        "sample": "engine-car",
+        "pitch": 0.74
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1854168325662613,
+        "step": 0.09020694368518889,
+        "rms": 0.06767462837652034,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1854168325662613,
+        "step": 0.0017599491402506828,
+        "rms": 0.09636198045642753,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "gol",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    },
+    {
+      "scope": "console",
+      "model": "uno",
+      "kind": "car",
+      "profile": {
+        "id": "road",
+        "sample": "engine-car",
+        "pitch": 1
+      },
+      "wave": {
+        "peak": 0.7253279685974121,
+        "step": 0.010039733722805977,
+        "rms": 0.3997180401338843,
+        "finite": true
+      },
+      "signal": {
+        "peak": 0.1873721331357956,
+        "step": 0.13542337715625763,
+        "rms": 0.06768572827115966,
+        "finite": true
+      },
+      "motor": {
+        "peak": 0.1873721331357956,
+        "step": 0.01822100579738617,
+        "rms": 0.09640275806889177,
+        "finite": true
+      },
+      "paused": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "zeroVolume": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "disposed": {
+        "peak": 0,
+        "step": 0,
+        "rms": 0,
+        "finite": true
+      },
+      "after": {
+        "recordings": 8,
+        "playedSamples": 0,
+        "activeEngines": 0,
+        "activeShots": 0,
+        "lastRecordingError": ""
+      }
+    }
+  ],
+  "failures": [],
+  "limits": [
+    "Native OfflineAudioContext at 48 kHz; no physical Android speaker or microphone testing."
+  ],
+  "passed": true,
+  "checkedAt": "2026-10-27T20:38:17.778Z"
+}
