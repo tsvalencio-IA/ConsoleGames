@@ -1,0 +1,372 @@
+{
+  "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+  "build": "705.26.5-frota-serra-garagem",
+  "revision": "f786b7c40346846b",
+  "passed": true,
+  "workflows": [
+    {
+      "id": 40423812313,
+      "name": "Volante por câmera nos autódromos",
+      "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812313",
+      "jobs": [
+        {
+          "id": 121924466283,
+          "name": "camera",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812313/job/121924466283",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:07:07Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar Chromium",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verificar volante, direção e evolução salva",
+              "conclusion": "success"
+            },
+            {
+              "name": "Servir o mundo e os jogos originais",
+              "conclusion": "success"
+            },
+            {
+              "name": "Entrar pelos dois autódromos e dirigir com MoveNet real",
+              "conclusion": "success"
+            },
+            {
+              "name": "Guardar telas e resultado",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40423812554,
+      "name": "Câmera frontal e modos no mundo OT",
+      "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812554",
+      "jobs": [
+        {
+          "id": 121924467072,
+          "name": "camera-e-mundo",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812554/job/121924467072",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:08:43Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar Chromium",
+              "conclusion": "success"
+            },
+            {
+              "name": "Servir jogos",
+              "conclusion": "success"
+            },
+            {
+              "name": "Reconhecer mãos com o modelo real e jogar pela câmera frontal",
+              "conclusion": "success"
+            },
+            {
+              "name": "Inferência real do corpo e controle por objeto nos dois mundos",
+              "conclusion": "success"
+            },
+            {
+              "name": "Arrastar a câmera e jogar com toques simultâneos no WAR",
+              "conclusion": "success"
+            },
+            {
+              "name": "Voar e trocar de modo na cena original do OT preservando a família",
+              "conclusion": "success"
+            },
+            {
+              "name": "Guardar evidências",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40423812366,
+      "name": "Validar gameplay real no Chromium",
+      "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366",
+      "jobs": [
+        {
+          "id": 121924466303,
+          "name": "embarque",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366/job/121924466303",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:05:31Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar navegador de teste",
+              "conclusion": "success"
+            },
+            {
+              "name": "Embarcar, pilotar, estacionar, encontrar praia e neve e abrir WAR",
+              "conclusion": "success"
+            },
+            {
+              "name": "Salvar evidências de embarque",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 121924466609,
+          "name": "frota-garagem-serra",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366/job/121924466609",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:07:47Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar navegador de teste",
+              "conclusion": "success"
+            },
+            {
+              "name": "Conferir geração determinística do aplicativo",
+              "conclusion": "success"
+            },
+            {
+              "name": "Embarcar nos helicópteros, aviões e balão com a família",
+              "conclusion": "success"
+            },
+            {
+              "name": "Repor a frota e testar dois pilotos e troca de autoridade",
+              "conclusion": "success"
+            },
+            {
+              "name": "Usar mapa móvel, pousar na rua, recolher aeronave e sair da concessionária e garagem",
+              "conclusion": "success"
+            },
+            {
+              "name": "Salvar evidências da frota, mapa e garagem",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 121924466644,
+          "name": "mundo",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366/job/121924466644",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:05:40Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar navegador de teste",
+              "conclusion": "success"
+            },
+            {
+              "name": "Servir mundo",
+              "conclusion": "success"
+            },
+            {
+              "name": "Validar frota completa e tráfego aéreo NPC",
+              "conclusion": "success"
+            },
+            {
+              "name": "Conferir pavimento, comércio, ondas e três minutos de trânsito",
+              "conclusion": "success"
+            },
+            {
+              "name": "Salvar evidências do mundo",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "id": 121924466696,
+          "name": "jogabilidade",
+          "conclusion": "success",
+          "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366/job/121924466696",
+          "startedAt": "2026-10-27T00:02:47Z",
+          "completedAt": "2026-10-27T00:13:19Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Instalar navegador de teste",
+              "conclusion": "success"
+            },
+            {
+              "name": "Servir console",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verificar motores, câmera e personagens",
+              "conclusion": "success"
+            },
+            {
+              "name": "Validar dança por corpo e inferência real sem câmera de usuário",
+              "conclusion": "success"
+            },
+            {
+              "name": "Entrar, iniciar e pausar cada um dos cinco jogos",
+              "conclusion": "success"
+            },
+            {
+              "name": "Jogar com a Família no OTThi e preservar o HQ",
+              "conclusion": "success"
+            },
+            {
+              "name": "Salvar evidências visuais",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

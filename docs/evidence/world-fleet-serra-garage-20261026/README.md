@@ -50,3 +50,6 @@ O CI inclui o novo percurso de frota/garagem/serra e preserva os trabalhos anter
 - Deployment `dpl_GNEb3ryZj2rFfAZHPSuWuozxVDEy`, estado `READY`, origem fixada no commit acima.
 - `family-world-report.json` confirma também a seleção jogável Thiago/Thamis, grupos completos/individuais/subconjuntos, recarga do progresso, presença recebida, brinquedo e retorno dos cães, condução e o HQ original, sem erros de página.
 - `validation-summary.json` reúne as referências de execução; os relatórios preservam as limitações de câmera física e rede móvel real.
+- `ci-validation.json`: **três workflows e seis trabalhos concluídos com sucesso** no commit publicado. Incluem os 258 testes, jogos originais, dança por corpo/inferência real, família/HQ, tráfego/comércio, embarques, frota compartilhada/garagem/serra, câmera frontal e volante pelas mãos nos dois autódromos.
+
+Execuções: [Gameplay](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812366), [câmera frontal e modos](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812554), [volante nos autódromos](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40423812313).

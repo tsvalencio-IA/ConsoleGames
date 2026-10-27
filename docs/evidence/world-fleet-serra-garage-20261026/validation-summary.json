@@ -32,5 +32,11 @@
   },
   "limits": [
     "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
-  ]
+  ],
+  "ci": {
+    "passed": true,
+    "workflows": 3,
+    "jobs": 6,
+    "report": "ci-validation.json"
+  }
 }
