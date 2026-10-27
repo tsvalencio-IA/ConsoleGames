@@ -1,0 +1,1595 @@
+{
+  "browser": "138.0.7204.0",
+  "flights": [
+    {
+      "mode": "helicopter",
+      "craft": {
+        "mode": "helicopter",
+        "id": "helicopter",
+        "model": "helicopter",
+        "livery": "tour",
+        "height": 1,
+        "label": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "yaw": 0,
+        "radius": 6,
+        "groundY": 0,
+        "baseId": "helicopter",
+        "base": "helicopter",
+        "status": "parked",
+        "parkedAt": 1793134053910,
+        "pilot": "",
+        "departedAt": 0
+      },
+      "first": {
+        "near": 1.5,
+        "body": {
+          "x": 314,
+          "y": 132.7496426750594,
+          "z": 15,
+          "yaw": 0,
+          "pitch": 0.012660710278908374,
+          "roll": 0.015192852334690046,
+          "vx": 0,
+          "vy": 7.8605360748982465,
+          "vz": 0,
+          "hp": 100
+        },
+        "ground": {
+          "x": 54,
+          "z": -165
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              314.23726574446835,
+              132.2810799091923,
+              15.625982348748636
+            ],
+            "expected": [
+              314.23726574446835,
+              132.2810799091923,
+              15.625982348748636
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              313.77731883268245,
+              132.27409202606805,
+              15.626070825039779
+            ],
+            "expected": [
+              313.77731883268245,
+              132.27409202606805,
+              15.626070825039779
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              314.1572749772012,
+              132.2675840642888,
+              14.656075477279854
+            ],
+            "expected": [
+              314.1572749772012,
+              132.2675840642888,
+              14.656075477279854
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              314.3172565117355,
+              132.27001463233202,
+              14.656044702917718
+            ],
+            "expected": [
+              314.3172565117355,
+              132.27001463233202,
+              14.656044702917718
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "second": {
+        "near": 1.5,
+        "body": {
+          "x": 314,
+          "y": 137.15904393988464,
+          "z": 15,
+          "yaw": 0,
+          "pitch": 0.0016029358476645625,
+          "roll": 0.0019235230171974736,
+          "vx": 0,
+          "vy": 8.855735773710188,
+          "vz": 0,
+          "hp": 100
+        },
+        "ground": {
+          "x": 54,
+          "z": -165
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              314.2309228649858,
+              136.68048167377842,
+              15.620767901784568
+            ],
+            "expected": [
+              314.2309228649858,
+              136.68048167377842,
+              15.620767901784568
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              313.77092371597195,
+              136.67959685487287,
+              15.620769320093725
+            ],
+            "expected": [
+              313.77092371597195,
+              136.67959685487287,
+              15.620769320093725
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              314.1509230129834,
+              136.67877294512323,
+              14.650769394607378
+            ],
+            "expected": [
+              314.1509230129834,
+              136.67877294512323,
+              14.650769394607378
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              314.3109227169883,
+              136.67908070822082,
+              14.650768901282454
+            ],
+            "expected": [
+              314.3109227169883,
+              136.67908070822082,
+              14.650768901282454
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "takeoff": {
+        "active": true,
+        "mode": "helicopter",
+        "armed": false,
+        "state": "PLAYING",
+        "elapsed": 5.249999999999987,
+        "onGround": false,
+        "crouched": false,
+        "canDisembark": false,
+        "landingAssist": false,
+        "flightPhase": "airborne",
+        "aircraftId": "helicopter",
+        "airspeed": 0,
+        "collective": 1,
+        "aiming": false,
+        "looking": false,
+        "handMode": false,
+        "handTracker": null,
+        "handAim": null,
+        "autoWalking": false,
+        "lock": null,
+        "kills": 0,
+        "wave": 0,
+        "goal": 8,
+        "ammo": 30,
+        "body": {
+          "x": 50,
+          "y": 36.47416684599504,
+          "z": -165,
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0,
+          "vx": 0,
+          "vy": 8.99999951353883,
+          "vz": 0,
+          "hp": 100
+        },
+        "peacePosition": {
+          "x": 54,
+          "y": 0,
+          "z": -165
+        },
+        "covers": 0,
+        "enemies": [],
+        "sameScene": true,
+        "trafficActors": 77,
+        "weapon": false,
+        "infantryVersions": [],
+        "engine": {
+          "profile": "helicopter",
+          "variant": "rotor",
+          "soundVersion": "combustion-20261027-smooth2",
+          "ready": true,
+          "gear": 1,
+          "rpm": 410,
+          "rate": 1.269357518406013,
+          "speed": 0,
+          "load": 1
+        },
+        "renderCalls": 0
+      }
+    },
+    {
+      "mode": "plane",
+      "craft": {
+        "mode": "plane",
+        "id": "plane",
+        "model": "light",
+        "livery": "tour",
+        "height": 0.92,
+        "label": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "groundY": 0,
+        "baseId": "plane",
+        "base": "plane",
+        "status": "parked",
+        "parkedAt": 1793134053910,
+        "pilot": "",
+        "departedAt": 0
+      },
+      "first": {
+        "near": 1.5,
+        "body": {
+          "x": 259.4850039943223,
+          "y": 130.04866879061532,
+          "z": 15.007455608064586,
+          "yaw": 1.551688320206894,
+          "pitch": 0.1,
+          "roll": 0.021203333490791627,
+          "vx": 2.155448803898602,
+          "vy": 0.2163057360681276,
+          "vz": 0.04119134327203449,
+          "hp": 100
+        },
+        "ground": {
+          "x": -1,
+          "z": -165
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              260.4957150555538,
+              130.19029009583505,
+              15.02761885711501
+            ],
+            "expected": [
+              260.4957150555538,
+              130.19029009583505,
+              15.02761885711501
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              259.8590286396329,
+              130.12639670918108,
+              15.015451568025425
+            ],
+            "expected": [
+              259.8590286396329,
+              130.12639670918108,
+              15.015451568025425
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              259.2995155466617,
+              130.0451094714096,
+              15.26432399271177
+            ],
+            "expected": [
+              259.2995155466617,
+              130.0451094714096,
+              15.26432399271177
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              259.3022333534997,
+              130.04848480330455,
+              15.104382688913812
+            ],
+            "expected": [
+              259.3022333534997,
+              130.04848480330455,
+              15.104382688913812
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "second": {
+        "near": 1.5,
+        "body": {
+          "x": 261.20512671302356,
+          "y": 130.22129740690048,
+          "z": 15.044767728381661,
+          "yaw": 1.5481424325429853,
+          "pitch": 0.1,
+          "roll": 0.0028695591435366438,
+          "vx": 4.642161340427387,
+          "vy": 0.4658892776851981,
+          "vz": 0.1051810256517368,
+          "hp": 100
+        },
+        "ground": {
+          "x": -1,
+          "z": -165
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              262.21577565323366,
+              130.36292749462683,
+              15.067781591656804
+            ],
+            "expected": [
+              262.21577565323366,
+              130.36292749462683,
+              15.067781591656804
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              261.57913638368933,
+              130.29903410797286,
+              15.053356765281707
+            ],
+            "expected": [
+              261.57913638368933,
+              130.29903410797286,
+              15.053356765281707
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              261.01825945121055,
+              130.22248503623806,
+              15.300656798095606
+            ],
+            "expected": [
+              261.01825945121055,
+              130.22248503623806,
+              15.300656798095606
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              261.02183792471243,
+              130.22294187133915,
+              15.140697472549746
+            ],
+            "expected": [
+              261.02183792471243,
+              130.22294187133915,
+              15.140697472549746
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "takeoff": null
+    },
+    {
+      "mode": "balloon",
+      "craft": {
+        "mode": "balloon",
+        "id": "balloon",
+        "model": "balloon",
+        "label": "Balão das montanhas",
+        "x": -66,
+        "z": 89,
+        "yaw": 3.141592653589793,
+        "radius": 5,
+        "height": 1.05,
+        "groundY": 0.5,
+        "baseId": "balloon",
+        "base": "balloon",
+        "status": "parked",
+        "parkedAt": 1793134053910,
+        "pilot": "",
+        "departedAt": 0
+      },
+      "first": {
+        "near": 1.5,
+        "body": {
+          "x": 198.00291746460823,
+          "y": 130,
+          "z": 269.0655632567084,
+          "yaw": 3.141592653589793,
+          "pitch": 0.011493191493570414,
+          "roll": 0.006172160534198125,
+          "vx": 0.013731544222305313,
+          "vy": 0,
+          "vz": 0.23029233126835957,
+          "hp": 100
+        },
+        "ground": {
+          "x": -62,
+          "z": 89
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              198.51871051727758,
+              129.32167560590545,
+              268.6377390601109
+            ],
+            "expected": [
+              198.51871051727758,
+              129.32167560590545,
+              268.6377390601109
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              197.47873032690885,
+              129.32809418815523,
+              268.6378128333542
+            ],
+            "expected": [
+              197.47873032690885,
+              129.32809418815523,
+              268.6378128333542
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              198.5987089934598,
+              129.31152780049786,
+              269.4776779066074
+            ],
+            "expected": [
+              198.5987089934598,
+              129.31152780049786,
+              269.4776779066074
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              198.43871204109539,
+              129.31251527469013,
+              269.47768925633716
+            ],
+            "expected": [
+              198.43871204109539,
+              129.31251527469013,
+              269.47768925633716
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "second": {
+        "near": 1.5,
+        "body": {
+          "x": 198.01348296871038,
+          "y": 130,
+          "z": 269.18584744619596,
+          "yaw": 3.141592653589793,
+          "pitch": 0.010383887299475293,
+          "roll": 0.01060460564296086,
+          "vx": 0.0310728949143799,
+          "vy": 0,
+          "vz": 0.27135075268053904,
+          "hp": 100
+        },
+        "ground": {
+          "x": -62,
+          "z": 89
+        },
+        "riders": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              198.52624273331244,
+              129.31892205339398,
+              268.75875231106545
+            ],
+            "expected": [
+              198.52624273331244,
+              129.31892205339398,
+              268.75875231106545
+            ],
+            "error": 0
+          },
+          {
+            "id": "thamis",
+            "visible": true,
+            "position": [
+              197.48630121074805,
+              129.32995004197804,
+              268.758866828572
+            ],
+            "expected": [
+              197.48630121074805,
+              129.32995004197804,
+              268.758866828572
+            ],
+            "error": 0
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              198.60623823504815,
+              129.30935143799755,
+              269.5986982158849
+            ],
+            "expected": [
+              198.60623823504815,
+              129.30935143799755,
+              269.5986982158849
+            ],
+            "error": 0
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              198.4462472315767,
+              129.31104805162585,
+              269.59871583396284
+            ],
+            "expected": [
+              198.4462472315767,
+              129.31104805162585,
+              269.59871583396284
+            ],
+            "error": 0
+          }
+        ]
+      },
+      "takeoff": null
+    }
+  ],
+  "cable": [
+    {
+      "from": "base",
+      "to": "top",
+      "point": {
+        "id": "cable-base",
+        "name": "Teleférico · Estação Vale",
+        "x": 210,
+        "z": 235,
+        "navX": 213.2,
+        "navZ": 238.4,
+        "icon": "🚡",
+        "group": "Montanhas",
+        "description": "Embarque na cabine para subir ao mirante da cordilheira."
+      },
+      "middle": {
+        "game": {
+          "running": true,
+          "paused": false,
+          "currentHouse": null,
+          "cameraMode": "openworld",
+          "player": {
+            "x": 186.21825438316637,
+            "y": 50.58592910370646,
+            "z": 257.98601342889634,
+            "vx": 0,
+            "vy": 0,
+            "vz": 0,
+            "facing": 0.83798122500839,
+            "grounded": true,
+            "vehicle": false,
+            "sitUntil": 115746.20006103537,
+            "lastGrounded": 94075.70006103537,
+            "lastSafeX": 213.2,
+            "lastSafeY": 0,
+            "lastSafeZ": 238.4,
+            "lastSafeAt": 94075.800061035,
+            "invalidSince": 0,
+            "jumpBuffer": 0,
+            "airJumpAvailable": true,
+            "lastJumpWasAir": false,
+            "attackUntil": 0,
+            "damageUntil": 0,
+            "shieldUntil": 0,
+            "skillDashUntil": 0,
+            "scaleMode": "normal",
+            "crouched": false,
+            "spinUntil": 0,
+            "preVehicleAbilities": null,
+            "hornUntil": 0,
+            "emoteUntil": 0,
+            "emoteType": "",
+            "emoteSeq": 0,
+            "boating": false,
+            "transit": {
+              "mode": "",
+              "busId": "",
+              "requestStop": false,
+              "metroUntil": 0
+            },
+            "boat": {
+              "heading": 0,
+              "speed": 0,
+              "steerVisual": 0,
+              "passengerOf": "",
+              "passengerUid": "",
+              "passengerBotId": "",
+              "hostMissingAt": 0
+            },
+            "car": {
+              "id": "",
+              "kind": "car",
+              "label": "Carro",
+              "heading": 3.141592653589793,
+              "speed": 0,
+              "steerVisual": 0,
+              "drift": 0,
+              "_prevSpeed": 0,
+              "turboUntil": 0,
+              "sirenActive": false,
+              "utilityCooldownUntil": 0,
+              "passengerOf": "",
+              "passengerUid": "",
+              "passengerUids": [],
+              "passengerBotId": "",
+              "hostMissingAt": 0
+            },
+            "recoveryReason": "",
+            "swimming": false,
+            "nextRecoveryScanAt": 94355.70006103537
+          },
+          "objects": {
+            "houses": 32,
+            "npcs": 122,
+            "enemies": 0,
+            "interactables": 830,
+            "builds": 0,
+            "vehicles": 23,
+            "buses": 7,
+            "metroStations": 7,
+            "policeCars": 2,
+            "resources": 72,
+            "school": true,
+            "policeStation": true,
+            "mine": true,
+            "well": true
+          }
+        },
+        "family": {
+          "ready": true,
+          "home": {
+            "x": -38,
+            "z": -24
+          },
+          "actors": [
+            {
+              "id": "thiago",
+              "x": 186.21169173296266,
+              "z": 257.993305262456,
+              "bones": 24,
+              "vertices": 164562,
+              "uniqueVertices": 31956,
+              "drawCalls": 1
+            },
+            {
+              "id": "thamis",
+              "x": 185.66314065303226,
+              "z": 258.6028064623787,
+              "bones": 25,
+              "vertices": 226968,
+              "uniqueVertices": 43480,
+              "drawCalls": 1
+            },
+            {
+              "id": "luna",
+              "x": 185.11458957310185,
+              "z": 259.2123076623013,
+              "bones": 13,
+              "vertices": 205176,
+              "uniqueVertices": 46812,
+              "drawCalls": 1
+            },
+            {
+              "id": "liz",
+              "x": 184.56603849317145,
+              "z": 259.82180886222403,
+              "bones": 13,
+              "vertices": 209400,
+              "uniqueVertices": 47082,
+              "drawCalls": 1
+            }
+          ],
+          "progress": {
+            "party": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "toy": "ball",
+            "deliveries": {
+              "luna": 0,
+              "liz": 0
+            },
+            "flags": {}
+          },
+          "party": {
+            "owner": "transport-native-local",
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ]
+          },
+          "ride": {
+            "owner": "transport-native-local",
+            "kind": "cable",
+            "mode": "cable",
+            "id": "cable-0",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ],
+            "controller": "thiago",
+            "hostUid": "transport-native-local"
+          },
+          "seated": [
+            {
+              "id": "thiago",
+              "visible": true,
+              "position": [
+                186.21169173296266,
+                50.98724368339207,
+                257.993305262456
+              ],
+              "scale": 0.4608,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": -1.25
+              }
+            },
+            {
+              "id": "thamis",
+              "visible": true,
+              "position": [
+                185.66314065303226,
+                50.98724368339207,
+                258.6028064623787
+              ],
+              "scale": 0.47784959999999993,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": -0.43000000000000005
+              }
+            },
+            {
+              "id": "luna",
+              "visible": true,
+              "position": [
+                185.11458957310185,
+                50.98724368339207,
+                259.2123076623013
+              ],
+              "scale": 0.504,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": 0.3899999999999999
+              }
+            },
+            {
+              "id": "liz",
+              "visible": true,
+              "position": [
+                184.56603849317145,
+                50.98724368339207,
+                259.82180886222403
+              ],
+              "scale": 0.504,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": 1.21
+              }
+            }
+          ],
+          "authority": true,
+          "ball": null
+        },
+        "cable": {
+          "stations": {
+            "base": {
+              "id": "base",
+              "x": 210,
+              "z": 235,
+              "label": "Estação Vale"
+            },
+            "top": {
+              "id": "top",
+              "x": 147,
+              "z": 305,
+              "label": "Estação Mirante"
+            },
+            "cycle": 112,
+            "travel": 48,
+            "dwell": 8,
+            "seats": 8
+          },
+          "cabins": [
+            {
+              "id": 0,
+              "t": 0.3637708326180776,
+              "docked": "",
+              "direction": 1,
+              "wait": 30.539000034332275,
+              "position": [
+                186.12271749221912,
+                50.41045533575689,
+                259.58701264629036
+              ]
+            },
+            {
+              "id": 1,
+              "t": 0.6362291673819225,
+              "docked": "",
+              "direction": -1,
+              "wait": 30.539000034332275,
+              "position": [
+                170.87728250778088,
+                71.1331217185465,
+                280.41298735370964
+              ]
+            }
+          ],
+          "ride": {
+            "uid": "transport-native-local",
+            "cabin": 0,
+            "from": "base",
+            "to": "top",
+            "startSeat": 0,
+            "count": 4,
+            "at": 1793134116287,
+            "questId": ""
+          },
+          "waiting": null
+        }
+      }
+    },
+    {
+      "from": "top",
+      "to": "base",
+      "point": {
+        "id": "cable-top",
+        "name": "Teleférico · Estação Mirante",
+        "x": 147,
+        "z": 305,
+        "navX": 150.2,
+        "navZ": 308.4,
+        "icon": "🚡",
+        "group": "Montanhas",
+        "description": "Mirante, visitantes e retorno pelo teleférico."
+      },
+      "middle": {
+        "game": {
+          "running": true,
+          "paused": false,
+          "currentHouse": null,
+          "cameraMode": "openworld",
+          "player": {
+            "x": 166.0359417605,
+            "y": 73.13151172033287,
+            "z": 280.41080523185894,
+            "vx": 0,
+            "vy": 0,
+            "vz": 0,
+            "facing": 0.83798122500839,
+            "grounded": true,
+            "vehicle": false,
+            "sitUntil": 281460.6999580385,
+            "lastGrounded": 259870.69995803855,
+            "lastSafeX": 150.2,
+            "lastSafeY": 76,
+            "lastSafeZ": 308.4,
+            "lastSafeAt": 259502.19995803855,
+            "invalidSince": 0,
+            "jumpBuffer": 0,
+            "airJumpAvailable": true,
+            "lastJumpWasAir": false,
+            "attackUntil": 0,
+            "damageUntil": 0,
+            "shieldUntil": 0,
+            "skillDashUntil": 0,
+            "scaleMode": "normal",
+            "crouched": false,
+            "spinUntil": 0,
+            "preVehicleAbilities": null,
+            "hornUntil": 0,
+            "emoteUntil": 0,
+            "emoteType": "",
+            "emoteSeq": 0,
+            "boating": false,
+            "transit": {
+              "mode": "",
+              "busId": "",
+              "requestStop": false,
+              "metroUntil": 0
+            },
+            "boat": {
+              "heading": 0,
+              "speed": 0,
+              "steerVisual": 0,
+              "passengerOf": "",
+              "passengerUid": "",
+              "passengerBotId": "",
+              "hostMissingAt": 0
+            },
+            "car": {
+              "id": "",
+              "kind": "car",
+              "label": "Carro",
+              "heading": 3.141592653589793,
+              "speed": 0,
+              "steerVisual": 0,
+              "drift": 0,
+              "_prevSpeed": 0,
+              "turboUntil": 0,
+              "sirenActive": false,
+              "utilityCooldownUntil": 0,
+              "passengerOf": "",
+              "passengerUid": "",
+              "passengerUids": [],
+              "passengerBotId": "",
+              "hostMissingAt": 0
+            },
+            "recoveryReason": "",
+            "swimming": false,
+            "nextRecoveryScanAt": 260067.099958038
+          },
+          "objects": {
+            "houses": 32,
+            "npcs": 122,
+            "enemies": 0,
+            "interactables": 830,
+            "builds": 0,
+            "vehicles": 23,
+            "buses": 7,
+            "metroStations": 7,
+            "policeCars": 2,
+            "resources": 72,
+            "school": true,
+            "policeStation": true,
+            "mine": true,
+            "well": true
+          }
+        },
+        "family": {
+          "ready": true,
+          "home": {
+            "x": -38,
+            "z": -24
+          },
+          "actors": [
+            {
+              "id": "thiago",
+              "x": 166.04119200583273,
+              "z": 280.4049716259337,
+              "bones": 24,
+              "vertices": 164562,
+              "uniqueVertices": 31956,
+              "drawCalls": 1
+            },
+            {
+              "id": "thamis",
+              "x": 165.49264092590232,
+              "z": 281.0144728258564,
+              "bones": 25,
+              "vertices": 226968,
+              "uniqueVertices": 43480,
+              "drawCalls": 1
+            },
+            {
+              "id": "luna",
+              "x": 164.94408984597192,
+              "z": 281.62397402577903,
+              "bones": 13,
+              "vertices": 205176,
+              "uniqueVertices": 46812,
+              "drawCalls": 1
+            },
+            {
+              "id": "liz",
+              "x": 164.3955387660415,
+              "z": 282.23347522570174,
+              "bones": 13,
+              "vertices": 209400,
+              "uniqueVertices": 47082,
+              "drawCalls": 1
+            }
+          ],
+          "progress": {
+            "party": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "toy": "ball",
+            "deliveries": {
+              "luna": 0,
+              "liz": 0
+            },
+            "flags": {}
+          },
+          "party": {
+            "owner": "transport-native-local",
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ]
+          },
+          "ride": {
+            "owner": "transport-native-local",
+            "kind": "cable",
+            "mode": "cable",
+            "id": "cable-0",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ],
+            "controller": "thiago",
+            "hostUid": "transport-native-local"
+          },
+          "seated": [
+            {
+              "id": "thiago",
+              "visible": true,
+              "position": [
+                166.04119200583273,
+                73.51875332435063,
+                280.4049716259337
+              ],
+              "scale": 0.4608,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": -1.25
+              }
+            },
+            {
+              "id": "thamis",
+              "visible": true,
+              "position": [
+                165.49264092590232,
+                73.51875332435063,
+                281.0144728258564
+              ],
+              "scale": 0.47784959999999993,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": -0.43000000000000005
+              }
+            },
+            {
+              "id": "luna",
+              "visible": true,
+              "position": [
+                164.94408984597192,
+                73.51875332435063,
+                281.62397402577903
+              ],
+              "scale": 0.504,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": 0.3899999999999999
+              }
+            },
+            {
+              "id": "liz",
+              "visible": true,
+              "position": [
+                164.3955387660415,
+                73.51875332435063,
+                282.23347522570174
+              ],
+              "scale": 0.504,
+              "seat": {
+                "x": -1,
+                "y": 0.57,
+                "z": 1.21
+              }
+            }
+          ],
+          "authority": true,
+          "ball": null
+        },
+        "cable": {
+          "stations": {
+            "base": {
+              "id": "base",
+              "x": 210,
+              "z": 235,
+              "label": "Estação Vale"
+            },
+            "top": {
+              "id": "top",
+              "x": 147,
+              "z": 305,
+              "label": "Estação Mirante"
+            },
+            "cycle": 112,
+            "travel": 48,
+            "dwell": 8,
+            "seats": 8
+          },
+          "cabins": [
+            {
+              "id": 0,
+              "t": 0.6838541676600773,
+              "docked": "",
+              "direction": -1,
+              "wait": 32.825000047683716,
+              "position": [
+                165.94565511488548,
+                72.9501327017667,
+                282.00597084332776
+              ]
+            },
+            {
+              "id": 1,
+              "t": 0.3161458323399226,
+              "docked": "",
+              "direction": 1,
+              "wait": 32.825000047683716,
+              "position": [
+                191.05434488511452,
+                44.99163271384657,
+                257.99402915667224
+              ]
+            }
+          ],
+          "ride": {
+            "uid": "transport-native-local",
+            "cabin": 0,
+            "from": "top",
+            "to": "base",
+            "startSeat": 0,
+            "count": 4,
+            "at": 1793134282082,
+            "questId": ""
+          },
+          "waiting": null
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "buffer": [
+    {
+      "type": "render",
+      "frame": 41
+    },
+    {
+      "type": "render",
+      "frame": 42
+    },
+    {
+      "type": "render",
+      "frame": 43
+    },
+    {
+      "type": "render",
+      "frame": 44
+    },
+    {
+      "type": "render",
+      "frame": 45
+    },
+    {
+      "type": "render",
+      "frame": 46
+    },
+    {
+      "type": "render",
+      "frame": 47
+    },
+    {
+      "type": "render",
+      "frame": 48
+    },
+    {
+      "type": "render",
+      "frame": 49
+    },
+    {
+      "type": "render",
+      "frame": 50
+    },
+    {
+      "type": "render",
+      "frame": 51
+    },
+    {
+      "type": "render",
+      "frame": 52
+    },
+    {
+      "type": "render",
+      "frame": 53
+    },
+    {
+      "type": "render",
+      "frame": 54
+    },
+    {
+      "type": "render",
+      "frame": 55
+    },
+    {
+      "type": "render",
+      "frame": 56
+    },
+    {
+      "type": "render",
+      "frame": 57
+    },
+    {
+      "type": "render",
+      "frame": 58
+    },
+    {
+      "type": "render",
+      "frame": 59
+    },
+    {
+      "type": "render",
+      "frame": 60
+    },
+    {
+      "type": "render",
+      "frame": 61
+    },
+    {
+      "type": "render",
+      "frame": 62
+    },
+    {
+      "type": "render",
+      "frame": 63
+    },
+    {
+      "type": "render",
+      "frame": 64
+    },
+    {
+      "type": "render",
+      "frame": 65
+    },
+    {
+      "type": "render",
+      "frame": 66
+    },
+    {
+      "type": "render",
+      "frame": 67
+    },
+    {
+      "type": "render",
+      "frame": 68
+    },
+    {
+      "type": "buffer",
+      "args": [
+        393,
+        852,
+        0.602
+      ],
+      "frame": 69
+    },
+    {
+      "type": "render",
+      "frame": 69
+    },
+    {
+      "type": "render",
+      "frame": 70
+    },
+    {
+      "type": "render",
+      "frame": 71
+    },
+    {
+      "type": "render",
+      "frame": 72
+    },
+    {
+      "type": "render",
+      "frame": 73
+    },
+    {
+      "type": "render",
+      "frame": 74
+    },
+    {
+      "type": "render",
+      "frame": 75
+    },
+    {
+      "type": "render",
+      "frame": 76
+    },
+    {
+      "type": "render",
+      "frame": 77
+    },
+    {
+      "type": "render",
+      "frame": 78
+    },
+    {
+      "type": "render",
+      "frame": 79
+    },
+    {
+      "type": "render",
+      "frame": 80
+    },
+    {
+      "type": "render",
+      "frame": 81
+    },
+    {
+      "type": "render",
+      "frame": 82
+    },
+    {
+      "type": "render",
+      "frame": 83
+    },
+    {
+      "type": "render",
+      "frame": 84
+    },
+    {
+      "type": "render",
+      "frame": 85
+    },
+    {
+      "type": "render",
+      "frame": 86
+    },
+    {
+      "type": "render",
+      "frame": 87
+    },
+    {
+      "type": "buffer",
+      "args": [
+        844,
+        390,
+        0.602
+      ],
+      "frame": 88
+    },
+    {
+      "type": "render",
+      "frame": 88
+    },
+    {
+      "type": "render",
+      "frame": 89
+    },
+    {
+      "type": "render",
+      "frame": 90
+    },
+    {
+      "type": "render",
+      "frame": 91
+    },
+    {
+      "type": "render",
+      "frame": 92
+    },
+    {
+      "type": "render",
+      "frame": 93
+    },
+    {
+      "type": "render",
+      "frame": 94
+    },
+    {
+      "type": "render",
+      "frame": 95
+    },
+    {
+      "type": "render",
+      "frame": 96
+    },
+    {
+      "type": "render",
+      "frame": 97
+    },
+    {
+      "type": "render",
+      "frame": 98
+    },
+    {
+      "type": "render",
+      "frame": 99
+    },
+    {
+      "type": "buffer",
+      "args": [
+        844,
+        390,
+        0.576
+      ],
+      "frame": 100
+    },
+    {
+      "type": "render",
+      "frame": 100
+    },
+    {
+      "type": "render",
+      "frame": 101
+    },
+    {
+      "type": "render",
+      "frame": 102
+    },
+    {
+      "type": "render",
+      "frame": 103
+    },
+    {
+      "type": "render",
+      "frame": 104
+    },
+    {
+      "type": "render",
+      "frame": 105
+    },
+    {
+      "type": "render",
+      "frame": 106
+    },
+    {
+      "type": "render",
+      "frame": 107
+    },
+    {
+      "type": "render",
+      "frame": 108
+    },
+    {
+      "type": "render",
+      "frame": 109
+    }
+  ],
+  "flightPixels": [
+    {
+      "w": 486,
+      "h": 224,
+      "min": 16,
+      "max": 711,
+      "mean": 552.1180279982364,
+      "hash": 2329873593,
+      "calls": 285,
+      "triangles": 626959
+    },
+    {
+      "w": 486,
+      "h": 224,
+      "min": 6,
+      "max": 711,
+      "mean": 557.643812463257,
+      "hash": 2622518066,
+      "calls": 284,
+      "triangles": 626929
+    },
+    {
+      "w": 486,
+      "h": 224,
+      "min": 24,
+      "max": 711,
+      "mean": 556.5604607583774,
+      "hash": 2446535034,
+      "calls": 284,
+      "triangles": 626929
+    }
+  ],
+  "passed": true,
+  "limits": [
+    "Chromium with software WebGL and capped rendering during functional simulation. Distant aircraft placement and accelerated cable clock are inspection setup; boarding, power control, seats, ride controllers and captured frames are native. No physical Android testing."
+  ]
+}
