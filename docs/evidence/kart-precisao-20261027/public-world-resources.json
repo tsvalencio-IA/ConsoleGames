@@ -1,0 +1,308 @@
+{
+  "passed": true,
+  "build": "705.27.1-mundo-familia",
+  "revision": "bdeccca31a011319",
+  "resources": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "9a05e2d6410e5c81ad2691d8017a5b73e1b37648943686ff9c2fb99b20204bd5"
+    },
+    {
+      "path": "game-audio.js",
+      "status": 200,
+      "sha256": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413"
+    },
+    {
+      "path": "console-world.js",
+      "status": 200,
+      "sha256": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553"
+    },
+    {
+      "path": "console-world.css",
+      "status": 200,
+      "sha256": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d"
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "sha256": "4894138d640720f608bfd678954b3287a07c6632daa40e7dbe2ab5befacf6c51"
+    },
+    {
+      "path": "assets/vendor/three-r128.min.js",
+      "status": 200,
+      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+    },
+    {
+      "path": "assets/js/core/runtime-config.js",
+      "status": 200,
+      "sha256": "2636cee0a36bca26ff1991212b6d5307b2811b28dd709ecdd5d23989e2c7a39e"
+    },
+    {
+      "path": "assets/js/core/safe-pointer.js",
+      "status": 200,
+      "sha256": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4"
+    },
+    {
+      "path": "assets/js/core/viewport-manager.js",
+      "status": 200,
+      "sha256": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1"
+    },
+    {
+      "path": "assets/js/save-db.js",
+      "status": 200,
+      "sha256": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d"
+    },
+    {
+      "path": "firebase-config.js",
+      "status": 200,
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+    },
+    {
+      "path": "assets/js/game-account.js",
+      "status": 200,
+      "sha256": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09"
+    },
+    {
+      "path": "assets/js/multiplayer-rtdb.js",
+      "status": 200,
+      "sha256": "4f63035c0787a7dc0ab7c34eff70d0355bfaf1c17fc3fa6654cc7371dc27cd47"
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "sha256": "2d997df52e493ba8f61a5b035a2876d8022ec7fa5dd61680fcbff290b79cbc1f"
+    },
+    {
+      "path": "family-mascots.js",
+      "status": 200,
+      "sha256": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9"
+    },
+    {
+      "path": "assets/ot-games-airframes.json",
+      "status": 200,
+      "sha256": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6"
+    },
+    {
+      "path": "assets/vendor/GLTFLoader-r128.js",
+      "status": 200,
+      "sha256": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+    },
+    {
+      "path": "assets/vendor/DRACOLoader-r128.js",
+      "status": 200,
+      "sha256": "bbd4a1bb08f05d9c8df1b411644a1fc31a32fdcd36489e5bcdfe6c4fa2b8e4e9"
+    },
+    {
+      "path": "assets/vendor/draco/draco_wasm_wrapper.js",
+      "status": 200,
+      "sha256": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846"
+    },
+    {
+      "path": "assets/vendor/draco/draco_decoder.wasm",
+      "status": 200,
+      "sha256": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e"
+    },
+    {
+      "path": "assets/world/vehicles/ferrari-458.glb",
+      "status": 200,
+      "sha256": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e"
+    },
+    {
+      "path": "assets/vehicles-credits.html",
+      "status": 200,
+      "sha256": "5be05f32d2fb989a67c6c51aa624a660dfb7eacdbd671f7f44a2f141dc32e75f"
+    },
+    {
+      "path": "assets/world/vehicles/ot-racer.glb",
+      "status": 200,
+      "sha256": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b"
+    },
+    {
+      "path": "assets/world/vehicles/ot-coupe.glb",
+      "status": 200,
+      "sha256": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862"
+    },
+    {
+      "path": "assets/js/controls/world-hand-controls.js",
+      "status": 200,
+      "sha256": "2bf948c5220aee8ce8c0b5dc2f9d6d4f8935754d8717e129d026a4329a3bcfcf"
+    },
+    {
+      "path": "assets/js/controls/world-body-controls.js",
+      "status": 200,
+      "sha256": "e3e69786bd4260ce91f00e6738c373c3796f2573efa1987c5697daadc07130bd"
+    },
+    {
+      "path": "assets/js/world-venue-bridge.js",
+      "status": 200,
+      "sha256": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c"
+    },
+    {
+      "path": "assets/js/world-venue-trip.js",
+      "status": 200,
+      "sha256": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7"
+    },
+    {
+      "path": "assets/js/ui/shared-modal.js",
+      "status": 200,
+      "sha256": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a"
+    },
+    {
+      "path": "assets/js/ui/account-access.js",
+      "status": 200,
+      "sha256": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff"
+    },
+    {
+      "path": "assets/js/core/performance-guardian.js",
+      "status": 200,
+      "sha256": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f"
+    },
+    {
+      "path": "assets/js/multiplayer/room-manager.js",
+      "status": 200,
+      "sha256": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4"
+    },
+    {
+      "path": "assets/js/education/adaptive-learning.js",
+      "status": 200,
+      "sha256": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701"
+    },
+    {
+      "path": "assets/js/safety/child-safety.js",
+      "status": 200,
+      "sha256": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "status": 200,
+      "sha256": "f6260ea34db8a1b04837e145830a64f79356e25897d4db9b1dcdfbfe9122a075"
+    },
+    {
+      "path": "404.html",
+      "status": 200,
+      "sha256": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8"
+    },
+    {
+      "path": "assets/js/controls/dance-pose-controller.js",
+      "status": 200,
+      "sha256": "2763591b28f1b1b4956018dda8131ac68b7ec63ecb0504c87bb1cd43606bfd6d"
+    },
+    {
+      "path": "assets/js/controls/dance-pose-worker.js",
+      "status": 200,
+      "sha256": "432b66e7f15cbf78bbf5361796e681b8c3cb6b2da75c6a2ca54ff6b1ae854898"
+    },
+    {
+      "path": "assets/js/controls/dance-stage.js",
+      "status": 200,
+      "sha256": "2ca096e4354c8d0a3f065f6756eedb9b9d48d1f57b2001b81ae4f33af1764f35"
+    },
+    {
+      "path": "assets/js/controls/dance-music.js",
+      "status": 200,
+      "sha256": "05f15d44f3a3c141097849b187ea1aa49b6e7638a72f3774361a9f0d9b80808a"
+    },
+    {
+      "path": "assets/pose/vision_bundle.mjs",
+      "status": 200,
+      "sha256": "40f4123dfcd75cfa58add046919cc6f52fde66f009ff582997c09ba54c6ba27c"
+    },
+    {
+      "path": "assets/pose/vision_wasm_internal.js",
+      "status": 200,
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "path": "assets/pose/vision_wasm_internal.wasm",
+      "status": 200,
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "path": "assets/pose/vision_wasm_nosimd_internal.js",
+      "status": 200,
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "path": "assets/pose/vision_wasm_nosimd_internal.wasm",
+      "status": 200,
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    },
+    {
+      "path": "assets/pose/pose_landmarker_lite.task",
+      "status": 200,
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+    },
+    {
+      "path": "assets/pose/sources.json",
+      "status": 200,
+      "sha256": "fa9be8c1638684f69827db69dbee836dc4058efd3ae72a96127600acea198d30"
+    },
+    {
+      "path": "assets/pose/LICENSE",
+      "status": 200,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "VERSION.json",
+      "status": 200,
+      "sha256": "2bd95faa4e01c1c6d5eb27c54037c2db1ae91fc795e106537ba2067f644b8f46"
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "d1e14b4e12720412c8a1bc8cef730222d64082c9f07dd27b452be69e79454b7c"
+    },
+    {
+      "path": "assets/js/world/civil-mission-core.js",
+      "status": 200,
+      "sha256": "cd11be9f39ee2c623ae221c07fd1ab7c301ee45a9c8282a5ad91f16ccd7aca51"
+    },
+    {
+      "path": "assets/js/vehicles/engine-sound.js",
+      "status": 200,
+      "sha256": "9de931c3e6b6aa3d5c1512a4b7067f718090f821f18d4b2c91b0804d025bfcac"
+    },
+    {
+      "path": "../ar/hand-controls.js",
+      "status": 200,
+      "sha256": "5167b78eaf5826c10c29dd503b355f1a1add0c8626a46b990698c15f0792a7bf"
+    },
+    {
+      "path": "../ar/hand-tracker-worker.js",
+      "status": 200,
+      "sha256": "01142f7fb63a927ebb183701186ba5be8468bcc8dc62bb51d54ff70946b1aa37"
+    },
+    {
+      "path": "../ar/body-controls.js",
+      "status": 200,
+      "sha256": "2de29d8c2001b9ffc98ab392bf1d6b6985aa9ad1168376ed54141b979bc6a097"
+    },
+    {
+      "path": "../ar/body-tracker-worker.js",
+      "status": 200,
+      "sha256": "ac2a1bed436a688d0c9fd9cd2c6c5f58fccd411c7de8a5c6b0aaf0807f45978b"
+    },
+    {
+      "path": "../ar/object-tracker.js",
+      "status": 200,
+      "sha256": "a5e1cf09e1cf8dc32b68cc61f74919ab25c949b894c6a80de5bc5f9128a46ec1"
+    },
+    {
+      "path": "../ar/object-tracker-worker.js",
+      "status": 200,
+      "sha256": "44eff39549d061d3a2f71bb3595d01ae9723a5aef4ec2603cf59eeed7b9700aa"
+    },
+    {
+      "path": "../ar/combat-controls.css",
+      "status": 200,
+      "sha256": "7cf24172406ebb61876fd78cfd9edfbce1c40936745674d34b3e9ed70d5b8a9b"
+    }
+  ],
+  "apk": {
+    "status": 200,
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "checkedAt": "2026-10-27T16:00:21.127Z"
+}

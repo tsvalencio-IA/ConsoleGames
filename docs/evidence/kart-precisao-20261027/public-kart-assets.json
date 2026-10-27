@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/kart/",
+  "sourceSha": "24bb4805f588fa2fedd8cde8bd93839b9f0ec211",
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "2c53077dd1df9f9c5dd59b93f955c9741e9ce3fcb6b097ebcd9c7a4f23b5ca1d"
+    },
+    {
+      "path": "js/game_kart.js",
+      "status": 200,
+      "sha256": "b94dd560a56eafc00cdcd406ce533455ff15670b70689df3ff7a891c08746419"
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "83bf211fc3b92afefbee6f452f65b43cb1c9cef626a810b7c2fed8072012da26"
+    },
+    {
+      "path": "control-modes.js",
+      "status": 200,
+      "sha256": "94ac25a08d0de24b10c6549a0ce5fd15e9a6f3d115dabb8e1c8e17b8d44ba55c"
+    },
+    {
+      "path": "mastery-gamepad.js",
+      "status": 200,
+      "sha256": "03fa4e52100b70da25af04fae24c0bdbb38d9692a8aa1e78c797bcff4a63b2c7"
+    },
+    {
+      "path": "play-settings.js",
+      "status": 200,
+      "sha256": "3288f1cc592681b89087bd022a5d2558a42b4cdda7262641857f0ab031cb5fb2"
+    }
+  ],
+  "checkedAt": "2026-10-27T15:59:13.554Z"
+}
