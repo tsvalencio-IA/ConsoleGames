@@ -1,0 +1,309 @@
+{
+  "passed": true,
+  "completed": {
+    "v": 1,
+    "revision": 31,
+    "records": {
+      "coop-e545fd9b-9930-403c-86f5-64a25f01e967": {
+        "id": "coop-e545fd9b-9930-403c-86f5-64a25f01e967",
+        "type": "beach",
+        "mode": "coop",
+        "difficulty": "easy",
+        "host": "civil-a",
+        "status": "completed",
+        "phase": 3,
+        "members": {
+          "civil-a": {
+            "ready": true,
+            "joinedAt": 1793114023395
+          },
+          "civil-b": {
+            "ready": true,
+            "joinedAt": 1793114023395
+          }
+        },
+        "counts": {
+          "0:civil-a": 1,
+          "0:civil-b": 1,
+          "1:civil-a": 2,
+          "1:civil-b": 2,
+          "2:civil-a": 1,
+          "2:civil-b": 1
+        },
+        "tokens": {
+          "0:civil-a:beach-desk": {
+            "uid": "civil-a",
+            "at": 1793114024361.6714
+          },
+          "0:civil-b:beach-desk": {
+            "uid": "civil-b",
+            "at": 1793114025411.6765
+          },
+          "1:team:beach-litter-0": {
+            "uid": "civil-a",
+            "at": 1793114026511.682
+          },
+          "1:team:beach-litter-1": {
+            "uid": "civil-a",
+            "at": 1793114027611.6873
+          },
+          "1:team:beach-litter-2": {
+            "uid": "civil-b",
+            "at": 1793114028678.3591
+          },
+          "1:team:beach-litter-3": {
+            "uid": "civil-b",
+            "at": 1793114029711.6975
+          },
+          "2:civil-a:beach-recycle": {
+            "uid": "civil-a",
+            "at": 1793114030811.703
+          },
+          "2:civil-b:beach-recycle": {
+            "uid": "civil-b",
+            "at": 1793114031811.7078
+          }
+        },
+        "pending": {},
+        "rides": {},
+        "createdAt": 1793114023395,
+        "updatedAt": 1793114031811.7078,
+        "completedAt": 1793114031811.7078
+      }
+    },
+    "transit": {
+      "clients": {}
+    },
+    "results": {
+      "civil-b-1793114029283-1": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114023395
+      },
+      "civil-b-1793114033382-2": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114023395
+      },
+      "civil-b-1793114049381.6714-3": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114024361.6714
+      },
+      "civil-b-1793114054540.6714-4": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114025411.6765
+      },
+      "civil-b-1793114094432.6821-5": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114027611.6873
+      },
+      "civil-b-1793114096787.3489-6": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114028678.3591
+      },
+      "civil-b-1793114101913.3489-7": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114028678.3591
+      },
+      "civil-b-1793114103777.6821-8": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114029711.6975
+      },
+      "civil-b-1793114123570.6875-9": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114030811.703
+      },
+      "civil-b-1793114124952.6875-10": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114031811.7078
+      }
+    }
+  },
+  "transit": {
+    "civil-a": {
+      "uid": "civil-a",
+      "cabin": 0,
+      "from": "base",
+      "to": "top",
+      "startSeat": 0,
+      "count": 4,
+      "at": 1793114065000,
+      "questId": "coop-e545fd9b-9930-403c-86f5-64a25f01e967"
+    },
+    "civil-b": {
+      "uid": "civil-b",
+      "cabin": 0,
+      "from": "base",
+      "to": "top",
+      "startSeat": 4,
+      "count": 4,
+      "at": 1793114065000,
+      "questId": "solo-fb7495af-149c-48c0-bad2-8002cd8da7d4"
+    }
+  },
+  "handoff": {
+    "v": 1,
+    "revision": 34,
+    "records": {
+      "coop-e545fd9b-9930-403c-86f5-64a25f01e967": {
+        "id": "coop-e545fd9b-9930-403c-86f5-64a25f01e967",
+        "type": "beach",
+        "mode": "coop",
+        "difficulty": "easy",
+        "host": "civil-a",
+        "status": "completed",
+        "phase": 3,
+        "members": {
+          "civil-a": {
+            "ready": true,
+            "joinedAt": 1793114023395
+          },
+          "civil-b": {
+            "ready": true,
+            "joinedAt": 1793114023395
+          }
+        },
+        "counts": {
+          "0:civil-a": 1,
+          "0:civil-b": 1,
+          "1:civil-a": 2,
+          "1:civil-b": 2,
+          "2:civil-a": 1,
+          "2:civil-b": 1
+        },
+        "tokens": {
+          "0:civil-a:beach-desk": {
+            "uid": "civil-a",
+            "at": 1793114024361.6714
+          },
+          "0:civil-b:beach-desk": {
+            "uid": "civil-b",
+            "at": 1793114025411.6765
+          },
+          "1:team:beach-litter-0": {
+            "uid": "civil-a",
+            "at": 1793114026511.682
+          },
+          "1:team:beach-litter-1": {
+            "uid": "civil-a",
+            "at": 1793114027611.6873
+          },
+          "1:team:beach-litter-2": {
+            "uid": "civil-b",
+            "at": 1793114028678.3591
+          },
+          "1:team:beach-litter-3": {
+            "uid": "civil-b",
+            "at": 1793114029711.6975
+          },
+          "2:civil-a:beach-recycle": {
+            "uid": "civil-a",
+            "at": 1793114030811.703
+          },
+          "2:civil-b:beach-recycle": {
+            "uid": "civil-b",
+            "at": 1793114031811.7078
+          }
+        },
+        "pending": {},
+        "rides": {},
+        "createdAt": 1793114023395,
+        "updatedAt": 1793114031811.7078,
+        "completedAt": 1793114031811.7078
+      }
+    },
+    "transit": {
+      "clients": {
+        "civil-a": {
+          "uid": "civil-a",
+          "cabin": 0,
+          "from": "base",
+          "to": "top",
+          "startSeat": 0,
+          "count": 4,
+          "at": 1793114065000,
+          "questId": "coop-e545fd9b-9930-403c-86f5-64a25f01e967"
+        },
+        "civil-b": {
+          "uid": "civil-b",
+          "cabin": 0,
+          "from": "base",
+          "to": "top",
+          "startSeat": 4,
+          "count": 4,
+          "at": 1793114065000,
+          "questId": "solo-fb7495af-149c-48c0-bad2-8002cd8da7d4"
+        }
+      }
+    },
+    "results": {
+      "civil-b-1793114029283-1": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114023395
+      },
+      "civil-b-1793114033382-2": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114023395
+      },
+      "civil-b-1793114049381.6714-3": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114024361.6714
+      },
+      "civil-b-1793114054540.6714-4": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114025411.6765
+      },
+      "civil-b-1793114094432.6821-5": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114027611.6873
+      },
+      "civil-b-1793114096787.3489-6": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114028678.3591
+      },
+      "civil-b-1793114101913.3489-7": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114028678.3591
+      },
+      "civil-b-1793114103777.6821-8": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114029711.6975
+      },
+      "civil-b-1793114123570.6875-9": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114030811.703
+      },
+      "civil-b-1793114124952.6875-10": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114031811.7078
+      },
+      "civil-b-1793114177530.9705-11": {
+        "uid": "civil-b",
+        "ok": true,
+        "at": 1793114065000
+      }
+    }
+  },
+  "errors": [],
+  "limits": [
+    "Two native Chromium clients over a local relay; no live Firebase permissions or physical mobile networking."
+  ]
+}

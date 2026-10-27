@@ -1,3 +1,5 @@
+> Registro de checkpoints intermediários. O resultado atual está em VALIDACAO.md.
+
 # Revisão civil — trabalho em andamento
 
 Pedido de Thiago: melhorar motores, NPCs em todas as regiões, estradas, gráficos e Palio; retirar operação militar e missões antigas; manter e melhorar polícia/bombeiros; retirar atividades digitais da oficina, colocar dois elevadores; novas casas, balões e teleférico; missões individuais e cooperativas coerentes.
