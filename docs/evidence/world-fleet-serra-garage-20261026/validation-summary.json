@@ -1,0 +1,36 @@
+{
+  "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+  "build": "705.26.5-frota-serra-garagem",
+  "revision": "f786b7c40346846b",
+  "unitTests": {
+    "passed": 258,
+    "failed": 0
+  },
+  "originalGames": {
+    "completed": 7,
+    "expected": 7,
+    "failures": []
+  },
+  "originalFamily": {
+    "passed": true,
+    "report": "family-world-report.json"
+  },
+  "airFleetTwoClients": {
+    "passed": true,
+    "report": "air-fleet-multiplayer.json",
+    "transport": "isolated local native event relay"
+  },
+  "publicValidation": {
+    "passed": true,
+    "report": "public-validation.json"
+  },
+  "deployment": {
+    "id": "dpl_GNEb3ryZj2rFfAZHPSuWuozxVDEy",
+    "state": "READY",
+    "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+    "canonical": "https://otthi-world-campanha-teste.vercel.app/games/otthi/"
+  },
+  "limits": [
+    "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
+  ]
+}

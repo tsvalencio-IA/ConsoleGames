@@ -1,0 +1,47 @@
+{
+  "actors": [
+    {
+      "id": "thiago",
+      "x": -39,
+      "z": -18.8,
+      "bones": 24,
+      "vertices": 164562,
+      "uniqueVertices": 31956,
+      "drawCalls": 1
+    },
+    {
+      "id": "thamis",
+      "x": -37,
+      "z": -18.7,
+      "bones": 25,
+      "vertices": 226968,
+      "uniqueVertices": 43480,
+      "drawCalls": 1
+    },
+    {
+      "id": "luna",
+      "x": -39.6,
+      "z": -17.3,
+      "bones": 13,
+      "vertices": 205176,
+      "uniqueVertices": 46812,
+      "drawCalls": 1
+    },
+    {
+      "id": "liz",
+      "x": -36.6,
+      "z": -17.2,
+      "bones": 13,
+      "vertices": 209400,
+      "uniqueVertices": 47082,
+      "drawCalls": 1
+    }
+  ],
+  "progress": 1,
+  "layout": {
+    "width": 844,
+    "viewport": 844,
+    "drawCalls": 556
+  },
+  "errors": []
+}

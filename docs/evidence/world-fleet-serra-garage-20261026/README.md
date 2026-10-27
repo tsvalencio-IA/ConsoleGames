@@ -41,4 +41,12 @@ O CI inclui o novo percurso de frota/garagem/serra e preserva os trabalhos anter
 - Os veículos procedurais permanecem estilizados; esta entrega não significa fidelidade fotográfica de todos os modelos brasileiros.
 - A música de dança é original. Não são gravações licenciadas do FitDance.
 - O APK continua sendo o invólucro Android assinado já existente, que abre o jogo atualizado; não foi apresentado como um novo binário nativo.
-- O teste público de integridade/PWA/APK deve ser executado depois da publicação e registrado separadamente, associado ao SHA exato do código publicado.
+- O relatório `public-validation.json` registra o teste público pós-publicação, associado ao SHA exato `228b9e98e988e90ddea88a30206ebf117d3b4337` e à revisão `f786b7c40346846b`. Passaram os 73 arquivos protegidos e oito arquivos de WAR, embarques, cinco rotas GPS, neve, compra nativa, família/Fusca, ondas, os modelos reais de corpo/mão em CPU, controle pelo service worker, instalabilidade e os bytes/SHA-256 do APK existente.
+
+## Publicação verificada em 27/10/2026 UTC
+
+- Produção: https://otthi-world-campanha-teste.vercel.app/games/otthi/
+- Instalação: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
+- Deployment `dpl_GNEb3ryZj2rFfAZHPSuWuozxVDEy`, estado `READY`, origem fixada no commit acima.
+- `family-world-report.json` confirma também a seleção jogável Thiago/Thamis, grupos completos/individuais/subconjuntos, recarga do progresso, presença recebida, brinquedo e retorno dos cães, condução e o HQ original, sem erros de página.
+- `validation-summary.json` reúne as referências de execução; os relatórios preservam as limitações de câmera física e rede móvel real.

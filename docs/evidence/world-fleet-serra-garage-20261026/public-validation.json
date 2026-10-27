@@ -1,0 +1,613 @@
+{
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "source": "228b9e98e988e90ddea88a30206ebf117d3b4337",
+  "limits": [
+    "Published Chromium mobile emulation and official static images. No physical Android/camera, speakers or live two-device multiplayer certification. APK checks refer to the existing Android wrapper."
+  ],
+  "build": "705.26.5-frota-serra-garagem",
+  "revision": "f786b7c40346846b",
+  "protectedFiles": 73,
+  "warAssets": 8,
+  "roads": {
+    "passed": true,
+    "samples": 5754,
+    "failures": []
+  },
+  "layout": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 22,
+    "highways": 16,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "nativePurchase": {
+    "purchases": 1,
+    "displayedPrice": 14
+  },
+  "animatedSea": true,
+  "familyAndFuscaPreserved": true,
+  "destinations": {
+    "ready": true,
+    "locations": [
+      {
+        "id": "marina-costa",
+        "name": "Marina · embarque nas lanchas",
+        "label": "Marina · embarque nas lanchas",
+        "icon": "🚤",
+        "group": "Praias e navegação",
+        "x": -220,
+        "z": 502,
+        "navX": -220,
+        "navZ": 502,
+        "description": "Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.",
+        "actions": [
+          "Seguir até a marina",
+          "Embarcar pelo botão AÇÃO",
+          "Pilotar, retornar e estacionar"
+        ]
+      },
+      {
+        "id": "snow-lookout",
+        "name": "Neve · mirante e chalés",
+        "label": "Neve · mirante e chalés",
+        "icon": "❄️",
+        "group": "Natureza",
+        "x": 20,
+        "z": 180,
+        "navX": 20,
+        "navZ": 180,
+        "description": "Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.",
+        "actions": [
+          "Seguir o GPS pela Ligação Norte",
+          "Chegar ao mirante"
+        ]
+      },
+      {
+        "id": "marina-sea-azul",
+        "name": "Lancha Azul · esportiva",
+        "label": "Lancha Azul · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227,
+        "z": 528,
+        "navX": -220,
+        "navZ": 528,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-familia",
+        "name": "Lancha Família · passeio",
+        "label": "Lancha Família · passeio",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -227,
+        "z": 542,
+        "navX": -220,
+        "navZ": 542,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "marina-sea-coral",
+        "name": "Lancha Coral · esportiva",
+        "label": "Lancha Coral · esportiva",
+        "icon": "🚤",
+        "group": "Embarcações",
+        "x": -213,
+        "z": 535,
+        "navX": -220,
+        "navZ": 535,
+        "description": "Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.",
+        "actions": [
+          "Caminhar pelo píer",
+          "Toque em AÇÃO ao lado da lancha"
+        ]
+      },
+      {
+        "id": "airport-terminal",
+        "name": "Aeroporto OT · terminal de embarque",
+        "label": "Aeroporto OT",
+        "x": 90,
+        "z": -175,
+        "navX": 90,
+        "navZ": -175,
+        "icon": "✈️",
+        "group": "Aeroporto",
+        "description": "Terminal com aviões e vários helicópteros. Chegue pelo acesso da Base Aérea, escolha o embarque e caminhe até a aeronave.",
+        "actions": [
+          "Abrir painel do terminal",
+          "Localizar aeronave",
+          "Embarcar pelo botão AÇÃO"
+        ]
+      },
+      {
+        "id": "mountain-balloon",
+        "name": "Balão · montanhas e trilhas",
+        "label": "Balão nas montanhas",
+        "x": -66,
+        "z": 89,
+        "navX": -62,
+        "navZ": 89,
+        "icon": "🎈",
+        "group": "Natureza",
+        "description": "Balão pilotável com cesta para a família. Controle o aquecimento para subir ou descer e use o manche para deslocamento suave. Pouse em terreno livre para desembarcar.",
+        "actions": [
+          "Seguir até o ponto de embarque",
+          "Ação junto à cesta",
+          "Subir, explorar, pousar e sair"
+        ]
+      },
+      {
+        "id": "campaign-heli-tour",
+        "name": "Helicóptero de passeio",
+        "label": "Helicóptero de passeio",
+        "x": 75,
+        "z": -164,
+        "navX": 75,
+        "navZ": -160,
+        "icon": "🚁",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "campaign-heli-ottovias",
+        "name": "Helicóptero OTTOVIAS",
+        "label": "Helicóptero OTTOVIAS",
+        "x": 96,
+        "z": -164,
+        "navX": 96,
+        "navZ": -160,
+        "icon": "🚁",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "campaign-heli-rescue",
+        "name": "Helicóptero de resgate",
+        "label": "Helicóptero de resgate",
+        "x": 117,
+        "z": -164,
+        "navX": 117,
+        "navZ": -160,
+        "icon": "🚁",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "campaign-plane-tour",
+        "name": "Avião de passeio",
+        "label": "Avião de passeio",
+        "x": 80,
+        "z": -216,
+        "navX": 80,
+        "navZ": -212,
+        "icon": "✈️",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "campaign-plane-cargo",
+        "name": "Avião de carga",
+        "label": "Avião de carga",
+        "x": 120,
+        "z": -216,
+        "navX": 120,
+        "navZ": -212,
+        "icon": "✈️",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "campaign-plane-ottovias",
+        "name": "Avião OTTOVIAS",
+        "label": "Avião OTTOVIAS",
+        "x": 143,
+        "z": -216,
+        "navX": 143,
+        "navZ": -212,
+        "icon": "✈️",
+        "group": "Aeronaves",
+        "description": "Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.",
+        "actions": [
+          "Localizar embarque",
+          "Pilotar e pousar",
+          "Sair e embarcar novamente"
+        ]
+      },
+      {
+        "id": "snow-trail-0",
+        "name": "Entrada dos Picos Nevados",
+        "x": 0,
+        "z": 260,
+        "label": "Entrada dos Picos Nevados",
+        "icon": "❄️",
+        "group": "Cordilheira e neve",
+        "navX": 0,
+        "navZ": 260,
+        "description": "Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.",
+        "actions": [
+          "Seguir pela estrada dos Picos Nevados",
+          "Visitar o mirante",
+          "Concluir a trilha por etapas"
+        ]
+      },
+      {
+        "id": "snow-trail-1",
+        "name": "Passo da Neve",
+        "x": 50,
+        "z": 330,
+        "label": "Passo da Neve",
+        "icon": "❄️",
+        "group": "Cordilheira e neve",
+        "navX": 50,
+        "navZ": 330,
+        "description": "Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.",
+        "actions": [
+          "Seguir pela estrada dos Picos Nevados",
+          "Visitar o mirante",
+          "Concluir a trilha por etapas"
+        ]
+      },
+      {
+        "id": "snow-trail-2",
+        "name": "Mirante da Cordilheira",
+        "x": 10,
+        "z": 410,
+        "label": "Mirante da Cordilheira",
+        "icon": "❄️",
+        "group": "Cordilheira e neve",
+        "navX": 10,
+        "navZ": 410,
+        "description": "Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.",
+        "actions": [
+          "Seguir pela estrada dos Picos Nevados",
+          "Visitar o mirante",
+          "Concluir a trilha por etapas"
+        ]
+      },
+      {
+        "id": "snow-trail-3",
+        "name": "Refúgio Oeste",
+        "x": -110,
+        "z": 410,
+        "label": "Refúgio Oeste",
+        "icon": "❄️",
+        "group": "Cordilheira e neve",
+        "navX": -110,
+        "navZ": 410,
+        "description": "Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.",
+        "actions": [
+          "Seguir pela estrada dos Picos Nevados",
+          "Visitar o mirante",
+          "Concluir a trilha por etapas"
+        ]
+      },
+      {
+        "id": "snow-trail-4",
+        "name": "Retorno aos chalés",
+        "x": 20,
+        "z": 180,
+        "label": "Retorno aos chalés",
+        "icon": "❄️",
+        "group": "Cordilheira e neve",
+        "navX": 20,
+        "navZ": 180,
+        "description": "Passo de montanha da trilha dos Picos Nevados. Estradas conectadas à Ligação Norte, neve, mirantes e moradores.",
+        "actions": [
+          "Seguir pela estrada dos Picos Nevados",
+          "Visitar o mirante",
+          "Concluir a trilha por etapas"
+        ]
+      },
+      {
+        "id": "forest-great",
+        "name": "Mata Grande · estrada e montanhas",
+        "label": "Mata Grande",
+        "icon": "🌲",
+        "group": "Natureza",
+        "x": -630,
+        "z": 170,
+        "navX": -550,
+        "navZ": 100,
+        "description": "Mata ampliada, colinas e uma estrada conectada à Costa Verde e à Rodovia dos Horizontes."
+      }
+    ],
+    "aircraft": [
+      {
+        "mode": "plane",
+        "id": "plane",
+        "label": "Embarque no avião",
+        "x": -5,
+        "z": -165,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "height": 1.3,
+        "groundY": 0,
+        "baseId": "plane",
+        "base": "plane",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "helicopter",
+        "id": "helicopter",
+        "label": "Embarque no helicóptero",
+        "x": 50,
+        "z": -165,
+        "yaw": 0,
+        "radius": 6,
+        "height": 1.6,
+        "groundY": 0,
+        "baseId": "helicopter",
+        "base": "helicopter",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "helicopter",
+        "id": "heli-tour",
+        "model": "helicopter",
+        "livery": "tour",
+        "label": "Helicóptero de passeio",
+        "x": 75,
+        "z": -164,
+        "yaw": 0,
+        "radius": 6,
+        "height": 1,
+        "groundY": 0,
+        "baseId": "heli-tour",
+        "base": "heli-tour",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "helicopter",
+        "id": "heli-ottovias",
+        "model": "helicopter",
+        "livery": "ottovias",
+        "label": "Helicóptero OTTOVIAS",
+        "x": 96,
+        "z": -164,
+        "yaw": 0,
+        "radius": 6,
+        "height": 1,
+        "groundY": 0,
+        "baseId": "heli-ottovias",
+        "base": "heli-ottovias",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "helicopter",
+        "id": "heli-rescue",
+        "model": "helicopter",
+        "livery": "rescue",
+        "label": "Helicóptero de resgate",
+        "x": 117,
+        "z": -164,
+        "yaw": 0,
+        "radius": 6,
+        "height": 1,
+        "groundY": 0,
+        "baseId": "heli-rescue",
+        "base": "heli-rescue",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "plane",
+        "id": "plane-tour",
+        "model": "light",
+        "livery": "tour",
+        "label": "Avião de passeio",
+        "x": 80,
+        "z": -216,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "height": 0.92,
+        "groundY": 0,
+        "baseId": "plane-tour",
+        "base": "plane-tour",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "plane",
+        "id": "plane-cargo",
+        "model": "cargo",
+        "livery": "cargo",
+        "label": "Avião de carga",
+        "x": 120,
+        "z": -216,
+        "yaw": 1.5707963267948966,
+        "radius": 7,
+        "height": 1.6,
+        "groundY": 0,
+        "baseId": "plane-cargo",
+        "base": "plane-cargo",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "plane",
+        "id": "plane-ottovias",
+        "model": "light",
+        "livery": "ottovias",
+        "label": "Avião OTTOVIAS",
+        "x": 143,
+        "z": -216,
+        "yaw": 1.5707963267948966,
+        "radius": 6,
+        "height": 0.92,
+        "groundY": 0,
+        "baseId": "plane-ottovias",
+        "base": "plane-ottovias",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      },
+      {
+        "mode": "balloon",
+        "id": "balloon",
+        "model": "balloon",
+        "label": "Balão das montanhas",
+        "x": -66,
+        "z": 89,
+        "yaw": 3.141592653589793,
+        "radius": 5,
+        "height": 1.05,
+        "groundY": 0.5,
+        "baseId": "balloon",
+        "base": "balloon",
+        "status": "parked",
+        "parkedAt": 1793059585562,
+        "pilot": "",
+        "departedAt": 0
+      }
+    ],
+    "marina": {
+      "minX": -224,
+      "maxX": -216,
+      "minZ": 506,
+      "maxZ": 549,
+      "exitX": -220,
+      "touchDistance": 5.8
+    },
+    "snow": {
+      "groundVisible": true,
+      "falling": false
+    },
+    "boats": [
+      {
+        "id": "lake-boat",
+        "label": "Barco de pesca",
+        "seaGoing": false,
+        "x": -70,
+        "z": 54,
+        "heading": 0,
+        "maxSpeed": 8.8,
+        "visible": true
+      },
+      {
+        "id": "sea-azul",
+        "label": "Lancha Azul · esportiva",
+        "seaGoing": true,
+        "x": -227,
+        "z": 528,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 22,
+        "visible": true
+      },
+      {
+        "id": "sea-familia",
+        "label": "Lancha Família · passeio",
+        "seaGoing": true,
+        "x": -227,
+        "z": 542,
+        "heading": -1.5707963267948966,
+        "maxSpeed": 17,
+        "visible": true
+      },
+      {
+        "id": "sea-coral",
+        "label": "Lancha Coral · esportiva",
+        "seaGoing": true,
+        "x": -213,
+        "z": 535,
+        "heading": 1.5707963267948966,
+        "maxSpeed": 20,
+        "visible": true
+      }
+    ],
+    "activeBoat": null
+  },
+  "gps": [
+    "campaign-plane",
+    "campaign-helicopter",
+    "marina-costa",
+    "coast-view",
+    "snow-lookout"
+  ],
+  "boarded": [
+    "plane",
+    "helicopter",
+    "sea-familia"
+  ],
+  "snowfall": true,
+  "warEntry": true,
+  "serviceWorkerControlled": true,
+  "installability": {
+    "installabilityErrors": []
+  },
+  "realWorkers": {
+    "body": {
+      "points": 33,
+      "world": 33,
+      "inferenceMs": 1319.8999999994412
+    },
+    "hand": {
+      "hands": 2,
+      "points": 21,
+      "inferenceMs": 1513.7999999998137
+    }
+  },
+  "apkUrl": "https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk",
+  "existingApk": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "installerStatus": 200,
+  "errors": [],
+  "passed": true
+}
