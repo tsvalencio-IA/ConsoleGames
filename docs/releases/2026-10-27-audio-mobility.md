@@ -27,4 +27,10 @@ A revisão corrige estalos dos motores, acompanhantes que ficavam para trás no 
 
 Os testes usam Chromium, áudio offline nativo e WebGL por software; a simulação funcional limita a renderização e usa posicionamento/relógio de inspeção para reduzir deslocamentos. A câmera do kart usa vídeo e poses sintéticos declarados. Não representam instalação, câmera, alto-falante ou GPU de um Android físico, nem teste de rede móvel com duas pessoas reais.
 
-Os resultados completos ficam em test-results/transport-audio, transport-audio-before, transport-flight, transport-regressions e kart-cups. A verificação pública e do instalador será registrada após a publicação do SHA validado.
+Os resultados completos ficam em test-results/transport-audio, transport-audio-before, transport-flight, transport-regressions e kart-cups. Publicação: `ca77458f1c20f04de1daa5ab0f0786aeb11700bd`, deployment `dpl_9RGaP25fTFA7UZxkomdT44aD2sek`, READY no alias canônico, revisão `46a592e8f31296b5`.
+
+Após publicar, 59 arquivos do manifesto público e 37 verificações adicionais do console/áudio conferem com os bytes locais testados. O instalador completou os downloads por toque/clique em retrato Android, paisagem Android, desktop, sem JavaScript e com service worker ativo; a entrada pelo console abriu a página correta. Todos os APKs tinham 57.991 bytes e SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`.
+
+A evidência pública fica em test-results/civil-public/resources.json, test-results/transport-public/result.json e test-results/android-download/result.json.
+
+O fluxo público também passou sem substituir o código ou limitar o renderizador: abrir o mundo, embarcar com a família, decolar pelo coletivo, abrir e fechar o mapa em voo e retornar ao mundo. Teste com WebGL real por software e save local descartável, sem login ou escrita em contas. Evidência em test-results/transport-public-browser/result.json.

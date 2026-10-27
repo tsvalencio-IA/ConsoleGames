@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/arcade/instalar/",
+  "consoleEntry": true,
+  "results": [
+    {
+      "case": "android-portrait",
+      "gesture": "touch",
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "passed": true
+    },
+    {
+      "case": "android-landscape",
+      "gesture": "touch",
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "passed": true
+    },
+    {
+      "case": "desktop",
+      "gesture": "click",
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "passed": true
+    },
+    {
+      "case": "without-javascript",
+      "gesture": "touch",
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "passed": true
+    },
+    {
+      "case": "current-worker",
+      "gesture": "touch",
+      "bytes": 57991,
+      "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Mobile Chromium emulation; the user phone and its in-app browser were not directly inspected."
+  ]
+}

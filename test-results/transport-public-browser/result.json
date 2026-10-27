@@ -1,0 +1,234 @@
+{
+  "browser": "138.0.7204.0",
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "flight": {
+    "version": "705.27.2-audio-mobilidade",
+    "coherent": true,
+    "flight": {
+      "active": true,
+      "mode": "helicopter",
+      "armed": false,
+      "state": "PLAYING",
+      "elapsed": 1.5999999999999992,
+      "onGround": false,
+      "crouched": false,
+      "canDisembark": false,
+      "landingAssist": false,
+      "flightPhase": "airborne",
+      "aircraftId": "helicopter",
+      "airspeed": 0,
+      "collective": 1,
+      "aiming": false,
+      "looking": false,
+      "handMode": false,
+      "handTracker": null,
+      "handAim": null,
+      "autoWalking": false,
+      "lock": null,
+      "kills": 0,
+      "wave": 0,
+      "goal": 8,
+      "ammo": 30,
+      "body": {
+        "x": 50,
+        "y": 6.112858488028873,
+        "z": -165,
+        "yaw": 0,
+        "pitch": 0,
+        "roll": 0,
+        "vx": 0,
+        "vy": 8.633140164194703,
+        "vz": 0,
+        "hp": 100
+      },
+      "peacePosition": {
+        "x": 54,
+        "y": 0,
+        "z": -165
+      },
+      "covers": 0,
+      "enemies": [],
+      "sameScene": true,
+      "trafficActors": 68,
+      "weapon": false,
+      "infantryVersions": [],
+      "engine": {
+        "profile": "helicopter",
+        "variant": "rotor",
+        "soundVersion": "combustion-20261027-smooth2",
+        "ready": true,
+        "gear": 1,
+        "rpm": 410,
+        "rate": 1.2693535394553108,
+        "speed": 0,
+        "load": 1
+      },
+      "renderCalls": 1725
+    },
+    "family": {
+      "ready": true,
+      "home": {
+        "x": -38,
+        "z": -24
+      },
+      "actors": [
+        {
+          "id": "thiago",
+          "x": 50.23,
+          "z": -164.38,
+          "bones": 24,
+          "vertices": 164562,
+          "uniqueVertices": 31956,
+          "drawCalls": 1
+        },
+        {
+          "id": "thamis",
+          "x": 49.77,
+          "z": -164.38,
+          "bones": 25,
+          "vertices": 226968,
+          "uniqueVertices": 43480,
+          "drawCalls": 1
+        },
+        {
+          "id": "luna",
+          "x": 50.15,
+          "z": -165.35,
+          "bones": 13,
+          "vertices": 205176,
+          "uniqueVertices": 46812,
+          "drawCalls": 1
+        },
+        {
+          "id": "liz",
+          "x": 50.31,
+          "z": -165.35,
+          "bones": 13,
+          "vertices": 209400,
+          "uniqueVertices": 47082,
+          "drawCalls": 1
+        }
+      ],
+      "progress": {
+        "party": {
+          "controller": "thiago",
+          "members": [
+            "thiago",
+            "thamis",
+            "luna",
+            "liz"
+          ]
+        },
+        "toy": "ball",
+        "deliveries": {
+          "luna": 0,
+          "liz": 0
+        },
+        "flags": {}
+      },
+      "party": {
+        "owner": "public-transport-local",
+        "controller": "thiago",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ]
+      },
+      "ride": {
+        "owner": "public-transport-local",
+        "kind": "aircraft",
+        "mode": "helicopter",
+        "id": "helicopter",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ],
+        "controller": "thiago",
+        "hostUid": "public-transport-local"
+      },
+      "seated": [
+        {
+          "id": "thiago",
+          "visible": true,
+          "position": [
+            50.23,
+            5.632858488028873,
+            -164.38
+          ],
+          "scale": 0.1536,
+          "seat": {
+            "x": 0.23,
+            "y": -0.48,
+            "z": 0.62
+          }
+        },
+        {
+          "id": "thamis",
+          "visible": true,
+          "position": [
+            49.77,
+            5.632858488028873,
+            -164.38
+          ],
+          "scale": 0.15928319999999999,
+          "seat": {
+            "x": -0.23,
+            "y": -0.48,
+            "z": 0.62
+          }
+        },
+        {
+          "id": "luna",
+          "visible": true,
+          "position": [
+            50.15,
+            5.632858488028873,
+            -165.35
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": 0.15000000000000002,
+            "y": -0.48,
+            "z": -0.35
+          }
+        },
+        {
+          "id": "liz",
+          "visible": true,
+          "position": [
+            50.31,
+            5.632858488028873,
+            -165.35
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": 0.31,
+            "y": -0.48,
+            "z": -0.35
+          }
+        }
+      ],
+      "authority": true,
+      "ball": null
+    },
+    "audio": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "combustion-20261027-smooth2",
+      "activeEngines": 1,
+      "variants": [
+        "rotor"
+      ]
+    }
+  },
+  "passed": true,
+  "errors": [],
+  "checkedAt": "2026-10-27T20:53:57.689Z",
+  "limits": [
+    "Software WebGL; no physical Android, real accounts or live multiplayer. Public QA teleport only positions the character beside the aircraft; no source interception or renderer cap."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "sourceSha": "ca77458f1c20f04de1daa5ab0f0786aeb11700bd",
+  "deployment": "dpl_9RGaP25fTFA7UZxkomdT44aD2sek",
+  "readyState": "READY",
+  "build": "705.27.2-audio-mobilidade",
+  "revision": "46a592e8f31296b5",
+  "alias": "https://otthi-world-campanha-teste.vercel.app",
+  "productionBranch": "world-revisao-20261022"
+}

@@ -1,0 +1,193 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/",
+  "build": "705.27.2-audio-mobilidade",
+  "checkedAt": "2026-10-27T20:51:52.737Z",
+  "resources": [
+    {
+      "path": "games/kart/js/game_kart.js",
+      "bytes": 150237,
+      "sha256": "d00f17cba6f44e62cbc33f9ca8381939d0dc89997ca3f406101b521061456b26"
+    },
+    {
+      "path": "games/voo/js/game_flight.js",
+      "bytes": 129439,
+      "sha256": "a2aa36ddfb14bb2784890c4cce92bd2f51f838fbbf4bd19675d0ebd7b02f5582"
+    },
+    {
+      "path": "games/kart/index.html",
+      "bytes": 26099,
+      "sha256": "47383df6c5b46f5e71af32804dee6571d3ae4049e69e9b76afa28c535a8b8443"
+    },
+    {
+      "path": "games/kart/sw.js",
+      "bytes": 2971,
+      "sha256": "1095417bb18aa218eff366a9e7ef910b27501054e7fccd7af7bfcebb354abeeb"
+    },
+    {
+      "path": "games/kart/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/kart/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/kart/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/boxe/index.html",
+      "bytes": 26177,
+      "sha256": "e1f0adf2d75facd8d0b2f2de45780d8890f86129c758209d8d4a74b9ae99cf88"
+    },
+    {
+      "path": "games/boxe/sw.js",
+      "bytes": 3024,
+      "sha256": "0235fc8c24ac9737e23f2f18bded485c891d8a0e49d4ac4fc17ae3f501a347d5"
+    },
+    {
+      "path": "games/boxe/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/boxe/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/boxe/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "bytes": 26095,
+      "sha256": "7d123cddf5e5d62a792fff7aeb1a37919b0800282541e8fa65b367098663e8d0"
+    },
+    {
+      "path": "games/tenis/sw.js",
+      "bytes": 2988,
+      "sha256": "b33f90ecdd2c41a1a4d57e6dcbb15c616091f5358f5ae7b4350df4aa0428944f"
+    },
+    {
+      "path": "games/tenis/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/tenis/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/tenis/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26564,
+      "sha256": "7678cf730d08f52265d64fdd9685c09579b7432cd78031c0b15436e0151582d1"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 3394,
+      "sha256": "45b2ecf56a63b9b0d0ba9421b7ee51fcefcb9e8e221ce61aadd338457ef024cb"
+    },
+    {
+      "path": "games/ar/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/ar/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/ar/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/voo/index.html",
+      "bytes": 26651,
+      "sha256": "12dc57417debec41826ce0cb8356a640a8b7de3317b2a2ac37d7831b4b8c4ff5"
+    },
+    {
+      "path": "games/voo/sw.js",
+      "bytes": 3148,
+      "sha256": "7ce2490d670399b66c081bef8aae61fdf2619c1b84e23a178e50487207a88171"
+    },
+    {
+      "path": "games/voo/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/voo/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/voo/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/otthi/index.html",
+      "bytes": 15380,
+      "sha256": "4f6dcad35c375a00903858ec55651e2684da40a5889fd35bfa5979188243be7b"
+    },
+    {
+      "path": "games/otthi/sw.js",
+      "bytes": 11687,
+      "sha256": "49a4979fe55fc55ab80d92b56c0f86dd1ccd36af11d890a94945dcdbc36f4b3a"
+    },
+    {
+      "path": "games/otthi/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/otthi/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/otthi/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    },
+    {
+      "path": "games/familia/3d/index.html",
+      "bytes": 59884,
+      "sha256": "0ac857c2640a5f09c18927e73afeb2dc8092d8460a1de5891327cd1c0383319f"
+    },
+    {
+      "path": "games/familia/3d/sw.js",
+      "bytes": 2241,
+      "sha256": "20f81ee5b40660ce2b4dbb08c0cda97d14d1ce3db9f36a6f4e5f046752c52b61"
+    },
+    {
+      "path": "games/familia/3d/recorded-audio.js",
+      "bytes": 8977,
+      "sha256": "0f0ca570dbb2fb8339d842b210ac2df9ae47f1d2f40d6c1e3fd7b2f18b47c946"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-car.ogg",
+      "bytes": 22323,
+      "sha256": "baacaedaca457df07e4c246ca5843642a7c3c2b60a93dc81a6d3cf49f05ef0fa"
+    },
+    {
+      "path": "games/familia/3d/audio/sources.json",
+      "bytes": 3920,
+      "sha256": "6aaca1a6103c290a7c16aacc21f8c2b84c6a421dc2a4b155cf46ceb36e25d5ba"
+    }
+  ]
+}
