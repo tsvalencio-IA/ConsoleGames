@@ -34,7 +34,7 @@
   function resize(force=false){
     const metrics=viewportMetrics(),w=metrics.w,h=metrics.h,landscape=metrics.landscape,portrait=!landscape;
     const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;
-    if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,targetDpr()));renderer.setSize(w,h,false);perf.lastRenderW=w;perf.lastRenderH=h;}
+    if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();const dpr=Math.min(devicePixelRatio||1,targetDpr());if(Math.abs(renderer.getPixelRatio()-dpr)>.001)renderer.setPixelRatio(dpr);if(sizeChanged)renderer.setSize(w,h,false);perf.lastRenderW=w;perf.lastRenderH=h;}
     const short=landscape&&h<560,ultraShort=landscape&&h<410,narrow=portrait&&w<390,tiny=h<620||w<350,compact=short||narrow||w<700;
     if(orientationChanged){clearMovementInputs();state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;els.game?.classList.remove('needs-expanded');els.missionCard?.classList.remove('expanded');document.body.classList.add('ui-orientation-changing');setTimeout(()=>document.body.classList.remove('ui-orientation-changing'),360);}
     const action=landscape?clamp(Math.min(h*.112,w*.075),ultraShort?38:42,58):clamp(Math.min(w*(narrow?.145:.155),h*.105),48,64);

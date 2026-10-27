@@ -1682,12 +1682,19 @@
             if(lost){g.armed=false;g.neutralSince=g.raisedSince=null;g.progress=0;g.holding=false;g.lastAt=now;return false;}
             if(frame===g.lastFrame)return false;g.lastFrame=frame;g.lastAt=now;
             const margin=videoH*.20,neutral=left.y>nose.y+margin&&right.y>nose.y+margin;
-            if(neutral){g.holding=false;g.consumed=false;g.raisedSince=null;g.progress=0;if(g.neutralSince===null)g.neutralSince=now;if(now-g.neutralSince>=180&&this.itemCooldown<=0)g.armed=true;return false;}
+            if(neutral){g.holding=false;g.consumed=false;g.transitionSince=null;g.raisedSince=null;g.progress=0;if(g.neutralSince===null)g.neutralSince=now;if(now-g.neutralSince>=180&&this.itemCooldown<=0)g.armed=true;return false;}
             g.neutralSince=null;
             // Require a hand near the head in both axes, accepting either mirror label.
             const nearHead=hand=>Math.hypot((hand.x-nose.x)/(videoH*.25),(hand.y-nose.y+videoH*.035)/(videoH*.23))<=1;
             const raised=(nearHead(right)&&left.y>nose.y+margin)||(nearHead(left)&&right.y>nose.y+margin);
-            if(!raised){g.raisedSince=null;g.progress=0;g.holding=false;g.armed=false;return false;}
+            if(!raised){
+                g.raisedSince=null;g.progress=0;
+                // A real hand passes through intermediate poses on its way to
+                // the head. Keep the neutral arming while that movement lasts.
+                const bothHigh=left.y<=nose.y+margin&&right.y<=nose.y+margin;
+                if(g.armed&&!bothHigh){if(g.transitionSince==null){g.transitionSince=now;g.steer=this.targetSteer;}g.holding=now-g.transitionSince<=1800;if(g.holding)return false;}
+                g.holding=false;g.armed=false;return false;
+            }
             if(g.consumed){g.holding=true;return false;}
             if(!g.armed){g.holding=false;return false;}
             if(!this.item){g.steer=this.targetSteer;g.holding=true;g.consumed=true;g.armed=false;return false;}

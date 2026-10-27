@@ -262,7 +262,7 @@
     const visible=Object.values(familyWorld.actors).some(a=>Math.hypot(player.x-a.x,player.z-a.z)<90);
     for(const a of Object.values(familyWorld.actors)){
       const controlled=familyWorld.walkOwner&&a.id===familyWorld.walkController&&performance.now()>Number(familyWorld.portraitUntil||0);
-      a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible)continue;
+      a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible&&!a.ridePose)continue;
       const dog=a.id==='luna'||a.id==='liz',work=!dog&&familyWorld.workUntil>familyWorld.clock;
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
       else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
