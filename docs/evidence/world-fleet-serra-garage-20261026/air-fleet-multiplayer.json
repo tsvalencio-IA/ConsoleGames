@@ -23,7 +23,7 @@
       "heli-ottovias": {
         "current": "",
         "generation": 0,
-        "spawnAt": 1793057809303
+        "spawnAt": 1793059400030
       },
       "heli-rescue": {
         "current": "heli-rescue",
@@ -59,7 +59,7 @@
         "z": -165,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -70,7 +70,7 @@
         "z": -165,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -81,7 +81,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -92,12 +92,12 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "air-a",
-        "departedAt": 1793057629303,
-        "claimAt": 1793057629079,
-        "seenAt": 1793057631694,
-        "y": 12.703598821464446
+        "departedAt": 1793059220030,
+        "claimAt": 1793059219925,
+        "seenAt": 1793059222987,
+        "y": 13.51514706381166
       },
       "heli-rescue": {
         "id": "heli-rescue",
@@ -106,7 +106,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -117,7 +117,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -128,7 +128,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -139,7 +139,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -150,7 +150,7 @@
         "z": 89,
         "yaw": 3.141592653589793,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       }
@@ -214,7 +214,7 @@
         "z": -165,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -225,7 +225,7 @@
         "z": -165,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -236,7 +236,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -247,12 +247,12 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "air-a",
-        "departedAt": 1793057629303,
-        "claimAt": 1793057629079,
-        "seenAt": 1793057813686,
-        "y": 13.419664598296764
+        "departedAt": 1793059220030,
+        "claimAt": 1793059219925,
+        "seenAt": 1793059404560,
+        "y": 13.599743103090372
       },
       "heli-rescue": {
         "id": "heli-rescue",
@@ -261,7 +261,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -272,7 +272,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -283,7 +283,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -294,7 +294,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -305,7 +305,7 @@
         "z": 89,
         "yaw": 3.141592653589793,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -316,11 +316,11 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057811746,
+        "parkedAt": 1793059403070,
         "pilot": "air-b",
         "departedAt": 0,
-        "claimAt": 1793057813567,
-        "seenAt": 1793057813686,
+        "claimAt": 1793059404414,
+        "seenAt": 1793059404560,
         "y": 1
       }
     }
@@ -347,7 +347,7 @@
       "heli-ottovias": {
         "current": "",
         "generation": 1,
-        "spawnAt": 1793057996158
+        "spawnAt": 1793059586934
       },
       "heli-rescue": {
         "current": "heli-rescue",
@@ -383,7 +383,7 @@
         "z": -165,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -394,7 +394,7 @@
         "z": -165,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -405,7 +405,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -416,12 +416,12 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "air-a",
-        "departedAt": 1793057629303,
-        "claimAt": 1793057629079,
-        "seenAt": 1793057816158,
-        "y": 13.419999982600906
+        "departedAt": 1793059220030,
+        "claimAt": 1793059219925,
+        "seenAt": 1793059406936,
+        "y": 13.599999980119007
       },
       "heli-rescue": {
         "id": "heli-rescue",
@@ -430,7 +430,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -441,7 +441,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -452,7 +452,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -463,7 +463,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -474,7 +474,7 @@
         "z": 89,
         "yaw": 3.141592653589793,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -485,11 +485,11 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057811746,
+        "parkedAt": 1793059403070,
         "pilot": "air-b",
-        "departedAt": 1793057816158,
-        "claimAt": 1793057813567,
-        "seenAt": 1793057816158,
+        "departedAt": 1793059406934,
+        "claimAt": 1793059404414,
+        "seenAt": 1793059406936,
         "y": 12.114631943968462
       }
     }
@@ -514,9 +514,9 @@
         "spawnAt": 0
       },
       "heli-ottovias": {
-        "current": "",
+        "current": "heli-ottovias-r1",
         "generation": 1,
-        "spawnAt": 1793057996158
+        "spawnAt": 0
       },
       "heli-rescue": {
         "current": "heli-rescue",
@@ -552,7 +552,7 @@
         "z": -165,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -563,7 +563,7 @@
         "z": -165,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -574,7 +574,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -585,12 +585,12 @@
         "z": -164,
         "yaw": 0,
         "status": "piloted",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "air-a",
-        "departedAt": 1793057629303,
-        "claimAt": 1793057629079,
-        "seenAt": 1793057821052,
-        "y": 13.419999999999984
+        "departedAt": 1793059220030,
+        "claimAt": 1793059219925,
+        "seenAt": 1793059411723,
+        "y": 13.59999999999998
       },
       "heli-rescue": {
         "id": "heli-rescue",
@@ -599,7 +599,7 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -610,7 +610,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -621,7 +621,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -632,7 +632,7 @@
         "z": -216,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -643,7 +643,7 @@
         "z": 89,
         "yaw": 3.141592653589793,
         "status": "parked",
-        "parkedAt": 1793057596161,
+        "parkedAt": 1793059188873,
         "pilot": "",
         "departedAt": 0
       },
@@ -654,11 +654,11 @@
         "z": -164,
         "yaw": 0,
         "status": "parked",
-        "parkedAt": 1793057820986,
+        "parkedAt": 1793059411715,
         "pilot": "",
-        "departedAt": 1793057816158,
-        "claimAt": 1793057813567,
-        "seenAt": 1793057820981,
+        "departedAt": 1793059406934,
+        "claimAt": 1793059404414,
+        "seenAt": 1793059411658,
         "hp": 100
       }
     }
