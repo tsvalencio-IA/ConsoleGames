@@ -7,7 +7,7 @@
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "b74bcc19531863ee1a92520101cd7dce20c738b2e9dff2a9268a49e3f17a1bda"
+      "sha256Body": "a85e656fb1829711fd81e49414722682559c48be872e905d12cc60a2d15d01ab"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -28,7 +28,7 @@
       "startLine": 490,
       "endLine": 756,
       "description": "Estado, save local, IndexedDB, nuvem e conta",
-      "sha256Body": "d38e747e16c8a3f5ac51ae7ac67d0e5125fb771db747f5c59cfadc2b30c0dc6d"
+      "sha256Body": "f244d4c371d9e3694987c49c563465e1d892634cfa9d9e5969ccbacd5cf97d85"
     },
     {
       "file": "src/modules/03-ui-modal-install-pwa.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "e06887bd29c939110938c2d8351fc45a0dec2e75ce24734e00aac0fd2651352c"
+      "sha256Body": "37e1f96ba4f9c5fabf3bd7491320667643553dc894c84a9f619fc3cc5022c5d2"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -119,7 +119,7 @@
       "startLine": 2743,
       "endLine": 2991,
       "description": "Casas, interiores, NPCs, inimigos, cristais, veículos e academia",
-      "sha256Body": "ddb289e35ba6164b7e6ebda001ce4448bc75ce115c37a7c09a75a8a99283e78f"
+      "sha256Body": "16cb488d55a8b3c2ffa44cd62f3441dd4c7e0a5b49967be0c107d96d9f7f720a"
     },
     {
       "file": "src/modules/13a-sports-kart-v705.js",
@@ -189,7 +189,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "d0f9460192a14d913a16ac670c7b46c1a7113ac5f6ccce140a47c932d56a5949"
+      "sha256Body": "11864db26052ae86594f2175d9b0921d4237d632f86ce0376afbfb25b00aa9dc"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -371,14 +371,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "eb069ebd3a41ce6c61f95170a1c4c75069a28c915f9c73b2091cfb9176b4db91"
+      "sha256Body": "236114d24fd4b849f44764d0495062af9da9a1224e0c0d93ed0d5f46418e4863"
     },
     {
       "file": "src/modules/43-world-campaign.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "66349dc03a5bff48e3438287041e2d3645815339b54c104828ad98b7a86658c1"
+      "sha256Body": "810f0c8faf72e0c486b2cdbe9f7889b8cd19cc2720c4917114ee7b298ba6dc94"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -473,17 +473,23 @@
     },
     {
       "file": "src/modules/52-neighborhood-riders.js",
-      "sha256Body": "fd08496f103c2b58cd6a315a443e0972f12a671ce0a041e42edd6b1ba18dbaec"
+      "sha256Body": "fd08496f103c2b58cd6a315a443e0972f12a671ce0a041e42edd6b1ba18dbaec",
+      "startLine": 0,
+      "endLine": 0
     },
     {
       "file": "src/modules/53-neighborhood-dealerships.js",
       "description": "Concessionárias físicas, exposição e compras nativas",
-      "sha256Body": "9fa4fd3e39593c91a2f74a908d995b0a940a5a5eb5d202ccbdb3b93a3bde0a03"
+      "sha256Body": "9fa4fd3e39593c91a2f74a908d995b0a940a5a5eb5d202ccbdb3b93a3bde0a03",
+      "startLine": 0,
+      "endLine": 0
     },
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "a9d8796ceb647ea07e6f9c569b91afb55874a73528b3e765abc7164a8046d739"
+      "sha256Body": "a9d8796ceb647ea07e6f9c569b91afb55874a73528b3e765abc7164a8046d739",
+      "startLine": 0,
+      "endLine": 0
     },
     {
       "file": "src/modules/55-world-traffic-and-air.js",
@@ -495,14 +501,16 @@
     {
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
-      "sha256Body": "f8db83b4f0ee2125fb224734697fc8bdf7e41317d48d5f4def136bbe3a8acfa7"
+      "sha256Body": "f8db83b4f0ee2125fb224734697fc8bdf7e41317d48d5f4def136bbe3a8acfa7",
+      "startLine": 0,
+      "endLine": 0
     },
     {
       "file": "src/modules/57-world-destinations-marina.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "bef932daa33984e78f0c8b2758891ff8269d41c3449deadd34ebdd578768f691"
+      "sha256Body": "571bfb36c7b9ca6ca40cb29df32259bb8ef1ed4cde7bb69e8ff920729eeacd0b"
     },
     {
       "file": "src/modules/58-character-activities.js",
@@ -545,6 +553,27 @@
       "endLine": 0,
       "description": "Cordilheira, neve, mata e trilha conectadas ao mundo",
       "sha256Body": "21885b1a41bb6975699a51800dd131f8f70a6fc7e3bd4e9fe5eaee46cebf8055"
+    },
+    {
+      "file": "src/modules/65-civil-community.js",
+      "description": "Vizinhanças, praia, neve, balões e teleférico civil",
+      "sha256Body": "c69f1291bf40a8d2c3de5112aa811f4b33c5cbb9e36e78eb9c664db57b5668ad",
+      "startLine": 0,
+      "endLine": 0
+    },
+    {
+      "file": "src/modules/66-civil-missions.js",
+      "description": "Missões individuais e cooperativas do mundo civil",
+      "sha256Body": "7c1e4d64e28bd294bc2fac7ea9e08fe07e58492980626cab2289e8f0696e68fc",
+      "startLine": 0,
+      "endLine": 0
+    },
+    {
+      "file": "src/modules/67-workshop-bays.js",
+      "description": "Dois elevadores independentes e manutenção preservada",
+      "startLine": 0,
+      "endLine": 0,
+      "sha256Body": "c1e4d58a10b05eefecaa8780197cb8566683dbf74c25cfe6ee8715b282a103ce"
     }
   ],
   "styles": [
@@ -729,6 +758,13 @@
       "endLine": 0,
       "description": "Atlas e ações visíveis dos personagens",
       "sha256Body": "92b34cd4a663bbe5b1fd8c59f810ca4a886bd9d6d32d140e96402e65d65131bc"
+    },
+    {
+      "file": "src/styles/25-civil-community.css",
+      "description": "Missões e embarque civil responsivos",
+      "sha256Body": "35e449bb0d6162efb67638116ff156201f6d68ab8ff9bbcb523d2d916fd3873c",
+      "startLine": 0,
+      "endLine": 0
     }
   ]
 }

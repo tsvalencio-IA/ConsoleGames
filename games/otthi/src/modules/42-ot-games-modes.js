@@ -3,7 +3,7 @@
  * its actual pose for passengers; explicit disembarking saves the parked craft. */
 // @otthi-module-body
   const otGames={mode:'peace',active:false,armed:false,body:null,group:null,enemies:[],bullets:[],effects:[],keys:new Set(),move:{x:0,y:0},aim:{x:0,y:0},collective:.5,pedal:0,fire:false,cameraEpoch:0,handSession:null,handAim:null,state:'PLAYING',assets:null,elapsed:0,ui:null,entry:null,trafficHolds:new Map()};
-  const otGameModes={peace:'Mundo de paz',ground:'WAR Combate',plane:'Avião',helicopter:'Helicóptero',balloon:'Balão nas montanhas'};
+  const otGameModes={peace:'Mundo de paz',plane:'Avião',helicopter:'Helicóptero',balloon:'Balão nas montanhas'};
   function otGamesFocus(){return otGames.active&&otGames.body?otGames.body:player;}
   function otGamesClearInput(){for(const reset of otGames.inputResets||[])reset();otGames.keys.clear();otGames.move.x=otGames.move.y=otGames.aim.x=otGames.aim.y=0;otGames.fire=false;otGames.aiming=false;otGames.pedal=0;otGames.collective=otGames.groundLaunch&&otGames.mode==='plane'?0:.5;otGames.handAim&&(otGames.handAim.fresh=false);}
   function otGamesMesh(kind,color,x,y,z,w,h,d,parent){
@@ -12,6 +12,7 @@
     const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.scale.set(w,h,d);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
   }
   function otGamesAirframe(mode){
+    if(OT_CHILD_WORLD)return createCivilianAirframe(mode==='plane'?'light':'helicopter','tour');
     const model=mode==='helicopter'?'kestrel':'falcon',root=new THREE.Group(),parts=new Map();
     for(const face of otGames.assets[model]){
       const canopy=face.color.join(',')===(mode==='plane'?'34,91,124':'40,101,130'),kind=face.rotor?'rotor':face.tailRotor?'tail':canopy?'canopy':'hull';if(!parts.has(kind))parts.set(kind,{positions:[],colors:[]});const part=parts.get(kind),v=face.vertices;
@@ -121,19 +122,21 @@
     if(won){let career={wins:0};try{career=JSON.parse(safeLocalGet(g.careerKey)||'{}')}catch{}career.wins=(Number(career.wins)||0)+1;career.lastMode=g.mode;career.lastDifficulty=g.difficulty;safeLocalSet(g.careerKey,JSON.stringify(career));}
   }
   async function otGamesEnter(mode,options={}){
+    if(OT_CHILD_WORLD){if(mode==='ground')return false;options={...options,armed:false};}
     if(mode==='peace'){otGamesLeave();return true;}
     if(mode==='balloon'&&!options.boarding){setWaypoint('mountain-balloon');toast('Siga o GPS até o balão e use AÇÃO junto à cesta para embarcar.','info',3800);return false;}
     if(otGames.starting)return false;
-    if(!otGameModes[mode]||!running||paused||currentHouse||player.vehicle||player.boating||player.transit.mode||buildMode||activeRace||window.OTTHI_COOP?.active?.()){
+    if(!otGameModes[mode]||!running||paused||currentHouse||player.vehicle||player.boating||player.transit.mode||buildMode||activeRace){
       toast('Para entrar, fique a pé ao ar livre e conclua ou saia da atividade atual.','warn',3000);return false;
     }
     if(otGames.active)otGamesLeave();
+    if(OT_CHILD_WORLD)otGames.assets||={};
     if(!otGames.assets){otGames.starting=true;let response;try{response=await fetch(new URL('assets/ot-games-airframes.json',OTTHI_GAME_LIVE_BASE));}finally{otGames.starting=false;}if(!response.ok)throw Error('Não foi possível carregar os veículos.');otGames.assets=await response.json();}
     const g=otGames;g.engineVoice?.dispose();g.engineVoice=['ground','balloon'].includes(mode)?null:window.GameAudio?.vehicleVoice(mode,mode);g.mode=mode;g.aircraftId=options.boarding?.id||mode;g.armed=mode!=='balloon'&&options.armed!==false;g.difficulty=['easy','normal','hard'].includes(options.difficulty)?options.difficulty:'normal';g.level={easy:{label:'INICIANTE',goal:6,damage:7,enemyRate:3.8},normal:{label:'NORMAL',goal:8,damage:10,enemyRate:2.9},hard:{label:'VETERANO',goal:10,damage:15,enemyRate:2.1}}[g.difficulty];
     state.ui.quickOpen=false;syncMobilePanels();
     g.entry={camera:camera.position.clone(),rotation:camera.quaternion.clone(),fov:camera.fov,playerVisible:playerGroup.visible,shadowVisible:contactShadow?.visible,toolVisible:toolVisual?.visible,position:{x:player.x,y:player.y,z:player.z},cameraYaw,cameraPitch,cameraZoom};
     savePlayerPosition(true);clearMovementInputs();otGamesClearInput();g.active=true;g.state='PLAYING';g.handMode=false;g.kills=0;g.goal=g.level.goal;g.wave=0;g.ammo=30;g.reserve=180;g.reload=0;g.cooldown=0;g.elapsed=0;g.resultSaved=false;g.notice='';g.lock=null;g.enemies=[];g.bullets=[];g.effects=[];
-    g.noticeUntil=0;g.autoWalkSide=0;g.autoWalking=false;g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_COMBAT_SESSION';scene.add(g.group);
+    g.noticeUntil=0;g.autoWalkSide=0;g.autoWalking=false;g.careerKey='thia:ot-games:combat:v1:'+(state.profile?.playerId||'local');g.group=new THREE.Group();g.group.name='OT_GAMES_CIVIL_FLIGHT';scene.add(g.group);
     const safe=safePointNear(player.x,player.z,{ignoreTraffic:true,allowWater:false,radius:.5});
     g.groundLaunch=!!options.groundLaunch&&mode!=='ground';g.onGround=g.groundLaunch;g.airspeed=mode==='plane'&&!g.groundLaunch?27:0;g.collective=g.groundLaunch&&mode==='plane'?0:.5;g.landingAssist=false;g.crouched=false;g.handViewAnchor=null;g.flightPhase=g.groundLaunch?'ready':'airborne';
     const boarding=options.boarding;if(g.groundLaunch&&boarding){safe.x=boarding.x;safe.z=boarding.z;safe.y=groundHeightAt(safe.x,safe.z);}
@@ -193,7 +196,7 @@
   }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');g.inputResets=[];g.aiming=false;root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
-    root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR À PAZ</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
+    root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR AO MUNDO</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
     root.insertAdjacentHTML('beforeend','<div class="ot-games-targets" aria-hidden="true"></div><div class="ot-games-result" hidden><strong></strong><p></p><button data-ot="retry">JOGAR NOVAMENTE</button></div>');
     root.insertAdjacentHTML('beforeend','<button data-ot="crouch" aria-pressed="false">ABAIXAR</button><button data-ot="land">POUSAR</button><button data-ot="disembark">SAIR DA AERONAVE</button>');
     root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button><button data-ot="map">MAPA / GPS</button>');
@@ -366,6 +369,7 @@
     const ads=g.ui.querySelector('[data-ot="ads"]');ads.setAttribute('aria-pressed',String(!!g.aiming));ads.classList.toggle('selected',!!g.aiming);
   }
   function otGamesChoose(){
+    if(OT_CHILD_WORLD)return openCivilWorldHub();
     if(!running||document.getElementById('ot-games-choose'))return;const previousPaused=paused;paused=true;otGamesClearInput();clearMovementInputs();const dialog=document.createElement('section');dialog.id='ot-games-choose';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','Escolha seu modo OT Games');
     dialog.innerHTML='<div><small>UM MUNDO · VÁRIAS FORMAS DE JOGAR</small><h2>OT GAMES</h2><p>As mesmas ruas, casas e trânsito do seu mundo.</p><div class="ot-games-mode-grid">'+Object.entries(otGameModes).map(([id,name])=>'<button data-ot-mode="'+id+'">'+({peace:'🌳',ground:'🎯',plane:'✈️',helicopter:'🚁',balloon:'🎈'}[id])+'<strong>'+name+'</strong></button>').join('')+'</div><label><input type="checkbox" data-ot-armed checked> Missão de combate solo (desmarque para passeio de paz)</label><label>Dificuldade <select data-ot-difficulty><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Veterano</option></select></label><p class="ot-games-help">A pé: mover + mirar + atirar. Na câmera frontal, calibre corpo + mãos ou o brinquedo: vire o tronco e a mão para mirar, dê passos para andar e agache para abaixar. Sem movimento para a frente obrigatório. Complete todos os alvos marcados para vencer. Helicóptero: manche + coletivo + pedais. Avião: manche e curvas. A mira alinhada trava o alvo antes de disparar.</p><button data-ot-close>CONTINUAR JOGO ATUAL</button></div>';
     document.body.append(dialog);const close=()=>{dialog.remove();paused=previousPaused;};dialog.querySelector('[data-ot-close]').onclick=close;
@@ -373,7 +377,7 @@
     dialog.querySelector('[data-ot-mode="peace"]').focus();dialog.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Tab'){const a=[...dialog.querySelectorAll('button,input,select')],first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
   }
   function otGamesInit(){
-    const button=document.createElement('button');button.id='ot-games-button';button.innerHTML='<b aria-hidden="true">OT</b><span>Games</span>';button.type='button';button.setAttribute('aria-label','OT Games: combate, avião e helicóptero');button.onclick=()=>{state.ui.quickOpen=false;syncMobilePanels();otGamesChoose();};document.getElementById('quickBar').prepend(button);
+    const button=document.createElement('button');button.id='ot-games-button';button.innerHTML='<b aria-hidden="true">OT</b><span>Games</span>';button.type='button';button.setAttribute('aria-label','OT Games: explorar, pilotar e ajudar');button.onclick=()=>{state.ui.quickOpen=false;syncMobilePanels();otGamesChoose();};document.getElementById('quickBar').prepend(button);
     window.addEventListener('blur',otGamesClearInput);window.addEventListener('resize',otGamesClearInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)otGamesClearInput();});
     for(const type of ['keydown','keyup'])window.addEventListener(type,e=>{
       if(!otGames.active||e.target.closest?.('input,select,button')||document.getElementById('ot-games-choose'))return;

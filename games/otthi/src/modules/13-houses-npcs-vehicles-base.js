@@ -49,7 +49,7 @@
     const sign=new THREE.Mesh(new THREE.PlaneGeometry(8.9,1.12),new THREE.MeshStandardMaterial({map:signTexture('SOS VALÊNCIO • CENTRO AUTOMOTIVO','#101419','#f4f6f7'),roughness:.46,side:THREE.DoubleSide}));sign.position.set(0,5.25,5.82);shell.add(sign);
     premiumBox(9.2,.07,.07,lime,0,4.58,5.76,shell);
     // Piso de acesso contínuo: o carro vem da rua e entra fisicamente no barracão.
-    premiumBox(6.6,.075,4.0,0x5b6064,-2.1,.045,7.75,shell);for(const ox of[-3.0,3.0])premiumBox(.08,.02,4.0,lime,-2.1+ox,.10,7.75,shell);
+    premiumBox(10.8,.075,4.0,0x5b6064,.3,.045,7.75,shell);for(const ox of[-5.0,5.0])premiumBox(.08,.02,4.0,lime,.3+ox,.10,7.75,shell);
     registerCollider(x,z-5.88,15,.28,{houseId:id,workshopOpen:true});registerCollider(x-7.38,z,.28,12,{houseId:id,workshopOpen:true});registerCollider(x+7.38,z,.28,12,{houseId:id,workshopOpen:true});
     world.houses.push(house);return house;
   }
@@ -115,42 +115,23 @@
     } else if(type==='workshop'){
       const graphite=renderMat(0x15191e,{roughness:.80}),graphite2=renderMat(0x252a30,{roughness:.70}),lime=renderMat(0xb7ed20,{roughness:.42,emissive:0x6f9400,emissiveIntensity:.22}),whiteLed=renderMat(0xf4f7f8,{roughness:.28,emissive:0xffffff,emissiveIntensity:.38}),steel=renderMat(0x66727c,{roughness:.44,metalness:.30}),blueLift=renderMat(0x205b91,{roughness:.56,metalness:.14}),glass=renderMat(0x8ec9d8,{roughness:.10,transparent:true,opacity:.34}),decor=new THREE.Group();decor.position.set(house.x,0,house.z);worldGroup.add(decor);decor.visible=true;world.workshopDecor=decor;house.interiorObjects.push(decor);
       // Boxes e circulação. O centro do barracão permanece livre para o veículo entrar dirigido pelo jogador.
-      for(const cx of[-2.25,2.15]){premiumBox(.065,.025,9.8,lime,cx-1.72,.20,-.35,decor);premiumBox(.065,.025,9.8,lime,cx+1.72,.20,-.35,decor);premiumBox(3.5,.025,.065,lime,cx,.20,-5.05,decor);premiumBox(3.5,.025,.065,lime,cx,.20,4.55,decor);}
+      for(const cx of[-2.25,3.0]){premiumBox(.065,.025,9.8,lime,cx-1.72,.20,-.35,decor);premiumBox(.065,.025,9.8,lime,cx+1.72,.20,-.35,decor);premiumBox(3.5,.025,.065,lime,cx,.20,-5.05,decor);premiumBox(3.5,.025,.065,lime,cx,.20,4.55,decor);}
       premiumBox(.06,.025,10.0,0xe9edf0,0,.205,-.35,decor);
       // Elevador automotivo funcional: colunas fixas e braços móveis.
-      const liftX=-2.25,liftZ=-.75,liftPlatform=new THREE.Group();liftPlatform.position.set(liftX,0,liftZ);decor.add(liftPlatform);
-      for(const lx of[-1.70,1.70]){premiumBox(.28,4.70,.34,blueLift,liftX+lx,2.45,liftZ,decor);premiumBox(.52,.22,.62,blueLift,liftX+lx,.28,liftZ,decor);premiumBox(.48,.20,.58,blueLift,liftX+lx,4.70,liftZ,decor);}
-      for(const zoff of[-1.08,1.08]){premiumBox(3.15,.12,.18,steel,0,.30,zoff,liftPlatform);premiumBox(.62,.11,.64,0x343a40,-1.20,.38,zoff,liftPlatform);premiumBox(.62,.11,.64,0x343a40,1.20,.38,zoff,liftPlatform);}
-      premiumBox(.16,4.20,.16,lime,liftX-1.48,2.38,liftZ+.02,decor);premiumBox(.16,4.20,.16,lime,liftX+1.48,2.38,liftZ+.02,decor);
-      // Painel do elevador e scanner físico.
-      premiumBox(.72,1.35,.52,graphite2,.45,.78,-.55,decor);premiumBox(.52,.46,.055,0x5ad8ff,.45,1.06,-.27,decor);premiumBox(.52,.055,.40,lime,.45,.30,-.52,decor);
+      const lifts=[createWorkshopLiftAssembly(decor,house,0,-2.25,-.75),createWorkshopLiftAssembly(decor,house,1,3.0,-.75)];
+      world.workshopLifts=lifts;world.workshopLift=lifts[0];
       premiumBox(1.05,1.22,.60,graphite2,.85,.72,-2.55,decor);premiumBox(.80,.50,.06,0x58d9f5,.85,1.05,-2.22,decor);
-      // Marcadores físicos de componentes. Só ficam visíveis quando o carro estiver erguido.
-      const markerDefs=[['engine','MOTOR',0,3.25,-1.72],['brakes','FREIOS',-1.62,2.78,-.55],['suspension','SUSPENSÃO',1.62,2.78,-.55],['steering','DIREÇÃO',-1.45,2.78,1.12],['electrical','ELÉTRICA',1.45,2.78,1.12],['cooling','ARREFEC.',0,3.35,1.52]],markerMap={},markers=new THREE.Group();markers.position.set(liftX,0,liftZ);decor.add(markers);
-      for(const [pid,label,mx,my,mz] of markerDefs){const mg=new THREE.Group();mg.position.set(mx,my,mz);const dot=new THREE.Mesh(new THREE.SphereGeometry(.15,10,8),new THREE.MeshStandardMaterial({color:0x6bd98a,emissive:0x173d24,emissiveIntensity:.55,roughness:.35}));mg.add(dot);const tag=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.30),new THREE.MeshStandardMaterial({map:signTexture(label,'#161b20','#ffffff'),roughness:.48,side:THREE.DoubleSide}));tag.position.set(0,.32,0);mg.add(tag);mg.visible=false;markers.add(mg);markerMap[pid]={group:mg,dot};}
-      // Componentes automotivos reconhecíveis. Acompanham a plataforma e só aparecem com o elevador erguido.
-      const underbody=new THREE.Group(),underbodyMap={};underbody.position.set(0,.56,0);underbody.visible=false;liftPlatform.add(underbody);
-      const workshopPart=(id,x,y,z,scale=1)=>{const part=createWorkshopServicePartVisual(id,underbody);part.group.position.set(x,y,z);part.group.scale.setScalar(scale);underbodyMap[id]=part;return part.group;};
-      workshopPart('engine',0,.08,-.82,.88);workshopPart('brakes',0,.05,.88,.82);workshopPart('suspension',0,.03,.18,.88);workshopPart('steering',0,.16,-.18,.86);workshopPart('electrical',.78,.22,-.72,.78);workshopPart('cooling',-.58,.18,-1.38,.72);
       // Bancadas e ferramental ao fundo.
       for(const x of[-.8,1.1,3.0]){premiumBox(1.55,1.05,.60,graphite2,x,.60,-5.20,decor);for(const y of[.38,.62,.86])premiumBox(1.34,.045,.64,steel,x,y,-5.18,decor);}
       const services=new THREE.Mesh(new THREE.PlaneGeometry(4.2,1.20),new THREE.MeshStandardMaterial({map:signTexture('MECÂNICA • ELÉTRICA • SCANNER • INJEÇÃO','#171c22','#b7ed20'),roughness:.50,side:THREE.DoubleSide}));services.position.set(.45,3.35,-5.72);decor.add(services);
       // Recepção técnica no lado direito, fora da faixa de circulação.
       premiumBox(2.7,.82,.82,graphite2,4.95,.54,2.85,decor);premiumBox(2.45,.07,.72,lime,4.95,.98,2.85,decor);premiumBox(.96,.66,.08,0x10354a,4.95,1.42,2.43,decor);
       const receptionSign=new THREE.Mesh(new THREE.PlaneGeometry(2.55,.62),new THREE.MeshStandardMaterial({map:signTexture('RECEPÇÃO TÉCNICA','#15191e','#f4f6f7'),roughness:.50,side:THREE.DoubleSide}));receptionSign.position.set(4.95,2.15,5.70);decor.add(receptionSign);
-      // Escritório envidraçado thIAguinho no fundo direito, sem ocupar o box do elevador.
-      premiumBox(.12,2.65,4.00,graphite2,3.60,1.48,-3.25,decor);premiumBox(3.25,2.65,.12,graphite2,5.18,1.48,-5.18,decor);premiumBox(.12,2.65,4.00,graphite2,6.78,1.48,-3.25,decor);
-      const glassFront=new THREE.Mesh(new THREE.PlaneGeometry(3.08,2.15),glass);glassFront.position.set(5.18,1.50,-1.30);decor.add(glassFront);premiumBox(3.18,.08,.08,lime,5.18,2.65,-1.34,decor);
-      premiumBox(1.80,.72,.70,graphite2,5.18,.55,-3.65,decor);premiumBox(1.0,.60,.08,0x0e2635,5.18,1.22,-4.02,decor);premiumBox(.72,.38,.055,0x3fd9ff,5.18,1.22,-4.06,decor);
-      const digitalSign=new THREE.Mesh(new THREE.PlaneGeometry(2.85,.72),new THREE.MeshStandardMaterial({map:signTexture('thIAguinho • SOLUÇÕES DIGITAIS','#07101d','#ffffff'),roughness:.46,side:THREE.DoubleSide}));digitalSign.position.set(5.18,2.15,-5.10);decor.add(digitalSign);
       // A bancada legada continua preservada, agora posicionada fora da área do elevador.
-      const table=createFurniture(house,'table',1.30,3.20,0,'Bancada e fundição');registerInteractable({id:'workshop-workbench-open',type:'activity',activity:'workshop',icon:'🛠',label:table.label,x:table.x,z:table.z,radius:1.85,priority:190,action:()=>useActivity('workshop',house)});createFurniture(house,'chest',2.65,3.25,0,'Baú de ferramentas');
-      world.workshopLift={x:house.x+liftX,z:house.z+liftZ,heading:Math.PI,platform:liftPlatform,markers,markerMap,underbody,underbodyMap,vehicleId:'',raised:false,busy:false,height:0,maxHeight:2.35,houseId:house.id};
-      registerInteractable({id:'workshop-lift-drive',type:'workshop',icon:'🚗',label:'Box do elevador',vehicleOnly:true,x:house.x+liftX,z:house.z+liftZ+1.25,radius:3.8,priority:1280,getActionLabel:()=>typeof workshopLiftDriveActionLabel==='function'?workshopLiftDriveActionLabel():'Alinhar',action:()=>typeof workshopStageCurrentVehicle==='function'?workshopStageCurrentVehicle():false});
-      registerInteractable({id:'workshop-lift-control',type:'workshop',icon:'⬆️',x:house.x+.45,z:house.z-.55,radius:2.25,priority:510,getLabel:()=>typeof workshopLiftContextLabel==='function'?workshopLiftContextLabel():'Painel do elevador',getActionLabel:()=>typeof workshopLiftActionLabel==='function'?workshopLiftActionLabel():'Erguer',action:()=>typeof handleWorkshopLiftControl==='function'?handleWorkshopLiftControl():false});
-      registerInteractable({id:'workshop-service-desk',type:'workshop',icon:'📋',label:'Recepção / Ordem de Serviço',x:house.x+4.95,z:house.z+2.85,radius:2.15,priority:335,action:()=>typeof openWorkshopServiceDesk==='function'?openWorkshopServiceDesk():openWorkshop()});
-      registerInteractable({id:'workshop-scanner-desk',type:'workshop',icon:'📟',label:'Scanner e diagnóstico',x:house.x+.85,z:house.z-2.55,radius:1.85,priority:345,action:()=>typeof openWorkshopLiftInspection==='function'&&world.workshopLift?.raised?openWorkshopLiftInspection():openWorkshopServiceDesk()});
-      registerInteractable({id:'workshop-digital-office',type:'workshop',icon:'💻',label:'thIAguinho • Criar projeto',x:house.x+5.18,z:house.z-3.10,radius:2.10,priority:350,action:()=>typeof openThiaguinhoStudio==='function'?openThiaguinhoStudio():openTioThiagoHub()});
+      const table=createFurniture(house,'table',5.8,-4.5,0,'Bancada e ferramentas');registerInteractable({id:'workshop-workbench-open',type:'activity',activity:'workshop',icon:'🛠',label:table.label,x:table.x,z:table.z,radius:1.85,priority:190,action:()=>useActivity('workshop',house)});createFurniture(house,'chest',5.9,-2.8,0,'Baú de ferramentas');
+      lifts.forEach(registerWorkshopBay);
+      registerInteractable({id:'workshop-service-desk',type:'workshop',icon:'📋',label:'Recepção / Ordem de Serviço',x:house.x+4.95,z:house.z+2.85,radius:2.15,priority:335,action:openWorkshopServiceDesk});
+      registerInteractable({id:'workshop-scanner-desk',type:'workshop',icon:'📟',label:'Scanner e diagnóstico',x:house.x+.85,z:house.z-2.55,radius:1.85,priority:345,action:()=>workshopLiftRuntime()?.raised?openWorkshopLiftInspection():openWorkshopServiceDesk()});
     } else if(type==='school'){
       premiumBox(8.2,.08,6.2,materials.schoolFloor,house.x,.16,house.z);premiumBox(8.1,1.0,.12,materials.interiorWall,house.x,.68,house.z-3.08);
       const board=createFurniture(house,'board',0,-2.75,0,'Começar aula');registerActivity(house,board,'school');
@@ -289,7 +270,7 @@
     if(hash%5===0){const cap=new THREE.Mesh(new THREE.SphereGeometry(.42,12,8,0,Math.PI*2,0,Math.PI*.48),renderMat(0x2f7ed6,{roughness:.62}));cap.position.set(0,2.28,0);cap.scale.y=.55;group.add(cap);box(.28,.04,.3,0x2f7ed6,0,2.27,.39,group);}
     const npc={id,name,x,z,baseX:x,baseZ:z,color,group,pathRadius,phase:Math.random()*6.28,friendship:state.friendship[id]||0,body,head,limbs:{leftArm,rightArm,leftLeg,rightLeg},brain:{state:'idle',target:null,nextThink:0,fearUntil:0,lastVehicle:'',lastVehicleAt:0,lastPlayerAt:0,wanderUntil:0,memory:[]}};
     const badge=new THREE.Sprite(new THREE.SpriteMaterial({map:iconTexture(name.charAt(0),'#ffffff','#15314b'),transparent:true,depthWrite:false}));badge.position.set(0,2.85,0);badge.scale.set(.5,.5,.5);badge.visible=false;group.add(badge);npc.badge=badge;
-    if(id!=='michelle-ottovias')applyNpcToyTheme(npc,npcToyTheme(id));world.npcs.push(npc);registerInteractable({id:`npc-${id}`,type:'npc',icon:'💬',label:`Conversar com ${name}`,radius:2.7,priority:160,getPos:()=>({x:npc.group.position.x,z:npc.group.position.z}),action:()=>talkToNPC(npc)});return npc;
+    if(id!=='michelle-ottovias'&&!OT_CHILD_WORLD)applyNpcToyTheme(npc,npcToyTheme(id));world.npcs.push(npc);registerInteractable({id:`npc-${id}`,type:'npc',icon:'💬',label:`Conversar com ${name}`,radius:2.7,priority:160,getPos:()=>({x:npc.group.position.x,z:npc.group.position.z}),action:()=>talkToNPC(npc)});return npc;
   }
 
   function createNpcMobility(npc,type,route,speed){
@@ -307,6 +288,7 @@
     ride.traverse(o=>{if(o.isMesh)addVoxelOutline(o,0x132238,.22);});const projected=buildTrafficRoute(route.map(p=>({x:p[0],z:p[1]})),true);npc.group.position.set(projected[0].x,0,projected[0].z);npc.group.userData.roadPath=projected;npc.group.userData.trafficCorridor=type==='car'?1.05:.82;npc.baseX=projected[0].x;npc.baseZ=projected[0].z;npc.mobility={id:`mobility-${npc.id}`,type,route:projected,index:1,speed:speed||({car:4.4,moto:4.8,bike:3.2,skate:2.8})[type]||3,currentSpeed:0,radius:type==='car'?1.45:type==='moto'?.9:.7,group:npc.group,ride,wheels};return npc;
   }
   function createEnemy(type,x,z){
+    if(OT_CHILD_WORLD)return null;
     const group=new THREE.Group();group.position.set(x,0,z);worldGroup.add(group);
     if(type==='slime'){box(1.35,.85,1.35,0x31c65b,0,.45,0,group);box(.18,.12,.05,0xff2441,-.28,.55,.7,group);box(.18,.12,.05,0xff2441,.28,.55,.7,group);}
     else if(type==='bat'){box(1.0,.75,1.0,0x35165e,0,1.4,0,group);box(.8,.18,.45,0x8c4ddb,-.8,1.4,0,group);box(.8,.18,.45,0x8c4ddb,.8,1.4,0,group);box(.12,.1,.05,0xff31f5,-.22,1.48,.54,group);box(.12,.1,.05,0xff31f5,.22,1.48,.54,group);}

@@ -9,6 +9,7 @@
  */
 // @otthi-module-body
   'use strict';
+  const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
   const OTTHI_GAME_WEB_BUILD = '705.26.5-frota-serra-garagem';

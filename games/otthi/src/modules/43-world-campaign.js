@@ -84,7 +84,7 @@
       for(const x of [-13,12]){wall(stone,x,1.5,-6,3,3,5);box(steel,x,3.15,-6,3.5,.3,5.5);box(glass,x,2,-3.42,2.3,1,.15);}
       for(const x of [-12,12])for(let z=1;z<11;z+=3)box(line,x,.1,z,1.5,.04,.14);
       campaignCylinder(root,steel,8,7,-8,.14,14);box(line,9,11,-8,2,.9,.08);
-      const sign=campaignSign(root,'QUARTEL-GENERAL','PATRULHAS · RETORNO À BASE',7);if(sign)sign.position.z=1;
+      const sign=campaignSign(root,'CENTRO DE RESGATE','POLÍCIA · BOMBEIROS · APOIO',7);if(sign)sign.position.z=1;
     }else if(site.id==='airbase'){
       box(road,0,.04,-3,82,.08,29);box(steel,0,.1,4,80,.06,8);
       for(let i=-3;i<=3;i++)box(line,i*10,.15,4,4,.025,.22);
@@ -101,13 +101,13 @@
       box(line,23,.15,4,9,.025,9);box(road,23,.18,4,8.6,.025,8.6);
       for(const x of [21.5,24.5])box(line,x,.21,4,.35,.02,4);box(line,23,.21,4,3,.02,.35);
       for(let x=-39;x<40;x+=8)for(const z of [-.4,8.4])campaignCylinder(root,line,x,.25,z,.12,.35);
-      const sign=campaignSign(root,'BASE AÉREA','HANGARES · PISTA · HELIPONTO',8);if(sign)sign.position.z=-7;
+      const sign=campaignSign(root,'AEROPORTO OT','HANGARES · PISTA · HELIPONTO',8);if(sign)sign.position.z=-7;
     }else{
       box(road,0,.04,0,15.8,.08,9.8);
       for(const x of [-5,5]){wall(green,x,1.25,2.8,4,2.5,3);box(steel,x,2.65,2.8,4.4,.3,3.4);box(glass,x,1.6,1.2,2,1,.1);}
       for(const x of [-6.5,6.5]){wall(stone,x,.5,-2.7,2.2,1,1);box(line,x,.8,-3.24,1.6,.12,.08);}
       campaignCylinder(root,steel,0,4,3,.09,8);box(line,1,7,3,2,1,.08);
-      const sign=campaignSign(root,'SETOR NORTE','OBJETIVOS DA OPERAÇÃO',5);if(sign)sign.position.z=0;
+      const sign=campaignSign(root,'CENTRO DE VISITANTES','TRILHAS · NATUREZA · PASSEIOS',5);if(sign)sign.position.z=0;
     }
     campaignBatch(root);worldGroup.add(root);worldCampaign.landmarks.push({site,root});
   }
@@ -115,6 +115,7 @@
     if(worldCampaign.loadingAircraft||worldCampaign.aircraft)return;
     worldCampaign.loadingAircraft=true;
     try{
+      if(OT_CHILD_WORLD)otGames.assets||={};
       if(!otGames.assets){const response=await fetch(new URL('assets/ot-games-airframes.json',OTTHI_GAME_LIVE_BASE));if(!response.ok)throw Error('airframes');otGames.assets=await response.json();}
       const root=new THREE.Group();root.name='CAMPAIGN_PARKED_AIRCRAFT';worldCampaign.aircraft=root;
       for(const mode of Object.keys(WORLD_CAMPAIGN_AIRCRAFT)){const p=campaignAircraftPose(mode),mesh=campaignCreateAircraft(mode);mesh.name=mode;mesh.position.set(p.x,groundHeightAt(p.x,p.z)+campaignAircraftHeight(mode),p.z);mesh.rotation.y=p.yaw;root.add(mesh);}
@@ -167,14 +168,17 @@
     try{return JSON.parse(safeLocalGet(worldCampaign.recordKey)||'{}')||{};}catch{return{};}
   }
   function campaignPending(){
+    if(OT_CHILD_WORLD)return null;
     try{const p=JSON.parse(safeLocalGet(worldCampaign.recordKey+':session')||'null');return p?.v===1&&['ground','plane','helicopter'].includes(p.mode)&&['depart','travel','combat','return'].includes(p.phase)&&p.body&&['x','y','z','yaw','pitch','hp'].every(k=>Number.isFinite(p.body[k]))&&p.body.hp>0&&p.body.hp<=100&&p.body.y>=0&&p.body.y<=650&&Math.abs(p.body.pitch)<=.85?p:null;}catch{return null;}
   }
   function campaignPersist(){
+    if(OT_CHILD_WORLD)return;
     const m=worldCampaign.mission,g=otGames;if(!m||m.recorded||!g.active||!g.body)return;
     if(g.state==='DEFEAT'||g.state==='SPAWN_BLOCKED'){safeLocalSet(worldCampaign.recordKey+':session','null');return;}
     safeLocalSet(worldCampaign.recordKey+':session',JSON.stringify({v:1,mode:m.mode,phase:m.phase,runId:m.runId,previousWaypoint:m.previousWaypoint,difficulty:g.difficulty,body:{...g.body},goal:g.goal,kills:g.kills,wave:g.wave,ammo:g.ammo,reserve:g.reserve,elapsed:g.elapsed,onGround:g.onGround,groundLaunch:g.groundLaunch,airspeed:g.airspeed,collective:g.collective,enemies:g.enemies.filter(e=>e.active).map(e=>({kind:e.kind,x:e.x,y:e.y,z:e.z,hp:e.hp}))}));
   }
   async function campaignResume(){
+    if(OT_CHILD_WORLD)return false;
     const p=campaignPending();if(!p||otGames.active||!running||paused)return false;
     const b=typeof v704WorldBounds==='function'?v704WorldBounds():{minX:-190,maxX:190,minZ:-190,maxZ:190};
     if(p.body.x<b.minX||p.body.x>b.maxX||p.body.z<b.minZ||p.body.z>b.maxZ)return false;
@@ -234,6 +238,7 @@
     });
   }
   async function campaignStart(mode){
+    if(OT_CHILD_WORLD){openCivilMissions();return false;}
     const site=campaignHome(mode);
     if(!running||paused||otGames.active||campaignDist(player,site)>site.radius){
       toast('Vá até a base correta e termine outras atividades primeiro.','warn',3000);return false;
@@ -272,6 +277,7 @@
     otGamesLeave();toast('Missão concluída e retorno registrado.','success',4200);
   }
   function updateWorldCampaign(dt){
+    if(OT_CHILD_WORLD)worldCampaign.mission=null;
     campaignEnsure();document.body.classList.toggle('campaign-operation-active',!!worldCampaign.mission);if(!worldCampaign.initialized||paused)return;
     const focus=otGames.active?otGames.body:player;
     for(const item of worldCampaign.landmarks)item.root.visible=campaignDist(focus,item.site)<240;

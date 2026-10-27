@@ -4,19 +4,41 @@
  * definidos aqui para impedir que módulos independentes criem mundos incompatíveis.
  */
 // @otthi-module-body
+  // Civilian neighbourhoods and cross-region routes share the same road graph.
+  const CIVIL_WORLD_LINKS=(()=>{
+    const highways=[],nodes={},edges=[],at=new Map();
+    const anchors={'24,220':'EXT_SNOW_GATE','240,220':'EXT_serra-access_2','-550,100':'EXT_forest-link_2','-360,475':'COAST_W','680,190':'EXT_serra-loop_5','360,10':'A_SE','171,-216':'EXT_airport-access_3','300,10':'A_S','-240,160':'CV_SE'};
+    function node(x,z,id){const key=x+','+z;if(anchors[key])return anchors[key];if(at.has(key))return at.get(key);nodes[id]={x,z};at.set(key,id);return id;}
+    function path(id,name,points,width=9){const ids=points.map(([x,z],i)=>node(x,z,'CIVIL_'+id+'_'+i));for(let i=1;i<ids.length;i++)edges.push([ids[i-1],ids[i]]);highways.push({id:'ottovias-civil-'+id,name,width,shoulder:1,closed:false,points:points.map(([x,z])=>({x,z,y:0}))});return ids;}
+    path('snow-serra','Ligação Neve–Cordilheira',[[24,220],[120,210],[210,220],[240,220]],10);
+    path('forest-coast','Estrada Mata Grande–Praia',[[-550,100],[-550,240],[-500,360],[-420,440],[-360,475]],10);
+    path('serra-aurora','Estrada Cordilheira–Aurora',[[680,190],[680,60],[500,60],[360,10]],10);
+    const airport=path('airport-south','Ligação Sul do Aeroporto',[[171,-216],[200,-260],[200,-400]],10);edges.push([airport.at(-1),'EXT_outer-link_4'],[airport.at(-1),'EXT_outer-link_5']);
+    path('cable-access','Acesso ao Teleférico',[[210,220],[210,235]],8);
+    path('snow-homes','Alameda dos Chalés',[[24,220],[-74,220]],7);
+    // Actual intersections, rather than disconnected visual street segments.
+    const aX=[240,254,304,354,360],aZ=[42,68];
+    for(const z of aZ)path('aurora-row-'+z,'Bairro Jardim Aurora',aX.map(x=>[x,z]),7);
+    for(const x of[254,304,354]){const ids=path('aurora-col-'+x,'Bairro Jardim Aurora',[[x,10],[x,42],[x,68]],7);edges.push([ids[0],'A_S']);}
+    const cX=[-290,-240,-190];
+    for(const z of[195,221])path('coast-row-'+z,'Bairro Jardim da Costa',cX.map(x=>[x,z]),7);
+    path('coast-top','Acesso Jardim da Costa',[[-290,160],[-240,160],[-190,160]],7);
+    for(const x of cX)path('coast-col-'+(-x),'Bairro Jardim da Costa',[[x,160],[x,195],[x,221]],7);
+    return{highways,nodes,edges};
+  })();
   const WORLD_LAYOUT_V704=Object.freeze({
     version:704,
     bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
     mountainRanges:Object.freeze([{"id":"snow-west","x":-118,"z":300,"rx":64,"rz":66,"height":62,"snow":true},{"id":"snow-central","x":-53,"z":371,"rx":66,"rz":75,"height":93,"snow":true},{"id":"snow-east","x":84,"z":376,"rx":63,"rz":73,"height":108,"snow":true},{"id":"snow-ridge","x":147,"z":305,"rx":66,"rz":76,"height":76,"snow":true},{"id":"serra-one","x":287,"z":325,"rx":77,"rz":86,"height":70,"snow":false},{"id":"serra-two","x":369,"z":394,"rx":86,"rz":77,"height":112,"snow":true},{"id":"serra-three","x":491,"z":359,"rx":78,"rz":80,"height":98,"snow":true},{"id":"serra-four","x":581,"z":452,"rx":83,"rz":53,"height":90,"snow":true},{"id":"serra-five","x":692,"z":438,"rx":92,"rz":62,"height":124,"snow":true},{"id":"forest-hill","x":-630,"z":232,"rx":108,"rz":115,"height":55,"snow":false},{"id":"forest-peak","x":-746,"z":325,"rx":76,"rz":107,"height":85,"snow":false}]),
     coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
-      hq:{id:'hq',label:'Quartel-General',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
-      airbase:{id:'airbase',label:'Base Aérea',x:27,z:-169,radius:36,navX:27,navZ:-159},
-      north:{id:'north',label:'Operação Norte',x:85,z:115,radius:30,navX:85,navZ:109}
+      hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
+      airbase:{id:'airbase',label:'Aeroporto OT',x:27,z:-169,radius:36,navX:27,navZ:-159},
+      north:{id:'north',label:'Centro de Visitantes',x:85,z:115,radius:30,navX:85,navZ:109}
     }),
     campaignAircraft:Object.freeze({
-      plane:{id:'plane',label:'Embarque no avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},
-      helicopter:{id:'helicopter',label:'Embarque no helicóptero',x:50,z:-165,yaw:0,radius:6}
+      plane:{id:'plane',mode:'plane',model:'light',livery:'tour',height:.92,label:'Embarque no avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},
+      helicopter:{id:'helicopter',mode:'helicopter',model:'helicopter',livery:'tour',height:1.0,label:'Embarque no helicóptero',x:50,z:-165,yaw:0,radius:6}
     }),
     cities:Object.freeze({
       aurora:{id:'aurora',label:'Nova Aurora',x:300,z:-40,color:0x638fa9},
@@ -57,6 +79,7 @@
     ]),
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
+      ...CIVIL_WORLD_LINKS.highways,
       {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
       {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
       {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
@@ -99,6 +122,7 @@
       })
     ]),
     nodes:Object.freeze({
+      ...CIVIL_WORLD_LINKS.nodes,
       "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
@@ -139,6 +163,7 @@
       CQ_TURN:{x:-145,z:-38},CQ_GATE:{x:-120,z:-38},CA_TURN:{x:20,z:-153},CA_GATE:{x:27,z:-159},CN_GATE:{x:85,z:109}
     }),
     edges:Object.freeze([
+      ...CIVIL_WORLD_LINKS.edges,
       ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],

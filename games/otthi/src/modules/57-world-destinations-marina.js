@@ -95,11 +95,11 @@
       ['coast-view','🏖️','Praia da Costa Verde','Orla, ondas, quiosques e acesso à marina.'],
       ['snow-lookout','❄️','Neve · mirante e chalés','Siga a OTTOVIAS pela Ligação Norte.']
     ];
-    return '<h3>Explore o mundo</h3><div class="choice-grid world-explore-directory">'+destinations.map(([id,icon,title,description])=>'<button class="choice" data-explore-nav="'+id+'"><b>'+icon+' '+title+'</b><span>'+description+'</span><small>TRAÇAR ROTA NO GPS</small></button>').join('')+'<button class="choice" data-explore-war><b>🎯 WAR Combate · jogar aqui</b><span>Controle de toque ou câmera frontal com corpo + mãos / brinquedo.</span><small>ABRIR CONTROLES E DIFICULDADE</small></button></div><h3>Operações e missões</h3>';
+    return '<h3>Explore o mundo</h3><div class="choice-grid world-explore-directory">'+destinations.map(([id,icon,title,description])=>'<button class="choice" data-explore-nav="'+id+'"><b>'+icon+' '+title+'</b><span>'+description+'</span><small>TRAÇAR ROTA NO GPS</small></button>').join('')+'<button class="choice" data-explore-civil><b>🤝 Missões do nosso mundo</b><span>Praias, vizinhança, neve, polícia, bombeiros e passeios.</span><small>INDIVIDUAL OU COOPERATIVO</small></button></div>';
   }
   function worldExploreBindDirectory(root){
     root.querySelectorAll('[data-explore-nav]').forEach(button=>button.onclick=()=>{const id=button.dataset.exploreNav;if(!currentMapLocations().some(x=>x.id===id)){toast('O destino está carregando. Tente novamente em instantes.','warn',2200);return;}setWaypoint(id);const loc=currentMapLocations().find(x=>x.id===id);worldCampaign.route={...loc,label:loc.name};worldCampaign.time=1;closeModal();toast('GPS: '+loc.name+'. Siga a rota até o local.','good',3000);});
-    root.querySelector('[data-explore-war]')?.addEventListener('click',()=>{closeModal();otGamesChoose();document.querySelector('[data-ot-mode="ground"]')?.focus();});
+    root.querySelector('[data-explore-civil]')?.addEventListener('click',()=>{closeModal();openCivilMissions();});
   }
   function updateWorldDestinations(){
     if(!worldDestinations.ready){if(!cityCoast.ready||!world.boats)return;createMarina();createSnowDestination();worldDestinations.ready=true;}

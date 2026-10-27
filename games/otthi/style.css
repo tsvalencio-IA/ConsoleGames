@@ -2074,3 +2074,24 @@ body.modal-open #ot-games-hud{visibility:hidden;pointer-events:none}
 #vehicleEngineSwitch{position:fixed;z-index:170;left:12px;top:calc(145px + env(safe-area-inset-top,0px));min-height:44px;background:#274c59;color:#f0e1bd;border:1px solid #92b2b0;font:800 12px system-ui}#vehicleEngineSwitch[hidden]{display:none!important}body.modal-open #vehicleEngineSwitch{display:none}@media(max-height:480px){#vehicleEngineSwitch{top:72px;left:12px;min-height:38px;font-size:10px;padding:7px}}
 
 #vehicleActionBtn[data-private-garage-park="true"]{animation:none!important;transform:none!important}
+
+/* ===== MODULE: 25-civil-community.css ===== */
+/* Mission and transport controls share the mobile safe area and scroll vertically. */
+.civil-mission-tabs{display:flex;gap:8px;position:sticky;top:0;background:#123344;z-index:2;padding:8px 0}
+.civil-mission-tabs .btn{flex:1;min-width:0;min-height:46px}
+.civil-mission-cards .choice{text-align:left;min-width:0;padding:14px;display:flex;flex-direction:column;gap:7px}
+.civil-mission-cards small{font-size:13px;line-height:1.45;color:#b8ced3}
+.civil-mission-cards em{font-size:11px;font-style:normal;color:#9ee0c8;font-weight:800;letter-spacing:.06em;margin-top:4px}
+.civil-step-list{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}
+.civil-step-list li{display:flex;gap:11px;align-items:center;background:#0d2d3d;border:1px solid #77959c55;border-radius:12px;padding:11px;line-height:1.4}
+.civil-step-list li>b{display:grid;place-items:center;flex:0 0 29px;width:29px;height:29px;border-radius:50%;background:#36515d}
+.civil-step-list .current{border-color:#8cdbc2;background:#17483f}.civil-step-list .done{opacity:.75}.civil-step-list .done>b{background:#397a5c}
+.civil-team{display:flex;flex-wrap:wrap;gap:8px}.civil-team span{padding:8px 12px;border-radius:10px;background:#153c4e}
+#civil-mission-task{position:absolute;z-index:156;left:50%;transform:translateX(-50%);bottom:calc(100px + var(--safe-bottom,0px));width:min(210px,45vw);min-height:48px;padding:8px 12px;white-space:normal;line-height:1.25;touch-action:manipulation}
+#civil-mission-task[hidden]{display:none!important}
+#civil-cable-hud{position:absolute;z-index:170;left:50%;bottom:calc(14px + var(--safe-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:12px;max-width:calc(100vw - 24px);box-sizing:border-box;padding:10px 12px;border:1px solid #91b6bd;background:#133342ed;border-radius:14px;color:#eef4e9;font-size:13px}
+#civil-cable-hud b{max-width:180px;line-height:1.4}#civil-cable-hud .btn{min-height:48px;min-width:135px}
+body.civil-cable-riding #joystick,body.civil-cable-riding #runBtn,body.civil-cable-riding #jumpBtn,body.civil-cable-riding #specialBtn{visibility:hidden;pointer-events:none}
+.ot-games-active .ot-games-reticle{display:none}
+@media(max-width:600px){.civil-mission-cards{grid-template-columns:minmax(0,1fr)!important}.civil-step-list li{padding:9px;font-size:13px}#civil-cable-hud{width:calc(100vw - 24px);justify-content:space-between}#civil-cable-hud .btn{font-size:12px;min-width:125px}}
+@media(max-height:480px){#civil-mission-task{bottom:calc(80px + var(--safe-bottom,0px));min-height:44px;width:180px}#civil-cable-hud{padding:7px 10px;bottom:calc(7px + var(--safe-bottom,0px))}}
