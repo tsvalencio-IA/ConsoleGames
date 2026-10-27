@@ -33,3 +33,8 @@ Os arquivos `world-civil-debug.mjs` e logs temporários não fazem parte do prod
 - Sete aeronaves civis/balão passaram por embarque, família, pouso/desembarque e recarga das posições salvas.
 - Dois boxes ocupados por usuários diferentes foram preservados no cenário compartilhado. Render dos modelos continua estilizado; não é réplica CAD.
 - Sem publicação até completar as verificações finais. Android físico, câmera de usuário e rede entre dois celulares não foram homologados.
+
+
+## Encerramento
+
+R27.1 publicada e conferida. Veja VALIDACAO.md e os relatórios JSON para os resultados finais e limitações.

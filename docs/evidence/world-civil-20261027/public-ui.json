@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.27.1-mundo-familia",
+  "revision": "bdeccca31a011319",
+  "missionCreated": "beach",
+  "newHouses": 19,
+  "npcBalloons": 9,
+  "staticAudit": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "roads": 22,
+    "highways": 33,
+    "structures": 52,
+    "zones": 24,
+    "paths": 24,
+    "signs": 16
+  },
+  "runtimeAudit": {
+    "version": 704,
+    "passed": true,
+    "problems": [],
+    "houses": 32,
+    "vehicles": 23,
+    "colliders": 462,
+    "hazards": 5,
+    "interactables": 796,
+    "at": 1793114522909
+  },
+  "overflow": false,
+  "errors": [],
+  "limits": [
+    "Public source and UI in isolated Chromium. Renderer throttled during setup; screenshot invokes one real native frame. No production account, physical Android or live multiplayer."
+  ]
+}
