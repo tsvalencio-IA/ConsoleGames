@@ -564,7 +564,7 @@
     {
       "file": "src/modules/66-civil-missions.js",
       "description": "Missões individuais e cooperativas do mundo civil",
-      "sha256Body": "029b8930cf4d0b3950d506606a00ed0541706d34071e92f729236d96a41bc849",
+      "sha256Body": "f1de46e34f77a967c5855117e1c84e8b04fdf01a094666f0f786f6a96a9e7904",
       "startLine": 0,
       "endLine": 0
     },
@@ -580,7 +580,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Ações civis visíveis, travessia de moradores e continuidade do teleférico online",
-      "sha256Body": "95484dbb552890d4aa12e33a7005253c241e2bf5570f99c724e3502b3daaacb7"
+      "sha256Body": "7347a6ef2d8748bc3bf68f38c0e97cd2974f19d794a50bc57103c3a87fc2c913"
     }
   ],
   "styles": [
