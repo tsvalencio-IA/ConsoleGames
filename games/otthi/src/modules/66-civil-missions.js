@@ -14,9 +14,9 @@
  function civilMemberOnline(uid){if(uid===civilNetUid())return civilOnline();const p=remotePresence.get(uid);return !!p&&airNow()-Number(p.updatedAt||0)<35000;}
  function civilTeamReady(r){return r.mode==='solo'||civilOnline()&&Object.keys(r.members).length===2&&Object.keys(r.members).every(civilMemberOnline);}
  function civilActor(uid){if(uid===civilNetUid()||uid===civilSoloUid())return{...player,...(otGames.active?otGames.body:{}),air:otGames.active?otGames.mode:'',onGround:otGames.active?otGames.onGround:player.grounded,vehicle:player.vehicle,boating:player.boating};const p=remotePresence.get(uid);if(!p)return null;const a=p.familyRide?.kind==='aircraft'?p.familyRide:null;return{...p,...(a||{}),air:a?.mode||'',onGround:a?.onGround??true,vehicle:!!p.vehicle,boating:!!p.boating};}
- function civilSubject(id){const p=civilCommunity.targets.get(id);if(!p)return null;if(id==='crossing-neighbor'&&civilCommunity.crossingNpc)return{...p,x:civilCommunity.crossingNpc.group.position.x,z:civilCommunity.crossingNpc.group.position.z};return p;}
+ function civilSubject(id,uid=civilSoloUid()){const p=civilCommunity.targets.get(id);if(!p)return null;if(id==='crossing-neighbor'){const n=civilEscortNpc(uid);if(n)return{...p,x:n.group.position.x,z:n.group.position.z};}return p;}
  function civilValidateTask(book,id,uid,phase,subject){
-  const p=book.progress(id,uid),target=civilSubject(subject),actor=civilActor(uid);if(!p||!target||!actor||!civilTeamReady(p.record)||phase!==p.record.phase||!p.step?.targets.includes(subject))return false;
+  const p=book.progress(id,uid),target=civilSubject(subject,uid),actor=civilActor(uid);if(!p||!target||!actor||!civilTeamReady(p.record)||phase!==p.record.phase||!p.step?.targets.includes(subject))return false;
   if(Math.hypot(Number(actor.x)-target.x,Number(actor.z)-target.z)>target.radius+.8)return false;
   if(p.step.vehicle){if(actor.air!==p.step.vehicle||Number(actor.y)-groundHeightAt(actor.x,actor.z)<Number(target.minAltitude||10))return false;}
   else if(actor.air||actor.vehicle||actor.boating||uid===civilNetUid()&&civilCommunity.ride)return false;
@@ -24,13 +24,13 @@
  }
  function civilHandle(book,uid,command,payload){
   const now=airNow(),p=payload||{};let ok=false,data=null;
-  if(command==='create'){if(p.mode==='coop'&&!civilOnline())return{ok:false};const r=book.create(p.id,p.type,uid,p.mode,p.difficulty,now);ok=!!r;data=r&&{id:r.id};}
-  else if(command==='join')ok=book.join(p.id,uid,now);
+  if(command==='create'){if(p.mode==='coop'&&!civilOnline()||Object.values(book.data.records).some(r=>r.members[uid]&&['lobby','active'].includes(r.status)))return{ok:false};civilPruneRecords(book);const r=book.create(p.id,p.type,uid,p.mode,p.difficulty,now);ok=!!r;data=r&&{id:r.id};}
+  else if(command==='join')ok=!Object.values(book.data.records).some(r=>r.id!==p.id&&r.members[uid]&&['lobby','active'].includes(r.status))&&book.join(p.id,uid,now);
   else if(command==='ready')ok=book.ready(p.id,uid,p.ready);
   else if(command==='start'){const r=book.data.records[p.id];ok=!!r&&civilTeamReady(r)&&book.start(p.id,uid);}
   else if(command==='leave')ok=book.leave(p.id,uid);
   else if(command==='begin'){if(civilValidateTask(book,p.id,uid,p.phase,p.subject))ok=book.begin(p.id,uid,p.phase,p.subject,now);}
-  else if(command==='finish'){if(civilValidateTask(book,p.id,uid,p.phase,p.subject))ok=book.finish(p.id,uid,p.phase,p.subject,now);}
+  else if(command==='finish'){if(civilValidateTask(book,p.id,uid,p.phase,p.subject)&&(p.subject!=='crossing-neighbor'||civilEscortArrived(uid)))ok=book.finish(p.id,uid,p.phase,p.subject,now);}
   else if(command==='cancel-task'){book.cancelTask(p.id,uid);ok=true;}
   else if(command==='cable-claim'){
    const actor=civilActor(uid),from=CIVIL_CABLE[p.from],cabin=Number(p.cabin),timing=civilCableTiming(cabin),count=Math.max(1,Math.min(4,Number(p.count)||1)),transit=book.data.transit||(book.data.transit={clients:{}});transit.clients||={};
@@ -39,7 +39,7 @@
     for(let start=0;start+count<=8;start++)if(Array.from({length:count},(_,i)=>start+i).every(i=>!occupied.has(i))){transit.clients[uid]={uid,cabin,from:p.from,to:p.from==='base'?'top':'base',startSeat:start,count,at:now,questId:String(p.questId||'')};ok=true;data=transit.clients[uid];book.data.revision++;break;}
    }
   }else if(command==='cable-leave'){
-   const transit=book.data.transit,r=transit?.clients?.[uid];if(r&&civilCableTiming(r.cabin).docked===r.to&&now-r.at>20000){if(r.questId){const questBook=r.questId.startsWith('solo-')?civilMissions.solo:book;questBook.ride(r.questId,r.questId.startsWith('solo-')?civilSoloUid():uid,r.from==='base'?'cable-up':'cable-down',now);}delete transit.clients[uid];book.data.revision++;ok=true;}
+   const transit=book.data.transit,r=transit?.clients?.[uid];if(r&&civilCableTiming(r.cabin).docked){const arrived=civilCableTiming(r.cabin).docked===r.to&&now-r.at>20000;if(arrived&&r.questId&&!r.questId.startsWith('solo-'))book.ride(r.questId,uid,r.from==='base'?'cable-up':'cable-down',now);delete transit.clients[uid];book.data.revision++;ok=true;}
   }
   return{ok,data};
  }
@@ -65,9 +65,9 @@
  function civilRebindSolo(){const own=civilSoloUid();for(const r of Object.values(civilMissions.solo.data.records)){if(r.mode!=='solo'||r.members[own]||Object.keys(r.members).length!==1)continue;const previous=Object.keys(r.members)[0];r.members={[own]:r.members[previous]};r.host=own;for(const key of Object.keys(r.counts))if(key.endsWith(':'+previous)){r.counts[key.slice(0,-previous.length)+own]=r.counts[key];delete r.counts[key];}const tokens={};for(const[key,value]of Object.entries(r.tokens)){const k=key.replace(':'+previous+':',':'+own+':');tokens[k]={...value,uid:value.uid===previous?own:value.uid};}r.tokens=tokens;if(r.rides[previous]){r.rides[own]=r.rides[previous];delete r.rides[previous];}r.pending={};}}
  function civilPersist(){if(!civilMissions.ready)return;state.civilWorld.solo=civilMissions.solo.data;state.civilWorld.shared=civilMissions.shared.data;state.civilWorld.sharedRoom=civilMissions.room;saveState();}
  function civilAvailableTarget(current=civilCurrent()){
-  if(!current)return null;const p=current.book.progress(current.r.id,current.uid);if(!p?.step)return null;
+  if(!current)return null;const p=current.book.progress(current.r.id,current.uid);if(!p?.step||p.count>=p.quota)return null;
   if(p.step.requiresRide&&!p.record.rides[current.uid]?.[p.step.requiresRide]){const station=p.step.requiresRide==='cable-up'?'base':'top';return{id:'civil-cable-boarding',label:'Embarcar na '+CIVIL_CABLE[station].label,name:'Teleférico · embarque',...CIVIL_CABLE[station],x:CIVIL_CABLE[station].x+3.2,z:CIVIL_CABLE[station].z+3.4,boarding:true};}
-  for(const id of p.step.targets){const token=`${p.record.phase}:${p.step.sharedSubjects?'team':current.uid}:${id}`;if(!p.record.tokens[token])return civilSubject(id);}return null;
+  for(const id of p.step.targets){const token=`${p.record.phase}:${p.step.sharedSubjects?'team':current.uid}:${id}`;if(!p.record.tokens[token])return civilSubject(id,current.uid);}return null;
  }
  function civilMissionLocation(){const p=civilAvailableTarget();return p?{...p,id:'civil-objective',name:p.label||p.name,label:p.label||p.name,navX:p.x,navZ:p.z,icon:p.icon||'🤝',group:'Missão atual',description:civilCurrent()?.book.progress(civilCurrent().r.id,civilCurrent().uid)?.step?.title||''}:null;}
  function civilRoute(force=false){const c=civilCurrent(),p=civilMissionLocation(),key=c?.r.id+':'+c?.r.phase+':'+p?.label;if(!p||!state.civilWorld.routeEnabled)return;if(force||key!==civilMissions.routeKey){civilMissions.routeKey=key;civilMissions.syncingRoute=true;setWaypoint('civil-objective');civilMissions.syncingRoute=false;}}
@@ -76,7 +76,7 @@
  function updateCivilHUD(){
   if(!civilMissions.ready)return;const c=civilCurrent(),p=c&&c.book.progress(c.r.id,c.uid),def=p?.definition,step=p?.step;
   els.missionChapter.textContent=c?c.r.mode==='coop'?'MISSÃO COOPERATIVA':'MISSÃO INDIVIDUAL':'VIVER E EXPLORAR';els.missionTitle.textContent=def?def.icon+' '+def.title:'Nosso Mundo OT';
-  els.missionStep.textContent=!c?'Escolha uma aventura, visite os vizinhos ou explore o mapa.':c.r.status==='lobby'?'Aguardando a dupla ficar pronta.':c.r.status==='completed'?'Aventura concluída. Toque para escolher a próxima.':!civilTeamReady(c.r)?'Aguardando o outro jogador reconectar. Progresso preservado.':step?step.title+' · você '+p.count+'/'+p.quota:'Missão encerrada.';
+  els.missionStep.textContent=!c?'Escolha uma aventura, visite os vizinhos ou explore o mapa.':c.r.status==='lobby'?'Aguardando a dupla ficar pronta.':c.r.status==='completed'?'Aventura concluída. Toque para escolher a próxima.':!civilTeamReady(c.r)?'Aguardando o outro jogador reconectar. Progresso preservado.':step?p.count>=p.quota?'Sua parte está concluída. Aguardando seu parceiro.':step.title+' · você '+p.count+'/'+p.quota:'Missão encerrada.';
   els.missionFill.style.width=(c?c.r.status==='completed'?100:Math.round((c.r.phase+(p.quota?Math.min(1,p.count/p.quota):0))/(def?.steps.length||1)*100):0)+'%';els.missionCard.title='Missões individuais e cooperativas';els.missionCard.setAttribute('aria-label',els.missionTitle.textContent+'. '+els.missionStep.textContent);
  }
  async function civilCreateMission(type,mode){
@@ -101,7 +101,7 @@
   if(!running)return;openModal('OT GAMES · nosso mundo',worldExploreDirectoryHtml()+'<div class="modal-actions"><button class="btn primary" data-civil-missions>MISSÕES INDIVIDUAIS E COOP</button><button class="btn" data-civil-family>FAMÍLIA</button><button class="btn" data-civil-map>MAPA E GPS</button></div>',root=>{worldExploreBindDirectory(root);root.querySelector('[data-civil-missions]').onclick=()=>openCivilMissions();root.querySelector('[data-civil-family]').onclick=()=>{closeModal();window.OTTHI_FAMILY.open();};root.querySelector('[data-civil-map]').onclick=()=>{closeModal();openMap();};});
  }
  async function civilTaskAt(subject){
-  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.task||characterActivities.session)return;
+  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.task||characterActivities.session)return;
   const data={id:c.r.id,phase:c.r.phase,subject};if(!await civilCommand('begin',data)){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
   if(otGames.active){civilMissions.task={...data,air:true,started:airNow(),duration};return;}
   const kind=subject.startsWith('fire-training')?'civil-hose':subject.startsWith('crossing-cone')?'civil-cone':subject==='crossing-neighbor'?'civil-escort':subject.startsWith('beach-litter')?'civil-pickup':'civil-deliver',point=kind==='civil-escort'?{x:309,z:46}:{x:player.x,z:player.z},pose={x:point.x,y:groundHeightAt(point.x,point.z),z:point.z,yaw:Math.atan2(target.x-player.x,target.z-player.z)};
@@ -109,7 +109,7 @@
   if(started){characterActivities.session.duration=Math.max(duration/1000,kind==='civil-escort'?1.8:0);civilMissions.task={...data,air:false,started:airNow(),duration};}else civilCommand('cancel-task',data);
  }
  function updateCivilMissions(){
-  if(!ensureCivilMissions())return;civilApplyShared();civilRebindSolo();const shared=civilMissions.shared.data,own=civilNetUid(),claim=shared.transit?.clients?.[own];
+  if(!ensureCivilMissions())return;civilCheckRoom();civilApplyShared();civilPruneTransit();civilRebindSolo();const shared=civilMissions.shared.data,own=civilNetUid(),claim=shared.transit?.clients?.[own];
   if(claim&&!civilCommunity.ride){civilCommunity.ride={...claim};civilCommunity.waiting=null;clearMovementInputs();}
   const c=civilCurrent(),p=c&&c.book.progress(c.r.id,c.uid);if(c&&c.r.status==='completed'&&!state.civilWorld.rewardReceipts[c.r.id]){state.civilWorld.rewardReceipts[c.r.id]=Date.now();state.civilWorld.completedTypes[c.r.type]=(state.civilWorld.completedTypes[c.r.type]||0)+1;const amount=p.definition.reward+(c.r.difficulty==='hard'?50:0);addCoins(amount);addXP(50);awardMedal(p.definition.title);civilPersist();toast('Aventura concluída! +'+amount+' moedas.','good',4000);}
   if(civilMissions.task){const t=civilMissions.task;if(!c||c.r.id!==t.id||!civilTeamReady(c.r)||!civilValidateTask(c.book,t.id,c.uid,t.phase,t.subject)||!t.air&&!characterActivities.session){civilCommand('cancel-task',t).catch(()=>{});if(characterActivities.session?.kind.startsWith('civil-'))stopCharacterActivity();civilMissions.task=null;}else if(t.air&&airNow()-t.started>=t.duration){civilMissions.task=null;civilCommand('finish',t).catch(()=>{});}}
@@ -124,6 +124,7 @@
  const civilSeatsBefore=familyCarrySeats;familyCarrySeats=function(ride,members,controller,owner){if(ride.kind!=='cable')return civilSeatsBefore(ride,members,controller,owner);const seats={};[controller,...members.filter(id=>id!==controller)].forEach((id,i)=>{const n=ride.seatStart+i;seats[id]={x:n<4?-1:1,y:.57,z:-1.25+(n%4)*.82};});return seats;};
  const civilFamilyCarryBefore=updateFamilyCarry;updateFamilyCarry=function(){civilFamilyCarryBefore();if(familyCarry.ride?.kind==='cable')for(const id of familyCarry.ride.members){const a=familyWorld.actors[id];if(a?.ridePose)a.ridePose.scale=.72;}};
  // Retire the former chapter/operations director, not the family's saved progress.
+ openJobCenter=openCivilMissions;startJob=function(){openCivilMissions();return false;};updateCareerMissions=()=>{};
  evaluateMissions=function(){activeMission=null;if(civilMissions.ready)updateCivilHUD();};updateMissionHUD=updateCivilHUD;chapterNextDestination=()=>null;openObjectivesPanel=openCivilMissions;openCoopMissionCenter=()=>openCivilMissions('coop');updateCoopMissions=()=>{};coopMissionMapLocations=()=>[];activeCoopMission=()=>null;activeCoopRecord=()=>null;campaignOpen=openCivilWorldHub;
  Object.assign(window.OTTHI_COOP,{open:()=>openCivilMissions('coop'),active:()=>null,templates:()=>OTCivilMissionCore.definitions});window.OTTHI_CAMPAIGN.open=openCivilWorldHub;window.OT_GAMES.open=openCivilWorldHub;
  Object.assign(CHARACTER_ACTIVITIES,{'civil-pickup':['Recolhendo para reciclagem',2],'civil-deliver':['Conversando e entregando',2],'civil-hose':['Usando a mangueira',2],'civil-cone':['Posicionando cone',2],'civil-escort':['Acompanhando a travessia',2]});

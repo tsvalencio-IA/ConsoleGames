@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.26.5-frota-serra-garagem',
+    build: '705.27.1-mundo-familia',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

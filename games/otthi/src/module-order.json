@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.26.5-frota-serra-garagem",
+  "build": "705.27.1-mundo-familia",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a85e656fb1829711fd81e49414722682559c48be872e905d12cc60a2d15d01ab"
+      "sha256Body": "b3b6c01e9d17e256d7170d0aca6c1ab8fd6697221f2b78a4b3d8247ad58fc4c1"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "37e1f96ba4f9c5fabf3bd7491320667643553dc894c84a9f619fc3cc5022c5d2"
+      "sha256Body": "5e8eccb4e36864038839f21a16c2f2634d617047855da3684c7b904578f7c35d"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -189,7 +189,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "11864db26052ae86594f2175d9b0921d4237d632f86ce0376afbfb25b00aa9dc"
+      "sha256Body": "781b7c2341bbc1a7931944f33fb73e5d6f791ed7bbea6c14722ed13ec6e49571"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "710e1603a8a9677123c7c64d1851752e9c9a6be3dcf5e0546d1e3ebbe2400030"
+      "sha256Body": "86a3d756b93db75d59d6e8bf040fee4f435e80d428e4fd8d7b00f73d17d46aa8"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -378,7 +378,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "810f0c8faf72e0c486b2cdbe9f7889b8cd19cc2720c4917114ee7b298ba6dc94"
+      "sha256Body": "43b88ef57dcbfa9081d386c366a7ad48bdb4a00769d6e10c1aa45990f016aab7"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -413,7 +413,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
-      "sha256Body": "b5fecdf71d42868c34ac293189facd8af5e71c108248852a4d7f789b89a6425b"
+      "sha256Body": "98786a163f40f31c7222510902819ccfb8e50972095b2d5d509bb5190a6ec0ab"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
@@ -427,7 +427,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "c69ecb4f95d6945ebaf002a0f9b1c811464f224e48f44eeeee89da9c39c74647"
+      "sha256Body": "e7ad916023cb09f4537633df29fd525294b5bf3f63674391578de028d6d0ec81"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -557,14 +557,14 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "c69f1291bf40a8d2c3de5112aa811f4b33c5cbb9e36e78eb9c664db57b5668ad",
+      "sha256Body": "2c129b2a78767426985e109a0db31867f1656b59d10ce829083d96e1ac62a794",
       "startLine": 0,
       "endLine": 0
     },
     {
       "file": "src/modules/66-civil-missions.js",
       "description": "Missões individuais e cooperativas do mundo civil",
-      "sha256Body": "7c1e4d64e28bd294bc2fac7ea9e08fe07e58492980626cab2289e8f0696e68fc",
+      "sha256Body": "029b8930cf4d0b3950d506606a00ed0541706d34071e92f729236d96a41bc849",
       "startLine": 0,
       "endLine": 0
     },
@@ -573,7 +573,14 @@
       "description": "Dois elevadores independentes e manutenção preservada",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "c1e4d58a10b05eefecaa8780197cb8566683dbf74c25cfe6ee8715b282a103ce"
+      "sha256Body": "32824975c375f64c9068741951e12e6d690ecab54323d984cc9a756123bfa28d"
+    },
+    {
+      "file": "src/modules/68-civil-actions-transit.js",
+      "startLine": 0,
+      "endLine": 0,
+      "description": "Ações civis visíveis, travessia de moradores e continuidade do teleférico online",
+      "sha256Body": "95484dbb552890d4aa12e33a7005253c241e2bf5570f99c724e3502b3daaacb7"
     }
   ],
   "styles": [
@@ -762,7 +769,7 @@
     {
       "file": "src/styles/25-civil-community.css",
       "description": "Missões e embarque civil responsivos",
-      "sha256Body": "35e449bb0d6162efb67638116ff156201f6d68ab8ff9bbcb523d2d916fd3873c",
+      "sha256Body": "e21faad28e71677a9f2608b2536f2c7560d5cf53f352aa4d66c515e296451918",
       "startLine": 0,
       "endLine": 0
     }

@@ -18,3 +18,5 @@ body.civil-cable-riding #joystick,body.civil-cable-riding #runBtn,body.civil-cab
 .ot-games-active .ot-games-reticle{display:none}
 @media(max-width:600px){.civil-mission-cards{grid-template-columns:minmax(0,1fr)!important}.civil-step-list li{padding:9px;font-size:13px}#civil-cable-hud{width:calc(100vw - 24px);justify-content:space-between}#civil-cable-hud .btn{font-size:12px;min-width:125px}}
 @media(max-height:480px){#civil-mission-task{bottom:calc(80px + var(--safe-bottom,0px));min-height:44px;width:180px}#civil-cable-hud{padding:7px 10px;bottom:calc(7px + var(--safe-bottom,0px))}}
+
+#civil-cable-waiting{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:86;max-width:90vw;padding:9px 12px;border:1px solid #8bb8ae;border-radius:14px;background:#143b42ed;color:white;font-size:13px;pointer-events:auto}

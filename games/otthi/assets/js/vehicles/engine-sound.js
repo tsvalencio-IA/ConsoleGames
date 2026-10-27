@@ -10,8 +10,9 @@
   const k=(model+' '+kind).toLowerCase();
   if(/bicycle|\bbike\b|skate/.test(k))return{id:'silent',variant:'bicicleta',cyl:0};
   if(/balloon|balão/.test(k))return{id:'balloon',variant:'queimador',cyl:0};
-  if(/electric|eletrico|elétrico/.test(k))return{id:'electric',variant:'elétrico',cyl:0,max:6500,idle:0};
+  if(/electric|eletrico|elétrico|attivi|attive/.test(k))return{id:'electric',variant:'elétrico',cyl:0,max:6500,idle:0};
   if(/helicopter|helicóptero/.test(k))return{id:'helicopter',variant:'rotor',cyl:4,idle:360,max:410,rotor:true};
+  if(/boat|lancha/.test(k))return{id:'marine',variant:'motor-de-popa',cyl:3,idle:800,max:5600,ratios:[0,28],tone:1100};
   if(/plane|avião|cargo/.test(k))return{id:'airplane',variant:'hélice',cyl:6,idle:750,max:2700,ratios:[0,42],tone:950};
   if(/mobylette|mobilete|moped/.test(k))return{id:'motorcycle',variant:'mobilete-2t',cyl:1,twoStroke:true,idle:1500,max:6500,ratios:[0,13,25],tone:1500};
   if(/hornet/.test(k))return{id:'motorcycle',variant:'quatro-cilindros-600',cyl:4,idle:1300,max:10500,ratios:[0,7,12,18,25,34,44],tone:2100};

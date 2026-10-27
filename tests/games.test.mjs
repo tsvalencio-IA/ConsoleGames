@@ -91,7 +91,7 @@ test("jornadas dos mundos leem contadores existentes sem inventar progressão",(
  for(const [folder,page] of [["otthi","index.html"],["familia","3d/index.html"]]){
    const prefix="games/"+folder+"/";
    const html=read(prefix+page),quest=read(prefix+"quest-chapter.js");
-   assert(html.includes("quest-chapter.js"),"Jornada não inserida: "+folder);
+   if(folder==="otthi"){assert(!html.includes("quest-chapter.js"),"Old extra journey must retire from the civilian world");assert(html.includes("civil-mission-core.js"));}else assert(html.includes("quest-chapter.js"),"Jornada não inserida: "+folder);
    assert(quest.includes("console-games:v2:worldquest:"),"Namespace de quests divergente");
    assert(quest.includes("localStorage.setItem(key"),"Quest sem persistência separada");
    assert(quest.includes("peak"),"Quest sem leitura de incremento verdadeiro");

@@ -65,7 +65,7 @@ RELEASE_FILES = [
 ]
 
 RELEASE_FILES += ['assets/js/world/civil-mission-core.js', 'assets/js/vehicles/engine-sound.js']
-RELEASE_FILES += ['recorded-audio.js', 'combat-visuals.js', 'audio/CREDITS.txt', 'audio/sources.json', 'audio/rifle-1.ogg', 'audio/rifle-2.ogg', 'audio/smg-1.ogg', 'audio/smg-2.ogg', 'audio/marksman.ogg', 'audio/engine-car.ogg', 'audio/engine-moto.ogg', 'audio/engine-heli.ogg', '../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css', '../ar/js/game_ar.js', '../ar/world-renderer.js', '../ar/combat-visuals.js', '../ar/recorded-audio.js']
+RELEASE_FILES += ['../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css']
 
 
 def body_after_marker(path: Path, marker: str) -> str:

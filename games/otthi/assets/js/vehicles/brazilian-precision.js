@@ -8,7 +8,7 @@ function build(T,key,H){
  function surface(n,m,fn,c=paint,k='paint'){const p=[],idx=[];for(let i=0;i<=n;i++)for(let j=0;j<=m;j++)p.push(...fn(i/n,j/m));for(let i=0;i<n;i++)for(let j=0;j<m;j++){const a=i*(m+1)+j;idx.push(a,a+m+1,a+m+2,a,a+m+2,a+1);}const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setIndex(idx);g.computeVertexNormals();return add(g,c,0,0,0,1,1,1,k);}
  function line(p,r=.007,c=black,k='fixed'){return tube(p,r,c,k);}
  function rb(c,x,y,z,w,h,d,k='fixed',r=.02){const a=-w/2,b=-h/2,q=new T.Shape();r=Math.min(r,w*.25,h*.4);q.moveTo(a+r,b);q.lineTo(a+w-r,b);q.quadraticCurveTo(a+w,b,a+w,b+r);q.lineTo(a+w,b+h-r);q.quadraticCurveTo(a+w,b+h,a+w-r,b+h);q.lineTo(a+r,b+h);q.quadraticCurveTo(a,b+h,a,b+h-r);q.lineTo(a,b+r);q.quadraticCurveTo(a,b,a+r,b);const bevel=Math.min(.008,r*.3,d*.2),g=new T.ExtrudeGeometry(q,{depth:d-bevel*2,bevelEnabled:true,bevelSize:bevel,bevelThickness:bevel,bevelSegments:3,curveSegments:8});g.translate(0,0,-d/2+bevel);return add(g,c,x,y,z,1,1,1,k);}
- const width=z=>W*(1-(suv?.045:.10)*Math.pow(Math.min(1,Math.abs(z)/L),7)),belt=z=>P.b+(suv?.022:.045)*Math.exp(-((z+.6)**2)/.8),hood=z=>P.b+(suv?.002:.003)-(suv?.061:.065)*Math.max(0,(z-P.front)/(L-P.front)),edgeBottom=z=>{let y=suv?.255:.225;for(const a of[P.fa,P.ra]){const d=z-a,r=P.r+.041;if(Math.abs(d)<r)y=Math.max(y,P.r+.008+Math.sqrt(r*r-d*d));}return y;};
+ const width=z=>W*(1-(suv?.045:.10)*Math.pow(Math.min(1,Math.abs(z)/L),7)),belt=z=>P.b+(suv?.022:.045)*Math.exp(-((z+.6)**2)/.8),hood=z=>P.b+(suv?.002:.045)-(suv?.061:.035)*Math.max(0,(z-P.front)/(L-P.front)),edgeBottom=z=>{let y=suv?.255:.225;for(const a of[P.fa,P.ra]){const d=z-a,r=P.r+.041;if(Math.abs(d)<r)y=Math.max(y,P.r+.008+Math.sqrt(r*r-d*d));}return y;};
  // Full curved side panels, with open wheel arches and soft shoulder sections.
  for(const a of[-1,1])surface(144,10,(u,t)=>{const z=-L+P.l*u,lo=edgeBottom(z),hi=z>P.front?hood(z):belt(z),x=width(z)-.045*(1-t)**2+.022*Math.sin(t*Math.PI);return[a*x,lo+(hi-lo)*t,z];});
  surface(42,28,(u,v)=>{const z=P.front+(L-P.front)*u,x=(v*2-1)*width(z);return[x,hood(z)+(suv?.025:.051)*(1-(x/width(z))**2),z];});
@@ -21,7 +21,7 @@ function build(T,key,H){
  // A small hatch has a curved, lower roof; the SUV has an upright C pillar.
  const roofW=W*(suv?.85:.80),roofAt=(z,x)=>P.h-(suv?.037:.063)*(x/roofW)**2-(suv?.020:.040)*Math.pow((z-(P.rf+P.rr)/2)/((P.rf-P.rr)/2),2);
  surface(28,28,(u,v)=>{const z=P.rr+(P.rf-P.rr)*u,x=(v*2-1)*roofW;return[x,roofAt(z,x),z];},suv?0x202a2f:paint,suv?'fixed':'paint');
- function endGlass(front){const z=front?P.front:P.rear,tz=front?P.rf:P.rr,base=front?P.b+.022:belt(P.rear)+.022,bw=width(z)*.94,tw=roofW*.98;
+ function endGlass(front){const z=front?P.front:P.rear,tz=front?P.rf:P.rr,base=front?hood(P.front)+.016:belt(P.rear)+.022,bw=width(z)*.94,tw=roofW*.98;
   const p=(u,t)=>{const v=u*2-1,x=v*(bw+(tw-bw)*t);return[x,base+(roofAt(tz,v*roofW)-.012-base)*t,z+(tz-z)*t+(front?1:-1)*.025*(1-v*v)*Math.sin(t*Math.PI)];};
   surface(28,16,p,glass,'glass');for(const u of[0,1])line(Array.from({length:17},(_,j)=>p(u,j/16)),suv?.023:.029,paint,'paint');for(const t of[0,1])line(Array.from({length:29},(_,j)=>p(j/28,t)),.012,black);
  }
@@ -31,14 +31,17 @@ function build(T,key,H){
   // These contours follow the curved glass perimeter; no block behind the window.
   const p=(z,t,topZ=z)=>[a*(width(z)*.954*(1-t)+roofW*t),belt(z)+.025+(roofAt(topZ,roofW)-.03-belt(z)-.025)*t,z+(topZ-z)*t];
   const panes=suv?[[P.front-.035,bp+.04,P.rf-.025,bp+.04],[bp-.04,-1.17,bp-.04,-1.12],[-1.22,P.rear+.07,-1.17,P.rr-.02]]:[[P.front-.04,bp+.035,P.rf-.035,bp+.035],[bp-.035,P.rear+.075,bp-.035,P.rr+.015]];
+  surface(10,12,(u,t)=>p(bp+.035-u*.070,t),suv?black:0x24333a,'fixed');
   for(const[f,b,tf,tb]of panes){surface(20,12,(u,t)=>p(f+(b-f)*u,t,tf+(tb-tf)*u),glass,'glass');for(const u of[0,1])line(Array.from({length:13},(_,j)=>p(f+(b-f)*u,j/12,tf+(tb-tf)*u)),.013,black);}
+  // Continuous roof return and stronger A pillar close the glazing perimeter.
+  surface(28,3,(u,t)=>{const z=P.rr+(P.rf-P.rr)*u;return[a*(roofW+.012*t),roofAt(z,roofW)-.033*t,z];});
   const sill=[];for(let i=0;i<=36;i++){const z=P.rear+(P.front-P.rear)*i/36;sill.push(p(z,0));}line(sill,.013,black);
   line([[a*width(P.front)*.96,P.b+.025,P.front],[a*roofW,roofAt(P.rf,roofW),P.rf],[a*roofW,roofAt(P.rr,roofW),P.rr],[a*width(P.rear)*.955,belt(P.rear)+.025,P.rear]],suv?.026:.035,paint,'paint');
   // The full rear quarter supports the vertical lamps and meets the roof.
   // It stays outside the rear window instead of covering its transparent pane.
-  surface(24,18,(u,t)=>{const bottomZ=-L+(P.rear+.075+L)*u,topZ=-L+.11+(P.rr+.015+L-.11)*u,topY=(suv?.935:1.028)+(roofAt(P.rr,roofW)-.020-(suv?.935:1.028))*u,z=bottomZ+(topZ-bottomZ)*t,x=width(bottomZ)*(1-t)+roofW*t;return[a*x,belt(bottomZ)+.015+(topY-belt(bottomZ)-.015)*t,z];});
+  surface(24,18,(u,t)=>{const bottomZ=-L+(P.rear+.075+L)*u,topZ=(suv?-L+.11:P.rear+.03)+(P.rr+.015-(suv?-L+.11:P.rear+.03))*u,topY=(suv?.935:1.028)+(roofAt(P.rr,roofW)-.020-(suv?.935:1.028))*u,z=bottomZ+(topZ-bottomZ)*t,x=width(bottomZ)*(1-t)+roofW*t;return[a*x,belt(bottomZ)+.015+(topY-belt(bottomZ)-.015)*t,z];});
   // Upright painted return around each tail lamp, joined to the hatch deck.
-  surface(14,14,(u,t)=>{const x=a*(width(-L)-.17*u),base=belt(-L),top=(suv?.91:1.035)-.13*u;return[x,base+(top-base)*t,-L+.014+.095*t*(1-u)];});
+  surface(14,14,(u,t)=>{const x=a*(width(-L)-.17*u),base=belt(-L),top=(suv?.91:1.035)-.13*u;return[x,base+(top-base)*t,-L+.014+(suv?.095:.20)*t*(1-u)];});
   for(const z of[P.front-.10,bp,P.rear+.14])line([[a*(width(z)+.004),belt(z)-.025,z],[a*(width(z)-.009),.29,z]],.0037,0x435158);
   const doorLine=[];for(let i=0;i<=24;i++){const z=P.rear+.14+(P.front-P.rear-.24)*i/24;doorLine.push([a*(width(z)-.007),.274,z]);}line(doorLine,.0037,0x435158);
   for(const z of[bp+.15,P.rear+.26])rb(suv?paint:black,a*(width(z)+.016),belt(z)-.090,z,.024,.032,.125,suv?'paint':'fixed',.011);
@@ -77,15 +80,17 @@ function build(T,key,H){
    line(Array.from({length:65},(_,i)=>lamp(i/64,0,.010)),.005,black);
    rb(black,a*.52,.317,L+.017,.24,.144,.032,'fixed',.04);ell(chrome,a*.54,.316,L+.041,.039,.038,.008,'chrome');ell(0x96acb4,a*.54,.316,L+.052,.029,.028,.006,'lens');
    // Smoky vertical lamps sit beside the rounded hatch shoulders.
-   const z=-L+.052;rb(black,a*.555,.842,z,.135,.362,.034,'fixed',.048);rb(0x6a323b,a*.555,.850,z-.023,.110,.327,.012,'lens',.037);rb(0xaf3341,a*.555,.940,z-.031,.091,.112,.007,'lens',.025);rb(0xb6c5c7,a*.555,.834,z-.033,.092,.051,.007,'lens',.010);rb(0xa2323b,a*.555,.748,z-.031,.090,.09,.007,'lens',.022);
+   const z=-L+.105,tail=(...args)=>{const mesh=rb(...args);mesh.rotation.x=.38;return mesh;};tail(black,a*.555,.842,z,.135,.362,.034,'fixed',.048);tail(0x6a323b,a*.555,.850,z-.023,.110,.327,.012,'lens',.037);tail(0xaf3341,a*.555,.940,z+.006,.091,.112,.007,'lens',.025);tail(0xb6c5c7,a*.555,.834,z-.035,.092,.051,.007,'lens',.010);tail(0xa2323b,a*.555,.748,z-.061,.090,.09,.007,'lens',.022);
   }
   rb(black,0,.670,L+.026,.473,.108,.026,'fixed',.02);for(const e of[-1,1])line([[-.221,.670+e*.032,L+.044],[.221,.670+e*.032,L+.044]],.007,chrome,'chrome');ring(0,.671,L+.058,.049,chrome);ell(0x982632,0,.671,L+.063,.042,.042,.008,'lens');name('FIAT',0,.671,L+.076,.067,.024);
   rb(black,0,.319,L+.018,.66,.142,.029,'fixed',.026);for(let i=0;i<3;i++)box(0x48565b,0,.274+i*.042,L+.037,.61,.008,.006);
-  for(const e of[-1,1]){rb(paint,0,.241,e*(L-.010),1.25,.095,.11,'paint',.032);line([[-.54,.37,e*(L+.008)],[.54,.37,e*(L+.008)]],.004,0x55656c);}
+  for(const e of[-1,1]){surface(36,8,(u,t)=>{const q=u*2-1,x=q*width(e*L),round=1-q*q;return[x,.205+t*.155,e*(L+.024+.055*round*Math.sin(t*Math.PI))];});line([[-.54,.37,e*(L+.008)],[.54,.37,e*(L+.008)]],.004,0x55656c);}
+  for(const a of[-1,1]){line([[a*(W+.008),.49,P.front-.10],[a*(W+.008),.49,P.rear+.23]],.011,0x35434a);line([[a*.49,.739,L+.015],[a*.31,.765,P.front+.04]],.004,0x59696d);}
+  ring(0,.735,-L-.035,.043,chrome);ell(0x982632,0,.735,-L-.044,.035,.035,.006,'lens');name('FIAT',0,.735,-L-.052,.058,.020,true);line([[-.18,.823,-L+.015],[.09,.858,-L+.075]],.007,black);
   rb(paint,0,.601,-L+.005,1.02,.20,.049,'paint',.05);rb(black,0,.635,-L-.026,.14,.033,.018,'fixed',.012);plate(.466,L+.052);plate(.457,-L-.038,true);name('Palio',.39,.695,-L-.027,.20,.049,true);name('FIRE ECONOMY',-.36,.696,-L-.027,.26,.032,true);name('Celebration',-.36,.648,-L-.027,.24,.032,true);
  }
  for(const[i,x,z]of[[0,-W+.035,P.fa],[1,W-.035,P.fa],[2,-W+.035,P.ra],[3,W-.035,P.ra]])wheel(i,x,z,P.r);
- root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:'model-specific-20261026-closed-shell',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
+ root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:suv?'model-specific-20261026-closed-shell':'palio-fire-2011-curved-panels-20261027',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
 }
 globalThis.OTBrazilPrecision={build};
 })();

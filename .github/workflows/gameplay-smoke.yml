@@ -100,7 +100,7 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install chromium
-      - name: Embarcar, pilotar, estacionar, encontrar praia e neve e abrir WAR
+      - name: Embarcar, pilotar, estacionar e explorar o mundo civil
         run: node tests/world-destinations-browser.mjs
       - name: Salvar evidências de embarque
         if: always()

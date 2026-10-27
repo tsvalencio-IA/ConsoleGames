@@ -54,6 +54,7 @@
   function stepWorldSimulation(dt){
     updatePlayUsage();
     if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
+    if(paused&&typeof updateCivilPaused==='function')updateCivilPaused(dt);
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.

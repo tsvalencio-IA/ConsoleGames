@@ -4,9 +4,9 @@
  */
 // @otthi-module-body
   const WORLD_CAMPAIGN_SITES=Object.freeze(typeof WORLD_LAYOUT_V704!=='undefined'?WORLD_LAYOUT_V704.campaignSites:{
-    hq:{id:'hq',label:'Quartel-General',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
-    airbase:{id:'airbase',label:'Base Aérea',x:27,z:-169,radius:36,navX:27,navZ:-159},
-    north:{id:'north',label:'Operação Norte',x:85,z:115,radius:30,navX:85,navZ:109}
+    hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
+    airbase:{id:'airbase',label:'Aeroporto OT',x:27,z:-169,radius:36,navX:27,navZ:-159},
+    north:{id:'north',label:'Centro de Visitantes',x:85,z:115,radius:30,navX:85,navZ:109}
   });
   const worldCampaign={initialized:false,landmarks:[],mission:null,route:null,routeUi:null,time:0,recordKey:''};
   const WORLD_CAMPAIGN_AIRCRAFT={
@@ -204,10 +204,10 @@
   function campaignMapLocations(){
     return [...Object.values(WORLD_CAMPAIGN_SITES),...['plane','helicopter'].map(campaignAircraftPose)].map(site=>({
       id:'campaign-'+site.id,name:site.label,
-      icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':site.id==='plane'?'✈️':site.id==='helicopter'?'🚁':'🎯',
-      group:'Bases e campanhas',x:site.x,z:site.z,navX:site.navX??site.x,navZ:site.navZ??site.z,
+      icon:site.id==='hq'?'🏛️':site.id==='airbase'?'🛫':site.id==='plane'?'✈️':site.id==='helicopter'?'🚁':'🧭',
+      group:'Aeroporto e serviços',x:site.x,z:site.z,navX:site.navX??site.x,navZ:site.navZ??site.z,
       missionTarget:!!worldCampaign.mission&&worldCampaign.route?.id===site.id,
-      description:site.id==='hq'?'Inicie patrulhas e siga por terra até o Setor Norte.':site.id==='airbase'?'Visite os hangares, a pista e o heliponto. Os veículos estacionados podem ser pilotados livremente.':site.id==='plane'||site.id==='helicopter'?'Aproxime-se da aeronave e toque em AÇÃO para embarcar e pilotar. Pouse e pare para sair.':'Local dos objetivos de campanha. Inicie antes sua missão na base correspondente.',
+      description:site.id==='hq'?'Apoio civil da polícia, dos bombeiros e do resgate.':site.id==='airbase'?'Visite os hangares, a pista e o heliponto. Os veículos estacionados podem ser pilotados livremente.':site.id==='plane'||site.id==='helicopter'?'Aproxime-se da aeronave e toque em AÇÃO para embarcar e pilotar. Pouse e pare para sair.':'Centro de visitantes, passeios e orientação sobre os destinos do mundo.',
       actions:['Marcar a rota azul no GPS','Viajar até o destino','Abrir MISSÕES ao chegar']
     }));
   }

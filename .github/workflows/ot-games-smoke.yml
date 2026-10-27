@@ -19,7 +19,7 @@ concurrency:
 jobs:
   camera-e-mundo:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,16 +35,19 @@ jobs:
           sleep 2
       - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
         run: node tests/war-camera-browser.mjs
-      - name: Inferência real do corpo e controle por objeto nos dois mundos
+      - name: Inferência real do corpo e controle por objeto no WAR original
         run: |
           node tests/war-body-model-browser.mjs
           node tests/war-object-browser.mjs
       - name: Arrastar a câmera e jogar com toques simultâneos no WAR
         if: ${{ always() && !cancelled() }}
         run: node tests/war-touch-browser.mjs
-      - name: Voar e trocar de modo na cena original do OT preservando a família
+      - name: Testar ações civis, teleférico, oficina e missões no mundo OT
         if: ${{ always() && !cancelled() }}
-        run: node tests/ot-games-browser.mjs
+        run: |
+          node tests/world-civil-browser.mjs
+          node tests/world-civil-multiplayer-browser.mjs
+          node tests/world-workshop-bays-browser.mjs
       - name: Guardar evidências
         if: always()
         uses: actions/upload-artifact@v4
@@ -55,6 +58,8 @@ jobs:
             test-results/war-touch/
             test-results/war-body/
             test-results/war-object/
-            test-results/ot-games/
+            test-results/world-civil-native/
+            test-results/world-civil-multiplayer/
+            test-results/workshop-bays/
           if-no-files-found: ignore
           retention-days: 14
