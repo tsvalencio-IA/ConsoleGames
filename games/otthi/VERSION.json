@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.4-atualizacao-segura",
+  "build": "705.28.5-cache-celular",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -288,7 +288,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70640,
+  "assetVersion": 70641,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

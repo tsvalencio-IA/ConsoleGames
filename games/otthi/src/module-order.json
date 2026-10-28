@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.4-atualizacao-segura",
+  "build": "705.28.5-cache-celular",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "53fe94b2aa3518463514a2fe303b2b1c5714f7922cc48f98dc422c9eda9b0656"
+      "sha256Body": "1bf7963923b640a5880e603ea329898676f834175f90d945bf48ee6e867baac2"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "650bc30b65d1b842e30151693cbfb52b7a7f277b869d88f9c2f314c3554ad910"
+      "sha256Body": "b65e822c996ab9ca81efeabb973f5082f2c8aa0513b264dc5e2c3eeda3f31fdf"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",

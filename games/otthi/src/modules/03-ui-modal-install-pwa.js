@@ -209,6 +209,7 @@
   }
 
   async function persistBeforeOtthiReload() {
+    await dbReady;
     try { await saveState(true); } catch {}
     try { await lastSavePromise; } catch {}
   }
@@ -218,10 +219,11 @@
     if(!navigator.onLine){toast('Conecte-se à internet para atualizar. Seu jogo continua disponível.','warn',3000);return false;}
     otthiUpdateReloading=true;
     try{
+      await dbReady;
       clearMovementInputs();
       if(typeof otGames!=='undefined'&&otGames.active)otGamesLeave({preserveCampaign:true});
       if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
-      savePlayerPosition(true);await persistBeforeOtthiReload();
+      if(running)savePlayerPosition(true);await persistBeforeOtthiReload();
       location.replace(new URL('../atualizar/',OTTHI_GAME_LIVE_BASE).href);return true;
     }catch(error){otthiUpdateReloading=false;toast('Não foi possível guardar a atualização. Tente novamente.','warn',3000);return false;}
   }

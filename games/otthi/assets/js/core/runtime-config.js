@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.4-atualizacao-segura',
+    build: '705.28.5-cache-celular',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
