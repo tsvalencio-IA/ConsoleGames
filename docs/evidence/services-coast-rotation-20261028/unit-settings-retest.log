@@ -1,0 +1,15 @@
+✔ kart: zoom moves road and actual competitors with the same camera; rear view reverses direction (750.683463ms)
+✔ flight: chase projection is finite in turns and cockpit returns to aircraft origin (38.59712ms)
+✔ tennis: loss holds racket without synthetic velocity; recovery and real wrist motion preserve direction (4.952271ms)
+✔ boxing: a preparation interval precedes a real attack and difficulty changes its pace (7.792153ms)
+✔ approved family rigs deform with actual Three.js bones and complete fetch once (5571.660284ms)
+✔ flight school: real throttle accelerates on runway and climb advances to the maneuver lesson (16405.310546ms)
+✔ player settings load after the game identity and all local assets are cached (0.738029ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23107.098788

@@ -1,0 +1,198 @@
+{
+  "errors": [],
+  "bays": [
+    {
+      "running": true,
+      "paused": false,
+      "context": "vehicle-garage-orange",
+      "bays": {
+        "ready": true,
+        "selected": 0,
+        "bays": [
+          {
+            "id": 0,
+            "x": 19.75,
+            "z": -18.75,
+            "height": 0,
+            "raised": false,
+            "busy": false,
+            "vehicleId": "garage-orange",
+            "controlX": 21.67,
+            "controlZ": -18.6,
+            "mechanic": "mecanico-oficina",
+            "action": false
+          },
+          {
+            "id": 1,
+            "x": 25,
+            "z": -18.75,
+            "height": 0,
+            "raised": false,
+            "busy": false,
+            "vehicleId": "",
+            "controlX": 26.92,
+            "controlZ": -18.6,
+            "mechanic": "workshop-mechanic-bay-2",
+            "action": false
+          }
+        ]
+      },
+      "room": {
+        "active": false,
+        "inside": null,
+        "units": [
+          {
+            "id": "garage-orange",
+            "catalogId": "garage-orange",
+            "model": "gol",
+            "unit": 1,
+            "stored": false
+          }
+        ],
+        "lastDelivery": null
+      },
+      "modal": "Preparando o mundo",
+      "blocked": [
+        {
+          "id": 0,
+          "centre": false,
+          "approach": false
+        },
+        {
+          "id": 1,
+          "centre": false,
+          "approach": false
+        }
+      ]
+    },
+    {
+      "running": true,
+      "paused": false,
+      "context": "workshop-lift-control",
+      "bays": {
+        "ready": true,
+        "selected": 1,
+        "bays": [
+          {
+            "id": 0,
+            "x": 19.75,
+            "z": -18.75,
+            "height": 0,
+            "raised": false,
+            "busy": false,
+            "vehicleId": "garage-orange",
+            "controlX": 21.67,
+            "controlZ": -18.6,
+            "mechanic": "mecanico-oficina",
+            "action": false
+          },
+          {
+            "id": 1,
+            "x": 25,
+            "z": -18.75,
+            "height": 0,
+            "raised": false,
+            "busy": false,
+            "vehicleId": "workshop-red",
+            "controlX": 26.92,
+            "controlZ": -18.6,
+            "mechanic": "workshop-mechanic-bay-2",
+            "action": false
+          }
+        ]
+      },
+      "room": {
+        "active": false,
+        "inside": null,
+        "units": [
+          {
+            "id": "garage-orange",
+            "catalogId": "garage-orange",
+            "model": "gol",
+            "unit": 1,
+            "stored": false
+          }
+        ],
+        "lastDelivery": null
+      },
+      "modal": "Preparando o mundo",
+      "blocked": [
+        {
+          "id": 0,
+          "centre": false,
+          "approach": false
+        },
+        {
+          "id": 1,
+          "centre": false,
+          "approach": false
+        }
+      ]
+    }
+  ],
+  "final": {
+    "running": true,
+    "paused": false,
+    "context": "player-home-garage",
+    "bays": {
+      "ready": true,
+      "selected": 1,
+      "bays": [
+        {
+          "id": 0,
+          "x": 19.75,
+          "z": -18.75,
+          "height": 2.35,
+          "raised": true,
+          "busy": false,
+          "vehicleId": "garage-orange",
+          "controlX": 21.67,
+          "controlZ": -18.6,
+          "mechanic": "mecanico-oficina",
+          "action": false
+        },
+        {
+          "id": 1,
+          "x": 25,
+          "z": -18.75,
+          "height": 2.35,
+          "raised": true,
+          "busy": false,
+          "vehicleId": "workshop-red",
+          "controlX": 26.92,
+          "controlZ": -18.6,
+          "mechanic": "workshop-mechanic-bay-2",
+          "action": false
+        }
+      ]
+    },
+    "room": {
+      "active": false,
+      "inside": null,
+      "units": [
+        {
+          "id": "garage-orange",
+          "catalogId": "garage-orange",
+          "model": "gol",
+          "unit": 1,
+          "stored": false
+        }
+      ],
+      "lastDelivery": null
+    },
+    "modal": "Casa de QA Serviços",
+    "blocked": [
+      {
+        "id": 0,
+        "centre": false,
+        "approach": false
+      },
+      {
+        "id": 1,
+        "centre": false,
+        "approach": false
+      }
+    ]
+  },
+  "passed": true
+}

@@ -1,0 +1,23 @@
+✔ combat: opening a mission and aiming never fire or pay automatically (108.304659ms)
+✔ combat: only the aligned virtual target receives damage; walls occlude shots (2.109467ms)
+✔ combat: magazine, timed reload and reserve prevent infinite ammunition (1.647829ms)
+✔ combat: attacks are telegraphed, physical walls block them and held cover reduces damage (1.448778ms)
+✔ combat: analog diagonal movement is normalized and aim axes remain independent (1.230088ms)
+✔ combat: scene swipes follow both axes, do not drift and respect pause and camera mode (1.915414ms)
+✔ combat: ADS enlarges the scene while preserving reticle and actual hit alignment (0.947561ms)
+✔ combat: every operation and difficulty can finish through actual shots, and defeat never unlocks weapons (22.664107ms)
+✔ combat: the front camera is a sensor and never replaces the battlefield (5.368079ms)
+✔ combat: held automatic fire has the same cadence on 30, 60 and 120 Hz screens (17.690543ms)
+✔ combat: the visible soldier head and legs acquire the target; pointing above the silhouette never does (1.440536ms)
+✔ combat: slow rendered frames preserve real reload duration, movement and weapon cadence (678.251835ms)
+✔ WAR sprint requires forward movement and stops for ADS, crouch, firing and release (5.04439ms)
+✔ WAR simple fire waits for aligned visible targets and stops when the sight or cover changes (3.957133ms)
+✔ WAR precision assist slows an aligned ADS swipe without moving the camera by itself (1.491253ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 966.245058

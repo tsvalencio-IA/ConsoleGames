@@ -1,0 +1,210 @@
+{
+  "passed": true,
+  "after": {
+    "ready": true,
+    "surfers": [
+      {
+        "id": "coast-surfer-0",
+        "position": [
+          -372.2753823016394,
+          0.020731130903294398,
+          528.2097782851744
+        ],
+        "visible": true,
+        "board": true
+      },
+      {
+        "id": "coast-surfer-1",
+        "position": [
+          -363.35969864081176,
+          -0.037445625458773404,
+          542.6613847997182
+        ],
+        "visible": true,
+        "board": true
+      },
+      {
+        "id": "coast-surfer-2",
+        "position": [
+          -350.94151443009036,
+          -0.08457084126010694,
+          532.9092916750119
+        ],
+        "visible": true,
+        "board": true
+      },
+      {
+        "id": "coast-surfer-3",
+        "position": [
+          -317.82994119366487,
+          -0.05069656696369154,
+          537.7618548363139
+        ],
+        "visible": true,
+        "board": true
+      },
+      {
+        "id": "coast-surfer-4",
+        "position": [
+          -277.54928653549223,
+          0.013897618041860044,
+          536.7058251100478
+        ],
+        "visible": false,
+        "board": false
+      },
+      {
+        "id": "coast-surfer-5",
+        "position": [
+          -254.26492518039882,
+          0.013334560147859553,
+          536.0779929076009
+        ],
+        "visible": false,
+        "board": false
+      }
+    ],
+    "seaTraffic": [
+      {
+        "name": "CIVIL_SEA_TOUR_0",
+        "position": [
+          -331.2171320441556,
+          0.10022790640006417,
+          587.4988356913815
+        ],
+        "visible": true,
+        "crew": 2
+      },
+      {
+        "name": "CIVIL_SEA_TOUR_1",
+        "position": [
+          -260.98076532169136,
+          0.1648758615691308,
+          586.0455614902437
+        ],
+        "visible": true,
+        "crew": 2
+      },
+      {
+        "name": "CIVIL_SEA_TOUR_2",
+        "position": [
+          -284.1027474126523,
+          0.09446129318100652,
+          617.2422283085618
+        ],
+        "visible": true,
+        "crew": 2
+      }
+    ]
+  },
+  "residents": [
+    {
+      "id": "coast-family-0",
+      "name": "Ana",
+      "x": -412,
+      "y": 0,
+      "z": 490,
+      "action": "stretch",
+      "visible": false,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-1",
+      "name": "Gustavo",
+      "x": -380,
+      "y": 0,
+      "z": 490,
+      "action": "talk",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-2",
+      "name": "Cecília",
+      "x": -348,
+      "y": 0,
+      "z": 490,
+      "action": "photo",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-3",
+      "name": "Marcos",
+      "x": -316,
+      "y": 0,
+      "z": 490,
+      "action": "stretch",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-4",
+      "name": "Rosa",
+      "x": -284,
+      "y": 0,
+      "z": 490,
+      "action": "talk",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-5",
+      "name": "Joaquim",
+      "x": -412,
+      "y": 0,
+      "z": 506,
+      "action": "photo",
+      "visible": false,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-6",
+      "name": "Vitória",
+      "x": -380,
+      "y": 0,
+      "z": 506,
+      "action": "stretch",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-7",
+      "name": "Henrique",
+      "x": -348,
+      "y": 0,
+      "z": 506,
+      "action": "talk",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-8",
+      "name": "Letícia",
+      "x": -316,
+      "y": 0,
+      "z": 506,
+      "action": "photo",
+      "visible": true,
+      "stop": 0
+    },
+    {
+      "id": "coast-family-9",
+      "name": "Samuel",
+      "x": -284,
+      "y": 0,
+      "z": 506,
+      "action": "stretch",
+      "visible": true,
+      "stop": 0
+    }
+  ],
+  "orientation": {
+    "lock": 0,
+    "unlock": 1
+  },
+  "errors": [],
+  "limits": [
+    "Native Chromium viewport rotation and pointer events; physical Android orientation sensor not exercised."
+  ]
+}

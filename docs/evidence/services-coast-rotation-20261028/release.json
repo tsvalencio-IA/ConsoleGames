@@ -1,0 +1,12 @@
+{
+  "source": "a0d467048900b4e39232bb7bd9e10f4aeb7a9408",
+  "branch": "world-revisao-20261022",
+  "deployment": "dpl_Av81G517sF5NeJfsNZHiKm6N9ijg",
+  "status": "READY",
+  "project": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+  "alias": "otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.2-oficina-praia-controles",
+  "assetVersion": 70638,
+  "revision": "c3c30da5bd462c6c",
+  "checkedAt": "2026-10-28T15:58:00.573180+00:00"
+}

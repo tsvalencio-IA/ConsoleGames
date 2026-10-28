@@ -5,16 +5,25 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 ## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Código em produção: `f917cc520eddc6774a5bae9152d5ea6ae332a29c`, branch `world-revisao-20261022`.
+- Código em produção: `a0d467048900b4e39232bb7bd9e10f4aeb7a9408`, branch `world-revisao-20261022`.
 - Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
-- Build `705.28.1-revisao-veiculos`, assetVersion `70637`, revisão `6729d7e56daa32b9`.
-- Vercel `dpl_Ci3963WZiLMWWZvRYbXVMULcaPan`, READY; SHA e alias confirmados.
+- Build `705.28.2-oficina-praia-controles`, assetVersion `70638`, revisão `c3c30da5bd462c6c`.
+- Vercel `dpl_Av81G517sF5NeJfsNZHiKm6N9ijg`, READY; SHA e alias confirmados.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
 - Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
 - APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## O que mudou nesta revisão
+## Correções mais recentes — oficina, garagem, praia, rotação e WAR
+
+- **Dois boxes:** uma interação de incêndio inativa capturava a ação perto do carro. Agora só aparece quando a ocorrência está ativa. O painel da oficina mostra os boxes 1 e 2 com ocupação e seleção independentes. Dois carros foram conduzidos por toque e alinhados nos dois boxes; os dois elevadores foram erguidos separadamente.
+- **Garagem:** corrigido o bloqueio causado pelo estado de pausa do próprio menu. O botão “Minha garagem” dentro da casa do jogador agora abre a garagem física. Entrada externa, menu e botão da casa exercitados. Outros imóveis continuam indicando a garagem da própria casa.
+- **Praia:** mais dez moradores com rotas/ações, seis NPCs surfando em pranchas e três lanchas circulando com dois ocupantes cada. Rotas analíticas e descarte de desenho por distância aproveitam os limites existentes; prancha e surfista somem juntos. Não foram criadas nesta revisão missões marítimas nem surf controlável pelo jogador.
+- **Rotação:** removido o bloqueio web em paisagem. Ao virar a tela, interface e controles se reorganizam; direção, acelerador e gestos de câmera ativos são liberados para não ficarem presos. Teste nativo Chromium em retrato/paisagem e três contatos simultâneos aprovado. APK atual já usa `fullUser`, e manifests PWA usam `any`: no Android, a rotação automática do sistema precisa estar habilitada. Nenhum APK novo foi compilado nem sensor físico validado.
+- **WAR apenas no console:** corrida por botão/Shift, cancelada ao mirar/atirar/abaixar; sensibilidade própria ao mirar; redução opcional da velocidade sobre alvo visível; modo avançado manual e modo simples que dispara após 0,14 s mantendo alvo visível alinhado. Preservados obstáculos, equipes, munição, recarga e controles por mão/corpo. Joystick à esquerda e arrasto livre da cena à direita, sem joystick direito. Quatro contatos simultâneos e três layouts aprovados. Isso melhora os controles; aparência, animações, mapas, progressão e áudio ainda não atingem o padrão COD Mobile pedido. Não afirmar equivalência nem nota 9,5/10.
+- Evidências desta revisão: `docs/evidence/services-coast-rotation-20261028/`. Publicação e conferências públicas concluídas: 95 recursos do mundo por hash, oito arquivos alterados de controle WAR e fluxo real de voo/órbita/cabine/mapa/rotação/orla, sem erros de JavaScript.
+
+## Recursos anteriores preservados
 
 1. **Câmera e passageiros** — módulo `69-vehicle-camera-passengers.js`: arrastar para girar 360°, manter o ângulo após soltar, aproximar e ver ocupantes por dentro/pela frente, botão para voltar a acompanhar o veículo. Funciona em carros, motos, lanchas, helicóptero, avião e balão; os fluxos nativos cobrem carro e três aeronaves. Passageiros acenam, humanos movimentam a cabeça e cães reagem. Motorista só acena parado. Família mantém os assentos. A câmera automática do voo também foi integrada à órbita, eliminando a disputa entre os dois posicionamentos.
 2. **Toque** — três contatos simultâneos de direção, aceleração e câmera aprovados; botão de ocupantes acessível em retrato e paisagem. Corrigido o toque que gerava `pointerdown` e um segundo `click` com `detail=0`, abrindo e fechando a cabine imediatamente. Teste dedicado exige uma ativação por toque, clique, Enter e espaço.
@@ -28,7 +37,7 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 
 ## Validação e limites
 
-- 290 verificações de unidade cobertas: 289 passaram no conjunto completo; uma falha era a correspondência textual da chamada `verifyResponse`. Formatação corrigida sem desativar SHA-256, e o teste mais dois de atualização passaram no reteste. Log original preservado.
+- Revisão atual: 293 verificações de unidade; 292 passaram no conjunto completo e uma falhou porque o teste não aceitava o novo parâmetro de cache na URL de `play-settings.js`. A correspondência foi corrigida preservando a exigência de ordem dos scripts; as sete verificações desse arquivo passaram no reteste. Logs completos preservados. Os três novos testes de combate também passaram com os testes existentes de WAR.
 - 102 grafos de áudio, 51 tipos/modelos em dois sistemas: amostras reproduzidas, aceleração, pausa, mute e descarte aprovados. Não certifica som do alto-falante do celular.
 - 44 modelos, três vistas cada, geometria/assentos/imagens aprovados e seis pranchas inspecionadas. A inspeção não comprova fidelidade de fábrica.
 - Câmera: eventos nativos, família de quatro, órbita persistente, interior, três toques e duas orientações aprovados.
@@ -36,18 +45,18 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 - Garagem/concessionária, reposição exata de aeronave em três minutos, pouso na rua, bloqueio real de trânsito, resgate OTTOVIAS, balão pilotado por NPC e auditoria das estradas aprovados.
 - Migração de worker antigo, recuperação de configuração antiga, preservação do progresso/armazenamento de outro aplicativo e início offline aprovados.
 - Instalador público: retrato, paisagem, desktop, sem JavaScript e worker instalado aprovados; download real do APK conferido.
-- Evidências: `docs/evidence/vehicle-camera-audio-20261028/`. Conferência pública final: 95 recursos protegidos por hash; 275 recursos compartilhados auditados, com reteste incremental dos dois alterados no último hotfix. No site público, sem interceptação/cap de desenho: início, quatro familiares no helicóptero, órbita, cabine, retorno à câmera de acompanhamento, decolagem, mapa e retorno ao mundo aprovados sem erros de JavaScript.
+- Evidências anteriores: `docs/evidence/vehicle-camera-audio-20261028/`, incluindo a auditoria dos 275 recursos compartilhados e o reteste incremental do hotfix anterior. Evidências atuais: `docs/evidence/services-coast-rotation-20261028/`: 95 recursos do mundo por hash e oito controles WAR alterados, todos idênticos ao código validado. No site público, sem interceptação/cap de desenho: início, quatro familiares no helicóptero, órbita, cabine, retorno à câmera de acompanhamento, decolagem, rotação nos dois sentidos, mapa, retorno ao mundo e novos surfistas/lanchas aprovados sem erros de JavaScript.
 - Não afirmar FPS sustentado, ausência de travamentos/piscadas no Android, precisão da câmera física, áudio perfeito ou multiplayer real entre celulares. Não foram testados no aparelho do Thiago. O vídeo recebido tinha área do jogo preta; não dizer que foi possível observar a piscada nele.
 
 ## Pedidos que continuam pendentes
 
 - Investigar travamentos e piscadas no Android real sem reduzir mapa, qualidade ou conteúdo.
 - Maior fidelidade das carrocerias e dos sons de todos os transportes, sobretudo motos e carros brasileiros. Não trocar todos por um modelo genérico.
-- NPCs surfando, pilotando lanchas, navios/barcos, pranchas e missões no mar. Interações do jogador para esquiar/brincar na neve e mais movimento nas regiões. Já há moradores, banhistas, vôlei, castelos, patinadores, trenós e caminhantes; não confundir isso com os novos pedidos.
+- Ampliar o mar com navios/barcos maiores, surf e prancha jogáveis e missões marítimas coerentes. Seis surfistas NPC e três lanchas tripuladas já foram adicionados; não apresentar isso como missão ou atividade jogável concluída. Interações do jogador para esquiar/brincar na neve e mais movimento nas regiões continuam pendentes. Já há moradores, banhistas, vôlei, castelos, patinadores, trenós e caminhantes.
 - Alternar recolhimento de aeronaves/balões com equipe terrestre, viatura, piloto, bloqueio e decolagem, além do resgate aéreo já existente.
 - Roupas para a família, mais personagens e criação ampliada de personagens.
 - Melhorar sons/animações das ações e movimentos do Fit Dance com teste corporal real.
-- Mundo aberto infantil/civil: manter polícia/bombeiros e remover tiros/guerra/operações militares do mundo. WAR continua no console para trabalho futuro; não apagar o jogo do console.
+- Mundo aberto infantil/civil: manter polícia/bombeiros e remover tiros/guerra/operações militares do mundo. WAR continua no console; evoluir conteúdo, animações e visual após a revisão atual dos controles. Não apagar o jogo do console.
 - Revisar regressões e multiplayer de cada jogo a partir de evidência concreta. Não garantir todos os jogos 10/10 nem alegar testes em dois celulares sem executá-los.
 
 ## Ambiente e publicação

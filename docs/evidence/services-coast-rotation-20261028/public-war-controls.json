@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/",
+  "build": "705.28.2-oficina-praia-controles",
+  "scope": "incremental-console-controls",
+  "checkedAt": "2026-10-28T15:55:34.281Z",
+  "resources": [
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 27264,
+      "sha256": "f50c4db9ca9cd18db57c866245fbf7aa7d3e7d9a42e56dd7e475ade61c59d4c8"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 17313,
+      "sha256": "77503de054733a98c2dac272c47786b812f883a098043e087b41b5ef8b639022"
+    },
+    {
+      "path": "games/ar/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 7946,
+      "sha256": "5e9052e3a7d56eb333b4a961b17db8da77c642a9e4e1c3a9f58aa508fdf3418b"
+    },
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26579,
+      "sha256": "14cbf674816b635e2619e047d26e5becc7fb0de36e321629eef1fdc6c62415d3"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 4526,
+      "sha256": "d02d47bcee05e95e39ddbbaee09f4239596d8a2345837cbd6410be18a8d0753f"
+    },
+    {
+      "path": "enhancements/control-modes.js",
+      "bytes": 18039,
+      "sha256": "c25860817dc37352676f5e5bae1672933d37502abd47347dfc4e97621d05432c"
+    },
+    {
+      "path": "enhancements/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    }
+  ]
+}
