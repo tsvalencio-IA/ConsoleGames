@@ -1,0 +1,33 @@
+✔ family visibility retains all original samples and blocker results (19.304657ms)
+✔ family plans long visibility at a bounded rate while movement continues every frame (1.966996ms)
+✔ a newly arrived obstacle blocks the next movement step despite a cached clear route (1.312493ms)
+✔ a substantial target change immediately invalidates a visibility decision (1.231892ms)
+✔ road projection preserves the exhaustive choice for occlusion, penalties and equal-distance roads (115.365715ms)
+✔ an unobstructed nearest road needs one line-of-sight query, rather than every road (6.165332ms)
+✔ render: repeated viewport notifications never clear an unchanged canvas (5.85395ms)
+✔ render: drawing-buffer changes wait for the replacement frame and use the latest viewport (1.884481ms)
+✔ finite lights outside the image are excluded only during rendering; every intersecting light stays (50.923927ms)
+✔ unlimited, zero-decay and shadow-casting lights are preserved; hidden parents are respected (11.24554ms)
+✔ lighting has no population cap and restores correctly as the camera turns (19.061863ms)
+✔ a quality setting with all glow lights disabled creates no padding or point-light shaders (10.812906ms)
+✔ point-light BRDF guard is installed once and leaves spot/directional lighting unchanged (5.287722ms)
+✔ spatial collision candidates preserve exhaustive results and inclusive edges across the whole map (197.765032ms)
+✔ building edits, disabled walls, array replacements and moving aircraft never leave stale collision bounds (3.153373ms)
+✔ cached highway queries preserve all map roads, shoulders, endpoints and closed loops (784.432469ms)
+✔ road point movement, replacement, width edits and newly connected roads invalidate correctly (5.279346ms)
+✔ idle service fleets never recalculate routes while already parked; a displaced vehicle still returns home (14.996626ms)
+✔ highway rail batching preserves every instance and shared cached geometry; dynamic nested objects remain independent (55.024645ms)
+✔ every resource that can block update installation has a release hash (6.902334ms)
+✔ automatic refresh waits for a safe place, without clearing other app storage or cookies (1.425233ms)
+✔ previous download reuse requires the exact new release SHA, rejecting stale or damaged bytes (25.486214ms)
+✔ play checks the remote release and routes a stale client to recovery before entering the world (2.901783ms)
+✔ reload cannot save default state over a profile still loading from the database (2.575763ms)
+✔ repeated play and continue taps cannot start two worlds while the version check is pending (3.709101ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1149.655639

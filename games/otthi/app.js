@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.5-cache-celular';
+  const OTTHI_GAME_WEB_BUILD = '705.28.6-fluidez';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2014,8 +2014,16 @@
   function v704HighwaySignPoint(spec){const highway=v704HighwayById(spec?.highwayId),points=highway?.points||[],index=Number(spec?.segmentIndex);if(!highway||!Number.isInteger(index)||index<0||index>=points.length-(highway.closed?0:1))return null;const a=points[index],b=points[(index+1)%points.length],t=Math.max(0,Math.min(1,Number(spec.t??.5))),dx=b.x-a.x,dz=b.z-a.z,heading=Math.atan2(dx,dz),rx=Math.cos(heading),rz=-Math.sin(heading),side=Number(spec.side||1)>=0?1:-1;
     /* O afastamento considera a meia largura física da placa, não apenas o poste. */
     const signHalfWidth=2.9,offset=Number(highway.width||10)/2+Number(highway.shoulder||0)+Number(spec.offset||2.2)+signHalfWidth;return{x:a.x+dx*t+rx*offset*side,z:a.z+dz*t+rz*offset*side,heading,highwayId:highway.id};}
-  function v704HighwaySegments(){const out=[];for(const highway of WORLD_LAYOUT_V704.highways||[]){const points=highway.points||[];for(let i=0;i<points.length-(highway.closed?0:1);i++){const a=points[i],b=points[(i+1)%points.length];out.push({id:`${highway.id}-${i}`,highwayId:highway.id,index:i,a,b,width:Number(highway.width||10),shoulder:Number(highway.shoulder||0)});}}return out;}
-  function v704HighwayAt(x,z,margin=0,includeShoulder=true){const point={x:Number(x),z:Number(z)};return v704HighwaySegments().some(seg=>v704DistanceToSegment(point,seg.a,seg.b).distance<=seg.width/2+(includeShoulder?seg.shoulder:0)+margin);}
+  function v704HighwaySegments(){return cachedWorldHighwaySegments();}
+  function v704HighwayAt(x,z,margin=0,includeShoulder=true){
+    const px=Number(x),pz=Number(z);if(!Number.isFinite(px)||!Number.isFinite(pz))return false;
+    for(const seg of v704HighwaySegments()){
+      const limit=seg.width/2+(includeShoulder?seg.shoulder:0)+margin;if(limit<0)continue;
+      const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((px-seg.a.x)*dx+(pz-seg.a.z)*dz)/len2)),ex=px-(seg.a.x+dx*t),ez=pz-(seg.a.z+dz*t);
+      if(ex*ex+ez*ez<=limit*limit)return true;
+    }
+    return false;
+  }
   function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin,len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
   function v704RoadAt(x,z,margin=0,includeSidewalk=false){return WORLD_LAYOUT_V704.roads.some(road=>v704PointInRect({x,z},v704RoadFootprint(road,includeSidewalk),margin))||v704HighwayAt(x,z,margin,includeSidewalk);}
   function v704SafeSignPoint(x,z,rotationY=0){
@@ -2254,7 +2262,7 @@
     return source.map((point,index)=>{const previous=source[index===0?(closed?source.length-1:0):index-1],next=source[index===source.length-1?(closed?0:source.length-1):index+1],normal=brazilianRightLaneNormal(Number(next.x)-Number(previous.x),Number(next.z)-Number(previous.z));for(const factor of factors){const x=Number(point.x)+normal.x*offset*factor,z=Number(point.z)+normal.z*offset*factor;if(factor===0||valid(x,z,point,index))return{...point,x,z};}return{...point};});
   }
   function projectPointToSegment(p,a,b){const dx=b.x-a.x,dz=b.z-a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.z-a.z)*dz)/len2));return{x:a.x+dx*t,z:a.z+dz*t,t};}
-  function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of world.colliders||[]){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
+  function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of nearbyWorldColliders(x,z,.45)){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
   function segmentClear(a,b){const len=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(len/1.8));for(let i=1;i<steps;i++){const t=i/steps;if(navBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t))return false;}return true;}
   function nearestRoadProjection(pos){
     // Distance is a lower bound for the final score. Test line of sight only
@@ -6895,6 +6903,7 @@
   // ===== MODULE: 25-render-init-resize-position-collision.js =====
   function initThree(){
     if(!window.THREE){openModal('Erro ao carregar 3D','<p>A biblioteca Three.js não carregou. Verifique a internet e recarregue a página.</p>');return false;}
+    configureWorldPointLightEvaluation();
     scene=new THREE.Scene();clock=new THREE.Clock();const initialViewport=viewportMetrics();camera=new THREE.PerspectiveCamera(58,initialViewport.w/initialViewport.h,.05,1200);
     renderer=new THREE.WebGLRenderer({antialias:qualityTier()==='high'&&!perf.mobile,alpha:false,powerPreference:perf.mobile?'default':'high-performance',precision:'highp',depth:true,stencil:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,targetDpr()));renderer.setSize(initialViewport.w,initialViewport.h,false);renderer.shadowMap.enabled=qualityTier()==='high'&&!perf.mobile;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;els.stage.innerHTML='';els.stage.appendChild(renderer.domElement);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();paused=true;toast('A placa gráfica reiniciou. Toque no menu para recarregar o jogo.','bad',5000);});renderer.domElement.addEventListener('webglcontextrestored',()=>{toast('Render restaurado.','good',1800);paused=false;});
     initMaterials();
@@ -6983,7 +6992,7 @@
   function positionBlockedForPlayer(x,z,radius=.48,options={}){
     if(!Number.isFinite(x)||!Number.isFinite(z))return true;const bounds=v704WorldBounds();if(x<bounds.minX||x>bounds.maxX||z<bounds.minZ||z>bounds.maxZ)return true;
     if(!options.allowWater&&waterAt(x,z)&&groundHeightAt(x,z)<=.24)return true;
-    for(const c of world.colliders){
+    for(const c of nearbyWorldColliders(x,z,radius)){
       if(c.disabled)continue;if(options.ignoreHouseId&&c.houseId===options.ignoreHouseId)continue;
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;
       if(Math.abs(x-c.x)<=c.w/2+radius&&Math.abs(z-c.z)<=c.d/2+radius)return true;
@@ -7843,6 +7852,14 @@
   }
   document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+  async function prepareWorldFirstFrame(){
+    showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
+    const start=performance.now();updateCamera(1);
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
+    try{renderer.compile(scene,camera);renderer.render(scene,camera);}
+    finally{restoreLights?.();restoreHome?.();}
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
+  }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
     const keys=Object.keys(fleet.catalog),start=performance.now();
@@ -7856,6 +7873,7 @@
       if(!window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key))fleet.prepare(THREE,key);
       prepared++;
     }
+    await prepareWorldFirstFrame();
     perf.vehicleTemplatesReady=true;perf.vehiclePreparation={models:keys.length,ms:Math.round(performance.now()-start)};
   }
   function showWorldLoading(progress,label){
@@ -7917,6 +7935,7 @@
   }
   function gameLoop(){
     if(!running)return;raf=requestAnimationFrame(gameLoop);
+    beginWorldQueryFrame();try{
     const elapsed=Math.max(0,clock.getDelta());
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
@@ -7941,7 +7960,8 @@
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     if(otGames.active){const navVisible=!!state.waypoint&&!(otGames.armed&&otGames.mode==='ground');if(world.routeGuide)world.routeGuide.visible=navVisible;if(world.waypointMarker)world.waypointMarker.visible=navVisible;}
     if(world.skyDome)world.skyDome.position.copy(camera.position);
-    const restoreHome=prepareHomeRender();try{renderer.render(scene,camera);}finally{restoreHome?.();playerGroup.visible=localVisible;}
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);try{renderer.render(scene,camera);}finally{restoreLights?.();restoreHome?.();playerGroup.visible=localVisible;}
+    }finally{endWorldQueryFrame();}
   }
 
   function setupControls(){
@@ -12841,5 +12861,90 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key)
   for(const j of actor.joints){if(active&&j.name==='shoulder1'){j.rot[0]=-.85;j.rot[2]=-.9+Math.sin(t*9)*.22;}if(active&&j.name==='elbow1')j.rot[0]=-1.05+Math.sin(t*9)*.18;if(!active&&(!controller||ride.speed<.5)&&/^(head|neck)$/.test(j.name)){const phase=now/1000+(actor.id==='thiago'?0:1.5);j.rot[1]=Math.sin(phase*.75)*.22;j.rot[0]=Math.sin(phase*2.8)*.035;}}
  }
  window.OT_VEHICLE_VIEW={reset:resetVehicleView,occupants:toggleVehicleOccupants,diagnostics:()=>({key:vehicleView.key,manual:vehicleView.manual,inside:vehicleView.inside,yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,camera:camera?.position.toArray(),focus:vehicleViewRide()?vehicleViewEyes(vehicleViewRide()).toArray():null,near:camera?.near,reactions:[...vehicleView.reactions].map(([id,r])=>({id,...r})),pointerCount:vehicleView.pointers.size})};
+
+  // ===== MODULE: 70-world-query-budget.js =====
+  var worldQueryBudget={active:0,frame:0,colliders:null,roads:null,stats:{colliderQueries:0,colliderValidations:0,colliderRebuilds:0,roadQueries:0,roadValidations:0,roadRebuilds:0}};
+  function beginWorldQueryFrame(){if(worldQueryBudget&&worldQueryBudget.active++===0)worldQueryBudget.frame++;}
+  function endWorldQueryFrame(){if(worldQueryBudget)worldQueryBudget.active=Math.max(0,worldQueryBudget.active-1);}
+  function worldQueryFrameChecked(record){return !!worldQueryBudget?.active&&record?.checkedFrame===worldQueryBudget.frame;}
+  function markWorldQueryFrame(record){record.checkedFrame=worldQueryBudget?.active?worldQueryBudget.frame:-1;}
+  function nearbyWorldColliders(x,z,radiusX=.48,radiusZ=radiusX){
+    const source=world.colliders;if(!worldQueryBudget||!source||![x,z,radiusX,radiusZ].every(Number.isFinite))return source||[];
+    const stats=worldQueryBudget.stats;stats.colliderQueries++;let cache=worldQueryBudget.colliders;
+    let rebuild=!cache||cache.source!==source||cache.records.length!==source.length;
+    if(!rebuild&&!worldQueryFrameChecked(cache)){
+      stats.colliderValidations++;
+      for(let i=0;i<source.length;i++){const c=source[i],r=cache.records[i];if(r.object!==c||r.dynamic!==!!c.aircraftId||!r.dynamic&&(r.x!==c.x||r.z!==c.z||r.w!==c.w||r.d!==c.d)){rebuild=true;break;}}
+    }
+    if(rebuild){
+      cache={source,records:[],cells:new Map(),loose:[],scratch:[],stamp:0,checkedFrame:-1};stats.colliderRebuilds++;
+      for(const c of source){const r={object:c,x:c.x,z:c.z,w:c.w,d:c.d,dynamic:!!c.aircraftId,stamp:0};cache.records.push(r);
+        if(r.dynamic||![c.x,c.z,c.w,c.d].every(Number.isFinite)||c.w<0||c.d<0){cache.loose.push(r);continue;}
+        const x0=Math.floor((c.x-c.w/2)/16),x1=Math.floor((c.x+c.w/2)/16),z0=Math.floor((c.z-c.d/2)/16),z1=Math.floor((c.z+c.d/2)/16);
+        if((x1-x0+1)*(z1-z0+1)>64){cache.loose.push(r);continue;}
+        for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const key=ix+':'+iz;let bucket=cache.cells.get(key);if(!bucket)cache.cells.set(key,bucket=[]);bucket.push(r);}
+      }
+      worldQueryBudget.colliders=cache;
+    }
+    markWorldQueryFrame(cache);
+    const rx=Math.abs(radiusX),rz=Math.abs(radiusZ),x0=Math.floor((x-rx)/16),x1=Math.floor((x+rx)/16),z0=Math.floor((z-rz)/16),z1=Math.floor((z+rz)/16);
+    if((x1-x0+1)*(z1-z0+1)>64)return source;
+    const result=cache.scratch;result.length=0;const stamp=++cache.stamp;
+    for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const bucket=cache.cells.get(ix+':'+iz);if(bucket)for(const r of bucket)if(r.stamp!==stamp){r.stamp=stamp;result.push(r.object);}}
+    // Parked/recovering aircraft move during the frame: always inspect their
+    // current bounds rather than storing a stale position in the grid.
+    for(const r of cache.loose)result.push(r.object);
+    return result;
+  }
+  function cachedWorldHighwaySegments(){
+    const source=WORLD_LAYOUT_V704.highways||[];let cache=worldQueryBudget?.roads,rebuild=!cache||cache.source!==source||cache.records.length!==source.length;
+    if(worldQueryBudget)worldQueryBudget.stats.roadQueries++;
+    if(!rebuild&&!worldQueryFrameChecked(cache)){
+      worldQueryBudget.stats.roadValidations++;
+      for(let i=0;i<source.length;i++){const h=source[i],r=cache.records[i],points=h.points||[];if(r.object!==h||r.id!==h.id||r.points!==points||r.width!==Number(h.width||10)||r.shoulder!==Number(h.shoulder||0)||r.closed!==!!h.closed||r.vertices.length!==points.length){rebuild=true;break;}for(let j=0;j<points.length;j++)if(r.vertices[j]!==points[j]){rebuild=true;break;}if(rebuild)break;}
+    }
+    if(rebuild){
+      cache={source,records:[],segments:[],checkedFrame:-1};if(worldQueryBudget)worldQueryBudget.stats.roadRebuilds++;
+      for(const h of source){const points=h.points||[];cache.records.push({object:h,id:h.id,points,vertices:points.slice(),width:Number(h.width||10),shoulder:Number(h.shoulder||0),closed:!!h.closed});for(let i=0;i<points.length-(h.closed?0:1);i++)cache.segments.push({id:`${h.id}-${i}`,highwayId:h.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(h.width||10),shoulder:Number(h.shoulder||0)});}
+      if(worldQueryBudget)worldQueryBudget.roads=cache;
+    }
+    markWorldQueryFrame(cache);return cache.segments;
+  }
+  window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};
+
+  // ===== MODULE: 71-world-light-budget.js =====
+  const worldLightBudget={frustum:null,projection:null,sphere:null,padding:[],stats:{total:0,active:0,culled:0,padded:0}};
+  function configureWorldPointLightEvaluation(){
+    const chunks=THREE.ShaderChunk,source=chunks.lights_fragment_begin;
+    if(source.includes('OTTHI_VISIBLE_POINT_LIGHT'))return;
+    // r128 evaluates the full physical BRDF even after attenuation reached
+    // zero. Zero irradiance contributes zero to diffuse, specular and coating.
+    chunks.lights_fragment_begin=source.replace('RE_Direct( directLight, geometry, material, reflectedLight );','if ( directLight.visible ) { // OTTHI_VISIBLE_POINT_LIGHT\n\t\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t\t}');
+  }
+  function prepareWorldPointLights(view){
+    if(!scene||!view||!world.glows?.length)return null;
+    const budget=worldLightBudget;budget.frustum??=new THREE.Frustum();budget.projection??=new THREE.Matrix4();budget.sphere??=new THREE.Sphere();
+    view.updateMatrixWorld();budget.projection.multiplyMatrices(view.projectionMatrix,view.matrixWorldInverse);budget.frustum.setFromProjectionMatrix(budget.projection);
+    const hidden=[],seen=new Set();let total=0,active=0;
+    for(const light of world.glows){
+      if(!light?.isPointLight||!light.visible||seen.has(light)||!light.layers.test(view.layers))continue;seen.add(light);
+      let parent=light.parent;while(parent&&parent!==scene&&parent.visible)parent=parent.parent;if(parent!==scene)continue;
+      total++;
+      // Infinite lights, no-decay lights and shadow casters stay untouched.
+      const range=Number(light.distance),finite=Number.isFinite(range)&&range>0&&(renderer.physicallyCorrectLights||light.decay>0);
+      if(finite&&!light.castShadow){
+        light.getWorldPosition(budget.sphere.center);budget.sphere.radius=range+Math.max(.05,range*.00001);
+        if(!budget.frustum.intersectsSphere(budget.sphere)){light.visible=false;hidden.push(light);continue;}
+      }
+      active++;
+    }
+    // Buckets avoid recompiling every material as one lamp enters/leaves the
+    // camera frustum. There is no light cap: all intersecting lights are kept.
+    const padded=total?Math.max(16,Math.ceil(active/8)*8)-active:0;
+    for(let i=0;i<padded;i++){let light=budget.padding[i];if(!light){light=new THREE.PointLight(0x000000,0,1,1);light.name='OTTHI_LIGHT_PADDING';budget.padding.push(light);}scene.add(light);}
+    budget.stats={total,active,culled:hidden.length,padded};
+    return()=>{for(const light of hidden)light.visible=true;for(let i=0;i<padded;i++)scene.remove(budget.padding[i]);};
+  }
+  window.OTTHI_LIGHT_BUDGET={diagnostics:()=>({...worldLightBudget.stats})};
 
 })();

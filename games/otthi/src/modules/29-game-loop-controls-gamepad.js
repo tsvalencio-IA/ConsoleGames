@@ -27,6 +27,14 @@
   }
   document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+  async function prepareWorldFirstFrame(){
+    showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
+    const start=performance.now();updateCamera(1);
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
+    try{renderer.compile(scene,camera);renderer.render(scene,camera);}
+    finally{restoreLights?.();restoreHome?.();}
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
+  }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
     const keys=Object.keys(fleet.catalog),start=performance.now();
@@ -40,6 +48,7 @@
       if(!window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key))fleet.prepare(THREE,key);
       prepared++;
     }
+    await prepareWorldFirstFrame();
     perf.vehicleTemplatesReady=true;perf.vehiclePreparation={models:keys.length,ms:Math.round(performance.now()-start)};
   }
   function showWorldLoading(progress,label){
@@ -101,6 +110,7 @@
   }
   function gameLoop(){
     if(!running)return;raf=requestAnimationFrame(gameLoop);
+    beginWorldQueryFrame();try{
     const elapsed=Math.max(0,clock.getDelta());
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
@@ -125,7 +135,8 @@
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     if(otGames.active){const navVisible=!!state.waypoint&&!(otGames.armed&&otGames.mode==='ground');if(world.routeGuide)world.routeGuide.visible=navVisible;if(world.waypointMarker)world.waypointMarker.visible=navVisible;}
     if(world.skyDome)world.skyDome.position.copy(camera.position);
-    const restoreHome=prepareHomeRender();try{renderer.render(scene,camera);}finally{restoreHome?.();playerGroup.visible=localVisible;}
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);try{renderer.render(scene,camera);}finally{restoreLights?.();restoreHome?.();playerGroup.visible=localVisible;}
+    }finally{endWorldQueryFrame();}
   }
 
   function setupControls(){

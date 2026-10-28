@@ -1,0 +1,61 @@
+{
+  "browser": "138.0.7204.0",
+  "cases": [
+    {
+      "name": "front",
+      "stats": {
+        "total": 29,
+        "active": 5,
+        "culled": 24,
+        "padded": 11
+      },
+      "pixelsDifferent": 0,
+      "maxDifference": 0,
+      "meanDifference": 0,
+      "range": 251,
+      "callsBefore": 4,
+      "callsAfter": 4,
+      "lightsRestored": 29,
+      "paddingRemoved": true
+    },
+    {
+      "name": "side",
+      "stats": {
+        "total": 29,
+        "active": 5,
+        "culled": 24,
+        "padded": 11
+      },
+      "pixelsDifferent": 0,
+      "maxDifference": 0,
+      "meanDifference": 0,
+      "range": 253,
+      "callsBefore": 4,
+      "callsAfter": 4,
+      "lightsRestored": 29,
+      "paddingRemoved": true
+    },
+    {
+      "name": "above",
+      "stats": {
+        "total": 29,
+        "active": 5,
+        "culled": 24,
+        "padded": 11
+      },
+      "pixelsDifferent": 0,
+      "maxDifference": 0,
+      "meanDifference": 0,
+      "range": 234,
+      "callsBefore": 4,
+      "callsAfter": 4,
+      "lightsRestored": 29,
+      "paddingRemoved": true
+    }
+  ],
+  "limits": [
+    "Offscreen Chromium software WebGL comparison; no physical Android test."
+  ],
+  "errors": [],
+  "passed": true
+}

@@ -1,0 +1,1790 @@
+{
+  "initial": {
+    "inspection": {
+      "layout": {
+        "version": 704,
+        "passed": true,
+        "problems": [],
+        "houses": 32,
+        "vehicles": 23,
+        "colliders": 462,
+        "hazards": 5,
+        "interactables": 798,
+        "at": 1793220087064
+      },
+      "services": {
+        "police": 2,
+        "fire": 2,
+        "enemies": 0
+      },
+      "escorts": [
+        [
+          300,
+          0,
+          45
+        ],
+        [
+          300,
+          0,
+          46.7
+        ]
+      ],
+      "props": 0
+    },
+    "community": {
+      "ready": true,
+      "houses": [
+        {
+          "id": "civil-home-aurora-0",
+          "x": 268,
+          "z": 32,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-1",
+          "x": 292,
+          "z": 32,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-2",
+          "x": 316,
+          "z": 32,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-3",
+          "x": 340,
+          "z": 32,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-4",
+          "x": 268,
+          "z": 58,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-5",
+          "x": 292,
+          "z": 58,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-6",
+          "x": 316,
+          "z": 58,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-aurora-7",
+          "x": 340,
+          "z": 58,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-0",
+          "x": -276,
+          "z": 185,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-1",
+          "x": -252,
+          "z": 185,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-2",
+          "x": -228,
+          "z": 185,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-3",
+          "x": -204,
+          "z": 185,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-4",
+          "x": -276,
+          "z": 211,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-5",
+          "x": -252,
+          "z": 211,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-6",
+          "x": -228,
+          "z": 211,
+          "interactive": true
+        },
+        {
+          "id": "civil-home-coast-7",
+          "x": -204,
+          "z": 211,
+          "interactive": true
+        },
+        {
+          "id": "civil-snow-home-0",
+          "x": -12,
+          "z": 202,
+          "interactive": true
+        },
+        {
+          "id": "civil-snow-home-1",
+          "x": -36,
+          "z": 202,
+          "interactive": true
+        },
+        {
+          "id": "civil-snow-home-2",
+          "x": -60,
+          "z": 202,
+          "interactive": true
+        }
+      ],
+      "targets": [
+        {
+          "id": "neighbor-home-0",
+          "label": "Casa de Bruna",
+          "name": "Casa de Bruna",
+          "x": 268,
+          "z": 36.8,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🏘️"
+        },
+        {
+          "id": "neighbor-home-1",
+          "label": "Casa de Davi",
+          "name": "Casa de Davi",
+          "x": 292,
+          "z": 36.8,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🏘️"
+        },
+        {
+          "id": "neighbor-home-2",
+          "label": "Casa de Camila",
+          "name": "Casa de Camila",
+          "x": 316,
+          "z": 36.8,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🏘️"
+        },
+        {
+          "id": "neighbor-home-3",
+          "label": "Casa de Rafael",
+          "name": "Casa de Rafael",
+          "x": 340,
+          "z": 36.8,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🏘️"
+        },
+        {
+          "id": "snow-home-0",
+          "label": "Chalé dos Pinheiros",
+          "name": "Chalé dos Pinheiros",
+          "x": -12,
+          "z": 207,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "❄️"
+        },
+        {
+          "id": "snow-home-1",
+          "label": "Chalé do Vale",
+          "name": "Chalé do Vale",
+          "x": -36,
+          "z": 207,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "❄️"
+        },
+        {
+          "id": "snow-home-2",
+          "label": "Chalé das Flores",
+          "name": "Chalé das Flores",
+          "x": -60,
+          "z": 207,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "❄️"
+        },
+        {
+          "id": "beach-litter-0",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -407,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-1",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -383,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-2",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -359,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-3",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -335,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-4",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -311,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-5",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -287,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-6",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -263,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-7",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -239,
+          "z": 500,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-8",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -407,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-9",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -383,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-10",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -359,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-11",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -335,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-12",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -311,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-13",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -287,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-14",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -263,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-litter-15",
+          "label": "Resíduo para reciclagem",
+          "name": "Resíduo para reciclagem",
+          "x": -239,
+          "z": 508,
+          "y": 0,
+          "radius": 1.7,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-desk",
+          "label": "Equipe da orla",
+          "name": "Equipe da orla",
+          "x": -258,
+          "z": 488,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🏖️"
+        },
+        {
+          "id": "beach-recycle",
+          "label": "Ecoponto da praia",
+          "name": "Ecoponto da praia",
+          "x": -279,
+          "z": 485.7,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "♻️"
+        },
+        {
+          "id": "beach-fire-post",
+          "label": "Posto de apoio da orla",
+          "name": "Posto de apoio da orla",
+          "x": -238,
+          "z": 489.5,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚒"
+        },
+        {
+          "id": "fire-training-0",
+          "label": "Treino de mangueira 1",
+          "name": "Treino de mangueira 1",
+          "x": -253,
+          "z": 469,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "💧"
+        },
+        {
+          "id": "fire-training-1",
+          "label": "Treino de mangueira 2",
+          "name": "Treino de mangueira 2",
+          "x": -247,
+          "z": 469,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "💧"
+        },
+        {
+          "id": "fire-training-2",
+          "label": "Treino de mangueira 3",
+          "name": "Treino de mangueira 3",
+          "x": -241,
+          "z": 469,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "💧"
+        },
+        {
+          "id": "snow-depot",
+          "label": "Chalé de apoio aos visitantes",
+          "name": "Chalé de apoio aos visitantes",
+          "x": 20,
+          "z": 180,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "❄️"
+        },
+        {
+          "id": "balloon-festival",
+          "label": "Festival de balões da serra",
+          "name": "Festival de balões da serra",
+          "x": 250,
+          "z": 212,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🎈"
+        },
+        {
+          "id": "balloon-view-0",
+          "label": "Panorama do festival 1",
+          "name": "Panorama do festival 1",
+          "x": 260,
+          "z": 255,
+          "y": 6.9449230918414635,
+          "radius": 18,
+          "icon": "📷",
+          "vehicle": "balloon",
+          "minAltitude": 14
+        },
+        {
+          "id": "balloon-view-1",
+          "label": "Panorama do festival 2",
+          "name": "Panorama do festival 2",
+          "x": 300,
+          "z": 285,
+          "y": 52.28834453465772,
+          "radius": 18,
+          "icon": "📷",
+          "vehicle": "balloon",
+          "minAltitude": 14
+        },
+        {
+          "id": "balloon-view-2",
+          "label": "Panorama do festival 3",
+          "name": "Panorama do festival 3",
+          "x": 355,
+          "z": 315,
+          "y": 18.288716241289677,
+          "radius": 18,
+          "icon": "📷",
+          "vehicle": "balloon",
+          "minAltitude": 14
+        },
+        {
+          "id": "cable-base",
+          "label": "Equipe do teleférico",
+          "name": "Equipe do teleférico",
+          "x": 216.5,
+          "z": 243,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚡"
+        },
+        {
+          "id": "cable-top",
+          "label": "Mirante do teleférico",
+          "name": "Mirante do teleférico",
+          "x": 153.5,
+          "z": 313,
+          "y": 75.37832326541205,
+          "radius": 3.4,
+          "icon": "🚡"
+        },
+        {
+          "id": "mountain-visitor",
+          "label": "Visitante do mirante",
+          "name": "Visitante do mirante",
+          "x": 140.5,
+          "z": 309,
+          "y": 76,
+          "radius": 3.4,
+          "icon": "🧭"
+        },
+        {
+          "id": "aurora-market",
+          "label": "Mercado de Nova Aurora",
+          "name": "Mercado de Nova Aurora",
+          "x": 332,
+          "z": -53.400000000000006,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🛒"
+        },
+        {
+          "id": "civil-fire-desk",
+          "label": "Equipe dos bombeiros",
+          "name": "Equipe dos bombeiros",
+          "x": 96,
+          "z": -13,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚒"
+        },
+        {
+          "id": "civil-police-desk",
+          "label": "Policial Marta · travessia segura",
+          "name": "Policial Marta · travessia segura",
+          "x": 309,
+          "z": 43,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚓"
+        },
+        {
+          "id": "crossing-cone-0",
+          "label": "Cones da travessia",
+          "name": "Cones da travessia",
+          "x": 300,
+          "z": 38,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚧"
+        },
+        {
+          "id": "crossing-cone-1",
+          "label": "Cones da travessia",
+          "name": "Cones da travessia",
+          "x": 303,
+          "z": 38,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚧"
+        },
+        {
+          "id": "crossing-cone-2",
+          "label": "Cones da travessia",
+          "name": "Cones da travessia",
+          "x": 306,
+          "z": 38,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚧"
+        },
+        {
+          "id": "crossing-neighbor",
+          "label": "Acompanhar o morador",
+          "name": "Acompanhar o morador",
+          "x": 300,
+          "z": 46,
+          "y": 0,
+          "radius": 3.4,
+          "icon": "🚶"
+        }
+      ],
+      "cable": {
+        "stations": {
+          "base": {
+            "id": "base",
+            "x": 210,
+            "z": 235,
+            "label": "Estação Vale"
+          },
+          "top": {
+            "id": "top",
+            "x": 147,
+            "z": 305,
+            "label": "Estação Mirante"
+          },
+          "cycle": 112,
+          "travel": 48,
+          "dwell": 8,
+          "seats": 8
+        },
+        "cabins": [
+          {
+            "id": 0,
+            "t": 0.8528333355983099,
+            "docked": "",
+            "direction": -1,
+            "wait": 40.93600010871887,
+            "position": [
+              155.22646754228703,
+              76.00342023415789,
+              293.916179257326
+            ]
+          },
+          {
+            "id": 1,
+            "t": 0.14716666440169016,
+            "docked": "",
+            "direction": 1,
+            "wait": 40.93600010871887,
+            "position": [
+              201.77353245771297,
+              22.182753404412907,
+              246.083820742674
+            ]
+          }
+        ],
+        "ride": null,
+        "waiting": null
+      },
+      "surfers": [
+        {
+          "id": "coast-surfer-0",
+          "position": [
+            -389.0978884209958,
+            -0.06690242370958159,
+            529.2011352096297
+          ],
+          "visible": false,
+          "board": false
+        },
+        {
+          "id": "coast-surfer-1",
+          "position": [
+            -349.122483591648,
+            -0.07891871638145412,
+            545.4911032004512
+          ],
+          "visible": false,
+          "board": false
+        },
+        {
+          "id": "coast-surfer-2",
+          "position": [
+            -326.7768756491237,
+            -0.01832496692024306,
+            527.0110518019056
+          ],
+          "visible": false,
+          "board": false
+        },
+        {
+          "id": "coast-surfer-3",
+          "position": [
+            -319.6054505625333,
+            0.024939532991245905,
+            545.1599996225686
+          ],
+          "visible": false,
+          "board": false
+        },
+        {
+          "id": "coast-surfer-4",
+          "position": [
+            -302.6295556053284,
+            -0.013342706266787907,
+            529.7752865103839
+          ],
+          "visible": false,
+          "board": false
+        },
+        {
+          "id": "coast-surfer-5",
+          "position": [
+            -265.4233120871531,
+            -0.07634937780641807,
+            540.6977724741188
+          ],
+          "visible": false,
+          "board": false
+        }
+      ],
+      "seaTraffic": [
+        {
+          "name": "CIVIL_SEA_TOUR_0",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "visible": false,
+          "crew": 2
+        },
+        {
+          "name": "CIVIL_SEA_TOUR_1",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "visible": false,
+          "crew": 2
+        },
+        {
+          "name": "CIVIL_SEA_TOUR_2",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "visible": false,
+          "crew": 2
+        }
+      ],
+      "balloons": 9,
+      "sky": true,
+      "environment": false,
+      "sledders": [
+        {
+          "id": "sledder-0",
+          "position": [
+            104.216374419586,
+            23.479190114591976,
+            284.0204680244825
+          ]
+        },
+        {
+          "id": "sledder-1",
+          "position": [
+            95.88996406541503,
+            3.44229189227236,
+            270.0874550817688
+          ]
+        },
+        {
+          "id": "sledder-2",
+          "position": [
+            105.65448019444729,
+            20.67140741370437,
+            278.7681002430591
+          ]
+        },
+        {
+          "id": "sledder-3",
+          "position": [
+            115.41899632347953,
+            50.61644499603046,
+            287.44874540434944
+          ]
+        }
+      ]
+    },
+    "bays": {
+      "ready": true,
+      "selected": 0,
+      "bays": [
+        {
+          "id": 0,
+          "x": 19.75,
+          "z": -18.75,
+          "height": 0,
+          "raised": false,
+          "busy": false,
+          "vehicleId": "",
+          "controlX": 21.67,
+          "controlZ": -18.6,
+          "mechanic": "mecanico-oficina",
+          "action": false
+        },
+        {
+          "id": 1,
+          "x": 25,
+          "z": -18.75,
+          "height": 0,
+          "raised": false,
+          "busy": false,
+          "vehicleId": "",
+          "controlX": 26.92,
+          "controlZ": -18.6,
+          "mechanic": "workshop-mechanic-bay-2",
+          "action": false
+        }
+      ]
+    }
+  },
+  "bays": {
+    "ready": true,
+    "selected": 1,
+    "bays": [
+      {
+        "id": 0,
+        "x": 19.75,
+        "z": -18.75,
+        "height": 2.35,
+        "raised": true,
+        "busy": false,
+        "vehicleId": "garage-orange",
+        "controlX": 21.67,
+        "controlZ": -18.6,
+        "mechanic": "mecanico-oficina",
+        "action": false
+      },
+      {
+        "id": 1,
+        "x": 25,
+        "z": -18.75,
+        "height": 2.35,
+        "raised": true,
+        "busy": false,
+        "vehicleId": "workshop-red",
+        "controlX": 26.92,
+        "controlZ": -18.6,
+        "mechanic": "workshop-mechanic-bay-2",
+        "action": false
+      }
+    ]
+  },
+  "missions": [
+    {
+      "id": "solo-6f0c94d3-466c-495f-a82e-8ff3f2564d2c",
+      "type": "beach",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "completed",
+      "phase": 3,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220089467
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 2,
+        "2:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:beach-desk": {
+          "uid": "civil-native-local",
+          "at": 1793220091889
+        },
+        "1:team:beach-litter-0": {
+          "uid": "civil-native-local",
+          "at": 1793220094155.3333
+        },
+        "1:team:beach-litter-1": {
+          "uid": "civil-native-local",
+          "at": 1793220096360
+        },
+        "2:civil-native-local:beach-recycle": {
+          "uid": "civil-native-local",
+          "at": 1793220098787
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1793220089467,
+      "updatedAt": 1793220098787,
+      "completedAt": 1793220098787
+    },
+    {
+      "id": "solo-e7c79339-dc36-4cbc-b8f8-abecc5607211",
+      "type": "snow",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "completed",
+      "phase": 3,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220099626
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 1,
+        "2:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:snow-depot": {
+          "uid": "civil-native-local",
+          "at": 1793220102085
+        },
+        "1:civil-native-local:snow-home-0": {
+          "uid": "civil-native-local",
+          "at": 1793220104103
+        },
+        "2:civil-native-local:snow-depot": {
+          "uid": "civil-native-local",
+          "at": 1793220106030
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1793220099626,
+      "updatedAt": 1793220106030,
+      "completedAt": 1793220106030
+    },
+    {
+      "id": "solo-13fed3e3-1ea7-49d6-9657-1b821c1139e1",
+      "type": "neighbors",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "completed",
+      "phase": 3,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220106314
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 1,
+        "2:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:aurora-market": {
+          "uid": "civil-native-local",
+          "at": 1793220108388.3333
+        },
+        "1:civil-native-local:neighbor-home-0": {
+          "uid": "civil-native-local",
+          "at": 1793220110383.6667
+        },
+        "2:civil-native-local:aurora-market": {
+          "uid": "civil-native-local",
+          "at": 1793220112204
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1793220106314,
+      "updatedAt": 1793220112204,
+      "completedAt": 1793220112204
+    },
+    {
+      "id": "solo-a0339c06-b8c9-4006-9446-f44dced58fd1",
+      "type": "fire",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "completed",
+      "phase": 4,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220112813
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 1,
+        "2:civil-native-local": 1,
+        "3:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:civil-fire-desk": {
+          "uid": "civil-native-local",
+          "at": 1793220115447
+        },
+        "1:civil-native-local:fire-training-0": {
+          "uid": "civil-native-local",
+          "at": 1793220117650.6667
+        },
+        "2:civil-native-local:beach-fire-post": {
+          "uid": "civil-native-local",
+          "at": 1793220119855.6667
+        },
+        "3:civil-native-local:civil-fire-desk": {
+          "uid": "civil-native-local",
+          "at": 1793220121874.6667
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1793220112813,
+      "updatedAt": 1793220121874.6667,
+      "completedAt": 1793220121874.6667
+    },
+    {
+      "id": "solo-afee8b24-3129-4f1e-b7d0-ba06e66c32e1",
+      "type": "police",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "completed",
+      "phase": 4,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220122154.6667
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 1,
+        "2:civil-native-local": 1,
+        "3:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:civil-police-desk": {
+          "uid": "civil-native-local",
+          "at": 1793220124348
+        },
+        "1:civil-native-local:crossing-cone-0": {
+          "uid": "civil-native-local",
+          "at": 1793220126265
+        },
+        "2:civil-native-local:crossing-neighbor": {
+          "uid": "civil-native-local",
+          "at": 1793220135455.3333
+        },
+        "3:civil-native-local:civil-police-desk": {
+          "uid": "civil-native-local",
+          "at": 1793220137281.3333
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1793220122154.6667,
+      "updatedAt": 1793220137281.3333,
+      "completedAt": 1793220137281.3333
+    }
+  ],
+  "up": {
+    "mid": {
+      "player": {
+        "x": 190.01662945326143,
+        "y": 43.64152808171191,
+        "z": 253.7655966843462,
+        "vx": 0,
+        "vy": 0,
+        "vz": 0,
+        "facing": 0.83798122500839,
+        "grounded": true,
+        "vehicle": false,
+        "sitUntil": 198696.40006039993,
+        "lastGrounded": 177095.70006039974,
+        "lastSafeX": 213.2,
+        "lastSafeY": 0,
+        "lastSafeZ": 238.4,
+        "lastSafeAt": 177095.80006039984,
+        "invalidSince": 0,
+        "jumpBuffer": 0,
+        "airJumpAvailable": true,
+        "lastJumpWasAir": false,
+        "attackUntil": 0,
+        "damageUntil": 0,
+        "shieldUntil": 0,
+        "skillDashUntil": 0,
+        "scaleMode": "normal",
+        "crouched": false,
+        "spinUntil": 0,
+        "preVehicleAbilities": null,
+        "hornUntil": 0,
+        "emoteUntil": 0,
+        "emoteType": "",
+        "emoteSeq": 0,
+        "boating": false,
+        "transit": {
+          "mode": "",
+          "busId": "",
+          "requestStop": false,
+          "metroUntil": 0
+        },
+        "boat": {
+          "heading": 0,
+          "speed": 0,
+          "steerVisual": 0,
+          "passengerOf": "",
+          "passengerUid": "",
+          "passengerBotId": "",
+          "hostMissingAt": 0
+        },
+        "car": {
+          "id": "",
+          "kind": "car",
+          "label": "Carro",
+          "heading": 3.141592653589793,
+          "speed": 0,
+          "steerVisual": 0,
+          "drift": 0,
+          "_prevSpeed": 0,
+          "turboUntil": 0,
+          "sirenActive": false,
+          "utilityCooldownUntil": 0,
+          "passengerOf": "",
+          "passengerUid": "",
+          "passengerUids": [],
+          "passengerBotId": "",
+          "hostMissingAt": 0
+        },
+        "recoveryReason": "",
+        "swimming": false,
+        "nextRecoveryScanAt": 177225.20006039974
+      },
+      "family": {
+        "ready": true,
+        "home": {
+          "x": -38,
+          "z": -24
+        },
+        "actors": [
+          {
+            "id": "thiago",
+            "x": 190.00744199331575,
+            "z": 253.77580497317476,
+            "bones": 24,
+            "vertices": 164562,
+            "uniqueVertices": 31956,
+            "drawCalls": 1
+          },
+          {
+            "id": "thamis",
+            "x": -37,
+            "z": -18.7,
+            "bones": 25,
+            "vertices": 226968,
+            "uniqueVertices": 43480,
+            "drawCalls": 1
+          },
+          {
+            "id": "luna",
+            "x": 189.45889091338535,
+            "z": 254.38530617309743,
+            "bones": 13,
+            "vertices": 205176,
+            "uniqueVertices": 46812,
+            "drawCalls": 1
+          },
+          {
+            "id": "liz",
+            "x": 188.91033983345494,
+            "z": 254.9948073730201,
+            "bones": 13,
+            "vertices": 209400,
+            "uniqueVertices": 47082,
+            "drawCalls": 1
+          }
+        ],
+        "progress": {
+          "party": {
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "luna",
+              "liz"
+            ]
+          },
+          "toy": "ball",
+          "deliveries": {
+            "luna": 0,
+            "liz": 0
+          },
+          "flags": {}
+        },
+        "party": {
+          "owner": "civil-native-local",
+          "controller": "thiago",
+          "members": [
+            "thiago",
+            "luna",
+            "liz"
+          ]
+        },
+        "ride": {
+          "owner": "civil-native-local",
+          "kind": "cable",
+          "mode": "cable",
+          "id": "cable-0",
+          "members": [
+            "thiago",
+            "luna",
+            "liz"
+          ],
+          "controller": "thiago",
+          "hostUid": "civil-native-local"
+        },
+        "seated": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              190.00744199331575,
+              44.04924412513764,
+              253.77580497317476
+            ],
+            "scale": 0.4608,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": -1.25
+            }
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              189.45889091338535,
+              44.04924412513764,
+              254.38530617309743
+            ],
+            "scale": 0.504,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": -0.43000000000000005
+            }
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              188.91033983345494,
+              44.04924412513764,
+              254.9948073730201
+            ],
+            "scale": 0.504,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": 0.3899999999999999
+            }
+          }
+        ],
+        "authority": true,
+        "ball": null
+      }
+    },
+    "quest": {
+      "id": "solo-e5922fd4-cfc1-4855-b721-9e395daec44e",
+      "type": "cable",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "active",
+      "phase": 1,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220137481.3333
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:cable-base": {
+          "uid": "civil-native-local",
+          "at": 1793220139159.3333
+        }
+      },
+      "pending": {},
+      "rides": {
+        "civil-native-local": {
+          "cable-up": 1793220297253
+        }
+      },
+      "createdAt": 1793220137481.3333,
+      "updatedAt": 1793220139159.3333,
+      "completedAt": 0
+    }
+  },
+  "down": {
+    "mid": {
+      "player": {
+        "x": 165.1263794707852,
+        "y": 73.58793483063562,
+        "z": 281.42142999820874,
+        "vx": 0,
+        "vy": 0,
+        "vz": 0,
+        "facing": 0.83798122500839,
+        "grounded": true,
+        "vehicle": false,
+        "sitUntil": 366612.4999078108,
+        "lastGrounded": 345016.59990781045,
+        "lastSafeX": 140.5,
+        "lastSafeY": 76,
+        "lastSafeZ": 309.25,
+        "lastSafeAt": 344636.59990781045,
+        "invalidSince": 0,
+        "jumpBuffer": 0,
+        "airJumpAvailable": true,
+        "lastJumpWasAir": false,
+        "attackUntil": 0,
+        "damageUntil": 0,
+        "shieldUntil": 0,
+        "skillDashUntil": 0,
+        "scaleMode": "normal",
+        "crouched": false,
+        "spinUntil": 0,
+        "preVehicleAbilities": null,
+        "hornUntil": 0,
+        "emoteUntil": 0,
+        "emoteType": "",
+        "emoteSeq": 0,
+        "boating": false,
+        "transit": {
+          "mode": "",
+          "busId": "",
+          "requestStop": false,
+          "metroUntil": 0
+        },
+        "boat": {
+          "heading": 0,
+          "speed": 0,
+          "steerVisual": 0,
+          "passengerOf": "",
+          "passengerUid": "",
+          "passengerBotId": "",
+          "hostMissingAt": 0
+        },
+        "car": {
+          "id": "",
+          "kind": "car",
+          "label": "Carro",
+          "heading": 3.141592653589793,
+          "speed": 0,
+          "steerVisual": 0,
+          "drift": 0,
+          "_prevSpeed": 0,
+          "turboUntil": 0,
+          "sirenActive": false,
+          "utilityCooldownUntil": 0,
+          "passengerOf": "",
+          "passengerUid": "",
+          "passengerUids": [],
+          "passengerBotId": "",
+          "hostMissingAt": 0
+        },
+        "recoveryReason": "",
+        "swimming": false,
+        "nextRecoveryScanAt": 345196.4999078108
+      },
+      "family": {
+        "ready": true,
+        "home": {
+          "x": -38,
+          "z": -24
+        },
+        "actors": [
+          {
+            "id": "thiago",
+            "x": 165.13031699832254,
+            "z": 281.4170549676117,
+            "bones": 24,
+            "vertices": 164562,
+            "uniqueVertices": 31956,
+            "drawCalls": 1
+          },
+          {
+            "id": "thamis",
+            "x": -37,
+            "z": -18.7,
+            "bones": 25,
+            "vertices": 226968,
+            "uniqueVertices": 43480,
+            "drawCalls": 1
+          },
+          {
+            "id": "luna",
+            "x": 164.58176591839214,
+            "z": 282.0265561675344,
+            "bones": 13,
+            "vertices": 205176,
+            "uniqueVertices": 46812,
+            "drawCalls": 1
+          },
+          {
+            "id": "liz",
+            "x": 164.03321483846173,
+            "z": 282.63605736745706,
+            "bones": 13,
+            "vertices": 209400,
+            "uniqueVertices": 47082,
+            "drawCalls": 1
+          }
+        ],
+        "progress": {
+          "party": {
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "luna",
+              "liz"
+            ]
+          },
+          "toy": "ball",
+          "deliveries": {
+            "luna": 0,
+            "liz": 0
+          },
+          "flags": {}
+        },
+        "party": {
+          "owner": "civil-native-local",
+          "controller": "thiago",
+          "members": [
+            "thiago",
+            "luna",
+            "liz"
+          ]
+        },
+        "ride": {
+          "owner": "civil-native-local",
+          "kind": "cable",
+          "mode": "cable",
+          "id": "cable-0",
+          "members": [
+            "thiago",
+            "luna",
+            "liz"
+          ],
+          "controller": "thiago",
+          "hostUid": "civil-native-local"
+        },
+        "seated": [
+          {
+            "id": "thiago",
+            "visible": true,
+            "position": [
+              165.13031699832254,
+              73.97604992086993,
+              281.4170549676117
+            ],
+            "scale": 0.4608,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": -1.25
+            }
+          },
+          {
+            "id": "luna",
+            "visible": true,
+            "position": [
+              164.58176591839214,
+              73.97604992086993,
+              282.0265561675344
+            ],
+            "scale": 0.504,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": -0.43000000000000005
+            }
+          },
+          {
+            "id": "liz",
+            "visible": true,
+            "position": [
+              164.03321483846173,
+              73.97604992086993,
+              282.63605736745706
+            ],
+            "scale": 0.504,
+            "seat": {
+              "x": -1,
+              "y": 0.57,
+              "z": 0.3899999999999999
+            }
+          }
+        ],
+        "authority": true,
+        "ball": null
+      }
+    },
+    "quest": {
+      "id": "solo-e5922fd4-cfc1-4855-b721-9e395daec44e",
+      "type": "cable",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "civil-native-local",
+      "status": "active",
+      "phase": 3,
+      "members": {
+        "civil-native-local": {
+          "ready": true,
+          "joinedAt": 1793220137481.3333
+        }
+      },
+      "counts": {
+        "0:civil-native-local": 1,
+        "1:civil-native-local": 1,
+        "2:civil-native-local": 1
+      },
+      "tokens": {
+        "0:civil-native-local:cable-base": {
+          "uid": "civil-native-local",
+          "at": 1793220139159.3333
+        },
+        "1:civil-native-local:cable-top": {
+          "uid": "civil-native-local",
+          "at": 1793220299080
+        },
+        "2:civil-native-local:mountain-visitor": {
+          "uid": "civil-native-local",
+          "at": 1793220300909
+        }
+      },
+      "pending": {},
+      "rides": {
+        "civil-native-local": {
+          "cable-up": 1793220297253,
+          "cable-down": 1793220465301
+        }
+      },
+      "createdAt": 1793220137481.3333,
+      "updatedAt": 1793220300909,
+      "completedAt": 0
+    }
+  },
+  "audio": {
+    "all": [
+      {
+        "profile": "road",
+        "model": "palio",
+        "engineFamily": "fire-inline4",
+        "fidelity": "related-engine-adaptation",
+        "layerRates": [
+          1.2604,
+          0.9888
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-fiat-idle",
+          "engine-fiat-load"
+        ],
+        "gear": 2,
+        "rpm": 2887,
+        "rate": 0.9888,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "quatro-brasileiro"
+      },
+      {
+        "profile": "classic",
+        "model": "fusca",
+        "engineFamily": "air-cooled-flat4",
+        "fidelity": "recorded-model-family",
+        "layerRates": [
+          1.2604,
+          0.9888
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-classic-idle",
+          "engine-classic-load"
+        ],
+        "gear": 2,
+        "rpm": 2354,
+        "rate": 0.9888,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "boxer-ar"
+      },
+      {
+        "profile": "sport",
+        "model": "opala",
+        "engineFamily": "classic-inline6",
+        "fidelity": "related-engine-adaptation",
+        "layerRates": [
+          1.508612,
+          1.251264
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-inline6-idle",
+          "engine-inline6-load"
+        ],
+        "gear": 1,
+        "rpm": 4963,
+        "rate": 1.251264,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "seis-em-linha"
+      },
+      {
+        "profile": "sport",
+        "model": "maverick",
+        "engineFamily": "cross-plane-v8",
+        "fidelity": "related-engine-adaptation",
+        "layerRates": [
+          1.477824,
+          1.225728
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-sport-idle",
+          "engine-sport-load"
+        ],
+        "gear": 1,
+        "rpm": 4612,
+        "rate": 1.225728,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "v8-clássico"
+      },
+      {
+        "profile": "motorcycle",
+        "model": "hornet",
+        "engineFamily": "inline4-600",
+        "fidelity": "recorded-model-family",
+        "layerRates": [
+          1.1674,
+          0.8928
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-hornet-idle",
+          "engine-hornet-load"
+        ],
+        "gear": 2,
+        "rpm": 3784,
+        "rate": 0.8928,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "quatro-cilindros-600"
+      },
+      {
+        "profile": "motorcycle",
+        "model": "titan",
+        "engineFamily": "four-stroke-single",
+        "fidelity": "related-engine-adaptation",
+        "layerRates": [
+          1.4812750000000001,
+          1.2168
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-moto-idle",
+          "engine-moto-load"
+        ],
+        "gear": 2,
+        "rpm": 6523,
+        "rate": 1.2168,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "monocilíndrica-125-150"
+      },
+      {
+        "profile": "motorcycle",
+        "model": "bmwgs",
+        "engineFamily": "boxer-twin",
+        "fidelity": "related-engine-adaptation",
+        "layerRates": [
+          1.2604,
+          0.9888
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-twin-idle",
+          "engine-twin-load"
+        ],
+        "gear": 2,
+        "rpm": 3817,
+        "rate": 0.9888,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "boxer-duplo"
+      },
+      {
+        "profile": "heavy",
+        "model": "truck",
+        "engineFamily": "diesel-generic",
+        "fidelity": "category-adaptation",
+        "layerRates": [
+          1.19065,
+          0.9168
+        ],
+        "ready": false,
+        "recorded": false,
+        "soundVersion": "20261028-vehicle4",
+        "samples": [
+          "engine-coach-idle",
+          "engine-coach-load"
+        ],
+        "gear": 3,
+        "rpm": 1215,
+        "rate": 0.9168,
+        "speed": 8,
+        "load": 0.6,
+        "level": 0.2758,
+        "variant": "diesel-seis"
+      }
+    ],
+    "after": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "20261028-vehicle4",
+      "recordedVersion": "20261028-vehicle4",
+      "recordings": 0,
+      "decodedEngineFiles": [],
+      "playedSamples": 0,
+      "activeEngines": 0,
+      "activeShots": 0,
+      "lastRecordingError": "",
+      "variants": []
+    }
+  },
+  "final": {
+    "layout": {
+      "version": 704,
+      "passed": true,
+      "problems": [],
+      "houses": 32,
+      "vehicles": 23,
+      "colliders": 462,
+      "hazards": 5,
+      "interactables": 846,
+      "at": 1793220467277.3333
+    },
+    "services": {
+      "police": 2,
+      "fire": 2,
+      "enemies": 0
+    },
+    "escorts": [
+      [
+        300.0153536211254,
+        0,
+        45
+      ],
+      [
+        300,
+        0,
+        46.7
+      ]
+    ],
+    "props": 1
+  },
+  "passed": true,
+  "errors": [],
+  "limits": [
+    "Software-rendered Chromium with a capped renderer for action simulation. Travel between task sites uses inspection teleports; telecable travel and work use native controllers. No physical Android or live networking."
+  ]
+}

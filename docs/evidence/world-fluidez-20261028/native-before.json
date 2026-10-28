@@ -1,0 +1,497 @@
+{
+  "frame": {
+    "samples": 11,
+    "mean": 1430.736363636372,
+    "p50": 1051,
+    "p95": 3683.5,
+    "max": 3683.5,
+    "over100": 11,
+    "over250": 10
+  },
+  "work": {
+    "samples": 12,
+    "mean": 836.7166666666744,
+    "p50": 182.19999999995343,
+    "p95": 3586.100000000093,
+    "max": 3586.100000000093,
+    "over100": 9,
+    "over250": 5
+  },
+  "longTasks": {
+    "samples": 12,
+    "mean": 838.5833333333334,
+    "p50": 184,
+    "p95": 3588,
+    "max": 3588,
+    "over100": 9,
+    "over250": 5
+  },
+  "renderMs": {
+    "samples": 12,
+    "mean": 599.8499999999962,
+    "p50": 37,
+    "p95": 3481.5,
+    "max": 3481.5,
+    "over100": 4,
+    "over250": 3
+  },
+  "matrixMs": {
+    "samples": 12,
+    "mean": 11.749999999961195,
+    "p50": 11.399999999906868,
+    "p95": 18.199999999953434,
+    "max": 18.199999999953434,
+    "over100": 0,
+    "over250": 0
+  },
+  "details": [
+    {
+      "ms": 3481.5,
+      "beforePrograms": 38,
+      "afterPrograms": 38,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 757,
+      "triangles": 725361,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 208.69999999995343,
+      "beforePrograms": 38,
+      "afterPrograms": 41,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 535,
+      "triangles": 681331,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 2274.5999999998603,
+      "beforePrograms": 41,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 498,
+      "triangles": 579643,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 30.300000000046566,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 482,
+      "triangles": 560513,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 30.300000000046566,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 472,
+      "triangles": 560469,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 28.100000000093132,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 476,
+      "triangles": 560521,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 19.800000000046566,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 475,
+      "triangles": 560521,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 22,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 476,
+      "triangles": 560557,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 40.89999999990687,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 490,
+      "triangles": 562601,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 27,
+      "beforePrograms": 42,
+      "afterPrograms": 42,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 506,
+      "triangles": 565631,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 998,
+      "beforePrograms": 42,
+      "afterPrograms": 43,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 515,
+      "triangles": 567253,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    },
+    {
+      "ms": 37,
+      "beforePrograms": 43,
+      "afterPrograms": 43,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2,
+        "PointLight": 89
+      },
+      "calls": 491,
+      "triangles": 561041,
+      "preparation": {
+        "models": 44,
+        "ms": 5645
+      }
+    }
+  ],
+  "preparation": {
+    "models": 44,
+    "ms": 5645
+  },
+  "catalog": 44,
+  "npcs": 138,
+  "trafficModels": 14,
+  "quality": "balanced",
+  "family": {
+    "ready": true,
+    "home": {
+      "x": -38,
+      "z": -24
+    },
+    "actors": [
+      {
+        "id": "thiago",
+        "x": -16.259879838380442,
+        "z": 46.25050067341486,
+        "bones": 24,
+        "vertices": 164562,
+        "uniqueVertices": 31956,
+        "drawCalls": 1
+      },
+      {
+        "id": "thamis",
+        "x": -18.023497528074486,
+        "z": 43.829828350359605,
+        "bones": 25,
+        "vertices": 226968,
+        "uniqueVertices": 43480,
+        "drawCalls": 1
+      },
+      {
+        "id": "luna",
+        "x": -16.905252130796892,
+        "z": 43.56144945501298,
+        "bones": 13,
+        "vertices": 205176,
+        "uniqueVertices": 46812,
+        "drawCalls": 1
+      },
+      {
+        "id": "liz",
+        "x": -15.787006733519297,
+        "z": 43.29307055966636,
+        "bones": 13,
+        "vertices": 209400,
+        "uniqueVertices": 47082,
+        "drawCalls": 1
+      }
+    ],
+    "progress": {
+      "party": {
+        "controller": "thiago",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ]
+      },
+      "toy": "ball",
+      "deliveries": {
+        "luna": 0,
+        "liz": 0
+      },
+      "flags": {}
+    },
+    "party": {
+      "owner": "live-profile-local",
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "thamis",
+        "luna",
+        "liz"
+      ]
+    },
+    "ride": null,
+    "seated": [],
+    "authority": true,
+    "ball": null
+  },
+  "game": {
+    "running": true,
+    "paused": false,
+    "currentHouse": null,
+    "cameraMode": "openworld",
+    "player": {
+      "x": -16.259879838380442,
+      "y": 0,
+      "z": 46.25050067341486,
+      "vx": 0.01149881129546197,
+      "vy": 0,
+      "vz": 0.04791171373109154,
+      "facing": 0.23554498072086336,
+      "grounded": true,
+      "vehicle": false,
+      "sitUntil": 0,
+      "lastGrounded": 61260.60000000009,
+      "lastSafeX": -16.28247170436105,
+      "lastSafeY": 0,
+      "lastSafeZ": 46.15636789849566,
+      "lastSafeAt": 61127.5,
+      "invalidSince": 0,
+      "jumpBuffer": 0,
+      "airJumpAvailable": true,
+      "lastJumpWasAir": false,
+      "attackUntil": 0,
+      "damageUntil": 0,
+      "shieldUntil": 0,
+      "skillDashUntil": 0,
+      "scaleMode": "normal",
+      "crouched": false,
+      "spinUntil": 0,
+      "preVehicleAbilities": null,
+      "hornUntil": 0,
+      "emoteUntil": 0,
+      "emoteType": "",
+      "emoteSeq": 0,
+      "boating": false,
+      "transit": {
+        "mode": "",
+        "busId": "",
+        "requestStop": false,
+        "metroUntil": 0
+      },
+      "boat": {
+        "heading": 0,
+        "speed": 0,
+        "steerVisual": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "car": {
+        "id": "",
+        "kind": "car",
+        "label": "Carro",
+        "heading": 3.141592653589793,
+        "speed": 0,
+        "steerVisual": 0,
+        "drift": 0,
+        "_prevSpeed": 0,
+        "turboUntil": 0,
+        "sirenActive": false,
+        "utilityCooldownUntil": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerUids": [],
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "recoveryReason": "",
+      "swimming": false,
+      "nextRecoveryScanAt": 61407.5
+    },
+    "objects": {
+      "houses": 32,
+      "npcs": 138,
+      "enemies": 0,
+      "interactables": 816,
+      "builds": 0,
+      "vehicles": 23,
+      "buses": 7,
+      "metroStations": 7,
+      "policeCars": 2,
+      "resources": 72,
+      "school": true,
+      "policeStation": true,
+      "mine": true,
+      "well": true
+    }
+  },
+  "render": {
+    "calls": 491,
+    "triangles": 561041
+  },
+  "drawRoots": [
+    [
+      "Group:MeshStandardMaterial",
+      184
+    ],
+    [
+      "BoxGeometry:MeshStandardMaterial",
+      54
+    ],
+    [
+      "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+      36
+    ],
+    [
+      "CAMPAIGN_airbase",
+      22
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:40255/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+      22
+    ],
+    [
+      "Group:LineBasicMaterial",
+      14
+    ],
+    [
+      "CAMPAIGN_PARKED_AIRCRAFT",
+      12
+    ],
+    [
+      "Group:http://127.0.0.1:40255/games/otthi/assets/textures/roof-v628.png",
+      11
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:40255/games/otthi/assets/world/textures/wood-basecolor.png",
+      9
+    ],
+    [
+      "ACTIVITY_VENUE_dance",
+      9
+    ],
+    [
+      "ACTIVITY_VENUE_boxing",
+      8
+    ],
+    [
+      "ACTIVITY_VENUE_pingpong",
+      7
+    ],
+    [
+      "CAMPAIGN_hq",
+      6
+    ],
+    [
+      "CAMPAIGN_north",
+      6
+    ],
+    [
+      "OT_CIVIL_AIRPORT",
+      6
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:40255/games/otthi/assets/textures/brick-v628.png",
+      5
+    ],
+    [
+      "OTTHOS_PLAYER",
+      4
+    ],
+    [
+      "Group:http://127.0.0.1:40255/games/otthi/assets/world/textures/wood-basecolor.png",
+      4
+    ]
+  ],
+  "label": "before",
+  "errors": []
+}

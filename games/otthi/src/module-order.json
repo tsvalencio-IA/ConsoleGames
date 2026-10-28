@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.5-cache-celular",
+  "build": "705.28.6-fluidez",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "1bf7963923b640a5880e603ea329898676f834175f90d945bf48ee6e867baac2"
+      "sha256Body": "7a00d4c81513928a0886df016faa19c265d4ea119da3eca1d378b4793569c76a"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "5e8eccb4e36864038839f21a16c2f2634d617047855da3684c7b904578f7c35d"
+      "sha256Body": "3d170755f9d4aed340489fb7299e6ff8bccc350992a317f415c42b91324fba76"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "600cce9cda12bd9e70674ea183c43aa4be1e031d07a3c20ff3a4167bd85526ff"
+      "sha256Body": "10839a5f7af6bda5912c52f1d3d2b37c137e0204db405d3726f13b5aa8a9aaee"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -224,7 +224,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "5512d50f1dc75391cc573802b002d4f0ab6fa73f6975bc7b38b472c57b717157"
+      "sha256Body": "05c99d312548a28bee316f372f2a8c097034938836c3f551d8602325dbbe9e82"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "91b87859aae77add591f56df3da1475322555f73229861ea531d35ff7a7a4ea4"
+      "sha256Body": "d9816216c54b22deafe8999d2acb53faa44bc6f375463ce90dbfa4bfe4f6ef94"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -586,6 +586,20 @@
       "file": "src/modules/69-vehicle-camera-passengers.js",
       "description": "Câmera 360 de veículos, vista dos ocupantes e reações dos passageiros",
       "sha256Body": "8ec2f194b0cbec8902f711cfff729b723e4c6d551ad1c5c1d23e81b039e22586"
+    },
+    {
+      "file": "src/modules/70-world-query-budget.js",
+      "description": "Consultas espaciais de colisão e rodovias reutilizadas por quadro",
+      "startLine": 0,
+      "endLine": 0,
+      "sha256Body": "968fcf4f4ce514ba2ca78b62e8ea1cf739479d35bfb38be1006c068eb18deab1"
+    },
+    {
+      "file": "src/modules/71-world-light-budget.js",
+      "description": "Luzes de alcance finito fora da imagem e cálculo físico de luz zero",
+      "startLine": 0,
+      "endLine": 0,
+      "sha256Body": "c5d0baf7c94aac33eb4ff50620c0e85a5459a85e476b8c5cf704246112706c4e"
     }
   ],
   "styles": [

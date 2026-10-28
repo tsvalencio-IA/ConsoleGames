@@ -24,7 +24,7 @@
     return source.map((point,index)=>{const previous=source[index===0?(closed?source.length-1:0):index-1],next=source[index===source.length-1?(closed?0:source.length-1):index+1],normal=brazilianRightLaneNormal(Number(next.x)-Number(previous.x),Number(next.z)-Number(previous.z));for(const factor of factors){const x=Number(point.x)+normal.x*offset*factor,z=Number(point.z)+normal.z*offset*factor;if(factor===0||valid(x,z,point,index))return{...point,x,z};}return{...point};});
   }
   function projectPointToSegment(p,a,b){const dx=b.x-a.x,dz=b.z-a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.z-a.z)*dz)/len2));return{x:a.x+dx*t,z:a.z+dz*t,t};}
-  function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of world.colliders||[]){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
+  function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of nearbyWorldColliders(x,z,.45)){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
   function segmentClear(a,b){const len=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(len/1.8));for(let i=1;i<steps;i++){const t=i/steps;if(navBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t))return false;}return true;}
   function nearestRoadProjection(pos){
     // Distance is a lower bound for the final score. Test line of sight only

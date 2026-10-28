@@ -2,7 +2,7 @@
  * travel setup and the clock; the mission director and character work run unchanged. */
 import{chromium}from'playwright';import fs from'node:fs';import assert from'node:assert/strict';
 import{installCityInspection}from'./helpers/world-city-inspection.mjs';import{multiplayerServer}from'./helpers/multiplayer-browser-fixture.mjs';
-const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
+const server=await multiplayerServer(),browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
 const out='test-results/world-civil-native';fs.mkdirSync(out,{recursive:true});const errors=[],report={};let page;
 const source=fs.readFileSync('games/otthi/app.js','utf8'),end=source.lastIndexOf('})();'),hook=`
 window.__CIVIL_QA={target:()=>civilAvailableTarget(),task:id=>civilTaskAt(id),current:()=>civilCurrent()?.book.progress(civilCurrent().r.id,civilCurrent().uid),clock:(index,station)=>{const timing=civilCableTiming(index),now=airNow()/1000,p=((now+index*56)%112+112)%112,target=station==='top'?57:1;cityQaMs+=((target-p+112)%112)*1000;stepWorldSimulation(1/60);},
