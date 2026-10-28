@@ -26,7 +26,14 @@
   function projectPointToSegment(p,a,b){const dx=b.x-a.x,dz=b.z-a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.z-a.z)*dz)/len2));return{x:a.x+dx*t,z:a.z+dz*t,t};}
   function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of world.colliders||[]){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
   function segmentClear(a,b){const len=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(len/1.8));for(let i=1;i<steps;i++){const t=i/steps;if(navBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t))return false;}return true;}
-  function nearestRoadProjection(pos){let best=null;for(const [aId,bId] of NAV_BASE_EDGES){const a=NAV_BASE_NODES[aId],b=NAV_BASE_NODES[bId],p=projectPointToSegment(pos,a,b),distance=Math.hypot(pos.x-p.x,pos.z-p.z),clear=segmentClear(pos,p);const score=distance+(clear?0:120);if(!best||score<best.score)best={aId,bId,point:p,distance,clear,score};}return best;}
+  function nearestRoadProjection(pos){
+    // Distance is a lower bound for the final score. Test line of sight only
+    // while a candidate can still beat the best result; retain original ties.
+    const candidates=NAV_BASE_EDGES.map(([aId,bId],index)=>{const point=projectPointToSegment(pos,NAV_BASE_NODES[aId],NAV_BASE_NODES[bId]);return{aId,bId,point,index,distance:Math.hypot(pos.x-point.x,pos.z-point.z)};}).sort((a,b)=>a.distance-b.distance||a.index-b.index);
+    let best=null,bestIndex=Infinity;
+    for(const c of candidates){if(best&&c.distance>best.score)break;const clear=segmentClear(pos,c.point),score=c.distance+(clear?0:120);if(!best||score<best.score||score===best.score&&c.index<bestIndex){best={aId:c.aId,bId:c.bId,point:c.point,distance:c.distance,clear,score};bestIndex=c.index;}}
+    return best;
+  }
   function pointOnRoad(x,z,margin=.7){return v704RoadAt(x,z,margin,false);}
   function projectPointToPolyline(pos,points){
     if(!points?.length)return null;let best=null;

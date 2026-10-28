@@ -175,7 +175,14 @@
     }
     return familyApplyCommand(kind,payload,sharedWorldOwnId(),player);
   }
-  function familyClear(a,b){const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22));for(let i=0;i<=steps;i++){const t=i/steps;if(positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25))return false;}return true;}
+  function familyClear(a,b){
+    const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22)),coarse=[0,steps,Math.floor(steps/2),Math.floor(steps/4),Math.floor(steps*3/4)],seen=new Set();
+    // The same sample points are tested, with distant blockers checked first.
+    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25);};
+    for(const i of coarse){if(seen.has(i))continue;seen.add(i);if(blocked(i))return false;}
+    for(let i=1;i<steps;i++)if(!seen.has(i)&&blocked(i))return false;
+    return true;
+  }
   function familyApplyCommand(kind,payload,owner,origin){
     if(!origin||!Number.isFinite(Number(origin.x))||!Number.isFinite(Number(origin.z)))return false;
     if(kind==='party'){
@@ -211,7 +218,13 @@
   function familyMove(actor,target,speed,dt){
     const dx=target.x-actor.x,dz=target.z-actor.z,distance=Math.hypot(dx,dz);actor.moving=0;if(distance<.30)return true;
     let dest=target;
-    if(!familyClear(actor,target)&&distance>1.4){
+    let clear=true;
+    if(distance>1.4){
+      const p=actor.lineProbe,now=familyWorld.clock;
+      if(!p||now-p.at>=.12||Math.hypot(actor.x-p.x,actor.z-p.z)>.6||Math.hypot(target.x-p.tx,target.z-p.tz)>.6)actor.lineProbe={at:now,x:actor.x,z:actor.z,tx:target.x,tz:target.z,clear:familyClear(actor,target)};
+      clear=actor.lineProbe.clear;
+    }
+    if(!clear&&distance>1.4){
       if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
       while(actor.path.length&&Math.hypot(actor.path[0].x-actor.x,actor.path[0].z-actor.z)<1.1)actor.path.shift();
       if(actor.path.length)dest=actor.path[0];

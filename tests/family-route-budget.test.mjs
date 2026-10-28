@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const source=fs.readFileSync('games/otthi/src/modules/41-family-adventure.js','utf8'),move=source.slice(source.indexOf('  function familyMove('),source.indexOf('  function familyOwnerPosition(')),clear=source.slice(source.indexOf('  function familyClear('),source.indexOf('  function familyApplyCommand('));
+test('family visibility retains all original samples and blocker results',()=>{
+ const points=[],c=vm.createContext({Math,Set,lerp:(a,b,t)=>a+(b-a)*t,positionBlockedForPlayer:(x,z)=>{points.push([x,z]);return false;}});vm.runInContext(clear,c);
+ for(const end of [{x:0,z:0},{x:1,z:2},{x:-45,z:99}]){points.length=0;assert(c.familyClear({x:0,z:0},end));const steps=Math.max(1,Math.ceil(Math.hypot(end.x,end.z)/.22)),expected=Array.from({length:steps+1},(_,i)=>[end.x*i/steps,end.z*i/steps]);assert.equal(points.length,steps+1);for(const p of expected)assert(points.some(q=>Math.hypot(p[0]-q[0],p[1]-q[1])<1e-10));}
+});
+function fixture(){let probes=0,blocked=false;const c=vm.createContext({Math,familyWorld:{clock:0},familyClear:(a,b)=>{if(Math.hypot(a.x-b.x,a.z-b.z)>1)probes++;return true},positionBlockedForPlayer:()=>blocked,buildRoutePoints:()=>[],actor:{x:0,z:0,path:[],routeAt:0},target:{x:20,z:0}});vm.runInContext(move,c);return{c,step(){c.familyWorld.clock+=1/60;c.familyMove(c.actor,c.target,4.6,1/60)},probes:()=>probes,block:()=>blocked=true};}
+test('family plans long visibility at a bounded rate while movement continues every frame',()=>{const f=fixture();for(let i=0;i<10;i++)f.step();assert(f.probes()<=3);assert(f.c.actor.x>.7);assert.equal(f.c.actor.moving,1);});
+test('a newly arrived obstacle blocks the next movement step despite a cached clear route',()=>{const f=fixture();f.step();const x=f.c.actor.x;f.block();f.step();assert.equal(f.c.actor.x,x);assert.equal(f.c.actor.moving,0);});
+test('a substantial target change immediately invalidates a visibility decision',()=>{const f=fixture();f.step();const before=f.probes();f.c.target.z+=3;f.step();assert.equal(f.probes(),before+1);});
