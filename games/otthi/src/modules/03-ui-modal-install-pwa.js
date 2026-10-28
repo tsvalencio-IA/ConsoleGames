@@ -168,8 +168,19 @@
       : '<p>No Chrome, abra o menu ⋮ e escolha <b>Instalar aplicativo</b> ou <b>Adicionar à tela inicial</b>.</p>');
   }
   if (els.installBtn) els.installBtn.onclick = installApp;
-  const OTTHI_UPDATE_INTERVAL_MS = 5 * 60 * 1000;
+  const OTTHI_UPDATE_INTERVAL_MS = 60 * 1000;
   let otthiUpdateReloading = false;
+  let otthiPendingUpdateToken = '';
+  let otthiUpdateNoticeAt = 0;
+  function safeOtthiUpdatePoint(){
+    return !running || (!player.vehicle&&!player.boating&&!player.transit?.mode&&!(typeof otGames!=='undefined'&&otGames.active)&&!(typeof worldVenues!=='undefined'&&worldVenues.session)&&!(typeof characterActivities!=='undefined'&&characterActivities.session)&&!(typeof civilMissions!=='undefined'&&civilMissions.task)&&!(typeof fishingSession!=='undefined'&&fishingSession)&&!buildMode&&Math.hypot(player.vx||0,player.vz||0)<.1&&(paused||els.modal.hidden));
+  }
+  function queueOtthiUpdate(token){
+    otthiPendingUpdateToken=String(token||Date.now());
+    if(safeOtthiUpdatePoint())return reloadForOtthiUpdate(otthiPendingUpdateToken);
+    if(Date.now()-otthiUpdateNoticeAt>15000){otthiUpdateNoticeAt=Date.now();toast('Atualização pronta. Será aplicada ao parar fora do veículo, preservando o progresso.','good',3500);}return false;
+  }
+  setInterval(()=>{if(otthiPendingUpdateToken&&!otthiUpdateReloading&&safeOtthiUpdatePoint())reloadForOtthiUpdate(otthiPendingUpdateToken);},1200);
   let otthiLastUpdateCheck = 0;
   let otthiServiceWorkerRegistration = null;
   let otthiWorkerRegistrationPromise = null;
@@ -179,7 +190,7 @@
     let previousController=navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener('controllerchange',()=>{
       const next=navigator.serviceWorker.controller;
-      if((previousController&&next!==previousController)||!window.OTTHI_RELEASE_COHERENT)reloadForOtthiUpdate('worker-'+OTTHI_GAME_WEB_BUILD);
+      if((previousController&&next!==previousController)||!window.OTTHI_RELEASE_COHERENT)queueOtthiUpdate('worker-'+OTTHI_GAME_WEB_BUILD);
       previousController=next;
     });
   }
@@ -227,7 +238,7 @@
       if ((remoteBuild && remoteBuild !== OTTHI_GAME_WEB_BUILD)
         || (remoteRevision && remoteRevision !== OTTHI_RELEASE_REVISION)) {
         if (!otthiServiceWorkerRegistration) {
-          return reloadForOtthiUpdate(remoteRevision || remoteBuild);
+          return queueOtthiUpdate(remoteRevision || remoteBuild);
         }
         await otthiServiceWorkerRegistration?.update?.().catch(() => {});
         if (otthiServiceWorkerRegistration?.waiting) {
@@ -306,9 +317,9 @@
     toast('Conexão restabelecida. Sincronizando com segurança.','good',2600);
     probeOtthiGameUpdate(true);
   }, { passive:true });
-  window.addEventListener('pageshow', () => probeOtthiGameUpdate(false), { passive:true });
+  window.addEventListener('pageshow', () => probeOtthiGameUpdate(true), { passive:true });
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) probeOtthiGameUpdate(false);
+    if (!document.hidden) {otthiServiceWorkerRegistration?.update?.().catch(()=>{});probeOtthiGameUpdate(true);}
   });
   updateInstallUI();
   if (!window.OTTHI_RELEASE_COHERENT) {

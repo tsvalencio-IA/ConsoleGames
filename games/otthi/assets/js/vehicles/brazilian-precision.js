@@ -82,7 +82,15 @@ function build(T,key,H){
    line(Array.from({length:65},(_,i)=>lamp(i/64,0,.010)),.005,black);
    rb(black,a*.52,.317,L+.017,.24,.144,.032,'fixed',.04);ell(chrome,a*.54,.316,L+.041,.039,.038,.008,'chrome');ell(0x96acb4,a*.54,.316,L+.052,.029,.028,.006,'lens');
    // Smoky vertical lamps sit beside the rounded hatch shoulders.
-   const z=-L+.105,tail=(...args)=>{const mesh=rb(...args);mesh.rotation.x=.38;return mesh;};tail(black,a*.555,.842,z,.135,.362,.034,'fixed',.048);tail(0x6a323b,a*.555,.850,z-.023,.110,.327,.012,'lens',.037);tail(0xaf3341,a*.555,.940,z+.006,.091,.112,.007,'lens',.025);tail(0xb6c5c7,a*.555,.834,z-.035,.092,.051,.007,'lens',.010);tail(0xa2323b,a*.555,.748,z-.061,.090,.09,.007,'lens',.022);
+   // Match the actual rear-quarter surface, including its lean and taper.
+   // A rotated generic box floated outside the curved shoulder.
+   const mount=(u,t,offset=0)=>{const q=.045+u*.58,base=belt(-L),top=1.035-.13*q;return[a*(width(-L)-.17*q),base+(top-base)*(.055+t*.89),-L+.014+.20*(.055+t*.89)*(1-q)-offset];};
+   surface(18,28,(u,t)=>mount(u,t,.006),black,'fixed');
+   surface(16,26,(u,t)=>mount(.07+u*.86,.04+t*.92,.011),0x66313b,'lens');
+   surface(16,12,(u,t)=>mount(.10+u*.80,.64+t*.29,.014),0xa53340,'lens');
+   surface(16,5,(u,t)=>mount(.10+u*.80,.43+t*.13,.014),0xb1bec4,'lens');
+   surface(16,10,(u,t)=>mount(.10+u*.80,.07+t*.29,.014),0x9b2f3a,'lens');
+   root.userData.tailLampMount='rear-quarter-parametric';
   }
   rb(black,0,.670,L+.026,.473,.108,.026,'fixed',.02);for(const e of[-1,1])line([[-.221,.670+e*.032,L+.044],[.221,.670+e*.032,L+.044]],.007,chrome,'chrome');ring(0,.671,L+.058,.049,chrome);ell(0x982632,0,.671,L+.063,.042,.042,.008,'lens');name('FIAT',0,.671,L+.076,.067,.024);
   rb(black,0,.319,L+.018,.66,.142,.029,'fixed',.026);for(let i=0;i<3;i++)box(0x48565b,0,.274+i*.042,L+.037,.61,.008,.006);

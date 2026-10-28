@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "85f64c62eaecbc0dd7f5dbdd390bcd070fe8d7a04f7f2ff37665aed8cc00671a"
+      "sha256Body": "63a868142108a97a7e094ae76a4f6b2ead52e40a063f2790c1fe3067fa0563f3"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -364,7 +364,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "1b44ae6d982117b0bfd4bb5abcdb65768b2ff3c000bedf5c7e5b63ef5ca95a32"
+      "sha256Body": "2a2918ac95f51eb04a256bc66270e42e870e3cb999b336594fd457bdcde8824b"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -385,14 +385,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "00d2f5a05bf6263bcb421b9e3fca70b5e2ce90ff27421f13a1d29ec61e6c2b96"
+      "sha256Body": "c1d2a3574dc3ae60989875c2998459dd6f09b44bec20b73b6b516b381aafd05d"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "c24175133dfd4d94bd2e8360a401ca8d70df2be4c32be14b612ad7318e2cc5e7"
+      "sha256Body": "452c8ceb90d662c8fc7953122384a99b6c36b261202d509adb1e710b8aec1bdd"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -413,7 +413,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
-      "sha256Body": "a408bada9cd863f5ebc44b9fc8ae46523a3fa612378c9fd7203e9b5d9c39f7be"
+      "sha256Body": "0ce6062841cc013412653195b6d8a8b8eef129365b1d35d7323fedd759947eb0"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
@@ -427,7 +427,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "ac4c8b499df22699100b81bac5af916010ac93490df7b367a32ed222dca43d65"
+      "sha256Body": "1c1d6d34220975e9902c1be920a8c19a06606163fdec6ae6f10290396b854673"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -469,7 +469,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Embarque e assentos de grupos online em carros, aviões e helicópteros",
-      "sha256Body": "b750385b88274ba00602bda832b0062032153dbe92121a04bea2c84c5be6e1a9"
+      "sha256Body": "57bc8b02e5bf59c66425fd328320ed3da2bad64a21882a7cdfd32151ec853d8b"
     },
     {
       "file": "src/modules/52-neighborhood-riders.js",
@@ -496,7 +496,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
-      "sha256Body": "0e419c0aa9780a828267896c0727e51285ef00510156138ec87d7910072c53d3"
+      "sha256Body": "bb2b5a01e0e220e1b1ff015fc2303c1cdb474fc09be44a0a0c5fe13fa701600f"
     },
     {
       "file": "src/modules/56-city-coast-life.js",
@@ -510,7 +510,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "571bfb36c7b9ca6ca40cb29df32259bb8ef1ed4cde7bb69e8ff920729eeacd0b"
+      "sha256Body": "82ef03b4a2f6e3225553b82d639132783ec5c5808638cdac3d3f5173e4ba940e"
     },
     {
       "file": "src/modules/58-character-activities.js",
@@ -538,14 +538,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "6434aab8b203af5d3921c8658861cc6648a1c23440183e8c786890acf7731409"
+      "sha256Body": "047e9d3c85ec64055c304f840c96de0f61a579fdc85760eafab0e94d49cd812c"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "1cb23c96e5104ba9cd5c8d6d5bc9b54271969f7f58fdd6494f5a8b24d3ba114a"
+      "sha256Body": "bf8faff17057ddc0a1b6d6e4c3c9ceadec396cf5626b1bab7f7d94f82489aa45"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
@@ -557,7 +557,7 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "1ce66e28af94fdeeb918b27b64b6ea38e5c5ba64b71fb30e8c18b1424313ad27",
+      "sha256Body": "066bebe50d58faf7b47df4ef9b837b16d1d09ef3b4b6864aa6895f271bb0dd3f",
       "startLine": 0,
       "endLine": 0
     },
@@ -581,6 +581,11 @@
       "endLine": 0,
       "description": "Ações civis visíveis, travessia de moradores e continuidade do teleférico online",
       "sha256Body": "7347a6ef2d8748bc3bf68f38c0e97cd2974f19d794a50bc57103c3a87fc2c913"
+    },
+    {
+      "file": "src/modules/69-vehicle-camera-passengers.js",
+      "description": "Câmera 360 de veículos, vista dos ocupantes e reações dos passageiros",
+      "sha256Body": "1d0ddec30a5d1dffa17998077f80eeb111d3bd972a3539e0ecc62839ad4a5508"
     }
   ],
   "styles": [
@@ -750,7 +755,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atividades acessíveis nos locais do mundo",
-      "sha256Body": "163151a36bb8b219909f7ef874875afc7b454bc93ed28f234d5572da812d930f"
+      "sha256Body": "d175e8ae4bf64b4b1a1bddb19ccac3caf4e70b1182b78327426caeac1156dc77"
     },
     {
       "file": "src/styles/23-world-race-focus.css",

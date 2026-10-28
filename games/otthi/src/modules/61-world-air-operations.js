@@ -31,6 +31,7 @@
   if(airOperations.ready||!worldCampaign.aircraft)return airOperations.ready;
   airOperations.bases=Object.fromEntries(Object.entries(WORLD_CAMPAIGN_AIRCRAFT).map(([id,p])=>[id,{...p,mode:p.mode||id,height:p.height??(id==='plane'?1.3:1.6),groundY:groundHeightAt(p.x,p.z)}]));
   const saved=state.vehicles.airOperations||{},migrated={...saved,craft:{...(saved.craft||{})}};
+  const oldSerra=migrated.craft['balloon-serra'];if(oldSerra?.status==='parked'&&!oldSerra.departedAt&&Math.hypot(oldSerra.x-242,oldSerra.z-224)<.5)migrated.craft['balloon-serra']={...oldSerra,x:250,z:205};
   for(const [id,p]of Object.entries(state.vehicles.aircraft||{}))if(airOperations.bases[id]&&!migrated.craft[id])migrated.craft[id]={id,base:id,...p,status:'parked',pilot:'',departedAt:0};
   airOperations.fleet=new WorldAirFleet(airOperations.bases,migrated,airNow());state.vehicles.airOperations=airOperations.fleet.data;
   for(const child of worldCampaign.aircraft.children)airOperations.meshes.set(child.name,child);

@@ -169,22 +169,22 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2116,
-          "light": 57740,
+          "dark": 2093,
+          "light": 57763,
           "draws": 11,
           "triangles": 72308
         },
         {
           "view": "lateral",
-          "dark": 3463,
-          "light": 56393,
+          "dark": 3459,
+          "light": 56397,
           "draws": 11,
           "triangles": 72308
         },
         {
           "view": "traseira",
-          "dark": 2994,
-          "light": 56862,
+          "dark": 2993,
+          "light": 56863,
           "draws": 11,
           "triangles": 72308
         }
@@ -256,7 +256,7 @@
     {
       "key": "golf",
       "finite": true,
-      "vertices": 308820,
+      "vertices": 226260,
       "meshes": 11,
       "size": [
         1.8263070583343506,
@@ -295,24 +295,24 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2163,
-          "light": 57693,
+          "dark": 2114,
+          "light": 57742,
           "draws": 11,
-          "triangles": 102940
+          "triangles": 75420
         },
         {
           "view": "lateral",
-          "dark": 3629,
-          "light": 56227,
+          "dark": 3616,
+          "light": 56240,
           "draws": 11,
-          "triangles": 102940
+          "triangles": 75420
         },
         {
           "view": "traseira",
-          "dark": 3199,
-          "light": 56657,
+          "dark": 3193,
+          "light": 56663,
           "draws": 11,
-          "triangles": 102940
+          "triangles": 75420
         }
       ]
     },
@@ -445,7 +445,7 @@
     {
       "key": "s10",
       "finite": true,
-      "vertices": 305208,
+      "vertices": 222648,
       "meshes": 11,
       "size": [
         1.9463070631027222,
@@ -484,31 +484,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 3421,
-          "light": 56435,
+          "dark": 3312,
+          "light": 56544,
           "draws": 11,
-          "triangles": 101736
+          "triangles": 74216
         },
         {
           "view": "lateral",
-          "dark": 5926,
-          "light": 53930,
+          "dark": 5882,
+          "light": 53974,
           "draws": 11,
-          "triangles": 101736
+          "triangles": 74216
         },
         {
           "view": "traseira",
-          "dark": 5705,
-          "light": 54151,
+          "dark": 5703,
+          "light": 54153,
           "draws": 11,
-          "triangles": 101736
+          "triangles": 74216
         }
       ]
     },
     {
       "key": "hilux",
       "finite": true,
-      "vertices": 320976,
+      "vertices": 238416,
       "meshes": 11,
       "size": [
         1.9863070249557495,
@@ -547,31 +547,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1740,
-          "light": 58116,
+          "dark": 1700,
+          "light": 58156,
           "draws": 11,
-          "triangles": 106992
+          "triangles": 79472
         },
         {
           "view": "lateral",
-          "dark": 2561,
-          "light": 57295,
+          "dark": 2552,
+          "light": 57304,
           "draws": 11,
-          "triangles": 106992
+          "triangles": 79472
         },
         {
           "view": "traseira",
-          "dark": 3300,
-          "light": 56556,
+          "dark": 3298,
+          "light": 56558,
           "draws": 11,
-          "triangles": 106992
+          "triangles": 79472
         }
       ]
     },
     {
       "key": "amarok",
       "finite": true,
-      "vertices": 319416,
+      "vertices": 236856,
       "meshes": 11,
       "size": [
         2.04630708694458,
@@ -610,31 +610,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 6099,
-          "light": 53757,
+          "dark": 6097,
+          "light": 53759,
           "draws": 11,
-          "triangles": 106472
+          "triangles": 78952
         },
         {
           "view": "lateral",
-          "dark": 6693,
-          "light": 53163,
+          "dark": 6660,
+          "light": 53196,
           "draws": 11,
-          "triangles": 106472
+          "triangles": 78952
         },
         {
           "view": "traseira",
-          "dark": 6713,
-          "light": 53143,
+          "dark": 6695,
+          "light": 53161,
           "draws": 11,
-          "triangles": 106472
+          "triangles": 78952
         }
       ]
     },
     {
       "key": "saveiro",
       "finite": true,
-      "vertices": 328032,
+      "vertices": 245472,
       "meshes": 11,
       "size": [
         1.8263070583343506,
@@ -673,31 +673,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2055,
-          "light": 57801,
+          "dark": 1990,
+          "light": 57866,
           "draws": 11,
-          "triangles": 109344
+          "triangles": 81824
         },
         {
           "view": "lateral",
-          "dark": 3072,
-          "light": 56784,
+          "dark": 3050,
+          "light": 56806,
           "draws": 11,
-          "triangles": 109344
+          "triangles": 81824
         },
         {
           "view": "traseira",
-          "dark": 3809,
-          "light": 56047,
+          "dark": 3799,
+          "light": 56057,
           "draws": 11,
-          "triangles": 109344
+          "triangles": 81824
         }
       ]
     },
     {
       "key": "constellation",
       "finite": true,
-      "vertices": 214854,
+      "vertices": 91014,
       "meshes": 12,
       "size": [
         2.140000104904175,
@@ -730,31 +730,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2959,
-          "light": 56897,
+          "dark": 2956,
+          "light": 56900,
           "draws": 12,
-          "triangles": 71618
+          "triangles": 30338
         },
         {
           "view": "lateral",
-          "dark": 6000,
-          "light": 53856,
+          "dark": 5996,
+          "light": 53860,
           "draws": 12,
-          "triangles": 71618
+          "triangles": 30338
         },
         {
           "view": "traseira",
-          "dark": 5746,
-          "light": 54110,
+          "dark": 5743,
+          "light": 54113,
           "draws": 12,
-          "triangles": 71618
+          "triangles": 30338
         }
       ]
     },
     {
       "key": "veraneio",
       "finite": true,
-      "vertices": 320152,
+      "vertices": 237592,
       "meshes": 11,
       "size": [
         2.0763070583343506,
@@ -793,31 +793,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 4172,
-          "light": 55684,
+          "dark": 4174,
+          "light": 55682,
           "draws": 11,
-          "triangles": 106718
+          "triangles": 79198
         },
         {
           "view": "lateral",
-          "dark": 7241,
-          "light": 52615,
+          "dark": 7240,
+          "light": 52616,
           "draws": 11,
-          "triangles": 106718
+          "triangles": 79198
         },
         {
           "view": "traseira",
-          "dark": 5367,
-          "light": 54489,
+          "dark": 5366,
+          "light": 54490,
           "draws": 11,
-          "triangles": 106718
+          "triangles": 79198
         }
       ]
     },
     {
       "key": "blazer",
       "finite": true,
-      "vertices": 304816,
+      "vertices": 222256,
       "meshes": 12,
       "size": [
         1.896307110786438,
@@ -856,24 +856,24 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 7147,
-          "light": 52709,
+          "dark": 7124,
+          "light": 52732,
           "draws": 12,
-          "triangles": 101606
+          "triangles": 74086
         },
         {
           "view": "lateral",
-          "dark": 8319,
-          "light": 51537,
+          "dark": 8235,
+          "light": 51621,
           "draws": 12,
-          "triangles": 101606
+          "triangles": 74086
         },
         {
           "view": "traseira",
-          "dark": 7541,
-          "light": 52315,
+          "dark": 7502,
+          "light": 52354,
           "draws": 12,
-          "triangles": 101606
+          "triangles": 74086
         }
       ]
     },
@@ -909,22 +909,22 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 4928,
-          "light": 54928,
+          "dark": 4946,
+          "light": 54910,
           "draws": 13,
           "triangles": 70656
         },
         {
           "view": "lateral",
-          "dark": 5370,
-          "light": 54486,
+          "dark": 5340,
+          "light": 54516,
           "draws": 13,
           "triangles": 70656
         },
         {
           "view": "traseira",
-          "dark": 5349,
-          "light": 54507,
+          "dark": 5342,
+          "light": 54514,
           "draws": 13,
           "triangles": 70656
         }
@@ -933,7 +933,7 @@
     {
       "key": "escort",
       "finite": true,
-      "vertices": 300308,
+      "vertices": 217748,
       "meshes": 13,
       "size": [
         1.7663071155548096,
@@ -972,36 +972,36 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1938,
-          "light": 57918,
+          "dark": 1911,
+          "light": 57945,
           "draws": 13,
-          "triangles": 100104
+          "triangles": 72584
         },
         {
           "view": "lateral",
-          "dark": 3205,
-          "light": 56651,
+          "dark": 3209,
+          "light": 56647,
           "draws": 13,
-          "triangles": 100104
+          "triangles": 72584
         },
         {
           "view": "traseira",
-          "dark": 3134,
-          "light": 56722,
+          "dark": 3128,
+          "light": 56728,
           "draws": 13,
-          "triangles": 100104
+          "triangles": 72584
         }
       ]
     },
     {
       "key": "tcross",
       "finite": true,
-      "vertices": 404624,
+      "vertices": 322064,
       "meshes": 12,
       "size": [
         1.8070000410079956,
         1.3333078815937043,
-        3.5959999561309814
+        3.580999970436096
       ],
       "min": [
         -0.9035000205039978,
@@ -1035,31 +1035,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 3682,
-          "light": 56174,
+          "dark": 3363,
+          "light": 56493,
           "draws": 12,
-          "triangles": 134876
+          "triangles": 107356
         },
         {
           "view": "lateral",
-          "dark": 3970,
-          "light": 55886,
+          "dark": 3951,
+          "light": 55905,
           "draws": 12,
-          "triangles": 134876
+          "triangles": 107356
         },
         {
           "view": "traseira",
-          "dark": 5041,
-          "light": 54815,
+          "dark": 4493,
+          "light": 55363,
           "draws": 12,
-          "triangles": 134876
+          "triangles": 107356
         }
       ]
     },
     {
       "key": "peugeot206",
       "finite": true,
-      "vertices": 293408,
+      "vertices": 210848,
       "meshes": 12,
       "size": [
         1.7363070249557495,
@@ -1098,31 +1098,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 4012,
-          "light": 55844,
+          "dark": 3708,
+          "light": 56148,
           "draws": 12,
-          "triangles": 97804
+          "triangles": 70284
         },
         {
           "view": "lateral",
-          "dark": 6642,
-          "light": 53214,
+          "dark": 6531,
+          "light": 53325,
           "draws": 12,
-          "triangles": 97804
+          "triangles": 70284
         },
         {
           "view": "traseira",
-          "dark": 5421,
-          "light": 54435,
+          "dark": 5415,
+          "light": 54441,
           "draws": 12,
-          "triangles": 97804
+          "triangles": 70284
         }
       ]
     },
     {
       "key": "jetta",
       "finite": true,
-      "vertices": 298360,
+      "vertices": 215800,
       "meshes": 12,
       "size": [
         1.8263070583343506,
@@ -1161,31 +1161,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1592,
-          "light": 58264,
+          "dark": 1546,
+          "light": 58310,
           "draws": 12,
-          "triangles": 99454
+          "triangles": 71934
         },
         {
           "view": "lateral",
-          "dark": 2429,
-          "light": 57427,
+          "dark": 2415,
+          "light": 57441,
           "draws": 12,
-          "triangles": 99454
+          "triangles": 71934
         },
         {
           "view": "traseira",
-          "dark": 2208,
-          "light": 57648,
+          "dark": 2205,
+          "light": 57651,
           "draws": 12,
-          "triangles": 99454
+          "triangles": 71934
         }
       ]
     },
     {
       "key": "corolla2007",
       "finite": true,
-      "vertices": 302620,
+      "vertices": 220060,
       "meshes": 12,
       "size": [
         1.7563071250915527,
@@ -1224,31 +1224,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1619,
-          "light": 58237,
+          "dark": 1548,
+          "light": 58308,
           "draws": 12,
-          "triangles": 100874
+          "triangles": 73354
         },
         {
           "view": "lateral",
-          "dark": 2347,
-          "light": 57509,
+          "dark": 2328,
+          "light": 57528,
           "draws": 12,
-          "triangles": 100874
+          "triangles": 73354
         },
         {
           "view": "traseira",
-          "dark": 2088,
-          "light": 57768,
+          "dark": 2074,
+          "light": 57782,
           "draws": 12,
-          "triangles": 100874
+          "triangles": 73354
         }
       ]
     },
     {
       "key": "corolla2021",
       "finite": true,
-      "vertices": 299692,
+      "vertices": 217132,
       "meshes": 12,
       "size": [
         1.8263070583343506,
@@ -1287,31 +1287,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1558,
-          "light": 58298,
+          "dark": 1495,
+          "light": 58361,
           "draws": 12,
-          "triangles": 99898
+          "triangles": 72378
         },
         {
           "view": "lateral",
-          "dark": 2187,
-          "light": 57669,
+          "dark": 2174,
+          "light": 57682,
           "draws": 12,
-          "triangles": 99898
+          "triangles": 72378
         },
         {
           "view": "traseira",
-          "dark": 2070,
-          "light": 57786,
+          "dark": 2066,
+          "light": 57790,
           "draws": 12,
-          "triangles": 99898
+          "triangles": 72378
         }
       ]
     },
     {
       "key": "civic2011",
       "finite": true,
-      "vertices": 297532,
+      "vertices": 214972,
       "meshes": 12,
       "size": [
         1.8163070678710938,
@@ -1350,31 +1350,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 4855,
-          "light": 55001,
+          "dark": 4877,
+          "light": 54979,
           "draws": 12,
-          "triangles": 99178
+          "triangles": 71658
         },
         {
           "view": "lateral",
-          "dark": 5685,
-          "light": 54171,
+          "dark": 5610,
+          "light": 54246,
           "draws": 12,
-          "triangles": 99178
+          "triangles": 71658
         },
         {
           "view": "traseira",
-          "dark": 5432,
-          "light": 54424,
+          "dark": 5407,
+          "light": 54449,
           "draws": 12,
-          "triangles": 99178
+          "triangles": 71658
         }
       ]
     },
     {
       "key": "bmwx1",
       "finite": true,
-      "vertices": 316624,
+      "vertices": 234064,
       "meshes": 12,
       "size": [
         1.9063071012496948,
@@ -1413,31 +1413,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1955,
-          "light": 57901,
+          "dark": 1916,
+          "light": 57940,
           "draws": 12,
-          "triangles": 105542
+          "triangles": 78022
         },
         {
           "view": "lateral",
-          "dark": 2924,
-          "light": 56932,
+          "dark": 2908,
+          "light": 56948,
           "draws": 12,
-          "triangles": 105542
+          "triangles": 78022
         },
         {
           "view": "traseira",
-          "dark": 2393,
-          "light": 57463,
+          "dark": 2395,
+          "light": 57461,
           "draws": 12,
-          "triangles": 105542
+          "triangles": 78022
         }
       ]
     },
     {
       "key": "bmwm3",
       "finite": true,
-      "vertices": 315712,
+      "vertices": 233152,
       "meshes": 12,
       "size": [
         1.9163070917129517,
@@ -1476,24 +1476,24 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2727,
-          "light": 57129,
+          "dark": 2580,
+          "light": 57276,
           "draws": 12,
-          "triangles": 105238
+          "triangles": 77718
         },
         {
           "view": "lateral",
-          "dark": 4890,
-          "light": 54966,
+          "dark": 4829,
+          "light": 55027,
           "draws": 12,
-          "triangles": 105238
+          "triangles": 77718
         },
         {
           "view": "traseira",
-          "dark": 3680,
-          "light": 56176,
+          "dark": 3667,
+          "light": 56189,
           "draws": 12,
-          "triangles": 105238
+          "triangles": 77718
         }
       ]
     },
@@ -1553,7 +1553,7 @@
     {
       "key": "porsche911",
       "finite": true,
-      "vertices": 246396,
+      "vertices": 163836,
       "meshes": 10,
       "size": [
         1.75,
@@ -1592,31 +1592,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1525,
-          "light": 58331,
+          "dark": 1526,
+          "light": 58330,
           "draws": 10,
-          "triangles": 82132
+          "triangles": 54612
         },
         {
           "view": "lateral",
-          "dark": 2092,
-          "light": 57764,
+          "dark": 2090,
+          "light": 57766,
           "draws": 10,
-          "triangles": 82132
+          "triangles": 54612
         },
         {
           "view": "traseira",
-          "dark": 2019,
-          "light": 57837,
+          "dark": 2015,
+          "light": 57841,
           "draws": 10,
-          "triangles": 82132
+          "triangles": 54612
         }
       ]
     },
     {
       "key": "golf7",
       "finite": true,
-      "vertices": 300188,
+      "vertices": 217628,
       "meshes": 12,
       "size": [
         1.8713070154190063,
@@ -1655,31 +1655,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1888,
-          "light": 57968,
+          "dark": 1822,
+          "light": 58034,
           "draws": 12,
-          "triangles": 100064
+          "triangles": 72544
         },
         {
           "view": "lateral",
-          "dark": 2726,
-          "light": 57130,
+          "dark": 2713,
+          "light": 57143,
           "draws": 12,
-          "triangles": 100064
+          "triangles": 72544
         },
         {
           "view": "traseira",
-          "dark": 2758,
-          "light": 57098,
+          "dark": 2753,
+          "light": 57103,
           "draws": 12,
-          "triangles": 100064
+          "triangles": 72544
         }
       ]
     },
     {
       "key": "palio",
       "finite": true,
-      "vertices": 358112,
+      "vertices": 357176,
       "meshes": 16,
       "size": [
         1.6920000314712524,
@@ -1718,31 +1718,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 2003,
-          "light": 57853,
+          "dark": 1800,
+          "light": 58056,
           "draws": 16,
-          "triangles": 119374
+          "triangles": 119062
         },
         {
           "view": "lateral",
-          "dark": 3236,
-          "light": 56620,
+          "dark": 3272,
+          "light": 56584,
           "draws": 16,
-          "triangles": 119374
+          "triangles": 119062
         },
         {
           "view": "traseira",
-          "dark": 2776,
-          "light": 57080,
+          "dark": 2706,
+          "light": 57150,
           "draws": 16,
-          "triangles": 119374
+          "triangles": 119062
         }
       ]
     },
     {
       "key": "passat",
       "finite": true,
-      "vertices": 286276,
+      "vertices": 203716,
       "meshes": 11,
       "size": [
         1.7363070249557495,
@@ -1784,28 +1784,28 @@
           "dark": 4815,
           "light": 55041,
           "draws": 11,
-          "triangles": 95426
+          "triangles": 67906
         },
         {
           "view": "lateral",
           "dark": 5951,
           "light": 53905,
           "draws": 11,
-          "triangles": 95426
+          "triangles": 67906
         },
         {
           "view": "traseira",
-          "dark": 4690,
-          "light": 55166,
+          "dark": 4685,
+          "light": 55171,
           "draws": 11,
-          "triangles": 95426
+          "triangles": 67906
         }
       ]
     },
     {
       "key": "tempra",
       "finite": true,
-      "vertices": 284800,
+      "vertices": 202240,
       "meshes": 11,
       "size": [
         1.7563071250915527,
@@ -1844,24 +1844,24 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 3369,
-          "light": 56487,
+          "dark": 3287,
+          "light": 56569,
           "draws": 11,
-          "triangles": 94934
+          "triangles": 67414
         },
         {
           "view": "lateral",
-          "dark": 5728,
-          "light": 54128,
+          "dark": 5689,
+          "light": 54167,
           "draws": 11,
-          "triangles": 94934
+          "triangles": 67414
         },
         {
           "view": "traseira",
-          "dark": 4358,
-          "light": 55498,
+          "dark": 4353,
+          "light": 55503,
           "draws": 11,
-          "triangles": 94934
+          "triangles": 67414
         }
       ]
     },
@@ -2355,7 +2355,7 @@
     {
       "key": "dinossauro",
       "finite": true,
-      "vertices": 227460,
+      "vertices": 144900,
       "meshes": 13,
       "size": [
         2.4040000438690186,
@@ -2404,31 +2404,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 6816,
-          "light": 53040,
+          "dark": 6815,
+          "light": 53041,
           "draws": 13,
-          "triangles": 75822
+          "triangles": 48302
         },
         {
           "view": "lateral",
           "dark": 8943,
           "light": 50913,
           "draws": 13,
-          "triangles": 75822
+          "triangles": 48302
         },
         {
           "view": "traseira",
           "dark": 6795,
           "light": 53061,
           "draws": 13,
-          "triangles": 75822
+          "triangles": 48302
         }
       ]
     },
     {
       "key": "attivi",
       "finite": true,
-      "vertices": 224844,
+      "vertices": 142284,
       "meshes": 13,
       "size": [
         2.4040000438690186,
@@ -2480,28 +2480,28 @@
           "dark": 5282,
           "light": 54574,
           "draws": 13,
-          "triangles": 74950
+          "triangles": 47430
         },
         {
           "view": "lateral",
-          "dark": 9276,
-          "light": 50580,
+          "dark": 9274,
+          "light": 50582,
           "draws": 13,
-          "triangles": 74950
+          "triangles": 47430
         },
         {
           "view": "traseira",
           "dark": 6413,
           "light": 53443,
           "draws": 13,
-          "triangles": 74950
+          "triangles": 47430
         }
       ]
     },
     {
       "key": "doubledeck",
       "finite": true,
-      "vertices": 355632,
+      "vertices": 231792,
       "meshes": 15,
       "size": [
         2.4040000438690186,
@@ -2553,28 +2553,28 @@
           "dark": 8231,
           "light": 51625,
           "draws": 15,
-          "triangles": 118546
+          "triangles": 77266
         },
         {
           "view": "lateral",
           "dark": 10053,
           "light": 49803,
           "draws": 15,
-          "triangles": 118546
+          "triangles": 77266
         },
         {
           "view": "traseira",
           "dark": 8421,
           "light": 51435,
           "draws": 15,
-          "triangles": 118546
+          "triangles": 77266
         }
       ]
     },
     {
       "key": "semi",
       "finite": true,
-      "vertices": 432968,
+      "vertices": 185288,
       "meshes": 24,
       "size": [
         2.303999900817871,
@@ -2608,31 +2608,31 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 5024,
-          "light": 54832,
+          "dark": 5022,
+          "light": 54834,
           "draws": 24,
-          "triangles": 144324
+          "triangles": 61764
         },
         {
           "view": "lateral",
-          "dark": 6117,
-          "light": 53739,
+          "dark": 6115,
+          "light": 53741,
           "draws": 24,
-          "triangles": 144324
+          "triangles": 61764
         },
         {
           "view": "traseira",
           "dark": 4970,
           "light": 54886,
           "draws": 24,
-          "triangles": 144324
+          "triangles": 61764
         }
       ]
     },
     {
       "key": "fuel",
       "finite": true,
-      "vertices": 439472,
+      "vertices": 191792,
       "meshes": 23,
       "size": [
         2.303999900817871,
@@ -2666,24 +2666,24 @@
       "frames": [
         {
           "view": "frente",
-          "dark": 1864,
-          "light": 57992,
+          "dark": 1865,
+          "light": 57991,
           "draws": 23,
-          "triangles": 146492
+          "triangles": 63932
         },
         {
           "view": "lateral",
-          "dark": 2440,
-          "light": 57416,
+          "dark": 2441,
+          "light": 57415,
           "draws": 23,
-          "triangles": 146492
+          "triangles": 63932
         },
         {
           "view": "traseira",
-          "dark": 1785,
-          "light": 58071,
+          "dark": 1784,
+          "light": 58072,
           "draws": 23,
-          "triangles": 146492
+          "triangles": 63932
         }
       ]
     }

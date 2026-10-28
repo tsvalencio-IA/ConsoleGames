@@ -280,6 +280,7 @@
       if(dog)familyWorld.studio.drawDog(a.id,0,0,0,a.moving,a.id==='luna'?0:1.5,familyWorld.clock,!!familyWorld.ball&&familyWorld.ball.dog===a.id&&familyWorld.ball.stage==='return');
       else familyWorld.studio.drawHuman(a.id,0,0,0,a.moving,false,0,familyWorld.clock,a.id==='thiago'&&familyWorld.ball?.stage==='flight'?1-familyWorld.ball.t:0,0,work?1:0,work?familyWorld.workKind:null);
       if(a.ridePose&&!dog)for(const joint of a.joints){if(/^hip-?1$/.test(joint.name))joint.rot[0]=-1.25;if(/^knee-?1$/.test(joint.name))joint.rot[0]=1.25;if(/^ankle-?1$/.test(joint.name))joint.rot[0]=0;}
+      if(a.ridePose&&typeof familyPassengerReaction==='function')familyPassengerReaction(a);
       for(let i=0;i<a.bones.length;i++){const rot=a.joints[i].rot;a.bones[i].rotation.set(rot[0],rot[1],rot[2],'YXZ');}
       const y=groundHeightAt(a.x,a.z);if(a.ridePose){const p=a.ridePose;a.group.position.set(p.x,p.y,p.z);a.group.quaternion.copy(p.q);a.group.scale.setScalar(a.scale*p.scale);}else{a.group.position.set(a.x,y+(dog ? .012 : -.038),a.z);a.group.rotation.set(0,a.heading,0);a.group.scale.setScalar(a.scale);}a.shadow.position.set(a.x,y+.025,a.z);
     }

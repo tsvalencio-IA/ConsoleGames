@@ -5,7 +5,7 @@
  const civilTerrainBefore=professionalTerrainHeightAt;
  const civilTerraces=[{x:147,z:305,w:17,d:15,y:civilTerrainBefore(147,305)},{x:210,z:235,w:15,d:12,y:civilTerrainBefore(210,235)}];
  professionalTerrainHeightAt=function(x,z){let y=civilTerrainBefore(x,z);for(const p of civilTerraces){const dx=Math.max(0,Math.abs(x-p.x)-p.w/2),dz=Math.max(0,Math.abs(z-p.z)-p.d/2),distance=Math.hypot(dx,dz);if(distance<4)y=lerp(p.y,y,clamp(distance/4,0,1));}return y;};
- for(const [id,x,z]of[['balloon-coast',-380,458],['balloon-snow',-83,208],['balloon-serra',242,224]])WORLD_CAMPAIGN_AIRCRAFT[id]={id,mode:'balloon',model:'balloon',label:id==='balloon-coast'?'Balão da Costa Verde':id==='balloon-snow'?'Balão dos Picos Nevados':'Balão do Festival da Serra',x,z,yaw:0,radius:5,height:1.05};
+ for(const [id,x,z]of[['balloon-coast',-380,458],['balloon-snow',-83,208],['balloon-serra',250,205]])WORLD_CAMPAIGN_AIRCRAFT[id]={id,mode:'balloon',model:'balloon',label:id==='balloon-coast'?'Balão da Costa Verde':id==='balloon-snow'?'Balão dos Picos Nevados':'Balão do Festival da Serra',x,z,yaw:0,radius:5,height:1.05};
  function civilTarget(id,label,x,z,options={}){
   const p={id,label,name:label,x,z,y:groundHeightAt(x,z),radius:3.4,...options};civilCommunity.targets.set(id,p);
   registerInteractable({id:'civil-target-'+id,type:'civil',icon:p.icon||'🤝',label,x,z,radius:p.radius,priority:260,available:()=>!civilCommunity.ride&&!currentHouse&&!player.vehicle&&!player.boating&&(!otGames.active||p.vehicle==='balloon'),action:()=>civilTaskAt(id)});return p;
@@ -60,7 +60,7 @@
   const hikes=[[210,240,220,246],[370,336,382,342],[432,408,444,411],[561,428,568,434],[680,190,671,190],[17,260,8,267]];
   for(const[i,[x,z,tx,tz]]of hikes.entries())addResident('mountain-walker-'+i,['André','Júlia','Bruno','Luiza','Marcelo','Rita'][i],[{x,z,action:'look',duration:9},{x:tx,z:tz,action:'photo',duration:9},{x,z,action:'walk'}],0x668a89+i*0x070509);
   civilTarget('snow-depot','Chalé de apoio aos visitantes',20,180,{icon:'❄️'});
-  civilTarget('balloon-festival','Festival de balões da serra',238,220,{icon:'🎈'});
+  civilTarget('balloon-festival','Festival de balões da serra',250,212,{icon:'🎈'});
   for(const[i,x,z]of[[0,260,255],[1,300,285],[2,355,315]])civilTarget('balloon-view-'+i,'Panorama do festival '+(i+1),x,z,{icon:'📷',vehicle:'balloon',radius:18,minAltitude:14});
   for(let i=0;i<6;i++){const coast=i<3,x=coast?-380+(i%3)*55:310+(i-3)*125,z=coast?462:280+(i%2)*45,group=createMountainBalloon();group.name='CIVIL_SCENIC_BALLOON_'+i;worldGroup.add(group);const pilot=createRoadsidePoliceOfficer(null);pilot.group.parent?.remove(pilot.group);group.add(pilot.group);pilot.group.scale.setScalar(.60);pilot.group.position.set(0,-.8,0);pilot.group.visible=true;cordillera.balloons.push({group,x,z,phase:29+i*41,ground:professionalTerrainHeightAt(x,z),cruise:coast?55+i*12:175+i*7,civil:true});}
   for(const id of['balloon-coast','balloon-snow','balloon-serra']){const p=WORLD_CAMPAIGN_AIRCRAFT[id],g=civilRegionRoot('BALLOON_PAD_'+id,p.x,p.z,240),pad=new THREE.Mesh(new THREE.CylinderGeometry(5.5,5.7,.10,32),campaignMaterial(0xc2b9a1));pad.position.set(p.x,groundHeightAt(p.x,p.z)-.03,p.z);g.add(pad);citySign(g,p.label,p.x+5,groundHeightAt(p.x,p.z)+2,p.z,6,1,'#47685b',.45);}

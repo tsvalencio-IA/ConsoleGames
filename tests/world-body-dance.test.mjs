@@ -7,3 +7,5 @@ test('camera dance: calibration requires the complete visible body, neutral stan
 test('camera dance: real world landmarks measure knee bend in depth even when a frontal image looks straight',()=>{const p=dancePose(),w=p.map(q=>({...q,z:0}));for(const hip of[23,24])w[hip].z=0;for(const knee of[25,26])w[knee].z=-.25;for(const ankle of[27,28])w[ankle].z=0;const flat=c.Dance.body(p),depth=c.Dance.body(p,w);assert(flat.kneeL>170);assert(depth.kneeL<140);assert(depth.kneeR<140);});
 
 test('camera dance: holding one successful pose cannot score four repetitions without another movement',()=>{const g=new c.Dance();let t=start(g);while(!g.done&&g.index<4){t+=100;g.observe(dancePose('up'),t);}assert.equal(g.hits,1);assert.equal(g.misses,3);});
+
+test('a local song keeps full eight-beat phrases within the recording and uses its tempo',()=>{for(const bpm of[80,108,120,150])for(const seconds of[30,63,180,359]){const g=new c.Dance(1,{bpm,musicSeconds:seconds});assert.equal(g.bpm,bpm);assert.equal(g.phrases.length%4,0);assert(g.snapshot().end<=seconds);assert(seconds-g.snapshot().end<8*60/bpm+.001);assert(g.phrases.every((p,i)=>p.rep===i%4+1&&!p.hit));}});

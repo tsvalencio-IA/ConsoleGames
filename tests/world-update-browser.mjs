@@ -22,12 +22,12 @@ const server=createServer((req,res)=>{
  }catch{res.writeHead(500).end();}
 });
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/games/otthi/';
-const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});mkdirSync('test-results/world-update',{recursive:true});
+const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});mkdirSync('test-results/world-update',{recursive:true});
 async function context(options={}){
  const c=await browser.newContext({viewport:{width:393,height:780},isMobile:true,hasTouch:true,...options});
  await c.addInitScript(()=>{
   const key='otthos_life_world_roleplay_v700';if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify({version:705,profile:{name:'Progresso preservado',nameConfirmed:true,playerId:'update-qa',coins:4321,xp:1234,level:2},position:{x:-18,y:0,z:39,yaw:0},flags:{accountPromptedV635:true},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','luna','liz']},deliveries:{luna:2,liz:1},flags:{}}}));
-  sessionStorage.setItem('qa-loads',String(Number(sessionStorage.getItem('qa-loads')||0)+1));
+  localStorage.setItem('qa-other-app-session','preserved');sessionStorage.setItem('qa-loads',String(Number(sessionStorage.getItem('qa-loads')||0)+1));
  });
  await c.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===origin?r.continue():r.abort('blockedbyclient'));
  return c;
@@ -54,7 +54,7 @@ try{
  console.log('NEW WORKER WAITING',await page.evaluate(async()=>({build:OTTHI_GAME_BUILD,reg:((r)=>({waiting:r?.waiting?.state,installing:r?.installing?.state,active:r?.active?.state}))(await navigator.serviceWorker.getRegistration())})));
  assert.equal(await page.evaluate(()=>window.OTTHI_GAME_BUILD),oldManifest.build,'new worker cannot change the files of a document still loading the old release');assert(await page.evaluate(()=>window.OTTHI_RELEASE_COHERENT));
  await page.evaluate(async()=>{const registration=await navigator.serviceWorker.getRegistration(),worker=registration.waiting;window.__holdWorker=false;worker?.postMessage({type:'SKIP_WAITING'});});
- await page.waitForFunction(build=>window.OTTHI_RELEASE_COHERENT&&window.OTTHI_GAME_BUILD===build,current.build,{timeout:45000});await verifySave(page);
+ await page.waitForFunction(build=>window.OTTHI_RELEASE_COHERENT&&window.OTTHI_GAME_BUILD===build,current.build,{timeout:45000});await verifySave(page);assert.equal(await page.evaluate(()=>localStorage.getItem('qa-other-app-session')),'preserved');
  await page.screenshot({path:'test-results/world-update/upgraded-existing-profile.png'});results.push({scenario:'real-worker-upgrade',waitedForPageReady:true,preserved:true});
  await upgraded.setOffline(true);await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.OTTHI_RELEASE_COHERENT);await verifySave(page);assert(await page.locator('#playBtn').isVisible());
  results.push({scenario:'offline-after-upgrade',coherent:true,preserved:true});await upgraded.close();assert.deepEqual(errors,[]);
