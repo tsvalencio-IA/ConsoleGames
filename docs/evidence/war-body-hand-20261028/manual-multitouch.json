@@ -1,0 +1,47 @@
+[
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "passed": true,
+    "simultaneousPointers": 4,
+    "dragLook": true,
+    "ads": true,
+    "noDrift": true,
+    "pauseReleases": true,
+    "resizeReleases": true
+  },
+  {
+    "viewport": {
+      "width": 844,
+      "height": 390
+    },
+    "passed": true,
+    "simultaneousPointers": 4,
+    "dragLook": true,
+    "ads": true,
+    "noDrift": true,
+    "pauseReleases": true,
+    "resizeReleases": true
+  },
+  {
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "passed": true,
+    "simultaneousPointers": 4,
+    "dragLook": true,
+    "ads": true,
+    "noDrift": true,
+    "pauseReleases": true,
+    "resizeReleases": true
+  },
+  {
+    "desktop": true,
+    "mouseDrag": true,
+    "keyboardMoveAndFire": true,
+    "passed": true
+  }
+]

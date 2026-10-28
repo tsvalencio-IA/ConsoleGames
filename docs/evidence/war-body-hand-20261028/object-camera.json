@@ -1,0 +1,141 @@
+{
+  "passed": true,
+  "source": "deterministic-pixel-camera",
+  "bodyReplayStepsAndCrouch": true,
+  "start": {
+    "state": "PLAYING",
+    "aim": {
+      "x": 0.5,
+      "y": 0.47999999999999987,
+      "fresh": true,
+      "present": true,
+      "timestamp": 7316.100000000093,
+      "twoHands": false,
+      "calibration": 3,
+      "roll": 0,
+      "source": "object"
+    },
+    "body": {
+      "x": 0,
+      "z": 0,
+      "yaw": 0,
+      "pitch": 2.4424906541753446e-16,
+      "hp": 100
+    },
+    "walking": false,
+    "object": {
+      "matches": 28,
+      "lost": false,
+      "object": {
+        "x": 0.5,
+        "y": 0.48500000000000004,
+        "dx": 0,
+        "dy": 1,
+        "scale": 0.3225,
+        "angle": 0,
+        "confidence": 1.0000000000000004,
+        "matches": 28,
+        "roi": {
+          "x": 108.80000000000001,
+          "y": 64.80000000000001,
+          "w": 102.4,
+          "h": 103.2
+        },
+        "source": "object"
+      }
+    },
+    "crouched": false,
+    "bodyFresh": true
+  },
+  "moved": {
+    "state": "PLAYING",
+    "aim": {
+      "x": 0.6040568438301447,
+      "y": 0.41250366886693307,
+      "fresh": true,
+      "present": true,
+      "timestamp": 11405.300000000047,
+      "twoHands": false,
+      "calibration": 3,
+      "roll": 0,
+      "source": "object"
+    },
+    "body": {
+      "x": 0,
+      "z": 0,
+      "yaw": 0.17689663451124596,
+      "pitch": 0.14849192849274723,
+      "hp": 100
+    },
+    "walking": false,
+    "object": {
+      "matches": 28,
+      "lost": false,
+      "object": {
+        "x": 0.44375,
+        "y": 0.4475,
+        "dx": 0,
+        "dy": 1,
+        "scale": 0.3225,
+        "angle": 0,
+        "confidence": 1.0000000000000004,
+        "matches": 28,
+        "roi": {
+          "x": 108.80000000000001,
+          "y": 64.80000000000001,
+          "w": 102.4,
+          "h": 103.2
+        },
+        "source": "object"
+      }
+    },
+    "crouched": false,
+    "bodyFresh": true
+  },
+  "steady": {
+    "state": "PLAYING",
+    "aim": {
+      "x": 0.6040624978606496,
+      "y": 0.41250000138768655,
+      "fresh": true,
+      "present": true,
+      "timestamp": 12019,
+      "twoHands": false,
+      "calibration": 3,
+      "roll": 0,
+      "source": "object"
+    },
+    "body": {
+      "x": 0,
+      "z": 0,
+      "yaw": 0.17690623693950497,
+      "pitch": 0.14849998903665956,
+      "hp": 100
+    },
+    "walking": false,
+    "object": {
+      "matches": 28,
+      "lost": false,
+      "object": {
+        "x": 0.44375,
+        "y": 0.4475,
+        "dx": 0,
+        "dy": 1,
+        "scale": 0.3225,
+        "angle": 0,
+        "confidence": 1.0000000000000004,
+        "matches": 28,
+        "roi": {
+          "x": 108.80000000000001,
+          "y": 64.80000000000001,
+          "w": 102.4,
+          "h": 103.2
+        },
+        "source": "object"
+      }
+    },
+    "crouched": false,
+    "bodyFresh": true
+  },
+  "errors": []
+}

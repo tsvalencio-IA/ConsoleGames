@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/",
+  "build": "705.28.3-war-corpo-mao",
+  "scope": "incremental-console-controls",
+  "checkedAt": "2026-10-28T16:55:56.009Z",
+  "resources": [
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 27477,
+      "sha256": "625ca873a3c64882aa2db77b945fef8839b29c10fbfc7d09db44562c73bdce58"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 17334,
+      "sha256": "74465bdcc8a0a9751b2de8f67e6f64544384d0bc25c97c4d73f08cfef7ea4fd9"
+    },
+    {
+      "path": "games/ar/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 8846,
+      "sha256": "14764ebf67e4412f83e29322438e7ac19fb7294ce5903ef7a02791ae0c096076"
+    },
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26587,
+      "sha256": "adfcf11a65ef5f250840ba5805c438f113e7e27271047900665eaf13bb49a57b"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 4523,
+      "sha256": "e64740d1f84e05fce1e2e864be6023d291c88168a0019d5be88016f75de39623"
+    },
+    {
+      "path": "enhancements/control-modes.js",
+      "bytes": 18039,
+      "sha256": "c25860817dc37352676f5e5bae1672933d37502abd47347dfc4e97621d05432c"
+    },
+    {
+      "path": "enhancements/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    }
+  ]
+}

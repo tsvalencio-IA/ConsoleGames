@@ -1,0 +1,7 @@
+PASS WAR native sprint, firing cancellation and saved simple-fire settings
+WAR touch layout passed: 390x844
+PASS WAR native sprint, firing cancellation and saved simple-fire settings
+WAR touch layout passed: 844x390
+PASS WAR native sprint, firing cancellation and saved simple-fire settings
+WAR touch layout passed: 320x568
+WAR TOUCH PASS: scene drag, zoom, four simultaneous touches, no drift, independent release, pause and rotation in three mobile layouts; mouse and keyboard on desktop.

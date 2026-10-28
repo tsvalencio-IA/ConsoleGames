@@ -1,0 +1,47 @@
+✔ AR camera: explicit request waits for actual frames, sets inline muted playback and can reuse a live camera (11.893071ms)
+✔ AR camera: denied or frame-less streams return controls fallback and release capture (28.302812ms)
+✔ combat: opening a mission and aiming never fire or pay automatically (236.330258ms)
+✔ combat: only the aligned virtual target receives damage; walls occlude shots (3.783064ms)
+✔ combat: magazine, timed reload and reserve prevent infinite ammunition (2.924499ms)
+✔ combat: attacks are telegraphed, physical walls block them and held cover reduces damage (2.362191ms)
+✔ combat: analog diagonal movement is normalized and aim axes remain independent (2.518677ms)
+✔ combat: scene swipes follow both axes, do not drift and respect pause and camera mode (3.465765ms)
+✔ combat: ADS enlarges the scene while preserving reticle and actual hit alignment (2.141108ms)
+✔ combat: every operation and difficulty can finish through actual shots, and defeat never unlocks weapons (44.403347ms)
+✔ combat: the front camera is a sensor and never replaces the battlefield (9.721066ms)
+✔ combat: held automatic fire has the same cadence on 30, 60 and 120 Hz screens (32.701544ms)
+✔ combat: the visible soldier head and legs acquire the target; pointing above the silhouette never does (2.726631ms)
+✔ combat: slow rendered frames preserve real reload duration, movement and weapon cadence (909.318123ms)
+✔ a GPU that fails on camera frames retries CPU once and then returns usable results (23.038014ms)
+✔ WAR body: a neutral stance and arm pointing cannot march forward; lateral steps retain mirrored direction (6.707032ms)
+✔ WAR body: crouch, anatomical right turn and two-hand support complement aiming; stale or hidden body releases movement (2.715243ms)
+✔ WAR body: whole-body steps can move forward; leaning or duplicate frames cannot walk or calibrate (4.459604ms)
+✔ WAR body: low-priority posture frames every 950ms can calibrate without resetting stable samples (0.850252ms)
+✔ WAR body session: recalibration and pause discard pending observations; disposal clears the body (4.982512ms)
+✔ WAR hand: a 185 ms inference remains continuous between valid camera results (4.539784ms)
+✔ WAR hand: adaptive latency never permits a frame older than 550 ms or an absent hand (2.34203ms)
+✔ WAR hand: calibration needs a single stable hand and binds the presented right hand independently of mirror labels (3.340467ms)
+✔ WAR hand: front mirror moves the sight right when the visible hand moves right; axes and knuckle rotation respond (2.237103ms)
+✔ WAR hand: an opposite hand or stale video never substitutes for the bound right hand (0.841338ms)
+✔ WAR hand: two-hand grip stabilizes the same weapon without changing unlocks; losing the supporting hand restores one-hand aim (2.670226ms)
+✔ WAR hand: only an actual visible aligned adversary enables automatic shots, and hand loss stops damage and ammunition immediately (21.311431ms)
+✔ WAR hand: inverse sight projection selects the same world target in portrait and landscape (6.403044ms)
+✔ WAR hand: calibration freezes the mission rather than counting as defeat or skipping an operation (1.962408ms)
+✔ WAR hand: two confirmed aligned observations acquire the target even when render frames are slow; an actual missing hand clears acquisition (1.517838ms)
+✔ WAR hand: inference latency pauses actions without discarding the first aligned observation before the next valid frame (2.995917ms)
+✔ WAR hand: an interrupted stream expires pending target acquisition and needs two new aligned observations (2.738278ms)
+✔ WAR hand: neutral camera stays still, fresh body steps move, cover collides, and lost tracking stops movement (10.707705ms)
+✔ WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray (4.585283ms)
+✔ WAR hand: neutral hand aiming and manual mode stay stationary without movement input (1.736428ms)
+✔ WAR body and hand: a fresh hand cannot advance the mission or fire without the required live body (2.246647ms)
+✔ WAR sprint requires forward movement and stops for ADS, crouch, firing and release (7.426127ms)
+✔ WAR simple fire waits for aligned visible targets and stops when the sight or cover changes (9.041682ms)
+✔ WAR precision assist slows an aligned ADS swipe without moving the camera by itself (2.824088ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1476.397218

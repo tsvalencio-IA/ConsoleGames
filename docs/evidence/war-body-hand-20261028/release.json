@@ -1,0 +1,9 @@
+{
+  "source": "840459a6aa7b8d987bd3c2d8ddde520603ea0e6b",
+  "deployment": "dpl_ErzfEXFbsnSG4zx6dxZxD6Edaq6g",
+  "status": "READY",
+  "alias": "otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.3-war-corpo-mao",
+  "revision": "5fe2fbcf4436ea87",
+  "checkedAt": "2026-10-28T17:02:59.062687+00:00"
+}

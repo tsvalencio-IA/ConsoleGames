@@ -5,16 +5,24 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 ## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Código em produção: `a0d467048900b4e39232bb7bd9e10f4aeb7a9408`, branch `world-revisao-20261022`.
+- Código em produção: `840459a6aa7b8d987bd3c2d8ddde520603ea0e6b`, branch `world-revisao-20261022`.
 - Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
-- Build `705.28.2-oficina-praia-controles`, assetVersion `70638`, revisão `c3c30da5bd462c6c`.
-- Vercel `dpl_Av81G517sF5NeJfsNZHiKm6N9ijg`, READY; SHA e alias confirmados.
+- Build `705.28.3-war-corpo-mao`, assetVersion `70639`, revisão `5fe2fbcf4436ea87`.
+- Vercel `dpl_ErzfEXFbsnSG4zx6dxZxD6Edaq6g`, READY; SHA e alias conferidos.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
 - Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
 - APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## Correções mais recentes — oficina, garagem, praia, rotação e WAR
+## Correção atual — corpo e mão juntos no WAR
+
+- Pedido atual do Thiago: o WAR precisa reconhecer corpo e mão, usando a câmera frontal. Não responder como se controles de toque atendessem ao pedido de câmera.
+- Corrigida a transição que iniciava a partida só pela mão e escondia a prévia antes de o corpo estar pronto. Agora exige corpo e mão/objeto calibrados e com observação recente dos dois. Mostra confirmação independente de cada sensor; a prévia some após a calibração conjunta. Corpo: agachar/girar/dar passos; mão: mira e disparo automático alinhado. Sem joystick no modo câmera. Postura neutra não provoca marcha constante.
+- Perder o corpo ou a mão interrompe movimentos e disparos. Erro no detector corporal é mostrado com opção de calibrar novamente. Pausa/recalibração descartam retornos antigos; saída para controles encerra câmera e workers. Captura opcional de brinquedo foi preservada. Painel de calibração em paisagem ajustado para comportar estados e botões.
+- 39 testes focais aprovados. Worker real de mãos foi executado com imagem oficial/captureStream, e o corporal real retornou 33 pontos de imagem e de mundo sobre imagem oficial. Fluxo integrado usa poses corporais sintéticas explícitas; confirma bloqueio quando só a mão está pronta, calibração conjunta, postura, mira, perdas e recuperação. Controles por toque continuam aprovados nos três layouts. Não confundir esses ensaios com teste de câmera física no celular.
+- Evidências: `docs/evidence/war-body-hand-20261028/`. Publicação e conferência pública concluídas, incluindo modelos e fluxo de corpo/mão com os limites de teste acima.
+
+## Revisão anterior — oficina, garagem, praia, rotação e controles WAR
 
 - **Dois boxes:** uma interação de incêndio inativa capturava a ação perto do carro. Agora só aparece quando a ocorrência está ativa. O painel da oficina mostra os boxes 1 e 2 com ocupação e seleção independentes. Dois carros foram conduzidos por toque e alinhados nos dois boxes; os dois elevadores foram erguidos separadamente.
 - **Garagem:** corrigido o bloqueio causado pelo estado de pausa do próprio menu. O botão “Minha garagem” dentro da casa do jogador agora abre a garagem física. Entrada externa, menu e botão da casa exercitados. Outros imóveis continuam indicando a garagem da própria casa.
@@ -37,7 +45,7 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 
 ## Validação e limites
 
-- Revisão atual: 293 verificações de unidade; 292 passaram no conjunto completo e uma falhou porque o teste não aceitava o novo parâmetro de cache na URL de `play-settings.js`. A correspondência foi corrigida preservando a exigência de ordem dos scripts; as sete verificações desse arquivo passaram no reteste. Logs completos preservados. Os três novos testes de combate também passaram com os testes existentes de WAR.
+- Suíte ampla da revisão anterior: 293 verificações de unidade; 292 passaram no conjunto completo e uma falhou porque o teste não aceitava o novo parâmetro de cache na URL de `play-settings.js`. A correspondência foi corrigida preservando a exigência de ordem dos scripts; as sete verificações desse arquivo passaram no reteste. Logs completos preservados. Os três novos testes de combate também passaram com os testes existentes de WAR.
 - 102 grafos de áudio, 51 tipos/modelos em dois sistemas: amostras reproduzidas, aceleração, pausa, mute e descarte aprovados. Não certifica som do alto-falante do celular.
 - 44 modelos, três vistas cada, geometria/assentos/imagens aprovados e seis pranchas inspecionadas. A inspeção não comprova fidelidade de fábrica.
 - Câmera: eventos nativos, família de quatro, órbita persistente, interior, três toques e duas orientações aprovados.
@@ -47,6 +55,10 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 - Instalador público: retrato, paisagem, desktop, sem JavaScript e worker instalado aprovados; download real do APK conferido.
 - Evidências anteriores: `docs/evidence/vehicle-camera-audio-20261028/`, incluindo a auditoria dos 275 recursos compartilhados e o reteste incremental do hotfix anterior. Evidências atuais: `docs/evidence/services-coast-rotation-20261028/`: 95 recursos do mundo por hash e oito controles WAR alterados, todos idênticos ao código validado. No site público, sem interceptação/cap de desenho: início, quatro familiares no helicóptero, órbita, cabine, retorno à câmera de acompanhamento, decolagem, rotação nos dois sentidos, mapa, retorno ao mundo e novos surfistas/lanchas aprovados sem erros de JavaScript.
 - Não afirmar FPS sustentado, ausência de travamentos/piscadas no Android, precisão da câmera física, áudio perfeito ou multiplayer real entre celulares. Não foram testados no aparelho do Thiago. O vídeo recebido tinha área do jogo preta; não dizer que foi possível observar a piscada nele.
+
+## Pedido mais recente em andamento — cache antigo no celular
+
+Thiago informou que o mundo aberto continua carregando cache antigo. Não considerar o problema resolvido pelo teste anterior de worker. Investigar e corrigir atualização no cliente, criar recuperação fora do escopo do worker antigo e preservar contas/progresso; revisar espera por atualização e headers HTTP. WAR já está publicado e aprovado nos ensaios de navegador acima.
 
 ## Pedidos que continuam pendentes
 
