@@ -26,7 +26,7 @@ try{
  await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,lastSaved:Date.now(),profile:{name:'Thiago Teste',nameConfirmed:true,playerId:'transport-native-local',coins:5000},avatar:{bodyStyle:'family-thiago'},flags:{accountPromptedV635:true},settings:{quality:'low',sound:true},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','thamis','luna','liz']}}})));
  page=await context.newPage();page.setDefaultTimeout(60000);page.on('pageerror',e=>{report.errors.push(e.stack);console.error('PAGE',e.stack)});
  await installCityInspection(page,{appSource:original.slice(0,end)+hook+original.slice(end),capDuringBoot:true});
- await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();await page.waitForFunction(()=>window.__CITY_QA?.cap()&&window.OT_CIVIL_COMMUNITY?.diagnostics().ready&&window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
+ await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();await page.waitForFunction(()=>window.__CITY_QA?.cap()&&window.OT_CIVIL_COMMUNITY?.diagnostics().ready&&window.OTTHI_FAMILY?.diagnostics().ready&&window.OTTHOS_TEST_API?.getGame().running&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:120000});
  await page.waitForFunction(()=>OTTHI_FAMILY.diagnostics().party.members.length===4);console.log('BOOT native world ready');
  const groundNear=await page.evaluate(()=>__TRANSPORT_QA.snapshot().near);
  const car=await page.evaluate(()=>OTTHOS_TEST_API.vehicle().parkedVehicles.find(v=>v.id==='city-aurora-coupe-0'));assert(car);

@@ -1,12 +1,12 @@
 {
   "passed": true,
-  "build": "705.27.2-audio-mobilidade",
-  "revision": "46a592e8f31296b5",
+  "build": "705.27.3-desempenho-audio",
+  "revision": "358f8eb2073aeb81",
   "resources": [
     {
       "path": "index.html",
       "status": 200,
-      "sha256": "4f6dcad35c375a00903858ec55651e2684da40a5889fd35bfa5979188243be7b"
+      "sha256": "b363c929b193bcf8ae3c41d7a64e9d6774b392b88d646e6cb83a26bdd558e5e1"
     },
     {
       "path": "game-audio.js",
@@ -36,7 +36,7 @@
     {
       "path": "assets/js/core/runtime-config.js",
       "status": 200,
-      "sha256": "bbd11587758cad27aeeee96e72727c0ecaa33b1abeb05257a7f507386f7ebe7d"
+      "sha256": "fca8e7dbcedabc97ab6ed08d483f94517d755ff501e81cc16db910f4e4c32d69"
     },
     {
       "path": "assets/js/core/safe-pointer.js",
@@ -71,7 +71,7 @@
     {
       "path": "app.js",
       "status": 200,
-      "sha256": "15df181bfe014136bd5264df10c66ba25b46ac4f7cc34b4b7df29a618c07bfc0"
+      "sha256": "104b469d9266fdbfe0305abd2d269f158fe84df0fe5920fcb1bd130e7978b9f2"
     },
     {
       "path": "family-mascots.js",
@@ -246,12 +246,12 @@
     {
       "path": "VERSION.json",
       "status": 200,
-      "sha256": "6427ba3efd4edd214ac323d31a55a748f01b925cdf3ae85d9186f5b0e40fb38a"
+      "sha256": "5e14eb180fe44684abf13315e117a1c13e7678cf42d4b22059c1ca0fc8b76c1f"
     },
     {
       "path": "sw.js",
       "status": 200,
-      "sha256": "49a4979fe55fc55ab80d92b56c0f86dd1ccd36af11d890a94945dcdbc36f4b3a"
+      "sha256": "50ee18486fba3e06e3e0d22ba41ea8fc6ea44d11e6bdeb29331c2de91a33abc8"
     },
     {
       "path": "assets/js/world/civil-mission-core.js",
@@ -261,7 +261,107 @@
     {
       "path": "assets/js/vehicles/engine-sound.js",
       "status": 200,
-      "sha256": "89f3e36576bd44968db2dd6cfb273e4379ed1c01ed327dd4b752f96ee85dcd12"
+      "sha256": "2bc5d9f4569ef4a6fe1b50f4615776a490bc035b334d58240b8102580f23822a"
+    },
+    {
+      "path": "recorded-audio.js",
+      "status": 200,
+      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+    },
+    {
+      "path": "audio/engine-recordings.json",
+      "status": 200,
+      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+    },
+    {
+      "path": "audio/CREDITS.txt",
+      "status": 200,
+      "sha256": "7644656ed05a8669df7a105269bd57906051c8e922dfdaa93f5c6da2913768b7"
+    },
+    {
+      "path": "audio/engine-road-idle.ogg",
+      "status": 200,
+      "sha256": "4ace075ac4ddcf31b8988b8f10db9f1e97ba1d7d7011c0a6c7c025988643fba7"
+    },
+    {
+      "path": "audio/engine-road-load.ogg",
+      "status": 200,
+      "sha256": "6b532f0f2113cadb36dc6a9eb10eaa590bb3048ba5244fd04bfb94cd8b4985f7"
+    },
+    {
+      "path": "audio/engine-classic-idle.ogg",
+      "status": 200,
+      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+    },
+    {
+      "path": "audio/engine-classic-load.ogg",
+      "status": 200,
+      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+    },
+    {
+      "path": "audio/engine-sport-idle.ogg",
+      "status": 200,
+      "sha256": "635331ad8b779f16f4b71e623edb8ef9ad94ad99d6dc19081fae7f03fd22d8f6"
+    },
+    {
+      "path": "audio/engine-sport-load.ogg",
+      "status": 200,
+      "sha256": "fbb816f1d1575159df43c43b61273379c6be63abeed5490aa4ca065dfd123f7f"
+    },
+    {
+      "path": "audio/engine-heavy-idle.ogg",
+      "status": 200,
+      "sha256": "4547d24888550d38b13e078da8459466294e1469bace9a56a8f2d997f9e8f9e6"
+    },
+    {
+      "path": "audio/engine-heavy-load.ogg",
+      "status": 200,
+      "sha256": "b1d9e30a7fc04581a8912dbab989beb46d55331db9da550341e7dd62c4d034af"
+    },
+    {
+      "path": "audio/engine-moto-idle.ogg",
+      "status": 200,
+      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+    },
+    {
+      "path": "audio/engine-moto-load.ogg",
+      "status": 200,
+      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+    },
+    {
+      "path": "audio/engine-twin-idle.ogg",
+      "status": 200,
+      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+    },
+    {
+      "path": "audio/engine-twin-load.ogg",
+      "status": 200,
+      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+    },
+    {
+      "path": "audio/engine-small-moto.ogg",
+      "status": 200,
+      "sha256": "bcb70e69ec8adea3c81034eeb2e48b9bddc0cb97c6a8413935b18b1093f1d5b8"
+    },
+    {
+      "path": "audio/engine-rotor-recorded.ogg",
+      "status": 200,
+      "sha256": "ebcecced8e946367352fb920bff495cc83ed118a8206e7c072f95001936a1d45"
+    },
+    {
+      "path": "audio/engine-prop-recorded.ogg",
+      "status": 200,
+      "sha256": "4b7b04f11a7281214aafebee136e7ed54a3889350266788b51cc80be96331582"
+    },
+    {
+      "path": "audio/engine-jet-recorded.ogg",
+      "status": 200,
+      "sha256": "7bd01e70f79dbc8056bd88779f27b3c58e224b22e477ba9ef65f23e5c3281653"
+    },
+    {
+      "path": "audio/engine-boat-recorded.ogg",
+      "status": 200,
+      "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
       "path": "../ar/hand-controls.js",
@@ -304,5 +404,5 @@
     "bytes": 57991,
     "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
   },
-  "checkedAt": "2026-10-27T20:52:29.815Z"
+  "checkedAt": "2026-10-28T02:11:34.356Z"
 }

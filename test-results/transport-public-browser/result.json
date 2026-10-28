@@ -2,14 +2,14 @@
   "browser": "138.0.7204.0",
   "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
   "flight": {
-    "version": "705.27.2-audio-mobilidade",
+    "version": "705.27.3-desempenho-audio",
     "coherent": true,
     "flight": {
       "active": true,
       "mode": "helicopter",
       "armed": false,
       "state": "PLAYING",
-      "elapsed": 1.5999999999999992,
+      "elapsed": 1.35,
       "onGround": false,
       "crouched": false,
       "canDisembark": false,
@@ -31,13 +31,13 @@
       "ammo": 30,
       "body": {
         "x": 50,
-        "y": 6.112858488028873,
+        "y": 5.2564792858972575,
         "z": -165,
         "yaw": 0,
         "pitch": 0,
         "roll": 0,
         "vx": 0,
-        "vy": 8.633140164194703,
+        "vy": 8.452709436373038,
         "vz": 0,
         "hp": 100
       },
@@ -49,21 +49,26 @@
       "covers": 0,
       "enemies": [],
       "sameScene": true,
-      "trafficActors": 68,
+      "trafficActors": 50,
       "weapon": false,
       "infantryVersions": [],
       "engine": {
         "profile": "helicopter",
-        "variant": "rotor",
-        "soundVersion": "combustion-20261027-smooth2",
         "ready": true,
+        "recorded": true,
+        "soundVersion": "20261028-recorded3",
+        "samples": [
+          "engine-rotor-recorded"
+        ],
         "gear": 1,
-        "rpm": 410,
-        "rate": 1.2693535394553108,
+        "rpm": 405,
+        "rate": 1.02,
         "speed": 0,
-        "load": 1
+        "load": 1,
+        "level": 0.301,
+        "variant": "rotor"
       },
-      "renderCalls": 1725
+      "renderCalls": 1701
     },
     "family": {
       "ready": true,
@@ -156,7 +161,7 @@
           "visible": true,
           "position": [
             50.23,
-            5.632858488028873,
+            4.776479285897258,
             -164.38
           ],
           "scale": 0.1536,
@@ -171,7 +176,7 @@
           "visible": true,
           "position": [
             49.77,
-            5.632858488028873,
+            4.776479285897258,
             -164.38
           ],
           "scale": 0.15928319999999999,
@@ -186,7 +191,7 @@
           "visible": true,
           "position": [
             50.15,
-            5.632858488028873,
+            4.776479285897258,
             -165.35
           ],
           "scale": 0.16799999999999998,
@@ -201,7 +206,7 @@
           "visible": true,
           "position": [
             50.31,
-            5.632858488028873,
+            4.776479285897258,
             -165.35
           ],
           "scale": 0.16799999999999998,
@@ -218,8 +223,16 @@
     "audio": {
       "state": "running",
       "lastError": "",
-      "engineVersion": "combustion-20261027-smooth2",
+      "engineVersion": "20261028-recorded3",
+      "recordedVersion": "20261028-recorded3",
+      "recordings": 1,
+      "decodedEngineFiles": [
+        "engine-rotor-recorded"
+      ],
+      "playedSamples": 0,
       "activeEngines": 1,
+      "activeShots": 0,
+      "lastRecordingError": "",
       "variants": [
         "rotor"
       ]
@@ -227,7 +240,7 @@
   },
   "passed": true,
   "errors": [],
-  "checkedAt": "2026-10-27T20:53:57.689Z",
+  "checkedAt": "2026-10-28T02:13:02.611Z",
   "limits": [
     "Software WebGL; no physical Android, real accounts or live multiplayer. Public QA teleport only positions the character beside the aircraft; no source interception or renderer cap."
   ]

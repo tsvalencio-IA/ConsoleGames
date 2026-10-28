@@ -13,7 +13,7 @@ try{
  page=await context.newPage();page.setDefaultTimeout(60000);page.on('pageerror',e=>errors.push(e.stack));
  assert.equal((await page.goto(base+'?v='+expected.assetVersion,{waitUntil:'domcontentloaded'})).status(),200);
  assert.equal(await page.locator('html').getAttribute('data-otthi-build'),expected.build);
- await page.locator('#playBtn').click();await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready&&window.OTTHI_CAMPAIGN?.parked().length>1,null,{timeout:120000});console.log('PASS public native world boot');
+ await page.locator('#playBtn').click();await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready&&window.OTTHI_CAMPAIGN?.parked().length>1&&window.OTTHOS_TEST_API?.getGame().running&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:120000});console.log('PASS public native world boot');
  const craft=await page.evaluate(()=>OTTHI_CAMPAIGN.parked().find(p=>p.mode==='helicopter'));await page.evaluate(p=>OTTHOS_TEST_API.teleport(p.x+4,p.z),craft);
  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='board-aircraft-helicopter');await page.locator('#actionBtn').tap({force:true});
  await page.waitForFunction(()=>OT_GAMES.diagnostics().mode==='helicopter'&&OTTHI_FAMILY.diagnostics().seated.length===4);console.log('PASS public helicopter boarding');

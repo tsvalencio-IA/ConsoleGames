@@ -1,9 +1,13 @@
 {
-  "sourceSha": "ca77458f1c20f04de1daa5ab0f0786aeb11700bd",
-  "deployment": "dpl_9RGaP25fTFA7UZxkomdT44aD2sek",
-  "readyState": "READY",
-  "build": "705.27.2-audio-mobilidade",
-  "revision": "46a592e8f31296b5",
+  "deploymentId": "dpl_6FZTNpHCxAoQqcXj4AZJvSHpYLGp",
+  "state": "READY",
+  "sha": "448329960a206af7ebb8bbb0382dba58cbfac1e3",
+  "build": "705.27.3-desempenho-audio",
+  "revision": "358f8eb2073aeb81",
   "alias": "https://otthi-world-campanha-teste.vercel.app",
-  "productionBranch": "world-revisao-20261022"
+  "publicWorldIntegrity": 79,
+  "publicTransportIntegrity": 163,
+  "nativePublicBrowserPassed": true,
+  "apkDownloadsPassed": 5,
+  "physicalAndroidTested": false
 }
