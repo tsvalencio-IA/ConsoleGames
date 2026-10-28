@@ -57,5 +57,5 @@ test('flight school: real throttle accelerates on runway and climb advances to t
 });
 
 test('player settings load after the game identity and all local assets are cached',()=>{
- for(const slug of ['kart','voo','tenis','boxe','ar']){const html=read('games/'+slug+'/index.html'),worker=read('games/'+slug+'/sw.js');assert(html.indexOf('src="./play-settings.js"')>html.indexOf('window.CONSOLE_GAME_ID='),slug+' settings must load after its identity');assert(worker.includes('play-settings.js')&&worker.includes('play-settings.css'));}
+ for(const slug of ['kart','voo','tenis','boxe','ar']){const html=read('games/'+slug+'/index.html'),worker=read('games/'+slug+'/sw.js');assert(html.indexOf('src="./play-settings.js')>html.indexOf('window.CONSOLE_GAME_ID='),slug+' settings must load after its identity');assert(worker.includes('play-settings.js')&&worker.includes('play-settings.css'));}
 });

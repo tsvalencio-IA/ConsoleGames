@@ -24,6 +24,14 @@
   registerInteractable({id:'workshop-lift-drive'+suffix,type:'workshop',icon:'🚗',label:'Box '+(lift.id+1)+' · elevador',vehicleOnly:true,x:lift.x,z:lift.z+1.25,radius:3.8,priority:1280,getActionLabel:()=>workshopForBay(lift,workshopLiftDriveActionLabel),action:()=>{workshopSelectBay(lift);return workshopStageCurrentVehicle();}});
   registerInteractable({id:'workshop-lift-control'+suffix,type:'workshop',icon:'⬆️',x:lift.controlX,z:lift.controlZ,radius:2.0,priority:510,getLabel:()=>workshopForBay(lift,()=> 'Box '+(lift.id+1)+' · '+workshopLiftContextLabel()),getActionLabel:()=>workshopForBay(lift,workshopLiftActionLabel),action:()=>{workshopSelectBay(lift);return handleWorkshopLiftControl();}});
  }
+ const workshopOpenMenuBefore=openWorkshop;
+ openWorkshop=function(){
+  workshopOpenMenuBefore();const original=els.modalBody.querySelector('[data-workshop-lift]');if(!original)return;
+  for(const lift of world.workshopLifts||[]){const vehicle=lift.vehicleId&&vehicleById(lift.vehicleId),button=document.createElement('button');button.type='button';button.className='choice';button.dataset.workshopBay=lift.id;
+   const title=document.createElement('b'),status=document.createElement('span');title.textContent='⬆️ Box '+(lift.id+1)+' · elevador';status.textContent=vehicle?(vehicle.label||vehicle.id)+' · '+(lift.raised?'erguido':'abaixado'):'Livre · entrada pela faixa demarcada';button.append(title,status);
+   button.onclick=()=>{workshopSelectBay(lift);if(lift.vehicleId)return openWorkshopLiftControl();closeModal();toast('Box '+(lift.id+1)+' livre. Entre pela faixa demarcada com o carro e use ALINHAR.','good',3500);};original.before(button);
+  }original.remove();
+ };
  function ensureWorkshopBays(){
   if(!world.workshopLifts?.length)return false;if(!workshopBays.ready){const [first,second]=world.workshopLifts,original=workshopMechanicNpc();first.mechanic=original;const house=world.houses.find(h=>h.id===first.houseId);if(!house||!world.npcs.length)return false;
    const npc=createNPC('workshop-mechanic-bay-2','Mecânico do box 2',second.x,house.z-4.0,0x4a7a8b,0);npc.workshopMechanic=true;npc.stationary=true;second.mechanic=npc;const tool=new THREE.Group();tool.name='workshop-mechanic-wrench';const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.36,8),renderMat(0xaeb9bd,{metalness:.6,roughness:.3}));shaft.rotation.z=.8;tool.add(shaft);tool.position.set(.58,.95,.18);tool.visible=false;npc.group.add(tool);workshopBays.ready=true;}

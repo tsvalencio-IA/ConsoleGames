@@ -4,15 +4,15 @@
  const id=window.CONSOLE_GAME_ID;
  if(!id)return;
  const key='thia:play-settings:v1:'+id;
- const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
+ const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,adsSensitivity:1,combatAimAssist:true,combatFireMode:'manual',smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
  let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
  const values={...defaults};
- const ranges={sensitivity:[.5,1.5],smoothing:[.35,.9],controlSize:[.9,1.15],controlOpacity:[.45,1],controlInset:[0,28],effectsVolume:[0,1],engineVolume:[0,1],alertVolume:[0,1]};
+ const ranges={sensitivity:[.5,1.5],adsSensitivity:[.35,1.5],smoothing:[.35,.9],controlSize:[.9,1.15],controlOpacity:[.45,1],controlInset:[0,28],effectsVolume:[0,1],engineVolume:[0,1],alertVolume:[0,1]};
  function set(name,value){
   if(!(name in defaults))return;
   if(name in ranges){const n=Number(value);if(!Number.isFinite(n))return;value=Math.max(ranges[name][0],Math.min(ranges[name][1],n))}
   else if(typeof defaults[name]==='boolean')value=value===true||value==='true';
-  else{const allowed={camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],steeringAssist:['off','light','medium','high'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
+  else{const allowed={combatFireMode:['manual','simple'],camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],steeringAssist:['off','light','medium','high'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
   values[name]=value;
  }
  Object.entries(saved).forEach(([k,v])=>set(k,v));
@@ -47,6 +47,7 @@
   if(['drive','tennis','box_pro','ar_truck_sim'].includes(id))content+=select('difficulty','Dificuldade solo',[['easy','Treino'],['normal','Normal'],['hard','Desafio']]);
   if(id==='ar_truck_sim'&&logic?.weapons){content+='<h3>Equipamento de combate</h3><label class="play-option"><span>Arma</span><select data-combat-weapon>'+logic.weapons.map(m=>'<option value="'+m.id+'"'+(logic.gun?.id===m.id?' selected':'')+(logic.career.wins<m.requires?' disabled':'')+'>'+m.name+(m.requires?' · '+m.requires+' operação(ões) vencida(s)':'')+'</option>').join('')+'</select></label><p>Escolha a arma antes do primeiro setor. Dificuldade vale na próxima operação. Fuzil inicial; novas armas liberam com vitórias.</p>';}
   if(id!=='box_pro')content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
+  if(id==='ar_truck_sim')content+='<h3>Mira e combate</h3>'+range('adsSensitivity','Sensibilidade ao mirar',.35,1.5,.05)+toggle('combatAimAssist','Reduzir a velocidade da mira sobre o adversário')+select('combatFireMode','Modo de disparo',[['manual','Avançado · botão de tiro'],['simple','Simples · tiro ao manter a mira no alvo']])+'<p>Arraste a cena à direita para olhar. Use CORRER com o joystick para avançar mais rápido. Mirar e abaixar reduzem a velocidade. O modo simples só dispara sobre um adversário visível alinhado; obstáculos continuam bloqueando os tiros.</p>';
   if(id==='tennis')content+=range('smoothing','Suavização da raquete',.35,.9,.05);
   if(id==='drive')content+='<h3>Ajuda de direção</h3>'+select('steeringAssist','Auxiliar de direção',[['off','Desligado'],['light','Leve'],['medium','Médio'],['high','Forte']])+'<p>Reduz a saída nas curvas e ajuda perto da borda. Você continua livre para virar e mudar de faixa. A dificuldade solo muda os adversários. No modo câmera, o kart só acelera com as duas mãos detectadas.</p>'+toggle('autoAccelerate','Aceleração automática nos controles');
   if(id==='usarmy_flight_sim')content+=toggle('assist','Estabilizar ao soltar os comandos');

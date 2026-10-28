@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.1-revisao-veiculos',
+    build: '705.28.2-oficina-praia-controles',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

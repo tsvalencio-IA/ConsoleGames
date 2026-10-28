@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.1-revisao-veiculos",
+  "build": "705.28.2-oficina-praia-controles",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "2711e509c5366cf75d35724e0fcc2b6a8ae1cf2296324b32cf648b9c729c6a1d"
+      "sha256Body": "b75d1c0ad72d4d80670f0a1eecf0d6b491b47872cab08ce1a718fdf50d06ea50"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "95a5d82b5216a4dc94d35d73af30419ce78a75503d88a2d48b6b7f9761ad7e9e"
+      "sha256Body": "f8f7324c5afe4ef45cebe306596cee5eb953b5cc3c7d6aacc4a8a10232f94d89"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -238,7 +238,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "deb5b94415b66ca290df926bff87ba87896953d934ade3890cd85faf5692bc0c"
+      "sha256Body": "4af316e7445e3d96fe00f5affbd1122bc9409da8accd4453a91e5b358bce52e0"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "7ef06be8e8a1cb384f0c3573a86d492b15a18d7cfc98630e68d94c32b085119e"
+      "sha256Body": "c1f989107b71dc58f673b80c437e85310d01bd7e0b3da9d654e7d430223b30c5"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -545,7 +545,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "bf8faff17057ddc0a1b6d6e4c3c9ceadec396cf5626b1bab7f7d94f82489aa45"
+      "sha256Body": "9ba4b90bd692b3accdf52749278ca394ec7de8b1b7f2402227a1849b021b3706"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
@@ -557,7 +557,7 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "066bebe50d58faf7b47df4ef9b837b16d1d09ef3b4b6864aa6895f271bb0dd3f",
+      "sha256Body": "c7869203f126a29a0909aa782e424849545b16f2e8894c8bff9e0caa4a08d5f7",
       "startLine": 0,
       "endLine": 0
     },
@@ -573,7 +573,7 @@
       "description": "Dois elevadores independentes e manutenção preservada",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "32824975c375f64c9068741951e12e6d690ecab54323d984cc9a756123bfa28d"
+      "sha256Body": "22551ac225ada5d35035e30f2b3e39bbe167db8d9eacdff93906fc8ad7a5d6e7"
     },
     {
       "file": "src/modules/68-civil-actions-transit.js",
@@ -585,7 +585,7 @@
     {
       "file": "src/modules/69-vehicle-camera-passengers.js",
       "description": "Câmera 360 de veículos, vista dos ocupantes e reações dos passageiros",
-      "sha256Body": "9dc7c309e3f7a61dd841d869fd699e8b4ceee85f86c38f54affde0c29818537d"
+      "sha256Body": "8ec2f194b0cbec8902f711cfff729b723e4c6d551ad1c5c1d23e81b039e22586"
     }
   ],
   "styles": [

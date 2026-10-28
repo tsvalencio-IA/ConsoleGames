@@ -26,12 +26,12 @@ const Game={
   let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
   this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
   this.eyeY=1.8;this.crouched=false;this.handViewAnchor=null;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
-  this.fireHeld=false;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
+  this.fireHeld=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
   this.covers=[{x:-7,z:15,w:5,h:1.5,d:2},{x:8,z:27,w:6,h:2,d:2},{x:-12,z:43,w:5,h:2.3,d:3}];
-  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
-  this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
+  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
+  this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
   if(window.ArcadeControls?.mode==='camera'&&window.WarHandControl){this.state='HAND_CALIBRATION';this.handSession=window.WarHandControl.start(this);}
   if(fase?.online){this.net=window.WarMultiplayer?.create(this);if(this.state!=='HAND_CALIBRATION')this.state='NET_LOBBY';if(!this.net)window.System?.msg('MULTIPLAYER INDISPONÍVEL • ATUALIZE O JOGO');}
@@ -68,7 +68,7 @@ const Game={
  lookBy(dx,dy,w,h){
   if(this.state!=='PLAYING'||this.handSession||window.System?.paused||w<=0||h<=0||!Number.isFinite(dx)||!Number.isFinite(dy))return;
   // A swipe is a distance, not a held axis: holding a finger still never turns.
-  const scale=1.6*(window.ArcadePlaySettings?.get().sensitivity??1)/this.focalLength(w,h);
+  const settings=window.ArcadePlaySettings?.get()||{},steady=this.aiming&&settings.combatAimAssist===true&&this.targetAtAim()? .55:1,scale=1.6*(settings.sensitivity??1)*(this.aiming?(settings.adsSensitivity??1):1)*steady/this.focalLength(w,h);
   this.player.yaw=angle(this.player.yaw+dx*scale);this.player.pitch=clamp(this.player.pitch-dy*scale,-.8,.8);
  },
  aimRay(){
@@ -104,7 +104,7 @@ const Game={
   for(let i=0;i<9;i++)this.particles.push({x:e.x,y:e.y,z:e.z,life:.7,vx:(Math.random()-.5)*5,vy:Math.random()*3,vz:(Math.random()-.5)*5});return true;
  },
  finish(won){
-  if(this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.fireHeld=this.aiming=this.lookPointerActive=false;
+  if(this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.sprintHeld=this.sprinting=this.fireHeld=this.aiming=this.lookPointerActive=false;
   this.career.kills+=this.stats.kills;if(won){this.stats.missions=1;this.career.wins++;this.career.completed[this.mission.id]=true;}this.saveCareer();return true;
  },
  cameraWalk(dt){
@@ -177,7 +177,7 @@ const Game={
   const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
   if(!cameraInput){p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
   p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);}
-  const speed=cover?1.9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
+  this.sprinting=!cameraInput&&!cover&&!this.aiming&&!this.fireHeld&&!this.autoFireLock&&mz>.65&&!!(this.sprintHeld||this.keys.shift);const speed=cover?1.9:this.aiming?3.6:this.sprinting?9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
 
   if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){this.autoWalking=Math.hypot(nx-p.x,nz-p.z)>.0001;p.x=nx;p.z=nz;}
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
@@ -190,6 +190,7 @@ const Game={
    else this.handLock={target,time:0,firstSample:this.handAim.timestamp||0};
    // The camera follows the hand; the weapon and reticle share its centre.
   }
+  if(!this.handSession&&(window.ArcadePlaySettings?.get().combatFireMode==='simple')){const target=this.targetAtAim();if(!target)this.autoFireLock=null;else if(this.autoFireLock?.target===target){this.autoFireLock.time+=dt;automatic=this.autoFireLock.time>=.14;}else this.autoFireLock={target,time:0};}else this.autoFireLock=null;
   if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
   if(!this.net){
   if(!this.enemies.some(e=>e.active)){
@@ -209,7 +210,7 @@ const Game={
   }
   for(const f of this.particles){f.life-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.z+=f.vz*dt;}this.particles=this.particles.filter(f=>f.life>0);
   const moving=this.autoWalking||(!cameraInput&&Math.hypot(mx,mz)>.15);
-  if(moving&&this.elapsed-this.lastStepSound>(cover?.55:.36)){this.lastStepSound=this.elapsed;window.GameAudio?.effect('step',.55);}
+  if(moving&&this.elapsed-this.lastStepSound>(cover?.55:this.sprinting?.23:.36)){this.lastStepSound=this.elapsed;window.GameAudio?.effect('step',.55);}
   if(p.hp<=0&&!this.net)this.finish(false);
  },
  update(ctx,w,h){

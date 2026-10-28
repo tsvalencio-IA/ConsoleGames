@@ -4,8 +4,8 @@ import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {installConsoleStubs} from './helpers/console-context.mjs';
 import {touchSession} from './helpers/touch-session.mjs';
-const origin=process.env.CONSOLE_QA_ORIGIN||'http://127.0.0.1:4173';
-const browser=await chromium.launch({headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
+const {multiplayerServer}=await import('./helpers/multiplayer-browser-fixture.mjs');const server=await multiplayerServer(),origin=process.env.CONSOLE_QA_ORIGIN||server.origin;
+const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
 mkdirSync('test-results/war-touch',{recursive:true});const results=[];
 try{
  for(const viewport of [{width:390,height:844},{width:844,height:390},{width:320,height:568}]){
@@ -21,6 +21,7 @@ try{
    await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;g.covers=[]});
    assert.equal(await page.evaluate(()=>window.__cameraRequests),0);assert.equal(await page.locator('.aim-stick').count(),0);
    const scene=page.locator('#game-canvas'),move=page.locator('.combat-input [data-control="joystick"]'),fire=page.locator('.combat-input [data-control="fire"]'),ads=page.locator('.combat-input [data-control="ads"]');
+   await page.locator('#play-settings-button').click();await page.locator('[data-setting="combatFireMode"]').selectOption('simple');await page.locator('[data-setting="adsSensitivity"]').focus();await page.keyboard.press('Home');for(let i=0;i<9;i++)await page.keyboard.press('ArrowRight');await page.locator('#play-settings [data-close]').first().click();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');const sprint=page.locator('[data-control="sprint"]'),forward=await fingers.start(move,.5,.06),run=await fingers.start(sprint);await page.waitForFunction(()=>System.activeGame.logic.sprinting);const stopFire=await fingers.start(fire);await page.waitForFunction(()=>!System.activeGame.logic.sprinting);await fingers.end(stopFire);await fingers.end(run);await fingers.end(forward);console.log('PASS WAR native sprint, firing cancellation and saved simple-fire settings');
    const controls=await page.locator('.combat-input .input-control:not([hidden]),.combat-input .move-stick').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
    for(const r of controls){assert(r.x>=0&&r.y>=0&&r.x+r.w<=viewport.width&&r.y+r.h<=viewport.height,JSON.stringify(r));assert(r.w>=44&&r.h>=44)}
    for(let i=0;i<controls.length;i++)for(let j=i+1;j<controls.length;j++){const a=controls[i],b=controls[j];assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'Overlapping controls: '+a.name+'/'+b.name)}
@@ -54,4 +55,4 @@ try{
  await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.player.yaw>.1&&g.player.pitch>.1&&!g.lookPointerActive&&g.stats.shots>0&&g.player.z>0});await page.keyboard.up('Space');await page.keyboard.up('w');
  await page.screenshot({path:'test-results/war-touch/885x770-mouse.png'});await desktop.close();results.push({desktop:true,mouseDrag:true,keyboardMoveAndFire:true,passed:true});
  writeFileSync('test-results/war-touch/result.json',JSON.stringify(results,null,2));console.log('WAR TOUCH PASS: scene drag, zoom, four simultaneous touches, no drift, independent release, pause and rotation in three mobile layouts; mouse and keyboard on desktop.');
-}finally{await browser.close()}
+}finally{await browser.close();await server.close()}

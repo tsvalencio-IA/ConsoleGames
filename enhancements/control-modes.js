@@ -221,6 +221,7 @@ const hub={
   const root=hub.createControls('ar-input combat-input',[
    {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
+   {id:'sprint',text:'CORRER',label:'Segurar para correr com o joystick',down:()=>logic.sprintHeld=true,up:()=>logic.sprintHeld=false},
    {id:'cover',text:'COBERTURA',label:'Segurar para se proteger e reduzir dano',down:()=>logic.coverHeld=true,up:()=>logic.coverHeld=false}
   ]);
   for(const aim of [false,true]){

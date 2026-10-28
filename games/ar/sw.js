@@ -3,7 +3,7 @@
 // Release 2026-10-26: continuous inference budget within the same 550 ms cap.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v32";
+const CACHE=PREFIX+"pro-control-v33";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",

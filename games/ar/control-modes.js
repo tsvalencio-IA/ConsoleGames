@@ -187,6 +187,7 @@ const hub={
    {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
    {id:'ads',text:'MIRAR',label:'Ligar ou desligar a mira aproximada',down:()=>{logic.setAiming(!logic.aiming);refreshAim()}},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
+   {id:'sprint',text:'CORRER',label:'Segurar para correr com o joystick',down:()=>logic.sprintHeld=true,up:()=>logic.sprintHeld=false},
    {id:'cover',text:'ABAIXAR',label:'Abaixar ou levantar',down:()=>{logic.toggleCrouch();const el=root.querySelector('[data-control="cover"]');el.textContent=logic.crouched?'LEVANTAR':'ABAIXAR';el.setAttribute('aria-pressed',String(logic.crouched));}},
    {id:'hand',text:'CALIBRAR MÃO',label:'Calibrar novamente a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);

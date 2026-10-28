@@ -165,7 +165,7 @@
 
   async function requestPreferredGameOrientation(){
     const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile||!orientation?.lock)return false;
-    try{await orientation.lock('landscape');document.body.classList.add('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
+    try{orientation.unlock?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
   }
   async function startGame(resetPosition=false){
     await dbReady;
