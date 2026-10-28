@@ -585,7 +585,7 @@
     {
       "file": "src/modules/69-vehicle-camera-passengers.js",
       "description": "Câmera 360 de veículos, vista dos ocupantes e reações dos passageiros",
-      "sha256Body": "1d0ddec30a5d1dffa17998077f80eeb111d3bd972a3539e0ecc62839ad4a5508"
+      "sha256Body": "9dc7c309e3f7a61dd841d869fd699e8b4ceee85f86c38f54affde0c29818537d"
     }
   ],
   "styles": [
