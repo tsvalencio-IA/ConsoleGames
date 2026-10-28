@@ -1,0 +1,16 @@
+{
+  "id": "dpl_AzCkY5fJtYxUUp9ek3C5tfNU8NLP",
+  "sourceCommit": "dcd5272a2b1200205cb760e5820c1aa778c65a89",
+  "state": "READY",
+  "target": "production",
+  "projectId": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+  "aliases": [
+    "otthi-world-campanha-teste.vercel.app",
+    "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+    "otthi-world-campanha-teste-git-wor-d6b28f-thiaguinho-s-projects.vercel.app"
+  ],
+  "build": "705.28.7-app-icones",
+  "assetVersion": 70643,
+  "revision": "77a885357343e755",
+  "apkStatus": "Unchanged; original signing key is unavailable."
+}

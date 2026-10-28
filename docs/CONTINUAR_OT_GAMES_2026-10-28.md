@@ -5,16 +5,28 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 ## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Código em produção: `82e0ff6e60d474ae35b5b9f9cda28a435c0eccc3`, branch `world-revisao-20261022`.
+- Código em produção: `dcd5272a2b1200205cb760e5820c1aa778c65a89`, branch `world-revisao-20261022`.
 - Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
-- Build `705.28.6-fluidez`, assetVersion `70642`, revisão `bdd23e077306cba3`.
-- Vercel `dpl_Hnbhj8iZWnQAKX22ac4ic1msuR6F`, READY; fonte, alias e conferência pública aprovados.
+- Build `705.28.7-app-icones`, assetVersion `70643`, revisão `77a885357343e755`.
+- Vercel `dpl_AzCkY5fJtYxUUp9ek3C5tfNU8NLP`, READY; fonte, alias e QA público aprovados.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
 - Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
 - APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## Correção atual — travamentos no mundo aberto
+## Revisão atual — atualização do app, ícones e respostas sobre WAR/dança
+
+- Pedido do Thiago: todas as publicações devem chegar automaticamente ao app instalado; refazer ícone; dizer se WAR já equivale a COD com o corpo; dizer se dança importa músicas e pesquisa/cria coreografias de YouTube. **Não afirmar que está tudo pronto.**
+- Build `705.28.7-app-icones`; console worker v14. Novo ícone OT Games em SVG/PNG normal/maskable, mundo e console, com URLs de imagem versionadas. IDs, origens e dados preservados. `arcade/update.js` confere ao abrir, reconectar, voltar ao primeiro plano e a cada minuto visível; adia reload durante login/edição. Migração real v13→v14 com e-mail/senha em edição e progresso preservados aprovada.
+- Projeto Vercel já conectado ao GitHub; build modular e saída dist-world persistidos. Credenciais do conector bastam para publicação web. Não colocar tokens/chaves privadas no front-end nem inventar credenciais. Cada release precisa ser publicada; um commit em qualquer branch não é garantia de produção.
+- **Android APK ainda bloqueado pela assinatura original:** código recovery 1.2.0/código 3 preparado e compilado/lintado no GitHub Actions. Emulador Android 35 abriu e executou os testes nativos. Workflow 40770888429, artefato android-install-package. Não significa teste em aparelho físico ou seleção de música real.
+- Código Android agora usa ícone normal/adaptativo, dá suporte a FileChooser para áudio escolhido explicitamente e emite evento de retomada. O APK público continua 1.1.0/código 2, 57.991 bytes, mesmo hash e assinatura. Portanto o ícone nativo instalado e o seletor nativo **ainda não foram entregues**. Falta o arquivo original de assinatura. Não criar outra chave silenciosamente nem mandar desinstalar/perder dados.
+- SHA-256 do certificado original: `65:2E:41:D7:CE:6F:D5:3B:F7:51:50:C7:5B:B4:86:4D:80:7C:4A:B9:0F:B5:4A:18:F3:CE:D2:12:15:E0:FA:B1`. Não há keystore no ambiente/repositório; buscas nos arquivos salvos não localizaram candidato; contexto de conversas anteriores indisponível. Não pedir senha de conta nem receber tokens em chat. É preciso localizar o keystore/backup original por meio seguro.
+- **WAR:** corpo+mão implementados e testes preservados, mas **não é COD** em gráfico, mecânica, animação ou validação com jogador físico. Não prometer equivalência.
+- **Dança:** arquivo de áudio funciona no navegador/PWA com BPM/fase estimados/editáveis e frases no ritmo; perda do corpo pausa/retoma. No APK antigo não havia FileChooser, agora corrigido apenas no código. YouTube (pesquisa, player e extração/reprodução de coreografia real) **não implementado**. Não sugerir que reconhecer BPM copia a dança do vídeo.
+- Suíte completa: 312 testes de unidade aprovados. Reteste de música local em Chromium aprovado. Evidências: `docs/evidence/app-update-icons-20261028/`. QA público aprovado: 104 hashes e APK antigo íntegro, recuperação preservando progresso, console worker v14, seis ícones por hash, três novas rotas de identidade/update sem cache e novo ícone do lobby. Workflow Android 40770888429 concluído com sucesso: compilação/lint/emulador aprovados; pacote release ainda sem assinatura, artefato 12851468641. Novo APK não foi publicado, pois falta a chave original.
+
+## Revisão anterior — travamentos no mundo aberto
 
 - Pedido: “Tá travando demais...”, seguido de “continue”. Não simplificar mapa, veículos, população ou gráficos. Código/evidências: `docs/evidence/world-fluidez-20261028/`.
 - Módulo `70-world-query-budget.js`: grade conservadora para os colisores e cache dos segmentos de rodovia, validados por quadro. Colisores exatos/água/casas/trânsito preservados; aeronaves móveis têm limites consultados ao vivo. Obras invalidam por troca do array/tamanho; edições de posição estática são verificadas no próximo quadro. Não introduzir novos colisores que se movem dentro do quadro sem tratar essa invalidação.

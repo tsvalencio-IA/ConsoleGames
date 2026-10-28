@@ -1,0 +1,105 @@
+{
+  "build": "705.28.7-app-icones",
+  "icons": [
+    {
+      "path": "arcade/icon-192-v2.png",
+      "bytes": 40363,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "arcade/icon-512-v2.png",
+      "bytes": 198828,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "arcade/icon-maskable-512-v2.png",
+      "bytes": 199385,
+      "sha256": "97f401d63901b86a54047f29125885699c6d2dc9e054ac2945cf6935e3d463ee"
+    },
+    {
+      "path": "games/otthi/icons/icon-192-v2.png",
+      "bytes": 40363,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "games/otthi/icons/icon-512-v2.png",
+      "bytes": 198828,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "games/otthi/icons/icon-maskable-512-v2.png",
+      "bytes": 199385,
+      "sha256": "97f401d63901b86a54047f29125885699c6d2dc9e054ac2945cf6935e3d463ee"
+    }
+  ],
+  "headers": [
+    {
+      "path": "arcade/update.js",
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "arcade/manifest.webmanifest",
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "games/otthi/manifest.webmanifest",
+      "cacheControl": "no-store, max-age=0"
+    }
+  ],
+  "console": {
+    "health": {
+      "type": "ARCADE_HEALTH",
+      "version": 14
+    },
+    "update": {
+      "registered": true,
+      "pending": false,
+      "checking": true,
+      "lastCheck": 1793222577750,
+      "error": ""
+    },
+    "manifest": {
+      "name": "thIAguinho ARCADE — Console de 7 jogos",
+      "short_name": "thIAguinho ARCADE",
+      "description": "Console independente com sete aventuras, por thIAguinho Soluções Digitais e Otto MMP Ferri.",
+      "lang": "pt-BR",
+      "id": "/arcade/",
+      "start_url": "/arcade/?app=arcade",
+      "scope": "/",
+      "display": "standalone",
+      "orientation": "any",
+      "background_color": "#081226",
+      "theme_color": "#10315b",
+      "categories": [
+        "games",
+        "entertainment"
+      ],
+      "icons": [
+        {
+          "src": "./icon-192-v2.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "./icon-512-v2.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "./icon-maskable-512-v2.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "passed": true,
+  "checkedAt": "2026-10-28T21:22:59.095Z",
+  "limits": [
+    "Public HTTPS, real worker and image bytes in Chromium; not native launcher/PWA identity approval or physical Android installation. APK signing key is still unavailable."
+  ]
+}

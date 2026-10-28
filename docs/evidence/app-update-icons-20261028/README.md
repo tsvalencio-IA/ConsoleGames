@@ -10,3 +10,11 @@
 - 32 testes focais de aplicativo/atualização/layout/luzes e 31 de WAR/dança aprovados. Comparação de importação musical usa WAV de teste; não certifica todos os formatos da biblioteca Android.
 
 A suíte completa de unidades passou: 312 testes, zero falhas. O layout continua auditável isoladamente: usa o cache no jogo e conserva a consulta independente quando carregado sem o módulo de orçamento.
+
+## Publicação e Android conferidos
+
+- Fonte publicada `dcd5272a2b1200205cb760e5820c1aa778c65a89`, build `705.28.7-app-icones`, revisão `77a885357343e755`, assetVersion 70643.
+- Vercel `dpl_AzCkY5fJtYxUUp9ek3C5tfNU8NLP`, READY, fonte e alias conferidos.
+- Conferência pública: 104 recursos por SHA-256 e APK original íntegro; recuperação real, progresso e entrada do console aprovados. Console respondeu ARCADE_HEALTH v14; seis PNGs novos conferidos contra o fonte, manifestos/update.js no-store e ícone de instalação do mundo carregados.
+- Android: workflow 40770888429 concluído com sucesso; compilação/lint e testes no emulador Android 35 aprovados. Artefato android-install-package, ID 12851468641. O release produzido é sem assinatura; não foi substituído o APK público e continua faltando a chave original. Não houve teste em celular físico nem seleção de áudio pessoal no aparelho.
+- Outros jogos mantêm seus workers existentes com rede primeiro e cache como fallback. Não foram removidos dados/recursos para forçar atualização.

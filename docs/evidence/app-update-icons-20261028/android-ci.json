@@ -1,0 +1,37 @@
+{
+  "sourceCommit": "dcd5272a2b1200205cb760e5820c1aa778c65a89",
+  "workflowRunId": 40770888429,
+  "workflowUrl": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40770888429",
+  "jobId": 123107439920,
+  "status": "completed",
+  "conclusion": "success",
+  "steps": [
+    {
+      "name": "Compilar aplicativo e teste Android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Instalar e abrir no Android 35",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Guardar pacote para assinatura final e evidências",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifact": {
+    "id": 12851468641,
+    "name": "android-install-package",
+    "bytes": 3264370
+  },
+  "publicApkChanged": false,
+  "originalSigningKeyAvailable": false,
+  "limits": [
+    "Compilation/lint and Android 35 emulator; no physical phone.",
+    "The prepared release artifact is unsigned. The published signed APK remains version 1.1.0.",
+    "Native file-picker code compiled; personal audio selection was not exercised on a physical device."
+  ]
+}
