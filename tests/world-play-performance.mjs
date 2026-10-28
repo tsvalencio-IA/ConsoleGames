@@ -1,0 +1,24 @@
+/* Before/after real RAF and WebGL, without capping the renderer or accelerating
+ * simulation. Public QA travel/input methods only prepare the scenario. */
+import {chromium} from 'playwright';import fs from 'node:fs';import {execFileSync} from 'node:child_process';import assert from 'node:assert/strict';
+import {multiplayerServer} from './helpers/multiplayer-browser-fixture.mjs';import {installCityInspection} from './helpers/world-city-inspection.mjs';
+const out='test-results/world-live-performance';fs.mkdirSync(out,{recursive:true});
+const server=await multiplayerServer(),browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const report={browser:browser.version(),cases:[],limits:['Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases.']};
+try{
+ for(const [label,revision]of [['before','5eb696e'],['after',null]].filter(([label])=>!process.env.OT_LIVE_CASE||process.env.OT_LIVE_CASE===label)){
+  const source=revision?execFileSync('git',['show',revision+':games/otthi/app.js'],{encoding:'utf8',maxBuffer:4e6}):fs.readFileSync('games/otthi/app.js','utf8'),end=source.lastIndexOf('})();'),hook=`
+const liveQa={started:0,last:0,frames:[],work:[],tasks:[],stop:false},liveLoop=gameLoop;
+try{new PerformanceObserver(list=>{for(const e of list.getEntries())if(liveQa.started&&e.startTime>=liveQa.started&&!liveQa.stop)liveQa.tasks.push(e.duration)}).observe({type:'longtask',buffered:false})}catch{}
+gameLoop=function(){const t=cityQaRealNow();if(!liveQa.started)liveQa.started=t;if(liveQa.last&&!liveQa.stop)liveQa.frames.push(t-liveQa.last);liveQa.last=t;try{return liveLoop()}finally{if(!liveQa.stop)liveQa.work.push(cityQaRealNow()-t)}};
+window.__LIVE_QA={read:()=>{liveQa.stop=true;const summary=a=>{const s=[...a].sort((a,b)=>a-b);return{samples:s.length,mean:s.reduce((a,b)=>a+b,0)/Math.max(1,s.length),p50:s[Math.floor(s.length*.5)]||0,p95:s[Math.floor(s.length*.95)]||0,max:s.at(-1)||0,over100:s.filter(v=>v>100).length,over250:s.filter(v=>v>250).length}};return{frame:summary(liveQa.frames),work:summary(liveQa.work),longTasks:summary(liveQa.tasks),catalog:Object.keys(OTBrazilVehicles.catalog).length,npcs:world.npcs.length,trafficModels:completeTraffic.created.size,quality:qualityTier(),family:OTTHI_FAMILY.diagnostics(),game:OTTHOS_TEST_API.getGame(),render:{calls:renderer.info.render.calls,triangles:renderer.info.render.triangles}}}};
+`;
+  const context=await browser.newContext({viewport:{width:393,height:852},deviceScaleFactor:1,isMobile:true,hasTouch:true,serviceWorkers:'block'});await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.abort());
+  await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,lastSaved:Date.now(),profile:{name:'Thiago QA',nameConfirmed:true,playerId:'live-profile-local'},avatar:{bodyStyle:'family-thiago'},flags:{accountPromptedV635:true},settings:{quality:'balanced',sound:false},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','thamis','luna','liz']}}})));
+  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.stack));await installCityInspection(page,{revision,appSource:source.slice(0,end)+hook+source.slice(end),capDuringBoot:false});await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();
+  await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:120000});console.log('PLAY',label);
+  await page.evaluate(()=>OTTHOS_TEST_API.joystickVector(.18,-.75));await page.waitForTimeout(Number(process.env.OT_LIVE_SECONDS||20)*1000);await page.evaluate(()=>OTTHOS_TEST_API.joystickVector(0,0));
+  const result=await page.evaluate(()=>__LIVE_QA.read());result.label=label;result.errors=errors;fs.writeFileSync(out+'/'+label+'.json',JSON.stringify(result,null,2));console.log('SAMPLES',label,JSON.stringify({frame:result.frame,work:result.work,longTasks:result.longTasks}));assert.deepEqual(errors,[]);assert(result.frame.samples>1&&result.work.samples>1,'native frames must keep running');assert.equal(result.family.party.members.length,4);report.cases.push(result);console.log('RESULT',label,JSON.stringify({frame:result.frame,work:result.work,longTasks:result.longTasks,catalog:result.catalog,npcs:result.npcs,trafficModels:result.trafficModels}));await page.screenshot({path:out+'/'+label+'.png'});await context.close();
+ }
+ report.passed=true;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));
+}finally{await browser.close();await server.close();}

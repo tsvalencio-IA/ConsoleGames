@@ -1,12 +1,12 @@
-const REVISION = '46a592e8f31296b5';
-const CACHE = `otthi-v70635-${REVISION}`;
+const REVISION = '358f8eb2073aeb81';
+const CACHE = `otthi-v70636-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.27.2-audio-mobilidade';
+const BUILD = '705.27.3-desempenho-audio';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70635';
+const RELEASE_MANIFEST = './release-manifest.json?v=70636';
 
 const REQUIRED_SHELL = [
-  './recorded-audio.js?v=20261027-transport2',
+  './recorded-audio.js?v=20261028-recorded3',
   './recorded-audio.js',
   './audio/rifle-1.ogg',
   './audio/rifle-2.ogg',
@@ -16,6 +16,24 @@ const REQUIRED_SHELL = [
   './audio/engine-car.ogg',
   './audio/engine-moto.ogg',
   './audio/engine-heli.ogg',
+  './audio/engine-recordings.json',
+  './audio/engine-road-idle.ogg',
+  './audio/engine-road-load.ogg',
+  './audio/engine-classic-idle.ogg',
+  './audio/engine-classic-load.ogg',
+  './audio/engine-sport-idle.ogg',
+  './audio/engine-sport-load.ogg',
+  './audio/engine-heavy-idle.ogg',
+  './audio/engine-heavy-load.ogg',
+  './audio/engine-moto-idle.ogg',
+  './audio/engine-moto-load.ogg',
+  './audio/engine-twin-idle.ogg',
+  './audio/engine-twin-load.ogg',
+  './audio/engine-small-moto.ogg',
+  './audio/engine-rotor-recorded.ogg',
+  './audio/engine-prop-recorded.ogg',
+  './audio/engine-jet-recorded.ogg',
+  './audio/engine-boat-recorded.ogg',
   './audio/CREDITS.txt',
   './audio/sources.json',
   './combat-visuals.js?v=20261026-combat2',
@@ -38,23 +56,23 @@ const REQUIRED_SHELL = [
   './assets/js/world-venue-bridge.js',
   './assets/js/world-venue-trip.js',
   './assets/ot-games-airframes.json',
-  './index.html?v=70635',
-  './style.css?v=70635',
-  './assets/vendor/three-r128.min.js?v=70635',
-  './assets/js/core/runtime-config.js?v=70635',
-  './assets/js/core/safe-pointer.js?v=70635',
-  './assets/js/core/viewport-manager.js?v=70635',
-  './assets/js/save-db.js?v=70635',
-  './firebase-config.js?v=70635',
-  './assets/js/game-account.js?v=70635',
-  './assets/js/multiplayer-rtdb.js?v=70635',
-  './app.js?v=70635',
-  './assets/js/ui/shared-modal.js?v=70635',
-  './assets/js/core/performance-guardian.js?v=70635',
-  './assets/js/multiplayer/room-manager.js?v=70635',
-  './assets/js/education/adaptive-learning.js?v=70635',
-  './assets/js/safety/child-safety.js?v=70635',
-  './manifest.webmanifest?v=70635'
+  './index.html?v=70636',
+  './style.css?v=70636',
+  './assets/vendor/three-r128.min.js?v=70636',
+  './assets/js/core/runtime-config.js?v=70636',
+  './assets/js/core/safe-pointer.js?v=70636',
+  './assets/js/core/viewport-manager.js?v=70636',
+  './assets/js/save-db.js?v=70636',
+  './firebase-config.js?v=70636',
+  './assets/js/game-account.js?v=70636',
+  './assets/js/multiplayer-rtdb.js?v=70636',
+  './app.js?v=70636',
+  './assets/js/ui/shared-modal.js?v=70636',
+  './assets/js/core/performance-guardian.js?v=70636',
+  './assets/js/multiplayer/room-manager.js?v=70636',
+  './assets/js/education/adaptive-learning.js?v=70636',
+  './assets/js/safety/child-safety.js?v=70636',
+  './manifest.webmanifest?v=70636'
 ];
 
 const OPTIONAL_ASSETS = [
@@ -219,7 +237,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70635') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70636') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })

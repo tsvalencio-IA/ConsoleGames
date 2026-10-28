@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.27.2-audio-mobilidade';
+  const OTTHI_GAME_WEB_BUILD = '705.27.3-desempenho-audio';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2211,7 +2211,14 @@
   function projectPointToSegment(p,a,b){const dx=b.x-a.x,dz=b.z-a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.z-a.z)*dz)/len2));return{x:a.x+dx*t,z:a.z+dz*t,t};}
   function navBlocked(x,z){for(const h of world.hazards||[]){if(Math.abs(x-h.x)<=h.w/2+.55&&Math.abs(z-h.z)<=h.d/2+.55)return true;}for(const c of world.colliders||[]){if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;if(Math.abs(x-c.x)<=c.w/2+.45&&Math.abs(z-c.z)<=c.d/2+.45)return true;}return false;}
   function segmentClear(a,b){const len=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(len/1.8));for(let i=1;i<steps;i++){const t=i/steps;if(navBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t))return false;}return true;}
-  function nearestRoadProjection(pos){let best=null;for(const [aId,bId] of NAV_BASE_EDGES){const a=NAV_BASE_NODES[aId],b=NAV_BASE_NODES[bId],p=projectPointToSegment(pos,a,b),distance=Math.hypot(pos.x-p.x,pos.z-p.z),clear=segmentClear(pos,p);const score=distance+(clear?0:120);if(!best||score<best.score)best={aId,bId,point:p,distance,clear,score};}return best;}
+  function nearestRoadProjection(pos){
+    // Distance is a lower bound for the final score. Test line of sight only
+    // while a candidate can still beat the best result; retain original ties.
+    const candidates=NAV_BASE_EDGES.map(([aId,bId],index)=>{const point=projectPointToSegment(pos,NAV_BASE_NODES[aId],NAV_BASE_NODES[bId]);return{aId,bId,point,index,distance:Math.hypot(pos.x-point.x,pos.z-point.z)};}).sort((a,b)=>a.distance-b.distance||a.index-b.index);
+    let best=null,bestIndex=Infinity;
+    for(const c of candidates){if(best&&c.distance>best.score)break;const clear=segmentClear(pos,c.point),score=c.distance+(clear?0:120);if(!best||score<best.score||score===best.score&&c.index<bestIndex){best={aId:c.aId,bId:c.bId,point:c.point,distance:c.distance,clear,score};bestIndex=c.index;}}
+    return best;
+  }
   function pointOnRoad(x,z,margin=.7){return v704RoadAt(x,z,margin,false);}
   function projectPointToPolyline(pos,points){
     if(!points?.length)return null;let best=null;
@@ -7791,6 +7798,21 @@
   }
   document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+  async function prepareVehicleTemplates(){
+    const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
+    const keys=Object.keys(fleet.catalog),start=performance.now();
+    // Imported assets keep their original loader and failure/retry behaviour.
+    // A slow download must not indefinitely block entry into an offline world.
+    const imported=keys.filter(key=>window.OTBrazilImports?.requires(key));let timer;
+    if(imported.length)await Promise.race([Promise.all(imported.map(key=>requestBrazilModel(key))).finally(()=>clearTimeout(timer)),new Promise(resolve=>{timer=setTimeout(resolve,4000);})]);
+    let prepared=0;
+    for(const key of keys){
+      showWorldLoading(50+Math.floor(prepared/Math.max(1,keys.length)*34),'Preparando veículos · '+(prepared+1)+' de '+keys.length);await nextPaint();
+      if(!window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key))fleet.prepare(THREE,key);
+      prepared++;
+    }
+    perf.vehicleTemplatesReady=true;perf.vehiclePreparation={models:keys.length,ms:Math.round(performance.now()-start)};
+  }
   function showWorldLoading(progress,label){
     const value=clamp(Math.round(Number(progress)||0),0,100);
     openModal('Preparando o mundo',`<div class="parent-gate"><span>🌎</span><h3>${label}</h3><p>Seu progresso já está protegido neste aparelho.</p><div class="mission-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><i style="width:${value}%"></i></div><small>${value}%</small></div>`);
@@ -7925,7 +7947,7 @@
     if(!hasValidPlayerName()){openPlayerNameModal(true,()=>startGame(resetPosition));return;}
     await saveState(true);showWorldLoading(12,'Protegendo o progresso...');await nextPaint();showScreen('game');showWorldLoading(28,'Organizando o bairro...');await nextPaint();
     state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;syncMobilePanels();els.game.classList.remove('needs-expanded');els.missionCard.classList.remove('expanded');
-    try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,'Construindo ruas, casas e transportes...');await nextPaint();if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();worldInitializationReady=true;showWorldLoading(88,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
+    try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,'Construindo ruas, casas e transportes...');await nextPaint();if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(88,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
     if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}toast('Bem-vindo à Vila do Sol!','good',2200);
   }
@@ -9400,7 +9422,14 @@ function build(T,key,H){
     }
     return familyApplyCommand(kind,payload,sharedWorldOwnId(),player);
   }
-  function familyClear(a,b){const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22));for(let i=0;i<=steps;i++){const t=i/steps;if(positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25))return false;}return true;}
+  function familyClear(a,b){
+    const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22)),coarse=[0,steps,Math.floor(steps/2),Math.floor(steps/4),Math.floor(steps*3/4)],seen=new Set();
+    // The same sample points are tested, with distant blockers checked first.
+    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25);};
+    for(const i of coarse){if(seen.has(i))continue;seen.add(i);if(blocked(i))return false;}
+    for(let i=1;i<steps;i++)if(!seen.has(i)&&blocked(i))return false;
+    return true;
+  }
   function familyApplyCommand(kind,payload,owner,origin){
     if(!origin||!Number.isFinite(Number(origin.x))||!Number.isFinite(Number(origin.z)))return false;
     if(kind==='party'){
@@ -9436,7 +9465,13 @@ function build(T,key,H){
   function familyMove(actor,target,speed,dt){
     const dx=target.x-actor.x,dz=target.z-actor.z,distance=Math.hypot(dx,dz);actor.moving=0;if(distance<.30)return true;
     let dest=target;
-    if(!familyClear(actor,target)&&distance>1.4){
+    let clear=true;
+    if(distance>1.4){
+      const p=actor.lineProbe,now=familyWorld.clock;
+      if(!p||now-p.at>=.12||Math.hypot(actor.x-p.x,actor.z-p.z)>.6||Math.hypot(target.x-p.tx,target.z-p.tz)>.6)actor.lineProbe={at:now,x:actor.x,z:actor.z,tx:target.x,tz:target.z,clear:familyClear(actor,target)};
+      clear=actor.lineProbe.clear;
+    }
+    if(!clear&&distance>1.4){
       if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
       while(actor.path.length&&Math.hypot(actor.path[0].x-actor.x,actor.path[0].z-actor.z)<1.1)actor.path.shift();
       if(actor.path.length)dest=actor.path[0];
@@ -11157,8 +11192,9 @@ function build(T,key){
  for(const[k,list]of buckets){const isTrailer=k.startsWith('trailer-'),kind=isTrailer?k.slice(8):k;merge(list,kind,materials[kind],isTrailer?root.getObjectByName('articulated-trailer'):root);}const wheels=[];root.traverse(x=>{if(/^wheel-\d+$/.test(x.name))wheels.push(x);});for(const g of wheels)merge([...g.children],g.name+'-mesh',materials.fixed,g);
  root.userData.seatScale??=key==='gol'?.33:key==='kombi'?.40:.36;root.userData.seats??=[{x:-.255,y:.32,z:.03},{x:.255,y:.32,z:.03},{x:-.255,y:.32,z:-.64},{x:.255,y:.32,z:-.64}];root.userData.roof??=key==='kombi'?1.64:key==='uno'?1.34:key==='gol'?1.23:1.38;root.userData.hoodY??=.84;root.userData.wheelRadius??=key==='kombi'?.28:key==='fusca'?.285:.275;root.userData.front??=key==='kombi'?1.69:key==='fusca'?1.73:1.57;root.userData.rear??=-root.userData.front;root.updateWorldMatrix(true,true);const bodyBounds=new T.Box3().setFromObject(root);root.userData.halfWidth=Math.max(.12,Math.max(Math.abs(bodyBounds.min.x),Math.abs(bodyBounds.max.x)));if(!root.userData.twoWheeler){root.userData.seats=root.userData.seats.map(seat=>({...seat,x:-seat.x}));root.userData.driverSide='left';root.userData.steeringX=root.userData.seats[0].x;}definitions[key]=root.userData;return root;
 }
-function create(T,key='fusca',color){if(!catalog[key])key='fusca';let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));const root=cache.get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
-(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,definition:key=>definitions[key]||null};
+function prepare(T,key){if(!catalog[key])return false;let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));return true;}
+function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key);const root=caches.get(T).get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
+(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,prepare,definition:key=>definitions[key]||null};
 })();
 
   // ===== MODULE: 48-family-transport.js =====

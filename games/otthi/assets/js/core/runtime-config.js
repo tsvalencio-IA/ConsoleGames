@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.27.2-audio-mobilidade',
+    build: '705.27.3-desempenho-audio',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

@@ -29,6 +29,12 @@ try{
  await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();await page.waitForFunction(()=>window.__CITY_QA?.cap()&&window.OT_CIVIL_COMMUNITY?.diagnostics().ready&&window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
  await page.waitForFunction(()=>OTTHI_FAMILY.diagnostics().party.members.length===4);console.log('BOOT native world ready');
  const groundNear=await page.evaluate(()=>__TRANSPORT_QA.snapshot().near);
+ const car=await page.evaluate(()=>OTTHOS_TEST_API.vehicle().parkedVehicles.find(v=>v.id==='city-aurora-coupe-0'));assert(car);
+ await page.evaluate(v=>OTTHOS_TEST_API.teleport(v.x,v.z+2.0),car);await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='vehicle-city-aurora-coupe-0');await page.locator('#actionBtn').tap({force:true});await page.waitForFunction(()=>OTTHOS_TEST_API.vehicle().active);
+ await page.waitForFunction(()=>GameAudio.diagnostics().decodedEngineFiles?.includes('engine-classic-idle')&&OTTHI_FAMILY.diagnostics().seated.length===4);
+ report.car=await page.evaluate(()=>({audio:GameAudio.diagnostics(),family:OTTHI_FAMILY.diagnostics(),vehicle:OTTHOS_TEST_API.vehicle()}));assert.equal(report.car.audio.engineVersion,'20261028-recorded3');assert.equal(report.car.audio.activeEngines,1);assert.deepEqual(report.car.audio.decodedEngineFiles.sort(),['engine-classic-idle','engine-classic-load']);
+ await page.locator('#actionBtn').tap({force:true});await page.waitForFunction(()=>!OTTHOS_TEST_API.vehicle().active);console.log('PASS native Fusca with family and real recorded engine');
+
  for(const mode of (process.env.TRANSPORT_QA_ONLY_CABLE?[]:['helicopter','plane','balloon'])){
   const craft=await page.evaluate(mode=>OTTHI_CAMPAIGN.parked().find(p=>p.mode===mode),mode);assert(craft,mode+' physical boarding point');
   await page.evaluate(p=>OTTHOS_TEST_API.teleport(p.x+4,p.z),craft);

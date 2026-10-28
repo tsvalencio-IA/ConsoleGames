@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.27.2-audio-mobilidade",
+  "build": "705.27.3-desempenho-audio",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "08ee60d12391497e27b49052c79a87b94b1bb104dce78aec51ad203f9910ac5d"
+      "sha256Body": "53893a9b152c8cda9efc4fe0ba11b4f08e0308edb0032fcf9a7afde59d9799cf"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "597477f0b8f21ede967c8e018764c9bd2e6dacc2c970d961a7859b158df3bc65"
+      "sha256Body": "600cce9cda12bd9e70674ea183c43aa4be1e031d07a3c20ff3a4167bd85526ff"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "18482ed11f6c2aa83c230bad4f01aea3de0bda18ee7a7f09158f4524ef9572bd"
+      "sha256Body": "7ef06be8e8a1cb384f0c3573a86d492b15a18d7cfc98630e68d94c32b085119e"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -364,7 +364,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "8216a09579b25341f2f82da635d0ae798dfb17a7bb4f58760a6901b837fe27a3"
+      "sha256Body": "1b44ae6d982117b0bfd4bb5abcdb65768b2ff3c000bedf5c7e5b63ef5ca95a32"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -427,7 +427,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "e7ad916023cb09f4537633df29fd525294b5bf3f63674391578de028d6d0ec81"
+      "sha256Body": "7509802f02893f3c124bb35e104682c1722fad637d74d27406e4e661fa33937c"
     },
     {
       "file": "src/modules/48-family-transport.js",

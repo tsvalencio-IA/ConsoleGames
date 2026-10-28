@@ -5,6 +5,7 @@ import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mj
 const base=process.env.TRANSPORT_QA_PUBLIC||'https://otthi-world-campanha-teste.vercel.app/';
 const api=await request.newContext({...browserNetwork(base),...browserContextNetwork(base),timeout:30000});
 const paths=['games/kart/js/game_kart.js','games/voo/js/game_flight.js'];for(const game of ['kart','boxe','tenis','ar','voo','otthi','familia/3d'])for(const file of ['index.html','sw.js','recorded-audio.js','audio/engine-car.ogg','audio/sources.json'])paths.push('games/'+game+'/'+file);
+const engineBank=JSON.parse(fs.readFileSync('games/otthi/audio/engine-recordings.json'));for(const game of ['kart','boxe','tenis','ar','voo','otthi','familia/3d']){paths.push('games/'+game+'/audio/engine-recordings.json');for(const record of engineBank.assets)paths.push('games/'+game+'/audio/'+record.file);}
 const results=[],hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 try{
  for(let i=0;i<paths.length;i+=5){const group=await Promise.all(paths.slice(i,i+5).map(async path=>{const response=await api.get(new URL(path,base).href);assert.equal(response.status(),200,path);const bytes=await response.body(),sha=hash(bytes);assert.equal(sha,hash(fs.readFileSync(path)),path+' differs from verified source');return{path,bytes:bytes.length,sha256:sha};}));results.push(...group);}
