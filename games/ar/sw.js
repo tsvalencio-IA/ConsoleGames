@@ -1,9 +1,9 @@
 /* thIAguinho ARCADE — ar: cache privado, versão atual primeiro.
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
-// Release 2026-10-26: continuous inference budget within the same 550 ms cap.
+// Release 2026-10-28: joint body and hand calibration; no hand-only start.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v33";
+const CACHE=PREFIX+"pro-control-v34";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",

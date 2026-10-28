@@ -159,6 +159,7 @@ const Game={
  step(dt){
   this.autoWalking=false;
   if(this.state==='HAND_CALIBRATION'||this.state==='NET_LOBBY')return;
+  if(this.handSession?.requiresBody&&!this.bodyPose?.fresh&&this.state==='PLAYING'){this.handLock=null;return;}
   if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
   if(this.handSession)this.crouched=!!(this.bodyPose?.fresh&&this.bodyPose.crouched);
@@ -283,7 +284,7 @@ const Game={
   const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
-  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handAim?.fresh?(this.bodyPose?.fresh?'CORPO E MÃOS • POSTURA, VISÃO E MIRA':'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
+  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?'CORPO E MÃOS • POSTURA, VISÃO E MIRA':'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
   const nearest=this.enemies.filter(e=>e.active&&!e.ally).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   if(nearest){const bearing=angle(Math.atan2(nearest.x-this.player.x,nearest.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?'ALVO À DIREITA →':'← ALVO À ESQUERDA',w/2,statusY+20,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}

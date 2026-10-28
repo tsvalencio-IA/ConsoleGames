@@ -19,7 +19,7 @@ const hub={
    overlay.setAttribute("aria-label","Escolha como jogar");
    const previous=document.activeElement;
    overlay.innerHTML='<div class="input-mode-panel"><div class="input-mode-eyebrow">thIAguinho ARCADE</div><h2>COMO VOCÊ QUER JOGAR?</h2><p>Você pode jogar sem câmera. Escolha a opção que preferir para esta partida.</p><div class="input-mode-options"><button type="button" data-mode="controls"><strong>🎮 CONTROLES</strong><small>Toque na tela ou use o teclado. Sem acesso à câmera.</small></button><button type="button" data-mode="camera"><strong>📷 CÂMERA</strong><small>Use seus movimentos. A câmera só será solicitada após esta escolha.</small></button></div><button type="button" data-mode="cancel" class="input-mode-cancel">VOLTAR ÀS FASES</button><span class="input-mode-foot">A escolha pode ser alterada antes da próxima partida.</span></div>';
-   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal acompanha sua mão direita. Calibre, aponte e dispare automaticamente ao mirar em um adversário.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
+   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal reconhece corpo e mão direita juntos. Agache e gire com o corpo, mire com a mão. O tiro é automático sobre o alvo.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
    document.body.appendChild(overlay);
    const stored=(()=>{try{return localStorage.getItem(key)}catch{return null}})();
    const first=overlay.querySelector(stored==="camera"?'[data-mode="camera"]':'[data-mode="controls"]');
@@ -189,7 +189,7 @@ const hub={
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
    {id:'sprint',text:'CORRER',label:'Segurar para correr com o joystick',down:()=>logic.sprintHeld=true,up:()=>logic.sprintHeld=false},
    {id:'cover',text:'ABAIXAR',label:'Abaixar ou levantar',down:()=>{logic.toggleCrouch();const el=root.querySelector('[data-control="cover"]');el.textContent=logic.crouched?'LEVANTAR':'ABAIXAR';el.setAttribute('aria-pressed',String(logic.crouched));}},
-   {id:'hand',text:'CALIBRAR MÃO',label:'Calibrar novamente a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
+   {id:'hand',text:'CORPO + MÃO',label:'Calibrar novamente o corpo e a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);
   root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
@@ -209,7 +209,7 @@ const hub={
   const aimButton=root.querySelector('[data-control="ads"]');
   const refreshAim=()=>{aimButton.setAttribute('aria-pressed',String(!!logic.aiming));aimButton.classList.toggle('selected',!!logic.aiming);};refreshAim();
   const watchAim=setInterval(refreshAim,160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
-  hub.showTip(hub.mode==='camera'?'AVANÇO AUTOMÁTICO • MIRE COM A MÃO • COBERTURA PAUSA O AVANÇO':'ARRASTE NA CENA PARA OLHAR • MIRAR APROXIMA • ANDE E ATIRE AO MESMO TEMPO');
+  hub.showTip(hub.mode==='camera'?'CORPO: AGACHE, GIRE E DÊ PASSOS • MÃO: APONTE PARA MIRAR':'ARRASTE NA CENA PARA OLHAR • MIRAR APROXIMA • ANDE E ATIRE AO MESMO TEMPO');
  }
 
 };

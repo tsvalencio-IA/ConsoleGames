@@ -72,3 +72,10 @@ test('WAR hand: the camera follows the calibrated hand in both axes and the reti
 test('WAR hand: neutral hand aiming and manual mode stay stationary without movement input',()=>{
  const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.step(.5);assert.equal(g.player.z,0);g.handSession={dispose(){}};g.handAim={x:.7,y:.3,fresh:true};g.enemies=[{active:true,x:3,z:9,y:1.15,kind:'soldier',aim:999,flash:0,phase:0}];g.step(.2);assert.equal(g.player.z,0);assert(!g.autoWalking);
 });
+test('WAR body and hand: a fresh hand cannot advance the mission or fire without the required live body',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.covers=[];g.waveDelay=999;g.handSession={requiresBody:true,dispose(){}};g.handAim={x:.5,y:.48,fresh:true,present:true,timestamp:1000};g.enemies=[{id:'aligned',kind:'soldier',x:0,z:28,y:1.8,hp:1000,active:true,aim:999}];
+ g.step(.2);assert.equal(g.elapsed,0);assert.equal(g.stats.shots,0);assert.equal(g.handLock,null);
+ g.bodyPose={fresh:true,calibrated:true,moveX:0,moveZ:0};g.step(.016);assert(g.handLock);g.handAim.timestamp=1250;g.step(.2);assert.equal(g.stats.shots,1);
+ g.bodyPose.fresh=false;const stopped={elapsed:g.elapsed,ammo:g.ammo,shots:g.stats.shots,...g.player};g.step(.5);assert.deepEqual({elapsed:g.elapsed,ammo:g.ammo,shots:g.stats.shots,...g.player},stopped);assert.equal(g.handLock,null);
+ g.bodyPose.fresh=true;g.handAim.timestamp=1500;g.step(.016);assert.equal(g.stats.shots,1,'returning requires a new confirmed target');g.handAim.timestamp=1750;g.step(.2);assert.equal(g.stats.shots,2);
+});

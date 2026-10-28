@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.2-oficina-praia-controles',
+    build: '705.28.3-war-corpo-mao',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

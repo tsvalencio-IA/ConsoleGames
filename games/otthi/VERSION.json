@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.2-oficina-praia-controles",
+  "build": "705.28.3-war-corpo-mao",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.3: WAR no console exige corpo e mão calibrados juntos, confirma os dois sensores, pausa ao perder rastreamento e permite recuperar o sensor corporal sem joystick.",
     "R28.2: boxes independentes, entrada da garagem pela casa, orla com surfistas e lanchas NPC, rotação automática e controles de precisão do WAR no console.",
     "R28.1: revisão de arquitetura de motores, gravações estáveis e acabamento de carrocerias e rodas, preservando geometria e integração.",
     "R27.3 prepara geometrias completas da frota durante o carregamento, elimina testes de visibilidade desnecessários nas rotas e distribui o planejamento da família sem reduzir a colisão por quadro. O mundo passa a usar gravações reais de motores, compartilhadas com o console, carregadas somente por categoria em uso.",
@@ -286,7 +287,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70638,
+  "assetVersion": 70639,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.2-oficina-praia-controles",
+  "build": "705.28.3-war-corpo-mao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "b75d1c0ad72d4d80670f0a1eecf0d6b491b47872cab08ce1a718fdf50d06ea50"
+      "sha256Body": "610d6856446db865e9948832f209812b72ad42b952ef87e94051c931a239aed7"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
