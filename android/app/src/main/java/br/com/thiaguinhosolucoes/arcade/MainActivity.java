@@ -20,6 +20,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,10 +31,12 @@ import android.widget.TextView;
 public final class MainActivity extends Activity {
     public static final String CONSOLE_URL = BuildConfig.CONSOLE_URL;
     private static final int CAMERA_REQUEST = 71;
+    private static final int FILE_REQUEST = 72;
     WebView webView;
     private ProgressBar progress;
     private LinearLayout errorPanel;
     private PermissionRequest pendingCamera;
+    private ValueCallback<Uri[]> pendingFiles;
 
     static boolean isConsoleOrigin(Uri uri) {
         return uri != null && "https".equals(uri.getScheme())
@@ -86,7 +89,9 @@ public final class MainActivity extends Activity {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(false);
-        settings.setAllowContentAccess(false);
+        // Files are selected explicitly through Android's document picker;
+        // navigation to content/file URLs still fails isGameUrl().
+        settings.setAllowContentAccess(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setLoadWithOverviewMode(true);
@@ -119,11 +124,29 @@ public final class MainActivity extends Activity {
             }
         });
         webView.setWebChromeClient(new WebChromeClient() {
+            @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                if(!isGameUrl(Uri.parse(view.getUrl()==null?"":view.getUrl()))) {callback.onReceiveValue(null);return true;}
+                if(pendingFiles!=null)pendingFiles.onReceiveValue(null);
+                pendingFiles=callback;
+                try {startActivityForResult(params.createIntent(),FILE_REQUEST);}
+                catch(Exception unavailable) {pendingFiles=null;callback.onReceiveValue(null);}
+                return true;
+            }
             @Override public void onPermissionRequest(PermissionRequest request) {runOnUiThread(() -> requestCamera(request));}
             @Override public void onPermissionRequestCanceled(PermissionRequest request) {if(pendingCamera==request)pendingCamera=null;}
         });
         immersive();
         if (savedState==null || webView.restoreState(savedState)==null) webView.loadUrl(CONSOLE_URL);
+    }
+    @Override protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode!=FILE_REQUEST||pendingFiles==null)return;
+        ValueCallback<Uri[]> callback=pendingFiles;pendingFiles=null;
+        Uri[] result=WebChromeClient.FileChooserParams.parseResult(resultCode,data);
+        // Accept document grants only; never let a provider return a private
+        // file:// path belonging to this application.
+        if(result!=null)for(Uri uri:result)if(uri==null||!"content".equals(uri.getScheme())) {result=null;break;}
+        callback.onReceiveValue(result);
     }
     private void requestCamera(PermissionRequest request) {
         boolean video=false;
@@ -154,9 +177,9 @@ public final class MainActivity extends Activity {
     }
     @Override public void onConfigurationChanged(Configuration config) {super.onConfigurationChanged(config);immersive();webView.postDelayed(this::refreshViewport,200);}
     @Override public void onWindowFocusChanged(boolean focus) {super.onWindowFocusChanged(focus);if(focus)immersive();}
-    @Override protected void onResume() {super.onResume();if(webView!=null){webView.onResume();webView.resumeTimers();refreshViewport();}}
+    @Override protected void onResume() {super.onResume();if(webView!=null){webView.onResume();webView.resumeTimers();refreshViewport();webView.evaluateJavascript("window.dispatchEvent(new Event('otthi:app-resume'));",null);}}
     @Override protected void onPause() {if(webView!=null){webView.onPause();webView.pauseTimers();}super.onPause();}
     @Override public void onBackPressed() {if(webView.canGoBack())webView.goBack();else super.onBackPressed();}
     @Override protected void onSaveInstanceState(Bundle out) {webView.saveState(out);super.onSaveInstanceState(out);}
-    @Override protected void onDestroy() {if(pendingCamera!=null){pendingCamera.deny();pendingCamera=null;}if(webView!=null){webView.stopLoading();webView.destroy();webView=null;}super.onDestroy();}
+    @Override protected void onDestroy() {if(pendingFiles!=null){pendingFiles.onReceiveValue(null);pendingFiles=null;}if(pendingCamera!=null){pendingCamera.deny();pendingCamera=null;}if(webView!=null){webView.stopLoading();webView.destroy();webView=null;}super.onDestroy();}
 }

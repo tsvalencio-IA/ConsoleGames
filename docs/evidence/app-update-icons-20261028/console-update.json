@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "worker": {
+    "type": "ARCADE_HEALTH",
+    "version": 14
+  },
+  "icons": [
+    {
+      "src": "./icon-192-v2.png",
+      "width": 192,
+      "height": 192,
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512-v2.png",
+      "width": 512,
+      "height": 512,
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512-v2.png",
+      "width": 512,
+      "height": 512,
+      "purpose": "maskable"
+    }
+  ],
+  "accountEditPreserved": true,
+  "savePreserved": true,
+  "registered": false,
+  "errors": [],
+  "limits": [
+    "Chromium mobile viewport and real local service worker; not native APK installation or physical Android."
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.6-fluidez",
+  "build": "705.28.7-app-icones",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "7a00d4c81513928a0886df016faa19c265d4ea119da3eca1d378b4793569c76a"
+      "sha256Body": "389afc6b98b0b45894dc5dba257c19c2493fe5548bdd0e283cb2f6264f5a44d0"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "3d170755f9d4aed340489fb7299e6ff8bccc350992a317f415c42b91324fba76"
+      "sha256Body": "048b5e904e36d363f3f36a0660ee2c82ceab965f37e416ad2ea6c9f851e53975"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",

@@ -1,0 +1,39 @@
+✔ WAR body: a neutral stance and arm pointing cannot march forward; lateral steps retain mirrored direction (4.396133ms)
+✔ WAR body: crouch, anatomical right turn and two-hand support complement aiming; stale or hidden body releases movement (1.540799ms)
+✔ WAR body: whole-body steps can move forward; leaning or duplicate frames cannot walk or calibrate (3.05651ms)
+✔ WAR body: low-priority posture frames every 950ms can calibrate without resetting stable samples (0.587678ms)
+✔ WAR body session: recalibration and pause discard pending observations; disposal clears the body (2.680968ms)
+✔ WAR hand: a 185 ms inference remains continuous between valid camera results (4.616435ms)
+✔ WAR hand: adaptive latency never permits a frame older than 550 ms or an absent hand (1.425413ms)
+✔ WAR hand: calibration needs a single stable hand and binds the presented right hand independently of mirror labels (2.800993ms)
+✔ WAR hand: front mirror moves the sight right when the visible hand moves right; axes and knuckle rotation respond (2.272405ms)
+✔ WAR hand: an opposite hand or stale video never substitutes for the bound right hand (0.687304ms)
+✔ WAR hand: two-hand grip stabilizes the same weapon without changing unlocks; losing the supporting hand restores one-hand aim (1.044031ms)
+✔ WAR hand: only an actual visible aligned adversary enables automatic shots, and hand loss stops damage and ammunition immediately (10.013558ms)
+✔ WAR hand: inverse sight projection selects the same world target in portrait and landscape (1.954983ms)
+✔ WAR hand: calibration freezes the mission rather than counting as defeat or skipping an operation (2.920363ms)
+✔ WAR hand: two confirmed aligned observations acquire the target even when render frames are slow; an actual missing hand clears acquisition (2.346454ms)
+✔ WAR hand: inference latency pauses actions without discarding the first aligned observation before the next valid frame (2.859392ms)
+✔ WAR hand: an interrupted stream expires pending target acquisition and needs two new aligned observations (3.015353ms)
+✔ WAR hand: neutral camera stays still, fresh body steps move, cover collides, and lost tracking stops movement (3.401665ms)
+✔ WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray (2.193799ms)
+✔ WAR hand: neutral hand aiming and manual mode stay stationary without movement input (2.209408ms)
+✔ WAR body and hand: a fresh hand cannot advance the mission or fire without the required live body (1.901041ms)
+✔ WAR sprint requires forward movement and stops for ADS, crouch, firing and release (7.244885ms)
+✔ WAR simple fire waits for aligned visible targets and stops when the sight or cover changes (3.853109ms)
+✔ WAR precision assist slows an aligned ADS swipe without moving the camera by itself (2.233012ms)
+✔ camera dance: every level is completed using distinct full-body movement, with left/right mirror mapping (61.716078ms)
+✔ camera dance: stationary body, keyboard-like input, duplicate frames and stale observations cannot earn points (13.398893ms)
+✔ camera dance: tracking loss and manual pause freeze time and preserve scoring until fresh frames return (2.912782ms)
+✔ camera dance: calibration requires the complete visible body, neutral stance, stable position and elapsed time (2.631767ms)
+✔ camera dance: real world landmarks measure knee bend in depth even when a frontal image looks straight (0.661857ms)
+✔ camera dance: holding one successful pose cannot score four repetitions without another movement (9.319087ms)
+✔ a local song keeps full eight-beat phrases within the recording and uses its tempo (6.84685ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 266.222945

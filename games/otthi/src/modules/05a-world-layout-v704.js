@@ -347,7 +347,11 @@
   function v704HighwaySignPoint(spec){const highway=v704HighwayById(spec?.highwayId),points=highway?.points||[],index=Number(spec?.segmentIndex);if(!highway||!Number.isInteger(index)||index<0||index>=points.length-(highway.closed?0:1))return null;const a=points[index],b=points[(index+1)%points.length],t=Math.max(0,Math.min(1,Number(spec.t??.5))),dx=b.x-a.x,dz=b.z-a.z,heading=Math.atan2(dx,dz),rx=Math.cos(heading),rz=-Math.sin(heading),side=Number(spec.side||1)>=0?1:-1;
     /* O afastamento considera a meia largura física da placa, não apenas o poste. */
     const signHalfWidth=2.9,offset=Number(highway.width||10)/2+Number(highway.shoulder||0)+Number(spec.offset||2.2)+signHalfWidth;return{x:a.x+dx*t+rx*offset*side,z:a.z+dz*t+rz*offset*side,heading,highwayId:highway.id};}
-  function v704HighwaySegments(){return cachedWorldHighwaySegments();}
+  function v704HighwaySegments(){
+    if(typeof cachedWorldHighwaySegments==='function')return cachedWorldHighwaySegments();
+    // The layout is also consumed on its own by audits and map tools.
+    const out=[];for(const highway of WORLD_LAYOUT_V704.highways||[]){const points=highway.points||[];for(let i=0;i<points.length-(highway.closed?0:1);i++)out.push({id:`${highway.id}-${i}`,highwayId:highway.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(highway.width||10),shoulder:Number(highway.shoulder||0)});}return out;
+  }
   function v704HighwayAt(x,z,margin=0,includeShoulder=true){
     const px=Number(x),pz=Number(z);if(!Number.isFinite(px)||!Number.isFinite(pz))return false;
     for(const seg of v704HighwaySegments()){
