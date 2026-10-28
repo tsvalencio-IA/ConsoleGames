@@ -8017,7 +8017,14 @@
     if(buildMode)endBuildMode('cancelled',true);
     if(world.policeAlert)removeRoadsidePoliceOfficer?.(world.policeAlert);world.policeAlert=null;updateSafetyPanel('');if(player.boating){player.x=-24.7;player.z=52;exitBoat(true);}if(player.vehicle)exitVehicle(true);if(player.transit.mode==='bus'){const bus=world.buses.find(b=>b.id===player.transit.busId);if(bus)exitBusAtStop(bus,{stopId:bus.lastStopId,stopName:bus.lastStopName});}if(player.transit.mode==='metro'){player.transit.mode='';if(metroOverlay)metroOverlay.hidden=true;if(playerModel)playerModel.visible=true;if(avatarLayer)avatarLayer.visible=true;if(contactShadow)contactShadow.visible=true;}running=false;paused=false;pauseMenuOpen=false;cancelAnimationFrame(raf);stopEngineSound();savePlayerPosition(true);showScreen('lobby');updateLobbyStats();
   }
-  els.playBtn.onclick=()=>requestPreferredGameOrientation().finally(()=>startGame(false));els.continueBtn.onclick=()=>requestPreferredGameOrientation().finally(()=>startGame(false));
+  let otthiEnteringWorld=false;
+  async function enterCurrentOtthiWorld(){
+    if(otthiEnteringWorld)return;otthiEnteringWorld=true;
+    const caption=els.playBtn.textContent;els.playBtn.disabled=els.continueBtn.disabled=true;els.playBtn.textContent='CONFERINDO VERSÃO…';
+    try{await requestPreferredGameOrientation();await startGame(false);}
+    finally{otthiEnteringWorld=false;els.playBtn.disabled=els.continueBtn.disabled=false;els.playBtn.textContent=caption;}
+  }
+  els.playBtn.onclick=enterCurrentOtthiWorld;els.continueBtn.onclick=enterCurrentOtthiWorld;
 
   function openPauseMenu(){
     if(!running||pauseMenuOpen)return;

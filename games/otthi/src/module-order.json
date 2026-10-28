@@ -273,7 +273,7 @@
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "79582c3999983e6907fcaa106ca08ed5c0d84499d3f2617b43b63b9585ff7fac"
+      "sha256Body": "d28d2fde0ef98978b67436af30c89d93b86e9668a327052a147e5960d48df755"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
