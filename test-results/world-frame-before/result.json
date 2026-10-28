@@ -1,0 +1,1261 @@
+{
+  "label": "before",
+  "browser": "138.0.7204.0",
+  "cases": [
+    {
+      "name": "city-family",
+      "frames": 40,
+      "totalMs": 2127.5,
+      "stats": [
+        [
+          "stepWorldSimulation",
+          {
+            "ms": 1890.5000000000582,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldExpansion",
+          {
+            "ms": 1701.5000000000873,
+            "calls": 40
+          }
+        ],
+        [
+          "ensureCompleteBrazilTraffic",
+          {
+            "ms": 1637,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFamilyAdventure",
+          {
+            "ms": 233.69999999992433,
+            "calls": 40
+          }
+        ],
+        [
+          "familyMove",
+          {
+            "ms": 223.5999999999476,
+            "calls": 120
+          }
+        ],
+        [
+          "positionBlockedForPlayer",
+          {
+            "ms": 221.89999999996508,
+            "calls": 13408
+          }
+        ],
+        [
+          "familyClear",
+          {
+            "ms": 220.9999999999709,
+            "calls": 240
+          }
+        ],
+        [
+          "updateOttoviasHighway",
+          {
+            "ms": 78.90000000005239,
+            "calls": 40
+          }
+        ],
+        [
+          "updateVisualLOD",
+          {
+            "ms": 28.800000000017462,
+            "calls": 4
+          }
+        ],
+        [
+          "updateCamera",
+          {
+            "ms": 16.70000000001164,
+            "calls": 40
+          }
+        ],
+        [
+          "resolveTrafficOverlaps",
+          {
+            "ms": 11.900000000023283,
+            "calls": 10
+          }
+        ],
+        [
+          "updatePlayer",
+          {
+            "ms": 10.79999999993015,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNPCs",
+          {
+            "ms": 10.200000000011642,
+            "calls": 8
+          }
+        ],
+        [
+          "updateCordillera",
+          {
+            "ms": 9.700000000011642,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNeighborhoodDealers",
+          {
+            "ms": 9.300000000017462,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldAirOperations",
+          {
+            "ms": 8.90000000008149,
+            "calls": 40
+          }
+        ],
+        [
+          "animateBrazilTransport",
+          {
+            "ms": 7.400000000023283,
+            "calls": 3321
+          }
+        ],
+        [
+          "updateCivilCommunity",
+          {
+            "ms": 5.900000000023283,
+            "calls": 40
+          }
+        ],
+        [
+          "updateTransitWorld",
+          {
+            "ms": 5.799999999959255,
+            "calls": 10
+          }
+        ],
+        [
+          "updateContext",
+          {
+            "ms": 5.699999999953434,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldResidents",
+          {
+            "ms": 4.399999999965075,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldCampaign",
+          {
+            "ms": 3.999999999970896,
+            "calls": 40
+          }
+        ],
+        [
+          "updateBrazilFleet",
+          {
+            "ms": 3.7000000000116415,
+            "calls": 40
+          }
+        ],
+        [
+          "updateTrafficIncidents",
+          {
+            "ms": 3.6000000000349246,
+            "calls": 10
+          }
+        ],
+        [
+          "updateNavigation",
+          {
+            "ms": 3.1000000000058208,
+            "calls": 8
+          }
+        ],
+        [
+          "updateCivilMissions",
+          {
+            "ms": 2.6000000000058208,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFamilyPlayableVisuals",
+          {
+            "ms": 2.6000000000058208,
+            "calls": 40
+          }
+        ],
+        [
+          "updateMultiplayer",
+          {
+            "ms": 2.599999999947613,
+            "calls": 8
+          }
+        ],
+        [
+          "updateTrafficVehicleTaking",
+          {
+            "ms": 1.6000000000640284,
+            "calls": 40
+          }
+        ],
+        [
+          "familyAnimateAvatar",
+          {
+            "ms": 1.6000000000058208,
+            "calls": 40
+          }
+        ],
+        [
+          "garageSyncIgnition",
+          {
+            "ms": 1.1999999999825377,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldDestinations",
+          {
+            "ms": 1.1000000000058208,
+            "calls": 40
+          }
+        ],
+        [
+          "updatePoliceSystem",
+          {
+            "ms": 1,
+            "calls": 10
+          }
+        ],
+        [
+          "updateFamilyCarry",
+          {
+            "ms": 0.7000000000116415,
+            "calls": 80
+          }
+        ],
+        [
+          "updateLifeActivities",
+          {
+            "ms": 0.5000000000291038,
+            "calls": 8
+          }
+        ],
+        [
+          "updateCityCoastLife",
+          {
+            "ms": 0.5,
+            "calls": 40
+          }
+        ],
+        [
+          "updateSharedWorldReplica",
+          {
+            "ms": 0.40000000002328306,
+            "calls": 40
+          }
+        ],
+        [
+          "updateHUD",
+          {
+            "ms": 0.20000000001164153,
+            "calls": 1
+          }
+        ],
+        [
+          "updateFireService",
+          {
+            "ms": 0.10000000000582077,
+            "calls": 10
+          }
+        ],
+        [
+          "updateWorldVenues",
+          {
+            "ms": 0,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldSportsV704",
+          {
+            "ms": 0,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNpcSociety",
+          {
+            "ms": 0,
+            "calls": 8
+          }
+        ],
+        [
+          "updateAdventure",
+          {
+            "ms": 0,
+            "calls": 8
+          }
+        ],
+        [
+          "updateClouds",
+          {
+            "ms": 0,
+            "calls": 5
+          }
+        ]
+      ]
+    },
+    {
+      "name": "beach-family",
+      "frames": 40,
+      "totalMs": 4917.399999999994,
+      "stats": [
+        [
+          "updateFamilyAdventure",
+          {
+            "ms": 4093.300000000105,
+            "calls": 40
+          }
+        ],
+        [
+          "familyMove",
+          {
+            "ms": 4083.4000000000524,
+            "calls": 120
+          }
+        ],
+        [
+          "buildRoutePoints",
+          {
+            "ms": 3810.500000000058,
+            "calls": 6
+          }
+        ],
+        [
+          "stepWorldSimulation",
+          {
+            "ms": 821.299999999901,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldExpansion",
+          {
+            "ms": 601.5000000001164,
+            "calls": 40
+          }
+        ],
+        [
+          "ensureCompleteBrazilTraffic",
+          {
+            "ms": 512.8000000000175,
+            "calls": 40
+          }
+        ],
+        [
+          "positionBlockedForPlayer",
+          {
+            "ms": 274.39999999976135,
+            "calls": 17673
+          }
+        ],
+        [
+          "familyClear",
+          {
+            "ms": 268.80000000004657,
+            "calls": 240
+          }
+        ],
+        [
+          "updateOttoviasHighway",
+          {
+            "ms": 103.5000000000291,
+            "calls": 40
+          }
+        ],
+        [
+          "updateVisualLOD",
+          {
+            "ms": 30.400000000023283,
+            "calls": 4
+          }
+        ],
+        [
+          "updateWorldResidents",
+          {
+            "ms": 28.0999999998603,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCamera",
+          {
+            "ms": 19.600000000122236,
+            "calls": 40
+          }
+        ],
+        [
+          "resolveTrafficOverlaps",
+          {
+            "ms": 15.500000000058208,
+            "calls": 10
+          }
+        ],
+        [
+          "updateCordillera",
+          {
+            "ms": 11.199999999866122,
+            "calls": 40
+          }
+        ],
+        [
+          "updatePlayer",
+          {
+            "ms": 9.899999999906868,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNeighborhoodDealers",
+          {
+            "ms": 9.59999999991851,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldAirOperations",
+          {
+            "ms": 8.60000000000582,
+            "calls": 40
+          }
+        ],
+        [
+          "animateBrazilTransport",
+          {
+            "ms": 6.600000000093132,
+            "calls": 4111
+          }
+        ],
+        [
+          "updateTransitWorld",
+          {
+            "ms": 5.7000000000116415,
+            "calls": 10
+          }
+        ],
+        [
+          "updateNPCs",
+          {
+            "ms": 5.199999999982538,
+            "calls": 8
+          }
+        ],
+        [
+          "updateContext",
+          {
+            "ms": 5.099999999831198,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCivilCommunity",
+          {
+            "ms": 5.000000000174623,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldCampaign",
+          {
+            "ms": 4.699999999895226,
+            "calls": 40
+          }
+        ],
+        [
+          "updateBrazilFleet",
+          {
+            "ms": 4.2000000000116415,
+            "calls": 40
+          }
+        ],
+        [
+          "updateTrafficIncidents",
+          {
+            "ms": 3.8999999999650754,
+            "calls": 10
+          }
+        ],
+        [
+          "updateNavigation",
+          {
+            "ms": 3.5,
+            "calls": 8
+          }
+        ],
+        [
+          "updateFamilyPlayableVisuals",
+          {
+            "ms": 2.599999999947613,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCivilMissions",
+          {
+            "ms": 2.400000000023283,
+            "calls": 40
+          }
+        ],
+        [
+          "updateSharedWorldReplica",
+          {
+            "ms": 2.099999999947613,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldDestinations",
+          {
+            "ms": 1.9999999998835847,
+            "calls": 40
+          }
+        ],
+        [
+          "updateMultiplayer",
+          {
+            "ms": 1.8999999999941792,
+            "calls": 8
+          }
+        ],
+        [
+          "familyAnimateAvatar",
+          {
+            "ms": 1.6999999999825377,
+            "calls": 40
+          }
+        ],
+        [
+          "updatePoliceSystem",
+          {
+            "ms": 1.2000000000407454,
+            "calls": 10
+          }
+        ],
+        [
+          "garageSyncIgnition",
+          {
+            "ms": 1.1000000000640284,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCityCoastLife",
+          {
+            "ms": 0.4000000000523869,
+            "calls": 40
+          }
+        ],
+        [
+          "updateLifeActivities",
+          {
+            "ms": 0.40000000002328306,
+            "calls": 8
+          }
+        ],
+        [
+          "updateTrafficVehicleTaking",
+          {
+            "ms": 0.3000000000174623,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldVenues",
+          {
+            "ms": 0.29999999998835847,
+            "calls": 40
+          }
+        ],
+        [
+          "updateHUD",
+          {
+            "ms": 0.29999999998835847,
+            "calls": 1
+          }
+        ],
+        [
+          "updateFireService",
+          {
+            "ms": 0.29999999995925464,
+            "calls": 10
+          }
+        ],
+        [
+          "updateFamilyCarry",
+          {
+            "ms": 0.1999999999825377,
+            "calls": 80
+          }
+        ],
+        [
+          "updateNpcSociety",
+          {
+            "ms": 0.10000000000582077,
+            "calls": 8
+          }
+        ],
+        [
+          "updateClouds",
+          {
+            "ms": 0.09999999997671694,
+            "calls": 5
+          }
+        ],
+        [
+          "updateWorldSportsV704",
+          {
+            "ms": 0,
+            "calls": 40
+          }
+        ],
+        [
+          "updateAdventure",
+          {
+            "ms": 0,
+            "calls": 8
+          }
+        ]
+      ]
+    },
+    {
+      "name": "helicopter-family",
+      "frames": 40,
+      "totalMs": 268.9000000000233,
+      "stats": [
+        [
+          "stepWorldSimulation",
+          {
+            "ms": 259.699999999837,
+            "calls": 40
+          }
+        ],
+        [
+          "updateOttoviasHighway",
+          {
+            "ms": 89.70000000001164,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldExpansion",
+          {
+            "ms": 57.899999999965075,
+            "calls": 40
+          }
+        ],
+        [
+          "updateOtGames",
+          {
+            "ms": 32.20000000001164,
+            "calls": 40
+          }
+        ],
+        [
+          "updateVisualLOD",
+          {
+            "ms": 28,
+            "calls": 4
+          }
+        ],
+        [
+          "resolveTrafficOverlaps",
+          {
+            "ms": 19.499999999941792,
+            "calls": 10
+          }
+        ],
+        [
+          "updateCordillera",
+          {
+            "ms": 11.999999999941792,
+            "calls": 40
+          }
+        ],
+        [
+          "positionBlockedForPlayer",
+          {
+            "ms": 9.599999999976717,
+            "calls": 503
+          }
+        ],
+        [
+          "updateWorldAirOperations",
+          {
+            "ms": 8.399999999965075,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldResidents",
+          {
+            "ms": 7.899999999965075,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFamilyAdventure",
+          {
+            "ms": 7.600000000093132,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNeighborhoodDealers",
+          {
+            "ms": 7.200000000069849,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNPCs",
+          {
+            "ms": 5.599999999918509,
+            "calls": 8
+          }
+        ],
+        [
+          "animateBrazilTransport",
+          {
+            "ms": 5.399999999965075,
+            "calls": 4400
+          }
+        ],
+        [
+          "updateTransitWorld",
+          {
+            "ms": 5.2999999999883585,
+            "calls": 10
+          }
+        ],
+        [
+          "updateCivilCommunity",
+          {
+            "ms": 4.600000000034925,
+            "calls": 40
+          }
+        ],
+        [
+          "updateTrafficIncidents",
+          {
+            "ms": 4.300000000046566,
+            "calls": 10
+          }
+        ],
+        [
+          "updateWorldCampaign",
+          {
+            "ms": 3.7000000000116415,
+            "calls": 40
+          }
+        ],
+        [
+          "updateBrazilFleet",
+          {
+            "ms": 2.9999999997671694,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNavigation",
+          {
+            "ms": 2.700000000069849,
+            "calls": 8
+          }
+        ],
+        [
+          "updatePoliceSystem",
+          {
+            "ms": 1.6000000000349246,
+            "calls": 10
+          }
+        ],
+        [
+          "updateMultiplayer",
+          {
+            "ms": 1.6000000000349246,
+            "calls": 8
+          }
+        ],
+        [
+          "updateCivilMissions",
+          {
+            "ms": 1.5000000000582077,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFamilyPlayableVisuals",
+          {
+            "ms": 1.5000000000582077,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFamilyCarry",
+          {
+            "ms": 1.2999999999883585,
+            "calls": 80
+          }
+        ],
+        [
+          "updateWorldDestinations",
+          {
+            "ms": 1.1000000000349246,
+            "calls": 40
+          }
+        ],
+        [
+          "familyAnimateAvatar",
+          {
+            "ms": 0.9999999999417923,
+            "calls": 40
+          }
+        ],
+        [
+          "garageSyncIgnition",
+          {
+            "ms": 0.49999999994179234,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCamera",
+          {
+            "ms": 0.4000000000814907,
+            "calls": 40
+          }
+        ],
+        [
+          "updateSharedWorldReplica",
+          {
+            "ms": 0.29999999998835847,
+            "calls": 40
+          }
+        ],
+        [
+          "ensureCompleteBrazilTraffic",
+          {
+            "ms": 0.2000000000698492,
+            "calls": 40
+          }
+        ],
+        [
+          "updateCityCoastLife",
+          {
+            "ms": 0.20000000001164153,
+            "calls": 40
+          }
+        ],
+        [
+          "updateHUD",
+          {
+            "ms": 0.20000000001164153,
+            "calls": 1
+          }
+        ],
+        [
+          "updateLifeActivities",
+          {
+            "ms": 0.19999999995343387,
+            "calls": 8
+          }
+        ],
+        [
+          "updateTrafficVehicleTaking",
+          {
+            "ms": 0.09999999997671694,
+            "calls": 40
+          }
+        ],
+        [
+          "updateFireService",
+          {
+            "ms": 0.09999999997671694,
+            "calls": 10
+          }
+        ],
+        [
+          "updateWorldVenues",
+          {
+            "ms": 0,
+            "calls": 40
+          }
+        ],
+        [
+          "updateWorldSportsV704",
+          {
+            "ms": 0,
+            "calls": 40
+          }
+        ],
+        [
+          "updateNpcSociety",
+          {
+            "ms": 0,
+            "calls": 8
+          }
+        ],
+        [
+          "updateClouds",
+          {
+            "ms": 0,
+            "calls": 5
+          }
+        ]
+      ]
+    }
+  ],
+  "limits": [
+    "Unchanged simulation with capped software rendering; no physical Android FPS measurement."
+  ],
+  "hotspots": [
+    {
+      "us": 2199292,
+      "functionName": "navBlocked",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 2211,
+      "columnNumber": 21
+    },
+    {
+      "us": 1728642,
+      "functionName": "navBlocked",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 2211,
+      "columnNumber": 21
+    },
+    {
+      "us": 1441882,
+      "functionName": "segmentClear",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 2212,
+      "columnNumber": 23
+    },
+    {
+      "us": 1221524,
+      "functionName": "segmentClear",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 2212,
+      "columnNumber": 23
+    },
+    {
+      "us": 578124,
+      "functionName": "build",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11070,
+      "columnNumber": 14
+    },
+    {
+      "us": 538167,
+      "functionName": "merge",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11154,
+      "columnNumber": 15
+    },
+    {
+      "us": 463753,
+      "functionName": "(garbage collector)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 392848,
+      "functionName": "(program)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 253076,
+      "functionName": "mn",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 94065
+    },
+    {
+      "us": 249632,
+      "functionName": "positionBlockedForPlayer",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 6930,
+      "columnNumber": 35
+    },
+    {
+      "us": 193290,
+      "functionName": "mn",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 94065
+    },
+    {
+      "us": 183431,
+      "functionName": "positionBlockedForPlayer",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 12278,
+      "columnNumber": 86
+    },
+    {
+      "us": 175629,
+      "functionName": "merge",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11154,
+      "columnNumber": 15
+    },
+    {
+      "us": 170232,
+      "functionName": "build",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11070,
+      "columnNumber": 14
+    },
+    {
+      "us": 81078,
+      "functionName": "t",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 102275
+    },
+    {
+      "us": 77754,
+      "functionName": "positionBlockedForPlayer",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 6930,
+      "columnNumber": 35
+    },
+    {
+      "us": 76761,
+      "functionName": "mn",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 94065
+    },
+    {
+      "us": 74461,
+      "functionName": "computeBoundingSphere",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 97692
+    },
+    {
+      "us": 60160,
+      "functionName": "positionBlockedForPlayer",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 12278,
+      "columnNumber": 86
+    },
+    {
+      "us": 60116,
+      "functionName": "t",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 102275
+    },
+    {
+      "us": 55303,
+      "functionName": "v704HighwaySegments",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 1971,
+      "columnNumber": 30
+    },
+    {
+      "us": 54823,
+      "functionName": "mn",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 94065
+    },
+    {
+      "us": 49847,
+      "functionName": "t",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 102275
+    },
+    {
+      "us": 48055,
+      "functionName": "v704HighwaySegments",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 1971,
+      "columnNumber": 30
+    },
+    {
+      "us": 42150,
+      "functionName": "setFromBufferAttribute",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 35308
+    },
+    {
+      "us": 36455,
+      "functionName": "create",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11159,
+      "columnNumber": 15
+    },
+    {
+      "us": 35946,
+      "functionName": "fromBufferAttribute",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 34595
+    },
+    {
+      "us": 35872,
+      "functionName": "computeBoundingSphere",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 97692
+    },
+    {
+      "us": 33702,
+      "functionName": "v704HighwayAt",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 1972,
+      "columnNumber": 24
+    },
+    {
+      "us": 30708,
+      "functionName": "build",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 11070,
+      "columnNumber": 14
+    },
+    {
+      "us": 29921,
+      "functionName": "v704DistanceToSegment",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 1966,
+      "columnNumber": 32
+    },
+    {
+      "us": 29283,
+      "functionName": "applyNormalMatrix",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 91892
+    },
+    {
+      "us": 29123,
+      "functionName": "mn",
+      "scriptId": "9",
+      "url": "http://127.0.0.1:36587/games/otthi/assets/vendor/three-r128.min.js?v=70635",
+      "lineNumber": 5,
+      "columnNumber": 94065
+    },
+    {
+      "us": 27049,
+      "functionName": "v704HighwayAt",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 1972,
+      "columnNumber": 24
+    },
+    {
+      "us": 26787,
+      "functionName": "snapTrafficToRoad",
+      "scriptId": "23",
+      "url": "http://127.0.0.1:36587/games/otthi/app.js?v=70635&release=world-20261027-2",
+      "lineNumber": 2220,
+      "columnNumber": 28
+    }
+  ],
+  "counts": {
+    "npcs": 122,
+    "vehicles": 23,
+    "interactables": 830,
+    "colliders": 461,
+    "family": [
+      {
+        "id": "thiago",
+        "x": 50.23,
+        "z": -164.38,
+        "bones": 24,
+        "vertices": 164562,
+        "uniqueVertices": 31956,
+        "drawCalls": 1
+      },
+      {
+        "id": "thamis",
+        "x": 49.77,
+        "z": -164.38,
+        "bones": 25,
+        "vertices": 226968,
+        "uniqueVertices": 43480,
+        "drawCalls": 1
+      },
+      {
+        "id": "luna",
+        "x": 50.15,
+        "z": -165.35,
+        "bones": 13,
+        "vertices": 205176,
+        "uniqueVertices": 46812,
+        "drawCalls": 1
+      },
+      {
+        "id": "liz",
+        "x": 50.31,
+        "z": -165.35,
+        "bones": 13,
+        "vertices": 209400,
+        "uniqueVertices": 47082,
+        "drawCalls": 1
+      }
+    ]
+  },
+  "errors": [],
+  "passed": true
+}
