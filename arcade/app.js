@@ -36,6 +36,8 @@
   let auth=null, db=null, deferredInstall=null, firebaseInit=null;
 
   function gameById(id) { return entries.find(game=>game.id===id); }
+  function destination(game){return game.id==="otthi"&&navigator.onLine?BASE+"atualizar/":game.url;}
+  function refreshWorldLinks(){document.querySelectorAll('[data-launch="otthi"]').forEach(link=>link.href=destination(gameById("otthi")));}
   function matches(game) {
     if(state.filter==="favoritos" && !state.favorites.has(game.id)) return false;
     if(state.filter!=="todos" && state.filter!=="favoritos" && game.category!==state.filter) return false;
@@ -81,7 +83,7 @@
     source.href=REPO_BASE+encodeURIComponent(game.source); source.target="_blank"; source.rel="noopener noreferrer";
     source.title="Ver código do projeto "+game.source;
     const play=el("a","game-open",game.destination==="menu"?"Abrir menu GAME ↗":"Jogar agora ↗");
-    play.href=game.url; play.target="_self"; play.rel="noopener noreferrer"; play.dataset.launch=game.id;
+    play.href=destination(game); play.target="_self"; play.rel="noopener noreferrer"; play.dataset.launch=game.id;
     play.setAttribute("aria-label",(game.destination==="menu"?"Abrir menu do GAME para escolher ":"Jogar ")+game.title+" no console");
     footer.append(source,play);
     // Outcomes from the real game engine, stored locally under the original game ID.
@@ -121,6 +123,7 @@
     if(shouldScroll) $("biblioteca").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth",block:"start"});
   }
   function launch(id) {
+    refreshWorldLinks();
     if(!valid.has(id))return;
     const list=store.read(HISTORY_KEY,[]);
     const next=[id,...(Array.isArray(list)?list.filter(x=>valid.has(x)&&x!==id):[])].slice(0,7);
@@ -148,7 +151,7 @@
   const recent=Array.isArray(history)?gameById(history.find(gameId=>valid.has(gameId))):null;
   const mainPlay=document.querySelector(".hero-actions [data-launch]");
   if(mainPlay && recent){
-    mainPlay.href=recent.url;
+    mainPlay.href=destination(recent);
     mainPlay.dataset.launch=recent.id;
     mainPlay.textContent="▶ Continuar "+recent.title+" ↗";
     mainPlay.setAttribute("aria-label","Continuar "+recent.title);
@@ -156,6 +159,7 @@
   document.querySelectorAll(".hero-actions [data-launch]").forEach(link=>
     link.addEventListener("click",()=>launch(link.dataset.launch))
   );
+  refreshWorldLinks();window.addEventListener("online",refreshWorldLinks);window.addEventListener("offline",refreshWorldLinks);
   $("year").textContent=String(new Date().getFullYear());
 
   function setFeedback(message,isError=false) {

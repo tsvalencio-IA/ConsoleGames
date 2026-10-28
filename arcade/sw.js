@@ -1,7 +1,7 @@
 /* thIAguinho ARCADE: PWA autónomo. O service worker NÃO controla os sete jogos.
    Scope: /ConsoleGames/arcade/ - ID diferente do console anterior. */
 "use strict";
-const CACHE="thiaguinho-arcade-shell-v12";
+const CACHE="thiaguinho-arcade-shell-v13";
 const SHELL=["./account-access.js","./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
@@ -9,7 +9,7 @@ self.addEventListener("install",event=>{
 self.addEventListener("activate",event=>{
   event.waitUntil((async()=>{try{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith("thiaguinho-arcade-shell-")&&key!==CACHE).map(key=>caches.delete(key)));}catch{}await self.clients.claim();})());
 });
-self.addEventListener('message',event=>{if(event.data?.type==='ARCADE_HEALTH')event.ports?.[0]?.postMessage({type:'ARCADE_HEALTH',version:12});});
+self.addEventListener('message',event=>{if(event.data?.type==='ARCADE_HEALTH')event.ports?.[0]?.postMessage({type:'ARCADE_HEALTH',version:13});});
 async function cachedResponse(request,navigation){
   try{const cache=await caches.open(CACHE);return await cache.match(request)||await cache.match(request,{ignoreSearch:true})||(navigation?await cache.match('./index.html'):null)||null;}catch{return null;}
 }
@@ -27,7 +27,7 @@ function offlinePage(){
 async function networkFirst(event,navigation){
   const request=event.request;
   try{
-    const response=await fetch(request);
+    const response=await fetch(request,{cache:"no-store"});
     if(response.type==='opaqueredirect')return response;
     if(!response.ok)throw Error('Console HTTP '+response.status);
     const url=new URL(request.url),shell=SHELL.some(path=>new URL(path,self.registration.scope).pathname===url.pathname);

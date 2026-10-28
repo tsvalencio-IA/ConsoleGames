@@ -68,6 +68,7 @@ RELEASE_FILES += ['assets/js/world/civil-mission-core.js', 'assets/js/vehicles/e
 RELEASE_FILES += ['recorded-audio.js', 'audio/engine-recordings.json', 'audio/CREDITS.txt']
 RELEASE_FILES += ['audio/' + a['file'] for a in json.loads((ROOT / 'audio/engine-recordings.json').read_text('utf-8'))['assets']]
 
+RELEASE_FILES += ['../atualizar/index.html', '../atualizar/update.js', '../atualizar/style.css']
 RELEASE_FILES += ['../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css']
 
 

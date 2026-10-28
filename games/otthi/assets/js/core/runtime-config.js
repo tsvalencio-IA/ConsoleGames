@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.3-war-corpo-mao',
+    build: '705.28.4-atualizacao-segura',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

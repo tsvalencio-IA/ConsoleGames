@@ -1,9 +1,9 @@
-const REVISION = '5fe2fbcf4436ea87';
-const CACHE = `otthi-v70639-${REVISION}`;
+const REVISION = '93deb202083e3b4d';
+const CACHE = `otthi-v70640-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.28.3-war-corpo-mao';
+const BUILD = '705.28.4-atualizacao-segura';
 const VERSION = '705';
-const RELEASE_MANIFEST = './release-manifest.json?v=70639';
+const RELEASE_MANIFEST = './release-manifest.json?v=70640';
 
 const REQUIRED_SHELL = [
   "./audio/engine-fiat-idle.ogg",
@@ -60,23 +60,23 @@ const REQUIRED_SHELL = [
   "./assets/js/world-venue-bridge.js",
   "./assets/js/world-venue-trip.js",
   "./assets/ot-games-airframes.json",
-  "./index.html?v=70639",
-  "./style.css?v=70639",
-  "./assets/vendor/three-r128.min.js?v=70639",
-  "./assets/js/core/runtime-config.js?v=70639",
-  "./assets/js/core/safe-pointer.js?v=70639",
-  "./assets/js/core/viewport-manager.js?v=70639",
-  "./assets/js/save-db.js?v=70639",
-  "./firebase-config.js?v=70639",
-  "./assets/js/game-account.js?v=70639",
-  "./assets/js/multiplayer-rtdb.js?v=70639",
-  "./app.js?v=70639",
-  "./assets/js/ui/shared-modal.js?v=70639",
-  "./assets/js/core/performance-guardian.js?v=70639",
-  "./assets/js/multiplayer/room-manager.js?v=70639",
-  "./assets/js/education/adaptive-learning.js?v=70639",
-  "./assets/js/safety/child-safety.js?v=70639",
-  "./manifest.webmanifest?v=70639",
+  "./index.html?v=70640",
+  "./style.css?v=70640",
+  "./assets/vendor/three-r128.min.js?v=70640",
+  "./assets/js/core/runtime-config.js?v=70640",
+  "./assets/js/core/safe-pointer.js?v=70640",
+  "./assets/js/core/viewport-manager.js?v=70640",
+  "./assets/js/save-db.js?v=70640",
+  "./firebase-config.js?v=70640",
+  "./assets/js/game-account.js?v=70640",
+  "./assets/js/multiplayer-rtdb.js?v=70640",
+  "./app.js?v=70640",
+  "./assets/js/ui/shared-modal.js?v=70640",
+  "./assets/js/core/performance-guardian.js?v=70640",
+  "./assets/js/multiplayer/room-manager.js?v=70640",
+  "./assets/js/education/adaptive-learning.js?v=70640",
+  "./assets/js/safety/child-safety.js?v=70640",
+  "./manifest.webmanifest?v=70640",
 ];
 
 const OPTIONAL_ASSETS = [
@@ -173,6 +173,7 @@ async function fetchReleaseManifest() {
 
 async function fetchAndCacheOptional(cache, resource) {
   try {
+    if (await cache.match(resource)) return { resource, ok:true };
     const response = await fetch(freshRequest(resource));
     if (!response || (!response.ok && response.type !== 'opaque')) throw new Error(`HTTP ${response?.status || 0}`);
     await cache.put(resource, response.clone());
@@ -182,13 +183,46 @@ async function fetchAndCacheOptional(cache, resource) {
   }
 }
 
+async function updateProgress(done, total, reused = 0, error = '') {
+  const scope = new URL(self.registration.scope), repair = new URL('../atualizar/', scope);
+  const clients = await self.clients.matchAll({ type:'window', includeUncontrolled:true });
+  for (const client of clients) {
+    if (client.url.startsWith(scope.href) || client.url.startsWith(repair.href)) {
+      client.postMessage({type:'OTTHI_UPDATE_PROGRESS',build:BUILD,revision:REVISION,done,total,reused,error});
+    }
+  }
+}
+
+async function verifiedPreviousResponse(resource, manifest, previousCaches) {
+  const path = new URL(resource, self.registration.scope).pathname;
+  for (const previous of previousCaches) {
+    const cached = await previous.match(path, { ignoreSearch:true });
+    if (!cached) continue;
+    try { await verifyResponse(cached, resource, manifest); return cached; } catch {}
+  }
+  return null;
+}
+
+async function cacheOptionalAssets() {
+  const cache=await caches.open(CACHE),results=[];
+  for(let i=0;i<OPTIONAL_ASSETS.length;i+=3)results.push(...await Promise.all(OPTIONAL_ASSETS.slice(i,i+3).map(resource=>fetchAndCacheOptional(cache,resource))));
+  const failed=results.filter(item=>!item.ok);
+  if(failed.length)console.warn('[OTTHI SW] Recursos opcionais não pré-cacheados:',failed);
+}
+
 async function cacheApplicationShell() {
   const { manifest, response:manifestResponse } = await fetchReleaseManifest();
   const verified = [];
+  const names=(await caches.keys()).filter(name=>CACHE_PREFIXES.some(prefix=>name.startsWith(prefix))&&name!==CACHE).reverse();
+  const previousCaches=await Promise.all(names.map(name=>caches.open(name)));
+  let reused=0;
+  await updateProgress(0,REQUIRED_SHELL.length);
   for (let i=0;i<REQUIRED_SHELL.length;i+=4) {
     const batch=await Promise.all(REQUIRED_SHELL.slice(i,i+4).map(async resource=>{
-      const response=await fetch(freshRequest(resource));await verifyResponse(response, resource, manifest);return {resource,response};
+      let response=await verifiedPreviousResponse(resource,manifest,previousCaches);
+      if(response)reused++;else{response=await fetch(freshRequest(resource));await verifyResponse(response, resource, manifest);}return {resource,response};
     }));verified.push(...batch);
+    await updateProgress(verified.length,REQUIRED_SHELL.length,reused);
   }
   await caches.delete(CACHE);
   const cache = await caches.open(CACHE);
@@ -197,9 +231,6 @@ async function cacheApplicationShell() {
     await cache.put(resource, response.clone());
     if (releasePath(resource) === 'index.html') await cache.put('./', response.clone());
   }
-  const optional = await Promise.all(OPTIONAL_ASSETS.map(resource => fetchAndCacheOptional(cache, resource)));
-  const failed = optional.filter(item => !item.ok);
-  if (failed.length) console.warn('[OTTHI SW] Recursos opcionais não pré-cacheados:', failed);
 }
 
 self.addEventListener('install', event => {
@@ -208,6 +239,7 @@ self.addEventListener('install', event => {
   event.waitUntil(cacheApplicationShell()
     .catch(async error => {
       await caches.delete(CACHE);
+      await updateProgress(0,REQUIRED_SHELL.length,0,String(error?.message||error));
       console.error('[OTTHI SW] Release incompleta; cache anterior preservado.', error);
       throw error;
     }));
@@ -227,6 +259,8 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data?.type === 'OTTHI_GET_RELEASE') event.ports?.[0]?.postMessage({type:'OTTHI_RELEASE',build:BUILD,revision:REVISION,version:VERSION});
+  if (event.data?.type === 'OTTHI_CACHE_OPTIONAL') event.waitUntil(cacheOptionalAssets());
   if (event.data?.type === 'PURGE_OTTHI_GAME_CACHE') {
     event.waitUntil(caches.keys().then(names => Promise.all(
       names.filter(name => CACHE_PREFIXES.some(prefix => name.startsWith(prefix))).map(name => caches.delete(name))
@@ -246,7 +280,7 @@ async function activeReleaseManifest(cache) {
 
 async function cachedFallback(cache, request, navigation) {
   if (navigation) {
-    return await cache.match('./index.html?v=70639') || await cache.match('./') || null;
+    return await cache.match('./index.html?v=70640') || await cache.match('./') || null;
   }
   return await cache.match(request, { ignoreSearch:false })
     || await cache.match(new URL(request.url).pathname, { ignoreSearch:true })

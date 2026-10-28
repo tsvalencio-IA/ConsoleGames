@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="theme-color" content="#0c1b33">
+ <meta name="robots" content="noindex">
+ <title>Atualizar OTTHI World</title>
+ <link rel="stylesheet" href="./style.css">
+ <script src="./update.js" defer></script>
+</head>
+<body>
+ <main>
+  <span class="brand">OTTHI WORLD</span>
+  <div class="mark" aria-hidden="true">↻</div>
+  <h1 id="title">Atualizando seu mundo</h1>
+  <p id="status" role="status" aria-live="polite">Conferindo a versão disponível…</p>
+  <progress id="progress" max="100" value="4" aria-label="Progresso da atualização"></progress>
+  <p id="version" class="version"></p>
+  <p class="preserved">Seu login, sua família, seus veículos e seu progresso continuam salvos neste aparelho.</p>
+  <button id="retry" type="button" hidden>Tentar novamente</button>
+  <a id="back" href="../otthi/" hidden>Voltar ao jogo disponível</a>
+  <noscript><p>Ative o JavaScript para conferir a atualização automaticamente.</p><a href="../otthi/">Abrir o jogo</a></noscript>
+ </main>
+</body>
+</html>

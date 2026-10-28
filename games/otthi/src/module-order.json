@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.3-war-corpo-mao",
+  "build": "705.28.4-atualizacao-segura",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "610d6856446db865e9948832f209812b72ad42b952ef87e94051c931a239aed7"
+      "sha256Body": "53fe94b2aa3518463514a2fe303b2b1c5714f7922cc48f98dc422c9eda9b0656"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "63a868142108a97a7e094ae76a4f6b2ead52e40a063f2790c1fe3067fa0563f3"
+      "sha256Body": "650bc30b65d1b842e30151693cbfb52b7a7f277b869d88f9c2f314c3554ad910"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -266,14 +266,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "c1f989107b71dc58f673b80c437e85310d01bd7e0b3da9d654e7d430223b30c5"
+      "sha256Body": "91b87859aae77add591f56df3da1475322555f73229861ea531d35ff7a7a4ea4"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "efaece4c15c16991651541216390aadcc7d89be2f45417428c778433c248e60d"
+      "sha256Body": "79582c3999983e6907fcaa106ca08ed5c0d84499d3f2617b43b63b9585ff7fac"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",

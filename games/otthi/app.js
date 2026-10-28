@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.3-war-corpo-mao';
+  const OTTHI_GAME_WEB_BUILD = '705.28.4-atualizacao-segura';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -968,6 +968,7 @@
   let otthiLastUpdateCheck = 0;
   let otthiServiceWorkerRegistration = null;
   let otthiWorkerRegistrationPromise = null;
+  let otthiAvailableRelease = null;
   const OTTHI_REPAIR_KEY = 'otthi:startup-repair:'+location.pathname;
   // Listen before any worker can activate, including while other page scripts load.
   if ('serviceWorker' in navigator) {
@@ -975,6 +976,7 @@
     navigator.serviceWorker.addEventListener('controllerchange',()=>{
       const next=navigator.serviceWorker.controller;
       if((previousController&&next!==previousController)||!window.OTTHI_RELEASE_COHERENT)queueOtthiUpdate('worker-'+OTTHI_GAME_WEB_BUILD);
+      next?.postMessage({type:'OTTHI_CACHE_OPTIONAL'});
       previousController=next;
     });
   }
@@ -993,6 +995,30 @@
   async function persistBeforeOtthiReload() {
     try { await saveState(true); } catch {}
     try { await lastSavePromise; } catch {}
+  }
+
+  async function openOtthiUpdateRecovery(){
+    if(otthiUpdateReloading)return true;
+    if(!navigator.onLine){toast('Conecte-se à internet para atualizar. Seu jogo continua disponível.','warn',3000);return false;}
+    otthiUpdateReloading=true;
+    try{
+      clearMovementInputs();
+      if(typeof otGames!=='undefined'&&otGames.active)otGamesLeave({preserveCampaign:true});
+      if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
+      savePlayerPosition(true);await persistBeforeOtthiReload();
+      location.replace(new URL('../atualizar/',OTTHI_GAME_LIVE_BASE).href);return true;
+    }catch(error){otthiUpdateReloading=false;toast('Não foi possível guardar a atualização. Tente novamente.','warn',3000);return false;}
+  }
+
+  async function ensureCurrentOtthiBeforePlay(){
+    if(!navigator.onLine||!isOfficialOtthiGameAddress())return false;
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),5000);
+    try{
+      const url=new URL('release-manifest.json',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otthi_probe',String(Date.now()));
+      const response=await fetch(url,{cache:'no-store',credentials:'same-origin',signal:controller.signal});if(!response.ok)return false;
+      const release=await response.json();if(release?.algorithm!=='SHA-256'||!release.build||!release.revision)return false;
+      if(release.build!==OTTHI_GAME_WEB_BUILD||release.revision!==OTTHI_RELEASE_REVISION){otthiAvailableRelease=release;return openOtthiUpdateRecovery();}
+    }catch{}finally{clearTimeout(timer);}return false;
   }
 
   async function reloadForOtthiUpdate(buildToken) {
@@ -1021,6 +1047,8 @@
       const remoteRevision = String(release?.revision || '');
       if ((remoteBuild && remoteBuild !== OTTHI_GAME_WEB_BUILD)
         || (remoteRevision && remoteRevision !== OTTHI_RELEASE_REVISION)) {
+        otthiAvailableRelease={build:remoteBuild,revision:remoteRevision};
+        const label=document.getElementById('gameUpdateStatus');if(label)label.textContent='Nova versão disponível';
         if (!otthiServiceWorkerRegistration) {
           return queueOtthiUpdate(remoteRevision || remoteBuild);
         }
@@ -1047,6 +1075,7 @@
         updateViaCache: 'none'
       });
       otthiServiceWorkerRegistration = registration;
+      registration.active?.postMessage({type:'OTTHI_CACHE_OPTIONAL'});
       const watched=new WeakSet(),watch=worker=>{
         if(!worker||watched.has(worker))return;watched.add(worker);
         const ready=()=>{if(worker.state==='installed')worker.postMessage({type:'SKIP_WAITING'});};
@@ -1106,6 +1135,9 @@
     if (!document.hidden) {otthiServiceWorkerRegistration?.update?.().catch(()=>{});probeOtthiGameUpdate(true);}
   });
   updateInstallUI();
+  const updateButton=document.getElementById('updateGameBtn');if(updateButton)updateButton.onclick=openOtthiUpdateRecovery;
+  const versionLabel=document.getElementById('gameUpdateStatus');if(versionLabel)versionLabel.textContent='Versão '+OTTHI_GAME_WEB_BUILD;
+  window.OTTHI_UPDATES={check:()=>probeOtthiGameUpdate(true),repair:openOtthiUpdateRecovery,diagnostics:()=>({build:OTTHI_GAME_WEB_BUILD,revision:OTTHI_RELEASE_REVISION,available:otthiAvailableRelease,pending:!!otthiPendingUpdateToken,reloading:otthiUpdateReloading})};
   if (!window.OTTHI_RELEASE_COHERENT) {
     setTimeout(()=>repairOtthiStartup(),0);
   } else if (!navigator.onLine) {
@@ -7951,6 +7983,7 @@
   }
   async function startGame(resetPosition=false){
     await dbReady;
+    if(await ensureCurrentOtthiBeforePlay())return;
     if(!window.OTTHI_RELEASE_COHERENT){openModal('Atualização incompleta','<p>Os arquivos do jogo pertencem a versões diferentes. Termine o envio da V700 e atualize a página; seu progresso está preservado.</p>');return;}
     state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{})};const sessionLimitSeconds=Math.max(0,Number(state.guardian?.sessionLimitMinutes||0))*60;
     if(sessionLimitSeconds>0&&(Number(state.usage.sessionLockedAt||0)>0||Number(state.usage.sessionSeconds||0)>=sessionLimitSeconds)){state.usage.sessionLockedAt=Number(state.usage.sessionLockedAt||Date.now());saveState(true);openModal('Tempo de jogo concluído','<div class="parent-gate"><span>⏰</span><h3>Nova sessão exige um responsável</h3><p>O limite continua bloqueado mesmo ao voltar ao menu. Um responsável pode liberar outra sessão usando a senha da conta.</p><button class="btn primary xl" data-session-parent>Área dos responsáveis</button><button class="btn" data-session-back>Ficar no menu</button></div>',root=>{$('[data-session-parent]',root).onclick=()=>openParentGate(false);$('[data-session-back]',root).onclick=closeModal;});return;}
@@ -7987,12 +8020,13 @@
   function openPauseMenu(){
     if(!running||pauseMenuOpen)return;
     if(buildMode)endBuildMode('cancelled',true);
-    paused=true;pauseMenuOpen=true;if(engineAudio)stopEngineSound();openModal('Jogo pausado',`<div class="choice-grid"><button class="choice" data-resume><b>▶ Continuar</b><span>Voltar ao mundo</span></button><button class="choice" data-life><b>👤 Minha vida</b><span>Carreira, amizades e visual</span></button><button class="choice" data-safe><b>🛟 Desprender</b><span>Voltar ao último ponto seguro</span></button><button class="choice" data-family><b>🐾 Aventuras em Família</b><span>Thiago, Thamis, Luna e Liz</span></button><button class="choice" data-home><b>🏠 Casa</b><span>Voltar para minha casa</span></button><button class="choice" data-menu><b>↩ Menu inicial</b><span>Salvar e sair</span></button></div>`,root=>{
+    paused=true;pauseMenuOpen=true;if(engineAudio)stopEngineSound();openModal('Jogo pausado',`<div class="choice-grid"><button class="choice" data-resume><b>▶ Continuar</b><span>Voltar ao mundo</span></button><button class="choice" data-life><b>👤 Minha vida</b><span>Carreira, amizades e visual</span></button><button class="choice" data-safe><b>🛟 Desprender</b><span>Voltar ao último ponto seguro</span></button><button class="choice" data-family><b>🐾 Aventuras em Família</b><span>Thiago, Thamis, Luna e Liz</span></button><button class="choice" data-home><b>🏠 Casa</b><span>Voltar para minha casa</span></button><button class="choice" data-update-game><b>↻ Salvar e atualizar</b><span>Conferir a versão mais recente</span></button><button class="choice" data-menu><b>↩ Menu inicial</b><span>Salvar e sair</span></button></div>`,root=>{
       $('[data-resume]',root).onclick=()=>closeModal();
       $('[data-life]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();if(player.vehicle)startEngineSound();openLifePanel();};
       $('[data-safe]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();recoverPlayerToLastSafe('retorno manual',true);};
       $('[data-family]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();openFamilyAdventure();};
       $('[data-home]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();returnHome();};
+      $('[data-update-game]',root).onclick=openOtthiUpdateRecovery;
       $('[data-menu]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();stopGame();};
     });
   }

@@ -169,6 +169,7 @@
   }
   async function startGame(resetPosition=false){
     await dbReady;
+    if(await ensureCurrentOtthiBeforePlay())return;
     if(!window.OTTHI_RELEASE_COHERENT){openModal('Atualização incompleta','<p>Os arquivos do jogo pertencem a versões diferentes. Termine o envio da V700 e atualize a página; seu progresso está preservado.</p>');return;}
     state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{})};const sessionLimitSeconds=Math.max(0,Number(state.guardian?.sessionLimitMinutes||0))*60;
     if(sessionLimitSeconds>0&&(Number(state.usage.sessionLockedAt||0)>0||Number(state.usage.sessionSeconds||0)>=sessionLimitSeconds)){state.usage.sessionLockedAt=Number(state.usage.sessionLockedAt||Date.now());saveState(true);openModal('Tempo de jogo concluído','<div class="parent-gate"><span>⏰</span><h3>Nova sessão exige um responsável</h3><p>O limite continua bloqueado mesmo ao voltar ao menu. Um responsável pode liberar outra sessão usando a senha da conta.</p><button class="btn primary xl" data-session-parent>Área dos responsáveis</button><button class="btn" data-session-back>Ficar no menu</button></div>',root=>{$('[data-session-parent]',root).onclick=()=>openParentGate(false);$('[data-session-back]',root).onclick=closeModal;});return;}
