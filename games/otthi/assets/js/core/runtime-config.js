@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.27.3-desempenho-audio',
+    build: '705.28.1-revisao-veiculos',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

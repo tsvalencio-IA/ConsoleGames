@@ -3,8 +3,25 @@
 // Release 2026-10-26: continuous inference budget within the same 550 ms cap.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v31";
-const FILES=["./recorded-audio.js?v=20261028-recorded3","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/engine-recordings.json","./audio/engine-road-idle.ogg","./audio/engine-road-load.ogg","./audio/engine-classic-idle.ogg","./audio/engine-classic-load.ogg","./audio/engine-sport-idle.ogg","./audio/engine-sport-load.ogg","./audio/engine-heavy-idle.ogg","./audio/engine-heavy-load.ogg","./audio/engine-moto-idle.ogg","./audio/engine-moto-load.ogg","./audio/engine-twin-idle.ogg","./audio/engine-twin-load.ogg","./audio/engine-small-moto.ogg","./audio/engine-rotor-recorded.ogg","./audio/engine-prop-recorded.ogg","./audio/engine-jet-recorded.ogg","./audio/engine-boat-recorded.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261026-combat2","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
+const CACHE=PREFIX+"pro-control-v32";
+const FILES=[
+"./audio/engine-fiat-idle.ogg",
+"./audio/engine-fiat-load.ogg",
+"./audio/engine-hornet-idle.ogg",
+"./audio/engine-hornet-load.ogg",
+"./audio/engine-inline6-idle.ogg",
+"./audio/engine-inline6-load.ogg",
+"./audio/engine-turbo6-idle.ogg",
+"./audio/engine-turbo6-load.ogg",
+"./audio/engine-flat6-idle.ogg",
+"./audio/engine-flat6-load.ogg",
+"./audio/engine-flatplane8-idle.ogg",
+"./audio/engine-flatplane8-load.ogg",
+"./audio/engine-coach-idle.ogg",
+"./audio/engine-coach-load.ogg",
+"./audio/engine-triple-idle.ogg",
+"./audio/engine-triple-load.ogg",
+"./recorded-audio.js?v=20261028-vehicle4","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/engine-recordings.json","./audio/engine-road-idle.ogg","./audio/engine-road-load.ogg","./audio/engine-classic-idle.ogg","./audio/engine-classic-load.ogg","./audio/engine-sport-idle.ogg","./audio/engine-sport-load.ogg","./audio/engine-heavy-idle.ogg","./audio/engine-heavy-load.ogg","./audio/engine-moto-idle.ogg","./audio/engine-moto-load.ogg","./audio/engine-twin-idle.ogg","./audio/engine-twin-load.ogg","./audio/engine-small-moto.ogg","./audio/engine-rotor-recorded.ogg","./audio/engine-prop-recorded.ogg","./audio/engine-jet-recorded.ogg","./audio/engine-boat-recorded.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261026-combat2","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261023-4","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
 "./multiplayer.js","./multiplayer.css","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./object-tracker.js","./object-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",

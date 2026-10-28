@@ -21,3 +21,20 @@ Joseph SARDIN — Small propeller aircraft; model unspecified — https://bigsou
 m_cel — Jet engine static test; public HQ preview — https://freesound.org/people/m_cel/sounds/534856/
 Legnalegna55 — Small motor boat; public HQ preview — https://freesound.org/people/Legnalegna55/sounds/577425/
 Recordings are adapted by engine family, not represented as factory recordings of every model. Freesound public preview encodings are identified above and in the manifest.
+
+Engine architecture revision
+Version 20261028-vehicle4. Sources, authors, licenses and edit bounds: engine-recordings.json.
+marfisa — 1977 Volkswagen Fusca — https://freesound.org/people/marfisa/sounds/365174/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+martian — Honda Hornet 600 / 599 — https://freesound.org/people/martian/sounds/181161/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+Andreabarata — BMW M4 — https://freesound.org/people/Andreabarata/sounds/335345/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+Noizemaker — 2002 BMW 1150 GS, air-cooled boxer twin — https://freesound.org/people/Noizemaker/sounds/23219/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+PritzProductions — Ferrari 360 Spider — https://freesound.org/people/PritzProductions/sounds/241083/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+sound_catcher99 — Fiat Grande Punto petrol engine — https://freesound.org/people/sound_catcher99/sounds/425158/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+ninebilly — 1988 BMW 320 engine — https://freesound.org/people/ninebilly/sounds/173005/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+chungus43A — 2007 New Flyer D40LFR, Cummins ISL inline-six diesel — https://freesound.org/people/chungus43A/sounds/833742/ — CC-BY-4.0. Edited public HQ preview, steady crop, filters and loop join.
+kyles — Mack semi trailer diesel, idle and pull away — https://freesound.org/people/kyles/sounds/451935/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+richwise — Honda CRF250 single-cylinder motorcycle — https://freesound.org/people/richwise/sounds/361407/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+rodrigocswm — Volkswagen three-cylinder petrol engine, model unspecified — https://freesound.org/people/rodrigocswm/sounds/584878/ — CC0-1.0. Edited public HQ preview, steady crop, filters and loop join.
+jerry.berumen — Porsche 911 boxer engine, generation unspecified — https://freesound.org/people/jerry.berumen/sounds/772802/ — CC-BY-4.0. Edited public HQ preview, steady crop, filters and loop join.
+Cummins ISL recording by chungus43A: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ . Edited crop, filtering and loop join; no endorsement implied.
+Porsche 911 recording by jerry.berumen: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ . Modified as described in engine-recordings.json; no endorsement implied.

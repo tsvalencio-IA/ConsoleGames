@@ -24,7 +24,7 @@ const specs={
  tempra:{l:3.49,w:1.36,h:1.16,b:.76,r:.267,fa:1.04,ra:-1.04,front:.66,rf:.18,rr:-.70,rear:-1.20,bp:-.28,seat:.04,back:-.65,doors:4,crown:.018,nose:.06},
  maverick:{l:3.68,w:1.44,h:1.13,b:.69,r:.282,fa:1.12,ra:-1.10,front:.65,rf:.16,rr:-.58,rear:-1.09,bp:-.36,seat:.01,back:-.65,doors:2,crown:.066,nose:.08,classic:true},
  landau:{l:4.33,w:1.59,h:1.16,b:.75,r:.291,fa:1.28,ra:-1.28,front:.91,rf:.36,rr:-.69,rear:-1.27,bp:-.20,seat:.15,back:-.64,doors:4,crown:.019,nose:.022,classic:true,vinyl:true},
- gol:{l:3.12,w:1.34,h:1.17,b:.68,r:.257,fa:.98,ra:-.99,front:.55,rf:.19,rr:-.81,rear:-1.34,bp:-.27,seat:.01,back:-.63,classic:true,doors:2,crown:.025,nose:.055},
+ gol:{l:3.12,w:1.34,h:1.17,b:.68,r:.257,fa:.98,ra:-.99,front:.55,rf:.19,rr:-.94,rear:-1.34,bp:-.27,seat:.01,back:-.63,classic:true,doors:2,crown:.025,nose:.055},
  uno:{l:3.05,w:1.32,h:1.25,b:.74,r:.255,fa:.94,ra:-.98,front:.53,rf:.22,rr:-1.12,rear:-1.40,bp:-.30,seat:.01,back:-.64,doors:2,crown:.034,nose:.055},
  golf:{l:3.34,w:1.43,h:1.22,b:.73,r:.276,fa:1.03,ra:-1.02,front:.58,rf:.16,rr:-1.10,rear:-1.61,bp:-.28,seat:.01,back:-.65,doors:4,crown:.057,nose:.12},
  opala:{l:3.87,w:1.51,h:1.18,b:.71,r:.282,fa:1.15,ra:-1.15,front:.66,rf:.16,rr:-.66,rear:-1.30,bp:-.40,seat:.01,back:-.65,classic:true,doors:2,crown:.047,nose:.07},
@@ -56,12 +56,13 @@ function build(T,key,h){
  const width=z=>{const q=Math.max(0,(Math.abs(z)/L-.77)/.23),corner=1-Math.sqrt(Math.max(0,1-q*q));return W*(1-p.nose*.40*corner)+(p.pickup&&!p.bus?.013*Math.exp(-(((z-p.ra)/.39)**2)):0);};
  const top=z=>Y-(z>p.front?(z-p.front)/(L-p.front||1)*(p.bus?0:key==='golf'?.10:p.pickup?.065:.075):z<p.rear&&!p.pickup?.025*(p.rear-z)/(L+p.rear):0);
  const bottom=z=>{let y=low;for(const az of[p.fa,p.ra]){const d=z-az,r=p.r+.038;if(Math.abs(d)<r)y=Math.max(y,p.r+.014+Math.sqrt(r*r-d*d));}return y;};
- const sidePoint=(a,z,t)=>{const bulge=(p.pickup?.021:.010)*(Math.exp(-(((z-p.fa)/.37)**2))+Math.exp(-(((z-p.ra)/.37)**2)));return[a*(width(z)-(!p.classic?.070:.035)*(1-t)**2+(!p.classic?.035:0)*Math.sin(Math.PI*t)+bulge*Math.sin(Math.PI*t)),bottom(z)+(top(z)-bottom(z))*t,z];};
- for(const a of[-1,1])patch(112,8,(u,t)=>sidePoint(a,-L+p.l*u,t));
+ const bevel=z=>Math.max(0,Math.min(p.classic?.014:p.pickup?.035:.045,(top(z)-bottom(z))*.22));
+ const sidePoint=(a,z,t)=>{const bulge=(p.pickup?.021:.010)*(Math.exp(-(((z-p.fa)/.37)**2))+Math.exp(-(((z-p.ra)/.37)**2)));return[a*(width(z)-(!p.classic?.070:.035)*(1-t)**2+(!p.classic?.035:0)*Math.sin(Math.PI*t)+bulge*Math.sin(Math.PI*t)),bottom(z)+(top(z)-bottom(z))*t-bevel(z)*t**8,z];};
+ for(const a of[-1,1]){patch(112,10,(u,t)=>sidePoint(a,-L+p.l*u,t));patch(112,8,(u,t)=>{const z=-L+p.l*u,r=bevel(z),angle=t*Math.PI/2;return[a*(width(z)-r+r*Math.cos(angle)),top(z)-r+r*Math.sin(angle),z];});}
  // Bonnet and boot are bowed across their full width, with rounded noses.
- function deck(z0,z1){if(z1-z0<.02)return;patch(32,20,(u,v)=>{const z=z0+(z1-z0)*u,x=v*2-1;return[x*width(z),top(z)+p.crown*(1-x*x),z];});}
+ function deck(z0,z1){if(z1-z0<.02)return;patch(32,20,(u,v)=>{const z=z0+(z1-z0)*u,x=v*2-1;return[x*(width(z)-bevel(z)),top(z)+p.crown*(1-x*x),z];});}
  deck(p.front,L);if(!p.pickup)deck(-L,p.rear);
- for(const e of[-1,1])patch(20,8,(u,v)=>{const x=u*2-1,z=e*L;return[x*width(z),low+(top(z)+p.crown*(1-x*x)-low)*v,z];});
+ for(const e of[-1,1])patch(20,8,(u,v)=>{const z=e*L,x=(u*2-1)*width(z),r=bevel(z),edge=width(z)-r,ax=Math.abs(x),cap=ax>edge&&r>0?top(z)-r+Math.sqrt(Math.max(0,r*r-(ax-edge)**2)):top(z)+p.crown*(1-(x/Math.max(.01,edge))**2);return[x,low+(cap-low)*v,z];});
  box(black,0,low-.035,0,p.w*.85,.07,p.l*.89);
  // Continuous rolled arch lips; no body panels run through a rotating tyre.
  for(const a of[-1,1])for(const az of[p.fa,p.ra]){
@@ -80,6 +81,8 @@ function build(T,key,h){
   const segments=p.wagon?[[p.front-.035,p.bp+.04,p.rf-.025,p.bp+.04],[p.bp-.04,p.rr+.30,p.bp-.04,p.rr+.20],[p.rr+.20,p.rear+.045,p.rr+.12,p.rr+.045]]:p.bus?[[1.48,.81,1.30,.81],[.72,.10,.72,.10],[.01,-.67,.01,-.67],[-.76,-1.48,-.76,-1.35]]:[[p.front-.035,p.bp+.04,p.rf-.025,p.bp+.04],[p.bp-.04,p.rear+.045,p.bp-.04,p.rr+.045]];
   for(const [f,b,tf,tb]of segments){patch(14,8,(u,t)=>sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,t),glass,'glass');for(const u of[0,1])line([sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,0),sideGlassPoint(a,f+(b-f)*u,tf+(tb-tf)*u,1)],p.bus?.021:.013,p.bus?cream:black);}
   line([[a*width(p.front)*.963,Y+.025,p.front],[a*roofW,roof-(p.classic?.04:.115),p.rf],[a*roofW,roof-(p.classic?.04:.115),p.rr],[a*width(p.rear)*.963,Y+.025,p.rear]],p.bus?.028:.024,p.bus?cream:white,p.bus?'fixed':'paint');
+  const pillarWidth=p.classic?.075:p.pickup?.065:.060;
+  patch(18,10,(u,t)=>{const z=p.rear+(p.rr-p.rear)*t+pillarWidth*u,x=(width(p.rear)*.962*(1-t)+roofW*t);return[a*x,Y+.035+(roof-(p.classic?.074:.115)-Y)*t,z];});
   // Painted shoulder joins the metal body to the bottom of each window.
   patch(40,3,(u,v)=>{const z=p.rear+(p.front-p.rear)*u;return[a*width(z)*(1-.038*v),top(z)+.028*v,z];},p.bus?cream:white,p.bus?'fixed':'paint');
   if(p.bus){for(const z of[.77,.05,-.71])line([[a*W,Y+.01,z],[a*roofW,roof-.04,z]],.025,cream);line([[a*(W+.009),Y,-1.45],[a*(W+.009),Y,1.48]],.011,cream);}
@@ -268,9 +271,9 @@ function build(T,key,h){
  for(const[i,x,z]of[[0,-W*.91,p.fa],[1,W*.91,p.fa],[2,-W*.91,p.ra],[3,W*.91,p.ra]])wheel(i,x,z,p.r);
  if(!p.classic&&!p.bus){
   const roundness=['palio','peugeot206','corolla2007','porsche911'].includes(key)?.19:p.sports?.16:.095,nearWhite=0xffffff;
-  root.userData.surfaceWarp={front:p.front,rear:p.rear,length:p.l,width:p.w,roundness};
+  const noseDrop=({golf:.075,golf7:.085,peugeot206:.115,corolla2007:.085,corolla2021:.105,civic2011:.115,bmwx1:.065,bmwm3:.105,jetta:.085,blazer:.045,s10:.045,hilux:.045,amarok:.035,saveiro:.060})[key]||.035;root.userData.surfaceWarp={front:p.front,rear:p.rear,length:p.l,width:p.w,roundness,noseDrop};
  }
- Object.assign(root.userData,{coachwork:'bonnet-aligned-panels-v3',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
+ Object.assign(root.userData,{coachwork:'rounded-shoulders-painted-pillars-v4',seats:[{x:-seatX,y:seatY-.05,z:p.seat+.02},{x:seatX,y:seatY-.05,z:p.seat+.02},...(!p.twoSeats?[{x:-seatX,y:seatY-.05,z:p.back+.02},{x:seatX,y:seatY-.05,z:p.back+.02}]:[])],seatScale:p.sports?.27:p.bus?.38:p.pickup?.34:.32,roof:roof+.025,hoodY:Y+p.crown,wheelRadius:p.r,front:L+.09,rear:-L-.09,pickup:!!p.pickup});
  return true;
 }
 // The 911 uses a continuous coupe shell rather than the sedan cabin template.

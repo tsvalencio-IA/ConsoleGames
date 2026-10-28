@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.27.3-desempenho-audio",
+  "build": "705.28.1-revisao-veiculos",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "53893a9b152c8cda9efc4fe0ba11b4f08e0308edb0032fcf9a7afde59d9799cf"
+      "sha256Body": "2711e509c5366cf75d35724e0fcc2b6a8ae1cf2296324b32cf648b9c729c6a1d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -315,7 +315,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota ampliada: carros históricos, motos, bicicletas, ônibus e carretas",
-      "sha256Body": "091031dc12f8c7ca1386ca8e222a0c6eae44b5b0df9e027418896cfbd76924e0"
+      "sha256Body": "35eb0379a4a868d5fef42d1e7885d7852c95da73a2a30bb6f3aaff262fa61853"
     },
     {
       "file": "src/modules/36-modular-build-machines.js",
@@ -413,21 +413,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias Palio Fire Economy MY2011 e T-Cross original",
-      "sha256Body": "98786a163f40f31c7222510902819ccfb8e50972095b2d5d509bb5190a6ec0ab"
+      "sha256Body": "a408bada9cd863f5ebc44b9fc8ae46523a3fa612378c9fd7203e9b5d9c39f7be"
     },
     {
       "file": "assets/js/vehicles/brazilian-coachwork.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Carrocerias curvas, proporções e detalhes próprios da frota brasileira",
-      "sha256Body": "d790596050f750aa8e4f8f795a2b85cc5336b62d01c8769a1284927d013111a6"
+      "sha256Body": "7eeb9584ed4c070a429e76da94ab1fcbca9ea434733e6da6fbe76d68a76095c8"
     },
     {
       "file": "assets/js/vehicles/brazilian-models.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "7509802f02893f3c124bb35e104682c1722fad637d74d27406e4e661fa33937c"
+      "sha256Body": "ac4c8b499df22699100b81bac5af916010ac93490df7b367a32ed222dca43d65"
     },
     {
       "file": "src/modules/48-family-transport.js",

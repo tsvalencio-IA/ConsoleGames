@@ -38,7 +38,9 @@ function build(T,key,H){
  function wireWheel(i,z,r,width=.065,spokes=28){const g=new T.Group();g.name='wheel-'+i;g.position.set(0,r+.018,z);g.userData.radius=r;g.userData.steering=i===0;root.add(g);
   const m=add(new T.TorusGeometry(r*.87,r*.13,10,36),black,0,0,0,1,1,width/(r*.26),'fixed',g);m.rotation.y=Math.PI/2;const rim=add(new T.TorusGeometry(r*.76,.012,6,36),chrome,0,0,0,1,1,1,'fixed',g);rim.rotation.y=Math.PI/2;
   const hub=add(new T.CylinderGeometry(r*.13,r*.13,width,16),chrome,0,0,0,1,1,1,'fixed',g);hub.rotation.z=Math.PI/2;
-  for(let n=0;n<spokes;n++){const a=n*Math.PI*2/spokes,path=new T.LineCurve3(new T.Vector3((n%2?1:-1)*width*.35,0,0),new T.Vector3(0,Math.cos(a)*r*.76,Math.sin(a)*r*.76));add(new T.TubeGeometry(path,1,.0028,4,false),0x9daeb8,0,0,0,1,1,1,'fixed',g);}
+  const cast=['hornet','factor','titan'].includes(key);
+  if(cast){for(let n=0;n<5;n++){const angle=n*Math.PI*2/5;for(const delta of(key==='hornet'?[-.025,.025]:[0])){const p=new T.LineCurve3(new T.Vector3(0,Math.cos(angle)*r*.14,Math.sin(angle)*r*.14),new T.Vector3(0,Math.cos(angle+.16+delta)*r*.76,Math.sin(angle+.16+delta)*r*.76));add(new T.TubeGeometry(p,4,key==='hornet'?.013:.016,6,false),key==='hornet'?0x2d353a:0x87949c,0,0,0,1,1,1,'fixed',g);}}g.userData.rim='cast-five-spoke';}
+  else{for(let n=0;n<spokes;n++){const a=n*Math.PI*2/spokes,path=new T.LineCurve3(new T.Vector3((n%2?1:-1)*width*.35,0,0),new T.Vector3(0,Math.cos(a)*r*.76,Math.sin(a)*r*.76));add(new T.TubeGeometry(path,1,.0028,4,false),0x9daeb8,0,0,0,1,1,1,'fixed',g);}g.userData.rim='wire-spoke';}
   if(!['mobylette','bicycle'].includes(key)){const disc=add(new T.CylinderGeometry(r*.52,r*.52,.008,28),0x8397a3,.045,0,0,1,1,1,'fixed',g);disc.rotation.z=Math.PI/2;}
   return g;
  }
@@ -63,7 +65,7 @@ function build(T,key,H){
    text(({factor:'YAMAHA',titan:'HONDA',hornet:'HORNET',xre:'XRE',bmwgs:'GS',mobylette:'MOBYLETTE'})[key],big?.246:.19,seatY+.05,.06,.24,.05,Math.PI/2);
   }
   if(pedal){const crank=new T.Group();crank.name='pedal-crank';crank.position.set(0,.34,-.06);root.add(crank);for(const a of[-1,1]){const bar=new T.Mesh(new T.BoxGeometry(.035,.22,.020),new T.MeshStandardMaterial({color:chrome,metalness:.7,roughness:.3}));bar.position.set(a*.09,a*.09,0);crank.add(bar);const foot=new T.Mesh(new T.BoxGeometry(.14,.035,.06),new T.MeshStandardMaterial({color:black}));foot.position.set(a*.14,a*.18,0);crank.add(foot);}tube([[.08,.32,rear],[.08,.24,-.06],[.08,.37,rear]],.005,chrome,'chrome');}
-  Object.assign(root.userData,{twoWheeler:true,humanPowered:cycle,pedals:pedal,seats:[{x:0,y:seatY+.025,z:cycle?-.26:-.12},...(!spec.singleSeat?[{x:0,y:seatY+.035,z:-.51}]:[])],seatScale:cycle?.34:.32,roof:big?1.38:trail?1.27:cycle?1.02:1.13,hoodY:seatY+.1,wheelRadius:radius,front:front+radius,rear:rear-radius,coachwork:'brazil-two-wheel-v1'});return true;
+  Object.assign(root.userData,{twoWheeler:true,humanPowered:cycle,pedals:pedal,seats:[{x:0,y:seatY+.025,z:cycle?-.26:-.12},...(!spec.singleSeat?[{x:0,y:seatY+.035,z:-.51}]:[])],seatScale:cycle?.34:.32,roof:big?1.38:trail?1.27:cycle?1.02:1.13,hoodY:seatY+.1,wheelRadius:radius,front:front+radius,rear:rear-radius,coachwork:'brazil-two-wheel-rims-v2'});return true;
  }
  if(spec.articulated){
   const trailer=new T.Group();trailer.name='articulated-trailer';trailer.position.z=-1.50;root.add(trailer);

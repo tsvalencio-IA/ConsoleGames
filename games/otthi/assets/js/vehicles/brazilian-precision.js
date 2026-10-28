@@ -9,14 +9,16 @@ function build(T,key,H){
  function line(p,r=.007,c=black,k='fixed'){return tube(p,r,c,k);}
  function rb(c,x,y,z,w,h,d,k='fixed',r=.02){const a=-w/2,b=-h/2,q=new T.Shape();r=Math.min(r,w*.25,h*.4);q.moveTo(a+r,b);q.lineTo(a+w-r,b);q.quadraticCurveTo(a+w,b,a+w,b+r);q.lineTo(a+w,b+h-r);q.quadraticCurveTo(a+w,b+h,a+w-r,b+h);q.lineTo(a+r,b+h);q.quadraticCurveTo(a,b+h,a,b+h-r);q.lineTo(a,b+r);q.quadraticCurveTo(a,b,a+r,b);const bevel=Math.min(.008,r*.3,d*.2),g=new T.ExtrudeGeometry(q,{depth:d-bevel*2,bevelEnabled:true,bevelSize:bevel,bevelThickness:bevel,bevelSegments:3,curveSegments:8});g.translate(0,0,-d/2+bevel);return add(g,c,x,y,z,1,1,1,k);}
  const width=z=>W*(1-(suv?.045:.10)*Math.pow(Math.min(1,Math.abs(z)/L),7)),belt=z=>P.b+(suv?.022:.045)*Math.exp(-((z+.6)**2)/.8),hood=z=>P.b+(suv?.002:.045)-(suv?.061:.035)*Math.max(0,(z-P.front)/(L-P.front)),edgeBottom=z=>{let y=suv?.255:.225;for(const a of[P.fa,P.ra]){const d=z-a,r=P.r+.041;if(Math.abs(d)<r)y=Math.max(y,P.r+.008+Math.sqrt(r*r-d*d));}return y;};
+ const metalTop=z=>z>P.front?hood(z):belt(z),bevel=z=>Math.max(0,Math.min(suv?.045:.040,(metalTop(z)-edgeBottom(z))*.22));
  // Full curved side panels, with open wheel arches and soft shoulder sections.
- for(const a of[-1,1])surface(144,10,(u,t)=>{const z=-L+P.l*u,lo=edgeBottom(z),hi=z>P.front?hood(z):belt(z),x=width(z)-.045*(1-t)**2+.022*Math.sin(t*Math.PI);return[a*x,lo+(hi-lo)*t,z];});
- surface(42,28,(u,v)=>{const z=P.front+(L-P.front)*u,x=(v*2-1)*width(z);return[x,hood(z)+(suv?.025:.051)*(1-(x/width(z))**2),z];});
+ for(const a of[-1,1])surface(144,10,(u,t)=>{const z=-L+P.l*u,lo=edgeBottom(z),hi=z>P.front?hood(z):belt(z),x=width(z)-.045*(1-t)**2+.022*Math.sin(t*Math.PI);return[a*x,lo+(hi-lo)*t-bevel(z)*t**8,z];});
+ for(const a of[-1,1])surface(144,8,(u,t)=>{const z=-L+P.l*u,r=bevel(z),angle=t*Math.PI/2;return[a*(width(z)-r+r*Math.cos(angle)),metalTop(z)-r+r*Math.sin(angle),z];});
+ surface(42,28,(u,v)=>{const z=P.front+(L-P.front)*u,x=(v*2-1)*(width(z)-bevel(z));return[x,hood(z)+(suv?.025:.051)*(1-(v*2-1)**2),z];});
  // End caps share the exact side/deck perimeter. The former corner offset
  // pulled their outer edges away from the wings and left visible open holes.
- for(const e of[-1,1])surface(40,12,(u,t)=>{const x=(u*2-1)*width(e*L),cross=1-(x/width(e*L))**2,top=(e===1?hood(L):belt(-L))+(suv?.025:.051)*cross;return[x,.23+(top-.23)*t,e*(L+.035*Math.sin(t*Math.PI)*cross)];});
+ for(const e of[-1,1])surface(40,12,(u,t)=>{const z=e*L,x=(u*2-1)*width(z),r=bevel(z),edge=width(z)-r,ax=Math.abs(x),cross=1-(x/width(z))**2,top=ax>edge&&r>0?metalTop(z)-r+Math.sqrt(Math.max(0,r*r-(ax-edge)**2)):metalTop(z)+(suv?.025:.051)*(1-(x/Math.max(.01,edge))**2);return[x,.23+(top-.23)*t,e*(L+.035*Math.sin(t*Math.PI)*cross)];});
  // Continuous hatch deck between the rear glazing and the tail panel.
- surface(28,24,(u,v)=>{const z=-L+(P.rear+L)*u,x=(v*2-1)*width(z),edge=belt(-L)+(belt(P.rear)+.022-belt(-L))*u;return[x,edge+(suv?.025:.040)*(1-(x/width(z))**2),z];});
+ surface(28,24,(u,v)=>{const z=-L+(P.rear+L)*u,x=(v*2-1)*(width(z)-bevel(z)),edge=belt(-L)+(belt(P.rear)+.022-belt(-L))*u;return[x,edge+(suv?.025:.040)*(1-(x/width(z))**2),z];});
  box(black,0,.213,0,P.w*.85,.07,P.l*.89);
  // A small hatch has a curved, lower roof; the SUV has an upright C pillar.
  const roofW=W*(suv?.85:.80),roofAt=(z,x)=>P.h-(suv?.037:.063)*(x/roofW)**2-(suv?.020:.040)*Math.pow((z-(P.rf+P.rr)/2)/((P.rf-P.rr)/2),2);
@@ -90,7 +92,8 @@ function build(T,key,H){
   rb(paint,0,.601,-L+.005,1.02,.20,.049,'paint',.05);rb(black,0,.635,-L-.026,.14,.033,.018,'fixed',.012);plate(.466,L+.052);plate(.457,-L-.038,true);name('Palio',.39,.695,-L-.027,.20,.049,true);name('FIRE ECONOMY',-.36,.696,-L-.027,.26,.032,true);name('Celebration',-.36,.648,-L-.027,.24,.032,true);
  }
  for(const[i,x,z]of[[0,-W+.035,P.fa],[1,W-.035,P.fa],[2,-W+.035,P.ra],[3,W-.035,P.ra]])wheel(i,x,z,P.r);
- root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:suv?'model-specific-20261026-closed-shell':'palio-fire-2011-curved-panels-20261027',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
+ root.userData.surfaceWarp={front:P.front,rear:P.rear,length:P.l,width:P.w,roundness:suv?.125:.17,noseDrop:suv?.065:.115};
+ root.userData.precisionReference=suv?'T-Cross original generation MY2021':'Palio Fire Economy Celebration MY2011';Object.assign(root.userData,{coachwork:suv?'tcross-rounded-body-20261028':'palio-fire-rounded-body-20261028',seats:[{x:-seatX,y:seatY-.08,z:suv?.14:.06},{x:seatX,y:seatY-.08,z:suv?.14:.06},{x:-seatX,y:seatY-.08,z:-.64},{x:seatX,y:seatY-.08,z:-.64}],seatScale:.32,roof:P.h+.065,hoodY:P.b+.03,wheelRadius:P.r,front:L+.09,rear:-L-.07});return true;
 }
 globalThis.OTBrazilPrecision={build};
 })();

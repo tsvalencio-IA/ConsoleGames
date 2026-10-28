@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.27.3-desempenho-audio",
+  "build": "705.28.1-revisao-veiculos",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.1: revisão de arquitetura de motores, gravações estáveis e acabamento de carrocerias e rodas, preservando geometria e integração.",
     "R27.3 prepara geometrias completas da frota durante o carregamento, elimina testes de visibilidade desnecessários nas rotas e distribui o planejamento da família sem reduzir a colisão por quadro. O mundo passa a usar gravações reais de motores, compartilhadas com o console, carregadas somente por categoria em uso.",
     "R27.2 corrige transições e loops dos motores de todos os transportes, mantém a família presa aos assentos no voo distante, ajusta o embarque do teleférico e o gesto de item no kart, e aplica mudanças de resolução junto ao quadro renderizado para evitar clarões no celular.",
     "R27.1 transforma o mundo aberto em uma aventura civil: novas missões individuais e em dupla, dois elevadores, 19 casas visitáveis, teleférico com embarque compartilhado, mais moradores e balões, ligações regionais, motores por arquitetura e revisão do Palio Fire 2011. Polícia e bombeiros permanecem ativos.",
@@ -284,7 +285,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70636,
+  "assetVersion": 70637,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
