@@ -1,0 +1,3 @@
+PASS failed new download preserves the old working release and account storage
+PASS stubborn cache recovery, current release, corrupt-asset rejection and verified reuse 67
+PASS console checks current version online and preserves direct cached world offline

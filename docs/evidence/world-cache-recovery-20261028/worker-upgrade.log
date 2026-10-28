@@ -1,0 +1,5 @@
+NEW WORKER WAITING {
+  build: '705.17.0-world-cities',
+  reg: { waiting: 'installed', installing: undefined, active: 'activated' }
+}
+WORLD UPDATE PASS [{"scenario":"stale-config","automaticRecovery":true,"preserved":true},{"scenario":"real-worker-upgrade","waitedForPageReady":true,"preserved":true},{"scenario":"offline-after-upgrade","coherent":true,"preserved":true}]

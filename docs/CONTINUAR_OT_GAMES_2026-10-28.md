@@ -5,16 +5,26 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 ## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Código em produção: `840459a6aa7b8d987bd3c2d8ddde520603ea0e6b`, branch `world-revisao-20261022`.
+- Código em produção: `6a0d480526fc1d6c26ee352a5115a9952d4b4461`, branch `world-revisao-20261022`.
 - Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
-- Build `705.28.3-war-corpo-mao`, assetVersion `70639`, revisão `5fe2fbcf4436ea87`.
-- Vercel `dpl_ErzfEXFbsnSG4zx6dxZxD6Edaq6g`, READY; SHA e alias conferidos.
+- Build `705.28.5-cache-celular`, assetVersion `70641`, revisão `e75a2ef5d73a4970`.
+- Vercel `dpl_4p37LgqubbLrUNgaQ9zd5gqS16h6`, READY; fonte, alias e conferência pública aprovados.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
 - Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
 - APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## Correção atual — corpo e mão juntos no WAR
+## Correção atual — cache antigo no celular
+
+- Pedido mais recente: o mundo aberto continuava carregando uma versão antiga no celular. A correção anterior de worker cooperante não bastava para essa situação; não repetir a alegação de que o celular foi homologado.
+- Recuperação: https://otthi-world-campanha-teste.vercel.app/games/atualizar/ . Essa página fica fora de `/games/otthi/`, consulta o manifesto pela rede e exige que o worker ativo confirme a mesma build/revisão. Confere também o SHA-256 do HTML antes de entrar. Não exclui login, cookies, localStorage, IndexedDB nem caches de outros aplicativos.
+- No aplicativo entregue, Console → OTThi World passa pela conferência quando conectado. Offline, o console continua abrindo diretamente o mundo em cache. Jogar/Continuar confere a release antes de iniciar; cliques repetidos são bloqueados durante a entrada, com mensagem de conferência. Há “Salvar e atualizar jogo” no menu inicial e “Salvar e atualizar” na pausa, além da build real visível.
+- Arquivos antigos são reaproveitados apenas quando seu SHA-256 é igual ao do manifesto novo. Opcionais são armazenados após ativar a versão; mapa, conteúdo e gráficos não foram removidos. No ensaio, 67 de 71 itens obrigatórios foram reaproveitados. Um arquivo corrompido foi rejeitado e baixado novamente.
+- Atualização espera a leitura do banco antes de salvar/recarregar. O botão no lobby preserva a posição salva e não a substitui pelas coordenadas iniciais do personagem. Falha no download mantém a versão anterior e oferece retentativa. Headers das entradas/worker/manifesto/recuperação são `no-store`; a regra genérica inicial da recuperação foi substituída por quatro rotas explícitas após conferência pública.
+- Sete verificações focais de integridade/atualização aprovadas. Navegador com worker antigo que ignora o parâmetro do manifesto: falha crítica simulada, retentativa, versão atual, família, moedas/XP, posição, cookie HttpOnly, outro IndexedDB e outro cache preservados. Entrada online do console, entrada offline, botão manual e retrato/paisagem aprovados. Os três cenários de migração anteriores também passaram.
+- Evidências: `docs/evidence/world-cache-recovery-20261028/`. Conferência pública aprovada: oito rotas com `no-store`, recuperação real, 98 hashes e fluxo completo do mundo/voo/mapa/rotação. O navegador de QA usou ajuste de certificado exclusivo para o proxy do ambiente; TLS do aplicativo não foi alterado. Nenhum cache físico do celular foi inspecionado, e nenhum APK novo foi compilado.
+
+## Revisão anterior — corpo e mão juntos no WAR
 
 - Pedido atual do Thiago: o WAR precisa reconhecer corpo e mão, usando a câmera frontal. Não responder como se controles de toque atendessem ao pedido de câmera.
 - Corrigida a transição que iniciava a partida só pela mão e escondia a prévia antes de o corpo estar pronto. Agora exige corpo e mão/objeto calibrados e com observação recente dos dois. Mostra confirmação independente de cada sensor; a prévia some após a calibração conjunta. Corpo: agachar/girar/dar passos; mão: mira e disparo automático alinhado. Sem joystick no modo câmera. Postura neutra não provoca marcha constante.
@@ -56,12 +66,9 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 - Evidências anteriores: `docs/evidence/vehicle-camera-audio-20261028/`, incluindo a auditoria dos 275 recursos compartilhados e o reteste incremental do hotfix anterior. Evidências atuais: `docs/evidence/services-coast-rotation-20261028/`: 95 recursos do mundo por hash e oito controles WAR alterados, todos idênticos ao código validado. No site público, sem interceptação/cap de desenho: início, quatro familiares no helicóptero, órbita, cabine, retorno à câmera de acompanhamento, decolagem, rotação nos dois sentidos, mapa, retorno ao mundo e novos surfistas/lanchas aprovados sem erros de JavaScript.
 - Não afirmar FPS sustentado, ausência de travamentos/piscadas no Android, precisão da câmera física, áudio perfeito ou multiplayer real entre celulares. Não foram testados no aparelho do Thiago. O vídeo recebido tinha área do jogo preta; não dizer que foi possível observar a piscada nele.
 
-## Pedido mais recente em andamento — cache antigo no celular
-
-Thiago informou que o mundo aberto continua carregando cache antigo. Não considerar o problema resolvido pelo teste anterior de worker. Investigar e corrigir atualização no cliente, criar recuperação fora do escopo do worker antigo e preservar contas/progresso; revisar espera por atualização e headers HTTP. WAR já está publicado e aprovado nos ensaios de navegador acima.
-
 ## Pedidos que continuam pendentes
 
+- Conferir no celular a entrada de recuperação e a build visível. Se o usuário continuar relatando cache antigo, verificar URL/origem e build carregada, sem pedir para apagar todo o histórico nem declarar o aparelho testado. A rota nova e os testes com worker antigo estão no bloco atual acima.
 - Investigar travamentos e piscadas no Android real sem reduzir mapa, qualidade ou conteúdo.
 - Maior fidelidade das carrocerias e dos sons de todos os transportes, sobretudo motos e carros brasileiros. Não trocar todos por um modelo genérico.
 - Ampliar o mar com navios/barcos maiores, surf e prancha jogáveis e missões marítimas coerentes. Seis surfistas NPC e três lanchas tripuladas já foram adicionados; não apresentar isso como missão ou atividade jogável concluída. Interações do jogador para esquiar/brincar na neve e mais movimento nas regiões continuam pendentes. Já há moradores, banhistas, vôlei, castelos, patinadores, trenós e caminhantes.

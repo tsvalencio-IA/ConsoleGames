@@ -1,0 +1,846 @@
+{
+  "oldBuild": "705.28.2-oficina-praia-controles",
+  "build": "705.28.5-cache-celular",
+  "revision": "e75a2ef5d73a4970",
+  "failedUpdatePreserved": true,
+  "recovered": {
+    "build": "705.28.5-cache-celular",
+    "coins": 4321,
+    "xp": 1234,
+    "position": {
+      "x": -18,
+      "y": 0,
+      "z": 39,
+      "yaw": 0
+    },
+    "party": {
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "luna",
+        "liz"
+      ]
+    },
+    "login": "preserved-login",
+    "otherCache": "preserved",
+    "indexed": "preserved-indexeddb",
+    "recovery": {
+      "build": "705.28.5-cache-celular",
+      "revision": "e75a2ef5d73a4970",
+      "at": 1793209192660,
+      "reused": 67,
+      "done": 71,
+      "total": 71
+    }
+  },
+  "manualUpdateButton": true,
+  "onlineConsoleChecksUpdate": true,
+  "offlineConsoleKeepsDirectWorld": true,
+  "passed": true,
+  "errors": [],
+  "requests": [
+    {
+      "release": "current",
+      "path": "games/atualizar/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/update.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/game-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/recorded-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/vehicles/engine-sound.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/GLTFLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/DRACOLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/icons/icon-192.png"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/safe-pointer.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/viewport-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/save-db.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/game-account.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/family-mascots.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world-venue-trip.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world/civil-mission-core.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/shared-modal.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/performance-guardian.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer/room-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/education/adaptive-learning.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/safety/child-safety.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/audio/engine-car.ogg"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/audio/engine-moto.ogg"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/audio/engine-heli.ogg"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/audio/sources.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/404.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/quest-chapter.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/athos.glb"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/update.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/game-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/recorded-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/vehicles/engine-sound.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/GLTFLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/DRACOLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/safe-pointer.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/viewport-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/save-db.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/game-account.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/family-mascots.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world-venue-trip.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world/civil-mission-core.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/shared-modal.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/performance-guardian.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer/room-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/education/adaptive-learning.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/safety/child-safety.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/athos.glb"
+    },
+    {
+      "release": "current",
+      "path": "arcade/index.html"
+    },
+    {
+      "release": "current",
+      "path": "arcade/styles.css"
+    },
+    {
+      "release": "current",
+      "path": "arcade/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/app.js"
+    },
+    {
+      "release": "current",
+      "path": "covers/otthi.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/familia.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/kart.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/boxe.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/tenis.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/ar.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/voo.svg"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/atualizar/update.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/release-manifest.json"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/game-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/recorded-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/vehicles/engine-sound.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/GLTFLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/DRACOLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/safe-pointer.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/viewport-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/save-db.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/game-account.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/family-mascots.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world-venue-trip.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world/civil-mission-core.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/shared-modal.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/performance-guardian.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer/room-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/education/adaptive-learning.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/safety/child-safety.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/index.html"
+    },
+    {
+      "release": "current",
+      "path": "arcade/styles.css"
+    },
+    {
+      "release": "current",
+      "path": "arcade/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/app.js"
+    },
+    {
+      "release": "current",
+      "path": "covers/otthi.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/familia.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/kart.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/boxe.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/tenis.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/ar.svg"
+    },
+    {
+      "release": "current",
+      "path": "covers/voo.svg"
+    },
+    {
+      "release": "current",
+      "path": "arcade/sw.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/index.html"
+    },
+    {
+      "release": "current",
+      "path": "arcade/index.html"
+    },
+    {
+      "release": "current",
+      "path": "arcade/app.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/styles.css"
+    },
+    {
+      "release": "current",
+      "path": "arcade/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "arcade/manifest.webmanifest"
+    },
+    {
+      "release": "current",
+      "path": "arcade/icon.svg"
+    },
+    {
+      "release": "current",
+      "path": "arcade/icon-192.png"
+    },
+    {
+      "release": "current",
+      "path": "arcade/icon-512.png"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/index.html"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/style.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/game-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/recorded-audio.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/vehicles/engine-sound.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.css"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/three-r128.min.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/GLTFLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/vendor/DRACOLoader-r128.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/runtime-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/safe-pointer.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/viewport-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/save-db.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/firebase-config.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/game-account.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/family-mascots.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world-venue-trip.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/account-access.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/world/civil-mission-core.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/app.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/ui/shared-modal.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/core/performance-guardian.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/multiplayer/room-manager.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/education/adaptive-learning.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/assets/js/safety/child-safety.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/console-world.js"
+    },
+    {
+      "release": "current",
+      "path": "games/otthi/studio-world.js"
+    }
+  ],
+  "limits": [
+    "Real Chromium service workers and local simulated old cache; no physical Android installation or phone cache inspected."
+  ]
+}

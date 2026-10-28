@@ -1,0 +1,61 @@
+{
+  "base": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.5-cache-celular",
+  "revision": "e75a2ef5d73a4970",
+  "headers": [
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/release-manifest.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/sw.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/VERSION.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/update.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/style.css",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/arcade/app.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    }
+  ],
+  "failure": "page.waitForFunction: Timeout 180000ms exceeded.\n    at /workspace/scratch/a10cbbfeaf34/ConsoleGames/tests/world-update-public-browser.mjs:9:158",
+  "errors": [],
+  "last": {
+    "url": "https://otthi-world-campanha-teste.vercel.app/games/atualizar/",
+    "update": {
+      "phase": "error",
+      "build": "705.28.5-cache-celular",
+      "revision": "e75a2ef5d73a4970",
+      "done": 0,
+      "total": 0,
+      "reused": 0,
+      "error": "Failed to register a ServiceWorker for scope ('https://otthi-world-campanha-teste.vercel.app/games/otthi/') with script ('https://otthi-world-campanha-teste.vercel.app/games/otthi/sw.js'): An SSL certificate error occurred when fetching the script."
+    }
+  }
+}

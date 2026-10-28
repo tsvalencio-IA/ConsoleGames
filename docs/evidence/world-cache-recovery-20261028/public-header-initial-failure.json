@@ -1,0 +1,29 @@
+{
+  "base": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.4-atualizacao-segura",
+  "revision": "220c639d7aae0b98",
+  "headers": [
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/release-manifest.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/sw.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/VERSION.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    }
+  ],
+  "failure": "AssertionError [ERR_ASSERTION]: /games/atualizar/ must not use old HTTP cache\n    at file:///workspace/scratch/a10cbbfeaf34/ConsoleGames/tests/world-update-public-browser.mjs:7:342",
+  "errors": []
+}

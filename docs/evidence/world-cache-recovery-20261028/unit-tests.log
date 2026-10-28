@@ -1,0 +1,16 @@
+PWA SHA-256 verified: 98 OTThi release assets. HQ 3D local offline resources: 5.
+✔ OTThi keeps SHA-256 integrity and HQ offline includes Studio (0.708787ms)
+✔ every resource that can block update installation has a release hash (3.092897ms)
+✔ automatic refresh waits for a safe place, without clearing other app storage or cookies (1.180858ms)
+✔ previous download reuse requires the exact new release SHA, rejecting stale or damaged bytes (12.48029ms)
+✔ play checks the remote release and routes a stale client to recovery before entering the world (1.916655ms)
+✔ reload cannot save default state over a profile still loading from the database (1.426198ms)
+✔ repeated play and continue taps cannot start two worlds while the version check is pending (2.154003ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 150.158825
