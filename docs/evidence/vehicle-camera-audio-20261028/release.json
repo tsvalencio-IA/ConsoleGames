@@ -1,0 +1,31 @@
+{
+  "build": "705.28.1-revisao-veiculos",
+  "revision": "6729d7e56daa32b9",
+  "sourceSha": "f917cc520eddc6774a5bae9152d5ea6ae332a29c",
+  "deployment": "dpl_Ci3963WZiLMWWZvRYbXVMULcaPan",
+  "state": "READY",
+  "canonical": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "verifiedAt": "2026-10-28T12:01:48.921Z",
+  "worldFiles": 95,
+  "sharedFiles": 275,
+  "apk": {
+    "status": 200,
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "nativePublic": [
+    "boot",
+    "four-family-helicopter-boarding",
+    "vehicle-orbit",
+    "cabin-view",
+    "follow-camera-reset",
+    "collective-takeoff",
+    "map",
+    "return-to-world"
+  ],
+  "limits": [
+    "No physical Android, physical camera/speaker or live multiplayer verification.",
+    "Local full-world functional simulation caps software WebGL rendering; public journey uses native unmodified rendering.",
+    "Imported-engine recordings include documented adaptations; catalogue inspection is not a realism score."
+  ]
+}

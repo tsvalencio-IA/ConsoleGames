@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "duration": 32,
+  "bpm": 120,
+  "offset": 0.2,
+  "confidence": 0.9999999999999998,
+  "rejected": [
+    true,
+    true
+  ],
+  "playing": {
+    "title": "Meu ritmo",
+    "bpm": 120,
+    "custom": true,
+    "position": 0.6,
+    "enabled": true,
+    "playing": true,
+    "audioState": "running",
+    "steps": 0,
+    "voices": 0,
+    "resyncs": 1,
+    "error": ""
+  },
+  "paused": {
+    "title": "Meu ritmo",
+    "bpm": 120,
+    "custom": true,
+    "position": 0.6,
+    "enabled": true,
+    "playing": false,
+    "audioState": "suspended",
+    "steps": 0,
+    "voices": 0,
+    "resyncs": 1,
+    "error": ""
+  },
+  "resumed": {
+    "title": "Meu ritmo",
+    "bpm": 120,
+    "custom": true,
+    "position": 0.9000000000000001,
+    "enabled": true,
+    "playing": true,
+    "audioState": "running",
+    "steps": 0,
+    "voices": 0,
+    "resyncs": 2,
+    "error": ""
+  },
+  "limits": [
+    "Generated WAV decoded in Chromium; physical phone speakers and music-library formats not certified."
+  ]
+}

@@ -12,7 +12,7 @@ try{
  await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,lastSaved:Date.now(),profile:{name:'Thiago Teste',nameConfirmed:true,playerId:'public-transport-local'},avatar:{bodyStyle:'family-thiago'},flags:{accountPromptedV635:true},settings:{quality:'low',sound:true},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','thamis','luna','liz']}}})));
  page=await context.newPage();page.setDefaultTimeout(60000);page.on('pageerror',e=>errors.push(e.stack));
  assert.equal((await page.goto(base+'?v='+expected.assetVersion,{waitUntil:'domcontentloaded'})).status(),200);
- assert.equal(await page.locator('html').getAttribute('data-otthi-build'),expected.build);
+ assert.equal(await page.locator('html').getAttribute('data-otthi-build'),expected.build);assert.equal(await page.locator('html').getAttribute('data-otthi-revision'),JSON.parse(fs.readFileSync('games/otthi/release-manifest.json')).revision);
  await page.locator('#playBtn').click();await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready&&window.OTTHI_CAMPAIGN?.parked().length>1&&window.OTTHOS_TEST_API?.getGame().running&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:120000});console.log('PASS public native world boot');
  const craft=await page.evaluate(()=>OTTHI_CAMPAIGN.parked().find(p=>p.mode==='helicopter'));await page.evaluate(p=>OTTHOS_TEST_API.teleport(p.x+4,p.z),craft);
  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='board-aircraft-helicopter');await page.locator('#actionBtn').tap({force:true});

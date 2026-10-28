@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "touch": {
+    "count": 1,
+    "inside": true,
+    "events": [
+      {
+        "type": "pointerdown",
+        "detail": 0,
+        "pointer": "touch"
+      },
+      {
+        "type": "pointerup",
+        "detail": 0,
+        "pointer": "touch"
+      },
+      {
+        "type": "click",
+        "detail": 0,
+        "pointer": "touch"
+      }
+    ]
+  },
+  "keyboard": true,
+  "mouse": true
+}

@@ -1,8 +1,8 @@
 {
   "passed": true,
   "base": "https://otthi-world-campanha-teste.vercel.app/",
-  "build": "705.27.3-desempenho-audio",
-  "checkedAt": "2026-10-28T02:13:05.082Z",
+  "build": "705.28.1-revisao-veiculos",
+  "checkedAt": "2026-10-28T12:00:17.969Z",
   "resources": [
     {
       "path": "games/kart/js/game_kart.js",
@@ -16,18 +16,18 @@
     },
     {
       "path": "games/kart/index.html",
-      "bytes": 26098,
-      "sha256": "b331d18d6fa456588c5f9d68e181cadd04aa8c556acb378d0d7d3df9fb971081"
+      "bytes": 26097,
+      "sha256": "b41f89232a456e28e5b5e9739f27970fde0b971c11db9e052744b3576da87f5e"
     },
     {
       "path": "games/kart/sw.js",
-      "bytes": 3557,
-      "sha256": "3676a2d914c2ff19cc3c00276058bcefa67fe8ce464d1f80403f5843ee9aaa30"
+      "bytes": 4103,
+      "sha256": "c3485002d7233ea01a7a45fac5813ffc5cfbd15f11545df81a0b0c0e025902e8"
     },
     {
       "path": "games/kart/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/kart/audio/engine-car.ogg",
@@ -41,18 +41,18 @@
     },
     {
       "path": "games/boxe/index.html",
-      "bytes": 26176,
-      "sha256": "0bd4497b711beb711a2fa377cb7cc8047705052bfe44b123e1f5763bc1cba16a"
+      "bytes": 26175,
+      "sha256": "9c08e6bedbaa646d3215851e3ddee8ee4cbde99a0e0cdf7539076201a3ccff76"
     },
     {
       "path": "games/boxe/sw.js",
-      "bytes": 3610,
-      "sha256": "ee3e4c996545e1f082509ac69c2c8a9bbee5dfcd2759501057029fb2cdd6800c"
+      "bytes": 4156,
+      "sha256": "e2b52a10f4c6c2db84e1dc36d2b3a1d49172694e80b92e1c1762a8503cbc0f0d"
     },
     {
       "path": "games/boxe/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/boxe/audio/engine-car.ogg",
@@ -66,18 +66,18 @@
     },
     {
       "path": "games/tenis/index.html",
-      "bytes": 26094,
-      "sha256": "e0e46a0020bf3ac3f5547399c96dc2869b934c6ec88aebf8494f04f4a24fa1a0"
+      "bytes": 26093,
+      "sha256": "f7d7b331b9046e237dfd3bbafd8a03b74ba277b582948a74a001b0204c60eff1"
     },
     {
       "path": "games/tenis/sw.js",
-      "bytes": 3574,
-      "sha256": "9687ea30ca0b30e5976d4dfd7758e2bb25c38a4deab426a30d590f5be8131a24"
+      "bytes": 4120,
+      "sha256": "cb2ea5c970afb45822cf529af0bf7bb0af43e616103ea2beb99df3452c1827fb"
     },
     {
       "path": "games/tenis/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/tenis/audio/engine-car.ogg",
@@ -91,18 +91,18 @@
     },
     {
       "path": "games/ar/index.html",
-      "bytes": 26563,
-      "sha256": "ffd4cc7cf9b28d23f5d6545b6be0791a1a658d7cf5b76c179ef4ec1272263cac"
+      "bytes": 26562,
+      "sha256": "d725240d9c1bce0cebe22807ee167aeeab2d1096ed1a591ad7cf66a46ea10aed"
     },
     {
       "path": "games/ar/sw.js",
-      "bytes": 3980,
-      "sha256": "e2ca08b64aee0f63b2e588653060605c34dad1930c18099f0d9f31804afd74a0"
+      "bytes": 4526,
+      "sha256": "547f91932df0db969576aea5ea199be88d7586c6ade88e3e185b8324bc585d53"
     },
     {
       "path": "games/ar/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/ar/audio/engine-car.ogg",
@@ -116,18 +116,18 @@
     },
     {
       "path": "games/voo/index.html",
-      "bytes": 26650,
-      "sha256": "72ac840e317f881d8cefa0b9cee7aae4edee6f577968497047f26e873e6ef752"
+      "bytes": 26649,
+      "sha256": "46e68a93e01a148e6677dab8877c778cd8b4d2dd48c69aec92198d84e2918dba"
     },
     {
       "path": "games/voo/sw.js",
-      "bytes": 3734,
-      "sha256": "38d4f8c4ee4d5f998b4df3a018d009bd2c6d0c95c148844a4701af1aa2c750af"
+      "bytes": 4280,
+      "sha256": "e3cecbf88362ae0f3ee20e0d736d4a69eb074d614c3d94b765dec67d8e1bc190"
     },
     {
       "path": "games/voo/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/voo/audio/engine-car.ogg",
@@ -141,18 +141,18 @@
     },
     {
       "path": "games/otthi/index.html",
-      "bytes": 15468,
-      "sha256": "b363c929b193bcf8ae3c41d7a64e9d6774b392b88d646e6cb83a26bdd558e5e1"
+      "bytes": 15467,
+      "sha256": "58a84ca373a1c2e0a51308dfb03268e3dc028f8630f9df1dd09dd2ed115611a1"
     },
     {
       "path": "games/otthi/sw.js",
-      "bytes": 12327,
-      "sha256": "50ee18486fba3e06e3e0d22ba41ea8fc6ea44d11e6bdeb29331c2de91a33abc8"
+      "bytes": 12814,
+      "sha256": "1df4af77dfbcedc0fcb6c116049ad1dcb09ce7151f513a2604c880ad9d7f0a8f"
     },
     {
       "path": "games/otthi/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/otthi/audio/engine-car.ogg",
@@ -166,18 +166,18 @@
     },
     {
       "path": "games/familia/3d/index.html",
-      "bytes": 59883,
-      "sha256": "d6402ea54ebd256d4973df5a2007b47255e40dd82b85306b1b6f67b322f87e08"
+      "bytes": 59882,
+      "sha256": "e75ec2cbf3a66f8c87d073f6d04242a3d744f99966bdafcccbdb7a12721e4888"
     },
     {
       "path": "games/familia/3d/sw.js",
-      "bytes": 2827,
-      "sha256": "2456cdbfa75fdf29f6dc28e9515e419ff5a229af54a4500d90913017800b83bd"
+      "bytes": 3373,
+      "sha256": "1119b1c792483e348ec32da91647e4981b4cb5de3362af6b30305bf36ccd0c9e"
     },
     {
       "path": "games/familia/3d/recorded-audio.js",
-      "bytes": 9384,
-      "sha256": "f6687bc44c357068e242b1d9f7f7f96703890374ac388404da4bd72b3f9349bf"
+      "bytes": 12492,
+      "sha256": "8954ea88e812b475d083c017a18aedd548c9eb438b76f9e2ffa375153630994d"
     },
     {
       "path": "games/familia/3d/audio/engine-car.ogg",
@@ -191,8 +191,8 @@
     },
     {
       "path": "games/kart/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/kart/audio/engine-road-idle.ogg",
@@ -206,13 +206,13 @@
     },
     {
       "path": "games/kart/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/kart/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/kart/audio/engine-sport-idle.ogg",
@@ -236,23 +236,23 @@
     },
     {
       "path": "games/kart/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/kart/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/kart/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/kart/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/kart/audio/engine-small-moto.ogg",
@@ -280,9 +280,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/kart/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/kart/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/kart/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/kart/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/kart/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/kart/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/kart/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/kart/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/kart/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/kart/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/kart/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/kart/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/kart/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/kart/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/kart/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/kart/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/boxe/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/boxe/audio/engine-road-idle.ogg",
@@ -296,13 +376,13 @@
     },
     {
       "path": "games/boxe/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/boxe/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/boxe/audio/engine-sport-idle.ogg",
@@ -326,23 +406,23 @@
     },
     {
       "path": "games/boxe/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/boxe/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/boxe/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/boxe/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/boxe/audio/engine-small-moto.ogg",
@@ -370,9 +450,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/boxe/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/boxe/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/boxe/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/boxe/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/boxe/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/boxe/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/boxe/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/boxe/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/boxe/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/boxe/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/boxe/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/boxe/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/boxe/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/boxe/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/boxe/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/boxe/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/tenis/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/tenis/audio/engine-road-idle.ogg",
@@ -386,13 +546,13 @@
     },
     {
       "path": "games/tenis/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/tenis/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/tenis/audio/engine-sport-idle.ogg",
@@ -416,23 +576,23 @@
     },
     {
       "path": "games/tenis/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/tenis/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/tenis/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/tenis/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/tenis/audio/engine-small-moto.ogg",
@@ -460,9 +620,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/tenis/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/tenis/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/tenis/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/tenis/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/tenis/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/tenis/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/tenis/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/tenis/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/tenis/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/tenis/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/tenis/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/tenis/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/tenis/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/tenis/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/tenis/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/tenis/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/ar/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/ar/audio/engine-road-idle.ogg",
@@ -476,13 +716,13 @@
     },
     {
       "path": "games/ar/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/ar/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/ar/audio/engine-sport-idle.ogg",
@@ -506,23 +746,23 @@
     },
     {
       "path": "games/ar/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/ar/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/ar/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/ar/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/ar/audio/engine-small-moto.ogg",
@@ -550,9 +790,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/ar/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/ar/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/ar/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/ar/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/ar/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/ar/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/ar/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/ar/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/ar/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/ar/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/ar/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/ar/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/ar/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/ar/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/ar/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/ar/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/voo/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/voo/audio/engine-road-idle.ogg",
@@ -566,13 +886,13 @@
     },
     {
       "path": "games/voo/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/voo/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/voo/audio/engine-sport-idle.ogg",
@@ -596,23 +916,23 @@
     },
     {
       "path": "games/voo/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/voo/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/voo/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/voo/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/voo/audio/engine-small-moto.ogg",
@@ -640,9 +960,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/voo/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/voo/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/voo/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/voo/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/voo/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/voo/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/voo/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/voo/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/voo/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/voo/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/voo/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/voo/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/voo/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/voo/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/voo/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/voo/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/otthi/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/otthi/audio/engine-road-idle.ogg",
@@ -656,13 +1056,13 @@
     },
     {
       "path": "games/otthi/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/otthi/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/otthi/audio/engine-sport-idle.ogg",
@@ -686,23 +1086,23 @@
     },
     {
       "path": "games/otthi/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/otthi/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/otthi/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/otthi/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/otthi/audio/engine-small-moto.ogg",
@@ -730,9 +1130,89 @@
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
     },
     {
+      "path": "games/otthi/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/otthi/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/otthi/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/otthi/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/otthi/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/otthi/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/otthi/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/otthi/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/otthi/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/otthi/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/otthi/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/otthi/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/otthi/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/otthi/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/otthi/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/otthi/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
       "path": "games/familia/3d/audio/engine-recordings.json",
-      "bytes": 14350,
-      "sha256": "ac64f018648277e7a518a256d882a6dca9c091b43e3dc8313ce7101e33587970"
+      "bytes": 31919,
+      "sha256": "52b72c50204ba43191f7565b20d042c157b655e888ed1da68d51559997531733"
     },
     {
       "path": "games/familia/3d/audio/engine-road-idle.ogg",
@@ -746,13 +1226,13 @@
     },
     {
       "path": "games/familia/3d/audio/engine-classic-idle.ogg",
-      "bytes": 41709,
-      "sha256": "024764b3eab4d7ee38099c264567f6b2c00e3ea9ae692630e487d2397c2c5bbd"
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
     },
     {
       "path": "games/familia/3d/audio/engine-classic-load.ogg",
-      "bytes": 16756,
-      "sha256": "30bc3b8c6037c5225d59a773945b58ced7864cd77488793a326a45cbec69c820"
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
     },
     {
       "path": "games/familia/3d/audio/engine-sport-idle.ogg",
@@ -776,23 +1256,23 @@
     },
     {
       "path": "games/familia/3d/audio/engine-moto-idle.ogg",
-      "bytes": 18270,
-      "sha256": "7df5ef4156776c1dbe94a924691056626c40d8e831ce85286b5f94722ceed60c"
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
     },
     {
       "path": "games/familia/3d/audio/engine-moto-load.ogg",
-      "bytes": 26868,
-      "sha256": "20395df919387fff92aea092994f0f124c3ba28ca6b036e26f7a8b94fce194d3"
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
     },
     {
       "path": "games/familia/3d/audio/engine-twin-idle.ogg",
-      "bytes": 57449,
-      "sha256": "7dfb8839e5034c208fb8829e17884d30a9ff9e959b6c420c3248d0a3e4c0866a"
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
     },
     {
       "path": "games/familia/3d/audio/engine-twin-load.ogg",
-      "bytes": 29468,
-      "sha256": "f45b7f7082816b2bb44a8eaf592e431adbd207ac1d5bdf9a56a7c426cc90f63a"
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
     },
     {
       "path": "games/familia/3d/audio/engine-small-moto.ogg",
@@ -818,6 +1298,96 @@
       "path": "games/familia/3d/audio/engine-boat-recorded.ogg",
       "bytes": 65444,
       "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/familia/3d/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
     }
-  ]
+  ],
+  "sourceSha": "f917cc520eddc6774a5bae9152d5ea6ae332a29c",
+  "incremental": {
+    "baseCheckedAt": "2026-10-28T11:55:26.711Z",
+    "unchangedFiles": 273,
+    "revalidated": [
+      "games/otthi/index.html",
+      "games/otthi/sw.js"
+    ],
+    "note": "Unchanged local hashes reuse the complete previous public audit; only the two files changed in this deployment were fetched again."
+  }
 }

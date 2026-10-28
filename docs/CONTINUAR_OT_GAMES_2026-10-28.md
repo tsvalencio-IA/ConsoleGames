@@ -1,95 +1,59 @@
 # Continuação — OT Games / ConsoleGames
 
-Copie este texto para o próximo chat. Se o chat não tiver acesso ao código ou às ferramentas de desenvolvimento, ele deve dizer essa limitação e pedir acesso ao repositório; não deve afirmar que corrigiu ou publicou algo sem executar.
+Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao repositório, o chat precisa dizer isso; não pode afirmar que corrigiu, testou ou publicou algo sem executar. Não recriar os jogos nem remover recursos para simplificar.
 
-## Pedido do Thiago
-
-Continue as correções do OT Games. O problema prioritário é o mundo aberto travar durante o jogo e o motor continuar fazendo “pá pá pá”. Quero motores gravados de verdade e jogabilidade fluida, preservando a qualidade gráfica, o mapa, os veículos, os NPCs e todas as funções. Não simplifique nem retire conteúdo. Entregue uma versão publicada e verificável, sem prometer notas 10/10 nem afirmar testes em Android físico que não aconteceram. Meu orçamento de tokens está acabando: seja rápido, preciso e não repita toda a investigação.
-
-## Projeto e estado salvo
+## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Trabalho em andamento: branch `performance-gravacoes-20261027`.
-- Código publicado: `448329960a206af7ebb8bbb0382dba58cbfac1e3`. A branch de trabalho contém também o checkpoint posterior das provas e deste resumo; consulte sua ponta mais recente.
-- Produção antes desta correção: branch `world-revisao-20261022`, commit `ca77458f1c20f04de1daa5ab0f0786aeb11700bd`, build `705.27.2-audio-mobilidade`.
-- Versão publicada e verificada: `705.27.3-desempenho-audio`, assetVersion 70636, revisão `358f8eb2073aeb81`.
+- Código em produção: `f917cc520eddc6774a5bae9152d5ea6ae332a29c`, branch `world-revisao-20261022`.
+- Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
+- Build `705.28.1-revisao-veiculos`, assetVersion `70637`, revisão `6729d7e56daa32b9`.
+- Vercel `dpl_Ci3963WZiLMWWZvRYbXVMULcaPan`, READY; SHA e alias confirmados.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
-- Instalação: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
+- Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
+- APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## Alterações implementadas
+## O que mudou nesta revisão
 
-1. `07-navigation-traffic-routes.js`: projeções de ruas ordenadas por distância antes dos testes caros de obstáculos, mantendo a mesma escolha do algoritmo original.
-2. `41-family-adventure.js`: reaproveitamento curto das sondagens de caminho e rejeição antecipada de obstáculos. As colisões de cada passo continuam sendo verificadas; nenhum ponto de colisão foi removido.
-3. `brazilian-models.js` e módulo 29: preparo dos mesmos modelos completos antes de começar a jogar, para evitar construir a geometria dos carros no meio do trânsito. Não houve redução de polígonos.
-4. Novo banco de 17 arquivos de motores reais CC0, com autoria, procedência, edição e hashes em `audio/engine-recordings.json`. Versão `20261028-recorded3`. Inclui carros, Fusca gravado, esportivos, diesel, motos, helicóptero, avião a hélice, jato e lancha. São adaptações por família de motor, não gravações de fábrica de cada modelo nomeado. Elétricos conservam zumbido sintetizado; bicicleta e balão não recebem motor a combustão.
-5. Banco compartilhado `enhancements/recorded-audio.js`, copiado nos sete jogos. O adaptador do mundo `assets/js/vehicles/engine-sound.js` usa as gravações e remove o gerador de ignições/pulsos. Carregamento por demanda, transições de aceleração e volume, silêncio ao pausar/encerrar.
-6. Cache, índices, manifesto e build atualizados. Não alterar contas, senhas, Firebase, regras, IDs ou saves.
+1. **Câmera e passageiros** — módulo `69-vehicle-camera-passengers.js`: arrastar para girar 360°, manter o ângulo após soltar, aproximar e ver ocupantes por dentro/pela frente, botão para voltar a acompanhar o veículo. Funciona em carros, motos, lanchas, helicóptero, avião e balão; os fluxos nativos cobrem carro e três aeronaves. Passageiros acenam, humanos movimentam a cabeça e cães reagem. Motorista só acena parado. Família mantém os assentos. A câmera automática do voo também foi integrada à órbita, eliminando a disputa entre os dois posicionamentos.
+2. **Toque** — três contatos simultâneos de direção, aceleração e câmera aprovados; botão de ocupantes acessível em retrato e paisagem. Corrigido o toque que gerava `pointerdown` e um segundo `click` com `detail=0`, abrindo e fechando a cabine imediatamente. Teste dedicado exige uma ativação por toque, clique, Enter e espaço.
+3. **Cabines** — aberturas envidraçadas reais no casco das aeronaves civis, bancos/painéis e assentos dos aviões ajustados à fuselagem. Vidros transparentes são preservados no agrupamento de geometria.
+4. **Atualização automática** — 11 recursos obrigatórios sem hash impediam o worker de atualizar. O conjunto obrigatório agora só inclui recursos protegidos pelo manifesto; armas não são mais pré-carregadas no mundo infantil. Verificação a cada minuto e ao retornar ao app, sem apagar cookies, contas ou progresso. Reload aguarda parar fora dos veículos e das atividades para não interromper voo/jogo.
+5. **Garagem** — sentido da direção corrigido; saída considera o comprimento inteiro, inclusive carreta; manobras e posição por unidade salvas, com correção de estacionamento abandonado ao revisitar. Compra entrega o carro na concessionária com ignição; duas unidades de Palio e saída física foram exercitadas. Base do balão da Serra saiu da estrada; migração só reposiciona o balão original ainda não usado.
+6. **Motores** — banco `20261028-vehicle4`, 33 OGG licenciados, perfis explícitos para os 44 modelos. Separados Fusca, Opala I6, M3 turbo I6, Porsche boxer 6, Ferrari V8 plano, T-Cross 3 cilindros, Hornet I4, GS boxer duplo, motos de um cilindro e diesel. Algumas fontes são adaptações por família de motor, não gravações de fábrica de cada veículo. Elétricos mantêm zumbido sintetizado; bicicleta e balão não têm motor a combustão. Metadados, hashes, cortes e licenças em `audio/engine-recordings.json` e `CREDITS.txt`, copiados nos sete jogos.
+7. **Carrocerias** — encontros curvos, colunas, capôs e rodas revistos. Lanternas traseiras do Palio acompanham a superfície; teste de encaixe aprovado. Fusca/Ferrari preservados. Os demais veículos continuam estilizados e vários ainda precisam de modelagem mais fiel. Não atribuir nota 10/10.
+8. **Fit Dance** — seletor real de áudio do aparelho, BPM detectado e editável, coreografia em frases completas ajustada ao ritmo e duração; arquivo não é enviado. Limite 12 MB, 30 s a 6 min. Câmera frontal some após calibrar; perda do corpo pausa música e aula, com retomada na mesma posição.
+9. **Desempenho preservado** — otimizações anteriores das rotas, planejamento da família e preparo dos 44 modelos completos antes de jogar. Comparação de CPU em 40 passos: cidade 2127,5 → 370,3 ms; praia 4917,4 → 374,3 ms. Desenho limitado nesses ensaios: não é FPS de Android.
 
-## Evidências já obtidas
+## Validação e limites
 
-- `node --test tests/*.test.mjs`: 280 aprovados, zero falhas. Log em `test-results/world-performance-regressions/node-unit.log`.
-- `tests/transport-audio-browser.mjs`: 102 grafos de áudio aprovados (51 tipos/modelos em dois sistemas). Compara as amostras realmente reproduzidas com os OGG licenciados, além de aceleração, pausa, volume zero e encerramento. Relatório `test-results/recorded-audio/result.json`.
-- Comparação de CPU em 40 passos de simulação: cidade 2127,5 → 370,3 ms; praia com família 4917,4 → 374,3 ms. Perfis em `test-results/world-frame-before/` e `world-frame-after/`. O desenho foi limitado para isolar CPU: isto NÃO é FPS de celular.
-- Chromium usa WebGL por software neste ambiente. Um teste sem limite de desenho teve compilação/desenho muito lento; não serve para alegar fluidez em GPU/Android reais.
-- Teste nativo do Fusca: entrar com quatro familiares e carregar exatamente as duas gravações do Fusca passou.
-- A espera inicial desse teste falhou porque a preparação de teste estava 0,13 m fora do raio da porta; corrigida somente a coordenada de aproximação no teste (2,0 m). Não era bloqueio do jogo.
+- 290 verificações de unidade cobertas: 289 passaram no conjunto completo; uma falha era a correspondência textual da chamada `verifyResponse`. Formatação corrigida sem desativar SHA-256, e o teste mais dois de atualização passaram no reteste. Log original preservado.
+- 102 grafos de áudio, 51 tipos/modelos em dois sistemas: amostras reproduzidas, aceleração, pausa, mute e descarte aprovados. Não certifica som do alto-falante do celular.
+- 44 modelos, três vistas cada, geometria/assentos/imagens aprovados e seis pranchas inspecionadas. A inspeção não comprova fidelidade de fábrica.
+- Câmera: eventos nativos, família de quatro, órbita persistente, interior, três toques e duas orientações aprovados.
+- Dança: seletor de arquivo real, calibração, câmera oculta, pausa/perda de corpo e retorno, fim de aula (27/28 movimentos) e encerramento da câmera aprovados com poses sintéticas e dispositivo falso. Nenhuma homologação física de reconhecimento de corpo nesta revisão.
+- Garagem/concessionária, reposição exata de aeronave em três minutos, pouso na rua, bloqueio real de trânsito, resgate OTTOVIAS, balão pilotado por NPC e auditoria das estradas aprovados.
+- Migração de worker antigo, recuperação de configuração antiga, preservação do progresso/armazenamento de outro aplicativo e início offline aprovados.
+- Instalador público: retrato, paisagem, desktop, sem JavaScript e worker instalado aprovados; download real do APK conferido.
+- Evidências: `docs/evidence/vehicle-camera-audio-20261028/`. Conferência pública final: 95 recursos protegidos por hash; 275 recursos compartilhados auditados, com reteste incremental dos dois alterados no último hotfix. No site público, sem interceptação/cap de desenho: início, quatro familiares no helicóptero, órbita, cabine, retorno à câmera de acompanhamento, decolagem, mapa e retorno ao mundo aprovados sem erros de JavaScript.
+- Não afirmar FPS sustentado, ausência de travamentos/piscadas no Android, precisão da câmera física, áudio perfeito ou multiplayer real entre celulares. Não foram testados no aparelho do Thiago. O vídeo recebido tinha área do jogo preta; não dizer que foi possível observar a piscada nele.
 
-## Publicação concluída e conferida
+## Pedidos que continuam pendentes
 
-- Deployment `dpl_6FZTNpHCxAoQqcXj4AZJvSHpYLGp`, READY, SHA `448329960a206af7ebb8bbb0382dba58cbfac1e3`. Alias público confirmado.
-- Integridade pública: 79 recursos protegidos do mundo e 163 recursos compartilhados dos sete jogos conferidos por hash, incluindo as novas gravações.
-- Instalador: cinco cenários aprovados (retrato, paisagem, desktop, sem JavaScript e com service worker instalado). O APK de 57.991 bytes permanece o mesmo wrapper; o conteúdo web foi atualizado. Não foi realizada instalação em aparelho físico.
-- Mundo público, sem interceptar código ou limitar desenho: início, embarque de quatro familiares no helicóptero, decolagem pelo coletivo, mapa e retorno ao mundo aprovados, sem erros de JavaScript. Banco de áudio `20261028-recorded3` confirmado.
-- Teste funcional local: helicóptero, avião, balão, assentos dos quatro familiares e teleférico em ambos os sentidos aprovados. Redimensionamento sem quadro branco conferido.
-- Build, pacote e `git diff --check` passaram. Não é necessário repetir a suíte de 280 testes sem nova mudança de produto.
+- Investigar travamentos e piscadas no Android real sem reduzir mapa, qualidade ou conteúdo.
+- Maior fidelidade das carrocerias e dos sons de todos os transportes, sobretudo motos e carros brasileiros. Não trocar todos por um modelo genérico.
+- NPCs surfando, pilotando lanchas, navios/barcos, pranchas e missões no mar. Interações do jogador para esquiar/brincar na neve e mais movimento nas regiões. Já há moradores, banhistas, vôlei, castelos, patinadores, trenós e caminhantes; não confundir isso com os novos pedidos.
+- Alternar recolhimento de aeronaves/balões com equipe terrestre, viatura, piloto, bloqueio e decolagem, além do resgate aéreo já existente.
+- Roupas para a família, mais personagens e criação ampliada de personagens.
+- Melhorar sons/animações das ações e movimentos do Fit Dance com teste corporal real.
+- Mundo aberto infantil/civil: manter polícia/bombeiros e remover tiros/guerra/operações militares do mundo. WAR continua no console para trabalho futuro; não apagar o jogo do console.
+- Revisar regressões e multiplayer de cada jogo a partir de evidência concreta. Não garantir todos os jogos 10/10 nem alegar testes em dois celulares sem executá-los.
 
-## Próxima etapa
+## Ambiente e publicação
 
-Validar fluidez e áudio no Android real do Thiago. A otimização de CPU está medida, mas a taxa de quadros do celular, câmera e alto-falante reais não foram testados. Multiplayer remoto também não foi revalidado nesta revisão. Se houver nova falha, investigar o caso concreto; não refazer os jogos, remover qualidade nem afirmar uma correção sem evidência.
+Diretório `/workspace/scratch/a10cbbfeaf34/ConsoleGames`. Chromium `/workspace/scratch/a10cbbfeaf34/qa-browser/chromium`, versão 138.0.7204.0, via `OT_BROWSER_BINARY`. Servidor local e navegador precisam executar no mesmo processo. Rede pública usa `tests/helpers/browser-network.mjs`; não expor credenciais.
 
-Para testes automatizados, aguarde `getGame().running`, `!paused` e o modal de preparação fechado antes de posicionar o personagem. O preparo de modelos é assíncrono; testar antes disso pode perder a posição ao restaurar o início da partida.
+Build: `python3 games/otthi/tools/build_project.py && python3 tools/package-world-preview.py`. Publicar somente SHA validado; atualizar a branch de produção com `expected_sha`, sem force. Vercel: projeto `prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm`, time `team_W3UyY5ss3Shyv78KRMndjust`, repoId `1427071731`, saída `dist-world`, install `true`, framework/root nulos.
 
-Provas: `test-results/civil-public/resources.json`, `test-results/transport-public/result.json`, `test-results/transport-public-browser/result.json`, `test-results/android-download/result.json` e os relatórios locais descritos acima.
-
-## Dados técnicos de retomada
-
-Vercel: projeto `prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm`, time `team_W3UyY5ss3Shyv78KRMndjust`, repoId 1427071731. Build: `python3 games/otthi/tools/build_project.py && python3 tools/package-world-preview.py`; output `dist-world`; install `true`; framework/rootDirectory nulos.
-
-No ambiente atual: `/workspace/scratch/a10cbbfeaf34/ConsoleGames`. Chromium: `/workspace/scratch/a10cbbfeaf34/qa-browser/chromium`, versão 138.0.7204.0. Usar `OT_BROWSER_BINARY` e fixtures que executam servidor e navegador no mesmo processo. Testes de rede pública usam `tests/helpers/browser-network.mjs`.
-
-Não criar agentes paralelos sem instrução explícita. Evitar repetir a suíte inteira se nenhuma mudança de produto invalidar os 280 testes aprovados. Resolver falhas específicas com evidência.
-
-
-## Retomada de 28/10 — revisão em andamento, ainda sem nova publicação
-
-Código da revisão de veículos salvo em `586d56c0deb1275c0e91a1940e769c79437976e6`, branch `performance-gravacoes-20261027`. Produção continua `448329960a206af7ebb8bbb0382dba58cbfac1e3` (705.27.3), não confundir com a versão local preparada `705.28.1-revisao-veiculos` (assetVersion 70637).
-
-Implementado: 33 gravações, perfis explícitos para todos os 44 modelos; separados Opala I6 / M3 turbo I6 / Porsche boxer 6 / Ferrari V8 plano / T-Cross 3 cilindros / Hornet I4 / GS boxer duplo. Fontes licenciadas com hashes e cortes em engine-recordings.json, incluindo CC BY 4.0 de jerry.berumen e chungus43A com créditos. Relações por família continuam declaradas como adaptações, sem afirmar gravação de fábrica de cada modelo. Carrocerias com novos encontros curvos, colunas e frente ajustada por modelo; rodas de liga para Hornet, Factor e Titan.
-
-Testes: 284 testes de unidade aprovados antes do último ajuste de queda do capô; 102 grafos de áudio aprovados; galeria dos 44 modelos em três vistas aprovada antes desse último ajuste. É preciso repetir as verificações afetadas e os fluxos nativos após as próximas mudanças. `tests/vehicle-catalogue-review.mjs` registra inspeção visual real com a Ferrari GLB, sem nota de fidelidade.
-
-Novos pedidos do Thiago, manter TODOS no escopo:
-- Atualizar automaticamente navegador/PWA/app sem apagar cookies, logins, saves ou exigir modo anônimo. Prioridade alta.
-- Travamentos e piscadas ainda relatados no celular. O vídeo recebido tem área do jogo preta; não afirmar que foi possível observar as piscadas nele.
-- Corrigir lanternas traseiras flutuantes do Palio e revisar todos os carros/motos; Fusca e Ferrari foram elogiados, preservar sua qualidade.
-- Saída da garagem sem prender carros; estacionamentos e manobras persistentes, autocorreção segura quando abandonados.
-- Recolher balões/aeronaves ociosos, com encenações civis de guincho, viaturas, piloto e bloqueio temporário de trânsito.
-- NPCs surfando, lanchas, navios/barcos, pranchas e missões no mar; esqui e brincadeiras na neve/montanha.
-- Mais animações e sons das ações, músicas próprias no Fit Dance e melhor sincronia dos movimentos.
-- Mundo aberto estritamente infantil/civil, sem tiros/guerra/operações militares. WAR permanece no console para trabalho futuro; não remover o jogo do console.
-- Roupas para a família, novos personagens e criação de personagem.
-- Pedido mais recente: câmera livre 360 graus em veículos, helicóptero, avião e balão, aproximação para ver os ocupantes pela frente e por dentro; passageiros acenando e conversando entre si quando observados. Não remover joystick/controles simultâneos.
-
-Próximo foco anunciado: câmera/orbita/animações, autoatualização, garagem e lanternas. Não afirmar que os pedidos amplos já estão prontos. Nenhum novo deployment desta revisão foi feito ainda.
-
-
-## Verificações mais recentes da revisão local
-
-- Câmera em `69-vehicle-camera-passengers.js`: órbita de 360°, giro persistente, aproximação/interior, botão de retorno, acenos e reação dos cães. Corrigida a disputa com a câmera automática de voo. Cabines civis agora possuem aberturas envidraçadas, bancos e painel; assentos dos aviões ajustados para dentro da fuselagem. Teste nativo passou nos quatro modos, com quatro familiares e três toques simultâneos. A disposição horizontal dos novos botões está no último reteste.
-- Atualização: removidos do conjunto obrigatório os recursos sem hash que impediam a instalação do novo worker. 95 arquivos protegidos. Busca de versão a cada minuto e ao voltar ao app; recarregamento adiado enquanto dirige, voa ou executa uma atividade. Migração real de worker antigo, progresso de exemplo e início offline aprovados, mantendo armazenamento de outro aplicativo.
-- Garagem: direção corrigida; saída considera comprimento completo do veículo; poses manobradas são salvas por unidade e posições abandonadas são corrigidas ao revisitar. Compra de duas unidades de Palio, ignição e saída física aprovadas. Estradas auditadas sem bloqueios após tirar a base do balão da Serra da pista; migração preserva balões já usados.
-- Palio: lanternas ajustadas à superfície traseira, teste de encaixe aprovado. Catálogo de 44 veículos aprovado em três vistas após todos os ajustes de carroceria e rodas. Isto não certifica fidelidade a veículos de fábrica.
-- Fit Dance: seleção real de áudio local, estimativa de BPM editável, coreografia em frases completas no ritmo e duração da música, sem enviar arquivo. Limites: 12 MB, 30 s a 6 min. Decodificação e sincronização aprovadas; interface, calibração, câmera frontal oculta, perda de corpo/pausa/retorno e conclusão de aula aprovados com poses sintéticas (27/28 movimentos). Inferência física em um usuário real não foi testada nesta revisão.
-- Suíte: 289 testes passaram no conjunto completo; a única falha era uma asserção de formato textual de `verifyResponse`, corrigida sem remover a verificação SHA. O teste reprovado e os dois testes de atualização passaram no reteste. Total de 290 verificações de unidade coberto. Áudio: 102 grafos nativos aprovados.
-- Ainda sem nova publicação no momento deste checkpoint. Não declarar que surf/esqui do jogador, novas missões no mar, criação ampliada de personagens/roupas ou recolhimento terrestre alternado já foram implementados. Preservar esses pedidos no trabalho seguinte.
+Preservar contas, Firebase/regras, senhas, IDs e saves. Não criar agentes paralelos sem instrução explícita. Não repetir toda a suíte se não houver mudança que invalide os resultados; investigar a primeira falha com observabilidade.

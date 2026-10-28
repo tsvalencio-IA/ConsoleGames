@@ -1,0 +1,440 @@
+{
+  "results": [
+    {
+      "mode": "car",
+      "view": {
+        "key": "car:city-aurora-coupe-0",
+        "manual": true,
+        "inside": true,
+        "yaw": 1.5707963267948966,
+        "pitch": 0.035,
+        "zoom": 0,
+        "camera": [
+          288.2868965214841,
+          1.0045845811309486,
+          -49
+        ],
+        "focus": [
+          288.96648006400005,
+          0.9807894399999999,
+          -49
+        ],
+        "near": 0.035,
+        "reactions": [
+          {
+            "id": "luna",
+            "at": 40563.299999999814,
+            "kind": "wag"
+          },
+          {
+            "id": "liz",
+            "at": 40563.299999999814,
+            "kind": "wag"
+          },
+          {
+            "id": "thiago",
+            "at": 40696.699999999255,
+            "kind": "wave"
+          },
+          {
+            "id": "thamis",
+            "at": 40792.5,
+            "kind": "wave"
+          }
+        ],
+        "pointerCount": 0
+      },
+      "family": [
+        {
+          "id": "thiago",
+          "visible": true,
+          "position": [
+            288.97,
+            0.32,
+            -48.786
+          ],
+          "scale": 0.2304,
+          "seat": {
+            "x": 0.214,
+            "y": 0.32,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "thamis",
+          "visible": true,
+          "position": [
+            288.97,
+            0.32,
+            -49.214
+          ],
+          "scale": 0.23892479999999996,
+          "seat": {
+            "x": -0.214,
+            "y": 0.32,
+            "z": 0.03
+          }
+        },
+        {
+          "id": "luna",
+          "visible": true,
+          "position": [
+            289.64,
+            0.335,
+            -48.896
+          ],
+          "scale": 0.252,
+          "seat": {
+            "x": 0.104,
+            "y": 0.335,
+            "z": -0.64
+          }
+        },
+        {
+          "id": "liz",
+          "visible": true,
+          "position": [
+            289.64,
+            0.335,
+            -48.676
+          ],
+          "scale": 0.252,
+          "seat": {
+            "x": 0.324,
+            "y": 0.335,
+            "z": -0.64
+          }
+        }
+      ]
+    },
+    {
+      "mode": "helicopter",
+      "view": {
+        "key": "air:helicopter",
+        "manual": true,
+        "inside": true,
+        "yaw": 0,
+        "pitch": 0.035,
+        "zoom": 0,
+        "camera": [
+          50,
+          1.0109881011309487,
+          -163.69806983348403
+        ],
+        "focus": [
+          50,
+          0.98719296,
+          -164.377653376
+        ],
+        "near": 0.035,
+        "reactions": [
+          {
+            "id": "thiago",
+            "at": 51714.09999999963,
+            "kind": "wave"
+          },
+          {
+            "id": "thamis",
+            "at": 51714.199999999255,
+            "kind": "wave"
+          },
+          {
+            "id": "luna",
+            "at": 51714.299999999814,
+            "kind": "wag"
+          },
+          {
+            "id": "liz",
+            "at": 51714.299999999814,
+            "kind": "wag"
+          }
+        ],
+        "pointerCount": 0
+      },
+      "family": [
+        {
+          "id": "thiago",
+          "visible": true,
+          "position": [
+            50.23,
+            0.52,
+            -164.38
+          ],
+          "scale": 0.1536,
+          "seat": {
+            "x": 0.23,
+            "y": -0.48,
+            "z": 0.62
+          }
+        },
+        {
+          "id": "thamis",
+          "visible": true,
+          "position": [
+            49.77,
+            0.52,
+            -164.38
+          ],
+          "scale": 0.15928319999999999,
+          "seat": {
+            "x": -0.23,
+            "y": -0.48,
+            "z": 0.62
+          }
+        },
+        {
+          "id": "luna",
+          "visible": true,
+          "position": [
+            50.15,
+            0.52,
+            -165.35
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": 0.15000000000000002,
+            "y": -0.48,
+            "z": -0.35
+          }
+        },
+        {
+          "id": "liz",
+          "visible": true,
+          "position": [
+            50.31,
+            0.52,
+            -165.35
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": 0.31,
+            "y": -0.48,
+            "z": -0.35
+          }
+        }
+      ]
+    },
+    {
+      "mode": "plane",
+      "view": {
+        "key": "air:plane",
+        "manual": true,
+        "inside": true,
+        "yaw": -1.5707963267948966,
+        "pitch": 0.035,
+        "zoom": 0,
+        "camera": [
+          -3.6580698334840283,
+          1.1409881011309488,
+          -165
+        ],
+        "focus": [
+          -4.3376533760000004,
+          1.1171929600000001,
+          -165
+        ],
+        "near": 0.035,
+        "reactions": [
+          {
+            "id": "thiago",
+            "at": 54014,
+            "kind": "wave"
+          },
+          {
+            "id": "thamis",
+            "at": 54014.09999999963,
+            "kind": "wave"
+          },
+          {
+            "id": "luna",
+            "at": 54014.09999999963,
+            "kind": "wag"
+          },
+          {
+            "id": "liz",
+            "at": 54014.09999999963,
+            "kind": "wag"
+          }
+        ],
+        "pointerCount": 0
+      },
+      "family": [
+        {
+          "id": "thiago",
+          "visible": true,
+          "position": [
+            -4.34,
+            0.65,
+            -164.84
+          ],
+          "scale": 0.1536,
+          "seat": {
+            "x": -0.16,
+            "y": -0.27,
+            "z": 0.66
+          }
+        },
+        {
+          "id": "thamis",
+          "visible": true,
+          "position": [
+            -4.34,
+            0.65,
+            -165.16
+          ],
+          "scale": 0.15928319999999999,
+          "seat": {
+            "x": 0.16,
+            "y": -0.27,
+            "z": 0.66
+          }
+        },
+        {
+          "id": "luna",
+          "visible": true,
+          "position": [
+            -5.23,
+            0.65,
+            -164.76
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": -0.24,
+            "y": -0.27,
+            "z": -0.23
+          }
+        },
+        {
+          "id": "liz",
+          "visible": true,
+          "position": [
+            -5.23,
+            0.65,
+            -164.92
+          ],
+          "scale": 0.16799999999999998,
+          "seat": {
+            "x": -0.08,
+            "y": -0.27,
+            "z": -0.23
+          }
+        }
+      ]
+    },
+    {
+      "mode": "balloon",
+      "view": {
+        "key": "air:balloon",
+        "manual": true,
+        "inside": true,
+        "yaw": -3.141592653589793,
+        "pitch": 0.035,
+        "zoom": 0,
+        "camera": [
+          -65.99691399920083,
+          2.04355963462234,
+          87.42844340841076
+        ],
+        "focus": [
+          -65.99681873615035,
+          2.0032901186638696,
+          88.57771528435003
+        ],
+        "near": 0.035,
+        "reactions": [
+          {
+            "id": "thiago",
+            "at": 55979.699999999255,
+            "kind": "wave"
+          },
+          {
+            "id": "thamis",
+            "at": 55979.799999999814,
+            "kind": "wave"
+          },
+          {
+            "id": "luna",
+            "at": 55979.89999999944,
+            "kind": "wag"
+          },
+          {
+            "id": "liz",
+            "at": 55979.89999999944,
+            "kind": "wag"
+          }
+        ],
+        "pointerCount": 0
+      },
+      "family": [
+        {
+          "id": "thiago",
+          "visible": true,
+          "position": [
+            -65.48588745810474,
+            0.8701878620940466,
+            88.57251461847014
+          ],
+          "scale": 0.41600000000000004,
+          "seat": {
+            "x": -0.52,
+            "y": -0.68,
+            "z": 0.42
+          }
+        },
+        {
+          "id": "thamis",
+          "visible": true,
+          "position": [
+            -66.52584873341131,
+            0.8791620564477983,
+            88.57261309910064
+          ],
+          "scale": 0.431392,
+          "seat": {
+            "x": 0.52,
+            "y": -0.68,
+            "z": 0.42
+          }
+        },
+        {
+          "id": "luna",
+          "visible": true,
+          "position": [
+            -65.40589043692732,
+            0.8602801383263172,
+            89.41245646979823
+          ],
+          "scale": 0.45499999999999996,
+          "seat": {
+            "x": -0.6,
+            "y": -0.68,
+            "z": -0.42
+          }
+        },
+        {
+          "id": "liz",
+          "visible": true,
+          "position": [
+            -65.56588447928218,
+            0.8616607836115098,
+            89.41247162066446
+          ],
+          "scale": 0.45499999999999996,
+          "seat": {
+            "x": -0.44,
+            "y": -0.68,
+            "z": -0.42
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "landscapeControls": true,
+  "threeTouches": true,
+  "passed": true,
+  "browser": "138.0.7204.0",
+  "limits": [
+    "Software WebGL with capped rendering for functional simulation; only selected frames use native rendering. No physical Android claim."
+  ]
+}
