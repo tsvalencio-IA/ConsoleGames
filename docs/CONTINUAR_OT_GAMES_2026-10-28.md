@@ -5,16 +5,27 @@ Copie este arquivo para o próximo chat. Se não houver acesso ao código ou ao 
 ## Estado atual
 
 - Repositório: https://github.com/tsvalencio-IA/ConsoleGames
-- Código em produção: `6a0d480526fc1d6c26ee352a5115a9952d4b4461`, branch `world-revisao-20261022`.
+- Código em produção: `82e0ff6e60d474ae35b5b9f9cda28a435c0eccc3`, branch `world-revisao-20261022`.
 - Trabalho e evidências: branch `performance-gravacoes-20261027`; consultar sua ponta mais recente. Os commits posteriores de evidência não alteram o jogo publicado.
-- Build `705.28.5-cache-celular`, assetVersion `70641`, revisão `e75a2ef5d73a4970`.
-- Vercel `dpl_4p37LgqubbLrUNgaQ9zd5gqS16h6`, READY; fonte, alias e conferência pública aprovados.
+- Build `705.28.6-fluidez`, assetVersion `70642`, revisão `bdd23e077306cba3`.
+- Vercel `dpl_Hnbhj8iZWnQAKX22ac4ic1msuR6F`, READY; fonte, alias e conferência pública aprovados.
 - Jogo: https://otthi-world-campanha-teste.vercel.app/games/otthi/
 - Instalador: https://otthi-world-campanha-teste.vercel.app/arcade/instalar/
 - APK: https://otthi-world-campanha-teste.vercel.app/android/thIAguinho-ARCADE-OT.apk
 - APK de 57.991 bytes: mesmo wrapper Android, conteúdo web atualizado; SHA-256 `8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49`. Não houve instalação em aparelho físico.
 
-## Correção atual — cache antigo no celular
+## Correção atual — travamentos no mundo aberto
+
+- Pedido: “Tá travando demais...”, seguido de “continue”. Não simplificar mapa, veículos, população ou gráficos. Código/evidências: `docs/evidence/world-fluidez-20261028/`.
+- Módulo `70-world-query-budget.js`: grade conservadora para os colisores e cache dos segmentos de rodovia, validados por quadro. Colisores exatos/água/casas/trânsito preservados; aeronaves móveis têm limites consultados ao vivo. Obras invalidam por troca do array/tamanho; edições de posição estática são verificadas no próximo quadro. Não introduzir novos colisores que se movem dentro do quadro sem tratar essa invalidação.
+- Módulo `71-world-light-budget.js`: excluir do cálculo durante o desenho apenas luz pontual finita, sem sombra, cuja esfera não intersecta a câmera. Luz ilimitada, sem decaimento e com sombra continua. Slots zero estabilizam programas; não existe limite de quantidade de luzes visíveis. Modo com brilhos desativados não cria slots. BRDF pula contribuição zero; sol, luz ambiente e materiais preservados.
+- A primeira imagem e os shaders são preparados durante o carregamento, com a câmera posicionada. Tentativa inicial de aquecer todos os carros em uma cena separada piorou o ensaio e foi descartada; não restaurar esse experimento.
+- Comparativo Chromium 138/SwiftShader, RAF/WebGL reais, qualidade equilibrada, 393×852, família com 4, áudio desligado em ambos: intervalo médio 1430,7 → 349,2 ms; maior intervalo 3683,5 → 875,8 ms; trabalho médio da função do quadro 836,7 → 152,8 ms. São medidas do ambiente de software, **não FPS nem homologação de Android**. A versão mais rápida executa mais simulação e insere mais tráfego no período; trajetórias podem divergir. NPCs 138, catálogo 44 e família 4 em ambos. Não afirmar que o celular já está fluido.
+- 25 verificações focais de unidade aprovadas. Comparação WebGL em 3 ângulos com materiais físicos, vidro e neblina: diferença zero em todos os pixels/canais. Missões civis, duas vagas/elevadores, recarga da oficina, carro, helicóptero, avião, balão, teleférico nos dois sentidos e família aprovados. Teste de transporte deve rodar isolado para não acionar o governador de DPR por competição artificial de CPU; a espera de pose da família após salto do relógio foi explicitada.
+- Migração da release publicada anterior aprovada com worker antigo insistente, falha de download, retentativa e 67 recursos íntegros reaproveitados; progresso e outros dados preservados. Publicação não muda APK, áudio, modelos ou controles de câmera.
+- Conferência pública desta revisão aprovada: 98 hashes, APK íntegro, oito rotas no-store, recuperação real preservando progresso e entrada pelo console. Código público confirmou otimizações ativas; voo, quatro familiares, órbita/cabine, mapa, rotação e orla aprovados sem erros JavaScript. Mesmo wrapper Android; nenhum celular físico testado.
+
+## Correção anterior — cache antigo no celular
 
 - Pedido mais recente: o mundo aberto continuava carregando uma versão antiga no celular. A correção anterior de worker cooperante não bastava para essa situação; não repetir a alegação de que o celular foi homologado.
 - Recuperação: https://otthi-world-campanha-teste.vercel.app/games/atualizar/ . Essa página fica fora de `/games/otthi/`, consulta o manifesto pela rede e exige que o worker ativo confirme a mesma build/revisão. Confere também o SHA-256 do HTML antes de entrar. Não exclui login, cookies, localStorage, IndexedDB nem caches de outros aplicativos.

@@ -1,0 +1,19 @@
+{
+  "id": "dpl_Hnbhj8iZWnQAKX22ac4ic1msuR6F",
+  "projectId": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+  "teamId": "team_W3UyY5ss3Shyv78KRMndjust",
+  "sourceCommit": "82e0ff6e60d474ae35b5b9f9cda28a435c0eccc3",
+  "branch": "world-revisao-20261022",
+  "target": "production",
+  "state": "READY",
+  "aliases": [
+    "otthi-world-campanha-teste.vercel.app",
+    "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+    "otthi-world-campanha-teste-git-wor-d6b28f-thiaguinho-s-projects.vercel.app"
+  ],
+  "build": "705.28.6-fluidez",
+  "assetVersion": 70642,
+  "revision": "bdd23e077306cba3",
+  "verifiedAt": "2026-10-28T20:52:46.312Z",
+  "physicalAndroidTested": false
+}

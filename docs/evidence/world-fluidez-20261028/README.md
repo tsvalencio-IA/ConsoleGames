@@ -40,3 +40,12 @@ A preparação de modelos/cena marcou 5645 → 6162 ms, incluindo a preparação
 - O teste de transporte foi ajustado para aguardar o próximo quadro de pose da família após avançar o relógio de inspeção; a verificação de altura não foi removida. Execuções concorrentes podem acionar o governador de resolução; a conferência de buffer/voo deve rodar isolada.
 
 Os JSONs, logs e imagens nesta pasta documentam os ensaios. Autenticação, progresso, conteúdo militar do console e modelos/som dos veículos não foram alterados nesta correção. Não houve compilação de APK novo nem teste em celular físico.
+
+## Publicação conferida
+
+- Produção: `82e0ff6e60d474ae35b5b9f9cda28a435c0eccc3`; build `705.28.6-fluidez`, assetVersion `70642`, revisão `bdd23e077306cba3`.
+- Vercel `dpl_Hnbhj8iZWnQAKX22ac4ic1msuR6F`, READY, projeto/equipe/fonte/alias conferidos.
+- 98 recursos públicos conferidos por SHA-256; APK anterior íntegro de 57.991 bytes.
+- Recuperação pública por worker real, oito rotas no-store, progresso preservado e entrada automática pelo console aprovados. O navegador de QA usou exceção de certificado apenas para o proxy de teste; TLS do produto não foi alterado.
+- Fluxo público sem interceptar o código: otimizações espaciais e de luz ativas, embarque, quatro familiares, órbita/cabine, decolagem do helicóptero, mapa, retrato/paisagem e orla aprovados, sem erros JavaScript.
+- A entrada pública permanece https://otthi-world-campanha-teste.vercel.app/games/atualizar/ . Nenhum aparelho físico foi usado.
