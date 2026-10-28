@@ -4,3 +4,20 @@ Car loop: domasx2 / public-domain pdsounds source. CC0. https://opengameart.org/
 Helicopter: WuxiaScrub. CC0. https://opengameart.org/content/helicopter-sfx
 Motorcycle: dklon, CC BY-SA 3.0. This trimmed/equalized adaptation engine-moto.ogg remains CC BY-SA 3.0: https://creativecommons.org/licenses/by-sa/3.0/ and https://opengameart.org/content/engines-startup-idle-rev
 Vehicle sounds are designed mixes, not model-specific factory recordings.
+
+Active recorded engine bank
+Version 20261028-recorded3. All newly added engine clips: CC0-1.0. Exact source, author, input hash, edits and encoded output hash: engine-recordings.json.
+Joseph SARDIN — Citroën Saxo 1.1 — https://bigsoundbank.com/car-starting-and-departure-s0189.html
+DenisChardonnet — Car accelerations; model unspecified — https://bigsoundbank.com/car-engine-2-s0291.html
+bowlingballout — 1970 VW Beetle; public HQ preview — https://freesound.org/people/bowlingballout/sounds/579211/
+Joseph SARDIN — AC Cobra 427 — https://bigsoundbank.com/ac-cobra-engine-s0534.html
+Joseph SARDIN — Iveco Daily 3.0 40C14 HPI — https://bigsoundbank.com/truck-engine-s1145.html
+Joseph SARDIN — Iveco Daily 3.0 40C14 HPI — https://bigsoundbank.com/truck-engine-big-accelerations-s1147.html
+DenisChardonnet — Motorcycle; model unspecified — https://bigsoundbank.com/motorcycle-s0281.html
+Joseph SARDIN — Ducati Granturismo — https://bigsoundbank.com/starting-a-motorcycle-s0884.html
+Joseph SARDIN — 75 cm³ motorcycle; model unspecified — https://bigsoundbank.com/75-cm3-motorcycle-acceleration-s0603.html
+Joseph SARDIN — Helicopter interior; model unspecified — https://bigsoundbank.com/helicopter-1-s0263.html
+Joseph SARDIN — Small propeller aircraft; model unspecified — https://bigsoundbank.com/sound-s0501.html
+m_cel — Jet engine static test; public HQ preview — https://freesound.org/people/m_cel/sounds/534856/
+Legnalegna55 — Small motor boat; public HQ preview — https://freesound.org/people/Legnalegna55/sounds/577425/
+Recordings are adapted by engine family, not represented as factory recordings of every model. Freesound public preview encodings are identified above and in the manifest.
