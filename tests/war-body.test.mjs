@@ -7,6 +7,14 @@ test('WAR body: whole-body steps can move forward; leaning or duplicate frames c
 
 test('WAR body: low-priority posture frames every 950ms can calibrate without resetting stable samples',()=>{const c=new BodyController();for(let t=100;t<6800;t+=950)c.consume(dancePose(),null,t,t+120);assert(c.neutral);assert(c.read(6800).fresh);});
 
+test('WAR body: a naturally offset torso is neutral after calibration and landmark jitter cannot turn the camera',()=>{
+ const c=new BodyController(),pose=dancePose();for(const i of[0,11,12,13,14,15,16])pose[i].x+=.03;
+ for(let t=100;t<=1500;t+=200)c.consume(pose,null,t);assert(c.neutral);assert.equal(c.read(1500).lean,0);
+ const noisy=pose.map(p=>({...p})),world=pose.map(p=>({...p,z:0}));noisy[11].x+=.002;noisy[12].x+=.002;world[11].z=-.002;world[12].z=.002;
+ const still=c.consume(noisy,world,1700);assert.equal(still.lean,0);assert.equal(still.turnYaw,0);
+ const deliberate=pose.map(p=>({...p}));deliberate[11].x+=.07;deliberate[12].x+=.07;assert(Math.abs(c.consume(deliberate,null,1900).lean)>.1,'a deliberate lean must still turn');
+});
+
 test('WAR body session: recalibration and pause discard pending observations; disposal clears the body',async()=>{
  let clock=100;const workers=[],frames=[];class Worker{constructor(){workers.push(this);}postMessage(data){frames.push(data);}terminate(){}}
  const scope={window:{},document:{baseURI:'http://local.test/'},URL,Worker,performance:{now:()=>clock},setTimeout:()=>1,clearTimeout(){},createImageBitmap:async()=>({close(){}})};vm.runInNewContext(fs.readFileSync('games/ar/body-controls.js','utf8'),scope);const game={},session=scope.window.WarBodyControl.start(game),worker=workers[0],video={readyState:2,currentTime:1,videoWidth:640,videoHeight:480};worker.onmessage({data:{type:'ready'}});

@@ -1,27 +1,27 @@
 {
   "passed": true,
-  "origin": "http://127.0.0.1:38389",
-  "checkedAt": "2026-10-29T09:20:21.625Z",
+  "origin": "http://127.0.0.1:36029",
+  "checkedAt": "2026-10-29T09:31:19.363Z",
   "calibrated": {
     "state": "PLAYING",
     "body": {
-      "fresh": true,
+      "fresh": false,
       "calibrated": true,
       "moveX": 0,
       "moveZ": 0,
       "crouched": false,
-      "turnYaw": 0.0005226333232370428,
-      "lean": -0.062122657432121725,
+      "turnYaw": 0,
+      "lean": 0,
       "twoHands": false,
-      "timestamp": 28672,
+      "timestamp": 13750.600000000559,
       "fullBody": true
     },
     "hand": {
-      "x": 0.4998415907599786,
-      "y": 0.4805964268933037,
+      "x": 0.5000236808198567,
+      "y": 0.48033936326663534,
       "fresh": false,
-      "present": true,
-      "timestamp": 28371.799999999814,
+      "present": false,
+      "timestamp": 14232.900000000373,
       "twoHands": false,
       "calibration": 1,
       "roll": 0,
@@ -30,46 +30,48 @@
     "bodySamples": 6,
     "handSamples": 9,
     "crop": {
-      "x": 0.2730339685082436,
-      "y": 0.3853333413600921,
+      "x": 0.27351760894060134,
+      "y": 0.3853251627087593,
       "w": 0.1875,
       "h": 0.25
     },
-    "bodyMs": 133.1000000005588,
-    "handMs": 250.59999999962747
+    "bodyMs": 166.20000000018626,
+    "handMs": 606
   },
   "combat": {
     "shots": 1,
     "hits": 1,
     "renderer": {
       "renderer": "webgl",
-      "frames": 3,
+      "frames": 39,
       "mission": "patrol",
-      "drawCalls": 2,
-      "triangles": 3536,
+      "drawCalls": 4,
+      "triangles": 3540,
       "width": 416,
       "height": 192,
       "low": false,
       "software": true,
-      "frameMs": 7,
+      "frameMs": 210,
       "shadows": false
     },
     "infantry": [
       {
         "id": "1:0",
-        "x": 0.19801862489277267,
+        "x": 0,
         "y": 0,
-        "z": -23.823983444539763,
+        "z": -24,
         "head": {
-          "x": 0.510577581192494,
-          "y": 0.4697630825702282,
-          "depth": 0.987569241108853
+          "x": 0.4996294685089109,
+          "y": 0.4728011992343484,
+          "depth": 0.9876658403629921
         }
       }
     ]
   },
   "sameUnmodifiedSample": true,
+  "stationaryTrainingAdversary": true,
   "bothProductionModels": true,
+  "mainThreadSlowdown": 1,
   "noWorkerInterception": true,
   "frontCamera": true,
   "hiddenPreview": true,

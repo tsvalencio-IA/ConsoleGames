@@ -29,13 +29,15 @@ class BodyController{
   const b=this.neutral,hipReady=!!(hip&&b.hip),shift=hipReady?(hip.x-b.hip.x)/b.width:0,drop=hipReady?(hip.y-b.hip.y)/b.width:0;
   const shoulderDrop=(shoulder.y-b.shoulder.y)/b.width,footShift=foot&&b.foot?(foot.x-b.foot.x)/b.width:0,footDrop=foot&&b.foot?(foot.y-b.foot.y)/b.width:0;
   const scale=width/b.width-1,turn=hasWorld?-angle(yaw-b.yaw):0;
+  const rawLean=hipReady?(shoulder.x-hip.x)/width-(b.shoulder.x-b.hip.x)/b.width:(shoulder.x-b.shoulder.x)/b.width;
+  const deadzone=(value,margin)=>Math.abs(value)<=margin?0:Math.sign(value)*(Math.abs(value)-margin);
   let crouched=hipReady?drop>.34&&shoulderDrop>.28:shoulderDrop>.45&&Math.abs(scale)<.20;
   if(this.output.crouched)crouched=hipReady?drop>.22&&shoulderDrop>.17:shoulderDrop>.29&&Math.abs(scale)<.25;
   const intentionalSide=feet&&b.foot&&Math.sign(shift)===Math.sign(footShift)&&Math.abs(footShift)>.18;
   const moveX=intentionalSide?Math.sign(shift)*clamp((Math.abs(shift)-.24)/.55,0,1):0;
   const moveZ=feet&&b.foot&&Math.abs(turn)<.28&&Math.abs(shift)<.35&&Math.abs(footDrop)>.10&&Math.sign(scale)===Math.sign(footDrop)?Math.sign(scale)*clamp((Math.abs(scale)-.15)/.28,0,1):0;
   const twoHands=[15,16].every(i=>visible(points[i],.6))&&Math.hypot(points[15].x-points[16].x,points[15].y-points[16].y)/width<.9;
-  this.reason='ready';this.lastAt=at;Object.assign(this.output,{fresh:true,calibrated:true,moveX:crouched?moveX*.5:moveX,moveZ:crouched?0:moveZ,crouched,turnYaw:clamp(turn,-.7,.7),lean:hipReady?clamp((shoulder.x-hip.x)/width,-.7,.7):clamp((shoulder.x-b.shoulder.x)/width,-.7,.7),twoHands,timestamp:at,fullBody:!!(feet&&b.foot)});return this.output;
+  this.reason='ready';this.lastAt=at;Object.assign(this.output,{fresh:true,calibrated:true,moveX:crouched?moveX*.5:moveX,moveZ:crouched?0:moveZ,crouched,turnYaw:clamp(deadzone(turn,.055),-.7,.7),lean:clamp(deadzone(rawLean,.08),-.7,.7),twoHands,timestamp:at,fullBody:!!(feet&&b.foot)});return this.output;
  }
  read(now){return now-this.lastAt>1200?this.release(this.neutral?'lost':this.reason):this.output;}
 }
