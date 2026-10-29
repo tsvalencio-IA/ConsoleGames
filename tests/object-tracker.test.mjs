@@ -14,3 +14,14 @@ test('object can be recovered at a different angle after reaching for the calibr
  assert(pose,'same textured object rotated 37 degrees must be recovered without recapturing');
  assert(Math.abs(pose.angle-.65)<.08);assert(Math.abs(pose.x*w-90)<3);for(let i=0;i<15;i++)assert(t.track(frame(10,-3,.65)),'recovered object must remain trackable for neutral calibration, frame '+i);
 });
+
+function cameraFrame(dx=0,dy=0,textureSeed=1988){const out=new Uint8ClampedArray(320*240*4),texture=[];let seed=textureSeed;for(let y=0;y<128;y+=4)for(let x=0;x<128;x+=4){seed=(seed*1664525+1013904223)>>>0;texture.push(40+seed%170);}for(let y=0;y<240;y++)for(let x=0;x<320;x++){const u=x-(96+dx),v=y-(56+dy),inside=u>=0&&u<128&&v>=0&&v<128,i=(y*320+x)*4,value=inside?texture[Math.floor(v/4)*32+Math.floor(u/4)]:120;out[i]=out[i+1]=out[i+2]=value;out[i+3]=255;}return out;}
+test('five-point camera movement reacquires large left/right and up/down jumps without a touch recapture',()=>{
+ const t=new ObjectTracker();t.initialize(cameraFrame(),320,240,{x:108.8,y:64.8,w:102.4,h:103.2});
+ for(const [x,y]of[[38,0],[-38,0],[0,-30],[0,30],[0,0]]){let p;for(let i=0;i<80&&!p;i++)p=t.track(cameraFrame(x,y));assert(p,'could not recover '+x+','+y);for(let i=0;i<12;i++)assert(t.track(cameraFrame(x,y)),'unstable after '+x+','+y);assert(Math.abs(p.centerX*320-(160+x))<3);assert(Math.abs(p.centerY*240-(116.4+y))<3);}
+});
+
+test('recovery cannot replace the registered toy with a different textured object',()=>{
+ const t=new ObjectTracker();t.initialize(cameraFrame(),320,240,{x:108.8,y:64.8,w:102.4,h:103.2});
+ for(let i=0;i<42;i++)assert.equal(t.track(cameraFrame(0,0,8117)),null,'unregistered texture must not resume the weapon');assert(t.lost);assert.equal(t.matches,0);
+});

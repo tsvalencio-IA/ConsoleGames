@@ -1,11 +1,11 @@
 {
-  "state": "candidate; not yet published",
+  "state": "28.12 candidate; 28.11 remains published until release verification",
   "baselineProduction": "8c5ba8cee90d163dab5b1c114579490d3b9c29cf",
-  "build": "705.28.11-calibracao-entrada-fluidez",
-  "assetVersion": 70647,
-  "revision": "3d8a8c932c9e8d84",
+  "build": "705.28.12-calibracao-recuperacao",
+  "assetVersion": 70648,
+  "revision": "72c45601e6968473",
   "resourceHashes": 107,
-  "unitTests": 335,
+  "unitTests": 337,
   "soloEntry": {
     "games": 5,
     "authPhasesGameplaySignoutAndSolo": true
@@ -16,10 +16,13 @@
     "calibrationFivePoints": true,
     "handOrObjectSourceIsExplicit": true,
     "syntheticCameraAndPostureFixture": true,
-    "physicalPhone": false
+    "physicalPhone": false,
+    "consecutiveCompleteTrainingPasses": 3,
+    "largeHorizontalAndVerticalRecovery": true,
+    "differentObjectRejected": true
   },
   "update": {
-    "warWorker": 40,
+    "warWorker": 41,
     "kartWorker": 32,
     "careerCoinsWeaponAndUnrelatedStoragePreserved": true
   },
@@ -33,5 +36,6 @@
     "cpuP95MsAfter": 69,
     "limits": "CPU reduction is measured; display cadence remained slow and was not improved consistently. Physical Android stuttering is not certified fixed."
   },
-  "androidApkReplaced": false
+  "androidApkReplaced": false,
+  "supersededProduction": "b7ebb6f3cd0f73048a3a8a00021e389ade6e286f"
 }

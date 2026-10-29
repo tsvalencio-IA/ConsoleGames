@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.11-calibracao-entrada-fluidez",
+  "build": "705.28.12-calibracao-recuperacao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "e65a3ffd64e6d9d6b480fc0a8caab4f52aa02b449b48b4dc12316d7b7e400083"
+      "sha256Body": "0b36bab761ab572a2b77c50c95368a0f71b4e7e20694cf2b126ef09280bdf37d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",

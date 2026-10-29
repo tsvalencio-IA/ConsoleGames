@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.11-calibracao-entrada-fluidez',
+    build: '705.28.12-calibracao-recuperacao',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
