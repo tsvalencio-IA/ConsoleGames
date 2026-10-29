@@ -76,6 +76,14 @@ test('cached highway queries preserve all map roads, shoulders, endpoints and cl
     assert(c.window.OTTHI_QUERY_BUDGET.diagnostics().roadValidations<=1);
   }finally{c.endWorldQueryFrame();}
 });
+test('city road queries retain the exact sidewalk footprints and inclusive borders',()=>{
+  const c=fixture(),layout=c.window.OTTHI_WORLD_LAYOUT_V704.layout,rng=random(),bounds=c.v704WorldBounds();
+  const expected=(x,z,margin,sidewalk)=>layout.roads.some(r=>c.v704PointInRect({x,z},c.v704RoadFootprint(r,sidewalk),margin))||exhaustiveRoad(c,x,z,margin,sidewalk);
+  c.beginWorldQueryFrame();try{
+    for(let i=0;i<5000;i++){const x=bounds.minX+rng()*(bounds.maxX-bounds.minX),z=bounds.minZ+rng()*(bounds.maxZ-bounds.minZ),margin=i%5-2,sidewalk=i%2===0;assert.equal(c.v704RoadAt(x,z,margin,sidewalk),expected(x,z,margin,sidewalk));}
+    for(const road of layout.roads)for(const sidewalk of[false,true]){const r=c.v704RoadFootprint(road,sidewalk);for(const [x,z]of[[r.x+r.w/2,r.z],[r.x,r.z-r.d/2]])assert.equal(c.v704RoadAt(x,z,0,sidewalk),expected(x,z,0,sidewalk));}
+  }finally{c.endWorldQueryFrame();}
+});
 test('road point movement, replacement, width edits and newly connected roads invalidate correctly',()=>{
   const functions=fixture(),layout={highways:[]},c=vm.createContext({window:{OTTHI_WORLD_LAYOUT_V704:{layout}},WORLD_LAYOUT_V704:layout});
   vm.runInContext(read('70-world-query-budget.js')+'\n'+['v704HighwaySegments','v704HighwayAt','v704DistanceToSegment'].map(name=>functions[name].toString()).join('\n'),c);

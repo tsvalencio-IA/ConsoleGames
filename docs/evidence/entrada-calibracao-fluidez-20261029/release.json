@@ -1,0 +1,37 @@
+{
+  "state": "candidate; not yet published",
+  "baselineProduction": "8c5ba8cee90d163dab5b1c114579490d3b9c29cf",
+  "build": "705.28.11-calibracao-entrada-fluidez",
+  "assetVersion": 70647,
+  "revision": "3d8a8c932c9e8d84",
+  "resourceHashes": 107,
+  "unitTests": 335,
+  "soloEntry": {
+    "games": 5,
+    "authPhasesGameplaySignoutAndSolo": true
+  },
+  "war": {
+    "rotatedAfterAxisDegrees": 37,
+    "failedRecaptureAndRetry": true,
+    "calibrationFivePoints": true,
+    "handOrObjectSourceIsExplicit": true,
+    "syntheticCameraAndPostureFixture": true,
+    "physicalPhone": false
+  },
+  "update": {
+    "warWorker": 40,
+    "kartWorker": 32,
+    "careerCoinsWeaponAndUnrelatedStoragePreserved": true
+  },
+  "performance": {
+    "environment": "Chromium software WebGL, all 44 traffic models and 138 NPCs; 15 second walking samples; no geometry or NPC removed",
+    "frameMeanMsBefore": 133.108,
+    "frameMeanMsAfter": 138.6682,
+    "cpuMeanMsBefore": 61.4832,
+    "cpuMeanMsAfter": 50.512,
+    "cpuP95MsBefore": 112.3,
+    "cpuP95MsAfter": 69,
+    "limits": "CPU reduction is measured; display cadence remained slow and was not improved consistently. Physical Android stuttering is not certified fixed."
+  },
+  "androidApkReplaced": false
+}

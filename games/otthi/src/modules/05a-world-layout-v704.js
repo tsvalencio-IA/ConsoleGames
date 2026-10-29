@@ -354,7 +354,7 @@
   }
   function v704HighwayAt(x,z,margin=0,includeShoulder=true){
     const px=Number(x),pz=Number(z);if(!Number.isFinite(px)||!Number.isFinite(pz))return false;
-    for(const seg of v704HighwaySegments()){
+    for(const seg of typeof nearbyWorldHighwaySegments==='function'?nearbyWorldHighwaySegments(px,pz,margin):v704HighwaySegments()){
       const limit=seg.width/2+(includeShoulder?seg.shoulder:0)+margin;if(limit<0)continue;
       const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((px-seg.a.x)*dx+(pz-seg.a.z)*dz)/len2)),ex=px-(seg.a.x+dx*t),ez=pz-(seg.a.z+dz*t);
       if(ex*ex+ez*ez<=limit*limit)return true;
@@ -362,7 +362,13 @@
     return false;
   }
   function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin,len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
-  function v704RoadAt(x,z,margin=0,includeSidewalk=false){return WORLD_LAYOUT_V704.roads.some(road=>v704PointInRect({x,z},v704RoadFootprint(road,includeSidewalk),margin))||v704HighwayAt(x,z,margin,includeSidewalk);}
+  function v704RoadAt(x,z,margin=0,includeSidewalk=false){
+    const px=Number(x),pz=Number(z),side=includeSidewalk?2.7:0;
+    // Same inclusive footprints, without allocating a point and spreading an
+    // entire road object for every candidate at every traffic physics step.
+    for(const road of WORLD_LAYOUT_V704.roads){const w=Number(road.w),d=Number(road.d);if(Math.abs(px-Number(road.x))<=(w+(w>=d?0:side))/2+margin&&Math.abs(pz-Number(road.z))<=(d+(w>=d?side:0))/2+margin)return true;}
+    return v704HighwayAt(x,z,margin,includeSidewalk);
+  }
   function v704SafeSignPoint(x,z,rotationY=0){
     const base={x:Number(x),z:Number(z)},half=1.08,alongX=Math.cos(rotationY)*half,alongZ=-Math.sin(rotationY)*half,normalX=Math.sin(rotationY),normalZ=Math.cos(rotationY);
     const clear=point=>![{x:point.x,z:point.z},{x:point.x+alongX,z:point.z+alongZ},{x:point.x-alongX,z:point.z-alongZ}].some(sample=>v704RoadAt(sample.x,sample.z,.38,true));

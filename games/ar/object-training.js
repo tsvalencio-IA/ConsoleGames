@@ -16,13 +16,36 @@ class ObjectTools{
    if(p.x<roi.x*320||p.x>(roi.x+roi.w)*320||p.y<roi.y*240||p.y>(roi.y+roi.h)*240){this.status.textContent='Toque em uma parte do brinquedo dentro da caixa.';return;}
    if(!this.tip){this.tip=p;this.status.textContent='3 · Agora toque no apoio / parte traseira do brinquedo.';return;}
    if(Math.hypot(p.x-this.tip.x,p.y-this.tip.y)<12){this.status.textContent='Escolha um apoio mais distante da ponta.';return;}
-   session.worker.postMessage({type:'axis',axis:{tip:this.tip,base:p}});this.frozen=false;session.controller.objectMapping=null;session.controller.reset();this.status.textContent='✓ Ponta e apoio marcados. Segure na posição central até calibrar corpo e objeto.';
+   this.awaitingAxis=true;session.worker.postMessage({type:'axis',axis:{tip:this.tip,base:p}});this.status.textContent='Confirmando a ponta e o apoio…';
   },true);
   this.sync();
  }
  sync(){const s=this.s,object=s.source==='object';if(object){s.root.querySelector('h2').textContent='CADASTRE SEU BRINQUEDO';s.root.querySelector('.war-hand-instruction').textContent='Mostre os ombros e segure o brinquedo na posição de mira. Selecione detalhes do próprio objeto, capture e marque sua ponta e apoio.';}else{s.root.querySelector('h2').textContent='CALIBRE CORPO E MÃO';s.root.querySelector('.war-hand-instruction').textContent='Mostre os ombros e a mão direita aberta na altura do peito. Segure para calibrar. Aponte para mirar e agache para se proteger.';}if(s.game.training)s.root.querySelector('small').textContent='Treino sem dano e sem limite de tempo. A câmera some após calibrar. No campo, use AJUSTAR MIRA para aprender seus cinco pontos. O avanço só começa se você pedir para testá-lo.';this.root.hidden=!object;s.root.querySelector('[data-hand="capture"]').hidden=!object;s.root.querySelector('[data-hand-object-options]').hidden=!object;for(const mode of['hand','object'])s.root.querySelector('[data-hand="source-'+mode+'"]').setAttribute('aria-pressed',String(mode===s.source));}
- sourceChanged(){this.cancel(false);this.frozen=false;this.still=null;this.template=null;this.s.controller.objectMapping=null;this.sync();}
+ sourceChanged(){this.resetCapture();this.s.controller.objectMapping=null;this.sync();}
  captured(frame){this.still=document.createElement('canvas');this.still.width=320;this.still.height=240;this.still.getContext('2d').putImageData(frame,0,0);}
+ resetCapture(message='1 · Selecione os detalhes do brinquedo que está na sua mão, sem incluir seu rosto ou o fundo.'){
+  this.cancel(false);this.frozen=false;this.awaitingAxis=false;this.tip=null;this.template=null;this.still=null;this.acquireAt=0;this.s.lastTemplate=null;this.s.lastObject=null;
+  for(const id of['axis','five'])this.root.querySelector('[data-object="'+id+'"]').disabled=true;
+  this.status.textContent=message;
+ }
+ axisAccepted(){
+  if(!this.awaitingAxis)return;this.awaitingAxis=false;this.frozen=false;this.s.controller.objectMapping=null;this.s.controller.reset();this.acquireAt=performance.now();
+  this.status.textContent='4 · Volte à posição da captura e segure o brinquedo parado. A calibração entra automaticamente.';
+ }
+ progress(now){
+  const s=this.s;if(s.source!=='object')return null;
+  if(this.awaitingAxis)return 'Confirmando a ponta e o apoio…';
+  if(this.frozen)return this.status.textContent;
+  if(s.needCapture)return s.captureMessage||this.status.textContent;
+  if(s.captureAt>now)return 'Captura em '+Math.ceil((s.captureAt-now)/1000)+'… segure o brinquedo.';
+  if(s.controller.state!=='calibrating')return null;
+  const samples=s.controller.samples;
+  if(samples.length){this.acquireAt=now;return 'OBJETO · Segure parado… '+Math.min(100,Math.round((samples.at(-1).time-samples[0].time)/10))+'%';}
+  if(!this.acquireAt)this.acquireAt=now;
+  const elapsed=now-this.acquireAt;
+  if(elapsed>8000){this.status.textContent='Objeto não confirmado. Volte à posição da captura ou toque em CAPTURAR para refazer. Sem brinquedo, escolha MÃO DIREITA.';return this.status.textContent;}
+  return 'OBJETO · Procurando os mesmos detalhes. Volte à posição da captura e mantenha a ponta à vista.';
+ }
  remember(template){
   this.template=template;this.s.lastTemplate=template;
   for(const id of['axis','five'])this.root.querySelector('[data-object="'+id+'"]').disabled=false;
@@ -35,7 +58,7 @@ class ObjectTools{
  load(template){this.template=template;this.s.lastTemplate=template;this.s.controller.objectMapping=window.WarObjectAim.valid(template.aimCalibration)?template.aimCalibration:null;for(const id of['axis','five'])this.root.querySelector('[data-object="'+id+'"]').disabled=false;}
  markAxis(){
   const s=this.s;if(!this.still){this.status.textContent='Capture uma imagem nova para marcar a ponta.';return;}
-  this.cancel(false);this.tip=null;this.frozen=true;s.release();s.game.state='HAND_CALIBRATION';s.root.classList.add('calibrating');s.root.setAttribute('role','dialog');s.root.setAttribute('aria-modal','true');this.status.textContent='2 · Imagem congelada: toque na PONTA do brinquedo.';s.canvas.scrollIntoView({block:'center',behavior:'instant'});
+  this.cancel(false);this.tip=null;this.awaitingAxis=false;this.frozen=true;s.release();s.game.state='HAND_CALIBRATION';s.root.classList.add('calibrating');s.root.setAttribute('role','dialog');s.root.setAttribute('aria-modal','true');this.status.textContent='2 · Imagem congelada: toque na PONTA do brinquedo.';s.canvas.scrollIntoView({block:'center',behavior:'instant'});
  }
  begin(){
   const s=this.s;if(!s.lastObject?.object||!s.controller.neutral){this.status.textContent='Primeiro capture o brinquedo e mantenha-o visível para calibrar o centro.';return;}

@@ -6,3 +6,11 @@ test('selected object tracks translation and rotation, then reacquires only the 
 test('object calibration rejects an untextured wall rather than following scenery',()=>{const t=new ObjectTracker();assert.throws(()=>t.initialize(new Uint8ClampedArray(w*h*4).fill(200),w,h,roi),/detalhes|Objeto/);assert(!t.ready);});
 
 test('a remembered toy stores validated visual features and requires a new real pixel match',()=>{const pixels=frame(),big=new Uint8ClampedArray(320*240*4);for(let y=0;y<240;y++)for(let x=0;x<320;x++)for(let k=0;k<4;k++)big[(y*320+x)*4+k]=pixels[(Math.floor(y/2)*160+Math.floor(x/2))*4+k];const a=new ObjectTracker();a.initialize(big,320,240,{x:102,y:70,w:116,h:116});const saved=JSON.parse(JSON.stringify(a.exportTemplate())),b=new ObjectTracker();assert(!('image' in saved));b.importTemplate(saved);assert(b.track(big));assert.throws(()=>b.importTemplate({...saved,template:[1]}),/inválido/);for(let i=0;i<3;i++)b.track(new Uint8ClampedArray(big.length).fill(180));assert(b.lost);assert.equal(b.track(big),null);assert(b.track(big));const old={...saved,version:1};delete old.axis;new ObjectTracker().importTemplate(old);});
+
+test('object can be recovered at a different angle after reaching for the calibration screen',()=>{
+ const t=new ObjectTracker();t.initialize(frame(),w,h,roi);
+ for(let i=0;i<3;i++)t.track(frame(0,0,0,true));assert(t.lost);
+ let pose;for(let i=0;i<35&&!pose;i++)pose=t.track(frame(10,-3,.65));
+ assert(pose,'same textured object rotated 37 degrees must be recovered without recapturing');
+ assert(Math.abs(pose.angle-.65)<.08);assert(Math.abs(pose.x*w-90)<3);for(let i=0;i<15;i++)assert(t.track(frame(10,-3,.65)),'recovered object must remain trackable for neutral calibration, frame '+i);
+});

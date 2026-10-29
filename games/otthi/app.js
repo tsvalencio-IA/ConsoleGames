@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.10-objetos-kart-fluidez';
+  const OTTHI_GAME_WEB_BUILD = '705.28.11-calibracao-entrada-fluidez';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2021,7 +2021,7 @@
   }
   function v704HighwayAt(x,z,margin=0,includeShoulder=true){
     const px=Number(x),pz=Number(z);if(!Number.isFinite(px)||!Number.isFinite(pz))return false;
-    for(const seg of v704HighwaySegments()){
+    for(const seg of typeof nearbyWorldHighwaySegments==='function'?nearbyWorldHighwaySegments(px,pz,margin):v704HighwaySegments()){
       const limit=seg.width/2+(includeShoulder?seg.shoulder:0)+margin;if(limit<0)continue;
       const dx=seg.b.x-seg.a.x,dz=seg.b.z-seg.a.z,len2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((px-seg.a.x)*dx+(pz-seg.a.z)*dz)/len2)),ex=px-(seg.a.x+dx*t),ez=pz-(seg.a.z+dz*t);
       if(ex*ex+ez*ez<=limit*limit)return true;
@@ -2029,7 +2029,13 @@
     return false;
   }
   function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin,len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
-  function v704RoadAt(x,z,margin=0,includeSidewalk=false){return WORLD_LAYOUT_V704.roads.some(road=>v704PointInRect({x,z},v704RoadFootprint(road,includeSidewalk),margin))||v704HighwayAt(x,z,margin,includeSidewalk);}
+  function v704RoadAt(x,z,margin=0,includeSidewalk=false){
+    const px=Number(x),pz=Number(z),side=includeSidewalk?2.7:0;
+    // Same inclusive footprints, without allocating a point and spreading an
+    // entire road object for every candidate at every traffic physics step.
+    for(const road of WORLD_LAYOUT_V704.roads){const w=Number(road.w),d=Number(road.d);if(Math.abs(px-Number(road.x))<=(w+(w>=d?0:side))/2+margin&&Math.abs(pz-Number(road.z))<=(d+(w>=d?side:0))/2+margin)return true;}
+    return v704HighwayAt(x,z,margin,includeSidewalk);
+  }
   function v704SafeSignPoint(x,z,rotationY=0){
     const base={x:Number(x),z:Number(z)},half=1.08,alongX=Math.cos(rotationY)*half,alongZ=-Math.sin(rotationY)*half,normalX=Math.sin(rotationY),normalZ=Math.cos(rotationY);
     const clear=point=>![{x:point.x,z:point.z},{x:point.x+alongX,z:point.z+alongZ},{x:point.x-alongX,z:point.z-alongZ}].some(sample=>v704RoadAt(sample.x,sample.z,.38,true));
@@ -7876,7 +7882,7 @@
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
     const start=performance.now();updateCamera(1);
     const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-    try{renderer.compile(scene,camera);renderer.render(scene,camera);}
+    try{const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);if(!templates)renderer.compile(scene,camera);perf.vehicleShaderTemplates=Number(templates||0);renderer.render(scene,camera);}
     finally{restoreLights?.();restoreHome?.();}
     perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
   }
@@ -9241,7 +9247,7 @@ function build(T,key,H){
   }
 
   const extendedTerrainRoads=v704HighwaySegments().filter(s=>s.a.y!==undefined||s.b.y!==undefined);
-  function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
+  function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){if(Math.abs(x-p.x)>=p.rx||Math.abs(z-p.z)>=p.rz)continue;const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
   function professionalTerrainHeightAt(x,z){
     if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
@@ -9251,7 +9257,7 @@ function build(T,key,H){
     let dune=0;if(x>70&&z>-61&&z<-24){const a=Math.max(0,1-Math.hypot((x-91)/25,(z+42)/20));dune=Math.max(0,Math.sin((x+z)*.12)*.45+.55)*a*2.1;}
     let height=Math.max(0,mountain,dune,mountainRangeHeightAt(x,z));
     // Raised mountain passes and the terrain share exactly the same height.
-    let nearest=null;for(const seg of extendedTerrainRoads){const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
+    let nearest=null;for(const seg of extendedTerrainRoads){if(x<Math.min(seg.a.x,seg.b.x)-32||x>Math.max(seg.a.x,seg.b.x)+32||z<Math.min(seg.a.z,seg.b.z)-32||z>Math.max(seg.a.z,seg.b.z)+32)continue;const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
     if(nearest){const edge=nearest.seg.width/2+nearest.seg.shoulder+1.4,t=clamp((nearest.distance-edge)/24,0,1),grade=lerp(Number(nearest.seg.a.y||0),Number(nearest.seg.b.y||0),nearest.t);height=lerp(grade,height,t*t*(3-2*t));}
     const launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
   }
@@ -11309,7 +11315,17 @@ function build(T,key){
 }
 function prepare(T,key){if(!catalog[key])return false;let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));return true;}
 function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key);const root=caches.get(T).get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
-(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,prepare,definition:key=>definitions[key]||null};
+function precompile(T,renderer,scene,camera){
+ const cache=caches.get(T);if(!cache)return 0;
+ const group=new T.Group();group.name='OTTHI_VEHICLE_SHADER_PREPARATION';group.visible=false;
+ for(const root of cache.values())if(!root.parent)group.add(root);
+ const count=group.children.length;scene.add(group);
+ // Three r128 compile visits materials in hidden groups too. Nothing from
+ // this temporary group is painted, cloned, disposed or left in the scene.
+ try{renderer.compile(scene,camera);}finally{scene.remove(group);for(const root of [...group.children])group.remove(root);}
+ return count;
+}
+(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,prepare,precompile,definition:key=>definitions[key]||null};
 })();
 
   // ===== MODULE: 48-family-transport.js =====
@@ -12930,14 +12946,33 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key)
     if(worldQueryBudget)worldQueryBudget.stats.roadQueries++;
     if(!rebuild&&!worldQueryFrameChecked(cache)){
       worldQueryBudget.stats.roadValidations++;
-      for(let i=0;i<source.length;i++){const h=source[i],r=cache.records[i],points=h.points||[];if(r.object!==h||r.id!==h.id||r.points!==points||r.width!==Number(h.width||10)||r.shoulder!==Number(h.shoulder||0)||r.closed!==!!h.closed||r.vertices.length!==points.length){rebuild=true;break;}for(let j=0;j<points.length;j++)if(r.vertices[j]!==points[j]){rebuild=true;break;}if(rebuild)break;}
+      for(let i=0;i<source.length;i++){const h=source[i],r=cache.records[i],points=h.points||[];if(r.object!==h||r.id!==h.id||r.points!==points||r.width!==Number(h.width||10)||r.shoulder!==Number(h.shoulder||0)||r.closed!==!!h.closed||r.vertices.length!==points.length){rebuild=true;break;}for(let j=0;j<points.length;j++)if(r.vertices[j]!==points[j]||r.coordinates[j*2]!==points[j].x||r.coordinates[j*2+1]!==points[j].z){rebuild=true;break;}if(rebuild)break;}
     }
     if(rebuild){
       cache={source,records:[],segments:[],checkedFrame:-1};if(worldQueryBudget)worldQueryBudget.stats.roadRebuilds++;
-      for(const h of source){const points=h.points||[];cache.records.push({object:h,id:h.id,points,vertices:points.slice(),width:Number(h.width||10),shoulder:Number(h.shoulder||0),closed:!!h.closed});for(let i=0;i<points.length-(h.closed?0:1);i++)cache.segments.push({id:`${h.id}-${i}`,highwayId:h.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(h.width||10),shoulder:Number(h.shoulder||0)});}
+      for(const h of source){const points=h.points||[];cache.records.push({object:h,id:h.id,points,vertices:points.slice(),coordinates:points.flatMap(p=>[p.x,p.z]),width:Number(h.width||10),shoulder:Number(h.shoulder||0),closed:!!h.closed});for(let i=0;i<points.length-(h.closed?0:1);i++)cache.segments.push({id:`${h.id}-${i}`,highwayId:h.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(h.width||10),shoulder:Number(h.shoulder||0)});}
       if(worldQueryBudget)worldQueryBudget.roads=cache;
     }
     markWorldQueryFrame(cache);return cache.segments;
+  }
+  function nearbyWorldHighwaySegments(x,z,margin=0){
+    const segments=cachedWorldHighwaySegments(),cache=worldQueryBudget?.roads;
+    if(!cache||typeof margin!=='number'||!Number.isFinite(margin))return segments;
+    if(!cache.spatial){
+      const cells=new Map(),loose=[];
+      for(const seg of segments){const pad=seg.width/2+seg.shoulder+.000001,minX=Math.min(seg.a.x,seg.b.x)-pad,maxX=Math.max(seg.a.x,seg.b.x)+pad,minZ=Math.min(seg.a.z,seg.b.z)-pad,maxZ=Math.max(seg.a.z,seg.b.z)+pad;
+        const record={seg,stamp:0},x0=Math.floor(minX/32),x1=Math.floor(maxX/32),z0=Math.floor(minZ/32),z1=Math.floor(maxZ/32);
+        if(![minX,maxX,minZ,maxZ].every(Number.isFinite)||pad<0||(x1-x0+1)*(z1-z0+1)>512){loose.push(record);continue;}
+        for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const key=ix+':'+iz;let bucket=cells.get(key);if(!bucket)cells.set(key,bucket=[]);bucket.push(record);}
+      }
+      cache.spatial={cells,loose,scratch:[],stamp:0};
+    }
+    const index=cache.spatial,r=Math.max(0,margin),x0=Math.floor((x-r)/32),x1=Math.floor((x+r)/32),z0=Math.floor((z-r)/32),z1=Math.floor((z+r)/32);
+    if((x1-x0+1)*(z1-z0+1)>64)return segments;
+    const result=index.scratch;result.length=0;const stamp=++index.stamp;
+    for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const bucket=index.cells.get(ix+':'+iz);if(bucket)for(const record of bucket)if(record.stamp!==stamp){record.stamp=stamp;result.push(record.seg);}}
+    for(const record of index.loose)result.push(record.seg);
+    return result;
   }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};
 

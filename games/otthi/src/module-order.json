@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.10-objetos-kart-fluidez",
+  "build": "705.28.11-calibracao-entrada-fluidez",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3cc362de1b9eff373ee28f56fc5aa8b815376a0eeff1c83b7c76379b3482f95f"
+      "sha256Body": "e65a3ffd64e6d9d6b480fc0a8caab4f52aa02b449b48b4dc12316d7b7e400083"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "048b5e904e36d363f3f36a0660ee2c82ceab965f37e416ad2ea6c9f851e53975"
+      "sha256Body": "e71b46375e6865ba0c2c7ed9c359131e7346d2b4c3bff3ddffee8188d7bf02f7"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "d9816216c54b22deafe8999d2acb53faa44bc6f375463ce90dbfa4bfe4f6ef94"
+      "sha256Body": "9e1ee93ebaed08c48d204953fd8f7af96ed53de934ea98da16a74c391a5b524e"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "94ad3dac9969c0fcd949e97173622c638f335b00fb7914518e0ccfbbc4c5b319"
+      "sha256Body": "1e9d2a9f95832e2d9a28d49c7c20892a2bf07e36c1ae230072a6e79d4fc8ec86"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -427,7 +427,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Modelos originais brasileiros compartilhados",
-      "sha256Body": "1c1d6d34220975e9902c1be920a8c19a06606163fdec6ae6f10290396b854673"
+      "sha256Body": "909c6bd27c1b0280ad2bfe740cb3bb770e6f070655995ec05c507447399bbee5"
     },
     {
       "file": "src/modules/48-family-transport.js",
@@ -592,7 +592,7 @@
       "description": "Consultas espaciais de colisão e rodovias reutilizadas por quadro",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "968fcf4f4ce514ba2ca78b62e8ea1cf739479d35bfb38be1006c068eb18deab1"
+      "sha256Body": "efd7985fb37f96846b77b12b60fa436b520dfdab10662a4649694fa1ffd2e62f"
     },
     {
       "file": "src/modules/71-world-light-budget.js",

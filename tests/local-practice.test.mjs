@@ -36,7 +36,7 @@ test('solo retains the actual Kart garage and flight progression after reopening
    const element=()=>({style:{},classList:{add:noop,remove:noop,contains:()=>true},querySelector:element,setAttribute:noop,append:noop,appendChild:noop,remove:noop,before:noop});
    const window={CONSOLE_GAME_ID:id,addEventListener:noop,Profile:{username:'Online',permissions:{},coins:900,xp:1,level:2,[field]:online,updateUI:noop},System:{canvas:{},openPhases:noop,stopGame:noop,gameOver:noop},Games:[{id}],onload:async()=>{}};
    const document={readyState:'loading',createElement:element,querySelector:s=>s==='#solo-indicator'?null:element(),body:{append:noop}};
-   runInNewContext(readFileSync('enhancements/local-practice.js','utf8'),{window,parent:window,document,location:{search:'',href:'https://test.example/games/kart/',origin:'https://test.example'},URL,URLSearchParams,crypto:{randomUUID:()=> '12345678-1234-1234-1234-123456789012'},navigator:{},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},console,setTimeout:noop,clearTimeout:noop,setInterval:noop,clearInterval:noop});
+   runInNewContext(readFileSync('enhancements/local-practice.js','utf8'),{window,parent:window,document,location:{search:'',href:'https://test.example/games/kart/',origin:'https://test.example'},URL,URLSearchParams,crypto:{randomUUID:()=> '12345678-1234-1234-1234-123456789012'},navigator:{},performance:{now:()=>0},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},console,setTimeout:noop,clearTimeout:noop,setInterval:noop,clearInterval:noop});
    return window;
   };
   const first=load();await first.ConsolePractice.enter();assert.notDeepEqual(first.Profile[field],online,'Local solo must not inherit a real account garage');

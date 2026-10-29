@@ -38,13 +38,32 @@
     if(worldQueryBudget)worldQueryBudget.stats.roadQueries++;
     if(!rebuild&&!worldQueryFrameChecked(cache)){
       worldQueryBudget.stats.roadValidations++;
-      for(let i=0;i<source.length;i++){const h=source[i],r=cache.records[i],points=h.points||[];if(r.object!==h||r.id!==h.id||r.points!==points||r.width!==Number(h.width||10)||r.shoulder!==Number(h.shoulder||0)||r.closed!==!!h.closed||r.vertices.length!==points.length){rebuild=true;break;}for(let j=0;j<points.length;j++)if(r.vertices[j]!==points[j]){rebuild=true;break;}if(rebuild)break;}
+      for(let i=0;i<source.length;i++){const h=source[i],r=cache.records[i],points=h.points||[];if(r.object!==h||r.id!==h.id||r.points!==points||r.width!==Number(h.width||10)||r.shoulder!==Number(h.shoulder||0)||r.closed!==!!h.closed||r.vertices.length!==points.length){rebuild=true;break;}for(let j=0;j<points.length;j++)if(r.vertices[j]!==points[j]||r.coordinates[j*2]!==points[j].x||r.coordinates[j*2+1]!==points[j].z){rebuild=true;break;}if(rebuild)break;}
     }
     if(rebuild){
       cache={source,records:[],segments:[],checkedFrame:-1};if(worldQueryBudget)worldQueryBudget.stats.roadRebuilds++;
-      for(const h of source){const points=h.points||[];cache.records.push({object:h,id:h.id,points,vertices:points.slice(),width:Number(h.width||10),shoulder:Number(h.shoulder||0),closed:!!h.closed});for(let i=0;i<points.length-(h.closed?0:1);i++)cache.segments.push({id:`${h.id}-${i}`,highwayId:h.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(h.width||10),shoulder:Number(h.shoulder||0)});}
+      for(const h of source){const points=h.points||[];cache.records.push({object:h,id:h.id,points,vertices:points.slice(),coordinates:points.flatMap(p=>[p.x,p.z]),width:Number(h.width||10),shoulder:Number(h.shoulder||0),closed:!!h.closed});for(let i=0;i<points.length-(h.closed?0:1);i++)cache.segments.push({id:`${h.id}-${i}`,highwayId:h.id,index:i,a:points[i],b:points[(i+1)%points.length],width:Number(h.width||10),shoulder:Number(h.shoulder||0)});}
       if(worldQueryBudget)worldQueryBudget.roads=cache;
     }
     markWorldQueryFrame(cache);return cache.segments;
+  }
+  function nearbyWorldHighwaySegments(x,z,margin=0){
+    const segments=cachedWorldHighwaySegments(),cache=worldQueryBudget?.roads;
+    if(!cache||typeof margin!=='number'||!Number.isFinite(margin))return segments;
+    if(!cache.spatial){
+      const cells=new Map(),loose=[];
+      for(const seg of segments){const pad=seg.width/2+seg.shoulder+.000001,minX=Math.min(seg.a.x,seg.b.x)-pad,maxX=Math.max(seg.a.x,seg.b.x)+pad,minZ=Math.min(seg.a.z,seg.b.z)-pad,maxZ=Math.max(seg.a.z,seg.b.z)+pad;
+        const record={seg,stamp:0},x0=Math.floor(minX/32),x1=Math.floor(maxX/32),z0=Math.floor(minZ/32),z1=Math.floor(maxZ/32);
+        if(![minX,maxX,minZ,maxZ].every(Number.isFinite)||pad<0||(x1-x0+1)*(z1-z0+1)>512){loose.push(record);continue;}
+        for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const key=ix+':'+iz;let bucket=cells.get(key);if(!bucket)cells.set(key,bucket=[]);bucket.push(record);}
+      }
+      cache.spatial={cells,loose,scratch:[],stamp:0};
+    }
+    const index=cache.spatial,r=Math.max(0,margin),x0=Math.floor((x-r)/32),x1=Math.floor((x+r)/32),z0=Math.floor((z-r)/32),z1=Math.floor((z+r)/32);
+    if((x1-x0+1)*(z1-z0+1)>64)return segments;
+    const result=index.scratch;result.length=0;const stamp=++index.stamp;
+    for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const bucket=index.cells.get(ix+':'+iz);if(bucket)for(const record of bucket)if(record.stamp!==stamp){record.stamp=stamp;result.push(record.seg);}}
+    for(const record of index.loose)result.push(record.seg);
+    return result;
   }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};

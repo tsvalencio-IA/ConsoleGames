@@ -33,6 +33,8 @@ jobs:
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/ot-games-server.log 2>&1 &
           sleep 2
+      - name: Entrada solo nunca cobre as fases, a calibração ou o jogo
+        run: node tests/solo-entry-browser.mjs
       - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
         run: node tests/war-camera-browser.mjs
       - name: Inferência real do corpo e controle por objeto no WAR original
@@ -79,6 +81,7 @@ jobs:
             test-results/war-body/
             test-results/war-object/
             test-results/war-training/
+            test-results/solo-entry/
             test-results/war-joint-camera/
             test-results/war-campaign/
             test-results/war-update/

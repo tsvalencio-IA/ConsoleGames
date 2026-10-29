@@ -108,9 +108,11 @@
     if(practice.active)return;
     if(!entry){
       entry=document.createElement('section');entry.id='solo-entry';entry.setAttribute('aria-label','Entrar no jogo');
-      entry.style.cssText='position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:8000;max-width:430px;margin:auto;padding:14px;box-sizing:border-box;border:1px solid #73c9c2;border-radius:16px;background:#102d3ef5;color:#f1fff6;box-shadow:0 6px 26px #0005;font:14px system-ui;text-align:center';
+      // An entry choice belongs inside the entry screen, never over gameplay.
+      entry.style.cssText='position:relative;width:100%;max-width:360px;margin:12px auto 0;padding:12px;box-sizing:border-box;border:1px solid #73c9c2;border-radius:12px;background:#102d3e;color:#f1fff6;font:13px system-ui;text-align:center';
       entry.innerHTML='<p style="margin:0 0 10px;line-height:1.4" data-solo-text>Você pode jogar sozinho neste aparelho. A conta online continua disponível.</p><button type="button" data-solo-start style="min-height:46px;width:100%;border:0;border-radius:10px;background:#a8e9ba;color:#102b32;font:800 15px system-ui">JOGAR SOZINHO</button>';
-      entry.querySelector('button').onclick=()=>practice.enter();document.body.append(entry);
+      entry.querySelector('button').onclick=()=>practice.enter();entry.hidden=true;
+      ($('#auth-form')||$('#auth-screen')||document.body).append(entry);
     }
     if(message)entry.querySelector('[data-solo-text]').textContent=message;
   }
@@ -139,9 +141,23 @@
     venueMessage('ot-venue-ready');
   }else{
     show();
-    // A real signed-in account keeps its original permissions and cloud progress.
-    const watch=setInterval(()=>{if(practice.active){clearInterval(watch);return;}if(window.AuthApp?.currentUser&&!$('#menu-screen')?.classList.contains('hidden')){entry?.remove();entry=null;clearInterval(watch);}},200);
-    window.addEventListener('pagehide',()=>clearInterval(watch),{once:true});
+    const loadedAt=performance.now(),visible=selector=>{const node=$(selector);return !!node&&!node.hidden&&!node.classList.contains('hidden');};
+    const syncEntry=()=>{
+      if(!entry)return;
+      const playing=!!window.System?.activeGame||['#menu-screen','#phase-screen','#game-ui','#screen-over'].some(visible);
+      const auth=visible('#auth-screen'),slowLoad=visible('#loading')&&performance.now()-loadedAt>=6500;
+      const host=auth?$('#auth-form')||$('#auth-screen'):slowLoad?$('#loading'):null;
+      const showEntry=!practice.active&&!playing&&!!host;
+      entry.hidden=!showEntry;entry.style.display=showEntry?'block':'none';
+      if(showEntry&&entry.parentElement!==host)host.append(entry);
+    };
+    // Phases can open without visiting the menu. Continue observing logout and
+    // delayed profile snapshots instead of stopping at the first menu frame.
+    const watch=setInterval(syncEntry,200);
+    const observer=typeof MutationObserver==='function'?new MutationObserver(syncEntry):null;
+    for(const selector of ['#loading','#auth-screen','#menu-screen','#phase-screen','#game-ui','#screen-over']){const node=$(selector);if(node)observer?.observe(node,{attributes:true,attributeFilter:['class','hidden']});}
+    syncEntry();
+    window.addEventListener('pagehide',()=>{clearInterval(watch);observer?.disconnect();},{once:true});
   }
   if('serviceWorker' in navigator&&location.protocol!=='about:'){
     let previousController=navigator.serviceWorker.controller;

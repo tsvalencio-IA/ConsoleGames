@@ -97,3 +97,9 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 #phase-screen .mission-card[data-mission] .mission-icon{font-size:20px;margin-left:12px}
 
 .war-hand-camera [data-hand="reuse"]{min-height:44px;padding:7px 10px;border:1px solid #8dd7c3;border-radius:9px;background:#204b59;color:#effff6;font:700 11px system-ui;touch-action:manipulation}
+
+/* A calibration step must remain reachable after scrolling on a phone. */
+.war-hand-camera.calibrating .war-hand-panel{touch-action:pan-y;overscroll-behavior:contain}
+.calibrating .war-hand-sources{position:sticky;top:0;z-index:3;background:#0b2632;padding:5px 0}
+.calibrating .war-hand-actions{background:#0b2632;padding:6px 0}
+.calibrating canvas{scroll-margin-block-start:65px}

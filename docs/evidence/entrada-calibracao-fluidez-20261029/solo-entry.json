@@ -1,0 +1,53 @@
+{
+  "cases": [
+    {
+      "slug": "kart",
+      "inlineEntry": true,
+      "directAccountPhases": true,
+      "controls": true,
+      "signOut": true,
+      "solo": true,
+      "errors": []
+    },
+    {
+      "slug": "boxe",
+      "inlineEntry": true,
+      "directAccountPhases": true,
+      "controls": true,
+      "signOut": true,
+      "solo": true,
+      "errors": []
+    },
+    {
+      "slug": "tenis",
+      "inlineEntry": true,
+      "directAccountPhases": true,
+      "controls": true,
+      "signOut": true,
+      "solo": true,
+      "errors": []
+    },
+    {
+      "slug": "ar",
+      "inlineEntry": true,
+      "directAccountPhases": true,
+      "controls": true,
+      "signOut": true,
+      "solo": true,
+      "errors": []
+    },
+    {
+      "slug": "voo",
+      "inlineEntry": true,
+      "directAccountPhases": true,
+      "controls": true,
+      "signOut": true,
+      "solo": true,
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Isolated account/database fixture; not a physical Android test."
+  ],
+  "passed": true
+}

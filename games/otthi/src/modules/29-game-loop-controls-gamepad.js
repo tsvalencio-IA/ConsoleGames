@@ -31,7 +31,7 @@
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
     const start=performance.now();updateCamera(1);
     const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-    try{renderer.compile(scene,camera);renderer.render(scene,camera);}
+    try{const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);if(!templates)renderer.compile(scene,camera);perf.vehicleShaderTemplates=Number(templates||0);renderer.render(scene,camera);}
     finally{restoreLights?.();restoreHome?.();}
     perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
   }

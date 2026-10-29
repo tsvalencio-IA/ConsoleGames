@@ -102,5 +102,15 @@ function build(T,key){
 }
 function prepare(T,key){if(!catalog[key])return false;let cache=caches.get(T);if(!cache)caches.set(T,cache=new Map());if(!cache.has(key))cache.set(key,build(T,key));return true;}
 function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key);const root=caches.get(T).get(key).clone(true);root.traverse(m=>{if(m.isMesh&&m.name==='paint'){m.material=m.material.clone();m.material.color.set(color??catalog[key].color).convertSRGBToLinear();m.material.userData.ownedBrazilPaint=true;}});return root;}
-(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,prepare,definition:key=>definitions[key]||null};
+function precompile(T,renderer,scene,camera){
+ const cache=caches.get(T);if(!cache)return 0;
+ const group=new T.Group();group.name='OTTHI_VEHICLE_SHADER_PREPARATION';group.visible=false;
+ for(const root of cache.values())if(!root.parent)group.add(root);
+ const count=group.children.length;scene.add(group);
+ // Three r128 compile visits materials in hidden groups too. Nothing from
+ // this temporary group is painted, cloned, disposed or left in the scene.
+ try{renderer.compile(scene,camera);}finally{scene.remove(group);for(const root of [...group.children])group.remove(root);}
+ return count;
+}
+(typeof window!=='undefined'?window:globalThis).OTBrazilVehicles={catalog,create,prepare,precompile,definition:key=>definitions[key]||null};
 })();

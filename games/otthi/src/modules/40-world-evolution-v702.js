@@ -19,7 +19,7 @@
   }
 
   const extendedTerrainRoads=v704HighwaySegments().filter(s=>s.a.y!==undefined||s.b.y!==undefined);
-  function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
+  function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){if(Math.abs(x-p.x)>=p.rx||Math.abs(z-p.z)>=p.rz)continue;const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
   function professionalTerrainHeightAt(x,z){
     if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
@@ -29,7 +29,7 @@
     let dune=0;if(x>70&&z>-61&&z<-24){const a=Math.max(0,1-Math.hypot((x-91)/25,(z+42)/20));dune=Math.max(0,Math.sin((x+z)*.12)*.45+.55)*a*2.1;}
     let height=Math.max(0,mountain,dune,mountainRangeHeightAt(x,z));
     // Raised mountain passes and the terrain share exactly the same height.
-    let nearest=null;for(const seg of extendedTerrainRoads){const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
+    let nearest=null;for(const seg of extendedTerrainRoads){if(x<Math.min(seg.a.x,seg.b.x)-32||x>Math.max(seg.a.x,seg.b.x)+32||z<Math.min(seg.a.z,seg.b.z)-32||z>Math.max(seg.a.z,seg.b.z)+32)continue;const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
     if(nearest){const edge=nearest.seg.width/2+nearest.seg.shoulder+1.4,t=clamp((nearest.distance-edge)/24,0,1),grade=lerp(Number(nearest.seg.a.y||0),Number(nearest.seg.b.y||0),nearest.t);height=lerp(grade,height,t*t*(3-2*t));}
     const launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
   }
