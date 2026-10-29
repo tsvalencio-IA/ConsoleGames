@@ -44,7 +44,7 @@ test('combat: every operation and difficulty can finish through actual shots, an
   let steps=0;
   while(g.state==='PLAYING'&&steps++<10000){
    const e=g.enemies.find(e=>e.active);if(e){for(const enemy of g.enemies)enemy.aim=999;aim(g,e);g.shotCooldown=0;g.shoot();if(g.ammo===0){g.reload();g.step(g.gun.reload+.01);}}
-   else g.step(2.6);
+   else{const p=g.objectivePoint(),dx=p.x-g.player.x,dz=p.z-g.player.z,n=Math.hypot(dx,dz);g.player.yaw=0;g.manualStick={x:n>2?dx/n:0,y:n>2?dz/n:0,active:n>2};g.step(.1);}
   }
   assert.equal(g.state,'VICTORY',difficulty+'/'+mission);assert.equal(g.wave,g.mission.waves);assert.equal(g.career.wins,1);assert.equal(g.stats.missions,1);assert(g.stats.hits>0);
  }

@@ -6,9 +6,9 @@
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const angle=v=>Math.atan2(Math.sin(v),Math.cos(v));
 const MISSIONS=[
- {id:'patrol',name:'PATRULHA • PORTO',waves:2,count:3,desc:'Limpe dois setores. Aprenda a mirar, recarregar e usar cobertura.'},
- {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Avance por três setores contra infantaria e drones.'},
- {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:4,count:4,desc:'Atravesse quatro setores e neutralize o blindado final.'}
+ {id:'patrol',name:'PATRULHA • PORTO',waves:2,count:3,desc:'Atravesse os corredores de contêineres, libere a carga e alcance o embarque.',route:[{x:-4,z:26},{x:12,z:62}],covers:[{x:-11,z:15,w:8,h:3,d:10,type:'container'},{x:10,z:17,w:7,h:3,d:9,type:'container'},{x:-14,z:38,w:10,h:3,d:9,type:'container'},{x:8,z:43,w:6,h:1.3,d:3,type:'crate'}]},
+ {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Recupere a praça e mantenha cada ponto de comunicação contra ataques pelos flancos.',route:[{x:-8,z:24},{x:10,z:40},{x:-10,z:60}],covers:[{x:-15,z:13,w:6,h:1.1,d:3,type:'planter'},{x:8,z:24,w:5,h:1.4,d:2,type:'barrier'},{x:-7,z:41,w:6,h:1.2,d:3,type:'planter'},{x:20,z:49,w:4,h:1.4,d:7,type:'car'}]},
+ {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:3,count:4,desc:'Desative dois transmissores, atravesse a fortaleza e abra a zona de extração.',route:[{x:10,z:23},{x:-10,z:43},{x:0,z:65}],covers:[{x:-10,z:14,w:11,h:2.7,d:3,type:'stone'},{x:13,z:33,w:12,h:2.5,d:3,type:'stone'},{x:-17,z:51,w:7,h:3,d:6,type:'stone'},{x:9,z:56,w:6,h:1.2,d:3,type:'stone'}]}
 ];
 const WEAPONS=[
  {id:'rifle',name:'Fuzil',mag:30,reserve:180,damage:34,interval:.15,reload:1.65,requires:0},
@@ -29,7 +29,7 @@ const Game={
   this.fireHeld=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
-  this.covers=[{x:-7,z:15,w:5,h:1.5,d:2},{x:8,z:27,w:6,h:2,d:2},{x:-12,z:43,w:5,h:2.3,d:3}];
+  this.resetOperation();
   this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
   this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
@@ -42,14 +42,33 @@ const Game={
   this.gun=gun;this.ammo=gun.mag;this.reserve=gun.reserve;this.reloadTime=0;this.career.weapon=gun.id;this.saveCareer();return true;
  },
  saveCareer(){try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
+ resetOperation(){this.covers=this.mission.covers.map(c=>({...c}));this.objective={phase:'approach',progress:0,required:0,secured:0};},
  reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;window.GameAudio?.effect('reload');return true;},
  spawnWave(){
   this.wave++;this.bannerTime=2.4;this.enemies=[];
   const count=this.mission.count+this.level.count+this.wave-1;
   for(let i=0;i<count;i++){
    const kind=this.mission.id==='extraction'&&this.wave===this.mission.waves&&i===count-1?'tank':this.mission.id!=='patrol'&&i%3===2?'drone':'soldier';
-   this.enemies.push({id:this.wave+':'+i,kind,x:(i-(count-1)/2)*6,z:34+(i%3)*8,y:kind==='drone'?5:1.15,hp:(kind==='tank'?260:kind==='drone'?70:100)*this.level.health,active:true,aim:this.level.aim+1.5+i*.35,flash:0,phase:i*.7,rewarded:false});
+   const point=this.mission.route[this.wave-1],side=i%2?1:-1;
+   const x=this.mission.id==='city'?side*(15+i%2*5):clamp(point.x+(i-(count-1)/2)*5,-24,24),z=this.mission.id==='city'?clamp(point.z+(i%3-1)*10,14,68):clamp(point.z+8+(i%3)*4,16,68);
+   this.enemies.push({id:this.wave+':'+i,kind,x,z,y:kind==='drone'?5:1.15,hp:(kind==='tank'?260:kind==='drone'?70:100)*this.level.health,active:true,aim:this.level.aim+1.5+i*.35,flash:0,phase:i*.7,rewarded:false});
   }
+  if(this.mission.id==='extraction'&&this.wave<3){const p=this.mission.route[this.wave-1];this.enemies.push({id:this.wave+':relay',kind:'relay',x:p.x,y:1.6,z:p.z+5,hp:102,active:true,aim:999999,flash:0,phase:0,rewarded:false});}
+  Object.assign(this.objective,{phase:'combat',progress:0,required:this.mission.id==='city'?4+this.wave*2:.8});
+ },
+ objectivePoint(){return this.mission.route[Math.max(0,this.wave-1)];},
+ objectiveHint(){const o=this.objective,targets=this.enemies.filter(e=>e.active&&!e.ally).length,p=this.objectivePoint(),distance=Math.ceil(Math.hypot(p.x-this.player.x,p.z-this.player.z));return targets?'SETOR '+this.wave+'/'+this.mission.waves+' · '+targets+' ALVOS'+(this.enemies.some(e=>e.kind==='relay'&&e.active)?' · DESATIVE O TRANSMISSOR':''):o.phase==='hold'?'MANTENHA A PRAÇA · '+Math.ceil(Math.max(0,o.required-o.progress))+'s · '+distance+'m':o.phase==='approach'?'PRÓXIMO SETOR · PREPARE A MIRA':(this.wave===this.mission.waves?'ALCANCE A EXTRAÇÃO':'ASSEGURE O SETOR')+' · '+distance+'m';},
+ advanceOperation(dt,players=[this.player]){
+  if(this.enemies.some(e=>e.active&&!e.ally))return false;
+  if(!this.wave||this.objective.phase==='approach'){
+   this.waveDelay-=dt;if(this.waveDelay<=0){this.spawnWave();this.waveDelay=1.2;this.reserve=Math.max(this.reserve,this.gun.mag*2);for(const p of players)if(p.hp!==undefined)p.hp=Math.min(100,p.hp+18);}return false;
+  }
+  const o=this.objective,point=this.objectivePoint();o.phase=this.mission.id==='city'?'hold':this.wave===this.mission.waves?'extract':'secure';
+  const reached=players.some(p=>p&&Math.hypot(p.x-point.x,p.z-point.z)<(this.mission.id==='city'?6:3));
+  if(reached)o.progress=Math.min(o.required,o.progress+dt);
+  if(o.progress+1e-7<o.required)return false;
+  o.secured=this.wave;if(this.wave===this.mission.waves){o.phase='complete';return true;}
+  o.phase='approach';this.waveDelay=1.2;return false;
  },
  // The same wall depth test is used by hits, enemy fire and rendered occlusion.
  blocked(x,z,y,p=this.player,eye=this.eyeY){
@@ -84,7 +103,7 @@ const Game={
   const p=this.player,ray=this.aimRay();let best=null,bestDistance=Infinity;
   for(const e of this.enemies){
    if(!e.active||e.ally)continue;const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),dy=e.y-this.eyeY;
-   const radius=e.kind==='tank'?2.6:e.kind==='drone'?.85:.72;
+   const radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72;
    const height=e.kind==='soldier'?1.08:radius,minPitch=Math.atan2(dy-height,distance),maxPitch=Math.atan2(dy+height,distance);
    if(Math.abs(angle(Math.atan2(dx,dz)-ray.yaw))<Math.atan2(radius,distance)&&ray.pitch>minPitch&&ray.pitch<maxPitch&&distance<bestDistance&&!this.blocked(e.x,e.z,e.y)){best=e;bestDistance=distance;}
   }
@@ -111,9 +130,11 @@ const Game={
   const p=this.player;this.autoWalking=false;
   // Leave room to aim: advance without a finger on the screen, then stop at
   // engagement distance. Holding cover pauses the advance; the stick overrides it.
-  if(this.enemies.some(e=>e.active&&!e.ally&&Math.hypot(e.x-p.x,e.z-p.z)<11)||this.targetAtAim())return;
+  if(this.enemies.some(e=>e.active&&!e.ally&&Math.hypot(e.x-p.x,e.z-p.z)<14)||this.targetAtAim())return;
   const free=(x,z)=>x>=-28.6&&x<=28.6&&z>=-8.6&&z<=71.6&&!this.covers.some(c=>Math.abs(x-c.x)<c.w/2+.55&&Math.abs(z-c.z)<c.d/2+.55);
-  const fx=Math.sin(p.yaw),fz=Math.cos(p.yaw),rx=Math.cos(p.yaw),rz=-Math.sin(p.yaw),ahead=1.8;
+  const objective=!this.enemies.some(e=>e.active&&!e.ally)&&this.wave>0?this.objectivePoint():null,dxGoal=objective?objective.x-p.x:0,dzGoal=objective?objective.z-p.z:0,distance=Math.hypot(dxGoal,dzGoal);
+  if(objective&&distance<2.2)return;
+  const fx=objective?dxGoal/distance:Math.sin(p.yaw),fz=objective?dzGoal/distance:Math.cos(p.yaw),rx=fz,rz=-fx,ahead=1.8;
   let side=this.autoWalkSide;
   if(free(p.x+fx*ahead,p.z+fz*ahead))side=0;
   else if(!side){
@@ -181,6 +202,7 @@ const Game={
   this.sprinting=!cameraInput&&!cover&&!this.aiming&&!this.fireHeld&&!this.autoFireLock&&mz>.65&&!!(this.sprintHeld||this.keys.shift);const speed=cover?1.9:this.aiming?3.6:this.sprinting?9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
 
   if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){this.autoWalking=Math.hypot(nx-p.x,nz-p.z)>.0001;p.x=nx;p.z=nz;}
+  if(cameraInput&&this.handSession.autoAdvance&&!cover&&Math.hypot(mx,mz)<.15)this.cameraWalk(dt);
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
   if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
   let automatic=false;
@@ -194,12 +216,9 @@ const Game={
   if(!this.handSession&&(window.ArcadePlaySettings?.get().combatFireMode==='simple')){const target=this.targetAtAim();if(!target)this.autoFireLock=null;else if(this.autoFireLock?.target===target){this.autoFireLock.time+=dt;automatic=this.autoFireLock.time>=.14;}else this.autoFireLock={target,time:0};}else this.autoFireLock=null;
   if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
   if(!this.net){
-  if(!this.enemies.some(e=>e.active)){
-   this.waveDelay-=dt;
-   if(this.waveDelay<=0){if(this.wave>=this.mission.waves)this.finish(true);else{this.spawnWave();this.waveDelay=2.5;this.reserve=Math.max(this.reserve,this.gun.mag*2);p.hp=Math.min(100,p.hp+18);}}
-  }
+  if(this.advanceOperation(dt))this.finish(true);
   for(const e of this.enemies){
-   if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);e.aim-=dt;
+   if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);if(e.kind==='relay')continue;e.aim-=dt;
    if(e.kind==='drone')e.y=5+Math.sin(this.elapsed*1.5+e.phase)*.8;
    this.updateEnemyTactics(e,dt);
    if(e.aim<=0){
@@ -266,6 +285,7 @@ const Game={
   this.drawCombatSignals(ctx,w,h);
  },
  drawCombatSignals(ctx,w,h){
+  if(this.wave>0&&!this.enemies.some(e=>e.active&&!e.ally)&&this.state==='PLAYING'){const goal=this.objectivePoint(),point=this.project(goal.x,1.1,goal.z,w,h);if(point&&point.x>25&&point.x<w-25&&point.y>40&&point.y<h-60){ctx.fillStyle='#8df0cd';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText(this.objective.phase==='hold'?'MANTENHA A POSIÇÃO':'SIGA ATÉ O MARCADOR',point.x,point.y-24,w-30);ctx.strokeStyle='#8df0cd';ctx.strokeRect(point.x-12,point.y-12,24,24);}}
   for(const e of this.enemies){
    if(!e.active||e.ally)continue;const p=this.project(e.x,e.kind==='soldier'?2.7:e.y+1.8,e.z,w,h);if(!p)continue;
    ctx.strokeStyle=e.aim<.8?'#ffba55':'#e58d77';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(6,Math.min(13,p.s*.5)),-Math.PI/2,-Math.PI/2+Math.PI*2*(1-clamp(e.aim/(this.level.aim+1.2),0,1)));ctx.stroke();
@@ -279,14 +299,14 @@ const Game={
   ctx.save();ctx.textAlign='left';const size=Math.min(16,Math.max(11,w*.032));ctx.font='bold '+size+'px Arial';
   const compact=h<500,shortPortrait=!compact&&h<700,hx=compact?87:12,hy=compact?9:Math.max(110,h*.13),hw=compact?Math.min(w-285,550):w-24,hh=compact?44:shortPortrait?108:65,textW=compact?hw-22:Math.min(hw-22,w*.51);
   ctx.fillStyle='rgba(5,20,29,.74)';ctx.fillRect(hx,hy,hw,hh);ctx.fillStyle='#e9f2ed';ctx.fillText(this.mission.name+' • '+this.difficulty.toUpperCase(),hx+11,hy+(compact?17:22),textW);
-  ctx.fillStyle='#9ed9ce';ctx.fillText('SETOR '+Math.max(1,this.wave)+'/'+this.mission.waves+'   •   ALVOS '+this.enemies.filter(e=>e.active&&!e.ally).length,hx+11,hy+(compact?35:46),textW);
+  ctx.fillStyle='#9ed9ce';ctx.fillText(this.objectiveHint(),hx+11,hy+(compact?35:46),textW);
   const y=shortPortrait?hy+62:h*.72,panelW=Math.min(w*.60,320),infoX=shortPortrait?hx+11:w/2;ctx.fillStyle='rgba(5,20,29,.74)';if(!shortPortrait)ctx.fillRect((w-panelW)/2,y,panelW,50);ctx.textAlign=shortPortrait?'left':'center';ctx.fillStyle=this.player.hp<30?'#ffb587':'#c4eddd';ctx.fillText('VIDA '+Math.ceil(this.player.hp)+'   •   '+this.gun.name,infoX,y+19,w*.55);ctx.fillStyle='#fff';ctx.fillText(this.reloadTime>0?'RECARREGANDO '+this.reloadTime.toFixed(1)+'s':this.ammo+' / '+this.reserve,infoX,y+40,w*.55);ctx.textAlign='center';
   const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
   const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?'CORPO E MÃOS • POSTURA, VISÃO E MIRA':'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
   const nearest=this.enemies.filter(e=>e.active&&!e.ally).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
-  if(nearest){const bearing=angle(Math.atan2(nearest.x-this.player.x,nearest.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?'ALVO À DIREITA →':'← ALVO À ESQUERDA',w/2,statusY+20,w-28);}}
+  const destination=nearest||this.objectivePoint();if(destination){const bearing=angle(Math.atan2(destination.x-this.player.x,destination.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?(nearest?'ALVO À DIREITA →':'OBJETIVO À DIREITA →'):(nearest?'← ALVO À ESQUERDA':'← OBJETIVO À ESQUERDA'),w/2,statusY+20,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}
   if(this.state==='VICTORY'||this.state==='DEFEAT'){ctx.fillStyle='rgba(6,18,27,.86)';ctx.fillRect(0,h*.34,w,h*.28);ctx.fillStyle=this.state==='VICTORY'?'#a3edbd':'#ffbe9c';ctx.font='bold 23px Arial';ctx.fillText(this.state==='VICTORY'?'OPERAÇÃO CONCLUÍDA':'TENTE OUTRA ESTRATÉGIA',w/2,h*.44,w-24);ctx.font='14px Arial';ctx.fillText(this.stats.kills+' alvos • '+this.stats.hits+'/'+this.stats.shots+' acertos',w/2,h*.50,w-24);}
   ctx.restore();

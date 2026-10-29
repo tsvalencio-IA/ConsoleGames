@@ -31,7 +31,7 @@ class WarRoom{
  write(task){try{return Promise.resolve(task()).catch(e=>this.fail(e));}catch(e){this.fail(e);return Promise.resolve();}}
  fail(error){if(this.disposed)return;this.error='Não foi possível acessar a sala. Confira sua conta e conexão e tente novamente pelas fases.';console.warn('WAR room:',error?.code||'connection');window.System?.msg(this.error);this.renderLobby();}
  live(){return Object.keys(this.roster).filter(id=>!this.clockReady||id===this.id||this.now()-Number(this.roster[id]?.lastSeen||0)<15000).sort();}
- ready(){return !this.game.handSession||this.game.handSession.controller?.state==='ready';}
+ ready(){const g=this.game,s=g.handSession;return !s||s.controller?.state==='ready'&&(!s.requiresBody||g.bodyPose?.fresh&&g.handAim?.fresh&&g.state!=='HAND_CALIBRATION');}
  pose(){const g=this.game,p=g.player;return {name:window.Profile?.username||'Jogador',x:p.x,z:p.z,yaw:p.yaw,pitch:p.pitch,eyeY:g.eyeY,cover:!!(g.coverHeld||g.crouched),ready:this.ready(),moving:!!g.autoWalking||!!g.manualStick?.active,shot:g.muzzle>0,lastSeen:stamp()};}
  sendPose(){if(this.ref&&!this.disposed)this.write(()=>this.ref.child('players/'+this.id).update(this.pose()));}
  prune(){if(!this.isHost||!this.clockReady)return;for(const[id,p]of Object.entries(this.roster))if(id!==this.id&&this.now()-Number(p.lastSeen||0)>15000)this.write(()=>this.ref.child('players/'+id).remove());}
@@ -55,10 +55,10 @@ class WarRoom{
   if(this.started&&this.phase==='PLAYING'&&this.ready()&&this.game.state==='NET_LOBBY')this.game.state='PLAYING';
   if(now-this.lastSent>80){this.lastSent=now;this.sendPose();this.publish();}this.renderLobby();
  }
- resetLocalRun(x){const g=this.game;Object.assign(g.player,{x,z:0,hp:100});g.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};g.score=0;g.ammo=g.gun.mag;g.reserve=g.gun.reserve;g.reloadTime=g.shotCooldown=g.muzzle=g.hitFlash=g.hurtFlash=0;g.particles=[];g.elapsed=0;g.resultPaid=g.resultSent=false;g.release?.();}
+ resetLocalRun(x){const g=this.game;Object.assign(g.player,{x,z:0,hp:100});g.resetOperation();g.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};g.score=0;g.ammo=g.gun.mag;g.reserve=g.gun.reserve;g.reloadTime=g.shotCooldown=g.muzzle=g.hitFlash=g.hurtFlash=0;g.particles=[];g.elapsed=0;g.resultPaid=g.resultSent=false;g.release?.();}
  publish(){
   if(!this.isHost||!this.started||!this.ref)return;
-  const g=this.game;this.write(()=>this.ref.child('snapshot').set({id:this.started,participants:this.participants,phase:this.phase,wave:g.wave,waveDelay:g.waveDelay,ledger:this.ledger,enemies:g.enemies.filter(e=>!e.peerId),at:stamp()}));
+  const g=this.game;this.write(()=>this.ref.child('snapshot').set({id:this.started,participants:this.participants,phase:this.phase,wave:g.wave,waveDelay:g.waveDelay,objective:g.objective,ledger:this.ledger,enemies:g.enemies.filter(e=>!e.peerId),at:stamp()}));
   this.applyLedger();
  }
  applyLedger(){const g=this.game,own=this.ledger?.[this.id];if(!own)return;g.player.hp=own.hp;g.stats.kills=own.kills;g.score=own.score;
@@ -68,7 +68,7 @@ class WarRoom{
   if(this.isHost)return;
   const g=this.game,fresh=this.started!==data.id;this.started=data.id;this.participants=data.participants;this.phase=data.phase;this.ledger=data.ledger||{};this.error='';
   if(fresh){this.resetLocalRun(this.ledger[this.id]?.spawnX||0);if(g.state!=='HAND_CALIBRATION')g.state='PLAYING';}
-  g.wave=data.wave;g.waveDelay=data.waveDelay;const previous=new Map(g.enemies.filter(e=>!e.peerId).map(e=>[e.id,e]));g.enemies=(data.enemies||[]).map(e=>Object.assign(previous.get(e.id)||{},e));this.updatePeers();this.applyLedger();this.renderLobby();
+  g.wave=data.wave;g.waveDelay=data.waveDelay;if(data.objective)g.objective={...data.objective};const previous=new Map(g.enemies.filter(e=>!e.peerId).map(e=>[e.id,e]));g.enemies=(data.enemies||[]).map(e=>Object.assign(previous.get(e.id)||{},e));this.updatePeers();this.applyLedger();this.renderLobby();
  }
  updatePeers(){
   const g=this.game,ids=this.participants||[];for(const id of ids){if(id===this.id)continue;const p=this.roster[id],life=this.ledger?.[id];if(!p||!life)continue;let actor=this.peers.get(id);if(!actor){actor={id:'peer:'+id,peerId:id,ally:true,kind:'soldier',phase:0,stride:0};this.peers.set(id,actor);}Object.assign(actor,{x:Number(p.x)||0,z:Number(p.z)||0,y:1.15,hp:life.hp,active:life.hp>0,aim:p.cover?.4:2,shot:p.shot?.13:0,flash:0,moving:!!p.moving,name:p.name});if(p.moving)actor.stride+=.3;}
@@ -84,7 +84,7 @@ class WarRoom{
   const previous=this.lastShot[shot.id];if(previous&&(shot.sequence<=previous.sequence||this.now()-previous.at<gun.interval*650))return;
   this.lastShot[shot.id]={sequence:shot.sequence,at:this.now()};
   const p=shot.id===this.id?g.player:this.roster[shot.id];if(!p)return;const e=g.enemies.find(e=>e.id===shot.target&&!e.peerId&&e.active);if(!e)return;
-  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?1.08:radius;
+  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?1.08:radius;
   if(Math.abs(angle(Math.atan2(dx,dz)-shot.yaw))>=Math.atan2(radius,distance)||shot.pitch<=Math.atan2(e.y-eye-height,distance)||shot.pitch>=Math.atan2(e.y-eye+height,distance)||g.blocked(e.x,e.z,e.y,p,eye))return;
   e.hp-=gun.damage;e.flash=.12;
   if(e.hp<=0){g.defeat(e,false);this.ledger[shot.id].kills++;this.ledger[shot.id].score+=e.kind==='tank'?350:100;}
@@ -94,8 +94,8 @@ class WarRoom{
   if(!this.isHost||this.phase!=='PLAYING'||!this.started)return;
   const g=this.game,living=this.participants.filter(id=>this.ledger[id]?.hp>0&&this.roster[id]);
   if(!living.length){this.phase='DEFEAT';this.publish();return;}
-  if(!g.enemies.some(e=>e.active&&!e.peerId)){g.waveDelay-=dt;if(g.waveDelay<=0){if(g.wave>=g.mission.waves){this.phase='VICTORY';this.publish();return;}g.spawnWave();g.waveDelay=2.5;for(const id of living)this.ledger[id].hp=Math.min(100,this.ledger[id].hp+18);g.reserve=Math.max(g.reserve,g.gun.mag*2);this.updatePeers();}}
-  for(const e of g.enemies){if(!e.active||e.peerId)continue;e.flash=Math.max(0,(e.flash||0)-dt);e.aim-=dt;if(e.kind==='drone')e.y=5+Math.sin(g.elapsed*1.5+e.phase)*.8;
+  const wave=g.wave,actors=living.map(id=>id===this.id?g.player:this.roster[id]);if(g.advanceOperation(dt,actors)){this.phase='VICTORY';this.publish();return;}if(g.wave!==wave){for(const id of living)this.ledger[id].hp=Math.min(100,this.ledger[id].hp+18);this.updatePeers();}
+  for(const e of g.enemies){if(!e.active||e.peerId||e.kind==='relay')continue;e.flash=Math.max(0,(e.flash||0)-dt);e.aim-=dt;if(e.kind==='drone')e.y=5+Math.sin(g.elapsed*1.5+e.phase)*.8;
    const target=living.slice().sort((a,b)=>Math.hypot(this.roster[a].x-e.x,this.roster[a].z-e.z)-Math.hypot(this.roster[b].x-e.x,this.roster[b].z-e.z))[0];const p=target===this.id?g.player:this.roster[target],cover=target===this.id?(g.coverHeld||g.crouched):p.cover;
    g.updateEnemyTactics(e,dt,p);
    if(e.aim<=0){if(!g.blocked(e.x,e.z,e.y,p,Number(p.eyeY)||g.eyeY)){this.ledger[target].hp=Math.max(0,this.ledger[target].hp-g.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1));if(target===this.id){g.hurtFlash=.15;if(cover)g.stats.blocks++;}}e.aim=g.level.aim+1.2;e.shot=.14;}e.shot=Math.max(0,(e.shot||0)-dt);

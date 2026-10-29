@@ -173,38 +173,39 @@ class World{
  }
  buildCombat(){
   const b=this.static,m=this.m,mission=this.game.mission?.id||'patrol';this.mission=mission;
-  b.box(m.grass,0,-.3,35,360,.25,400);b.box(m.asphalt,0,-.08,32,62,.08,125);
-  for(const side of [-1,1]){
-   b.box(m.stone,side*32,-.02,35,2.8,.16,130);b.box(m.darkConcrete,side*34,-.02,35,.25,.4,130);
-   for(let z=-15;z<102;z+=13){this.lamp(b,side*31.2,z,1.15);b.box(m.line,side*19,.012,z,1.2,.014,3.6)}
-   for(let z=-20,i=0;z<120;z+=20,i++){
-    const x=side*(42+(i%2)*3),h=mission==='city'?14+(i%3)*7:mission==='extraction'?10+(i%3)*3:7+(i%3)*2;
-    this.building(b,x,z,14,h,16,(i+(side===1?1:0))%4);
-    if(mission==='patrol'){
-     b.box(m.metal||m.steel,x,0,z+4,13,4,15);b.box(m.dark,x,0,z-8.15,7,4,.2);
-     for(let j=-3;j<=3;j++)b.box(m.steel,x+j,.1,z-8.3,.15,3.8,.18);
-    }
-    if(i%2===0)this.tree(b,side*34.6,z+9,.8);
+  b.box(m.grass,0,-.32,35,360,.25,400);
+  if(mission==='patrol'){
+   // Cargo quay, water, warehouses, container alleys and gantry cranes.
+   b.box(m.concrete,0,-.12,34,70,.12,140);b.box(m.glass,70,-.2,35,70,.08,220);
+   for(let z=-20;z<115;z+=8){b.box(m.yellow,28,.012,z,1,.015,3);b.box(m.dark,32,-.1,z,1,.8,2);}
+   for(const side of [-1,1])for(let i=0;i<6;i++){
+    const x=side*(38+i%2*5),z=-10+i*22;b.box(i%2?m.blue:m.rust,x,0,z,9,5,16);
+    for(let j=-4;j<=4;j++)b.box(m.steel,x+j,.1,z-8.1,.12,4.8,.15);
+    if(i%2===0)b.box(m.white,x,5.1,z,9,3,16);this.lamp(b,side*30,z,1.1);
    }
+   for(let z=15;z<110;z+=40){b.box(m.yellow,42,0,z,1.4,25,1.4);b.box(m.yellow,62,0,z,1.4,25,1.4);b.box(m.steel,52,24,z,27,1.3,2);b.add('cylinder',m.dark,49,18,z,.08,12,.08);b.box(m.yellow,49,10,z,3,1.5,3);}
+   this.building(b,-53,43,24,10,45,2);this.sign('PORTO OT · CARGA E EMBARQUE',0,7,100,26,3.5,Math.PI);
+   this.sky.material.uniforms.top.value.set('#315d84');this.sky.material.uniforms.bottom.value.set('#b5d1d2');
+  }else if(mission==='city'){
+   // Plaza, crossing streets and a skyline rather than the port's cargo lane.
+   b.box(m.stone,0,-.13,35,72,.13,140);b.box(m.asphalt,0,-.03,35,24,.03,135);
+   for(const z of [0,30,62]){b.box(m.asphalt,0,-.02,z,130,.03,13);for(let x=-27;x<30;x+=4)b.box(m.line,x,.02,z+7,2.6,.01,4);}
+   for(const side of [-1,1])for(let i=0;i<7;i++){const z=-20+i*20,x=side*(39+(i%2)*9);this.building(b,x,z,14,20+i%3*11,14,i%4);this.lamp(b,side*28,z,1.1);if(i%2===0)this.tree(b,side*25,z+8,.8);}
+   for(const p of this.game.mission.route){b.box(m.stone,p.x,-.015,p.z,12,.025,12);b.box(m.blue,p.x-4,0,p.z+4,1,2,1);b.add('cylinder',m.steel,p.x-4,5,p.z+4,.12,6,.12);b.round(m.light,p.x-4,8,p.z+4,.35,.35,.35);}
+   this.sign('DISTRITO CENTRAL · COMUNICAÇÕES',0,9,106,27,4,Math.PI);
+   this.sun.color.set('#ffd1a0');this.sun.intensity=1.25;this.sky.material.uniforms.top.value.set('#536482');this.sky.material.uniforms.bottom.value.set('#edb68b');this.fog.color.set('#b9a899').convertSRGBToLinear();
+  }else{
+   // Stone courtyard and gate, framed by mountain peaks and watchtowers.
+   b.box(m.sand,0,-.10,35,72,.10,140);
+   for(const side of [-1,1]){
+    b.box(m.stone,side*32,0,39,4,8,128);for(let z=-15;z<112;z+=7)b.box(m.stone,side*32,8,z,4.3,1.3,3);
+    for(const z of [0,44,95]){b.box(m.darkConcrete,side*34,0,z,9,15,9);b.box(m.stone,side*34,15,z,10,1.5,10);this.lamp(b,side*26,z,1.1);}
+    for(let i=0;i<8;i++){const x=side*(70+i*29),z=70+i%3*46,h=28+i%4*17;b.add('cone',m.darkConcrete,x,h/2-3,z,70,h,80);b.add('cone',m.white,x,h*.85,z,17,h*.24,20);}
+   }
+   b.box(m.stone,-18,0,100,24,16,5);b.box(m.stone,18,0,100,24,16,5);b.box(m.stone,0,10,100,14,6,5);this.sign('FORTALEZA · ZONA DE EXTRAÇÃO',0,13,97,21,3,Math.PI);
+   for(let x=-5;x<=5;x+=2)b.box(m.yellow,x,.015,66,.4,.02,10);
+   this.sun.color.set('#b2d5ee');this.sun.intensity=.95;this.sky.material.uniforms.top.value.set('#122641');this.sky.material.uniforms.bottom.value.set('#597e95');this.fog.color.set('#607e8f').convertSRGBToLinear();this.fog.density=.0028;
   }
-  for(let z=-10;z<98;z+=8)b.box(m.yellow,0,.012,z,.15,.015,3.8);
-  // The play space stays clear; dressing is outside the original x/z bounds.
-  for(const side of [-1,1])for(let i=0;i<7;i++){
-   const x=side*(37+(i%2)*2),z=10+i*13;
-   if(mission==='patrol'){b.box(i%2?m.blue:m.rust,x,0,z,4.3,3.1,9.2);b.box(m.steel,x,3.1,z,4.4,.16,9.3);for(let j=-2;j<=2;j++)b.box(m.dark,x+j*.7,.3,z-4.63,.04,2.6,.08)}
-   else if(mission==='extraction'){b.box(m.sand,x,0,z,4,2.3,7);for(let j=0;j<4;j++)b.round(m.sand,x+side*.1,2.35+j*.04,z-2.5+j*1.5,2,.33,.65)}
-   else{b.box(m.darkConcrete,x,0,z,4,.6,5);this.tree(b,x,z,1.1)}
-  }
-  for(let i=0;i<6;i++){const x=-49+i*19;this.building(b,x,130,15,17+i%3*8,22,i%4)}
-  // Port cranes, fortress towers and a distant elevated roadway provide actual
-  // silhouettes; they are geometry with perspective, never a flat backdrop.
-  for(const side of [-1,1]){
-   const x=side*57;b.box(m.steel,x,0,90,1.3,32,1.3);b.box(m.steel,x,30,90,22,.8,1);b.box(m.yellow,x,25,90,4,4,4);b.add('cylinder',m.dark,x-side*8,23,90,.08,16,.08);
-   b.box(m.darkConcrete,x,8,-26,4,13,4);b.box(m.stone,x,20,-26,7,2,7);
-  }
-  b.box(m.concrete,0,16,156,170,2,12);for(let x=-70;x<80;x+=28)b.box(m.darkConcrete,x,0,156,3,16,5);
-  this.sign(mission==='patrol'?'PORTO • SETOR 07':mission==='city'?'DISTRITO CENTRAL':'FORTALEZA LESTE',0,8.2,103,23,4,Math.PI);
-  this.smoke(-68,87,12,11);this.smoke(54,136,16,13);
   this.buildWeapon();
  }
  buildWeapon(){
@@ -323,10 +324,19 @@ class World{
   }
  }
  cover(b,c){
-  const m=this.m;b.box(m.darkConcrete,c.x,0,c.z,c.w,c.h,c.d);b.box(m.stone,c.x,c.h-.16,c.z,c.w+.09,.16,c.d+.08);
-  for(let x=-c.w/2+.35;x<c.w/2;x+=.7){b.box(m.yellow,c.x+x,.18,c.z-c.d/2-.011,.28,.22,.02);b.box(m.steel,c.x+x,c.h-.34,c.z-c.d/2-.02,.04,.16,.05)}
+  const m=this.m,kind=c.type;
+  if(kind==='container'){
+   b.box(c.x<0?m.blue:m.rust,c.x,0,c.z,c.w,c.h,c.d);b.box(m.steel,c.x,c.h,c.z,c.w+.1,.1,c.d+.1);
+   for(let x=-c.w/2+.3;x<c.w/2;x+=.55)b.box(m.steel,c.x+x,.1,c.z-c.d/2-.03,.06,c.h-.2,.06);
+  }else if(kind==='car')this.car(b,c.x,c.z,0,Math.min(c.w/1.8,c.d/4.2),m.red);
+  else{
+   b.box(kind==='stone'?m.stone:kind==='crate'?m.rust:m.darkConcrete,c.x,0,c.z,c.w,c.h,c.d);b.box(m.stone,c.x,c.h-.16,c.z,c.w+.09,.16,c.d+.08);
+   if(kind==='planter')for(let i=-1;i<=1;i++)b.round(m.leaf,c.x+i*c.w*.25,c.h+.2,c.z,c.w*.22,.45,c.d*.45);
+   else for(let x=-c.w/2+.35;x<c.w/2;x+=.7)b.box(m.yellow,c.x+x,.18,c.z-c.d/2-.011,.28,.22,.02);
+  }
   this.shadow(b,c.x,c.z,c.w*1.6,c.d*2);
  }
+ relay(b,e){const m=this.m;b.box(m.dark,e.x,0,e.z,1.5,.25,1.3);b.box(m.blue,e.x,.25,e.z,1.2,2.1,1);b.box(e.flash?m.light:m.visor,e.x,1.2,e.z-.52,.85,.6,.04);b.add('cylinder',m.steel,e.x,3.2,e.z,.09,2,.09);b.round(m.light,e.x,4.2,e.z,.16,.16,.16);}
  soldier(b,e,time){
   if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,-e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,e.z-this.game.player.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:e.tactic==='cover',firing:!!e.shot,hit:e.flash});return;}
   const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=e.stride??(time*4+(e.phase||0)),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
@@ -380,7 +390,8 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const model of this.infantryModels?.values()||[])model.visible=false;
-   for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else this.tank(b,e.x,e.z,0,1,e.shot)}
+   for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else if(e.kind==='relay')this.relay(b,e);else this.tank(b,e.x,e.z,0,1,e.shot)}
+   if(g.wave>0&&g.objective?.phase!=='complete'){const p=g.objectivePoint();b.add('ring',m.light,p.x,.05,p.z,3,3,.3,Math.PI/2);b.box(m.light,p.x,.03,p.z,.15,.025,4);b.box(m.light,p.x,.03,p.z,4,.025,.15);}
    this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=(g.aiming?0:-.07)+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=(g.aiming?0:-.1)+(g.handAim&&!g.handSession?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=(g.aiming?0:.06)-(g.handAim&&!g.handSession?(g.handAim.y-.48)*.45:0);
   }else{
    for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw+(car.crashed?.18:0),5,car.crashed?m.dark:m.cars[i%4])}

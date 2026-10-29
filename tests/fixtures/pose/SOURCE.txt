@@ -2,3 +2,9 @@ MediaPipe's public pose landmark example image, used only for CPU model inferenc
 Source: https://storage.googleapis.com/mediapipe-assets/pose.jpg
 Documentation: https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker/web_js
 Retrieved 2026-10-25. No user camera image or biometric data is stored in this fixture.
+
+Combined body/hand recognition sample (2026-10-28):
+https://storage.googleapis.com/mediapipe-assets/male_full_height_hands.jpg
+MediaPipe public vision test asset, used only for automated on-device inference QA.
+The image is replayed unchanged (aspect-preserving scaling) into a simulated camera.
+No personal camera image is saved. This test is not physical Android certification.
