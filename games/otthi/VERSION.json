@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.8-war-corpo-fases",
+  "build": "705.28.9-war-corpo-fases",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -289,7 +289,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70644,
+  "assetVersion": 70645,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.8-war-corpo-fases",
+  "build": "705.28.9-war-corpo-fases",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "4457d8c5ffdce516e0303d056a5f58b0e22f8389183d26e84c513b2f3eb067f5"
+      "sha256Body": "8beeaaa87f6f111f20f2e07789db4cba7cb4ce2b01ae63bf5f862dd8d13f2fb3"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -557,7 +557,7 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "c7869203f126a29a0909aa782e424849545b16f2e8894c8bff9e0caa4a08d5f7",
+      "sha256Body": "f846089e8dfc519a0b219dcf5104ab77b1aff522bbbd087ea4836635d12d76ad",
       "startLine": 0,
       "endLine": 0
     },

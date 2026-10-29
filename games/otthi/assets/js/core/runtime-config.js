@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.8-war-corpo-fases',
+    build: '705.28.9-war-corpo-fases',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

@@ -464,7 +464,8 @@ try{
           return result;
         };
       });
-      await page.waitForFunction(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive?.finished,null,{timeout:90000});
+      // Full three-lap race: software rendering in CI can run below real display cadence.
+      await page.waitForFunction(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive?.finished,null,{timeout:180000});
       const laps=await page.evaluate(()=>window.Games.find(g=>g.id==='drive').logic.__lapDrive);
       assert(laps.ticks>500&&laps.maxOffset<1,'Complete race leaves asphalt: '+JSON.stringify(laps));
       console.log('Kart real three-lap race ('+(device||'portrait')+'):',JSON.stringify(laps));

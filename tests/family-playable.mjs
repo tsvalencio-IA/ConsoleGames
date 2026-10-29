@@ -3,6 +3,7 @@ import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {touchSession} from './helpers/touch-session.mjs';
+import {installCityInspection} from './helpers/world-city-inspection.mjs';
 const base=process.env.FAMILY_QA_BASE||'http://127.0.0.1:4173/';
 mkdirSync('test-results/playable',{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
@@ -12,24 +13,29 @@ try{
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[];const fingers=await touchSession(context,page);page.on('pageerror',e=>errors.push(e.message));
  try{
+ // Keep the native simulation and meshes; limit software GPU work for functional QA.
+ await installCityInspection(page,{capDuringBoot:true});
  await page.goto(base+'games/otthi/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.locator('#playBtn').click();
- await page.waitForFunction(()=>window.OTTHI_FAMILY?.diagnostics().ready,null,{timeout:120000});
+ await page.waitForFunction(()=>window.__CITY_QA?.cap(1)&&window.OTTHOS_TEST_API?.getGame().running&&window.OTTHI_FAMILY?.diagnostics().ready&&window.OT_CIVIL_MISSIONS?.diagnostics().ready,null,{timeout:120000});
  const info=await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics());assert.equal(info.actors.length,4);assert(info.actors.every(a=>a.bones>12&&a.vertices>1000));
  // Exercise the player's actual mission choices; no connection to production.
  await page.evaluate(()=>window.OTTHI_COOP.open());
- assert.equal(await page.locator('[data-create-solo]').count(),7);assert.equal(await page.locator('[data-create-duo]').count(),7);
- await page.locator('[data-coop-difficulty]').selectOption('hard');
- assert.equal(await page.evaluate(()=>window.OTTHI_COOP.difficulty().laps),4);
- await page.locator('[data-create-duo="streetRace"]').click();
- assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active()),null,'Failed online selection must not silently start solo');
- await page.locator('[data-create-solo="streetRace"]').click();
- assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active().record.mode),'solo');
- assert.equal(await page.evaluate(()=>window.OTTHI_COOP.active().record.difficulty),'hard');
- await page.evaluate(()=>window.OTTHI_COOP.open());await page.locator('[data-open-active-coop]').click();
+ const missionIds=['beach','snow','cable','neighbors','fire','police','balloon'];
+ assert.deepEqual(await page.locator('[data-civil-create]').evaluateAll(bs=>bs.map(b=>b.dataset.civilCreate)),missionIds);
+ assert.equal(await page.locator('[data-civil-mode="coop"]').count(),missionIds.length);
+ await page.locator('[data-civil-difficulty]').selectOption('hard');
+ await page.locator('[data-civil-create="neighbors"]').click();
+ assert.equal(await page.evaluate(()=>window.OT_CIVIL_MISSIONS.diagnostics().current),null,'Failed online selection must not silently start solo');
+ await page.locator('[data-civil-tab="solo"]').click();
+ assert.equal(await page.locator('[data-civil-mode="solo"]').count(),missionIds.length);
+ await page.locator('[data-civil-create="neighbors"]').click();
+ await page.waitForFunction(()=>window.OT_CIVIL_MISSIONS.diagnostics().current?.mode==='solo');
+ assert.equal(await page.evaluate(()=>window.OT_CIVIL_MISSIONS.diagnostics().current.difficulty),'hard');
+ await page.evaluate(()=>window.OTTHI_COOP.open());await page.locator('[data-civil-current]').click();
  await page.screenshot({path:'test-results/playable/otthi-solo-mission-hard.png'});
- await page.locator('[data-coop-leave]').click();await page.locator('[data-yes]').click();
- await page.waitForFunction(()=>!window.OTTHI_COOP.active(),null,{timeout:10000});
+ await page.locator('[data-civil-leave]').click();await page.locator('[data-yes]').click();
+ await page.waitForFunction(()=>!window.OT_CIVIL_MISSIONS.diagnostics().current,null,{timeout:10000});
 
  async function chooseParty(controller,members){
   await page.evaluate(()=>window.OTTHI_FAMILY.open());
@@ -70,7 +76,7 @@ try{
  await chooseParty('thamis',['thamis']);
  await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis',null,{timeout:15000});
  await page.reload({waitUntil:'domcontentloaded'});await page.locator('#playBtn').click();
- await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:120000});
+ await page.waitForFunction(()=>window.__CITY_QA?.cap(1)&&window.OTTHOS_TEST_API?.getGame().running&&window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:120000});
  assert.deepEqual(await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().progress.party),{controller:'thamis',members:['thamis']});
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().party.members.join(',')==='thamis',null,{timeout:15000});
  await moveCharacter('thamis');

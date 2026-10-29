@@ -8,7 +8,8 @@
  for(const [id,x,z]of[['balloon-coast',-380,458],['balloon-snow',-83,208],['balloon-serra',250,205]])WORLD_CAMPAIGN_AIRCRAFT[id]={id,mode:'balloon',model:'balloon',label:id==='balloon-coast'?'Balão da Costa Verde':id==='balloon-snow'?'Balão dos Picos Nevados':'Balão do Festival da Serra',x,z,yaw:0,radius:5,height:1.05};
  function civilTarget(id,label,x,z,options={}){
   const p={id,label,name:label,x,z,y:groundHeightAt(x,z),radius:3.4,...options};civilCommunity.targets.set(id,p);
-  registerInteractable({id:'civil-target-'+id,type:'civil',icon:p.icon||'🤝',label,x,z,radius:p.radius,priority:260,available:()=>!civilCommunity.ride&&!currentHouse&&!player.vehicle&&!player.boating&&(!otGames.active||p.vehicle==='balloon'),action:()=>civilTaskAt(id)});return p;
+  const currentTask=()=>{const c=civilCurrent();return c?.r.status==='active'&&c.book.progress(c.r.id,c.uid)?.step?.targets.includes(id);};
+  registerInteractable({id:'civil-target-'+id,type:'civil',icon:p.icon||'🤝',label,x,z,radius:p.radius,priority:260,available:()=>!civilCommunity.ride&&!currentHouse&&!player.vehicle&&!player.boating&&(!otGames.active||p.vehicle==='balloon')&&(!p.shopId||currentTask()),action:()=>civilTaskAt(id)});return p;
  }
  function civilRegionRoot(name,x,z,range=220){const root=new THREE.Group();root.name=name;worldGroup.add(root);civilCommunity.roots.push({root,x,z,range});return root;}
  function civilBench(root,x,z,angle=0){const g=new THREE.Group();g.position.set(x,groundHeightAt(x,z),z);g.rotation.y=angle;root.add(g);const wood=campaignMaterial(0x9b7e58),steel=campaignMaterial(0x46616b,.35);campaignBox(g,wood,0,.52,0,2.0,.12,.65);campaignBox(g,wood,0,.88,-.30,2.0,.65,.10);for(const sx of[-.75,.75])campaignBox(g,steel,sx,.26,0,.10,.52,.52);return g;}
@@ -117,7 +118,7 @@
  }
  function createCivilCommunity(){
   if(civilCommunity.ready||!cordillera.ready)return;civilCreateHomes();civilCreateBeach();civilCreateSnowAndMountainLife();civilCreateCableway();civilSkyEnvironment();
-  const shop=cityCoast.shops.get('shop-aurora-1');civilTarget('aurora-market','Mercado de Nova Aurora',shop?.navX??332,shop?.navZ??-53,{icon:'🛒'});
+  const shop=cityCoast.shops.get('shop-aurora-1');civilTarget('aurora-market','Mercado de Nova Aurora',shop?.navX??332,shop?.navZ??-53,{icon:'🛒',shopId:'shop-aurora-1'});
   const fire=world.fireStation||world.houses.find(h=>/fire|bombeiro/.test(h.id));civilTarget('civil-fire-desk','Equipe dos bombeiros',fire?.x??-38,(fire?.z??-36)+5,{icon:'🚒'});
   civilTarget('civil-police-desk','Policial Marta · travessia segura',309,43,{icon:'🚓'});addResident('civil-police-agent','Policial Marta',[{x:309,z:43,action:'talk',duration:14},{x:311,z:44,action:'look',duration:8}],0x39596f);
   for(let i=0;i<3;i++){const x=300+i*3;civilTarget('crossing-cone-'+i,'Cones da travessia',x,38,{icon:'🚧'});}civilTarget('crossing-neighbor','Acompanhar o morador',300,46,{icon:'🚶'});
