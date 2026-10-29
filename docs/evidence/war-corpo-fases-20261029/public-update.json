@@ -1,0 +1,62 @@
+{
+  "base": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.9-war-corpo-fases",
+  "revision": "07e6a02c08d06796",
+  "headers": [
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/release-manifest.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/sw.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/otthi/VERSION.json",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/update.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/games/atualizar/style.css",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "/arcade/app.js",
+      "status": 200,
+      "cacheControl": "no-store, max-age=0"
+    }
+  ],
+  "recovery": {
+    "build": "705.28.9-war-corpo-fases",
+    "revision": "07e6a02c08d06796",
+    "at": 1793269505640,
+    "reused": 0,
+    "done": 71,
+    "total": 71
+  },
+  "consoleAutomaticUpdate": true,
+  "passed": true,
+  "errors": [],
+  "checkedAt": "2026-10-29T10:25:07.970Z",
+  "limits": [
+    "Real public HTTPS worker, manifest and update entry in Chromium. The controlled test proxy requires a test-browser certificate override for worker installation; product TLS validation is unchanged. No physical Android or user phone cache inspected."
+  ]
+}

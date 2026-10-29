@@ -1,0 +1,478 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "checkedAt": "2026-10-29T10:24:08.371Z",
+  "results": [
+    {
+      "id": "patrol",
+      "layouts": [
+        {
+          "mission": "patrol",
+          "metrics": {
+            "staticInstances": 280,
+            "dynamicInstances": 70,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 17,
+              "mission": "patrol",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 591,
+              "height": 273,
+              "low": false,
+              "software": true,
+              "frameMs": 2,
+              "shadows": false
+            },
+            "mission": "patrol",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": -11.758072818377295,
+                "y": 0,
+                "z": -32.303463044832505,
+                "head": {
+                  "x": 0.3519897148566662,
+                  "y": 0.4734620012811974,
+                  "depth": 0.9908789765830829
+                }
+              },
+              {
+                "id": "1:1",
+                "x": -6.964008905105051,
+                "y": 0,
+                "z": -37.4199888686186,
+                "head": {
+                  "x": 0.4243235943724733,
+                  "y": 0.47435595770106925,
+                  "depth": 0.992148906870652
+                }
+              },
+              {
+                "id": "1:2",
+                "x": -2.0371916449147935,
+                "y": 0,
+                "z": -41.48702601120833,
+                "head": {
+                  "x": 0.4800324667974471,
+                  "y": 0.47490925187206856,
+                  "depth": 0.9929349015903814
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 2.897228342667228,
+                "y": 0,
+                "z": -33.56596831260913,
+                "head": {
+                  "x": 0.5350984855289286,
+                  "y": 0.47370791278734947,
+                  "depth": 0.9912283118110451
+                }
+              }
+            ]
+          },
+          "brightness": 3101958,
+          "colored": 9982,
+          "w": 844,
+          "h": 390,
+          "objective": "SETOR 1/2 · 4 ALVOS",
+          "sceneHash": "cb32ca6a88767d9466bf81bfb322e4375fb96e219c6b48e10185cae8aa30576c"
+        },
+        {
+          "mission": "patrol",
+          "metrics": {
+            "staticInstances": 280,
+            "dynamicInstances": 70,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 22,
+              "mission": "patrol",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 273,
+              "height": 591,
+              "low": false,
+              "software": true,
+              "frameMs": 2,
+              "shadows": false
+            },
+            "mission": "patrol",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": -11.043111428373702,
+                "y": 0,
+                "z": -32.33768612481425,
+                "head": {
+                  "x": 0.1994856706982563,
+                  "y": 0.4769820841019691,
+                  "depth": 0.9908888057908596
+                }
+              },
+              {
+                "id": "1:1",
+                "x": -7.411153126243261,
+                "y": 0,
+                "z": -36.86105859219579,
+                "head": {
+                  "x": 0.3230703349231846,
+                  "y": 0.47735242500381486,
+                  "depth": 0.9920273320533842
+                }
+              },
+              {
+                "id": "1:2",
+                "x": -2.554858734974199,
+                "y": 0,
+                "z": -40.99269637193022,
+                "head": {
+                  "x": 0.44515423756518724,
+                  "y": 0.477619273048639,
+                  "depth": 0.9928476937947457
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 2.3163647853584948,
+                "y": 0,
+                "z": -33.14771176909785,
+                "head": {
+                  "x": 0.5614944713322803,
+                  "y": 0.47705583245861954,
+                  "depth": 0.9911155278203361
+                }
+              }
+            ]
+          },
+          "brightness": 4372495,
+          "colored": 9980,
+          "w": 390,
+          "h": 844,
+          "objective": "SETOR 1/2 · 4 ALVOS",
+          "sceneHash": "dcaf677454e5a2f6a71b01348dd93ddd9d664308db3f58caa74246037f31ff45"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "city",
+      "layouts": [
+        {
+          "mission": "city",
+          "metrics": {
+            "staticInstances": 319,
+            "dynamicInstances": 49,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 24,
+              "mission": "city",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 591,
+              "height": 273,
+              "low": false,
+              "software": true,
+              "frameMs": 4,
+              "shadows": false
+            },
+            "mission": "city",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": -1.2805282619773983,
+                "y": 0,
+                "z": -33.432466392988474,
+                "head": {
+                  "x": 0.48442508863326944,
+                  "y": 0.47368278733858854,
+                  "depth": 0.9911926192787683
+                }
+              },
+              {
+                "id": "1:1",
+                "x": 19.08409633290129,
+                "y": 0,
+                "z": -23.970769031901067,
+                "head": {
+                  "x": 0.8237385858872956,
+                  "y": 0.4711892689083555,
+                  "depth": 0.9876503945049714
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 19.108482720760318,
+                "y": 0,
+                "z": -14.21196914331571,
+                "head": {
+                  "x": 1.046734878975856,
+                  "y": 0.46513928662029685,
+                  "depth": 0.9790559534605586
+                }
+              },
+              {
+                "id": "1:4",
+                "x": -15.258131994315814,
+                "y": 0,
+                "z": -23.12073789436179,
+                "head": {
+                  "x": 0.23164820186284096,
+                  "y": 0.47086534344340697,
+                  "depth": 0.9871902347592513
+                }
+              }
+            ]
+          },
+          "brightness": 3163978,
+          "colored": 9982,
+          "w": 844,
+          "h": 390,
+          "objective": "SETOR 1/3 · 5 ALVOS",
+          "sceneHash": "75adfc59d3e4e5076bb644d18d1ea2dcd9dc1d1b88dfdd199213c4e94fb7bc11"
+        },
+        {
+          "mission": "city",
+          "metrics": {
+            "staticInstances": 319,
+            "dynamicInstances": 49,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 30,
+              "mission": "city",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 273,
+              "height": 591,
+              "low": false,
+              "software": true,
+              "frameMs": 2,
+              "shadows": false
+            },
+            "mission": "city",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": -0.7169131481503737,
+                "y": 0,
+                "z": -32.9878755889138,
+                "head": {
+                  "x": 0.48087528950835656,
+                  "y": 0.4770415670812579,
+                  "depth": 0.9910716722626859
+                }
+              },
+              {
+                "id": "1:1",
+                "x": 18.366601645750393,
+                "y": 0,
+                "z": -23.947870265289847,
+                "head": {
+                  "x": 1.1749080093225035,
+                  "y": 0.4759247976550523,
+                  "depth": 0.9876384265299505
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 18.410091684305666,
+                "y": 0,
+                "z": -14.378020158976247,
+                "head": {
+                  "x": 1.6267810521238364,
+                  "y": 0.4732123883551043,
+                  "depth": 0.979299760162517
+                }
+              },
+              {
+                "id": "1:4",
+                "x": -15.460345765434278,
+                "y": 0,
+                "z": -22.43194723648954,
+                "head": {
+                  "x": -0.10650571839127043,
+                  "y": 0.4756494005610507,
+                  "depth": 0.9867917827415352
+                }
+              }
+            ]
+          },
+          "brightness": 3697594,
+          "colored": 9980,
+          "w": 390,
+          "h": 844,
+          "objective": "SETOR 1/3 · 5 ALVOS",
+          "sceneHash": "25f1fe65231cf5ee015e179240511877d2ffbc5a5fbb41277c8a3708ece9cdf7"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "extraction",
+      "layouts": [
+        {
+          "mission": "extraction",
+          "metrics": {
+            "staticInstances": 451,
+            "dynamicInstances": 86,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 23,
+              "mission": "extraction",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 591,
+              "height": 273,
+              "low": false,
+              "software": true,
+              "frameMs": 6,
+              "shadows": false
+            },
+            "mission": "extraction",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": 0.568599113281057,
+                "y": 0,
+                "z": -30.494578565972397,
+                "head": {
+                  "x": 0.5075820802163431,
+                  "y": 0.473074178757936,
+                  "depth": 0.9903280464062385
+                }
+              },
+              {
+                "id": "1:1",
+                "x": 4.3656382110396255,
+                "y": 0,
+                "z": -34.58007036505436,
+                "head": {
+                  "x": 0.5513365526894217,
+                  "y": 0.47389243579407425,
+                  "depth": 0.9914904401987205
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 12.543507498047633,
+                "y": 0,
+                "z": -29.7677501150973,
+                "head": {
+                  "x": 0.6713475168081399,
+                  "y": 0.4729050734710083,
+                  "depth": 0.9900878200138955
+                }
+              },
+              {
+                "id": "1:4",
+                "x": 19.33790819306468,
+                "y": 0,
+                "z": -35.1480810751988,
+                "head": {
+                  "x": 0.7237240677804254,
+                  "y": 0.4739911371107816,
+                  "depth": 0.991630652617048
+                }
+              }
+            ]
+          },
+          "brightness": 3264619,
+          "colored": 9982,
+          "w": 844,
+          "h": 390,
+          "objective": "SETOR 1/4 · 6 ALVOS · DESATIVE O TRANSMISSOR",
+          "sceneHash": "5c45a7e55119721e8ecd8008fced10b3a81b59da3ffadf6d579a8599c0383f3d"
+        },
+        {
+          "mission": "extraction",
+          "metrics": {
+            "staticInstances": 451,
+            "dynamicInstances": 86,
+            "materials": 33,
+            "renderer": {
+              "renderer": "webgl",
+              "frames": 30,
+              "mission": "extraction",
+              "drawCalls": 2,
+              "triangles": 3536,
+              "width": 273,
+              "height": 591,
+              "low": false,
+              "software": true,
+              "frameMs": 2,
+              "shadows": false
+            },
+            "mission": "extraction",
+            "aircraft": 0,
+            "infantry": [
+              {
+                "id": "1:0",
+                "x": 1.127190415784216,
+                "y": 0,
+                "z": -29.99805296374737,
+                "head": {
+                  "x": 0.5330663982455413,
+                  "y": 0.4767467082887162,
+                  "depth": 0.9901651980456284
+                }
+              },
+              {
+                "id": "1:1",
+                "x": 3.742441709889873,
+                "y": 0,
+                "z": -34.16753183612421,
+                "head": {
+                  "x": 0.5963882530496727,
+                  "y": 0.4771437089009037,
+                  "depth": 0.9913856833362378
+                }
+              },
+              {
+                "id": "1:3",
+                "x": 11.83181657169678,
+                "y": 0,
+                "z": -29.53958801866808,
+                "head": {
+                  "x": 0.8524760933196873,
+                  "y": 0.4766962160406592,
+                  "depth": 0.990009971468763
+                }
+              },
+              {
+                "id": "1:4",
+                "x": 18.604503085089224,
+                "y": 0,
+                "z": -35.2918825511738,
+                "head": {
+                  "x": 0.9639016547541465,
+                  "y": 0.47723470639685767,
+                  "depth": 0.9916654337998005
+                }
+              }
+            ]
+          },
+          "brightness": 3130898,
+          "colored": 9980,
+          "w": 390,
+          "h": 844,
+          "objective": "SETOR 1/4 · 6 ALVOS · DESATIVE O TRANSMISSOR",
+          "sceneHash": "2582c0266eb3feb922cd9b003651fb9be11fb16e550679119f2b7cac223c359c"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Chromium/SwiftShader in automated environment; physical phone frame rate and player testing not certified."
+  ]
+}

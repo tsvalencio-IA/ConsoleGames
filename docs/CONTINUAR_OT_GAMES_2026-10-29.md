@@ -6,7 +6,7 @@ Projeto correto: tsvalencio-IA/ConsoleGames, OT Games, não o SaaS da oficina. N
 
 - Trabalho: performance-gravacoes-20261027. Produção: world-revisao-20261022.
 - Web 705.28.9-war-corpo-fases, assetVersion 70645, revisão 07e6a02c08d06796; worker WAR v38.
-- Produção ainda estava em dcd5272a2b1200205cb760e5820c1aa778c65a89 durante esta anotação. Não afirmar publicação: conferir docs/evidence/war-corpo-fases-20261029/deployment.json e resultados públicos, quando existirem.
+- PUBLICADO: f60e00210a87246d5c7f67634b3549f827c5cb7d, deployment dpl_CrhsJKF1xmbRG19xtfLDfE2eVcVa (production/READY). Alias principal confirmado. Provas em docs/evidence/war-corpo-fases-20261029/deployment.json e public-*.json.
 - Vercel: projeto prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm, time team_W3UyY5ss3Shyv78KRMndjust, repoId 1427071731. Build: python3 games/otthi/tools/build_project.py && python3 tools/package-world-preview.py. Saída: dist-world. Publicar SHA testado, esperar READY e conferir origem/alias/recursos públicos. Não gravar segredos.
 
 ## Alterações WAR
@@ -28,11 +28,11 @@ Projeto correto: tsvalencio-IA/ConsoleGames, OT Games, não o SaaS da oficina. N
 
 ## Evidências e conclusão
 
-Pasta docs/evidence/war-corpo-fases-20261029/ contém relatórios e imagens reais do jogo. Fonte funcional b289025 passou integralmente no gameplay 40850792513: 323 unidades, 7 cenários dos cinco jogos, três corridas completas de kart, família/HQ, embarque, frota, garagem, mundo e comércio. Depois houve ajustes de agendamento da câmera, aquisição e diagnóstico; aguardar sua rodada final antes de afirmar aprovação global.
+Pasta docs/evidence/war-corpo-fases-20261029/ contém relatórios e imagens reais do jogo. Fonte publicada f60e002 passou integralmente em gameplay 40854507129 e câmera/mundo 40854507253: 324 unidades, 7 cenários dos cinco jogos, três corridas completas de kart, família/HQ, embarque, frota, garagem, mundo e comércio. Cenários/projeção passaram também em 40855640343. Os ajustes de câmera e aquisição já integram essa fonte testada.
 
 Ambos os modelos reais sobre a mesma foto oficial passaram também com o navegador artificialmente mais lento (1.25x); não é webcam de uma pessoa real. Adversário de treino estacionário mantém modelo e disparo reais: foto estática não acompanha flanqueamento. Observadores somente de leitura das respostas reais confirmam ausência dos dois sensores depois da ocultação. A posição, os tiros e o tempo devem ficar exatamente parados por 500 ms e depois retomar. Não usar o rótulo transitório show-shoulders como confirmação: é sobrescrito por lost. Não mockar workers/landmarks nem aumentar validade das imagens para passar testes. Limitação em 2x excedeu 550 ms e pausou: não certifica jogabilidade nesse hardware.
 
-Fases WebGL e controles em retrato/paisagem passaram em preview. HTML de preview pode receber Vercel Live, inclusive créditos; produção deve passar na conferência byte a byte. Não ignorar diferenças de assets. Entrada canônica WAR: /games/ar/.
+PRODUÇÃO VERIFICADA: ambos os modelos reais, acerto, avanço, perda/retomada e três operações WebGL em retrato/paisagem passaram no domínio principal. Conferência byte a byte: 20 recursos WAR e 104 do mundo; APK original preservado. Recuperação pública instalou a revisão correta, preservando progresso/dados e confirmando entrada automática pelo console e cabeçalhos no-store. HTML de preview pode receber Vercel Live; produção passou sem ignorar diferenças de assets. Entrada canônica WAR: /games/ar/.
 
 ## Limites e links
 

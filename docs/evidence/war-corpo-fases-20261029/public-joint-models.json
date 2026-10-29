@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "checkedAt": "2026-10-29T10:23:07.279Z",
+  "calibrated": {
+    "state": "PLAYING",
+    "body": {
+      "fresh": true,
+      "calibrated": true,
+      "moveX": 0,
+      "moveZ": 0,
+      "crouched": false,
+      "turnYaw": 0,
+      "lean": 0,
+      "twoHands": false,
+      "timestamp": 27392.400000000373,
+      "fullBody": true
+    },
+    "hand": {
+      "x": 0.4999932710342815,
+      "y": 0.4804059016216118,
+      "fresh": true,
+      "present": true,
+      "timestamp": 27989.800000000745,
+      "twoHands": false,
+      "calibration": 1,
+      "roll": 0,
+      "source": "hand"
+    },
+    "bodySamples": 6,
+    "handSamples": 9,
+    "crop": {
+      "x": 0.273156164586544,
+      "y": 0.3852841579914093,
+      "w": 0.1875,
+      "h": 0.25
+    },
+    "bodyMs": 125,
+    "handMs": 526.1999999992549
+  },
+  "combat": {
+    "shots": 1,
+    "hits": 1,
+    "renderer": {
+      "renderer": "webgl",
+      "frames": 3,
+      "mission": "patrol",
+      "drawCalls": 4,
+      "triangles": 3540,
+      "width": 416,
+      "height": 192,
+      "low": false,
+      "software": true,
+      "frameMs": 214,
+      "shadows": false
+    },
+    "infantry": [
+      {
+        "id": "1:0",
+        "x": 0,
+        "y": 0,
+        "z": -24,
+        "head": {
+          "x": 0.5000664220236268,
+          "y": 0.47001499767975047,
+          "depth": 0.9876654589833547
+        }
+      }
+    ]
+  },
+  "sameUnmodifiedSample": true,
+  "stationaryTrainingAdversary": true,
+  "bothProductionModels": true,
+  "mainThreadSlowdown": 1,
+  "noWorkerInterception": true,
+  "frontCamera": true,
+  "hiddenPreview": true,
+  "assistedAdvance": true,
+  "lossStopsActions": true,
+  "lossProof": {
+    "hand": {
+      "timestamp": 37059.300000000745,
+      "count": 0
+    },
+    "body": {
+      "timestamp": 36861.40000000037,
+      "count": 0
+    }
+  },
+  "reacquired": true,
+  "errors": [],
+  "limits": [
+    "Official static photo replayed as camera video; physical Android tracking and player accuracy not certified."
+  ]
+}

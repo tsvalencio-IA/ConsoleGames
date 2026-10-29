@@ -46,3 +46,11 @@ A fonte b289025 passou integralmente no workflow de jogabilidade 40850792513: ci
 O corpo recebe uma nova observação antes de seu prazo, calculado com o custo real dos dois reconhecedores. A mão mantém apenas a memória de aquisição entre inferências seriais; imagens com mais de 550 ms continuam impedidas de mover ou atirar. Observação vazia limpa a aquisição imediatamente. Nova regressão cobre 410 ms de mão e 294 ms de postura; os 30 testes focais passaram. A inferência real passou com o navegador artificialmente mais lento (1.25x), conforme joint-models.json. Limitação em 2x continua fora da certificação de jogabilidade.
 
 O ensaio de perda observa as respostas dos workers reais com listeners somente de leitura. Ambos precisam informar ausência depois da ocultação; a mesma comparação exata verifica posição/tiros/tempo parados por 500 ms e posterior retomada. O rótulo transitório show-shoulders é sobrescrito por lost e não é utilizado como confirmação. Não há worker falso nem landmarks substituídos. A CI separa corpo/mão e cenários em etapas independentes e mantém atualização e cenários executando para diagnóstico completo mesmo após falha.
+
+## Publicação concluída
+
+Fonte f60e00210a87246d5c7f67634b3549f827c5cb7d publicada no alias principal, deployment dpl_CrhsJKF1xmbRG19xtfLDfE2eVcVa, production/READY. Gameplay 40854507129 e câmera/mundo 40854507253 passaram integralmente, com 324 unidades e sete cenários nativos dos cinco jogos; cenários/projeção 40855640343 também passou. Ver deployment.json e ci-gameplay.json.
+
+Verificações no domínio público: os dois modelos reais (calibração, acerto, caminhada, perda e retomada), três mapas em ambas orientações, 20 arquivos WAR e 104 arquivos do mundo com hashes exatos e APK original preservado. Recuperação real do mundo confirmou revisão, progresso, família e dados preservados, cabeçalhos no-store e entrada automática do console. Ver public-joint-models.json, public-campaign.json, public-war-integrity.json, public-world-integrity.json e public-update.json. Falhas HTTP 503 transitórias na primeira auditoria de arquivos não se repetiram na verificação sequencial completa; não alterar os hashes para aceitá-las.
+
+Os limites de homologação física e multiplayer real continuam válidos. Esta publicação atualiza conteúdo web; não distribui um novo APK assinado.

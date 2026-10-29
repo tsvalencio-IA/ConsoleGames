@@ -1,0 +1,78 @@
+{
+  "published": true,
+  "checkedAt": "2026-10-29T10:28:50.956Z",
+  "sourceSha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+  "branch": "world-revisao-20261022",
+  "build": "705.28.9-war-corpo-fases",
+  "assetVersion": 70645,
+  "revision": "07e6a02c08d06796",
+  "warCache": 38,
+  "deployment": {
+    "id": "dpl_CrhsJKF1xmbRG19xtfLDfE2eVcVa",
+    "url": "https://otthi-world-campanha-teste-3j01sv89q-thiaguinho-s-projects.vercel.app",
+    "target": "production",
+    "state": "READY",
+    "aliases": [
+      "otthi-world-campanha-teste.vercel.app",
+      "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+      "otthi-world-campanha-teste-git-wor-d6b28f-thiaguinho-s-projects.vercel.app"
+    ]
+  },
+  "publicUrl": "https://otthi-world-campanha-teste.vercel.app/games/ar/",
+  "checks": [
+    {
+      "id": 40855640343,
+      "name": "Conferir cenários 3D e alinhamento da mira",
+      "branch": "world-revisao-20261022",
+      "sha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40855640343"
+    },
+    {
+      "id": 40855640431,
+      "name": "Câmera frontal e modos no mundo OT",
+      "branch": "world-revisao-20261022",
+      "sha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40855640431"
+    },
+    {
+      "id": 40855640385,
+      "name": "Validar gameplay real no Chromium",
+      "branch": "world-revisao-20261022",
+      "sha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40855640385"
+    },
+    {
+      "id": 40854507253,
+      "name": "Câmera frontal e modos no mundo OT",
+      "branch": "performance-gravacoes-20261027",
+      "sha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40854507253"
+    },
+    {
+      "id": 40854507129,
+      "name": "Validar gameplay real no Chromium",
+      "branch": "performance-gravacoes-20261027",
+      "sha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40854507129"
+    }
+  ],
+  "unitTests": 324,
+  "gameplayScenarios": 7,
+  "limitations": [
+    "Physical Android tracking, sustained device FPS and live Firebase play between phones are not certified.",
+    "The existing signed Android package is preserved; this is a web-content release."
+  ],
+  "publicVerification": {
+    "warFiles": 20,
+    "worldFiles": 104,
+    "realBodyAndHandOnSameSample": true,
+    "threeWebGLMapsBothLayouts": true,
+    "worldUpdatePreservesProgress": true,
+    "automaticConsoleUpdateEntry": true
+  }
+}
