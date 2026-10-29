@@ -24,6 +24,9 @@ try{
     await page.evaluate(()=>System.paused=false);
    }
    assert.equal(errors.length,0,errors.join('\n'));results.push(report);
+  }catch(error){
+   const state=await page.evaluate(()=>{const g=window.System?.activeGame?.logic;return{game:window.System?.activeGame?.id,paused:window.System?.paused,mission:g?.mission?.id,wave:g?.wave,three:typeof window.THREE,world:g?.worldVisual?{frames:g.worldVisual.frames,ready:g.worldVisual.ready,error:g.worldVisual.error}:null,render:g&&window.ArcadeWorldRenderer?.inspect(g),resources:performance.getEntriesByType('resource').filter(r=>/renderer|three|combat-visuals/.test(r.name)).map(r=>({url:r.name,duration:r.duration,bytes:r.decodedBodySize}))};}).catch(()=>null);
+   fs.writeFileSync(`test-results/war-campaign/${id}-failure.json`,JSON.stringify({origin,error:error.stack,errors,state},null,2));throw error;
   }finally{await context.close();}
  }
  assert.equal(new Set(results.map(r=>r.layouts[0].sceneHash)).size,3,'the actual battlefield pixels must differ');assert.equal(new Set(results.map(r=>r.layouts[0].metrics.staticInstances)).size,3,'the three maps need distinct geometry');

@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "models": [
+    {
+      "kind": "light",
+      "livery": "tour",
+      "size": [
+        5.860289573669434,
+        2.2426722049713135,
+        3.983542397305369
+      ],
+      "rotors": 1,
+      "draws": 7,
+      "civilian": true
+    },
+    {
+      "kind": "cargo",
+      "livery": "cargo",
+      "size": [
+        11.860116958618164,
+        3.990642786026001,
+        9.600000381469727
+      ],
+      "rotors": 4,
+      "draws": 10,
+      "civilian": true
+    },
+    {
+      "kind": "helicopter",
+      "livery": "tour",
+      "size": [
+        4.930000305175781,
+        2.1299999952316284,
+        5.930000146627426
+      ],
+      "rotors": 2,
+      "draws": 8,
+      "civilian": true
+    },
+    {
+      "kind": "helicopter",
+      "livery": "ottovias",
+      "size": [
+        4.930000305175781,
+        2.1299999952316284,
+        5.930000146627426
+      ],
+      "rotors": 2,
+      "draws": 9,
+      "civilian": true
+    }
+  ]
+}

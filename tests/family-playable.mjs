@@ -8,7 +8,7 @@ const base=process.env.FAMILY_QA_BASE||'http://127.0.0.1:4173/';
 mkdirSync('test-results/playable',{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox','--disable-dev-shm-usage']});
 try{
- const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
+ const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  await context.addInitScript(()=>!localStorage.getItem('otthos_life_world_roleplay_v700')&&localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Teste Família',nameConfirmed:true,playerId:'family-test-player'},flags:{accountPromptedV635:true},settings:{quality:'low'},guardian:{sessionLimitMinutes:0},familyAdventure:{deliveries:{luna:0,liz:0},flags:{}}})));
  await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===new URL(base).origin?route.continue():route.abort('blockedbyclient'));
  const page=await context.newPage(),errors=[];const fingers=await touchSession(context,page);page.on('pageerror',e=>errors.push(e.message));

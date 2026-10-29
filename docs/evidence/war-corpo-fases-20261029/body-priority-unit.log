@@ -1,0 +1,32 @@
+✔ WAR body: a neutral stance and arm pointing cannot march forward; lateral steps retain mirrored direction (4.935069ms)
+✔ WAR body: crouch, anatomical right turn and two-hand support complement aiming; stale or hidden body releases movement (5.668298ms)
+✔ WAR body: whole-body steps can move forward; leaning or duplicate frames cannot walk or calibrate (1.952231ms)
+✔ WAR body: low-priority posture frames every 950ms can calibrate without resetting stable samples (0.644882ms)
+✔ WAR body session: recalibration and pause discard pending observations; disposal clears the body (2.865008ms)
+✔ WAR body session: a slow hand gets consecutive observations without starving posture or accepting stale frames (2.223488ms)
+✔ WAR hand: a 185 ms inference remains continuous between valid camera results (4.177995ms)
+✔ WAR hand: adaptive latency never permits a frame older than 550 ms or an absent hand (0.795165ms)
+✔ WAR hand: calibration needs a single stable hand and binds the presented right hand independently of mirror labels (2.528512ms)
+✔ WAR hand: front mirror moves the sight right when the visible hand moves right; axes and knuckle rotation respond (1.039217ms)
+✔ WAR hand: an opposite hand or stale video never substitutes for the bound right hand (0.648608ms)
+✔ WAR hand: two-hand grip stabilizes the same weapon without changing unlocks; losing the supporting hand restores one-hand aim (1.050617ms)
+✔ WAR hand: only an actual visible aligned adversary enables automatic shots, and hand loss stops damage and ammunition immediately (11.357946ms)
+✔ WAR hand: inverse sight projection selects the same world target in portrait and landscape (3.020129ms)
+✔ WAR hand: calibration freezes the mission rather than counting as defeat or skipping an operation (3.687332ms)
+✔ WAR hand: two confirmed aligned observations acquire the target even when render frames are slow; an actual missing hand clears acquisition (2.619628ms)
+✔ WAR hand: inference latency pauses actions without discarding the first aligned observation before the next valid frame (5.527463ms)
+✔ WAR hand: an interrupted stream expires pending target acquisition and needs two new aligned observations (2.02769ms)
+✔ WAR hand: neutral camera stays still, fresh body steps move, cover collides, and lost tracking stops movement (2.786215ms)
+✔ WAR hand: the camera follows the calibrated hand in both axes and the reticle remains on its real forward ray (2.007556ms)
+✔ WAR hand: neutral hand aiming and manual mode stay stationary without movement input (1.850554ms)
+✔ WAR body and hand: a fresh hand cannot advance the mission or fire without the required live body (6.831036ms)
+✔ WAR worker: a six-connection transport finishes installing every resource by draining response bodies as they arrive (25.777526ms)
+✔ WAR worker: an incomplete shell discards only the new cache and retains the working release and other games (10.182132ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 471.861895

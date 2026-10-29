@@ -15,3 +15,13 @@ test('WAR body session: recalibration and pause discard pending observations; di
  clock=700;video.currentTime=3;session.tick(video,clock,false);await Promise.resolve();session.tick(video,clock,true);worker.onmessage({data:{type:'pose',timestamp:700,landmarks:dancePose(),worldLandmarks:[]}});assert.equal(session.controller.samples.length,1,'a frame captured before pause cannot reactivate the body');assert(!game.bodyPose.fresh);
  session.dispose();session.release();assert.equal(game.bodyPose,null);
 });
+
+test('WAR body session: a slow hand gets consecutive observations without starving posture or accepting stale frames',async()=>{
+ let clock=2000;const messages=[];class Worker{postMessage(data){messages.push(data);}terminate(){}}
+ const scope={window:{},document:{baseURI:'http://local.test/'},URL,Worker,performance:{now:()=>clock},setTimeout:()=>1,clearTimeout(){},createImageBitmap:async()=>({close(){}})};vm.runInNewContext(fs.readFileSync('games/ar/body-controls.js','utf8'),scope);
+ const game={},session=scope.window.WarBodyControl.start(game),video={readyState:2,currentTime:1,videoWidth:640,videoHeight:480};session.worker.onmessage({data:{type:'ready'}});session.controller=start();session.nextAt=0;
+ session.tick(video,clock,false,294,false,true);await Promise.resolve();assert.equal(messages.filter(m=>m.type==='frame').length,0,'recent posture yields to a due hand frame');assert(game.bodyPose.fresh);
+ clock=2250;video.currentTime=2;session.tick(video,clock,false,294,false,true);await Promise.resolve();assert.equal(messages.filter(m=>m.type==='frame').length,1,'posture receives a turn within its freshness budget');
+ session.worker.onmessage({data:{type:'pose',timestamp:clock,landmarks:dancePose(),worldLandmarks:[],inferenceMs:240}});clock=2800;video.currentTime=3;session.tick(video,clock,false,294,false,false);await Promise.resolve();assert.equal(messages.filter(m=>m.type==='frame').length,2,'idle hand never prevents posture refresh');
+ session.dispose();
+});

@@ -496,7 +496,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
-      "sha256Body": "bb2b5a01e0e220e1b1ff015fc2303c1cdb474fc09be44a0a0c5fe13fa701600f"
+      "sha256Body": "83967192f8d2e04e4303d9b6950329bf6402b48e1e37761b1fb01a435c119453"
     },
     {
       "file": "src/modules/56-city-coast-life.js",
