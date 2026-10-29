@@ -1,0 +1,99 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "completedRepetitions": 3,
+  "source": "deterministic pixel camera and actual object worker; posture fixture explicitly mocked",
+  "fivePoints": true,
+  "axisSelection": true,
+  "actualNativeTargets": true,
+  "rotatedAfterAxis": true,
+  "rejectedCapture": {
+    "lastTemplate": null,
+    "toolsTemplate": null,
+    "frozen": false,
+    "axisDisabled": true,
+    "fiveDisabled": true,
+    "state": "HAND_CALIBRATION",
+    "status": "Escolha uma região com detalhes visíveis no objeto."
+  },
+  "retrySuccessful": true,
+  "tested": {
+    "targets": 6,
+    "hits": 6,
+    "shots": 6,
+    "hp": 100,
+    "careerRaw": null,
+    "wins": 0,
+    "kills": 0,
+    "object": {
+      "matches": 28,
+      "quality": 0.9801527056685857,
+      "probe": 0,
+      "lost": false,
+      "object": {
+        "x": 0.6011378445090264,
+        "y": 0.3500542221780287,
+        "centerX": 0.501175469539025,
+        "centerY": 0.48500777500652187,
+        "tip": {
+          "x": 0.6011378445090264,
+          "y": 0.3500542221780287
+        },
+        "base": {
+          "x": 0.4012134567593262,
+          "y": 0.6499505292829239
+        },
+        "dx": 0,
+        "dy": 0,
+        "scale": 0.32238391560681834,
+        "angle": -0.000016103143130800755,
+        "confidence": 0.9801527056685857,
+        "matches": 28,
+        "corners": [
+          {
+            "x": 0.34123046611967695,
+            "y": 0.2700885987304883
+          },
+          {
+            "x": 0.6611152815640373,
+            "y": 0.27008173052919643
+          },
+          {
+            "x": 0.6611204729583732,
+            "y": 0.6999269512825556
+          },
+          {
+            "x": 0.3412356575140128,
+            "y": 0.6999338194838474
+          }
+        ],
+        "axis": true,
+        "recovered": false,
+        "roi": {
+          "x": 108.80000000000001,
+          "y": 64.80000000000001,
+          "w": 102.4,
+          "h": 103.2
+        },
+        "source": "object"
+      }
+    },
+    "map": {
+      "version": 1,
+      "xx": -1.9367545325551567,
+      "xy": 0.015238746025050093,
+      "yx": 0.00010254573731508156,
+      "yy": 1.6978442403182459,
+      "error": 0.0030948405622112127
+    }
+  },
+  "careerBefore": {
+    "raw": null,
+    "wins": 0,
+    "kills": 0
+  },
+  "errors": [],
+  "limits": [
+    "Not a physical toy/phone recording."
+  ]
+}

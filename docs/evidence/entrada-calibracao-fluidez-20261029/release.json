@@ -1,5 +1,5 @@
 {
-  "state": "28.12 candidate; 28.11 remains published until release verification",
+  "state": "published and publicly accepted",
   "baselineProduction": "8c5ba8cee90d163dab5b1c114579490d3b9c29cf",
   "build": "705.28.12-calibracao-recuperacao",
   "assetVersion": 70648,
@@ -34,8 +34,79 @@
     "cpuMeanMsAfter": 50.512,
     "cpuP95MsBefore": 112.3,
     "cpuP95MsAfter": 69,
-    "limits": "CPU reduction is measured; display cadence remained slow and was not improved consistently. Physical Android stuttering is not certified fixed."
+    "limits": "CPU reduction is measured; display cadence remained slow and was not improved consistently. Physical Android stuttering is not certified fixed.",
+    "worldGeometryOrPopulationRemoved": false
   },
   "androidApkReplaced": false,
-  "supersededProduction": "b7ebb6f3cd0f73048a3a8a00021e389ade6e286f"
+  "supersededProduction": "b7ebb6f3cd0f73048a3a8a00021e389ade6e286f",
+  "sourceSha": "0c066cf421ccf659ea7af34a111adeac44d89732",
+  "gamesTree": "ff9dc06c39234142db9d7ae6641692aae7ebbe30",
+  "deployment": {
+    "id": "dpl_G3ddG6aYrVZoyhFDQqFXfkWk7Z2w",
+    "target": "production",
+    "state": "READY",
+    "alias": "https://otthi-world-campanha-teste.vercel.app",
+    "branch": "world-revisao-20261022"
+  },
+  "ci": [
+    {
+      "id": 40951085432,
+      "branch": "performance-gravacoes-20261027",
+      "name": "Câmera frontal e modos no mundo OT",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0c066cf421ccf659ea7af34a111adeac44d89732",
+      "updated": "2026-10-29T20:45:06Z"
+    },
+    {
+      "id": 40951085492,
+      "branch": "performance-gravacoes-20261027",
+      "name": "Validar gameplay real no Chromium",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0c066cf421ccf659ea7af34a111adeac44d89732",
+      "updated": "2026-10-29T20:51:11Z"
+    },
+    {
+      "id": 40952884761,
+      "branch": "world-revisao-20261022",
+      "name": "Câmera frontal e modos no mundo OT",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0c066cf421ccf659ea7af34a111adeac44d89732",
+      "updated": "2026-10-29T21:00:23Z"
+    },
+    {
+      "id": 40952885266,
+      "branch": "world-revisao-20261022",
+      "name": "Validar gameplay real no Chromium",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0c066cf421ccf659ea7af34a111adeac44d89732",
+      "updated": "2026-10-29T21:02:38Z"
+    }
+  ],
+  "unchangedKartCameraGate": {
+    "run": 40948333311,
+    "source": "b7ebb6f3cd0f73048a3a8a00021e389ade6e286f",
+    "conclusion": "success",
+    "kartCodeUnchangedInAdditionalRevision": true
+  },
+  "public": {
+    "warExactHashComparisons": 25,
+    "worldExactHashComparisons": 107,
+    "consoleControlsAndEntryExactHashComparisons": 21,
+    "fiveGameEntryTransitions": true,
+    "consecutiveCompleteTrainingRuns": 3,
+    "oldDataAndAutomaticConsoleUpdatePreserved": true,
+    "actualWorkerAndNoStoreHeaders": true
+  },
+  "originalApk": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49",
+    "replaced": false
+  },
+  "physicalAndroidValidated": false,
+  "androidStutterResolutionCertified": false,
+  "checkedAt": "2026-10-29T21:04:33.397Z"
 }

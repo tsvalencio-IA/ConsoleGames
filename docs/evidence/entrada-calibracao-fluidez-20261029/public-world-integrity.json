@@ -1,0 +1,548 @@
+{
+  "passed": true,
+  "build": "705.28.12-calibracao-recuperacao",
+  "revision": "72c45601e6968473",
+  "resources": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "b27438aa35d1cfdccb2034f0018a07f0afd76ee8b0fe8680e804468c4a20094d"
+    },
+    {
+      "path": "game-audio.js",
+      "status": 200,
+      "sha256": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413"
+    },
+    {
+      "path": "console-world.js",
+      "status": 200,
+      "sha256": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553"
+    },
+    {
+      "path": "console-world.css",
+      "status": 200,
+      "sha256": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d"
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "sha256": "d9d3b1f536acbfd4ad19d44372700e333069940453ce9e4c49b9c1c7dd54b2cd"
+    },
+    {
+      "path": "assets/vendor/three-r128.min.js",
+      "status": 200,
+      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+    },
+    {
+      "path": "assets/js/core/runtime-config.js",
+      "status": 200,
+      "sha256": "7524afd10b27bf4222cd078c2ead8e1d0e21b57e34a88d59d13ffedab614fb62"
+    },
+    {
+      "path": "assets/js/core/safe-pointer.js",
+      "status": 200,
+      "sha256": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4"
+    },
+    {
+      "path": "assets/js/core/viewport-manager.js",
+      "status": 200,
+      "sha256": "b098277b9df4ad0c3f4265d35dcf44a4c9d8d5742a0212fbd5dec1ec21f949f1"
+    },
+    {
+      "path": "assets/js/save-db.js",
+      "status": 200,
+      "sha256": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d"
+    },
+    {
+      "path": "firebase-config.js",
+      "status": 200,
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+    },
+    {
+      "path": "assets/js/game-account.js",
+      "status": 200,
+      "sha256": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09"
+    },
+    {
+      "path": "assets/js/multiplayer-rtdb.js",
+      "status": 200,
+      "sha256": "4f63035c0787a7dc0ab7c34eff70d0355bfaf1c17fc3fa6654cc7371dc27cd47"
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "sha256": "3df49e67eb80dc30ea50c901ef4d324ecdbb464a30fcea060a66f0cbff16b5b7"
+    },
+    {
+      "path": "family-mascots.js",
+      "status": 200,
+      "sha256": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9"
+    },
+    {
+      "path": "assets/ot-games-airframes.json",
+      "status": 200,
+      "sha256": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6"
+    },
+    {
+      "path": "assets/vendor/GLTFLoader-r128.js",
+      "status": 200,
+      "sha256": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+    },
+    {
+      "path": "assets/vendor/DRACOLoader-r128.js",
+      "status": 200,
+      "sha256": "bbd4a1bb08f05d9c8df1b411644a1fc31a32fdcd36489e5bcdfe6c4fa2b8e4e9"
+    },
+    {
+      "path": "assets/vendor/draco/draco_wasm_wrapper.js",
+      "status": 200,
+      "sha256": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846"
+    },
+    {
+      "path": "assets/vendor/draco/draco_decoder.wasm",
+      "status": 200,
+      "sha256": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e"
+    },
+    {
+      "path": "assets/world/vehicles/ferrari-458.glb",
+      "status": 200,
+      "sha256": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e"
+    },
+    {
+      "path": "assets/vehicles-credits.html",
+      "status": 200,
+      "sha256": "5be05f32d2fb989a67c6c51aa624a660dfb7eacdbd671f7f44a2f141dc32e75f"
+    },
+    {
+      "path": "assets/world/vehicles/ot-racer.glb",
+      "status": 200,
+      "sha256": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b"
+    },
+    {
+      "path": "assets/world/vehicles/ot-coupe.glb",
+      "status": 200,
+      "sha256": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862"
+    },
+    {
+      "path": "assets/js/controls/world-hand-controls.js",
+      "status": 200,
+      "sha256": "2bf948c5220aee8ce8c0b5dc2f9d6d4f8935754d8717e129d026a4329a3bcfcf"
+    },
+    {
+      "path": "assets/js/controls/world-body-controls.js",
+      "status": 200,
+      "sha256": "e3e69786bd4260ce91f00e6738c373c3796f2573efa1987c5697daadc07130bd"
+    },
+    {
+      "path": "assets/js/world-venue-bridge.js",
+      "status": 200,
+      "sha256": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c"
+    },
+    {
+      "path": "assets/js/world-venue-trip.js",
+      "status": 200,
+      "sha256": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7"
+    },
+    {
+      "path": "assets/js/ui/shared-modal.js",
+      "status": 200,
+      "sha256": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a"
+    },
+    {
+      "path": "assets/js/ui/account-access.js",
+      "status": 200,
+      "sha256": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff"
+    },
+    {
+      "path": "assets/js/core/performance-guardian.js",
+      "status": 200,
+      "sha256": "2405134db875a019bd50996efd2f908c0082583005f9d3a9f6a7d9811b52ee1f"
+    },
+    {
+      "path": "assets/js/multiplayer/room-manager.js",
+      "status": 200,
+      "sha256": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4"
+    },
+    {
+      "path": "assets/js/education/adaptive-learning.js",
+      "status": 200,
+      "sha256": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701"
+    },
+    {
+      "path": "assets/js/safety/child-safety.js",
+      "status": 200,
+      "sha256": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "status": 200,
+      "sha256": "11d449b168efbdec8fa31d8a1e117f5f3bac76b504fa65d1580b2d3e74d1920e"
+    },
+    {
+      "path": "icons/icon-192.png",
+      "status": 200,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "icons/icon-512.png",
+      "status": 200,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "icons/icon-192-v2.png",
+      "status": 200,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "icons/icon-512-v2.png",
+      "status": 200,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "icons/icon-maskable-512-v2.png",
+      "status": 200,
+      "sha256": "97f401d63901b86a54047f29125885699c6d2dc9e054ac2945cf6935e3d463ee"
+    },
+    {
+      "path": "icons/favicon.png",
+      "status": 200,
+      "sha256": "653f506d96b4563612202fb66398399ea1818fd43fe5b3461b65e37d17b9022f"
+    },
+    {
+      "path": "404.html",
+      "status": 200,
+      "sha256": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8"
+    },
+    {
+      "path": "assets/js/controls/dance-pose-controller.js",
+      "status": 200,
+      "sha256": "2763591b28f1b1b4956018dda8131ac68b7ec63ecb0504c87bb1cd43606bfd6d"
+    },
+    {
+      "path": "assets/js/controls/dance-pose-worker.js",
+      "status": 200,
+      "sha256": "432b66e7f15cbf78bbf5361796e681b8c3cb6b2da75c6a2ca54ff6b1ae854898"
+    },
+    {
+      "path": "assets/js/controls/dance-stage.js",
+      "status": 200,
+      "sha256": "2ca096e4354c8d0a3f065f6756eedb9b9d48d1f57b2001b81ae4f33af1764f35"
+    },
+    {
+      "path": "assets/js/controls/dance-music.js",
+      "status": 200,
+      "sha256": "5cc162ab83bd2c07c29b93c51a60a17881bf861fb937d3907176ed6127f9b0f2"
+    },
+    {
+      "path": "assets/pose/vision_bundle.mjs",
+      "status": 200,
+      "sha256": "40f4123dfcd75cfa58add046919cc6f52fde66f009ff582997c09ba54c6ba27c"
+    },
+    {
+      "path": "assets/pose/vision_wasm_internal.js",
+      "status": 200,
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "path": "assets/pose/vision_wasm_internal.wasm",
+      "status": 200,
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "path": "assets/pose/vision_wasm_nosimd_internal.js",
+      "status": 200,
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "path": "assets/pose/vision_wasm_nosimd_internal.wasm",
+      "status": 200,
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    },
+    {
+      "path": "assets/pose/pose_landmarker_lite.task",
+      "status": 200,
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+    },
+    {
+      "path": "assets/pose/sources.json",
+      "status": 200,
+      "sha256": "fa9be8c1638684f69827db69dbee836dc4058efd3ae72a96127600acea198d30"
+    },
+    {
+      "path": "assets/pose/LICENSE",
+      "status": 200,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "VERSION.json",
+      "status": 200,
+      "sha256": "ba411c1645b9b2ca288341b3d109fa979d5aeeb000f082774778346e08d49260"
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "b43cf2a7df31511764bdd94bdbf052185174df7307b88511fb43bf9befd843db"
+    },
+    {
+      "path": "assets/js/world/civil-mission-core.js",
+      "status": 200,
+      "sha256": "cd11be9f39ee2c623ae221c07fd1ab7c301ee45a9c8282a5ad91f16ccd7aca51"
+    },
+    {
+      "path": "assets/js/vehicles/engine-sound.js",
+      "status": 200,
+      "sha256": "ea6a4885a906d34927cd20154a6eaffc65c80395827dd85c265a00e8ebf1038e"
+    },
+    {
+      "path": "recorded-audio.js",
+      "status": 200,
+      "sha256": "6fb979bebfc6cb7afeff7cf2f5ab6dcd343f24a372545d8901267ccb9aa1a9b9"
+    },
+    {
+      "path": "audio/engine-recordings.json",
+      "status": 200,
+      "sha256": "6e4c6616ee0a926b8163fb31a9f399cd2b3fadebfcf2ea7cb2959bfed609609a"
+    },
+    {
+      "path": "audio/CREDITS.txt",
+      "status": 200,
+      "sha256": "54dbab9352e4f96e7724c23e3201e6d8500349dcb067442962b81240d47b764b"
+    },
+    {
+      "path": "audio/engine-road-idle.ogg",
+      "status": 200,
+      "sha256": "4ace075ac4ddcf31b8988b8f10db9f1e97ba1d7d7011c0a6c7c025988643fba7"
+    },
+    {
+      "path": "audio/engine-road-load.ogg",
+      "status": 200,
+      "sha256": "6b532f0f2113cadb36dc6a9eb10eaa590bb3048ba5244fd04bfb94cd8b4985f7"
+    },
+    {
+      "path": "audio/engine-classic-idle.ogg",
+      "status": 200,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
+    },
+    {
+      "path": "audio/engine-classic-load.ogg",
+      "status": 200,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
+    },
+    {
+      "path": "audio/engine-sport-idle.ogg",
+      "status": 200,
+      "sha256": "635331ad8b779f16f4b71e623edb8ef9ad94ad99d6dc19081fae7f03fd22d8f6"
+    },
+    {
+      "path": "audio/engine-sport-load.ogg",
+      "status": 200,
+      "sha256": "fbb816f1d1575159df43c43b61273379c6be63abeed5490aa4ca065dfd123f7f"
+    },
+    {
+      "path": "audio/engine-heavy-idle.ogg",
+      "status": 200,
+      "sha256": "4547d24888550d38b13e078da8459466294e1469bace9a56a8f2d997f9e8f9e6"
+    },
+    {
+      "path": "audio/engine-heavy-load.ogg",
+      "status": 200,
+      "sha256": "b1d9e30a7fc04581a8912dbab989beb46d55331db9da550341e7dd62c4d034af"
+    },
+    {
+      "path": "audio/engine-moto-idle.ogg",
+      "status": 200,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
+    },
+    {
+      "path": "audio/engine-moto-load.ogg",
+      "status": 200,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
+    },
+    {
+      "path": "audio/engine-twin-idle.ogg",
+      "status": 200,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
+    },
+    {
+      "path": "audio/engine-twin-load.ogg",
+      "status": 200,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
+    },
+    {
+      "path": "audio/engine-small-moto.ogg",
+      "status": 200,
+      "sha256": "bcb70e69ec8adea3c81034eeb2e48b9bddc0cb97c6a8413935b18b1093f1d5b8"
+    },
+    {
+      "path": "audio/engine-rotor-recorded.ogg",
+      "status": 200,
+      "sha256": "ebcecced8e946367352fb920bff495cc83ed118a8206e7c072f95001936a1d45"
+    },
+    {
+      "path": "audio/engine-prop-recorded.ogg",
+      "status": 200,
+      "sha256": "4b7b04f11a7281214aafebee136e7ed54a3889350266788b51cc80be96331582"
+    },
+    {
+      "path": "audio/engine-jet-recorded.ogg",
+      "status": 200,
+      "sha256": "7bd01e70f79dbc8056bd88779f27b3c58e224b22e477ba9ef65f23e5c3281653"
+    },
+    {
+      "path": "audio/engine-boat-recorded.ogg",
+      "status": 200,
+      "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
+    },
+    {
+      "path": "audio/engine-fiat-idle.ogg",
+      "status": 200,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "audio/engine-fiat-load.ogg",
+      "status": 200,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "audio/engine-hornet-idle.ogg",
+      "status": 200,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "audio/engine-hornet-load.ogg",
+      "status": 200,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "audio/engine-inline6-idle.ogg",
+      "status": 200,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "audio/engine-inline6-load.ogg",
+      "status": 200,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "audio/engine-turbo6-idle.ogg",
+      "status": 200,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "audio/engine-turbo6-load.ogg",
+      "status": 200,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "audio/engine-flat6-idle.ogg",
+      "status": 200,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "audio/engine-flat6-load.ogg",
+      "status": 200,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "audio/engine-flatplane8-idle.ogg",
+      "status": 200,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "audio/engine-flatplane8-load.ogg",
+      "status": 200,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "audio/engine-coach-idle.ogg",
+      "status": 200,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "audio/engine-coach-load.ogg",
+      "status": 200,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "audio/engine-triple-idle.ogg",
+      "status": 200,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "audio/engine-triple-load.ogg",
+      "status": 200,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
+      "path": "../atualizar/index.html",
+      "status": 200,
+      "sha256": "5e72c9e61491ccf952e8f988606db1ea234654092fadf74ef15a840c2f62a940"
+    },
+    {
+      "path": "../atualizar/update.js",
+      "status": 200,
+      "sha256": "d99a25f49940f0be916e60fbb9319395a36904f55906a556414fccf928edcebc"
+    },
+    {
+      "path": "../atualizar/style.css",
+      "status": 200,
+      "sha256": "dc667d5591ffe4972fd08cd34eb9732a804e5655077591d92d07d8ed268149b1"
+    },
+    {
+      "path": "../ar/hand-controls.js",
+      "status": 200,
+      "sha256": "d9b8466f72d2a4501307850c2d1a4aa7ffac5f5073a67d5b7fa968fffb467ab7"
+    },
+    {
+      "path": "../ar/hand-tracker-worker.js",
+      "status": 200,
+      "sha256": "01142f7fb63a927ebb183701186ba5be8468bcc8dc62bb51d54ff70946b1aa37"
+    },
+    {
+      "path": "../ar/body-controls.js",
+      "status": 200,
+      "sha256": "b8313f10fc5af734f20df7426906d33f7e438bc30f09c1594791ed9d2b966d9d"
+    },
+    {
+      "path": "../ar/body-tracker-worker.js",
+      "status": 200,
+      "sha256": "ac2a1bed436a688d0c9fd9cd2c6c5f58fccd411c7de8a5c6b0aaf0807f45978b"
+    },
+    {
+      "path": "../ar/object-flow.js",
+      "status": 200,
+      "sha256": "fd41108100a633bba1c196ea62326663354880bdda11843703ac34af6181a147"
+    },
+    {
+      "path": "../ar/object-aim.js",
+      "status": 200,
+      "sha256": "b3222925075e74aa5447b1c0fd596381c07699ef09448d38d39558a571109578"
+    },
+    {
+      "path": "../ar/object-training.js",
+      "status": 200,
+      "sha256": "ac01b0bb03592f06fe56277202ee0cf40bee14e3df2b71777e3901c46e2605f8"
+    },
+    {
+      "path": "../ar/object-tracker.js",
+      "status": 200,
+      "sha256": "7a12f278fb40c083528cf6815b9ba5cb374efca6ea468cd6c8d6dd94362d025f"
+    },
+    {
+      "path": "../ar/object-tracker-worker.js",
+      "status": 200,
+      "sha256": "0986f023da7ee150d7f585b2700ea87172adbff08b1c9673b458afb70973eca4"
+    },
+    {
+      "path": "../ar/combat-controls.css",
+      "status": 200,
+      "sha256": "a5cc76cc8ef8ea173cdd049e608e10518cb29c598ae9ff2f6cacf0c95ccf5961"
+    }
+  ],
+  "apk": {
+    "status": 200,
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "checkedAt": "2026-10-29T20:59:07.313Z"
+}

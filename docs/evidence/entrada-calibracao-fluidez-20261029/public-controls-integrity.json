@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "base": "https://otthi-world-campanha-teste.vercel.app/",
+  "build": "705.28.12-calibracao-recuperacao",
+  "scope": "incremental-console-controls",
+  "checkedAt": "2026-10-29T20:59:59.381Z",
+  "resources": [
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 34183,
+      "sha256": "e8c78afd3ad55b788afa8bfc57fbca7bf29564545b52a401e3b3b687b2c1d6fb"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 17338,
+      "sha256": "ff284c1b1bf975e910917af5181e85a2bbbcca38101d5f51659a9cf7b1608bca"
+    },
+    {
+      "path": "games/ar/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 13471,
+      "sha256": "a5cc76cc8ef8ea173cdd049e608e10518cb29c598ae9ff2f6cacf0c95ccf5961"
+    },
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26773,
+      "sha256": "def972d648424d313e75e4687161b8faf81907c1fd69b60f98a8dd1c9cea6329"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 4976,
+      "sha256": "1e90e3681f635e2d64aacf9f168da1ab4abef267f66741e9cad7b82ed59f9cd8"
+    },
+    {
+      "path": "enhancements/control-modes.js",
+      "bytes": 18039,
+      "sha256": "c25860817dc37352676f5e5bae1672933d37502abd47347dfc4e97621d05432c"
+    },
+    {
+      "path": "enhancements/play-settings.js",
+      "bytes": 10707,
+      "sha256": "ac85ff877f1f77561b52008fb0c83ab5d92f1bd433e45b785c41d9af623279b4"
+    },
+    {
+      "path": "games/kart/index.html",
+      "bytes": 26104,
+      "sha256": "ef7d323435fd4bd08d1985851dcdbd42d6d0833ecc819a32211f47625add913e"
+    },
+    {
+      "path": "games/kart/sw.js",
+      "bytes": 4111,
+      "sha256": "e3908cc4373b50aa997e80f08306685cdba0c57cb9aef01c383b2811619d4e21"
+    },
+    {
+      "path": "games/kart/local-practice.js",
+      "bytes": 13723,
+      "sha256": "eddb5d11e5f65e10218e1053c0d3da0947e2296e683606fa59f56747014edc79"
+    },
+    {
+      "path": "games/boxe/index.html",
+      "bytes": 26183,
+      "sha256": "90e2bf98e9d98825bcf4483434278c780e2a860860ac93c681727ae75052c7a7"
+    },
+    {
+      "path": "games/boxe/sw.js",
+      "bytes": 4164,
+      "sha256": "9ddecb46667759e6aac12e7ab5c3b874b37915db97e00fc70370405ef25da37a"
+    },
+    {
+      "path": "games/boxe/local-practice.js",
+      "bytes": 13723,
+      "sha256": "eddb5d11e5f65e10218e1053c0d3da0947e2296e683606fa59f56747014edc79"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "bytes": 26101,
+      "sha256": "1332f2387eb735026b1d6cbb5b0d5231a2944d357f836cf1ff7280718cf868fb"
+    },
+    {
+      "path": "games/tenis/sw.js",
+      "bytes": 4128,
+      "sha256": "3a1aa6389c96de199b092cbd19da3bf72dda71e7dcf6ebafd60bef3295896a2c"
+    },
+    {
+      "path": "games/tenis/local-practice.js",
+      "bytes": 13723,
+      "sha256": "eddb5d11e5f65e10218e1053c0d3da0947e2296e683606fa59f56747014edc79"
+    },
+    {
+      "path": "games/ar/local-practice.js",
+      "bytes": 13723,
+      "sha256": "eddb5d11e5f65e10218e1053c0d3da0947e2296e683606fa59f56747014edc79"
+    },
+    {
+      "path": "games/voo/index.html",
+      "bytes": 26657,
+      "sha256": "48a77a1805cea6adb1eb118ae58dc42f182ed5e03cc724d966358791fc6fb65c"
+    },
+    {
+      "path": "games/voo/sw.js",
+      "bytes": 4288,
+      "sha256": "c71822a2d85b3f9a974cbf70696b80e2c9417d1afc098add91862c8bf99bb409"
+    },
+    {
+      "path": "games/voo/local-practice.js",
+      "bytes": 13723,
+      "sha256": "eddb5d11e5f65e10218e1053c0d3da0947e2296e683606fa59f56747014edc79"
+    }
+  ]
+}
