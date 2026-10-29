@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checkedAt": "2026-10-29T08:35:49.274Z",
+  "oldWorker": 34,
+  "newWorker": 35,
+  "legacyInitialization": "preinstalled-state fixture; old fetch and activation preserved",
+  "newWorkerImplementation": "unmodified production v35",
+  "transport": "HTTP/1",
+  "cachedResources": 100,
+  "matchNotInterrupted": true,
+  "activatesAfterExit": true,
+  "careerAndWeaponPreserved": true,
+  "coins": 4321,
+  "otherStoragePreserved": true,
+  "errors": [],
+  "limits": [
+    "Disposable Chromium solo profile, no physical Android. Legacy warmup is seeded; new shell installation is real and complete."
+  ]
+}

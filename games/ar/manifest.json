@@ -1,7 +1,7 @@
 {
   "name": "WAR Combate • thIAguinho",
   "short_name": "WAR Combate",
-  "description": "Combate em cenário virtual, com câmera frontal para acompanhar a mão ou controles por toque. Três operações, armas e cobertura.",
+  "description": "Três operações diferentes: porto, praça e fortaleza. Corpo e mão pela câmera frontal, avanço assistido, toque e cooperativo.",
   "start_url": "./index.html",
   "display": "fullscreen",
   "background_color": "#050508",

@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   camera-e-mundo:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +39,15 @@ jobs:
         run: |
           node tests/war-body-model-browser.mjs
           node tests/war-object-browser.mjs
+      - name: Corpo e mão reais na mesma câmera e três operações distintas
+        run: |
+          node tests/war-joint-camera-browser.mjs
+          node tests/war-campaign-browser.mjs
+      - name: Atualização completa sem interromper a partida
+        run: |
+          python3 games/otthi/tools/build_project.py
+          python3 tools/package-world-preview.py
+          node tests/war-update-browser.mjs
       - name: Arrastar a câmera e jogar com toques simultâneos no WAR
         if: ${{ always() && !cancelled() }}
         run: node tests/war-touch-browser.mjs
@@ -58,6 +67,9 @@ jobs:
             test-results/war-touch/
             test-results/war-body/
             test-results/war-object/
+            test-results/war-joint-camera/
+            test-results/war-campaign/
+            test-results/war-update/
             test-results/world-civil-native/
             test-results/world-civil-multiplayer/
             test-results/workshop-bays/

@@ -6,7 +6,7 @@ import {engine,canvas} from './helpers/game-fixture.mjs';
 const read=p=>readFileSync(p,'utf8');
 // Real bundled Three geometry and camera math. GPU pixels are checked separately
 // by scenery-browser.mjs, including actual shader compilation in Chromium.
-function renderer(f,unavailable=false){
+function renderer(f,unavailable=false,detailed=false){
  const module={exports:{}};vm.runInNewContext(read('games/ar/vendor/three-r128.min.js'),{module,exports:module.exports,console});
  class GPU{
   constructor({canvas}){if(unavailable)throw Error('GPU unavailable');this.domElement=canvas;this.shadowMap={};this.info={render:{calls:1,triangles:1000}}}
@@ -15,7 +15,7 @@ function renderer(f,unavailable=false){
  const ctx=new Proxy({createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})}, {get(o,k){return o[k]||(()=>{})}});
  const document={createElement:()=>({width:1,height:1,getContext:()=>ctx,addEventListener(){}})};
  f.window.THREE={...module.exports,WebGLRenderer:GPU};
- vm.runInNewContext(read('enhancements/war-world-renderer.js'),{window:f.window,document,console:{warn(){}}});
+ const scope={window:f.window,document,console:{warn(){}}};if(detailed){vm.runInNewContext(read('games/ar/combat-visuals.js'),scope);scope.OTCombatArt=f.window.OTCombatArt;}vm.runInNewContext(read('enhancements/war-world-renderer.js'),scope);
  return f.window.ArcadeWorldRenderer;
 }
 test('WAR: GPU camera matches hit-test projection through pitch/yaw and both screen orientations',()=>{
@@ -71,4 +71,16 @@ test('WAR: detailed infantry face the player, animate with instanced geometry an
  const f=engine('ar','game_ar');f.game.init({id:'patrol'});const api=renderer(f),g=f.game,T=f.window.THREE;g.covers=[];g.spawnWave();g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,z:25,aim:999});
  const snapshot=JSON.stringify(g.enemies);const pose=()=>{api.combat(g,canvas(),844,390,false);const scene=f.sceneCaptures.findLast(s=>s.children.some(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8)),cloth=scene?.children.find(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8);assert(cloth&&cloth.count>=8);const matrix=new T.Matrix4();cloth.getMatrixAt(0,matrix);const q=new T.Quaternion(),scale=new T.Vector3(),pos=new T.Vector3();matrix.decompose(pos,q,scale);return {q,pos,count:api.inspect(g).dynamicInstances};};
  const front=pose();g.player.x=20;g.elapsed=1;const side=pose();assert(Math.abs(front.q.dot(side.q))<.99,'The soldier must turn towards the actual player');assert(side.count>50&&side.count<150,'Detailed infantry should remain batched');assert.equal(JSON.stringify(g.enemies),snapshot);api.release(g);
+});
+
+test('WAR detailed infantry: visible model, head and facing use the same reflected world as hit detection',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'city'});const api=renderer(f,false,true),g=f.game,T=f.window.THREE;g.covers=[];g.spawnWave();g.enemies=g.enemies.slice(0,1);const e=g.enemies[0];Object.assign(e,{x:4,z:25,aim:999});
+ for(const x of[-8,0,15]){
+  Object.assign(g.player,{x,z:0,yaw:Math.atan2(e.x-x,e.z),pitch:0});g.eyeY=1.8;api.combat(g,canvas(),844,390,false);
+  const scene=f.sceneCaptures.findLast(s=>s.getObjectByName('OT_INFANTRY_V2')),model=scene.getObjectByName('OT_INFANTRY_V2');scene.updateMatrixWorld(true);
+  const feet=new T.Vector3(0,0,0).applyMatrix4(model.matrixWorld);assert(Math.hypot(feet.x-e.x,feet.y,feet.z+e.z)<1e-8,'detailed infantry was mirrored behind the player');
+  const head=new T.Vector3(0,1.70,0).applyMatrix4(model.matrixWorld),point=api.project(g,e.x,head.y,e.z,844,390),native=g.project(e.x,head.y,e.z,844,390);assert(native&&Math.hypot(point.x-native.x,point.y-native.y)<1e-8);assert(point.x>0&&point.x<844&&point.y>0&&point.y<390);assert(head.y>2&&head.y<2.2);
+  const forward=new T.Vector3(0,0,1).transformDirection(model.matrixWorld),towards=new T.Vector3(g.player.x-e.x,0,e.z-g.player.z).normalize();assert(forward.dot(towards)>.9999,'the face and rifle must point at the real player');
+ }
+ api.release(g);
 });

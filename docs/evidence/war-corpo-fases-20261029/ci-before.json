@@ -1,0 +1,31 @@
+{
+  "source": "bf4122f21525cff8ffe5c5dfb7727c0dee4305e8",
+  "runs": [
+    {
+      "runId": 40801116809,
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40801116809",
+      "errors": [
+        "2026-10-29T01:33:30.1251357Z Failed to install browsers",
+        "2026-10-29T01:33:30.1252710Z Error: ERROR: Playwright does not support chromium on ubuntu26.04-x64"
+      ]
+    },
+    {
+      "runId": 40801116774,
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40801116774",
+      "errors": [
+        "2026-10-29T01:33:34.6896489Z Failed to install browsers",
+        "2026-10-29T01:33:34.6897350Z Error: ERROR: Playwright does not support chromium on ubuntu26.04-x64",
+        "2026-10-29T01:33:35.0206289Z browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1194/chrome-linux/headless_shell",
+        "2026-10-29T01:33:35.3042829Z browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1194/chrome-linux/headless_shell"
+      ]
+    },
+    {
+      "runId": 40801117012,
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40801117012",
+      "errors": [
+        "2026-10-29T01:33:29.7020328Z Failed to install browsers",
+        "2026-10-29T01:33:29.7021596Z Error: ERROR: Playwright does not support chromium on ubuntu26.04-x64"
+      ]
+    }
+  ]
+}

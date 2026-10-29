@@ -7,8 +7,8 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const angle=v=>Math.atan2(Math.sin(v),Math.cos(v));
 const MISSIONS=[
  {id:'patrol',name:'PATRULHA • PORTO',waves:2,count:3,desc:'Atravesse os corredores de contêineres, libere a carga e alcance o embarque.',route:[{x:-4,z:26},{x:12,z:62}],covers:[{x:-11,z:15,w:8,h:3,d:10,type:'container'},{x:10,z:17,w:7,h:3,d:9,type:'container'},{x:-14,z:38,w:10,h:3,d:9,type:'container'},{x:8,z:43,w:6,h:1.3,d:3,type:'crate'}]},
- {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Recupere a praça e mantenha cada ponto de comunicação contra ataques pelos flancos.',route:[{x:-8,z:24},{x:10,z:40},{x:-10,z:60}],covers:[{x:-15,z:13,w:6,h:1.1,d:3,type:'planter'},{x:8,z:24,w:5,h:1.4,d:2,type:'barrier'},{x:-7,z:41,w:6,h:1.2,d:3,type:'planter'},{x:20,z:49,w:4,h:1.4,d:7,type:'car'}]},
- {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:3,count:4,desc:'Desative dois transmissores, atravesse a fortaleza e abra a zona de extração.',route:[{x:10,z:23},{x:-10,z:43},{x:0,z:65}],covers:[{x:-10,z:14,w:11,h:2.7,d:3,type:'stone'},{x:13,z:33,w:12,h:2.5,d:3,type:'stone'},{x:-17,z:51,w:7,h:3,d:6,type:'stone'},{x:9,z:56,w:6,h:1.2,d:3,type:'stone'}]}
+ {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Recupere a praça e mantenha cada ponto de comunicação contra ataques pelos flancos.',route:[{x:-8,z:24},{x:10,z:40},{x:-10,z:60}],covers:[{x:-15,z:13,w:6,h:1.1,d:3,type:'planter'},{x:8,z:24,w:5,h:1.4,d:2,type:'barrier'},{x:-7,z:41,w:6,h:1.2,d:3,type:'planter'},{x:20,z:49,w:3,h:2.6,d:7,type:'car'}]},
+ {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:4,count:4,desc:'Desative dois transmissores, atravesse a fortaleza e abra a zona de extração.',route:[{x:10,z:23},{x:-10,z:43},{x:0,z:55},{x:0,z:68}],covers:[{x:-10,z:14,w:11,h:2.7,d:3,type:'stone'},{x:13,z:33,w:12,h:2.5,d:3,type:'stone'},{x:-17,z:51,w:7,h:3,d:6,type:'stone'},{x:9,z:56,w:6,h:1.2,d:3,type:'stone'}]}
 ];
 const WEAPONS=[
  {id:'rifle',name:'Fuzil',mag:30,reserve:180,damage:34,interval:.15,reload:1.65,requires:0},
@@ -44,14 +44,15 @@ const Game={
  saveCareer(){try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
  resetOperation(){this.covers=this.mission.covers.map(c=>({...c}));this.objective={phase:'approach',progress:0,required:0,secured:0};},
  reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;window.GameAudio?.effect('reload');return true;},
+ spawnPosition(x,z,radius=.8){const free=(px,pz)=>px>=-26&&px<=26&&pz>=0&&pz<=69&&!this.covers.some(c=>Math.abs(px-c.x)<c.w/2+radius&&Math.abs(pz-c.z)<c.d/2+radius)&&!this.enemies.some(e=>e.active&&Math.hypot(px-e.x,pz-e.z)<1.7);if(free(x,z))return{x,z};for(let r=2;r<=24;r+=2)for(let i=0;i<12;i++){const px=x+Math.cos(i*Math.PI/6)*r,pz=z+Math.sin(i*Math.PI/6)*r;if(free(px,pz))return{x:px,z:pz};}throw Error('Não há posição livre neste setor.');},
  spawnWave(){
   this.wave++;this.bannerTime=2.4;this.enemies=[];
   const count=this.mission.count+this.level.count+this.wave-1;
   for(let i=0;i<count;i++){
    const kind=this.mission.id==='extraction'&&this.wave===this.mission.waves&&i===count-1?'tank':this.mission.id!=='patrol'&&i%3===2?'drone':'soldier';
    const point=this.mission.route[this.wave-1],side=i%2?1:-1;
-   const x=this.mission.id==='city'?side*(15+i%2*5):clamp(point.x+(i-(count-1)/2)*5,-24,24),z=this.mission.id==='city'?clamp(point.z+(i%3-1)*10,14,68):clamp(point.z+8+(i%3)*4,16,68);
-   this.enemies.push({id:this.wave+':'+i,kind,x,z,y:kind==='drone'?5:1.15,hp:(kind==='tank'?260:kind==='drone'?70:100)*this.level.health,active:true,aim:this.level.aim+1.5+i*.35,flash:0,phase:i*.7,rewarded:false});
+   const x=this.mission.id==='city'?(i===0?point.x*.25:side*(15+i%2*5)):clamp(point.x+(i-(count-1)/2)*5,-24,24),z=this.mission.id==='city'?clamp(point.z+(i===0?10:(i%3-1)*10),14,68):clamp(point.z+8+(i%3)*4,16,68);
+   const spawn=this.spawnPosition(x,z,kind==='tank'?3:kind==='drone'?1.2:.8);this.enemies.push({id:this.wave+':'+i,kind,...spawn,y:kind==='drone'?5:1.15,hp:(kind==='tank'?260:kind==='drone'?70:100)*this.level.health,active:true,aim:this.level.aim+1.5+i*.35,flash:0,phase:i*.7,rewarded:false});
   }
   if(this.mission.id==='extraction'&&this.wave<3){const p=this.mission.route[this.wave-1];this.enemies.push({id:this.wave+':relay',kind:'relay',x:p.x,y:1.6,z:p.z+5,hp:102,active:true,aim:999999,flash:0,phase:0,rewarded:false});}
   Object.assign(this.objective,{phase:'combat',progress:0,required:this.mission.id==='city'?4+this.wave*2:.8});
@@ -59,13 +60,14 @@ const Game={
  objectivePoint(){return this.mission.route[Math.max(0,this.wave-1)];},
  objectiveHint(){const o=this.objective,targets=this.enemies.filter(e=>e.active&&!e.ally).length,p=this.objectivePoint(),distance=Math.ceil(Math.hypot(p.x-this.player.x,p.z-this.player.z));return targets?'SETOR '+this.wave+'/'+this.mission.waves+' · '+targets+' ALVOS'+(this.enemies.some(e=>e.kind==='relay'&&e.active)?' · DESATIVE O TRANSMISSOR':''):o.phase==='hold'?'MANTENHA A PRAÇA · '+Math.ceil(Math.max(0,o.required-o.progress))+'s · '+distance+'m':o.phase==='approach'?'PRÓXIMO SETOR · PREPARE A MIRA':(this.wave===this.mission.waves?'ALCANCE A EXTRAÇÃO':'ASSEGURE O SETOR')+' · '+distance+'m';},
  advanceOperation(dt,players=[this.player]){
-  if(this.enemies.some(e=>e.active&&!e.ally))return false;
+  const active=this.enemies.some(e=>e.active&&!e.ally),o=this.objective,point=this.objectivePoint(),reached=players.some(p=>p&&Math.hypot(p.x-point.x,p.z-point.z)<(this.mission.id==='city'?6:3));
+  if(this.wave>0&&this.mission.id==='city'&&o.phase!=='approach'){const contested=this.enemies.some(e=>e.active&&!e.ally&&Math.hypot(e.x-point.x,e.z-point.z)<5);if(reached&&!contested)o.progress=Math.min(o.required,o.progress+dt);}
+  if(active)return false;
   if(!this.wave||this.objective.phase==='approach'){
    this.waveDelay-=dt;if(this.waveDelay<=0){this.spawnWave();this.waveDelay=1.2;this.reserve=Math.max(this.reserve,this.gun.mag*2);for(const p of players)if(p.hp!==undefined)p.hp=Math.min(100,p.hp+18);}return false;
   }
-  const o=this.objective,point=this.objectivePoint();o.phase=this.mission.id==='city'?'hold':this.wave===this.mission.waves?'extract':'secure';
-  const reached=players.some(p=>p&&Math.hypot(p.x-point.x,p.z-point.z)<(this.mission.id==='city'?6:3));
-  if(reached)o.progress=Math.min(o.required,o.progress+dt);
+  o.phase=this.mission.id==='city'?'hold':this.wave===this.mission.waves?'extract':'secure';
+  if(reached&&this.mission.id!=='city')o.progress=Math.min(o.required,o.progress+dt);
   if(o.progress+1e-7<o.required)return false;
   o.secured=this.wave;if(this.wave===this.mission.waves){o.phase='complete';return true;}
   o.phase='approach';this.waveDelay=1.2;return false;
@@ -272,6 +274,8 @@ const Game={
     box(e.x-.21,0,e.z+walk,.3,.82,.32,'#273b3b');box(e.x+.21,0,e.z-walk,.3,.82,.32,'#314846');
     box(e.x,.75,e.z,.86,.84,.48,color);box(e.x,1.58,e.z,.48,.39,.43,'#a2a891');box(e.x,1.94,e.z,.58,.17,.5,'#354c46');
     box(e.x,1.74,e.z-.225,.36,.1,.03,'#61c6c2');box(e.x+.5,1.1,e.z-.32,.22,.23,.95,'#202f35');
+   }else if(e.kind==='relay'){
+    box(e.x,0,e.z,1.2,2.35,1,'#487f93');box(e.x,1.2,e.z-.52,.85,.6,.05,e.flash?'#fff0bf':'#edbb62');box(e.x,2.35,e.z,.1,1.8,.1,'#52646b');
    }else if(e.kind==='drone'){
     box(e.x,e.y-.25,e.z,1.1,.45,.8,color);for(const s of [-1,1]){box(e.x+s,e.y,e.z,1,.1,.13,'#a7b5b5');box(e.x+s,e.y+.12,e.z,1.5,.035,.18,'#293f49');}box(e.x,e.y-.13,e.z-.5,.25,.12,.04,'#f6a050');
    }else{
@@ -289,7 +293,7 @@ const Game={
   for(const e of this.enemies){
    if(!e.active||e.ally)continue;const p=this.project(e.x,e.kind==='soldier'?2.7:e.y+1.8,e.z,w,h);if(!p)continue;
    ctx.strokeStyle=e.aim<.8?'#ffba55':'#e58d77';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(6,Math.min(13,p.s*.5)),-Math.PI/2,-Math.PI/2+Math.PI*2*(1-clamp(e.aim/(this.level.aim+1.2),0,1)));ctx.stroke();
-   if(this.handLock?.target===e||Math.hypot(e.x-this.player.x,e.z-this.player.z)<22){const width=clamp(p.s*1.1,22,46),maxHP=(e.kind==='tank'?260:e.kind==='drone'?70:100)*this.level.health;ctx.fillStyle='#142c35';ctx.fillRect(p.x-width/2,p.y-20,width,4);ctx.fillStyle=e.flash?'#fff0bf':'#e3b17b';ctx.fillRect(p.x-width/2,p.y-20,width*clamp(e.hp/maxHP,0,1),4);}
+   if(this.handLock?.target===e||Math.hypot(e.x-this.player.x,e.z-this.player.z)<22){const width=clamp(p.s*1.1,22,46),maxHP=(e.kind==='tank'?260:e.kind==='relay'?102:e.kind==='drone'?70:100)*this.level.health;ctx.fillStyle='#142c35';ctx.fillRect(p.x-width/2,p.y-20,width,4);ctx.fillStyle=e.flash?'#fff0bf':'#e3b17b';ctx.fillRect(p.x-width/2,p.y-20,width*clamp(e.hp/maxHP,0,1),4);}
    if(e.shot>0){ctx.strokeStyle='rgba(255,187,87,.8)';ctx.beginPath();ctx.moveTo(p.x,p.y+20);ctx.lineTo(w*.5,h*.76);ctx.stroke();}
   }
   for(const f of this.particles){const p=this.project(f.x,f.y,f.z,w,h);if(p){ctx.fillStyle='rgba(255,194,94,'+f.life+')';ctx.fillRect(p.x,p.y,Math.max(2,p.s*.15),Math.max(2,p.s*.15));}}
@@ -304,7 +308,7 @@ const Game={
   const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
-  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?'CORPO E MÃOS • POSTURA, VISÃO E MIRA':'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
+  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?(this.handSession?.autoAdvance?'AVANÇO ASSISTIDO • AGACHE PARA PARAR':'CORPO E MÃOS • POSTURA, VISÃO E MIRA'):'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
   const nearest=this.enemies.filter(e=>e.active&&!e.ally).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   const destination=nearest||this.objectivePoint();if(destination){const bearing=angle(Math.atan2(destination.x-this.player.x,destination.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?(nearest?'ALVO À DIREITA →':'OBJETIVO À DIREITA →'):(nearest?'← ALVO À ESQUERDA':'← OBJETIVO À ESQUERDA'),w/2,statusY+20,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}

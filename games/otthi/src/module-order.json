@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.7-app-icones",
+  "build": "705.28.8-war-corpo-fases",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "389afc6b98b0b45894dc5dba257c19c2493fe5548bdd0e283cb2f6264f5a44d0"
+      "sha256Body": "4457d8c5ffdce516e0303d056a5f58b0e22f8389183d26e84c513b2f3eb067f5"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",

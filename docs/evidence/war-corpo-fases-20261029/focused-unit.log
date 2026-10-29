@@ -1,0 +1,22 @@
+✔ WAR campaign: every sector spawns outside physical cover, objectives stay reachable, and the fortress retains four sectors (49.174559ms)
+✔ WAR city: capture progresses under distant attack, stops outside or contested, and cannot skip surviving enemies (10.017093ms)
+✔ WAR fortress: actual aligned shots disable transmitters; a transmitter never attacks the user (4.750616ms)
+✔ WAR camera: assisted traversal reaches every extraction without entering cover; body loss and crouch stop it (528.320679ms)
+✔ WAR upper body: missing feet/hips never block calibration or crouching, while missing shoulders releases all controls (7.568244ms)
+✔ WAR co-op: all three operations share capture/extraction state and only the host can complete a stage (188.590043ms)
+✔ WAR: GPU camera matches hit-test projection through pitch/yaw and both screen orientations (1685.930867ms)
+✔ flight: same chase/cockpit projection, original road positions and populated instanced scenery (484.21142ms)
+✔ render: unsupported GPU falls back without changing controls, enemies, ammo or mission (16.464702ms)
+✔ flight: lit aircraft retain native yaw, pitch, roll, model scaling and cockpit visibility (419.828223ms)
+✔ WAR branding: installable PNG icon, cover art and visible game name use the new artwork (5.717103ms)
+✔ WAR: the visible weapon follows hand aim on both axes without reversing vertical pointing (270.272875ms)
+✔ WAR: detailed infantry face the player, animate with instanced geometry and leave combat physics untouched (305.780734ms)
+✔ WAR detailed infantry: visible model, head and facing use the same reflected world as hit detection (2401.370906ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5769.670436

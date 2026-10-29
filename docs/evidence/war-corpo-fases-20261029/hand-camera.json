@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:44191",
+  "checkedAt": "2026-10-29T01:35:05.446Z",
+  "realModelHands": 2,
+  "labels": [
+    "Left",
+    "Right"
+  ],
+  "frontCamera": true,
+  "handAloneCannotStart": true,
+  "jointCalibrationRequired": true,
+  "bodyLossFreezesMission": true,
+  "bodyErrorVisibleAndRecoverable": true,
+  "previewHiddenAfterCalibration": true,
+  "neutralStanceStaysStill": true,
+  "bodyReplayStepsCrouchAndLoss": true,
+  "trackingLossStopsMovement": true,
+  "actualAlignedHits": true,
+  "lossStopsFire": true,
+  "manualFallback": true,
+  "runtimeErrorRecovery": true,
+  "errors": [],
+  "limits": [
+    "Actual CPU hand model on official sample footage; body UI uses explicit synthetic replay. Physical Android tracking not certified."
+  ]
+}

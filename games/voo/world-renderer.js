@@ -183,7 +183,7 @@ class World{
     for(let j=-4;j<=4;j++)b.box(m.steel,x+j,.1,z-8.1,.12,4.8,.15);
     if(i%2===0)b.box(m.white,x,5.1,z,9,3,16);this.lamp(b,side*30,z,1.1);
    }
-   for(let z=15;z<110;z+=40){b.box(m.yellow,42,0,z,1.4,25,1.4);b.box(m.yellow,62,0,z,1.4,25,1.4);b.box(m.steel,52,24,z,27,1.3,2);b.add('cylinder',m.dark,49,18,z,.08,12,.08);b.box(m.yellow,49,10,z,3,1.5,3);}
+   for(let z=15;z<110;z+=40){b.box(m.yellow,42,0,z,1.4,25,1.4);b.box(m.yellow,62,0,z,1.4,25,1.4);b.box(m.steel,52,24,z,27,1.3,2);b.add('cylinder',m.dark,49,18,z,.08,12,.08);b.box(m.yellow,49,10,z,3,1.5,3);for(let y=1.5;y<24;y+=1.5)b.box(m.steel,42.7,y,z,.8,.08,1.7);}
    this.building(b,-53,43,24,10,45,2);this.sign('PORTO OT · CARGA E EMBARQUE',0,7,100,26,3.5,Math.PI);
    this.sky.material.uniforms.top.value.set('#315d84');this.sky.material.uniforms.bottom.value.set('#b5d1d2');
   }else if(mission==='city'){
@@ -199,7 +199,14 @@ class World{
    b.box(m.sand,0,-.10,35,72,.10,140);
    for(const side of [-1,1]){
     b.box(m.stone,side*32,0,39,4,8,128);for(let z=-15;z<112;z+=7)b.box(m.stone,side*32,8,z,4.3,1.3,3);
-    for(const z of [0,44,95]){b.box(m.darkConcrete,side*34,0,z,9,15,9);b.box(m.stone,side*34,15,z,10,1.5,10);this.lamp(b,side*26,z,1.1);}
+    for(const z of [0,44,95]){
+     b.box(m.darkConcrete,side*34,0,z,9,15,9);b.box(m.stone,side*34,15,z,10,1.5,10);this.lamp(b,side*26,z,1.1);
+     // Stone crowns, recessed windows and trim give each watchtower a silhouette.
+     for(let k=-4;k<=4;k+=2)for(const edge of [-1,1]){b.box(m.stone,side*34+k,16.5,z+edge*4.6,1.1,1.5,1.1);b.box(m.stone,side*34+edge*4.6,16.5,z+k,1.1,1.5,1.1);}
+     for(const y of [5,10])for(const edge of [-1,1])for(const k of [-2,2]){b.box(m.dark,side*34+k,y,z+edge*4.52,.7,1.6,.06);b.box(m.stone,side*34+k,y-.15,z+edge*4.6,1.1,.18,.2);b.box(m.dark,side*34+edge*4.52,y,z+k,.06,1.6,.7);}
+     b.box(m.stone,side*34,3,z,9.2,.25,9.2);b.box(m.stone,side*34,12.8,z,9.3,.3,9.3);
+    }
+    for(let z=-15;z<108;z+=9){b.box(m.stone,side*30.2,0,z,.5,7.5,1.2);b.box(m.dark,side*29.93,4.8,z,.03,1.4,.24);}
     for(let i=0;i<8;i++){const x=side*(70+i*29),z=70+i%3*46,h=28+i%4*17;b.add('cone',m.darkConcrete,x,h/2-3,z,70,h,80);b.add('cone',m.white,x,h*.85,z,17,h*.24,20);}
    }
    b.box(m.stone,-18,0,100,24,16,5);b.box(m.stone,18,0,100,24,16,5);b.box(m.stone,0,10,100,14,6,5);this.sign('FORTALEZA · ZONA DE EXTRAÇÃO',0,13,97,21,3,Math.PI);
@@ -338,7 +345,7 @@ class World{
  }
  relay(b,e){const m=this.m;b.box(m.dark,e.x,0,e.z,1.5,.25,1.3);b.box(m.blue,e.x,.25,e.z,1.2,2.1,1);b.box(e.flash?m.light:m.visor,e.x,1.2,e.z-.52,.85,.6,.04);b.add('cylinder',m.steel,e.x,3.2,e.z,.09,2,.09);b.round(m.light,e.x,4.2,e.z,.16,.16,.16);}
  soldier(b,e,time){
-  if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,-e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,e.z-this.game.player.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:e.tactic==='cover',firing:!!e.shot,hit:e.flash});return;}
+  if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);model.scale.setScalar(1.2);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,this.game.player.z-e.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:e.tactic==='cover',firing:!!e.shot,hit:e.flash});return;}
   const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=e.stride??(time*4+(e.phase||0)),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
   // Local articulated parts are rotated as one body: armour, face and weapon
   // always face the player, while knees/ankles keep the gait grounded.
@@ -501,6 +508,6 @@ window.ArcadeWorldRenderer={
  hasAircraft(game,body){return !cache.get(game)?.lost&&cache.get(game)?.aircraft.has(body)||false},
  // Read-only projection inspection used by the browser regression checks.
  project(game,x,y,z,w,h){const world=cache.get(game);if(!world)return null;const p=new T.Vector3(x,y,-z).project(world.camera);return{x:(p.x+1)*w/2,y:(1-p.y)*h/2}},
- inspect(game){const world=cache.get(game);return world?{staticInstances:[...world.static.items.values()].reduce((n,b)=>n+b.count,0),dynamicInstances:[...world.dynamic.items.values()].reduce((n,b)=>n+b.count,0),materials:world.materials.length,renderer:game.worldVisual,mission:world.mission||'flight',aircraft:world.aircraft.size}:null}
+ inspect(game){const world=cache.get(game);return world?{staticInstances:[...world.static.items.values()].reduce((n,b)=>n+b.count,0),dynamicInstances:[...world.dynamic.items.values()].reduce((n,b)=>n+b.count,0),materials:world.materials.length,renderer:game.worldVisual,mission:world.mission||'flight',aircraft:world.aircraft.size,infantry:[...(world.infantryModels||new Map())].filter(([,model])=>model.visible).map(([id,model])=>{const p=model.getWorldPosition(new T.Vector3()),head=model.localToWorld(new T.Vector3(0,1.7,0)).project(world.camera);return{id,x:p.x,y:p.y,z:p.z,head:{x:(head.x+1)/2,y:(1-head.y)/2,depth:head.z}};})}:null}
 };
 })();

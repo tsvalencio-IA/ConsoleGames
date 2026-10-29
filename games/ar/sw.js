@@ -1,9 +1,9 @@
 /* thIAguinho ARCADE — ar: cache privado, versão atual primeiro.
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
-// Release 2026-10-28: joint body and hand calibration; no hand-only start.
+// Release 2026-10-28: body-guided hand crop, hands-free advance, distinct operations.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v34";
+const CACHE=PREFIX+"pro-control-v35";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",
@@ -29,14 +29,21 @@ const FILES=[
 "./mastery-gamepad.js","./mastery-gamepad.css","./pro-controls.css","./play-settings.js","./play-settings.css"];
 self.addEventListener("install",event=>{
   event.waitUntil((async()=>{
-    const responses=await Promise.all(FILES.map(async path=>{
-      const response=await fetch(new Request(path,{cache:"no-store"}));
-      if(!response.ok)throw Error('Incomplete game shell: '+path+' HTTP '+response.status);
-      return {path,response};
+    // Drain each response into the new cache immediately. Holding every body
+    // until Promise.all(fetch(...)) can exhaust HTTP/1 connection slots.
+    await caches.delete(CACHE);const cache=await caches.open(CACHE);let next=0,failed=false;
+    const results=await Promise.allSettled(Array.from({length:Math.min(4,FILES.length)},async()=>{
+      while(!failed&&next<FILES.length){
+        const path=FILES[next++];
+        try{
+          const response=await fetch(new Request(path,{cache:"no-store"}));
+          if(!response.ok)throw Error('Incomplete game shell: '+path+' HTTP '+response.status);
+          await cache.put(path,response);
+        }catch(error){failed=true;throw error;}
+      }
     }));
-    // Keep the working release until every local code file has downloaded.
-    await caches.delete(CACHE);const cache=await caches.open(CACHE);
-    await Promise.all(responses.map(({path,response})=>cache.put(path,response)));
+    const rejected=results.find(result=>result.status==='rejected');
+    if(rejected){await caches.delete(CACHE);throw rejected.reason;}
     // The ready menu acknowledges activation. Never replace a game mid-match.
   })());
 });
@@ -57,7 +64,7 @@ self.addEventListener("fetch",event=>{
   event.respondWith((async()=>{
     const cache=await caches.open(CACHE);
     try{
-      const response=await fetch(req);
+      const response=await fetch(req,{cache:"no-store"});
       if(response.ok && (/\.(?:js|mjs|wasm|task)$/.test(url.pathname)||url.pathname.endsWith(".css")||url.pathname.endsWith(".html")||req.mode==="navigate")){
         event.waitUntil(cache.put(req,response.clone()));
       }

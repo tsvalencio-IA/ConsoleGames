@@ -310,6 +310,7 @@ window.System = {
             const isUnlocked = window.Profile.level >= fase.reqLvl;
             const card = document.createElement('div');
             card.className = `mission-card ${isUnlocked ? '' : 'locked'}`;
+            if(game.id==='ar_truck_sim')card.dataset.mission=fase.missionId||fase.id;
             card.innerHTML = `
                 <div class="mission-info">
                     <h2>${fase.name}</h2>

@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.7-app-icones",
+  "build": "705.28.8-war-corpo-fases",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.8: WAR no console com reconhecimento conjunto de corpo e mão em uma mesma câmera, recorte anatômico da mão, tronco sem pés obrigatórios, avanço assistido opcional, mapas distintos e objetivos sincronizados no cooperativo.",
     "R28.4: recuperação de atualização fora do cache antigo, verificação antes de jogar, arquivos íntegros reaproveitados e entradas sem cache HTTP, preservando conta, progresso e acesso offline.",
     "R28.3: WAR no console exige corpo e mão calibrados juntos, confirma os dois sensores, pausa ao perder rastreamento e permite recuperar o sensor corporal sem joystick.",
     "R28.2: boxes independentes, entrada da garagem pela casa, orla com surfistas e lanchas NPC, rotação automática e controles de precisão do WAR no console.",
@@ -288,7 +289,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70643,
+  "assetVersion": 70644,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
