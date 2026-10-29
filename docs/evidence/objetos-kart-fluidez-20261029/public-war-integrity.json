@@ -1,0 +1,140 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.10-objetos-kart-fluidez",
+  "checkedAt": "2026-10-29T16:33:40.938Z",
+  "resources": [
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26770,
+      "sha256": "bf3055ac667ee3c52e081c0ba71ee557814f4674df8bee0709818bfb62de6bb1"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 4971,
+      "sha256": "4d645d0e8ac620d06b468a520483adb77a519971b7045f148f55fb04ddf25140"
+    },
+    {
+      "path": "games/ar/js/core.js",
+      "bytes": 29090,
+      "sha256": "12e38a71059be92ef8783ad8905248c753e5ce76e35b03c18c6d739c0265ec38"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 34183,
+      "sha256": "e8c78afd3ad55b788afa8bfc57fbca7bf29564545b52a401e3b3b687b2c1d6fb"
+    },
+    {
+      "path": "games/ar/body-controls.js",
+      "bytes": 7972,
+      "sha256": "b8313f10fc5af734f20df7426906d33f7e438bc30f09c1594791ed9d2b966d9d"
+    },
+    {
+      "path": "games/ar/body-tracker-worker.js",
+      "bytes": 1251,
+      "sha256": "ac2a1bed436a688d0c9fd9cd2c6c5f58fccd411c7de8a5c6b0aaf0807f45978b"
+    },
+    {
+      "path": "games/ar/hand-controls.js",
+      "bytes": 25473,
+      "sha256": "1687d44f7575c691314c016b079980e011d65b6ff14b4b5950e0f53ee6f478fb"
+    },
+    {
+      "path": "games/ar/object-flow.js",
+      "bytes": 3300,
+      "sha256": "fd41108100a633bba1c196ea62326663354880bdda11843703ac34af6181a147"
+    },
+    {
+      "path": "games/ar/object-tracker.js",
+      "bytes": 10429,
+      "sha256": "a6ba160e6a22439b206b49999643e1895f984624ff611b575f8f13d505b4f726"
+    },
+    {
+      "path": "games/ar/object-tracker-worker.js",
+      "bytes": 969,
+      "sha256": "c9f64ec0f413ef7a6b488ca9ba281a8a2af3668a87008f37b5cac266a66e6a47"
+    },
+    {
+      "path": "games/ar/object-aim.js",
+      "bytes": 3145,
+      "sha256": "b3222925075e74aa5447b1c0fd596381c07699ef09448d38d39558a571109578"
+    },
+    {
+      "path": "games/ar/object-training.js",
+      "bytes": 11021,
+      "sha256": "6ad2e3d379bb51ed37f3fa56d112aa808a947e91756173564845c09c2761b165"
+    },
+    {
+      "path": "games/ar/hand-tracker-worker.js",
+      "bytes": 2674,
+      "sha256": "01142f7fb63a927ebb183701186ba5be8468bcc8dc62bb51d54ff70946b1aa37"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 13088,
+      "sha256": "f38f4aa9f2eec92194551a94be98aad5ba290d4fc90be1d7e11e292ad1c4fe1f"
+    },
+    {
+      "path": "games/ar/world-renderer.js",
+      "bytes": 48932,
+      "sha256": "24c8997d75cbc339d3e8a793fece01cc7dad2cda31895360a5559453d31d7cd6"
+    },
+    {
+      "path": "games/ar/multiplayer.js",
+      "bytes": 13696,
+      "sha256": "0cf719fc45cd5de40c19df98f8ac8ff1dfe60bf4232f13a7ae64a8b38c641368"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 17338,
+      "sha256": "ff284c1b1bf975e910917af5181e85a2bbbcca38101d5f51659a9cf7b1608bca"
+    },
+    {
+      "path": "games/ar/manifest.json",
+      "bytes": 644,
+      "sha256": "eb3292d13536699bcb078d3152f1ef4a150ff66eefeea05c82c2e7a2a69c85fb"
+    },
+    {
+      "path": "games/ar/vendor/body-tracker/pose_landmarker_lite.task",
+      "bytes": 5777746,
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/hand_landmarker.task",
+      "bytes": 7819105,
+      "sha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_bundle.mjs",
+      "bytes": 137735,
+      "sha256": "40f4123dfcd75cfa58add046919cc6f52fde66f009ff582997c09ba54c6ba27c"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_internal.js",
+      "bytes": 204284,
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_internal.wasm",
+      "bytes": 9574032,
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_nosimd_internal.js",
+      "bytes": 204137,
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_nosimd_internal.wasm",
+      "bytes": 9448638,
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    }
+  ],
+  "originalApkPreserved": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "limits": [
+    "Read-only production byte verification; not physical camera or Android installation."
+  ]
+}

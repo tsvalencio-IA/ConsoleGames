@@ -1,11 +1,49 @@
 {
-  "status": "validated candidate; not yet promoted",
+  "status": "production READY; public resources and native training/update verified",
   "build": "705.28.10-objetos-kart-fluidez",
   "assetVersion": 70646,
   "revision": "2b546ef983249b4f",
-  "previousProductionSha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
-  "sourceSha": null,
-  "deployment": null,
+  "sourceSha": "8c5ba8cee90d163dab5b1c114579490d3b9c29cf",
+  "productCodeSha": "332a685db274344ed60ee088ae2e590c9d75c627",
+  "identicalGamesTree": "920530095d15b0863eef060539f74acb01fa2b97",
+  "deployment": "dpl_6eRDHucKfgyhr1N77yzvaTJdda4s",
+  "target": "production",
+  "url": "https://otthi-world-campanha-teste.vercel.app",
+  "warWorker": 39,
+  "kartWorker": 31,
+  "ci": {
+    "cameraAndWorld": 40910357657,
+    "gameplayFamilyBoardingFleetGarage": 40910357516,
+    "scenery": 40910358100,
+    "realKartCameraBothAutodromes": 40911203657
+  },
+  "unitTests": 332,
+  "nativeAudioGraphs": 102,
+  "publicWarHashes": 25,
+  "publicWorldHashes": 107,
+  "originalApkPreserved": true,
   "physicalAndroid": false,
-  "notes": "Promotion and public-byte checks must be recorded after build and browser gates."
+  "limits": [
+    "Object/training camera is deterministic pixels with an explicitly mocked posture worker. Real body and hand models independently/jointly passed official photo replay tests. No physical toy or phone measurement.",
+    "World warmed native software-WebGL interval mean 147.16 to 144.10 ms; median slightly worse, maximum worse. CPU work decreased; complete stutter removal or phone FPS is NOT certified."
+  ],
+  "productionCI": {
+    "scenery": {
+      "run": 40912288330,
+      "conclusion": "success"
+    },
+    "realKartCamera": {
+      "run": 40912288343,
+      "conclusion": "success"
+    },
+    "bodyCameraAndWorld": {
+      "run": 40912288415,
+      "conclusion": "success"
+    },
+    "gameplayFamilyBoardingFleetGarage": {
+      "run": 40912288334,
+      "conclusion": "success"
+    }
+  },
+  "publicTransportHashes": 281
 }

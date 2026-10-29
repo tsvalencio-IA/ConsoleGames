@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "source": "deterministic pixel camera and actual object worker; posture fixture explicitly mocked",
+  "fivePoints": true,
+  "axisSelection": true,
+  "actualNativeTargets": true,
+  "tested": {
+    "targets": 6,
+    "hits": 6,
+    "shots": 6,
+    "hp": 100,
+    "careerRaw": null,
+    "wins": 0,
+    "kills": 0,
+    "object": {
+      "matches": 28,
+      "lost": false,
+      "object": {
+        "x": 0.6011328383306889,
+        "y": 0.35135143325891216,
+        "centerX": 0.5011699137251446,
+        "centerY": 0.48629552157024786,
+        "tip": {
+          "x": 0.6011328383306889,
+          "y": 0.35135143325891216
+        },
+        "base": {
+          "x": 0.4012065008317644,
+          "y": 0.6512278280746684
+        },
+        "dx": 0,
+        "dy": 0,
+        "scale": 0.3223733456516345,
+        "angle": 2.1710207774517057e-05,
+        "confidence": 0.9739477125404243,
+        "matches": 28,
+        "corners": [
+          {
+            "x": 0.3412362494248494,
+            "y": 0.2713753281610663
+          },
+          {
+            "x": 0.6611105768177544,
+            "y": 0.27138458754521366
+          },
+          {
+            "x": 0.6611035780254398,
+            "y": 0.7012157149794295
+          },
+          {
+            "x": 0.34122925063253495,
+            "y": 0.701206455595282
+          }
+        ],
+        "axis": true,
+        "recovered": false,
+        "roi": {
+          "x": 108.80000000000001,
+          "y": 64.80000000000001,
+          "w": 102.4,
+          "h": 103.2
+        },
+        "source": "object"
+      }
+    },
+    "map": {
+      "version": 1,
+      "xx": -1.9365209607896934,
+      "xy": -0.0007694166365261563,
+      "yx": 0.01840491544214109,
+      "yy": 1.6782158827991411,
+      "error": 0.008496732295100885
+    }
+  },
+  "careerBefore": {
+    "raw": null,
+    "wins": 0,
+    "kills": 0
+  },
+  "errors": [],
+  "limits": [
+    "Not a physical toy/phone recording."
+  ],
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "execution": "Original training test adapted only for public origin and the controlled test-browser proxy; same pixel/body fixtures and native game logic."
+}

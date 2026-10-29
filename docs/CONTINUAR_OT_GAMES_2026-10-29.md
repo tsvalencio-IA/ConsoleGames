@@ -1,6 +1,6 @@
 # Continuação OT Games — 29/10/2026, objetos, kart e fluidez
 
-Projeto correto: tsvalencio-IA/ConsoleGames. Não mexer no SaaS da oficina nem simplificar/remover os jogos. Esta revisão é web 705.28.10-objetos-kart-fluidez, assetVersion 70646. Conferir a publicação exata em docs/evidence/objetos-kart-fluidez-20261029/release.json antes de afirmar que chegou à produção. O APK compatível continua dependente da chave original descrita abaixo.
+Projeto correto: tsvalencio-IA/ConsoleGames. Não mexer no SaaS da oficina nem simplificar/remover os jogos. Esta revisão é web 705.28.10-objetos-kart-fluidez, assetVersion 70646. PUBLICADO: 8c5ba8cee90d163dab5b1c114579490d3b9c29cf, deployment dpl_6eRDHucKfgyhr1N77yzvaTJdda4s, production/READY. Revisão 2b546ef983249b4f; worker WAR v39 e kart v31. Prova: docs/evidence/objetos-kart-fluidez-20261029/release.json. O APK compatível continua dependente da chave original descrita abaixo.
 
 ## Escopo desta revisão
 
@@ -16,6 +16,10 @@ Projeto correto: tsvalencio-IA/ConsoleGames. Não mexer no SaaS da oficina nem s
 332 unitários e 102 grafos de áudio passaram. Os sete cenários nativos passaram, incluindo três corridas completas em retrato, paisagem e desktop. A copa multiplayer de três etapas e o gesto passaram no navegador com dois clientes isolados. O job de câmera do kart falhou antes de testar por incompatibilidade do Playwright fixado com ubuntu-latest/26.04; runner fixado em 24.04, sem enfraquecer os testes.
 
 Provas em docs/evidence/objetos-kart-fluidez-20261029/. Há simulação/unitários, navegador WebGL, câmera de pixels determinísticos + postura simulada para brinquedo e dois modelos MediaPipe reais para corpo/mão. Não confundir isso com câmera física. O vídeo 324344.mp4 foi examinado por quadros e diferenças temporais; ausência de movimento nos pixels não mede sozinha o FPS do motor. Não copiá-lo para Git.
+
+O teste público confirmou 25 hashes do WAR, 107 do mundo e 281 de transportes/controles dos sete jogos, treino de objeto/cinco pontos, recuperação com worker real, cabeçalhos no-store e preservação de moedas/família/outra sessão. Fonte de jogo idêntica nas duas revisões (árvore games 920530095d15b0863eef060539f74acb01fa2b97); o commit publicado acrescenta somente a correção do runner e provas ao código 332a685. Os quatro workflows da própria branch de produção passaram no SHA 8c5ba8c: câmera/mundo 40912288415, jogabilidade/família/frota 40912288334, cenários 40912288330 e volante 40912288343. O APK público original continua idêntico; não foi gerado APK com outra chave.
+
+A comparação aquecida com todos os 44 veículos e 138 NPCs teve intervalo médio 147,16 → 144,10 ms, mediana 135,9 → 137,0 e máximo 419 → 517 ms no software WebGL. O custo CPU médio caiu 71,50 → 65,10 ms. Isto NÃO prova resolução geral dos travamentos. Próxima prioridade: perfil de CPU/GPU e redução de chamadas de desenho preservando a geometria, com regressões de animação. Não publicar o experimento zero-light do checkpoint: o ganho era inconclusivo.
 
 A comparação fria de desempenho tem variação e frota em aquecimento; demonstra menos custo de matrizes (13,35 → 4,50 ms no ambiente), mas não certifica FPS no Android nem resolução completa dos travamentos. Não prometer 9,5/10, COD ou rastreamento 3D infalível. Próximo teste físico: brinquedo real, perfil do aparelho e condução prolongada com áudio.
 
