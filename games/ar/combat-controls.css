@@ -58,3 +58,9 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
  .war-hand-camera.calibrating .war-hand-actions{grid-row:7}
 }
 @media(max-height:460px){.input-game-controls.combat-input [data-control="sprint"]{bottom:165px}}
+
+/* Hands-free advance is an explicit camera preference, never a joystick. */
+.war-camera-movement{display:none;min-height:44px;padding:8px 12px;border:1px solid #8dd7c3;background:#183e4c;color:#effff6;border-radius:9px;font:700 11px system-ui;touch-action:manipulation}
+.calibrating .war-camera-movement{display:block;width:100%;margin:4px 0;grid-column:1/-1;grid-row:7}
+.calibrating .war-camera-movement[aria-pressed="true"]{background:#225b4d}
+.war-hand-camera.calibrating .war-hand-actions{grid-row:8}
