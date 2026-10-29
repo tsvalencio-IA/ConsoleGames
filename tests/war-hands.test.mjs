@@ -17,6 +17,14 @@ test('WAR hand: adaptive latency never permits a frame older than 550 ms or an a
  const c=calibrated();for(const latency of[0,80,185,300,900,Infinity,NaN]){const budget=c.setLatency(latency);assert(budget>=300&&budget<=550);c.consume(result(hand()),3000);assert(!c.read(3551).fresh);}
  c.setLatency(300);c.consume(result(hand()),4000);assert(c.read(4200).fresh);c.consume({landmarks:[],handedness:[]},4201);assert(!c.read(4201).fresh);assert(!c.aim.present);
 });
+
+test('WAR hand: serial posture inference retains acquisition but never accepts a stale shot or an empty detection',()=>{
+ const c=calibrated();c.setLatency(410,294);const{game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.covers=[];g.waveDelay=999;g.handSession={requiresBody:true,dispose(){}};g.bodyPose={fresh:true,calibrated:true,moveX:0,moveZ:0};g.enemies=[{id:'aligned',kind:'soldier',x:0,z:24,y:1.8,hp:1000,active:true,aim:999,decision:999,destination:{x:0,z:24}}];
+ c.consume(result(hand()),1300);g.handAim=c.read(1710);g.step(.016);assert(g.handLock);assert.equal(g.stats.shots,0);
+ g.handAim=c.read(2413);assert(!g.handAim.fresh&&g.handAim.present);g.step(.1);assert.equal(g.stats.shots,0,'a delayed observation cannot fire');assert(g.handLock,'only the pending acquisition survives the serial inference gap');
+ c.consume(result(hand()),2004);g.handAim=c.read(2414);g.step(.016);assert.equal(g.stats.shots,1,'two fresh aligned observations acquire the real target');
+ c.consume({landmarks:[],handedness:[]},2415);g.handAim=c.read(2415);g.step(.1);assert(!g.handAim.fresh&&!g.handAim.present);assert.equal(g.handLock,null);assert(!c.read(5000).present);
+});
 test('WAR hand: calibration needs a single stable hand and binds the presented right hand independently of mirror labels',()=>{
  const c=new AimController(),two={landmarks:[hand(.3),hand(.7)],handedness:[[{categoryName:'Left',score:.95}],[{categoryName:'Right',score:.95}]]};for(let t=0;t<2000;t+=100)c.consume(two,t);assert.equal(c.state,'calibrating');assert.equal(c.samples.length,0);
  for(let t=2000;t<3200;t+=100)c.consume(result(hand()),t);assert.equal(c.state,'ready');assert.equal(c.label,'Left');

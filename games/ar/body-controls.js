@@ -60,7 +60,8 @@ class BodySession{
   if(this.busy&&now-(this.sentAt||now)>6000){this.unavailable();return;}
   // A slow hand detector needs priority between posture updates. Refresh the
   // body before its 1200 ms expiry; never lengthen the hand's freshness limit.
-  const handFirst=handDue&&handLatency>150&&this.controller.neutral&&now-this.controller.lastAt<750;
+  const postureDeadline=Math.max(0,Math.min(750,1200-Number(this.computeMs||0)-handLatency-100));
+  const handFirst=handDue&&handLatency>150&&this.controller.neutral&&now-this.controller.lastAt<postureDeadline;
   if(defer||handFirst||!this.ready||this.busy||!video||video.readyState<2||now<this.nextAt||video.currentTime===this.lastVideo)return;
   this.busy=true;this.sentAt=now;this.inflightSerial=this.serial;const serial=this.serial;this.lastVideo=video.currentTime;
   this.nextAt=now+Math.max(330,Number(this.computeMs||0)*1.7,handLatency>200?500:330);

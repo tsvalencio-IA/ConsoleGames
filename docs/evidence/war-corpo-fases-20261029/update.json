@@ -1,10 +1,10 @@
 {
   "passed": true,
-  "checkedAt": "2026-10-29T09:32:45.793Z",
+  "checkedAt": "2026-10-29T09:59:28.195Z",
   "oldWorker": 34,
-  "newWorker": 37,
+  "newWorker": 38,
   "legacyInitialization": "preinstalled-state fixture; old fetch and activation preserved",
-  "newWorkerImplementation": "unmodified production v37",
+  "newWorkerImplementation": "unmodified production v38",
   "transport": "HTTP/1",
   "cachedResources": 100,
   "matchNotInterrupted": true,

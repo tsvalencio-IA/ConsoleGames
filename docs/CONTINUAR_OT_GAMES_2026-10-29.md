@@ -1,49 +1,44 @@
 # Continuação OT Games — 29/10/2026
 
-Repositório: tsvalencio-IA/ConsoleGames. Projeto correto é OT Games, não o SaaS da oficina. Não simplificar nem reconstruir os jogos, não remover recursos e não afirmar teste em celular físico ou qualidade COD sem evidência.
+Projeto correto: tsvalencio-IA/ConsoleGames, OT Games, não o SaaS da oficina. Não simplificar os jogos, retirar recursos ou prometer equivalência ao COD / nota 10 sem evidência. Ler docs/CONTINUAR_OT_GAMES_2026-10-28.md para pedidos anteriores, Android, garagem, família e veículos.
 
-Ler também `docs/CONTINUAR_OT_GAMES_2026-10-28.md` para todos os requisitos anteriores, mundo aberto civil, garagem/família, veículos, assinatura Android e trabalhos pendentes.
+## Fonte e publicação
 
-## Revisão WAR atual
+- Trabalho: performance-gravacoes-20261027. Produção: world-revisao-20261022.
+- Web 705.28.9-war-corpo-fases, assetVersion 70645, revisão 07e6a02c08d06796; worker WAR v38.
+- Produção ainda estava em dcd5272a2b1200205cb760e5820c1aa778c65a89 durante esta anotação. Não afirmar publicação: conferir docs/evidence/war-corpo-fases-20261029/deployment.json e resultados públicos, quando existirem.
+- Vercel: projeto prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm, time team_W3UyY5ss3Shyv78KRMndjust, repoId 1427071731. Build: python3 games/otthi/tools/build_project.py && python3 tools/package-world-preview.py. Saída: dist-world. Publicar SHA testado, esperar READY e conferir origem/alias/recursos públicos. Não gravar segredos.
 
-Thiago relatou fases repetitivas, corpo não reconhecido e jogo impraticável. Implementação e evidências em `docs/evidence/war-corpo-fases-20261029/README.md`.
+## Alterações WAR
 
-- Tronco calibra sem pés obrigatórios; alternância entre os modelos, recorte ampliado do punho direito e coordenadas restauradas ao vídeo original. Câmera frontal e prévia oculta depois da calibração conjunta. Perdas interrompem ações.
-- Avanço assistido padrão, opção por passos, agachar para interromper/proteger. Sem joystick na câmera; toque continua com joystick esquerdo e arrasto livre à direita. Objeto/brinquedo preservado.
-- Três mapas e objetivos diferentes, mantendo porto 2 setores, cidade 3 e fortaleza 4. Captura sob ataque, transmissores, marcadores de saída e progressão autoritativa no cooperativo. Spawns fora de coberturas; contato frontal na cidade e flancos mantidos.
-- Bug real de render: soldados detalhados tinham Z invertido duas vezes, deixando os corpos fora da vista. Corrigidos posição, orientação e altura, com comparação do modelo real e da projeção de acertos.
-- Suíte completa 319 aprovada e verificações focais de objetivos/câmera/render. Ambos os modelos reais sobre a mesma foto oficial calibraram e deram acerto real em um alvo detalhado; perda/retomada e avanço funcionaram. Isso não é teste de câmera física. Três mapas WebGL em duas orientações e controles simultâneos aprovados. Objeto preservado com prova de navegador.
-- Cache: instalação passa a drenar respostas a cada download, com quatro conexões, sem deixar todos os corpos pendentes. Dois testes de regressão e atualização real do v37 com saída de partida/carreira/arma/moedas preservadas aprovados.
-- GitHub: as três falhas exibidas em bf4122f eram instalação do Chromium incompatível com ubuntu-26.04. Workflows ot-games-smoke, scenery-smoke e gameplay-smoke fixados em ubuntu-24.04, sem retirar verificações. Aguardar suas execuções na fonte final antes de declarar aprovação.
-- Web 705.28.9-war-corpo-fases, assetVersion 70645, revisão 6f18273470fd3940. Worker WAR v37, scripts versionados; conta/IDs/progresso mantidos. Não alterar APK público ou criar chave de assinatura nova.
-- Fonte de trabalho: branch `performance-gravacoes-20261027`; produção usa `world-revisao-20261022`. Conferir arquivos `deployment.json` e `public-*.json` desta pasta de evidências para identificar a publicação exata e os resultados públicos. Não tomar um commit WIP como versão já publicada.
+- Tronco calibra sem exigir pés/quadril. Postura inicial compensa ombros naturalmente deslocados; zona neutra evita deriva. Passos, agachar e rotação deliberados preservados.
+- Dois modelos reais alternam no vídeo frontal. Corpo localiza o punho direito, ampliado para a mão; coordenadas voltam ao vídeo original. Prévia some após calibração conjunta. Objeto/brinquedo e duas mãos preservados.
+- Postura renova antes do prazo conforme o custo das duas inferências. Aquisição mantém somente memória do alvo entre inferências seriais; imagens antigas não movem/disparam (mão 550 ms, corpo 1200 ms). Observação vazia limpa ações e aquisição.
+- Avanço assistido padrão; opção por passos; agachar interrompe/protege. Sem joystick na câmera. Toque: joystick esquerdo e arrasto livre à direita, contatos simultâneos, sprint/ADS/pausa.
+- Porto (2 setores), cidade (3) e fortaleza (4) têm geometrias, iluminação, rotas e objetivos distintos. Captura sob ataque, transmissores e extração não são pulados ao eliminar adversários. Anfitrião sincroniza progresso no cooperativo.
+- Soldados detalhados tinham Z refletido duas vezes. Posição, direção e altura corrigidas, comparando modelo real e projeção dos acertos. Spawns fora de coberturas; cidade com contato frontal e flancos.
+- Worker instala shell com quatro downloads e consumo imediato de respostas. Falha descarta apenas cache novo. Ativação aguarda saída da partida; carreira, arma, moedas e outros dados preservados.
 
-## Publicação e recuperação
+## Outras regressões corrigidas
 
-Vercel projeto prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm, time team_W3UyY5ss3Shyv78KRMndjust, repoId 1427071731. Build `python3 games/otthi/tools/build_project.py && python3 tools/package-world-preview.py`, saída dist-world. Publicar SHA testado, esperar READY e conferir alias. Não gravar segredos no código ou chat.
+- Mercado de Aurora: alvo de missão interceptava compras sem missão ativa. Prioridade agora somente na etapa relevante. Sete compras nativas e missões civis passaram.
+- Aeronaves NPC: todos os vidros agrupados por material, sem retirar geometria. Hélices independentes; galeria real manteve limite de 14 chamadas e passou com 7/10/8/9.
+- QA aguarda o mundo pronto e observa carros e todas as oito aeronaves. Família usa missões civis atuais e contexto sem worker para manter seu gancho de inspeção após recarga. Teste de cache separado usa worker real.
+- Três workflows fixados em Ubuntu 24.04: Playwright 1.56.1 falhava na instalação em Ubuntu 26.04. Nenhuma verificação retirada.
 
-WAR: https://otthi-world-campanha-teste.vercel.app/games/ar/
-Console: https://otthi-world-campanha-teste.vercel.app/arcade/
-Recuperação do mundo: https://otthi-world-campanha-teste.vercel.app/games/atualizar/
+## Evidências e conclusão
 
-Sem homologação física de Android, FPS, precisão corporal com pessoa real ou multiplayer entre celulares. WAR ainda não é COD. Não prometer todos os jogos 10/10. Pedidos de YouTube/coreografia automática e fidelidade total de veículos permanecem pendentes, conforme documento anterior.
+Pasta docs/evidence/war-corpo-fases-20261029/ contém relatórios e imagens reais do jogo. Fonte funcional b289025 passou integralmente no gameplay 40850792513: 323 unidades, 7 cenários dos cinco jogos, três corridas completas de kart, família/HQ, embarque, frota, garagem, mundo e comércio. Depois houve ajustes de agendamento da câmera, aquisição e diagnóstico; aguardar sua rodada final antes de afirmar aprovação global.
 
-## Rechecagem dos workflows
+Ambos os modelos reais sobre a mesma foto oficial passaram também com o navegador artificialmente mais lento (1.25x); não é webcam de uma pessoa real. Adversário de treino estacionário mantém modelo e disparo reais: foto estática não acompanha flanqueamento. Observadores somente de leitura das respostas reais confirmam ausência dos dois sensores depois da ocultação. A posição, os tiros e o tempo devem ficar exatamente parados por 500 ms e depois retomar. Não usar o rótulo transitório show-shoulders como confirmação: é sobrescrito por lost. Não mockar workers/landmarks nem aumentar validade das imagens para passar testes. Limitação em 2x excedeu 550 ms e pausou: não certifica jogabilidade nesse hardware.
 
-A fonte 2e58d9a passou em cenários (40844021737) e câmera/mundo (40844021615). Gameplay 40844021627 revelou problemas adicionais: frota/garagem/embarque passaram, mas o teste de família ainda usava o painel de missões aposentado e abria antes do fim do carregamento; o teste do tráfego encerrava a observação quando apenas os carros tinham se movido; e o mercado de Aurora tinha sua compra interceptada por um alvo civil sem missão ativa. A revisão seguinte atualiza o teste para as sete missões civis sem restaurar missões antigas, aguarda o jogo rodando, observa carros e todas as oito aeronaves e limita renderização de software somente no teste. A corrida completa continua exigindo três voltas pelos controles, com orçamento de tempo maior para GPU de software. O mercado só prioriza retirada/devolução de encomendas enquanto essa é a etapa ativa. Não retirar verificações para deixar o CI verde.
+Fases WebGL e controles em retrato/paisagem passaram em preview. HTML de preview pode receber Vercel Live, inclusive créditos; produção deve passar na conferência byte a byte. Não ignorar diferenças de assets. Entrada canônica WAR: /games/ar/.
 
-A verificação pública do HTML usa a entrada canônica /games/ar/ utilizada pelo jogador. No preview, /games/ar/index.html recebe uma inserção adicional da barra Vercel Live; os vinte arquivos continuam comparados byte a byte. Não ignorar diferenças de scripts, modelos ou executáveis.
+## Limites e links
 
-Produção ainda é dcd5272 até a fonte final passar no CI e ser publicada com SHA fixado; registrar a publicação e os testes públicos em deployment.json e public-*.json. A aprovação física continua pendente.
+Sem teste físico Android, FPS sustentado, precisão corporal com pessoa real ou Firebase entre celulares. WAR é jogo próprio, não COD. Mundo aberto civil; polícia e bombeiros preservados. YouTube/coreografia automática, assinatura Android original e fidelidade final dos veículos continuam pendentes conforme documento anterior. Não criar chave Android nova, substituir APK sem assinatura original ou pedir desinstalação/limpeza do histórico.
 
-Aeronaves NPC: e53967d confirmou circulação das oito aeronaves, mas a galeria real falhou no orçamento <=14 chamadas por modelo. A correção seguinte agrupa apenas vidros com material idêntico e mantém a geometria integral, translucidez, aberturas da cabine e rotores independentes. Galeria real aprovada com 7/10/8/9 chamadas. Não aumentar o limite para esconder o custo. Última câmera/mundo aprovada em 40846816583, embarque/frota/garagem aprovados; jogabilidade/família ainda em execução durante essa anotação.
-
-Prioridade dos reconhecedores: em processador lento, resultados de postura podem ocupar o intervalo entre todas as observações da mão. A sessão agora dá observações consecutivas à mão quando a postura ainda é recente, atualizando o corpo antes do prazo. Não aumenta o limite de 550 ms da mão nem o de 1200 ms do corpo. Teste de relógio/worker verifica prioridade e ausência de starvation; repetir a inferência real e atualização v37 na fonte final. Uma tentativa pública anterior teve pausa segura do rastreamento e não atingiu o alvo; não apresentar essa tentativa como aprovada.
-
-O teste de família em e53967d já passou pelos menus de missão, seleção, movimento e persistência da Thamis, mas o segundo carregamento passou pelo worker real e ignorou o gancho de inspeção exigido pelo próprio teste. A revisão bloqueia service workers somente nesse contexto descartável de QA, mantendo o teste separado de cache (que usa o worker real). Não remover a verificação de persistência nem alterar os controles do produto para satisfazer o gancho.
-
-Calibração neutra: o deslocamento natural entre ombros e quadril agora é subtraído da postura inicial. Pequeno ruído angular/lateral tem zona neutra, sem impedir inclinação deliberada. Regressão usa um tronco naturalmente deslocado; 29 testes de corpo/mão/campanha passaram. Ambos os modelos reais também passaram com adversário de treino estacionário e modelo/acerto reais. A imagem estática não pode acompanhar flanqueamento: o ensaio define destino/decisão do adversário para o próprio ponto, sem interceptar os modelos de visão ou alterar a lógica de disparo. Um ensaio adicional com CPU artificialmente limitada em 2x excedeu 550 ms e pausou os disparos; não certificar jogabilidade em hardware lento a partir desse ensaio.
-
-Família local: fluxo inteiro aprovado após isolar o service worker do gancho de QA; Thamis gravada/recarregada, movimento, grupos, pets, retrato, carro e HQ original. Fonte b4750cc passou embarque, mundo, frota/garagem; câmera falhou no ensaio de foto estática com adversário em flanqueamento. Aguardar a fonte final, suas verificações e publicação exata; produção ainda não foi atualizada nesta anotação.
-
-Último diagnóstico: em b289025 a câmera real já calibrava corpo/mão e acertou o alvo duas vezes no CI. A falha restante era a condição do próprio ensaio de perda: podia observar um intervalo normal sem `fresh`, antes de os dois reconhecedores consumirem a imagem em branco, e depois aceitava uma fotografia anterior ainda em processamento. A correção do teste aguarda `show-shoulders`, ausência de mão e uma observação corporal capturada depois do ocultamento. Mantém a mesma comparação exata de posição, tiros e tempo por 500 ms, e a retomada real. Não altera o produto nem os limites de 550/1200 ms.
+- WAR: https://otthi-world-campanha-teste.vercel.app/games/ar/
+- Console: https://otthi-world-campanha-teste.vercel.app/arcade/
+- Recuperação: https://otthi-world-campanha-teste.vercel.app/games/atualizar/
+- Canva, referência original de cenários (não screenshot): https://www.canva.com/M/MAHZVzJMdsY?utm_source=OC-AaBlKrqBJJNF&utm_campaign=agent_connector_create_image_asset_opened

@@ -39,11 +39,21 @@ jobs:
         run: |
           node tests/war-body-model-browser.mjs
           node tests/war-object-browser.mjs
-      - name: Corpo e mão reais na mesma câmera e três operações distintas
-        run: |
-          node tests/war-joint-camera-browser.mjs
-          node tests/war-campaign-browser.mjs
+      - name: Corpo e mão reais na mesma câmera
+        run: node tests/war-joint-camera-browser.mjs
+      - name: Guardar diagnóstico imediato de câmera
+        if: ${{ failure() && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: war-joint-camera-diagnostic
+          path: test-results/war-joint-camera/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Conferir as três operações em retrato e paisagem
+        if: ${{ always() && !cancelled() }}
+        run: node tests/war-campaign-browser.mjs
       - name: Atualização completa sem interromper a partida
+        if: ${{ always() && !cancelled() }}
         run: |
           python3 games/otthi/tools/build_project.py
           python3 tools/package-world-preview.py

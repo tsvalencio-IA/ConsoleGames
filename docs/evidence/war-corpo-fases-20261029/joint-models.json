@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "origin": "http://127.0.0.1:39295",
-  "checkedAt": "2026-10-29T09:45:00.658Z",
+  "origin": "http://127.0.0.1:38037",
+  "checkedAt": "2026-10-29T09:57:01.965Z",
   "calibrated": {
     "state": "PLAYING",
     "body": {
@@ -13,15 +13,15 @@
       "turnYaw": 0,
       "lean": 0,
       "twoHands": false,
-      "timestamp": 10683.5,
+      "timestamp": 32670.89999999944,
       "fullBody": true
     },
     "hand": {
-      "x": 0.5000611890614447,
-      "y": 0.4801293316935218,
+      "x": 0.4998140839328535,
+      "y": 0.4805751919658738,
       "fresh": false,
       "present": true,
-      "timestamp": 10474.199999999255,
+      "timestamp": 32473.89999999944,
       "twoHands": false,
       "calibration": 1,
       "roll": 0,
@@ -30,28 +30,28 @@
     "bodySamples": 6,
     "handSamples": 9,
     "crop": {
-      "x": 0.27349254459142686,
-      "y": 0.38544027715921403,
+      "x": 0.27351991027593614,
+      "y": 0.3852241137623787,
       "w": 0.1875,
       "h": 0.25
     },
-    "bodyMs": 127.80000000074506,
-    "handMs": 208
+    "bodyMs": 103.90000000037253,
+    "handMs": 188.20000000018626
   },
   "combat": {
-    "shots": 1,
-    "hits": 1,
+    "shots": 2,
+    "hits": 2,
     "renderer": {
       "renderer": "webgl",
-      "frames": 3,
+      "frames": 4,
       "mission": "patrol",
-      "drawCalls": 2,
-      "triangles": 3536,
+      "drawCalls": 4,
+      "triangles": 3540,
       "width": 416,
       "height": 192,
       "low": false,
       "software": true,
-      "frameMs": 4,
+      "frameMs": 87,
       "shadows": false
     },
     "infantry": [
@@ -61,9 +61,9 @@
         "y": 0,
         "z": -24,
         "head": {
-          "x": 0.5000531640661159,
-          "y": 0.47027902881756534,
-          "depth": 0.9876655010341592
+          "x": 0.49995508058782484,
+          "y": 0.47042108258142207,
+          "depth": 0.9876655231911156
         }
       }
     ]
@@ -71,7 +71,7 @@
   "sameUnmodifiedSample": true,
   "stationaryTrainingAdversary": true,
   "bothProductionModels": true,
-  "mainThreadSlowdown": 1,
+  "mainThreadSlowdown": 1.25,
   "noWorkerInterception": true,
   "frontCamera": true,
   "hiddenPreview": true,
