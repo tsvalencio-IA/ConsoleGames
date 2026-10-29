@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.12-calibracao-recuperacao",
+  "build": "705.28.13-cadastro-duas-cameras",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "0b36bab761ab572a2b77c50c95368a0f71b4e7e20694cf2b126ef09280bdf37d"
+      "sha256Body": "2538dbfcaba00e0ff19788006a9e93f37985df95d4740ee78e4275dfa804467d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",

@@ -1,0 +1,20 @@
+{
+  "build": "705.28.13-cadastro-duas-cameras",
+  "revision": "82a1b51acd9fc8b8",
+  "worldManifestFiles": 109,
+  "assetVersion": 70649,
+  "warWorker": 42,
+  "previousProductionSource": "0c066cf421ccf659ea7af34a111adeac44d89732",
+  "status": "Local acceptance passed; remote CI and public acceptance pending.",
+  "localChecks": {
+    "unitTests": 340,
+    "rearRegistrationBrowser": true,
+    "frontTrainingFivePointsAndTargets": true,
+    "completeWorker34to42": true
+  },
+  "limits": [
+    "Camera feeds and pose are deterministic fixtures; actual object recognition workers and UI are exercised.",
+    "No physical Android or arbitrary-object reliability claim.",
+    "This change does not resolve or certify open-world Android performance."
+  ]
+}

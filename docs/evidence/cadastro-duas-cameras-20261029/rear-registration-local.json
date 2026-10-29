@@ -1,0 +1,15 @@
+{
+  "origin": "http://127.0.0.1:45849",
+  "limits": [
+    "Synthetic front/rear camera feeds and explicitly simulated body pose; actual object workers, UI and camera constraints. No physical Android claim."
+  ],
+  "dualRegistration": true,
+  "frontConfirmationRequired": true,
+  "bodyNeverUsesRear": true,
+  "otherRegisteredViewRecovered": true,
+  "oldCameraReleasedBeforeSwitch": true,
+  "noRearFallback": true,
+  "pendingPermissionCleanup": true,
+  "errors": [],
+  "passed": true
+}

@@ -103,3 +103,9 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 .calibrating .war-hand-sources{position:sticky;top:0;z-index:3;background:#0b2632;padding:5px 0}
 .calibrating .war-hand-actions{background:#0b2632;padding:6px 0}
 .calibrating canvas{scroll-margin-block-start:65px}
+
+/* Rear registration is temporary; the front camera owns body-controlled play. */
+.war-hand-camera.war-rear-registration canvas{transform:none}
+[data-camera-registration="rear"]{width:100%;min-height:44px;margin:6px 0;padding:8px;border:1px solid #8dd7c3;border-radius:9px;background:#204b59;color:#effff6;font:700 11px system-ui;touch-action:manipulation}
+[data-camera-registration="hint"]{font:12px/1.4 system-ui;color:#d0e5de}
+.war-registration-active .war-camera-movement,.war-registration-active .war-object-tools label,.war-registration-active [data-object="five"],.war-registration-active .war-hand-panel>small{display:none!important}

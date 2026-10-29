@@ -75,7 +75,7 @@ RELEASE_FILES += ['recorded-audio.js', 'audio/engine-recordings.json', 'audio/CR
 RELEASE_FILES += ['audio/' + a['file'] for a in json.loads((ROOT / 'audio/engine-recordings.json').read_text('utf-8'))['assets']]
 
 RELEASE_FILES += ['../atualizar/index.html', '../atualizar/update.js', '../atualizar/style.css']
-RELEASE_FILES += ['../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-flow.js', '../ar/object-aim.js', '../ar/object-training.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css']
+RELEASE_FILES += ['../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-flow.js', '../ar/object-views.js', '../ar/object-camera-registration.js', '../ar/object-aim.js', '../ar/object-training.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css']
 
 
 def body_after_marker(path: Path, marker: str) -> str:

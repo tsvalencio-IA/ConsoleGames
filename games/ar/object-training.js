@@ -12,7 +12,7 @@ class ObjectTools{
   const gain=root.querySelector('[data-object="gain"]');gain.oninput=()=>{session.controller.objectGain=Number(gain.value);root.querySelector('output').textContent=Number(gain.value).toFixed(2).replace('.',',')+'×';};
   session.canvas.addEventListener('pointerdown',e=>{
    if(!this.frozen)return;e.preventDefault();e.stopImmediatePropagation();
-   const r=session.canvas.getBoundingClientRect(),p={x:clamp(1-(e.clientX-r.left)/r.width,0,1)*320,y:clamp((e.clientY-r.top)/r.height,0,1)*240},roi=session.roi;
+   const normalized=session.canvasPoint(e.clientX,e.clientY),p={x:normalized.x*320,y:normalized.y*240},roi=session.roi;
    if(p.x<roi.x*320||p.x>(roi.x+roi.w)*320||p.y<roi.y*240||p.y>(roi.y+roi.h)*240){this.status.textContent='Toque em uma parte do brinquedo dentro da caixa.';return;}
    if(!this.tip){this.tip=p;this.status.textContent='3 · Agora toque no apoio / parte traseira do brinquedo.';return;}
    if(Math.hypot(p.x-this.tip.x,p.y-this.tip.y)<12){this.status.textContent='Escolha um apoio mais distante da ponta.';return;}
@@ -29,11 +29,11 @@ class ObjectTools{
   this.status.textContent=message;
  }
  axisAccepted(){
-  if(!this.awaitingAxis)return;this.awaitingAxis=false;this.frozen=false;this.s.controller.objectMapping=null;this.s.controller.reset();this.acquireAt=performance.now();
-  this.status.textContent='4 · Volte à posição da captura e segure o brinquedo parado. A calibração entra automaticamente.';
+  if(!this.awaitingAxis)return;this.awaitingAxis=false;this.frozen=false;if(this.s.cameraRegistration?.axisAccepted(this.template))return;this.s.controller.objectMapping=null;this.s.controller.reset();this.acquireAt=performance.now();
+  this.status.textContent='4 · Mantenha o brinquedo visível na posição e distância de jogo. A calibração entra automaticamente.';this.persist();
  }
  progress(now){
-  const s=this.s;if(s.source!=='object')return null;
+  const s=this.s;if(s.source!=='object')return null;if(s.cameraRegistration?.switching)return s.cameraRegistration.message;
   if(this.awaitingAxis)return 'Confirmando a ponta e o apoio…';
   if(this.frozen)return this.status.textContent;
   if(s.needCapture)return s.captureMessage||this.status.textContent;
@@ -52,7 +52,7 @@ class ObjectTools{
   this.persist();
  }
  persist(){
-  const s=this.s;if(!this.template||!s.root.querySelector('[data-hand-remember]').checked)return;
+  const s=this.s;if(!this.template?.axis||s.cameraRegistration?.blocksPlaying||!s.root.querySelector('[data-hand-remember]').checked)return;
   try{const template={...this.template};if(window.WarObjectAim.valid(s.controller.objectMapping))template.aimCalibration=s.controller.objectMapping;localStorage.setItem('ot_war_toy_template_v1',JSON.stringify(template));s.savedToy=true;s.root.querySelector('[data-hand="reuse"]').hidden=false;}catch{this.status.textContent='Não foi possível lembrar o brinquedo neste aparelho.';}
  }
  load(template){this.template=template;this.s.lastTemplate=template;this.s.controller.objectMapping=window.WarObjectAim.valid(template.aimCalibration)?template.aimCalibration:null;for(const id of['axis','five'])this.root.querySelector('[data-object="'+id+'"]').disabled=false;}

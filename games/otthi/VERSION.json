@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.12-calibracao-recuperacao",
+  "build": "705.28.13-cadastro-duas-cameras",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -290,7 +290,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70648,
+  "assetVersion": 70649,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.12-calibracao-recuperacao',
+    build: '705.28.13-cadastro-duas-cameras',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
