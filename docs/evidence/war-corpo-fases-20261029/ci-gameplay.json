@@ -1,0 +1,22 @@
+{
+  "sourceSha": "b289025d916a9c5d90939781fdb0a7ef840df790",
+  "run": 40850792513,
+  "conclusion": "success",
+  "jobs": [
+    123369439493,
+    123369439830,
+    123369439895,
+    123369439918
+  ],
+  "evidence": [
+    "2026-10-29T09:36:23.7111430Z # tests 323",
+    "2026-10-29T09:36:23.7111745Z # pass 323",
+    "2026-10-29T09:36:23.7111894Z # fail 0",
+    "2026-10-29T09:38:25.9603286Z Kart real three-lap race (portrait): {\"ticks\":2092,\"maxOffset\":0.43549512247813765,\"finished\":true,\"startedAt\":13012,\"elapsedMs\":50731}",
+    "2026-10-29T09:39:48.2406728Z Kart real three-lap race (landscape-844): {\"ticks\":2093,\"maxOffset\":0.43733004035794465,\"finished\":true,\"startedAt\":15082.5,\"elapsedMs\":63865.29999999999}",
+    "2026-10-29T09:41:16.8887814Z Kart real three-lap race (desktop-885): {\"ticks\":1983,\"maxOffset\":0.43733004035794465,\"finished\":true,\"startedAt\":12433.900000000023,\"elapsedMs\":71958.69999999995}",
+    "2026-10-29T09:42:34.6395424Z   \"completed\": 7,",
+    "2026-10-29T09:42:34.6395697Z   \"expected\": 7,",
+    "2026-10-29T09:45:16.3144168Z Family world: approved rig skinning, playable Thiago/Thamis, all/solo/subset parties with save/reload, real companions and received presence, real throw/return, walking, original HQ controls and no page errors."
+  ]
+}

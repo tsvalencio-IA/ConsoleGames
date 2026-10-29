@@ -1,11 +1,11 @@
 {
   "passed": true,
-  "origin": "http://127.0.0.1:36029",
-  "checkedAt": "2026-10-29T09:31:19.363Z",
+  "origin": "http://127.0.0.1:39295",
+  "checkedAt": "2026-10-29T09:45:00.658Z",
   "calibrated": {
     "state": "PLAYING",
     "body": {
-      "fresh": false,
+      "fresh": true,
       "calibrated": true,
       "moveX": 0,
       "moveZ": 0,
@@ -13,15 +13,15 @@
       "turnYaw": 0,
       "lean": 0,
       "twoHands": false,
-      "timestamp": 13750.600000000559,
+      "timestamp": 10683.5,
       "fullBody": true
     },
     "hand": {
-      "x": 0.5000236808198567,
-      "y": 0.48033936326663534,
+      "x": 0.5000611890614447,
+      "y": 0.4801293316935218,
       "fresh": false,
-      "present": false,
-      "timestamp": 14232.900000000373,
+      "present": true,
+      "timestamp": 10474.199999999255,
       "twoHands": false,
       "calibration": 1,
       "roll": 0,
@@ -30,28 +30,28 @@
     "bodySamples": 6,
     "handSamples": 9,
     "crop": {
-      "x": 0.27351760894060134,
-      "y": 0.3853251627087593,
+      "x": 0.27349254459142686,
+      "y": 0.38544027715921403,
       "w": 0.1875,
       "h": 0.25
     },
-    "bodyMs": 166.20000000018626,
-    "handMs": 606
+    "bodyMs": 127.80000000074506,
+    "handMs": 208
   },
   "combat": {
     "shots": 1,
     "hits": 1,
     "renderer": {
       "renderer": "webgl",
-      "frames": 39,
+      "frames": 3,
       "mission": "patrol",
-      "drawCalls": 4,
-      "triangles": 3540,
+      "drawCalls": 2,
+      "triangles": 3536,
       "width": 416,
       "height": 192,
       "low": false,
       "software": true,
-      "frameMs": 210,
+      "frameMs": 4,
       "shadows": false
     },
     "infantry": [
@@ -61,9 +61,9 @@
         "y": 0,
         "z": -24,
         "head": {
-          "x": 0.4996294685089109,
-          "y": 0.4728011992343484,
-          "depth": 0.9876658403629921
+          "x": 0.5000531640661159,
+          "y": 0.47027902881756534,
+          "depth": 0.9876655010341592
         }
       }
     ]
