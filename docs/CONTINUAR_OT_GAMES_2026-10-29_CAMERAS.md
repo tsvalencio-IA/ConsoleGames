@@ -23,3 +23,5 @@ Branches: performance-gravacoes-20261027 (trabalho/evidências) e world-revisao-
 Esta revisão não altera simulação/renderização civil, mapa, NPCs, veículos, áudio ou kart. Os travamentos Android permanecem pendentes de perfil físico conforme a continuação anterior. Não prometer fluidez ou padrão COD. O controle legado world-hand-controls dentro do mundo civil não é substituído por esta alteração; o WAR atualizado é o console.
 
 A chave de assinatura Android original continua ausente. Não criar outra identidade/chave nem alegar um novo APK compatível. A entrega atualiza o conteúdo web/PWA no mesmo domínio. Não apagar conta, saves, família, histórico ou outra sessão do usuário.
+
+A primeira execução Android 40965558902 falhou antes do teste: Playwright 1.56.1 não suporta o runner ubuntu26.04-x64 que ubuntu-latest passou a selecionar. Correção focal: fixar esse workflow em ubuntu-24.04, como os demais testes de câmera e gameplay. Não é falha de download observada no produto nem motivo para trocar a versão do APK. O commit de compatibilidade não altera a árvore games.
