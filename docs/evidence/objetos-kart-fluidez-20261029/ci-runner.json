@@ -1,0 +1,8 @@
+{
+  "run": 40910357551,
+  "job": 123576342873,
+  "sourceSha": "332a685db274344ed60ee088ae2e590c9d75c627",
+  "failedStep": "Instalar Chromium",
+  "error": "Playwright does not support chromium on ubuntu26.04-x64",
+  "action": "Pin kart camera workflow to ubuntu-24.04, consistent with the other gameplay workflows. Browser assertions remain intact."
+}

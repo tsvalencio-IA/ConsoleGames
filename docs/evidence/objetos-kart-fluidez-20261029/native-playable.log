@@ -1,0 +1,8 @@
+Kart real three-lap race (portrait): {"ticks":1981,"maxOffset":0.43738096556548434,"finished":true,"startedAt":11062.800000000745,"elapsedMs":33305.199999999255}
+Kart real three-lap race (landscape-844): {"ticks":2039,"maxOffset":0.4425625651233973,"finished":true,"startedAt":11566.099999999627,"elapsedMs":34746}
+Kart real three-lap race (desktop-885): {"ticks":2039,"maxOffset":0.4353557037658482,"finished":true,"startedAt":9085.399999999441,"elapsedMs":34714.40000000037}
+{
+  "completed": 7,
+  "expected": 7,
+  "failures": []
+}

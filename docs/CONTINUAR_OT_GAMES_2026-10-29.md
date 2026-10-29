@@ -13,6 +13,8 @@ Projeto correto: tsvalencio-IA/ConsoleGames. Não mexer no SaaS da oficina nem s
 
 ## Verificação e limites
 
+332 unitários e 102 grafos de áudio passaram. Os sete cenários nativos passaram, incluindo três corridas completas em retrato, paisagem e desktop. A copa multiplayer de três etapas e o gesto passaram no navegador com dois clientes isolados. O job de câmera do kart falhou antes de testar por incompatibilidade do Playwright fixado com ubuntu-latest/26.04; runner fixado em 24.04, sem enfraquecer os testes.
+
 Provas em docs/evidence/objetos-kart-fluidez-20261029/. Há simulação/unitários, navegador WebGL, câmera de pixels determinísticos + postura simulada para brinquedo e dois modelos MediaPipe reais para corpo/mão. Não confundir isso com câmera física. O vídeo 324344.mp4 foi examinado por quadros e diferenças temporais; ausência de movimento nos pixels não mede sozinha o FPS do motor. Não copiá-lo para Git.
 
 A comparação fria de desempenho tem variação e frota em aquecimento; demonstra menos custo de matrizes (13,35 → 4,50 ms no ambiente), mas não certifica FPS no Android nem resolução completa dos travamentos. Não prometer 9,5/10, COD ou rastreamento 3D infalível. Próximo teste físico: brinquedo real, perfil do aparelho e condução prolongada com áudio.
