@@ -16,7 +16,7 @@ try{
   try{
    await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.Games?.some(g=>g.id==='ar_truck_sim')&&window.System?.canvas);
    await page.waitForFunction(()=>!document.getElementById('phase-screen')?.classList.contains('hidden'),null,{timeout:5000}).catch(async()=>{await page.locator('#channel-grid .channel').first().click()});
-   await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('[data-mode="controls"]').click();await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING');
+   await page.locator('#phase-grid .mission-card[data-mission=patrol]:not(.locked)').first().click();await page.locator('[data-mode="controls"]').click();await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING');
    // Isolate input from incoming attacks; the full mission engine has separate tests.
    await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;g.covers=[]});
    assert.equal(await page.evaluate(()=>window.__cameraRequests),0);assert.equal(await page.locator('.aim-stick').count(),0);
@@ -49,7 +49,7 @@ try{
  await desktop.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===origin?route.continue():route.request().resourceType()==='script'?route.fulfill({status:200,contentType:'application/javascript',body:'/* isolated remote service */'}):route.abort('blockedbyclient'));
  const page=await desktop.newPage();await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.Games?.some(g=>g.id==='ar_truck_sim')&&window.System?.canvas);
  await page.waitForFunction(()=>!document.getElementById('phase-screen')?.classList.contains('hidden'),null,{timeout:5000}).catch(async()=>{await page.locator('#channel-grid .channel').first().click()});
- await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('[data-mode="controls"]').click();await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING');
+ await page.locator('#phase-grid .mission-card[data-mission=patrol]:not(.locked)').first().click();await page.locator('[data-mode="controls"]').click();await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING');
  await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;g.covers=[]});
  await page.keyboard.down('w');await page.keyboard.down('Space');await page.mouse.move(500,340);await page.mouse.down();await page.mouse.move(650,290);await page.mouse.up();
  await page.waitForFunction(()=>{const g=window.System.activeGame.logic;return g.player.yaw>.1&&g.player.pitch>.1&&!g.lookPointerActive&&g.stats.shots>0&&g.player.z>0});await page.keyboard.up('Space');await page.keyboard.up('w');

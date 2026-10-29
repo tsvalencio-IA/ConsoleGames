@@ -1,0 +1,11 @@
+{
+  "status": "validated candidate; not yet promoted",
+  "build": "705.28.10-objetos-kart-fluidez",
+  "assetVersion": 70646,
+  "revision": "2b546ef983249b4f",
+  "previousProductionSha": "f60e00210a87246d5c7f67634b3549f827c5cb7d",
+  "sourceSha": null,
+  "deployment": null,
+  "physicalAndroid": false,
+  "notes": "Promotion and public-byte checks must be recorded after build and browser gates."
+}

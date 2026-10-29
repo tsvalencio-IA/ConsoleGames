@@ -597,5 +597,12 @@
       "segmentRmsCV": 0.0329,
       "segmentSpectralFlux": 0.4513
     }
-  ]
+  ],
+  "playbackContinuity": {
+    "version": "20261029-continuity5",
+    "implementation": "recorded-audio.js",
+    "originalEncodedAssetsPreserved": true,
+    "processing": "Steady decoded windows for legacy variable recordings; slow envelope correction limited to 0.70–1.40 gain; 120 ms complementary cosine join after decoding; exact frame bounds exposed in GameAudio.diagnostics().engineLoopEdits.",
+    "limits": "Engine-family adaptations retain source identities and licenses. Not factory recordings of every in-game vehicle."
+  }
 }

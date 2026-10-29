@@ -226,8 +226,10 @@
                 KartAudio.init(); if(KartAudio.ctx && KartAudio.ctx.state === 'suspended') KartAudio.ctx.resume();
 
                 if(this.isOnline&&(this.raceState==='FINISHED'||this.raceState==='CUP_END')){const b=this.onlineActionHitbox;if(b&&clickX>=b.x&&clickX<=b.x+b.w&&clickY>=b.y&&clickY<=b.y+b.h){this.confirmOnlineStage();window.Sfx.click();}return;}
-                // --- SISTEMA DE PÓDIO E COPA (NOVO) ---
+                // Preserve the native cup continuation. Starting a new stage
+                // cancels the old finish timer and invalidates its token.
                 if (this.raceState === "FINISHED") {
+                    const hit=this.offlineActionHitbox;if(!hit||clickX<hit.x||clickX>hit.x+hit.w||clickY<hit.y||clickY>hit.y+hit.h)return;
                     if(!this.isOnline||this.podiumAcceptedMatch!==this.lastStartedMatch){
                     if (window.Profile) { window.Profile.coins = (Number(window.Profile.coins) || 0) + this.reward; if(window.Profile.save) window.Profile.save(); }
                     this.player.lap = 1;
@@ -634,6 +636,7 @@
             this.player.lap = 1;
             this.player.finished = false;
             this.totalLaps = CONF.TOTAL_LAPS;
+            if(this.finishTimer)clearTimeout(this.finishTimer);this.finishTimer=null;this.raceToken=(this.raceToken||0)+1;
             this.reward = 0;
             this.state = 'RACE'; this.status = 'RACING'; this.buildTrack(trackId);this.applyOnlineHazards();
             nitroBtn.style.display = 'flex'; resetBtn.style.display = 'none'; 
@@ -671,6 +674,7 @@
             if (this.state === 'GAMEOVER') { return Math.floor(this.score); }
             
             if (this.raceState === "FINISHED") {
+                if(!this.isOnline)this.checkRaceStatus();
                 if(this.isOnline){if(this.onlineCup?.state==='RACING'){const now=performance.now(),steps=Math.min(6,Math.max(0,Math.floor((now-this.lastTime)/(1000/60))));this.lastTime=now;for(let i=0;i<steps;i++){this.updateBotDrivers();this.updateProjectiles(w,h);}this.syncMultiplayer();}this.renderOnlineStage(ctx,w,h);return Math.floor(this.score);}
                 this.renderWorld(ctx, w, h);
                 this.renderUI(ctx, w, h);
@@ -681,8 +685,8 @@
                 return Math.floor(this.score);
             }
             
-            const now=performance.now(),elapsed=Math.max(0,Math.min(100,now-(this.lastTime??now-16.667)));
-            this.lastTime=now;this.physicsAccumulator=Math.min(100,(this.physicsAccumulator||0)+elapsed);
+            const now=performance.now(),elapsed=Math.max(0,Math.min(250,now-(this.lastTime??now-16.667)));
+            this.lastTime=now;this.physicsAccumulator=Math.min(250,(this.physicsAccumulator||0)+elapsed);
             while(this.physicsAccumulator>=1000/60-.001){
                 this.updatePhysics(w,h,pose);this.physicsAccumulator-=1000/60;
             }
@@ -726,7 +730,8 @@
                 if (this.currentFase.mode === 'RACE' && this.finalRank <= this.currentFase.targetRank) isWin = true;
                 if (this.currentFase.mode === 'COIN_HUNT' && this.matchCoins >= this.currentFase.targetCoins) isWin = true;
 
-                this.finishTimer=setTimeout(() => {
+                const token=this.raceToken;this.finishTimer=setTimeout(() => {
+                    if(this.raceToken!==token||this.status!=='FINISHED'||this.state!=='SPECTATE_WAIT')return;
                     this.finishTimer=null;this.state = 'GAMEOVER'; KartAudio.stop();
                     if(window.System.gameOver) { window.System.gameOver(this.score, isWin, this.matchCoins); } 
                     else { window.System.home(); }
@@ -1628,7 +1633,7 @@
                 ctx.fillText(`POSIÇÃO FINAL: ${this.finalRank}º`, cx, cy - h*0.05);
 
                 ctx.fillStyle = "#f1c40f";
-                ctx.fillText(`RECOMPENSA: R$ ${this.reward}`, cx, cy + h*0.05);
+                ctx.fillText(`MOEDAS COLETADAS: ${this.matchCoins}`, cx, cy + h*0.05);
 
                 ctx.fillStyle = "#2ecc71";
                 if(ctx.roundRect) {
@@ -1641,7 +1646,7 @@
                 ctx.font = `bold ${fBtn}px Arial`;
                 
                 let nextTrackId = this.selectedTrack + 1;
-                let btnText = nextTrackId < TRACKS.length ? "PRÓXIMA CORRIDA" : "VER PÓDIO DA COPA";
+                let btnText = nextTrackId < TRACKS.length ? "PRÓXIMA CORRIDA" : "VER PÓDIO DA COPA";this.offlineActionHitbox={x:cx-btnW/2,y:cy+h*.15,w:btnW,h:btnH};
                 if (this.isOnline && !this.isHost && nextTrackId < TRACKS.length) btnText = "AGUARDANDO HOST...";
 
                 ctx.fillText(btnText, cx, cy + h*0.15 + btnH/2 + fBtn*0.35);
@@ -1675,17 +1680,17 @@
         },
         readCameraItemGesture(pose,videoH){
             const now=performance.now(),g=this.cameraItemGesture||(this.cameraItemGesture={armed:false,neutralSince:null,raisedSince:null,lastAt:null,lastFrame:null,progress:0,holding:false});
-            const point=name=>pose?.keypoints?.find(k=>k.name===name&&k.score>=.25),nose=point('nose'),left=point('left_wrist'),right=point('right_wrist');
-            const videoFrame=window.System?.video?.currentTime,frame=Number.isFinite(videoFrame)?videoFrame:now;
+            const point=(name,confidence=.25)=>pose?.keypoints?.find(k=>k.name===name&&k.score>=confidence),face=['nose','left_eye','right_eye','left_ear','right_ear'].map(name=>point(name)).filter(Boolean),nose=point('nose')||(face.length>=2?{x:face.reduce((s,p)=>s+p.x,0)/face.length,y:face.reduce((s,p)=>s+p.y,0)/face.length}:null),left=point('left_wrist',.20),right=point('right_wrist',.20);
+            const videoFrame=pose?.cameraFrame??pose?.cameraSampleAt??window.System?.video?.currentTime,frame=Number.isFinite(videoFrame)?videoFrame:now;
             const gap=g.lastAt===null?0:now-g.lastAt;
-            const lost=!nose||!left||!right||gap>900;
+            const lost=!nose||!left||!right||gap>900||(Number.isFinite(pose?.cameraSampleAt)&&now-pose.cameraSampleAt>900);
             if(lost){g.armed=false;g.neutralSince=g.raisedSince=null;g.progress=0;g.holding=false;g.lastAt=now;return false;}
             if(frame===g.lastFrame)return false;g.lastFrame=frame;g.lastAt=now;
-            const margin=videoH*.20,neutral=left.y>nose.y+margin&&right.y>nose.y+margin;
+            const shoulders=['left_shoulder','right_shoulder'].map(name=>point(name)),span=shoulders.every(Boolean)?Math.hypot(shoulders[0].x-shoulders[1].x,shoulders[0].y-shoulders[1].y):videoH*.42,margin=Math.max(videoH*.10,span*.40),neutral=left.y>nose.y+margin&&right.y>nose.y+margin;
             if(neutral){g.holding=false;g.consumed=false;g.transitionSince=null;g.raisedSince=null;g.progress=0;if(g.neutralSince===null)g.neutralSince=now;if(now-g.neutralSince>=180&&this.itemCooldown<=0)g.armed=true;return false;}
             g.neutralSince=null;
             // Require a hand near the head in both axes, accepting either mirror label.
-            const nearHead=hand=>Math.hypot((hand.x-nose.x)/(videoH*.25),(hand.y-nose.y+videoH*.035)/(videoH*.23))<=1;
+            const nearHead=hand=>Math.hypot((hand.x-nose.x)/Math.max(videoH*.14,span*.62),(hand.y-nose.y+span*.08)/Math.max(videoH*.14,span*.57))<=1;
             const raised=(nearHead(right)&&left.y>nose.y+margin)||(nearHead(left)&&right.y>nose.y+margin);
             if(!raised){
                 g.raisedSince=null;g.progress=0;

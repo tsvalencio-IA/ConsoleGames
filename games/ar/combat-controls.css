@@ -65,6 +65,29 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 .calibrating .war-camera-movement[aria-pressed="true"]{background:#225b4d}
 .war-hand-camera.calibrating .war-hand-actions{grid-row:8}
 
+/* Registration remains scrollable on small phones. The five-point screen is
+   separate from the camera preview so the pointing marks stay unambiguous. */
+.war-object-tools{grid-column:1/-1;grid-row:8;font-size:12px;text-align:left}
+.war-object-tools[hidden],.war-object-wizard[hidden],.war-practice[hidden]{display:none!important}
+.war-object-tools p{margin:5px 0;line-height:1.4}
+.war-object-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.war-object-tools button,.war-practice button{min-height:44px;padding:7px 10px;border:1px solid #8dd7c3;border-radius:9px;background:#204b59;color:#effff6;font:700 11px system-ui;touch-action:manipulation}
+.war-object-tools button:disabled{opacity:.45}
+.war-object-tools label{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:7px}
+.war-object-tools input{width:120px;accent-color:#75eacb}
+.war-hand-camera.calibrating .war-hand-actions{grid-row:9}
+.war-object-wizard{position:fixed;inset:0;z-index:1200;background:#091e2afc;text-align:center}
+.war-object-target{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:60px;height:60px;border:2px solid #88edca;border-radius:50%;font-size:44px;color:#e9fff3;box-shadow:0 0 24px #6bdfbf44}
+.war-object-wizard [data-object-direction]{position:absolute;top:max(12px,env(safe-area-inset-top));bottom:auto;left:5%;width:90%;font:700 clamp(13px,2.5vw,18px)/1.4 system-ui}
+.war-object-wizard progress{position:absolute;bottom:65px;left:25%;width:50%;accent-color:#75eacb}
+.war-object-wizard button{position:absolute;bottom:max(10px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%)}
+.war-practice{position:fixed;z-index:370;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));top:calc(max(110px,13dvh) + 74px);display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 10px;background:#0b2532ee;border:1px solid #78d4c199;border-radius:12px;font:11px/1.5 system-ui;color:#e8fff5;box-sizing:border-box;pointer-events:none}
+.war-practice output{display:block}.war-practice-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;pointer-events:auto}
+.war-practice button[aria-pressed="true"]{background:#2d735f}
+#phase-screen .mission-card[data-mission="training"]{border-left-color:#91eabc;background:linear-gradient(110deg,#1d5348,#143644)}
+@media(max-height:460px){.war-object-tools{font-size:11px}.war-object-tools p{margin:2px 0}.war-practice{top:58px;padding:5px 8px;gap:5px}.war-practice button{padding:5px 8px;font-size:10px}}
+@media(max-width:480px){.war-practice{flex-direction:column;align-items:stretch}.war-practice-actions{justify-content:space-between}.war-practice button{flex:1;padding:5px}}
+
 /* Distinct operation identities; live geometry remains the actual battlefield. */
 #phase-screen .mission-card[data-mission]{border-left:4px solid #67d1d2;min-height:86px;background:linear-gradient(110deg,#123442e8,#183141e8);box-sizing:border-box}
 #phase-screen .mission-card[data-mission="city"]{border-left-color:#f5c37c;background:linear-gradient(110deg,#494033e8,#273948e8)}
@@ -72,3 +95,5 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 #phase-screen .mission-card[data-mission] .mission-info h2{color:#f1f5ee;font-size:clamp(14px,3vw,20px)}
 #phase-screen .mission-card[data-mission] .mission-info p{max-width:46em;line-height:1.4;color:#c6d5d7}
 #phase-screen .mission-card[data-mission] .mission-icon{font-size:20px;margin-left:12px}
+
+.war-hand-camera [data-hand="reuse"]{min-height:44px;padding:7px 10px;border:1px solid #8dd7c3;border-radius:9px;background:#204b59;color:#effff6;font:700 11px system-ui;touch-action:manipulation}

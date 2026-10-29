@@ -10,6 +10,7 @@ const MISSIONS=[
  {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Recupere a praça e mantenha cada ponto de comunicação contra ataques pelos flancos.',route:[{x:-8,z:24},{x:10,z:40},{x:-10,z:60}],covers:[{x:-15,z:13,w:6,h:1.1,d:3,type:'planter'},{x:8,z:24,w:5,h:1.4,d:2,type:'barrier'},{x:-7,z:41,w:6,h:1.2,d:3,type:'planter'},{x:20,z:49,w:3,h:2.6,d:7,type:'car'}]},
  {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:4,count:4,desc:'Desative dois transmissores, atravesse a fortaleza e abra a zona de extração.',route:[{x:10,z:23},{x:-10,z:43},{x:0,z:55},{x:0,z:68}],covers:[{x:-10,z:14,w:11,h:2.7,d:3,type:'stone'},{x:13,z:33,w:12,h:2.5,d:3,type:'stone'},{x:-17,z:51,w:7,h:3,d:6,type:'stone'},{x:9,z:56,w:6,h:1.2,d:3,type:'stone'}]}
 ];
+const TRAINING={id:'training',name:'TREINO • MIRA E CALIBRAÇÃO',waves:0,count:0,desc:'Cadastre o brinquedo, ajuste cinco pontos e teste corpo, mira e tiro automático sem dano ou limite de tempo.',route:[{x:0,z:20}],covers:[]};
 const WEAPONS=[
  {id:'rifle',name:'Fuzil',mag:30,reserve:180,damage:34,interval:.15,reload:1.65,requires:0},
  {id:'smg',name:'Submetralhadora',mag:24,reserve:192,damage:24,interval:.085,reload:1.25,requires:1},
@@ -20,7 +21,7 @@ const Game={
  state:'INIT',lastTime:0,weapons:WEAPONS,manualStick:{x:0,y:0,active:false},keys:{},
  init(fase){
   this.cleanup();this.lastTime=performance.now();this.state='PLAYING';this.resultPaid=false;this.resultTimer=0;
-  this.mission=MISSIONS.find(m=>m.id===(fase?.missionId||fase?.id))||MISSIONS[0];
+  this.training=fase?.id==='training';this.practiceMovement=false;this.trainingTargets=0;this.trainingNext=0;this.mission=this.training?TRAINING:MISSIONS.find(m=>m.id===(fase?.missionId||fase?.id))||MISSIONS[0];
   this.difficulty=window.ArcadePlaySettings?.get().difficulty||'normal';this.level=LEVELS[this.difficulty]||LEVELS.normal;
   this.careerKey='thia:ar-combat:v1:'+(window.System?.playerId||'local');
   let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
@@ -29,23 +30,25 @@ const Game={
   this.fireHeld=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
-  this.resetOperation();
+  this.resetOperation();if(this.training)this.resetTraining();
   this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
   this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
   if(window.ArcadeControls?.mode==='camera'&&window.WarHandControl){this.state='HAND_CALIBRATION';this.handSession=window.WarHandControl.start(this);}
-  if(fase?.online){this.net=window.WarMultiplayer?.create(this);if(this.state!=='HAND_CALIBRATION')this.state='NET_LOBBY';if(!this.net)window.System?.msg('MULTIPLAYER INDISPONÍVEL • ATUALIZE O JOGO');}
+  this.practiceUI=window.WarPracticeUI?.start(this);
+  if(fase?.online&&!this.training){this.net=window.WarMultiplayer?.create(this);if(this.state!=='HAND_CALIBRATION')this.state='NET_LOBBY';if(!this.net)window.System?.msg('MULTIPLAYER INDISPONÍVEL • ATUALIZE O JOGO');}
  },
  selectWeapon(id,initial=false){
   const gun=WEAPONS.find(w=>w.id===id);if(!gun||this.career.wins<gun.requires)return false;
   if(!initial&&this.state==='PLAYING'&&(this.stats.shots>0||this.wave>0))return false;
   this.gun=gun;this.ammo=gun.mag;this.reserve=gun.reserve;this.reloadTime=0;this.career.weapon=gun.id;this.saveCareer();return true;
  },
- saveCareer(){try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
+ saveCareer(){if(this.training)return;try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
  resetOperation(){this.covers=this.mission.covers.map(c=>({...c}));this.objective={phase:'approach',progress:0,required:0,secured:0};},
  reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;window.GameAudio?.effect('reload');return true;},
  spawnPosition(x,z,radius=.8){const free=(px,pz)=>px>=-26&&px<=26&&pz>=0&&pz<=69&&!this.covers.some(c=>Math.abs(px-c.x)<c.w/2+radius&&Math.abs(pz-c.z)<c.d/2+radius)&&!this.enemies.some(e=>e.active&&Math.hypot(px-e.x,pz-e.z)<1.7);if(free(x,z))return{x,z};for(let r=2;r<=24;r+=2)for(let i=0;i<12;i++){const px=x+Math.cos(i*Math.PI/6)*r,pz=z+Math.sin(i*Math.PI/6)*r;if(free(px,pz))return{x:px,z:pz};}throw Error('Não há posição livre neste setor.');},
  spawnWave(){
+  if(this.training)return;
   this.wave++;this.bannerTime=2.4;this.enemies=[];
   const count=this.mission.count+this.level.count+this.wave-1;
   for(let i=0;i<count;i++){
@@ -57,9 +60,12 @@ const Game={
   if(this.mission.id==='extraction'&&this.wave<3){const p=this.mission.route[this.wave-1];this.enemies.push({id:this.wave+':relay',kind:'relay',x:p.x,y:1.6,z:p.z+5,hp:102,active:true,aim:999999,flash:0,phase:0,rewarded:false});}
   Object.assign(this.objective,{phase:'combat',progress:0,required:this.mission.id==='city'?4+this.wave*2:.8});
  },
+ resetTraining(){this.trainingTargets=0;this.trainingNext=0;this.stats.shots=this.stats.hits=0;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.handViewAnchor=null;this.ammo=this.gun.mag;this.reserve=9999;this.enemies=[];this.nextPracticeTarget();},
+ nextPracticeTarget(){const poses=[[0,1.8,20],[-4,1.8,20],[4,1.8,20],[0,4.4,20],[0,.6,20]],[x,y,z]=poses[this.trainingTargets%poses.length];this.enemies=[{id:'practice:'+this.trainingTargets,kind:'practice',x,y,z,hp:1,active:true,aim:999999,flash:0,phase:0}];this.handLock=null;this.trainingNext=0;},
  objectivePoint(){return this.mission.route[Math.max(0,this.wave-1)];},
- objectiveHint(){const o=this.objective,targets=this.enemies.filter(e=>e.active&&!e.ally).length,p=this.objectivePoint(),distance=Math.ceil(Math.hypot(p.x-this.player.x,p.z-this.player.z));return targets?'SETOR '+this.wave+'/'+this.mission.waves+' · '+targets+' ALVOS'+(this.enemies.some(e=>e.kind==='relay'&&e.active)?' · DESATIVE O TRANSMISSOR':''):o.phase==='hold'?'MANTENHA A PRAÇA · '+Math.ceil(Math.max(0,o.required-o.progress))+'s · '+distance+'m':o.phase==='approach'?'PRÓXIMO SETOR · PREPARE A MIRA':(this.wave===this.mission.waves?'ALCANCE A EXTRAÇÃO':'ASSEGURE O SETOR')+' · '+distance+'m';},
+ objectiveHint(){if(this.training)return this.trainingTargets+' ALVOS · '+this.stats.hits+'/'+this.stats.shots+' ACERTOS · SEM DANO';const o=this.objective,targets=this.enemies.filter(e=>e.active&&!e.ally).length,p=this.objectivePoint(),distance=Math.ceil(Math.hypot(p.x-this.player.x,p.z-this.player.z));return targets?'SETOR '+this.wave+'/'+this.mission.waves+' · '+targets+' ALVOS'+(this.enemies.some(e=>e.kind==='relay'&&e.active)?' · DESATIVE O TRANSMISSOR':''):o.phase==='hold'?'MANTENHA A PRAÇA · '+Math.ceil(Math.max(0,o.required-o.progress))+'s · '+distance+'m':o.phase==='approach'?'PRÓXIMO SETOR · PREPARE A MIRA':(this.wave===this.mission.waves?'ALCANCE A EXTRAÇÃO':'ASSEGURE O SETOR')+' · '+distance+'m';},
  advanceOperation(dt,players=[this.player]){
+  if(this.training)return false;
   const active=this.enemies.some(e=>e.active&&!e.ally),o=this.objective,point=this.objectivePoint(),reached=players.some(p=>p&&Math.hypot(p.x-point.x,p.z-point.z)<(this.mission.id==='city'?6:3));
   if(this.wave>0&&this.mission.id==='city'&&o.phase!=='approach'){const contested=this.enemies.some(e=>e.active&&!e.ally&&Math.hypot(e.x-point.x,e.z-point.z)<5);if(reached&&!contested)o.progress=Math.min(o.required,o.progress+dt);}
   if(active)return false;
@@ -121,14 +127,15 @@ const Game={
   return true;
  },
  defeat(e,credit=true){
-  if(!e.active||e.rewarded)return false;e.active=false;e.rewarded=true;window.GameAudio?.effect(e.kind==='tank'?'explosion':'impact',e.kind==='tank'?1:.5,Math.sin(Math.atan2(e.x-this.player.x,e.z-this.player.z)-this.player.yaw));if(credit){this.stats.kills++;this.score+=e.kind==='tank'?350:100;}
+  if(!e.active||e.rewarded)return false;if(this.training&&e.kind==='practice'){e.active=false;this.trainingTargets++;this.trainingNext=.65;window.GameAudio?.effect('impact',.5);return true;}e.active=false;e.rewarded=true;window.GameAudio?.effect(e.kind==='tank'?'explosion':'impact',e.kind==='tank'?1:.5,Math.sin(Math.atan2(e.x-this.player.x,e.z-this.player.z)-this.player.yaw));if(credit){this.stats.kills++;this.score+=e.kind==='tank'?350:100;}
   for(let i=0;i<9;i++)this.particles.push({x:e.x,y:e.y,z:e.z,life:.7,vx:(Math.random()-.5)*5,vy:Math.random()*3,vz:(Math.random()-.5)*5});return true;
  },
  finish(won){
-  if(this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.sprintHeld=this.sprinting=this.fireHeld=this.aiming=this.lookPointerActive=false;
+  if(this.training||this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.sprintHeld=this.sprinting=this.fireHeld=this.aiming=this.lookPointerActive=false;
   this.career.kills+=this.stats.kills;if(won){this.stats.missions=1;this.career.wins++;this.career.completed[this.mission.id]=true;}this.saveCareer();return true;
  },
  cameraWalk(dt){
+  if(this.training&&!this.practiceMovement)return;
   const p=this.player;this.autoWalking=false;
   // Leave room to aim: advance without a finger on the screen, then stop at
   // engagement distance. Holding cover pauses the advance; the stick overrides it.
@@ -217,10 +224,11 @@ const Game={
   }
   if(!this.handSession&&(window.ArcadePlaySettings?.get().combatFireMode==='simple')){const target=this.targetAtAim();if(!target)this.autoFireLock=null;else if(this.autoFireLock?.target===target){this.autoFireLock.time+=dt;automatic=this.autoFireLock.time>=.14;}else this.autoFireLock={target,time:0};}else this.autoFireLock=null;
   if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
+  if(this.training&&this.trainingNext>0){this.trainingNext=Math.max(0,this.trainingNext-dt);if(!this.trainingNext)this.nextPracticeTarget();}
   if(!this.net){
   if(this.advanceOperation(dt))this.finish(true);
   for(const e of this.enemies){
-   if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);if(e.kind==='relay')continue;e.aim-=dt;
+   if(!e.active)continue;e.flash=Math.max(0,e.flash-dt);if(e.kind==='relay'||e.kind==='practice')continue;e.aim-=dt;
    if(e.kind==='drone')e.y=5+Math.sin(this.elapsed*1.5+e.phase)*.8;
    this.updateEnemyTactics(e,dt);
    if(e.aim<=0){
@@ -269,7 +277,9 @@ const Game={
   for(const c of this.covers){box(c.x,0,c.z,c.w,c.h,c.d,'#5a6964');box(c.x,c.h,c.z,c.w+.12,.12,c.d+.12,'#b4b89a');}
   for(const e of this.enemies){
    if(!e.active)continue;const color=e.flash?'#f2ebca':e.kind==='tank'?'#66784e':'#586a61';
-   if(e.kind==='soldier'){
+   if(e.kind==='practice'){
+    box(e.x,e.y-.8,e.z,1.6,1.6,.12,e.flash?'#fff0bf':'#dbe9dd');box(e.x,e.y-.5,e.z-.08,1,1,.05,'#d07450');box(e.x,e.y-.2,e.z-.12,.4,.4,.05,'#f4d37c');
+   }else if(e.kind==='soldier'){
     const walk=Math.sin(this.elapsed*4+e.phase)*.12;
     box(e.x-.21,0,e.z+walk,.3,.82,.32,'#273b3b');box(e.x+.21,0,e.z-walk,.3,.82,.32,'#314846');
     box(e.x,.75,e.z,.86,.84,.48,color);box(e.x,1.58,e.z,.48,.39,.43,'#a2a891');box(e.x,1.94,e.z,.58,.17,.5,'#354c46');
@@ -308,7 +318,7 @@ const Game={
   const cx=this.handAim&&!this.handSession?this.handAim.x*w:w/2,cy=this.handAim&&!this.handSession?this.handAim.y*h:h*.48;ctx.strokeStyle=this.hitFlash>0?'#ffcc80':'#eaf9e4';ctx.lineWidth=2;
   for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(cx+s*5,cy);ctx.lineTo(cx+s*14,cy);ctx.moveTo(cx,cy+s*5);ctx.lineTo(cx,cy+s*14);ctx.stroke();}
   if(this.handLock){ctx.strokeStyle=this.handLock.time>=.12?'#9eebc4':'#e2c28a';ctx.beginPath();ctx.arc(cx,cy,20,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(this.handLock.time/.12,0,1));ctx.stroke();}
-  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?(this.handSession?.autoAdvance?'AVANÇO ASSISTIDO • AGACHE PARA PARAR':'CORPO E MÃOS • POSTURA, VISÃO E MIRA'):'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA'):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
+  const statusY=compact?h*.24:hy+hh+20;ctx.fillStyle='#e1eee8';ctx.font='10px Arial';ctx.fillText(window.ArcadeControls?.mode==='camera'?(this.handSession?.requiresBody&&!this.bodyPose?.fresh?'CORPO NÃO ENCONTRADO • REENQUADRE O CORPO':this.handAim?.fresh?(this.bodyPose?.fresh?(this.handSession?.autoAdvance?'AVANÇO ASSISTIDO • AGACHE PARA PARAR':'CORPO E MÃOS • POSTURA, VISÃO E MIRA'):'MÃO DIREITA • MIRE, GIRE E OLHE PARA CIMA/BAIXO'):(this.handSession?.source==='object'?'OBJETO FORA DE VISTA • VOLTE À POSIÇÃO CALIBRADA':'RASTREAMENTO PAUSADO • MOSTRE A MÃO DIREITA')):(this.aiming?'MIRA APROXIMADA • TOQUE EM MIRAR PARA SOLTAR':'ARRASTE NA CENA PARA OLHAR • ATIRAR PARA DISPARAR'),w/2,statusY,w-24);
   const nearest=this.enemies.filter(e=>e.active&&!e.ally).sort((a,b)=>Math.hypot(a.x-this.player.x,a.z-this.player.z)-Math.hypot(b.x-this.player.x,b.z-this.player.z))[0];
   const destination=nearest||this.objectivePoint();if(destination){const bearing=angle(Math.atan2(destination.x-this.player.x,destination.z-this.player.z)-this.player.yaw);if(Math.abs(bearing)>.48){ctx.fillStyle='#f0c999';ctx.fillText(bearing>0?(nearest?'ALVO À DIREITA →':'OBJETIVO À DIREITA →'):(nearest?'← ALVO À ESQUERDA':'← OBJETIVO À ESQUERDA'),w/2,statusY+20,w-28);}}
   if(this.coverHeld){ctx.fillStyle='#9ce8d2';ctx.fillText('EM COBERTURA • DANO REDUZIDO',w/2,h*.64,w-30);}
@@ -316,12 +326,13 @@ const Game={
   ctx.restore();
  },
  cleanup(){
+  this.practiceUI?.dispose();this.practiceUI=null;
   this.net?.dispose();this.net=null;
   this.handSession?.dispose();this.handSession=null;this.handAim=null;
   window.ArcadeWorldRenderer?.release(this);
   this.release?.();if(this.keyDown)window.removeEventListener?.('keydown',this.keyDown);if(this.keyUp)window.removeEventListener?.('keyup',this.keyUp);if(this.release){window.removeEventListener?.('blur',this.release);window.removeEventListener?.('arcade:release-inputs',this.release);}this.resultSent=false;
  }
 };
-const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','WAR Combate','🎯',Game,{camera:'hand',camOpacity:0,phases:[...MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1})),...MISSIONS.map(m=>({id:m.id+'_coop',missionId:m.id,online:true,name:'ONLINE • '+m.name,desc:'Cooperativo para dois jogadores. Escolham esta missão e a mesma dificuldade nos dois aparelhos.',reqLvl:1}))]});return true;};
+const register=()=>{if(!window.System?.registerGame)return false;window.System.registerGame('ar_truck_sim','WAR Combate','🎯',Game,{camera:'hand',camOpacity:0,phases:[{id:TRAINING.id,name:TRAINING.name,desc:TRAINING.desc,reqLvl:1},...MISSIONS.map(m=>({id:m.id,name:m.name,desc:m.desc,reqLvl:1})),...MISSIONS.map(m=>({id:m.id+'_coop',missionId:m.id,online:true,name:'ONLINE • '+m.name,desc:'Cooperativo para dois jogadores. Escolham esta missão e a mesma dificuldade nos dois aparelhos.',reqLvl:1}))]});return true;};
 if(!register()){const timer=setInterval(()=>{if(register())clearInterval(timer)},100);}
 })();

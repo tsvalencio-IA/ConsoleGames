@@ -18,7 +18,7 @@ try{
   }}});
  });
  const page=await context.newPage(),errors=[],cpuSlowdown=Number(process.env.WAR_QA_CPU_SLOWDOWN||1);if(cpuSlowdown>1)await(await context.newCDPSession(page)).send('Emulation.setCPUThrottlingRate',{rate:cpuSlowdown});page.on('pageerror',e=>errors.push(e.message));
- await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);await page.locator('#phase-grid .mission-card').first().click();await page.locator('[data-mode="camera"]').click();await page.locator('.war-hand-camera.calibrating').waitFor();
+ await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);await page.locator('#phase-grid .mission-card[data-mission=patrol]').first().click();await page.locator('[data-mode="camera"]').click();await page.locator('.war-hand-camera.calibrating').waitFor();
  try{
   await page.waitForFunction(()=>{const g=System.activeGame?.logic;return g?.state==='PLAYING'&&g.handAim?.fresh&&g.bodyPose?.fresh},null,{timeout:60000});
   const calibrated=await page.evaluate(()=>{const g=System.activeGame.logic,s=g.handSession;return{state:g.state,body:structuredClone(g.bodyPose),hand:structuredClone(g.handAim),bodySamples:s.bodySession.controller.samples.length,handSamples:s.controller.samples.length,crop:s.inflightCrop,bodyMs:s.bodySession.computeMs,handMs:s.lastInferenceMs};});

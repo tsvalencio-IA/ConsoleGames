@@ -1,0 +1,27 @@
+{
+  "unitTests": {
+    "passed": 332,
+    "failed": 0
+  },
+  "audio": {
+    "nativeGraphs": 102,
+    "vehicles": 51,
+    "failures": 0
+  },
+  "browsers": {
+    "registeredObject": "passed",
+    "fivePointCalibrationAndTraining": "passed",
+    "realJointBodyAndHand": "passed",
+    "threeMapsBothLayouts": "passed",
+    "safeWorkerUpgrade": "passed",
+    "independentMultitouch": "passed",
+    "nativeKartCupThreeStagesTwoClients": "passed after preserving original camera reader",
+    "michelleLegacyReset": "reproduced before; no reset after"
+  },
+  "limits": [
+    "Synthetic object video and explicitly mocked body posture for object/training regression; official photo replay for the two real body/hand models.",
+    "No physical Android, toy tracking, sustained device FPS or live Firebase multiplayer certification.",
+    "Cold-start performance timings have variable fleet warmup; matrix-cost reduction does not certify complete stutter removal."
+  ],
+  "parallelKartCameraPrototype": "discarded after native gesture test failed; original camera reader retained"
+}

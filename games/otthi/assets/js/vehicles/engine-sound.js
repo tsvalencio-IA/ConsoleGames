@@ -32,7 +32,7 @@
   const p=profile(model,kind),voice=previous.vehicleVoice?.(model,kind,p);
   if(!voice)return{update(){},dispose(){},diagnostics:()=>({profile:p.id,variant:p.variant,ready:false,silent:true,error:'Recorded engine bank unavailable'})};
   if(p.id!=='silent')voices.set(voice,p.variant);
-  return{update:(...args)=>voice.update(...args),dispose:()=>{voices.delete(voice);voice.dispose();},diagnostics:()=>({...voice.diagnostics(),profile:p.id,variant:p.variant,soundVersion:'20261028-vehicle4'})};
+  return{update:(...args)=>voice.update(...args),dispose:()=>{voices.delete(voice);voice.dispose();},diagnostics:()=>({...voice.diagnostics(),profile:p.id,variant:p.variant,soundVersion:previous.recordedVersion})};
  }
  window.GameAudio=Object.freeze({...previous,vehicleVoice,engineProfile:profile,effect:(name,...args)=>/rifle|smg|marksman|explosion|reload/.test(name)?false:previous.effect(name,...args),diagnostics:()=>({...previous.diagnostics(),engineVersion:previous.recordedVersion||'recorded-bank-unavailable',variants:[...voices.values()]})});
 })();

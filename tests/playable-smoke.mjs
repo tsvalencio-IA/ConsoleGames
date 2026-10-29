@@ -65,7 +65,7 @@ try{
       await page.locator("#channel-grid .channel").first().click({timeout:5000});
       await page.waitForFunction(()=>!document.getElementById("phase-screen")?.classList.contains("hidden"),{timeout:10000});
     });
-    const phases=page.locator("#phase-grid .mission-card:not(.locked)");
+    const phases=page.locator(slug==="ar"?'#phase-grid .mission-card[data-mission="patrol"]:not(.locked)':"#phase-grid .mission-card:not(.locked)");
     await phases.first().click({timeout:10000});
     // Real interaction: player explicitly chooses controls without granting camera.
     await page.locator(".input-mode-dialog [data-mode=controls]").waitFor({timeout:7000});
@@ -477,7 +477,7 @@ try{
       const game=window.Games.find(g=>g.id===id);
       window.System.menu();window.System.openPhases(game);
     },id);
-    await page.locator("#phase-grid .mission-card:not(.locked)").first().click({timeout:6000});
+    await page.locator(slug==="ar"?'#phase-grid .mission-card[data-mission="patrol"]:not(.locked)':"#phase-grid .mission-card:not(.locked)").first().click({timeout:6000});
     await page.locator(".input-mode-dialog [data-mode=camera]").click({timeout:6000});
     await page.waitForFunction(id=>window.System?.activeGame?.id===id,id,{timeout:12000});
     assert.equal(await page.evaluate(()=>window.ArcadeControls?.mode),"controls",
@@ -492,7 +492,7 @@ try{
         const c=document.createElement('canvas');c.width=640;c.height=480;const x=c.getContext('2d');x.fillStyle='#387d87';x.fillRect(0,0,640,480);x.fillStyle='#bbcba1';x.fillRect(30,150,170,330);x.fillStyle='#1b4f5e';x.fillRect(430,80,190,400);window.__arTestCamera=c;
         Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{window.__cameraRequests++;const stream=c.captureStream(15);let tick=0;window.__arCameraTick=setInterval(()=>{x.fillStyle=++tick%2?'#aed5cb':'#beddd3';x.fillRect(280,200,20,20)},60);return stream}}});
       });
-      await page.locator('#phase-grid .mission-card:not(.locked)').first().click();await page.locator('.input-mode-dialog [data-mode="camera"]').click();
+      await page.locator('#phase-grid .mission-card[data-mission="patrol"]:not(.locked)').first().click();await page.locator('.input-mode-dialog [data-mode="camera"]').click();
       await page.waitForFunction(()=>window.System.activeGame?.id==='ar_truck_sim'&&window.ArcadeControls.mode==='camera'&&window.System.video.readyState>=2,null,{timeout:10000});
       assert.equal(await page.locator('.combat-input [data-control="fire"]').isVisible(),false,'Hand mode must not require the manual fire button');
       assert.equal(await page.evaluate(()=>window.System.currentCameraMode),'user');

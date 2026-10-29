@@ -324,6 +324,20 @@
     if(world.clouds){const max=qualityTier()==='high'?8:qualityTier()==='balanced'?6:4;world.clouds.forEach((cloud,i)=>cloud.group.visible=i<max);}
   }
 
+  function configureHiddenWorldTransforms(){
+    const prototype=THREE.Object3D.prototype;if(prototype.updateMatrixWorld.otthiHiddenBranches)return;
+    const original=prototype.updateMatrixWorld,pending=new WeakSet();
+    function updateVisibleWorldMatrices(force){
+      // Hidden groups still simulate. Their world matrices are calculated on
+      // demand by updateWorldMatrix/getWorldPosition, or refreshed in full on
+      // reappearance. Traversing every hidden dealership/house/NPC on every
+      // paint does not contribute a pixel to that paint.
+      if(!this.visible&&!this.isCamera){pending.add(this);return;}
+      if(pending.has(this)){pending.delete(this);force=true;}
+      return original.call(this,force);
+    }
+    updateVisibleWorldMatrices.otthiHiddenBranches=true;prototype.updateMatrixWorld=updateVisibleWorldMatrices;
+  }
   function freezeWorldFrustumCulling(){
     if(!worldGroup)return;
     let enabled=0,bypassed=0,total=0;

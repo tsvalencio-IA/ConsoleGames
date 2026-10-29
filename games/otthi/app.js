@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.9-war-corpo-fases';
+  const OTTHI_GAME_WEB_BUILD = '705.28.10-objetos-kart-fluidez';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -3081,6 +3081,20 @@
     if(world.clouds){const max=qualityTier()==='high'?8:qualityTier()==='balanced'?6:4;world.clouds.forEach((cloud,i)=>cloud.group.visible=i<max);}
   }
 
+  function configureHiddenWorldTransforms(){
+    const prototype=THREE.Object3D.prototype;if(prototype.updateMatrixWorld.otthiHiddenBranches)return;
+    const original=prototype.updateMatrixWorld,pending=new WeakSet();
+    function updateVisibleWorldMatrices(force){
+      // Hidden groups still simulate. Their world matrices are calculated on
+      // demand by updateWorldMatrix/getWorldPosition, or refreshed in full on
+      // reappearance. Traversing every hidden dealership/house/NPC on every
+      // paint does not contribute a pixel to that paint.
+      if(!this.visible&&!this.isCamera){pending.add(this);return;}
+      if(pending.has(this)){pending.delete(this);force=true;}
+      return original.call(this,force);
+    }
+    updateVisibleWorldMatrices.otthiHiddenBranches=true;prototype.updateMatrixWorld=updateVisibleWorldMatrices;
+  }
   function freezeWorldFrustumCulling(){
     if(!worldGroup)return;
     let enabled=0,bypassed=0,total=0;
@@ -5445,7 +5459,9 @@
     // A represa usa a geometria oficial do layout e permanece fisicamente separada da via.
     const lake=worldLayoutRect('lake'),lakeNorth=worldLayoutRect('lakeNorth');createReservoirBasin(lake,lakeNorth);
     for(let i=-5;i<=5;i++){const part=box(2.1,.35,5,materials.wood,-12+i*2.15,.25,52);world.bridgeParts.push(part);registerPlatform(-12+i*2.15,52,2.1,5,.43,{bridgePart:i+5});}
-    const lava=P('lava');createLava(lava.x,lava.z,26,20);
+    // O antigo desafio de lava ocupava o acesso da central da Michelle e
+    // chamava returnHome() ao atravessá-lo. O mundo civil não usa esse desafio.
+    if(!OT_CHILD_WORLD){const lava=P('lava');createLava(lava.x,lava.z,26,20);}
 
     // Vegetação apenas em áreas livres: não nasce sobre ruas, pistas, quadras, fazenda ou kartódromo.
     for(let i=0,created=0;i<180&&created<48;i++){
@@ -6907,7 +6923,7 @@
   // ===== MODULE: 25-render-init-resize-position-collision.js =====
   function initThree(){
     if(!window.THREE){openModal('Erro ao carregar 3D','<p>A biblioteca Three.js não carregou. Verifique a internet e recarregue a página.</p>');return false;}
-    configureWorldPointLightEvaluation();
+    configureWorldPointLightEvaluation();configureHiddenWorldTransforms();
     scene=new THREE.Scene();clock=new THREE.Clock();const initialViewport=viewportMetrics();camera=new THREE.PerspectiveCamera(58,initialViewport.w/initialViewport.h,.05,1200);
     renderer=new THREE.WebGLRenderer({antialias:qualityTier()==='high'&&!perf.mobile,alpha:false,powerPreference:perf.mobile?'default':'high-performance',precision:'highp',depth:true,stencil:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,targetDpr()));renderer.setSize(initialViewport.w,initialViewport.h,false);renderer.shadowMap.enabled=qualityTier()==='high'&&!perf.mobile;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;els.stage.innerHTML='';els.stage.appendChild(renderer.domElement);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();paused=true;toast('A placa gráfica reiniciou. Toque no menu para recarregar o jogo.','bad',5000);});renderer.domElement.addEventListener('webglcontextrestored',()=>{toast('Render restaurado.','good',1800);paused=false;});
     initMaterials();
@@ -11439,10 +11455,11 @@ function create(T,key='fusca',color){if(!catalog[key])key='fusca';prepare(T,key)
     if(Math.abs(lx)<1.02+margin&&lz<1.64+margin&&lz>-2.3-margin)return true;const tz=lz+1.50,a=f.trailerAngle,tx=lx*Math.cos(a)-tz*Math.sin(a),zz=lx*Math.sin(a)+tz*Math.cos(a);return Math.abs(tx)<1.02+margin&&zz<.6+margin&&zz>-7.75-margin;
   }
   function brazilDriveProbes(v,heading){const f=brazilSpecialFootprint(v);if(!f)return null;const local=[];const addSection=(front,rear,width,angle=0,pivot=0)=>{for(let z=rear;z<=front+.01;z+=.65)for(const x of[-width,0,width])local.push([x*Math.cos(angle)+z*Math.sin(angle),pivot-x*Math.sin(angle)+z*Math.cos(angle)]);for(const x of[-width,0,width])local.push([x*Math.cos(angle)+front*Math.sin(angle),pivot-x*Math.sin(angle)+front*Math.cos(angle)]);};if(f.trailerAngle||v?.group?.userData?.brazilRoot?.userData.articulated){addSection(1.64,-2.3,.86);addSection(.6,-7.75,.90,f.trailerAngle,-1.5);}else addSection(f.front,f.rear,.91);return local.map(([x,z])=>[x*Math.cos(heading)+z*Math.sin(heading),-x*Math.sin(heading)+z*Math.cos(heading),.24]);}
+  const brazilTransportRigs=new WeakMap();
   function animateBrazilTransport(group){
-    const root=group?.userData?.brazilRoot;if(!root||!group.visible)return;group.updateWorldMatrix(true,false);const q=group.getWorldQuaternion(new THREE.Quaternion()),v=group.getWorldPosition(new THREE.Vector3()),dir=new THREE.Vector3(0,0,1).applyQuaternion(q),yaw=Math.atan2(dir.x,dir.z),oldPose=brazilCollection.pose.get(group),prior=oldPose?.root===root?oldPose:null,initialAngle=root.getObjectByName('articulated-trailer')?.rotation.y||0;brazilCollection.pose.set(group,{root,x:v.x,z:v.z,yaw,trailerYaw:prior?.trailerYaw??yaw+initialAngle});if(!prior)return;const dx=v.x-prior.x,dz=v.z-prior.z,distance=Math.hypot(dx,dz),signed=dx*Math.sin(yaw)+dz*Math.cos(yaw);if(distance>20){brazilCollection.pose.get(group).trailerYaw=yaw+initialAngle;return;}
-    const pedal=root.getObjectByName('pedal-crank');if(pedal)pedal.rotation.x-=signed*2.7;
-    const trailer=root.getObjectByName('articulated-trailer');if(trailer){const wb=root.userData.trailer?.wheelbase||6.35,base=prior.trailerYaw??yaw,turn=Math.atan2(Math.sin(yaw-base),Math.cos(yaw-base)),next=base+Math.sin(turn)*signed/wb,angle=clamp(Math.atan2(Math.sin(next-yaw),Math.cos(next-yaw)),-1.10,1.10);trailer.rotation.y=angle;brazilCollection.pose.get(group).trailerYaw=yaw+angle;group.userData.brazilArticulation=angle;}
+    const root=group?.userData?.brazilRoot;if(!root||!group.visible)return;let rig=brazilTransportRigs.get(root);if(!rig){rig={pedal:root.getObjectByName('pedal-crank'),trailer:root.getObjectByName('articulated-trailer')};brazilTransportRigs.set(root,rig);}if(!rig.pedal&&!rig.trailer)return;group.updateWorldMatrix(true,false);const q=group.getWorldQuaternion(new THREE.Quaternion()),v=group.getWorldPosition(new THREE.Vector3()),dir=new THREE.Vector3(0,0,1).applyQuaternion(q),yaw=Math.atan2(dir.x,dir.z),oldPose=brazilCollection.pose.get(group),prior=oldPose?.root===root?oldPose:null,initialAngle=rig.trailer?.rotation.y||0;brazilCollection.pose.set(group,{root,x:v.x,z:v.z,yaw,trailerYaw:prior?.trailerYaw??yaw+initialAngle});if(!prior)return;const dx=v.x-prior.x,dz=v.z-prior.z,distance=Math.hypot(dx,dz),signed=dx*Math.sin(yaw)+dz*Math.cos(yaw);if(distance>20){brazilCollection.pose.get(group).trailerYaw=yaw+initialAngle;return;}
+    const pedal=rig.pedal;if(pedal)pedal.rotation.x-=signed*2.7;
+    const trailer=rig.trailer;if(trailer){const wb=root.userData.trailer?.wheelbase||6.35,base=prior.trailerYaw??yaw,turn=Math.atan2(Math.sin(yaw-base),Math.cos(yaw-base)),next=base+Math.sin(turn)*signed/wb,angle=clamp(Math.atan2(Math.sin(next-yaw),Math.cos(next-yaw)),-1.10,1.10);trailer.rotation.y=angle;brazilCollection.pose.get(group).trailerYaw=yaw+angle;group.userData.brazilArticulation=angle;}
   }
   function attachBrazilTransit(){for(const bus of world.buses||[]){if(bus.group.userData.brazilRoot)continue;bus.brazilModel='attivi';bus.bodyType='truck';bus.kind='bus';brazilAttach(bus.group,{id:bus.id,brazilModel:'attivi',bodyType:'truck',kind:'bus',appearance:{primary:bus.route.color}},{});bus.wheels=bus.group.userData.wheels;bus.seatOffset?.set(.52,.94,.55);}}
   function addBrazilCollectionTraffic(){if(typeof ensureCompleteBrazilTraffic==='function')ensureCompleteBrazilTraffic();}

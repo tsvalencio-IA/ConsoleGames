@@ -174,7 +174,13 @@ class World{
  buildCombat(){
   const b=this.static,m=this.m,mission=this.game.mission?.id||'patrol';this.mission=mission;
   b.box(m.grass,0,-.32,35,360,.25,400);
-  if(mission==='patrol'){
+  if(mission==='training'){
+   b.box(m.concrete,0,-.12,22,40,.12,70);b.box(m.stone,0,0,48,42,8,1);
+   for(const x of[-17,-9,9,17])b.box(m.yellow,x,.01,19,.12,.02,55);
+   for(const x of[-21,21]){b.box(m.steel,x,0,20,.3,7,62);for(const z of[0,20,40])this.lamp(b,x,z,1);}
+   this.sign('TREINO OT · MIRA E CALIBRAÇÃO',0,6,46,24,2.5,Math.PI);
+   this.sky.material.uniforms.top.value.set('#477ea3');this.sky.material.uniforms.bottom.value.set('#d4e3df');
+  }else if(mission==='patrol'){
    // Cargo quay, water, warehouses, container alleys and gantry cranes.
    b.box(m.concrete,0,-.12,34,70,.12,140);b.box(m.glass,70,-.2,35,70,.08,220);
    for(let z=-20;z<115;z+=8){b.box(m.yellow,28,.012,z,1,.015,3);b.box(m.dark,32,-.1,z,1,.8,2);}
@@ -397,7 +403,7 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const model of this.infantryModels?.values()||[])model.visible=false;
-   for(const e of g.enemies||[])if(e.active){if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else if(e.kind==='relay')this.relay(b,e);else this.tank(b,e.x,e.z,0,1,e.shot)}
+   for(const e of g.enemies||[])if(e.active){if(e.kind==='practice'){b.box(m.steel,e.x,.01,e.z,.12,Math.max(.1,e.y),.12);for(const[r,ma,depth]of[[.78,m.white,0],[.53,m.rust,-.08],[.22,m.yellow,-.15]])b.add('cylinder',e.flash?m.light:ma,e.x,e.y,e.z+depth,r*2,.08,r*2,Math.PI/2);}else if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else if(e.kind==='relay')this.relay(b,e);else this.tank(b,e.x,e.z,0,1,e.shot)}
    if(g.wave>0&&g.objective?.phase!=='complete'){const p=g.objectivePoint();b.add('ring',m.light,p.x,.05,p.z,3,3,.3,Math.PI/2);b.box(m.light,p.x,.03,p.z,.15,.025,4);b.box(m.light,p.x,.03,p.z,4,.025,.15);}
    this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=(g.aiming?0:-.07)+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=(g.aiming?0:-.1)+(g.handAim&&!g.handSession?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=(g.aiming?0:.06)-(g.handAim&&!g.handSession?(g.handAim.y-.48)*.45:0);
   }else{

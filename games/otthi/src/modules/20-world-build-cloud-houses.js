@@ -49,7 +49,9 @@
     // A represa usa a geometria oficial do layout e permanece fisicamente separada da via.
     const lake=worldLayoutRect('lake'),lakeNorth=worldLayoutRect('lakeNorth');createReservoirBasin(lake,lakeNorth);
     for(let i=-5;i<=5;i++){const part=box(2.1,.35,5,materials.wood,-12+i*2.15,.25,52);world.bridgeParts.push(part);registerPlatform(-12+i*2.15,52,2.1,5,.43,{bridgePart:i+5});}
-    const lava=P('lava');createLava(lava.x,lava.z,26,20);
+    // O antigo desafio de lava ocupava o acesso da central da Michelle e
+    // chamava returnHome() ao atravessá-lo. O mundo civil não usa esse desafio.
+    if(!OT_CHILD_WORLD){const lava=P('lava');createLava(lava.x,lava.z,26,20);}
 
     // Vegetação apenas em áreas livres: não nasce sobre ruas, pistas, quadras, fazenda ou kartódromo.
     for(let i=0,created=0;i<180&&created<48;i++){

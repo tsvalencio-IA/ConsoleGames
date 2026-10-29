@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:41987",
+  "checkedAt": "2026-10-29T16:02:21.905Z",
+  "calibrated": {
+    "state": "PLAYING",
+    "body": {
+      "fresh": true,
+      "calibrated": true,
+      "moveX": 0,
+      "moveZ": 0,
+      "crouched": false,
+      "turnYaw": 0,
+      "lean": 0,
+      "twoHands": false,
+      "timestamp": 6070.799999999814,
+      "fullBody": true
+    },
+    "hand": {
+      "x": 0.49985219618446086,
+      "y": 0.4805972895217961,
+      "fresh": false,
+      "present": true,
+      "timestamp": 5922.5,
+      "twoHands": false,
+      "calibration": 1,
+      "roll": 0,
+      "source": "hand"
+    },
+    "bodySamples": 6,
+    "handSamples": 9,
+    "crop": {
+      "x": 0.27348266571760177,
+      "y": 0.3854606083035469,
+      "w": 0.1875,
+      "h": 0.25
+    },
+    "bodyMs": 69.29999999981374,
+    "handMs": 134.09999999962747
+  },
+  "combat": {
+    "shots": 2,
+    "hits": 2,
+    "renderer": {
+      "renderer": "webgl",
+      "frames": 3,
+      "mission": "patrol",
+      "drawCalls": 4,
+      "triangles": 3540,
+      "width": 416,
+      "height": 192,
+      "low": false,
+      "software": true,
+      "frameMs": 85,
+      "shadows": false
+    },
+    "infantry": [
+      {
+        "id": "1:0",
+        "x": 0,
+        "y": 0,
+        "z": -24,
+        "head": {
+          "x": 0.4999590245089182,
+          "y": 0.47050465861952145,
+          "depth": 0.9876655360696103
+        }
+      }
+    ]
+  },
+  "sameUnmodifiedSample": true,
+  "stationaryTrainingAdversary": true,
+  "bothProductionModels": true,
+  "mainThreadSlowdown": 1,
+  "noWorkerInterception": true,
+  "frontCamera": true,
+  "hiddenPreview": true,
+  "assistedAdvance": true,
+  "lossStopsActions": true,
+  "lossProof": {
+    "hand": {
+      "timestamp": 10545.099999999627,
+      "count": 0
+    },
+    "body": {
+      "timestamp": 10658.299999999814,
+      "count": 0
+    }
+  },
+  "reacquired": true,
+  "errors": [],
+  "limits": [
+    "Official static photo replayed as camera video; physical Android tracking and player accuracy not certified."
+  ]
+}

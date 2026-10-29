@@ -2,13 +2,33 @@
  * Sources and edits: audio/engine-recordings.json. These category adaptations
  * are not factory recordings of every named in-game vehicle. */
 (()=>{'use strict';
- const legacy=window.GameAudio,version='20261028-vehicle4';if(!legacy||legacy.recordedVersion===version)return;
+ const legacy=window.GameAudio,version='20261029-continuity5';if(!legacy||legacy.recordedVersion===version)return;
  const script=document.currentScript,base=new URL('audio/',script.src),civilian=script.dataset?.civilian==='true',buffers=new Map(),pending=new Map(),engines=new Set(),shots=new Set(),targets=new WeakMap();let output=null,ownerContext=null,index=0,played=0,lastError='';
  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),weapons=['rifle-1','rifle-2','smg-1','smg-2','marksman'];
- function context(){const a=legacy.context();if(a&&a!==ownerContext){output?.disconnect();ownerContext=a;buffers.clear();pending.clear();output=a.createDynamicsCompressor();output.threshold.value=-12;output.knee.value=10;output.ratio.value=2.5;output.attack.value=.008;output.release.value=.18;output.connect(a.destination);}return a;}
+ function context(){const a=legacy.context();if(a&&a!==ownerContext){output?.disconnect();ownerContext=a;buffers.clear();pending.clear();loopEdits.clear();output=a.createDynamicsCompressor();output.threshold.value=-12;output.knee.value=10;output.ratio.value=2.5;output.attack.value=.008;output.release.value=.18;output.connect(a.destination);}return a;}
+ const loopEdits=new Map(),steadyBounds={'engine-road-idle':[.55,2.25],'engine-road-load':[1.6,3.3],'engine-moto-idle':[0,1.7],'engine-moto-load':[.35,2.05],'engine-small-moto':[0,1.7],'engine-rotor-recorded':[2.45,5.45],'engine-sport-idle':[.1,3.1],'engine-sport-load':[0,3]};
+ function continuous(buffer,name,a){
+  if(!name.startsWith('engine-'))return buffer;
+  const rate=buffer.sampleRate,bounds=steadyBounds[name]||[0,buffer.duration],start=Math.round(bounds[0]*rate),end=Math.min(buffer.length,Math.round(bounds[1]*rate)),length=end-start,join=Math.min(Math.round(rate*.12),Math.floor(length/8));
+  if(length<rate*.5)return buffer;
+  // The encoded recordings are retained. Remove repeated acceleration/clunk
+  // passages, gently level slow envelope changes and join decoded samples in
+  // memory, after Vorbis decoding (which can otherwise reopen a loop seam).
+  const bins=Math.ceil(length/(rate*.02)),energy=new Float64Array(bins),counts=new Uint32Array(bins);
+  for(let c=0;c<buffer.numberOfChannels;c++){const input=buffer.getChannelData(c);for(let i=0;i<length;i++){const b=Math.min(bins-1,Math.floor(i/(rate*.02)));energy[b]+=input[start+i]**2;counts[b]++;}}
+  const rms=Array.from(energy,(v,i)=>Math.sqrt(v/Math.max(1,counts[i]))),mean=rms.reduce((s,v)=>s+v,0)/bins,cv=Math.sqrt(rms.reduce((s,v)=>s+(v-mean)**2,0)/bins)/Math.max(1e-8,mean),gains=rms.map((_,i)=>{let sum=0;for(let j=-5;j<=5;j++)sum+=rms[(i+j+bins)%bins]**2;return cv>.18?clamp(mean/Math.max(1e-6,Math.sqrt(sum/11)),.70,1.4):1;});
+  const result=a.createBuffer(buffer.numberOfChannels,length-join,rate);
+  for(let c=0;c<buffer.numberOfChannels;c++){
+   const input=buffer.getChannelData(c),prepared=new Float32Array(length),out=result.getChannelData(c);
+   for(let i=0;i<length;i++){const at=i/(rate*.02),b=Math.floor(at),f=at-b;prepared[i]=input[start+i]*(gains[Math.min(b,bins-1)]*(1-f)+gains[Math.min(b+1,bins-1)]*f);}
+   out.set(prepared.subarray(join));
+   for(let i=0;i<join;i++){const t=.5-.5*Math.cos(Math.PI*i/(join-1));out[out.length-join+i]=prepared[length-join+i]*(1-t)+prepared[i]*t;}
+  }
+  loopEdits.set(name,{sourceFrames:buffer.length,sourceRate:rate,startFrame:start,endFrame:end,crossfadeFrames:join,frames:result.length,slowLeveling:cv>.18,sourceRmsCV:cv});return result;
+ }
  function load(name,a=context()){
   if(!a)return Promise.resolve(false);if(buffers.has(name))return Promise.resolve(true);if(pending.has(name))return pending.get(name);
-  const job=fetch(new URL(name+'.ogg',base)).then(r=>{if(!r.ok)throw Error(name+': HTTP '+r.status);return r.arrayBuffer();}).then(b=>a.decodeAudioData(b)).then(b=>{if(ownerContext===a)buffers.set(name,b);return true;}).catch(error=>{lastError=String(error);pending.delete(name);return false;});pending.set(name,job);return job;
+  const job=fetch(new URL(name+'.ogg',base)).then(r=>{if(!r.ok)throw Error(name+': HTTP '+r.status);return r.arrayBuffer();}).then(b=>a.decodeAudioData(b)).then(b=>{if(ownerContext===a)buffers.set(name,continuous(b,name,a));return true;}).catch(error=>{lastError=String(error);pending.delete(name);return false;});pending.set(name,job);return job;
  }
  function preload(){const a=context();if(!a)return Promise.resolve(false);if(!civilian)for(const name of weapons)load(name,a);return Promise.all([...pending.values()]).then(results=>results.every(Boolean));}
  function effect(name,volume=1,pan=0){
@@ -73,5 +93,5 @@
  }
  for(const name of ['pointerdown','pointerup','keydown','touchend'])document.addEventListener(name,()=>{legacy.unlock();preload();},{capture:true,passive:true});
  document.addEventListener('visibilitychange',()=>{if(document.hidden){for(const v of engines)if(v.a)for(const layer of v.layers)level(layer.gain.gain,0,v.a.currentTime);for(const v of shots)v.source.stop();}});
- window.GameAudio=Object.freeze({...legacy,recordedVersion:version,effect,vehicleVoice,vehicleProfile:profile,preload,diagnostics:()=>({...legacy.diagnostics(),engineVersion:version,recordedVersion:version,recordings:buffers.size,decodedEngineFiles:[...buffers.keys()].filter(k=>k.startsWith('engine-')),playedSamples:played,activeEngines:engines.size,activeShots:shots.size,lastRecordingError:lastError})});
+ window.GameAudio=Object.freeze({...legacy,recordedVersion:version,effect,vehicleVoice,vehicleProfile:profile,preload,diagnostics:()=>({...legacy.diagnostics(),engineVersion:version,recordedVersion:version,recordings:buffers.size,decodedEngineFiles:[...buffers.keys()].filter(k=>k.startsWith('engine-')),engineLoopEdits:Object.fromEntries(loopEdits),playedSamples:played,activeEngines:engines.size,activeShots:shots.size,lastRecordingError:lastError})});
 })();

@@ -39,6 +39,7 @@ jobs:
         run: |
           node tests/war-body-model-browser.mjs
           node tests/war-object-browser.mjs
+          node tests/war-training-browser.mjs
       - name: Corpo e mão reais na mesma câmera
         run: node tests/war-joint-camera-browser.mjs
       - name: Guardar diagnóstico imediato de câmera
@@ -77,6 +78,7 @@ jobs:
             test-results/war-touch/
             test-results/war-body/
             test-results/war-object/
+            test-results/war-training/
             test-results/war-joint-camera/
             test-results/war-campaign/
             test-results/war-update/

@@ -1,0 +1,107 @@
+{
+  "videoSeconds": 233.5,
+  "analysisFPS": 6,
+  "nearIdenticalSceneHolds": [
+    {
+      "from": 1.17,
+      "to": 2.33,
+      "seconds": 1.17
+    },
+    {
+      "from": 2.67,
+      "to": 6.0,
+      "seconds": 3.33
+    },
+    {
+      "from": 6.5,
+      "to": 9.83,
+      "seconds": 3.33
+    },
+    {
+      "from": 10.0,
+      "to": 16.67,
+      "seconds": 6.67
+    },
+    {
+      "from": 16.83,
+      "to": 24.17,
+      "seconds": 7.33
+    },
+    {
+      "from": 24.83,
+      "to": 25.67,
+      "seconds": 0.83
+    },
+    {
+      "from": 31.33,
+      "to": 45.83,
+      "seconds": 14.5
+    },
+    {
+      "from": 46.0,
+      "to": 49.5,
+      "seconds": 3.5
+    },
+    {
+      "from": 90.33,
+      "to": 99.67,
+      "seconds": 9.33
+    },
+    {
+      "from": 99.83,
+      "to": 100.83,
+      "seconds": 1.0
+    },
+    {
+      "from": 101.67,
+      "to": 109.5,
+      "seconds": 7.83
+    },
+    {
+      "from": 110.67,
+      "to": 112.17,
+      "seconds": 1.5
+    },
+    {
+      "from": 115.33,
+      "to": 116.33,
+      "seconds": 1.0
+    },
+    {
+      "from": 127.67,
+      "to": 131.83,
+      "seconds": 4.17
+    },
+    {
+      "from": 133.67,
+      "to": 134.67,
+      "seconds": 1.0
+    },
+    {
+      "from": 134.83,
+      "to": 140.33,
+      "seconds": 5.5
+    },
+    {
+      "from": 140.5,
+      "to": 141.17,
+      "seconds": 0.67
+    },
+    {
+      "from": 141.5,
+      "to": 142.83,
+      "seconds": 1.33
+    },
+    {
+      "from": 173.33,
+      "to": 174.0,
+      "seconds": 0.67
+    },
+    {
+      "from": 232.5,
+      "to": 233.17,
+      "seconds": 0.67
+    }
+  ],
+  "note": "Near-identical recorded pixels, not engine FPS. Static gameplay and screen-recording stalls cannot be distinguished from pixels alone."
+}

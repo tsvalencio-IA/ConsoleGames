@@ -1,0 +1,362 @@
+[
+  {
+    "file": "engine-boat-recorded.ogg",
+    "seconds": 9.85,
+    "seam": 0.0268,
+    "startRMS": 0.1437,
+    "endRMS": 0.1165,
+    "medianRMS": 0.1485,
+    "max50msRMS": 0.2307,
+    "peak": 0.775
+  },
+  {
+    "file": "engine-car.ogg",
+    "seconds": 3.07,
+    "seam": 0.0154,
+    "startRMS": 0.3791,
+    "endRMS": 0.3968,
+    "medianRMS": 0.3964,
+    "max50msRMS": 0.4426,
+    "peak": 0.725
+  },
+  {
+    "file": "engine-classic-idle.ogg",
+    "seconds": 3.64,
+    "seam": 0.0261,
+    "startRMS": 0.1409,
+    "endRMS": 0.1148,
+    "medianRMS": 0.1479,
+    "max50msRMS": 0.2074,
+    "peak": 0.72
+  },
+  {
+    "file": "engine-classic-load.ogg",
+    "seconds": 3.64,
+    "seam": 0.0352,
+    "startRMS": 0.2044,
+    "endRMS": 0.1187,
+    "medianRMS": 0.1472,
+    "max50msRMS": 0.2044,
+    "peak": 0.707
+  },
+  {
+    "file": "engine-coach-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0105,
+    "startRMS": 0.1713,
+    "endRMS": 0.1513,
+    "medianRMS": 0.2037,
+    "max50msRMS": 0.2386,
+    "peak": 0.579
+  },
+  {
+    "file": "engine-coach-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0657,
+    "startRMS": 0.2055,
+    "endRMS": 0.1212,
+    "medianRMS": 0.1563,
+    "max50msRMS": 0.2055,
+    "peak": 0.726
+  },
+  {
+    "file": "engine-fiat-idle.ogg",
+    "seconds": 2.84,
+    "seam": 0.0997,
+    "startRMS": 0.1579,
+    "endRMS": 0.129,
+    "medianRMS": 0.1742,
+    "max50msRMS": 0.2321,
+    "peak": 0.73
+  },
+  {
+    "file": "engine-fiat-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0099,
+    "startRMS": 0.1589,
+    "endRMS": 0.1494,
+    "medianRMS": 0.1744,
+    "max50msRMS": 0.2355,
+    "peak": 0.729
+  },
+  {
+    "file": "engine-flat6-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0031,
+    "startRMS": 0.1929,
+    "endRMS": 0.1707,
+    "medianRMS": 0.1996,
+    "max50msRMS": 0.2316,
+    "peak": 0.522
+  },
+  {
+    "file": "engine-flat6-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0697,
+    "startRMS": 0.1782,
+    "endRMS": 0.1614,
+    "medianRMS": 0.1732,
+    "max50msRMS": 0.2195,
+    "peak": 0.743
+  },
+  {
+    "file": "engine-flatplane8-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0277,
+    "startRMS": 0.187,
+    "endRMS": 0.1539,
+    "medianRMS": 0.1748,
+    "max50msRMS": 0.2292,
+    "peak": 0.708
+  },
+  {
+    "file": "engine-flatplane8-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.001,
+    "startRMS": 0.2017,
+    "endRMS": 0.1025,
+    "medianRMS": 0.2015,
+    "max50msRMS": 0.2353,
+    "peak": 0.568
+  },
+  {
+    "file": "engine-heavy-idle.ogg",
+    "seconds": 7.85,
+    "seam": 0.0144,
+    "startRMS": 0.1942,
+    "endRMS": 0.1827,
+    "medianRMS": 0.2021,
+    "max50msRMS": 0.2217,
+    "peak": 0.763
+  },
+  {
+    "file": "engine-heavy-load.ogg",
+    "seconds": 6.85,
+    "seam": 0.037,
+    "startRMS": 0.1645,
+    "endRMS": 0.1228,
+    "medianRMS": 0.1664,
+    "max50msRMS": 0.2227,
+    "peak": 0.831
+  },
+  {
+    "file": "engine-heli.ogg",
+    "seconds": 4.0,
+    "seam": 0.0015,
+    "startRMS": 0.1542,
+    "endRMS": 0.0705,
+    "medianRMS": 0.118,
+    "max50msRMS": 0.1819,
+    "peak": 0.714
+  },
+  {
+    "file": "engine-hornet-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.009,
+    "startRMS": 0.1639,
+    "endRMS": 0.0899,
+    "medianRMS": 0.1227,
+    "max50msRMS": 0.1867,
+    "peak": 0.724
+  },
+  {
+    "file": "engine-hornet-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0091,
+    "startRMS": 0.179,
+    "endRMS": 0.1118,
+    "medianRMS": 0.2043,
+    "max50msRMS": 0.2275,
+    "peak": 0.505
+  },
+  {
+    "file": "engine-inline6-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0206,
+    "startRMS": 0.2046,
+    "endRMS": 0.112,
+    "medianRMS": 0.1593,
+    "max50msRMS": 0.2334,
+    "peak": 0.71
+  },
+  {
+    "file": "engine-inline6-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0089,
+    "startRMS": 0.2027,
+    "endRMS": 0.1854,
+    "medianRMS": 0.1842,
+    "max50msRMS": 0.2419,
+    "peak": 0.717
+  },
+  {
+    "file": "engine-jet-recorded.ogg",
+    "seconds": 8.85,
+    "seam": 0.0337,
+    "startRMS": 0.2571,
+    "endRMS": 0.215,
+    "medianRMS": 0.2295,
+    "max50msRMS": 0.2826,
+    "peak": 0.679
+  },
+  {
+    "file": "engine-moto-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0054,
+    "startRMS": 0.1264,
+    "endRMS": 0.0846,
+    "medianRMS": 0.1281,
+    "max50msRMS": 0.1408,
+    "peak": 0.717
+  },
+  {
+    "file": "engine-moto-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0054,
+    "startRMS": 0.0354,
+    "endRMS": 0.062,
+    "medianRMS": 0.154,
+    "max50msRMS": 0.1814,
+    "peak": 0.698
+  },
+  {
+    "file": "engine-moto.ogg",
+    "seconds": 3.5,
+    "seam": 0.0082,
+    "startRMS": 0.1055,
+    "endRMS": 0.0235,
+    "medianRMS": 0.0941,
+    "max50msRMS": 0.2146,
+    "peak": 0.711
+  },
+  {
+    "file": "engine-prop-recorded.ogg",
+    "seconds": 6.6,
+    "seam": 0.0062,
+    "startRMS": 0.1313,
+    "endRMS": 0.1008,
+    "medianRMS": 0.1098,
+    "max50msRMS": 0.148,
+    "peak": 0.786
+  },
+  {
+    "file": "engine-road-idle.ogg",
+    "seconds": 3.15,
+    "seam": 0.0229,
+    "startRMS": 0.1324,
+    "endRMS": 0.1212,
+    "medianRMS": 0.2014,
+    "max50msRMS": 0.281,
+    "peak": 0.789
+  },
+  {
+    "file": "engine-road-load.ogg",
+    "seconds": 3.85,
+    "seam": 0.0154,
+    "startRMS": 0.1172,
+    "endRMS": 0.122,
+    "medianRMS": 0.165,
+    "max50msRMS": 0.3292,
+    "peak": 0.81
+  },
+  {
+    "file": "engine-rotor-recorded.ogg",
+    "seconds": 5.5,
+    "seam": 0.0005,
+    "startRMS": 0.1714,
+    "endRMS": 0.0504,
+    "medianRMS": 0.1368,
+    "max50msRMS": 0.1969,
+    "peak": 0.785
+  },
+  {
+    "file": "engine-small-moto.ogg",
+    "seconds": 4.85,
+    "seam": 0.0723,
+    "startRMS": 0.095,
+    "endRMS": 0.0831,
+    "medianRMS": 0.1057,
+    "max50msRMS": 0.2186,
+    "peak": 0.793
+  },
+  {
+    "file": "engine-sport-idle.ogg",
+    "seconds": 6.85,
+    "seam": 0.0054,
+    "startRMS": 0.1991,
+    "endRMS": 0.3612,
+    "medianRMS": 0.131,
+    "max50msRMS": 0.3612,
+    "peak": 0.781
+  },
+  {
+    "file": "engine-sport-load.ogg",
+    "seconds": 8.25,
+    "seam": 0.0076,
+    "startRMS": 0.092,
+    "endRMS": 0.1852,
+    "medianRMS": 0.1624,
+    "max50msRMS": 0.4239,
+    "peak": 0.805
+  },
+  {
+    "file": "engine-triple-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.051,
+    "startRMS": 0.1584,
+    "endRMS": 0.0988,
+    "medianRMS": 0.1668,
+    "max50msRMS": 0.1856,
+    "peak": 0.732
+  },
+  {
+    "file": "engine-triple-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0473,
+    "startRMS": 0.1965,
+    "endRMS": 0.1288,
+    "medianRMS": 0.2014,
+    "max50msRMS": 0.2185,
+    "peak": 0.585
+  },
+  {
+    "file": "engine-turbo6-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0167,
+    "startRMS": 0.2286,
+    "endRMS": 0.1416,
+    "medianRMS": 0.2017,
+    "max50msRMS": 0.2342,
+    "peak": 0.616
+  },
+  {
+    "file": "engine-turbo6-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0019,
+    "startRMS": 0.1364,
+    "endRMS": 0.1063,
+    "medianRMS": 0.1201,
+    "max50msRMS": 0.186,
+    "peak": 0.736
+  },
+  {
+    "file": "engine-twin-idle.ogg",
+    "seconds": 3.44,
+    "seam": 0.0026,
+    "startRMS": 0.1196,
+    "endRMS": 0.1499,
+    "medianRMS": 0.1613,
+    "max50msRMS": 0.1772,
+    "peak": 0.751
+  },
+  {
+    "file": "engine-twin-load.ogg",
+    "seconds": 3.44,
+    "seam": 0.0696,
+    "startRMS": 0.1557,
+    "endRMS": 0.1186,
+    "medianRMS": 0.1424,
+    "max50msRMS": 0.1578,
+    "peak": 0.688
+  }
+]

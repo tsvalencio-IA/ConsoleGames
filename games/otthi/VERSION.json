@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.9-war-corpo-fases",
+  "build": "705.28.10-objetos-kart-fluidez",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -247,6 +247,7 @@
   },
   "release": "705.7-r16.8.1-visual-performance-governor-r11-lineage",
   "notes": [
+    "Rastreamento explícito da ponta do brinquedo, treino e calibração em cinco pontos no WAR; física do kart acompanha o tempo real entre quadros, timer da chegada isolado por corrida e gesto com referência facial; acesso civil da Michelle sem o antigo gatilho de lava; matrizes de objetos ocultos atualizadas sob demanda e continuidade das gravações dos motores após decodificação.",
     "Frota completa no trânsito, volante à esquerda, tráfego aéreo civil NPC e dança com câmera frontal, calibração e acompanhamento do corpo. Palio Fire Economy 2011 e T-Cross original receberam carrocerias próprias.",
     "Coleção de 47 veículos com 44 modelos de referência; IDs, pinturas e saves anteriores preservados. Centro de coleção com acesso por ponte, bancos conforme modelo, motos e bicicleta, ônibus elétrico, carreta articulada e Ferrari 458 licenciada com créditos. A validação física e multiplayer entre dispositivos continua separada.",
     "R16.8.1 altera somente qualidade/render/performance; Multiplayer Core V2, Firebase, mapa, oficina, esportes, veículos e assets permanecem preservados.",
@@ -289,7 +290,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70645,
+  "assetVersion": 70646,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

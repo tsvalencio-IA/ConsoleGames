@@ -9,7 +9,7 @@ try{
   await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===origin?r.continue():r.request().resourceType()==='script'?r.fulfill({contentType:'application/javascript',body:'/* isolate external account services */'}):r.abort('blockedbyclient'));
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   try{
-   await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);await page.locator('#phase-grid .mission-card').nth(index).click();await page.locator('[data-mode="controls"]').click();
+   await page.goto(origin+'/games/ar/',{waitUntil:'domcontentloaded'});await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);await page.locator('#phase-grid .mission-card[data-mission="'+id+'"]').first().click();await page.locator('[data-mode="controls"]').click();
    await page.waitForFunction(id=>System.activeGame?.logic.mission.id===id&&System.activeGame.logic.worldVisual?.frames>=2&&System.activeGame.logic.wave>=1,id,{timeout:15000});
    await page.locator('.input-mode-tip').waitFor({state:'detached',timeout:6000});const report={id,layouts:[],errors};
    for(const viewport of[{width:844,height:390},{width:390,height:844}]){

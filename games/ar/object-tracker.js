@@ -10,18 +10,70 @@ class ObjectTracker{
  constructor(){this.ready=false;this.lost=false;this.bad=0;this.matches=0;}
  initialize(rgba,w,h,roi){this.ready=false;this.lost=false;this.bad=0;this.matches=0;this.w=w;this.h=h;const im=gray(rgba,w,h),r={x:clamp(roi.x,8,w-32),y:clamp(roi.y,8,h-32),w:clamp(roi.w,24,Math.min(160,w-16)),h:clamp(roi.h,24,Math.min(160,h-16))};r.w=Math.min(r.w,w-r.x-8);r.h=Math.min(r.h,h-r.y-8);this.roi=r;this.reference={x:r.x+r.w/2,y:r.y+r.h/2,angle:0,scale:1};this.pose={...this.reference};this.step=Math.max(2,Math.min(r.w,r.h)/13);this.template=descriptor(im,w,h,this.pose.x,this.pose.y,0,1,11,this.step);if(!this.template)throw Error('Escolha uma região com detalhes visíveis no objeto.');
   const candidates=[];for(let y=Math.ceil(r.y+5);y<r.y+r.h-5;y+=2)for(let x=Math.ceil(r.x+5);x<r.x+r.w-5;x+=2){let a=0,b=0,c=0;for(let yy=-2;yy<=2;yy++)for(let xx=-2;xx<=2;xx++){const i=(y+yy)*w+x+xx,gx=(im[i+1]-im[i-1])*.5,gy=(im[i+w]-im[i-w])*.5;a+=gx*gx;b+=gy*gy;c+=gx*gy;}const score=(a+b-Math.sqrt((a-b)*(a-b)+4*c*c))/2;if(score>130)candidates.push({x,y,score});}
-  candidates.sort((a,b)=>b.score-a.score);this.features=[];for(const p of candidates){if(this.features.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<7))continue;const patch=descriptor(im,w,h,p.x,p.y);if(patch)this.features.push({x:p.x,y:p.y,patch});if(this.features.length===28)break;}if(this.features.length<7)throw Error('Objeto sem detalhes suficientes. Selecione botões, desenho ou cantos bem iluminados.');this.ready=true;this.matches=this.features.length;return this.result(1);
+  candidates.sort((a,b)=>b.score-a.score);this.features=[];for(const p of candidates){if(this.features.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<7))continue;const patch=descriptor(im,w,h,p.x,p.y);if(patch)this.features.push({x:p.x,y:p.y,patch});if(this.features.length===28)break;}if(this.features.length<7)throw Error('Objeto sem detalhes suficientes. Selecione botões, desenho ou cantos bem iluminados.');this.ready=true;this.matches=this.features.length;this.axis=null;this.previous=WarObjectFlow.pyramid(im,w,h);this.coarseTemplate=descriptor(this.previous[2].data,this.previous[2].w,this.previous[2].h,this.pose.x/4,this.pose.y/4,0,1,11,this.step/4);this.recoveryIndex=0;this.recoveryConfirm=0;return this.result(1);
  }
- result(confidence){const p=this.pose;return{x:p.x/this.w,y:p.y/this.h,dx:Math.sin(p.angle),dy:Math.cos(p.angle),scale:Math.max(this.roi.w,this.roi.h)/this.w*p.scale,angle:p.angle,confidence,matches:this.matches,roi:{...this.roi},source:'object'};}
- exportTemplate(){if(!this.ready)return null;return{version:1,w:this.w,h:this.h,roi:{...this.roi},reference:{...this.reference},step:this.step,template:[...this.template],features:this.features.map(p=>({x:p.x,y:p.y,patch:[...p.patch]}))};}
- importTemplate(t){const vec=(a,n)=>Array.isArray(a)&&a.length===n&&a.every(x=>Number.isFinite(x)&&Math.abs(x)<=1.001)&&Math.abs(a.reduce((s,x)=>s+x*x,0)-1)<.02;if(t?.version!==1||t.w!==320||t.h!==240||!t.roi||!['x','y','w','h'].every(k=>Number.isFinite(t.roi[k]))||t.roi.x<8||t.roi.y<8||t.roi.w<24||t.roi.h<24||t.roi.w>160||t.roi.h>160||t.roi.x+t.roi.w>312||t.roi.y+t.roi.h>232||!Number.isFinite(t.step)||t.step<2||t.step>13||!vec(t.template,121)||!Array.isArray(t.features)||t.features.length<7||t.features.length>28||t.features.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)||p.x<t.roi.x||p.x>t.roi.x+t.roi.w||p.y<t.roi.y||p.y>t.roi.y+t.roi.h||!vec(p.patch,49)))throw Error('Cadastro do brinquedo inválido. Capture novamente.');this.w=t.w;this.h=t.h;this.roi={...t.roi};this.reference={x:t.roi.x+t.roi.w/2,y:t.roi.y+t.roi.h/2,angle:0,scale:1};this.pose={...this.reference};this.step=t.step;this.template=t.template.slice();this.features=t.features.map(p=>({...p,patch:p.patch.slice()}));this.bad=this.matches=0;this.lost=false;this.ready=true;}
- track(rgba){if(!this.ready||this.lost)return null;const im=gray(rgba,this.w,this.h),old=this.pose,score=p=>dot(this.template,descriptor(im,this.w,this.h,p.x,p.y,p.angle,p.scale,11,this.step));let best={...old},quality=score(best);
-  if(quality<.985){for(const da of[-.16,-.08,0,.08,.16])for(const ds of[.96,1,1.04])for(let dy=-30;dy<=30;dy+=4)for(let dx=-30;dx<=30;dx+=4){const p={x:old.x+dx,y:old.y+dy,angle:old.angle+da,scale:old.scale*ds};if(p.scale<.55||p.scale>1.8)continue;const q=score(p);if(q>quality){best=p;quality=q;}}const near={...best};for(const da of[-.03,0,.03])for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const p={...near,x:near.x+dx,y:near.y+dy,angle:near.angle+da},q=score(p);if(q>quality){best=p;quality=q;}}}
-  this.quality=quality;const c=Math.cos(best.angle)*best.scale,s=Math.sin(best.angle)*best.scale,matched=[];if(quality>=.65)for(const p of this.features){const x=best.x+c*(p.x-this.reference.x)-s*(p.y-this.reference.y),y=best.y+s*(p.x-this.reference.x)+c*(p.y-this.reference.y);let q=-1,m;for(let dy=-4;dy<=4;dy+=2)for(let dx=-4;dx<=4;dx+=2){const corr=dot(p.patch,descriptor(im,this.w,this.h,x+dx,y+dy,best.angle,best.scale));if(corr>q){q=corr;m={dx,dy};}}if(q>=.78)matched.push(m);}
-  this.matches=matched.length;const min=Math.max(6,Math.ceil(this.features.length*.55));if(matched.length<min||Math.hypot(best.x-old.x,best.y-old.y)>35||Math.abs(best.angle-old.angle)>.4){this.bad++;this.matches=0;if(this.bad>=3)this.lost=true;return null;}
-  const median=key=>matched.map(p=>p[key]).sort((a,b)=>a-b)[Math.floor(matched.length/2)],mx=median('dx'),my=median('dy'),inliers=matched.filter(p=>Math.hypot(p.dx-mx,p.dy-my)<=2.6);if(inliers.length<min){this.bad++;this.matches=0;if(this.bad>=3)this.lost=true;return null;}
-  this.bad=0;this.matches=inliers.length;best.x+=mx;best.y+=my;this.pose=best;return this.result(quality);
+ setAxis(axis){
+  if(!this.ready||!axis||!['tip','base'].every(k=>axis[k]&&Number.isFinite(axis[k].x+axis[k].y)&&axis[k].x>=this.roi.x&&axis[k].x<=this.roi.x+this.roi.w&&axis[k].y>=this.roi.y&&axis[k].y<=this.roi.y+this.roi.h)||Math.hypot(axis.tip.x-axis.base.x,axis.tip.y-axis.base.y)<12)throw Error('Marque a ponta e o apoio em dois pontos separados dentro da caixa.');
+  this.axis={tip:{...axis.tip},base:{...axis.base}};
  }
+ result(confidence){const p=this.pose,tip=this.axis?WarObjectFlow.transform(this.reference,p,this.axis.tip):p,base=this.axis?WarObjectFlow.transform(this.reference,p,this.axis.base):p,corners=[[0,0],[1,0],[1,1],[0,1]].map(([x,y])=>{const q=WarObjectFlow.transform(this.reference,p,{x:this.roi.x+x*this.roi.w,y:this.roi.y+y*this.roi.h});return{x:q.x/this.w,y:q.y/this.h};});return{x:tip.x/this.w,y:tip.y/this.h,centerX:p.x/this.w,centerY:p.y/this.h,tip:{x:tip.x/this.w,y:tip.y/this.h},base:{x:base.x/this.w,y:base.y/this.h},dx:0,dy:0,scale:Math.max(this.roi.w,this.roi.h)/this.w*p.scale,angle:p.angle,confidence,matches:this.matches,corners,axis:!!this.axis,recovered:!!this.recovered,roi:{...this.roi},source:'object'};}
+
+ exportTemplate(){if(!this.ready)return null;return{version:2,w:this.w,h:this.h,roi:{...this.roi},axis:this.axis?JSON.parse(JSON.stringify(this.axis)):null,reference:{...this.reference},step:this.step,template:[...this.template],coarseTemplate:this.coarseTemplate?[...this.coarseTemplate]:null,features:this.features.map(p=>({x:p.x,y:p.y,patch:[...p.patch]}))};}
+ importTemplate(t){const vec=(a,n)=>Array.isArray(a)&&a.length===n&&a.every(x=>Number.isFinite(x)&&Math.abs(x)<=1.001)&&Math.abs(a.reduce((s,x)=>s+x*x,0)-1)<.02;if(![1,2].includes(t?.version)||t.w!==320||t.h!==240||!t.roi||!['x','y','w','h'].every(k=>Number.isFinite(t.roi[k]))||t.roi.x<8||t.roi.y<8||t.roi.w<24||t.roi.h<24||t.roi.w>160||t.roi.h>160||t.roi.x+t.roi.w>312||t.roi.y+t.roi.h>232||!Number.isFinite(t.step)||t.step<2||t.step>13||!vec(t.template,121)||!Array.isArray(t.features)||t.features.length<7||t.features.length>28||t.features.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)||p.x<t.roi.x||p.x>t.roi.x+t.roi.w||p.y<t.roi.y||p.y>t.roi.y+t.roi.h||!vec(p.patch,49)))throw Error('Cadastro do brinquedo inválido. Capture novamente.');this.w=t.w;this.h=t.h;this.roi={...t.roi};this.reference={x:t.roi.x+t.roi.w/2,y:t.roi.y+t.roi.h/2,angle:0,scale:1};this.pose={...this.reference};this.step=t.step;this.template=t.template.slice();this.coarseTemplate=vec(t.coarseTemplate,121)?t.coarseTemplate.slice():null;this.features=t.features.map(p=>({...p,patch:p.patch.slice()}));this.bad=this.matches=0;this.lost=false;this.ready=true;this.previous=null;this.axis=null;if(t.axis)this.setAxis(t.axis);this.recoveryIndex=0;this.recoveryConfirm=0;}
+ validate(im,pose,threshold=.72){
+  const matches=[];
+  for(const p of this.features){const q=WarObjectFlow.transform(this.reference,pose,p);if(dot(p.patch,descriptor(im,this.w,this.h,q.x,q.y,pose.angle,pose.scale))>=threshold)matches.push(p);}
+  return matches.length>=Math.max(6,Math.ceil(this.features.length*.5))?matches:null;
+ }
+ search(im,old,recovering,pyramid){
+  const fullScore=p=>dot(this.template,descriptor(im,this.w,this.h,p.x,p.y,p.angle,p.scale,11,this.step)),coarse=pyramid[2],score=this.coarseTemplate?p=>dot(this.coarseTemplate,descriptor(coarse.data,coarse.w,coarse.h,p.x/4,p.y/4,p.angle,p.scale,11,this.step/4)):fullScore;
+  let best={...old},quality=score(best);if(recovering&&fullScore(this.reference)>.94)return{pose:{...this.reference},quality:fullScore(this.reference)};
+  if(quality<.90){
+   // Coarse translation precedes small rotation/scale refinement. The former
+   // Cartesian 5*3*16*16 search ran even for a little sensor noise.
+   const stride=recovering?8:6,radius=48;
+   for(let dy=-radius;dy<=radius;dy+=stride)for(let dx=-radius;dx<=radius;dx+=stride){const p={...old,x:old.x+dx,y:old.y+dy},q=score(p);if(q>quality){best=p;quality=q;}}
+   if(recovering&&quality<.7){
+    // Bounded slices scan for the SAME stored appearance; never recapture a
+    // background or another arbitrary object after loss.
+    const cols=Math.ceil((this.w-24)/8),rows=Math.ceil((this.h-24)/8);
+    for(let n=0;n<240;n++){const i=this.recoveryIndex++%(cols*rows),p={...old,x:12+(i%cols)*8,y:12+Math.floor(i/cols)*8},q=score(p);if(q>quality){best=p;quality=q;}}
+   }
+   for(const [position,rotation,scale]of [[4,.14,.06],[2,.05,.02]]){
+    const near={...best};for(const da of[-rotation,0,rotation])for(const ds of[1-scale,1,1+scale])for(const dy of[-position,0,position])for(const dx of[-position,0,position]){
+     const p={x:near.x+dx,y:near.y+dy,angle:near.angle+da,scale:near.scale*ds};if(p.scale<.55||p.scale>1.8)continue;const q=score(p);if(q>quality){best=p;quality=q;}
+    }
+   }
+  }
+  if(this.coarseTemplate){
+   const near={...best};quality=fullScore(best);
+   for(const da of[-.035,0,.035])for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const p={...near,x:near.x+dx,y:near.y+dy,angle:near.angle+da},q=fullScore(p);if(q>quality){best=p;quality=q;}}
+  }
+  return{pose:best,quality};
+ }
+ track(rgba){
+  if(!this.ready)return null;
+  const im=gray(rgba,this.w,this.h),pyramid=WarObjectFlow.pyramid(im,this.w,this.h),old=this.lost&&this.recoveryPose?this.recoveryPose:this.pose;
+  let candidate=null,quality=dot(this.template,descriptor(im,this.w,this.h,old.x,old.y,old.angle,old.scale,11,this.step));
+  if(quality>.985)candidate={...old};
+  else if(this.previous){
+   const pairs=[];
+   for(const p of this.features){const q=WarObjectFlow.transform(this.reference,this.pose,p),next=WarObjectFlow.flow(this.previous,pyramid,q);if(!next)continue;const back=WarObjectFlow.flow(pyramid,this.previous,next,q);if(!back||Math.hypot(back.x-q.x,back.y-q.y)>1.3)continue;pairs.push({x:p.x,y:p.y,u:next.x,v:next.y});}
+   const fit=WarObjectFlow.fit(pairs,this.reference);if(fit?.pose&&fit.inliers.length>=Math.max(6,Math.ceil(this.features.length*.5))){candidate=fit.pose;quality=dot(this.template,descriptor(im,this.w,this.h,candidate.x,candidate.y,candidate.angle,candidate.scale,11,this.step));}
+  }
+  let matches=candidate&&quality>=.62?this.validate(im,candidate):null;
+  if(!matches){const found=this.search(im,old,this.lost||!this.previous,pyramid);candidate=found.pose;quality=found.quality;matches=quality>=.70?this.validate(im,candidate,.78):null;}
+  this.quality=quality;
+  const plausible=candidate&&candidate.scale>=.55&&candidate.scale<=1.8&&(this.lost||Math.hypot(candidate.x-old.x,candidate.y-old.y)<=48&&Math.abs(candidate.angle-old.angle)<.5);
+  if(!matches||!plausible){this.matches=0;this.bad++;this.recoveryConfirm=0;if(this.bad>=3)this.lost=true;return null;}
+  this.matches=matches.length;this.recovered=false;
+  if(this.lost){
+   const last=this.recoveryPose;this.recoveryConfirm=last&&Math.hypot(last.x-candidate.x,last.y-candidate.y)<12?this.recoveryConfirm+1:1;this.recoveryPose=candidate;
+   if(this.recoveryConfirm<2){this.matches=0;return null;}this.recovered=true;
+  }
+  this.pose=candidate;this.bad=0;this.lost=false;this.recoveryConfirm=0;this.previous=pyramid;return this.result(quality);
+ }
+
 }
 if(typeof module!=='undefined'&&module.exports)module.exports={ObjectTracker};else globalThis.WarObjectTracker=ObjectTracker;
 })();

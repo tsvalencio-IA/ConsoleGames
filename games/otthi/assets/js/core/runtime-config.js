@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.9-war-corpo-fases',
+    build: '705.28.10-objetos-kart-fluidez',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

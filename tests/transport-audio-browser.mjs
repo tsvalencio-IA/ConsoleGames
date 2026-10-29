@@ -29,7 +29,9 @@ try{
    const result=await page.evaluate(async({model,kind,scope})=>{
     const q=__AUDIO_QA,a=q.native,voice=GameAudio.vehicleVoice(model,kind);await GameAudio.preload();await Promise.resolve();await Promise.resolve();
     const voiceInfo=voice.diagnostics(),profile=(GameAudio.engineProfile||GameAudio.vehicleProfile)?.(model,kind)||voiceInfo;
-    const provenance=[];for(let i=0;i<(voiceInfo.samples||[]).length;i++){const response=await fetch('/games/'+(scope==='world'?'otthi':'kart')+'/audio/'+voiceInfo.samples[i]+'.ogg'),expected=await a.decodeAudioData(await response.arrayBuffer()),actual=q.sources[i]?.buffer;let difference=Infinity;if(actual&&actual.length===expected.length){difference=0;const x=actual.getChannelData(0),y=expected.getChannelData(0);for(let j=0;j<x.length;j++)difference=Math.max(difference,Math.abs(x[j]-y[j]));}provenance.push({sample:voiceInfo.samples[i],difference,frames:actual?.length});}
+    const provenance=[];for(let i=0;i<(voiceInfo.samples||[]).length;i++){const response=await fetch('/games/'+(scope==='world'?'otthi':'kart')+'/audio/'+voiceInfo.samples[i]+'.ogg'),expected=await a.decodeAudioData(await response.arrayBuffer()),actual=q.sources[i]?.buffer;const edit=GameAudio.diagnostics().engineLoopEdits?.[voiceInfo.samples[i]];let correlation=0,seam=0,correctFrames=false;
+    if(actual&&edit){correctFrames=actual.length===edit.frames&&edit.sourceFrames===expected.length;const x=actual.getChannelData(0),y=expected.getChannelData(0);let xy=0,xx=0,yy=0;for(let j=0;j<x.length-edit.crossfadeFrames;j++){const sample=y[edit.startFrame+edit.crossfadeFrames+j];xy+=x[j]*sample;xx+=x[j]*x[j];yy+=sample*sample;}correlation=xy/Math.max(1e-12,Math.sqrt(xx*yy));seam=Math.abs(x[0]-x.at(-1));}
+    provenance.push({sample:voiceInfo.samples[i],correlation,correctFrames,seam,frames:actual?.length,edit});}
     function stats(buffer,start=0,end=buffer.length){let peak=0,step=0,energy=0,finite=true;for(let c=0;c<buffer.numberOfChannels;c++){const x=buffer.getChannelData(c);for(let i=start;i<end;i++){const v=x[i];finite&&=Number.isFinite(v);peak=Math.max(peak,Math.abs(v));energy+=v*v;if(i>start)step=Math.max(step,Math.abs(v-x[i-1]));}}return{peak,step,rms:Math.sqrt(energy/((end-start)*buffer.numberOfChannels)),finite};}
     const source=q.sources.find(n=>n.buffer),wave=source?.buffer?stats(source.buffer):null;
     function update(frame){const t=frame/20;let speed=t<1.5?0:t<4?(t-1.5)*12:t<5?-(30-(t-4)*4):t<6?26*(6-t):8,load=t<1.5?.15:t<4?1:t<5?.6:t<6?0:.6;q.volume=t>=7&&t<7.5?0:.7;voice.update(speed,load,t>=3.5&&t<4,!(t>=6&&t<7));}
@@ -44,7 +46,7 @@ try{
    if(!silent&&result.motor.rms<.001)issues.push('inaudible motor');
    if(result.paused.rms>1e-6)issues.push('pause tail');if(result.zeroVolume.rms>1e-6)issues.push('volume zero tail');if(result.disposed.rms>1e-7)issues.push('dispose tail');
    if((result.after.activeEngines||0)!==0)issues.push('retained voice');
-   if(!silent&&result.profile.id!=='electric'&&(!result.voiceInfo.recorded||!result.provenance.length||result.provenance.some(p=>p.difference>1e-7)))issues.push('motor is not the licensed recording');
+   if(!silent&&result.profile.id!=='electric'&&(!result.voiceInfo.recorded||!result.provenance.length||result.provenance.some(p=>p.correlation<.94||!p.correctFrames)))issues.push('motor is not the licensed recording');
    if(scope==='world'&&result.after.decodedEngineFiles.length>result.provenance.length)issues.push('unrelated engines were decoded');
    if(issues.length)report.failures.push({scope,model,issues});
   }catch(error){report.failures.push({scope,model,error:String(error.stack)});}finally{await page.close();}

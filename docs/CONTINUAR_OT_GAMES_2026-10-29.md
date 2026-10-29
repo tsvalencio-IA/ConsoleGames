@@ -1,3 +1,29 @@
+# Continuação OT Games — 29/10/2026, objetos, kart e fluidez
+
+Projeto correto: tsvalencio-IA/ConsoleGames. Não mexer no SaaS da oficina nem simplificar/remover os jogos. Esta revisão é web 705.28.10-objetos-kart-fluidez, assetVersion 70646. Conferir a publicação exata em docs/evidence/objetos-kart-fluidez-20261029/release.json antes de afirmar que chegou à produção. O APK compatível continua dependente da chave original descrita abaixo.
+
+## Escopo desta revisão
+
+- WAR no console: primeiro cartão TREINO DE MIRA, alvos nativos sem dano/limite de tempo, carreira e moedas intactas; cadastro da ponta e apoio do brinquedo em imagem congelada; cinco posições reais para aprender eixos, espelhamento e alcance confortável; retorno ao centro; sensibilidade; rastreador piramidal com validação da aparência e recuperação do mesmo objeto sem tocar na tela. Inclinação do objeto não é mais somada artificialmente a yaw/pitch. Prévia desaparece depois de calibrar. Perda para ações; não aumenta a validade de imagens antigas. Objeto muito liso ou encoberto não é reconhecido com garantia.
+- Kart: física em passos fixos recupera até 250 ms de intervalo de quadro, mantendo progresso equivalente a 8 e 60 FPS. Timer de chegada é cancelado/invalida seu token ao iniciar outra corrida. Opção original de continuar copa preservada, com hitbox do botão. Gesto usa olhos/orelhas quando a mão encobre o nariz; um gesto não consome dois itens. A leitura paralela experimental da câmera falhou na regressão de dois jogadores e foi descartada; o leitor original foi preservado.
+- Michelle: a área legada de lava ficava no acesso civil da central (x 46, z -94 a -114) e chamava returnHome(). Reproduzido no SHA f60e002; não se cria esse desafio antigo no mundo civil. Central, noticiário, família e moedas preservados.
+- Fluidez: Three não percorre matrizes dos ramos ocultos a cada pintura. Consultas explícitas continuam funcionando; ao reaparecer, atualiza ancestrais/filhos. Veículos comuns deixam de procurar pedais/carreta e calcular matrizes inúteis em toda atualização; bicicletas e carretas mantêm sua animação.
+- Motores: mesmas gravações licenciadas e famílias de motores; trechos estáveis e correção lenta de amplitude, com junção de 120 ms feita APÓS decodificar Vorbis. Fonte .ogg e atribuições preservadas. Limites exatos no diagnóstico engineLoopEdits. Não afirmar gravação de fábrica de todos os modelos.
+- WAR worker v39, kart v31, demais shells atualizados. Manifesto do mundo inclui 107 hashes SHA-256. Conservar IDs, contas, permissões, famílias, saves e salas. Não apagar caches de outros aplicativos.
+
+## Verificação e limites
+
+Provas em docs/evidence/objetos-kart-fluidez-20261029/. Há simulação/unitários, navegador WebGL, câmera de pixels determinísticos + postura simulada para brinquedo e dois modelos MediaPipe reais para corpo/mão. Não confundir isso com câmera física. O vídeo 324344.mp4 foi examinado por quadros e diferenças temporais; ausência de movimento nos pixels não mede sozinha o FPS do motor. Não copiá-lo para Git.
+
+A comparação fria de desempenho tem variação e frota em aquecimento; demonstra menos custo de matrizes (13,35 → 4,50 ms no ambiente), mas não certifica FPS no Android nem resolução completa dos travamentos. Não prometer 9,5/10, COD ou rastreamento 3D infalível. Próximo teste físico: brinquedo real, perfil do aparelho e condução prolongada com áudio.
+
+## Publicar e retomar
+
+Trabalho: performance-gravacoes-20261027. Produção: world-revisao-20261022. Usar commit e alias verificados, não comparar apenas nomes. Evitar auditoria pública de dezenas de arquivos simultânea com os modelos no navegador (503 por disputa). Chave Android original não encontrada; não gerar outra chave/pacote nem apagar dados do usuário.
+
+
+## Histórico da base publicada anterior
+
 # Continuação OT Games — 29/10/2026
 
 Projeto correto: tsvalencio-IA/ConsoleGames, OT Games, não o SaaS da oficina. Não simplificar os jogos, retirar recursos ou prometer equivalência ao COD / nota 10 sem evidência. Ler docs/CONTINUAR_OT_GAMES_2026-10-28.md para pedidos anteriores, Android, garagem, família e veículos.

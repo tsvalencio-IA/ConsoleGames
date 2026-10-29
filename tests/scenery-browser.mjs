@@ -53,7 +53,7 @@ try{
       await page.locator("#channel-grid .channel").first().click({timeout:5000});
       await page.waitForFunction(()=>!document.getElementById("phase-screen")?.classList.contains("hidden"),{timeout:10000});
     });
-    const phases=page.locator("#phase-grid .mission-card:not(.locked)");
+    const phases=page.locator(slug==="ar"?'#phase-grid .mission-card[data-mission="patrol"]:not(.locked)':"#phase-grid .mission-card:not(.locked)");
     await phases.first().click({timeout:10000});
     // Real interaction: player explicitly chooses controls without granting camera.
     await page.locator(".input-mode-dialog [data-mode=controls]").waitFor({timeout:7000});

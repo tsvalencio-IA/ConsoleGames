@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "label": "before",
+      "resets": 1,
+      "x": -30,
+      "z": 37.2,
+      "hazards": 1,
+      "coins": 4321,
+      "family": [
+        "thiago",
+        "luna",
+        "liz"
+      ],
+      "errors": []
+    },
+    {
+      "label": "after",
+      "resets": 0,
+      "x": 46,
+      "z": -111.5,
+      "hazards": 0,
+      "coins": 4321,
+      "family": [
+        "thiago",
+        "luna",
+        "liz"
+      ],
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Native world logic and interface with rendering capped for deterministic CPU regression; no physical Android FPS claim."
+  ]
+}

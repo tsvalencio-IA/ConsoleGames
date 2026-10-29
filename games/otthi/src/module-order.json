@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.9-war-corpo-fases",
+  "build": "705.28.10-objetos-kart-fluidez",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "8beeaaa87f6f111f20f2e07789db4cba7cb4ce2b01ae63bf5f862dd8d13f2fb3"
+      "sha256Body": "3cc362de1b9eff373ee28f56fc5aa8b815376a0eeff1c83b7c76379b3482f95f"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "f3d7111c87bf56253c854b67f0875eb574d651dcf42e049179834b949b747dd1"
+      "sha256Body": "6c0dee14599825f04db56dccb366a818fa96b26688a2283a1ee4fb8ee24a81eb"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -182,7 +182,7 @@
       "startLine": 3805,
       "endLine": 3948,
       "description": "Construção do mundo, recursos, baús, casas em nuvem e interiores",
-      "sha256Body": "6ad79ba3cc7dc7c314fb7c3397f5f013c46bbaf2220a157d381b9e325111b9f8"
+      "sha256Body": "223f63f4d1159fbe902c46be0b44d4d1fa8d43bd03535c09a9f2dcb0dc1d2f01"
     },
     {
       "file": "src/modules/21-interactions-shop-social-races.js",
@@ -224,7 +224,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "05c99d312548a28bee316f372f2a8c097034938836c3f551d8602325dbbe9e82"
+      "sha256Body": "4f28ade1f002848949534ed4cb084277cc07d9b81eeaa461999a70a973f031b4"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -448,7 +448,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "d8cd87890d642d7a018f3cf58e25d0496e38d6697b70f35944fb224465997492"
+      "sha256Body": "530e5ff6f401bd56f4c82d95f81f58163f26cad1048d18a41a02cdff60ab4e7c"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
