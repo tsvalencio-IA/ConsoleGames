@@ -10,7 +10,7 @@ const MISSIONS=[
  {id:'city',name:'CERCO • CIDADE',waves:3,count:4,desc:'Recupere a praça e mantenha cada ponto de comunicação contra ataques pelos flancos.',route:[{x:-8,z:24},{x:10,z:40},{x:-10,z:60}],covers:[{x:-15,z:13,w:6,h:1.1,d:3,type:'planter'},{x:8,z:24,w:5,h:1.4,d:2,type:'barrier'},{x:-7,z:41,w:6,h:1.2,d:3,type:'planter'},{x:20,z:49,w:3,h:2.6,d:7,type:'car'}]},
  {id:'extraction',name:'EXTRAÇÃO • FORTALEZA',waves:4,count:4,desc:'Desative dois transmissores, atravesse a fortaleza e abra a zona de extração.',route:[{x:10,z:23},{x:-10,z:43},{x:0,z:55},{x:0,z:68}],covers:[{x:-10,z:14,w:11,h:2.7,d:3,type:'stone'},{x:13,z:33,w:12,h:2.5,d:3,type:'stone'},{x:-17,z:51,w:7,h:3,d:6,type:'stone'},{x:9,z:56,w:6,h:1.2,d:3,type:'stone'}]}
 ];
-const TRAINING={id:'training',name:'TREINO • MIRA E CALIBRAÇÃO',waves:0,count:0,desc:'Cadastre o brinquedo, ajuste cinco pontos e teste corpo, mira e tiro automático sem dano ou limite de tempo.',route:[{x:0,z:20}],covers:[]};
+const TRAINING={id:'training',name:'TREINO • MIRA E CALIBRAÇÃO',waves:0,count:0,desc:'Calibre a mão direita e teste mira, corpo e disparo automático sem dano ou limite de tempo.',route:[{x:0,z:20}],covers:[]};
 const WEAPONS=[
  {id:'rifle',name:'Fuzil',mag:30,reserve:180,damage:34,interval:.15,reload:1.65,requires:0},
  {id:'smg',name:'Submetralhadora',mag:24,reserve:192,damage:24,interval:.085,reload:1.25,requires:1},
