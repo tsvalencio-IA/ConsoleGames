@@ -1,3 +1,4 @@
+/* Regression contract: the front camera uses the player's hand and optional body pose, never toy registration. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
