@@ -10,6 +10,9 @@
 .input-game-controls.combat-input [data-control="fire"]{right:max(17px,env(safe-area-inset-right,0px));bottom:12px;height:64px;border-radius:23px;background:linear-gradient(150deg,#c4804b,#7f3b3a);border-color:#ffd4a1}
 .input-game-controls.combat-input [data-control="ads"]{right:max(17px,env(safe-area-inset-right,0px));bottom:88px}
 .input-game-controls.combat-input [data-control="ads"].selected{background:#376c64;border-color:#b8f4cf;box-shadow:0 0 15px #a0efc14d}
+.input-game-controls.combat-input [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 94px);bottom:88px;font-size:9px;white-space:nowrap;background:#244454;border-color:#9ebec2}
+.input-game-controls.combat-input [data-control="auto-fire"].selected{background:#245f51;border-color:#b8f4cf;box-shadow:0 0 10px #a0efc13d}
+.input-game-controls.combat-input [data-control="auto-fire"][hidden]{display:none!important}
 .input-game-controls.combat-input [data-control="reload"]{left:calc(50% - 43px);bottom:5px}
 .input-game-controls.combat-input [data-control="cover"]{left:max(17px,env(safe-area-inset-left,0px));bottom:calc(clamp(96px,28vw,132px) + 16px)}
 @media(max-height:460px){.input-game-controls.combat-input{height:158px}.combat-stick{width:96px;height:96px}.input-game-controls.combat-input [data-control="cover"]{bottom:111px}.input-game-controls.combat-input [data-control="reload"]{bottom:8px}}

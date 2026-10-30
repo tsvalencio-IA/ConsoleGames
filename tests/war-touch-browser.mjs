@@ -21,6 +21,11 @@ try{
    await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;g.covers=[]});
    assert.equal(await page.evaluate(()=>window.__cameraRequests),0);assert.equal(await page.locator('.aim-stick').count(),0);
    const scene=page.locator('#game-canvas'),move=page.locator('.combat-input [data-control="joystick"]'),fire=page.locator('.combat-input [data-control="fire"]'),ads=page.locator('.combat-input [data-control="ads"]');
+   const autoFire=page.locator('.combat-input [data-control="auto-fire"]');assert(await autoFire.isVisible());
+   assert.equal(await autoFire.getAttribute('aria-pressed'),'false');
+   await autoFire.tap();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');
+   assert.equal(await autoFire.getAttribute('aria-pressed'),'true');
+   await autoFire.tap();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'manual');
    await page.locator('#play-settings-button').click();await page.locator('[data-setting="combatFireMode"]').selectOption('simple');await page.locator('[data-setting="adsSensitivity"]').focus();await page.keyboard.press('Home');for(let i=0;i<9;i++)await page.keyboard.press('ArrowRight');await page.locator('#play-settings [data-close]').first().click();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');const sprint=page.locator('[data-control="sprint"]'),forward=await fingers.start(move,.5,.06),run=await fingers.start(sprint);await page.waitForFunction(()=>System.activeGame.logic.sprinting);const stopFire=await fingers.start(fire);await page.waitForFunction(()=>!System.activeGame.logic.sprinting);await fingers.end(stopFire);await fingers.end(run);await fingers.end(forward);console.log('PASS WAR native sprint, firing cancellation and saved simple-fire settings');
    const controls=await page.locator('.combat-input .input-control:not([hidden]),.combat-input .move-stick').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
    for(const r of controls){assert(r.x>=0&&r.y>=0&&r.x+r.w<=viewport.width&&r.y+r.h<=viewport.height,JSON.stringify(r));assert(r.w>=44&&r.h>=44)}

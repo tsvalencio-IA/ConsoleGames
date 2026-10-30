@@ -186,12 +186,13 @@ const hub={
   const root=hub.createControls('ar-input combat-input',[
    {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
    {id:'ads',text:'MIRAR',label:'Ligar ou desligar a mira aproximada',down:()=>{logic.setAiming(!logic.aiming);refreshAim()}},
+   {id:'auto-fire',text:'AUTO: DESL.',label:'Ativar ou desativar o disparo automático ao passar a mira sobre um adversário',down:()=>{const settings=window.ArcadePlaySettings;const current=settings?.get().combatFireMode;if(!settings)return;settings.set('combatFireMode',current==='simple'?'manual':'simple');refreshAutoFire();}},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
    {id:'sprint',text:'CORRER',label:'Segurar para correr com o joystick',down:()=>logic.sprintHeld=true,up:()=>logic.sprintHeld=false},
    {id:'cover',text:'ABAIXAR',label:'Abaixar ou levantar',down:()=>{logic.toggleCrouch();const el=root.querySelector('[data-control="cover"]');el.textContent=logic.crouched?'LEVANTAR':'ABAIXAR';el.setAttribute('aria-pressed',String(logic.crouched));}},
    {id:'hand',text:'CORPO + MÃO',label:'Calibrar novamente o corpo e a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);
-  root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';
+  root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';root.querySelector('[data-control="auto-fire"]').hidden=hub.mode==='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
   if(hub.mode!=='camera'){
    const stick=document.createElement('div'),knob=document.createElement('span'),caption=document.createElement('small');
@@ -208,8 +209,10 @@ const hub={
   hub.combatLook(logic,root);
   const aimButton=root.querySelector('[data-control="ads"]');
   const refreshAim=()=>{aimButton.setAttribute('aria-pressed',String(!!logic.aiming));aimButton.classList.toggle('selected',!!logic.aiming);};refreshAim();
-  const watchAim=setInterval(refreshAim,160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
-  hub.showTip(hub.mode==='camera'?'CORPO: AGACHE, GIRE E DÊ PASSOS • MÃO: APONTE PARA MIRAR':'ARRASTE NA CENA PARA OLHAR • MIRAR APROXIMA • ANDE E ATIRE AO MESMO TEMPO');
+  const autoFireButton=root.querySelector('[data-control="auto-fire"]');
+  const refreshAutoFire=()=>{const enabled=window.ArcadePlaySettings?.get().combatFireMode==='simple';autoFireButton.textContent=enabled?'AUTO: LIGADO':'AUTO: DESL.';autoFireButton.setAttribute('aria-pressed',String(enabled));autoFireButton.classList.toggle('selected',enabled);};refreshAutoFire();
+  const watchAim=setInterval(()=>{refreshAim();refreshAutoFire()},160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
+  hub.showTip(hub.mode==='camera'?'CORPO: AGACHE, GIRE E DÊ PASSOS • MÃO: APONTE PARA MIRAR':'ARRASTE A CENA PARA MIRAR • AUTO: LIGUE PARA ATIRAR AO PASSAR NO ALVO');
  }
 
 };
