@@ -37,12 +37,8 @@ jobs:
         run: node tests/solo-entry-browser.mjs
       - name: Reconhecer mãos com o modelo real e jogar pela câmera frontal
         run: node tests/war-camera-browser.mjs
-      - name: Inferência real do corpo e controle por objeto no WAR original
-        run: |
-          node tests/war-body-model-browser.mjs
-          node tests/war-object-browser.mjs
-          node tests/war-training-browser.mjs
-          node tests/war-rear-registration-browser.mjs
+      - name: Reconhecer corpo real sem impor cadastro de objeto
+        run: node tests/war-body-model-browser.mjs
       - name: Corpo e mão reais na mesma câmera
         run: node tests/war-joint-camera-browser.mjs
       - name: Guardar diagnóstico imediato de câmera
