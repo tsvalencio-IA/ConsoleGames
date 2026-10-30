@@ -1,0 +1,43 @@
+name: Atualizar manifesto de integridade WAR somente na branch de teste
+on:
+  push:
+    branches: [war-corpo-sem-objetos-20261030]
+    paths:
+      - '.github/workflows/war-integrity-branch.yml'
+permissions:
+  contents: write
+jobs:
+  war-manifest:
+    if: github.ref == 'refs/heads/war-corpo-sem-objetos-20261030'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regerar hashes sem mudar motores, mapa ou progresso
+        run: |
+          set -euo pipefail
+          python3 games/otthi/tools/build_project.py
+          while IFS= read -r path; do
+            case "$path" in
+              games/otthi/index.html|games/otthi/sw.js|games/otthi/release-manifest.json) ;;
+              *) echo "Mudança fora dos metadados bloqueada: $path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only)
+      - name: Validar integridade e regras dos sete jogos
+        run: |
+          node --test tests/world-integrity.test.mjs tests/mastery.test.mjs tests/war-camera-body-only.test.mjs
+      - name: Gravar somente metadados e remover este fluxo temporário
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- games/otthi/index.html games/otthi/sw.js games/otthi/release-manifest.json
+          git rm .github/workflows/war-integrity-branch.yml
+          git diff --cached --name-only
+          git commit -m "chore(war): refresh linked world integrity hashes for body-only camera"
+          git push origin HEAD:refs/heads/war-corpo-sem-objetos-20261030
