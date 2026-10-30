@@ -25,6 +25,11 @@ try{
    assert.equal(await autoFire.getAttribute('aria-pressed'),'false');
    await autoFire.tap();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');
    assert.equal(await autoFire.getAttribute('aria-pressed'),'true');
+   const beforeAuto=await page.evaluate(()=>System.activeGame.logic.stats.shots);
+   await page.evaluate(()=>{const g=System.activeGame.logic;g.shotCooldown=0;g.player.yaw=0;g.player.pitch=0;g.enemies=[{id:'qa-auto',kind:'soldier',x:g.player.x,z:g.player.z+20,y:g.eyeY,hp:1000,active:true,aim:999,flash:0}];});
+   await page.waitForFunction(n=>System.activeGame.logic.stats.shots>n,beforeAuto,{timeout:4000});
+   assert.equal(await page.evaluate(()=>System.activeGame.logic.fireHeld),false,'automatic shot must require no fire-button press');
+   await page.evaluate(()=>{System.activeGame.logic.enemies=[]});
    await autoFire.tap();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'manual');
    await page.locator('#play-settings-button').click();await page.locator('[data-setting="combatFireMode"]').selectOption('simple');await page.locator('[data-setting="adsSensitivity"]').focus();await page.keyboard.press('Home');for(let i=0;i<9;i++)await page.keyboard.press('ArrowRight');await page.locator('#play-settings [data-close]').first().click();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');const sprint=page.locator('[data-control="sprint"]'),forward=await fingers.start(move,.5,.06),run=await fingers.start(sprint);await page.waitForFunction(()=>System.activeGame.logic.sprinting);const stopFire=await fingers.start(fire);await page.waitForFunction(()=>!System.activeGame.logic.sprinting);await fingers.end(stopFire);await fingers.end(run);await fingers.end(forward);console.log('PASS WAR native sprint, firing cancellation and saved simple-fire settings');
    const controls=await page.locator('.combat-input .input-control:not([hidden]),.combat-input .move-stick').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
