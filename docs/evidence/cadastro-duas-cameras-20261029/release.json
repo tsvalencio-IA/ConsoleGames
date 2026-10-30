@@ -5,7 +5,7 @@
   "assetVersion": 70649,
   "warWorker": 42,
   "previousProductionSource": "0c066cf421ccf659ea7af34a111adeac44d89732",
-  "status": "Local acceptance passed; remote CI and public acceptance pending.",
+  "status": "Accepted: source CI, production CI, public rear flow, WAR bytes and actual public update passed.",
   "localChecks": {
     "unitTests": 340,
     "rearRegistrationBrowser": true,
@@ -16,5 +16,68 @@
     "Camera feeds and pose are deterministic fixtures; actual object recognition workers and UI are exercised.",
     "No physical Android or arbitrary-object reliability claim.",
     "This change does not resolve or certify open-world Android performance."
-  ]
+  ],
+  "source": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+  "sourceTree": "c4306aa03a5d904a53abf5d983e3f0a700f23da9",
+  "gamesTree": "3f0430c8c6c2be5a4e925daf35179bafa8786ba7",
+  "deployment": "dpl_FfJVQ941DWnhWaUo6V93DjxSkCjf",
+  "alias": "https://otthi-world-campanha-teste.vercel.app",
+  "sourceRuns": [
+    {
+      "id": 40965558985,
+      "sha": "1f080b89fc7fb40f93ab86d3feaf9ca23dce8990",
+      "conclusion": "success"
+    },
+    {
+      "id": 40965559027,
+      "sha": "1f080b89fc7fb40f93ab86d3feaf9ca23dce8990",
+      "conclusion": "success"
+    },
+    {
+      "id": 40965716592,
+      "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+      "conclusion": "success"
+    }
+  ],
+  "productionRuns": [
+    {
+      "id": 40967050909,
+      "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050909",
+      "completedAt": "2026-10-29T22:42:22Z"
+    },
+    {
+      "id": 40967050918,
+      "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050918",
+      "completedAt": "2026-10-29T22:43:20Z"
+    },
+    {
+      "id": 40967050944,
+      "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050944",
+      "completedAt": "2026-10-29T22:36:13Z"
+    }
+  ],
+  "sameGamesTreeAcrossRunnerFix": true,
+  "publicRearRegistration": true,
+  "publicWarResources": 27,
+  "publicUpdate": {
+    "passed": true,
+    "build": "705.28.13-cadastro-duas-cameras",
+    "revision": "82a1b51acd9fc8b8",
+    "realWorker": true,
+    "preservedCoins": 4321,
+    "preservedFamily": [
+      "thiago",
+      "luna",
+      "liz"
+    ],
+    "otherSessionPreserved": true
+  },
+  "fullPublicWorldHashAudit": "No retained completion result; not claimed.",
+  "physicalAndroidApproved": false
 }

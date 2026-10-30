@@ -1,0 +1,8 @@
+Excertos de verificações aprovadas; log completo no job GitHub 123774077864.
+2026-10-29T22:36:36.8766165Z # tests 340
+2026-10-29T22:36:36.8766414Z # pass 340
+2026-10-29T22:36:36.8766527Z # fail 0
+2026-10-29T22:36:37.6851861Z PASS actual CPU pose worker:33 landmarks 168 ms
+2026-10-29T22:36:39.7257713Z PASS three original music tracks: rendered PCM, chart sync, body-loss pause, resume and mute
+2026-10-29T22:36:50.9321541Z PASS native local-song selection and tempo
+2026-10-29T22:37:29.5842087Z PASS camera-body dance UI, no arrows, calibration, hidden preview, body-loss pause, progression, track cleanup 28/28

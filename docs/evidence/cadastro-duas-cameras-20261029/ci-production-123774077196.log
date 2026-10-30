@@ -1,0 +1,34 @@
+Excertos de verificações aprovadas; log completo no job GitHub 123774077196.
+2026-10-29T22:36:00.6853443Z PASS solo entry kart
+2026-10-29T22:36:01.5326491Z PASS solo entry boxe
+2026-10-29T22:36:02.0467984Z PASS solo entry tenis
+2026-10-29T22:36:03.6264838Z PASS solo entry ar
+2026-10-29T22:36:05.4463078Z PASS solo entry voo
+2026-10-29T22:36:38.9476686Z WAR FRONT HAND PASS: real CPU/WASM detector, calibrated pointing, aligned auto-fire, lost-hand stop, manual fallback.
+2026-10-29T22:36:40.0344829Z PASS WAR production CPU pose worker: 33 image and 33 world landmarks
+2026-10-29T22:37:02.4976683Z OBJECT CAMERA PASS native
+2026-10-29T22:37:47.9647070Z PASS object registration + five-point calibration + native training target hits + unchanged career
+2026-10-29T22:38:09.8816889Z PASS rear capture -> explicit front confirmation -> body + object play -> reference recovery, denied-camera fallback and late-stream cleanup
+2026-10-29T22:38:30.9645893Z PASS WAR both real models on same stream, calibration, crop, assisted walking, loss and reacquisition
+2026-10-29T22:38:51.9060971Z PASS WAR three different real WebGL battlefields via real phase buttons in both mobile layouts, without JS errors
+2026-10-29T22:38:57.8168000Z PASS WAR legacy -> v42 real complete install on HTTP/1, match exit gate, career/weapon/coins and unrelated storage preserved
+2026-10-29T22:39:05.4894910Z PASS WAR native sprint, firing cancellation and saved simple-fire settings
+2026-10-29T22:39:20.8446945Z PASS WAR native sprint, firing cancellation and saved simple-fire settings
+2026-10-29T22:39:35.7794786Z PASS WAR native sprint, firing cancellation and saved simple-fire settings
+2026-10-29T22:39:46.6068739Z WAR TOUCH PASS: scene drag, zoom, four simultaneous touches, no drift, independent release, pause and rotation in three mobile layouts; mouse and keyboard on desktop.
+2026-10-29T22:40:04.2786892Z PASS two independently occupied and raised native lifts
+2026-10-29T22:40:07.7536814Z PASS native mission beach
+2026-10-29T22:40:10.9470758Z PASS native mission snow
+2026-10-29T22:40:13.3486749Z PASS native mission neighbors
+2026-10-29T22:40:16.3793847Z PASS native mission fire
+2026-10-29T22:40:20.8075306Z PASS native mission police
+2026-10-29T22:40:25.3456667Z PASS native cable ascent, family, descent and ordered quest
+2026-10-29T22:41:33.5475539Z PASS two users occupy different raised workshop bays without displacing each other
+2026-10-29T22:41:35.5441069Z PASS shared lobby, readiness and start
+2026-10-29T22:41:45.4579220Z PASS both players perform every stage; one idle member cannot advance the team
+2026-10-29T22:41:46.4397183Z PASS two families occupy eight distinct cable seats
+2026-10-29T22:41:46.4847328Z PASS authority handoff retains riders; a disconnected family releases its seats
+2026-10-29T22:41:46.5356444Z PASS a guest receives its private solo quest ride only after an acknowledged physical arrival
+2026-10-29T22:41:46.5626588Z PASS a reconnected user can safely alight after the old seat lease expired
+2026-10-29T22:42:01.8317615Z PASS boot preserves two raised cars and their separate removed components
+2026-10-29T22:42:16.8677590Z PASS lowering one box and reloading preserves the other raised car and disassembly

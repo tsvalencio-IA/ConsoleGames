@@ -1,0 +1,29 @@
+{
+  "source": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.13-cadastro-duas-cameras",
+  "rearRegistration": {
+    "passed": true,
+    "seconds": 28.5,
+    "checks": [
+      "dual registration",
+      "explicit front confirmation",
+      "body never uses rear",
+      "other registered view recovered",
+      "old camera released",
+      "missing rear fallback",
+      "late stream cleanup"
+    ],
+    "stdout": "PASS rear capture -> explicit front confirmation -> body + object play -> reference recovery, denied-camera fallback and late-stream cleanup"
+  },
+  "warBytes": {
+    "passed": true,
+    "resources": 27,
+    "originalApkPreserved": true,
+    "stdout": "{\"passed\":true,\"build\":\"705.28.13-cadastro-duas-cameras\",\"warResources\":27,\"originalApkPreserved\":true}"
+  },
+  "provenance": "Results and stdout observed in the preceding execution before the workspace restarted. Raw temporary public reports were not retained; do not label this reconstructed observation as a test-generated report.",
+  "notClaimed": [
+    "The prior full 109-file public world audit had no retained completion result. The actual public update and worker were validated separately afterward."
+  ]
+}
