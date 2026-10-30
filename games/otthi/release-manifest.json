@@ -1,10 +1,10 @@
 {
   "version": 705,
   "build": "705.28.13-cadastro-duas-cameras",
-  "revision": "028ca8f9a7f92fae",
+  "revision": "dbc41aa38d2768cd",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "276dc118ace3a51499e4dc3cb2cc0d7a69d1de3f89e905a59c1618c9e6b992e9",
+    "index.html": "2b8feb5a7db464c172eb8c6ce2642cbc3198a8215de9a4c7538208f81dd2b396",
     "game-audio.js": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
     "console-world.js": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
     "console-world.css": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
@@ -59,7 +59,7 @@
     "assets/pose/sources.json": "fa9be8c1638684f69827db69dbee836dc4058efd3ae72a96127600acea198d30",
     "assets/pose/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "VERSION.json": "d8525f85e6077f3270d3a5e262351c76231f7e2f2b03f862e02295502cbc4f9b",
-    "sw.js": "761b0676c3d7bb24d639b0d9d557619e716800d425020c1b486056b5306714b3",
+    "sw.js": "efe1662ed687cd2ff44c63392f96241e7cc8343f2d2f2f1748bfc7c06441a531",
     "assets/js/world/civil-mission-core.js": "cd11be9f39ee2c623ae221c07fd1ab7c301ee45a9c8282a5ad91f16ccd7aca51",
     "assets/js/vehicles/engine-sound.js": "ea6a4885a906d34927cd20154a6eaffc65c80395827dd85c265a00e8ebf1038e",
     "recorded-audio.js": "6fb979bebfc6cb7afeff7cf2f5ab6dcd343f24a372545d8901267ccb9aa1a9b9",
@@ -112,6 +112,6 @@
     "../ar/object-training.js": "3e45a532c3c30bb08ed865c3f98466cd38cfdf8b1bb54f4718b80632ca21d81e",
     "../ar/object-tracker.js": "7a12f278fb40c083528cf6815b9ba5cb374efca6ea468cd6c8d6dd94362d025f",
     "../ar/object-tracker-worker.js": "f03fe31c144e52f3c1feee6597866c7cc8334bbc01b804e837cf59f1873faf88",
-    "../ar/combat-controls.css": "a828d51317e495d364bf87a2294b0789e584ec205e0eaabc98a6a612062eee2a"
+    "../ar/combat-controls.css": "fcc4d0651ce01dd66517a70237356cc1d13c797c0f4ec964984d175f30803dfb"
   }
 }
