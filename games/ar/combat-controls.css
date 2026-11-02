@@ -118,7 +118,7 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
    Keep every action available; only the width and offsets adapt to the viewport. */
 @media(max-width:360px){
  .input-game-controls.combat-input:not(.hand-input) .input-control{width:64px;min-width:44px;padding:3px 4px;font-size:9px}
- .input-game-controls.combat-input:not(.hand-input) [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 71px);font-size:8px}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 71px);bottom:105px;font-size:8px}
  .input-game-controls.combat-input:not(.hand-input) [data-control="reload"]{left:calc(50% - 32px)}
  .input-game-controls.combat-input:not(.hand-input) [data-control="fire"]{height:64px}
 }
