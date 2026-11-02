@@ -1,4 +1,4 @@
-name: Conferir separação HUD, Vida e MUNDO GPS sem sobreposição
+name: Validar Vida, GPS e OT Games com modo disponível no mundo infantil
 on:
   push:
     branches: [world-hud-separar-modos-20261102]
