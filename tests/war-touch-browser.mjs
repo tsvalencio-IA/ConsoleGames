@@ -36,6 +36,24 @@ try{
    const controls=await page.locator('.combat-input .input-control:not([hidden]),.combat-input .move-stick').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
    for(const r of controls){assert(r.x>=0&&r.y>=0&&r.x+r.w<=viewport.width&&r.y+r.h<=viewport.height,JSON.stringify(r));assert(r.w>=44&&r.h>=44)}
    for(let i=0;i<controls.length;i++)for(let j=i+1;j<controls.length;j++){const a=controls[i],b=controls[j];assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'Overlapping controls: '+a.name+'/'+b.name)}
+   // The camera layout has no joystick; its recalibration button must never cover reload.
+   await page.evaluate(()=>{
+    const root=document.querySelector('.combat-input');
+    root.classList.add('hand-input');
+    root.querySelector('[data-control="hand"]').hidden=false;
+    root.querySelector('[data-control="auto-fire"]').hidden=true;
+    root.querySelector('.move-stick').hidden=true;
+   });
+   const cameraControls=await page.locator('.combat-input .input-control:not([hidden])').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return{name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
+   for(const r of cameraControls){assert(r.x>=0&&r.y>=0&&r.x+r.w<=viewport.width&&r.y+r.h<=viewport.height,'Camera mode: '+JSON.stringify(r))}
+   for(let i=0;i<cameraControls.length;i++)for(let j=i+1;j<cameraControls.length;j++){const a=cameraControls[i],b=cameraControls[j];assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'Camera controls overlapping: '+a.name+'/'+b.name)}
+   await page.evaluate(()=>{
+    const root=document.querySelector('.combat-input');
+    root.classList.remove('hand-input');
+    root.querySelector('[data-control="hand"]').hidden=true;
+    root.querySelector('[data-control="auto-fire"]').hidden=false;
+    root.querySelector('.move-stick').hidden=false;
+   });
    await page.evaluate(()=>ArcadePlaySettings.set('controlInset',8));
    const moving=await fingers.start(move,.78,.22),before=await read(),looking=await fingers.start(scene,.54,.46);
    assert.equal((await read()).yaw,before.yaw,'Touching the view must not jump the camera');await fingers.move(looking,scene,.68,.40);
