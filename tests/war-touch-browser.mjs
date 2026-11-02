@@ -8,7 +8,7 @@ const {multiplayerServer}=await import('./helpers/multiplayer-browser-fixture.mj
 const browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--enable-features=SyntheticPointerActions','--use-gl=angle','--use-angle=swiftshader','--no-sandbox']});
 mkdirSync('test-results/war-touch',{recursive:true});const results=[];
 try{
- for(const viewport of [{width:390,height:844},{width:844,height:390},{width:320,height:568}]){
+ for(const viewport of [{width:390,height:844},{width:844,height:390},{width:320,height:568},{width:360,height:740},{width:280,height:600},{width:667,height:375}]){
   const context=await browser.newContext({viewport,isMobile:true,hasTouch:true,deviceScaleFactor:1});await installConsoleStubs(context);
   await context.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===origin?route.continue():route.request().resourceType()==='script'?route.fulfill({status:200,contentType:'application/javascript',body:'/* isolated remote service */'}):route.abort('blockedbyclient'));
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const fingers=await touchSession(context,page);
@@ -32,9 +32,11 @@ try{
    await page.evaluate(()=>{System.activeGame.logic.enemies=[]});
    await autoFire.tap();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'manual');
    await page.locator('#play-settings-button').click();await page.locator('[data-setting="combatFireMode"]').selectOption('simple');await page.locator('[data-setting="adsSensitivity"]').focus();await page.keyboard.press('Home');for(let i=0;i<9;i++)await page.keyboard.press('ArrowRight');await page.locator('#play-settings [data-close]').first().click();assert.equal(await page.evaluate(()=>ArcadePlaySettings.get().combatFireMode),'simple');const sprint=page.locator('[data-control="sprint"]'),forward=await fingers.start(move,.5,.06),run=await fingers.start(sprint);await page.waitForFunction(()=>System.activeGame.logic.sprinting);const stopFire=await fingers.start(fire);await page.waitForFunction(()=>!System.activeGame.logic.sprinting);await fingers.end(stopFire);await fingers.end(run);await fingers.end(forward);console.log('PASS WAR native sprint, firing cancellation and saved simple-fire settings');
+   await page.evaluate(()=>ArcadePlaySettings.set('controlInset',28));
    const controls=await page.locator('.combat-input .input-control:not([hidden]),.combat-input .move-stick').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {name:n.dataset.control,x:r.x,y:r.y,w:r.width,h:r.height,visible:getComputedStyle(n).display!=='none'}}).filter(r=>r.visible));
    for(const r of controls){assert(r.x>=0&&r.y>=0&&r.x+r.w<=viewport.width&&r.y+r.h<=viewport.height,JSON.stringify(r));assert(r.w>=44&&r.h>=44)}
    for(let i=0;i<controls.length;i++)for(let j=i+1;j<controls.length;j++){const a=controls[i],b=controls[j];assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),'Overlapping controls: '+a.name+'/'+b.name)}
+   await page.evaluate(()=>ArcadePlaySettings.set('controlInset',8));
    const moving=await fingers.start(move,.78,.22),before=await read(),looking=await fingers.start(scene,.54,.46);
    assert.equal((await read()).yaw,before.yaw,'Touching the view must not jump the camera');await fingers.move(looking,scene,.68,.40);
    let state=await read();assert(state.yaw>before.yaw+.1&&state.pitch>before.pitch+.1);assert(state.move&&state.look);

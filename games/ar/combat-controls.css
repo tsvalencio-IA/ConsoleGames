@@ -112,3 +112,18 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 [data-camera-registration="rear"]{width:100%;min-height:44px;margin:6px 0;padding:8px;border:1px solid #8dd7c3;border-radius:9px;background:#204b59;color:#effff6;font:700 11px system-ui;touch-action:manipulation}
 [data-camera-registration="hint"]{font:12px/1.4 system-ui;color:#d0e5de}
 .war-registration-active .war-camera-movement,.war-registration-active .war-object-tools label,.war-registration-active [data-object="five"],.war-registration-active .war-hand-panel>small{display:none!important}
+
+
+/* Compact safe-area HUD: do not let left movement buttons cross right-side AUTO.
+   Keep every action available; only the width and offsets adapt to the viewport. */
+@media(max-width:360px){
+ .input-game-controls.combat-input:not(.hand-input) .input-control{width:64px;min-width:44px;padding:3px 4px;font-size:9px}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 71px);font-size:8px}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="reload"]{left:calc(50% - 32px)}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="fire"]{height:64px}
+}
+@media(max-width:300px){
+ .input-game-controls.combat-input:not(.hand-input) .input-control{width:56px;min-width:44px;font-size:8px}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 62px)}
+ .input-game-controls.combat-input:not(.hand-input) [data-control="reload"]{left:calc(50% - 28px)}
+}
