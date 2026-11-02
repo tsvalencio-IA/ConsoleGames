@@ -1,3 +1,4 @@
+# Reexecução: impedir sobreposição entre recarga e joystick nos formatos estreitos.
 name: Validar toque e controles compactos WAR sem publicação
 on:
   push:
