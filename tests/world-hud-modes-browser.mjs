@@ -30,7 +30,7 @@ try{
    const nav=await page.locator('#quickBar').boundingBox(),map=await page.locator('#miniNav').boundingBox();
    assert(nav&&map&&!(nav.x<map.x+map.width&&nav.x+nav.width>map.x&&nav.y<map.y+map.height&&nav.y+nav.height>map.y),'expanded shortcuts must not obscure the minimap');
    assert(await page.locator('#quickBar #mapBtn').isVisible(),'map shortcut remains accessible');
-   const entered=await page.evaluate(()=>OT_GAMES.enter('ground',{armed:false}));
+   const entered=await page.evaluate(()=>OT_GAMES.enter('helicopter',{armed:false}));
    assert.equal(entered,true,'OT Games must still start normally');
    await page.waitForFunction(()=>document.body.classList.contains('ot-games-active')&&!!document.querySelector('#ot-games-hud'));
    const hidden=await page.evaluate(selectors=>selectors.map(selector=>({selector,display:[...document.querySelectorAll('#game > '+selector)].map(el=>getComputedStyle(el).display)})),ids);
