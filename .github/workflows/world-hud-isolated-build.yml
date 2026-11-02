@@ -1,4 +1,4 @@
-name: Conferir HUD original e modo OT Games sem sobreposições
+name: Conferir separação HUD, Vida e MUNDO GPS sem sobreposição
 on:
   push:
     branches: [world-hud-separar-modos-20261102]

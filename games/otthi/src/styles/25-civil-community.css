@@ -42,3 +42,64 @@ body.ot-games-active #game > :is(
  #vehicleBadge,
  #safetyPanel
 ){display:none!important;pointer-events:none!important}
+
+/* Screenshot regression 2026-11-02: MUNDO/GPS was covering VIDA and preventing
+   the player from opening the shortcut menu. Keep both actions on screen. */
+body.otthi-v705-world.ui-portrait #worldCampaignBtn{
+ top:calc(161px + var(--safe-top,0px))!important;
+ left:calc(9px + var(--safe-left,0px))!important;
+ right:auto!important;
+ width:min(45vw,175px)!important;
+ min-height:44px!important;
+ box-sizing:border-box!important;
+}
+body.otthi-v705-world.ui-landscape #worldCampaignBtn{
+ top:calc(113px + var(--safe-top,0px))!important;
+ left:calc(9px + var(--safe-left,0px))!important;
+ right:auto!important;
+ width:min(27vw,160px)!important;
+ min-height:44px!important;
+ box-sizing:border-box!important;
+}
+/* Portrait shortcuts become a scrollable left drawer, away from right actions
+   and minimap. GPS is still in this drawer, so avoid duplicate floating touch
+   targets only while the drawer is expanded. */
+body.otthi-v705-world.ui-portrait .quick-bar{
+ position:absolute!important;
+ left:calc(9px + var(--safe-left,0px))!important;
+ right:auto!important;
+ top:calc(163px + var(--safe-top,0px))!important;
+ bottom:calc(var(--joy,130px) + 100px + var(--safe-bottom,0px))!important;
+ width:min(46vw,205px)!important;
+ height:auto!important;
+ max-height:none!important;
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-auto-rows:minmax(48px,auto)!important;
+ align-content:start!important;
+ gap:5px!important;
+ padding:7px!important;
+ box-sizing:border-box!important;
+ overflow-x:hidden!important;
+ overflow-y:auto!important;
+ overscroll-behavior:contain;
+ border-radius:15px!important;
+ background:#08192ff2!important;
+ z-index:77!important;
+}
+body.otthi-v705-world.ui-portrait .quick-bar[hidden]{display:none!important}
+body.otthi-v705-world.ui-portrait .quick-bar button{
+ min-width:0!important;width:100%!important;
+ height:auto!important;min-height:48px!important;
+ padding:5px!important;box-sizing:border-box!important;
+ overflow-wrap:anywhere!important;
+}
+body.otthi-v705-world.ui-portrait.quick-open #worldCampaignBtn{
+ visibility:hidden!important;pointer-events:none!important
+}
+/* Landscape: expanded shortcuts start below the minimap (48px+76px). */
+body.otthi-v705-world.ui-landscape .quick-bar{
+ top:calc(129px + var(--safe-top,0px))!important;
+ max-height:calc(100dvh - 130px - var(--safe-top,0px) - var(--land-bottom,12px) - (var(--land-action,45px)*2) - 15px)!important;
+ overflow-y:auto!important;
+}

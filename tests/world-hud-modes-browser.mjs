@@ -20,8 +20,16 @@ try{
    await page.waitForFunction(()=>window.OTTHI_EXPANSION?.diagnostics().ready&&window.OT_GAMES?.enter,null,{timeout:100000});
    assert(await page.locator('.game-hud').isVisible(),'world HUD must work normally');
    assert(await page.locator('#miniNav').isVisible(),'world minimap must work normally');
+   const worldControls=await page.locator('#quickToggleBtn, #worldCampaignBtn, #miniNav').evaluateAll(nodes=>nodes.map(el=>{const r=el.getBoundingClientRect();return{id:el.id,x:r.x,y:r.y,w:r.width,h:r.height}}));
+   for(let i=0;i<worldControls.length;i++)for(let j=i+1;j<worldControls.length;j++){
+    const a=worldControls[i],b=worldControls[j];
+    assert(!(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y),a.id+' overlaps '+b.id+' at '+viewport.width+'x'+viewport.height);
+   }
    await page.locator('#quickToggleBtn').click();
    assert(await page.locator('#quickBar').isVisible(),'world shortcuts must remain available');
+   const nav=await page.locator('#quickBar').boundingBox(),map=await page.locator('#miniNav').boundingBox();
+   assert(nav&&map&&!(nav.x<map.x+map.width&&nav.x+nav.width>map.x&&nav.y<map.y+map.height&&nav.y+nav.height>map.y),'expanded shortcuts must not obscure the minimap');
+   assert(await page.locator('#quickBar #mapBtn').isVisible(),'map shortcut remains accessible');
    const entered=await page.evaluate(()=>OT_GAMES.enter('ground',{armed:false}));
    assert.equal(entered,true,'OT Games must still start normally');
    await page.waitForFunction(()=>document.body.classList.contains('ot-games-active')&&!!document.querySelector('#ot-games-hud'));
