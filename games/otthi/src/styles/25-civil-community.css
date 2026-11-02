@@ -20,3 +20,25 @@ body.civil-cable-riding #joystick,body.civil-cable-riding #runBtn,body.civil-cab
 @media(max-height:480px){#civil-mission-task{bottom:calc(80px + var(--safe-bottom,0px));min-height:44px;width:180px}#civil-cable-hud{padding:7px 10px;bottom:calc(7px + var(--safe-bottom,0px))}}
 
 #civil-cable-waiting{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:86;max-width:90vw;padding:9px 12px;border:1px solid #8bb8ae;border-radius:14px;background:#143b42ed;color:white;font-size:13px;pointer-events:auto}
+
+
+/* OT Games uses its own complete HUD. Never overlay the original World HUD on
+   top of the game's map, touch actions and camera calibration. Normal world
+   controls return automatically when otGamesLeave removes the active class. */
+body.ot-games-active #game > :is(
+ .game-hud,
+ #missionCard,
+ #quickToggleBtn,
+ #quickBar,
+ #miniNav,
+ #cameraControls,
+ #contextPrompt,
+ #joystick,
+ #skillsToggleBtn,
+ .secondary-actions,
+ .primary-actions,
+ #raceBadge,
+ #buildBadge,
+ #vehicleBadge,
+ #safetyPanel
+){display:none!important;pointer-events:none!important}
