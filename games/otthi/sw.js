@@ -1,4 +1,4 @@
-const REVISION = '5ac182dbe4608522';
+const REVISION = '171dcdfd46e10c77';
 const CACHE = `otthi-v70649-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.28.13-cadastro-duas-cameras';
