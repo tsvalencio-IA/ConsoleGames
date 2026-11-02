@@ -1,0 +1,42 @@
+name: Gerar runtime OTThi somente na branch de otimização de trânsito
+on:
+  push:
+    branches: [world-trafego-spawn-sem-recalculo-20261102]
+    paths:
+      - '.github/workflows/world-traffic-build-branch.yml'
+permissions:
+  contents: write
+jobs:
+  verify-traffic-build:
+    if: github.ref == 'refs/heads/world-trafego-spawn-sem-recalculo-20261102'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar os arquivos derivados do motor modular
+        run: |
+          set -euo pipefail
+          python3 games/otthi/tools/build_project.py
+          while IFS= read -r path; do
+            case "$path" in
+              games/otthi/app.js|games/otthi/src/module-order.json|games/otthi/index.html|games/otthi/sw.js|games/otthi/release-manifest.json) ;;
+              *) echo "Arquivo inesperado alterado: $path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only)
+      - name: Testar rotas, integridade e física existente
+        run: |
+          node --test tests/world-traffic-route-metrics.test.mjs tests/world-integrity.test.mjs tests/world-runtime-performance.test.mjs tests/world-query-budget.test.mjs
+      - name: Gravar apenas o motor e os metadados derivados
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- games/otthi/app.js games/otthi/src/module-order.json games/otthi/index.html games/otthi/sw.js games/otthi/release-manifest.json
+          git rm .github/workflows/world-traffic-build-branch.yml
+          git commit -m "build(world): regenerate runtime with cached route geometry"
+          git push origin HEAD:refs/heads/world-trafego-spawn-sem-recalculo-20261102
