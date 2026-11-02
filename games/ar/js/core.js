@@ -496,7 +496,15 @@ window.System = {
         }, 300); 
     },
 
-    resize: () => { if(window.System.canvas) { window.System.canvas.width = window.innerWidth; window.System.canvas.height = window.innerHeight; } },
+    resize: () => {
+        const canvas=window.System.canvas;if(!canvas)return;
+        const bounds=canvas.getBoundingClientRect?.();
+        const width=Math.max(1,Math.round(bounds?.width||window.innerWidth));
+        const height=Math.max(1,Math.round(bounds?.height||window.innerHeight));
+        if(canvas.width===width&&canvas.height===height)return;
+        canvas.width=width;canvas.height=height;
+        window.dispatchEvent(new Event('arcade:release-inputs'));
+    },
     msg: (t) => {
         const el = document.getElementById('game-msg');
         if(el) { el.innerText = t; el.style.animation = 'none'; el.offsetHeight; el.style.animation = 'popMsg 1.5s forwards'; }

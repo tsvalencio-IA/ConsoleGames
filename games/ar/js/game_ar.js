@@ -29,7 +29,7 @@ const Game={
   this.eyeY=1.8;this.crouched=false;this.handViewAnchor=null;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
   this.fireHeld=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
-  this.enemies=[];this.particles=[];this.elapsed=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
+  this.enemies=[];this.particles=[];this.elapsed=0;this.lastDamageAt=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
   this.resetOperation();if(this.training)this.resetTraining();
   this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
   this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
@@ -232,12 +232,20 @@ const Game={
    if(e.kind==='drone')e.y=5+Math.sin(this.elapsed*1.5+e.phase)*.8;
    this.updateEnemyTactics(e,dt);
    if(e.aim<=0){
-    if(!this.blocked(e.x,e.z,e.y)){const damage=this.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1);p.hp=Math.max(0,p.hp-damage);this.hurtFlash=.15;if(cover)this.stats.blocks++;}
+    if(!this.blocked(e.x,e.z,e.y)){
+     const protection=!this.net?window.ArcadePlaySettings?.get()?.combatProtection:'normal';
+     const multiplier=protection==='relaxed'?.4:protection==='resistant'?.65:1;
+     const damage=this.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1)*multiplier;
+     p.hp=Math.max(0,p.hp-damage);this.lastDamageAt=this.elapsed;this.hurtFlash=.15;if(cover)this.stats.blocks++;
+    }
     e.aim=this.level.aim+1.2;e.shot=.14;
    }
    e.shot=Math.max(0,(e.shot||0)-dt);
   }
   }
+  // Healing only after five seconds without damage, only for living solo players.
+  if(!this.net&&p.hp>0&&p.hp<100&&window.ArcadePlaySettings?.get()?.combatRecovery===true&&this.elapsed-this.lastDamageAt>=5)
+   p.hp=Math.min(100,p.hp+5*dt);
   for(const f of this.particles){f.life-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.z+=f.vz*dt;}this.particles=this.particles.filter(f=>f.life>0);
   const moving=this.autoWalking||(!cameraInput&&Math.hypot(mx,mz)>.15);
   if(moving&&this.elapsed-this.lastStepSound>(cover?.55:this.sprinting?.23:.36)){this.lastStepSound=this.elapsed;window.GameAudio?.effect('step',.55);}

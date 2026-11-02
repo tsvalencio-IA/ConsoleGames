@@ -4,7 +4,7 @@
  const id=window.CONSOLE_GAME_ID;
  if(!id)return;
  const key='thia:play-settings:v1:'+id;
- const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,adsSensitivity:1,combatAimAssist:true,combatFireMode:'manual',smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
+ const defaults={camera:'chase',distance:'far',difficulty:'normal',sensitivity:1,adsSensitivity:1,combatAimAssist:true,combatFireMode:'manual',combatProtection:'normal',combatRecovery:false,smoothing:.62,autoAccelerate:false,assist:true,steeringAssist:'light',controlSize:1,controlOpacity:.92,controlInset:8,effectsVolume:.7,engineVolume:.6,alertVolume:.7,quality:'auto'};
  let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
  const values={...defaults};
  const ranges={sensitivity:[.5,1.5],adsSensitivity:[.35,1.5],smoothing:[.35,.9],controlSize:[.9,1.15],controlOpacity:[.45,1],controlInset:[0,28],effectsVolume:[0,1],engineVolume:[0,1],alertVolume:[0,1]};
@@ -12,7 +12,7 @@
   if(!(name in defaults))return;
   if(name in ranges){const n=Number(value);if(!Number.isFinite(n))return;value=Math.max(ranges[name][0],Math.min(ranges[name][1],n))}
   else if(typeof defaults[name]==='boolean')value=value===true||value==='true';
-  else{const allowed={combatFireMode:['manual','simple'],camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],steeringAssist:['off','light','medium','high'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
+  else{const allowed={combatFireMode:['manual','simple'],combatProtection:['normal','resistant','relaxed'],camera:['chase','cockpit'],distance:['near','medium','far'],difficulty:['easy','normal','hard'],steeringAssist:['off','light','medium','high'],quality:['auto','low','high']}[name];if(!allowed?.includes(value))return}
   values[name]=value;
  }
  Object.entries(saved).forEach(([k,v])=>set(k,v));
@@ -47,6 +47,8 @@
   if(['drive','tennis','box_pro','ar_truck_sim'].includes(id))content+=select('difficulty','Dificuldade solo',[['easy','Treino'],['normal','Normal'],['hard','Desafio']]);
   if(id==='ar_truck_sim'&&logic?.weapons){content+='<h3>Equipamento de combate</h3><label class="play-option"><span>Arma</span><select data-combat-weapon>'+logic.weapons.map(m=>'<option value="'+m.id+'"'+(logic.gun?.id===m.id?' selected':'')+(logic.career.wins<m.requires?' disabled':'')+'>'+m.name+(m.requires?' · '+m.requires+' operação(ões) vencida(s)':'')+'</option>').join('')+'</select></label><p>Escolha a arma antes do primeiro setor. Dificuldade vale na próxima operação. Fuzil inicial; novas armas liberam com vitórias.</p>';}
   if(id!=='box_pro')content+=range('sensitivity','Sensibilidade',.5,1.5,.05);
+  if(id==='ar_truck_sim')content+='<h3>Sobrevivência (somente solo)</h3>'+select('combatProtection','Resistência',[['normal','Padrão'],['resistant','Reforçada · 35% menos dano'],['relaxed','Aventura · 60% menos dano']])+toggle('combatRecovery','Recuperar vida após 5 segundos sem receber dano')+'<p>Os ajustes de sobrevivência têm efeito imediato apenas em partidas solo. O multiplayer permanece com as regras originais.</p>';
+  if(id==='ar_truck_sim')content+='<h3>Tela e orientação</h3><p>O jogo segue automaticamente o aparelho quando a Rotação automática do Android está ativa. As opções abaixo tentam usar a tela cheia para orientar o jogo quando o navegador permite.</p><div class="war-orientation-actions"><button type="button" data-war-rotate="auto">SEGUIR CELULAR</button><button type="button" data-war-rotate="landscape">PAISAGEM</button><button type="button" data-war-rotate="portrait">RETRATO</button></div><p data-war-rotate-status role="status">Orientação automática disponível.</p>';
   if(id==='ar_truck_sim')content+='<h3>Mira e combate</h3>'+range('adsSensitivity','Sensibilidade ao mirar',.35,1.5,.05)+toggle('combatAimAssist','Reduzir a velocidade da mira sobre o adversário')+select('combatFireMode','Modo de disparo',[['manual','Avançado · botão de tiro'],['simple','Automático · ao passar a mira no adversário']])+'<p>Arraste a cena à direita para olhar. Use CORRER com o joystick para avançar mais rápido. Mirar e abaixar reduzem a velocidade. No modo automático, o tiro começa ao passar a mira sobre um adversário visível e alinhado. Obstáculos continuam bloqueando os tiros; a cadência, a recarga e a munição da arma são preservadas.</p>';
   if(id==='tennis')content+=range('smoothing','Suavização da raquete',.35,.9,.05);
   if(id==='drive')content+='<h3>Ajuda de direção</h3>'+select('steeringAssist','Auxiliar de direção',[['off','Desligado'],['light','Leve'],['medium','Médio'],['high','Forte']])+'<p>Reduz a saída nas curvas e ajuda perto da borda. Você continua livre para virar e mudar de faixa. A dificuldade solo muda os adversários. No modo câmera, o kart só acelera com as duas mãos detectadas.</p>'+toggle('autoAccelerate','Aceleração automática nos controles');
@@ -56,7 +58,17 @@
   dialog.innerHTML='<div class="play-panel"><header><div><small>SEU JEITO DE JOGAR</small><h2 id="play-settings-title">Ajustes do jogo</h2></div><button type="button" data-close aria-label="Fechar ajustes">✕</button></header><p>Preferências salvas neste dispositivo.'+(online?' A partida online continua em andamento.':'')+'</p>'+content+'<footer><button type="button" data-reset>Restaurar ajustes</button><button type="button" data-close>PRONTO</button></footer></div>';
   document.body.append(dialog);
   dialog.addEventListener('input',e=>{const el=e.target,k=el.dataset.setting;if(el.matches('[data-combat-weapon]')){if(!logic?.selectWeapon(el.value)){el.value=logic.gun.id;window.System?.msg('TROQUE A ARMA ANTES DO PRIMEIRO SETOR');}return;}if(el.matches('[data-airframe]')){logic?.selectAirframe(el.value);return;}if(!k)return;set(k,el.type==='checkbox'?el.checked:el.value);const out=el.closest('label')?.querySelector('output');if(out)out.value=String(values[k]);apply()});
-  dialog.addEventListener('click',e=>{const sound=e.target.closest('[data-studio-audio]');if(sound){const native=document.getElementById('studio-audio-switch');native?.click();sound.textContent='Sons extras: '+(native?.getAttribute('aria-pressed')==='false'?'desligados':'ligados');}if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
+  dialog.addEventListener('click',e=>{
+   const rotate=e.target.closest('[data-war-rotate]');
+   if(rotate&&id==='ar_truck_sim'){
+    e.preventDefault();const status=dialog.querySelector('[data-war-rotate-status]');
+    if(status)status.textContent='Solicitando orientação...';
+    if(!window.WarScreenOrientation){if(status)status.textContent='Orientação indisponível neste navegador.';return;}
+    const mode=rotate.dataset.warRotate;
+    window.WarScreenOrientation.request(mode).then(result=>{if(status?.isConnected)status.textContent=result.ok?(mode==='auto'?'Rotação automática restaurada.':'Orientação aplicada; controles adaptados à tela.'):'Giro bloqueado pelo navegador: ative Rotação automática no Android ou abra em tela cheia.';});
+    return;
+   }
+   const sound=e.target.closest('[data-studio-audio]');if(sound){const native=document.getElementById('studio-audio-switch');native?.click();sound.textContent='Sons extras: '+(native?.getAttribute('aria-pressed')==='false'?'desligados':'ligados');}if(e.target.closest('[data-close]'))close();if(e.target.closest('[data-reset]')){Object.assign(values,defaults);apply();close();open()}});
   dialog.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close()}if(e.key==='Tab'){const focus=[...dialog.querySelectorAll('button,select,input')],a=focus[0],b=focus.at(-1);if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus()}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus()}}});
   dialog.querySelector('[data-close]').focus();
  }
