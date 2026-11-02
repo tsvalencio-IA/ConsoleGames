@@ -127,3 +127,8 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
  .input-game-controls.combat-input:not(.hand-input) [data-control="auto-fire"]{right:calc(max(17px,env(safe-area-inset-right,0px)) + 62px)}
  .input-game-controls.combat-input:not(.hand-input) [data-control="reload"]{left:calc(50% - 28px)}
 }
+
+/* Narrow portrait: centred reload must not sit over the large movement stick. */
+@media(max-width:420px){
+ .input-game-controls.combat-input:not(.hand-input) [data-control="reload"]{bottom:160px}
+}
