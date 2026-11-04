@@ -1,0 +1,62 @@
+name: Verificar atualização pública do mundo
+on:
+  push:
+    paths:
+      - '.github/workflows/world-release-acceptance.yml'
+      - 'docs/evidence/perfil-iluminacao-20261104/release.json'
+  workflow_dispatch:
+    inputs:
+      origin:
+        description: Origem HTTPS da versão que será conferida
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: world-release-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  atualizacao-publica:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Conferir instalação HTTPS e preservação do progresso
+        env:
+          WORLD_RELEASE_ORIGIN: ${{ inputs.origin }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import json, os
+          release = json.loads(Path('docs/evidence/perfil-iluminacao-20261104/release.json').read_text())
+          origin = os.environ.get('WORLD_RELEASE_ORIGIN') or release.get('productionUrl') or release['previewUrl']
+          parsed = urlparse(origin)
+          assert parsed.scheme == 'https' and parsed.hostname and not parsed.username and not parsed.password
+          assert parsed.path in ('', '/') and not parsed.query and not parsed.fragment
+          origin = origin.rstrip('/')
+          manifest = json.loads(Path('games/otthi/release-manifest.json').read_text())
+          assert manifest['revision'] == release['revision']
+          source = Path('tests/world-update-public-browser.mjs').read_text()
+          marker = "const origin='https://otthi-world-campanha-teste.vercel.app'"
+          assert source.count(marker) == 1
+          # Configure only the disposable test origin; retain every assertion.
+          source = source.replace(marker, 'const origin=' + json.dumps(origin), 1)
+          Path('tests/.world-release-acceptance.mjs').write_text(source)
+          print('Public update acceptance:', origin, manifest['build'], manifest['revision'])
+          PY
+          node tests/.world-release-acceptance.mjs
+      - name: Salvar evidências da atualização
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-release-acceptance
+          path: test-results/world-update-public/
+          if-no-files-found: ignore

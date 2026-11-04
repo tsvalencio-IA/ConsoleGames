@@ -1,0 +1,22 @@
+{
+  "status": "Candidate: source and gameplay verified; public HTTPS update under investigation before production.",
+  "build": "705.28.15-preparo-iluminacao",
+  "revision": "7e1f365289361665",
+  "runtimeCommit": "2b62e70d39627a07392bdbec5f23ac51c93ab47b",
+  "previewUrl": "https://otthi-world-campanha-teste-180klpsjp-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_BW4rQA84RpcnF4JqCz29pe26ZzF9",
+  "unitTests": {"passed": 354, "failed": 0},
+  "checks": {
+    "cameraWorldRun": 41882818502,
+    "gameplayRun": 41882818269,
+    "publicHttpFilesMatch": ["release-manifest.json", "index.html", "sw.js"],
+    "publicHttpCacheControl": "no-store, max-age=0"
+  },
+  "browserObservation": "Cloud browser reported SHA-256 mismatch for index.html twice. Direct HTTPS checks, including the directory entry and version query, matched committed bytes. Do not waive the integrity check; verify the full public update independently before release.",
+  "worldHudUnchanged": true,
+  "physicalAndroidApproved": false,
+  "limitations": [
+    "Software WebGL measurements do not certify physical Android FPS.",
+    "Continuous draw load and a late-created boxing material remain outside this narrow lighting preparation correction."
+  ]
+}
