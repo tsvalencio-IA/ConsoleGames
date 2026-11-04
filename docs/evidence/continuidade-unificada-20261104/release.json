@@ -1,5 +1,5 @@
 {
-  "status": "Public acceptance passed; production CI finalization test repair being validated.",
+  "status": "Accepted: unified runtime published, public training/integrity/update passed, final production verification passed.",
   "build": "705.28.14-continuacao-unificada",
   "revision": "86031f0cfb054f68",
   "assetVersion": 70650,
@@ -92,7 +92,40 @@
     "fix": "Wait for the actual final-result UI, then retain score >=85%, next-level unlock and stopped-camera assertions.",
     "localPassed": true,
     "localHits": 28,
-    "applicationBytesChanged": false
+    "applicationBytesChanged": false,
+    "verifiedInCI": 41835362112
   },
-  "worldHudUnchanged": true
+  "worldHudUnchanged": true,
+  "verifiedRepositorySource": "4d30e90af7261a0cf973bd48ce2cfd91e24b578f",
+  "productionChecks": [
+    {
+      "id": 41832923007,
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "name": "camera/world",
+      "conclusion": "success"
+    },
+    {
+      "id": 41832923038,
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "name": "scenery",
+      "conclusion": "success"
+    },
+    {
+      "id": 41832923032,
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "name": "Android download",
+      "conclusion": "success"
+    },
+    {
+      "id": 41835362112,
+      "sha": "4d30e90af7261a0cf973bd48ce2cfd91e24b578f",
+      "name": "gameplay with final dance observation repaired",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/41835362112"
+    }
+  ],
+  "finalGameplayRun": 41835362112,
+  "applicationTreeSameAfterTestRepair": true,
+  "publicAcceptanceComplete": true,
+  "physicalAndroidApproved": false
 }
