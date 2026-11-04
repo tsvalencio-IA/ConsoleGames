@@ -1,5 +1,5 @@
 {
-  "status": "Published: lighting preparation correction; final public-origin update verification pending.",
+  "status": "Accepted: lighting preparation correction published; source, gameplay, full public integrity and production-origin recovery verified.",
   "build": "705.28.15-preparo-iluminacao",
   "revision": "7e1f365289361665",
   "runtimeCommit": "2b62e70d39627a07392bdbec5f23ac51c93ab47b",
@@ -23,7 +23,11 @@
     "previewPublicAcceptanceRun": 41885392582,
     "previewPublicAcceptanceConclusion": "success",
     "previewPublicIntegrityFiles": 111,
-    "previewPublicIntegrityFailures": 0
+    "previewPublicIntegrityFailures": 0,
+    "productionPublicAcceptanceRun": 41886464076,
+    "productionPublicAcceptanceConclusion": "success",
+    "productionHttpEvidence": "production-http-final.json",
+    "historicalHeaderExpectationFailure": "production-http.json"
   },
   "browserObservation": "Cloud browser reported an index hash mismatch; independent Chromium public HTTPS recovery passed the unchanged integrity checks and preserved 4321 synthetic coins, Thiago/Luna/Liz and another local session. Direct HTTPS verification passed all 111 release hashes. Cloud local preview also lacked a WebGL context; source CI independently passed the real bundled Three world and all functional flows. No physical Android session was inspected.",
   "worldHudUnchanged": true,

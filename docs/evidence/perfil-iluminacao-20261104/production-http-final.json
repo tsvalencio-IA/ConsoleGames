@@ -1,0 +1,45 @@
+{
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "checkedAt": "2026-11-04T18:21:10.876466+00:00",
+  "build": "705.28.15-preparo-iluminacao",
+  "revision": "7e1f365289361665",
+  "files": [
+    {
+      "file": "release-manifest.json",
+      "status": 200,
+      "matches": true,
+      "bytes": 11596,
+      "sha256": "238219177db393a38f47920a78d9870d4d892aa298833740663bce43a9b72afd",
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "matches": true,
+      "bytes": 15654,
+      "sha256": "5b970970f3114062e3c2798777f4dd2b3586dfdabf9ad0eece61e85515e4c6f6",
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "file": "sw.js",
+      "status": 200,
+      "matches": true,
+      "bytes": 14687,
+      "sha256": "1de205607a716689e6924bfc827e0bd9897601785f8d5ccf3d24f38314bb40ad",
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "file": "app.js",
+      "status": 200,
+      "matches": true,
+      "bytes": 2223068,
+      "sha256": "bc4f3ef48da30163e59462b46a178741aa156985d88930ebbcc7f591dc6e2af3",
+      "cacheControl": "public, max-age=0, must-revalidate"
+    }
+  ],
+  "passed": true,
+  "policy": "Release metadata, entry HTML and service worker require no-store. The versioned app.js requires revalidation and exact committed bytes.",
+  "versionedAppUrl": "app.js?v=70651&release=world-20261028-3",
+  "previousReport": "production-http.json",
+  "expectationCorrection": "The initial check incorrectly required no-store for app.js, which intentionally uses versioned URLs and public max-age=0 must-revalidate. No product headers or integrity assertions were relaxed or changed."
+}
