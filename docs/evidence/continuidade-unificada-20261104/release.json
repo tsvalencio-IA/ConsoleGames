@@ -1,5 +1,5 @@
 {
-  "status": "Local acceptance passed; integrated source CI and public release pending.",
+  "status": "Public acceptance passed; production CI finalization test repair being validated.",
   "build": "705.28.14-continuacao-unificada",
   "revision": "86031f0cfb054f68",
   "assetVersion": 70650,
@@ -36,5 +36,63 @@
     "Other ChatGPT conversation was inaccessible via context retrieval and direct link; source history was inspected instead.",
     "Training test uses explicit sensor fixtures. Actual ML recognition is checked separately by existing CI tests.",
     "Physical Android smoothness, body tracking accuracy and two-device multiplayer are not certified."
-  ]
+  ],
+  "runtimeSource": "957664b4912e69417d621af9ff2786193fad5658",
+  "sourceTree": "c86b57b4acd19d2ae6ec79c2eadde5424b12279b",
+  "gamesTree": "46442dcd3ab31fb2c0a57bec2b37a34fc55e6a23",
+  "deployment": "dpl_5Eqe4HThkpoQwvoR7BSCVb7MLtWB",
+  "alias": "https://otthi-world-campanha-teste.vercel.app",
+  "sourceRuns": [
+    {
+      "id": 41830918657,
+      "branch": "performance-gravacoes-20261027",
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/41830918657"
+    },
+    {
+      "id": 41830918618,
+      "branch": "performance-gravacoes-20261027",
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/41830918618"
+    },
+    {
+      "id": 41830918977,
+      "branch": "performance-gravacoes-20261027",
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/41830918977"
+    },
+    {
+      "id": 41830918764,
+      "branch": "performance-gravacoes-20261027",
+      "sha": "957664b4912e69417d621af9ff2786193fad5658",
+      "conclusion": "success",
+      "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/41830918764"
+    }
+  ],
+  "public": {
+    "training": true,
+    "warResourceBytes": 31,
+    "actualWorldUpdate": true,
+    "preservedCoins": 4321,
+    "preservedFamily": [
+      "thiago",
+      "luna",
+      "liz"
+    ],
+    "otherSessionPreserved": true,
+    "originalApkPreserved": true
+  },
+  "productionDanceTestRepair": {
+    "failedRun": 41832922890,
+    "failedJob": 126584388610,
+    "failure": "28/28 chart completed; result.passed was not set until the next venue RAF finalized the result.",
+    "fix": "Wait for the actual final-result UI, then retain score >=85%, next-level unlock and stopped-camera assertions.",
+    "localPassed": true,
+    "localHits": 28,
+    "applicationBytesChanged": false
+  },
+  "worldHudUnchanged": true
 }

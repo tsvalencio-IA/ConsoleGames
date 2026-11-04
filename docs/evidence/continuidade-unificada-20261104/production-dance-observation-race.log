@@ -1,0 +1,21 @@
+Run 41832922890, job 126584388610: chart.done was observed before the venue finalized records/UI.
+2026-11-04T12:53:31.4879964Z node:internal/modules/run_main:123
+2026-11-04T12:53:31.4880378Z     triggerUncaughtException(
+2026-11-04T12:53:31.4880607Z     ^
+2026-11-04T12:53:31.4880697Z 
+2026-11-04T12:53:31.4883116Z AssertionError [ERR_ASSERTION]: {"mode":"body-camera","phase":"done","level":0,"bpm":120,"time":28.007100000000005,"end":28,"score":3975,"hits":28,"misses":0,"combo":28,"bestCombo":28,"total":28,"accuracy":1,"done":true,"calibrated":true,"calibration":1,"index":28,"group":6,"repetition":4,"beatInBar":1,"move":"left","label":"PASSO PARA A ESQUERDA","next":"","progress":0.00710000000000582,"feedback":"Música concluída","countdownUntil":23168.900000000023,"lastPoseAt":48935.30000000002}
+2026-11-04T12:53:31.4884156Z     at file:///home/runner/work/ConsoleGames/ConsoleGames/tests/world-body-dance-browser.mjs:16:73 {
+2026-11-04T12:53:31.4884432Z   generatedMessage: false,
+2026-11-04T12:53:31.4884575Z   code: 'ERR_ASSERTION',
+2026-11-04T12:53:31.4884707Z   actual: undefined,
+2026-11-04T12:53:31.4884832Z   expected: true,
+2026-11-04T12:53:31.4884948Z   operator: '==',
+2026-11-04T12:53:31.4885062Z   diff: 'simple'
+2026-11-04T12:53:31.4885183Z }
+2026-11-04T12:53:31.4885240Z 
+2026-11-04T12:53:31.4885292Z Node.js v22.23.4
+2026-11-04T12:53:31.5031564Z ##[error]Process completed with exit code 1.
+2026-11-04T12:53:31.5072884Z ##[group]Run node tests/playable-smoke.mjs
+2026-11-04T12:53:31.5073090Z [36;1mnode tests/playable-smoke.mjs[0m
+2026-11-04T12:53:31.5089333Z shell: /usr/bin/bash -e {0}
+2026-11-04T12:53:31.5089485Z ##[endgroup]

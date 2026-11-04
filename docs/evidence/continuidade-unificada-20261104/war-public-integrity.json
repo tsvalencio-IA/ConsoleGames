@@ -1,0 +1,170 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.14-continuacao-unificada",
+  "checkedAt": "2026-11-04T12:54:44.289Z",
+  "resources": [
+    {
+      "path": "games/ar/index.html",
+      "bytes": 26842,
+      "sha256": "c412a3da41fede1c373fa8c302e0abe1b40935dab2c1fd0e0c0cbef48250088c"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 4950,
+      "sha256": "6346290fb78acb1f6838a92d36ed253344918f7637dacf2bb5b8d9e26d64a153"
+    },
+    {
+      "path": "games/ar/js/core.js",
+      "bytes": 29421,
+      "sha256": "617e146096a08a4b994f6ed320d091beabb57f85ff64099ee9872ad2087cea1e"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 34756,
+      "sha256": "7a0dd5f8cf971e1063fef73dcf256d2bc2f2cbefdc4a9c92c3e44b8057944031"
+    },
+    {
+      "path": "games/ar/body-controls.js",
+      "bytes": 7972,
+      "sha256": "b8313f10fc5af734f20df7426906d33f7e438bc30f09c1594791ed9d2b966d9d"
+    },
+    {
+      "path": "games/ar/body-tracker-worker.js",
+      "bytes": 1251,
+      "sha256": "ac2a1bed436a688d0c9fd9cd2c6c5f58fccd411c7de8a5c6b0aaf0807f45978b"
+    },
+    {
+      "path": "games/ar/practice-controls.js",
+      "bytes": 2154,
+      "sha256": "96dede5805d46e7b650805de218202dc8490464acdf38cfb9f96413aa1918832"
+    },
+    {
+      "path": "games/ar/war-screen-orientation.js",
+      "bytes": 1633,
+      "sha256": "ca64543048113671526e9e02d62b83fcfa29b232e0c226c9c50bf13396e53604"
+    },
+    {
+      "path": "games/ar/play-settings.js",
+      "bytes": 12662,
+      "sha256": "767685e9c99b54903b280408ecb64c4138567770d4c012c88f72f6b710c67c60"
+    },
+    {
+      "path": "games/ar/play-settings.css",
+      "bytes": 8107,
+      "sha256": "f17e606d10b39ad261c1cbeffec322cc3ca2ccb9b2fdf489daf78b28b1f5a976"
+    },
+    {
+      "path": "games/ar/hand-controls.js",
+      "bytes": 26401,
+      "sha256": "f90295c8598099242abdcbe3eec334696a00aed60d2c639f3265d0cdf01087fc"
+    },
+    {
+      "path": "games/ar/object-flow.js",
+      "bytes": 3300,
+      "sha256": "fd41108100a633bba1c196ea62326663354880bdda11843703ac34af6181a147"
+    },
+    {
+      "path": "games/ar/object-tracker.js",
+      "bytes": 12438,
+      "sha256": "7a12f278fb40c083528cf6815b9ba5cb374efca6ea468cd6c8d6dd94362d025f"
+    },
+    {
+      "path": "games/ar/object-tracker-worker.js",
+      "bytes": 1060,
+      "sha256": "f03fe31c144e52f3c1feee6597866c7cc8334bbc01b804e837cf59f1873faf88"
+    },
+    {
+      "path": "games/ar/object-aim.js",
+      "bytes": 3145,
+      "sha256": "b3222925075e74aa5447b1c0fd596381c07699ef09448d38d39558a571109578"
+    },
+    {
+      "path": "games/ar/object-training.js",
+      "bytes": 12790,
+      "sha256": "3e45a532c3c30bb08ed865c3f98466cd38cfdf8b1bb54f4718b80632ca21d81e"
+    },
+    {
+      "path": "games/ar/object-views.js",
+      "bytes": 2574,
+      "sha256": "06a8342318b8e771d8eb11f6303227ce58ec1db747ea963b2fd783989124ff85"
+    },
+    {
+      "path": "games/ar/object-camera-registration.js",
+      "bytes": 8028,
+      "sha256": "7ad50e06aaa174c7261d1458ae38de5a28b430a84e585006c8f01f4a3d166a99"
+    },
+    {
+      "path": "games/ar/hand-tracker-worker.js",
+      "bytes": 2674,
+      "sha256": "01142f7fb63a927ebb183701186ba5be8468bcc8dc62bb51d54ff70946b1aa37"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 15955,
+      "sha256": "794266dce86a5db4869a870cef2f6b2b9724a76a52b880cbad1ecc97129ea79e"
+    },
+    {
+      "path": "games/ar/world-renderer.js",
+      "bytes": 48932,
+      "sha256": "24c8997d75cbc339d3e8a793fece01cc7dad2cda31895360a5559453d31d7cd6"
+    },
+    {
+      "path": "games/ar/multiplayer.js",
+      "bytes": 13696,
+      "sha256": "0cf719fc45cd5de40c19df98f8ac8ff1dfe60bf4232f13a7ae64a8b38c641368"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 18206,
+      "sha256": "a9a6de0827a20b3aafbf329318c6ffdb2ab7315d11e467eacd6d82c503b3574b"
+    },
+    {
+      "path": "games/ar/manifest.json",
+      "bytes": 644,
+      "sha256": "eb3292d13536699bcb078d3152f1ef4a150ff66eefeea05c82c2e7a2a69c85fb"
+    },
+    {
+      "path": "games/ar/vendor/body-tracker/pose_landmarker_lite.task",
+      "bytes": 5777746,
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/hand_landmarker.task",
+      "bytes": 7819105,
+      "sha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_bundle.mjs",
+      "bytes": 137735,
+      "sha256": "40f4123dfcd75cfa58add046919cc6f52fde66f009ff582997c09ba54c6ba27c"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_internal.js",
+      "bytes": 204284,
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_internal.wasm",
+      "bytes": 9574032,
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_nosimd_internal.js",
+      "bytes": 204137,
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "path": "games/ar/vendor/hand-tracker/vision_wasm_nosimd_internal.wasm",
+      "bytes": 9448638,
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    }
+  ],
+  "originalApkPreserved": {
+    "bytes": 57991,
+    "sha256": "8ea2f38c966ee3b938dab2362569ef0224488ab5748c6e9ba1accb0336c0fc49"
+  },
+  "limits": [
+    "Read-only production byte verification; not physical camera or Android installation."
+  ]
+}

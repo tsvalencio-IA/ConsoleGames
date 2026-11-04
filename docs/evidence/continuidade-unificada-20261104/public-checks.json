@@ -1,0 +1,20 @@
+[
+  {
+    "name": "training",
+    "script": "tests/war-training-browser.mjs",
+    "exitCode": 0,
+    "seconds": 40.39
+  },
+  {
+    "name": "war-integrity",
+    "script": "tests/war-public-integrity.mjs",
+    "exitCode": 0,
+    "seconds": 61.37
+  },
+  {
+    "name": "world-update",
+    "script": "tests/world-update-public-browser.mjs",
+    "exitCode": 0,
+    "seconds": 54.41
+  }
+]
