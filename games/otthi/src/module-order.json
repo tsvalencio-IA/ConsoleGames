@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.14-continuacao-unificada",
+  "build": "705.28.15-preparo-iluminacao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a2802dd14a6393acd5fe4adf3a93e40cc9c2d78b9c423b3690bfaf826f52c7a5"
+      "sha256Body": "eeb37c8d1e6bf8fd0551ee1e0619ad23580dac1bda07a9a38526290e7ddd113b"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "9e1ee93ebaed08c48d204953fd8f7af96ed53de934ea98da16a74c391a5b524e"
+      "sha256Body": "f43fe47ac8bcd3fb98a862a07383a7b44614ee1eabc577f5f95db7e23531fbdb"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -599,7 +599,7 @@
       "description": "Luzes de alcance finito fora da imagem e cálculo físico de luz zero",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "c5d0baf7c94aac33eb4ff50620c0e85a5459a85e476b8c5cf704246112706c4e"
+      "sha256Body": "3d41ce0a7fe0dcbcf707387f57b5188f5eb1f4e05451afb9645015f0b9c04796"
     }
   ],
   "styles": [

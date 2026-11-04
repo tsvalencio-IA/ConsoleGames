@@ -1,0 +1,5673 @@
+{
+  "frame": {
+    "samples": 134,
+    "mean": 146.8119402985078,
+    "p50": 140.5999999998603,
+    "p95": 284.80000000004657,
+    "max": 375.30000000004657,
+    "over100": 106,
+    "over250": 17
+  },
+  "work": {
+    "samples": 135,
+    "mean": 45.130370370360716,
+    "p50": 33.60000000009313,
+    "p95": 174.0999999998603,
+    "max": 365.80000000004657,
+    "over100": 7,
+    "over250": 4
+  },
+  "longTasks": {
+    "samples": 13,
+    "mean": 168.46153846153845,
+    "p50": 175,
+    "p95": 367,
+    "max": 367,
+    "over100": 7,
+    "over250": 4
+  },
+  "renderMs": {
+    "samples": 134,
+    "mean": 22.557462686561603,
+    "p50": 11.199999999953434,
+    "p95": 137.79999999981374,
+    "max": 332.9000000001397,
+    "over100": 7,
+    "over250": 4
+  },
+  "matrixMs": {
+    "samples": 134,
+    "mean": 3.3582089552308307,
+    "p50": 3.2000000001862645,
+    "p95": 4.2000000001862645,
+    "max": 7.899999999906868,
+    "over100": 0,
+    "over250": 0
+  },
+  "details": [
+    {
+      "ms": 9.199999999953434,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 440,
+      "triangles": 553681,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 444,
+      "triangles": 553745,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.199999999953434,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 425,
+      "triangles": 556615,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 431,
+      "triangles": 564119,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 411,
+      "triangles": 557549,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 6.800000000046566,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 411,
+      "triangles": 557549,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 418,
+      "triangles": 557599,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 425,
+      "triangles": 565991,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 433,
+      "triangles": 566051,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 437,
+      "triangles": 566063,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 437,
+      "triangles": 566063,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.899999999906868,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 437,
+      "triangles": 566075,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.800000000046566,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 439,
+      "triangles": 566099,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.900000000139698,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 438,
+      "triangles": 566087,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.299999999813735,
+      "beforePrograms": 74,
+      "afterPrograms": 74,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 440,
+      "triangles": 566099,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 144.19999999995343,
+      "beforePrograms": 74,
+      "afterPrograms": 75,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 449,
+      "triangles": 566603,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 282.80000000004657,
+      "beforePrograms": 75,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 464,
+      "triangles": 576837,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.799999999813735,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 465,
+      "triangles": 597401,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 15.099999999860302,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 466,
+      "triangles": 597413,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.300000000046566,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 468,
+      "triangles": 597437,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.099999999860302,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 470,
+      "triangles": 605781,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.399999999906868,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 474,
+      "triangles": 605817,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 477,
+      "triangles": 605865,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.400000000139698,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 479,
+      "triangles": 605889,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 15.600000000093132,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 482,
+      "triangles": 605965,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.199999999953434,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 486,
+      "triangles": 610163,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 487,
+      "triangles": 610165,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.699999999953434,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 489,
+      "triangles": 614349,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.899999999906868,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 489,
+      "triangles": 614385,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.899999999906868,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 492,
+      "triangles": 614411,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.099999999860302,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 493,
+      "triangles": 614437,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.199999999953434,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 494,
+      "triangles": 614439,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 495,
+      "triangles": 614441,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.800000000046566,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 491,
+      "triangles": 616382,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.099999999860302,
+      "beforePrograms": 80,
+      "afterPrograms": 80,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 495,
+      "triangles": 616466,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 332.9000000001397,
+      "beforePrograms": 80,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 494,
+      "triangles": 616998,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.899999999906868,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 497,
+      "triangles": 617034,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.400000000139698,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 499,
+      "triangles": 617094,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 506,
+      "triangles": 617995,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 505,
+      "triangles": 618031,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.699999999953434,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 507,
+      "triangles": 618055,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 508,
+      "triangles": 618067,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.5,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 514,
+      "triangles": 618139,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 520,
+      "triangles": 618213,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.100000000093132,
+      "beforePrograms": 81,
+      "afterPrograms": 81,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 525,
+      "triangles": 618291,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 253.60000000009313,
+      "beforePrograms": 81,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 530,
+      "triangles": 618677,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.800000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 507,
+      "triangles": 617297,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.099999999860302,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 512,
+      "triangles": 617357,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.599999999860302,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 515,
+      "triangles": 617389,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 14.199999999953434,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 520,
+      "triangles": 617947,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.300000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 525,
+      "triangles": 617997,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 526,
+      "triangles": 618009,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.199999999953434,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 525,
+      "triangles": 617997,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.900000000139698,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 526,
+      "triangles": 618009,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.200000000186265,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 532,
+      "triangles": 618071,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.200000000186265,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 539,
+      "triangles": 618155,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.400000000139698,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 545,
+      "triangles": 618223,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 547,
+      "triangles": 618247,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.899999999906868,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 554,
+      "triangles": 618331,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.699999999953434,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 559,
+      "triangles": 618391,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.600000000093132,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 567,
+      "triangles": 618487,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.700000000186265,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 573,
+      "triangles": 614237,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 578,
+      "triangles": 610121,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 17.399999999906868,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 587,
+      "triangles": 610229,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.800000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 594,
+      "triangles": 610313,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.299999999813735,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 597,
+      "triangles": 610339,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.800000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 597,
+      "triangles": 610339,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.5,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 598,
+      "triangles": 588563,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.700000000186265,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 602,
+      "triangles": 539661,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.700000000186265,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 606,
+      "triangles": 539709,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.099999999860302,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 614,
+      "triangles": 539785,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 622,
+      "triangles": 539871,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.600000000093132,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 624,
+      "triangles": 539885,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.100000000093132,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 634,
+      "triangles": 570649,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 636,
+      "triangles": 574833,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.800000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 639,
+      "triangles": 579029,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.900000000139698,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 645,
+      "triangles": 579091,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 651,
+      "triangles": 579151,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 656,
+      "triangles": 587531,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.5,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 648,
+      "triangles": 583775,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 652,
+      "triangles": 583803,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.300000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 654,
+      "triangles": 583817,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.300000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 649,
+      "triangles": 583501,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.300000000046566,
+      "beforePrograms": 82,
+      "afterPrograms": 82,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 649,
+      "triangles": 583501,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 186.89999999990687,
+      "beforePrograms": 82,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 653,
+      "triangles": 583537,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 655,
+      "triangles": 583561,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.600000000093132,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 655,
+      "triangles": 583561,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.399999999906868,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 651,
+      "triangles": 583523,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.599999999860302,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 656,
+      "triangles": 583583,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.5,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 651,
+      "triangles": 577935,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.400000000139698,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 658,
+      "triangles": 578019,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.400000000139698,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 658,
+      "triangles": 578019,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.599999999860302,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 664,
+      "triangles": 578231,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.300000000046566,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 673,
+      "triangles": 638515,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 677,
+      "triangles": 650179,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.5,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 687,
+      "triangles": 650279,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.899999999906868,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 698,
+      "triangles": 655017,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 7.899999999906868,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 700,
+      "triangles": 655041,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 14.100000000093132,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 707,
+      "triangles": 659325,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.199999999953434,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 712,
+      "triangles": 659385,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.300000000046566,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 714,
+      "triangles": 659409,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.599999999860302,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 718,
+      "triangles": 659469,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.699999999953434,
+      "beforePrograms": 83,
+      "afterPrograms": 83,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 730,
+      "triangles": 660155,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 297.39999999990687,
+      "beforePrograms": 83,
+      "afterPrograms": 84,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 735,
+      "triangles": 660211,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 15.199999999953434,
+      "beforePrograms": 84,
+      "afterPrograms": 84,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 747,
+      "triangles": 661367,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 84,
+      "afterPrograms": 84,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 746,
+      "triangles": 661355,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.399999999906868,
+      "beforePrograms": 84,
+      "afterPrograms": 84,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 749,
+      "triangles": 661391,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.899999999906868,
+      "beforePrograms": 84,
+      "afterPrograms": 84,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 752,
+      "triangles": 661511,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 137.79999999981374,
+      "beforePrograms": 84,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 759,
+      "triangles": 661561,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.900000000139698,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 751,
+      "triangles": 661181,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 14.400000000139698,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 745,
+      "triangles": 660799,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.099999999860302,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 750,
+      "triangles": 660859,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.300000000046566,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 755,
+      "triangles": 660919,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 15,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 757,
+      "triangles": 660943,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.100000000093132,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 759,
+      "triangles": 660967,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.600000000093132,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 763,
+      "triangles": 661015,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.899999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 771,
+      "triangles": 661111,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 11.899999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 773,
+      "triangles": 661135,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 773,
+      "triangles": 661135,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.800000000046566,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 780,
+      "triangles": 661219,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 10.5,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 788,
+      "triangles": 661305,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 788,
+      "triangles": 661305,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.600000000093132,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 792,
+      "triangles": 661353,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.299999999813735,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 794,
+      "triangles": 661367,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.399999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 794,
+      "triangles": 661367,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.100000000093132,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 795,
+      "triangles": 661379,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.400000000139698,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 796,
+      "triangles": 661391,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9.399999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 798,
+      "triangles": 661415,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 798,
+      "triangles": 661415,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 14.599999999860302,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 801,
+      "triangles": 661451,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 803,
+      "triangles": 661475,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 13.300000000046566,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 795,
+      "triangles": 660561,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.400000000139698,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 797,
+      "triangles": 660585,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 85,
+      "afterPrograms": 85,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 797,
+      "triangles": 660585,
+      "preparation": {
+        "models": 44,
+        "ms": 5239
+      },
+      "scenePreparation": {
+        "ms": 1142,
+        "programs": 40
+      }
+    }
+  ],
+  "preparation": {
+    "models": 44,
+    "ms": 5239
+  },
+  "scenePreparation": {
+    "ms": 1142,
+    "programs": 40
+  },
+  "catalog": 44,
+  "npcs": 138,
+  "trafficModels": 44,
+  "quality": "low",
+  "family": {
+    "ready": true,
+    "home": {
+      "x": -38,
+      "z": -24
+    },
+    "actors": [
+      {
+        "id": "thiago",
+        "x": 2.2676175456390246,
+        "z": 123.44840644016377,
+        "bones": 24,
+        "vertices": 164562,
+        "uniqueVertices": 31956,
+        "drawCalls": 1
+      },
+      {
+        "id": "thamis",
+        "x": 0.502819882356571,
+        "z": 121.02281756049015,
+        "bones": 25,
+        "vertices": 226968,
+        "uniqueVertices": 43480,
+        "drawCalls": 1
+      },
+      {
+        "id": "luna",
+        "x": 1.621065279634166,
+        "z": 120.75443866514352,
+        "bones": 13,
+        "vertices": 205176,
+        "uniqueVertices": 46812,
+        "drawCalls": 1
+      },
+      {
+        "id": "liz",
+        "x": 2.739310676911761,
+        "z": 120.4860597697969,
+        "bones": 13,
+        "vertices": 209400,
+        "uniqueVertices": 47082,
+        "drawCalls": 1
+      }
+    ],
+    "progress": {
+      "party": {
+        "controller": "thiago",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ]
+      },
+      "toy": "ball",
+      "deliveries": {
+        "luna": 0,
+        "liz": 0
+      },
+      "flags": {}
+    },
+    "party": {
+      "owner": "live-profile-local",
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "thamis",
+        "luna",
+        "liz"
+      ]
+    },
+    "ride": null,
+    "seated": [],
+    "authority": true,
+    "ball": null
+  },
+  "game": {
+    "running": true,
+    "paused": false,
+    "currentHouse": null,
+    "cameraMode": "openworld",
+    "player": {
+      "x": 2.2676175456390246,
+      "y": 0,
+      "z": 123.44840644016377,
+      "vx": 1.3229999999999997,
+      "vy": 0,
+      "vz": 5.512499999999998,
+      "facing": 0.23554498072086336,
+      "grounded": true,
+      "vehicle": false,
+      "sitUntil": 0,
+      "lastGrounded": 48314.09999999986,
+      "lastSafeX": 1.760467545639024,
+      "lastSafeY": 0,
+      "lastSafeZ": 121.33528144016373,
+      "lastSafeAt": 47883,
+      "invalidSince": 0,
+      "jumpBuffer": 0,
+      "airJumpAvailable": true,
+      "lastJumpWasAir": false,
+      "attackUntil": 0,
+      "damageUntil": 0,
+      "shieldUntil": 0,
+      "skillDashUntil": 0,
+      "scaleMode": "normal",
+      "crouched": false,
+      "spinUntil": 0,
+      "preVehicleAbilities": null,
+      "hornUntil": 0,
+      "emoteUntil": 0,
+      "emoteType": "",
+      "emoteSeq": 0,
+      "boating": false,
+      "transit": {
+        "mode": "",
+        "busId": "",
+        "requestStop": false,
+        "metroUntil": 0
+      },
+      "boat": {
+        "heading": 0,
+        "speed": 0,
+        "steerVisual": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "car": {
+        "id": "",
+        "kind": "car",
+        "label": "Carro",
+        "heading": 3.141592653589793,
+        "speed": 0,
+        "steerVisual": 0,
+        "drift": 0,
+        "_prevSpeed": 0,
+        "turboUntil": 0,
+        "sirenActive": false,
+        "utilityCooldownUntil": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerUids": [],
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "recoveryReason": "",
+      "swimming": false,
+      "nextRecoveryScanAt": 48588.5
+    },
+    "objects": {
+      "houses": 32,
+      "npcs": 138,
+      "enemies": 0,
+      "interactables": 846,
+      "builds": 0,
+      "vehicles": 23,
+      "buses": 7,
+      "metroStations": 7,
+      "policeCars": 2,
+      "resources": 72,
+      "school": true,
+      "policeStation": true,
+      "mine": true,
+      "well": true
+    }
+  },
+  "render": {
+    "calls": 797,
+    "triangles": 660585
+  },
+  "shaderPrograms": [
+    {
+      "id": 0,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 74,
+      "initial": true
+    },
+    {
+      "id": 1,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 8,
+      "initial": true
+    },
+    {
+      "id": 2,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 11,
+      "initial": true
+    },
+    {
+      "id": 3,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 12,
+      "initial": true
+    },
+    {
+      "id": 4,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,true,1024,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 5,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 669,
+      "initial": true
+    },
+    {
+      "id": 6,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 22,
+      "initial": true
+    },
+    {
+      "id": 7,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,true,false,,0,true,,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 35,
+      "initial": true
+    },
+    {
+      "id": 8,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 9,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 10,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 117,
+      "initial": true
+    },
+    {
+      "id": 11,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 12,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 14,
+      "initial": true
+    },
+    {
+      "id": 13,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 14,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 15,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 16,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 36,
+      "initial": true
+    },
+    {
+      "id": 17,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 34,
+      "initial": true
+    },
+    {
+      "id": 18,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 19,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 118,
+      "initial": true
+    },
+    {
+      "id": 20,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 21,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 22,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 23,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 32,
+      "initial": true
+    },
+    {
+      "id": 24,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 25,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 26,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 27,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,true,false,true,false,false,false,false,false,false,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 28,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 29,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 30,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,true,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 31,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,true,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 32,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,false,,false,true,false,,0,true,,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 33,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 34,
+      "cacheKey": "points,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,true,false,,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 35,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 55,
+      "initial": true
+    },
+    {
+      "id": 36,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 56,
+      "initial": true
+    },
+    {
+      "id": 37,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 87,
+      "initial": true
+    },
+    {
+      "id": 38,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 39,
+      "initial": true
+    },
+    {
+      "id": 39,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.18,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 7,
+      "initial": true
+    },
+    {
+      "id": 40,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,0,false,0,false,true,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 41,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 42,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": true
+    },
+    {
+      "id": 43,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 44,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 45,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 46,
+      "cacheKey": "basic,highp,true,true,3001,true,true,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,0,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 47,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,shader=>{shader.uniforms.uCoastTime={value:0};shader.vertexShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`float dx=.045*.055*cos(position.x*.055+position.z*.12+uCoastTime*1.35);float dz=.045*.12*cos(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*.29*cos(position.z*.29+uCoastTime*2.0)+.025*.43*cos(position.z*.43-position.x*.028+uCoastTime*2.4);vec3 objectNormal=normalize(vec3(-dx,1.0,-dz));`).replace('#include <begin_vertex>',`vec3 transformed=vec3(position);transformed.y+=.045*sin(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*sin(position.z*.29+uCoastTime*2.0)+.025*sin(position.z*.43-position.x*.028+uCoastTime*2.4);vCoastPosition=transformed;`);shader.fragmentShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>\n float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 48,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.1,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": true
+    },
+    {
+      "id": 49,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 50,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": true
+    },
+    {
+      "id": 51,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 52,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 157,
+      "initial": true
+    },
+    {
+      "id": 53,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 54,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 13,
+      "initial": true
+    },
+    {
+      "id": 55,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 26,
+      "initial": true
+    },
+    {
+      "id": 56,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 57,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 58,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 59,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 22,
+      "initial": true
+    },
+    {
+      "id": 60,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 32,
+      "initial": true
+    },
+    {
+      "id": 61,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 62,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,true,1024,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 63,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 64,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 65,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 66,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 7,
+      "initial": true
+    },
+    {
+      "id": 67,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 68,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 5,
+      "initial": true
+    },
+    {
+      "id": 69,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,shader=>{shader.uniforms.uCoastTime={value:0};shader.vertexShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`float dx=.045*.055*cos(position.x*.055+position.z*.12+uCoastTime*1.35);float dz=.045*.12*cos(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*.29*cos(position.z*.29+uCoastTime*2.0)+.025*.43*cos(position.z*.43-position.x*.028+uCoastTime*2.4);vec3 objectNormal=normalize(vec3(-dx,1.0,-dz));`).replace('#include <begin_vertex>',`vec3 transformed=vec3(position);transformed.y+=.045*sin(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*sin(position.z*.29+uCoastTime*2.0)+.025*sin(position.z*.43-position.x*.028+uCoastTime*2.4);vCoastPosition=transformed;`);shader.fragmentShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>\n float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 70,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.1,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 71,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 72,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 14,
+      "initial": true
+    },
+    {
+      "id": 73,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 74,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": false
+    },
+    {
+      "id": 75,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": false
+    },
+    {
+      "id": 76,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": false
+    },
+    {
+      "id": 77,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": false
+    },
+    {
+      "id": 78,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 7,
+      "initial": false
+    },
+    {
+      "id": 79,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": false
+    },
+    {
+      "id": 80,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": false
+    },
+    {
+      "id": 81,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": false
+    },
+    {
+      "id": 82,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,true,false,true,false,false,false,false,false,false,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": false
+    },
+    {
+      "id": 83,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": false
+    },
+    {
+      "id": 84,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": false
+    }
+  ],
+  "shaderMaterials": [
+    {
+      "object": "",
+      "type": "Line",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Line",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Line",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Line",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Line",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "paint",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshPhysicalMaterial",
+      "programIds": [
+        77
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "paint",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshPhysicalMaterial",
+      "programIds": [
+        77
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "OTTHI_WORLD_INSTANCED_GRASS",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        22,
+        74
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/foliage-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        26,
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "LineSegments",
+      "material": "",
+      "materialType": "LineBasicMaterial",
+      "programIds": [
+        6,
+        78
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        28,
+        83
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        28,
+        83
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        27,
+        82
+      ],
+      "map": "http://127.0.0.1:34287/games/otthi/assets/world/textures/hero-energy-basecolor.png",
+      "normalMap": true,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        26,
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        26,
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        26,
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        26,
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": ""
+    },
+    {
+      "object": "port-red",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshBasicMaterial",
+      "programIds": [
+        80
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "helicopter"
+    },
+    {
+      "object": "starboard-green",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshBasicMaterial",
+      "programIds": [
+        80
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "helicopter"
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshBasicMaterial",
+      "programIds": [
+        84
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "ACTIVITY_VENUE_boxing"
+    },
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        81
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "OT_CIVIL_AIRPORT"
+    },
+    {
+      "object": "badge-ELÉTRICO",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "wheel-0-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-0"
+    },
+    {
+      "object": "wheel-1-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-1"
+    },
+    {
+      "object": "wheel-2-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-2"
+    },
+    {
+      "object": "wheel-3-mesh",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "wheel-3"
+    },
+    {
+      "object": "badge-ATTIVI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "badge-OTTHI",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        38,
+        79
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "glass",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "fixed",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "interior",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        36,
+        76
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "chrome",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    },
+    {
+      "object": "lens",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshStandardMaterial",
+      "programIds": [
+        37,
+        75
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": true,
+      "vertexColors": true,
+      "skinning": false,
+      "fog": true,
+      "parent": "BR_ATTIVI"
+    }
+  ],
+  "drawRoots": [
+    [
+      "Group:MeshStandardMaterial",
+      507
+    ],
+    [
+      "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+      56
+    ],
+    [
+      "BoxGeometry:MeshStandardMaterial",
+      43
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/world/textures/wood-basecolor.png",
+      22
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/textures/roof-v628.png",
+      15
+    ],
+    [
+      "OTTHI_OTTOVIAS_HIGHWAY_NETWORK",
+      12
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/world/textures/wood-basecolor.png",
+      10
+    ],
+    [
+      "OTTHI_OTTOVIAS_OPERATIONS",
+      7
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/textures/brick-v628.png",
+      7
+    ],
+    [
+      "ACTIVITY_VENUE_pingpong",
+      7
+    ],
+    [
+      "CAMPAIGN_hq",
+      6
+    ],
+    [
+      "CAMPAIGN_north",
+      6
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/world/textures/stone-basecolor.png",
+      5
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+      5
+    ],
+    [
+      "OTTHOS_PLAYER",
+      4
+    ],
+    [
+      "Group:MeshPhysicalMaterial",
+      4
+    ],
+    [
+      "OTTHI_CONTINUOUS_ROAD_SURFACE",
+      4
+    ],
+    [
+      "CircleGeometry:MeshBasicMaterial",
+      4
+    ]
+  ],
+  "label": "before",
+  "errors": []
+}

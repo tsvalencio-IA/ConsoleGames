@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.14-continuacao-unificada',
+    build: '705.28.15-preparo-iluminacao',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.14-continuacao-unificada';
+  const OTTHI_GAME_WEB_BUILD = '705.28.15-preparo-iluminacao';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -7881,10 +7881,10 @@
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
     const start=performance.now();updateCamera(1);
-    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-    try{const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);if(!templates)renderer.compile(scene,camera);perf.vehicleShaderTemplates=Number(templates||0);renderer.render(scene,camera);}
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);let lightingVariants=1;
+    try{const prepared=precompileWorldLighting();perf.vehicleShaderTemplates=prepared.templates;lightingVariants=prepared.lightingVariants;renderer.render(scene,camera);}
     finally{restoreLights?.();restoreHome?.();}
-    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants};
   }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
@@ -12985,6 +12985,25 @@ function precompile(T,renderer,scene,camera){
     // r128 evaluates the full physical BRDF even after attenuation reached
     // zero. Zero irradiance contributes zero to diffuse, specular and coating.
     chunks.lights_fragment_begin=source.replace('RE_Direct( directLight, geometry, material, reflectedLight );','if ( directLight.visible ) { // OTTHI_VISIBLE_POINT_LIGHT\n\t\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t\t}');
+  }
+  function precompileWorldLighting(){
+    const compile=()=>{
+      const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);
+      if(!templates)renderer.compile(scene,camera);
+      return Number(templates||0);
+    };
+    const templates=compile(),lights=[];
+    scene.traverseVisible(object=>{if(object.isPointLight&&object.layers.test(camera.layers))lights.push(object);});
+    // The automatic quality profile can hide decorative lamps during play.
+    // Three r128 keys every material program by its light count, even for a
+    // basic material. Warm the unlit variant while the loading screen owns
+    // the frame, including cached vehicles and currently hidden scenery.
+    // This changes no material, quality setting or light in a painted frame.
+    if(lights.length){
+      try{for(const light of lights)light.visible=false;compile();}
+      finally{for(const light of lights)light.visible=true;}
+    }
+    return{templates,lightingVariants:lights.length?2:1};
   }
   function prepareWorldPointLights(view){
     if(!scene||!view||!world.glows?.length)return null;

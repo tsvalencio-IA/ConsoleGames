@@ -30,10 +30,10 @@
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
     const start=performance.now();updateCamera(1);
-    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-    try{const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);if(!templates)renderer.compile(scene,camera);perf.vehicleShaderTemplates=Number(templates||0);renderer.render(scene,camera);}
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);let lightingVariants=1;
+    try{const prepared=precompileWorldLighting();perf.vehicleShaderTemplates=prepared.templates;lightingVariants=prepared.lightingVariants;renderer.render(scene,camera);}
     finally{restoreLights?.();restoreHome?.();}
-    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length};
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants};
   }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;

@@ -7,7 +7,7 @@ function fixture(){
   const module={exports:{}};vm.runInNewContext(fs.readFileSync('games/otthi/assets/vendor/three-r128.min.js','utf8'),{module,exports:module.exports});
   const THREE=module.exports,scene=new THREE.Scene(),world={glows:[]},camera=new THREE.PerspectiveCamera(60,1,.1,100);
   camera.position.set(0,2,8);camera.lookAt(0,1,0);camera.updateProjectionMatrix();
-  const c=vm.createContext({window:{},THREE,scene,world,renderer:{physicallyCorrectLights:false}});vm.runInContext(fs.readFileSync('games/otthi/src/modules/71-world-light-budget.js','utf8'),c);
+  const c=vm.createContext({window:{},THREE,scene,world,camera,renderer:{physicallyCorrectLights:false}});vm.runInContext(fs.readFileSync('games/otthi/src/modules/71-world-light-budget.js','utf8'),c);
   const add=(x,z,distance=3,decay=1)=>{const light=new THREE.PointLight(0xffaa55,.5,distance,decay);light.position.set(x,1,z);scene.add(light);world.glows.push(light);return light;};
   return{c,THREE,scene,world,camera,add};
 }
@@ -37,4 +37,20 @@ test('point-light BRDF guard is installed once and leaves spot/directional light
   const f=fixture(),source=f.THREE.ShaderChunk.lights_fragment_begin;f.c.configureWorldPointLightEvaluation();const optimized=f.THREE.ShaderChunk.lights_fragment_begin;f.c.configureWorldPointLightEvaluation();assert.equal(f.THREE.ShaderChunk.lights_fragment_begin,optimized);
   assert.equal((optimized.match(/OTTHI_VISIBLE_POINT_LIGHT/g)||[]).length,1);
   assert.equal(optimized.slice(optimized.indexOf('#if ( NUM_SPOT_LIGHTS')),source.slice(source.indexOf('#if ( NUM_SPOT_LIGHTS')));
+});
+test('loading warms both point-light variants, including hidden scenery and cached vehicle templates, without changing the scene',()=>{
+  const f=fixture(),lamp=f.add(0,0),disabled=f.add(1,0),parent=new f.THREE.Group(),hiddenLamp=f.add(2,0),sun=new f.THREE.DirectionalLight();disabled.visible=false;parent.visible=false;parent.add(hiddenLamp);f.scene.add(parent,sun);
+  const mesh=new f.THREE.Mesh(new f.THREE.BoxGeometry(),new f.THREE.MeshStandardMaterial());mesh.visible=false;parent.add(mesh);const children=[...f.scene.children],snap=f.scene.toJSON();let templates=0;const counts=[];
+  f.c.renderer.compile=(scene,camera)=>{assert.equal(scene,f.scene);assert.equal(camera,f.camera);assert.equal(mesh.parent,parent);assert.equal(mesh.visible,false);assert.equal(sun.visible,true);let count=0;scene.traverseVisible(o=>{if(o.isPointLight&&o.layers.test(camera.layers))count++;});counts.push(count);};
+  f.c.window.OTBrazilVehicles={precompile(THREE,renderer,scene,camera){assert.equal(THREE,f.THREE);templates++;renderer.compile(scene,camera);return 44;}};
+  const prepared=f.c.precompileWorldLighting();assert.equal(prepared.templates,44);assert.equal(prepared.lightingVariants,2);assert.equal(templates,2);assert.deepEqual(counts,[1,0]);assert(lamp.visible&&hiddenLamp.visible);assert(!disabled.visible);assert.deepEqual([...f.scene.children],children);assert.deepEqual(f.scene.toJSON(),snap);
+});
+test('shader preparation restores every lamp if the second compilation fails',()=>{
+  const f=fixture(),a=f.add(0,0),b=f.add(1,0),hidden=f.add(2,0);hidden.visible=false;let calls=0;
+  f.c.renderer.compile=()=>{if(++calls===2){assert(!a.visible&&!b.visible);throw Error('shader failed');}};
+  assert.throws(()=>f.c.precompileWorldLighting(),/shader failed/);assert.equal(calls,2);assert(a.visible&&b.visible);assert(!hidden.visible);
+});
+test('a world with no visible point lights compiles only once',()=>{
+  const f=fixture();f.add(0,0).visible=false;let calls=0;f.c.renderer.compile=()=>calls++;
+  const prepared=f.c.precompileWorldLighting();assert.equal(calls,1);assert.equal(prepared.lightingVariants,1);assert.equal(prepared.templates,0);
 });

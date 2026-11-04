@@ -8,6 +8,25 @@
     // zero. Zero irradiance contributes zero to diffuse, specular and coating.
     chunks.lights_fragment_begin=source.replace('RE_Direct( directLight, geometry, material, reflectedLight );','if ( directLight.visible ) { // OTTHI_VISIBLE_POINT_LIGHT\n\t\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t\t}');
   }
+  function precompileWorldLighting(){
+    const compile=()=>{
+      const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);
+      if(!templates)renderer.compile(scene,camera);
+      return Number(templates||0);
+    };
+    const templates=compile(),lights=[];
+    scene.traverseVisible(object=>{if(object.isPointLight&&object.layers.test(camera.layers))lights.push(object);});
+    // The automatic quality profile can hide decorative lamps during play.
+    // Three r128 keys every material program by its light count, even for a
+    // basic material. Warm the unlit variant while the loading screen owns
+    // the frame, including cached vehicles and currently hidden scenery.
+    // This changes no material, quality setting or light in a painted frame.
+    if(lights.length){
+      try{for(const light of lights)light.visible=false;compile();}
+      finally{for(const light of lights)light.visible=true;}
+    }
+    return{templates,lightingVariants:lights.length?2:1};
+  }
   function prepareWorldPointLights(view){
     if(!scene||!view||!world.glows?.length)return null;
     const budget=worldLightBudget;budget.frustum??=new THREE.Frustum();budget.projection??=new THREE.Matrix4();budget.sphere??=new THREE.Sphere();

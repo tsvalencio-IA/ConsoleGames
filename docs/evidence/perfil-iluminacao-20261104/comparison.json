@@ -1,0 +1,158 @@
+{
+  "baselineSource": "dfb95179a670c12d632271488b2d51055f60614b",
+  "build": "705.28.15-preparo-iluminacao",
+  "assetVersion": 70651,
+  "revision": "7e1f365289361665",
+  "browser": "Chromium software WebGL; native RAF, no renderer cap, sound disabled",
+  "durationSecondsPerCase": 20,
+  "units": {
+    "passed": 354,
+    "failed": 0
+  },
+  "before": {
+    "frame": {
+      "samples": 134,
+      "mean": 146.8119402985078,
+      "p50": 140.5999999998603,
+      "p95": 284.80000000004657,
+      "max": 375.30000000004657,
+      "over100": 106,
+      "over250": 17
+    },
+    "work": {
+      "samples": 135,
+      "mean": 45.130370370360716,
+      "p50": 33.60000000009313,
+      "p95": 174.0999999998603,
+      "max": 365.80000000004657,
+      "over100": 7,
+      "over250": 4
+    },
+    "renderMs": {
+      "samples": 134,
+      "mean": 22.557462686561603,
+      "p50": 11.199999999953434,
+      "p95": 137.79999999981374,
+      "max": 332.9000000001397,
+      "over100": 7,
+      "over250": 4
+    },
+    "longTasks": {
+      "samples": 13,
+      "mean": 168.46153846153845,
+      "p50": 175,
+      "p95": 367,
+      "max": 367,
+      "over100": 7,
+      "over250": 4
+    },
+    "npcs": 138,
+    "catalog": 44,
+    "trafficModels": 44,
+    "quality": "low"
+  },
+  "after": {
+    "frame": {
+      "samples": 147,
+      "mean": 134.70408163265307,
+      "p50": 126.80000000004657,
+      "p95": 267.0999999998603,
+      "max": 576.3999999999069,
+      "over100": 116,
+      "over250": 10
+    },
+    "work": {
+      "samples": 148,
+      "mean": 33.66351351351634,
+      "p50": 32.699999999953434,
+      "p95": 49.10000000009313,
+      "max": 239.5,
+      "over100": 1,
+      "over250": 0
+    },
+    "renderMs": {
+      "samples": 147,
+      "mean": 11.825850340149676,
+      "p50": 10.300000000046566,
+      "p95": 13.900000000139698,
+      "max": 218,
+      "over100": 1,
+      "over250": 0
+    },
+    "longTasks": {
+      "samples": 8,
+      "mean": 77.125,
+      "p50": 55,
+      "p95": 240,
+      "max": 240,
+      "over100": 1,
+      "over250": 0
+    },
+    "npcs": 138,
+    "catalog": 44,
+    "trafficModels": 44,
+    "quality": "low"
+  },
+  "programsCreatedDuringWalk": {
+    "before": 11,
+    "after": 1
+  },
+  "limitations": [
+    "Software rendering is not physical Android FPS.",
+    "Worst frame interval increased from 375.3 to 576.4 ms; steady-state draw load remains unresolved.",
+    "A late-created boxing venue material still compiles once during this walk.",
+    "Fresh independent Chromium also passed. Remote CI and publication are recorded in release.json after completion."
+  ],
+  "modules": {
+    "games/otthi/src/modules/29-game-loop-controls-gamepad.js": "5bf552b4bea5827c6d2a7c9fc7c9a7e46f2b8e6c93fec0150dd87c680369b308",
+    "games/otthi/src/modules/71-world-light-budget.js": "fb4fa5c04d14dad23a50e673dccf5dc4845bd6394a209d8067775861c85bb9e9"
+  },
+  "freshBrowser": {
+    "frame": {
+      "samples": 144,
+      "mean": 137.6875,
+      "p50": 131.89999999990687,
+      "p95": 272.4000000001397,
+      "max": 358.19999999995343,
+      "over100": 117,
+      "over250": 11
+    },
+    "work": {
+      "samples": 145,
+      "mean": 34.974482758637066,
+      "p50": 36.300000000046566,
+      "p95": 50.300000000046566,
+      "max": 64.5,
+      "over100": 0,
+      "over250": 0
+    },
+    "renderMs": {
+      "samples": 145,
+      "mean": 11.321379310343865,
+      "p50": 11,
+      "p95": 15.5,
+      "max": 25,
+      "over100": 0,
+      "over250": 0
+    },
+    "longTasks": {
+      "samples": 14,
+      "mean": 53.142857142857146,
+      "p50": 51,
+      "p95": 65,
+      "max": 65,
+      "over100": 0,
+      "over250": 0
+    },
+    "npcs": 138,
+    "catalog": 44,
+    "trafficModels": 44,
+    "quality": "low",
+    "scenePreparation": {
+      "ms": 1592,
+      "programs": 80,
+      "lightingVariants": 2
+    },
+    "programsCreatedDuringWalk": 0
+  }
+}

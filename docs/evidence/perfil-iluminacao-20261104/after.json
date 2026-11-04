@@ -1,0 +1,3846 @@
+{
+  "frame": {
+    "samples": 147,
+    "mean": 134.70408163265307,
+    "p50": 126.80000000004657,
+    "p95": 267.0999999998603,
+    "max": 576.3999999999069,
+    "over100": 116,
+    "over250": 10
+  },
+  "work": {
+    "samples": 148,
+    "mean": 33.66351351351634,
+    "p50": 32.699999999953434,
+    "p95": 49.10000000009313,
+    "max": 239.5,
+    "over100": 1,
+    "over250": 0
+  },
+  "longTasks": {
+    "samples": 8,
+    "mean": 77.125,
+    "p50": 55,
+    "p95": 240,
+    "max": 240,
+    "over100": 1,
+    "over250": 0
+  },
+  "renderMs": {
+    "samples": 147,
+    "mean": 11.825850340149676,
+    "p50": 10.300000000046566,
+    "p95": 13.900000000139698,
+    "max": 218,
+    "over100": 1,
+    "over250": 0
+  },
+  "matrixMs": {
+    "samples": 147,
+    "mean": 3.2619047619110972,
+    "p50": 3.1000000000931323,
+    "p95": 4.199999999953434,
+    "max": 8,
+    "over100": 0,
+    "over250": 0
+  },
+  "details": [
+    {
+      "ms": 16.9000000001397,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 434,
+      "triangles": 494229,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 435,
+      "triangles": 494241,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 440,
+      "triangles": 494581,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 414,
+      "triangles": 487961,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 415,
+      "triangles": 487961,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 419,
+      "triangles": 487985,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 421,
+      "triangles": 487997,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 429,
+      "triangles": 488045,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 6.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 407,
+      "triangles": 486443,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 412,
+      "triangles": 486479,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.200000000186265,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 418,
+      "triangles": 486515,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 416,
+      "triangles": 486503,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.799999999813735,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 416,
+      "triangles": 486503,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 418,
+      "triangles": 486527,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 418,
+      "triangles": 486527,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 421,
+      "triangles": 486551,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 421,
+      "triangles": 486551,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 20.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 434,
+      "triangles": 487131,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 14.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 438,
+      "triangles": 487119,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 436,
+      "triangles": 487095,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 437,
+      "triangles": 487123,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 439,
+      "triangles": 487135,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 438,
+      "triangles": 487135,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.599999999860302,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 445,
+      "triangles": 487207,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 18.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 447,
+      "triangles": 487243,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 451,
+      "triangles": 487319,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 452,
+      "triangles": 487331,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 459,
+      "triangles": 487395,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 459,
+      "triangles": 487395,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 460,
+      "triangles": 487433,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 461,
+      "triangles": 487445,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 459,
+      "triangles": 487449,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 461,
+      "triangles": 489402,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 458,
+      "triangles": 489426,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 462,
+      "triangles": 490018,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 462,
+      "triangles": 490018,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.199999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 463,
+      "triangles": 490030,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 462,
+      "triangles": 490054,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 467,
+      "triangles": 490114,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 470,
+      "triangles": 491003,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.799999999813735,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 473,
+      "triangles": 491039,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 473,
+      "triangles": 491075,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 480,
+      "triangles": 491159,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 486,
+      "triangles": 491221,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 488,
+      "triangles": 491245,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 492,
+      "triangles": 491301,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 496,
+      "triangles": 491685,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 473,
+      "triangles": 490305,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 478,
+      "triangles": 490365,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 482,
+      "triangles": 490399,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 489,
+      "triangles": 490981,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 492,
+      "triangles": 491017,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 493,
+      "triangles": 491029,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 498,
+      "triangles": 491079,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 500,
+      "triangles": 491103,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.700000000186265,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 507,
+      "triangles": 491183,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 512,
+      "triangles": 491243,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 519,
+      "triangles": 491327,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 525,
+      "triangles": 491399,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 531,
+      "triangles": 491471,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 541,
+      "triangles": 491581,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 544,
+      "triangles": 491613,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 552,
+      "triangles": 491709,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 563,
+      "triangles": 491831,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 565,
+      "triangles": 491855,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 568,
+      "triangles": 491881,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 575,
+      "triangles": 491955,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 581,
+      "triangles": 492027,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 588,
+      "triangles": 492229,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.200000000186265,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 592,
+      "triangles": 492277,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 600,
+      "triangles": 492353,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 607,
+      "triangles": 492437,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13.199999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 611,
+      "triangles": 492475,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 612,
+      "triangles": 492487,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 613,
+      "triangles": 492499,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 614,
+      "triangles": 492511,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.099999999860302,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 620,
+      "triangles": 492573,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 622,
+      "triangles": 492597,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 631,
+      "triangles": 547901,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 636,
+      "triangles": 556305,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 636,
+      "triangles": 560079,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 6.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 636,
+      "triangles": 560079,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.099999999860302,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 641,
+      "triangles": 560129,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 645,
+      "triangles": 568511,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 640,
+      "triangles": 568195,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.599999999860302,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 641,
+      "triangles": 568207,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 16.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 644,
+      "triangles": 568231,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 643,
+      "triangles": 568229,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.700000000186265,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 643,
+      "triangles": 568229,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 644,
+      "triangles": 568241,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 646,
+      "triangles": 568265,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 7.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 642,
+      "triangles": 562629,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 6.5,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 642,
+      "triangles": 562629,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 649,
+      "triangles": 562713,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.899999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 653,
+      "triangles": 562761,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 657,
+      "triangles": 563745,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 658,
+      "triangles": 563757,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.299999999813735,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 662,
+      "triangles": 563795,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.400000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 667,
+      "triangles": 563855,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.100000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 674,
+      "triangles": 564383,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.199999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 683,
+      "triangles": 564519,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.800000000046566,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 685,
+      "triangles": 564543,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.699999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 692,
+      "triangles": 564603,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 695,
+      "triangles": 564639,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 699,
+      "triangles": 564713,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.600000000093132,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 707,
+      "triangles": 564795,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13.900000000139698,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 723,
+      "triangles": 573735,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.399999999906868,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 728,
+      "triangles": 597255,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.199999999953434,
+      "beforePrograms": 95,
+      "afterPrograms": 95,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 731,
+      "triangles": 601451,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 218,
+      "beforePrograms": 95,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 739,
+      "triangles": 605777,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 733,
+      "triangles": 605401,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.800000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 733,
+      "triangles": 605401,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.900000000139698,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 734,
+      "triangles": 605413,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.299999999813735,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 728,
+      "triangles": 605031,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.899999999906868,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 731,
+      "triangles": 605067,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.699999999953434,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 732,
+      "triangles": 605079,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.800000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 735,
+      "triangles": 605115,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.800000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 740,
+      "triangles": 609335,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.300000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 744,
+      "triangles": 615430,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.900000000139698,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 748,
+      "triangles": 618173,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.799999999813735,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 755,
+      "triangles": 618257,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 11.799999999813735,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 758,
+      "triangles": 618293,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 763,
+      "triangles": 618353,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.699999999953434,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 773,
+      "triangles": 618961,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.199999999953434,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 780,
+      "triangles": 619543,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.099999999860302,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 780,
+      "triangles": 619543,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.700000000186265,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 786,
+      "triangles": 619605,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13.199999999953434,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 786,
+      "triangles": 619605,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 13.099999999860302,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 795,
+      "triangles": 638739,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.900000000139698,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 797,
+      "triangles": 650371,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.899999999906868,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 800,
+      "triangles": 654567,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.400000000139698,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 804,
+      "triangles": 658775,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.300000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 811,
+      "triangles": 668945,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.200000000186265,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 812,
+      "triangles": 668957,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.400000000139698,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 807,
+      "triangles": 681179,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.300000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 811,
+      "triangles": 696995,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 812,
+      "triangles": 696987,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.599999999860302,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 812,
+      "triangles": 696987,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 814,
+      "triangles": 701171,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.800000000046566,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 817,
+      "triangles": 705367,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 10.600000000093132,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 817,
+      "triangles": 705367,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 12.299999999813735,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 818,
+      "triangles": 705379,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 14.5,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 818,
+      "triangles": 705379,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.600000000093132,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 829,
+      "triangles": 736189,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 9.699999999953434,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 834,
+      "triangles": 740489,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.899999999906868,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 836,
+      "triangles": 744673,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    },
+    {
+      "ms": 8.5,
+      "beforePrograms": 96,
+      "afterPrograms": 96,
+      "lights": {
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "calls": 843,
+      "triangles": 744757,
+      "preparation": {
+        "models": 44,
+        "ms": 4371
+      },
+      "scenePreparation": {
+        "ms": 544,
+        "programs": 80,
+        "lightingVariants": 2
+      }
+    }
+  ],
+  "preparation": {
+    "models": 44,
+    "ms": 4371
+  },
+  "scenePreparation": {
+    "ms": 544,
+    "programs": 80,
+    "lightingVariants": 2
+  },
+  "catalog": 44,
+  "npcs": 138,
+  "trafficModels": 44,
+  "quality": "low",
+  "family": {
+    "ready": true,
+    "home": {
+      "x": -38,
+      "z": -24
+    },
+    "actors": [
+      {
+        "id": "thiago",
+        "x": 3.899317545639034,
+        "z": 130.24715644016354,
+        "bones": 24,
+        "vertices": 164562,
+        "uniqueVertices": 31956,
+        "drawCalls": 1
+      },
+      {
+        "id": "thamis",
+        "x": 1.9893242545231657,
+        "z": 127.21658577785078,
+        "bones": 25,
+        "vertices": 226968,
+        "uniqueVertices": 43480,
+        "drawCalls": 1
+      },
+      {
+        "id": "luna",
+        "x": 3.109405492675925,
+        "z": 126.955856219484,
+        "bones": 13,
+        "vertices": 205176,
+        "uniqueVertices": 46812,
+        "drawCalls": 1
+      },
+      {
+        "id": "liz",
+        "x": 4.226543321316606,
+        "z": 126.6828624548169,
+        "bones": 13,
+        "vertices": 209400,
+        "uniqueVertices": 47082,
+        "drawCalls": 1
+      }
+    ],
+    "progress": {
+      "party": {
+        "controller": "thiago",
+        "members": [
+          "thiago",
+          "thamis",
+          "luna",
+          "liz"
+        ]
+      },
+      "toy": "ball",
+      "deliveries": {
+        "luna": 0,
+        "liz": 0
+      },
+      "flags": {}
+    },
+    "party": {
+      "owner": "live-profile-local",
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "thamis",
+        "luna",
+        "liz"
+      ]
+    },
+    "ride": null,
+    "seated": [],
+    "authority": true,
+    "ball": null
+  },
+  "game": {
+    "running": true,
+    "paused": false,
+    "currentHouse": null,
+    "cameraMode": "openworld",
+    "player": {
+      "x": 3.899317545639034,
+      "y": 0,
+      "z": 130.24715644016354,
+      "vx": 1.3229999999999997,
+      "vy": 0,
+      "vz": 5.512499999999998,
+      "facing": 0.23554498072086336,
+      "grounded": true,
+      "vehicle": false,
+      "sitUntil": 0,
+      "lastGrounded": 46398.90000000014,
+      "lastSafeX": 3.568567545639032,
+      "lastSafeY": 0,
+      "lastSafeZ": 128.86903144016372,
+      "lastSafeAt": 46195.700000000186,
+      "invalidSince": 0,
+      "jumpBuffer": 0,
+      "airJumpAvailable": true,
+      "lastJumpWasAir": false,
+      "attackUntil": 0,
+      "damageUntil": 0,
+      "shieldUntil": 0,
+      "skillDashUntil": 0,
+      "scaleMode": "normal",
+      "crouched": false,
+      "spinUntil": 0,
+      "preVehicleAbilities": null,
+      "hornUntil": 0,
+      "emoteUntil": 0,
+      "emoteType": "",
+      "emoteSeq": 0,
+      "boating": false,
+      "transit": {
+        "mode": "",
+        "busId": "",
+        "requestStop": false,
+        "metroUntil": 0
+      },
+      "boat": {
+        "heading": 0,
+        "speed": 0,
+        "steerVisual": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "car": {
+        "id": "",
+        "kind": "car",
+        "label": "Carro",
+        "heading": 3.141592653589793,
+        "speed": 0,
+        "steerVisual": 0,
+        "drift": 0,
+        "_prevSpeed": 0,
+        "turboUntil": 0,
+        "sirenActive": false,
+        "utilityCooldownUntil": 0,
+        "passengerOf": "",
+        "passengerUid": "",
+        "passengerUids": [],
+        "passengerBotId": "",
+        "hostMissingAt": 0
+      },
+      "recoveryReason": "",
+      "swimming": false,
+      "nextRecoveryScanAt": 46475.60000000009
+    },
+    "objects": {
+      "houses": 32,
+      "npcs": 138,
+      "enemies": 0,
+      "interactables": 846,
+      "builds": 0,
+      "vehicles": 23,
+      "buses": 7,
+      "metroStations": 7,
+      "policeCars": 2,
+      "resources": 72,
+      "school": true,
+      "policeStation": true,
+      "mine": true,
+      "well": true
+    }
+  },
+  "render": {
+    "calls": 843,
+    "triangles": 744757
+  },
+  "shaderPrograms": [
+    {
+      "id": 0,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 74,
+      "initial": true
+    },
+    {
+      "id": 1,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 8,
+      "initial": true
+    },
+    {
+      "id": 2,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 11,
+      "initial": true
+    },
+    {
+      "id": 3,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 12,
+      "initial": true
+    },
+    {
+      "id": 4,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,true,1024,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 5,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 669,
+      "initial": true
+    },
+    {
+      "id": 6,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 22,
+      "initial": true
+    },
+    {
+      "id": 7,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,true,false,,0,true,,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 35,
+      "initial": true
+    },
+    {
+      "id": 8,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 9,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 10,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 117,
+      "initial": true
+    },
+    {
+      "id": 11,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 12,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 14,
+      "initial": true
+    },
+    {
+      "id": 13,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 14,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 15,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 16,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 36,
+      "initial": true
+    },
+    {
+      "id": 17,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 34,
+      "initial": true
+    },
+    {
+      "id": 18,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 19,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 118,
+      "initial": true
+    },
+    {
+      "id": 20,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 21,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 22,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 23,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 32,
+      "initial": true
+    },
+    {
+      "id": 24,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 25,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 26,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 27,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,true,false,true,false,false,false,false,false,false,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 28,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 29,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 30,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,true,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 31,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,true,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 32,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,false,,false,true,false,,0,true,,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 33,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 34,
+      "cacheKey": "points,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,true,false,,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 35,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 55,
+      "initial": true
+    },
+    {
+      "id": 36,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 56,
+      "initial": true
+    },
+    {
+      "id": 37,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 87,
+      "initial": true
+    },
+    {
+      "id": 38,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 39,
+      "initial": true
+    },
+    {
+      "id": 39,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.18,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 7,
+      "initial": true
+    },
+    {
+      "id": 40,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 72,
+      "initial": true
+    },
+    {
+      "id": 41,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 42,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 11,
+      "initial": true
+    },
+    {
+      "id": 43,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 12,
+      "initial": true
+    },
+    {
+      "id": 44,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,true,1024,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 45,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 669,
+      "initial": true
+    },
+    {
+      "id": 46,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 22,
+      "initial": true
+    },
+    {
+      "id": 47,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,true,false,,0,true,,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 35,
+      "initial": true
+    },
+    {
+      "id": 48,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 49,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 50,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 117,
+      "initial": true
+    },
+    {
+      "id": 51,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 52,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 14,
+      "initial": true
+    },
+    {
+      "id": 53,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 54,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 55,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 31,
+      "initial": true
+    },
+    {
+      "id": 56,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 36,
+      "initial": true
+    },
+    {
+      "id": 57,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 34,
+      "initial": true
+    },
+    {
+      "id": 58,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 59,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 118,
+      "initial": true
+    },
+    {
+      "id": 60,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,true,true,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 61,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,true,false,false,3001,2,function(){}",
+      "usedTimes": 10,
+      "initial": true
+    },
+    {
+      "id": 62,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 63,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 32,
+      "initial": true
+    },
+    {
+      "id": 64,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 26,
+      "initial": true
+    },
+    {
+      "id": 65,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 25,
+      "initial": true
+    },
+    {
+      "id": 66,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 11,
+      "initial": true
+    },
+    {
+      "id": 67,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,true,false,true,false,false,false,false,false,false,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 68,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,true,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 69,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,true,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 70,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,true,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 71,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,false,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,true,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 72,
+      "cacheKey": "sprite,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,false,,false,true,false,,0,true,,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 73,
+      "cacheKey": "basic,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,false,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 74,
+      "cacheKey": "points,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,true,false,,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 75,
+      "cacheKey": "physical,STANDARD,,PHYSICAL,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 59,
+      "initial": true
+    },
+    {
+      "id": 76,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 56,
+      "initial": true
+    },
+    {
+      "id": 77,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,true,301,3001,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 87,
+      "initial": true
+    },
+    {
+      "id": 78,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.15,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 39,
+      "initial": true
+    },
+    {
+      "id": 79,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.18,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 7,
+      "initial": true
+    },
+    {
+      "id": 80,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,false,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,0,false,0,false,true,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 81,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 82,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": true
+    },
+    {
+      "id": 83,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 3,
+      "initial": true
+    },
+    {
+      "id": 84,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 85,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 4,
+      "initial": true
+    },
+    {
+      "id": 86,
+      "cacheKey": "basic,highp,true,true,3001,true,true,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,false,false,true,true,,false,,false,false,0,true,false,,false,2,16,0,1,0,0,0,0,false,2,0,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 87,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,shader=>{shader.uniforms.uCoastTime={value:0};shader.vertexShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`float dx=.045*.055*cos(position.x*.055+position.z*.12+uCoastTime*1.35);float dz=.045*.12*cos(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*.29*cos(position.z*.29+uCoastTime*2.0)+.025*.43*cos(position.z*.43-position.x*.028+uCoastTime*2.4);vec3 objectNormal=normalize(vec3(-dx,1.0,-dz));`).replace('#include <begin_vertex>',`vec3 transformed=vec3(position);transformed.y+=.045*sin(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*sin(position.z*.29+uCoastTime*2.0)+.025*sin(position.z*.43-position.x*.028+uCoastTime*2.4);vCoastPosition=transformed;`);shader.fragmentShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>\n float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 88,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,16,0,1,0,0,0,0,false,2,4,false,0.1,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 2,
+      "initial": true
+    },
+    {
+      "id": 89,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,true,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 23,
+      "initial": true
+    },
+    {
+      "id": 90,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,true,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,false,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 9,
+      "initial": true
+    },
+    {
+      "id": 91,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,true,false,true,false,false,false,false,false,true,false,false,false,,false,false,false,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 92,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 93,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,false,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,false,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,shader=>{shader.uniforms.uCoastTime={value:0};shader.vertexShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`float dx=.045*.055*cos(position.x*.055+position.z*.12+uCoastTime*1.35);float dz=.045*.12*cos(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*.29*cos(position.z*.29+uCoastTime*2.0)+.025*.43*cos(position.z*.43-position.x*.028+uCoastTime*2.4);vec3 objectNormal=normalize(vec3(-dx,1.0,-dz));`).replace('#include <begin_vertex>',`vec3 transformed=vec3(position);transformed.y+=.045*sin(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*sin(position.z*.29+uCoastTime*2.0)+.025*sin(position.z*.43-position.x*.028+uCoastTime*2.4);vCoastPosition=transformed;`);shader.fragmentShader='uniform float uCoastTime; varying vec3 vCoastPosition;\\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>\n float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;}",
+      "usedTimes": 1,
+      "initial": true
+    },
+    {
+      "id": 94,
+      "cacheKey": "physical,STANDARD,,highp,true,true,3001,false,false,true,3001,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,true,false,false,false,false,false,false,false,false,false,,false,false,,true,false,true,true,,false,,false,false,0,true,false,false,false,2,0,0,1,0,0,0,0,false,2,4,false,0.1,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 6,
+      "initial": true
+    },
+    {
+      "id": 95,
+      "cacheKey": "basic,highp,true,true,3001,false,false,true,3000,false,3000,false,,3000,false,false,3000,false,false,3000,false,false,false,false,false,false,false,false,false,false,false,false,false,0,false,false,,true,false,true,true,,false,,false,false,0,true,false,,false,2,0,0,1,0,0,0,0,false,2,4,false,0,true,false,0,0,false,false,false,false,3001,2,function(){}",
+      "usedTimes": 1,
+      "initial": false
+    }
+  ],
+  "shaderMaterials": [
+    {
+      "object": "",
+      "type": "Mesh",
+      "material": "",
+      "materialType": "MeshBasicMaterial",
+      "programIds": [
+        95
+      ],
+      "map": null,
+      "normalMap": false,
+      "envMap": false,
+      "vertexColors": false,
+      "skinning": false,
+      "fog": true,
+      "parent": "ACTIVITY_VENUE_boxing"
+    }
+  ],
+  "drawRoots": [
+    [
+      "Group:MeshStandardMaterial",
+      535
+    ],
+    [
+      "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+      56
+    ],
+    [
+      "BoxGeometry:MeshStandardMaterial",
+      42
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/world/textures/wood-basecolor.png",
+      23
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/textures/roof-v628.png",
+      15
+    ],
+    [
+      "OTTHI_OTTOVIAS_HIGHWAY_NETWORK",
+      12
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/world/textures/wood-basecolor.png",
+      11
+    ],
+    [
+      "OTTHI_OTTOVIAS_OPERATIONS",
+      7
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/textures/brick-v628.png",
+      7
+    ],
+    [
+      "ACTIVITY_VENUE_pingpong",
+      7
+    ],
+    [
+      "NPC_AIR_light_tour",
+      7
+    ],
+    [
+      "Group:MeshPhysicalMaterial",
+      6
+    ],
+    [
+      "CAMPAIGN_hq",
+      6
+    ],
+    [
+      "CAMPAIGN_north",
+      6
+    ],
+    [
+      "Group:http://127.0.0.1:34287/games/otthi/assets/world/textures/stone-basecolor.png",
+      5
+    ],
+    [
+      "BoxGeometry:http://127.0.0.1:34287/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+      5
+    ],
+    [
+      "OTTHOS_PLAYER",
+      4
+    ],
+    [
+      "OTTHI_CONTINUOUS_ROAD_SURFACE",
+      4
+    ]
+  ],
+  "label": "after",
+  "errors": []
+}
