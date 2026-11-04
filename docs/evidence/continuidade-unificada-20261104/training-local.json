@@ -1,0 +1,29 @@
+{
+  "origin": "http://127.0.0.1:38505",
+  "cases": [
+    {
+      "mode": "controls",
+      "nativeHits": true,
+      "restart": true,
+      "careerUnchanged": true,
+      "cameraRecalibration": false,
+      "walkStartsAndStops": false,
+      "layouts": 3,
+      "errors": []
+    },
+    {
+      "mode": "camera",
+      "nativeHits": true,
+      "restart": true,
+      "careerUnchanged": true,
+      "cameraRecalibration": true,
+      "walkStartsAndStops": true,
+      "layouts": 3,
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Synthetic hand and absent-body replies exercise the native training pipeline. Actual hand/body model tests are independent; no physical Android claim."
+  ],
+  "passed": true
+}

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.13-cadastro-duas-cameras",
+  "build": "705.28.14-continuacao-unificada",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "2538dbfcaba00e0ff19788006a9e93f37985df95d4740ee78e4275dfa804467d"
+      "sha256Body": "a2802dd14a6393acd5fe4adf3a93e40cc9c2d78b9c423b3690bfaf826f52c7a5"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -496,7 +496,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota completa brasileira e tráfego aéreo civil NPC",
-      "sha256Body": "83967192f8d2e04e4303d9b6950329bf6402b48e1e37761b1fb01a435c119453"
+      "sha256Body": "6f4490f0f371dc318963c47bbf0e4eb7debcadc8204a2b059585977000baf754"
     },
     {
       "file": "src/modules/56-city-coast-life.js",

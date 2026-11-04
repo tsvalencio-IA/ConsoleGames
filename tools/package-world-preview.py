@@ -96,7 +96,7 @@ def package(output=OUTPUT):
 <script>location.replace((navigator.onLine?'./games/atualizar/':'./games/otthi/')+location.search+location.hash)</script>
 <body><a href="games/otthi/">Entrar no OTThi World</a><p>Powered by thIAguinho Soluções Digitais</p></body></html>''', encoding='utf-8')
     required = ['games/atualizar/index.html', 'games/atualizar/update.js', 'games/atualizar/style.css', 'games/otthi/app.js', 'games/otthi/release-manifest.json',
-                'games/ar/hand-controls.js', 'games/ar/hand-tracker-worker.js',
+                'games/ar/practice-controls.js', 'games/ar/war-screen-orientation.js', 'games/ar/hand-controls.js', 'games/ar/hand-tracker-worker.js',
                 'games/ar/object-views.js', 'games/ar/object-camera-registration.js',
                 'games/ar/body-controls.js', 'games/ar/body-tracker-worker.js',
                 'games/ar/vendor/body-tracker/pose_landmarker_lite.task',

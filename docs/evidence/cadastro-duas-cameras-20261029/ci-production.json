@@ -1,0 +1,23 @@
+[
+  {
+    "id": 40967050909,
+    "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+    "conclusion": "success",
+    "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050909",
+    "completedAt": "2026-10-29T22:42:22Z"
+  },
+  {
+    "id": 40967050918,
+    "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+    "conclusion": "success",
+    "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050918",
+    "completedAt": "2026-10-29T22:43:20Z"
+  },
+  {
+    "id": 40967050944,
+    "sha": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+    "conclusion": "success",
+    "url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/40967050944",
+    "completedAt": "2026-10-29T22:36:13Z"
+  }
+]

@@ -39,6 +39,8 @@ jobs:
         run: node tests/war-camera-browser.mjs
       - name: Reconhecer corpo real sem impor cadastro de objeto
         run: node tests/war-body-model-browser.mjs
+      - name: Treino nativo sem objetos, movimento, recalibração e progresso preservado
+        run: node tests/war-training-browser.mjs
       - name: Corpo e mão reais na mesma câmera
         run: node tests/war-joint-camera-browser.mjs
       - name: Guardar diagnóstico imediato de câmera

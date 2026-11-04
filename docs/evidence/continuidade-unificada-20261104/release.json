@@ -1,0 +1,40 @@
+{
+  "status": "Local acceptance passed; integrated source CI and public release pending.",
+  "build": "705.28.14-continuacao-unificada",
+  "revision": "86031f0cfb054f68",
+  "assetVersion": 70650,
+  "warWorker": 47,
+  "worldManifestFiles": 111,
+  "conversationTextAccessible": false,
+  "conversationId": "6ae48565-0f18-83e9-930a-9f6b152f7e71",
+  "priorProductionSource": "491e1415cb639a5dd0bd89f218d45fb766fab803",
+  "sources": {
+    "warWithCompactControls": "8d6e253351cb7468d7da1872fb1cc92cc2978f2d",
+    "priorWorkEvidence": "d02fc1307b18c0cde42d953908ce990704076a00",
+    "worldWithHudReverted": "32fa6ad6caa3feb860fa7422ceaebc4eaaa81dba",
+    "worldTrafficOnlyEquivalentTree": "86f22bc4a93f33a3fc18ed890a5cef2c27272e31"
+  },
+  "localTests": {
+    "unitPassed": 351,
+    "unitFailed": 0,
+    "nativeTrainingModes": [
+      "controls",
+      "camera"
+    ],
+    "nativeTrainingLayouts": [
+      "390x844",
+      "320x568",
+      "844x390"
+    ],
+    "manualAndCameraHits": true,
+    "trainingMovementStartStop": true,
+    "calibrationAndHiddenPreview": true,
+    "progressUnchanged": true,
+    "manifestHashMismatches": 0
+  },
+  "limits": [
+    "Other ChatGPT conversation was inaccessible via context retrieval and direct link; source history was inspected instead.",
+    "Training test uses explicit sensor fixtures. Actual ML recognition is checked separately by existing CI tests.",
+    "Physical Android smoothness, body tracking accuracy and two-device multiplayer are not certified."
+  ]
+}

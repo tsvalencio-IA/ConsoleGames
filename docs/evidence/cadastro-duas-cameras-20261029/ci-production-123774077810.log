@@ -1,0 +1,9 @@
+Excertos de verificações aprovadas; log completo no job GitHub 123774077810.
+2026-10-29T22:36:00.3658150Z # fail 0
+2026-10-29T22:36:02.6093724Z PASS download android-portrait
+2026-10-29T22:36:03.3759585Z PASS download android-landscape
+2026-10-29T22:36:04.1930859Z PASS download desktop
+2026-10-29T22:36:04.9229277Z PASS download without-javascript
+2026-10-29T22:36:06.2087737Z PASS download current-worker
+2026-10-29T22:36:07.4562750Z PASS download previous-worker
+2026-10-29T22:36:07.8668195Z PASS console installation entry

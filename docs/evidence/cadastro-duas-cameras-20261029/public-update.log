@@ -1,0 +1,2 @@
+PASS public recovery installs and opens the current verified world, preserving local progress
+PASS public HTTP no-store headers and automatic console update entry

@@ -1,0 +1,5 @@
+app.js: 2,212,929 caracteres
+style.css: 328,017 caracteres
+release-manifest.json: 111 arquivos verificados; revisao 86031f0cfb054f68
+Build modular concluído.
+{"packaged": "/workspace/scratch/a10cbbfeaf34/otgames-continuity/dist-world", "verifiedResources": 24, "games": ["otthi", "familia", "kart", "boxe", "tenis", "ar", "voo"]}
