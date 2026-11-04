@@ -1,22 +1,39 @@
 {
-  "status": "Candidate: source and gameplay verified; public HTTPS update under investigation before production.",
+  "status": "Published: lighting preparation correction; final public-origin update verification pending.",
   "build": "705.28.15-preparo-iluminacao",
   "revision": "7e1f365289361665",
   "runtimeCommit": "2b62e70d39627a07392bdbec5f23ac51c93ab47b",
   "previewUrl": "https://otthi-world-campanha-teste-180klpsjp-thiaguinho-s-projects.vercel.app",
   "previewDeployment": "dpl_BW4rQA84RpcnF4JqCz29pe26ZzF9",
-  "unitTests": {"passed": 354, "failed": 0},
+  "unitTests": {
+    "passed": 354,
+    "failed": 0
+  },
   "checks": {
     "cameraWorldRun": 41882818502,
     "gameplayRun": 41882818269,
-    "publicHttpFilesMatch": ["release-manifest.json", "index.html", "sw.js"],
-    "publicHttpCacheControl": "no-store, max-age=0"
+    "publicHttpFilesMatch": [
+      "release-manifest.json",
+      "index.html",
+      "sw.js"
+    ],
+    "publicHttpCacheControl": "no-store, max-age=0",
+    "cameraWorldConclusion": "success",
+    "gameplayConclusion": "success",
+    "previewPublicAcceptanceRun": 41885392582,
+    "previewPublicAcceptanceConclusion": "success",
+    "previewPublicIntegrityFiles": 111,
+    "previewPublicIntegrityFailures": 0
   },
-  "browserObservation": "Cloud browser reported SHA-256 mismatch for index.html twice. Direct HTTPS checks, including the directory entry and version query, matched committed bytes. Do not waive the integrity check; verify the full public update independently before release.",
+  "browserObservation": "Cloud browser reported an index hash mismatch; independent Chromium public HTTPS recovery passed the unchanged integrity checks and preserved 4321 synthetic coins, Thiago/Luna/Liz and another local session. Direct HTTPS verification passed all 111 release hashes. Cloud local preview also lacked a WebGL context; source CI independently passed the real bundled Three world and all functional flows. No physical Android session was inspected.",
   "worldHudUnchanged": true,
   "physicalAndroidApproved": false,
   "limitations": [
     "Software WebGL measurements do not certify physical Android FPS.",
     "Continuous draw load and a late-created boxing material remain outside this narrow lighting preparation correction."
-  ]
+  ],
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionDeployment": "dpl_FuRAqZZF3ycpaeHhvdSyjrSvhJKe",
+  "productionSource": "14d29564e26705210d94419a6fe0017bdb05e8e3",
+  "productionReady": true
 }
