@@ -16,7 +16,7 @@ function scheduler({hz=60,mobile=true,requested='auto',paused=false}={}){
     beginWorldQueryFrame:()=>counts.queries++,endWorldQueryFrame(){},samplePerformance(){},applyPendingRenderBuffer(){},
     renderer:{setScissorTest(){},setViewport(){},render:()=>counts.draws++},scene:{},camera:{},
     world:{},state:{},otGames:{active:false},els:{},playerGroup:{visible:true},
-    updateFamilyAdventure(){},updateFamilyPlayableVisuals(){},prepareHomeRender:()=>null,prepareWorldPointLights:()=>null
+    updateCamera(){},updateFamilyAdventure(){},updateFamilyPlayableVisuals(){},prepareHomeRender:()=>null,prepareWorldPointLights:()=>null
   });
   vm.runInContext(loop.slice(loop.indexOf('  function targetRenderFrameRate(){'),loop.indexOf('  function setupControls(){')),c);
   c.stepWorldSimulation=dt=>{counts.steps++;counts.seconds+=dt;};
@@ -68,4 +68,12 @@ test('automatic mobile resolution reacts promptly to severe load, has a floor an
     for(let i=0;i<20;i++)c.performanceGovernorProtect('fps-pressure',1.5);assert.equal(perf.renderScale,.55);
     c.performanceGovernorRecover();assert(Math.abs(perf.renderScale-.575)<1e-10);assert.equal(perf.sessionTier,'balanced');
   }
+});
+test('camera work runs once per displayed frame and consumes the physics time accumulated during slow frames',()=>{
+ for(const hz of[10,60,144]){const f=scheduler({hz}),counts={calls:0,time:0};f.c.stepWorldSimulation=dt=>{f.counts.steps++;f.counts.seconds+=dt;f.c.perf.cameraAcc=Number(f.c.perf.cameraAcc||0)+dt;};f.c.updateCamera=dt=>{counts.calls++;counts.time+=dt;};f.run(2);assert.equal(counts.calls,f.counts.draws);assert(Math.abs(counts.time-2)<.035);assert(f.counts.steps>=118);}
+});
+test('performance governor measures painted frames and actual physics steps rather than counting RAF callbacks as both',()=>{
+ const source=read('09-responsive-ar-quality-diagnostics.js'),body=source.slice(source.indexOf('  function samplePerformance('),source.indexOf('  function performanceDistanceRanges('));
+ const perf={mobile:true,frameAcc:0,frameCount:0,sampleMs:0,simulationSampleAcc:0,simulationFrames:0,renderedFrames:0},c=vm.createContext({perf,paused:false,document:{hidden:false},Math,Number,requestedQuality:()=> 'low'});vm.runInContext(body,c);
+ for(let i=0;i<180;i++){if(i%2===1)perf.renderedFrames++;perf.simulationFrames++;c.samplePerformance(1/60);}assert(perf.fps>29&&perf.fps<31);assert(perf.simulationHz>59&&perf.simulationHz<61);
 });

@@ -64,8 +64,7 @@
       batches.get(key).items.push(matrix);root.remove(o);o.geometry.dispose();
     }
     for(const {material,items}of batches.values()){
-      const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),material,items.length);
-      items.forEach((m,i)=>mesh.setMatrixAt(i,m));mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;root.add(mesh);
+      for(const mesh of createBoundedWorldBoxInstances(material,items)){mesh.castShadow=mesh.receiveShadow=true;root.add(mesh);}
     }
   }
   function campaignDrawSite(site){

@@ -1,0 +1,31 @@
+/* @otthi-style-body */
+html,body,.app,.screen{width:var(--otthi-width,100vw)!important;height:var(--otthi-height,100dvh)!important;min-height:0!important}
+/* One reserved row for destinations/menu and two rows for camera actions. */
+@media (pointer:coarse), (max-width:950px) {
+  body.otthi-v705-world #game :is(.identity-box,.needs-box,.currency-box,.mission-card,.mini-nav,.quick-toggle,.camera-controls button,.round,.skills-toggle,.quick-bar,.secondary-actions){
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
+body.ui-portrait.otthi-v705-world #worldCampaignBtn{
+  top:calc(156px + var(--safe-top,0px))!important;
+  right:calc(56px + var(--safe-right,0px))!important;
+  width:103px!important;
+  min-height:44px!important;
+  box-sizing:border-box!important;
+}
+body.ui-portrait.otthi-v705-world .quick-toggle{top:calc(156px + var(--safe-top,0px))!important;right:calc(7px + var(--safe-right,0px))!important;width:44px!important;height:44px!important;box-sizing:border-box!important}
+body.ui-portrait.otthi-v705-world .camera-controls{
+  display:grid!important;grid-template-columns:repeat(3,44px)!important;grid-auto-rows:44px!important;
+  top:calc(204px + var(--safe-top,0px))!important;right:calc(7px + var(--safe-right,0px))!important;
+  left:auto!important;bottom:auto!important;width:140px!important;height:auto!important;gap:4px!important;
+}
+body.ui-portrait.otthi-v705-world .camera-controls>button{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;box-sizing:border-box!important}
+body.ui-portrait.otthi-v705-world #skillsToggleBtn{width:72px!important;height:56px!important;padding:4px!important;box-sizing:border-box!important}
+body.ui-portrait.otthi-v705-world #skillsToggleBtn b{font-size:23px!important;line-height:1!important}
+body.ui-portrait.otthi-v705-world #skillsToggleBtn span{font-size:10px!important;line-height:1.15!important;white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important}
+body.ui-portrait.otthi-v705-world :is(.quick-bar,.secondary-actions){z-index:150!important}
+body.ui-portrait.otthi-v705-world:is(.quick-open,.skills-open) .camera-controls{visibility:hidden!important;pointer-events:none!important}
+
+body.ui-portrait.otthi-v705-world #miniNav{top:calc(70px + var(--safe-top,0px))!important;height:80px!important}
+body.ui-landscape.otthi-v705-world #miniNav{top:calc(72px + var(--safe-top,0px))!important}

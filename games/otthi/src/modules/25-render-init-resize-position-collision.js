@@ -20,15 +20,10 @@
   }
   function applyQuality(){ if(!renderer)return;applyAdaptiveRenderSettings(); }
   function viewportMetrics(){
-    const vv=window.visualViewport,de=document.documentElement,rect=els.stage?.getBoundingClientRect?.()||{};
-    // Dentro da PWA/WebView, visualViewport pode reportar uma área menor que o palco real.
-    // O retângulo CSS do #stage é a fonte de verdade para o WebGL; isso impede a cena
-    // de ocupar apenas parte da tela quando a qualidade usa pixelRatio abaixo de 1.
-    const stageW=Number(rect.width||0),stageH=Number(rect.height||0);
-    let w=Math.round(stageW>2?stageW:(de.clientWidth||vv?.width||innerWidth||390));
-    let h=Math.round(stageH>2?stageH:(de.clientHeight||vv?.height||innerHeight||720));
+    const vv=window.visualViewport,de=document.documentElement,viewport=window.OTTHI_VIEWPORT?.measure?.(),unzoomed=!vv||Math.abs(Number(vv.scale||1)-1)<.01;
+    const w=Math.round(viewport?.width||(unzoomed&&vv?.width)||innerWidth||de.clientWidth||390),h=Math.round(viewport?.height||(unzoomed&&vv?.height)||innerHeight||de.clientHeight||720);
     const offsetTop=0,offsetLeft=0;
-    const type=String(screen.orientation?.type||''),cssLandscape=matchMedia('(orientation: landscape)').matches,dimensionLandscape=w>h,landscape=Math.abs(w-h)>12?dimensionLandscape:(type.includes('landscape')?true:type.includes('portrait')?false:cssLandscape);
+    const type=String(screen.orientation?.type||''),cssLandscape=matchMedia('(orientation: landscape)').matches,dimensionLandscape=w>h,landscape=typeof viewport?.landscape==='boolean'?viewport.landscape:Math.abs(w-h)>12?dimensionLandscape:(type.includes('landscape')?true:type.includes('portrait')?false:cssLandscape);
     const layoutHeight=Math.round(de.clientHeight||innerHeight||h),keyboard=Math.max(0,layoutHeight-h)>120;
     return{w:Math.max(280,w),h:Math.max(220,h),landscape,offsetTop,offsetLeft,keyboard};
   }
@@ -41,7 +36,7 @@
   function queueRenderBuffer(w,h,dpr){perf.pendingRenderBuffer={w,h,dpr};if(!running)applyPendingRenderBuffer();}
   function resize(force=false){
     const metrics=viewportMetrics(),w=metrics.w,h=metrics.h,landscape=metrics.landscape,portrait=!landscape;
-    const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;
+    const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;perf.viewLandscape=landscape;
     if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();queueRenderBuffer(w,h,Math.min(devicePixelRatio||1,targetDpr()));}
     const short=landscape&&h<560,ultraShort=landscape&&h<410,narrow=portrait&&w<390,tiny=h<620||w<350,compact=short||narrow||w<700;
     if(orientationChanged){clearMovementInputs();state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;els.game?.classList.remove('needs-expanded');els.missionCard?.classList.remove('expanded');document.body.classList.add('ui-orientation-changing');setTimeout(()=>document.body.classList.remove('ui-orientation-changing'),360);}
@@ -59,7 +54,8 @@
     if(classLandscape!==metrics.landscape||bufferMismatch){window.OTTHI_VIEWPORT?.measure?.();resize(true);return true;}return false;
   }
   function refreshOrientationLayout(){
-    resize(true);requestAnimationFrame(()=>resize(true));[60,160,320,620,1000].forEach(delay=>setTimeout(()=>resize(true),delay));
+    for(const job of refreshOrientationLayout.jobs||[])clearTimeout(job);if(refreshOrientationLayout.frame)cancelAnimationFrame(refreshOrientationLayout.frame);
+    resize(true);refreshOrientationLayout.frame=requestAnimationFrame(()=>resize(true));refreshOrientationLayout.jobs=[80,250].map(delay=>setTimeout(()=>resize(true),delay));
   }
   window.addEventListener('resize',()=>scheduleStableResize(50,true),{passive:true});window.addEventListener('orientationchange',refreshOrientationLayout,{passive:true});window.addEventListener('otthi:viewport',()=>scheduleStableResize(30,true),{passive:true});window.addEventListener('pageshow',refreshOrientationLayout,{passive:true});window.addEventListener('focus',()=>scheduleStableResize(30,true),{passive:true});document.addEventListener('fullscreenchange',refreshOrientationLayout,{passive:true});if(window.visualViewport){window.visualViewport.addEventListener('resize',()=>scheduleStableResize(50,true),{passive:true});window.visualViewport.addEventListener('scroll',()=>scheduleStableResize(80,false),{passive:true});}screen.orientation?.addEventListener?.('change',refreshOrientationLayout);if(window.ResizeObserver&&els.stage)new ResizeObserver(()=>scheduleStableResize(40,true)).observe(els.stage);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshOrientationLayout();});
 

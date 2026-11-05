@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.16-carga-do-mundo",
+  "build": "705.28.17-controles-rotacao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "c24644f43330716e87526877d75f4f6f3fcd274b907aa0937cd1e8c73c71bb1d"
+      "sha256Body": "e7f9641d79ed77d852f052d2f5e37cb0ef0ca8b74ce0c04f82500fda738ba8e9"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "768e85ce78b7ad8f669732d522f56ff0ab79106336d7033a9d67df5fff8bf595"
+      "sha256Body": "2052e442b631d70bcda759f90c186e6da66a734e3c8bf042785755677896a001"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -140,7 +140,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rodovia OTTOVIAS integrada: circuito, biomas, pedágios, Michelle e ronda guiada",
-      "sha256Body": "c6c3ec9dd8ba57afbcc04074f8fdeadc57082e44d56723128b501d75565ff526"
+      "sha256Body": "ae48e42381d5d38077d540db8f773731bdd44dc29155ff5464b6c878f3298afd"
     },
     {
       "file": "src/modules/15-transit-bus-metro.js",
@@ -224,7 +224,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "01f36c5dab58c2f44b5338a9481f831e32dc1622b61e10227d98c5d2e37a4ac3"
+      "sha256Body": "a96f71305e63db0aa1df453386adbff220aa7c1a7ceb56585d58e702cb0e8760"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -238,7 +238,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "4af316e7445e3d96fe00f5affbd1122bc9409da8accd4453a91e5b358bce52e0"
+      "sha256Body": "7054996f00d33ae725aeac8946eb9887e61b093f1f5947b6c0cdadbb06342dfa"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "3afa2978bbcc4f25ec7881338c01aafa14ad52698ef27fabacb8f31cc2096553"
+      "sha256Body": "3e95b7af8853f7d43e134e0704c17449dd447f2ccedc32cb3de2426b02beef70"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -378,7 +378,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "43b88ef57dcbfa9081d386c366a7ad48bdb4a00769d6e10c1aa45990f016aab7"
+      "sha256Body": "bfdf9c07421f460c523a2ac6c9cfec47a98333a161cafc71e36c85a248f1d21d"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -600,6 +600,11 @@
       "startLine": 0,
       "endLine": 0,
       "sha256Body": "05fb88f904ad275f5c85db8325741c9cf0443dd8ae1c1bfc71aa7545a656ad5c"
+    },
+    {
+      "file": "src/modules/72-static-instance-culling.js",
+      "description": "Static instance bounds and spatial drawing without removing world geometry",
+      "sha256Body": "0ad2a73e925f66e606428e415802d57b454be718adf0b671f24f55f0537ebf77"
     }
   ],
   "styles": [
@@ -791,6 +796,11 @@
       "sha256Body": "e21faad28e71677a9f2608b2536f2c7560d5cf53f352aa4d66c515e296451918",
       "startLine": 0,
       "endLine": 0
+    },
+    {
+      "file": "src/styles/26-world-mobile-controls.css",
+      "description": "Reserved mobile control zones and native HUD composition",
+      "sha256Body": "949f0dc59ff790f0b0a5c25c8e528cec0cf4b8e61e16d0a72fa6df25a4ad0e0a"
     }
   ]
 }

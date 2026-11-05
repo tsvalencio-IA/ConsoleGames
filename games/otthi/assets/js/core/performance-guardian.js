@@ -29,7 +29,7 @@
   function sample() {
     const data = performanceData();
     const game = diagnostic();
-    if (!data || !game?.running) return;
+    if (!data || !game?.running || game.paused || document.hidden) return;
     history.push({ at:Date.now(), ...data });
     if (history.length > 40) history.shift();
     showBadge(data);

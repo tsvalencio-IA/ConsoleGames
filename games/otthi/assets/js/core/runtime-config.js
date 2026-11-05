@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.16-carga-do-mundo',
+    build: '705.28.17-controles-rotacao',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

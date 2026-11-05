@@ -25,7 +25,7 @@
       });
     }
   }
-  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
+  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
@@ -78,13 +78,14 @@
     perf.rafSampleAcc+=rawDt;perf.rafFrames++;if(perf.rafSampleAcc>=1.5){perf.rafHz=perf.rafFrames/Math.max(.001,perf.rafSampleAcc);perf.rafSampleAcc=0;perf.rafFrames=0;}
   }
   function stepWorldSimulation(dt){
+    perf.simulationFrames=Number(perf.simulationFrames||0)+1;
     updatePlayUsage();
     if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
     if(paused&&typeof updateCivilPaused==='function')updateCivilPaused(dt);
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
-      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);updateCamera(dt);if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();if(typeof updateWorldExpansion==='function')updateWorldExpansion();if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
+      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();if(typeof updateWorldExpansion==='function')updateWorldExpansion();if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
       if(typeof updateFamilyCarry==='function')updateFamilyCarry();
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
@@ -116,11 +117,11 @@
     const elapsed=Math.max(0,clock.getDelta());
     // Consume the clock while hidden, but neither simulate nor draw a covered
     // world. Visibility changes discard background time rather than replay it.
-    if(document.hidden){perf.loopAcc=perf.renderAcc=0;return;}
+    if(document.hidden){perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;return;}
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
-    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
-    sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
+    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;return;}
+    sampleRafCadence(Math.min(1,elapsed));samplePerformance(elapsed);
     // Fixed physics steps catch up with real time when a rendered frame is slow.
     // The cap prevents a long background pause from replaying minutes of input.
     const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);
@@ -136,6 +137,7 @@
     // avatar covering their faces; restore visibility immediately after drawing.
     if(!paused&&typeof updateFamilyAdventure==='function')updateFamilyAdventure(Math.min(.1,elapsed));
     updateFamilyPlayableVisuals();
+    if(!paused){updateCamera(Math.min(.15,Number(perf.cameraAcc||elapsed)));perf.cameraAcc=0;}
     if(otGames.active&&otGames.hudDirty){otGames.hudDirty=false;otGamesUpdateHUD();}
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
@@ -181,8 +183,8 @@
   }
 
   async function requestPreferredGameOrientation(){
-    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile||!orientation?.lock)return false;
-    try{orientation.unlock?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
+    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile)return false;
+    try{orientation?.unlock?.();window.OTTHI_VIEWPORT?.measure?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
   }
   async function startGame(resetPosition=false){
     await dbReady;

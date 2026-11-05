@@ -153,7 +153,7 @@
     lowSamples:0, highSamples:0, recommendationSamples:0, aiAcc:0, trafficAcc:0, cloudAcc:0, lodAcc:0, uiAcc:0, panelAcc:0, modeAuditAcc:0, renderAcc:0, renderedFrames:0, aiTicks:0, trafficTicks:0, mobile:matchMedia('(pointer:coarse)').matches,
     appliedTier:'',appliedDpr:0,recommendation:initialAutoTier,lastRecommendationSaved:0,lastRenderW:0,lastRenderH:0,resizeTimer:0,cullingEnabled:0,cullingBypassed:0,criticalVisible:0,criticalHidden:0,dynamicVisible:0,dynamicHidden:0,
     renderScale:1,renderScaleMin:matchMedia('(pointer:coarse)').matches?.55:.82,renderScaleMax:1,governorPressure:0,governorRecoveries:0,governorProtections:0,governorReason:'boot',
-    loopAcc:0,rafHz:60,rafSampleAcc:0,rafFrames:0,simulationHz:0,simulationFrames:0,simulationSampleAcc:0
+    cameraAcc:0,loopAcc:0,rafHz:60,rafSampleAcc:0,rafFrames:0,simulationHz:0,simulationFrames:0,simulationSampleAcc:0
   };
   const distanceCullPosition=new THREE.Vector3(),distanceCullScale=new THREE.Vector3();
   const PLAYER_MODES=Object.freeze({
@@ -262,8 +262,9 @@
     perf.appliedTier=tier;document.body.dataset.renderTier=tier;document.body.dataset.renderGovernor=String(Math.round((perf.renderScale||1)*100));scheduleStableResize(80,true);
   }
   function samplePerformance(dt){
-    if(paused||document.hidden){perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;return;}
-    perf.frameAcc+=dt;perf.frameCount++;perf.sampleMs+=dt;perf.simulationSampleAcc+=dt;perf.simulationFrames++;
+    if(paused||document.hidden){perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;perf.lastSampledPaint=Number(perf.renderedFrames||0);return;}
+    perf.frameAcc+=dt;perf.sampleMs+=dt;perf.simulationSampleAcc+=dt;
+    const painted=Number(perf.renderedFrames||0);if(perf.lastSampledPaint===undefined)perf.lastSampledPaint=painted;perf.frameCount+=Math.max(0,painted-perf.lastSampledPaint);perf.lastSampledPaint=painted;
     if(perf.simulationSampleAcc>=1.5){perf.simulationHz=perf.simulationFrames/Math.max(.001,perf.simulationSampleAcc);perf.simulationSampleAcc=0;perf.simulationFrames=0;}
     if(perf.sampleMs<(perf.mobile?2:3))return;
     perf.fps=perf.frameCount/Math.max(.001,perf.frameAcc);perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;
@@ -353,7 +354,7 @@
       const radius=Number(obj.geometry?.boundingSphere?.radius||0),critical=world.criticalSurfaces.includes(obj),overlay=obj.isSprite||Number(obj.renderOrder||0)>=900||obj.userData?.alwaysVisible===true;
       // Instâncias distribuídas pelo mundo não podem usar apenas a esfera da geometria-base no Three r128.
       // Superfícies críticas, overlays, lotes instanciados e objetos enormes permanecem protegidos.
-      const keepAlwaysVisible=critical||overlay||obj.isInstancedMesh||radius>170;
+      const keepAlwaysVisible=critical||overlay||obj.isInstancedMesh&&!obj.userData.otthiBoundedInstances||radius>170;
       obj.frustumCulled=!keepAlwaysVisible;
       if(obj.frustumCulled)enabled++;else bypassed++;
     });

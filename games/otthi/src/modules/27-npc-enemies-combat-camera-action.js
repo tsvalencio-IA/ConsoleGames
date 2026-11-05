@@ -127,17 +127,17 @@
       }
     }
     if(!desiredPos&&fishingVisual?.active){
-      const portrait=innerHeight>innerWidth,v=fishingVisual,target=v.phase==='ready'?v.target:(v.bobber?.position||v.target);
+      const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape),v=fishingVisual,target=v.phase==='ready'?v.target:(v.bobber?.position||v.target);
       const focusX=lerp(player.x,Number(target?.x??player.x),.58),focusZ=lerp(player.z,Number(target?.z??player.z),.58),focusY=Math.max(.7,player.y+1.0);
       const dist=clamp((portrait?9.2:7.6)+cameraZoom,5.8,14.5),height=clamp((portrait?4.8:4.0)+cameraPitch*2.0,3.2,7.2);
       desiredPos=new THREE.Vector3(focusX-Math.sin(cameraYaw)*dist,focusY+height,focusZ+Math.cos(cameraYaw)*dist);
       look=new THREE.Vector3(focusX,focusY+.12,focusZ);camera.fov=portrait?52:49;
     }
     if(!desiredPos&&currentHouse&&cameraMode==='interior'){
-      const h=currentHouse;const portrait=innerHeight>innerWidth;const orbit=clamp(cameraYaw,-1.18,1.18);const dist=clamp((portrait?8.2:7.2)+cameraZoom,5.2,12.5);const height=clamp((portrait?5.6:4.6)+cameraPitch*2.4+cameraZoom*.18,3.8,8.8);
+      const h=currentHouse;const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape);const orbit=clamp(cameraYaw,-1.18,1.18);const dist=clamp((portrait?8.2:7.2)+cameraZoom,5.2,12.5);const height=clamp((portrait?5.6:4.6)+cameraPitch*2.4+cameraZoom*.18,3.8,8.8);
       const cx=lerp(h.x,player.x,.20),cz=lerp(h.z,player.z,.20);desiredPos=new THREE.Vector3(cx-Math.sin(orbit)*dist,player.y+height,cz+Math.cos(orbit)*dist);look=new THREE.Vector3(cx,player.y+.75,cz);camera.fov=portrait?58:56;
     }else if(!desiredPos){
-      const portrait=innerHeight>innerWidth;const speed=Math.hypot(player.vx,player.vz);
+      const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape);const speed=Math.hypot(player.vx,player.vz);
       if((player.vehicle||player.boating)&&!input.cameraDrag){const heading=player.vehicle?player.car.heading:player.boat.heading;cameraYaw=lerpAngle(cameraYaw,Math.PI-heading,Math.min(1,dt*3.2));}
       const speedKick=clamp(Math.abs(player.vehicle?player.car.speed:speed)/9,0,1.6),pitch=clamp(cameraPitch,-.55,1.35);
       const followScale=playerModel?.userData?.familyAvatar&&!player.vehicle&&!player.boating?.72:1;

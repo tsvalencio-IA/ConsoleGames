@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.16-carga-do-mundo';
+  const OTTHI_GAME_WEB_BUILD = '705.28.17-controles-rotacao';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2923,7 +2923,7 @@
     lowSamples:0, highSamples:0, recommendationSamples:0, aiAcc:0, trafficAcc:0, cloudAcc:0, lodAcc:0, uiAcc:0, panelAcc:0, modeAuditAcc:0, renderAcc:0, renderedFrames:0, aiTicks:0, trafficTicks:0, mobile:matchMedia('(pointer:coarse)').matches,
     appliedTier:'',appliedDpr:0,recommendation:initialAutoTier,lastRecommendationSaved:0,lastRenderW:0,lastRenderH:0,resizeTimer:0,cullingEnabled:0,cullingBypassed:0,criticalVisible:0,criticalHidden:0,dynamicVisible:0,dynamicHidden:0,
     renderScale:1,renderScaleMin:matchMedia('(pointer:coarse)').matches?.55:.82,renderScaleMax:1,governorPressure:0,governorRecoveries:0,governorProtections:0,governorReason:'boot',
-    loopAcc:0,rafHz:60,rafSampleAcc:0,rafFrames:0,simulationHz:0,simulationFrames:0,simulationSampleAcc:0
+    cameraAcc:0,loopAcc:0,rafHz:60,rafSampleAcc:0,rafFrames:0,simulationHz:0,simulationFrames:0,simulationSampleAcc:0
   };
   const distanceCullPosition=new THREE.Vector3(),distanceCullScale=new THREE.Vector3();
   const PLAYER_MODES=Object.freeze({
@@ -3032,8 +3032,9 @@
     perf.appliedTier=tier;document.body.dataset.renderTier=tier;document.body.dataset.renderGovernor=String(Math.round((perf.renderScale||1)*100));scheduleStableResize(80,true);
   }
   function samplePerformance(dt){
-    if(paused||document.hidden){perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;return;}
-    perf.frameAcc+=dt;perf.frameCount++;perf.sampleMs+=dt;perf.simulationSampleAcc+=dt;perf.simulationFrames++;
+    if(paused||document.hidden){perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;perf.lastSampledPaint=Number(perf.renderedFrames||0);return;}
+    perf.frameAcc+=dt;perf.sampleMs+=dt;perf.simulationSampleAcc+=dt;
+    const painted=Number(perf.renderedFrames||0);if(perf.lastSampledPaint===undefined)perf.lastSampledPaint=painted;perf.frameCount+=Math.max(0,painted-perf.lastSampledPaint);perf.lastSampledPaint=painted;
     if(perf.simulationSampleAcc>=1.5){perf.simulationHz=perf.simulationFrames/Math.max(.001,perf.simulationSampleAcc);perf.simulationSampleAcc=0;perf.simulationFrames=0;}
     if(perf.sampleMs<(perf.mobile?2:3))return;
     perf.fps=perf.frameCount/Math.max(.001,perf.frameAcc);perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;
@@ -3123,7 +3124,7 @@
       const radius=Number(obj.geometry?.boundingSphere?.radius||0),critical=world.criticalSurfaces.includes(obj),overlay=obj.isSprite||Number(obj.renderOrder||0)>=900||obj.userData?.alwaysVisible===true;
       // Instâncias distribuídas pelo mundo não podem usar apenas a esfera da geometria-base no Three r128.
       // Superfícies críticas, overlays, lotes instanciados e objetos enormes permanecem protegidos.
-      const keepAlwaysVisible=critical||overlay||obj.isInstancedMesh||radius>170;
+      const keepAlwaysVisible=critical||overlay||obj.isInstancedMesh&&!obj.userData.otthiBoundedInstances||radius>170;
       obj.frustumCulled=!keepAlwaysVisible;
       if(obj.frustumCulled)enabled++;else bypassed++;
     });
@@ -4500,7 +4501,7 @@
     if(!THREE.InstancedMesh)return;const groups=new Map();
     for(const m of root.children.slice())if(m.isMesh&&m.geometry.type==='BoxGeometry'){const key=m.material.uuid;if(!groups.has(key))groups.set(key,{material:m.material,items:[]});m.updateMatrix();const p=m.geometry.parameters;groups.get(key).items.push(m.matrix.clone().multiply(new THREE.Matrix4().makeScale(p.width,p.height,p.depth)));root.remove(m);}
     // Source geometries/materials belong to the shared cache and remain owned there.
-    for(const{material,items}of groups.values()){const mesh=new THREE.InstancedMesh(sharedBoxGeometry(1,1,1),material,items.length);items.forEach((m,i)=>mesh.setMatrixAt(i,m));mesh.instanceMatrix.needsUpdate=true;mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.name='HIGHWAY_RAIL_BATCH';root.add(mesh);}
+    for(const{material,items}of groups.values())for(const mesh of createBoundedWorldBoxInstances(material,items)){mesh.receiveShadow=true;mesh.name='HIGHWAY_RAIL_BATCH';root.add(mesh);}
   }
   function createOttoviasRoadSegment(a,b,index,parent=worldGroup,highway=ottoviasHighway()){const dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz),heading=Math.atan2(dx,dz),h=highway,g=new THREE.Group();g.position.set((a.x+b.x)/2,.02,(a.z+b.z)/2);g.rotation.y=heading;g.name=`OTTHI_${String(h.id||'ottovias').toUpperCase().replaceAll('-','_')}_SEGMENT_${index}`;parent.add(g);
     const width=Number(h.width||12.4);if(!h.usesExistingRoad){const rail=ottoviasMaterial(0xb9c2c9,{roughness:.5,metalness:.32});if(index%2===0||['snow','beach'].includes(a.biome)){for(const side of[-1,1])for(let u=2;u<len-2;u+=4){const span=Math.min(4,len-2-u),t=(u+span/2)/len,x=a.x+dx*t+Math.cos(heading)*side*(width/2+1),z=a.z+dz*t-Math.sin(heading)*side*(width/2+1);if(WORLD_LAYOUT_V704.roads.some(r=>Math.abs(x-r.x)<r.w/2+1&&Math.abs(z-r.z)<r.d/2+1))continue;let junction=false;for(const other of v704HighwaySegments()){if(other.highwayId===h.id)continue;const q=projectPointToSegment({x,z},other.a,other.b);if(Math.hypot(x-q.x,z-q.z)<other.width/2+1){junction=true;break;}}if(junction)continue;box(.11,.48,span,rail,side*(width/2+1),.58,-len/2+u+span/2,g);box(.12,1.0,.12,0x66727b,side*(width/2+1),.5,-len/2+u,g);}}}
@@ -6951,15 +6952,10 @@
   }
   function applyQuality(){ if(!renderer)return;applyAdaptiveRenderSettings(); }
   function viewportMetrics(){
-    const vv=window.visualViewport,de=document.documentElement,rect=els.stage?.getBoundingClientRect?.()||{};
-    // Dentro da PWA/WebView, visualViewport pode reportar uma área menor que o palco real.
-    // O retângulo CSS do #stage é a fonte de verdade para o WebGL; isso impede a cena
-    // de ocupar apenas parte da tela quando a qualidade usa pixelRatio abaixo de 1.
-    const stageW=Number(rect.width||0),stageH=Number(rect.height||0);
-    let w=Math.round(stageW>2?stageW:(de.clientWidth||vv?.width||innerWidth||390));
-    let h=Math.round(stageH>2?stageH:(de.clientHeight||vv?.height||innerHeight||720));
+    const vv=window.visualViewport,de=document.documentElement,viewport=window.OTTHI_VIEWPORT?.measure?.(),unzoomed=!vv||Math.abs(Number(vv.scale||1)-1)<.01;
+    const w=Math.round(viewport?.width||(unzoomed&&vv?.width)||innerWidth||de.clientWidth||390),h=Math.round(viewport?.height||(unzoomed&&vv?.height)||innerHeight||de.clientHeight||720);
     const offsetTop=0,offsetLeft=0;
-    const type=String(screen.orientation?.type||''),cssLandscape=matchMedia('(orientation: landscape)').matches,dimensionLandscape=w>h,landscape=Math.abs(w-h)>12?dimensionLandscape:(type.includes('landscape')?true:type.includes('portrait')?false:cssLandscape);
+    const type=String(screen.orientation?.type||''),cssLandscape=matchMedia('(orientation: landscape)').matches,dimensionLandscape=w>h,landscape=typeof viewport?.landscape==='boolean'?viewport.landscape:Math.abs(w-h)>12?dimensionLandscape:(type.includes('landscape')?true:type.includes('portrait')?false:cssLandscape);
     const layoutHeight=Math.round(de.clientHeight||innerHeight||h),keyboard=Math.max(0,layoutHeight-h)>120;
     return{w:Math.max(280,w),h:Math.max(220,h),landscape,offsetTop,offsetLeft,keyboard};
   }
@@ -6972,7 +6968,7 @@
   function queueRenderBuffer(w,h,dpr){perf.pendingRenderBuffer={w,h,dpr};if(!running)applyPendingRenderBuffer();}
   function resize(force=false){
     const metrics=viewportMetrics(),w=metrics.w,h=metrics.h,landscape=metrics.landscape,portrait=!landscape;
-    const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;
+    const sizeChanged=Math.abs(w-perf.lastRenderW)>2||Math.abs(h-perf.lastRenderH)>2;const orientationChanged=resize._landscape!==undefined&&resize._landscape!==landscape;resize._landscape=landscape;perf.viewLandscape=landscape;
     if(renderer&&camera&&(sizeChanged||force||orientationChanged)){camera.aspect=w/h;camera.updateProjectionMatrix();queueRenderBuffer(w,h,Math.min(devicePixelRatio||1,targetDpr()));}
     const short=landscape&&h<560,ultraShort=landscape&&h<410,narrow=portrait&&w<390,tiny=h<620||w<350,compact=short||narrow||w<700;
     if(orientationChanged){clearMovementInputs();state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;els.game?.classList.remove('needs-expanded');els.missionCard?.classList.remove('expanded');document.body.classList.add('ui-orientation-changing');setTimeout(()=>document.body.classList.remove('ui-orientation-changing'),360);}
@@ -6990,7 +6986,8 @@
     if(classLandscape!==metrics.landscape||bufferMismatch){window.OTTHI_VIEWPORT?.measure?.();resize(true);return true;}return false;
   }
   function refreshOrientationLayout(){
-    resize(true);requestAnimationFrame(()=>resize(true));[60,160,320,620,1000].forEach(delay=>setTimeout(()=>resize(true),delay));
+    for(const job of refreshOrientationLayout.jobs||[])clearTimeout(job);if(refreshOrientationLayout.frame)cancelAnimationFrame(refreshOrientationLayout.frame);
+    resize(true);refreshOrientationLayout.frame=requestAnimationFrame(()=>resize(true));refreshOrientationLayout.jobs=[80,250].map(delay=>setTimeout(()=>resize(true),delay));
   }
   window.addEventListener('resize',()=>scheduleStableResize(50,true),{passive:true});window.addEventListener('orientationchange',refreshOrientationLayout,{passive:true});window.addEventListener('otthi:viewport',()=>scheduleStableResize(30,true),{passive:true});window.addEventListener('pageshow',refreshOrientationLayout,{passive:true});window.addEventListener('focus',()=>scheduleStableResize(30,true),{passive:true});document.addEventListener('fullscreenchange',refreshOrientationLayout,{passive:true});if(window.visualViewport){window.visualViewport.addEventListener('resize',()=>scheduleStableResize(50,true),{passive:true});window.visualViewport.addEventListener('scroll',()=>scheduleStableResize(80,false),{passive:true});}screen.orientation?.addEventListener?.('change',refreshOrientationLayout);if(window.ResizeObserver&&els.stage)new ResizeObserver(()=>scheduleStableResize(40,true)).observe(els.stage);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshOrientationLayout();});
 
@@ -7383,17 +7380,17 @@
       }
     }
     if(!desiredPos&&fishingVisual?.active){
-      const portrait=innerHeight>innerWidth,v=fishingVisual,target=v.phase==='ready'?v.target:(v.bobber?.position||v.target);
+      const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape),v=fishingVisual,target=v.phase==='ready'?v.target:(v.bobber?.position||v.target);
       const focusX=lerp(player.x,Number(target?.x??player.x),.58),focusZ=lerp(player.z,Number(target?.z??player.z),.58),focusY=Math.max(.7,player.y+1.0);
       const dist=clamp((portrait?9.2:7.6)+cameraZoom,5.8,14.5),height=clamp((portrait?4.8:4.0)+cameraPitch*2.0,3.2,7.2);
       desiredPos=new THREE.Vector3(focusX-Math.sin(cameraYaw)*dist,focusY+height,focusZ+Math.cos(cameraYaw)*dist);
       look=new THREE.Vector3(focusX,focusY+.12,focusZ);camera.fov=portrait?52:49;
     }
     if(!desiredPos&&currentHouse&&cameraMode==='interior'){
-      const h=currentHouse;const portrait=innerHeight>innerWidth;const orbit=clamp(cameraYaw,-1.18,1.18);const dist=clamp((portrait?8.2:7.2)+cameraZoom,5.2,12.5);const height=clamp((portrait?5.6:4.6)+cameraPitch*2.4+cameraZoom*.18,3.8,8.8);
+      const h=currentHouse;const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape);const orbit=clamp(cameraYaw,-1.18,1.18);const dist=clamp((portrait?8.2:7.2)+cameraZoom,5.2,12.5);const height=clamp((portrait?5.6:4.6)+cameraPitch*2.4+cameraZoom*.18,3.8,8.8);
       const cx=lerp(h.x,player.x,.20),cz=lerp(h.z,player.z,.20);desiredPos=new THREE.Vector3(cx-Math.sin(orbit)*dist,player.y+height,cz+Math.cos(orbit)*dist);look=new THREE.Vector3(cx,player.y+.75,cz);camera.fov=portrait?58:56;
     }else if(!desiredPos){
-      const portrait=innerHeight>innerWidth;const speed=Math.hypot(player.vx,player.vz);
+      const portrait=(perf.viewLandscape===undefined?innerHeight>innerWidth:!perf.viewLandscape);const speed=Math.hypot(player.vx,player.vz);
       if((player.vehicle||player.boating)&&!input.cameraDrag){const heading=player.vehicle?player.car.heading:player.boat.heading;cameraYaw=lerpAngle(cameraYaw,Math.PI-heading,Math.min(1,dt*3.2));}
       const speedKick=clamp(Math.abs(player.vehicle?player.car.speed:speed)/9,0,1.6),pitch=clamp(cameraPitch,-.55,1.35);
       const followScale=playerModel?.userData?.familyAvatar&&!player.vehicle&&!player.boating?.72:1;
@@ -7889,7 +7886,7 @@
       });
     }
   }
-  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
+  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
@@ -7942,13 +7939,14 @@
     perf.rafSampleAcc+=rawDt;perf.rafFrames++;if(perf.rafSampleAcc>=1.5){perf.rafHz=perf.rafFrames/Math.max(.001,perf.rafSampleAcc);perf.rafSampleAcc=0;perf.rafFrames=0;}
   }
   function stepWorldSimulation(dt){
+    perf.simulationFrames=Number(perf.simulationFrames||0)+1;
     updatePlayUsage();
     if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
     if(paused&&typeof updateCivilPaused==='function')updateCivilPaused(dt);
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
-      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);updateCamera(dt);if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();if(typeof updateWorldExpansion==='function')updateWorldExpansion();if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
+      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();if(typeof updateWorldExpansion==='function')updateWorldExpansion();if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
       if(typeof updateFamilyCarry==='function')updateFamilyCarry();
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
@@ -7980,11 +7978,11 @@
     const elapsed=Math.max(0,clock.getDelta());
     // Consume the clock while hidden, but neither simulate nor draw a covered
     // world. Visibility changes discard background time rather than replay it.
-    if(document.hidden){perf.loopAcc=perf.renderAcc=0;return;}
+    if(document.hidden){perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;return;}
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
-    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
-    sampleRafCadence(Math.min(1,elapsed));samplePerformance(Math.min(.25,elapsed));
+    if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;return;}
+    sampleRafCadence(Math.min(1,elapsed));samplePerformance(elapsed);
     // Fixed physics steps catch up with real time when a rendered frame is slow.
     // The cap prevents a long background pause from replaying minutes of input.
     const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);
@@ -8000,6 +7998,7 @@
     // avatar covering their faces; restore visibility immediately after drawing.
     if(!paused&&typeof updateFamilyAdventure==='function')updateFamilyAdventure(Math.min(.1,elapsed));
     updateFamilyPlayableVisuals();
+    if(!paused){updateCamera(Math.min(.15,Number(perf.cameraAcc||elapsed)));perf.cameraAcc=0;}
     if(otGames.active&&otGames.hudDirty){otGames.hudDirty=false;otGamesUpdateHUD();}
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
@@ -8045,8 +8044,8 @@
   }
 
   async function requestPreferredGameOrientation(){
-    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile||!orientation?.lock)return false;
-    try{orientation.unlock?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
+    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile)return false;
+    try{orientation?.unlock?.();window.OTTHI_VIEWPORT?.measure?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
   }
   async function startGame(resetPosition=false){
     await dbReady;
@@ -10144,8 +10143,7 @@ function build(T,key,H){
       batches.get(key).items.push(matrix);root.remove(o);o.geometry.dispose();
     }
     for(const {material,items}of batches.values()){
-      const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),material,items.length);
-      items.forEach((m,i)=>mesh.setMatrixAt(i,m));mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;root.add(mesh);
+      for(const mesh of createBoundedWorldBoxInstances(material,items)){mesh.castShadow=mesh.receiveShadow=true;root.add(mesh);}
     }
   }
   function campaignDrawSite(site){
@@ -13098,5 +13096,21 @@ function precompile(T,renderer,scene,camera){
     return()=>{for(const light of hidden)light.visible=true;for(let i=0;i<padded;i++)scene.remove(budget.padding[i]);};
   }
   window.OTTHI_LIGHT_BUDGET={diagnostics:()=>({...worldLightBudget.stats})};
+
+  // ===== MODULE: 72-static-instance-culling.js =====
+  function createBoundedWorldBoxInstances(material,items){
+    let minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;for(const matrix of items){const e=matrix.elements;minX=Math.min(minX,e[12]);maxX=Math.max(maxX,e[12]);minZ=Math.min(minZ,e[14]);maxZ=Math.max(maxZ,e[14]);}
+    const chunks=new Map(),spatial=!material.transparent&&(maxX-minX>64||maxZ-minZ>64);
+    for(const matrix of items){const e=matrix.elements,key=spatial?Math.floor(e[12]/32)+':'+Math.floor(e[14]/32):'transparent';let chunk=chunks.get(key);if(!chunk)chunks.set(key,chunk=[]);chunk.push(matrix);}
+    const meshes=[],unit=new THREE.Box3(new THREE.Vector3(-.5,-.5,-.5),new THREE.Vector3(.5,.5,.5)),part=new THREE.Box3();
+    for(const matrices of chunks.values()){
+      // Each batch owns its tiny unit geometry, so its aggregate bounds never
+      // overwrite the shared geometry used by other objects or instances.
+      const geometry=new THREE.BoxGeometry(1,1,1),bounds=new THREE.Box3(),mesh=new THREE.InstancedMesh(geometry,material,matrices.length);
+      matrices.forEach((matrix,i)=>{mesh.setMatrixAt(i,matrix);bounds.union(part.copy(unit).applyMatrix4(matrix));});
+      geometry.boundingSphere=bounds.getBoundingSphere(new THREE.Sphere());mesh.instanceMatrix.needsUpdate=true;mesh.userData.otthiBoundedInstances=true;mesh.frustumCulled=true;meshes.push(mesh);
+    }
+    return meshes;
+  }
 
 })();

@@ -21,6 +21,8 @@ jobs:
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
       - run: node tests/world-integrity.mjs
+      - name: Comparar todos os pixels das instâncias
+        run: node tests/world-instance-culling-browser.mjs
       - name: Reproduzir os defeitos da versão recebida
         env:
           WORLD_UI_REVISION: cc2437b7a03d784fa219c9327d97880688835736
@@ -32,7 +34,9 @@ jobs:
         if: always()
         with:
           name: world-mobile-layout
-          path: test-results/world-mobile-*/
+          path: |
+            test-results/world-mobile-*/
+            test-results/world-instance-culling/
   carga-online:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
