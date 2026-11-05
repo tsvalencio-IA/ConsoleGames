@@ -1,0 +1,106 @@
+{
+  "sourceCommit": "b85b59892c79dccfd0b89f1169f1df562888f04f",
+  "run": 42012106580,
+  "environment": "Chromium 141 software WebGL, same CI job, 12 seconds per case. No physical Android session.",
+  "before": {
+    "frame": {
+      "samples": 69,
+      "mean": 171.9913043478262,
+      "p50": 169.40000000000873,
+      "p95": 327.79999999998836,
+      "max": 335.20000000001164,
+      "over100": 56,
+      "over250": 13
+    },
+    "work": {
+      "samples": 70,
+      "mean": 44.69000000000087,
+      "p50": 42.69999999999709,
+      "p95": 74.59999999999127,
+      "max": 110.39999999999418,
+      "over100": 1,
+      "over250": 0
+    },
+    "longTasks": {
+      "samples": 21,
+      "mean": 63.904761904761905,
+      "p50": 59,
+      "p95": 86,
+      "max": 113,
+      "over100": 1,
+      "over250": 0
+    },
+    "renderMs": {
+      "samples": 70,
+      "mean": 12.978571428571428,
+      "p50": 12.900000000008731,
+      "p95": 15.599999999991269,
+      "max": 24,
+      "over100": 0,
+      "over250": 0
+    },
+    "matrixMs": {
+      "samples": 70,
+      "mean": 4.052857142856269,
+      "p50": 3.8000000000029104,
+      "p95": 5.399999999994179,
+      "max": 8.599999999991269,
+      "over100": 0,
+      "over250": 0
+    },
+    "npcs": 138,
+    "trafficModels": 44,
+    "catalog": 44
+  },
+  "after": {
+    "frame": {
+      "samples": 69,
+      "mean": 173.16231884057987,
+      "p50": 171,
+      "p95": 332.5,
+      "max": 390.79999999998836,
+      "over100": 55,
+      "over250": 13
+    },
+    "work": {
+      "samples": 70,
+      "mean": 38.607142857143685,
+      "p50": 39.30000000001746,
+      "p95": 58,
+      "max": 68.69999999999709,
+      "over100": 0,
+      "over250": 0
+    },
+    "longTasks": {
+      "samples": 12,
+      "mean": 56.333333333333336,
+      "p50": 57,
+      "p95": 70,
+      "max": 70,
+      "over100": 0,
+      "over250": 0
+    },
+    "renderMs": {
+      "samples": 68,
+      "mean": 12.616176470588364,
+      "p50": 12.299999999988358,
+      "p95": 18,
+      "max": 25.90000000000873,
+      "over100": 0,
+      "over250": 0
+    },
+    "matrixMs": {
+      "samples": 68,
+      "mean": 3.8470588235312095,
+      "p50": 3.6999999999825377,
+      "p95": 5.300000000017462,
+      "max": 8.400000000023283,
+      "over100": 0,
+      "over250": 0
+    },
+    "npcs": 138,
+    "trafficModels": 44,
+    "catalog": 44
+  },
+  "interpretation": "CPU mean improved by 13.6%, CPU p95 by 22.3%, and long tasks fell from 21 to 12. Native software frame time did not improve. Do not claim Android FPS or heat reduction from this test. Adaptive pixel-budget follow-up is measured separately."
+}

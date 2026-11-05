@@ -1,8 +1,8 @@
 {
-  "status": "Candidate: 364 local checks passed; automatic mobile and public update verification running",
+  "status": "Validated source and preview; ready for production publication",
   "build": "705.28.16-carga-do-mundo",
   "revision": "d4915ab5ed472447",
-  "runtimeCommit": "d0ed38b41e44b032d3295777e1e58f4309595d46",
+  "runtimeCommit": "d6d9216de6ca558776925865f6a08f8569d84a06",
   "previewUrl": "https://otthi-world-campanha-teste-co1bu07lc-thiaguinho-s-projects.vercel.app",
   "previewDeployment": "dpl_3pG1bFLPjWSQu7RBdTw3fCeRDCKu",
   "unitTests": {
@@ -11,11 +11,22 @@
   },
   "physicalAndroidApproved": false,
   "checks": {
-    "performanceRun": 42013144900,
-    "gameplayRun": 42013144857,
-    "cameraWorldRun": 42013144941
+    "performanceRun": 42013933158,
+    "gameplayRun": 42013933292,
+    "cameraWorldRun": 42013933369,
+    "previewPublicAcceptanceRun": 42013578870,
+    "previewPublicAcceptanceConclusion": "success",
+    "performanceConclusion": "success",
+    "gameplayConclusion": "success",
+    "cameraWorldConclusion": "success",
+    "lightingViews": 3,
+    "lightingPixelDifferences": 0,
+    "releaseAssets": 111
   },
   "limitations": [
     "No physical Android FPS or temperature measurement. Software WebGL results do not certify phone performance."
-  ]
+  ],
+  "sourceCoherence": "Generated entry, worker, runtime and manifest match; module-order body hash synchronized in the evidence commit.",
+  "measurements": "fluidez-20261105/final-comparison.json",
+  "worldHudUnchanged": true
 }

@@ -1,0 +1,223 @@
+{
+  "sourceCommit": "d6d9216de6ca558776925865f6a08f8569d84a06",
+  "run": 42013933158,
+  "artifact": 13408178675,
+  "build": "705.28.16-carga-do-mundo",
+  "revision": "d4915ab5ed472447",
+  "environment": "Chromium 141, native uncapped software WebGL, same CI job, two 12-second comparisons; no physical Android measurement.",
+  "cases": [
+    {
+      "mode": "manual",
+      "label": "before",
+      "frame": {
+        "samples": 37,
+        "mean": 317.2891891891895,
+        "p50": 295.6999999999971,
+        "p95": 633.8000000000029,
+        "max": 674.3999999999942,
+        "over100": 31,
+        "over250": 29
+      },
+      "work": {
+        "samples": 38,
+        "mean": 64.7736842105254,
+        "p50": 68.09999999999127,
+        "p95": 99.30000000000291,
+        "max": 107.40000000000873,
+        "over100": 1,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 28,
+        "mean": 76.07142857142857,
+        "p50": 74,
+        "p95": 100,
+        "max": 108,
+        "over100": 1,
+        "over250": 0
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "drawingBuffer": {
+        "width": 226,
+        "height": 490,
+        "dpr": 0.576
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.72,
+        "pressure": 100,
+        "protections": 4,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 3.9,
+        "simulationHz": 4.4
+      },
+      "case": "legacy-balanced-input-normalized-to-auto"
+    },
+    {
+      "mode": "manual",
+      "label": "after",
+      "frame": {
+        "samples": 46,
+        "mean": 261.208695652174,
+        "p50": 256.70000000001164,
+        "p95": 484.79999999998836,
+        "max": 652.7000000000116,
+        "over100": 37,
+        "over250": 25
+      },
+      "work": {
+        "samples": 47,
+        "mean": 54.2744680851075,
+        "p50": 54.79999999998836,
+        "p95": 82,
+        "max": 106.80000000001746,
+        "over100": 1,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 33,
+        "mean": 65.15151515151516,
+        "p50": 63,
+        "p95": 86,
+        "max": 108,
+        "over100": 1,
+        "over250": 0
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "guardian-low-fps",
+        "rafHz": 3.3,
+        "simulationHz": 5.4
+      },
+      "case": "legacy-balanced-input-normalized-to-auto"
+    },
+    {
+      "mode": "auto",
+      "label": "before",
+      "frame": {
+        "samples": 39,
+        "mean": 300.0358974358973,
+        "p50": 294.1000000000058,
+        "p95": 547.6000000000058,
+        "max": 556.6999999999825,
+        "over100": 33,
+        "over250": 33
+      },
+      "work": {
+        "samples": 40,
+        "mean": 61.71749999999811,
+        "p50": 63.89999999999418,
+        "p95": 90.79999999998836,
+        "max": 120.79999999998836,
+        "over100": 1,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 33,
+        "mean": 69.57575757575758,
+        "p50": 67,
+        "p95": 92,
+        "max": 123,
+        "over100": 1,
+        "over250": 0
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "drawingBuffer": {
+        "width": 226,
+        "height": 490,
+        "dpr": 0.576
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.72,
+        "pressure": 100,
+        "protections": 4,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 4.2,
+        "simulationHz": 5.5
+      },
+      "case": "explicit-auto-input"
+    },
+    {
+      "mode": "auto",
+      "label": "after",
+      "frame": {
+        "samples": 43,
+        "mean": 270.83720930232556,
+        "p50": 256.70000000001164,
+        "p95": 507.8999999999651,
+        "max": 526.0999999999767,
+        "over100": 37,
+        "over250": 26
+      },
+      "work": {
+        "samples": 44,
+        "mean": 52.961363636355436,
+        "p50": 53,
+        "p95": 72.90000000002328,
+        "max": 88.29999999998836,
+        "over100": 0,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 27,
+        "mean": 64.03703703703704,
+        "p50": 64,
+        "p95": 87,
+        "max": 90,
+        "over100": 0,
+        "over250": 0
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 5.2,
+        "simulationHz": 5.4
+      },
+      "case": "explicit-auto-input"
+    }
+  ],
+  "interpretation": "Mean native software frame time improved 17.7% and 9.7% in the two comparisons. Mean CPU callback duration improved 16.2% and 14.2%; CPU p95 improved 17.4% and 19.7%. All cases retained 138 NPCs, 44 catalog models and 44 traffic models. This is a relative lab improvement; it does not establish phone FPS, temperature, or that all stutters are eliminated.",
+  "lightingPixelComparison": {
+    "views": 3,
+    "differentChannels": 0
+  },
+  "unitTests": {
+    "passed": 364,
+    "failed": 0
+  }
+}

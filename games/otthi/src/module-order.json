@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "e4d3e1440394c5168e4cc853adb43e4bada0ac8baef695e53747a0b1fa627cd8"
+      "sha256Body": "768e85ce78b7ad8f669732d522f56ff0ab79106336d7033a9d67df5fff8bf595"
     },
     {
       "file": "src/modules/10-player-skills.js",
