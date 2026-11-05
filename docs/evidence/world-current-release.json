@@ -1,5 +1,5 @@
 {
-  "status": "Candidate under review: mobile layout and rendering checks passed; public update acceptance runs before publication",
+  "status": "Published: reviewed mobile release; production update acceptance is recorded alongside the release evidence",
   "build": "705.28.18-revisao-mobile",
   "revision": "40ace149df68355d",
   "runtimeCommit": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
@@ -17,7 +17,11 @@
     "instanceRenderingPixelDifferences": 0,
     "releaseAssets": 111,
     "gameplayRun": 42057101360,
-    "cameraWorldRun": 42057101459
+    "cameraWorldRun": 42057101459,
+    "gameplayConclusion": "success",
+    "cameraWorldConclusion": "success",
+    "previewPublicAcceptanceRun": 42058610367,
+    "previewPublicAcceptanceConclusion": "success"
   },
   "previewConfiguration": {
     "branch": "world-mobile-20261105",
@@ -34,5 +38,12 @@
     "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
     "build": "705.28.16-carga-do-mundo",
     "revision": "d4915ab5ed472447"
-  }
+  },
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionDeployment": "dpl_CzgFnVuhHeCS7uBsWzooBFd4wRmB",
+  "productionSource": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
+  "productionReady": true,
+  "evidenceDirectory": "revisao-mobile-20261105",
+  "productionAcceptanceReport": "revisao-mobile-20261105/production-verification.json",
+  "sourceCoherence": "The generated entry, worker, runtime, stylesheet and manifest carry one release identity; all 111 SHA-256 digests match."
 }

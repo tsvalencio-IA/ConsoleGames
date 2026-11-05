@@ -1,0 +1,118 @@
+{
+  "sourceCommit": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
+  "workflowRun": 42057101570,
+  "browser": "141.0.7390.37",
+  "cases": [
+    {
+      "label": "before",
+      "frame": {
+        "samples": 52,
+        "mean": 280.36153846153877,
+        "p50": 273.20000000001164,
+        "p95": 522.6000000000058,
+        "max": 536.5,
+        "over100": 44,
+        "over250": 38
+      },
+      "work": {
+        "samples": 53,
+        "mean": 55.26603773584697,
+        "p50": 55,
+        "p95": 79.69999999998254,
+        "max": 85.39999999999418,
+        "over100": 0,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 38,
+        "mean": 63,
+        "p50": 61,
+        "p95": 84,
+        "max": 88,
+        "over100": 0,
+        "over250": 0
+      },
+      "render": {
+        "calls": 556,
+        "triangles": 618355
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 3.6,
+        "simulationHz": 4
+      },
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "errors": []
+    },
+    {
+      "label": "after",
+      "frame": {
+        "samples": 58,
+        "mean": 253.83965517241398,
+        "p50": 248.60000000000582,
+        "p95": 488.8999999999942,
+        "max": 540.6999999999825,
+        "over100": 49,
+        "over250": 28
+      },
+      "work": {
+        "samples": 59,
+        "mean": 50.31016949152572,
+        "p50": 49.5,
+        "p95": 76.39999999999418,
+        "max": 84.60000000000582,
+        "over100": 0,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 33,
+        "mean": 63.36363636363637,
+        "p50": 61,
+        "p95": 83,
+        "max": 87,
+        "over100": 0,
+        "over250": 0
+      },
+      "render": {
+        "calls": 552,
+        "triangles": 616637
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 4.2,
+        "simulationHz": 27.1
+      },
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases."
+  ]
+}

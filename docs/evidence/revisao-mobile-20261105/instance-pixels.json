@@ -1,0 +1,75 @@
+{
+  "cases": [
+    {
+      "position": [
+        0,
+        6,
+        14
+      ],
+      "different": 0,
+      "maxDifference": 0,
+      "before": {
+        "frame": 1,
+        "calls": 2,
+        "triangles": 3504,
+        "points": 0,
+        "lines": 0
+      },
+      "after": {
+        "frame": 1,
+        "calls": 10,
+        "triangles": 576,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "position": [
+        40,
+        9,
+        42
+      ],
+      "different": 0,
+      "maxDifference": 0,
+      "before": {
+        "frame": 2,
+        "calls": 2,
+        "triangles": 3504,
+        "points": 0,
+        "lines": 0
+      },
+      "after": {
+        "frame": 2,
+        "calls": 18,
+        "triangles": 960,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "position": [
+        -80,
+        8,
+        -5
+      ],
+      "different": 0,
+      "maxDifference": 0,
+      "before": {
+        "frame": 3,
+        "calls": 2,
+        "triangles": 3504,
+        "points": 0,
+        "lines": 0
+      },
+      "after": {
+        "frame": 3,
+        "calls": 7,
+        "triangles": 432,
+        "points": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}
