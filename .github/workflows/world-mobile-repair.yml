@@ -2,7 +2,7 @@ name: Verificar controles, giro e carga online
 on:
   push:
     branches: ['world-mobile-20261105']
-    paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs']
+    paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs', 'tests/helpers/world-rtdb-browser-fixture.mjs']
   workflow_dispatch:
 permissions:
   contents: read
