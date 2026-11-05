@@ -1,0 +1,21 @@
+{
+  "status": "Candidate: local checks passed; full-world performance and public update under verification",
+  "build": "705.28.16-carga-do-mundo",
+  "revision": "0b1d2545c5a648ac",
+  "runtimeCommit": "b85b59892c79dccfd0b89f1169f1df562888f04f",
+  "previewUrl": "https://otthi-world-campanha-teste-artnoiych-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_57hqTTveMsQwUU4E7VEczkn4H47D",
+  "unitTests": {
+    "passed": 363,
+    "failed": 0
+  },
+  "physicalAndroidApproved": false,
+  "checks": {
+    "performanceRun": 42012106580,
+    "gameplayRun": 42012106709,
+    "cameraWorldRun": 42012106406
+  },
+  "limitations": [
+    "No physical Android FPS or temperature measurement. Software WebGL results do not certify phone performance."
+  ]
+}

@@ -4,6 +4,7 @@ on:
     paths:
       - '.github/workflows/world-release-acceptance.yml'
       - 'docs/evidence/perfil-iluminacao-20261104/release.json'
+      - 'docs/evidence/world-current-release.json'
   workflow_dispatch:
     inputs:
       origin:
@@ -36,7 +37,10 @@ jobs:
           from pathlib import Path
           from urllib.parse import urlparse
           import json, os
-          release = json.loads(Path('docs/evidence/perfil-iluminacao-20261104/release.json').read_text())
+          receipt = Path('docs/evidence/world-current-release.json')
+          if not receipt.exists():
+              receipt = Path('docs/evidence/perfil-iluminacao-20261104/release.json')
+          release = json.loads(receipt.read_text())
           origin = os.environ.get('WORLD_RELEASE_ORIGIN') or release.get('productionUrl') or release['previewUrl']
           parsed = urlparse(origin)
           assert parsed.scheme == 'https' and parsed.hostname and not parsed.username and not parsed.password
