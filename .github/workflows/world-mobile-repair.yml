@@ -2,7 +2,7 @@ name: Verificar controles, giro e carga online
 on:
   push:
     branches: ['world-mobile-20261105']
-    paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs', 'tests/helpers/world-rtdb-browser-fixture.mjs']
+    paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs', 'tests/world-vehicle-performance.mjs', 'tests/helpers/world-rtdb-browser-fixture.mjs']
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,6 +10,23 @@ concurrency:
   group: world-mobile-repair-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  veiculo-e-motor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - name: Medir entrada e direcao com motor real e familia
+        run: node tests/world-vehicle-performance.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: world-vehicle-performance
+          path: test-results/world-vehicle-performance/
   controles-e-giro:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
