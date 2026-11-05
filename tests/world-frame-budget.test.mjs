@@ -58,3 +58,14 @@ test('a manually selected economical profile survives migration on an older mobi
   const source=read('09-responsive-ar-quality-diagnostics.js'),body=source.slice(source.indexOf('  const OTTHI_VISUAL_GOVERNOR_MIGRATION='),source.indexOf('  function detectStableAutoTier('));
   for(const quality of['low','high','auto']){const state={settings:{quality,autoTier:'low'}},c=vm.createContext({state,localStorage:{getItem:()=>null,setItem(){}},matchMedia:()=>({matches:true}),saveState(){}});vm.runInContext(body,c);assert.equal(state.settings.quality,quality);assert.equal(state.settings.autoTier,quality==='auto'?'balanced':'low');}
 });
+test('automatic mobile resolution reacts promptly to severe load, has a floor and recovers gradually without overriding manual choices',()=>{
+  const source=read('09-responsive-ar-quality-diagnostics.js'),body=source.slice(source.indexOf('  function performanceGovernorState('),source.indexOf('  function applyAdaptiveRenderSettings('));
+  for(const requested of['auto','low','high']){
+    const perf={mobile:true,fps:8,renderScale:1,renderScaleMin:.55,renderScaleMax:1,sessionTier:'balanced'},c=vm.createContext({Math,Number,devicePixelRatio:3,perf,requestedQuality:()=>requested,qualityTier:()=>requested==='auto'?'balanced':requested,clamp:(v,a,b)=>Math.max(a,Math.min(b,v)),applyAdaptiveRenderSettings(){}});vm.runInContext(body,c);
+    c.performanceGovernorProtect('fps-pressure',1.5);
+    if(requested!=='auto'){assert.equal(perf.renderScale,1);assert.equal(c.targetDpr(),requested==='low'?.62:1);continue;}
+    assert.equal(perf.renderScale,.55);assert(Math.abs(c.targetDpr()-.44)<1e-10);
+    for(let i=0;i<20;i++)c.performanceGovernorProtect('fps-pressure',1.5);assert.equal(perf.renderScale,.55);
+    c.performanceGovernorRecover();assert(Math.abs(perf.renderScale-.575)<1e-10);assert.equal(perf.sessionTier,'balanced');
+  }
+});

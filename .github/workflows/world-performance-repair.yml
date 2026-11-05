@@ -46,6 +46,13 @@ jobs:
           OT_LIVE_PROFILE: '1'
           OT_LIVE_SHADERS: '1'
         run: node tests/world-play-performance.mjs
+      - name: Medir proteção automática sem limitar o renderizador
+        env:
+          OT_LIVE_BASELINE: 043d82abcc9d3b2e743fd72e49debc2aeb508353
+          OT_LIVE_SECONDS: '12'
+          OT_LIVE_QUALITY: auto
+          OT_LIVE_OUT: test-results/world-auto-performance
+        run: node tests/world-play-performance.mjs
       - name: Guardar medições e imagens
         if: always()
         uses: actions/upload-artifact@v4
@@ -55,4 +62,5 @@ jobs:
             test-results/world-frame-before/
             test-results/world-frame-after/
             test-results/world-live-performance/
+            test-results/world-auto-performance/
           if-no-files-found: ignore
