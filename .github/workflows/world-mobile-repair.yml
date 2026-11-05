@@ -1,0 +1,57 @@
+name: Verificar controles, giro e carga online
+on:
+  push:
+    branches: ['world-mobile-20261105']
+    paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: world-mobile-repair-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  controles-e-giro:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tests/world-integrity.mjs
+      - name: Reproduzir os defeitos da versão recebida
+        env:
+          WORLD_UI_REVISION: cc2437b7a03d784fa219c9327d97880688835736
+          WORLD_UI_REPORT_ONLY: '1'
+        run: node tests/world-mobile-layout-browser.mjs
+      - name: Conferir controles e dez giros sem recarregar
+        run: node tests/world-mobile-layout-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: world-mobile-layout
+          path: test-results/world-mobile-*/
+  carga-online:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - name: Comparar partida online isolada sem limitar os desenhos
+        env:
+          OT_LIVE_BASELINE: cc2437b7a03d784fa219c9327d97880688835736
+          OT_LIVE_SECONDS: '15'
+          OT_LIVE_ONLINE: '1'
+          OT_LIVE_OUT: test-results/world-online-performance
+        run: node tests/world-play-performance.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: world-mobile-performance
+          path: test-results/world-online-performance/
