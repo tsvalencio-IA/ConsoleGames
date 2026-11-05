@@ -1,5 +1,5 @@
 {
-  "status": "Validated source and preview; ready for production publication",
+  "status": "Published: source, gameplay, performance and preview verified; exact production worker recovery is checked automatically",
   "build": "705.28.16-carga-do-mundo",
   "revision": "d4915ab5ed472447",
   "runtimeCommit": "d6d9216de6ca558776925865f6a08f8569d84a06",
@@ -28,5 +28,9 @@
   ],
   "sourceCoherence": "Generated entry, worker, runtime and manifest match; module-order body hash synchronized in the evidence commit.",
   "measurements": "fluidez-20261105/final-comparison.json",
-  "worldHudUnchanged": true
+  "worldHudUnchanged": true,
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionDeployment": "dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc",
+  "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
+  "productionReady": true
 }
