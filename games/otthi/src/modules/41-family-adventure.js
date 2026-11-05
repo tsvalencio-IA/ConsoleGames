@@ -178,7 +178,8 @@
   function familyClear(a,b){
     const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22)),coarse=[0,steps,Math.floor(steps/2),Math.floor(steps/4),Math.floor(steps*3/4)],seen=new Set();
     // The same sample points are tested, with distant blockers checked first.
-    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25);};
+    const options=length>1&&typeof worldSegmentCollisionOptions==='function'?worldSegmentCollisionOptions(a,b,.25):{};
+    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25,options);};
     for(const i of coarse){if(seen.has(i))continue;seen.add(i);if(blocked(i))return false;}
     for(let i=1;i<steps;i++)if(!seen.has(i)&&blocked(i))return false;
     return true;

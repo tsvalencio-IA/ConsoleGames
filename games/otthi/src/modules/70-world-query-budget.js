@@ -80,4 +80,20 @@
     }
     markWorldQueryFrame(cache);return cache.byId.get(id);
   }
+  function worldSegmentCollisionOptions(a,b,radius){
+    // A path is sampled synchronously: collect its possible vehicles once,
+    // without retaining positions across movement or between family members.
+    const minX=Math.min(a.x,b.x),maxX=Math.max(a.x,b.x),minZ=Math.min(a.z,b.z),maxZ=Math.max(a.z,b.z),parkedVehicleCandidates=[],trafficCandidates=[];
+    for(const v of world.vehicles||[]){
+      if(!v.group?.visible)continue;
+      const d=v.group.userData?.brazilRoot?.userData;let reach=1.18+radius;
+      if(d){const width=d.bus?1.03:d.articulated?1.02:d.halfWidth||.76;reach=Math.max(Math.abs(width+radius)+Math.max(Math.abs(d.front+radius),Math.abs(d.rear-radius)),d.articulated?10.27+2*Math.abs(radius):0);if(!Number.isFinite(reach))reach=Infinity;}
+      const p=v.group.position;if(p.x+reach>=minX&&p.x-reach<=maxX&&p.z+reach>=minZ&&p.z-reach<=maxZ)parkedVehicleCandidates.push(v);
+    }
+    for(const actor of trafficActorList()){
+      const p=actor.group.position,reach=(actor.radius||1.4)+radius;
+      if(p.x+reach>=minX&&p.x-reach<=maxX&&p.z+reach>=minZ&&p.z-reach<=maxZ)trafficCandidates.push(actor);
+    }
+    return{parkedVehicleCandidates,trafficCandidates};
+  }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};

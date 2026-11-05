@@ -14,7 +14,7 @@
       "startLine": 51,
       "endLine": 367,
       "description": "Registro central de assets, LOD gerenciado, orçamento visual e esquema de avatar V2",
-      "sha256Body": "66e94b2cd90c68e43a7455afa3045b6449799c9710b602558166d6e5f0e03d39"
+      "sha256Body": "9f5fa5af79b49cc734e6cead4eabda02a9cc76cab0ec388962ccae98ec4b24c0"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "8129b48fccaf1adda1b9a269671298ad05b33082c576b22cee0afd736acc9cf6"
+      "sha256Body": "e4d3e1440394c5168e4cc853adb43e4bada0ac8baef695e53747a0b1fa627cd8"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -224,7 +224,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "4f28ade1f002848949534ed4cb084277cc07d9b81eeaa461999a70a973f031b4"
+      "sha256Body": "01f36c5dab58c2f44b5338a9481f831e32dc1622b61e10227d98c5d2e37a4ac3"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "5755049dc3ab506cc196287891bcfbbbf81d362e90ac7e2c475f5b7453229b45"
+      "sha256Body": "3afa2978bbcc4f25ec7881338c01aafa14ad52698ef27fabacb8f31cc2096553"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -364,14 +364,14 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "2a2918ac95f51eb04a256bc66270e42e870e3cb999b336594fd457bdcde8824b"
+      "sha256Body": "9ed9a3c44d7308b541b931e6b30e474475f9ffa8888841d4e8ea2d929484119a"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "a4d489613a00de9611173387658cab3b8dd2956ea26b453f770fc448f95be966"
+      "sha256Body": "c7a88339952642ccd55c36543c25e2d586d144f4493cd5ffcd80ba81b21947d9"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -441,7 +441,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "94a7f0d0fc4608177229701e2187174e89cdaff64ecb7613ac33bec0c7e73c1d"
+      "sha256Body": "8778e21eb355b1dfa1c128a4d4b1be6cf5b3370bdb664a0abac65983809ad715"
     },
     {
       "file": "src/modules/50-fleet-collection.js",
@@ -592,7 +592,7 @@
       "description": "Consultas espaciais de colisão e rodovias reutilizadas por quadro",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "90bef3750f949d81eb3a25c0da00f42eff152d8e592f5a236645546e6c762fc3"
+      "sha256Body": "10459252867a96d514aa6502cf215c1070d4619a2d5cac72c5ab2e9a04368a5c"
     },
     {
       "file": "src/modules/71-world-light-budget.js",

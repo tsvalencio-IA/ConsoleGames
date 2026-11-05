@@ -15,7 +15,7 @@ function scheduler({hz=60,mobile=true,requested='auto',paused=false}={}){
     requestedQuality:()=>requested,qualityTier:()=>requested==='low'?'low':requested==='high'?'high':'balanced',
     beginWorldQueryFrame:()=>counts.queries++,endWorldQueryFrame(){},samplePerformance(){},applyPendingRenderBuffer(){},
     renderer:{setScissorTest(){},setViewport(){},render:()=>counts.draws++},scene:{},camera:{},
-    world:{},otGames:{active:false},els:{},playerGroup:{visible:true},
+    world:{},state:{},otGames:{active:false},els:{},playerGroup:{visible:true},
     updateFamilyAdventure(){},updateFamilyPlayableVisuals(){},prepareHomeRender:()=>null,prepareWorldPointLights:()=>null
   });
   vm.runInContext(loop.slice(loop.indexOf('  function targetRenderFrameRate(){'),loop.indexOf('  function setupControls(){')),c);
@@ -33,6 +33,11 @@ test('pause reduces drawing work and a hidden world neither draws nor simulates 
   const hidden=scheduler();hidden.c.document.hidden=true;hidden.c.clock.getDelta=()=>10;hidden.events.visibilitychange();hidden.run(2);
   assert.equal(hidden.counts.draws,0);assert.equal(hidden.counts.steps,0);assert.equal(hidden.c.perf.loopAcc,0);
   hidden.c.document.hidden=false;hidden.events.visibilitychange();hidden.c.clock.getDelta=()=>1/60;hidden.run(1);assert(Math.abs(hidden.counts.seconds-1)<.025);
+});
+test('flight HUD updates once per painted frame, rather than once for every catch-up physics step',()=>{
+  const f=scheduler({hz:144});let updates=0;f.c.otGames.active=true;f.c.otGamesUpdateHUD=()=>updates++;
+  f.c.stepWorldSimulation=()=>{f.c.otGames.hudDirty=true;};f.run(2);
+  assert(updates>=58&&updates<=61);assert.equal(updates,f.counts.draws);
 });
 test('parked vehicle broad-phase matches the previous collision predicate for every tested footprint and trailer angle',()=>{
   const source=read('50-fleet-collection.js');

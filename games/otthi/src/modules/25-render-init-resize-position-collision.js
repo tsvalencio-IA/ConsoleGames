@@ -104,11 +104,12 @@
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;
       if(Math.abs(x-c.x)<=c.w/2+radius&&Math.abs(z-c.z)<=c.d/2+radius)return true;
     }
-    if(!options.ignoreParkedVehicles){for(const v of world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;const precise=typeof brazilParkedContains==='function'?brazilParkedContains(v,x,z,radius):null;if(precise===null?Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius:precise)return true;}}
+    if(!options.ignoreParkedVehicles){for(const v of options.parkedVehicleCandidates||world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;const precise=typeof brazilParkedContains==='function'?brazilParkedContains(v,x,z,radius):null;if(precise===null?Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius:precise)return true;}}
     if(!options.ignoreTraffic){
-      for(const actor of trafficActorList()){
+      for(const actor of options.trafficCandidates||trafficActorList()){
         if(options.ignoreActor&&actor.ref===options.ignoreActor)continue;
-        if(Math.hypot(x-actor.group.position.x,z-actor.group.position.z)<(actor.radius||1.4)+radius)return true;
+        const dx=x-actor.group.position.x,dz=z-actor.group.position.z,reach=(actor.radius||1.4)+radius;
+        if(Math.abs(dx)<reach&&Math.abs(dz)<reach&&Math.hypot(dx,dz)<reach)return true;
       }
     }
     return false;

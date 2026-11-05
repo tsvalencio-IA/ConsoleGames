@@ -264,10 +264,17 @@
     }
     return false;
   }
+  function visualWorldMatrix(object,visited){
+    if(!visited.has(object)){
+      if(object.parent)visualWorldMatrix(object.parent,visited);
+      object.updateWorldMatrix(false,false);visited.add(object);
+    }
+    return object.matrixWorld;
+  }
   function updateManagedOutlineVisibility(){
     if(!world?.outlines||!camera)return;
     const profile=visualFoundation.qualityProfile||visualQualityProfile(qualityTier?.()||'balanced');
-    const position=new THREE.Vector3();
+    const position=new THREE.Vector3(),visited=new Set();
     let visible=0,hidden=0;
     for(const line of world.outlines){
       if(!line?.parent)continue;
@@ -277,7 +284,7 @@
         visible++;
         continue;
       }
-      line.getWorldPosition(position);
+      position.setFromMatrixPosition(visualWorldMatrix(line,visited));
       const show=position.distanceTo(camera.position)<=profile.outlineDistance;
       line.visible=show;
       if(show)visible++;else hidden++;
@@ -3060,12 +3067,12 @@
   }
   function updateCriticalSurfaceDistanceVisibility(){
     const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
-    const range=performanceDistanceRanges().critical;let visible=0,hidden=0;
+    const range=performanceDistanceRanges().critical,visited=new Set();let visible=0,hidden=0;
     for(const mesh of world.criticalSurfaces||[]){
       if(!mesh?.parent)continue;
       if(mesh.userData?.alwaysVisible===true||Number(mesh.renderOrder||0)>=900){mesh.visible=true;visible++;continue;}
       let radius=0;
-      try{if(mesh.geometry&&!mesh.geometry.boundingSphere)mesh.geometry.computeBoundingSphere();radius=Number(mesh.geometry?.boundingSphere?.radius||0);mesh.getWorldPosition(distanceCullPosition);mesh.getWorldScale(distanceCullScale);radius*=Math.max(Math.abs(distanceCullScale.x)||1,Math.abs(distanceCullScale.y)||1,Math.abs(distanceCullScale.z)||1);}catch{mesh.visible=true;visible++;continue;}
+      try{if(mesh.geometry&&!mesh.geometry.boundingSphere)mesh.geometry.computeBoundingSphere();radius=Number(mesh.geometry?.boundingSphere?.radius||0);const matrix=visualWorldMatrix(mesh,visited);distanceCullPosition.setFromMatrixPosition(matrix);distanceCullScale.setFromMatrixScale(matrix);radius*=Math.max(Math.abs(distanceCullScale.x)||1,Math.abs(distanceCullScale.y)||1,Math.abs(distanceCullScale.z)||1);}catch{mesh.visible=true;visible++;continue;}
       const d=Math.hypot(focus.x-distanceCullPosition.x,focus.z-distanceCullPosition.z),show=!Number.isFinite(d)||!Number.isFinite(radius)||d<=range+Math.max(1,radius);
       mesh.visible=show;mesh.frustumCulled=false;mesh.userData.otthiDistanceCulled=!show;if(show)visible++;else hidden++;
     }
@@ -7024,11 +7031,12 @@
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;
       if(Math.abs(x-c.x)<=c.w/2+radius&&Math.abs(z-c.z)<=c.d/2+radius)return true;
     }
-    if(!options.ignoreParkedVehicles){for(const v of world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;const precise=typeof brazilParkedContains==='function'?brazilParkedContains(v,x,z,radius):null;if(precise===null?Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius:precise)return true;}}
+    if(!options.ignoreParkedVehicles){for(const v of options.parkedVehicleCandidates||world.vehicles||[]){if(!v.group?.visible||v===options.ignoreActor)continue;const precise=typeof brazilParkedContains==='function'?brazilParkedContains(v,x,z,radius):null;if(precise===null?Math.hypot(x-v.group.position.x,z-v.group.position.z)<1.18+radius:precise)return true;}}
     if(!options.ignoreTraffic){
-      for(const actor of trafficActorList()){
+      for(const actor of options.trafficCandidates||trafficActorList()){
         if(options.ignoreActor&&actor.ref===options.ignoreActor)continue;
-        if(Math.hypot(x-actor.group.position.x,z-actor.group.position.z)<(actor.radius||1.4)+radius)return true;
+        const dx=x-actor.group.position.x,dz=z-actor.group.position.z,reach=(actor.radius||1.4)+radius;
+        if(Math.abs(dx)<reach&&Math.abs(dz)<reach&&Math.hypot(dx,dz)<reach)return true;
       }
     }
     return false;
@@ -7988,6 +7996,7 @@
     // avatar covering their faces; restore visibility immediately after drawing.
     if(!paused&&typeof updateFamilyAdventure==='function')updateFamilyAdventure(Math.min(.1,elapsed));
     updateFamilyPlayableVisuals();
+    if(otGames.active&&otGames.hudDirty){otGames.hudDirty=false;otGamesUpdateHUD();}
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     if(otGames.active){const navVisible=!!state.waypoint&&!(otGames.armed&&otGames.mode==='ground');if(world.routeGuide)world.routeGuide.visible=navVisible;if(world.waypointMarker)world.waypointMarker.visible=navVisible;}
@@ -9533,7 +9542,8 @@ function build(T,key,H){
   function familyClear(a,b){
     const length=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(1,Math.ceil(length/.22)),coarse=[0,steps,Math.floor(steps/2),Math.floor(steps/4),Math.floor(steps*3/4)],seen=new Set();
     // The same sample points are tested, with distant blockers checked first.
-    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25);};
+    const options=length>1&&typeof worldSegmentCollisionOptions==='function'?worldSegmentCollisionOptions(a,b,.25):{};
+    const blocked=i=>{const t=i/steps;return positionBlockedForPlayer(lerp(a.x,b.x,t),lerp(a.z,b.z,t),.25,options);};
     for(const i of coarse){if(seen.has(i))continue;seen.add(i);if(blocked(i))return false;}
     for(let i=1;i<steps;i++)if(!seen.has(i)&&blocked(i))return false;
     return true;
@@ -9927,7 +9937,7 @@ function build(T,key,H){
   }
   function updateOtGames(dt){
     const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){const power=g.collective;otGamesClearInput();g.collective=power;otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
-    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
+    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;g.hudDirty=true;return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
@@ -10027,10 +10037,10 @@ function build(T,key,H){
       else if(!g.enemies.some(e=>e.active))otGamesSpawnWave();
     }
     for(const fx of g.effects){fx.age+=dt;fx.life-=dt;fx.x+=fx.vx*dt;fx.y+=fx.vy*dt;fx.z+=fx.vz*dt;fx.mesh.position.set(fx.x,fx.y,fx.z);fx.mesh.scale.setScalar((fx.smoke?.3+fx.age*.5:1-fx.age)*1.2);}
-    for(const fx of g.effects.filter(f=>f.life<=0))otGamesDisposeGroup(fx.mesh);g.effects=g.effects.filter(f=>f.life>0);otGamesUpdateHUD();
+    for(const fx of g.effects.filter(f=>f.life<=0))otGamesDisposeGroup(fx.mesh);g.effects=g.effects.filter(f=>f.life>0);g.hudDirty=true;
   }
   function otGamesUpdateHUD(){
-    const g=otGames;if(!g.ui)return;g.ui.querySelector('[data-ot-status]').textContent=otGameModes[g.mode]+' · '+(g.armed?'VIDA '+Math.ceil(g.body.hp)+' · '+(g.reload>0?'RECARREGANDO':g.ammo+'/'+g.reserve):'PASSEIO DE PAZ');
+    const g=otGames;if(!g.ui)return;const hudHeight=g.ui.clientHeight,lever=g.ui.querySelector('[data-ot="collective"]'),leverHeight=lever.clientHeight;g.ui.querySelector('[data-ot-status]').textContent=otGameModes[g.mode]+' · '+(g.armed?'VIDA '+Math.ceil(g.body.hp)+' · '+(g.reload>0?'RECARREGANDO':g.ammo+'/'+g.reserve):'PASSEIO DE PAZ');
     g.ui.querySelector('.ot-games-mission').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA · '+g.kills+'/'+g.goal+' ALVOS':g.state==='DEFEAT'?'MISSÃO ENCERRADA · VOLTE AO MENU PARA TENTAR NOVAMENTE':g.notice||(g.armed?'MISSÃO SOLO · SETOR '+g.wave+' · '+g.kills+'/'+g.goal+' ALVOS · '+g.level.label:'Passeio livre · pouse e pare para desembarcar.');
     if(g.noticeUntil&&g.elapsed>g.noticeUntil){g.notice='';g.noticeUntil=0;}
     const live=g.enemies.filter(e=>e.active),next=live.slice().sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
@@ -10040,11 +10050,11 @@ function build(T,key,H){
     for(const marker of targets.children)if(!live.some(e=>e.id===marker.dataset.target))marker.remove();
     for(const e of live){
       let marker=targets.querySelector('[data-target="'+e.id+'"]');if(!marker){marker=document.createElement('span');marker.dataset.target=e.id;targets.append(marker);}
-      const p=new THREE.Vector3(e.x,e.y+(e.kind==='tank'?2:1.5),e.z).project(camera),top=(-p.y*.5+.5)*g.ui.clientHeight,visible=p.z>-1&&p.z<1&&Math.abs(p.x)<.94&&Math.abs(p.y)<.74&&top>100&&!otGamesBlocked(g.body,e);
+      const p=new THREE.Vector3(e.x,e.y+(e.kind==='tank'?2:1.5),e.z).project(camera),top=(-p.y*.5+.5)*hudHeight,visible=p.z>-1&&p.z<1&&Math.abs(p.x)<.94&&Math.abs(p.y)<.74&&top>100&&!otGamesBlocked(g.body,e);
       marker.hidden=!visible;marker.classList.toggle('attacking',e.aim<.65);marker.classList.toggle('secondary',e!==primary);marker.style.left=(p.x*.5+.5)*100+'%';marker.style.top=(-p.y*.5+.5)*100+'%';marker.textContent=e===primary?(e.kind==='tank'?'BLINDADO':e.kind==='drone'?'DRONE':e.aim<.65?'DISPARO IMINENTE':'ALVO')+' · '+Math.round(Math.hypot(e.x-g.body.x,e.z-g.body.z))+' m':'';
     }
     const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
-    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
+    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(leverHeight-28))+'px';
     if(g.mode==='plane')g.ui.querySelector('[data-ot-status]').textContent='AVIÃO · '+Math.round(g.airspeed*3.6)+' km/h · '+(g.onGround?'NA PISTA':'EM VOO');
     const leave=g.ui.querySelector('[data-ot="disembark"]');leave.disabled=!otGamesCanDisembark();const crew=g.ui.querySelector('[data-ot="crew"]');if(crew){crew.hidden=typeof remotePresence==='undefined'||remotePresence.size===0;crew.disabled=!g.onGround;}const land=g.ui.querySelector('[data-ot="land"]');land.disabled=!!g.onGround;land.textContent=g.onGround?'NO SOLO':g.landingAssist?'CANCELAR POUSO':'POUSAR';land.setAttribute('aria-pressed',String(!!g.landingAssist));const crouch=g.ui.querySelector('[data-ot="crouch"]');crouch.textContent=g.crouched?'LEVANTAR':'ABAIXAR';crouch.setAttribute('aria-pressed',String(!!g.crouched));
     const ads=g.ui.querySelector('[data-ot="ads"]');ads.setAttribute('aria-pressed',String(!!g.aiming));ads.classList.toggle('selected',!!g.aiming);
@@ -11421,7 +11431,7 @@ function precompile(T,renderer,scene,camera){
   applyRemoteVehicleVisual=function(g,raw,fallback){if(g)g.userData.brazilRemote=true;const d=brazilOldRemote(g,raw,fallback);if(d&&brazilEligible(d)){d.brazilModel=brazilResolve(d);brazilAttach(g,{...d,brazilModel:d.brazilModel},d.parts);}return d;};
   function updateBrazilFleet(){
     if(!worldExpansion.ready)return;
-    for(const v of brazilAllVehicles())if(brazilEligible(v)&&!v.group.userData.brazilRoot){v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);v.originalLabel=v.originalLabel||v.label;v.label=window.OTBrazilVehicles.catalog[v.brazilModel].label;brazilAttach(v.group,v,worldVehicleParts(v.id));}
+    for(const v of brazilAllVehicles())if(!v.group.userData.brazilRoot&&brazilEligible(v)){v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);v.originalLabel=v.originalLabel||v.label;v.label=window.OTBrazilVehicles.catalog[v.brazilModel].label;brazilAttach(v.group,v,worldVehicleParts(v.id));}
     for(const actor of world.ottoviasTraffic||[])if(!actor.group.userData.brazilRoot){
       actor.bodyType=actor.bodyType||'car';actor.brazilModel=brazilModelKey(actor.id,actor.bodyType);if(actor.id==='ottovias-azul'||actor.id==='aurora-0')actor.color=0x2788d2;brazilAttach(actor.group,{id:actor.id,bodyType:actor.bodyType,kind:actor.bodyType==='truck'?'truck':'car',brazilModel:actor.brazilModel,appearance:{primary:actor.color||0x7a99b0}},{});actor.wheels=actor.group.userData.wheels;
     }brazilFleet.ready=true;
@@ -13003,6 +13013,22 @@ function precompile(T,renderer,scene,camera){
       worldQueryBudget.interactables=cache;
     }
     markWorldQueryFrame(cache);return cache.byId.get(id);
+  }
+  function worldSegmentCollisionOptions(a,b,radius){
+    // A path is sampled synchronously: collect its possible vehicles once,
+    // without retaining positions across movement or between family members.
+    const minX=Math.min(a.x,b.x),maxX=Math.max(a.x,b.x),minZ=Math.min(a.z,b.z),maxZ=Math.max(a.z,b.z),parkedVehicleCandidates=[],trafficCandidates=[];
+    for(const v of world.vehicles||[]){
+      if(!v.group?.visible)continue;
+      const d=v.group.userData?.brazilRoot?.userData;let reach=1.18+radius;
+      if(d){const width=d.bus?1.03:d.articulated?1.02:d.halfWidth||.76;reach=Math.max(Math.abs(width+radius)+Math.max(Math.abs(d.front+radius),Math.abs(d.rear-radius)),d.articulated?10.27+2*Math.abs(radius):0);if(!Number.isFinite(reach))reach=Infinity;}
+      const p=v.group.position;if(p.x+reach>=minX&&p.x-reach<=maxX&&p.z+reach>=minZ&&p.z-reach<=maxZ)parkedVehicleCandidates.push(v);
+    }
+    for(const actor of trafficActorList()){
+      const p=actor.group.position,reach=(actor.radius||1.4)+radius;
+      if(p.x+reach>=minX&&p.x-reach<=maxX&&p.z+reach>=minZ&&p.z-reach<=maxZ)trafficCandidates.push(actor);
+    }
+    return{parkedVehicleCandidates,trafficCandidates};
   }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};
 

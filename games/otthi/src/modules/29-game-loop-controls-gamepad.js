@@ -136,6 +136,7 @@
     // avatar covering their faces; restore visibility immediately after drawing.
     if(!paused&&typeof updateFamilyAdventure==='function')updateFamilyAdventure(Math.min(.1,elapsed));
     updateFamilyPlayableVisuals();
+    if(otGames.active&&otGames.hudDirty){otGames.hudDirty=false;otGamesUpdateHUD();}
     const portrait=!(typeof otGames!=='undefined'&&otGames.active)&&window.OTTHI_FAMILY?.cameraFrame?.(),localVisible=playerGroup.visible;
     document.body.classList.toggle('family-portrait',!!portrait);if(portrait)playerGroup.visible=false;
     if(otGames.active){const navVisible=!!state.waypoint&&!(otGames.armed&&otGames.mode==='ground');if(world.routeGuide)world.routeGuide.visible=navVisible;if(world.waypointMarker)world.waypointMarker.visible=navVisible;}

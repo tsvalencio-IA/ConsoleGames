@@ -52,7 +52,7 @@
   applyRemoteVehicleVisual=function(g,raw,fallback){if(g)g.userData.brazilRemote=true;const d=brazilOldRemote(g,raw,fallback);if(d&&brazilEligible(d)){d.brazilModel=brazilResolve(d);brazilAttach(g,{...d,brazilModel:d.brazilModel},d.parts);}return d;};
   function updateBrazilFleet(){
     if(!worldExpansion.ready)return;
-    for(const v of brazilAllVehicles())if(brazilEligible(v)&&!v.group.userData.brazilRoot){v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);v.originalLabel=v.originalLabel||v.label;v.label=window.OTBrazilVehicles.catalog[v.brazilModel].label;brazilAttach(v.group,v,worldVehicleParts(v.id));}
+    for(const v of brazilAllVehicles())if(!v.group.userData.brazilRoot&&brazilEligible(v)){v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);v.originalLabel=v.originalLabel||v.label;v.label=window.OTBrazilVehicles.catalog[v.brazilModel].label;brazilAttach(v.group,v,worldVehicleParts(v.id));}
     for(const actor of world.ottoviasTraffic||[])if(!actor.group.userData.brazilRoot){
       actor.bodyType=actor.bodyType||'car';actor.brazilModel=brazilModelKey(actor.id,actor.bodyType);if(actor.id==='ottovias-azul'||actor.id==='aurora-0')actor.color=0x2788d2;brazilAttach(actor.group,{id:actor.id,bodyType:actor.bodyType,kind:actor.bodyType==='truck'?'truck':'car',brazilModel:actor.brazilModel,appearance:{primary:actor.color||0x7a99b0}},{});actor.wheels=actor.group.userData.wheels;
     }brazilFleet.ready=true;

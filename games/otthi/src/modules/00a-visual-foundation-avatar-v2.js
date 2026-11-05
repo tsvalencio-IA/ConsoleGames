@@ -222,10 +222,17 @@
     }
     return false;
   }
+  function visualWorldMatrix(object,visited){
+    if(!visited.has(object)){
+      if(object.parent)visualWorldMatrix(object.parent,visited);
+      object.updateWorldMatrix(false,false);visited.add(object);
+    }
+    return object.matrixWorld;
+  }
   function updateManagedOutlineVisibility(){
     if(!world?.outlines||!camera)return;
     const profile=visualFoundation.qualityProfile||visualQualityProfile(qualityTier?.()||'balanced');
-    const position=new THREE.Vector3();
+    const position=new THREE.Vector3(),visited=new Set();
     let visible=0,hidden=0;
     for(const line of world.outlines){
       if(!line?.parent)continue;
@@ -235,7 +242,7 @@
         visible++;
         continue;
       }
-      line.getWorldPosition(position);
+      position.setFromMatrixPosition(visualWorldMatrix(line,visited));
       const show=position.distanceTo(camera.position)<=profile.outlineDistance;
       line.visible=show;
       if(show)visible++;else hidden++;

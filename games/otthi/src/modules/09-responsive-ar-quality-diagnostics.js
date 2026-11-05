@@ -297,12 +297,12 @@
   }
   function updateCriticalSurfaceDistanceVisibility(){
     const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
-    const range=performanceDistanceRanges().critical;let visible=0,hidden=0;
+    const range=performanceDistanceRanges().critical,visited=new Set();let visible=0,hidden=0;
     for(const mesh of world.criticalSurfaces||[]){
       if(!mesh?.parent)continue;
       if(mesh.userData?.alwaysVisible===true||Number(mesh.renderOrder||0)>=900){mesh.visible=true;visible++;continue;}
       let radius=0;
-      try{if(mesh.geometry&&!mesh.geometry.boundingSphere)mesh.geometry.computeBoundingSphere();radius=Number(mesh.geometry?.boundingSphere?.radius||0);mesh.getWorldPosition(distanceCullPosition);mesh.getWorldScale(distanceCullScale);radius*=Math.max(Math.abs(distanceCullScale.x)||1,Math.abs(distanceCullScale.y)||1,Math.abs(distanceCullScale.z)||1);}catch{mesh.visible=true;visible++;continue;}
+      try{if(mesh.geometry&&!mesh.geometry.boundingSphere)mesh.geometry.computeBoundingSphere();radius=Number(mesh.geometry?.boundingSphere?.radius||0);const matrix=visualWorldMatrix(mesh,visited);distanceCullPosition.setFromMatrixPosition(matrix);distanceCullScale.setFromMatrixScale(matrix);radius*=Math.max(Math.abs(distanceCullScale.x)||1,Math.abs(distanceCullScale.y)||1,Math.abs(distanceCullScale.z)||1);}catch{mesh.visible=true;visible++;continue;}
       const d=Math.hypot(focus.x-distanceCullPosition.x,focus.z-distanceCullPosition.z),show=!Number.isFinite(d)||!Number.isFinite(radius)||d<=range+Math.max(1,radius);
       mesh.visible=show;mesh.frustumCulled=false;mesh.userData.otthiDistanceCulled=!show;if(show)visible++;else hidden++;
     }

@@ -246,7 +246,7 @@
   }
   function updateOtGames(dt){
     const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){const power=g.collective;otGamesClearInput();g.collective=power;otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
-    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;otGamesUpdateHUD();return;}
+    if(g.state!=='PLAYING'||(g.handSession&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;g.hudDirty=true;return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
@@ -346,10 +346,10 @@
       else if(!g.enemies.some(e=>e.active))otGamesSpawnWave();
     }
     for(const fx of g.effects){fx.age+=dt;fx.life-=dt;fx.x+=fx.vx*dt;fx.y+=fx.vy*dt;fx.z+=fx.vz*dt;fx.mesh.position.set(fx.x,fx.y,fx.z);fx.mesh.scale.setScalar((fx.smoke?.3+fx.age*.5:1-fx.age)*1.2);}
-    for(const fx of g.effects.filter(f=>f.life<=0))otGamesDisposeGroup(fx.mesh);g.effects=g.effects.filter(f=>f.life>0);otGamesUpdateHUD();
+    for(const fx of g.effects.filter(f=>f.life<=0))otGamesDisposeGroup(fx.mesh);g.effects=g.effects.filter(f=>f.life>0);g.hudDirty=true;
   }
   function otGamesUpdateHUD(){
-    const g=otGames;if(!g.ui)return;g.ui.querySelector('[data-ot-status]').textContent=otGameModes[g.mode]+' · '+(g.armed?'VIDA '+Math.ceil(g.body.hp)+' · '+(g.reload>0?'RECARREGANDO':g.ammo+'/'+g.reserve):'PASSEIO DE PAZ');
+    const g=otGames;if(!g.ui)return;const hudHeight=g.ui.clientHeight,lever=g.ui.querySelector('[data-ot="collective"]'),leverHeight=lever.clientHeight;g.ui.querySelector('[data-ot-status]').textContent=otGameModes[g.mode]+' · '+(g.armed?'VIDA '+Math.ceil(g.body.hp)+' · '+(g.reload>0?'RECARREGANDO':g.ammo+'/'+g.reserve):'PASSEIO DE PAZ');
     g.ui.querySelector('.ot-games-mission').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA · '+g.kills+'/'+g.goal+' ALVOS':g.state==='DEFEAT'?'MISSÃO ENCERRADA · VOLTE AO MENU PARA TENTAR NOVAMENTE':g.notice||(g.armed?'MISSÃO SOLO · SETOR '+g.wave+' · '+g.kills+'/'+g.goal+' ALVOS · '+g.level.label:'Passeio livre · pouse e pare para desembarcar.');
     if(g.noticeUntil&&g.elapsed>g.noticeUntil){g.notice='';g.noticeUntil=0;}
     const live=g.enemies.filter(e=>e.active),next=live.slice().sort((a,b)=>Math.hypot(a.x-g.body.x,a.z-g.body.z)-Math.hypot(b.x-g.body.x,b.z-g.body.z))[0];
@@ -359,11 +359,11 @@
     for(const marker of targets.children)if(!live.some(e=>e.id===marker.dataset.target))marker.remove();
     for(const e of live){
       let marker=targets.querySelector('[data-target="'+e.id+'"]');if(!marker){marker=document.createElement('span');marker.dataset.target=e.id;targets.append(marker);}
-      const p=new THREE.Vector3(e.x,e.y+(e.kind==='tank'?2:1.5),e.z).project(camera),top=(-p.y*.5+.5)*g.ui.clientHeight,visible=p.z>-1&&p.z<1&&Math.abs(p.x)<.94&&Math.abs(p.y)<.74&&top>100&&!otGamesBlocked(g.body,e);
+      const p=new THREE.Vector3(e.x,e.y+(e.kind==='tank'?2:1.5),e.z).project(camera),top=(-p.y*.5+.5)*hudHeight,visible=p.z>-1&&p.z<1&&Math.abs(p.x)<.94&&Math.abs(p.y)<.74&&top>100&&!otGamesBlocked(g.body,e);
       marker.hidden=!visible;marker.classList.toggle('attacking',e.aim<.65);marker.classList.toggle('secondary',e!==primary);marker.style.left=(p.x*.5+.5)*100+'%';marker.style.top=(-p.y*.5+.5)*100+'%';marker.textContent=e===primary?(e.kind==='tank'?'BLINDADO':e.kind==='drone'?'DRONE':e.aim<.65?'DISPARO IMINENTE':'ALVO')+' · '+Math.round(Math.hypot(e.x-g.body.x,e.z-g.body.z))+' m':'';
     }
     const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
-    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';const lever=g.ui.querySelector('[data-ot="collective"]');lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(lever.clientHeight-28))+'px';
+    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(leverHeight-28))+'px';
     if(g.mode==='plane')g.ui.querySelector('[data-ot-status]').textContent='AVIÃO · '+Math.round(g.airspeed*3.6)+' km/h · '+(g.onGround?'NA PISTA':'EM VOO');
     const leave=g.ui.querySelector('[data-ot="disembark"]');leave.disabled=!otGamesCanDisembark();const crew=g.ui.querySelector('[data-ot="crew"]');if(crew){crew.hidden=typeof remotePresence==='undefined'||remotePresence.size===0;crew.disabled=!g.onGround;}const land=g.ui.querySelector('[data-ot="land"]');land.disabled=!!g.onGround;land.textContent=g.onGround?'NO SOLO':g.landingAssist?'CANCELAR POUSO':'POUSAR';land.setAttribute('aria-pressed',String(!!g.landingAssist));const crouch=g.ui.querySelector('[data-ot="crouch"]');crouch.textContent=g.crouched?'LEVANTAR':'ABAIXAR';crouch.setAttribute('aria-pressed',String(!!g.crouched));
     const ads=g.ui.querySelector('[data-ot="ads"]');ads.setAttribute('aria-pressed',String(!!g.aiming));ads.classList.toggle('selected',!!g.aiming);
