@@ -1,36 +1,38 @@
 {
-  "status": "Published: source, gameplay, performance and preview verified; exact production worker recovery is checked automatically",
-  "build": "705.28.16-carga-do-mundo",
-  "revision": "d4915ab5ed472447",
-  "runtimeCommit": "d6d9216de6ca558776925865f6a08f8569d84a06",
-  "previewUrl": "https://otthi-world-campanha-teste-co1bu07lc-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_3pG1bFLPjWSQu7RBdTw3fCeRDCKu",
+  "status": "Candidate under review: mobile layout and rendering checks passed; public update acceptance runs before publication",
+  "build": "705.28.18-revisao-mobile",
+  "revision": "40ace149df68355d",
+  "runtimeCommit": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
+  "previewUrl": "https://otthi-world-campanha-teste-2i52j4390-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_4c2trkyA6s1AEuMzaWACDzhzYZJY",
   "unitTests": {
-    "passed": 364,
+    "passed": 374,
     "failed": 0
   },
-  "physicalAndroidApproved": false,
   "checks": {
-    "performanceRun": 42013933158,
-    "gameplayRun": 42013933292,
-    "cameraWorldRun": 42013933369,
-    "previewPublicAcceptanceRun": 42013578870,
-    "previewPublicAcceptanceConclusion": "success",
-    "performanceConclusion": "success",
-    "gameplayConclusion": "success",
-    "cameraWorldConclusion": "success",
-    "lightingViews": 3,
-    "lightingPixelDifferences": 0,
-    "releaseAssets": 111
+    "mobileLayoutRun": 42057101570,
+    "mobileLayoutConclusion": "success",
+    "viewportChanges": 10,
+    "overlapOrLabelIssues": 0,
+    "instanceRenderingPixelDifferences": 0,
+    "releaseAssets": 111,
+    "gameplayRun": 42057101360,
+    "cameraWorldRun": 42057101459
   },
+  "previewConfiguration": {
+    "branch": "world-mobile-20261105",
+    "VERCEL_PREVIEW_FEEDBACK_ENABLED": "0",
+    "reason": "Prevent the review toolbar from changing byte-verified HTML."
+  },
+  "physicalAndroidApproved": false,
   "limitations": [
-    "No physical Android FPS or temperature measurement. Software WebGL results do not certify phone performance."
+    "No physical Android temperature, sensor rotation, sustained FPS or installed user cache was measured. Chromium software WebGL timings are comparison data only."
   ],
-  "sourceCoherence": "Generated entry, worker, runtime and manifest match; module-order body hash synchronized in the evidence commit.",
-  "measurements": "fluidez-20261105/final-comparison.json",
-  "worldHudUnchanged": true,
-  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc",
-  "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
-  "productionReady": true
+  "previousProduction": {
+    "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+    "productionDeployment": "dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc",
+    "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
+    "build": "705.28.16-carga-do-mundo",
+    "revision": "d4915ab5ed472447"
+  }
 }
