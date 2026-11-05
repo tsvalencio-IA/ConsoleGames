@@ -1,0 +1,49 @@
+name: Medir carga real do mundo
+on:
+  push:
+    paths:
+      - '.github/workflows/world-performance-repair.yml'
+      - 'games/otthi/src/modules/09-responsive-ar-quality-diagnostics.js'
+      - 'games/otthi/src/modules/29-game-loop-controls-gamepad.js'
+      - 'games/otthi/src/modules/71-world-light-budget.js'
+      - 'tests/world-frame-budget.test.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: world-performance-repair-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  carga-do-mundo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preparar navegador de medição
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Medir simulação sem alterar o mundo
+        run: node tests/world-frame-profile.mjs
+      - name: Medir quadros nativos sem limitar o renderizador
+        env:
+          OT_LIVE_CASE: after
+          OT_LIVE_BASELINE: 043d82abcc9d3b2e743fd72e49debc2aeb508353
+          OT_LIVE_SECONDS: '12'
+          OT_LIVE_PROFILE: '1'
+          OT_LIVE_SHADERS: '1'
+        run: node tests/world-play-performance.mjs
+      - name: Guardar medições e imagens
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-performance-repair
+          path: |
+            test-results/world-frame-current/
+            test-results/world-live-performance/
+          if-no-files-found: ignore
