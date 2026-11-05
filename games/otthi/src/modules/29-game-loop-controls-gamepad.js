@@ -25,7 +25,7 @@
       });
     }
   }
-  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();},{passive:true});
+  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
@@ -65,10 +65,12 @@
     });
   }
   function targetRenderFrameRate(){
+    if(paused)return 5;
     if(typeof otGames!=='undefined'&&otGames.active&&otGames.handSession){
       const now=performance.now();if(otGames.handSession.lastInferenceMs>180)otGames.cameraLowBudgetUntil=now+3000;
       if(now<(otGames.cameraLowBudgetUntil||0))return 15;
     }
+    if(perf.mobile&&requestedQuality()==='auto')return 30;
     return perf.mobile?(qualityTier()==='low'?30:qualityTier()==='balanced'?45:60):60;
   }
   function targetSimulationFrameRate(){return paused?15:60;}
@@ -112,6 +114,9 @@
     if(!running)return;raf=requestAnimationFrame(gameLoop);
     beginWorldQueryFrame();try{
     const elapsed=Math.max(0,clock.getDelta());
+    // Consume the clock while hidden, but neither simulate nor draw a covered
+    // world. Visibility changes discard background time rather than replay it.
+    if(document.hidden){perf.loopAcc=perf.renderAcc=0;return;}
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
     if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
@@ -122,7 +127,7 @@
     let steps=0;while(running&&perf.loopAcc>=simulationInterval&&steps<8){perf.loopAcc-=simulationInterval;stepWorldSimulation(simulationInterval);steps++;}
     if(!running)return;
     if(otGames.active&&otGames.handSession?.busy&&performance.now()-Number(otGames.handSession.frameSent||0)<700)return;
-    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
+    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc+1e-9<renderInterval)return;perf.renderAcc=Math.max(0,perf.renderAcc-renderInterval)%renderInterval;perf.renderedFrames++;
     // Resizing clears WebGL. Commit it in the same task as the replacement
     // frame, and never clear the canvas merely for an unchanged viewport.
     applyPendingRenderBuffer();

@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.15-preparo-iluminacao',
+    build: '705.28.16-carga-do-mundo',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
@@ -31,9 +31,9 @@
       interpolationMs: 180
     },
     performance: {
-      targetFps: 45,
-      downgradeFps: 34,
-      recoveryFps: 43,
+      targetFps: 30,
+      downgradeFps: 24,
+      recoveryFps: 29,
       sampleIntervalMs: 3000
     },
     childSafety: {

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.15-preparo-iluminacao",
+  "build": "705.28.16-carga-do-mundo",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "eeb37c8d1e6bf8fd0551ee1e0619ad23580dac1bda07a9a38526290e7ddd113b"
+      "sha256Body": "c24644f43330716e87526877d75f4f6f3fcd274b907aa0937cd1e8c73c71bb1d"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -91,7 +91,7 @@
       "startLine": 1808,
       "endLine": 2074,
       "description": "Responsividade, AR, modos, qualidade, LOD e diagnóstico",
-      "sha256Body": "6c0dee14599825f04db56dccb366a818fa96b26688a2283a1ee4fb8ee24a81eb"
+      "sha256Body": "8129b48fccaf1adda1b9a269671298ad05b33082c576b22cee0afd736acc9cf6"
     },
     {
       "file": "src/modules/10-player-skills.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "f43fe47ac8bcd3fb98a862a07383a7b44614ee1eabc577f5f95db7e23531fbdb"
+      "sha256Body": "5755049dc3ab506cc196287891bcfbbbf81d362e90ac7e2c475f5b7453229b45"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -448,7 +448,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Coleção ampliada, estacionamento de pesados, bancos e articulação",
-      "sha256Body": "530e5ff6f401bd56f4c82d95f81f58163f26cad1048d18a41a02cdff60ab4e7c"
+      "sha256Body": "73057b3060c3d24c8590c32301df58a1f1ae23cf5f4eda2d9a711d8c46df1cf2"
     },
     {
       "file": "src/modules/47-world-vehicle-taking.js",
@@ -480,7 +480,7 @@
     {
       "file": "src/modules/53-neighborhood-dealerships.js",
       "description": "Concessionárias físicas, exposição e compras nativas",
-      "sha256Body": "9fa4fd3e39593c91a2f74a908d995b0a940a5a5eb5d202ccbdb3b93a3bde0a03",
+      "sha256Body": "9b992b49d448c280faa67c17196211a5d9c8ed23f3f9ffd0c80c489754333d6c",
       "startLine": 0,
       "endLine": 0
     },
@@ -592,14 +592,14 @@
       "description": "Consultas espaciais de colisão e rodovias reutilizadas por quadro",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "efd7985fb37f96846b77b12b60fa436b520dfdab10662a4649694fa1ffd2e62f"
+      "sha256Body": "90bef3750f949d81eb3a25c0da00f42eff152d8e592f5a236645546e6c762fc3"
     },
     {
       "file": "src/modules/71-world-light-budget.js",
       "description": "Luzes de alcance finito fora da imagem e cálculo físico de luz zero",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "3d41ce0a7fe0dcbcf707387f57b5188f5eb1f4e05451afb9645015f0b9c04796"
+      "sha256Body": "05fb88f904ad275f5c85db8325741c9cf0443dd8ae1c1bfc71aa7545a656ad5c"
     }
   ],
   "styles": [

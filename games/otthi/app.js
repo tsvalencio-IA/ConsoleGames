@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.15-preparo-iluminacao';
+  const OTTHI_GAME_WEB_BUILD = '705.28.16-carga-do-mundo';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2887,8 +2887,9 @@
     let migrated=false;try{migrated=localStorage.getItem(OTTHI_VISUAL_GOVERNOR_MIGRATION)==='1';}catch{}
     if(migrated)return false;
     const mobile=matchMedia('(pointer:coarse)').matches;
-    if(mobile&&state.settings?.quality==='low')state.settings.quality='auto';
-    if(mobile&&state.settings?.autoTier==='low')state.settings.autoTier='balanced';
+    // A manually selected economical profile belongs to the player. Only
+    // migrate the recommendation used by an explicitly automatic profile.
+    if(mobile&&state.settings?.quality==='auto'&&state.settings?.autoTier==='low')state.settings.autoTier='balanced';
     try{localStorage.setItem(OTTHI_VISUAL_GOVERNOR_MIGRATION,'1');}catch{}
     try{saveState();}catch{}
     return true;
@@ -3026,8 +3027,8 @@
     if(perf.sampleMs<(perf.mobile?2:3))return;
     perf.fps=perf.frameCount/Math.max(.001,perf.frameAcc);perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;
     if(requestedQuality()!=='auto')return;
-    const lowRecommendationFps=perf.mobile?34:28,lowProtectionFps=perf.mobile?31:26;
-    const target=perf.mobile?45:60,protectFps=Math.max(lowProtectionFps,perf.mobile?36:48),severeFps=perf.mobile?20:24;
+    const lowRecommendationFps=perf.mobile?26:28,lowProtectionFps=perf.mobile?24:26;
+    const target=perf.mobile?30:60,protectFps=Math.max(lowProtectionFps,perf.mobile?26:48),severeFps=perf.mobile?20:24;
     const recommendation=perf.mobile?'balanced':perf.fps<lowRecommendationFps?'balanced':perf.fps>55?'high':'balanced';
     if(recommendation===perf.recommendation)perf.recommendationSamples++;else{perf.recommendation=recommendation;perf.recommendationSamples=1;}
     perf.lowSamples=perf.fps<protectFps?perf.lowSamples+1:Math.max(0,perf.lowSamples-1);
@@ -7876,7 +7877,7 @@
       });
     }
   }
-  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();},{passive:true});
+  document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   async function prepareWorldFirstFrame(){
     showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
@@ -7916,10 +7917,12 @@
     });
   }
   function targetRenderFrameRate(){
+    if(paused)return 5;
     if(typeof otGames!=='undefined'&&otGames.active&&otGames.handSession){
       const now=performance.now();if(otGames.handSession.lastInferenceMs>180)otGames.cameraLowBudgetUntil=now+3000;
       if(now<(otGames.cameraLowBudgetUntil||0))return 15;
     }
+    if(perf.mobile&&requestedQuality()==='auto')return 30;
     return perf.mobile?(qualityTier()==='low'?30:qualityTier()==='balanced'?45:60):60;
   }
   function targetSimulationFrameRate(){return paused?15:60;}
@@ -7963,6 +7966,9 @@
     if(!running)return;raf=requestAnimationFrame(gameLoop);
     beginWorldQueryFrame();try{
     const elapsed=Math.max(0,clock.getDelta());
+    // Consume the clock while hidden, but neither simulate nor draw a covered
+    // world. Visibility changes discard background time rather than replay it.
+    if(document.hidden){perf.loopAcc=perf.renderAcc=0;return;}
     // A full-screen activity owns the GPU and input clock until the player exits.
     // Keeping the covered 3D city rendering competes with ping pong and rhythm.
     if((typeof worldVenues!=='undefined'&&worldVenues.session)||(typeof otGames!=='undefined'&&otGames.active&&otGames.state==='HAND_CALIBRATION')){perf.loopAcc=perf.renderAcc=0;return;}
@@ -7973,7 +7979,7 @@
     let steps=0;while(running&&perf.loopAcc>=simulationInterval&&steps<8){perf.loopAcc-=simulationInterval;stepWorldSimulation(simulationInterval);steps++;}
     if(!running)return;
     if(otGames.active&&otGames.handSession?.busy&&performance.now()-Number(otGames.handSession.frameSent||0)<700)return;
-    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc<renderInterval*.92)return;perf.renderAcc%=renderInterval;perf.renderedFrames++;
+    const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc+1e-9<renderInterval)return;perf.renderAcc=Math.max(0,perf.renderAcc-renderInterval)%renderInterval;perf.renderedFrames++;
     // Resizing clears WebGL. Commit it in the same task as the replacement
     // frame, and never clear the canvas merely for an unchanged viewport.
     applyPendingRenderBuffer();
@@ -11466,7 +11472,16 @@ function precompile(T,renderer,scene,camera){
   const brazilPreviousCapacity=vehiclePassengerSeatCapacity;
   vehiclePassengerSeatCapacity=function(body='',kind='',model=''){const seats=window.OTBrazilVehicles?.definition(model)?.seats;if(seats?.length)return Math.max(0,seats.length-1);const spec=window.OTBrazilExpansion.catalog[model];if(spec?.singleSeat)return 0;if(spec?.twoSeats)return 1;if(spec?.bus)return 5;return brazilPreviousCapacity(body,kind);};
   function brazilSpecialFootprint(v){const model=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=model?.userData;if(!data?.bus&&!data?.articulated)return null;return{front:Number(data.front),rear:Number(data.rear),halfWidth:data.bus?1.03:1.02,trailerAngle:model.getObjectByName('articulated-trailer')?.rotation.y||0};}
-  function brazilParkedContains(v,x,z,margin=.0){const root=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=root?.userData,f=brazilSpecialFootprint(v)||(data?{front:data.front,rear:data.rear,halfWidth:data.halfWidth||.76,trailerAngle:0}:null);if(!f)return null;const group=v?.group||v,heading=Number(group.rotation.y||0),dx=x-group.position.x,dz=z-group.position.z,lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
+  function brazilParkedContains(v,x,z,margin=.0){const root=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=root?.userData,group=v?.group||v,dx=x-group?.position?.x,dz=z-group?.position?.z;
+    // A conservative enclosing square rejects distant probes before walking
+    // trailer rigs or calculating rotations. The existing precise predicate
+    // still decides every possible contact, including articulated vehicles.
+    if(data&&Number.isFinite(margin)&&Number.isFinite(data.front)&&Number.isFinite(data.rear)){
+      const width=data.bus?1.03:data.articulated?1.02:data.halfWidth||.76;
+      const extent=Math.max(Math.abs(width+margin)+Math.max(Math.abs(data.front+margin),Math.abs(data.rear-margin)),data.articulated?10.27+2*Math.abs(margin):0);
+      if(Number.isFinite(extent)&&(Math.abs(dx)>extent||Math.abs(dz)>extent))return false;
+    }
+    const f=brazilSpecialFootprint(v)||(data?{front:data.front,rear:data.rear,halfWidth:data.halfWidth||.76,trailerAngle:0}:null);if(!f)return null;const heading=Number(group.rotation.y||0),lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
     if(!f.trailerAngle)return Math.abs(lx)<f.halfWidth+margin&&lz<f.front+margin&&lz>f.rear-margin;
     if(Math.abs(lx)<1.02+margin&&lz<1.64+margin&&lz>-2.3-margin)return true;const tz=lz+1.50,a=f.trailerAngle,tx=lx*Math.cos(a)-tz*Math.sin(a),zz=lx*Math.sin(a)+tz*Math.cos(a);return Math.abs(tx)<1.02+margin&&zz<.6+margin&&zz>-7.75-margin;
   }
@@ -11692,7 +11707,7 @@ function precompile(T,renderer,scene,camera){
     const group=vehicle.group,d=group.userData.brazilRoot?.userData;if(!d)return{x:group.position.x,z:group.position.z};const a=group.rotation.y,c=Math.cos(a),sn=Math.sin(a),dx=player.x-group.position.x,dz=player.z-group.position.z,lx=clamp(dx*c-dz*sn,-(d.halfWidth||.76),d.halfWidth||.76),lz=clamp(dx*sn+dz*c,d.rear,d.front);return{x:group.position.x+lx*c+lz*sn,z:group.position.z-lx*sn+lz*c};
   }
   function updateNeighborhoodVehicleAccess(){
-    for(const v of brazilAllVehicles()){if(v.group.userData.neighborhoodAccess||!v.group.userData.brazilRoot)continue;const action=world.interactables.find(i=>i.id==='vehicle-'+v.id);if(!action)continue;action.getPos=()=>neighborhoodVehicleApproachPoint(v);action.radius=1.5;v.group.userData.neighborhoodAccess=true;}
+    for(const v of brazilAllVehicles()){if(v.group.userData.neighborhoodAccess||!v.group.userData.brazilRoot)continue;const action=worldInteractableById('vehicle-'+v.id);if(!action)continue;action.getPos=()=>neighborhoodVehicleApproachPoint(v);action.radius=1.5;v.group.userData.neighborhoodAccess=true;}
   }
   function updateNeighborhoodDealers(){
     createNeighborhoodDealers();updateNeighborhoodVehicleAccess();const now=performance.now();if(now-neighborhoodDealers.lastAt<120)return;neighborhoodDealers.lastAt=now;const focus=otGamesFocus();let budget=2;
@@ -12909,7 +12924,7 @@ function precompile(T,renderer,scene,camera){
  window.OT_VEHICLE_VIEW={reset:resetVehicleView,occupants:toggleVehicleOccupants,diagnostics:()=>({key:vehicleView.key,manual:vehicleView.manual,inside:vehicleView.inside,yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,camera:camera?.position.toArray(),focus:vehicleViewRide()?vehicleViewEyes(vehicleViewRide()).toArray():null,near:camera?.near,reactions:[...vehicleView.reactions].map(([id,r])=>({id,...r})),pointerCount:vehicleView.pointers.size})};
 
   // ===== MODULE: 70-world-query-budget.js =====
-  var worldQueryBudget={active:0,frame:0,colliders:null,roads:null,stats:{colliderQueries:0,colliderValidations:0,colliderRebuilds:0,roadQueries:0,roadValidations:0,roadRebuilds:0}};
+  var worldQueryBudget={active:0,frame:0,colliders:null,roads:null,interactables:null,stats:{colliderQueries:0,colliderValidations:0,colliderRebuilds:0,roadQueries:0,roadValidations:0,roadRebuilds:0,interactableQueries:0,interactableValidations:0,interactableRebuilds:0}};
   function beginWorldQueryFrame(){if(worldQueryBudget&&worldQueryBudget.active++===0)worldQueryBudget.frame++;}
   function endWorldQueryFrame(){if(worldQueryBudget)worldQueryBudget.active=Math.max(0,worldQueryBudget.active-1);}
   function worldQueryFrameChecked(record){return !!worldQueryBudget?.active&&record?.checkedFrame===worldQueryBudget.frame;}
@@ -12975,6 +12990,20 @@ function precompile(T,renderer,scene,camera){
     for(const record of index.loose)result.push(record.seg);
     return result;
   }
+  function worldInteractableById(id){
+    const source=world.interactables||[];if(!worldQueryBudget)return source.find(action=>action.id===id);
+    worldQueryBudget.stats.interactableQueries++;let cache=worldQueryBudget.interactables,rebuild=!cache||cache.source!==source||cache.records.length!==source.length;
+    if(!rebuild&&!worldQueryFrameChecked(cache)){
+      worldQueryBudget.stats.interactableValidations++;
+      for(let i=0;i<source.length;i++)if(cache.records[i].object!==source[i]||cache.records[i].id!==source[i].id){rebuild=true;break;}
+    }
+    if(rebuild){
+      cache={source,records:[],byId:new Map(),checkedFrame:-1};worldQueryBudget.stats.interactableRebuilds++;
+      for(const action of source){cache.records.push({object:action,id:action.id});if(!cache.byId.has(action.id))cache.byId.set(action.id,action);}
+      worldQueryBudget.interactables=cache;
+    }
+    markWorldQueryFrame(cache);return cache.byId.get(id);
+  }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};
 
   // ===== MODULE: 71-world-light-budget.js =====
@@ -12992,16 +13021,23 @@ function precompile(T,renderer,scene,camera){
       if(!templates)renderer.compile(scene,camera);
       return Number(templates||0);
     };
-    const templates=compile(),lights=[];
+    const lights=[],temporary=[];
     scene.traverseVisible(object=>{if(object.isPointLight&&object.layers.test(camera.layers))lights.push(object);});
+    // An initial view with no contributing lamps still needs the normal lit
+    // program when the camera turns. Prepare it only under the loading screen;
+    // the zero-light view itself must never draw padding lamps.
+    if(!lights.length&&worldLightBudget.stats.total>0){for(let i=0;i<16;i++){const light=new THREE.PointLight(0x000000,0,1,1);scene.add(light);lights.push(light);temporary.push(light);}}
     // The automatic quality profile can hide decorative lamps during play.
     // Three r128 keys every material program by its light count, even for a
     // basic material. Warm the unlit variant while the loading screen owns
     // the frame, including cached vehicles and currently hidden scenery.
     // This changes no material, quality setting or light in a painted frame.
-    if(lights.length){
-      try{for(const light of lights)light.visible=false;compile();}
-      finally{for(const light of lights)light.visible=true;}
+    let templates;
+    try{
+      templates=compile();
+      if(lights.length){try{for(const light of lights)light.visible=false;compile();}finally{for(const light of lights)light.visible=true;}}
+    }finally{
+      for(const light of temporary)scene.remove(light);
     }
     return{templates,lightingVariants:lights.length?2:1};
   }
@@ -13024,7 +13060,9 @@ function precompile(T,renderer,scene,camera){
     }
     // Buckets avoid recompiling every material as one lamp enters/leaves the
     // camera frustum. There is no light cap: all intersecting lights are kept.
-    const padded=total?Math.max(16,Math.ceil(active/8)*8)-active:0;
+    // With no contributing point lights, use the already-prepared zero-light
+    // program instead of evaluating sixteen artificial lamps per fragment.
+    const padded=active?Math.max(16,Math.ceil(active/8)*8)-active:0;
     for(let i=0;i<padded;i++){let light=budget.padding[i];if(!light){light=new THREE.PointLight(0x000000,0,1,1);light.name='OTTHI_LIGHT_PADDING';budget.padding.push(light);}scene.add(light);}
     budget.stats={total,active,culled:hidden.length,padded};
     return()=>{for(const light of hidden)light.visible=true;for(let i=0;i<padded;i++)scene.remove(budget.padding[i]);};

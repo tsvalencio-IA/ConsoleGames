@@ -1,6 +1,6 @@
 /** Broad-phase queries preserve the existing precise collision predicates. */
 // @otthi-module-body
-  var worldQueryBudget={active:0,frame:0,colliders:null,roads:null,stats:{colliderQueries:0,colliderValidations:0,colliderRebuilds:0,roadQueries:0,roadValidations:0,roadRebuilds:0}};
+  var worldQueryBudget={active:0,frame:0,colliders:null,roads:null,interactables:null,stats:{colliderQueries:0,colliderValidations:0,colliderRebuilds:0,roadQueries:0,roadValidations:0,roadRebuilds:0,interactableQueries:0,interactableValidations:0,interactableRebuilds:0}};
   function beginWorldQueryFrame(){if(worldQueryBudget&&worldQueryBudget.active++===0)worldQueryBudget.frame++;}
   function endWorldQueryFrame(){if(worldQueryBudget)worldQueryBudget.active=Math.max(0,worldQueryBudget.active-1);}
   function worldQueryFrameChecked(record){return !!worldQueryBudget?.active&&record?.checkedFrame===worldQueryBudget.frame;}
@@ -65,5 +65,19 @@
     for(let ix=x0;ix<=x1;ix++)for(let iz=z0;iz<=z1;iz++){const bucket=index.cells.get(ix+':'+iz);if(bucket)for(const record of bucket)if(record.stamp!==stamp){record.stamp=stamp;result.push(record.seg);}}
     for(const record of index.loose)result.push(record.seg);
     return result;
+  }
+  function worldInteractableById(id){
+    const source=world.interactables||[];if(!worldQueryBudget)return source.find(action=>action.id===id);
+    worldQueryBudget.stats.interactableQueries++;let cache=worldQueryBudget.interactables,rebuild=!cache||cache.source!==source||cache.records.length!==source.length;
+    if(!rebuild&&!worldQueryFrameChecked(cache)){
+      worldQueryBudget.stats.interactableValidations++;
+      for(let i=0;i<source.length;i++)if(cache.records[i].object!==source[i]||cache.records[i].id!==source[i].id){rebuild=true;break;}
+    }
+    if(rebuild){
+      cache={source,records:[],byId:new Map(),checkedFrame:-1};worldQueryBudget.stats.interactableRebuilds++;
+      for(const action of source){cache.records.push({object:action,id:action.id});if(!cache.byId.has(action.id))cache.byId.set(action.id,action);}
+      worldQueryBudget.interactables=cache;
+    }
+    markWorldQueryFrame(cache);return cache.byId.get(id);
   }
   window.OTTHI_QUERY_BUDGET={diagnostics:()=>({...worldQueryBudget.stats,colliders:worldQueryBudget.colliders?.records.length||0,cells:worldQueryBudget.colliders?.cells.size||0,roadSegments:worldQueryBudget.roads?.segments.length||0})};

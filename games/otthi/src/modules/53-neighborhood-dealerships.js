@@ -54,7 +54,7 @@
     const group=vehicle.group,d=group.userData.brazilRoot?.userData;if(!d)return{x:group.position.x,z:group.position.z};const a=group.rotation.y,c=Math.cos(a),sn=Math.sin(a),dx=player.x-group.position.x,dz=player.z-group.position.z,lx=clamp(dx*c-dz*sn,-(d.halfWidth||.76),d.halfWidth||.76),lz=clamp(dx*sn+dz*c,d.rear,d.front);return{x:group.position.x+lx*c+lz*sn,z:group.position.z-lx*sn+lz*c};
   }
   function updateNeighborhoodVehicleAccess(){
-    for(const v of brazilAllVehicles()){if(v.group.userData.neighborhoodAccess||!v.group.userData.brazilRoot)continue;const action=world.interactables.find(i=>i.id==='vehicle-'+v.id);if(!action)continue;action.getPos=()=>neighborhoodVehicleApproachPoint(v);action.radius=1.5;v.group.userData.neighborhoodAccess=true;}
+    for(const v of brazilAllVehicles()){if(v.group.userData.neighborhoodAccess||!v.group.userData.brazilRoot)continue;const action=worldInteractableById('vehicle-'+v.id);if(!action)continue;action.getPos=()=>neighborhoodVehicleApproachPoint(v);action.radius=1.5;v.group.userData.neighborhoodAccess=true;}
   }
   function updateNeighborhoodDealers(){
     createNeighborhoodDealers();updateNeighborhoodVehicleAccess();const now=performance.now();if(now-neighborhoodDealers.lastAt<120)return;neighborhoodDealers.lastAt=now;const focus=otGamesFocus();let budget=2;

@@ -33,6 +33,14 @@ test('a quality setting with all glow lights disabled creates no padding or poin
   const f=fixture();f.add(0,0).visible=false;const restore=f.c.prepareWorldPointLights(f.camera);
   assert.equal(f.c.window.OTTHI_LIGHT_BUDGET.diagnostics().padded,0);assert(!f.scene.children.some(o=>o.name==='OTTHI_LIGHT_PADDING'));restore();
 });
+test('a view with no contributing lamps draws no artificial lights but warms the lit camera-turn variant before play',()=>{
+  const f=fixture();f.add(500,0);f.add(0,30);f.scene.updateMatrixWorld(true);const original=f.scene.toJSON(),restore=f.c.prepareWorldPointLights(f.camera);
+  assert.equal(f.c.window.OTTHI_LIGHT_BUDGET.diagnostics().active,0);assert.equal(f.c.window.OTTHI_LIGHT_BUDGET.diagnostics().padded,0);
+  assert.equal(f.scene.children.filter(x=>x.isPointLight&&x.visible).length,0);
+  const counts=[];f.c.renderer.compile=()=>counts.push(f.scene.children.filter(x=>x.isPointLight&&x.visible).length);
+  const prepared=f.c.precompileWorldLighting();assert.deepEqual(counts,[16,0]);assert.equal(prepared.lightingVariants,2);
+  assert.equal(f.scene.children.filter(x=>x.isPointLight&&x.visible).length,0);restore();assert.deepEqual(f.scene.toJSON(),original);
+});
 test('point-light BRDF guard is installed once and leaves spot/directional lighting unchanged',()=>{
   const f=fixture(),source=f.THREE.ShaderChunk.lights_fragment_begin;f.c.configureWorldPointLightEvaluation();const optimized=f.THREE.ShaderChunk.lights_fragment_begin;f.c.configureWorldPointLightEvaluation();assert.equal(f.THREE.ShaderChunk.lights_fragment_begin,optimized);
   assert.equal((optimized.match(/OTTHI_VISIBLE_POINT_LIGHT/g)||[]).length,1);

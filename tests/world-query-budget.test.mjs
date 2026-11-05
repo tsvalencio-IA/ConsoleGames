@@ -4,6 +4,22 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const read=name=>fs.readFileSync('games/otthi/src/modules/'+name,'utf8');
+test('indexed vehicle actions retain first-match semantics and invalidate edits without repeating a full scan per lookup',()=>{
+  const world={interactables:[]},c=vm.createContext({window:{},world});vm.runInContext(read('70-world-query-budget.js'),c);
+  for(let i=0;i<3000;i++)world.interactables.push({id:'vehicle-'+i});
+  const first=world.interactables[3];world.interactables.push({id:first.id});
+  c.beginWorldQueryFrame();try{
+    for(let i=0;i<1000;i++)assert.equal(c.worldInteractableById('vehicle-3'),first);
+    assert.equal(c.worldInteractableById('missing'),undefined);
+    world.interactables.push({id:'late'});assert.equal(c.worldInteractableById('late'),world.interactables.at(-1));
+    assert(c.window.OTTHI_QUERY_BUDGET.diagnostics().interactableValidations<=1);
+  }finally{c.endWorldQueryFrame();}
+  world.interactables[3]={id:'replacement'};
+  assert.equal(c.worldInteractableById('replacement'),world.interactables[3]);
+  assert.equal(c.worldInteractableById('vehicle-3'),world.interactables.at(-2));
+  world.interactables[3].id='renamed';assert.equal(c.worldInteractableById('renamed'),world.interactables[3]);
+  world.interactables=[{id:'new-array'}];assert.equal(c.worldInteractableById('renamed'),undefined);assert.equal(c.worldInteractableById('new-array'),world.interactables[0]);
+});
 function fixture(){
   const world={colliders:[],hazards:[],vehicles:[]};
   const context=vm.createContext({window:{},world,currentHouse:null,waterAt:()=>false,groundHeightAt:()=>1,trafficActorList:()=>[]});

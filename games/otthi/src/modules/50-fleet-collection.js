@@ -25,7 +25,16 @@
   const brazilPreviousCapacity=vehiclePassengerSeatCapacity;
   vehiclePassengerSeatCapacity=function(body='',kind='',model=''){const seats=window.OTBrazilVehicles?.definition(model)?.seats;if(seats?.length)return Math.max(0,seats.length-1);const spec=window.OTBrazilExpansion.catalog[model];if(spec?.singleSeat)return 0;if(spec?.twoSeats)return 1;if(spec?.bus)return 5;return brazilPreviousCapacity(body,kind);};
   function brazilSpecialFootprint(v){const model=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=model?.userData;if(!data?.bus&&!data?.articulated)return null;return{front:Number(data.front),rear:Number(data.rear),halfWidth:data.bus?1.03:1.02,trailerAngle:model.getObjectByName('articulated-trailer')?.rotation.y||0};}
-  function brazilParkedContains(v,x,z,margin=.0){const root=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=root?.userData,f=brazilSpecialFootprint(v)||(data?{front:data.front,rear:data.rear,halfWidth:data.halfWidth||.76,trailerAngle:0}:null);if(!f)return null;const group=v?.group||v,heading=Number(group.rotation.y||0),dx=x-group.position.x,dz=z-group.position.z,lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
+  function brazilParkedContains(v,x,z,margin=.0){const root=v?.group?.userData?.brazilRoot||v?.userData?.brazilRoot,data=root?.userData,group=v?.group||v,dx=x-group?.position?.x,dz=z-group?.position?.z;
+    // A conservative enclosing square rejects distant probes before walking
+    // trailer rigs or calculating rotations. The existing precise predicate
+    // still decides every possible contact, including articulated vehicles.
+    if(data&&Number.isFinite(margin)&&Number.isFinite(data.front)&&Number.isFinite(data.rear)){
+      const width=data.bus?1.03:data.articulated?1.02:data.halfWidth||.76;
+      const extent=Math.max(Math.abs(width+margin)+Math.max(Math.abs(data.front+margin),Math.abs(data.rear-margin)),data.articulated?10.27+2*Math.abs(margin):0);
+      if(Number.isFinite(extent)&&(Math.abs(dx)>extent||Math.abs(dz)>extent))return false;
+    }
+    const f=brazilSpecialFootprint(v)||(data?{front:data.front,rear:data.rear,halfWidth:data.halfWidth||.76,trailerAngle:0}:null);if(!f)return null;const heading=Number(group.rotation.y||0),lx=dx*Math.cos(heading)-dz*Math.sin(heading),lz=dx*Math.sin(heading)+dz*Math.cos(heading);if(!Number.isFinite(lx)||!Number.isFinite(lz))return false;
     if(!f.trailerAngle)return Math.abs(lx)<f.halfWidth+margin&&lz<f.front+margin&&lz>f.rear-margin;
     if(Math.abs(lx)<1.02+margin&&lz<1.64+margin&&lz>-2.3-margin)return true;const tz=lz+1.50,a=f.trailerAngle,tx=lx*Math.cos(a)-tz*Math.sin(a),zz=lx*Math.sin(a)+tz*Math.cos(a);return Math.abs(tx)<1.02+margin&&zz<.6+margin&&zz>-7.75-margin;
   }

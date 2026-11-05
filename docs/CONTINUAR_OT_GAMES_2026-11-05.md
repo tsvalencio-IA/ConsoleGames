@@ -1,0 +1,25 @@
+# Correção de carga do mundo — 05/11/2026
+
+Escopo: ConsoleGames, continuação de world-revisao-20261022 em 043d82ab. O usuário informou travamentos severos e preocupação com celulares antigos e pediu “Arrume!”. Preservar mundo, população, frota, família, física, controles, progresso, assinatura Android e o HUD após a reversão. Nenhuma temperatura ou dano físico foi medido. Não prometer eliminação de aquecimento ou fluidez física Android sem evidência.
+
+## Base e medições
+
+A produção encontrada é 705.28.15-preparo-iluminacao, deployment dpl_FuRAqZZF3ycpaeHhvdSyjrSvhJKe, fonte de aplicação 14d29564. A base canônica inclui somente documentação adicional até 043d82ab.
+
+A branch de trabalho world-fluidez-20261105 começou com 2761d90f, contendo apenas o workflow de medição. Run 42005804958, job 127172109210, passou na base sem alterações. O perfil mostrou buscas de ações de veículos repetidas e milhares de consultas de colisão da família. CPU em 40 passos: cidade 244,7 ms, praia 248,1 ms, helicóptero 244,2 ms. No teste nativo não limitado de 12 s, o WebGL por software apresentou CPU média 68,53 ms e p95 102 ms. Esses resultados não são FPS de telefone.
+
+## Correção candidata
+
+Build 705.28.16-carga-do-mundo, assetVersion 70652. A versão e a revisão finais são determinadas por VERSION.json e release-manifest.json após o build modular.
+
+- Colisões de veículos rejeitam pontos comprovadamente distantes antes de percorrer carretas e calcular rotações. O predicado preciso original continua decidindo todos os contatos possíveis. O teste compara 60 mil sondas, posições dinâmicas e ângulos de articulação com a função original preservada como fixture.
+- Acesso às ações das concessionárias usa índice por ID, mantendo a primeira ocorrência, alterações de array, inclusões e validação por quadro. Não há remoção de veículos ou ações.
+- Em automático móvel, o render fica limitado a 30 FPS; a física continua a 60 passos por segundo. Alta manual e desktop continuam a 60 FPS. Pausa desenha no máximo 5 FPS; documento oculto não simula nem desenha e não acumula tempo para reproduzir na volta. Preferência manual Econômica não é convertida em Automática pela migração.
+- Foi reproduzido um defeito no limitador: limiar de 92% seguido de módulo podia manter o acumulador sem consumi-lo e gerar dois desenhos consecutivos. O novo cálculo consome o intervalo completo com tolerância apenas numérica. O teste a 144 Hz reproduziu 83 desenhos em dois segundos com o erro e aceita cerca de 60 após a correção, sem reduzir o tempo da física.
+- Uma vista sem nenhuma contribuição de luz pontual não desenha dezesseis lâmpadas artificiais. A variante iluminada permanece preparada durante o carregamento; câmera girando não perde a preparação nem a contribuição de luzes reais. Testes verificam a cena restaurada; o CI compara cada canal de pixels.
+
+## Validação e publicação
+
+Os testes direcionados passaram após corrigir a fixture de janela e o erro real de cadência. A primeira suíte completa, antes desse ajuste do limitador, registrou falha dos novos testes de cadência; não tratá-la como aprovação. A suíte completa será executada novamente e pelo CI. O workflow de medição compara CPU e render nativo antes/depois na mesma execução e preserva relatórios e imagens. Não publicar a candidata apenas porque testes funcionais passaram: avaliar a medição e a estabilidade visual também.
+
+Checkout ativo desta correção: /workspace/scratch/a6a0069f9162/otgames-fix. O checkout antigo otgames-fluidez perdeu o diretório Git após a pausa da sessão. O clone novo reutilizou os arquivos, restaurou road-height.png ao blob canônico e mantém separadas as alterações antigas de ConsoleGames. Não usar esse checkout antigo nem misturar o SaaS ou outro projeto.

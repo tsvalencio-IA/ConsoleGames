@@ -14,16 +14,23 @@
       if(!templates)renderer.compile(scene,camera);
       return Number(templates||0);
     };
-    const templates=compile(),lights=[];
+    const lights=[],temporary=[];
     scene.traverseVisible(object=>{if(object.isPointLight&&object.layers.test(camera.layers))lights.push(object);});
+    // An initial view with no contributing lamps still needs the normal lit
+    // program when the camera turns. Prepare it only under the loading screen;
+    // the zero-light view itself must never draw padding lamps.
+    if(!lights.length&&worldLightBudget.stats.total>0){for(let i=0;i<16;i++){const light=new THREE.PointLight(0x000000,0,1,1);scene.add(light);lights.push(light);temporary.push(light);}}
     // The automatic quality profile can hide decorative lamps during play.
     // Three r128 keys every material program by its light count, even for a
     // basic material. Warm the unlit variant while the loading screen owns
     // the frame, including cached vehicles and currently hidden scenery.
     // This changes no material, quality setting or light in a painted frame.
-    if(lights.length){
-      try{for(const light of lights)light.visible=false;compile();}
-      finally{for(const light of lights)light.visible=true;}
+    let templates;
+    try{
+      templates=compile();
+      if(lights.length){try{for(const light of lights)light.visible=false;compile();}finally{for(const light of lights)light.visible=true;}}
+    }finally{
+      for(const light of temporary)scene.remove(light);
     }
     return{templates,lightingVariants:lights.length?2:1};
   }
@@ -46,7 +53,9 @@
     }
     // Buckets avoid recompiling every material as one lamp enters/leaves the
     // camera frustum. There is no light cap: all intersecting lights are kept.
-    const padded=total?Math.max(16,Math.ceil(active/8)*8)-active:0;
+    // With no contributing point lights, use the already-prepared zero-light
+    // program instead of evaluating sixteen artificial lamps per fragment.
+    const padded=active?Math.max(16,Math.ceil(active/8)*8)-active:0;
     for(let i=0;i<padded;i++){let light=budget.padding[i];if(!light){light=new THREE.PointLight(0x000000,0,1,1);light.name='OTTHI_LIGHT_PADDING';budget.padding.push(light);}scene.add(light);}
     budget.stats={total,active,culled:hidden.length,padded};
     return()=>{for(const light of hidden)light.visible=true;for(let i=0;i<padded;i++)scene.remove(budget.padding[i]);};

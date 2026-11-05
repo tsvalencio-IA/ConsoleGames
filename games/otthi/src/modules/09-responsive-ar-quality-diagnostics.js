@@ -124,8 +124,9 @@
     let migrated=false;try{migrated=localStorage.getItem(OTTHI_VISUAL_GOVERNOR_MIGRATION)==='1';}catch{}
     if(migrated)return false;
     const mobile=matchMedia('(pointer:coarse)').matches;
-    if(mobile&&state.settings?.quality==='low')state.settings.quality='auto';
-    if(mobile&&state.settings?.autoTier==='low')state.settings.autoTier='balanced';
+    // A manually selected economical profile belongs to the player. Only
+    // migrate the recommendation used by an explicitly automatic profile.
+    if(mobile&&state.settings?.quality==='auto'&&state.settings?.autoTier==='low')state.settings.autoTier='balanced';
     try{localStorage.setItem(OTTHI_VISUAL_GOVERNOR_MIGRATION,'1');}catch{}
     try{saveState();}catch{}
     return true;
@@ -263,8 +264,8 @@
     if(perf.sampleMs<(perf.mobile?2:3))return;
     perf.fps=perf.frameCount/Math.max(.001,perf.frameAcc);perf.frameAcc=0;perf.frameCount=0;perf.sampleMs=0;
     if(requestedQuality()!=='auto')return;
-    const lowRecommendationFps=perf.mobile?34:28,lowProtectionFps=perf.mobile?31:26;
-    const target=perf.mobile?45:60,protectFps=Math.max(lowProtectionFps,perf.mobile?36:48),severeFps=perf.mobile?20:24;
+    const lowRecommendationFps=perf.mobile?26:28,lowProtectionFps=perf.mobile?24:26;
+    const target=perf.mobile?30:60,protectFps=Math.max(lowProtectionFps,perf.mobile?26:48),severeFps=perf.mobile?20:24;
     const recommendation=perf.mobile?'balanced':perf.fps<lowRecommendationFps?'balanced':perf.fps>55?'high':'balanced';
     if(recommendation===perf.recommendation)perf.recommendationSamples++;else{perf.recommendation=recommendation;perf.recommendationSamples=1;}
     perf.lowSamples=perf.fps<protectFps?perf.lowSamples+1:Math.max(0,perf.lowSamples-1);
