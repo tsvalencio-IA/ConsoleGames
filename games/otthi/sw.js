@@ -1,7 +1,7 @@
-const REVISION = '1c5b5040458fa93f';
+const REVISION = '40ace149df68355d';
 const CACHE = `otthi-v70653-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.28.17-controles-rotacao';
+const BUILD = '705.28.18-revisao-mobile';
 const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70653';
 

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.17-controles-rotacao",
+  "build": "705.28.18-revisao-mobile",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "e7f9641d79ed77d852f052d2f5e37cb0ef0ca8b74ce0c04f82500fda738ba8e9"
+      "sha256Body": "e644da36dd4f7d87ee2de03f6b1ca7da8b89a5a0548bb46acbe770114e730008"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -800,7 +800,7 @@
     {
       "file": "src/styles/26-world-mobile-controls.css",
       "description": "Reserved mobile control zones and native HUD composition",
-      "sha256Body": "1e8959483916fec01aea1fe64dda3b50936a737228491add47e5989a23355ece"
+      "sha256Body": "e01d1830538fd6f182c7b04e8b6869c223e5b7a8a13f42e7703b90f54ca2be8e"
     }
   ]
 }

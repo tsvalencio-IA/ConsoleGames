@@ -16,6 +16,12 @@ try{
   for(const b of items){const r=b.rect;if(r.x<-.5||r.y<-.5||r.right>innerWidth+.5||r.bottom>innerHeight+.5)issues.push('outside:'+b.id);const top=document.elementFromPoint(r.x+r.w/2,r.y+r.h/2);if(top&&!b.element.contains(top))issues.push('covered:'+b.id+':'+(top.id||top.className));}
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){const a=items[i],b=items[j],w=Math.min(a.rect.right,b.rect.right)-Math.max(a.rect.x,b.rect.x),h=Math.min(a.rect.bottom,b.rect.bottom)-Math.max(a.rect.y,b.rect.y);if(w>1&&h>1)issues.push('overlap:'+a.id+':'+b.id);}
   const label=document.querySelector('#skillsToggleBtn span'),parent=label?.parentElement;if(label&&visible(parent)&&label.getBoundingClientRect().bottom>parent.getBoundingClientRect().bottom+.5)issues.push('clipped:skills-label');
+  for(const text of document.querySelectorAll('.primary-actions .round span')){
+   const style=getComputedStyle(text);if(style.display==='none'||style.visibility==='hidden'||text.getBoundingClientRect().height<1||!visible(text.parentElement))continue;
+   const range=document.createRange();range.selectNodeContents(text);const lines=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0),button=text.parentElement.getBoundingClientRect();
+   if(lines.length>1)issues.push('wrapped:action-label:'+text.parentElement.id);
+   if(lines.some(r=>r.left<button.left||r.right>button.right||r.top<button.top||r.bottom>button.bottom))issues.push('clipped:action-label:'+text.parentElement.id);
+  }
   return{width:innerWidth,height:innerHeight,orientation:document.body.dataset.orientation,screen:screen.orientation.type,stage:rect(document.getElementById('stage')),canvas:rect(document.querySelector('#stage canvas')),buttons:items.map(({element,...rest})=>rest),issues,network:window.OTTHOS_RTDB?.status?.()};
  });
  for(const [index,[width,height]]of [[393,852],[852,393],[393,852],[320,568],[568,320],[360,740],[740,360],[412,915],[915,412],[393,852]].entries()){
