@@ -1,0 +1,24 @@
+{
+  "status": "success",
+  "build": "705.28.16-carga-do-mundo",
+  "revision": "d4915ab5ed472447",
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
+  "productionDeployment": "dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc",
+  "sourceRuntimeVerification": "d6d9216de6ca558776925865f6a08f8569d84a06",
+  "publicAcceptanceRun": 42015485851,
+  "publicAcceptanceJob": 127204860797,
+  "expectedReleaseAssets": 111,
+  "httpEvidence": "production-http.json",
+  "checks": [
+    "Public HTTPS updater installs current build/revision using real service workers",
+    "Synthetic 4321 coins and Thiago/Luna/Liz party remain after update",
+    "Other local browser session remains untouched",
+    "No-store update entry, manifest, worker and version headers",
+    "Automatic console update entry points to the updater"
+  ],
+  "physicalAndroidApproved": false,
+  "limits": [
+    "No physical Android FPS or temperature measurement. Relative software WebGL improvements do not establish that every phone stutter is eliminated."
+  ]
+}

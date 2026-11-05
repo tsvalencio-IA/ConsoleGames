@@ -1,0 +1,37 @@
+{
+  "origin": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "checks": [
+    {
+      "path": "release-manifest.json",
+      "status": 200,
+      "bytes": 11592,
+      "sha256": "6e1eed4a7057397adfebe422ed1327db42df03f2159bbfbe76c5321a239ad989",
+      "matchesLocal": true,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 15650,
+      "sha256": "8a32e9011f9c39b1776978c1d09f71e6728830c6c717a6264d08ad54b7b7577a",
+      "matchesLocal": true,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 14683,
+      "sha256": "e1437b96c96f5d88ad0fcfd13f5d36659b72b3e6c8aa9c4cfef88ee8434cf39b",
+      "matchesLocal": true,
+      "cacheControl": "no-store, max-age=0"
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "bytes": 2228345,
+      "sha256": "f8a7cea78529678c9e27239109f986c18e56c7710929ef7318efa39049da3b92",
+      "matchesLocal": true,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    }
+  ]
+}

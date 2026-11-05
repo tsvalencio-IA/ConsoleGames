@@ -43,3 +43,11 @@ Validações finais da fonte d6d9216d: carga 42013933158, gameplay 42013933292, 
 Todos os jobs finais passaram: medição 42013933158; gameplay 42013933292 (quatro jobs: mundo, frota/garagem/serra, embarque e cinco jogos/família); câmera/mundo 42013933369. Integridade de 111 arquivos e 364 testes locais passaram. O empacotamento foi repetido com sucesso sequencialmente após uma disputa entre duas gerações de dist-world; não tratar a falha transitória de cópia como falha aprovada.
 
 As duas comparações nativas finais melhoraram o tempo médio de quadro por software em 17,7% e 9,7%, e a duração média de CPU em 16,2% e 14,2%. O buffer sob pressão passou de 226×490 a 172×374, preservando HUD em CSS nativo. População e catálogo continuaram 138/44, com 44 modelos no tráfego. Não houve certificação de FPS Android nem medição térmica. Evidência detalhada em docs/evidence/fluidez-20261105/final-comparison.json. A revisão d4915ab5ed472447 será publicada com a mesma fonte de runtime aprovada; somente evidência e hash modular foram acrescentados após os testes.
+
+## Publicado e conferido
+
+A versão 705.28.16-carga-do-mundo, assetVersion 70652, revisão d4915ab5ed472447 foi publicada na origem https://otthi-world-campanha-teste.vercel.app. Fonte de produção 5de93fd1ce6bddc666b3a59841a11d2ef30075cb; deployment dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc READY, target production, alias canônico confirmado. Branch canônica world-revisao-20261022 contém a correção e suas evidências.
+
+Verificação direta HTTPS confirmou bytes e hashes iguais ao local para index, manifest, sw e app; index/manifest/sw com no-store. Run 42015485851, job 127204860797 passou na origem pública de produção com o teste original: recuperação real pelo worker e revisão exata, 4321 moedas de teste, Thiago/Luna/Liz e outra sessão local preservados. O console continua apontando ao atualizador. Evidência: docs/evidence/fluidez-20261105/production-verification.json e production-http.json.
+
+Link de entrada/atualização para o usuário: https://otthi-world-campanha-teste.vercel.app/games/atualizar/. Nenhum dado Firebase, assinatura APK, catálogo, população ou fluxo de progressão foi removido. Não declarar temperatura medida nem fluidez Android certificada: esta entrega tem validação automatizada e ganho relativo de software, não um ensaio no celular físico.
