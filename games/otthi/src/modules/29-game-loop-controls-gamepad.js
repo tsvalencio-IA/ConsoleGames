@@ -183,8 +183,22 @@
   }
 
   async function requestPreferredGameOrientation(){
-    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;if(!mobile)return false;
-    try{orientation?.unlock?.();window.OTTHI_VIEWPORT?.measure?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return true;}catch{return false;}
+    const mobile=matchMedia('(pointer:coarse)').matches&&Math.min(screen.width||innerWidth,screen.height||innerHeight)<900,orientation=window.screen?.orientation;
+    if(!mobile)return false;
+    const attempt=async action=>{let timer;try{await Promise.race([action(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('orientation-timeout')),700);})]);return true;}catch{return false;}finally{clearTimeout(timer);}};
+    let free=false;
+    // "any" overrides an installed app's old portrait default. Some browsers
+    // permit this only after the player's tap enters fullscreen. Never wait
+    // indefinitely or prevent the game opening on an unsupported WebView.
+    if(orientation?.lock){
+      free=await attempt(()=>orientation.lock('any'));
+      if(!free&&!document.fullscreenElement&&navigator.userActivation?.isActive&&document.documentElement.requestFullscreen){
+        const full=await attempt(()=>document.documentElement.requestFullscreen());
+        if(full)free=await attempt(()=>orientation.lock('any'));
+      }
+    }
+    if(!free){try{orientation?.unlock?.();}catch{}}
+    perf.orientationMode=free?'any':'system';window.OTTHI_VIEWPORT?.measure?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return free;
   }
   async function startGame(resetPosition=false){
     await dbReady;

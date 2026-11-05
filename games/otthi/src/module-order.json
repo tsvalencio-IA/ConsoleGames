@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "3e95b7af8853f7d43e134e0704c17449dd447f2ccedc32cb3de2426b02beef70"
+      "sha256Body": "1c8b9f847adb7c55c5d87d71be60d67d8fd1d04110b65cbcbeea554f2f8fce22"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
