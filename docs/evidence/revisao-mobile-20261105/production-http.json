@@ -1,0 +1,44 @@
+{
+  "build": "705.28.18-revisao-mobile",
+  "revision": "40ace149df68355d",
+  "origin": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "checks": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "4067343bce9a993419323df74356fe9e635de97d8fbd5afee11e8ed2f1db72cf",
+      "bytes": 15646
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "sha256": "708b1f55b8a4ec049160066602bc22f8dddb61553dbc25270c6ee9a9d84fc564",
+      "bytes": 2231146
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "sha256": "9c52f4f41aa3defe35c1e0c61ef5f7c0c73c4943d761517728ae1a414908a653",
+      "bytes": 331707
+    },
+    {
+      "path": "VERSION.json",
+      "status": 200,
+      "sha256": "155ce8e89eb808ea23f252a4f671a15733f2232d9a07ee3bbacd3e57999778ac",
+      "bytes": 38446
+    },
+    {
+      "path": "assets/js/core/runtime-config.js",
+      "status": 200,
+      "sha256": "4dd7a3179b91d30abab775d9e293eaf756beec25da3e7e7e9147232a202f52b9",
+      "bytes": 2014
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "54c59dc40a00c5383972bec843f1d7b26e56dd5daeda7fa8e42c055d5fe490f1",
+      "bytes": 14683
+    }
+  ],
+  "passed": true
+}
