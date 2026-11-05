@@ -1,19 +1,19 @@
 {
-  "status": "Candidate: local checks passed; full-world performance and public update under verification",
+  "status": "Candidate: 364 local checks passed; automatic mobile and public update verification running",
   "build": "705.28.16-carga-do-mundo",
-  "revision": "0b1d2545c5a648ac",
-  "runtimeCommit": "b85b59892c79dccfd0b89f1169f1df562888f04f",
-  "previewUrl": "https://otthi-world-campanha-teste-artnoiych-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_57hqTTveMsQwUU4E7VEczkn4H47D",
+  "revision": "d4915ab5ed472447",
+  "runtimeCommit": "d0ed38b41e44b032d3295777e1e58f4309595d46",
+  "previewUrl": "https://otthi-world-campanha-teste-co1bu07lc-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_3pG1bFLPjWSQu7RBdTw3fCeRDCKu",
   "unitTests": {
-    "passed": 363,
+    "passed": 364,
     "failed": 0
   },
   "physicalAndroidApproved": false,
   "checks": {
-    "performanceRun": 42012106580,
-    "gameplayRun": 42012106709,
-    "cameraWorldRun": 42012106406
+    "performanceRun": 42013144900,
+    "gameplayRun": 42013144857,
+    "cameraWorldRun": 42013144941
   },
   "limitations": [
     "No physical Android FPS or temperature measurement. Software WebGL results do not certify phone performance."
