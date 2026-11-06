@@ -1,49 +1,43 @@
 {
-  "status": "Published: reviewed mobile release; production update acceptance is recorded alongside the release evidence",
-  "build": "705.28.18-revisao-mobile",
-  "revision": "40ace149df68355d",
-  "runtimeCommit": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
-  "previewUrl": "https://otthi-world-campanha-teste-2i52j4390-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_4c2trkyA6s1AEuMzaWACDzhzYZJY",
+  "status": "Candidate: parked-aircraft handoff and redundant vehicle UI work fixed; production unchanged until acceptance checks complete",
+  "build": "705.28.19-veiculo-fluidez",
+  "revision": "0e335be2c9539a84",
+  "runtimeCommit": "0a91a0f24c83d776f694cf55a988b1b2b78464a5",
+  "previewUrl": "https://otthi-world-campanha-teste-6j95ppdp1-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_HXjrXoYv62sxgwkwdD8YduEKBEPz",
   "unitTests": {
-    "passed": 374,
+    "passed": 380,
     "failed": 0
   },
   "checks": {
-    "mobileLayoutRun": 42057101570,
+    "mobileLayoutRun": 42293071317,
     "mobileLayoutConclusion": "success",
     "viewportChanges": 10,
-    "overlapOrLabelIssues": 0,
-    "instanceRenderingPixelDifferences": 0,
     "releaseAssets": 111,
-    "gameplayRun": 42057101360,
-    "cameraWorldRun": 42057101459,
-    "gameplayConclusion": "success",
+    "cameraWorldRun": 42293071469,
     "cameraWorldConclusion": "success",
-    "previewPublicAcceptanceRun": 42058610367,
-    "previewPublicAcceptanceConclusion": "success"
+    "aircraftReuseRun": 42294281202,
+    "aircraftReuseJob": 128155506241,
+    "aircraftReuseConclusion": "success",
+    "vehicleDrivingMeasurement": "Pending a valid, moving, operational vehicle sample."
   },
+  "physicalAndroidApproved": false,
+  "limitations": [
+    "No physical Android FPS or temperature was measured.",
+    "No overall fluency improvement is claimed from the HUD optimization. A sustained physical-device freeze is not yet verified as resolved."
+  ],
+  "previousProduction": {
+    "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+    "productionDeployment": "dpl_CzgFnVuhHeCS7uBsWzooBFd4wRmB",
+    "productionSource": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
+    "build": "705.28.18-revisao-mobile",
+    "revision": "40ace149df68355d"
+  },
+  "productionReady": false,
+  "evidenceDirectory": "veiculos-20261106",
   "previewConfiguration": {
     "branch": "world-mobile-20261105",
     "VERCEL_PREVIEW_FEEDBACK_ENABLED": "0",
     "reason": "Prevent the review toolbar from changing byte-verified HTML."
-  },
-  "physicalAndroidApproved": false,
-  "limitations": [
-    "No physical Android temperature, sensor rotation, sustained FPS or installed user cache was measured. Chromium software WebGL timings are comparison data only."
-  ],
-  "previousProduction": {
-    "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-    "productionDeployment": "dpl_AbrugQmLh7U7irXxUS5hAMUfsWVc",
-    "productionSource": "5de93fd1ce6bddc666b3a59841a11d2ef30075cb",
-    "build": "705.28.16-carga-do-mundo",
-    "revision": "d4915ab5ed472447"
-  },
-  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_CzgFnVuhHeCS7uBsWzooBFd4wRmB",
-  "productionSource": "09c9b5718ca87978b3f7f612f94a1288a54b34fc",
-  "productionReady": true,
-  "evidenceDirectory": "revisao-mobile-20261105",
-  "productionAcceptanceReport": "revisao-mobile-20261105/production-verification.json",
-  "sourceCoherence": "The generated entry, worker, runtime, stylesheet and manifest carry one release identity; all 111 SHA-256 digests match."
+  }
 }
