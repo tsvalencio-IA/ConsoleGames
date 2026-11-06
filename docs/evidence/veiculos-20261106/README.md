@@ -46,3 +46,5 @@ Essas propostas ainda não integram esta revisão.
 ## Publicação
 
 Build `705.28.19-veiculo-fluidez`, revisão `0e335be2c9539a84`, publicado em `https://otthi-world-campanha-teste.vercel.app`. Os cinco arquivos principais correspondem aos arquivos conferidos na prévia. A instalação pública da prévia verificou os 71 recursos do shell e preservou o progresso de teste.
+
+A verificação posterior da produção passou no run `42296394325`: atualização automática, 71/71 recursos do shell instalados e progresso de teste preservado. O relatório integral está em `production-verification.json`. A regressão completa de jogabilidade passou no run `42295259204`; controles, giro e condução passaram no run `42295258986`.
