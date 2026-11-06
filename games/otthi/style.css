@@ -2142,3 +2142,14 @@ body:is(.ui-portrait,.ui-landscape).otthi-v705-world .primary-actions .round spa
   max-width:100%!important;white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;
   font-size:clamp(8px,calc(var(--action) * .18),10px)!important;line-height:1.1!important;
 }
+
+/* ===== MODULE: 27-world-phone.css ===== */
+.world-phone{max-width:520px;margin:0 auto;min-width:0;padding:8px 10px 14px;border:1px solid #87acba66;border-radius:20px;background:#102936;color:#edf7f8;box-sizing:border-box}
+.world-phone p{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.world-phone h3{font-size:15px;margin:18px 0 8px}
+.world-phone-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.world-phone-list button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:5px;width:100%;max-width:100%;white-space:normal;min-height:56px;box-sizing:border-box}
+.world-phone-list button span{overflow-wrap:anywhere;font-size:13px}
+.world-phone-list button small{font-size:12px;color:#b4d4d8}
+.world-phone-status{padding:9px 11px;border-radius:10px;background:#22514d;color:#d7f7df}
+.world-phone [data-phone-cancel]{margin-top:16px;width:100%}

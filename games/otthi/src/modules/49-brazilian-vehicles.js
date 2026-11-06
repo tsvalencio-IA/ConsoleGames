@@ -41,9 +41,23 @@
   const brazilOldClear=clearThemedVehicleGeometry;
   clearThemedVehicleGeometry=function(g){const v=serviceVehicleById(g?.userData?.serviceVehicleId||''),door=v?.roadsideDoorPivot?.parent===g?v.roadsideDoorPivot:null;if(door)g.remove(door);brazilDetach(g);const result=brazilOldClear(g);if(door)g.add(door);return result;};
   const brazilOldParts=applyWorldVehiclePartsToGroup;
-  applyWorldVehiclePartsToGroup=function(g,parts,durability,id){const result=brazilOldParts(g,parts,durability,id),v=vehicleById(id)||serviceVehicleById(id)||{id,kind:parts?.kind||'car',bodyType:parts?.bodyType||'small',appearance:{primary:parts?.primary}};if(brazilEligible(v)){v.brazilModel=v.brazilModel||brazilModelKey(id,v.bodyType,v.serviceType||v.kind);brazilAttach(g,v,parts);}return result;};
+  function brazilModelAvailable(v){const key=brazilResolve(v);return !window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key);}
+  applyWorldVehiclePartsToGroup=function(g,parts,durability,id){const v=vehicleById(id)||serviceVehicleById(id)||{id,kind:parts?.kind||'car',bodyType:parts?.bodyType||'small',appearance:{primary:parts?.primary}};if(g&&brazilEligible(v)&&brazilModelAvailable(v)){v.brazilModel=v.brazilModel||brazilModelKey(id,v.bodyType,v.serviceType||v.kind);return brazilAttach(g,{...v,durability},parts);}const result=brazilOldParts(g,parts,durability,id);if(g&&brazilEligible(v))brazilAttach(g,v,parts);return result;};
   const brazilOldApply=applyVehicleAppearance;
-  applyVehicleAppearance=function(v){if(vehicleVisual)vehicleVisual.userData.brazilRemote=false;brazilOldApply(v);if(brazilEligible(v)){v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);brazilAttach(vehicleVisual,v,worldVehicleParts(v.id));}};
+  applyVehicleAppearance=function(v){
+    if(vehicleVisual)vehicleVisual.userData.brazilRemote=false;
+    if(vehicleVisual&&brazilEligible(v)&&brazilModelAvailable(v)){
+      // The detailed body already owns paint, wheels, lights and accessories.
+      // Building the hidden toy body and its modules first only allocates and
+      // disposes geometry on boarding, without contributing a visible pixel.
+      if(!vehicleVisual.userData.brazilRoot)clearThemedVehicleGeometry(vehicleVisual);
+      vehicleVisual.userData.bodyType=normalizeVehicleBodyType(v.bodyType||v.kind);
+      vehicleVisual.userData.toyTheme=normalizeToyTheme(v.theme||v.appearance?.theme);
+      v.brazilModel=v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);
+      return brazilAttach(vehicleVisual,v,worldVehicleParts(v.id));
+    }
+    const result=brazilOldApply(v);if(vehicleVisual&&brazilEligible(v))brazilAttach(vehicleVisual,v,worldVehicleParts(v.id));return result;
+  };
   const brazilOldCreate=createToyCar;
   createToyCar=function(x,z,options={}){const v=brazilOldCreate(x,z,options);if(brazilEligible({...v,brazilModel:options.brazilModel||v.brazilModel})){v.brazilModel=options.brazilModel||v.brazilModel||brazilModelKey(v.id,v.bodyType,v.serviceType||v.kind);if(v.id==='city-aurora-coupe-0'&&!state.vehicles.owned?.includes(v.id)&&!state.vehicles.brazilColors?.[v.id])v.appearance.primary=0x2788d2;v.originalLabel=v.originalLabel||v.label;v.label=window.OTBrazilVehicles.catalog[v.brazilModel].label+(v.id==='city-aurora-coupe-0'?' azul':'');brazilAttach(v.group,v,worldVehicleParts(v.id));const action=world.interactables.find(i=>i.id==='vehicle-'+v.id);if(action)action.label='Entrar: '+v.label;}return v;};
   const brazilOldRacer=worldRacerAttach;

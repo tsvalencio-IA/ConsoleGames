@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.18-revisao-mobile",
+  "build": "705.28.19-evolucao-console",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "e644da36dd4f7d87ee2de03f6b1ca7da8b89a5a0548bb46acbe770114e730008"
+      "sha256Body": "4c80e4c6b4584d6c359efcc51dc04403b483264706bd43cf616223f4f027724f"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -126,7 +126,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "e46f666cead2ff2b055dd99153685be2e321d68c59f161e710647130971e8c7c"
+      "sha256Body": "777fef77af56927b6a63414cf8617c4c1ec58a9c267c22bbc434ad9553343f18"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -203,7 +203,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "46c0a5135ffcba0af02d20a0d03270a2d982aeab031e0efd1d3702972780429d"
+      "sha256Body": "6099d77e73c736fc76824f23993a251690e96a2c548aa42e52b83565275f123e"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -231,14 +231,14 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "7fbeeb90a2df837a7b9fb3360e16a5ad0851c3b5947604c8550f2a84a8c0ad41"
+      "sha256Body": "469fbaef5bdb613e72f1c704fcc58efd45fc52ba0cf452536b65520fd90eb319"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "7054996f00d33ae725aeac8946eb9887e61b093f1f5947b6c0cdadbb06342dfa"
+      "sha256Body": "aa16ad8e26347d6f1d7869db035f14909fa9d4d8a7cf4ce79d0f479c43338081"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "1c8b9f847adb7c55c5d87d71be60d67d8fd1d04110b65cbcbeea554f2f8fce22"
+      "sha256Body": "050b72b7e5e4ce36222b1bef624e71ad7b012b716a47c0c4a3b431ff6388e639"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -329,7 +329,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Dano, quebra, reboque e reparo real de veículos V704",
-      "sha256Body": "74f3f6bb582766121bc4e10a11f9b0f37f6697e05b2e6547603584ebfbbafc4a"
+      "sha256Body": "0636a9e50f498918e856f13dde653b51e9d49cf6f99ee2d8b9610647f187a816"
     },
     {
       "file": "src/modules/37-hero-platform-gameplay.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "c7a88339952642ccd55c36543c25e2d586d144f4493cd5ffcd80ba81b21947d9"
+      "sha256Body": "e0b6f74f17ae64e02017c4035f13d838ceef09b3731249c688d40cd3ea3d060d"
     },
     {
       "file": "src/modules/43-world-campaign.js",
@@ -385,7 +385,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "c1d2a3574dc3ae60989875c2998459dd6f09b44bec20b73b6b516b381aafd05d"
+      "sha256Body": "405ccb7bd703988afcecb5afb64785c9a18c3ac6f4d00f874926cd61e72efc7f"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
@@ -434,14 +434,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "e537ae62032e61a379dcc6d3aa78bcd2da2ae6857b7bd69423a5bf17c4518c09"
+      "sha256Body": "b2230cafd4171da7bd340edbb388b5015c616d8b13281152ee9ebfe0729a0a94"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Frota brasileira integrada à oficina, física e multiplayer",
-      "sha256Body": "8778e21eb355b1dfa1c128a4d4b1be6cf5b3370bdb664a0abac65983809ad715"
+      "sha256Body": "e37c7583db2d35eeeb87f6175c3b4c9bd467c6523b01c2ba9436f39b3ebc6d24"
     },
     {
       "file": "src/modules/50-fleet-collection.js",
@@ -538,14 +538,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "047e9d3c85ec64055c304f840c96de0f61a579fdc85760eafab0e94d49cd812c"
+      "sha256Body": "ef1687954eddfe8af9a37ff1a7cc413de3d8c8b0c34262dffb2de78c9183b23b"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "9ba4b90bd692b3accdf52749278ca394ec7de8b1b7f2402227a1849b021b3706"
+      "sha256Body": "5fed4184a8f78c5c23c7d57575d10b6a934ecc0fca8df86e46499cceb0a5f24f"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
@@ -605,6 +605,11 @@
       "file": "src/modules/72-static-instance-culling.js",
       "description": "Static instance bounds and spatial drawing without removing world geometry",
       "sha256Body": "0ad2a73e925f66e606428e415802d57b454be718adf0b671f24f55f0537ebf77"
+    },
+    {
+      "file": "src/modules/73-world-phone-dispatch.js",
+      "description": "Celular do personagem e entrega física de veículos por NPC",
+      "sha256Body": "bbdf310bc18b6e4f3cd2b2a4882c2b05da2b980d8f9ce689cfdec2e676cb729b"
     }
   ],
   "styles": [
@@ -801,6 +806,11 @@
       "file": "src/styles/26-world-mobile-controls.css",
       "description": "Reserved mobile control zones and native HUD composition",
       "sha256Body": "e01d1830538fd6f182c7b04e8b6869c223e5b7a8a13f42e7703b90f54ca2be8e"
+    },
+    {
+      "file": "src/styles/27-world-phone.css",
+      "description": "Celular no menu Vida, com lista responsiva de veículos",
+      "sha256Body": "8607dc6c5d17e52056622dad629f3a20c79d1fe35da10f1a13b0c8d033773617"
     }
   ]
 }

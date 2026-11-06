@@ -78,6 +78,7 @@
     perf.rafSampleAcc+=rawDt;perf.rafFrames++;if(perf.rafSampleAcc>=1.5){perf.rafHz=perf.rafFrames/Math.max(.001,perf.rafSampleAcc);perf.rafSampleAcc=0;perf.rafFrames=0;}
   }
   function stepWorldSimulation(dt){
+    beginWorldQueryFrame();try{
     perf.simulationFrames=Number(perf.simulationFrames||0)+1;
     updatePlayUsage();
     if(paused&&typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();
@@ -110,6 +111,7 @@
       perf.modeAuditAcc+=dt;if(perf.modeAuditAcc>=.75){perf.modeAuditAcc=0;ensureViewportCoherence();auditPlayerMode('loop');}
       perf.panelAcc+=dt;if(perf.panelAcc>=1){perf.panelAcc=0;refreshTechnicalPanel();}
     }
+    }finally{endWorldQueryFrame();}
   }
   function gameLoop(){
     if(!running)return;raf=requestAnimationFrame(gameLoop);

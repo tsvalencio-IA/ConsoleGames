@@ -1,0 +1,51 @@
+/* Both hands come from official photographic test data and the production
+ * MediaPipe worker. Gesture classification is also covered by unit replay.
+ * This is not a physical player's accuracy or Android latency certificate. */
+import {chromium} from 'playwright';
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {multiplayerServer} from './helpers/multiplayer-browser-fixture.mjs';
+const out='test-results/war-dual-hands';fs.mkdirSync(out,{recursive:true});
+const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+const errors=[],report={limits:['Production hand model on independent crops of official photographic test data replayed through a local video stream.','Physical two-hand ergonomics, pinch accuracy, Android camera latency and temperature remain unmeasured.']};let page;
+try{
+ const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true,serviceWorkers:'block'});
+ await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.request().resourceType()==='script'?r.fulfill({contentType:'application/javascript',body:'/* isolated external services */'}):r.abort());
+ const photo=fs.readFileSync('tests/fixtures/hand/woman_hands.jpg');await context.route('**/tests/fixtures/hand/woman_hands.jpg',r=>r.fulfill({contentType:'image/jpeg',body:photo}));
+ const probe=await context.newPage();await probe.goto(server.origin+'/games/otthi/assets/vehicles-credits.html');
+ const crops=await probe.evaluate(()=>new Promise((resolve,reject)=>{
+  const worker=new Worker('/games/ar/hand-tracker-worker.js'),timer=setTimeout(()=>reject(Error('Production hand model timed out')),60000);
+  worker.onmessage=async({data})=>{
+   if(data.type==='ready'){const frame=await createImageBitmap(await(await fetch('/tests/fixtures/hand/woman_hands.jpg')).blob());worker.postMessage({type:'frame',frame,timestamp:performance.now()},[frame]);}
+   if(data.type==='error')reject(Error(data.message));
+   if(data.type==='result'){clearTimeout(timer);worker.terminate();const result=data.landmarks.map((points,i)=>{const xs=points.map(p=>p.x),ys=points.map(p=>p.y),x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;return{x:Math.max(0,x-w*.2),y:Math.max(0,y-h*.2),w:Math.min(1,w*1.4),h:Math.min(1,h*1.4),label:data.handedness[i][0].categoryName};});if(!result.length)reject(Error('No real photographed hand detected'));else resolve(result);}
+  };worker.onerror=e=>reject(Error(e.message));worker.postMessage({type:'init'});
+ }));report.realSourceHands=crops.length;await probe.close();
+ await context.addInitScript(crops=>{
+  window.__dualLeftOffsetX=window.__dualLeftOffsetY=0;window.__blankDualLeft=window.__blankDualRight=false;
+  Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:async()=>{
+   const image=new Image();image.src='/tests/fixtures/hand/woman_hands.jpg';await image.decode();const canvas=document.createElement('canvas');canvas.width=640;canvas.height=480;const ctx=canvas.getContext('2d');let tick=0;
+   const paint=()=>{ctx.fillStyle='#dcdddd';ctx.fillRect(0,0,640,480);
+    for(let i=0;i<2;i++){if(i===0&&__blankDualRight||i===1&&__blankDualLeft)continue;const c=crops[i]||crops[0],sw=image.naturalWidth*c.w,sh=image.naturalHeight*c.h,scale=Math.min(195/sw,330/sh),dw=sw*scale,dh=sh*scale,cx=i?460+__dualLeftOffsetX:180,cy=240+(i?__dualLeftOffsetY:0);ctx.save();if(i===1&&!crops[1]){ctx.translate(cx,cy);ctx.scale(-1,1);ctx.drawImage(image,image.naturalWidth*c.x,image.naturalHeight*c.y,sw,sh,-dw/2,-dh/2,dw,dh);}else ctx.drawImage(image,image.naturalWidth*c.x,image.naturalHeight*c.y,sw,sh,cx-dw/2,cy-dh/2,dw,dh);ctx.restore();}
+    ctx.fillStyle=++tick%2?'#dddddc':'#dddcdd';ctx.fillRect(0,0,3,3);
+   };paint();setInterval(paint,65);return canvas.captureStream(15);
+  }}});
+ },crops);
+ page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));page.setDefaultTimeout(60000);await page.goto(server.origin+'/games/ar/');await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);await page.locator('#phase-grid .mission-card[data-mission=patrol]').first().click();await page.locator('[data-mode="camera"]').click();await page.locator('.war-hand-camera.calibrating').waitFor();
+ assert.equal(await page.locator('.war-camera-dual').getAttribute('aria-pressed'),'true');
+ await page.screenshot({path:out+'/calibration-landscape.png'});
+ await page.waitForFunction(()=>{const g=System.activeGame?.logic,s=g?.handSession;return g?.state==='PLAYING'&&g.handAim?.fresh&&s?.controller.navigation.read(performance.now()).fresh;},null,{timeout:90000});
+ const calibrated=await page.evaluate(()=>{const s=System.activeGame.logic.handSession;return{dual:s.dualHands,bodyWorker:!!s.bodySession,handCount:s.lastHandCount,latencyMs:s.lastInferenceMs,neutral:s.controller.navigation.neutral,label:s.controller.label,source:s.source,crop:s.inflightCrop};});assert(calibrated.dual);assert(!calibrated.bodyWorker);assert.equal(calibrated.source,'hand');assert(calibrated.handCount>=2);report.calibrated=calibrated;
+ await page.evaluate(()=>{const g=System.activeGame.logic;g.covers=[];g.enemies=[];g.wave=0;g.waveDelay=999;g.player.x=g.player.z=g.player.yaw=g.player.pitch=0;g.handViewAnchor=null;});
+ const neutral=await page.evaluate(()=>({...System.activeGame.logic.player}));await page.waitForTimeout(600);assert(Math.hypot((await page.evaluate(()=>System.activeGame.logic.player.x))-neutral.x,(await page.evaluate(()=>System.activeGame.logic.player.z))-neutral.z)<.02);
+ await page.evaluate(()=>window.__dualLeftOffsetX=-55);await page.waitForFunction(()=>System.activeGame.logic.player.yaw>1.1,null,{timeout:15000});
+ const turning=await page.evaluate(()=>{const g=System.activeGame.logic;return{yaw:g.player.yaw,aim:structuredClone(g.handAim),navigation:structuredClone(g.handSession.controller.navigation.read(performance.now()))};});assert(turning.aim.fresh);assert(Math.abs(turning.aim.x-.5)<.12);assert(turning.navigation.turn>0);report.turning=turning;
+ await page.evaluate(()=>window.__dualLeftOffsetX=0);await page.waitForTimeout(1000);const stoppedYaw=await page.evaluate(()=>System.activeGame.logic.player.yaw);await page.waitForTimeout(400);assert(Math.abs(await page.evaluate(()=>System.activeGame.logic.player.yaw)-stoppedYaw)<.06);
+ const start=await page.evaluate(()=>({...System.activeGame.logic.player}));await page.evaluate(()=>window.__dualLeftOffsetY=-55);await page.waitForFunction(p=>Math.hypot(System.activeGame.logic.player.x-p.x,System.activeGame.logic.player.z-p.z)>.6,start,{timeout:12000});
+ await page.evaluate(()=>window.__blankDualLeft=true);await page.waitForFunction(()=>{const s=System.activeGame.logic.handSession;return !s.controller.navigation.read(performance.now()).fresh;});
+ const leftLost=await page.evaluate(()=>({x:System.activeGame.logic.player.x,z:System.activeGame.logic.player.z}));await page.waitForTimeout(650);assert.deepEqual(await page.evaluate(()=>({x:System.activeGame.logic.player.x,z:System.activeGame.logic.player.z})),leftLost);assert(await page.evaluate(()=>System.activeGame.logic.handAim.fresh));
+ await page.evaluate(()=>{window.__blankDualLeft=false;window.__dualLeftOffsetY=0;window.__blankDualRight=true;});await page.waitForFunction(()=>!System.activeGame.logic.handAim.fresh);const shots=await page.evaluate(()=>System.activeGame.logic.stats.shots);await page.waitForTimeout(650);assert.equal(await page.evaluate(()=>System.activeGame.logic.stats.shots),shots);
+ await page.evaluate(()=>window.__blankDualRight=false);await page.waitForFunction(()=>System.activeGame.logic.handAim.fresh);await page.screenshot({path:out+'/dual-playing.png'});
+ await page.locator('.combat-input [data-control="hand"]').click();await page.locator('.war-hand-camera.calibrating').waitFor();await page.locator('[data-hand="manual"]').click();assert.equal(await page.evaluate(()=>ArcadeControls.mode),'controls');assert.equal(await page.evaluate(()=>System.video.srcObject),null);assert(await page.locator('.combat-input [data-control="fire"]').isVisible());
+ assert.deepEqual(errors,[]);report.passed=true;report.independentNavigation=true;report.leftLossStopsMovement=true;report.rightLossStopsFire=true;report.manualFallback=true;report.errors=errors;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS both production-model hands: calibration, independent turn and walk, neutral stop, separate tracking loss and manual fallback');
+}catch(error){report.failure=error.stack;report.errors=errors;if(page){report.state=await page.evaluate(()=>{const g=System.activeGame?.logic,s=g?.handSession;return{game:g?.state,aim:g?.handAim,nav:s?.controller.navigation?.output,neutral:s?.controller.navigation?.neutral,handCount:s?.lastHandCount,label:s?.controller.label,calibration:s?.controller.state,status:document.querySelector('.war-hand-status')?.textContent};}).catch(()=>null);await page.screenshot({path:out+'/failure.png'}).catch(()=>{});}fs.writeFileSync(out+'/failure.json',JSON.stringify(report,null,2));throw error;}finally{await browser.close();await server.close();}

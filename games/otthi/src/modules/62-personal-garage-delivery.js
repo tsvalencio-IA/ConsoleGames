@@ -116,7 +116,7 @@
  }
  function garageSyncIgnition(){
   if(player.vehicle&&state.vehicles.manualIgnition?.[player.car.id]&&currentVehicleRef())currentVehicleRef().manualIgnition=true;let b=document.getElementById('vehicleEngineSwitch');if(!b){b=document.createElement('button');b.id='vehicleEngineSwitch';b.type='button';b.className='btn';document.body.append(b);b.onclick=()=>{if(!player.vehicle||player.car.passengerOf)return;player.car.ignition=player.car.ignition===false;if(player.car.ignition)startEngineSound();else stopEngineSound();garageSyncIgnition();};}
-  b.hidden=!player.vehicle||!!player.car.passengerOf||!currentVehicleRef()?.manualIgnition||!!worldVenues.session;b.textContent=player.car.ignition===false?'LIGAR MOTOR':'DESLIGAR MOTOR';b.setAttribute('aria-pressed',String(player.car.ignition!==false));
+  b.hidden=!player.vehicle||!!player.car.passengerOf||!currentVehicleRef()?.manualIgnition||!!worldVenues.session;setControlText(b,player.car.ignition===false?'LIGAR MOTOR':'DESLIGAR MOTOR');setControlAttribute(b,'aria-pressed',String(player.car.ignition!==false));
  }
  const garageOldEngineUpdate=updateEngineSound;updateEngineSound=function(...args){if(player.vehicle&&currentVehicleRef()?.manualIgnition&&player.car.ignition===false){stopEngineSound();return;}return garageOldEngineUpdate(...args);};
  const garageOldPhysics=updateVehiclePhysics;updateVehiclePhysics=function(dt,...args){if(currentVehicleRef()?.manualIgnition&&player.car.ignition===false){player.car.speed=0;player.vx=player.vz=0;return;}return garageOldPhysics(dt,...args);};

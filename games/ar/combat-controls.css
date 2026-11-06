@@ -136,3 +136,10 @@ video.war-camera-source{display:block!important;position:fixed!important;left:0!
 /* The independent training panel replaces its duplicate canvas mission header. */
 .war-practice{top:max(110px,13dvh)}
 @media(max-height:460px){.war-practice{top:58px}}
+
+/* Independent hand navigation keeps calibration inside the existing panel. */
+.war-camera-dual{display:none;min-height:44px;padding:8px 12px;border:1px solid #8dd7c3;background:#225b4d;color:#effff6;border-radius:9px;font:700 11px system-ui;touch-action:manipulation}
+.calibrating .war-camera-dual{display:block;width:100%;margin:4px 0;grid-column:1/-1;grid-row:7;pointer-events:auto}
+.calibrating .war-camera-movement{grid-row:8;pointer-events:auto}
+.war-camera-movement[hidden],.war-camera-dual[hidden]{display:none!important}
+@media(max-height:460px){.calibrating .war-camera-dual{grid-column:1;grid-row:7}.calibrating .war-camera-dual[aria-pressed="true"]{grid-column:1/-1}.calibrating .war-camera-movement{grid-column:2;grid-row:7}}

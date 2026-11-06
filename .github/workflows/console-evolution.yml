@@ -1,0 +1,49 @@
+name: Validar evolução do console e entregas
+on:
+  push:
+    branches: ['console-evolution-20261106']
+    paths: ['games/**', 'tests/**', '.github/workflows/console-evolution.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: console-evolution-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  celular-e-entregas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tests/world-integrity.mjs
+      - run: node tests/world-phone-browser.mjs
+      - run: node tests/world-air-fleet-multiplayer-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: console-phone-and-aircraft
+          path: |
+            test-results/world-phone/
+            test-results/air-fleet-multiplayer/
+  duas-maos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tests/war-dual-hands-browser.mjs
+      - run: node tests/war-joint-camera-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: console-two-hand-controls
+          path: |
+            test-results/war-dual-hands/
+            test-results/war-joint-camera/

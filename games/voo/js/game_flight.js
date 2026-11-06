@@ -226,7 +226,7 @@
             if(window.Profile?.flightSave&&typeof window.Profile.flightSave==='object')saved=window.Profile.flightSave;
             for(const key of Object.keys(this.upgrades))this.upgrades[key]=Math.max(1,Math.min(5,Math.floor(Number(saved.upgrades?.[key])||1)));
             this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school};
-            this.flightSchool=null;this.manualThrottle=1;this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
+            this.flightSchool=null;this.onGround=false;this.manualThrottle=1;this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
             this.currentStats = JSON.parse(JSON.stringify(BASE_PLANE_STATS));
             
             this.ship = { 
@@ -472,6 +472,7 @@
         },
 
         _startMission: function() {
+            this.onGround=false;this.landingQuality=null;
             this.currentStats=JSON.parse(JSON.stringify(BASE_PLANE_STATS));
             this.currentStats.thrust+=((this.upgrades.engine-1)*50000);
             this.ship.maxHp=100+(this.upgrades.armor-1)*100;
@@ -683,6 +684,7 @@
                 this.ship.z += this.ship.vz * dt;
                 }
 
+                this._softenLandingApproach();
                 if(this.flightSchool){
                     const onRunway=Math.abs(this.ship.x)<105&&Math.abs(this.ship.z)<3000;
                     if(this.flightSchool.stage==='takeoff'&&this.ship.speed<65){this.ship.y=8;this.ship.vy=0;}
@@ -698,7 +700,8 @@
                     if(this.flightSchool.stage==='gates'&&gate&&Math.hypot(this.ship.x-gate.x,this.ship.y-gate.y,this.ship.z-gate.z)<330){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
                 }
                 const floor=this.isHelicopter()?14:50;
-                if (!this.flightSchool && this.ship.y < floor) {
+                if(!this.flightSchool&&this.mode==='FREE'&&!this.isHelicopter())this._updateRunwayLanding(dt);
+                else if (!this.flightSchool && this.ship.y < floor) {
                     this.ship.y = floor;
                     this.ship.vy = Math.max(0, this.ship.vy); 
                     if (this.ship.pitch < 0) this.ship.pitch = 0; 
@@ -1297,15 +1300,41 @@
             }, 2000);
         },
 
+        _landingGuidance: function(){
+            const p=this.ship,altitude=Math.max(0,p.y-8),speed=Math.hypot(p.vx||0,p.vz||0),sink=Math.max(0,-(p.vy||0));
+            const onRunway=Math.abs(p.x)<105&&Math.abs(p.z)<3000,aligned=Math.abs(Math.sin(p.yaw||0))<.28,level=Math.abs(p.roll||0)<.35;
+            let cue=this.onGround?'NO SOLO • REDUZA A POTÊNCIA PARA PARAR':!onRunway?'ALINHE À PISTA':!aligned?'ALINHE O NARIZ COM A PISTA':!level?'NIVELE AS ASAS':speed>115?'REDUZA A VELOCIDADE':sink>6?'CABRE SUAVEMENTE • REDUZA A DESCIDA':altitude<18?'SEGURE O NARIZ • TOQUE SUAVE':'APROXIMAÇÃO ESTÁVEL';
+            return{altitude,speed,sink,onRunway,aligned,level,gentle:onRunway&&aligned&&level&&speed<120&&sink<7,cue};
+        },
+        _softenLandingApproach: function(){
+            if(this.isHelicopter()||!(this.flightSchool?.stage==='landing'||this.mode==='FREE')||window.ArcadePlaySettings?.get().assist===false)return;
+            const g=this._landingGuidance();
+            if(g.onRunway&&g.aligned&&g.level&&g.speed<130&&g.altitude<70&&this.pilot.throttle<.55&&this.ship.vy<0)this.ship.vy=Math.max(this.ship.vy,-Math.max(1.2,Math.min(6,g.altitude*.16)));
+        },
+        _updateRunwayLanding: function(dt){
+            const p=this.ship,g=this._landingGuidance();
+            if(this.onGround){
+                if(!g.onRunway||g.speed>65&&p.pitch>.04){this.onGround=false;return;}
+                p.y=8;p.vy=0;
+                const friction=Math.exp(-Math.max(0,dt)*(this.pilot.throttle<.12?.75:.04));p.vx*=friction;p.vz*=friction;
+                return;
+            }
+            if(g.onRunway&&p.y<=8){
+                p.y=8;p.vy=0;p.pitch=0;this.pilot.targetPitch=0;this.onGround=true;
+                this.landingQuality=g.gentle?'smooth':'firm';
+            }else if(!g.onRunway&&p.y<50){p.y=50;p.vy=Math.max(0,p.vy);if(p.pitch<0)p.pitch=0;}
+        },
         _schoolGates: function(){return[{x:0,y:230,z:0},{x:1000,y:450,z:1900},{x:2300,y:480,z:0},{x:1200,y:300,z:-2600},{x:0,y:120,z:-2300}];},
         _drawSchool: function(ctx,w,h){
             const quad=(points,color)=>{const pp=points.map(p=>this._projectView(...p,w,h));if(pp.some(p=>!p.visible))return;ctx.beginPath();pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
             // One continuous runway at ground level, rendered in the same camera space.
             for(let z=-3000;z<3000;z+=100){quad([[-110,0,z],[110,0,z],[110,0,z+100],[-110,0,z+100]],'#394856');if(z%300===0)quad([[-4,.3,z],[4,.3,z],[4,.3,z+65],[-4,.3,z+65]],'#f4f2d9');}
-            const school=this.flightSchool,gate=this._schoolGates()[school.gate];
+            const school=this.flightSchool,guide=this._landingGuidance();
+            if(!school){if(Math.abs(this.ship.x)<1200&&Math.abs(this.ship.z)<4200&&this.ship.y<350){ctx.save();ctx.fillStyle='rgba(6,21,37,.86)';ctx.fillRect(w*.08,h*.19,w*.84,40);ctx.fillStyle='#d9f1ed';ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillText(guide.cue,w/2,h*.19+15,w*.8);ctx.font='11px Arial';ctx.fillText(Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m · descida '+guide.sink.toFixed(1)+' m/s',w/2,h*.19+31,w*.8);ctx.restore();}return;}
+            const gate=this._schoolGates()[school.gate];
             if(school.stage==='gates'&&gate){const center=this._projectView(gate.x,gate.y,gate.z,w,h);if(center.visible){const radius=Math.min(w*.28,Math.max(7,300*center.s));ctx.strokeStyle='#88e9e1';ctx.lineWidth=3;ctx.beginPath();ctx.arc(center.x,center.y,radius,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText((school.gate+1)+'/5',center.x,center.y-radius-10);}else{ctx.fillStyle='#ffdc88';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('VIRE PARA O PRÓXIMO ARCO',w/2,h*.30);}}
             const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'APROXIMAÇÃO INSTÁVEL • use Pausa → Escolher fase para repetir'};
-            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,h*.19,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(labels[school.stage]||'',w/2,h*.19+21,w*.82);ctx.restore();
+            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,h*.19,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(school.stage==='landing'?guide.cue+' · '+Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m':labels[school.stage]||'',w/2,h*.19+21,w*.82);ctx.restore();
         },
         updateAudio: function(){
             const active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden;
@@ -1549,7 +1578,7 @@
             
             this._drawWorld(ctx,w,h);
             this._drawEntities(ctx,w,h);
-            if(this.flightSchool)this._drawSchool(ctx,w,h);
+            if(this.flightSchool||this.mode==='FREE'&&!this.isHelicopter())this._drawSchool(ctx,w,h);
             if(window.ArcadePlaySettings?.get().camera!=='cockpit')this._drawOwnPlane(ctx,w,h);
             this._drawHUD(ctx,w,h);
             if(window.ArcadePlaySettings?.get().camera==='cockpit')this._drawCockpit(ctx,w,h);

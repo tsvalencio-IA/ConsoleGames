@@ -34,9 +34,26 @@
       if(!Array.isArray(landmarks)||landmarks.length<33)return null;
       const need=[0,11,12,15,16,23,24,25,26,27,28];if(need.some(i=>!landmarks[i]||!Number.isFinite(landmarks[i].x)||!Number.isFinite(landmarks[i].y)||(landmarks[i].visibility??1)<.50))return null;
       const p=i=>({x:1-landmarks[i].x,y:landmarks[i].y}),head=p(0),ls=p(11),rs=p(12),lw=p(15),rw=p(16),lh=p(23),rh=p(24),la=p(27),ra=p(28),lk=p(25),rk=p(26),hip={x:(lh.x+rh.x)/2,y:(lh.y+rh.y)/2},shoulder={x:(ls.x+rs.x)/2,y:(ls.y+rs.y)/2},foot={x:(la.x+ra.x)/2,y:Math.max(la.y,ra.y)},width=Math.hypot(ls.x-rs.x,ls.y-rs.y),height=foot.y-head.y;
-      if(width<.085||width>.65||height<.42||height>.96||head.y<.015||foot.y>.99||[ls,rs,la,ra].some(p=>p.x<.025||p.x>.975))return null;
+      if(width<.085||width>.65||height<.42||height>.96||head.y<.015||foot.y>.99||[ls,rs,la,ra,lw,rw].some(p=>p.x<.015||p.x>.985||p.y<.005||p.y>.995))return null;
       const angle=(a,b,c)=>{const ax=a.x-b.x,ay=a.y-b.y,bx=c.x-b.x,by=c.y-b.y;return Math.acos(Math.max(-1,Math.min(1,(ax*bx+ay*by)/(Math.hypot(ax,ay)*Math.hypot(bx,by)||1))))*180/Math.PI;};
       const angle3=(ia,ib,ic)=>{const a=worldLandmarks[ia],b=worldLandmarks[ib],c=worldLandmarks[ic],v=[a.x-b.x,a.y-b.y,a.z-b.z],w=[c.x-b.x,c.y-b.y,c.z-b.z];return Math.acos(Math.max(-1,Math.min(1,v.reduce((s,n,i)=>s+n*w[i],0)/(Math.hypot(...v)*Math.hypot(...w)||1))))*180/Math.PI;},has3=worldLandmarks?.length===33&&[23,24,25,26,27,28].every(i=>['x','y','z'].every(k=>Number.isFinite(worldLandmarks[i]?.[k])));return{head,ls,rs,lw,rw,lh,rh,la,ra,lk,rk,hip,shoulder,foot,width,height,kneeL:has3?angle3(23,25,27):angle(lh,lk,la),kneeR:has3?angle3(24,26,28):angle(rh,rk,ra)};
+    }
+    static framingHint(points){
+      if(!Array.isArray(points)||points.length<33)return 'Mostre o corpo inteiro, de frente para a câmera.';
+      const hidden=i=>!points[i]||(points[i].visibility??1)<.5||points[i].x<.015||points[i].x>.985||points[i].y<.005||points[i].y>.995;
+      if([27,28].some(hidden))return 'Afaste o celular ou recue até os dois pés aparecerem.';
+      if([15,16].some(hidden))return 'As duas mãos precisam ficar dentro da imagem, inclusive com os braços abertos.';
+      if(hidden(0))return 'Ajuste o enquadramento para mostrar também a cabeça.';
+      return 'Mostre cabeça, mãos e pés; mantenha o celular apoiado.';
+    }
+    correction(move,f){
+      if(move==='up'&&Math.min(f.leftUp,f.rightUp)<.4)return f.leftUp<f.rightUp?'Levante mais o braço esquerdo.':'Levante mais o braço direito.';
+      if(move==='leftUp'||move==='rightUp')return 'Levante somente o braço '+(move==='leftUp'?'esquerdo.':'direito.');
+      if(move==='open')return 'Abra os dois braços na altura dos ombros.';
+      if(move==='squat')return 'Flexione os joelhos e abaixe o quadril.';
+      if(move==='cross')return 'Cruze os antebraços à frente do peito.';
+      if(move==='left'||move==='right'||move.startsWith('stepTouch'))return 'Dê o passo com o corpo e os pés para a '+(move==='left'||move==='stepTouchLeft'?'esquerda.':'direita.');
+      return 'Siga a posição mostrada pelo professor.';
     }
     extract(body){const b=this.baseline,w=b.width;return{leftUp:(body.shoulder.y-body.lw.y)/w,rightUp:(body.shoulder.y-body.rw.y)/w,leftOut:(body.shoulder.x-body.lw.x)/w,rightOut:(body.rw.x-body.shoulder.x)/w,step:(body.hip.x-b.hip.x)/w,footShift:((body.la.x+body.ra.x)/2-b.foot.x)/w,lean:(body.shoulder.x-body.hip.x)/w,drop:(body.hip.y-b.hip.y)/w,knee:Math.min(body.kneeL,body.kneeR),cross:(body.lw.x-body.rw.x)/w,handY:((body.lw.y+body.rw.y)/2-body.shoulder.y)/w,lwX:(body.lw.x-b.hip.x)/w,lwY:(body.lw.y-b.hip.y)/w,rwX:(body.rw.x-b.hip.x)/w,rwY:(body.rw.y-b.hip.y)/w};}
     match(move,f){const high=[.30,.40,.48][this.level],min=(...v)=>Math.max(0,Math.min(1,...v)),up=v=>(v-high+.3)/.4;
@@ -53,7 +70,7 @@
     }
     observe(landmarks,capturedAt,now=capturedAt,frameId=capturedAt,worldLandmarks=null){
       this.tick(now);if(this.done||capturedAt<=this.lastInputAt||frameId===this.lastFrameId||now-capturedAt>650||capturedAt>now+30)return false;this.lastInputAt=capturedAt;this.lastFrameId=frameId;
-      const body=WorldDanceBody.body(landmarks,worldLandmarks);if(!body){this.hold=0;this.holdSamples=0;this.recovery=0;if(this.phase==='calibration'){this.calibration=[];this.stable=0;this.feedback='Mostre o corpo inteiro, da cabeça aos pés, de frente para a câmera.';}return false;}
+      const body=WorldDanceBody.body(landmarks,worldLandmarks);if(!body){this.hold=0;this.holdSamples=0;this.recovery=0;if(this.phase==='calibration'){this.calibration=[];this.stable=0;this.feedback=WorldDanceBody.framingHint(landmarks);}return false;}
       const previousAt=this.lastPoseAt;this.lastPoseAt=now;this.body=body;
       if(this.phase==='calibration'){
         if(body.kneeL<155||body.kneeR<155||body.lw.y<body.shoulder.y||body.rw.y<body.shoulder.y){this.calibration=[];this.stable=0;this.feedback='Fique em pé, braços relaxados, e olhe para a câmera.';return false;}
@@ -66,9 +83,11 @@
       if(this.phase==='lost'){if(previousAt&&now-previousAt>550)this.recovery=0;if(++this.recovery>=4){this.phase='countdown';this.countdownUntil=now+1500;this.feedback='Corpo encontrado. Vamos continuar…';}return true;}
       if(this.phase!=='playing'||this.phrases[this.index]?.hit)return true;
       const offset=this.activeMs%this.duration,latency=Math.max(0,now-capturedAt),at=Math.max(0,offset-latency);const item=this.phrases[this.index],quality=this.match(item.move,this.features),origin=this.originFeatures||this.features,energy=Math.max(...['lwX','lwY','rwX','rwY','step','drop','lean'].map(k=>Math.abs(this.features[k]-origin[k])));
+      // A late image from the preceding phrase cannot score this phrase.
+      if(Math.floor(Math.max(0,this.activeMs-latency)/this.duration)!==this.index)return true;
       item.moved ||= energy>.18;
       if(at<this.beat*.80||at>this.beat*1.85){this.hold=0;this.holdSamples=0;return true;}
-      if(quality>=.72&&item.moved){this.hold+=Math.min(200,now-(previousAt||now));this.holdSamples++;if(this.hold>=140&&this.holdSamples>=2){item.hit=true;item.quality=quality;this.hits++;this.weight+=quality;this.combo++;this.bestCombo=Math.max(this.bestCombo,this.combo);this.score+=Math.round(quality*100)+Math.min(50,this.combo*5);this.feedback=quality>.92?'MOVIMENTO PERFEITO!':'BOM MOVIMENTO!';}}else{this.hold=0;this.holdSamples=0;}
+      if(quality>=.72&&item.moved){this.hold+=Math.min(200,now-(previousAt||now));this.holdSamples++;if(this.hold>=140&&this.holdSamples>=2){item.hit=true;item.quality=quality;this.hits++;this.weight+=quality;this.combo++;this.bestCombo=Math.max(this.bestCombo,this.combo);this.score+=Math.round(quality*100)+Math.min(50,this.combo*5);this.feedback=quality>.92?'MOVIMENTO PERFEITO!':'BOM MOVIMENTO!';}}else{this.hold=0;this.holdSamples=0;if(quality<.72)this.feedback=this.correction(item.move,this.features);}
       return true;
     }
     pause(now){this.tick(now);if(this.done)return;this.phase='paused';this.manual=true;this.hold=0;this.holdSamples=0;this.feedback='PAUSADO';}

@@ -1,7 +1,7 @@
 name: Verificar controles, giro e carga online
 on:
   push:
-    branches: ['world-mobile-20261105']
+    branches: ['world-mobile-20261105', 'console-evolution-20261106']
     paths: ['.github/workflows/world-mobile-repair.yml', 'games/otthi/**', 'tests/world-mobile-layout-browser.mjs', 'tests/world-play-performance.mjs', 'tests/world-vehicle-performance.mjs', 'tests/helpers/world-rtdb-browser-fixture.mjs']
   workflow_dispatch:
 permissions:
@@ -21,6 +21,8 @@ jobs:
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
       - name: Medir entrada e direcao com motor real e familia
+        env:
+          OT_VEHICLE_BASELINE: 1b97926979dc54abe040adfbb145c5915ce7c138
         run: node tests/world-vehicle-performance.mjs
       - uses: actions/upload-artifact@v4
         if: always()

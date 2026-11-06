@@ -100,7 +100,7 @@ function moveGamepad(){
    return;
  }
  lastPad=pad;
- const axis=i=>Math.abs(Number(pad.axes?.[i])||0)<.24?0:Number(pad.axes[i]);
+ const axis=i=>{const v=clamp(Number(pad.axes?.[i])||0,-1,1),dead=i<2?.14:.11;return Math.abs(v)<=dead?0:Math.sign(v)*(Math.abs(v)-dead)/(1-dead);};
  const btn=i=>!!(pad.buttons?.[i]?.pressed);
  const x=axis(0),y=axis(1);
  const left=x<-.35||btn(14),right=x>.35||btn(15);
@@ -143,11 +143,11 @@ function moveGamepad(){
  }
  startHeld=a;
 }
-// Snapshot only every 150ms; gamepad is sampled every 50ms.
+// Snapshot only every 150ms; gamepad is sampled every 16ms.
 // Both timers have strictly bounded, constant memory and no network traffic.
 function boot(){
  make();reset();
- window.setInterval(cycle,160);window.setInterval(moveGamepad,50);
+ window.setInterval(cycle,160);window.setInterval(moveGamepad,16);
  window.addEventListener("pagehide",release,{once:true});
  window.addEventListener("gamepaddisconnected",release);
  window.addEventListener("blur",release);

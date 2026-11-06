@@ -190,7 +190,7 @@ const Game={
   this.autoWalking=false;
   if(this.state==='HAND_CALIBRATION'||this.state==='NET_LOBBY')return;
   if(this.handSession?.requiresBody&&!this.bodyPose?.fresh&&this.state==='PLAYING'){this.handLock=null;return;}
-  if(this.handSession&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
+  if(this.handSession&&!this.handSession.dualHands&&!this.handAim?.fresh&&this.state==='PLAYING'){if(!this.handAim?.present)this.handLock=null;return;}
   this.elapsed+=dt;this.bannerTime=Math.max(0,this.bannerTime-dt);this.hitFlash=Math.max(0,this.hitFlash-dt);this.hurtFlash=Math.max(0,this.hurtFlash-dt);this.muzzle=Math.max(0,this.muzzle-dt);
   if(this.handSession)this.crouched=!!(this.bodyPose?.fresh&&this.bodyPose.crouched);
   this.eyeY=(this.coverHeld||this.crouched)?1.05:1.8;
@@ -200,18 +200,25 @@ const Game={
   if(this.net&&this.player.hp<=0)return;
   const p=this.player,cameraInput=!!this.handSession,stick=cameraInput?null:this.manualStick,aim=cameraInput?null:this.aimStick,cover=this.coverHeld||this.crouched;
   const sensitivity=window.ArcadePlaySettings?.get().sensitivity??1;
-  if(cameraInput&&this.handAim?.fresh){
+  if(cameraInput&&this.handSession.dualHands){
+   const a=this.handAim,calibration=a?.calibration||0,nav=this.handSession.controller.navigation.read(performance.now());
+   if(!this.handViewAnchor||this.handViewAnchor.calibration!==calibration)this.handViewAnchor={yaw:p.yaw,pitch:p.pitch,calibration,aimYaw:0,aimPitch:0};
+   const anchor=this.handViewAnchor;if(nav.fresh)anchor.yaw=angle(anchor.yaw+nav.turn*3*dt*sensitivity);
+   if(a?.fresh){anchor.aimYaw=(a.x-.5)*1.4*sensitivity;anchor.aimPitch=(.48-a.y)*1.8*sensitivity;}
+   p.yaw=angle(anchor.yaw+anchor.aimYaw);p.pitch=clamp(anchor.pitch+anchor.aimPitch,-1.05,1.05);
+  }else if(cameraInput&&this.handAim?.fresh){
    const a=this.handAim,calibration=a.calibration||0;if(!this.handViewAnchor||this.handViewAnchor.calibration!==calibration)this.handViewAnchor={yaw:p.yaw,pitch:p.pitch,calibration};const offset=a.x-.5,body=this.bodyPose?.fresh?this.bodyPose:null;p.yaw=angle(this.handViewAnchor.yaw+(offset*1.7+Math.sign(offset)*Math.pow(Math.max(0,Math.abs(offset)-.30)/.20,2)*2.2)*sensitivity+(body?.turnYaw||0)*.65+(body?.lean||0)*.30);p.pitch=clamp(this.handViewAnchor.pitch+(.48-a.y)*2.2*sensitivity,-1.05,1.05);
   }
   if(!cameraInput){p.yaw=angle(p.yaw+(Number(aim?.x)||0)*1.7*dt*sensitivity);p.pitch=clamp(p.pitch+(Number(aim?.y)||0)*1.1*dt*sensitivity,-.8,.8);}
   let mx=cameraInput?(this.bodyPose?.fresh?this.bodyPose.moveX:0):(Number(stick?.x)||0)+Number(!!this.keys.d)-Number(!!this.keys.a),mz=cameraInput?(this.bodyPose?.fresh?this.bodyPose.moveZ:0):(Number(stick?.y)||0)+Number(!!this.keys.w)-Number(!!this.keys.s);
+  if(cameraInput&&this.handSession.dualHands){const nav=this.handSession.controller.navigation.read(performance.now());mx=0;mz=nav.fresh?nav.move:0;}
   const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
   if(!cameraInput){p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
   p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);}
   this.sprinting=!cameraInput&&!cover&&!this.aiming&&!this.fireHeld&&!this.autoFireLock&&mz>.65&&!!(this.sprintHeld||this.keys.shift);const speed=cover?1.9:this.aiming?3.6:this.sprinting?9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
 
   if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){this.autoWalking=Math.hypot(nx-p.x,nz-p.z)>.0001;p.x=nx;p.z=nz;}
-  if(cameraInput&&this.handSession.autoAdvance&&!cover&&Math.hypot(mx,mz)<.15)this.cameraWalk(dt);
+  if(cameraInput&&!this.handSession.dualHands&&this.handSession.autoAdvance&&!cover&&Math.hypot(mx,mz)<.15)this.cameraWalk(dt);
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
   if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
   let automatic=false;
@@ -220,7 +227,8 @@ const Game={
    if(!target)this.handLock=null;
    else if(this.handLock?.target===target){this.handLock.time=Math.max(this.handLock.time+dt,Math.max(0,((this.handAim.timestamp||0)-this.handLock.firstSample)/1000));automatic=this.handLock.time>=.12&&(this.handAim.timestamp||0)>this.handLock.firstSample;}
    else this.handLock={target,time:0,firstSample:this.handAim.timestamp||0};
-   // The camera follows the hand; the weapon and reticle share its centre.
+   if(this.handSession.dualHands)automatic=!!(this.handAim?.fresh&&this.handAim.fire);
+   // The left hand turns the view; the right palm aims within that view.
   }
   if(!this.handSession&&(window.ArcadePlaySettings?.get().combatFireMode==='simple')){const target=this.targetAtAim();this.autoFireLock=target?{target}:null;automatic=!!target;}else this.autoFireLock=null;
   if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
