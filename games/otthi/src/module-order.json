@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.18-revisao-mobile",
+  "build": "705.28.19-veiculo-fluidez",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "e644da36dd4f7d87ee2de03f6b1ca7da8b89a5a0548bb46acbe770114e730008"
+      "sha256Body": "99464a11f0a1dab75a4e8a64d209caf7f0d6eccf3775ed1db2e70297506b8f34"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -203,7 +203,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "46c0a5135ffcba0af02d20a0d03270a2d982aeab031e0efd1d3702972780429d"
+      "sha256Body": "6099d77e73c736fc76824f23993a251690e96a2c548aa42e52b83565275f123e"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -231,14 +231,14 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "7fbeeb90a2df837a7b9fb3360e16a5ad0851c3b5947604c8550f2a84a8c0ad41"
+      "sha256Body": "469fbaef5bdb613e72f1c704fcc58efd45fc52ba0cf452536b65520fd90eb319"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "7054996f00d33ae725aeac8946eb9887e61b093f1f5947b6c0cdadbb06342dfa"
+      "sha256Body": "aa16ad8e26347d6f1d7869db035f14909fa9d4d8a7cf4ce79d0f479c43338081"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -329,7 +329,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Dano, quebra, reboque e reparo real de veículos V704",
-      "sha256Body": "74f3f6bb582766121bc4e10a11f9b0f37f6697e05b2e6547603584ebfbbafc4a"
+      "sha256Body": "0636a9e50f498918e856f13dde653b51e9d49cf6f99ee2d8b9610647f187a816"
     },
     {
       "file": "src/modules/37-hero-platform-gameplay.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "e537ae62032e61a379dcc6d3aa78bcd2da2ae6857b7bd69423a5bf17c4518c09"
+      "sha256Body": "17ae902b13174572c6effc095aa163bbd9cb79aa2f1910e7329d3b92aa5c8e6e"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
@@ -538,7 +538,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "047e9d3c85ec64055c304f840c96de0f61a579fdc85760eafab0e94d49cd812c"
+      "sha256Body": "243e31d5de8de1f4d589c6a0876e5b91b0a4eb7d42ce41e95d21d32833b3f51f"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",

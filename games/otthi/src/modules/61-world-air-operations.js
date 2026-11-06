@@ -83,22 +83,29 @@
  campaignBoardAircraft=async function(id){
   if(!airEnsure()||!airAvailable(id))return false;const c=campaignAircraftPose(id);
   if(!c||!running||paused||otGames.active||player.vehicle||player.boating||currentHouse||campaignDist(player,c)>c.radius)return false;
-  if(!await airRequestClaim(id)){toast('Esta aeronave foi reservada por outro piloto. Há outras no aeroporto.','info',2800);return false;}
+  if(!await airRequestClaim(id)){toast(airOperations.fleet.data.craft[id]?.status==='piloted'&&airOperations.fleet.data.craft[id].pilot!==sharedWorldOwnId()?'Esta aeronave está sendo usada por outro piloto.':'Não foi possível sincronizar o embarque. Tente novamente.','info',2800);return false;}
   airSyncObstacles();let result=false;try{result=await airOriginalBoard(id);}catch(error){toast('Não foi possível preparar esta aeronave. Tente embarcar novamente.','warn',2800);}if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'release',id}).catch(()=>{});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
  };
  const airOriginalPark=campaignParkAircraft;
  campaignParkAircraft=function(id,b){
   const result=airOriginalPark(id,b);if(!airEnsure())return result;
-  if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),b,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,z:b.z,yaw:b.yaw,hp:b.hp}}).catch(()=>{});
+  if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),b,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,y:b.y,z:b.z,yaw:b.yaw,hp:b.hp,vx:b.vx||0,vy:b.vy||0,vz:b.vz||0}}).catch(()=>{});
   airSyncObstacles();campaignSyncAircraft();saveState(true);return result;
  };
+ // The exit event can arrive after presence has already changed to walking.
+ // Validate the submitted stopped, grounded pose instead of requiring an old flying snapshot.
+ function airParkPoseValid(c,presence,pose){
+  if(!c||!presence||!pose||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;
+  const ride=presence.familyRide?.kind==='aircraft'&&presence.familyRide.id===c.id?presence.familyRide:null;
+  if(presence.familyRide?.kind==='aircraft'&&!ride)return false;
+  const y=Number.isFinite(pose.y)?pose.y:ride?.y,near=ride||presence,vx=pose.vx??ride?.vx??0,vy=pose.vy??ride?.vy??0,vz=pose.vz??ride?.vz??0;
+  return [y,near.x,near.z,vx,vy,vz].every(Number.isFinite)&&Math.abs(y-groundHeightAt(pose.x,pose.z)-campaignAircraftHeight(c.id))<1&&Math.hypot(pose.x-near.x,pose.z-near.z)<20&&Math.hypot(vx,vz)<3&&Math.abs(vy)<1.5;
+ }
  function airReceiveCommand(event){
   if(!airEnsure()||!sharedWorldIsAuthority())return;const e=event.detail||{},p=e.payload||{},uid=String(e.actorUid||''),c=airOperations.fleet.data.craft[p.id],presence=remotePresence.get(uid);if(e.kind!=='air-fleet'||!c||!presence)return;
   if(p.action==='release'&&c.pilot===uid&&!c.departedAt)airOperations.fleet.park(c.id,uid,c,airNow());
   if(p.action==='claim'&&Math.hypot(Number(presence.x)-c.x,Number(presence.z)-c.z)<Number(airOperations.fleet.spec(c.id).radius||6)+5)airClaimLocal(c.id,uid);
-  if(p.action==='park'&&c.pilot===uid&&p.pose&&[p.pose.x,p.pose.z,p.pose.yaw].every(Number.isFinite)){
-   const r=presence.familyRide;if(r?.id===c.id&&r.onGround&&Math.hypot(p.pose.x-r.x,p.pose.z-r.z)<12)airOperations.fleet.park(c.id,uid,p.pose,airNow());
-  }
+  if(p.action==='park'&&c.pilot===uid&&airParkPoseValid(c,presence,p.pose))airOperations.fleet.park(c.id,uid,p.pose,airNow());
   airSyncObstacles();sharedWorldRuntime.captureAt=0;
  }
  window.addEventListener('otthi:event-v2',airReceiveCommand);

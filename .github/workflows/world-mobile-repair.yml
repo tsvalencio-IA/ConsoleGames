@@ -21,6 +21,8 @@ jobs:
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
       - name: Medir entrada e direcao com motor real e familia
+        env:
+          OT_VEHICLE_BASELINE: 1b97926979dc54abe040adfbb145c5915ce7c138
         run: node tests/world-vehicle-performance.mjs
       - uses: actions/upload-artifact@v4
         if: always()

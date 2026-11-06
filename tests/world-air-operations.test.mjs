@@ -26,3 +26,24 @@ test('air operations: the V2 publisher actually carries fleet state without weak
  const connector=fs.readFileSync('games/otthi/assets/js/multiplayer-rtdb.js','utf8');assert(connector.includes('a:snapshot?.a||null'));const rules=JSON.parse(fs.readFileSync('games/otthi/firebase-database.rules.json','utf8'));assert(rules.rules);
  assert(source.includes("window.addEventListener('otthi:event-v2',airReceiveCommand)"));assert(source.includes("c.pilot===uid"));assert(source.includes("e.kind!=='air-fleet'"));
 });
+test('air operations: touchdown is published immediately and includes the grounded state used by other pilots',()=>{
+ const family=fs.readFileSync('games/otthi/src/modules/48-family-transport.js','utf8'),start=family.indexOf('  function familyCarryPresence()'),end=family.indexOf('\n',start);
+ let ride={kind:'aircraft',id:'heli',mode:'helicopter',hostUid:'a',x:30,y:1.6,z:40,yaw:0,pitch:0,roll:0,onGround:false,vx:0,vy:0,vz:0};
+ const scope={player:{vehicle:false,boating:false,car:{},boat:{}},sharedWorldOwnId:()=> 'a',familyVehicleSeatsUsed:()=>0,familyCarryParty:()=>({controller:'thiago',members:['thiago']}),familyRideForOwner:()=>ride};vm.createContext(scope);vm.runInContext(family.slice(start,end),scope);
+ const airborne=scope.familyCarryPresence();assert.equal(airborne.familyRide.onGround,false);ride.onGround=true;const landed=scope.familyCarryPresence();assert.equal(landed.familyRide.onGround,true);assert.notEqual(landed.familyTravelSig,airborne.familyTravelSig);assert.equal(landed.familyRide.vy,0);
+});
+test('air operations: a guest can park after its walking presence arrives, then another player can board the same aircraft',()=>{
+ const fleet=new c.Fleet(base,{},1000);fleet.claim('heli','pilot-a',2000);fleet.depart('heli','pilot-a',3000);
+ const scope={airOperations:{fleet},airEnsure:()=>true,sharedWorldIsAuthority:()=>true,remotePresence:new Map([['pilot-a',{x:40,z:20,familyRide:null}]]),groundHeightAt:()=>0,campaignAircraftHeight:()=>1.6,airNow:()=>10000,airSyncObstacles(){},sharedWorldRuntime:{captureAt:1}};
+ vm.createContext(scope);vm.runInContext(source.slice(source.indexOf(' function airParkPoseValid'),source.indexOf(" window.addEventListener('otthi:event-v2'")),scope);
+ const pose={x:35,y:1.6,z:20,yaw:.4,hp:80,vx:0,vy:0,vz:0};scope.airReceiveCommand({detail:{kind:'air-fleet',actorUid:'pilot-a',payload:{action:'park',id:'heli',pose}}});
+ assert.equal(fleet.data.craft.heli.status,'parked');assert.equal(fleet.data.craft.heli.pilot,'');assert.equal(fleet.data.craft.heli.x,35);assert(fleet.claim('heli','pilot-b',10001));assert.equal(fleet.data.craft.heli.pilot,'pilot-b');assert.equal(fleet.data.craft.heli.hp,80);
+});
+test('air operations: a stale pre-landing presence does not reject a valid stop, while airborne, moving, distant and wrong-pilot park requests are refused',()=>{
+ const fleet=new c.Fleet(base,{},1000);fleet.claim('heli','pilot-a',2000);const ride={kind:'aircraft',id:'heli',x:35,y:3,z:20,onGround:false},presence={x:35,z:20,familyRide:ride};
+ const scope={airOperations:{fleet},airEnsure:()=>true,sharedWorldIsAuthority:()=>true,remotePresence:new Map([['pilot-a',presence],['guest',presence]]),groundHeightAt:()=>0,campaignAircraftHeight:()=>1.6,airNow:()=>10000,airSyncObstacles(){},sharedWorldRuntime:{captureAt:1}};
+ vm.createContext(scope);vm.runInContext(source.slice(source.indexOf(' function airParkPoseValid'),source.indexOf(" window.addEventListener('otthi:event-v2'")),scope);
+ const pose={x:35,y:1.6,z:20,yaw:0,vx:0,vy:0,vz:0};assert(scope.airParkPoseValid(fleet.data.craft.heli,presence,pose));
+ for(const invalid of [{...pose,y:50},{...pose,vx:12},{...pose,vy:-6},{...pose,x:200},{...pose,yaw:NaN}])assert.equal(scope.airParkPoseValid(fleet.data.craft.heli,presence,invalid),false);
+ scope.airReceiveCommand({detail:{kind:'air-fleet',actorUid:'guest',payload:{action:'park',id:'heli',pose}}});assert.equal(fleet.data.craft.heli.pilot,'pilot-a');
+});

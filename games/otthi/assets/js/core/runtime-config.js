@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.18-revisao-mobile',
+    build: '705.28.19-veiculo-fluidez',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

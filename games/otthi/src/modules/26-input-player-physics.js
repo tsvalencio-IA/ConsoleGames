@@ -27,7 +27,7 @@
   }
   function sprintRequested(){return !!(input.touchSprint||input.gamepadSprint||input.keys.has('ShiftLeft')||input.keys.has('ShiftRight'));}
   function updateRunUI(){
-    if(!els.runBtn)return;if(typeof syncSportControlsV705==='function'&&syncSportControlsV705())return;if(typeof mobilityDriverActive==='function'&&mobilityDriverActive()){updateMobilityControlLabels();return;}const active=sprintRequested();els.runBtn.classList.toggle('active',active);const icon=$('b',els.runBtn),label=$('span',els.runBtn);if(icon)icon.textContent='🏃';if(label)label.textContent='Correr';
+    if(!els.runBtn)return;if(typeof syncSportControlsV705==='function'&&syncSportControlsV705())return;if(typeof mobilityDriverActive==='function'&&mobilityDriverActive()){updateMobilityControlLabels();return;}const active=sprintRequested();els.runBtn.classList.toggle('active',active);const icon=$('b',els.runBtn),label=$('span',els.runBtn);setControlText(icon,'🏃');setControlText(label,'Correr');
   }
   function clearMovementInputs(){
     input.keys.clear();input.joyId=null;input.joyX=0;input.joyZ=0;

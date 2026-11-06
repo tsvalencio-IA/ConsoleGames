@@ -54,7 +54,7 @@
   function updateVehicleFX(dt){
     if(player.boating&&!player.boat.passengerOf){updateEngineSound(player.boat.speed,'boat','boat');return;}
     if(!player.vehicle){if(engineAudio)stopEngineSound();return;}
-    if(player.car.passengerOf){if(engineAudio)stopEngineSound();if(els.vehicleBadge)els.vehicleBadge.textContent=`${serviceVehicleIcon(player.car.kind)} Passageiro — AÇÃO para sair`;return;}
+    if(player.car.passengerOf){if(engineAudio)stopEngineSound();setVehicleBadgeText(`${serviceVehicleIcon(player.car.kind)} Passageiro — AÇÃO para sair`);return;}
     const car=player.car,wheels=vehicleVisual.userData.wheels,fronts=vehicleVisual.userData.frontWheels;
     const spin=car.speed*dt*3.4;
     wheels.forEach(w=>w.rotation.x-=spin);
@@ -68,19 +68,28 @@
       if(updateVehicleFX.acc>.045){updateVehicleFX.acc=0;spawnDust(player.x-Math.sin(car.heading)*1.05,player.z-Math.cos(car.heading)*1.05);}
       driftSoundCooldown-=dt;if(driftSoundCooldown<=0){driftSoundCooldown=.5;beep(180,55,'sawtooth');}
     }
-    const serviceKind=String(car.kind||'car'),serviceIcon=serviceVehicleIcon(serviceKind),siren=!!car.sirenActive,turbo=performance.now()<Number(car.turboUntil||0);for(const [index,light] of (vehicleVisual.userData.serviceLights||[]).entries())light.material.emissiveIntensity=siren?(.32+(Math.floor(performance.now()/180)+index)%2*1.2):.08;if(siren&&performance.now()>Number(car.sirenBeepAt||0)){car.sirenBeepAt=performance.now()+620;beep(serviceKind==='paramedic'?740:serviceKind==='police'?610:520,135,'square');setTimeout(()=>{if(player.vehicle&&player.car.sirenActive)beep(serviceKind==='paramedic'?560:760,120,'square');},175);}if(els.vehicleBadge)els.vehicleBadge.textContent=`${serviceIcon} ${car.label||'Veículo'} • ${Math.round(Math.abs(car.speed)*6)} km/h${turbo?' • TURBO':siren?' • SIRENE':''} — SAIR sempre disponível`;
+    const serviceKind=String(car.kind||'car'),serviceIcon=serviceVehicleIcon(serviceKind),siren=!!car.sirenActive,turbo=performance.now()<Number(car.turboUntil||0);for(const [index,light] of (vehicleVisual.userData.serviceLights||[]).entries())light.material.emissiveIntensity=siren?(.32+(Math.floor(performance.now()/180)+index)%2*1.2):.08;if(siren&&performance.now()>Number(car.sirenBeepAt||0)){car.sirenBeepAt=performance.now()+620;beep(serviceKind==='paramedic'?740:serviceKind==='police'?610:520,135,'square');setTimeout(()=>{if(player.vehicle&&player.car.sirenActive)beep(serviceKind==='paramedic'?560:760,120,'square');},175);}setVehicleBadgeText(`${serviceIcon} ${car.label||'Veículo'} • ${Math.round(Math.abs(car.speed)*6)} km/h${turbo?' • TURBO':siren?' • SIRENE':''} — SAIR sempre disponível`);
     updateEngineSound(car.speed,car.kind||'car',currentVehicleRef()?.brazilModel||car.id||'');
   }
 
   function mobilityDriverActive(){return(player.vehicle&&!player.car.passengerOf)||(player.boating&&!player.boat.passengerOf);}
+  function setControlText(element,value){if(element&&element.textContent!==value)element.textContent=value;}
+  function setControlAttribute(element,name,value){if(element&&element.getAttribute(name)!==value)element.setAttribute(name,value);}
+  function setVehicleBadgeText(base){
+    const badge=els.vehicleBadge;if(!badge)return;
+    const family=typeof familyVehicleBadgeDetails==='function'?familyVehicleBadgeDetails():null;
+    let text=base;if(family)text=text.replace(' — ',` • FAMÍLIA ${family.count} — `);
+    if(player.vehicle&&!player.car.passengerOf&&typeof vehicleDurabilityV704==='function'){const d=vehicleDurabilityV704();text+=` • Integridade ${d}%${d<=0?' • QUEBRADO':d<25?' • CRÍTICO':''}`;}
+    setControlText(badge,text);setControlAttribute(badge,'title',family?.title||'');
+  }
   function updateMobilityControlLabels(){
     if(typeof syncSportControlsV705==='function'&&syncSportControlsV705())return;
     const mobility=mobilityDriverActive(),isBoat=player.boating&&!player.boat.passengerOf,speed=isBoat?Number(player.boat.speed||0):Number(player.car.speed||0);
     const runIcon=$('b',els.runBtn),runLabel=$('span',els.runBtn),jumpIcon=$('b',els.jumpBtn),jumpLabel=$('span',els.jumpBtn),actionIcon=$('b',els.actionBtn),actionLabel=$('span',els.actionBtn);
-    if(mobility){if(runIcon)runIcon.textContent='▲';if(runLabel)runLabel.textContent='Acelerar';if(jumpIcon)jumpIcon.textContent=speed>.04?'■':'▼';if(jumpLabel)jumpLabel.textContent=speed>.04?'Freio':'Ré';if(actionIcon)actionIcon.textContent=isBoat?'🛶':'🚗';if(actionLabel)actionLabel.textContent='Sair';}
-    else{if(runIcon)runIcon.textContent='🏃';if(runLabel)runLabel.textContent='Correr';if(jumpIcon)jumpIcon.textContent='⬆';if(jumpLabel)jumpLabel.textContent='Pular';}
+    if(mobility){setControlText(runIcon,'▲');setControlText(runLabel,'Acelerar');setControlText(jumpIcon,speed>.04?'■':'▼');setControlText(jumpLabel,speed>.04?'Freio':'Ré');setControlText(actionIcon,isBoat?'🛶':'🚗');setControlText(actionLabel,'Sair');}
+    else{setControlText(runIcon,'🏃');setControlText(runLabel,'Correr');setControlText(jumpIcon,'⬆');setControlText(jumpLabel,'Pular');}
     els.runBtn?.classList.toggle('mobility-accelerate',mobility);els.runBtn?.classList.toggle('active',mobility?input.mobilityAccelerate:sprintRequested());els.jumpBtn?.classList.toggle('mobility-brake',mobility);els.jumpBtn?.classList.toggle('active',mobility&&input.mobilityBrake);
-    if(els.runBtn)els.runBtn.setAttribute('aria-label',mobility?`Acelerar ${isBoat?'barco':'veículo'}`:'Correr');if(els.jumpBtn)els.jumpBtn.setAttribute('aria-label',mobility?(speed>.04?'Frear':'Engatar ré'):'Pular');
+    setControlAttribute(els.runBtn,'aria-label',mobility?`Acelerar ${isBoat?'barco':'veículo'}`:'Correr');setControlAttribute(els.jumpBtn,'aria-label',mobility?(speed>.04?'Frear':'Engatar ré'):'Pular');
   }
   function updateVehicleControlsUI(){
     const vehiclePassenger=!!player.car.passengerOf,boatPassenger=!!player.boat.passengerOf,mobility=mobilityDriverActive();document.body.classList.toggle('mode-vehicle',!!player.vehicle);document.body.classList.toggle('mode-passenger',vehiclePassenger||boatPassenger);document.body.classList.toggle('mode-transit',!!player.transit.mode);document.body.classList.toggle('mode-boat',!!player.boating);document.body.classList.toggle('mode-mobility-driver',mobility);document.body.classList.toggle('mode-building',!!buildMode);document.body.classList.toggle('mode-fishing',!!fishingSession);
