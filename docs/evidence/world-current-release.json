@@ -1,5 +1,5 @@
 {
-  "status": "Candidate: parked-aircraft handoff and redundant vehicle UI work fixed; production unchanged until acceptance checks complete",
+  "status": "Published: parked-aircraft handoff and redundant vehicle interface updates corrected; sustained physical-device freeze is not yet verified as resolved",
   "build": "705.28.19-veiculo-fluidez",
   "revision": "0e335be2c9539a84",
   "runtimeCommit": "0a91a0f24c83d776f694cf55a988b1b2b78464a5",
@@ -10,16 +10,22 @@
     "failed": 0
   },
   "checks": {
-    "mobileLayoutRun": 42293071317,
+    "mobileLayoutRun": 42295258986,
     "mobileLayoutConclusion": "success",
     "viewportChanges": 10,
     "releaseAssets": 111,
     "cameraWorldRun": 42293071469,
     "cameraWorldConclusion": "success",
-    "aircraftReuseRun": 42294281202,
-    "aircraftReuseJob": 128155506241,
+    "aircraftReuseRun": 42295259204,
+    "aircraftReuseJob": 128158852124,
     "aircraftReuseConclusion": "success",
-    "vehicleDrivingMeasurement": "Pending a valid, moving, operational vehicle sample."
+    "vehicleDrivingMeasurement": "Operational car moving on a real road, recorded engine and family active, with native collisions and damage.",
+    "vehicleDrivingRun": 42295258986,
+    "vehicleDrivingConclusion": "success",
+    "previewPublicAcceptanceRun": 42295422077,
+    "previewPublicAcceptanceConclusion": "success",
+    "gameplayRun": 42295259204,
+    "gameplayConclusion": "success"
   },
   "physicalAndroidApproved": false,
   "limitations": [
@@ -33,11 +39,15 @@
     "build": "705.28.18-revisao-mobile",
     "revision": "40ace149df68355d"
   },
-  "productionReady": false,
+  "productionReady": true,
   "evidenceDirectory": "veiculos-20261106",
   "previewConfiguration": {
     "branch": "world-mobile-20261105",
     "VERCEL_PREVIEW_FEEDBACK_ENABLED": "0",
     "reason": "Prevent the review toolbar from changing byte-verified HTML."
-  }
+  },
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionDeployment": "dpl_HwQDkUK4MqmzRsCH3jXdqsbUDdjR",
+  "productionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e",
+  "productionHttpReport": "veiculos-20261106/production-http.json"
 }

@@ -18,7 +18,18 @@ Esta revisão corrige dois problemas concretos: atualizações repetidas da inte
 
 ## Desempenho
 
-A primeira medição foi rejeitada porque o carro havia batido e a amostra final já não representava condução. A medição corrigida deve comprovar deslocamento, carro operacional, motor ativo e ausência de pausa/modal, preservando colisões e dano.
+A primeira medição foi rejeitada porque o carro havia batido e a amostra final já não representava condução. A medição válida usa a Rodovia dos Horizontes, em um corredor de 250 metros previamente conferido. Colisões, dano, família, som gravado e simulação continuam ativos.
+
+Nos dois casos, o carro acelerou durante os 120 passos manuais e continuou andando na amostra nativa de dez segundos. Terminou com 100% de integridade, motor ativo, sem pausa ou janela aberta. `before.json` e `after.json` registram posições, velocidade, chamadas, escritas e os limites da amostra.
+
+| Escritas de texto em 120 passos dirigindo | Antes | Depois |
+| --- | ---: | ---: |
+| Acelerar | 480 | 0 |
+| Freio/ré | 480 | 2 |
+| Sair/ação | 662 | 0 |
+| Aviso do veículo | 360 | 94 |
+
+Parado, os textos não foram reescritos na versão corrigida. Em movimento, os avisos mudam quando a velocidade ou outra informação muda. A amostra não mostrou redução do tempo total de CPU nem melhoria de FPS. O objetivo comprovado desta alteração é eliminar trabalho redundante da interface, preservando funções e informação.
 
 A redução de escritas da interface está comprovada. Não há comprovação de que a travada prolongada no Android relatada pelo usuário tenha sido eliminada. Tempos de WebGL por software não representam FPS ou temperatura de um celular físico.
 
@@ -31,3 +42,7 @@ A redução de escritas da interface está comprovada. Não há comprovação de
 - Pingue-pongue: refinar atraso, espelhamento e contato da raquete, conservando a sensação aprovada.
 
 Essas propostas ainda não integram esta revisão.
+
+## Publicação
+
+Build `705.28.19-veiculo-fluidez`, revisão `0e335be2c9539a84`, publicado em `https://otthi-world-campanha-teste.vercel.app`. Os cinco arquivos principais correspondem aos arquivos conferidos na prévia. A instalação pública da prévia verificou os 71 recursos do shell e preservou o progresso de teste.

@@ -1,0 +1,1454 @@
+{
+  "label": "before",
+  "revision": "1b97926979dc54abe040adfbb145c5915ce7c138",
+  "target": {
+    "id": "qa-vehicle-saveiro",
+    "model": "saveiro",
+    "x": 660,
+    "z": -400,
+    "heading": -1.5707963267948966,
+    "road": "ottovias-outer-link"
+  },
+  "foot": {
+    "frames": 120,
+    "ms": 4046.699999999997,
+    "motion": {
+      "accelerating": false,
+      "braking": false,
+      "heading": 3.141592653589793,
+      "at": 23425.000000000004
+    },
+    "hits": [],
+    "damage": [],
+    "stats": [
+      [
+        "stepWorldSimulation",
+        {
+          "calls": 120,
+          "ms": 4046.300000000003
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "calls": 120,
+          "ms": 3478.899999999936
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "calls": 12,
+          "ms": 79.49999999998545
+        }
+      ],
+      [
+        "buildThemedVehicleGeometry",
+        {
+          "calls": 4,
+          "ms": 45.10000000000582
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "calls": 120,
+          "ms": 34.499999999970896
+        }
+      ],
+      [
+        "brazilAttach",
+        {
+          "calls": 52,
+          "ms": 16.799999999959255
+        }
+      ],
+      [
+        "updateContext",
+        {
+          "calls": 120,
+          "ms": 7.699999999953434
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "calls": 8944,
+          "ms": 5
+        }
+      ],
+      [
+        "brazilAccessories",
+        {
+          "calls": 52,
+          "ms": 3.7999999999738066
+        }
+      ],
+      [
+        "updateRunUI",
+        {
+          "calls": 120,
+          "ms": 2.6000000000058208
+        }
+      ],
+      [
+        "applyWorldVehiclePartsToGroup",
+        {
+          "calls": 4,
+          "ms": 2.400000000008731
+        }
+      ],
+      [
+        "positionBlockedForPlayer",
+        {
+          "calls": 41,
+          "ms": 2.3000000000174623
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "calls": 120,
+          "ms": 1.3000000000174623
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "calls": 120,
+          "ms": 1.1999999999970896
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "calls": 2,
+          "ms": 0.5
+        }
+      ]
+    ],
+    "textWrites": {
+      "runBtn": 240
+    },
+    "vehicle": "",
+    "speed": 0,
+    "position": {
+      "x": 660,
+      "z": -397.9
+    },
+    "durability": 100,
+    "running": true,
+    "paused": false,
+    "modal": false,
+    "audio": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "20261029-continuity5",
+      "recordedVersion": "20261029-continuity5",
+      "recordings": 0,
+      "decodedEngineFiles": [],
+      "engineLoopEdits": {},
+      "playedSamples": 0,
+      "activeEngines": 0,
+      "activeShots": 0,
+      "lastRecordingError": "",
+      "variants": []
+    },
+    "badge": "🚗 Carrinho ativo — SAIR permanece disponível"
+  },
+  "footView": {
+    "performance": {
+      "fps": 0,
+      "targetRenderFps": 30,
+      "targetSimulationFps": 60,
+      "renderedFrames": 1,
+      "tier": "low",
+      "requested": "auto",
+      "dpr": 0.44000000000000006,
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 18,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 60,
+        "simulationHz": 11.8
+      },
+      "drawCalls": 77,
+      "triangles": 555773,
+      "culling": {
+        "criticalVisible": 2,
+        "criticalHidden": 173,
+        "dynamicVisible": 0,
+        "dynamicHidden": 225
+      },
+      "textures": {
+        "grass": {
+          "name": "./assets/textures/grass-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "road": {
+          "name": "./assets/textures/asphalt-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "sidewalk": {
+          "name": "./assets/textures/sidewalk-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "water": {
+          "name": "./assets/textures/water-ripples-v643.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "wood": {
+          "name": "./assets/textures/wood-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "brick": {
+          "name": "./assets/textures/brick-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "stone": {
+          "name": "./assets/textures/stone-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "roof": {
+          "name": "./assets/textures/roof-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "busSeat": {
+          "name": "./assets/textures/bus-seat-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "schoolWall": {
+          "name": "./assets/textures/school-wall-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "policeWall": {
+          "name": "./assets/textures/police-wall-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "goldOre": {
+          "name": "./assets/textures/gold-ore-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "interiorFloor": {
+          "name": "./assets/textures/home-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "interiorWall": {
+          "name": "./assets/textures/interior-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "marketFloor": {
+          "name": "./assets/textures/market-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "marketWall": {
+          "name": "./assets/textures/market-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "schoolFloor": {
+          "name": "./assets/textures/school-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "fireWall": {
+          "name": "./assets/textures/fire-station-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "concrete": {
+          "name": "./assets/textures/concrete-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "cityGlass": {
+          "name": "./assets/textures/city-glass-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "emergencyMetal": {
+          "name": "./assets/textures/emergency-metal-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "tile": {
+          "name": "",
+          "status": "generated",
+          "width": 256,
+          "height": 256
+        },
+        "fabric": {
+          "name": "./assets/textures/bus-seat-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "metal": {
+          "name": "",
+          "status": "generated",
+          "width": 256,
+          "height": 256
+        }
+      }
+    },
+    "roots": [
+      [
+        "OTTHI_OTTOVIAS_HIGHWAY_NETWORK",
+        32
+      ],
+      [
+        "Group:MeshStandardMaterial",
+        12
+      ],
+      [
+        "BoxGeometry:MeshStandardMaterial",
+        6
+      ],
+      [
+        "OTTHOS_PLAYER",
+        4
+      ],
+      [
+        "OTTHI_CONTINUOUS_ROAD_SURFACE",
+        4
+      ],
+      [
+        "OT_EXTENDED_FOREST",
+        3
+      ],
+      [
+        "CircleGeometry:MeshBasicMaterial",
+        3
+      ],
+      [
+        "OTTHI_V705_SPORTS",
+        2
+      ],
+      [
+        "Group:MeshPhysicalMaterial",
+        2
+      ],
+      [
+        "Sprite:SpriteMaterial",
+        2
+      ],
+      [
+        "CIVIL_SKY_PANORAMA",
+        1
+      ],
+      [
+        "SphereGeometry:MeshBasicMaterial",
+        1
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:36789/games/otthi/assets/world/textures/grass-basecolor.png",
+        1
+      ],
+      [
+        "OTTHI_WORLD_INSTANCED_FLOWERS",
+        1
+      ],
+      [
+        "OTTHI_V702_GRASS_RECOVERY",
+        1
+      ],
+      [
+        "CITY_TRAFFIC_SIGNALS",
+        1
+      ],
+      [
+        "COSTA_VERDE_OCEAN",
+        1
+      ]
+    ]
+  },
+  "standing": {
+    "frames": 120,
+    "ms": 513.1999999999971,
+    "motion": {
+      "accelerating": false,
+      "braking": false,
+      "heading": -1.5707963267948966,
+      "at": 33140.09999999998
+    },
+    "hits": [],
+    "damage": [],
+    "stats": [
+      [
+        "stepWorldSimulation",
+        {
+          "calls": 120,
+          "ms": 512.6000000000495
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "calls": 120,
+          "ms": 174.39999999990687
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "calls": 7,
+          "ms": 63.29999999998836
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "calls": 120,
+          "ms": 48.40000000002328
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "calls": 11952,
+          "ms": 9.19999999999709
+        }
+      ],
+      [
+        "updateMobilityControlLabels",
+        {
+          "calls": 240,
+          "ms": 7.699999999982538
+        }
+      ],
+      [
+        "updateRunUI",
+        {
+          "calls": 120,
+          "ms": 5.899999999994179
+        }
+      ],
+      [
+        "updateVehicleFX",
+        {
+          "calls": 120,
+          "ms": 5.59999999984575
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "calls": 120,
+          "ms": 5.499999999985448
+        }
+      ],
+      [
+        "updateVehiclePhysics",
+        {
+          "calls": 120,
+          "ms": 4.69999999999709
+        }
+      ],
+      [
+        "brazilAttach",
+        {
+          "calls": 17,
+          "ms": 4.2000000000116415
+        }
+      ],
+      [
+        "updateContext",
+        {
+          "calls": 120,
+          "ms": 3.099999999991269
+        }
+      ],
+      [
+        "updateEngineSound",
+        {
+          "calls": 120,
+          "ms": 2.199999999953434
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "calls": 120,
+          "ms": 0.9999999999854481
+        }
+      ],
+      [
+        "brazilAccessories",
+        {
+          "calls": 17,
+          "ms": 0.40000000000873115
+        }
+      ],
+      [
+        "positionBlockedForPlayer",
+        {
+          "calls": 34,
+          "ms": 0.3000000000174623
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "calls": 2,
+          "ms": 0.20000000001164153
+        }
+      ]
+    ],
+    "textWrites": {
+      "runBtn": 480,
+      "jumpBtn": 480,
+      "actionBtn": 532,
+      "vehicleBadge": 359
+    },
+    "vehicle": "qa-vehicle-saveiro",
+    "speed": 0,
+    "position": {
+      "x": 660,
+      "z": -400
+    },
+    "durability": 100,
+    "running": true,
+    "paused": false,
+    "modal": false,
+    "audio": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "20261029-continuity5",
+      "recordedVersion": "20261029-continuity5",
+      "recordings": 2,
+      "decodedEngineFiles": [
+        "engine-road-idle",
+        "engine-road-load"
+      ],
+      "engineLoopEdits": {
+        "engine-road-idle": {
+          "sourceFrames": 139238,
+          "sourceRate": 44100,
+          "startFrame": 24255,
+          "endFrame": 99225,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": false,
+          "sourceRmsCV": 0.1450716478057856
+        },
+        "engine-road-load": {
+          "sourceFrames": 169814,
+          "sourceRate": 44100,
+          "startFrame": 70560,
+          "endFrame": 145530,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": true,
+          "sourceRmsCV": 0.24691137566921353
+        }
+      },
+      "playedSamples": 0,
+      "activeEngines": 1,
+      "activeShots": 0,
+      "lastRecordingError": "",
+      "variants": [
+        "quatro-brasileiro"
+      ]
+    },
+    "badge": "🚗 Volkswagen Saveiro Cross • 0 km/h — SAIR sempre disponível • Integridade 100%"
+  },
+  "driving": {
+    "frames": 120,
+    "ms": 406.20000000001164,
+    "motion": {
+      "accelerating": true,
+      "braking": false,
+      "heading": -1.5707963267948966,
+      "at": 35585.300000000025
+    },
+    "hits": [],
+    "damage": [],
+    "stats": [
+      [
+        "stepWorldSimulation",
+        {
+          "calls": 120,
+          "ms": 405.9000000000233
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "calls": 120,
+          "ms": 114.79999999995925
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "calls": 8,
+          "ms": 59.90000000002328
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "calls": 120,
+          "ms": 37.600000000034925
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "calls": 120,
+          "ms": 5.400000000008731
+        }
+      ],
+      [
+        "updateContext",
+        {
+          "calls": 120,
+          "ms": 5.30000000007567
+        }
+      ],
+      [
+        "updateVehicleFX",
+        {
+          "calls": 120,
+          "ms": 5.199999999982538
+        }
+      ],
+      [
+        "updateMobilityControlLabels",
+        {
+          "calls": 240,
+          "ms": 5.199999999938882
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "calls": 13388,
+          "ms": 4.800000000017462
+        }
+      ],
+      [
+        "updateEngineSound",
+        {
+          "calls": 120,
+          "ms": 3.800000000032014
+        }
+      ],
+      [
+        "brazilAttach",
+        {
+          "calls": 4,
+          "ms": 3.8000000000029104
+        }
+      ],
+      [
+        "updateRunUI",
+        {
+          "calls": 120,
+          "ms": 3.4999999999563443
+        }
+      ],
+      [
+        "updateVehiclePhysics",
+        {
+          "calls": 120,
+          "ms": 2.599999999933061
+        }
+      ],
+      [
+        "positionBlockedForPlayer",
+        {
+          "calls": 59,
+          "ms": 1.2999999999592546
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "calls": 120,
+          "ms": 0.29999999998835847
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "calls": 2,
+          "ms": 0.10000000000582077
+        }
+      ],
+      [
+        "brazilAccessories",
+        {
+          "calls": 4,
+          "ms": 0
+        }
+      ]
+    ],
+    "textWrites": {
+      "runBtn": 480,
+      "jumpBtn": 480,
+      "actionBtn": 662,
+      "vehicleBadge": 360
+    },
+    "vehicle": "qa-vehicle-saveiro",
+    "speed": 18.514069900379468,
+    "position": {
+      "x": 637.397522657913,
+      "z": -400
+    },
+    "durability": 100,
+    "running": true,
+    "paused": false,
+    "modal": false,
+    "audio": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "20261029-continuity5",
+      "recordedVersion": "20261029-continuity5",
+      "recordings": 2,
+      "decodedEngineFiles": [
+        "engine-road-idle",
+        "engine-road-load"
+      ],
+      "engineLoopEdits": {
+        "engine-road-idle": {
+          "sourceFrames": 139238,
+          "sourceRate": 44100,
+          "startFrame": 24255,
+          "endFrame": 99225,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": false,
+          "sourceRmsCV": 0.1450716478057856
+        },
+        "engine-road-load": {
+          "sourceFrames": 169814,
+          "sourceRate": 44100,
+          "startFrame": 70560,
+          "endFrame": 145530,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": true,
+          "sourceRmsCV": 0.24691137566921353
+        }
+      },
+      "playedSamples": 0,
+      "activeEngines": 1,
+      "activeShots": 0,
+      "lastRecordingError": "",
+      "variants": [
+        "quatro-brasileiro"
+      ]
+    },
+    "badge": "🚗 Volkswagen Saveiro Cross • 111 km/h — SAIR sempre disponível • Integridade 100%"
+  },
+  "live": {
+    "entry": {
+      "ms": 29.10000000000582
+    },
+    "stats": [
+      [
+        "stepWorldSimulation",
+        {
+          "calls": 146,
+          "ms": 616.7000000000262
+        }
+      ],
+      [
+        "updateWorldExpansion",
+        {
+          "calls": 146,
+          "ms": 173.39999999997963
+        }
+      ],
+      [
+        "updateVisualLOD",
+        {
+          "calls": 9,
+          "ms": 70.39999999999418
+        }
+      ],
+      [
+        "updatePlayer",
+        {
+          "calls": 146,
+          "ms": 69.10000000003492
+        }
+      ],
+      [
+        "updateContext",
+        {
+          "calls": 146,
+          "ms": 12.79999999984284
+        }
+      ],
+      [
+        "updateMobilityControlLabels",
+        {
+          "calls": 292,
+          "ms": 11.199999999866122
+        }
+      ],
+      [
+        "updateRunUI",
+        {
+          "calls": 146,
+          "ms": 9.599999999860302
+        }
+      ],
+      [
+        "updateVehicleFX",
+        {
+          "calls": 146,
+          "ms": 9.000000000029104
+        }
+      ],
+      [
+        "updateFamilyCarry",
+        {
+          "calls": 167,
+          "ms": 7.50000000007276
+        }
+      ],
+      [
+        "animateBrazilTransport",
+        {
+          "calls": 16352,
+          "ms": 6.80000000007567
+        }
+      ],
+      [
+        "updateEngineSound",
+        {
+          "calls": 146,
+          "ms": 4.900000000081491
+        }
+      ],
+      [
+        "updateVehiclePhysics",
+        {
+          "calls": 146,
+          "ms": 4.300000000017462
+        }
+      ],
+      [
+        "positionBlockedForPlayer",
+        {
+          "calls": 312,
+          "ms": 3.300000000061118
+        }
+      ],
+      [
+        "updateSharedWorldReplica",
+        {
+          "calls": 146,
+          "ms": 0.8000000000465661
+        }
+      ],
+      [
+        "updateHUD",
+        {
+          "calls": 3,
+          "ms": 0.3999999999796273
+        }
+      ]
+    ],
+    "textWrites": {
+      "runBtn": 584,
+      "jumpBtn": 584,
+      "actionBtn": 876,
+      "vehicleBadge": 439
+    },
+    "performance": {
+      "fps": 2.8,
+      "targetRenderFps": 30,
+      "targetSimulationFps": 60,
+      "renderedFrames": 32,
+      "tier": "low",
+      "requested": "auto",
+      "dpr": 0.44000000000000006,
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 2.4,
+        "simulationHz": 15
+      },
+      "drawCalls": 3694,
+      "triangles": 1306521,
+      "culling": {
+        "criticalVisible": 2,
+        "criticalHidden": 173,
+        "dynamicVisible": 0,
+        "dynamicHidden": 225
+      },
+      "textures": {
+        "grass": {
+          "name": "./assets/textures/grass-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "road": {
+          "name": "./assets/textures/asphalt-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "sidewalk": {
+          "name": "./assets/textures/sidewalk-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "water": {
+          "name": "./assets/textures/water-ripples-v643.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "wood": {
+          "name": "./assets/textures/wood-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "brick": {
+          "name": "./assets/textures/brick-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "stone": {
+          "name": "./assets/textures/stone-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "roof": {
+          "name": "./assets/textures/roof-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "busSeat": {
+          "name": "./assets/textures/bus-seat-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "schoolWall": {
+          "name": "./assets/textures/school-wall-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "policeWall": {
+          "name": "./assets/textures/police-wall-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "goldOre": {
+          "name": "./assets/textures/gold-ore-v628.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "interiorFloor": {
+          "name": "./assets/textures/home-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "interiorWall": {
+          "name": "./assets/textures/interior-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "marketFloor": {
+          "name": "./assets/textures/market-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "marketWall": {
+          "name": "./assets/textures/market-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "schoolFloor": {
+          "name": "./assets/textures/school-floor-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "fireWall": {
+          "name": "./assets/textures/fire-station-wall-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "concrete": {
+          "name": "./assets/textures/concrete-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "cityGlass": {
+          "name": "./assets/textures/city-glass-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "emergencyMetal": {
+          "name": "./assets/textures/emergency-metal-v632.png",
+          "status": "loaded",
+          "width": 512,
+          "height": 512
+        },
+        "tile": {
+          "name": "",
+          "status": "generated",
+          "width": 256,
+          "height": 256
+        },
+        "fabric": {
+          "name": "./assets/textures/bus-seat-v628.png",
+          "status": "loaded",
+          "width": 256,
+          "height": 256
+        },
+        "metal": {
+          "name": "",
+          "status": "generated",
+          "width": 256,
+          "height": 256
+        }
+      }
+    },
+    "vehicle": "qa-vehicle-saveiro",
+    "speed": 23.5,
+    "position": {
+      "x": 584.217236624801,
+      "z": -400
+    },
+    "durability": 100,
+    "running": true,
+    "paused": false,
+    "modal": false,
+    "audio": {
+      "state": "running",
+      "lastError": "",
+      "engineVersion": "20261029-continuity5",
+      "recordedVersion": "20261029-continuity5",
+      "recordings": 2,
+      "decodedEngineFiles": [
+        "engine-road-idle",
+        "engine-road-load"
+      ],
+      "engineLoopEdits": {
+        "engine-road-idle": {
+          "sourceFrames": 139238,
+          "sourceRate": 44100,
+          "startFrame": 24255,
+          "endFrame": 99225,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": false,
+          "sourceRmsCV": 0.1450716478057856
+        },
+        "engine-road-load": {
+          "sourceFrames": 169814,
+          "sourceRate": 44100,
+          "startFrame": 70560,
+          "endFrame": 145530,
+          "crossfadeFrames": 5292,
+          "frames": 69678,
+          "slowLeveling": true,
+          "sourceRmsCV": 0.24691137566921353
+        }
+      },
+      "playedSamples": 0,
+      "activeEngines": 1,
+      "activeShots": 0,
+      "lastRecordingError": "",
+      "variants": [
+        "quatro-brasileiro"
+      ]
+    },
+    "badge": "🚗 Volkswagen Saveiro Cross • 141 km/h • FAMÍLIA 3 — SAIR sempre disponível • Integridade 100%",
+    "party": {
+      "owner": "browser-test-user-123456789012345",
+      "controller": "thiago",
+      "members": [
+        "thiago",
+        "luna",
+        "liz"
+      ]
+    },
+    "roots": [
+      [
+        "Group:MeshStandardMaterial",
+        2513
+      ],
+      [
+        "BoxGeometry:MeshStandardMaterial",
+        271
+      ],
+      [
+        "Group:http://127.0.0.1:36789/games/otthi/assets/textures/roof-v628.png",
+        109
+      ],
+      [
+        "OTTHI_FLEET_COLLECTION",
+        109
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:36789/games/otthi/assets/world/textures/wood-basecolor.png",
+        81
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:36789/games/otthi/assets/textures/brick-v628.png",
+        62
+      ],
+      [
+        "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+        56
+      ],
+      [
+        "OTTHI_RESERVOIR_SINGLE_CONNECTED",
+        50
+      ],
+      [
+        "Group:http://127.0.0.1:36789/games/otthi/assets/textures/brick-v628.png",
+        41
+      ],
+      [
+        "Group:http://127.0.0.1:36789/games/otthi/assets/world/textures/wood-basecolor.png",
+        26
+      ],
+      [
+        "CylinderGeometry:MeshStandardMaterial",
+        26
+      ],
+      [
+        "OTTHI_PLAYER_HOME_GARAGE",
+        23
+      ],
+      [
+        "Group:http://127.0.0.1:36789/games/otthi/assets/world/textures/stone-basecolor.png",
+        22
+      ],
+      [
+        "BoxGeometry:http://127.0.0.1:36789/games/otthi/assets/world/textures/interior-floor-basecolor.png",
+        21
+      ],
+      [
+        "OTTHI_V702_FARM",
+        20
+      ],
+      [
+        "OTTHI_CONTINUOUS_ROAD_SURFACE",
+        16
+      ],
+      [
+        "Group:MeshPhysicalMaterial",
+        15
+      ],
+      [
+        "OTTHI_V702_LAKE_DEPTH",
+        11
+      ]
+    ]
+  },
+  "hotspots": [
+    {
+      "us": 1173396,
+      "functionName": "(idle)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 348618,
+      "functionName": "(program)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 43187,
+      "functionName": "(garbage collector)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 32989,
+      "functionName": "visualWorldMatrix",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 266,
+      "columnNumber": 28
+    },
+    {
+      "us": 25944,
+      "functionName": "visualWorldMatrix",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 266,
+      "columnNumber": 28
+    },
+    {
+      "us": 25520,
+      "functionName": "continuous",
+      "scriptId": "10",
+      "url": "http://127.0.0.1:36789/games/otthi/recorded-audio.js?v=20261029-continuity5",
+      "lineNumber": 9,
+      "columnNumber": 20
+    },
+    {
+      "us": 23680,
+      "functionName": "vehicleHitsCollider",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 7087,
+      "columnNumber": 30
+    },
+    {
+      "us": 23265,
+      "functionName": "projectPointToPolyline",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 2292,
+      "columnNumber": 33
+    },
+    {
+      "us": 22480,
+      "functionName": "trafficActualImpact",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 5030,
+      "columnNumber": 30
+    },
+    {
+      "us": 22197,
+      "functionName": "updateVisualLOD",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 3132,
+      "columnNumber": 26
+    },
+    {
+      "us": 21565,
+      "functionName": "professionalTerrainHeightAt",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 9282,
+      "columnNumber": 38
+    },
+    {
+      "us": 18485,
+      "functionName": "",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 7090,
+      "columnNumber": 32
+    },
+    {
+      "us": 18234,
+      "functionName": "professionalTerrainHeightAt",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 9282,
+      "columnNumber": 38
+    },
+    {
+      "us": 16591,
+      "functionName": "trafficSpeedFactor",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 12355,
+      "columnNumber": 28
+    },
+    {
+      "us": 14864,
+      "functionName": "stepWorldSimulation",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 7940,
+      "columnNumber": 30
+    },
+    {
+      "us": 14292,
+      "functionName": "updateWorldExpansion",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 12537,
+      "columnNumber": 77
+    },
+    {
+      "us": 12687,
+      "functionName": "worldInteractableById",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 13018,
+      "columnNumber": 32
+    },
+    {
+      "us": 12324,
+      "functionName": "getBoundingClientRect",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 11815,
+      "functionName": "nearbyWorldHighwaySegments",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 12999,
+      "columnNumber": 37
+    },
+    {
+      "us": 11642,
+      "functionName": "updateManagedOutlineVisibility",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 273,
+      "columnNumber": 41
+    },
+    {
+      "us": 11417,
+      "functionName": "trafficBody",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 2339,
+      "columnNumber": 22
+    },
+    {
+      "us": 10398,
+      "functionName": "",
+      "scriptId": "10",
+      "url": "http://127.0.0.1:36789/games/otthi/recorded-audio.js?v=20261029-continuity5",
+      "lineNumber": 30,
+      "columnNumber": 161
+    },
+    {
+      "us": 8331,
+      "functionName": "groundHeightAt",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 7023,
+      "columnNumber": 25
+    },
+    {
+      "us": 8139,
+      "functionName": "updateOttoviasTraffic",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 4520,
+      "columnNumber": 32
+    },
+    {
+      "us": 7677,
+      "functionName": "updateNeighborhoodVehicleAccess",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 11734,
+      "columnNumber": 42
+    },
+    {
+      "us": 7510,
+      "functionName": "fetch",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    {
+      "us": 7145,
+      "functionName": "updateTrafficIncidents",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 5062,
+      "columnNumber": 33
+    },
+    {
+      "us": 7098,
+      "functionName": "otthiHomeLotIndex",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 2005,
+      "columnNumber": 28
+    },
+    {
+      "us": 6903,
+      "functionName": "campaignSyncAircraft",
+      "scriptId": "26",
+      "url": "http://127.0.0.1:36789/games/otthi/app.js?v=70653&release=world-20261028-3",
+      "lineNumber": 12258,
+      "columnNumber": 30
+    },
+    {
+      "us": 6493,
+      "functionName": "multiplyMatrices",
+      "scriptId": "12",
+      "url": "http://127.0.0.1:36789/games/otthi/assets/vendor/three-r128.min.js?v=70653",
+      "lineNumber": 5,
+      "columnNumber": 49646
+    }
+  ],
+  "errors": []
+}

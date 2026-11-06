@@ -1,0 +1,22 @@
+{
+  "VERSION.json": {
+    "bytes": 38447,
+    "sha256": "dc000143909ffe5c1cb455642b2b77c1b45d002583f6de2fb13a69b37dafc4a7"
+  },
+  "release-manifest.json": {
+    "bytes": 11593,
+    "sha256": "0b97c1295cf2c679b7537498c1bca9b2e7d78b22a4e10cb270603b951f56e91b"
+  },
+  "index.html": {
+    "bytes": 15647,
+    "sha256": "cc5b5f024664e44cf77498460a72f3299569460d2aec590102329c9b75a56c84"
+  },
+  "sw.js": {
+    "bytes": 14684,
+    "sha256": "09ece17bcf5b0ef647ce151ec8959459e7ece005bb2ec034d2820556ee467230"
+  },
+  "app.js": {
+    "bytes": 2232607,
+    "sha256": "3f24fa91a9faf827f095b793f6c1c3ca1016146aa18db10e4d22609367deb49a"
+  }
+}
