@@ -84,26 +84,24 @@
  campaignBoardAircraft=async function(id){
   if(!airEnsure()||!airAvailable(id)||airOperations.boardingId)return false;const c=campaignAircraftPose(id);
   if(!c||!running||paused||otGames.active||player.vehicle||player.boating||currentHouse||campaignDist(player,c)>c.radius)return false;
-  if(!await airRequestClaim(id)){toast('Esta aeronave foi reservada por outro piloto. Há outras no aeroporto.','info',2800);return false;}
+  if(!await airRequestClaim(id)){toast(airOperations.fleet.data.craft[id]?.status==='piloted'&&airOperations.fleet.data.craft[id].pilot!==sharedWorldOwnId()?'Esta aeronave está sendo usada por outro piloto.':'Não foi possível sincronizar o embarque. Tente novamente.','info',2800);return false;}
   airOperations.boardingId=id;airSyncObstacles();let result=false;try{result=await airOriginalBoard(id);}catch(error){toast('Não foi possível preparar esta aeronave. Tente embarcar novamente.','warn',2800);}finally{airOperations.boardingId='';}if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'release',id}).catch(()=>{});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
  };
  const airOriginalPark=campaignParkAircraft;
  campaignParkAircraft=function(id,b){
   const result=airOriginalPark(id,b);if(!airEnsure())return result;
   airOperations.fleet.park(id,sharedWorldOwnId(),b,airNow());
-  if(airOnline()&&!sharedWorldIsAuthority())window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,z:b.z,yaw:b.yaw,hp:b.hp}}).catch(()=>{});
+  if(airOnline()&&!sharedWorldIsAuthority())window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,y:b.y,z:b.z,yaw:b.yaw,hp:b.hp,vx:b.vx||0,vy:b.vy||0,vz:b.vz||0}}).catch(()=>{});
   airSyncObstacles();campaignSyncAircraft();saveState(true);return result;
  };
- function airCanParkFromPresence(c,uid,pose,presence){
-  if(!c||c.status!=='piloted'||c.pilot!==uid||!pose||!presence||![pose.x,pose.z,pose.yaw,presence.x,presence.z].every(Number.isFinite))return false;
-  const bounds=v704WorldBounds();if(pose.x<bounds.minX||pose.x>bounds.maxX||pose.z<bounds.minZ||pose.z>bounds.maxZ)return false;
-  const ride=presence.familyRide;
-  // Leaving clears familyRide before the command reaches the authority. The
-  // same authenticated pilot may still park beside its last grounded pose.
-  if(ride?.kind==='aircraft')return ride.id===c.id&&!!ride.onGround&&Math.hypot(pose.x-ride.x,pose.z-ride.z)<12;
-  const ground=groundHeightAt(c.x,c.z)+campaignAircraftHeight(c.id);
-  return (c.onGround===true||Number.isFinite(c.y)&&c.y<=ground+1.5)&&Math.hypot(pose.x-c.x,pose.z-c.z)<12&&Math.hypot(pose.x-presence.x,pose.z-presence.z)<12;
+ function airParkPoseValid(c,presence,pose){
+  if(!c||!presence||!pose||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;
+  const ride=presence.familyRide?.kind==='aircraft'&&presence.familyRide.id===c.id?presence.familyRide:null;
+  if(presence.familyRide?.kind==='aircraft'&&!ride)return false;
+  const y=Number.isFinite(pose.y)?pose.y:ride?.y,near=ride||presence,vx=pose.vx??ride?.vx??0,vy=pose.vy??ride?.vy??0,vz=pose.vz??ride?.vz??0;
+  return [y,near.x,near.z,vx,vy,vz].every(Number.isFinite)&&Math.abs(y-groundHeightAt(pose.x,pose.z)-campaignAircraftHeight(c.id))<1&&Math.hypot(pose.x-near.x,pose.z-near.z)<20&&Math.hypot(vx,vz)<3&&Math.abs(vy)<1.5;
  }
+ function airCanParkFromPresence(c,uid,pose,presence){return !!c&&c.status==='piloted'&&c.pilot===uid&&airParkPoseValid(c,presence,pose);}
  function airReceiveCommand(event){
   if(!airEnsure()||!sharedWorldIsAuthority())return;const e=event.detail||{},p=e.payload||{},uid=String(e.actorUid||''),c=airOperations.fleet.data.craft[p.id],presence=remotePresence.get(uid);if(e.kind!=='air-fleet'||!c||!presence)return;
   if(p.action==='release'&&c.status==='piloted'&&c.pilot===uid&&!c.departedAt)airOperations.fleet.park(c.id,uid,c,airNow());

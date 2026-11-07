@@ -1,7 +1,7 @@
 {
   "status": "Candidate verification in progress; production remains unchanged",
-  "build": "705.28.19-evolucao-console",
-  "revision": "b94a6c11fdaa6ea0",
+  "build": "705.28.20-evolucao-console",
+  "revision": "5de3a8876ae6b7fb",
   "initialPreview": "https://otthi-world-campanha-teste-f4w5e8n7n-thiaguinho-s-projects.vercel.app",
   "branch": "console-evolution-20261106",
   "initialRuns": {
@@ -12,7 +12,7 @@
     "scenery": 42298095935
   },
   "unitTests": {
-    "passed": 385,
+    "passed": 391,
     "failed": 0
   },
   "verified": [
@@ -47,5 +47,18 @@
     "Sample right-hand availability at a fresh model observation instead of an arbitrary software-rendering instant",
     "Native free-flight runway landing, braking and second takeoff",
     "Align combat instructions with the two-hand mode"
+  ],
+  "preservedProductionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e",
+  "previousProduction": {
+    "build": "705.28.19-veiculo-fluidez",
+    "revision": "0e335be2c9539a84",
+    "deployment": "dpl_HwQDkUK4MqmzRsCH3jXdqsbUDdjR",
+    "source": "d69afb61c5544c87b0476f6f958c106f0dad5f8e"
+  },
+  "preservedProductionChecks": [
+    "Ground state and velocities are published on touchdown",
+    "Authenticated disembark accepts a real grounded pose even after walking presence arrives",
+    "Helicopter and plane reuse by a second pilot",
+    "Vehicle measurements require a moving, operational vehicle on a clear road"
   ]
 }

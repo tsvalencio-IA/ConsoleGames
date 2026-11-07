@@ -1,7 +1,7 @@
-const REVISION = 'b94a6c11fdaa6ea0';
+const REVISION = '5de3a8876ae6b7fb';
 const CACHE = `otthi-v70653-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.28.19-evolucao-console';
+const BUILD = '705.28.20-evolucao-console';
 const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70653';
 

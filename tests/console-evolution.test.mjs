@@ -66,10 +66,10 @@ test('phone aircraft: an occupied unit cannot be recalled, unsafe landing sites 
  job.holdLanding=true;assert(c.phoneAirDeliveryPose(job,100000).craft.y>=13.6,'a blocked destination holds above the landing area');
 });
 test('aircraft release: a disembark command is accepted after presence cleared the ride, while a different pilot or an airborne old position is rejected',()=>{
- const c=phoneFixture();vm.runInContext(fleetSource.slice(fleetSource.indexOf(' function airCanParkFromPresence('),fleetSource.indexOf(' function airReceiveCommand(')),c);
- const craft={id:'heli',status:'piloted',pilot:'guest',x:96,z:-164,y:1.6,onGround:true},pose={x:96,z:-164,yaw:.2},presence={x:99,z:-164};
+ const c=phoneFixture();vm.runInContext(fleetSource.slice(fleetSource.indexOf(' function airParkPoseValid('),fleetSource.indexOf(' function airReceiveCommand(')),c);
+ const craft={id:'heli',status:'piloted',pilot:'guest',x:96,z:-164,y:1.6,onGround:true},pose={x:96,y:1.6,z:-164,yaw:.2,vx:0,vy:0,vz:0},presence={x:99,z:-164};
  assert(c.airCanParkFromPresence(craft,'guest',pose,presence));assert.equal(c.airCanParkFromPresence(craft,'intruder',pose,presence),false);
- assert.equal(c.airCanParkFromPresence({...craft,onGround:false,y:100},'guest',pose,presence),false);
+ assert.equal(c.airCanParkFromPresence({...craft,onGround:false,y:100},'guest',{...pose,y:100},presence),false);
  assert.equal(c.airCanParkFromPresence({...craft,status:'delivery'},'guest',pose,presence),false,'a delayed old exit must not cancel a new delivery');
  const f=c.airOperations.fleet;f.claim('heli','guest',1000);assert(f.park('heli','guest',pose,2000));assert(f.claim('heli','next-player',2001));assert.equal(f.park('heli','guest',pose,2002),false);
 });

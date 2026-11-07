@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.19-evolucao-console';
+  const OTTHI_GAME_WEB_BUILD = '705.28.20-evolucao-console';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -11409,12 +11409,12 @@ function precompile(T,renderer,scene,camera){
   function familyBoatSeatOffset(i=-1){return[{x:-.4,y:.28,z:.72},{x:.4,y:.28,z:.72},{x:-.4,y:.28,z:-.65},{x:.4,y:.28,z:-.65}][Math.max(0,Math.min(3,i+1))];}
   function familyRideForOwner(uid){
     if(!uid)return null;const own=uid===sharedWorldOwnId(),owner=own?player:remotePresence.get(uid);if(!owner)return null;
-    if(own&&otGames.active&&otGames.mode!=='ground')return{kind:'aircraft',mode:otGames.mode,id:otGames.aircraftId||otGames.mode,hostUid:uid,...otGames.body};
+    if(own&&otGames.active&&otGames.mode!=='ground')return{kind:'aircraft',mode:otGames.mode,id:otGames.aircraftId||otGames.mode,hostUid:uid,...otGames.body,onGround:!!otGames.onGround};
     if(!own&&owner.familyRide?.kind==='aircraft'&&['plane','helicopter','balloon'].includes(owner.familyRide.mode)){const r=owner.familyRide;if(![r.x,r.y,r.z,r.yaw,r.pitch,r.roll].every(Number.isFinite))return null;const ghost=world.ghosts?.get(uid);return{...r,x:ghost?.position.x??r.x,y:ghost?.position.y??r.y,z:ghost?.position.z??r.z,yaw:ghost?.rotation.y??r.yaw};}
     if(owner.vehicle){const hostUid=own?player.car.passengerOf||uid:owner.vehiclePassengerOf||uid,host=hostUid===sharedWorldOwnId()?player:remotePresence.get(hostUid),vehicle=hostUid===sharedWorldOwnId()?currentVehicleRef():null,ghost=world.ghosts?.get(hostUid);return{kind:'car',id:own?player.car.id:String(owner.vehicleId||''),hostUid,passenger:hostUid!==uid,bodyType:vehicle?.bodyType||host?.vehicleBodyType||'small',vehicleKind:vehicle?.kind||host?.vehicleKind||'car',brazilModel:vehicle?.brazilModel||host?.vehicleAppearance?.brazilModel||'',x:vehicle?player.x:ghost?.position.x??Number(host?.vehicleX??host?.x??owner.x),y:vehicle?player.y:ghost?.position.y??Number(host?.vehicleY??host?.y??owner.y??0),z:vehicle?player.z:ghost?.position.z??Number(host?.vehicleZ??host?.z??owner.z),yaw:vehicle?player.car.heading:ghost?.rotation.y??Number(host?.vehicleR??host?.r??0),pitch:0,roll:0};}
     if(owner.boating){const hostUid=own?player.boat.passengerOf||uid:owner.passengerOf||uid,host=hostUid===sharedWorldOwnId()?player:remotePresence.get(hostUid),ghost=world.ghosts?.get(hostUid);return{kind:'boat',id:own?state.boats?.activeBoatId||'boat':owner.boatId||'boat',passenger:hostUid!==uid,hostUid,x:hostUid===sharedWorldOwnId()?player.x:ghost?.position.x??Number(host?.x??owner.x),y:hostUid===sharedWorldOwnId()?player.y:ghost?.position.y??Number(host?.y??owner.y??0),z:hostUid===sharedWorldOwnId()?player.z:ghost?.position.z??Number(host?.z??owner.z),yaw:hostUid===sharedWorldOwnId()?player.boat.heading:ghost?.rotation.y??Number(host?.r??0),pitch:0,roll:0};}return null;
   }
-  function familyCarryPresence(){const party=familyCarryParty(),ride=familyRideForOwner(sharedWorldOwnId()),air=ride?.kind==='aircraft',groups=player.vehicle&&!player.car.passengerOf?Object.fromEntries(hostedVehiclePassengerUids().map(uid=>[uid,vehiclePassengerGroupSeats(uid)])):{};return{familyParty:party,vehicleFamilySeats:familyVehicleSeatsUsed(),vehiclePassengerGroups:groups,boatFamilySeats:player.boating&&!player.boat.passengerOf?familyCompanionSeatCount(party):0,familyTravelSig:[party.controller,...party.members,ride?.kind||'',ride?.mode||'',air?Math.round(ride.pitch*40):0,air?Math.round(ride.roll*40):0].join('|'),familyRide:ride?{kind:ride.kind,mode:ride.mode||'',id:ride.id,hostUid:ride.hostUid,x:ride.x,y:ride.y,z:ride.z,yaw:ride.yaw,pitch:ride.pitch||0,roll:ride.roll||0}:null,...(air?{x:+ride.x.toFixed(2),y:+ride.y.toFixed(2),z:+ride.z.toFixed(2),r:+ride.yaw.toFixed(3)}:{})};}
+  function familyCarryPresence(){const party=familyCarryParty(),ride=familyRideForOwner(sharedWorldOwnId()),air=ride?.kind==='aircraft',groups=player.vehicle&&!player.car.passengerOf?Object.fromEntries(hostedVehiclePassengerUids().map(uid=>[uid,vehiclePassengerGroupSeats(uid)])):{};return{familyParty:party,vehicleFamilySeats:familyVehicleSeatsUsed(),vehiclePassengerGroups:groups,boatFamilySeats:player.boating&&!player.boat.passengerOf?familyCompanionSeatCount(party):0,familyTravelSig:[party.controller,...party.members,ride?.kind||'',ride?.mode||'',air?Math.round(ride.pitch*40):0,air?Math.round(ride.roll*40):0,air?!!ride.onGround:false].join('|'),familyRide:ride?{kind:ride.kind,mode:ride.mode||'',id:ride.id,hostUid:ride.hostUid,x:ride.x,y:ride.y,z:ride.z,yaw:ride.yaw,pitch:ride.pitch||0,roll:ride.roll||0,...(air?{onGround:!!ride.onGround,vx:Number(ride.vx)||0,vy:Number(ride.vy)||0,vz:Number(ride.vz)||0}:{})}:null,...(air?{x:+ride.x.toFixed(2),y:+ride.y.toFixed(2),z:+ride.z.toFixed(2),r:+ride.yaw.toFixed(3)}:{})};}
   function familyCarrySeats(ride,members,controller,owner){
     const seats={},others=members.filter(id=>id!==controller),humans=others.filter(id=>id==='thiago'||id==='thamis'),dogs=others.filter(id=>id==='luna'||id==='liz');
     if(ride.kind==='aircraft'){seats[controller]=aircraftSeatOffset(ride.mode,-1,ride.id);let next=0;humans.forEach(id=>seats[id]=aircraftSeatOffset(ride.mode,next++,ride.id));const pet=aircraftSeatOffset(ride.mode,next,ride.id);dogs.forEach((id,i)=>seats[id]={...pet,x:pet.x+(dogs.length===2?(i?1:-1)*.08:0)});}
@@ -12328,26 +12328,24 @@ function precompile(T,renderer,scene,camera){
  campaignBoardAircraft=async function(id){
   if(!airEnsure()||!airAvailable(id)||airOperations.boardingId)return false;const c=campaignAircraftPose(id);
   if(!c||!running||paused||otGames.active||player.vehicle||player.boating||currentHouse||campaignDist(player,c)>c.radius)return false;
-  if(!await airRequestClaim(id)){toast('Esta aeronave foi reservada por outro piloto. Há outras no aeroporto.','info',2800);return false;}
+  if(!await airRequestClaim(id)){toast(airOperations.fleet.data.craft[id]?.status==='piloted'&&airOperations.fleet.data.craft[id].pilot!==sharedWorldOwnId()?'Esta aeronave está sendo usada por outro piloto.':'Não foi possível sincronizar o embarque. Tente novamente.','info',2800);return false;}
   airOperations.boardingId=id;airSyncObstacles();let result=false;try{result=await airOriginalBoard(id);}catch(error){toast('Não foi possível preparar esta aeronave. Tente embarcar novamente.','warn',2800);}finally{airOperations.boardingId='';}if(!result){if(!airOnline()||sharedWorldIsAuthority())airOperations.fleet.park(id,sharedWorldOwnId(),c,airNow());else window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'release',id}).catch(()=>{});}else state.vehicles.airOperations=airOperations.fleet.data;return result;
  };
  const airOriginalPark=campaignParkAircraft;
  campaignParkAircraft=function(id,b){
   const result=airOriginalPark(id,b);if(!airEnsure())return result;
   airOperations.fleet.park(id,sharedWorldOwnId(),b,airNow());
-  if(airOnline()&&!sharedWorldIsAuthority())window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,z:b.z,yaw:b.yaw,hp:b.hp}}).catch(()=>{});
+  if(airOnline()&&!sharedWorldIsAuthority())window.OTTHOS_RTDB.sendEventV2('air-fleet',{action:'park',id,pose:{x:b.x,y:b.y,z:b.z,yaw:b.yaw,hp:b.hp,vx:b.vx||0,vy:b.vy||0,vz:b.vz||0}}).catch(()=>{});
   airSyncObstacles();campaignSyncAircraft();saveState(true);return result;
  };
- function airCanParkFromPresence(c,uid,pose,presence){
-  if(!c||c.status!=='piloted'||c.pilot!==uid||!pose||!presence||![pose.x,pose.z,pose.yaw,presence.x,presence.z].every(Number.isFinite))return false;
-  const bounds=v704WorldBounds();if(pose.x<bounds.minX||pose.x>bounds.maxX||pose.z<bounds.minZ||pose.z>bounds.maxZ)return false;
-  const ride=presence.familyRide;
-  // Leaving clears familyRide before the command reaches the authority. The
-  // same authenticated pilot may still park beside its last grounded pose.
-  if(ride?.kind==='aircraft')return ride.id===c.id&&!!ride.onGround&&Math.hypot(pose.x-ride.x,pose.z-ride.z)<12;
-  const ground=groundHeightAt(c.x,c.z)+campaignAircraftHeight(c.id);
-  return (c.onGround===true||Number.isFinite(c.y)&&c.y<=ground+1.5)&&Math.hypot(pose.x-c.x,pose.z-c.z)<12&&Math.hypot(pose.x-presence.x,pose.z-presence.z)<12;
+ function airParkPoseValid(c,presence,pose){
+  if(!c||!presence||!pose||![pose.x,pose.z,pose.yaw].every(Number.isFinite))return false;
+  const ride=presence.familyRide?.kind==='aircraft'&&presence.familyRide.id===c.id?presence.familyRide:null;
+  if(presence.familyRide?.kind==='aircraft'&&!ride)return false;
+  const y=Number.isFinite(pose.y)?pose.y:ride?.y,near=ride||presence,vx=pose.vx??ride?.vx??0,vy=pose.vy??ride?.vy??0,vz=pose.vz??ride?.vz??0;
+  return [y,near.x,near.z,vx,vy,vz].every(Number.isFinite)&&Math.abs(y-groundHeightAt(pose.x,pose.z)-campaignAircraftHeight(c.id))<1&&Math.hypot(pose.x-near.x,pose.z-near.z)<20&&Math.hypot(vx,vz)<3&&Math.abs(vy)<1.5;
  }
+ function airCanParkFromPresence(c,uid,pose,presence){return !!c&&c.status==='piloted'&&c.pilot===uid&&airParkPoseValid(c,presence,pose);}
  function airReceiveCommand(event){
   if(!airEnsure()||!sharedWorldIsAuthority())return;const e=event.detail||{},p=e.payload||{},uid=String(e.actorUid||''),c=airOperations.fleet.data.craft[p.id],presence=remotePresence.get(uid);if(e.kind!=='air-fleet'||!c||!presence)return;
   if(p.action==='release'&&c.status==='piloted'&&c.pilot===uid&&!c.departedAt)airOperations.fleet.park(c.id,uid,c,airNow());

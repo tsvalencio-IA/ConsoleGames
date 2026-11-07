@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.19-evolucao-console",
+  "build": "705.28.20-evolucao-console",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "4c80e4c6b4584d6c359efcc51dc04403b483264706bd43cf616223f4f027724f"
+      "sha256Body": "058e126b6299967523960daf19fe7b2b57aa215164ae1b9d5762fc7e56361f06"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -434,7 +434,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Família embarcada nos veículos reais",
-      "sha256Body": "b2230cafd4171da7bd340edbb388b5015c616d8b13281152ee9ebfe0729a0a94"
+      "sha256Body": "17ae902b13174572c6effc095aa163bbd9cb79aa2f1910e7329d3b92aa5c8e6e"
     },
     {
       "file": "src/modules/49-brazilian-vehicles.js",
@@ -538,7 +538,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "859b1e0aca3ea2705de0378582692ae0b23ba071fadd75d903b5a36d85d31bd9"
+      "sha256Body": "80355c55ea1aa226c8a72f41ff36a309423fa2f36e34ed4218c70f9a8bafa3fa"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",
