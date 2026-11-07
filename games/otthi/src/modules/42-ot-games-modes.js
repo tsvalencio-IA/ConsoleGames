@@ -246,7 +246,7 @@
   }
   function updateOtGames(dt){
     const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){const power=g.collective;otGamesClearInput();g.collective=power;otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
-    if(g.state!=='PLAYING'||(g.handSession&&!g.handSession.dualHands&&!g.handAim?.fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;g.hudDirty=true;return;}
+    if(g.state!=='PLAYING'||(g.handSession&&!g.handSession.dualHands&&!g.handAim?.fresh)||(g.handSession?.dualHands&&!g.handAim?.fresh&&!g.handSession.controller.navigation.read(performance.now()).fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;g.hudDirty=true;return;}
     const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
@@ -268,7 +268,7 @@
         const offset=a.x-.5,body=g.bodyPose?.fresh?g.bodyPose:null;b.yaw=g.handViewAnchor.yaw-(offset*1.7+Math.sign(offset)*Math.pow(Math.max(0,Math.abs(offset)-.30)/.20,2)*2.2)-(body?.turnYaw||0)*.65-(body?.lean||0)*.30;b.pitch=clamp(g.handViewAnchor.pitch+(.48-a.y)*2.2,-1.05,1.05);
       }
       let mx=x,my=y,speed=g.crouched?2.2:5;const free=(px,pz)=>!positionBlockedForPlayer(px,pz,.45,{ignoreTraffic:true});
-      if(g.handMode&&g.handSession){const body=g.bodyPose?.fresh?g.bodyPose:null;mx=body?.moveX||0;my=body?.moveZ||0;g.crouched=!!body?.crouched;speed=g.crouched?2.2:5;}
+      if(g.handMode&&g.handSession&&!g.handSession.dualHands){const body=g.bodyPose?.fresh?g.bodyPose:null;mx=body?.moveX||0;my=body?.moveZ||0;g.crouched=!!body?.crouched;speed=g.crouched?2.2:5;}
       if(g.handMode&&g.handSession?.dualHands){const nav=g.handSession.controller.navigation.read(performance.now());mx=0;my=nav.fresh?nav.move:0;}
       const n=Math.max(1,Math.hypot(mx,my)),nx=b.x+(-Math.cos(b.yaw)*mx+Math.sin(b.yaw)*my)/n*speed*dt,nz=b.z+(Math.sin(b.yaw)*mx+Math.cos(b.yaw)*my)/n*speed*dt;
       if(free(nx,nz)){b.x=nx;b.z=nz;g.autoWalking=!!g.handSession&&!!(mx||my);}b.y=groundHeightAt(b.x,b.z)+(g.crouched?1.05:1.8);

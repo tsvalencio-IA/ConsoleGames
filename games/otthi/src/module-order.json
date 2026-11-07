@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.20-evolucao-console",
+  "build": "705.28.21-war-revisao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "058e126b6299967523960daf19fe7b2b57aa215164ae1b9d5762fc7e56361f06"
+      "sha256Body": "6f1bb39611fbf570cc89c7d21863e6ca6b1da9afca98e883f88b3cc19c1a5e43"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "79f02f8a42a1c1d910c940adb6204cee337c4c1aab322036d2bcb347d1c442b2"
+      "sha256Body": "1676aea827beb1e85c7f4373a8b105fabb2d2ad35cba010a988791e728fbb1f1"
     },
     {
       "file": "src/modules/43-world-campaign.js",

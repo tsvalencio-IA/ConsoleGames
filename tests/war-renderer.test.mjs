@@ -10,7 +10,7 @@ function renderer(f,unavailable=false,detailed=false){
  const module={exports:{}};vm.runInNewContext(read('games/ar/vendor/three-r128.min.js'),{module,exports:module.exports,console});
  class GPU{
   constructor({canvas}){if(unavailable)throw Error('GPU unavailable');this.domElement=canvas;this.shadowMap={};this.info={render:{calls:1,triangles:1000}}}
-  setPixelRatio(){}setSize(w,h){this.domElement.width=w;this.domElement.height=h}setClearColor(){}render(scene){scene.updateMatrixWorld(true);f.sceneCapture=scene;(f.sceneCaptures??=[]).push(scene)}clearDepth(){}dispose(){}
+  setPixelRatio(){}setSize(w,h){this.domElement.width=w;this.domElement.height=h}setClearColor(){}render(scene){f.renderCost?.();scene.updateMatrixWorld(true);f.sceneCapture=scene;(f.sceneCaptures??=[]).push(scene)}clearDepth(){}dispose(){}
  }
  const ctx=new Proxy({createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})}, {get(o,k){return o[k]||(()=>{})}});
  const document={createElement:()=>({width:1,height:1,getContext:()=>ctx,addEventListener(){}})};
@@ -36,6 +36,23 @@ test('flight: same chase/cockpit projection, original road positions and populat
  }
  assert.equal(JSON.stringify(g.groundTraffic),traffic);assert.equal(JSON.stringify(g.ship),ship);
  const info=api.inspect(g);assert(info.staticInstances>8000);assert(info.dynamicInstances>300);api.release(g);
+});
+test('WAR: the battlefield still redraws for left-hand movement when the right hand is absent, then freezes when both are lost',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'patrol'});let now=1000;f.window.performance={now:()=>now};
+ const api=renderer(f),g=f.game,nav={fresh:true};g.handSession={dualHands:true,controller:{navigation:{read:()=>nav}}};g.handAim={fresh:false};
+ api.combat(g,canvas(),844,390,false);const first=g.worldVisual.frames;
+ now+=100;g.player.z+=2;api.combat(g,canvas(),844,390,false);assert(g.worldVisual.frames>first,'left-hand walking must remain visible');
+ nav.fresh=false;const last=g.worldVisual.frames;now+=100;api.combat(g,canvas(),844,390,false);assert.equal(g.worldVisual.frames,last);api.release(g);
+});
+test('WAR auto quality recovers camera detail after sustained cheap GPU frames and lowers it again under sustained render cost',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'patrol'});let now=1000,cost=5;f.window.performance={now:()=>now};f.renderCost=()=>now+=cost;
+ const api=renderer(f),g=f.game;g.handSession={lastComputeMs:260};g.handAim={fresh:true};
+ api.combat(g,canvas(),844,390,false);const initial=g.worldVisual.width;
+ for(let i=0;i<100;i++){now+=100;api.combat(g,canvas(),844,390,false);}
+ assert(g.worldVisual.width>initial,'slow inference alone must not leave a fast GPU permanently blurry');assert(g.worldVisual.pixelBudget<=800000);assert.equal(g.worldVisual.drawCalls,2,'diagnostics count both scene and weapon passes');
+ const recovered=g.worldVisual.width;cost=55;
+ for(let i=0;i<120;i++){now+=150;api.combat(g,canvas(),844,390,false);}
+ assert(g.worldVisual.width<recovered);assert(g.worldVisual.pixelBudget>=160000);api.release(g);
 });
 test('render: unsupported GPU falls back without changing controls, enemies, ammo or mission',()=>{
  const f=engine('ar','game_ar');f.game.init({id:'extraction'});f.game.step(0);f.game.spawnWave();const api=renderer(f,true),g=f.game;

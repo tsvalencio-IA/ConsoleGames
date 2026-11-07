@@ -460,14 +460,15 @@ class World{
   const g=this.game,flight=this.type==='flight',q=window.ArcadePlaySettings?.get().quality;
   // A stale hand freezes simulation. Reuse that same battlefield image while
   // the worker catches up instead of spending its CPU budget redrawing it.
-  if(g.handSession&&!g.handAim?.fresh&&this.frames){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
+  if(g.handSession&&!g.handAim?.fresh&&(!g.handSession.dualHands||!g.handSession.controller.navigation.read(clock()).fresh)&&this.frames){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
   const v=flight?(g.view||g.ship):{x:g.player.x,y:g.eyeY||1.8,z:g.player.z,yaw:g.player.yaw,pitch:g.player.pitch,roll:0};
   const focal=flight?800:(g.focalLength?.(w,h)||Math.min(w,h)*.88);
   const lv=this.lastView,jump=this.lastFocal!==focal||!lv||Math.hypot(v.x-lv.x,v.y-lv.y,v.z-lv.z)>(flight?75:1)||Math.abs(v.yaw-lv.yaw)>.12||Math.abs(v.pitch-lv.pitch)>.12;
   if(this.frames&&!jump&&clock()<this.nextRenderAt&&this.lastWidth===w&&this.lastHeight===h&&this.lastCamera===cameraBackground){ctx.drawImage(this.frameCanvas||this.canvas,0,0,w,h);return true}
   // Internal pixels are capped on phones, independently of the HUD canvas.
   const slowHands=!!g.handSession&&(this.software||g.handSession.lastComputeMs>180);
-  const begin=clock(),cap=slowHands?(this.software?80000:200000):q==='high'?1400000:800000;
+  const begin=clock(),baseCap=slowHands?(this.software?80000:200000):q==='high'?1400000:800000;
+  const adaptiveCombat=!flight&&q==='auto',cap=adaptiveCombat?(this.pixelBudget??=baseCap):baseCap;
   const factor=Math.min(this.renderScale,Math.sqrt(cap/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
   if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
   configureCamera(this.camera,v,w,h,focal,flight?.5:.48,flight?10:.15,flight?120000:1800);
@@ -480,7 +481,8 @@ class World{
   for(const o of this.scene.children)if(o.isMesh&&o!==this.sky&&!o.isInstancedMesh&&o!==this.terrain)o.visible=!cameraBackground;
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
-  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.98:-.82):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=(this.combatWeaponV2?-.056:-.166+.022*h/edge)+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);this.renderer.autoClear=true}
+  let drawCalls=this.renderer.info.render.calls,triangles=this.renderer.info.render.triangles;
+  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.98:-.82):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=(this.combatWeaponV2?-.056:-.166+.022*h/edge)+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);drawCalls+=this.renderer.info.render.calls;triangles+=this.renderer.info.render.triangles;this.renderer.autoClear=true}
   if(this.frameCanvas){
    if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
    this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);
@@ -490,8 +492,12 @@ class World{
   // Software GPUs share CPU time with input and physics. Leave several native
   // animation ticks between draws instead of stalling reloads and flight motion.
   this.nextRenderAt=clock()+(slowHands?85:this.software||g.handSession?33:0);
-  if(q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
-  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
+  this.renderCost=this.renderCost==null?duration:this.renderCost*.85+duration*.15;
+  // A slow hand inference is not proof of a slow GPU. Start conservatively,
+  // then recover detail only after sustained cheap renders; keep a hard cap.
+  if(adaptiveCombat&&this.frames%18===0){const floor=this.software?80000:160000,ceiling=this.software?200000:800000;if(this.renderCost>32)this.pixelBudget=Math.max(floor,this.pixelBudget*.8);else if(this.renderCost<14)this.pixelBudget=Math.min(ceiling,this.pixelBudget*1.18);}
+  else if(!adaptiveCombat&&q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
+  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls,triangles,pixelBudget:Math.round(cap),width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
   return true;
  }
  dispose(){

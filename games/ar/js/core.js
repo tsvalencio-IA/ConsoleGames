@@ -415,7 +415,8 @@ window.System = {
                 } finally {ctx.restore();}
                 if (system.loopEpoch !== epoch || system.activeGame !== game) return;
                 const hud = document.getElementById('hud-score');
-                if (hud) hud.innerText = String(Math.max(0,Math.floor(Number(score)||0)));
+                const scoreText=String(Math.max(0,Math.floor(Number(score)||0)));
+                if (hud && hud.textContent!==scoreText) hud.textContent=scoreText;
             }
         } catch (error) {
             console.error('Falha durante partida:',error);

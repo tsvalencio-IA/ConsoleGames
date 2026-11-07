@@ -41,6 +41,35 @@ test('two hands: accumulated turns exceed 180 degrees with no physical turn or a
 });
 
 const phoneSource=read('games/otthi/src/modules/73-world-phone-dispatch.js');
+test('two-hand calibration waits for both hands before binding their roles, even when the left hand appears first',()=>{
+ const c=new AimController({dualHands:true});
+ for(let at=100;at<=1800;at+=100)c.consume({landmarks:[hand(.73)],handedness:[[{categoryName:'Right',score:.98}]]},at);
+ assert.equal(c.state,'calibrating');assert.equal(c.label,null);
+ for(let at=1900;at<=4600;at+=100)c.consume(pair(),at);
+ assert.equal(c.state,'ready');assert.equal(c.label,'Left');assert.equal(c.navigation.neutral.label,'Right');
+});
+test('both hands share the measured freshness budget while either missing detection still releases its own command immediately',()=>{
+ const c=dual();c.setLatency(260);c.consume(pair(.61,.4),2800);
+ assert(c.read(3300).fresh);assert(c.navigation.read(3300).fresh);
+ assert(!c.read(3351).fresh);assert(!c.navigation.read(3351).fresh);
+ c.consume({landmarks:[hand(.28)],handedness:[[{categoryName:'Left',score:.98}]]},3400);
+ assert(c.read(3400).fresh);assert(!c.navigation.read(3400).fresh);
+});
+test('two-hand WAR preserves the crouch button without requiring a torso detector',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.enemies=[];
+ g.handSession={dualHands:true,controller:{navigation:{read:()=>({fresh:false,move:0,turn:0})}},dispose(){}};
+ g.handAim={fresh:true,x:.5,y:.48,fire:false,calibration:1};
+ g.toggleCrouch();g.step(.016);assert(g.crouched);assert.equal(g.eyeY,1.05);
+ g.toggleCrouch();g.step(.016);assert(!g.crouched);assert.equal(g.eyeY,1.8);
+});
+test('two-hand WAR pauses combat when both hands are unavailable and keeps either remaining hand independent',()=>{
+ const {game:g}=engine('ar','game_ar');g.init({id:'patrol'});g.waveDelay=999;g.enemies=[];
+ const nav={fresh:false,move:0,turn:0};g.handSession={dualHands:true,controller:{navigation:{read:()=>nav}},dispose(){}};
+ g.handAim={fresh:false,present:false,x:.5,y:.48,fire:false,calibration:1};
+ const elapsed=g.elapsed,hp=g.player.hp;g.step(.2);assert.equal(g.elapsed,elapsed);assert.equal(g.player.hp,hp);assert.equal(g.stats.shots,0);
+ Object.assign(nav,{fresh:true,move:.5});g.step(.1);assert(g.player.z>0);assert.equal(g.stats.shots,0);
+ Object.assign(nav,{fresh:false,move:0});const z=g.player.z;Object.assign(g.handAim,{fresh:true,fire:true});g.step(.1);assert.equal(g.player.z,z);assert(g.stats.shots>0);
+});
 const fleetSource=read('games/otthi/src/modules/61-world-air-operations.js');
 function phoneFixture(){
  const c=vm.createContext({Math,Date,Number,lerp:(a,b,t)=>a+(b-a)*t,clamp:(v,a,b)=>Math.max(a,Math.min(b,v)),window:{},world:{colliders:[],vehicles:[]},remotePresence:new Map(),player:{x:180,z:200},sharedWorldRuntime:{},groundHeightAt:()=>0,waterAt:()=>false,v704WorldBounds:()=>({minX:-1000,maxX:1000,minZ:-1000,maxZ:1000}),campaignAircraftHeight:()=>1.6,airSafeCruise:()=>45,airNow:()=>1000,airEnsure:()=>true});

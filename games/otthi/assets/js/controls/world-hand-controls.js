@@ -13,7 +13,7 @@ const feature=points=>{
 };
 class HandNavigator{
  constructor(){this.reset();}
- reset(){this.neutral=null;this.samples=[];this.lastAt=-Infinity;this.output={fresh:false,move:0,turn:0};}
+ reset(){this.neutral=null;this.samples=[];this.lastAt=-Infinity;this.maxAge=300;this.output={fresh:false,move:0,turn:0};}
  release(){Object.assign(this.output,{fresh:false,move:0,turn:0});return this.output;}
  consume(candidates,primaryLabel,at){
   if(at<=this.lastAt)return this.read(at);
@@ -33,7 +33,7 @@ class HandNavigator{
   this.output.move=move===0?0:this.output.move+(move-this.output.move)*blend;
   this.output.fresh=true;this.lastAt=at;return this.output;
  }
- read(now){return now-this.lastAt>450?this.release():this.output;}
+ read(now){return now-this.lastAt>this.maxAge?this.release():this.output;}
 }
 class AimController{
  constructor(options={}){this.dualHands=!!options.dualHands;this.navigation=new HandNavigator();this.calibration=0;this.reset();}
@@ -41,6 +41,7 @@ class AimController{
   // lastSeen is capture time. Keep one inference cycle plus the next result
   // continuous, while retaining the existing absolute 550 ms freshness cap.
   this.maxAge=Math.min(550,Math.max(300,latency*2+100));
+  this.navigation.maxAge=this.maxAge;
   // Retain only acquisition memory across the two serial detectors. An old
   // frame still cannot move or fire, and an empty detection clears it at once.
   this.pendingAge=Math.max(900,this.maxAge*2,posture?Math.min(2000,latency*2+posture+150):0);return this.maxAge;
@@ -51,7 +52,7 @@ class AimController{
   // During the first calibration, the anatomical right hand is at the left
   // of the unmirrored sensor. Bind its detector label once; never switch hands
   // later when they cross or one detection disappears.
-  const initial=this.dualHands&&this.state==='calibrating'&&candidates.length>1?[candidates.reduce((a,b)=>a.f.x<b.f.x?a:b)]:candidates;
+  const initial=this.dualHands&&this.state==='calibrating'?(candidates.length===2&&candidates[0].label!==candidates[1].label?[candidates.reduce((a,b)=>a.f.x<b.f.x?a:b)]:[]):candidates;
   const aim=this.consumeCandidates(initial,now,'hand');
   if(this.dualHands&&this.state==='ready')this.navigation.consume(candidates,this.label,now);
   if(this.dualHands&&aim.fresh){const points=this.last?.points,ratio=points?Math.hypot(points[4].x-points[8].x,points[4].y-points[8].y)/this.last.scale:Infinity;aim.fire=ratio<(aim.fire?.62:.43);aim.twoHands=false;}
@@ -115,7 +116,7 @@ class CameraSession{
    const source='hand';this.worker=new Worker(new URL('hand-tracker-worker.js',handRoot));
    this.worker.onmessage=({data})=>{
     if(this.disposed||source!==this.source)return;
-    if(data.type==='ready'){clearTimeout(this.loadTimer);this.ready=true;this.busy=false;this.delegate=data.delegate;this.status.textContent='Mostre a mão direita aberta e fique parado por um segundo. Os ombros não são obrigatórios.';this.root.querySelector('[data-hand="capture"]').disabled=false;this.root.querySelector('[data-hand="reuse"]').disabled=false;this.cameraRegistration?.sync();}
+    if(data.type==='ready'){clearTimeout(this.loadTimer);this.ready=true;this.busy=false;this.delegate=data.delegate;this.status.textContent=this.dualHands?'Mostre as duas mãos abertas e separadas. Mantenha-as paradas para calibrar.':'Mostre a mão direita aberta e fique parado por um segundo. Os ombros não são obrigatórios.';this.root.querySelector('[data-hand="capture"]').disabled=false;this.root.querySelector('[data-hand="reuse"]').disabled=false;this.cameraRegistration?.sync();}
     if(data.type==='recovering'){this.ready=false;this.busy=false;this.release();this.status.textContent=data.message;}
     if(data.type==='error')this.fail(data.message);
     if(data.type==='capture-error'){this.busy=false;this.frameSent=0;this.objectTools?.resetCapture(data.message);this.needCapture=true;this.captureROI=false;this.release();this.status.textContent=data.message;this.captureMessage=data.message;}
@@ -151,15 +152,15 @@ class CameraSession{
   const handDue=!this.cameraRegistration?.switching&&this.ready&&!this.busy&&!this.objectTools?.frozen&&video?.readyState>=2&&now>=this.nextFrame&&video.currentTime!==this.lastVideo&&(this.source!=='object'||!this.needCapture&&now>=(this.captureAt||0));
   this.bodySession?.tick(video,now,paused||!!this.cameraRegistration?.blocksBody,Number(this.lastInferenceMs||0),this.busy,handDue);this.game.handAim=this.controller.read(now);if(this.source==='object'&&this.game.bodyPose?.fresh)this.game.handAim.twoHands=!!this.game.bodyPose.twoHands;if(!paused)this.finishCalibration();
   // Unavailable body tracking never takes the player back to calibration.
-  if(video?.readyState>=2&&!paused){
+  const preview=this.root.classList.contains('calibrating'),due=handDue&&!this.bodySession?.busy;
+  if(video?.readyState>=2&&!paused&&(due||preview)){
    const ctx=this.canvas.getContext('2d',{willReadFrequently:true});ctx.save();
    const vw=video.videoWidth||320,vh=video.videoHeight||240,fit=Math.min(320/vw,240/vh),dw=vw*fit,dh=vh*fit;
-   const due=handDue&&!this.bodySession?.busy;
-   const preview=this.root.classList.contains('calibrating');if(due||preview){ctx.fillStyle='#102732';ctx.fillRect(0,0,320,240);ctx.drawImage(video,0,0,vw,vh,(320-dw)/2,(240-dh)/2,dw,dh);}
+   ctx.fillStyle='#102732';ctx.fillRect(0,0,320,240);ctx.drawImage(video,0,0,vw,vh,(320-dw)/2,(240-dh)/2,dw,dh);
    let rawFrame=null,crop=null;if(due){crop=!this.dualHands&&this.source==='hand'&&this.game.bodyPose?.fresh?window.WarBodyControl.handRegion(this.bodySession.controller.landmarks,vw,vh):null;if(crop){this.sensorCanvas??=document.createElement('canvas');this.sensorCanvas.width=this.sensorCanvas.height=256;const sensor=this.sensorCanvas.getContext('2d',{willReadFrequently:true});sensor.drawImage(video,crop.x*vw,crop.y*vh,crop.w*vw,crop.h*vh,0,0,256,256);rawFrame=sensor.getImageData(0,0,256,256);}else rawFrame=ctx.getImageData(0,0,320,240);}
    if(preview&&!this.cameraRegistration?.blocksBody){const body=this.bodySession?.controller,points=body?.landmarks;if(points&&now-body.lastInput<=1200){const xy=p=>({x:(320-dw)/2+p.x*dw,y:(240-dh)/2+p.y*dh});ctx.strokeStyle='#6de2f0';ctx.lineWidth=2;for(const[a,b]of[[11,12],[11,23],[12,24],[23,24],[11,13],[13,15],[12,14],[14,16],[23,25],[25,27],[24,26],[26,28]]){if((points[a]?.visibility??0)<.55||(points[b]?.visibility??0)<.55)continue;const p=xy(points[a]),q=xy(points[b]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}}
    if(this.source==='object'&&this.controller.state==='calibrating'){const r=this.roi;ctx.strokeStyle='#ffd887';ctx.lineWidth=3;ctx.strokeRect(r.x*320,r.y*240,r.w*320,r.h*240);}
-   ctx.lineWidth=2;ctx.strokeStyle='#8bf4c2';for(const hand of this.source==='hand'?this.landmarks||[]:[])for(const line of connections){ctx.beginPath();line.forEach((i,j)=>j?ctx.lineTo(hand[i].x*320,hand[i].y*240):ctx.moveTo(hand[i].x*320,hand[i].y*240));ctx.stroke();}if(preview&&this.source==='object')this.objectTools?.draw(ctx);ctx.restore();
+   if(preview){ctx.lineWidth=2;ctx.strokeStyle='#8bf4c2';for(const hand of this.source==='hand'?this.landmarks||[]:[])for(const line of connections){ctx.beginPath();line.forEach((i,j)=>j?ctx.lineTo(hand[i].x*320,hand[i].y*240):ctx.moveTo(hand[i].x*320,hand[i].y*240));ctx.stroke();}if(this.source==='object')this.objectTools?.draw(ctx);}ctx.restore();
    if(due){
     this.busy=true;this.frameSent=now;this.lastVideo=video.currentTime;this.nextFrame=now+80;this.inflightSerial=this.serial;this.inflightCrop=crop||{x:-(320-dw)/(2*dw),y:-(240-dh)/(2*dh),w:320/dw,h:240/dh};
     try{
@@ -167,12 +168,14 @@ class CameraSession{
     }catch{this.busy=false;this.release();}
    }
   }
-  const bodyStatus=this.root.querySelector('[data-war-body-status]');if(bodyStatus){const state=this.bodySession?.status;bodyStatus.dataset.ready=String(!!this.game.bodyPose?.fresh);const reason=this.bodySession?.controller.reason,progress=Math.min(100,Math.round((this.bodySession?.controller.samples.length||0)/6*100));bodyStatus.textContent=this.dualHands?'DUAS MÃOS · O corpo inteiro não precisa aparecer.':this.cameraRegistration?.blocksBody?'CADASTRO TRASEIRO · Corpo pausado até voltar à frontal.':state==='unavailable'?'CORPO INDISPONÍVEL · Toque em CALIBRAR NOVAMENTE para tentar de novo.':state==='loading'?'CORPO · Carregando reconhecimento…':this.game.bodyPose?.fresh?'✓ CORPO CALIBRADO · Agache e gire.':this.bodySession?.controller.neutral?'CORPO FORA DO QUADRO · MIRA COM A MÃO CONTINUA.':reason==='closer'?'CORPO · Aproxime-se um pouco.':reason==='farther'?'CORPO · Afaste-se um pouco.':reason==='hold-still'?'CORPO · Fique parado… '+progress+'%':'CORPO OPCIONAL · ENQUADRE O TRONCO PARA AGACHAR E GIRAR.';}
+  const bodyStatus=this.root.querySelector('[data-war-body-status]');if(bodyStatus){const state=this.bodySession?.status;const bodyReady=String(!!this.game.bodyPose?.fresh);if(bodyStatus.dataset.ready!==bodyReady)bodyStatus.dataset.ready=bodyReady;const reason=this.bodySession?.controller.reason,progress=Math.min(100,Math.round((this.bodySession?.controller.samples.length||0)/6*100));const bodyText=this.dualHands?'DUAS MÃOS · O corpo inteiro não precisa aparecer.':this.cameraRegistration?.blocksBody?'CADASTRO TRASEIRO · Corpo pausado até voltar à frontal.':state==='unavailable'?'CORPO INDISPONÍVEL · Toque em CALIBRAR NOVAMENTE para tentar de novo.':state==='loading'?'CORPO · Carregando reconhecimento…':this.game.bodyPose?.fresh?'✓ CORPO CALIBRADO · Agache e gire.':this.bodySession?.controller.neutral?'CORPO FORA DO QUADRO · MIRA COM A MÃO CONTINUA.':reason==='closer'?'CORPO · Aproxime-se um pouco.':reason==='farther'?'CORPO · Afaste-se um pouco.':reason==='hold-still'?'CORPO · Fique parado… '+progress+'%':'CORPO OPCIONAL · ENQUADRE O TRONCO PARA AGACHAR E GIRAR.';if(bodyStatus.textContent!==bodyText)bodyStatus.textContent=bodyText;}
   if(this.ready&&!this.error){
-   if(this.source==='object'&&this.controller.state==='calibrating')this.status.textContent=this.objectTools?.progress(now)||'Selecione os detalhes do brinquedo e toque em CAPTURAR.';
-   else if(this.controller.state==='calibrating')this.status.textContent=this.controller.samples.length?'Segure a mão direita parada… '+Math.min(100,Math.round((now-(this.controller.samples[0]?.time||now))/10))+'%':'MÃO · Abra a mão direita na altura do peito, dentro da imagem.';
-   else if(this.dualHands)this.status.textContent=!this.controller.navigation.neutral?'MÃO ESQUERDA · Mantenha-a aberta e parada na posição de controle.':!this.game.handAim.fresh?'MÃO DIREITA FORA DO QUADRO · TIRO PAUSADO':!this.controller.navigation.read(now).fresh?'MÃO ESQUERDA FORA DO QUADRO · MOVIMENTO PAUSADO':'ESQUERDA · ANDAR / GIRAR · DIREITA · MIRAR / PINÇAR PARA ATIRAR';
-   else this.status.textContent=this.game.handAim.fresh?(this.game.state==='HAND_CALIBRATION'?'✓ MÃO DIREITA CALIBRADA · INICIANDO PARTIDA.':this.source==='object'?'OBJETO · TIRO AO MIRAR NO ALVO':this.game.handAim.twoHands?'DUAS MÃOS · MIRA ESTABILIZADA':'MÃO DIREITA · TIRO AO MIRAR NO ALVO'):this.game.handAim.present?'RASTREAMENTO PAUSADO · TIRO PAUSADO':this.source==='object'?'OBJETO FORA DE VISTA · VOLTE À POSIÇÃO CALIBRADA':'MÃO NÃO ENCONTRADA · TIRO PAUSADO';
+   let message;
+   if(this.source==='object'&&this.controller.state==='calibrating')message=this.objectTools?.progress(now)||'Selecione os detalhes do brinquedo e toque em CAPTURAR.';
+   else if(this.controller.state==='calibrating')message=this.controller.samples.length?(this.dualHands?'Segure as duas mãos paradas… ':'Segure a mão direita parada… ')+Math.min(100,Math.round((now-(this.controller.samples[0]?.time||now))/10))+'%':this.dualHands?'DUAS MÃOS · Abra e separe as mãos na altura do peito, dentro da imagem.':'MÃO · Abra a mão direita na altura do peito, dentro da imagem.';
+   else if(this.dualHands)message=!this.controller.navigation.neutral?'MÃO ESQUERDA · Mantenha-a aberta e parada na posição de controle.':!this.game.handAim.fresh?'MÃO DIREITA FORA DO QUADRO · TIRO PAUSADO':!this.controller.navigation.read(now).fresh?'MÃO ESQUERDA FORA DO QUADRO · MOVIMENTO PAUSADO':'ESQUERDA · ANDAR / GIRAR · DIREITA · MIRAR / PINÇAR PARA ATIRAR';
+   else message=this.game.handAim.fresh?(this.game.state==='HAND_CALIBRATION'?'✓ MÃO DIREITA CALIBRADA · INICIANDO PARTIDA.':this.source==='object'?'OBJETO · TIRO AO MIRAR NO ALVO':this.game.handAim.twoHands?'DUAS MÃOS · MIRA ESTABILIZADA':'MÃO DIREITA · TIRO AO MIRAR NO ALVO'):this.game.handAim.present?'RASTREAMENTO PAUSADO · TIRO PAUSADO':this.source==='object'?'OBJETO FORA DE VISTA · VOLTE À POSIÇÃO CALIBRADA':'MÃO NÃO ENCONTRADA · TIRO PAUSADO';
+   if(this.status.textContent!==message)this.status.textContent=message;
    this.root.classList.toggle('hand-lost',!this.game.handAim.fresh);
   }
  }

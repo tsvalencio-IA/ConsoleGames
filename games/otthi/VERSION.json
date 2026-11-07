@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.20-evolucao-console",
+  "build": "705.28.21-war-revisao",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "WAR: calibração espera as duas mãos, navegação e mira compartilham validade, abaixar persiste e perda das duas mãos pausa o combate; preserva o mundo civil.",
     "R28.19: controles independentes de duas mãos no WAR, contato com a pista no voo livre, dança com enquadramento e feedback mais precisos, resposta refinada da raquete e celular com entrega física de veículos por NPC.",
     "R28.19: elimina reescritas redundantes dos controles, evita construir a carroceria invisível ao embarcar e libera aeronaves estacionadas após desembarque, preservando progresso, identidade dos veículos e regras Firebase.",
     "R28.15: prepara durante o carregamento as variantes de iluminação dos materiais e da frota, evitando recompilação ao mudar a qualidade automática enquanto o usuário caminha; preserva iluminação, cenário, personagens e veículos.",

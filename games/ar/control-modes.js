@@ -19,7 +19,7 @@ const hub={
    overlay.setAttribute("aria-label","Escolha como jogar");
    const previous=document.activeElement;
    overlay.innerHTML='<div class="input-mode-panel"><div class="input-mode-eyebrow">thIAguinho ARCADE</div><h2>COMO VOCÊ QUER JOGAR?</h2><p>Você pode jogar sem câmera. Escolha a opção que preferir para esta partida.</p><div class="input-mode-options"><button type="button" data-mode="controls"><strong>🎮 CONTROLES</strong><small>Toque na tela ou use o teclado. Sem acesso à câmera.</small></button><button type="button" data-mode="camera"><strong>📷 CÂMERA</strong><small>Use seus movimentos. A câmera só será solicitada após esta escolha.</small></button></div><button type="button" data-mode="cancel" class="input-mode-cancel">VOLTAR ÀS FASES</button><span class="input-mode-foot">A escolha pode ser alterada antes da próxima partida.</span></div>';
-   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="A câmera frontal acompanha a mão direita e reconhece o corpo quando estiver enquadrado. A calibração não exige mostrar os ombros. Mire com a mão; agache para se proteger quando o corpo estiver visível.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
+   if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="Apoie o celular e calibre as duas mãos. A esquerda anda e gira; a direita mira e atira ao juntar polegar e indicador. O modo corpo + mão direita também está disponível na calibração.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
    document.body.appendChild(overlay);
    const stored=(()=>{try{return localStorage.getItem(key)}catch{return null}})();
    const first=overlay.querySelector(stored==="camera"?'[data-mode="camera"]':'[data-mode="controls"]');
@@ -212,7 +212,7 @@ const hub={
   const autoFireButton=root.querySelector('[data-control="auto-fire"]');
   const refreshAutoFire=()=>{const enabled=window.ArcadePlaySettings?.get().combatFireMode==='simple';autoFireButton.textContent=enabled?'AUTO: LIGADO':'AUTO: DESL.';autoFireButton.setAttribute('aria-pressed',String(enabled));autoFireButton.classList.toggle('selected',enabled);};refreshAutoFire();
   const watchAim=setInterval(()=>{refreshAim();refreshAutoFire()},160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
-  hub.showTip(hub.mode==='camera'?'CALIBRE AS MÃOS NA CÂMERA FRONTAL':'ARRASTE A CENA PARA MIRAR • AUTO: LIGUE PARA ATIRAR AO PASSAR NO ALVO');
+  if(hub.mode==='camera')hub.showTip('CALIBRE AS MÃOS NA CÂMERA FRONTAL');
  }
 
 };

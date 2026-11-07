@@ -55,6 +55,7 @@ jobs:
       - run: npx playwright install chromium
       - run: node tests/war-dual-hands-browser.mjs
       - run: node tests/war-joint-camera-browser.mjs
+      - run: node tests/war-review-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,6 +63,7 @@ jobs:
           path: |
             test-results/war-dual-hands/
             test-results/war-joint-camera/
+            test-results/war-review/
   atualizacao-da-candidata:
     runs-on: ubuntu-24.04
     timeout-minutes: 10

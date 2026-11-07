@@ -35,6 +35,14 @@ test('open-world flight: a helicopter can climb above the new snowy mountain pea
 test('civil world: ground combat cannot be started and an armed flight request stays unarmed',async()=>{
  const f=fixture();assert.equal(await f.api.enter('ground',{armed:true}),false);assert(!f.g.active);assert.equal(f.scene.children.length,0);assert(await f.api.enter('helicopter',{armed:true}));assert.equal(f.g.armed,false);assert.equal(f.g.enemies.length,0);assert.equal(f.g.bullets.length,0);assert.equal(f.storage.size,0);
 });
+test('shared ground controls preserve dual-hand crouching and pause only when neither hand is available',async()=>{
+ const f=fixture();await f.api.enter('helicopter',{armed:false});const g=f.g;g.mode='ground';g.handMode=true;g.armed=false;g.enemies=[];g.body.yaw=0;g.handViewAnchor=null;
+ const nav={fresh:false,move:0,turn:0};g.handAim={fresh:false,present:false,x:.5,y:.48,calibration:1};
+ g.handSession={dualHands:true,controller:{read:()=>g.handAim,navigation:{read:()=>nav}},dispose(){}};
+ const elapsed=g.elapsed;f.step(.2);assert.equal(g.elapsed,elapsed);
+ nav.fresh=true;nav.move=.5;g.crouched=true;const z=g.body.z;f.step(.1);assert(g.body.z>z);assert(g.crouched);assert.equal(g.body.y,1.05);
+ nav.fresh=false;nav.move=0;g.handAim.fresh=true;g.crouched=false;const still=g.body.z;f.step(.1);assert.equal(g.body.z,still);assert(!g.crouched);assert.equal(g.body.y,1.8);
+});
 test('civil world: modal and occupied vehicles prevent a conflicting entry, while the current cooperative world can use a balloon',async()=>{
  const f=fixture();f.context.paused=true;assert.equal(await f.api.enter('plane'),false);f.context.paused=false;f.player.vehicle=true;assert.equal(await f.api.enter('plane'),false);f.player.vehicle=false;f.context.window.OTTHI_COOP.active=()=>({id:'active'});assert(await f.api.enter('balloon',{boarding:{id:'balloon',x:0,z:0,yaw:0}}));assert.equal(f.g.armed,false);
 });
