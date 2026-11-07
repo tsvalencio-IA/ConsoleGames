@@ -1,8 +1,7 @@
 {
   "status": "Candidate verification in progress; production remains unchanged",
   "build": "705.28.19-evolucao-console",
-  "revision": "061922d4a2a8f066",
-  "runtimeCommit": "8aefc00a5324ea1de6ae9e123ccf3eade8f48f79",
+  "revision": "4557fcc10d985b48",
   "initialPreview": "https://otthi-world-campanha-teste-f4w5e8n7n-thiaguinho-s-projects.vercel.app",
   "branch": "console-evolution-20261106",
   "initialRuns": {
@@ -13,7 +12,7 @@
     "scenery": 42298095935
   },
   "unitTests": {
-    "passed": 384,
+    "passed": 385,
     "failed": 0
   },
   "verified": [
@@ -28,5 +27,16 @@
     "Installed WAR update test must derive its current cache name instead of hardcoding v47",
     "Vercel preview toolbar must stay disabled for byte-verified HTML"
   ],
-  "physicalAndroidApproved": false
+  "physicalAndroidApproved": false,
+  "initialRuntimeCommit": "8aefc00a5324ea1de6ae9e123ccf3eade8f48f79",
+  "followupRuns": {
+    "source": "f513859e262532229b534861a009443ecaaaa65a",
+    "features": 42372479564,
+    "mobile": 42372479579,
+    "gameplay": 42372479575,
+    "camera": 42372479582,
+    "twoHands": "success",
+    "installedHTTPSUpdate": "success",
+    "phonePlaneDelivery": "A reused pilot-only visual entry could not yet supply recovery equipment; fixed and awaiting a new native run"
+  }
 }

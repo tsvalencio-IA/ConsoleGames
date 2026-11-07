@@ -74,6 +74,15 @@ test('aircraft release: a disembark command is accepted after presence cleared t
  const f=c.airOperations.fleet;f.claim('heli','guest',1000);assert(f.park('heli','guest',pose,2000));assert(f.claim('heli','next-player',2001));assert.equal(f.park('heli','guest',pose,2002),false);
 });
 
+test('aircraft recovery: a helicopter delivered by a phone pilot can later gain recovery equipment without replacing its character',()=>{
+ const node=()=>({position:{set(x,y,z){Object.assign(this,{x,y,z});}},rotation:{},scale:{setScalar(n){this.value=n;}},userData:{},traverse(){}}),person={group:node(),rightArm:{rotation:{}},leftArm:{rotation:{}}},visual={person},added=[];
+ const c=phoneFixture();Object.assign(c,{createCivilianAirframe:node,createRoadsidePoliceOfficer:()=>{throw Error('The existing pilot must be reused');},worldGroup:{add:o=>added.push(o)},THREE:{Mesh:function(){return node();},CylinderGeometry:function(){}},campaignMaterial:()=>({}),otGamesFocus:()=>({x:96,z:-164})});c.airOperations.recovery=new Map([['heli',visual]]);
+ vm.runInContext(fleetSource.slice(fleetSource.indexOf(' function airRecoveryPose('),fleetSource.indexOf(' function airRecoveryDestination('))+fleetSource.slice(fleetSource.indexOf(' function airRecoveryVisual('),fleetSource.indexOf(' function airNpcBalloonPose(')),c);
+ const craft={id:'heli',status:'recovering',job:{id:'heli',at:1000,from:{x:96,z:-164,yaw:0},to:{x:100,z:-240,yaw:0},ground:0,targetGround:0,cruise:45}};
+ c.airRecoveryVisual(craft,1000);assert(visual.heli&&visual.cable);assert.equal(visual.person,person);assert.equal(person.group.scale.value,1);assert.equal(added.length,2);
+ c.airRecoveryVisual(craft,2000);assert.equal(added.length,2,'equipment is created once, not every animation frame');assert(visual.heli.visible);
+});
+
 test('runway landing: free flight reaches the runway, settles and brakes; off-runway clearance and takeoff remain available',()=>{
  const {game:g}=engine('voo','game_flight');g.init({mode:'FREE'});g.flightSchool=null;g.mode='FREE';g.pilot.throttle=0;
  Object.assign(g.ship,{x:0,z:0,y:7.8,yaw:0,pitch:-.02,roll:0,vx:0,vy:-2,vz:65});g._updateRunwayLanding(1/60);assert(g.onGround);assert.equal(g.ship.y,8);assert.equal(g.landingQuality,'smooth');
