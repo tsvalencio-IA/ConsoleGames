@@ -1,0 +1,75 @@
+{
+  "runtimeCommit": "58140e0ca02d8d52b2b11342e3fa4600642f3b03",
+  "run": 42373646094,
+  "job": 128406703148,
+  "baseline": "1b97926979dc54abe040adfbb145c5915ce7c138",
+  "passed": true,
+  "limits": [
+    "Disposable synthetic profile and isolated HTTP realtime fixture.",
+    "Vehicle uses an actual public road with a 250m clear corridor selected from the road graph; collisions and damage remain enabled.",
+    "CPU profiles cap software rendering; the native sample uses unchanged WebGL. Neither is a physical Android FPS or temperature measurement."
+  ],
+  "measurements": [
+    {
+      "label": "before",
+      "entryMs": 26.099999999998545,
+      "standing": {
+        "ms": 400.09999999999854,
+        "textWrites": {
+          "runBtn": 480,
+          "jumpBtn": 480,
+          "actionBtn": 530,
+          "vehicleBadge": 359
+        },
+        "durability": 100,
+        "position": {
+          "x": 660,
+          "z": -400
+        }
+      },
+      "driving": {
+        "ms": 319.90000000000146,
+        "textWrites": {
+          "runBtn": 480,
+          "jumpBtn": 480,
+          "actionBtn": 660,
+          "vehicleBadge": 359
+        },
+        "speed": 18.514069900379468,
+        "position": {
+          "x": 637.397522657913,
+          "z": -400
+        },
+        "durability": 100
+      },
+      "softwareRenderedFPS": 3.9
+    },
+    {
+      "label": "after",
+      "entryMs": 5.80000000000291,
+      "standing": {
+        "ms": 448.1000000000058,
+        "textWrites": {},
+        "durability": 100,
+        "position": {
+          "x": 660,
+          "z": -400
+        }
+      },
+      "driving": {
+        "ms": 308.3999999999942,
+        "textWrites": {
+          "vehicleBadge": 93
+        },
+        "speed": 18.514069900379468,
+        "position": {
+          "x": 637.397522657913,
+          "z": -400
+        },
+        "durability": 100
+      },
+      "softwareRenderedFPS": 3.3
+    }
+  ],
+  "interpretation": "Entry and redundant UI work improve; software-rendered FPS does not show a consistent improvement. Physical phone FPS and temperature remain unmeasured."
+}

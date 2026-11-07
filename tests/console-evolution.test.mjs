@@ -87,6 +87,7 @@ test('runway landing: free flight reaches the runway, settles and brakes; off-ru
  const {game:g}=engine('voo','game_flight');g.init({mode:'FREE'});g.flightSchool=null;g.mode='FREE';g.pilot.throttle=0;
  Object.assign(g.ship,{x:0,z:0,y:7.8,yaw:0,pitch:-.02,roll:0,vx:0,vy:-2,vz:65});g._updateRunwayLanding(1/60);assert(g.onGround);assert.equal(g.ship.y,8);assert.equal(g.landingQuality,'smooth');
  const before=g.ship.vz;for(let i=0;i<180;i++)g._updateRunwayLanding(1/60);assert(g.ship.vz<before*.12);
+ g.ship.pitch=1;g.ship.roll=.5;g._updateRunwayLanding(1/60);assert(g.ship.pitch<=.12);assert.equal(g.ship.roll,0);
  g.ship.vz=80;g.ship.pitch=.1;g.pilot.throttle=.9;g._updateRunwayLanding(1/60);assert(!g.onGround);
  g.ship.x=1000;g.ship.y=4;g._updateRunwayLanding(1/60);assert.equal(g.ship.y,50);
  g.onGround=true;g._startMission();assert.equal(g.onGround,false,'a new flight cannot inherit the previous landing state');
