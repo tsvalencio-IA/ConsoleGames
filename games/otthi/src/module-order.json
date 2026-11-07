@@ -371,7 +371,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "OT Games: original map shared by peace, infantry and aircraft; separate combat body and save",
-      "sha256Body": "e0b6f74f17ae64e02017c4035f13d838ceef09b3731249c688d40cd3ea3d060d"
+      "sha256Body": "79f02f8a42a1c1d910c940adb6204cee337c4c1aab322036d2bcb347d1c442b2"
     },
     {
       "file": "src/modules/43-world-campaign.js",

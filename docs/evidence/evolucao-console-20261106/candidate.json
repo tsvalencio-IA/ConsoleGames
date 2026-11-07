@@ -1,7 +1,7 @@
 {
   "status": "Candidate verification in progress; production remains unchanged",
   "build": "705.28.19-evolucao-console",
-  "revision": "4557fcc10d985b48",
+  "revision": "b94a6c11fdaa6ea0",
   "initialPreview": "https://otthi-world-campanha-teste-f4w5e8n7n-thiaguinho-s-projects.vercel.app",
   "branch": "console-evolution-20261106",
   "initialRuns": {
@@ -20,7 +20,8 @@
     "Native helicopter delivery and parked aircraft release",
     "Ten orientation changes without control overlap",
     "Detailed Saveiro entry with family and recorded engine audio",
-    "Scenery alignment and touch gameplay"
+    "Scenery alignment and touch gameplay",
+    "Native fixed-wing aircraft phone delivery uses its recovery helicopter and completes without changing balance, ownership or damage"
   ],
   "initialFollowups": [
     "Camera-loss test must wait for an actual missing-hand model observation, not an inference freshness gap",
@@ -38,5 +39,13 @@
     "twoHands": "success",
     "installedHTTPSUpdate": "success",
     "phonePlaneDelivery": "A reused pilot-only visual entry could not yet supply recovery equipment; fixed and awaiting a new native run"
-  }
+  },
+  "recoveryFixCommit": "2aab517a94e760632c537fff0b6d48b1e3bb8dd6",
+  "recoveryFixRun": 42372805653,
+  "pendingFollowups": [
+    "Verify another player reboards the vacated craft after landing its own at a different unoccupied pad",
+    "Sample right-hand availability at a fresh model observation instead of an arbitrary software-rendering instant",
+    "Native free-flight runway landing, braking and second takeoff",
+    "Align combat instructions with the two-hand mode"
+  ]
 }

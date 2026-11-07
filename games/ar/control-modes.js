@@ -190,7 +190,7 @@ const hub={
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
    {id:'sprint',text:'CORRER',label:'Segurar para correr com o joystick',down:()=>logic.sprintHeld=true,up:()=>logic.sprintHeld=false},
    {id:'cover',text:'ABAIXAR',label:'Abaixar ou levantar',down:()=>{logic.toggleCrouch();const el=root.querySelector('[data-control="cover"]');el.textContent=logic.crouched?'LEVANTAR':'ABAIXAR';el.setAttribute('aria-pressed',String(logic.crouched));}},
-   {id:'hand',text:'CORPO + MÃO',label:'Calibrar novamente o corpo e a mão ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
+   {id:'hand',text:'CALIBRAR',label:'Calibrar a câmera ou trocar para controles',down:()=>logic.handSession?.recalibrate()}
   ]);
   root.querySelector('[data-control="hand"]').hidden=hub.mode!=='camera';root.querySelector('[data-control="auto-fire"]').hidden=hub.mode==='camera';
   if(hub.mode==='camera')root.classList.add('hand-input');
@@ -212,7 +212,7 @@ const hub={
   const autoFireButton=root.querySelector('[data-control="auto-fire"]');
   const refreshAutoFire=()=>{const enabled=window.ArcadePlaySettings?.get().combatFireMode==='simple';autoFireButton.textContent=enabled?'AUTO: LIGADO':'AUTO: DESL.';autoFireButton.setAttribute('aria-pressed',String(enabled));autoFireButton.classList.toggle('selected',enabled);};refreshAutoFire();
   const watchAim=setInterval(()=>{refreshAim();refreshAutoFire()},160);hub.releases.push(()=>{clearInterval(watchAim);logic.setAiming(false)});
-  hub.showTip(hub.mode==='camera'?'CORPO: AGACHE, GIRE E DÊ PASSOS • MÃO: APONTE PARA MIRAR':'ARRASTE A CENA PARA MIRAR • AUTO: LIGUE PARA ATIRAR AO PASSAR NO ALVO');
+  hub.showTip(hub.mode==='camera'?'CALIBRE AS MÃOS NA CÂMERA FRONTAL':'ARRASTE A CENA PARA MIRAR • AUTO: LIGUE PARA ATIRAR AO PASSAR NO ALVO');
  }
 
 };
