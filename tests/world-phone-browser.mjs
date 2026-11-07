@@ -10,6 +10,7 @@ const out='test-results/world-phone';fs.mkdirSync(out,{recursive:true});
 const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const source=fs.readFileSync('games/otthi/app.js','utf8'),end=source.lastIndexOf('})();');
 const hook=`
+ const phoneQaGifts=[],phoneQaSociety=updateNpcSociety;updateNpcSociety=function(...args){const before=state.profile.coins,result=phoneQaSociety(...args),amount=state.profile.coins-before;if(amount){if(amount!==8)throw Error('Unexpected passive NPC credit: '+amount);phoneQaGifts.push({amount,source:'native NPC society gift',at:Date.now()});}return result;};
  window.__PHONE_QA={
   prepare:()=>{
    const id='playmobil-utility';if(!state.vehicles.owned.includes(id))state.vehicles.owned.push(id);const v=vehicleById(id)||ensureCatalogVehicle(id);if(!v)throw Error('Missing detailed owned vehicle');
@@ -22,7 +23,7 @@ const hook=`
    }throw Error('No unoccupied road fixture for native phone delivery');
   },
   advance:frames=>__CITY_QA.simulate(frames),
-  snapshot:()=>({phone:OT_WORLD_PHONE.diagnostics(),coins:state.profile.coins,owned:[...state.vehicles.owned],damage:{...state.vehicles.partDurability},vehicle:worldPhone.job?{id:worldPhone.job.id,x:worldPhone.job.vehicle.group.position.x,z:worldPhone.job.vehicle.group.position.z,occupied:worldPhone.job.vehicle.occupied}:null}),
+  snapshot:()=>({phone:OT_WORLD_PHONE.diagnostics(),coins:state.profile.coins,passiveGifts:phoneQaGifts.slice(),owned:[...state.vehicles.owned],damage:{...state.vehicles.partDurability},vehicle:worldPhone.job?{id:worldPhone.job.id,x:worldPhone.job.vehicle.group.position.x,z:worldPhone.job.vehicle.group.position.z,occupied:worldPhone.job.vehicle.occupied}:null}),
   prepareAir:(mode='helicopter')=>{airEnsure();const id=mode==='plane'?Object.values(airOperations.fleet.data.craft).find(c=>airOperations.fleet.spec(c.id)?.mode==='plane'&&c.status==='parked')?.id:'heli-ottovias',c=airOperations.fleet.data.craft[id];if(!c)throw Error('No native helicopter');state.vehicles.aircraft||={};state.vehicles.aircraft[id]={x:c.x,z:c.z,yaw:c.yaw};return{id,from:{x:c.x,z:c.z}};},
   air:id=>({craft:structuredClone(airOperations.fleet.data.craft[id]),available:airAvailable(id)}),
   draw:()=>__CITY_QA.renderNative()
@@ -40,7 +41,7 @@ try{
  await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();await page.locator('[data-phone-ground="'+target.id+'"]').click();
  await page.waitForFunction(()=>OT_WORLD_PHONE.diagnostics().job);const dispatched=await page.evaluate(()=>__PHONE_QA.snapshot());assert(dispatched.phone.job.driverVisible);assert(dispatched.vehicle.occupied);
  for(let i=0;i<30;i++){if(!await page.evaluate(()=>OT_WORLD_PHONE.diagnostics().job))break;await page.evaluate(()=>__PHONE_QA.advance(120));}
- const arrived=await page.evaluate(()=>__PHONE_QA.snapshot());assert.equal(arrived.phone.job,null,JSON.stringify(arrived.phone));assert.equal(arrived.phone.last.status,'delivered');assert.equal(arrived.coins,before.coins);assert.deepEqual(arrived.owned,before.owned);assert.deepEqual(arrived.damage,before.damage);
+ const arrived=await page.evaluate(()=>__PHONE_QA.snapshot());assert.equal(arrived.phone.job,null,JSON.stringify(arrived.phone));assert.equal(arrived.phone.last.status,'delivered');assert.equal(arrived.coins-before.coins,arrived.passiveGifts.slice(before.passiveGifts.length).reduce((sum,gift)=>sum+gift.amount,0),'delivery must not change the balance apart from independently observed native NPC gifts');assert.deepEqual(arrived.owned,before.owned);assert.deepEqual(arrived.damage,before.damage);
  await page.evaluate(()=>__PHONE_QA.draw());await page.screenshot({path:out+'/ground-arrival.png'});report.ground={dispatched,arrived};
  const air=await page.evaluate(()=>__PHONE_QA.prepareAir());await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();await page.locator('[data-phone-air="'+air.id+'"]').click();
  await page.waitForFunction(id=>OT_WORLD_AIR_OPERATIONS.diagnostics().fleet.craft[id].status==='delivery',air.id);const airStart=await page.evaluate(id=>__PHONE_QA.air(id),air.id);

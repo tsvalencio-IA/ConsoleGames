@@ -1303,7 +1303,7 @@
         _landingGuidance: function(){
             const p=this.ship,altitude=Math.max(0,p.y-8),speed=Math.hypot(p.vx||0,p.vz||0),sink=Math.max(0,-(p.vy||0));
             const onRunway=Math.abs(p.x)<105&&Math.abs(p.z)<3000,aligned=Math.abs(Math.sin(p.yaw||0))<.28,level=Math.abs(p.roll||0)<.35;
-            let cue=this.onGround?(this.pilot.throttle>.6?(speed<65?'DECOLAGEM • ACELERE NIVELADO':'DECOLAGEM • CABRE SUAVEMENTE'):'NO SOLO • REDUZA A POTÊNCIA PARA PARAR'):!onRunway?'ALINHE À PISTA':!aligned?'ALINHE O NARIZ COM A PISTA':!level?'NIVELE AS ASAS':speed>115?'REDUZA A VELOCIDADE':sink>6?'CABRE SUAVEMENTE • REDUZA A DESCIDA':altitude<18?'SEGURE O NARIZ • TOQUE SUAVE':'APROXIMAÇÃO ESTÁVEL';
+            let cue=this.onGround?(this.pilot.throttle>.6?(speed<65?'DECOLAGEM • ACELERE NIVELADO':'DECOLAGEM • CABRE SUAVEMENTE'):'NO SOLO • REDUZA A POTÊNCIA PARA PARAR'):onRunway&&p.vy>1&&this.pilot.throttle>.6?'DECOLAGEM • SUBIDA ESTÁVEL':!onRunway?'ALINHE À PISTA':!aligned?'ALINHE O NARIZ COM A PISTA':!level?'NIVELE AS ASAS':speed>115?'REDUZA A VELOCIDADE':sink>6?'CABRE SUAVEMENTE • REDUZA A DESCIDA':altitude<18?'SEGURE O NARIZ • TOQUE SUAVE':'APROXIMAÇÃO ESTÁVEL';
             return{altitude,speed,sink,onRunway,aligned,level,gentle:onRunway&&aligned&&level&&speed<120&&sink<7,cue};
         },
         _softenLandingApproach: function(){

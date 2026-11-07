@@ -3,7 +3,7 @@
 // Release 2026-10-22 war3: refresh touch look and ADS in the game shell while retaining cached local recognition models.
 "use strict";
 const PREFIX="thia-arcade-voo-";
-const CACHE=PREFIX+"pro-control-v30";
+const CACHE=PREFIX+"pro-control-v31";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",

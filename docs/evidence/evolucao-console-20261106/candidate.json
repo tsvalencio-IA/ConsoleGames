@@ -23,7 +23,9 @@
     "Scenery alignment and touch gameplay",
     "Native fixed-wing aircraft phone delivery uses its recovery helicopter and completes without changing balance, ownership or damage",
     "Both the actual vacated helicopter and actual vacated plane can be boarded by a different player",
-    "Operational vehicle measurement passed on a clear road with 100% durability and equal native travel before and after"
+    "Operational vehicle measurement passed on a clear road with 100% durability and equal native travel before and after",
+    "Native runway touchdown and braking were observed; final second-takeoff verification is pending",
+    "Native free-flight touchdown, full braking, level acceleration and a second touch-controlled takeoff passed"
   ],
   "initialFollowups": [
     "Camera-loss test must wait for an actual missing-hand model observation, not an inference freshness gap",
@@ -45,9 +47,8 @@
   "recoveryFixCommit": "2aab517a94e760632c537fff0b6d48b1e3bb8dd6",
   "recoveryFixRun": 42372805653,
   "pendingFollowups": [
-    "Correct the native free-flight test to select the visible VOO LIVRE card",
-    "Complete gameplay and world regression checks",
-    "Publish only after checks pass"
+    "Observe passive native NPC gifts separately from delivery balance changes",
+    "Complete final public verification"
   ],
   "preservedProductionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e",
   "previousProduction": {
@@ -62,7 +63,9 @@
     "Helicopter and plane reuse by a second pilot",
     "Vehicle measurements require a moving, operational vehicle on a clear road"
   ],
-  "runtimeCommit": "58140e0ca02d8d52b2b11342e3fa4600642f3b03",
+  "runtimeCommit": "b38b96e0a252c0d9f2bf96c15e93a15636d0aa5d",
   "candidateDeployment": "dpl_FuJCnaC65frs2LpmUDYFyVQCWufw",
-  "candidateUrl": "https://otthi-world-campanha-teste-khauey0ut-thiaguinho-s-projects.vercel.app"
+  "candidateUrl": "https://otthi-world-campanha-teste-khauey0ut-thiaguinho-s-projects.vercel.app",
+  "runtimeWorldCommit": "58140e0ca02d8d52b2b11342e3fa4600642f3b03",
+  "runwayRun": 42374821942
 }
