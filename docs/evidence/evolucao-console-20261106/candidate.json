@@ -1,0 +1,32 @@
+{
+  "status": "Candidate verification in progress; production remains unchanged",
+  "build": "705.28.19-evolucao-console",
+  "revision": "061922d4a2a8f066",
+  "runtimeCommit": "8aefc00a5324ea1de6ae9e123ccf3eade8f48f79",
+  "initialPreview": "https://otthi-world-campanha-teste-f4w5e8n7n-thiaguinho-s-projects.vercel.app",
+  "branch": "console-evolution-20261106",
+  "initialRuns": {
+    "mobile": 42298095969,
+    "features": 42298095991,
+    "gameplay": 42298095948,
+    "camera": 42298095906,
+    "scenery": 42298095935
+  },
+  "unitTests": {
+    "passed": 384,
+    "failed": 0
+  },
+  "verified": [
+    "Native road delivery with visible driver and preserved balance/ownership/damage",
+    "Native helicopter delivery and parked aircraft release",
+    "Ten orientation changes without control overlap",
+    "Detailed Saveiro entry with family and recorded engine audio",
+    "Scenery alignment and touch gameplay"
+  ],
+  "initialFollowups": [
+    "Camera-loss test must wait for an actual missing-hand model observation, not an inference freshness gap",
+    "Installed WAR update test must derive its current cache name instead of hardcoding v47",
+    "Vercel preview toolbar must stay disabled for byte-verified HTML"
+  ],
+  "physicalAndroidApproved": false
+}

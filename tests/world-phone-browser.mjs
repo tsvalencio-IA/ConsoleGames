@@ -23,7 +23,7 @@ const hook=`
   },
   advance:frames=>__CITY_QA.simulate(frames),
   snapshot:()=>({phone:OT_WORLD_PHONE.diagnostics(),coins:state.profile.coins,owned:[...state.vehicles.owned],damage:{...state.vehicles.partDurability},vehicle:worldPhone.job?{id:worldPhone.job.id,x:worldPhone.job.vehicle.group.position.x,z:worldPhone.job.vehicle.group.position.z,occupied:worldPhone.job.vehicle.occupied}:null}),
-  prepareAir:()=>{airEnsure();const id='heli-ottovias',c=airOperations.fleet.data.craft[id];if(!c)throw Error('No native helicopter');state.vehicles.aircraft||={};state.vehicles.aircraft[id]={x:c.x,z:c.z,yaw:c.yaw};return{id,from:{x:c.x,z:c.z}};},
+  prepareAir:(mode='helicopter')=>{airEnsure();const id=mode==='plane'?Object.values(airOperations.fleet.data.craft).find(c=>airOperations.fleet.spec(c.id)?.mode==='plane'&&c.status==='parked')?.id:'heli-ottovias',c=airOperations.fleet.data.craft[id];if(!c)throw Error('No native helicopter');state.vehicles.aircraft||={};state.vehicles.aircraft[id]={x:c.x,z:c.z,yaw:c.yaw};return{id,from:{x:c.x,z:c.z}};},
   air:id=>({craft:structuredClone(airOperations.fleet.data.craft[id]),available:airAvailable(id)}),
   draw:()=>__CITY_QA.renderNative()
  };
@@ -47,11 +47,15 @@ try{
  for(let i=0;i<45;i++){if(await page.evaluate(id=>__PHONE_QA.air(id).craft.status==='parked',air.id))break;await page.evaluate(()=>__PHONE_QA.advance(120));}
  const airEnd=await page.evaluate(id=>__PHONE_QA.air(id),air.id);assert.equal(airEnd.craft.status,'parked',JSON.stringify(airEnd));assert(airEnd.available);assert.equal(airEnd.craft.pilot,'');assert(Math.hypot(airEnd.craft.x-air.from.x,airEnd.craft.z-air.from.z)>15);report.air={airStart,airEnd};
  await page.evaluate(()=>__PHONE_QA.draw());await page.screenshot({path:out+'/air-arrival.png'});
+ const plane=await page.evaluate(()=>__PHONE_QA.prepareAir('plane'));await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();await page.locator('[data-phone-air="'+plane.id+'"]').click();
+ await page.waitForFunction(id=>OT_WORLD_AIR_OPERATIONS.diagnostics().fleet.craft[id].status==='delivery',plane.id);
+ for(let i=0;i<65;i++){if(await page.evaluate(id=>__PHONE_QA.air(id).craft.status==='parked',plane.id))break;await page.evaluate(()=>__PHONE_QA.advance(120));}
+ const planeEnd=await page.evaluate(id=>__PHONE_QA.air(id),plane.id);assert.equal(planeEnd.craft.status,'parked',JSON.stringify(planeEnd));assert(planeEnd.available);assert.equal(planeEnd.craft.pilot,'');report.plane={id:plane.id,planeEnd};await page.evaluate(()=>__PHONE_QA.draw());await page.screenshot({path:out+'/plane-arrival.png'});
  report.layouts=[];
  for(const size of[{width:390,height:844},{width:844,height:390},{width:360,height:740}]){
   await page.setViewportSize(size);await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();
   const layout=await page.evaluate(()=>{const p=document.querySelector('.world-phone'),r=p.getBoundingClientRect();return{left:r.left,right:r.right,viewport:innerWidth,scrollWidth:p.scrollWidth,clientWidth:p.clientWidth,groundButtons:p.querySelectorAll('[data-phone-ground]').length};});
   assert(layout.left>=0&&layout.right<=size.width+1);assert(layout.scrollWidth<=layout.clientWidth+1);assert(layout.groundButtons>0);report.layouts.push({size,...layout});await page.screenshot({path:out+'/phone-'+size.width+'x'+size.height+'.png'});await page.locator('#modalClose').click();
  }
- assert.deepEqual(errors,[]);report.passed=true;report.errors=errors;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS native phone, road delivery, visible driver, helicopter delivery, release, layouts and preserved balance/ownership/damage');
+ assert.deepEqual(errors,[]);report.passed=true;report.errors=errors;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS native phone, road delivery, visible driver, helicopter and plane delivery, release, layouts and preserved balance/ownership/damage');
 }catch(error){report.failure=error.stack;report.errors=errors;if(page){report.state=await page.evaluate(()=>window.__PHONE_QA?.snapshot()).catch(()=>null);await page.screenshot({path:out+'/failure.png'}).catch(()=>{});}fs.writeFileSync(out+'/failure.json',JSON.stringify(report,null,2));throw error;}finally{await browser.close();await server.close();}

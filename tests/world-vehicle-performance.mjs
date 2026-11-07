@@ -45,6 +45,7 @@ window.__VEHICLE_QA={
   await page.evaluate(()=>__VEHICLE_QA.live());
   await page.evaluate(()=>__VEHICLE_QA.gas(true));await page.waitForTimeout(10000);await page.evaluate(()=>__VEHICLE_QA.gas(false));const live=await page.evaluate(()=>({...__VEHICLE_QA.read(),roots:__CITY_QA.drawProfile()}));
   assert.deepEqual(errors,[]);assert.equal(live.vehicle,target.id);assert.equal(live.audio.activeEngines,1);assert(live.audio.decodedEngineFiles.length>0);assert(live.performance.renderedFrames>0);await page.screenshot({path:out+'/'+label+'.png'});
+  if(label==='after')for(const id of['runBtn','jumpBtn','actionBtn','vehicleBadge'])assert((standing.textWrites[id]||0)<6,'Stationary vehicle must not rewrite '+id+' every frame');
   const result={label,revision,target,foot,footView,standing,driving,live,hotspots,errors};report.cases.push(result);fs.writeFileSync(out+'/'+label+'.json',JSON.stringify(result,null,2));console.log('VEHICLE RESULT',label,JSON.stringify({entry:live.entry,footView,roots:live.roots,footMs:foot.ms,standingMs:standing.ms,drivingMs:driving.ms,standingWrites:standing.textWrites,drivingWrites:driving.textWrites,liveWrites:live.textWrites,hotspots:hotspots.slice(0,12),performance:live.performance}));await context.close();
  }
  report.passed=true;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));
