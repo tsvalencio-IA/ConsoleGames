@@ -1,5 +1,5 @@
 {
-  "status": "Native candidate verified and deployed; public verification in progress",
+  "status": "Native candidate and public production verification passed",
   "build": "705.28.20-evolucao-console",
   "revision": "5de3a8876ae6b7fb",
   "runtimeCommit": "fc11232adbcd687fd01f553a5a14a280cced8a39",
@@ -34,5 +34,8 @@
     "vehicleOperationalMeasurementRun": 42373646094,
     "vehicleOperationalMeasurementJob": 128406703148
   },
-  "physicalAndroidApproved": false
+  "physicalAndroidApproved": false,
+  "publicVerificationRun": 42376464163,
+  "publicVerifiedFiles": 129,
+  "productionAcceptanceStatus": "success"
 }

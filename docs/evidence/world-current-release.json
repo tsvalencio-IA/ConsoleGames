@@ -1,5 +1,5 @@
 {
-  "status": "Published: native feature checks passed; public installation and byte verification in progress",
+  "status": "Published and verified: native gameplay, camera, dispatch, fleet reuse, runway cycle and public update acceptance passed",
   "build": "705.28.20-evolucao-console",
   "revision": "5de3a8876ae6b7fb",
   "runtimeCommit": "fc11232adbcd687fd01f553a5a14a280cced8a39",
@@ -10,7 +10,7 @@
   "productionDeployment": "dpl_B2PDjwqyVF7vFkZXdn58esEFXZiZ",
   "productionSource": "fc11232adbcd687fd01f553a5a14a280cced8a39",
   "productionReady": true,
-  "productionAcceptanceStatus": "pending",
+  "productionAcceptanceStatus": "success",
   "unitTests": {
     "passed": 391,
     "failed": 0
@@ -38,7 +38,16 @@
     "sceneryRun": 42374821881,
     "sceneryConclusion": "success",
     "vehicleOperationalMeasurementRun": 42373646094,
-    "vehicleOperationalMeasurementJob": 128406703148
+    "vehicleOperationalMeasurementJob": 128406703148,
+    "productionAcceptanceRun": 42376464163,
+    "productionAcceptanceConclusion": "success",
+    "publicVerifiedFiles": 129,
+    "finalGameplayRun": 42375696594,
+    "finalGameplayConclusion": "success",
+    "finalCameraRun": 42375696579,
+    "finalCameraConclusion": "success",
+    "finalSceneryRun": 42375696565,
+    "finalSceneryConclusion": "success"
   },
   "previewConfiguration": {
     "branch": "console-evolution-20261106",
@@ -58,7 +67,8 @@
   "evidenceDirectory": "evolucao-console-20261106",
   "productionAcceptanceReport": "evolucao-console-20261106/production-update.json",
   "productionHttpIntegrityReport": "evolucao-console-20261106/public-integrity.json",
-  "sourceCoherence": "All 111 local release digests agree. The HTTPS public updater and all published component bytes are being verified.",
+  "sourceCoherence": "All 111 local release digests agree. All 129 public manifest and console-component SHA-256 checks passed against the exact existing publication output.",
   "publishedAt": "2026-11-07T13:14:56.440793+00:00",
-  "publicationPreparation": "Existing root_site_console and root_site_manifest transformations from tools/package-world-preview.py are reproduced by the public byte audit; product source and deployment remain unchanged."
+  "publicationPreparation": "Existing root_site_console and root_site_manifest transformations from tools/package-world-preview.py are reproduced by the public byte audit; product source and deployment remain unchanged.",
+  "productionVerifiedAt": "2026-11-07T13:20:47.913Z"
 }
