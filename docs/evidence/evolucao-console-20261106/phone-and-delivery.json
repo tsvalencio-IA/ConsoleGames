@@ -22,6 +22,7 @@
       "last": null
     },
     "coins": 8000,
+    "passiveGifts": [],
     "owned": [
       "garage-orange",
       "playmobil-utility"
@@ -38,11 +39,11 @@
       "city-white": 100,
       "adventure-black": 100,
       "country-brown": 100,
+      "playmobil-utility": 100,
       "city-aurora-coupe-0": 100,
       "city-aurora-coupe-1": 100,
       "city-costa-coupe-0": 100,
-      "city-costa-coupe-1": 100,
-      "playmobil-utility": 100
+      "city-costa-coupe-1": 100
     },
     "vehicle": null
   },
@@ -57,8 +58,8 @@
             "z": 209.6846053036974,
             "yaw": 1.6745886672519397
           },
-          "x": 48,
-          "z": 217.5,
+          "x": 48.004357073143666,
+          "z": 217.49954613821419,
           "waiting": false,
           "driverVisible": true
         },
@@ -66,7 +67,7 @@
           "id": "playmobil-utility",
           "type": "ground",
           "status": "en-route",
-          "at": 1794055365029,
+          "at": 1794057027298,
           "target": {
             "x": 98.89793206047757,
             "z": 209.6846053036974,
@@ -75,6 +76,7 @@
         }
       },
       "coins": 8000,
+      "passiveGifts": [],
       "owned": [
         "garage-orange",
         "playmobil-utility"
@@ -91,16 +93,16 @@
         "city-white": 100,
         "adventure-black": 100,
         "country-brown": 100,
+        "playmobil-utility": 100,
         "city-aurora-coupe-0": 100,
         "city-aurora-coupe-1": 100,
         "city-costa-coupe-0": 100,
-        "city-costa-coupe-1": 100,
-        "playmobil-utility": 100
+        "city-costa-coupe-1": 100
       },
       "vehicle": {
         "id": "playmobil-utility",
-        "x": 48,
-        "z": 217.5,
+        "x": 48.004357073143666,
+        "z": 217.49954613821419,
         "occupied": true
       }
     },
@@ -112,7 +114,7 @@
           "id": "playmobil-utility",
           "type": "ground",
           "status": "delivered",
-          "at": 1794055375754.3333,
+          "at": 1794057038019.6667,
           "target": {
             "x": 98.89793206047757,
             "z": 209.6846053036974,
@@ -120,7 +122,14 @@
           }
         }
       },
-      "coins": 8000,
+      "coins": 8008,
+      "passiveGifts": [
+        {
+          "amount": 8,
+          "source": "native NPC society gift",
+          "at": 1794057037674.3333
+        }
+      ],
       "owned": [
         "garage-orange",
         "playmobil-utility"
@@ -137,11 +146,11 @@
         "city-white": 100,
         "adventure-black": 100,
         "country-brown": 100,
+        "playmobil-utility": 100,
         "city-aurora-coupe-0": 100,
         "city-aurora-coupe-1": 100,
         "city-costa-coupe-0": 100,
-        "city-costa-coupe-1": 100,
-        "playmobil-utility": 100
+        "city-costa-coupe-1": 100
       },
       "vehicle": null
     }
@@ -155,13 +164,13 @@
         "z": -164,
         "yaw": 0,
         "status": "delivery",
-        "parkedAt": 1794055363732,
+        "parkedAt": 1794057025956,
         "pilot": "browser-test-user-123456789012345",
-        "departedAt": 1794055386440,
+        "departedAt": 1794057048919,
         "delivery": {
           "id": "heli-ottovias",
           "uid": "browser-test-user-123456789012345",
-          "at": 1794055386440,
+          "at": 1794057048919,
           "from": {
             "x": 96,
             "z": -164,
@@ -175,11 +184,8 @@
           "cruise": 45.98067560262985,
           "ground": 0,
           "targetGround": 0,
-          "transport": false,
-          "holdLanding": false
-        },
-        "y": 1.0019778307098524,
-        "onGround": false
+          "transport": false
+        }
       },
       "available": false
     },
@@ -191,9 +197,9 @@
         "z": 220.03767113776456,
         "yaw": 3.141592653589793,
         "status": "parked",
-        "parkedAt": 1794055419647,
+        "parkedAt": 1794057082136.3333,
         "pilot": "",
-        "departedAt": 1794055386440,
+        "departedAt": 1794057048919,
         "onGround": true,
         "hp": 100
       },
@@ -210,9 +216,9 @@
         "z": -244,
         "yaw": 1.5707963267948966,
         "status": "parked",
-        "parkedAt": 1794055461609.6667,
+        "parkedAt": 1794057123563,
         "pilot": "",
-        "departedAt": 1794055422597,
+        "departedAt": 1794057084558,
         "onGround": true,
         "hp": 100
       },

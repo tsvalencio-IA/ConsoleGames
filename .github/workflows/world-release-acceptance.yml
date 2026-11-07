@@ -57,10 +57,16 @@ jobs:
           print('Public update acceptance:', origin, manifest['build'], manifest['revision'])
           PY
           node tests/.world-release-acceptance.mjs
+      - name: Comparar manifesto e componentes publicados por SHA-256
+        env:
+          WORLD_RELEASE_ORIGIN: ${{ inputs.origin }}
+        run: node docs/evidence/evolucao-console-20261106/verify-public.mjs
       - name: Salvar evidências da atualização
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: world-release-acceptance
-          path: test-results/world-update-public/
+          path: |
+            test-results/world-update-public/
+            test-results/console-http-integrity/
           if-no-files-found: ignore
