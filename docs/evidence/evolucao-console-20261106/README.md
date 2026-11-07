@@ -20,3 +20,5 @@ As verificações usam perfis descartáveis, serviços isolados e os motores nat
 `verify-public.mjs` compara por SHA-256 os arquivos do manifesto e os componentes alterados do console no endereço HTTPS publicado. O resultado de aceitação pública será registrado após a publicação.
 
 O teste da entrega registra os presentes de oito moedas concedidos pela rotina nativa dos NPCs. A variação do saldo deve corresponder exatamente a esses créditos observados, mantendo as verificações de propriedade e integridade.
+
+A comparação pública deriva os dois arquivos de instalação do preparador de publicação já existente, preservando as identidades distintas de GitHub Pages e Vercel. Os demais arquivos são comparados diretamente, incluindo os 111 hashes do manifesto.

@@ -59,5 +59,6 @@
   "productionAcceptanceReport": "evolucao-console-20261106/production-update.json",
   "productionHttpIntegrityReport": "evolucao-console-20261106/public-integrity.json",
   "sourceCoherence": "All 111 local release digests agree. The HTTPS public updater and all published component bytes are being verified.",
-  "publishedAt": "2026-11-07T13:14:56.440793+00:00"
+  "publishedAt": "2026-11-07T13:14:56.440793+00:00",
+  "publicationPreparation": "Existing root_site_console and root_site_manifest transformations from tools/package-world-preview.py are reproduced by the public byte audit; product source and deployment remain unchanged."
 }
