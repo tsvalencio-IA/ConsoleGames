@@ -11,7 +11,7 @@ try{
  const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.request().resourceType()==='script'?r.fulfill({contentType:'application/javascript',body:'/* isolated external services */'}):r.abort());
  page=await context.newPage();page.setDefaultTimeout(30000);page.on('pageerror',e=>errors.push(e.stack));await page.goto(server.origin+'/games/voo/');await page.locator('[data-solo-start]').click();
- await page.locator('#phase-grid .mission-card[data-mission="free"]').click();await page.locator('[data-mode="controls"]').click();
+ await page.locator('#phase-grid .mission-card').filter({hasText:'VOO LIVRE'}).click();await page.locator('[data-mode="controls"]').click();
  await page.waitForFunction(()=>System.activeGame?.logic.state==='HANGAR');const start=page.locator('.flight-input [data-control="start"]');await start.click();await page.waitForFunction(()=>System.activeGame.logic.state==='CALIBRATION');await start.click();await page.waitForFunction(()=>System.activeGame.logic.state==='PLAYING');
  assert.equal(await page.evaluate(()=>System.activeGame.logic.mode),'FREE');
  await page.evaluate(()=>{const g=System.activeGame.logic;g.entities=[];g.manualThrottle=0;g.pilot.targetPitch=g.pilot.targetRoll=0;g.view=null;Object.assign(g.ship,{x:0,z:-900,y:8.04,yaw:0,pitch:-.025,roll:0,vx:0,vy:-1.5,vz:75,speed:75});});

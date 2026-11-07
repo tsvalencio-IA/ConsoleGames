@@ -1,0 +1,262 @@
+{
+  "limits": [
+    "Disposable local profile and isolated RTDB fixture. Native geometry, controls and dispatch code; no live player data.",
+    "Software WebGL confirms rendering and behavior, not physical Android temperature or sustained FPS."
+  ],
+  "before": {
+    "target": {
+      "id": "playmobil-utility",
+      "from": {
+        "x": 48,
+        "z": 217.5,
+        "yaw": 1.6745886672519397
+      },
+      "player": {
+        "x": 90.4747574101838,
+        "z": 206.03767113776456
+      }
+    },
+    "phone": {
+      "pending": false,
+      "job": null,
+      "last": null
+    },
+    "coins": 8000,
+    "owned": [
+      "garage-orange",
+      "playmobil-utility"
+    ],
+    "damage": {
+      "ottovias-service": 100,
+      "garage-orange": 100,
+      "market-blue": 100,
+      "workshop-red": 100,
+      "home-green": 100,
+      "royal-purple": 100,
+      "gym-yellow": 100,
+      "forest-teal": 100,
+      "city-white": 100,
+      "adventure-black": 100,
+      "country-brown": 100,
+      "city-aurora-coupe-0": 100,
+      "city-aurora-coupe-1": 100,
+      "city-costa-coupe-0": 100,
+      "city-costa-coupe-1": 100,
+      "playmobil-utility": 100
+    },
+    "vehicle": null
+  },
+  "ground": {
+    "dispatched": {
+      "phone": {
+        "pending": false,
+        "job": {
+          "id": "playmobil-utility",
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          },
+          "x": 48,
+          "z": 217.5,
+          "waiting": false,
+          "driverVisible": true
+        },
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "en-route",
+          "at": 1794055365029,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          }
+        }
+      },
+      "coins": 8000,
+      "owned": [
+        "garage-orange",
+        "playmobil-utility"
+      ],
+      "damage": {
+        "ottovias-service": 100,
+        "garage-orange": 100,
+        "market-blue": 100,
+        "workshop-red": 100,
+        "home-green": 100,
+        "royal-purple": 100,
+        "gym-yellow": 100,
+        "forest-teal": 100,
+        "city-white": 100,
+        "adventure-black": 100,
+        "country-brown": 100,
+        "city-aurora-coupe-0": 100,
+        "city-aurora-coupe-1": 100,
+        "city-costa-coupe-0": 100,
+        "city-costa-coupe-1": 100,
+        "playmobil-utility": 100
+      },
+      "vehicle": {
+        "id": "playmobil-utility",
+        "x": 48,
+        "z": 217.5,
+        "occupied": true
+      }
+    },
+    "arrived": {
+      "phone": {
+        "pending": false,
+        "job": null,
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "delivered",
+          "at": 1794055375754.3333,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          }
+        }
+      },
+      "coins": 8000,
+      "owned": [
+        "garage-orange",
+        "playmobil-utility"
+      ],
+      "damage": {
+        "ottovias-service": 100,
+        "garage-orange": 100,
+        "market-blue": 100,
+        "workshop-red": 100,
+        "home-green": 100,
+        "royal-purple": 100,
+        "gym-yellow": 100,
+        "forest-teal": 100,
+        "city-white": 100,
+        "adventure-black": 100,
+        "country-brown": 100,
+        "city-aurora-coupe-0": 100,
+        "city-aurora-coupe-1": 100,
+        "city-costa-coupe-0": 100,
+        "city-costa-coupe-1": 100,
+        "playmobil-utility": 100
+      },
+      "vehicle": null
+    }
+  },
+  "air": {
+    "airStart": {
+      "craft": {
+        "id": "heli-ottovias",
+        "base": "heli-ottovias",
+        "x": 96,
+        "z": -164,
+        "yaw": 0,
+        "status": "delivery",
+        "parkedAt": 1794055363732,
+        "pilot": "browser-test-user-123456789012345",
+        "departedAt": 1794055386440,
+        "delivery": {
+          "id": "heli-ottovias",
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794055386440,
+          "from": {
+            "x": 96,
+            "z": -164,
+            "yaw": 0
+          },
+          "to": {
+            "x": 90.4747574101838,
+            "z": 220.03767113776456,
+            "yaw": 3.141592653589793
+          },
+          "cruise": 45.98067560262985,
+          "ground": 0,
+          "targetGround": 0,
+          "transport": false,
+          "holdLanding": false
+        },
+        "y": 1.0019778307098524,
+        "onGround": false
+      },
+      "available": false
+    },
+    "airEnd": {
+      "craft": {
+        "id": "heli-ottovias",
+        "base": "heli-ottovias",
+        "x": 90.4747574101838,
+        "z": 220.03767113776456,
+        "yaw": 3.141592653589793,
+        "status": "parked",
+        "parkedAt": 1794055419647,
+        "pilot": "",
+        "departedAt": 1794055386440,
+        "onGround": true,
+        "hp": 100
+      },
+      "available": true
+    }
+  },
+  "plane": {
+    "id": "plane",
+    "planeEnd": {
+      "craft": {
+        "id": "plane",
+        "base": "plane",
+        "x": 46,
+        "z": -244,
+        "yaw": 1.5707963267948966,
+        "status": "parked",
+        "parkedAt": 1794055461609.6667,
+        "pilot": "",
+        "departedAt": 1794055422597,
+        "onGround": true,
+        "hp": 100
+      },
+      "available": true
+    }
+  },
+  "layouts": [
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "left": 21,
+      "right": 369,
+      "viewport": 390,
+      "scrollWidth": 346,
+      "clientWidth": 346,
+      "groundButtons": 2
+    },
+    {
+      "size": {
+        "width": 844,
+        "height": 390
+      },
+      "left": 19,
+      "right": 825,
+      "viewport": 844,
+      "scrollWidth": 804,
+      "clientWidth": 804,
+      "groundButtons": 2
+    },
+    {
+      "size": {
+        "width": 360,
+        "height": 740
+      },
+      "left": 21,
+      "right": 339,
+      "viewport": 360,
+      "scrollWidth": 316,
+      "clientWidth": 316,
+      "groundButtons": 2
+    }
+  ],
+  "passed": true,
+  "errors": []
+}
