@@ -1,18 +1,18 @@
 {
-  "status": "Published WAR revision v51: short fire taps, hand-role calibration, independent navigation, visual layouts and installed update verified; physical Android unmeasured",
+  "status": "Published direct Dança console entry and visible official YouTube music player; live stream and physical device verification remain limited",
   "build": "705.28.21-war-revisao",
-  "revision": "defa5c4df1748e8e",
-  "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
-  "runtimeWorldCommit": "64acd1c1bd500bf20ac313750531d9aa30bba2ab",
-  "previewUrl": "https://otthi-world-campanha-teste-berjv2hh6-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_CyapvbdaJtf7uTGPDN3wLZqViRV5",
+  "revision": "4d8e8395e38c85ce",
+  "runtimeCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
+  "runtimeWorldCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
+  "previewUrl": "https://otthi-world-campanha-teste-3hauwllpn-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_4Nan4QfHXeuSHGUedAeGR7q6LzSu",
   "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt",
-  "productionSource": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+  "productionDeployment": "dpl_GcVLwTNWBLPTCzM3AUPiusTJSESq",
+  "productionSource": "1506219af05a8dae04020dc7045c06eaf9409819",
   "productionReady": true,
-  "productionAcceptanceStatus": "Public file integrity and manual WAR training verified; installed WAR upgrade validated in a disposable browser",
+  "productionAcceptanceStatus": "138 public file hashes, manual console entry, shared dance lesson and direct YouTube fixture checks passed; continuous live audio was not observed in the remote browser",
   "unitTests": {
-    "passed": 404,
+    "passed": 407,
     "failed": 0
   },
   "checks": {
@@ -64,13 +64,13 @@
     "productionDeployment": "dpl_HwQDkUK4MqmzRsCH3jXdqsbUDdjR",
     "productionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e"
   },
-  "evidenceDirectory": "evolucao-console-20261106",
-  "productionAcceptanceReport": "war-revisao-20261107/public-integrity.json",
-  "productionHttpIntegrityReport": "war-revisao-20261107/public-integrity.json",
-  "sourceCoherence": "All 111 local release digests agree. All 129 public manifest and console-component SHA-256 checks passed against the exact existing publication output.",
+  "evidenceDirectory": "danca-youtube-20261107",
+  "productionAcceptanceReport": "danca-youtube-20261107/http-integrity.json",
+  "productionHttpIntegrityReport": "danca-youtube-20261107/http-integrity.json",
+  "sourceCoherence": "All 117 manifest resources and 138 public file hashes match the publication output.",
   "publishedAt": "2026-11-07T13:14:56.440793+00:00",
   "publicationPreparation": "Existing root_site_console and root_site_manifest transformations from tools/package-world-preview.py are reproduced by the public byte audit; product source and deployment remain unchanged.",
-  "productionVerifiedAt": "2026-11-08T00:56:39.295Z",
+  "productionVerifiedAt": "2026-11-08T01:28:41.012702+00:00",
   "previousReleaseRecord": {
     "build": "705.28.20-evolucao-console",
     "revision": "5de3a8876ae6b7fb",
@@ -101,5 +101,22 @@
     "gameplayRun": 42431707330,
     "gameplayConclusion": "success",
     "installedUpdateReport": "war-revisao-20261107/installed-update.json"
+  },
+  "previousDanceBase": {
+    "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+    "revision": "defa5c4df1748e8e",
+    "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt"
+  },
+  "danceConsole": {
+    "cards": 8,
+    "directUrl": "https://otthi-world-campanha-teste.vercel.app/games/danca/",
+    "browserRun": 42434156049,
+    "browserStep": "Run node tests/dance-console-browser.mjs",
+    "browserStepConclusion": "success",
+    "existingDanceRun": 42434156033,
+    "existingDanceStepConclusion": "success",
+    "publicFiles": 138,
+    "liveAudioConfirmed": false,
+    "physicalDeviceVerified": false
   }
 }
