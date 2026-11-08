@@ -22,6 +22,7 @@ print(json.dumps({'arcade/manifest.webmanifest':manifest,'arcade/index.html':con
 `],{encoding:'utf8'}));
 const expected=new Map(Object.entries(manifest.files).map(([path,hash])=>['games/otthi/'+path,hash]));
 const extra=['arcade/index.html','arcade/app.js','arcade/sw.js','arcade/manifest.webmanifest','games/otthi/release-manifest.json','games/otthi/sw.js','games/otthi/VERSION.json',
+ 'games/ar/js/core.js','games/ar/world-renderer.js','games/voo/world-renderer.js',
  'games/ar/index.html','games/ar/hand-controls.js','games/ar/js/game_ar.js','games/ar/control-modes.js','games/ar/mastery-gamepad.js','games/ar/combat-controls.css','games/ar/sw.js',
  'games/voo/index.html','games/voo/js/game_flight.js','games/voo/sw.js','games/tenis/index.html','games/tenis/js/game_tennis.js','games/tenis/sw.js'];
 for(const path of extra)expected.set(path,sha(rooted[path]===undefined?fs.readFileSync(path):Buffer.from(rooted[path],'utf8')));

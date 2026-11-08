@@ -27,12 +27,12 @@ const Game={
   let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{}}catch{}
   this.career={wins:Math.max(0,Math.floor(Number(saved.wins)||0)),kills:Math.max(0,Number(saved.kills)||0),completed:saved.completed&&typeof saved.completed==='object'?saved.completed:{},weapon:saved.weapon||'rifle'};
   this.eyeY=1.8;this.crouched=false;this.handViewAnchor=null;this.handAim=null;this.handLock=null;this.player={x:0,z:0,yaw:0,pitch:0,hp:100};this.keys={};this.manualStick={x:0,y:0,active:false};this.aimStick={x:0,y:0,active:false};
-  this.fireHeld=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
+  this.fireHeld=false;this.firePressed=false;this.sprintHeld=false;this.sprinting=false;this.autoFireLock=null;this.coverHeld=false;this.aiming=false;this.lookPointerActive=false;this.autoWalkSide=0;this.autoWalking=false;this.reloadTime=0;this.shotCooldown=0;this.hitFlash=0;this.hurtFlash=0;this.muzzle=0;
   this.stats={kills:0,hits:0,shots:0,reloads:0,blocks:0,missions:0};this.score=0;this.lastStepSound=0;this.wave=0;this.waveDelay=2;this.bannerTime=3.5;
   this.enemies=[];this.particles=[];this.elapsed=0;this.lastDamageAt=0;this.gun=WEAPONS[0];this.selectWeapon(this.career.weapon,true);
   this.resetOperation();if(this.training)this.resetTraining();
-  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea'))return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
-  this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
+  this.keyDown=e=>{if(e.target?.closest?.('input,select,textarea')||window.System?.paused)return;const k=e.key.toLowerCase();if(['w','a','s','d','arrowleft','arrowright','arrowup','arrowdown',' ','r','c','shift'].includes(k)){e.preventDefault();this.keys[k]=true;if(k===' '&&!e.repeat)this.requestFire(false);if(k==='r'&&!e.repeat)this.reload();if(k==='c'&&!e.repeat)this.toggleCrouch();}};
+  this.keyUp=e=>{this.keys[e.key.toLowerCase()]=false};this.release=()=>{this.keys={};this.sprintHeld=this.sprinting=this.fireHeld=this.firePressed=this.coverHeld=this.aiming=this.lookPointerActive=false;this.autoFireLock=null;for(const s of [this.manualStick,this.aimStick])if(s){s.x=s.y=0;s.active=false;}};
   window.addEventListener('keydown',this.keyDown);window.addEventListener('keyup',this.keyUp);window.addEventListener('blur',this.release);window.addEventListener('arcade:release-inputs',this.release);
   if(window.ArcadeControls?.mode==='camera'&&window.WarHandControl){this.state='HAND_CALIBRATION';this.handSession=window.WarHandControl.start(this);}
   this.practiceUI=window.WarPracticeUI?.start(this);
@@ -117,6 +117,13 @@ const Game={
   }
   return best;
  },
+ requestFire(hold=true){
+  if(this.state!=='PLAYING'||window.System?.paused||this.handSession||this.net&&this.player.hp<=0)return false;
+  // Preserve one press across a down/up pair between simulation ticks. The
+  // simulation still owns ammunition, recoil, cooldown and network shots.
+  if(hold)this.fireHeld=true;this.firePressed=true;return true;
+ },
+ releaseFire(cancel=false){this.fireHeld=false;if(cancel)this.firePressed=false;},
  shoot(){
   if(this.state!=='PLAYING'||this.reloadTime>0||this.shotCooldown>0)return false;
   if(this.ammo<=0){this.reload();return false;}
@@ -131,7 +138,7 @@ const Game={
   for(let i=0;i<9;i++)this.particles.push({x:e.x,y:e.y,z:e.z,life:.7,vx:(Math.random()-.5)*5,vy:Math.random()*3,vz:(Math.random()-.5)*5});return true;
  },
  finish(won){
-  if(this.training||this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.sprintHeld=this.sprinting=this.fireHeld=this.aiming=this.lookPointerActive=false;
+  if(this.training||this.resultPaid||this.state!=='PLAYING')return false;this.resultPaid=true;this.state=won?'VICTORY':'DEFEAT';this.resultTimer=2.4;this.sprintHeld=this.sprinting=this.fireHeld=this.firePressed=this.aiming=this.lookPointerActive=false;
   this.career.kills+=this.stats.kills;if(won){this.stats.missions=1;this.career.wins++;this.career.completed[this.mission.id]=true;}this.saveCareer();return true;
  },
  cameraWalk(dt){
@@ -232,7 +239,8 @@ const Game={
    // The left hand turns the view; the right palm aims within that view.
   }
   if(!this.handSession&&(window.ArcadePlaySettings?.get().combatFireMode==='simple')){const target=this.targetAtAim();this.autoFireLock=target?{target}:null;automatic=!!target;}else this.autoFireLock=null;
-  if(automatic||(!this.handSession&&(this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
+  const firePressed=this.firePressed;this.firePressed=false;
+  if(automatic||(!this.handSession&&(firePressed||this.fireHeld||this.keys[' ']))){const debt=this.shotCooldown;if(this.shoot())this.shotCooldown=Math.max(0,this.shotCooldown+Math.min(0,debt));}else this.shotCooldown=Math.max(0,this.shotCooldown);
   if(this.training&&this.trainingNext>0){this.trainingNext=Math.max(0,this.trainingNext-dt);if(!this.trainingNext)this.nextPracticeTarget();}
   if(!this.net){
   if(this.advanceOperation(dt))this.finish(true);

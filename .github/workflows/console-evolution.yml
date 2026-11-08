@@ -53,6 +53,7 @@ jobs:
         with: {node-version: '22'}
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
+      - run: node tests/war-touch-browser.mjs
       - run: node tests/war-dual-hands-browser.mjs
       - run: node tests/war-joint-camera-browser.mjs
       - run: node tests/war-review-browser.mjs

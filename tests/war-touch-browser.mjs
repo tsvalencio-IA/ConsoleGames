@@ -19,6 +19,14 @@ try{
    await page.locator('#phase-grid .mission-card[data-mission=patrol]:not(.locked)').first().click();await page.locator('[data-mode="controls"]').click();await page.waitForFunction(()=>window.System.activeGame?.logic.state==='PLAYING');
    // Isolate input from incoming attacks; the full mission engine has separate tests.
    await page.evaluate(()=>{const g=window.System.activeGame.logic;g.enemies=[];g.waveDelay=999;g.covers=[]});
+   // A complete press can fall between two frames on a busy phone. Replay
+   // the real visible button handlers in that interval, then advance physics.
+   const quickTap=await page.evaluate(()=>{
+    const g=System.activeGame.logic,button=document.querySelector('.combat-input [data-control="fire"]'),shots=g.stats.shots;
+    for(const type of ['pointerdown','pointerup'])button.dispatchEvent(new PointerEvent(type,{bubbles:true,cancelable:true,pointerId:911,pointerType:'touch'}));
+    const released=!g.fireHeld;g.step(.016);const once=g.stats.shots-shots;g.step(.5);
+    return{released,once,afterRelease:g.stats.shots-shots};
+   });assert.deepEqual(quickTap,{released:true,once:1,afterRelease:1},'a tap between frames must fire exactly once');
    assert.equal(await page.evaluate(()=>window.__cameraRequests),0);assert.equal(await page.locator('.aim-stick').count(),0);
    const scene=page.locator('#game-canvas'),move=page.locator('.combat-input [data-control="joystick"]'),fire=page.locator('.combat-input [data-control="fire"]'),ads=page.locator('.combat-input [data-control="ads"]');
    const autoFire=page.locator('.combat-input [data-control="auto-fire"]');assert(await autoFire.isVisible());

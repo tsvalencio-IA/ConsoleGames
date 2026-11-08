@@ -184,7 +184,7 @@ const hub={
  },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[
-   {id:'fire',text:'ATIRAR',label:'Segurar para atirar',down:()=>logic.fireHeld=true,up:()=>logic.fireHeld=false},
+   {id:'fire',text:'ATIRAR',label:'Tocar para atirar ou segurar para rajada',down:()=>logic.requestFire(),up:e=>logic.releaseFire(e?.type!=='pointerup')},
    {id:'ads',text:'MIRAR',label:'Ligar ou desligar a mira aproximada',down:()=>{logic.setAiming(!logic.aiming);refreshAim()}},
    {id:'auto-fire',text:'AUTO: DESL.',label:'Ativar ou desativar o disparo automático ao passar a mira sobre um adversário',down:()=>{const settings=window.ArcadePlaySettings;const current=settings?.get().combatFireMode;if(!settings)return;settings.set('combatFireMode',current==='simple'?'manual':'simple');refreshAutoFire();}},
    {id:'reload',text:'RECARREGAR',label:'Recarregar arma',down:()=>logic.reload()},
