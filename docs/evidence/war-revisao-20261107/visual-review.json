@@ -1,0 +1,1073 @@
+{
+  "views": [
+    {
+      "mission": "patrol",
+      "compatible": false,
+      "w": 844,
+      "h": 390,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "patrol",
+        "drawCalls": 105,
+        "triangles": 35040,
+        "pixelBudget": 800000,
+        "width": 591,
+        "height": 273,
+        "low": false,
+        "software": true,
+        "frameMs": 519,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "city",
+      "compatible": false,
+      "w": 844,
+      "h": 390,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "city",
+        "drawCalls": 96,
+        "triangles": 32202,
+        "pixelBudget": 800000,
+        "width": 591,
+        "height": 273,
+        "low": false,
+        "software": true,
+        "frameMs": 251,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "extraction",
+      "compatible": false,
+      "w": 844,
+      "h": 390,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "extraction",
+        "drawCalls": 104,
+        "triangles": 37974,
+        "pixelBudget": 800000,
+        "width": 591,
+        "height": 273,
+        "low": false,
+        "software": true,
+        "frameMs": 201,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "training",
+      "compatible": false,
+      "w": 844,
+      "h": 390,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "training",
+        "drawCalls": 15,
+        "triangles": 4954,
+        "pixelBudget": 800000,
+        "width": 591,
+        "height": 273,
+        "low": false,
+        "software": true,
+        "frameMs": 93,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "patrol",
+      "compatible": false,
+      "w": 844,
+      "h": 390,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "patrol",
+        "drawCalls": 105,
+        "triangles": 35040,
+        "pixelBudget": 800000,
+        "width": 591,
+        "height": 273,
+        "low": false,
+        "software": true,
+        "frameMs": 200,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "city",
+      "compatible": false,
+      "w": 390,
+      "h": 844,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "city",
+        "drawCalls": 58,
+        "triangles": 19330,
+        "pixelBudget": 800000,
+        "width": 273,
+        "height": 591,
+        "low": false,
+        "software": true,
+        "frameMs": 194,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "extraction",
+      "compatible": false,
+      "w": 390,
+      "h": 844,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "extraction",
+        "drawCalls": 98,
+        "triangles": 36822,
+        "pixelBudget": 800000,
+        "width": 273,
+        "height": 591,
+        "low": false,
+        "software": true,
+        "frameMs": 183,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "training",
+      "compatible": false,
+      "w": 390,
+      "h": 844,
+      "visual": {
+        "renderer": "webgl",
+        "frames": 1,
+        "mission": "training",
+        "drawCalls": 15,
+        "triangles": 4954,
+        "pixelBudget": 800000,
+        "width": 273,
+        "height": 591,
+        "low": false,
+        "software": true,
+        "frameMs": 93,
+        "shadows": false
+      },
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "patrol",
+      "compatible": true,
+      "w": 844,
+      "h": 390,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "city",
+      "compatible": true,
+      "w": 844,
+      "h": 390,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "extraction",
+      "compatible": true,
+      "w": 844,
+      "h": 390,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "training",
+      "compatible": true,
+      "w": 844,
+      "h": 390,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 733,
+          "y": 311,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 733,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 639,
+          "y": 253,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 379,
+          "y": 333,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 176,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 230,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 286,
+          "w": 96,
+          "h": 96
+        }
+      ]
+    },
+    {
+      "mission": "patrol",
+      "compatible": true,
+      "w": 844,
+      "h": 390,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "city",
+      "compatible": true,
+      "w": 390,
+      "h": 844,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "extraction",
+      "compatible": true,
+      "w": 390,
+      "h": 844,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    },
+    {
+      "mission": "training",
+      "compatible": true,
+      "w": 390,
+      "h": 844,
+      "visual": null,
+      "ammo": 30,
+      "hp": 100,
+      "controls": [
+        {
+          "id": "fire",
+          "x": 279,
+          "y": 760,
+          "w": 86,
+          "h": 64
+        },
+        {
+          "id": "ads",
+          "x": 279,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "auto-fire",
+          "x": 185,
+          "y": 702,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "reload",
+          "x": 152,
+          "y": 630,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "sprint",
+          "x": 25,
+          "y": 610.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "cover",
+          "x": 25,
+          "y": 664.8125,
+          "w": 86,
+          "h": 46
+        },
+        {
+          "id": "joystick",
+          "x": 18,
+          "y": 721.8125,
+          "w": 109.1875,
+          "h": 109.1875
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Software GPU; no physical Android FPS, camera ergonomics or temperature measurement."
+  ],
+  "passed": true
+}

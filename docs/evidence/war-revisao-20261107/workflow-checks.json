@@ -1,0 +1,42 @@
+{
+  "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+  "runs": [
+    {
+      "id": 42431707196,
+      "name": "Conferir cenários 3D e alinhamento da mira",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42431707266,
+      "name": "Validar evolução do console e entregas",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42431707330,
+      "name": "Validar gameplay real no Chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42431707221,
+      "name": "Câmera frontal e modos no mundo OT",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "warInstalledUpdate": [
+    {
+      "name": "Atualização completa sem interromper a partida",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Arrastar a câmera e jogar com toques simultâneos no WAR",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "physicalAndroid": false
+}

@@ -1,0 +1,10 @@
+{
+  "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+  "command": "node --test tests/*.test.mjs",
+  "passed": 404,
+  "failed": 0,
+  "durationMs": 37487.797071,
+  "warCache": 51,
+  "worldBuild": "705.28.21-war-revisao",
+  "worldRevision": "defa5c4df1748e8e"
+}

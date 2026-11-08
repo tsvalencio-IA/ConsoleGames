@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:42211",
+  "checkedAt": "2026-11-08T00:53:55.740Z",
+  "calibrated": {
+    "state": "PLAYING",
+    "body": {
+      "fresh": true,
+      "calibrated": true,
+      "moveX": 0,
+      "moveZ": 0,
+      "crouched": false,
+      "turnYaw": 0,
+      "lean": 0,
+      "twoHands": false,
+      "timestamp": 6247.399999999994,
+      "fullBody": true
+    },
+    "hand": {
+      "x": 0.4999215158762229,
+      "y": 0.4805408810243263,
+      "fresh": false,
+      "present": true,
+      "timestamp": 6130.699999999997,
+      "twoHands": false,
+      "calibration": 2,
+      "roll": 0,
+      "source": "hand",
+      "fire": false
+    },
+    "bodySamples": 6,
+    "handSamples": 9,
+    "crop": {
+      "x": 0.273314728140831,
+      "y": 0.38534345179796214,
+      "w": 0.1875,
+      "h": 0.25
+    },
+    "bodyMs": 67.10000000000582,
+    "handMs": 116
+  },
+  "combat": {
+    "shots": 2,
+    "hits": 2,
+    "renderer": {
+      "renderer": "webgl",
+      "frames": 3,
+      "mission": "patrol",
+      "drawCalls": 44,
+      "triangles": 14972,
+      "pixelBudget": 80000,
+      "width": 416,
+      "height": 192,
+      "low": false,
+      "software": true,
+      "frameMs": 67,
+      "shadows": false
+    },
+    "infantry": [
+      {
+        "id": "1:0",
+        "x": 0,
+        "y": 0,
+        "z": -24,
+        "head": {
+          "x": 0.5000469084906619,
+          "y": 0.47029140582598516,
+          "depth": 0.9876655029986238
+        }
+      }
+    ]
+  },
+  "sameUnmodifiedSample": true,
+  "stationaryTrainingAdversary": true,
+  "bothProductionModels": true,
+  "mainThreadSlowdown": 1,
+  "noWorkerInterception": true,
+  "frontCamera": true,
+  "hiddenPreview": true,
+  "assistedAdvance": true,
+  "lossStopsActions": true,
+  "lossProof": {
+    "hand": {
+      "timestamp": 9590.100000000006,
+      "count": 0
+    },
+    "body": {
+      "timestamp": 9735.600000000006,
+      "count": 0
+    }
+  },
+  "reacquired": true,
+  "errors": [],
+  "limits": [
+    "Official static photo replayed as camera video; physical Android tracking and player accuracy not certified."
+  ]
+}

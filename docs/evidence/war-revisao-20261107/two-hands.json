@@ -1,0 +1,65 @@
+{
+  "limits": [
+    "Production hand model on independent crops of official photographic test data replayed through a local video stream.",
+    "Physical two-hand ergonomics, pinch accuracy, Android camera latency and temperature remain unmeasured."
+  ],
+  "realSourceHands": 2,
+  "leftFirstCannotSwapRoles": true,
+  "calibrated": {
+    "dual": true,
+    "bodyWorker": false,
+    "handCount": 2,
+    "latencyMs": 279.3999999999942,
+    "neutral": {
+      "x": 0.6954914437873023,
+      "y": 0.4890009750212942,
+      "label": "Right"
+    },
+    "label": "Left",
+    "source": "hand",
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+    }
+  },
+  "crouchPersists": true,
+  "turning": {
+    "yaw": 1.104393096613969,
+    "aim": {
+      "x": 0.5003212266182705,
+      "y": 0.4805044476884479,
+      "fresh": true,
+      "present": true,
+      "timestamp": 9186.899999999994,
+      "twoHands": false,
+      "calibration": 1,
+      "roll": 0,
+      "source": "hand",
+      "fire": false
+    },
+    "navigation": {
+      "fresh": true,
+      "move": 0,
+      "turn": 0.34967283703656066
+    }
+  },
+  "bothLostPausesCombat": true,
+  "passed": true,
+  "independentNavigation": true,
+  "lossObservations": {
+    "left": {
+      "timestamp": 14562.399999999994,
+      "hands": 0
+    },
+    "right": {
+      "timestamp": 14562.399999999994,
+      "hands": 0
+    }
+  },
+  "leftLossStopsMovement": true,
+  "rightLossStopsFire": true,
+  "manualFallback": true,
+  "errors": []
+}
