@@ -23,11 +23,14 @@ try{
   const media=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);window.__danceTracks=[];window.__cameraCalls=0;
   navigator.mediaDevices.getUserMedia=async options=>{window.__cameraCalls++;const stream=await media(options);window.__danceTracks.push(...stream.getTracks());return stream;};
   localStorage.setItem('dance-preservation-marker','existing-other-game');
+  localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({profile:{playerId:'dance-existing-player'}}));
+  localStorage.setItem('thia:otthi:venues:v1:dance-existing-player',JSON.stringify({dance:{0:{passed:true,bodyBest:900}},pingpong:{best:321}}));
  });
  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(server.origin+'/arcade/');assert.equal(await page.locator('.game-card').count(),8);
  await page.locator('[data-game="danca"] [data-launch="danca"]').click();
  await page.locator('[data-youtube-url]').waitFor();assert.equal(await page.evaluate(()=>__cameraCalls),0);
+ assert(await page.locator('[data-dance-level="1"]').isEnabled(),'direct entry retains the existing world lesson unlock');
  await page.locator('[data-youtube-url]').fill('https://youtu.be/M7lc1UVf-VE');await page.locator('[data-youtube-load]').click();await page.locator('[data-youtube-options]').waitFor({state:'visible'});
  await page.locator('[data-youtube-bpm]').fill('120');await page.locator('[data-youtube-select]').click();
  assert.match(await page.locator('[data-dance-file-status]').textContent(),/Música de teste/);
@@ -46,6 +49,7 @@ try{
  assert.equal(await page.evaluate(()=>__danceTracks.filter(t=>t.readyState!=='ended').length),0);assert.equal(await page.evaluate(()=>__youtubeFixture.created),1);
  await page.locator('[data-dance-original]').click();assert.equal(await page.evaluate(()=>__youtubeFixture.destroyed),1);
  assert.equal(await page.evaluate(()=>localStorage.getItem('dance-preservation-marker')),'existing-other-game');assert.deepEqual(errors,[]);
+ assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('thia:otthi:venues:v1:dance-existing-player')).pingpong.best),321);
  fs.writeFileSync(out+'/result.json',JSON.stringify({passed:true,eightCards:true,directEntry:true,viewports:4,youtubeFixture:true,playerRetained:true,bufferingFreezesClock:true,manualPause:true,cameraStopped:true,otherSavesPreserved:true,errors,limits:['Synthetic YouTube state and pose fixtures; does not certify physical device performance or live video availability.']},null,2));
  console.log('PASS dance console entry, four layouts, visible retained YouTube player, buffering pause, camera cleanup and save preservation');
 }finally{await browser.close();await server.close();}
