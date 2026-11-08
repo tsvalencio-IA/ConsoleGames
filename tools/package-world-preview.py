@@ -103,13 +103,14 @@ def package(output=OUTPUT):
                 'games/ar/object-tracker.js', 'games/ar/object-tracker-worker.js',
                 'games/ar/combat-controls.css', 'games/ar/vendor/hand-tracker/hand_landmarker.task',
                 'games/ar/vendor/hand-tracker/vision_wasm_internal.wasm',
+                'games/danca/index.html', 'games/danca/app.js', 'games/danca/style.css',
                 'arcade/index.html', 'console.html', 'arcade/instalar/index.html',
                 'arcade/instalar/install.js', 'games/familia/3d/index.html']
     for path in required:
         if not (output / path).is_file():
             raise RuntimeError('Missing deployment resource: ' + path)
     print(json.dumps({'packaged': str(output), 'verifiedResources': len(required),
-                      'games': ['otthi', 'familia', 'kart', 'boxe', 'tenis', 'ar', 'voo']}, ensure_ascii=False))
+                      'games': ['otthi', 'familia', 'kart', 'boxe', 'tenis', 'ar', 'voo', 'danca']}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

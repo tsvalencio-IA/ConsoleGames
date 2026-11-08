@@ -38,7 +38,7 @@ try{
   await p.goto(base,{waitUntil:'domcontentloaded'});await p.waitForFunction(()=>window.OTTHI_RELEASE_COHERENT);await p.locator('#playBtn').click();
   await p.waitForFunction(()=>window.OTTHI_EXPANSION?.diagnostics().ready,null,{timeout:90000});
   await p.locator('#quickToggleBtn').click();await p.locator('#worldConsoleLink').click();await p.waitForURL('**/arcade/');
-  assert.equal(await p.locator('.game-card').count(),7);results.push({flow:'world-to-console',sevenOriginalGames:true});console.log('PASS world to console');
+  assert.equal(await p.locator('.game-card').count(),8);results.push({flow:'world-to-console',eightGames:true});console.log('PASS world to console');
   for(const [slug,id]of [['kart','drive'],['boxe','box_pro'],['tenis','tennis'],['ar','ar_truck_sim'],['voo','usarmy_flight_sim']]){
    await p.locator('[data-game="'+slug+'"] [data-launch]').click();await enterOriginal(p,id);
    assert.equal(await p.evaluate(()=>window.GameAudio.diagnostics().state),'running');

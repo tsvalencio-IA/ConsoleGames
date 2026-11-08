@@ -1,4 +1,4 @@
-const REVISION = 'defa5c4df1748e8e';
+const REVISION = '5a63b0a452b77f6b';
 const CACHE = `otthi-v70653-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.28.21-war-revisao';
@@ -47,6 +47,8 @@ const REQUIRED_SHELL = [
   "./assets/js/controls/dance-pose-worker.js",
   "./assets/js/controls/dance-stage.js?v=music2",
   "./assets/js/controls/dance-music.js?v=music3",
+  "./assets/js/controls/dance-game.js?v=youtube1",
+  "./assets/js/controls/dance-youtube.js",
   "./assets/js/ui/account-access.js?v=20261024-head1",
   "./game-audio.js?v=20261023-3",
   "./console-world.js",

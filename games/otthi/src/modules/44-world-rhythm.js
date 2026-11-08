@@ -64,7 +64,7 @@
       if(this.phase==='playing'&&now-this.lastPoseAt>450){this.phase='lost';this.feedback='Corpo fora do enquadramento. A música está pausada.';this.recovery=0;this.hold=0;this.holdSamples=0;}
       if(this.phase==='countdown'&&now-this.lastPoseAt>450){this.phase='lost';this.recovery=0;return;}
       if(this.phase==='countdown'&&now>=this.countdownUntil){this.phase='playing';this.feedback='Siga a demonstração';this.originFeatures=this.features;}
-      if(this.phase!=='playing')return;this.activeMs+=dt;
+      if(this.phase!=='playing'||this.musicWaiting)return;this.activeMs+=dt;
       const next=Math.min(this.phrases.length,Math.floor(this.activeMs/this.duration));while(this.index<next){const item=this.phrases[this.index];if(!item.hit){item.miss=true;this.misses++;this.combo=0;}this.index++;this.hold=0;this.holdSamples=0;this.originFeatures=this.features;}
       if(this.index>=this.phrases.length){this.done=true;this.phase='done';this.feedback='Música concluída';}
     }
@@ -79,7 +79,7 @@
         if(this.calibration.length>=12&&this.stable>=1){const list=this.calibration.map(x=>x.body),average=(fn)=>list.reduce((s,p)=>s+fn(p),0)/list.length;this.baseline={width:average(p=>p.width),height:average(p=>p.height),hip:{x:average(p=>p.hip.x),y:average(p=>p.hip.y)},foot:{x:average(p=>p.foot.x),y:average(p=>p.foot.y)}};this.features=this.extract(body);this.originFeatures=this.features;this.phase='countdown';this.countdownUntil=now+3000;this.feedback='Calibrado. Prepare-se!';}
         return true;
       }
-      this.features=this.extract(body);if(this.manual||this.phase==='paused')return true;
+      this.features=this.extract(body);if(this.manual||this.phase==='paused'||this.musicWaiting)return true;
       if(this.phase==='lost'){if(previousAt&&now-previousAt>550)this.recovery=0;if(++this.recovery>=4){this.phase='countdown';this.countdownUntil=now+1500;this.feedback='Corpo encontrado. Vamos continuar…';}return true;}
       if(this.phase!=='playing'||this.phrases[this.index]?.hit)return true;
       const offset=this.activeMs%this.duration,latency=Math.max(0,now-capturedAt),at=Math.max(0,offset-latency);const item=this.phrases[this.index],quality=this.match(item.move,this.features),origin=this.originFeatures||this.features,energy=Math.max(...['lwX','lwY','rwX','rwY','step','drop','lean'].map(k=>Math.abs(this.features[k]-origin[k])));
@@ -90,6 +90,7 @@
       if(quality>=.72&&item.moved){this.hold+=Math.min(200,now-(previousAt||now));this.holdSamples++;if(this.hold>=140&&this.holdSamples>=2){item.hit=true;item.quality=quality;this.hits++;this.weight+=quality;this.combo++;this.bestCombo=Math.max(this.bestCombo,this.combo);this.score+=Math.round(quality*100)+Math.min(50,this.combo*5);this.feedback=quality>.92?'MOVIMENTO PERFEITO!':'BOM MOVIMENTO!';}}else{this.hold=0;this.holdSamples=0;if(quality<.72)this.feedback=this.correction(item.move,this.features);}
       return true;
     }
+    setMusicWaiting(waiting,now){if(this.musicWaiting===!!waiting)return;this.musicWaiting=!!waiting;this.lastTick=now;this.hold=0;this.holdSamples=0;}
     pause(now){this.tick(now);if(this.done)return;this.phase='paused';this.manual=true;this.hold=0;this.holdSamples=0;this.feedback='PAUSADO';}
     resume(now){if(this.done||!this.baseline)return;this.manual=false;this.phase='lost';this.recovery=0;this.lastTick=now;this.feedback='Volte ao enquadramento para continuar.';}
     snapshot(){const current=this.phrases[Math.min(this.index,this.phrases.length-1)],next=this.phrases[this.index+1];return{mode:'body-camera',phase:this.phase,level:this.level,bpm:this.bpm,time:this.activeMs/1000,end:this.phrases.length*this.duration/1000,score:this.score,hits:this.hits,misses:this.misses,combo:this.combo,bestCombo:this.bestCombo,total:this.phrases.length,accuracy:this.weight/this.phrases.length,done:this.done,calibrated:!!this.baseline,calibration:this.stable,index:this.index,group:current?.group,repetition:current?.rep,beatInBar:Math.floor(this.activeMs/this.beat)%4+1,move:current?.move,label:WorldDanceBody.moves[current?.move]||'',next:WorldDanceBody.moves[next?.move]||'',progress:this.activeMs%this.duration/this.duration,feedback:this.feedback,countdownUntil:this.countdownUntil,lastPoseAt:this.lastPoseAt};}

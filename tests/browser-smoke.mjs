@@ -31,7 +31,7 @@ try{
     const page=await context.newPage();
     await page.goto(base,{waitUntil:"domcontentloaded",timeout:45000});
     await page.waitForSelector(".game-card",{timeout:15000});
-    assert.equal(await page.locator(".game-card").count(),7,"Biblioteca deve conter sete jogos");
+    assert.equal(await page.locator(".game-card").count(),8,"Biblioteca deve conter oito jogos");
     const firstWidth=await page.evaluate(()=>({window:window.innerWidth,scroll:document.documentElement.scrollWidth}));
     assert(firstWidth.scroll<=firstWidth.window+2,JSON.stringify({page:"console",size,firstWidth}));
     await page.screenshot({path:join("test-results/mobile","console-"+size.name+".png"),fullPage:true});
@@ -39,7 +39,7 @@ try{
     // A instalação nova utiliza um segundo endereço, ID e manifest independentes.
     await page.goto(base+"arcade/",{waitUntil:"domcontentloaded",timeout:45000});
     await page.waitForSelector(".game-card",{timeout:15000});
-    assert.equal(await page.locator(".game-card").count(),7,"Arcade não mostra os sete jogos");
+    assert.equal(await page.locator(".game-card").count(),8,"Arcade não mostra os oito jogos");
     const arcadeLinks=await page.locator("a.game-open").evaluateAll(nodes=>nodes.map(a=>new URL(a.href).pathname));
     assert(arcadeLinks.every(path=>path.startsWith("/games/") || path.startsWith("/ConsoleGames/games/")),JSON.stringify(arcadeLinks));
     const arcadeWidth=await page.evaluate(()=>({window:window.innerWidth,scroll:document.documentElement.scrollWidth}));

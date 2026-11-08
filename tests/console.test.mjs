@@ -11,23 +11,23 @@ test("JavaScript do console e service worker têm sintaxe válida",()=>{
   execFileSync(process.execPath,["--check",new URL("../app.js",import.meta.url).pathname]);
   execFileSync(process.execPath,["--check",new URL("../sw.js",import.meta.url).pathname]);
 });
-test("há sete jogos reais com IDs únicos: 2 mundos e 5 jogos GAME",()=>{
+test("há oito jogos reais com IDs únicos: 2 mundos, dança e 5 jogos GAME",()=>{
   const items=[...js.matchAll(/\{ id:"([a-z]+)", title:"([^"]+)", category:"([^"]+)",/g)];
-  assert.equal(items.length,7);
-  assert.equal(new Set(items.map(x=>x[1])).size,7);
+  assert.equal(items.length,8);
+  assert.equal(new Set(items.map(x=>x[1])).size,8);
   assert.equal(items.filter(x=>x[3]==="aventura").length,2);
-  assert.equal(items.filter(x=>x[3]==="acao").length,5);
-  ["otthi","familia","kart","boxe","tenis","ar","voo"].forEach(id=>assert(items.some(x=>x[1]===id)));
+  assert.equal(items.filter(x=>x[3]==="acao").length,6);
+  ["otthi","familia","kart","boxe","tenis","ar","voo","danca"].forEach(id=>assert(items.some(x=>x[1]===id)));
 });
-test("sete experiências usam páginas locais reais em pastas independentes",()=>{
-  const expected={otthi:"otthi/",familia:"familia/3d/",kart:"kart/",boxe:"boxe/",tenis:"tenis/",ar:"ar/",voo:"voo/"};
+test("oito experiências usam páginas locais reais em pastas independentes",()=>{
+  const expected={otthi:"otthi/",familia:"familia/3d/",kart:"kart/",boxe:"boxe/",tenis:"tenis/",ar:"ar/",voo:"voo/",danca:"danca/"};
   for(const [id,folder] of Object.entries(expected)){
     const line=js.split("\n").find(x=>x.includes('id:"'+id+'"'));
     assert.ok(line,"Jogo sem catálogo: "+id);
     assert.ok(line.includes('BASE+"'+folder+'"'),"Rota divergente: "+id);
     assert.match(line,/destination:"direct"/);
   }
-  assert.match(html,/Os sete jogos estão agora em pastas próprias/);
+  assert.match(html,/Os oito jogos estão agora em pastas próprias/);
 });
 
 test("o Firebase é o OTThi e não acessa o banco do GAME",()=>{
@@ -64,8 +64,8 @@ test("PWA está no escopo do console e não tenta cachear jogos externos",()=>{
 });
 
 
-test("sete capas ilustradas originais estão presentes e possuem fallback acessível",()=>{
-  for(const id of ["otthi","familia","kart","boxe","tenis","ar","voo"]){
+test("oito capas ilustradas originais estão presentes e possuem fallback acessível",()=>{
+  for(const id of ["otthi","familia","kart","boxe","tenis","ar","voo","danca"]){
     const path="covers/"+id+".svg";
     const svg=readFileSync(new URL("../"+path,import.meta.url),"utf8");
     assert(svg.startsWith("<svg "),"SVG inválido: "+path);

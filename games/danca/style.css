@@ -1,0 +1,9 @@
+html,body.dance-console{margin:0;width:100%;height:100%;overflow:hidden;background:#112035;color:#f1f6ee;font-family:system-ui,sans-serif}
+body.dance-console{min-width:280px}
+#worldVenueDialog>header nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#worldVenueDialog>header a{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;box-sizing:border-box;border:1px solid #8dc6bc;border-radius:10px;color:#f5faf0;background:#305e6a;text-decoration:none;font:800 12px system-ui}
+#worldVenueDialog>header{flex-wrap:wrap}
+#worldVenueDialog>main{overflow-x:hidden}
+.dance-console input,.dance-console button{box-sizing:border-box}
+.dance-console .venue-dance-menu{box-sizing:border-box}
+@media(max-width:420px){#worldVenueDialog>header{gap:5px}#worldVenueDialog>header b{font-size:14px}#worldVenueDialog>header button,#worldVenueDialog>header a{padding:8px!important;font-size:10px!important}.venue-dance-menu{padding:14px}}

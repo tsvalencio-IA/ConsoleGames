@@ -385,14 +385,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Regras determinísticas da atividade de ritmo",
-      "sha256Body": "405ccb7bd703988afcecb5afb64785c9a18c3ac6f4d00f874926cd61e72efc7f"
+      "sha256Body": "96af6190d5f0ee97b042976d335fcf88a497c91800eefaaaeca470ad23a0cad2"
     },
     {
       "file": "src/modules/45-world-activity-venues.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "452c8ceb90d662c8fc7953122384a99b6c36b261202d509adb1e710b8aec1bdd"
+      "sha256Body": "83683f4ad7bc80b6200080b7dfccb7940c455e6f605b7c94c07b09705d2fc4bf"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -779,7 +779,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atividades acessíveis nos locais do mundo",
-      "sha256Body": "d175e8ae4bf64b4b1a1bddb19ccac3caf4e70b1182b78327426caeac1156dc77"
+      "sha256Body": "52c9580413911e56f4ab70100646db038d69bb90fa12db583da5768bf7cce68a"
     },
     {
       "file": "src/styles/23-world-race-focus.css",

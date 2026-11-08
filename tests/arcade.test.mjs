@@ -26,8 +26,8 @@ test("app ARCADE tem link, ID, nome, escopo e inicialização próprios",()=>{
   assert.match(html,/href="\.\/icon\.svg"/);
 });
 
-test("sete jogos da nova instalação abrem no repositório correto",()=>{
-  for(const slug of ["otthi","familia/3d","kart","boxe","tenis","ar","voo"]){
+test("oito jogos da nova instalação abrem no repositório correto",()=>{
+  for(const slug of ["otthi","familia/3d","kart","boxe","tenis","ar","voo","danca"]){
     assert(app.includes('BASE+"'+slug+'/"'),slug+" não aponta para o jogo existente");
     assert(existsSync(new URL("games/"+slug+"/index.html",root)),slug+" ausente");
   }
@@ -63,6 +63,7 @@ test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
   assert(read("games/"+name+"/arcade-enhancements.js").includes('back.href="../../arcade/"'));
   assert(read("games/"+name+"/arcade-pause.js").includes('href="../../arcade/" data-action="exit"'));
  }
+ assert(read("games/danca/index.html").includes('href="../../arcade/"'));
  assert(read("games/otthi/console-world.js").includes('link.href="../../arcade/"'));
  assert(read("games/familia/console-world.js").includes('back.href=mode==="familia"?"../../../arcade/"'));
  assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");

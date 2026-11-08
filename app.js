@@ -12,6 +12,7 @@
     { id:"boxe", title:"Boxing Pro", category:"acao", categoryLabel:"Esporte com câmera", short:"Um jogo de boxe com movimento e desafios por fases.", icon:"🥊", coverA:"#72364b", coverB:"#af435e", source:"GAME", url:BASE+"boxe/", tint:"#ffc1be", destination:"direct" },
     { id:"tenis", title:"Ping Pong Wii", category:"acao", categoryLabel:"Tênis de mesa", short:"Partidas de pingue-pongue com controles por movimento.", icon:"🏓", coverA:"#184c65", coverB:"#3b8ca0", source:"GAME", url:BASE+"tenis/", tint:"#7de7f6", destination:"direct" },
     { id:"ar", title:"WAR Combate", category:"acao", categoryLabel:"Combate tático", short:"Combate com câmera opcional, joysticks, cobertura e três operações.", icon:"🎯", coverA:"#173642", coverB:"#385951", source:"GAME", url:BASE+"ar/", tint:"#ddbefc", destination:"direct" },
+    { id:"danca", title:"Dança", category:"acao", categoryLabel:"Dança com câmera", short:"Escolha sua música do YouTube, acompanhe o professor e dance com o corpo inteiro.", icon:"🎵", coverA:"#30254d", coverB:"#136268", source:"OTThi-World3", url:BASE+"danca/", tint:"#b3e2d2", destination:"direct" },
     { id:"voo", title:"Aero Strike WAR", category:"acao", categoryLabel:"Simulador de voo", short:"Pilote caças e helicópteros sobre cidades com trânsito e combate no solo.", icon:"✈️", coverA:"#21486b", coverB:"#3c5baa", source:"GAME", url:BASE+"voo/", tint:"#a7c9ff", destination:"direct" }
   ]);
 
@@ -121,7 +122,7 @@
   function launch(id) {
     if(!valid.has(id))return;
     const list=store.read(HISTORY_KEY,[]);
-    const next=[id,...(Array.isArray(list)?list.filter(x=>valid.has(x)&&x!==id):[])].slice(0,7);
+    const next=[id,...(Array.isArray(list)?list.filter(x=>valid.has(x)&&x!==id):[])].slice(0,8);
     store.write(HISTORY_KEY,next);
   }
   function toggleFavorite(id) {

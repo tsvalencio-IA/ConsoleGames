@@ -20,6 +20,7 @@ jobs:
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
       - run: node tests/world-integrity.mjs
+      - run: node tests/dance-console-browser.mjs
       - run: node tests/world-phone-browser.mjs
       - run: node tests/world-air-fleet-multiplayer-browser.mjs
       - uses: actions/upload-artifact@v4
@@ -28,6 +29,7 @@ jobs:
           name: console-phone-and-aircraft
           path: |
             test-results/world-phone/
+            test-results/dance-console/
             test-results/air-fleet-multiplayer/
   pouso:
     runs-on: ubuntu-24.04
