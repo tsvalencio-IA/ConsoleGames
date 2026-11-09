@@ -114,13 +114,14 @@ class World{
   this.canvas.addEventListener('webglcontextrestored',()=>{this.dispose();cache.delete(game)});
   this.scene=new T.Scene();this.scene.scale.z=-1;this.camera=new T.PerspectiveCamera();this.textures=textureSet();this.materials=[];
   this.static=new Batch(this.scene);this.dynamic=new Batch(this.scene,true);this.smokes=[];this.aircraft=new Map();this.aircraftTemplates=new Map();
-  this.createMaterials();this.lighting();
+  this.createMaterials();if(type==='combat')this.loadGroundMaterials();this.lighting();
   if(type==='flight')this.buildFlight();else this.buildCombat();this.static.finish();
  }
  material(color,map=null,metal=.05,rough=.88){const m=new T.MeshStandardMaterial({color,map,metalness:metal,roughness:rough});m.color.convertSRGBToLinear();this.materials.push(m);return m}
  createMaterials(){
   const tx=this.textures,m=this.m={};
   for(const key of ['asphalt','concrete','metal','roof']){tx[key].wrapS=tx[key].wrapT=T.RepeatWrapping;tx[key].repeat.set(key==='asphalt'?8:2,key==='asphalt'?32:2)}
+  m.battleFloor=this.material('#b5b1a4',tx.concrete,0,.94);
   m.stone=this.material('#d0c6ac',tx.concrete);m.concrete=this.material('#b7b9af',tx.concrete);m.darkConcrete=this.material('#677370',tx.concrete);
   m.asphalt=this.material('#959fa4',tx.asphalt);m.line=this.material('#ded9b7');m.yellow=this.material('#d4af54');m.olive=this.material('#748062',tx.metal,.28);m.sand=this.material('#baa582',tx.concrete);
   m.steel=this.material('#52646b',tx.metal,.5,.65);m.dark=this.material('#27363b',null,.3);m.rubber=this.material('#18242a');m.glass=this.material('#3b7289',null,.5,.27);m.light=this.material('#f7d5a0');m.light.emissive.set('#c7a26d');m.light.emissiveIntensity=.45;
@@ -129,6 +130,14 @@ class World{
   m.facade=tx.facades.map((t,i)=>this.material(['#b1bbb4','#e1d0b4','#a4bfca','#d5d7c8'][i],t,.14,.78));
   m.blue=this.material('#52798a',tx.metal,.3);m.red=this.material('#9a6354',tx.metal,.25);m.white=this.material('#d4d3c4',null,.3);m.cars=[m.white,m.blue,m.red,m.sand];
   m.shadow=new T.MeshBasicMaterial({map:tx.shadow,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});m.shadow.userData.cast=false;this.materials.push(m.shadow);
+ }
+ loadGroundMaterials(){
+  if(typeof URL==='undefined'||!document.baseURI)return;
+  this.groundMaps=0;this.groundTextures=[];const base=new URL('assets/ground/',document.baseURI),loader=new T.TextureLoader();
+  for(const [file,property,srgb] of [['concrete-albedo.jpg','map',true],['concrete-normal.jpg','normalMap',false],['concrete-arm.jpg','roughnessMap',false]]){
+   if(this.low&&property==='normalMap')continue;
+   loader.load(new URL(file,base).href,texture=>{if(this.disposed){texture.dispose();return;}texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.set(22,44);texture.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());if(srgb)texture.encoding=T.sRGBEncoding;this.groundTextures.push(texture);this.m.battleFloor[property]=texture;if(property==='normalMap')this.m.battleFloor.normalScale.set(.35,.35);this.m.battleFloor.needsUpdate=true;this.groundMaps++;},undefined,()=>{});
+  }
  }
  lighting(){
   this.scene.add(new T.HemisphereLight('#c4dfeb','#776750',.8));
@@ -175,14 +184,14 @@ class World{
   const b=this.static,m=this.m,mission=this.game.mission?.id||'patrol';this.mission=mission;
   b.box(m.grass,0,-.32,35,360,.25,400);
   if(mission==='training'){
-   b.box(m.concrete,0,-.12,22,40,.12,70);b.box(m.stone,0,0,48,42,8,1);
+   b.box(m.battleFloor,0,-.12,22,40,.12,70);b.box(m.stone,0,0,48,42,8,1);
    for(const x of[-17,-9,9,17])b.box(m.yellow,x,.01,19,.12,.02,55);
    for(const x of[-21,21]){b.box(m.steel,x,0,20,.3,7,62);for(const z of[0,20,40])this.lamp(b,x,z,1);}
    this.sign('TREINO OT · MIRA E CALIBRAÇÃO',0,6,46,24,2.5,Math.PI);
    this.sky.material.uniforms.top.value.set('#477ea3');this.sky.material.uniforms.bottom.value.set('#d4e3df');
   }else if(mission==='patrol'){
    // Cargo quay, water, warehouses, container alleys and gantry cranes.
-   b.box(m.concrete,0,-.12,34,70,.12,140);b.box(m.glass,70,-.2,35,70,.08,220);
+   b.box(m.battleFloor,0,-.12,34,70,.12,140);b.box(m.glass,70,-.2,35,70,.08,220);
    for(let z=-20;z<115;z+=8){b.box(m.yellow,28,.012,z,1,.015,3);b.box(m.dark,32,-.1,z,1,.8,2);}
    for(const side of [-1,1])for(let i=0;i<6;i++){
     const x=side*(38+i%2*5),z=-10+i*22;b.box(i%2?m.blue:m.rust,x,0,z,9,5,16);
@@ -232,7 +241,7 @@ class World{
   b.round(m.fabric,-.095,-.2,-.87,.09,.1,.16);b.round(m.fabric,.08,-.25,-.38,.1,.13,.12);b.finish();this.weaponBatch=b;
   this.weapon.position.set(.23,-.25,-.18);this.weapon.rotation.set(.06,-.1,-.07);
   this.flash=new T.Mesh(new T.SphereGeometry(1,8,5),new T.MeshBasicMaterial({color:'#ffdb82',transparent:true,opacity:.9}));this.flash.position.set(0,.02,-1.34);this.flash.scale.set(.07,.07,.14);this.weapon.add(this.flash);this.materials.push(this.flash.material);
-  if(window.OTCombatArt){this.weaponBatch.dispose();this.weapon.remove(this.flash);this.flash.material.dispose();const rifle=OTCombatArt.rifle(true);rifle.rotation.y=Math.PI;rifle.scale.setScalar(.62);this.weapon.add(rifle);this.flash=rifle.userData.flash;this.combatWeaponV2=true;}
+  if(window.OTCombatArt){this.weaponBatch.dispose();this.weapon.remove(this.flash);this.flash.material.dispose();const rifle=OTCombatArt.rifle(true,this.game.gun?.id||'rifle');rifle.rotation.y=Math.PI;rifle.scale.multiplyScalar(.62);this.weapon.add(rifle);this.flash=rifle.userData.flash;this.combatWeaponV2=true;}
  }
  terrainHeight(x,z){
   let flatten=1;for(const c of this.game.battleCities||[])flatten=Math.min(flatten,smooth(2700,6200,Math.hypot(x-c.x,z-c.z)));
@@ -351,7 +360,7 @@ class World{
  }
  relay(b,e){const m=this.m;b.box(m.dark,e.x,0,e.z,1.5,.25,1.3);b.box(m.blue,e.x,.25,e.z,1.2,2.1,1);b.box(e.flash?m.light:m.visor,e.x,1.2,e.z-.52,.85,.6,.04);b.add('cylinder',m.steel,e.x,3.2,e.z,.09,2,.09);b.round(m.light,e.x,4.2,e.z,.16,.16,.16);}
  soldier(b,e,time){
-  if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);model.scale.setScalar(1.2);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,this.game.player.z-e.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:e.tactic==='cover',firing:!!e.shot,hit:e.flash});return;}
+  if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);model.scale.setScalar(1.2);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,this.game.player.z-e.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:!!e.crouched,firing:!!e.shot&&e.active,hit:e.flash,fall:e.active?0:clamp((time-e.defeatedAt)/.75,0,1)});return;}
   const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=e.stride??(time*4+(e.phase||0)),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
   // Local articulated parts are rotated as one body: armour, face and weapon
   // always face the player, while knees/ankles keep the gait grounded.
@@ -403,9 +412,11 @@ class World{
   if(this.type==='combat'){
    for(const c of g.covers||[])this.cover(b,c);
    for(const model of this.infantryModels?.values()||[])model.visible=false;
-   for(const e of g.enemies||[])if(e.active){if(e.kind==='practice'){b.box(m.steel,e.x,.01,e.z,.12,Math.max(.1,e.y),.12);for(const[r,ma,depth]of[[.78,m.white,0],[.53,m.rust,-.08],[.22,m.yellow,-.15]])b.add('cylinder',e.flash?m.light:ma,e.x,e.y,e.z+depth,r*2,.08,r*2,Math.PI/2);}else if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else if(e.kind==='relay')this.relay(b,e);else this.tank(b,e.x,e.z,0,1,e.shot)}
+   for(const e of g.enemies||[])if(e.active||e.kind==='soldier'&&time-e.defeatedAt<3){if(e.kind==='practice'){b.box(m.steel,e.x,.01,e.z,.12,Math.max(.1,e.y),.12);for(const[r,ma,depth]of[[.78,m.white,0],[.53,m.rust,-.08],[.22,m.yellow,-.15]])b.add('cylinder',e.flash?m.light:ma,e.x,e.y,e.z+depth,r*2,.08,r*2,Math.PI/2);}else if(e.kind==='soldier')this.soldier(b,e,time);else if(e.kind==='drone')this.drone(b,e,time);else if(e.kind==='relay')this.relay(b,e);else this.tank(b,e.x,e.z,0,1,e.shot)}
    if(g.wave>0&&g.objective?.phase!=='complete'){const p=g.objectivePoint();b.add('ring',m.light,p.x,.05,p.z,3,3,.3,Math.PI/2);b.box(m.light,p.x,.03,p.z,.15,.025,4);b.box(m.light,p.x,.03,p.z,4,.025,.15);}
+   for(const mark of g.bulletMarks||[])if(time-mark.at<12){const toward=.018;b.round(m.dark,mark.x+(mark.axis===0?mark.sign*toward:0),mark.y+(mark.axis===1?mark.sign*toward:0),mark.z+(mark.axis===2?mark.sign*toward:0),.035,.035,.035);}
    this.flash.visible=g.muzzle>0;this.weapon.position.y=-.25+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);this.weapon.rotation.z=(g.aiming?0:-.07)+(g.reloadTime>0?-.25:0);this.weapon.rotation.y=(g.aiming?0:-.1)+(g.handAim&&!g.handSession?(g.handAim.x-.5)*-.65:0);this.weapon.rotation.x=(g.aiming?0:.06)-(g.handAim&&!g.handSession?(g.handAim.y-.48)*.45:0);
+   const motion=window.WarPresentation?.motion(g);this.weaponMotion=motion;if(motion){this.weapon.rotation.x-=motion.kick*.045;this.weapon.rotation.z+=motion.x*2+motion.lower*.28;this.weapon.position.y+=motion.y-motion.lower*.13;}
   }else{
    for(const [i,car]of (g.groundTraffic||[]).entries()){const p=g._groundPath(car);this.car(b,p.x,p.z,p.yaw+(car.crashed?.18:0),5,car.crashed?m.dark:m.cars[i%4])}
    for(const tank of g.groundTanks||[]){const p=g._groundPath(tank);if(tank.active!==false)this.tank(b,p.x,p.z,p.yaw+Math.PI,8,tank.flash);else{b.box(m.dark,p.x,3,p.z,35,8,46,p.yaw);b.box(m.steel,p.x,11,p.z,20,5,24,p.yaw+.4);b.box(m.rubber,p.x-16,1,p.z,7,8,48,p.yaw)}}
@@ -482,7 +493,7 @@ class World{
   this.renderer.setClearColor('#8fa8b3',cameraBackground?0:1);this.updateActors();
   this.renderer.render(this.scene,this.camera);
   let drawCalls=this.renderer.info.render.calls,triangles=this.renderer.info.render.triangles;
-  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=g.aiming?0:.124*w/edge;this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.98:-.82):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=(this.combatWeaponV2?-.056:-.166+.022*h/edge)+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);drawCalls+=this.renderer.info.render.calls;triangles+=this.renderer.info.render.triangles;this.renderer.autoClear=true}
+  if(!flight){const edge=Math.min(w,h);this.weapon.position.x=(g.aiming?0:.124*w/edge)+(this.weaponMotion?.x||0);this.weapon.position.z=this.combatWeaponV2?(g.aiming?-.98:-.82):(g.aiming?-.6:-.18);if(g.aiming)this.weapon.position.y=(this.combatWeaponV2?-.056:-.166+.022*h/edge)+(g.muzzle>0?.012:0)-(g.reloadTime>0?.13:0);else this.weapon.position.y-=.193*(h/edge-1);this.weaponCamera.fov=2*Math.atan(h/(2*edge*1.2))*180/Math.PI;this.weaponCamera.aspect=w/h;this.weaponCamera.updateProjectionMatrix();this.renderer.autoClear=false;this.renderer.clearDepth();this.renderer.render(this.weaponScene,this.weaponCamera);drawCalls+=this.renderer.info.render.calls;triangles+=this.renderer.info.render.triangles;this.renderer.autoClear=true}
   if(this.frameCanvas){
    if(this.frameCanvas.width!==rw||this.frameCanvas.height!==rh){this.frameCanvas.width=rw;this.frameCanvas.height=rh}
    this.frameContext.clearRect(0,0,rw,rh);this.frameContext.drawImage(this.canvas,0,0);
@@ -497,14 +508,14 @@ class World{
   // then recover detail only after sustained cheap renders; keep a hard cap.
   if(adaptiveCombat&&this.frames%18===0){const floor=this.software?80000:160000,ceiling=this.software?200000:800000;if(this.renderCost>32)this.pixelBudget=Math.max(floor,this.pixelBudget*.8);else if(this.renderCost<14)this.pixelBudget=Math.min(ceiling,this.pixelBudget*1.18);}
   else if(!adaptiveCombat&&q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
-  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls,triangles,pixelBudget:Math.round(cap),width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows};
+  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls,triangles,pixelBudget:Math.round(cap),width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows,groundMaps:this.groundMaps||0,presentation:window.WarPresentation?.version||'legacy'};
   return true;
  }
  dispose(){
   if(this.disposed)return;this.disposed=true;for(const model of this.infantryModels?.values()||[]){model.parent?.remove(model);model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}this.infantryModels?.clear();this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
   this.scene.traverse(o=>{if(o.geometry&&!Object.values(geometries).includes(o.geometry))o.geometry.dispose()});
   for(const template of this.aircraftTemplates.values())template.traverse(o=>o.geometry?.dispose());this.aircraft.clear();this.aircraftTemplates.clear();
-  for(const m of this.materials){m.map?.dispose();m.dispose();}for(const tx of Object.values(this.textures).flat())tx.dispose();this.sky.material.dispose();this.renderer.dispose();
+  for(const m of this.materials){m.map?.dispose();m.dispose();}for(const tx of Object.values(this.textures).flat())tx.dispose();for(const tx of this.groundTextures||[])tx.dispose();this.sky.material.dispose();this.renderer.dispose();
  }
 }
 function render(type,game,ctx,w,h,camera=false){

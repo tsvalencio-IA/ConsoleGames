@@ -83,6 +83,8 @@ RELEASE_FILES += ['audio/' + a['file'] for a in json.loads((ROOT / 'audio/engine
 RELEASE_FILES += ['../atualizar/index.html', '../atualizar/update.js', '../atualizar/style.css']
 RELEASE_FILES += ['../ar/practice-controls.js', '../ar/war-screen-orientation.js', '../ar/hand-controls.js', '../ar/hand-tracker-worker.js', '../ar/body-controls.js', '../ar/body-tracker-worker.js', '../ar/object-flow.js', '../ar/object-views.js', '../ar/object-camera-registration.js', '../ar/object-aim.js', '../ar/object-training.js', '../ar/object-tracker.js', '../ar/object-tracker-worker.js', '../ar/combat-controls.css']
 
+RELEASE_FILES += [path for path in ['../ar/index.html', '../ar/sw.js', '../ar/js/game_ar.js', '../ar/world-renderer.js', '../ar/combat-visuals.js', '../ar/combat-presentation.js', '../ar/multiplayer.js', '../ar/assets/ground/concrete-albedo.jpg', '../ar/assets/ground/concrete-normal.jpg', '../ar/assets/ground/concrete-arm.jpg', '../ar/assets/ground/sources.json', '../kart/index.html', '../kart/sw.js', '../kart/js/game_kart.js', '../voo/index.html', '../voo/sw.js', '../voo/world-renderer.js'] if path not in RELEASE_FILES]
+
 
 def body_after_marker(path: Path, marker: str) -> str:
     text = path.read_text('utf-8')

@@ -48,7 +48,7 @@ try{
     let totalTicks=0;
     for(let stage=0;stage<3;stage++){
      let finished=false,ticks=0;
-     while(!finished&&ticks<7000){
+     while(!finished&&ticks<20000){
       const states=await Promise.all(pages.map((p,i)=>p.evaluate(({batch,offset})=>{const g=System.activeGame.logic;for(let k=0;k<batch;k++){
        if(g.status==='RACING'){
         const target=.23*Math.sin((g.__testTick||0)/110)+offset,right=g.playerX<target-.035,left=g.playerX>target+.035;

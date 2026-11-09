@@ -37,7 +37,7 @@ test('kart: curves require steering; help levels reduce drift without locking th
 test('kart: active steering completes all three tracks for all eight drivers, with help off',()=>{
  for(let track=0;track<3;track++)for(let char=0;char<8;char++){
   const g=race(track,char,false,{steeringAssist:'off'});let ticks=0,maxOffset=0,turns=0;
-  while(g.status==='RACING'&&ticks<5000){
+  while(g.status==='RACING'&&ticks<20000){
    const target=.25*Math.sin(ticks/110);
    g.arcadeManual.right=g.playerX<target-.035;g.arcadeManual.left=g.playerX>target+.035;
    if(g.arcadeManual.left||g.arcadeManual.right)turns++;

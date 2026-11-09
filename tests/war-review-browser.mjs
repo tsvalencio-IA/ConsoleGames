@@ -16,15 +16,25 @@ try{
    await page.setViewportSize(viewport);
    for(const mission of['patrol','city','extraction','training']){
     const info=await page.evaluate(({mission,compatible})=>{const s=System,g=s.activeGame.logic;g.init({id:mission});g.waveDelay=999;g.spawnWave();for(const e of g.enemies)e.aim=999;g.elapsed=10;s.paused=true;const w=s.canvas.width,h=s.canvas.height,ctx=s.canvas.getContext('2d');g.drawVirtualScene(ctx,w,h);g.drawHUD(ctx,w,h);return{mission,compatible,w,h,visual:g.worldVisual||null,ammo:g.ammo,hp:g.player.hp};},{mission,compatible});
-    if(!compatible)assert(info.visual?.frames>0,'Actual WebGL frame missing');else assert.equal(info.visual,null);
+    if(!compatible){
+     assert(info.visual?.frames>0,'Actual WebGL frame missing');
+     if(mission==='patrol'||mission==='training')await page.waitForFunction(()=>{const s=System,g=s.activeGame.logic;g.drawVirtualScene(s.canvas.getContext('2d'),s.canvas.width,s.canvas.height);return g.worldVisual.groundMaps>=2;},null,{timeout:30000});
+     info.visual=await page.evaluate(()=>System.activeGame.logic.worldVisual);
+    }else assert.equal(info.visual,null);
     const controls=await page.locator('.combat-input button:not([hidden]), .combat-input .combat-stick:not([hidden])').evaluateAll(nodes=>nodes.filter(e=>getComputedStyle(e).display!=='none').map(e=>({id:e.dataset.control||'stick',x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y,w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height})));
     for(const b of controls){assert(b.x>=-1&&b.y>=-1&&b.x+b.w<=viewport.width+1&&b.y+b.h<=viewport.height+1,JSON.stringify({viewport,b}));assert(b.w>=44&&b.h>=44);}
     for(let i=0;i<controls.length;i++)for(let j=i+1;j<controls.length;j++){const a=controls[i],b=controls[j];assert(Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x)<2||Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)<2,'Controls overlap: '+a.id+'/'+b.id);}
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.screenshot({path:`${out}/${compatible?'compatible':'webgl'}-${mission}-${viewport.width}x${viewport.height}.png`});report.views.push({...info,controls});
    }
+   for(const gun of['rifle','smg','marksman']){
+    const pose=await page.evaluate(gun=>{const s=System,g=s.activeGame.logic;g.init({id:'city'});g.career.wins=3;g.selectWeapon(gun);g.spawnWave();g.waveDelay=999;g.enemies=g.enemies.filter(e=>e.kind==='soldier').slice(0,2);for(const [i,e]of g.enemies.entries())Object.assign(e,{x:i?2.2:-1.8,z:i?12:8,aim:999,moving:true,stride:1});g.elapsed=6;s.paused=true;g.drawVirtualScene(s.canvas.getContext('2d'),s.canvas.width,s.canvas.height);g.drawHUD(s.canvas.getContext('2d'),s.canvas.width,s.canvas.height);return{gun:g.gun.id,ray:g.aimRay(),player:{...g.player},model:window.OTCombatArt?.version,presentation:WarPresentation.version};},gun);
+    assert.equal(pose.gun,gun);assert.equal(pose.ray.yaw,pose.player.yaw);assert.equal(pose.ray.pitch,pose.player.pitch);
+    await page.screenshot({path:`${out}/${compatible?'compatible':'webgl'}-${gun}-infantry-${viewport.width}x${viewport.height}.png`});
+    report.views.push({compatible,viewport,weapon:pose});
+   }
   }
   await context.close();
  }
- assert.deepEqual(report.errors,[]);report.passed=true;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS WAR 16 visual views: four missions, both orientations, WebGL and compatible renderer; controls stay inside the viewport without overlaps');
+ assert.deepEqual(report.errors,[]);report.passed=true;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS WAR 28 visual views: four missions and three weapons with near infantry, both orientations, WebGL and compatible renderer; local materials load and controls stay inside the viewport without overlaps');
 }catch(error){report.failure=error.stack;if(page)await page.screenshot({path:out+'/failure.png'}).catch(()=>{});fs.writeFileSync(out+'/failure.json',JSON.stringify(report,null,2));throw error;}finally{await browser.close();await server.close();}

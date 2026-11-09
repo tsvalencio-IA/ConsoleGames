@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.21-war-revisao",
+  "build": "705.28.22-combate-circuitos",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -251,6 +251,7 @@
   },
   "release": "705.7-r16.8.1-visual-performance-governor-r11-lineage",
   "notes": [
+    "R28.22: direção do kart independente da orientação da tela, circuitos com quatro setores, cronômetro de voltas e WAR com materiais de superfície, variações de armas, recuo visual e reação dos adversários à cobertura e aos acertos.",
     "Rastreamento explícito da ponta do brinquedo, treino e calibração em cinco pontos no WAR; física do kart acompanha o tempo real entre quadros, timer da chegada isolado por corrida e gesto com referência facial; acesso civil da Michelle sem o antigo gatilho de lava; matrizes de objetos ocultos atualizadas sob demanda e continuidade das gravações dos motores após decodificação.",
     "Frota completa no trânsito, volante à esquerda, tráfego aéreo civil NPC e dança com câmera frontal, calibração e acompanhamento do corpo. Palio Fire Economy 2011 e T-Cross original receberam carrocerias próprias.",
     "Coleção de 47 veículos com 44 modelos de referência; IDs, pinturas e saves anteriores preservados. Centro de coleção com acesso por ponte, bancos conforme modelo, motos e bicicleta, ônibus elétrico, carreta articulada e Ferrari 458 licenciada com créditos. A validação física e multiplayer entre dispositivos continua separada.",

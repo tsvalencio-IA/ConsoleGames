@@ -61,7 +61,7 @@
 
     const KartAudio={initialized:false,isPlaying:false,voice:null,init(){this.initialized=!!window.GameAudio?.vehicleVoice;window.GameAudio?.unlock?.();},start(){if(this.isPlaying)return;this.init();this.voice=window.GameAudio?.vehicleVoice?.('kart','kart');this.isPlaying=!!this.voice;},stop(){this.voice?.dispose();this.voice=null;this.isPlaying=false;},update(speed,maxSpeed,driftIntensity,isOffroad,isTurbo){this.voice?.update(Math.abs(speed)/Math.max(1,maxSpeed)*24,speed>0?.8:0,isTurbo,!window.System?.paused);},crash(){window.GameAudio?.effect?.('impact');}};
 
-    let segments = []; let trackLength = 0; let minimapPath = []; let minimapBounds = {minX:0, maxX:0, minZ:0, maxZ:0, w:1, h:1};
+    let segments = []; let trackLength = 0; let minimapShape=null;let minimapPath = []; let minimapBounds = {minX:0, maxX:0, minZ:0, maxZ:0, w:1, h:1};
     let hudMessages = []; let particles = []; let nitroBtn = null; let resetBtn = null; 
     const DUMMY_SEG = { curve: 0, y: 0, color: 'light', obs: [], theme: 'grass' };
 
@@ -73,6 +73,7 @@
         let minX=Infinity, maxX=-Infinity, minZ=Infinity, maxZ=-Infinity;
         minimapPath.forEach(p => { if(p.x < minX) minX = p.x; if(p.x > maxX) maxX = p.x; if(p.z < minZ) minZ = p.z; if(p.z > maxZ) maxZ = p.z; });
         minimapBounds = { minX, maxX, minZ, maxZ, w: maxX-minX || 1, h: maxZ-minZ || 1 };
+        minimapShape=null;if(typeof Path2D!=='undefined'){minimapShape=new Path2D();minimapPath.forEach((p,i)=>i?minimapShape.lineTo(p.x,p.z):minimapShape.moveTo(p.x,p.z));minimapShape.closePath();}
     }
 
     function drawCharacterHead(ctx, charId, steer) {
@@ -158,8 +159,8 @@
         },
 
         resetPhysics: function() {
-            this.lastTime=performance.now();this.physicsAccumulator=0;this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
-            this.virtualWheel={x:0,y:0,r:60,opacity:0,isHigh:false};this.cameraItemGesture=null;this.seenOnlineImpacts=new Set();
+            this.lastTime=performance.now();this.physicsAccumulator=0;this.raceElapsed=0;this.lapStartedAt=0;this.lapTimes=[];this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
+            this.steeringFrame=null;this.steeringFrameAt=null;this.virtualWheel={x:0,y:0,r:60,opacity:0,isHigh:false};this.cameraItemGesture=null;this.seenOnlineImpacts=new Set();
             this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
             this.lap = 1; this.maxLapPos = 0; this.status = 'RACING'; this.finishTime = 0; this.finalRank = 0; this.score = 0; this.nitro = 100; this.spinAngle = 0; this.spinTimer = 0; this.lateralInertia = 0; this.vibration = 0; this.engineTimer = 0; this.inputActive = false; this.rivals = []; this.localBots = []; particles = []; hudMessages = []; this.remotePlayersData = {};
             this.matchCoins = 0; this.item = null; this.itemCooldown = 0; this.projectiles = [];
@@ -403,13 +404,20 @@
                         if(random() < 0.4) { obsList.push({ id: 'bx2_'+globalIdx, type: 'item_box', x: (random() - 0.5) * 1.4, collected: false }); }
                     }
                     
-                    segments.push({ curve: curve * mult, color: Math.floor(segments.length / CONF.RUMBLE_LENGTH) % 2 ? 'dark' : 'light', theme: trk.theme, obs: obsList }); 
+                    segments.push({ sector:this.trackSectors?.length||1,curve:curve*mult, color: Math.floor(segments.length / CONF.RUMBLE_LENGTH) % 2 ? 'dark' : 'light', theme: trk.theme, obs: obsList });
                 }
             };
+            this.trackSectors=[{name:'LARGADA',start:0}];
             if (trackId === 0) { addRoad(50, 0); addRoad(40, 2); addRoad(40, 0); addRoad(60, -3); addRoad(40, 0); addRoad(60, 4); addRoad(50, -2); addRoad(80, 0); } 
             else if (trackId === 1) { addRoad(80, 0); addRoad(60, -1); addRoad(40, -4); addRoad(100, 0); addRoad(60, 2); addRoad(40, 0); addRoad(30, 5); addRoad(100, 0); } 
             else { addRoad(40, 0); addRoad(30, 3); addRoad(30, -3); addRoad(30, 3); addRoad(20, -5); addRoad(100, 0); addRoad(50, 2); addRoad(50, 0); }
-            trackLength = segments.length * CONF.SEGMENT_LENGTH; buildMiniMap(segments);
+            const sectors=[
+                {name:'CURVAS DE ALTA',road:[[80,0],[70,1.5],[60,-2],[80,0],[70,3],[60,-1]]},
+                {name:'CHICANES',road:[[45,0],[55,-2],[40,2.5],[60,0],[50,-3],[70,1.5],[100,0]]},
+                {name:'RETA FINAL',road:[[70,0],[80,2],[60,0],[70,-2.5],[50,1],[90,0]]}
+            ];
+            for(const sector of sectors){this.trackSectors.push({name:sector.name,start:segments.length*CONF.SEGMENT_LENGTH});for(const [length,curve] of sector.road)addRoad(length,curve);}
+            trackLength = segments.length * CONF.SEGMENT_LENGTH;this.trackMeters=trackLength;buildMiniMap(segments);
         },
 
         selectMode(mode) {
@@ -607,7 +615,7 @@
             if(!window.DB){this.state='MODE_SELECT';window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
             const suffix=this.readOnlineStorage('peer',null)||globalThis.crypto?.randomUUID?.()||Math.random().toString(36).slice(2);this.writeOnlineStorage('peer',suffix);
             this.peerId=String(window.System.playerId||'player')+'_'+suffix;
-            this.networkPath='rooms/'+this.roomId+'_cups_v2_'+this.currentFase.id;
+            this.networkPath='rooms/'+this.roomId+'_cups_v3_'+this.currentFase.id;
             const ref=this.roomRef=window.DB.ref(this.networkPath);this.dbRef=ref;this.hostKnown=this.rosterKnown=false;this.roomHostId='';this.lastSync=0;
             const fail=error=>{if(this.roomRef!==ref)return;window.System.msg('SALA INDISPONÍVEL • CONFIRA A CONTA E A CONEXÃO');console.warn('Kart room:',error?.code||'connection');};
             const watch=(path,callback)=>ref.child(path).on('value',snap=>{if(this.roomRef===ref)callback(snap);},fail);
@@ -902,15 +910,20 @@
                 d.steer += (-futureSeg.curve * 0.05 - d.steer) * 0.1; 
                 d.speed += (130-d.speed)*.05; d.playerX *= 0.95;
             } else {
-                if(window.ArcadeControls?.mode!=='controls' && pose && pose.keypoints) {
+                const sample=pose?.cameraFrame??window.System?.video?.currentTime,now=performance.now();
+                if(Number.isFinite(sample)&&this.steeringFrame!==sample){this.steeringFrame=sample;this.steeringFrameAt=now;}
+                const freshSteering=!Number.isFinite(sample)||now-(this.steeringFrameAt??now)<550;
+                if(window.ArcadeControls?.mode!=='controls' && pose && pose.keypoints && freshSteering) {
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
                     const map=pt=>({x:(1-pt.x/videoW)*w,y:pt.y/videoH*h});
                     itemTriggered=this.readCameraItemGesture(pose,videoH)||itemTriggered;
                     const lw = pose.keypoints.find(k => k.name === 'left_wrist'); const rw = pose.keypoints.find(k => k.name === 'right_wrist'); const nose = pose.keypoints.find(k => k.name === 'nose');
-                    if (lw?.score > 0.2 && rw?.score > 0.2) {
+                    if (lw?.score > 0.2 && rw?.score > 0.2 && [lw.x,lw.y,rw.x,rw.y].every(Number.isFinite) && Math.abs(lw.x-rw.x)>videoW*.08) {
                         const pl = map(lw); const pr = map(rw);
-                        const slope=pr.x>=pl.x?pr.y-pl.y:pl.y-pr.y;
-                        d.targetSteer=this.cameraItemGesture?.holding?this.cameraItemGesture.steer:Math.max(-1,Math.min(1,Math.atan2(slope,Math.max(1,Math.abs(pr.x-pl.x)))*1.8))*playOptions().sensitivity;
+                        // Pixel coordinates of the camera are square. Viewport-scaled
+                        // points stretch this angle by 4x between portrait and landscape.
+                        const slope=(rw.y-lw.y)*(lw.x>=rw.x?1:-1),span=Math.abs(rw.x-lw.x);
+                        d.targetSteer=this.cameraItemGesture?.holding?this.cameraItemGesture.steer:Math.max(-1,Math.min(1,Math.atan2(slope,Math.max(1,span))*1.8))*playOptions().sensitivity;
                         d.virtualWheel = { x: (pl.x+pr.x)/2, y: (pl.y+pr.y)/2, r: Math.hypot(pr.x-pl.x, pr.y-pl.y)/2, opacity: 1 };
                         detected = true;
                         
@@ -1132,11 +1145,13 @@
             d.playerX = Math.max(-1.8, Math.min(1.8, d.playerX));
             if (Math.abs(d.playerX) >= 1.8 && Math.sign(d.lateralInertia) === Math.sign(d.playerX)) d.lateralInertia = 0;
             d.cameraX += (d.playerX - d.cameraX) * CONF.CAMERA_LERP;
+            if(d.status==='RACING')d.raceElapsed=(d.raceElapsed||0)+1/60;
             d.pos += d.speed;
 
             if (d.pos > trackLength * 0.60 && d.pos < trackLength * 0.95) { d.maxLapPos = Math.max(d.maxLapPos, d.pos); }
             if (d.pos >= trackLength) { 
                 if (d.maxLapPos > trackLength * 0.70) {
+                    d.lapTimes.push(d.raceElapsed-d.lapStartedAt);d.lapStartedAt=d.raceElapsed;
                     d.pos -= trackLength; d.lap++; d.maxLapPos = 0;
                     
                     d.player.lap++;
@@ -1483,11 +1498,13 @@
             const d=Logic,assist=(STEERING_ASSISTS[playOptions().steeringAssist]||STEERING_ASSISTS.light).label;
             const width=Math.max(150,Math.min(234,w-166)),x=12,y=10;
             ctx.save();ctx.fillStyle='rgba(5,20,31,.84)';
-            if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,width,49,10);ctx.fill();}else ctx.fillRect(x,y,width,49);
+            if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,width,65,10);ctx.fill();}else ctx.fillRect(x,y,width,65);
             ctx.textAlign='left';ctx.fillStyle='#eef7f2';ctx.font='bold 14px Arial';
             ctx.fillText(d.finalRank+'º  ·  VOLTA '+d.lap+'/'+CONF.TOTAL_LAPS,x+10,y+18,width-20);
             ctx.font='bold 10px Arial';ctx.fillStyle='#b9d8da';
             ctx.fillText('VEL '+Math.floor(d.speed)+'  ·  AUX '+assist.toUpperCase(),x+10,y+34,width-20);
+            const sector=Math.max(0,(d.trackSectors||[]).findLastIndex(s=>d.pos>=s.start)),seconds=d.raceElapsed||0,time=Math.floor(seconds/60)+':'+String(Math.floor(seconds%60)).padStart(2,'0')+'.'+Math.floor(seconds%1*10);
+            ctx.fillStyle='#f0d69c';ctx.fillText(time+'  ·  SETOR '+(sector+1)+'/4',x+10,y+51,width-20);
             ctx.fillStyle='#223d4c';ctx.fillRect(x+10,y+40,width-20,3);
             ctx.fillStyle=d.turboLock?'#7de6f1':'#efb76b';ctx.fillRect(x+10,y+40,(width-20)*d.nitro/100,3);
             if(d.item){ctx.textAlign='center';ctx.font='22px Arial';ctx.fillStyle='#fff';ctx.fillText(d.item==='mushroom'?'🍄':d.item==='banana'?'🍌':'🐢',x+width-22,y+23);}
@@ -1496,7 +1513,7 @@
                 ctx.save();ctx.beginPath();ctx.rect(mx,my,size,size);ctx.clip();
                 ctx.translate(mx+size/2,my+size/2);const scale=Math.min((size-14)/minimapBounds.w,(size-14)/minimapBounds.h);
                 ctx.scale(scale,scale);ctx.translate(-(minimapBounds.minX+minimapBounds.maxX)/2,-(minimapBounds.minZ+minimapBounds.maxZ)/2);
-                ctx.strokeStyle='#b7d4d5';ctx.lineWidth=1.4/scale;ctx.beginPath();minimapPath.forEach((p,i)=>i?ctx.lineTo(p.x,p.z):ctx.moveTo(p.x,p.z));ctx.closePath();ctx.stroke();
+                ctx.strokeStyle='#b7d4d5';ctx.lineWidth=1.4/scale;if(minimapShape)ctx.stroke(minimapShape);else{ctx.beginPath();minimapPath.forEach((p,i)=>i?ctx.lineTo(p.x,p.z):ctx.moveTo(p.x,p.z));ctx.closePath();ctx.stroke();}
                 const dot=(pos,color,r)=>{const p=minimapPath[Math.floor(pos/trackLength*minimapPath.length)%minimapPath.length];if(p){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.z,r/scale,0,Math.PI*2);ctx.fill();}};
                 for(const r of d.rivals)dot(r.pos,'#e1c788',1.8);dot(d.pos,'#91f2d1',2.8);ctx.restore();
             }

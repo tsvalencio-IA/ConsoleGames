@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.21-war-revisao',
+    build: '705.28.22-combate-circuitos',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

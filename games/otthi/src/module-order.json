@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.21-war-revisao",
+  "build": "705.28.22-combate-circuitos",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "6f1bb39611fbf570cc89c7d21863e6ca6b1da9afca98e883f88b3cc19c1a5e43"
+      "sha256Body": "df0faa291eb8b0db4267b0e239db9c0c0d69858d0db8348f49edf841df17072f"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",

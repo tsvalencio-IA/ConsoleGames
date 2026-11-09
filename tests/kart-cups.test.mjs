@@ -7,14 +7,14 @@ async function pair(phase='f1'){const db=new RealtimeFixture(),a=driver(db,phase
 async function physicalStage({db,a,b,host}){
  const id=host.game.lastStartedMatch;let ticks=0;
  for(const f of [a,b])f.game.arcadeManual={throttle:true,left:false,right:false};
- while([a,b].some(f=>f.game.status==='RACING')&&ticks<7000){
+ while([a,b].some(f=>f.game.status==='RACING')&&ticks<20000){
   for(const f of [a,b]){const g=f.game;if(g.status==='RACING'){
     const target=.23*Math.sin(ticks/110)+(f===a?-.08:.08);g.arcadeManual.right=g.playerX<target-.035;g.arcadeManual.left=g.playerX>target+.035;g.updatePhysics(390,844,null);if(g.status==='FINISHED')g.checkRaceStatus();
    }else if(g.isHost)g.updateBotDrivers();f.advance(1000/60);
   }
   if(++ticks%8===0){a.game.syncMultiplayer(true);b.game.syncMultiplayer(true);await db.settle();}
  }
- assert(ticks<7000,'actual steering/physics must finish this stage');a.game.syncMultiplayer(true);b.game.syncMultiplayer(true);await db.settle();
+ assert(ticks<20000,'actual steering/physics must finish this stage');a.game.syncMultiplayer(true);b.game.syncMultiplayer(true);await db.settle();
  assert.equal(a.game.onlineCup.state,'RESULTS');assert.equal(b.game.onlineCup.state,'RESULTS');assert.equal(a.game.onlineCup.matchId,id);assert(a.game.player.finished&&b.game.player.finished);
  assert.equal(JSON.stringify(a.game.onlineCup.results),JSON.stringify(b.game.onlineCup.results));return ticks;
 }

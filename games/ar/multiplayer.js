@@ -84,9 +84,9 @@ class WarRoom{
   const previous=this.lastShot[shot.id];if(previous&&(shot.sequence<=previous.sequence||this.now()-previous.at<gun.interval*650))return;
   this.lastShot[shot.id]={sequence:shot.sequence,at:this.now()};
   const p=shot.id===this.id?g.player:this.roster[shot.id];if(!p)return;const e=g.enemies.find(e=>e.id===shot.target&&!e.peerId&&e.active);if(!e)return;
-  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?1.08:radius;
+  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?(e.crouched?.8:1.08):radius;
   if(Math.abs(angle(Math.atan2(dx,dz)-shot.yaw))>=Math.atan2(radius,distance)||shot.pitch<=Math.atan2(e.y-eye-height,distance)||shot.pitch>=Math.atan2(e.y-eye+height,distance)||g.blocked(e.x,e.z,e.y,p,eye))return;
-  e.hp-=gun.damage;e.flash=.12;
+  e.hp-=gun.damage;e.flash=.12;e.suppressed=.65;
   if(e.hp<=0){g.defeat(e,false);this.ledger[shot.id].kills++;this.ledger[shot.id].score+=e.kind==='tank'?350:100;}
   this.publish();
  }
@@ -97,8 +97,8 @@ class WarRoom{
   const wave=g.wave,actors=living.map(id=>id===this.id?g.player:this.roster[id]);if(g.advanceOperation(dt,actors)){this.phase='VICTORY';this.publish();return;}if(g.wave!==wave){for(const id of living)this.ledger[id].hp=Math.min(100,this.ledger[id].hp+18);this.updatePeers();}
   for(const e of g.enemies){if(!e.active||e.peerId||e.kind==='relay')continue;e.flash=Math.max(0,(e.flash||0)-dt);e.aim-=dt;if(e.kind==='drone')e.y=5+Math.sin(g.elapsed*1.5+e.phase)*.8;
    const target=living.slice().sort((a,b)=>Math.hypot(this.roster[a].x-e.x,this.roster[a].z-e.z)-Math.hypot(this.roster[b].x-e.x,this.roster[b].z-e.z))[0];const p=target===this.id?g.player:this.roster[target],cover=target===this.id?(g.coverHeld||g.crouched):p.cover;
-   g.updateEnemyTactics(e,dt,p);
-   if(e.aim<=0){if(!g.blocked(e.x,e.z,e.y,p,Number(p.eyeY)||g.eyeY)){this.ledger[target].hp=Math.max(0,this.ledger[target].hp-g.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1));if(target===this.id){g.hurtFlash=.15;if(cover)g.stats.blocks++;}}e.aim=g.level.aim+1.2;e.shot=.14;}e.shot=Math.max(0,(e.shot||0)-dt);
+   g.updateEnemyTactics(e,dt,p);g.updateEnemyAwareness(e,dt,p);
+   if(e.aim<=0){if(!g.blocked(e.x,e.z,e.y,p,Number(p.eyeY)||g.eyeY)){this.ledger[target].hp=Math.max(0,this.ledger[target].hp-g.level.damage*(e.kind==='tank'?1.7:1)*(cover?.25:1));if(target===this.id){g.hurtFlash=.25;g.damageBearing=Math.atan2(e.x-p.x,e.z-p.z);g.damageTime=1;if(cover)g.stats.blocks++;}}e.aim=g.level.aim+1.2;e.shot=.14;}e.shot=Math.max(0,(e.shot||0)-dt);
   }
   if(this.participants.every(id=>this.ledger[id].hp<=0)){this.phase='DEFEAT';this.publish();}this.applyLedger();
  }
