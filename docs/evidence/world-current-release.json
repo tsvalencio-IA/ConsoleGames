@@ -1,18 +1,18 @@
 {
-  "status": "Published direct Dança console entry and visible official YouTube music player; live stream and physical device verification remain limited",
-  "build": "705.28.21-war-revisao",
-  "revision": "4d8e8395e38c85ce",
-  "runtimeCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
-  "runtimeWorldCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
-  "previewUrl": "https://otthi-world-campanha-teste-3hauwllpn-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_4Nan4QfHXeuSHGUedAeGR7q6LzSu",
+  "status": "Published autonomous NPC workshop, longer and precise Kart races, and revised WAR combat presentation; physical phone verification remains limited",
+  "build": "705.28.23-oficina-combate-kart",
+  "revision": "00b49a044927f542",
+  "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
+  "runtimeWorldCommit": "5f51324be6a284d858dfa198dd668ae722756455",
+  "previewUrl": "https://otthi-world-campanha-teste-naz0xoz4p-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_HwLXTcceh3LSDqpTwQNNfEkXAca2",
   "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_GcVLwTNWBLPTCzM3AUPiusTJSESq",
-  "productionSource": "1506219af05a8dae04020dc7045c06eaf9409819",
+  "productionDeployment": "dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY",
+  "productionSource": "5f51324be6a284d858dfa198dd668ae722756455",
   "productionReady": true,
-  "productionAcceptanceStatus": "138 public file hashes, manual console entry, shared dance lesson and direct YouTube fixture checks passed; continuous live audio was not observed in the remote browser",
+  "productionAcceptanceStatus": "422 unit tests; 164 public hashes; all six final evolution browser jobs succeeded, including NPC workshop collection, reload, Kart precision and installed update.",
   "unitTests": {
-    "passed": 407,
+    "passed": 422,
     "failed": 0
   },
   "checks": {
@@ -41,13 +41,28 @@
     "vehicleOperationalMeasurementJob": 128406703148,
     "productionAcceptanceRun": 42376464163,
     "productionAcceptanceConclusion": "success",
-    "publicVerifiedFiles": 129,
+    "publicVerifiedFiles": 164,
     "finalGameplayRun": 42375696594,
     "finalGameplayConclusion": "success",
     "finalCameraRun": 42375696579,
     "finalCameraConclusion": "success",
     "finalSceneryRun": 42375696565,
-    "finalSceneryConclusion": "success"
+    "finalSceneryConclusion": "success",
+    "previousPublicVerifiedFiles": 129,
+    "evolutionFinalRun": 42659723387,
+    "evolutionFinalConclusion": "success",
+    "evolutionFinalJobs": [
+      "pouso",
+      "duas-maos",
+      "kart-precisao-e-copa",
+      "atualizacao-da-candidata",
+      "oficina-autonoma",
+      "celular-e-entregas"
+    ],
+    "realKartCameraRun": 42657634241,
+    "realKartCameraConclusion": "success",
+    "realKartCameraSource": "748a9a198a56a737676425f2e838f557bc1e3644",
+    "realKartCameraScope": "Kart, WAR and aircraft sources are unchanged between this camera-verified source and the production runtime commit."
   },
   "previewConfiguration": {
     "branch": "console-evolution-20261106",
@@ -55,8 +70,9 @@
   },
   "physicalAndroidApproved": false,
   "limitations": [
-    "No physical Android or iPhone temperature, sustained FPS, camera ergonomics, sensor response or installed user cache was measured.",
-    "Software-rendered FPS did not show a consistent improvement; entry time and redundant interface writes are the measured improvements."
+    "Physical Android/iPhone camera precision, temperature, sustained FPS and installed user cache were not measured.",
+    "Software WebGL and compatible rendering validate functional behavior and geometry, not physical-device performance.",
+    "The WAR web game is not equivalent in production scale or graphics to Call of Duty 2026."
   ],
   "previousProduction": {
     "build": "705.28.19-veiculo-fluidez",
@@ -64,21 +80,45 @@
     "productionDeployment": "dpl_HwQDkUK4MqmzRsCH3jXdqsbUDdjR",
     "productionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e"
   },
-  "evidenceDirectory": "danca-youtube-20261107",
-  "productionAcceptanceReport": "danca-youtube-20261107/http-integrity.json",
-  "productionHttpIntegrityReport": "danca-youtube-20261107/http-integrity.json",
-  "sourceCoherence": "All 117 manifest resources and 138 public file hashes match the publication output.",
-  "publishedAt": "2026-11-07T13:14:56.440793+00:00",
-  "publicationPreparation": "Existing root_site_console and root_site_manifest transformations from tools/package-world-preview.py are reproduced by the public byte audit; product source and deployment remain unchanged.",
-  "productionVerifiedAt": "2026-11-08T01:28:41.012702+00:00",
+  "evidenceDirectory": "combate-kart-20261109",
+  "productionAcceptanceReport": "combate-kart-20261109/http-integrity.json",
+  "productionHttpIntegrityReport": "combate-kart-20261109/http-integrity.json",
+  "sourceCoherence": "All 143 manifest resources and 164 public file hashes match the publication output.",
+  "publishedAt": "2026-11-09",
+  "publicationPreparation": "Production pinned to runtime commit 5f51324be6a284d858dfa198dd668ae722756455; evidence-only commit does not redeploy product source.",
+  "productionVerifiedAt": "2026-11-09T16:58:20.536Z",
   "previousReleaseRecord": {
-    "build": "705.28.20-evolucao-console",
-    "revision": "5de3a8876ae6b7fb",
-    "runtimeCommit": "fc11232adbcd687fd01f553a5a14a280cced8a39",
-    "productionSource": "fc11232adbcd687fd01f553a5a14a280cced8a39",
-    "productionDeployment": "dpl_B2PDjwqyVF7vFkZXdn58esEFXZiZ"
+    "build": "705.28.21-war-revisao",
+    "revision": "4d8e8395e38c85ce",
+    "runtimeCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
+    "productionSource": "1506219af05a8dae04020dc7045c06eaf9409819",
+    "productionDeployment": "dpl_GcVLwTNWBLPTCzM3AUPiusTJSESq"
   },
   "warRevision": {
+    "cache": 54,
+    "visualViews": 40,
+    "releasedBattlefields": 14,
+    "evidence": "combate-kart-20261109/verification.json",
+    "physicalDeviceVerified": false
+  },
+  "previousDanceBase": {
+    "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+    "revision": "defa5c4df1748e8e",
+    "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt"
+  },
+  "danceConsole": {
+    "cards": 8,
+    "directUrl": "https://otthi-world-campanha-teste.vercel.app/games/danca/",
+    "browserRun": 42434156049,
+    "browserStep": "Run node tests/dance-console-browser.mjs",
+    "browserStepConclusion": "success",
+    "existingDanceRun": 42434156033,
+    "existingDanceStepConclusion": "success",
+    "publicFiles": 138,
+    "liveAudioConfirmed": false,
+    "physicalDeviceVerified": false
+  },
+  "previousWarRevision": {
     "cache": 51,
     "entry": "20261107-war-revisao2",
     "unitTests": 404,
@@ -101,22 +141,5 @@
     "gameplayRun": 42431707330,
     "gameplayConclusion": "success",
     "installedUpdateReport": "war-revisao-20261107/installed-update.json"
-  },
-  "previousDanceBase": {
-    "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
-    "revision": "defa5c4df1748e8e",
-    "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt"
-  },
-  "danceConsole": {
-    "cards": 8,
-    "directUrl": "https://otthi-world-campanha-teste.vercel.app/games/danca/",
-    "browserRun": 42434156049,
-    "browserStep": "Run node tests/dance-console-browser.mjs",
-    "browserStepConclusion": "success",
-    "existingDanceRun": 42434156033,
-    "existingDanceStepConclusion": "success",
-    "publicFiles": 138,
-    "liveAudioConfirmed": false,
-    "physicalDeviceVerified": false
   }
 }

@@ -1,0 +1,77 @@
+{
+  "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
+  "runId": 42659723387,
+  "jobs": [
+    {
+      "name": "pouso",
+      "id": 129307693926,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307693926",
+      "failedSteps": []
+    },
+    {
+      "name": "duas-maos",
+      "id": 129307694351,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307694351",
+      "failedSteps": []
+    },
+    {
+      "name": "kart-precisao-e-copa",
+      "id": 129307694367,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307694367",
+      "failedSteps": []
+    },
+    {
+      "name": "atualizacao-da-candidata",
+      "id": 129307694389,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307694389",
+      "failedSteps": []
+    },
+    {
+      "name": "oficina-autonoma",
+      "id": 129307694392,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307694392",
+      "failedSteps": []
+    },
+    {
+      "name": "celular-e-entregas",
+      "id": 129307694591,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/42659723387/job/129307694591",
+      "failedSteps": []
+    }
+  ],
+  "unitTests": {
+    "passed": 422,
+    "failed": 0
+  },
+  "publicFiles": {
+    "verified": 164,
+    "expected": 164
+  },
+  "realKartCamera": {
+    "runId": 42657634241,
+    "sourceCommit": "748a9a198a56a737676425f2e838f557bc1e3644",
+    "conclusion": "success",
+    "runtimeSourcesUnchanged": true
+  },
+  "warVisual": {
+    "views": 40,
+    "releasedBattlefields": 14,
+    "artifactId": 13692876523,
+    "scope": "Software WebGL and compatible renderer; not a physical phone"
+  },
+  "limitations": [
+    "Physical phone temperature, sustained FPS and physical camera precision were not measured."
+  ]
+}

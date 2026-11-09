@@ -1,4 +1,4 @@
-# Combate e Kart — 9 de novembro de 2026
+# Combate, Kart e oficina — 9 de novembro de 2026
 
 Escopo solicitado: precisão e duração das corridas do Kart; combate com apresentação militar mais séria, tomando FPS atuais como referência.
 
@@ -28,4 +28,16 @@ Referência consultada: `tsvalencio-IA/GAME`, commit b18e140896fbec438524b47316a
 
 Não foi medida a câmera física, temperatura, latência nem FPS de um Android real. Chromium com GPU por software verifica funcionamento, geometria, projeção, controles e atualização; não representa desempenho de aparelho. Este projeto web não é apresentado como equivalente técnico ou gráfico a Call of Duty 2026.
 
-Resultados finais, revisão publicada e imagens são registrados nos arquivos de evidência após a aprovação dos testes.
+## Oficina — solicitação adicionada durante a revisão
+
+- Carros de NPCs aguardam 120 segundos antes de serem atendidos pela equipe, com até dois serviços simultâneos de 30 segundos. O proprietário retira o carro oito segundos depois de pronto. Os prontos já existentes entram direto na retirada; os classificados sem conserto são retirados com reboque, preservando o diagnóstico.
+- São reinstaladas as peças do NPC em manutenção, concluído o reparo e liberado o box. Carros do jogador, moedas, estoque, XP e estatísticas de serviço do jogador não recebem alterações por esse atendimento.
+- Ao devolver um veículo do trânsito, o jogo libera a reserva do carro e o NPC retoma a rota. O registro de serviço é mantido; a cópia estacionada sai do pátio e não reaparece depois de recarregar.
+- Uma operação manual ou inspeção em andamento adia a equipe automática. Carros antigos recebem o prazo na primeira execução da versão nova.
+- Vagas compartilhadas respeitam posições ocupadas e as faixas de status têm maior distância para impedir sobreposição entre filas.
+
+Validação final: 422 testes unitários passaram; todos os seis trabalhos da execução 42659723387 passaram. A oficina foi exercitada com seis carros de NPCs, peça desmontada, box elevado, preservação do carro e economia do jogador, retorno ao trânsito e recarga da página. O Kart também passou pela captura real de corpo do MoveNet na execução 42657634241; os arquivos do Kart são idênticos na versão publicada.
+
+Publicação: `705.28.23-oficina-combate-kart`, revisão `00b49a044927f542`, commit `5f51324be6a284d858dfa198dd668ae722756455`, deployment de produção `dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY`. URL: https://otthi-world-campanha-teste.vercel.app/arcade/ .
+
+A auditoria HTTP conferiu os 164 arquivos públicos com sucesso. `http-integrity.json` e `verification.json` registram a auditoria e as execuções verificadas. Os artefatos completos permanecem associados às execuções do GitHub Actions. As 40 vistas do WAR verificam três armas e orientações em renderização WebGL por software e compatível, além da liberação de 14 contextos. As imagens anexadas foram capturadas no navegador; não são certificação de um telefone físico.
