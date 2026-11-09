@@ -1700,7 +1700,10 @@
             const point=(name,confidence=.25)=>pose?.keypoints?.find(k=>k.name===name&&k.score>=confidence),face=['nose','left_eye','right_eye','left_ear','right_ear'].map(name=>point(name)).filter(Boolean),nose=point('nose')||(face.length>=2?{x:face.reduce((s,p)=>s+p.x,0)/face.length,y:face.reduce((s,p)=>s+p.y,0)/face.length}:null),left=point('left_wrist',.20),right=point('right_wrist',.20);
             const videoFrame=pose?.cameraFrame??pose?.cameraSampleAt??window.System?.video?.currentTime,frame=Number.isFinite(videoFrame)?videoFrame:now;
             const gap=g.lastAt===null?0:now-g.lastAt;
-            const lost=!nose||!left||!right||gap>900||(Number.isFinite(pose?.cameraSampleAt)&&now-pose.cameraSampleAt>900);
+            // A slow renderer may deliver fresh observations over one second
+            // apart. Require distinct camera frames and three held samples;
+            // a missing hand, stale frame or long interruption still cancels.
+            const lost=!nose||!left||!right||gap>1800||(Number.isFinite(pose?.cameraSampleAt)&&now-pose.cameraSampleAt>900);
             if(lost){g.armed=false;g.neutralSince=g.raisedSince=null;g.progress=0;g.holding=false;g.lastAt=now;return false;}
             if(frame===g.lastFrame)return false;g.lastFrame=frame;g.lastAt=now;
             const shoulders=['left_shoulder','right_shoulder'].map(name=>point(name)),span=shoulders.every(Boolean)?Math.hypot(shoulders[0].x-shoulders[1].x,shoulders[0].y-shoulders[1].y):videoH*.42,margin=Math.max(videoH*.10,span*.40),neutral=left.y>nose.y+margin&&right.y>nose.y+margin;

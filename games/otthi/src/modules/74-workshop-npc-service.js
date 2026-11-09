@@ -23,6 +23,9 @@
   workshopNpcLog(vehicle,'npc-repaired',now);
  }
  function workshopNpcCollect(vehicle,record,lift,now){
+  // Close and hide before synchronizing the lift: its recovery finder must
+  // never reclaim the customer's finished car while the box is being freed.
+  vehicle.group.visible=false;record.serviceStatus='delivered';record.operatorReleasedAt=now;record.npcCollectedAt=now;record.npcAutoPhase='delivered';
   if(lift){
    workshopForBay(lift,()=>{workshopRestoreAssemblyVisuals(vehicle,true);lift.height=0;lift.raised=false;lift.busy=false;lift.platform.position.y=0;lift.vehicleId='';lift.disassembly={vehicleId:'',wheels:{},parts:{}};workshopSyncLiftMarkers();});
   }

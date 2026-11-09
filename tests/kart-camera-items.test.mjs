@@ -34,6 +34,12 @@ test('camera item: stale video and a pause gap cannot trigger a delayed item',()
 test('camera item: fresh low-rate video observations still confirm the hold, without trusting one delayed observation',()=>{
  const f=fixture(),g=f.game;g.item='mushroom';frame(f,pose(),400);frame(f,pose(),400);frame(f,headPose(),400);frame(f,headPose(),400);assert.equal(g.item,'mushroom');frame(f,headPose(),400);assert.equal(g.item,null);
 });
+test('camera item: fresh observations delivered by a busy renderer still use a deliberate hold once',()=>{
+ const f=fixture(),g=f.game;g.item='mushroom';f.window.System.video={videoWidth:640,videoHeight:480,currentTime:0};
+ const sample=p=>{f.window.System.video.currentTime+=.2;frame(f,p,1200);};
+ sample(pose());sample(pose());sample(headPose());sample(headPose());assert.equal(g.item,'mushroom');sample(headPose());assert.equal(g.item,null);assert.equal(f.uses.length,1);
+ g.item='banana';sample(headPose());sample(headPose());assert.equal(g.item,'banana');
+});
 
 test('camera item: head gesture accepts either mirror label and usable wrist confidence',()=>{for(const side of ['right','left']){const f=fixture();f.game.item='mushroom';neutral(f);const p=headPose(side);p.keypoints.find(k=>k.name===side+'_wrist').score=.3;for(let i=0;i<16;i++)frame(f,p);assert.equal(f.game.item,null);}});
 test('camera item: a raised hand away from the head never spends an item',()=>{const f=fixture();f.game.item='banana';neutral(f);for(let i=0;i<40;i++)frame(f,pose(300,30));assert.equal(f.game.item,'banana');});

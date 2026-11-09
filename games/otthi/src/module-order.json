@@ -614,7 +614,7 @@
     {
       "file": "src/modules/74-workshop-npc-service.js",
       "description": "Atendimento automático e retirada dos carros de NPCs",
-      "sha256Body": "543f7e1aa7a3c626510c249f1015b558e4c4dd9409622be4f6f6050b9f27bdb9"
+      "sha256Body": "4f76b5babf63104c3dec01f47b628be2d7b2e88caf61dd9ecb8e63a5c8f12156"
     }
   ],
   "styles": [
