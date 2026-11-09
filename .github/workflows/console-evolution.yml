@@ -82,7 +82,21 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import json, os
+          import json, os, time, urllib.request
+          expected = json.loads(Path('games/otthi/release-manifest.json').read_text())['revision']
+          manifest_url = os.environ['WORLD_RELEASE_ORIGIN'] + '/release-manifest.json?verify=' + expected
+          for attempt in range(60):
+              try:
+                  with urllib.request.urlopen(manifest_url, timeout=10) as response:
+                      actual = json.load(response).get('revision')
+                  if actual == expected:
+                      break
+                  print('Aguardando publicação da candidata:', actual, '->', expected, flush=True)
+              except Exception as error:
+                  print('Candidata ainda indisponível:', type(error).__name__, flush=True)
+              time.sleep(3)
+          else:
+              raise RuntimeError('A candidata HTTPS não publicou a revisão esperada.')
           source = Path('tests/world-update-public-browser.mjs').read_text()
           marker = "const origin='https://otthi-world-campanha-teste.vercel.app'"
           assert source.count(marker) == 1

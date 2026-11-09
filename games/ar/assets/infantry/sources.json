@@ -1,0 +1,30 @@
+{
+  "asset": "Vanguard / Soldier",
+  "author": "Mixamo (Adobe)",
+  "source": "https://github.com/mrdoob/three.js/blob/dev/examples/models/gltf/Soldier.glb",
+  "upstream_credit": "https://github.com/mrdoob/three.js/blob/dev/examples/webgl_animation_skinning_blending.html",
+  "usage": "Embedded character and animations within ConsoleGames",
+  "terms": "https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html",
+  "license": "Mixamo royalty-free use in personal and commercial projects, including video games",
+  "sha256": "dfb230fc1f942f259dd00281a1186953ad602fc5d69067ce63e24b2aa439736b",
+  "vendor_libraries": [
+    {
+      "file": "vendor/SkeletonUtils-r128.js",
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/js/utils/SkeletonUtils.js",
+      "bytes": 11872,
+      "sha256": "cc2e2e1a3183ab55169d185565f86f43f80c6dfafe73610d991e741ea990ac1a"
+    },
+    {
+      "file": "vendor/RGBELoader-r128.js",
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/js/loaders/RGBELoader.js",
+      "bytes": 12572,
+      "sha256": "f6ba8cf5df528f1fd38b749d46cd7799a40b80d4eb1a5c5c072d31b1eae7f816"
+    },
+    {
+      "file": "vendor/THREE-LICENSE.txt",
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r128/LICENSE",
+      "bytes": 1081,
+      "sha256": "7dddf7c5b8fd10ee654db8857d75d104b5557889aa5a91fc4ca545ea7c07062f"
+    }
+  ]
+}

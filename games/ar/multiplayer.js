@@ -84,8 +84,9 @@ class WarRoom{
   const previous=this.lastShot[shot.id];if(previous&&(shot.sequence<=previous.sequence||this.now()-previous.at<gun.interval*650))return;
   this.lastShot[shot.id]={sequence:shot.sequence,at:this.now()};
   const p=shot.id===this.id?g.player:this.roster[shot.id];if(!p)return;const e=g.enemies.find(e=>e.id===shot.target&&!e.peerId&&e.active);if(!e)return;
-  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?(e.crouched?.8:1.08):radius;
-  if(Math.abs(angle(Math.atan2(dx,dz)-shot.yaw))>=Math.atan2(radius,distance)||shot.pitch<=Math.atan2(e.y-eye-height,distance)||shot.pitch>=Math.atan2(e.y-eye+height,distance)||g.blocked(e.x,e.z,e.y,p,eye))return;
+  const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),eye=Number(p.eyeY)||g.eyeY,radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72,height=e.kind==='soldier'?(e.crouched?.92:1.08):radius;
+  const hitX=p.x+Math.sin(shot.yaw)*distance,hitZ=p.z+Math.cos(shot.yaw)*distance,hitY=eye+Math.tan(shot.pitch)*distance;
+  if(Math.abs(angle(Math.atan2(dx,dz)-shot.yaw))>=Math.atan2(radius,distance)||shot.pitch<=Math.atan2(e.y-eye-height,distance)||shot.pitch>=Math.atan2(e.y-eye+height,distance)||g.blocked(hitX,hitZ,hitY,p,eye))return;
   e.hp-=gun.damage;e.flash=.12;e.suppressed=.65;
   if(e.hp<=0){g.defeat(e,false);this.ledger[shot.id].kills++;this.ledger[shot.id].score+=e.kind==='tank'?350:100;}
   this.publish();

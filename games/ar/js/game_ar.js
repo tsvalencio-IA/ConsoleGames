@@ -82,13 +82,12 @@ const Game={
  },
  // The same wall depth test is used by hits, enemy fire and rendered occlusion.
  blocked(x,z,y,p=this.player,eye=this.eyeY){
-  const dx=x-p.x,dz=z-p.z;
-  return this.covers.some(c=>{
-   const tx=Math.abs(dx)<1e-8?[-Infinity,Infinity]:[(c.x-c.w/2-p.x)/dx,(c.x+c.w/2-p.x)/dx].sort((a,b)=>a-b);
-   const tz=Math.abs(dz)<1e-8?[-Infinity,Infinity]:[(c.z-c.d/2-p.z)/dz,(c.z+c.d/2-p.z)/dz].sort((a,b)=>a-b);
-   if(Math.abs(dx)<1e-8&&Math.abs(p.x-c.x)>c.w/2||Math.abs(dz)<1e-8&&Math.abs(p.z-c.z)>c.d/2)return false;
-   const t=Math.max(0,tx[0],tz[0]),end=Math.min(1,tx[1],tz[1]);
-   return t<=end&&t>0.001&&t<.99&&(eye+(y-eye)*t)<c.h;
+  const origin=[p.x,eye,p.z],delta=[x-p.x,y-eye,z-p.z];
+  return this.covers.some(c=>{let near=.001,far=.99;const min=[c.x-c.w/2,0,c.z-c.d/2],max=[c.x+c.w/2,c.h,c.z+c.d/2];
+   for(let axis=0;axis<3;axis++){
+    if(Math.abs(delta[axis])<1e-8){if(origin[axis]<min[axis]||origin[axis]>max[axis])return false;continue;}
+    const a=(min[axis]-origin[axis])/delta[axis],b=(max[axis]-origin[axis])/delta[axis];near=Math.max(near,Math.min(a,b));far=Math.min(far,Math.max(a,b));if(near>far)return false;
+   }return near<=far;
   });
  },
  toggleCrouch(){this.crouched=!this.crouched;this.eyeY=this.crouched?1.05:1.8;return this.crouched;},
@@ -114,8 +113,9 @@ const Game={
   for(const e of this.enemies){
    if(!e.active||e.ally)continue;const dx=e.x-p.x,dz=e.z-p.z,distance=Math.hypot(dx,dz),dy=e.y-this.eyeY;
    const radius=e.kind==='tank'?2.6:e.kind==='relay'?1:e.kind==='drone'?.85:.72;
-   const height=e.kind==='soldier'?(e.crouched?.8:1.08):radius,minPitch=Math.atan2(dy-height,distance),maxPitch=Math.atan2(dy+height,distance);
-   if(Math.abs(angle(Math.atan2(dx,dz)-ray.yaw))<Math.atan2(radius,distance)&&ray.pitch>minPitch&&ray.pitch<maxPitch&&distance<bestDistance&&!this.blocked(e.x,e.z,e.y)){best=e;bestDistance=distance;}
+   const height=e.kind==='soldier'?(e.crouched?.92:1.08):radius,minPitch=Math.atan2(dy-height,distance),maxPitch=Math.atan2(dy+height,distance);
+   const hitX=p.x+Math.sin(ray.yaw)*distance,hitZ=p.z+Math.cos(ray.yaw)*distance,hitY=this.eyeY+Math.tan(ray.pitch)*distance;
+   if(Math.abs(angle(Math.atan2(dx,dz)-ray.yaw))<Math.atan2(radius,distance)&&ray.pitch>minPitch&&ray.pitch<maxPitch&&distance<bestDistance&&!this.blocked(hitX,hitZ,hitY)){best=e;bestDistance=distance;}
   }
   return best;
  },
@@ -197,7 +197,7 @@ const Game={
    }else if(e.tactic==='brace')target={x:e.x,z:e.z};else target={x:clamp(e.x-dz/distance*side*1.4,-26,26),z:clamp(e.z+dx/distance*side*1.4,-7,70)};
    e.destination=target;
   }
-  e.crouched=e.tactic==='cover';e.y=e.crouched?.82:1.15;
+  e.crouched=e.tactic==='cover';e.y=e.crouched?.92:1.15;
   const target=e.destination,tx=target.x-e.x,tz=target.z-e.z,n=Math.hypot(tx,tz);
   const step=Math.min(n,dt*(this.difficulty==='hard'?1.8:this.difficulty==='easy'?.9:1.3));
   let moved=0;

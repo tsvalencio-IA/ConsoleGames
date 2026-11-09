@@ -115,7 +115,7 @@ class World{
   this.scene=new T.Scene();this.scene.scale.z=-1;this.camera=new T.PerspectiveCamera();this.textures=textureSet();this.materials=[];
   this.static=new Batch(this.scene);this.dynamic=new Batch(this.scene,true);this.smokes=[];this.aircraft=new Map();this.aircraftTemplates=new Map();
   this.createMaterials();if(type==='combat')this.loadGroundMaterials();this.lighting();
-  if(type==='flight')this.buildFlight();else this.buildCombat();this.static.finish();
+  if(type==='flight')this.buildFlight();else{this.buildCombat();if(!this.low)window.OTCombatActors?.ensure();this.loadSky();}this.static.finish();
  }
  material(color,map=null,metal=.05,rough=.88){const m=new T.MeshStandardMaterial({color,map,metalness:metal,roughness:rough});m.color.convertSRGBToLinear();this.materials.push(m);return m}
  createMaterials(){
@@ -138,6 +138,14 @@ class World{
    if(this.low&&property==='normalMap')continue;
    loader.load(new URL(file,base).href,texture=>{if(this.disposed){texture.dispose();return;}texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.set(22,44);texture.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());if(srgb)texture.encoding=T.sRGBEncoding;this.groundTextures.push(texture);this.m.battleFloor[property]=texture;if(property==='normalMap')this.m.battleFloor.normalScale.set(.35,.35);this.m.battleFloor.needsUpdate=true;this.groundMaps++;},undefined,()=>{});
   }
+ }
+ loadSky(){
+  if(!T.RGBELoader||typeof URL==='undefined'||!document.baseURI)return;
+  new T.RGBELoader().setDataType(T.UnsignedByteType).load(new URL('assets/sky/daylight-1k.hdr',document.baseURI).href,texture=>{
+   if(this.disposed){texture.dispose();return;}
+   texture.mapping=T.EquirectangularReflectionMapping;this.skyTexture=texture;
+   if(!this.low){const generator=new T.PMREMGenerator(this.renderer);this.skyEnvironment=generator.fromEquirectangular(texture);this.scene.environment=this.skyEnvironment.texture;this.weaponScene.environment=this.skyEnvironment.texture;generator.dispose();}
+  },undefined,()=>{});
  }
  lighting(){
   this.scene.add(new T.HemisphereLight('#c4dfeb','#776750',.8));
@@ -360,6 +368,13 @@ class World{
  }
  relay(b,e){const m=this.m;b.box(m.dark,e.x,0,e.z,1.5,.25,1.3);b.box(m.blue,e.x,.25,e.z,1.2,2.1,1);b.box(e.flash?m.light:m.visor,e.x,1.2,e.z-.52,.85,.6,.04);b.add('cylinder',m.steel,e.x,3.2,e.z,.09,2,.09);b.round(m.light,e.x,4.2,e.z,.16,.16,.16);}
  soldier(b,e,time){
+  if(window.OTCombatActors?.ready&&!this.low){
+   this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);
+   if(model&&!model.userData.importedCombat){model.parent?.remove(model);model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});model=null;}
+   if(!model){model=OTCombatActors.create();this.infantryModels.set(e.id,model);this.scene.add(model);}
+   model.visible=true;model.position.set(e.x,0,e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,this.game.player.z-e.z);
+   OTCombatActors.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:!!e.crouched,firing:!!e.shot&&e.active,hit:e.flash,fall:e.active?0:clamp((time-e.defeatedAt)/.75,0,1)});return;
+  }
   if(window.OTCombatArt){this.infantryModels=this.infantryModels||new Map();let model=this.infantryModels.get(e.id);if(!model){model=OTCombatArt.infantry(this.infantryModels.size);model.scale.setScalar(1.2);this.infantryModels.set(e.id,model);this.scene.add(model);}model.visible=true;model.position.set(e.x,0,e.z);model.rotation.y=Math.atan2(this.game.player.x-e.x,this.game.player.z-e.z);OTCombatArt.animate(model,{time:time+(e.phase||0),speed:e.moving?2.2:0,crouched:!!e.crouched,firing:!!e.shot&&e.active,hit:e.flash,fall:e.active?0:clamp((time-e.defeatedAt)/.75,0,1)});return;}
   const m=this.m,p=this.game.player,x=e.x,z=e.z,yaw=Math.atan2(x-p.x,z-p.z),cy=Math.cos(yaw),sy=Math.sin(yaw),phase=e.stride??(time*4+(e.phase||0)),breath=Math.sin(time*2.3+(e.phase||0))*.012,duck=e.aim<.65?.06:0,f=e.flash?m.light:m.fabric;
   // Local articulated parts are rotated as one body: armour, face and weapon
@@ -483,7 +498,7 @@ class World{
   const factor=Math.min(this.renderScale,Math.sqrt(cap/(w*h))),rw=Math.max(1,Math.round(w*factor)),rh=Math.max(1,Math.round(h*factor));
   if(this.canvas.width!==rw||this.canvas.height!==rh)this.renderer.setSize(rw,rh,false);
   configureCamera(this.camera,v,w,h,focal,flight?.5:.48,flight?10:.15,flight?120000:1800);
-  this.sky.position.set(v.x,v.y,v.z);this.sky.visible=!cameraBackground;
+  this.sky.position.set(v.x,v.y,v.z);this.sky.visible=!cameraBackground&&!this.skyTexture;this.scene.background=cameraBackground?null:this.skyTexture||null;
   // Only rendered environment is hidden for the optional camera backdrop.
   for(const batch of this.static.items.values())if(batch.mesh)batch.mesh.visible=!cameraBackground;
   for(const s of this.smokes)s.sprite.visible=!cameraBackground;
@@ -508,12 +523,12 @@ class World{
   // then recover detail only after sustained cheap renders; keep a hard cap.
   if(adaptiveCombat&&this.frames%18===0){const floor=this.software?80000:160000,ceiling=this.software?200000:800000;if(this.renderCost>32)this.pixelBudget=Math.max(floor,this.pixelBudget*.8);else if(this.renderCost<14)this.pixelBudget=Math.min(ceiling,this.pixelBudget*1.18);}
   else if(!adaptiveCombat&&q==='auto'&&this.frames%12===0&&duration>38)this.renderScale=Math.max(.55,this.renderScale-.08);
-  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls,triangles,pixelBudget:Math.round(cap),width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows,groundMaps:this.groundMaps||0,presentation:window.WarPresentation?.version||'legacy'};
+  g.worldVisual={renderer:'webgl',frames:this.frames,mission:this.mission||'flight',drawCalls,triangles,pixelBudget:Math.round(cap),width:rw,height:rh,low:this.low,software:this.software,frameMs:Math.round(duration),shadows:this.shadows,groundMaps:this.groundMaps||0,photographicSky:!!this.skyTexture,infantry:window.OTCombatActors?.ready?'vanguard':'procedural',presentation:window.WarPresentation?.version||'legacy'};
   return true;
  }
  dispose(){
-  if(this.disposed)return;this.disposed=true;for(const model of this.infantryModels?.values()||[]){model.parent?.remove(model);model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}this.infantryModels?.clear();this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
-  this.scene.traverse(o=>{if(o.geometry&&!Object.values(geometries).includes(o.geometry))o.geometry.dispose()});
+  if(this.disposed)return;this.disposed=true;for(const model of this.infantryModels?.values()||[]){model.parent?.remove(model);if(model.userData.importedCombat)window.OTCombatActors?.dispose(model);else model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}this.infantryModels?.clear();this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
+  this.scene.traverse(o=>{if(o.geometry&&!o.geometry.userData.sharedCombat&&!Object.values(geometries).includes(o.geometry))o.geometry.dispose()});this.skyEnvironment?.dispose();this.skyTexture?.dispose();
   for(const template of this.aircraftTemplates.values())template.traverse(o=>o.geometry?.dispose());this.aircraft.clear();this.aircraftTemplates.clear();
   for(const m of this.materials){m.map?.dispose();m.dispose();}for(const tx of Object.values(this.textures).flat())tx.dispose();for(const tx of this.groundTextures||[])tx.dispose();this.sky.material.dispose();this.renderer.dispose();
  }
