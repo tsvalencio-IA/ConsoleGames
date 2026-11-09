@@ -13412,7 +13412,7 @@ function precompile(T,renderer,scene,camera){
   // never reclaim the customer's finished car while the box is being freed.
   vehicle.group.visible=false;record.serviceStatus='delivered';record.operatorReleasedAt=now;record.npcCollectedAt=now;record.npcAutoPhase='delivered';
   if(lift){
-   workshopForBay(lift,()=>{workshopRestoreAssemblyVisuals(vehicle,true);lift.height=0;lift.raised=false;lift.busy=false;lift.platform.position.y=0;lift.vehicleId='';lift.disassembly={vehicleId:'',wheels:{},parts:{}};workshopSyncLiftMarkers();});
+   workshopForBay(lift,()=>{workshopRestoreAssemblyVisuals(vehicle,true);lift.height=0;lift.raised=false;lift.busy=false;lift.platform.position.y=0;lift.vehicleId='';lift.disassembly=null;workshopSyncLiftMarkers();});
   }
   workshopClearVehicleYardMeta(vehicle);vehicle.occupied=false;vehicle.group.visible=false;record.serviceStatus='delivered';record.operatorReleasedAt=now;record.npcCollectedAt=now;record.npcAutoPhase='delivered';
   const actor=(world.ottoviasTraffic||[]).find(a=>String(a.id)===String(vehicle.trafficActorId||''));

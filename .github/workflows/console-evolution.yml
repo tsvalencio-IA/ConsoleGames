@@ -135,6 +135,7 @@ jobs:
       - run: npx playwright install chromium
       - run: node tests/world-workshop-auto-browser.mjs
       - run: node tests/world-workshop-bays-browser.mjs
+      - run: node tests/world-civil-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -142,3 +143,4 @@ jobs:
           path: |
             test-results/workshop-auto/
             test-results/workshop-bays/
+            test-results/world-civil-native/

@@ -10,3 +10,8 @@ test('an ongoing manual operation defers automatic service, and a resumed claim 
 test('a vehicle marked unrepairable is collected by tow without inventing a successful repair',()=>{
  const f=fixture(),r=f.state.vehicles.workshopComponents.npc;r.unrepairable=true;r.serviceStatus='unrepairable';f.tick(0);f.tick(9000);assert.equal(r.serviceStatus,'delivered');assert.equal(r.parts.engine,20);assert.equal(f.state.vehicles.partDurability,undefined);assert.equal(f.state.vehicles.workshopServiceLog[0].result,'npc-collected-towed');
 });
+test('collection closes the service before lift recovery and leaves an empty bay in its canonical saved form',()=>{
+ const f=fixture(),record=f.state.vehicles.workshopComponents.npc,lift={vehicleId:'npc',height:2.35,raised:true,busy:false,platform:{position:{y:2.35}},disassembly:{parts:{engine:true}}};f.world.workshopLifts=[lift];
+ f.c.workshopSyncLiftMarkers=()=>{if(record.serviceStatus!=='delivered'&&f.npc.group.visible)lift.vehicleId='npc';};
+ f.c.workshopNpcCollect(f.npc,record,lift,1200000);assert.equal(lift.vehicleId,'');assert.equal(lift.height,0);assert.equal(lift.disassembly,null);assert(!lift.raised);assert(!f.npc.group.visible);
+});
