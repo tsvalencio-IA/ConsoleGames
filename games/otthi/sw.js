@@ -1,4 +1,4 @@
-const REVISION = '276f66beb43b5497';
+const REVISION = '918c8173ac404371';
 const CACHE = `otthi-v70653-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.28.23-oficina-combate-kart';

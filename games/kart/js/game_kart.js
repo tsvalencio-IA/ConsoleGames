@@ -918,7 +918,7 @@
                     const map=pt=>({x:(1-pt.x/videoW)*w,y:pt.y/videoH*h});
                     itemTriggered=this.readCameraItemGesture(pose,videoH)||itemTriggered;
                     const lw = pose.keypoints.find(k => k.name === 'left_wrist'); const rw = pose.keypoints.find(k => k.name === 'right_wrist'); const nose = pose.keypoints.find(k => k.name === 'nose');
-                    if (lw?.score > 0.2 && rw?.score > 0.2 && [lw.x,lw.y,rw.x,rw.y].every(Number.isFinite) && Math.abs(lw.x-rw.x)>videoW*.08) {
+                    if (lw?.score > 0.2 && rw?.score > 0.2 && [lw.x,lw.y,rw.x,rw.y].every(Number.isFinite)) {
                         const pl = map(lw); const pr = map(rw);
                         // Pixel coordinates of the camera are square. Viewport-scaled
                         // points stretch this angle by 4x between portrait and landscape.

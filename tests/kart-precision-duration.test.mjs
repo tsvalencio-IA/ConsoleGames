@@ -19,6 +19,11 @@ test('a frozen camera observation stops acceleration and boost until a new video
  assert(g.trackingLost);assert(!g.turboLock);assert(g.speed<speed*.02);
  f.advance(16);f.window.System.video.currentTime+=1/30;g.updatePhysics(844,390,hands(0));assert(!g.trackingLost);assert(g.inputActive);
 });
+test('reliable wrists close together in the camera remain a valid steering wheel',()=>{
+ const f=race(),g=f.game;f.window.ArcadeControls.mode='camera';
+ const p={keypoints:[{name:'left_wrist',score:.95,x:335,y:305},{name:'right_wrist',score:.95,x:305,y:295}]};
+ g.updatePhysics(844,390,p);assert(g.inputActive);assert(!g.trackingLost);assert(g.targetSteer<0);assert(g.virtualWheel.r>0);
+});
 test('each three-lap circuit has distinct sectors, lasts over 80 seconds at real racing speed, and records completed lap times',()=>{
  for(let track=0;track<3;track++){
   const {game:g}=race(track);let ticks=0;
