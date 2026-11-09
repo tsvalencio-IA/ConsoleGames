@@ -84,7 +84,7 @@ jobs:
           from pathlib import Path
           import json, os, time, urllib.request
           expected = json.loads(Path('games/otthi/release-manifest.json').read_text())['revision']
-          manifest_url = os.environ['WORLD_RELEASE_ORIGIN'] + '/release-manifest.json?verify=' + expected
+          manifest_url = os.environ['WORLD_RELEASE_ORIGIN'] + '/games/otthi/release-manifest.json?verify=' + expected
           for attempt in range(60):
               try:
                   with urllib.request.urlopen(manifest_url, timeout=10) as response:
@@ -124,3 +124,21 @@ jobs:
         with:
           name: console-kart-cup
           path: test-results/kart-cups/
+  oficina-autonoma:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tests/world-workshop-auto-browser.mjs
+      - run: node tests/world-workshop-bays-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: console-workshop-auto
+          path: |
+            test-results/workshop-auto/
+            test-results/workshop-bays/

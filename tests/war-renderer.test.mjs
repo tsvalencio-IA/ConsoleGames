@@ -84,6 +84,17 @@ test('WAR: the visible weapon follows hand aim on both axes without reversing ve
  const direction=(x,y)=>{g.handAim={x,y,fresh:true};g.player.yaw+=.15;assert(api.combat(g,canvas(),390,844,false));const weapon=f.sceneCapture.getObjectByProperty('type','Group');return new T.Vector3(0,0,-1).applyQuaternion(weapon.quaternion);};
  const left=direction(.25,.48),right=direction(.75,.48),up=direction(.5,.25),down=direction(.5,.7);assert(right.x>left.x);assert(up.y>down.y);api.release(g);
 });
+test('each real optical window aligns with the calibrated hit reticle in both orientations and remains open through its center',()=>{
+ const f=engine('ar','game_ar');f.game.init({id:'training'});const api=renderer(f,false,true),g=f.game,T=f.window.THREE;g.career.wins=3;
+ for(const gun of['rifle','smg','marksman'])for(const[w,h]of[[844,390],[390,844]]){
+  g.selectWeapon(gun);g.aiming=true;assert(api.combat(g,canvas(),w,h));
+  const scene=f.sceneCapture,camera=scene.getObjectByProperty('type','PerspectiveCamera'),lens=scene.getObjectByName('WAR_OPTIC_LENS'),p=lens.getWorldPosition(new T.Vector3()).project(camera);
+  assert(Math.abs((p.x+1)*w/2-w/2)<1e-7,gun+' horizontal optic alignment');assert(Math.abs((1-p.y)*h/2-h*.48)<1e-7,gun+' vertical optic alignment');
+  const owner=lens.parent,origin=owner.localToWorld(new T.Vector3(0,.13,-.20)),direction=owner.localToWorld(new T.Vector3(0,.13,.5)).sub(origin).normalize();
+  const hits=new T.Raycaster(origin,direction,0,.2).intersectObjects(owner.children,true).filter(hit=>!hit.object.material?.transparent);
+  assert.equal(hits.length,0,gun+' has an opaque surface across the optical opening');api.release(g);
+ }
+});
 test('WAR: detailed infantry face the player, animate with instanced geometry and leave combat physics untouched',()=>{
  const f=engine('ar','game_ar');f.game.init({id:'patrol'});const api=renderer(f),g=f.game,T=f.window.THREE;g.covers=[];g.spawnWave();g.enemies=g.enemies.slice(0,1);Object.assign(g.enemies[0],{x:0,z:25,aim:999});
  const snapshot=JSON.stringify(g.enemies);const pose=()=>{api.combat(g,canvas(),844,390,false);const scene=f.sceneCaptures.findLast(s=>s.children.some(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8)),cloth=scene?.children.find(o=>o.isInstancedMesh&&o.material.map?.image?.width===256&&o.count>=8);assert(cloth&&cloth.count>=8);const matrix=new T.Matrix4();cloth.getMatrixAt(0,matrix);const q=new T.Quaternion(),scale=new T.Vector3(),pos=new T.Vector3();matrix.decompose(pos,q,scale);return {q,pos,count:api.inspect(g).dynamicInstances};};

@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.22-combate-circuitos',
+    build: '705.28.23-oficina-combate-kart',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

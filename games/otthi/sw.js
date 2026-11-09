@@ -1,7 +1,7 @@
-const REVISION = 'f8a9e95537408144';
+const REVISION = '1ccf32d053ef7ba5';
 const CACHE = `otthi-v70653-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
-const BUILD = '705.28.22-combate-circuitos';
+const BUILD = '705.28.23-oficina-combate-kart';
 const VERSION = '705';
 const RELEASE_MANIFEST = './release-manifest.json?v=70653';
 

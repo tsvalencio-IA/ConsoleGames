@@ -10,7 +10,9 @@ try{
   const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true,serviceWorkers:'block'});
   await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.request().resourceType()==='script'?r.fulfill({contentType:'application/javascript',body:'/* isolated remote services */'}):r.abort());
   if(compatible)await context.addInitScript(()=>{const native=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/.test(type)?null:native.call(this,type,...args);};});
-  page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.stack));await page.goto(server.origin+'/games/ar/');await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);
+  page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.stack));await page.goto(server.origin+'/games/ar/');
+  if(!compatible)await page.evaluate(()=>{const Native=THREE.WebGLRenderer;window.__warContexts=[];THREE.WebGLRenderer=new Proxy(Native,{construct(C,args){const renderer=new C(...args);__warContexts.push(renderer.getContext());return renderer;}});});
+  await page.locator('[data-solo-start]').click();await page.waitForFunction(()=>window.ConsolePractice.active&&System.canvas);
   await page.locator('#phase-grid .mission-card[data-mission=patrol]').first().click();await page.locator('[data-mode=controls]').click();await page.waitForFunction(()=>System.activeGame?.logic?.state==='PLAYING');
   for(const viewport of[{width:844,height:390},{width:390,height:844}]){
    await page.setViewportSize(viewport);
@@ -43,6 +45,7 @@ try{
     report.views.push({compatible,viewport,weapon:gun,aiming:true});
    }
   }
+  if(!compatible){await page.waitForFunction(()=>__warContexts.length>10&&__warContexts.slice(0,-1).every(gl=>gl.isContextLost()),null,{timeout:10000});report.releasedBattlefields=await page.evaluate(()=>__warContexts.length-1);}
   await context.close();
  }
  assert.deepEqual(report.errors,[]);report.passed=true;fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));console.log('PASS WAR 40 visual views: four missions and three weapons with hip/ADS, near independently animated infantry, both orientations, WebGL and compatible renderer; local materials/sky load and controls stay inside the viewport without overlaps');

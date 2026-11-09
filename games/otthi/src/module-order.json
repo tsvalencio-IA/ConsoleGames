@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.22-combate-circuitos",
+  "build": "705.28.23-oficina-combate-kart",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "df0faa291eb8b0db4267b0e239db9c0c0d69858d0db8348f49edf841df17072f"
+      "sha256Body": "8264ed226537afbf600f2f8b674d5ec93ee9136e7fda61242c2c4633fea39670"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -189,7 +189,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "781b7c2341bbc1a7931944f33fb73e5d6f791ed7bbea6c14722ed13ec6e49571"
+      "sha256Body": "60cfa5f6f655241ac2473d5f5cfe0d5d812aaf556a81be653e0a27ab4c15c9f6"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -259,7 +259,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "a97161b3ee74a89e8ed49d5bc8b00842e71396212e352910a579c471b0cf8aa8"
+      "sha256Body": "be9c5e4e5a65a902e7efe63a212f7f12ff45cd42f2049360b82755ac3c8b3b50"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
@@ -329,7 +329,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Dano, quebra, reboque e reparo real de veículos V704",
-      "sha256Body": "0636a9e50f498918e856f13dde653b51e9d49cf6f99ee2d8b9610647f187a816"
+      "sha256Body": "7458e46817abffe34fcc2043391ee370b759b2a441beceab7c2557540b5bcea3"
     },
     {
       "file": "src/modules/37-hero-platform-gameplay.js",
@@ -610,6 +610,11 @@
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
       "sha256Body": "bbdf310bc18b6e4f3cd2b2a4882c2b05da2b980d8f9ce689cfdec2e676cb729b"
+    },
+    {
+      "file": "src/modules/74-workshop-npc-service.js",
+      "description": "Atendimento automático e retirada dos carros de NPCs",
+      "sha256Body": "543f7e1aa7a3c626510c249f1015b558e4c4dd9409622be4f6f6050b9f27bdb9"
     }
   ],
   "styles": [
