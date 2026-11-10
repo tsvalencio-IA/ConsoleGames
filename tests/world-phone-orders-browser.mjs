@@ -33,6 +33,7 @@ const hook=`
   garage:()=>({owned:[...state.vehicles.owned],stored:{...state.vehicles.garage.stored},visible:world.vehicles.filter(v=>state.vehicles.owned.includes(v.id)&&v.group.visible).map(v=>v.id)}),
   approach:()=>{const v=worldPhone.job?.vehicle;if(!v)throw Error('No parcel van');for(let n=0;n<16;n++){const a=n*Math.PI/8,x=v.group.position.x+Math.sin(a)*4.5,z=v.group.position.z+Math.cos(a)*4.5;if(!positionBlockedForPlayer(x,z,.45,{ignoreTraffic:false})){OTTHOS_TEST_API.teleport(x,z);return;}}throw Error('No parcel access');},
   receiveAgain:()=>phoneReceiveParcel(),
+  vehiclePrice:()=>garageOldCatalogEntry('br-palio').price,
   prepareAir:(mode='helicopter')=>{airEnsure();const id=mode==='plane'?Object.values(airOperations.fleet.data.craft).find(c=>airOperations.fleet.spec(c.id)?.mode==='plane'&&c.status==='parked')?.id:'heli-ottovias',c=airOperations.fleet.data.craft[id];if(!c)throw Error('No native helicopter');state.vehicles.aircraft||={};state.vehicles.aircraft[id]={x:c.x,z:c.z,yaw:c.yaw};return{id,from:{x:c.x,z:c.z}};},
   air:id=>({craft:structuredClone(airOperations.fleet.data.craft[id]),available:airAvailable(id)}),
   draw:()=>__CITY_QA.renderNative()
@@ -43,7 +44,7 @@ let page;
 try{
  const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true,serviceWorkers:'block'});
  await context.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.abort());await installWorldRtdbFixture(context);
- await context.addInitScript(()=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Phone QA',nameConfirmed:true,playerId:'phone-local-fixture',coins:8000},flags:{accountPromptedV635:true},settings:{quality:'low',sound:false},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago']}}})));
+ await context.addInitScript(()=>{if(!localStorage.getItem('otthos_life_world_roleplay_v700'))localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,profile:{name:'Phone QA',nameConfirmed:true,playerId:'phone-local-fixture',coins:8000},flags:{accountPromptedV635:true},settings:{quality:'low',sound:false},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago']}}}));});
  page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));page.setDefaultTimeout(60000);await installCityInspection(page,{appSource:source.slice(0,end)+hook+source.slice(end),capDuringBoot:true});
  await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();await page.waitForFunction(()=>window.__CITY_QA?.cap()&&OTTHOS_TEST_API.getGame().running&&document.getElementById('modal').hidden,null,{timeout:120000});
  const target=await page.evaluate(()=>__PHONE_QA.prepare()),before=await page.evaluate(()=>__PHONE_QA.snapshot());report.before={target,...before};
@@ -68,6 +69,11 @@ try{
  await page.evaluate(()=>__PHONE_QA.approach());await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();await page.screenshot({path:out+'/parcel-ready.png'});await page.locator('[data-phone-parcel-receive]').click();
  const received=await page.evaluate(()=>__PHONE_QA.goods());assert.equal(received.food,goods.food+2);assert.equal(received.orders.at(-1).status,'delivered');assert.equal(await page.evaluate(()=>__PHONE_QA.receiveAgain()),false);assert.equal((await page.evaluate(()=>__PHONE_QA.goods())).food,goods.food+2);report.parcelReceived=received;
  await page.locator('#modalClose').click();
+ const vehicleBefore=await page.evaluate(()=>({...__PHONE_QA.goods(),gifts:__PHONE_QA.snapshot().passiveGifts})),price=await page.evaluate(()=>__PHONE_QA.vehiclePrice());
+ await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();await page.locator('[data-phone-shop]').click();await page.locator('[data-phone-shop-tab="vehicles"]').click();await page.locator('[data-phone-buy-vehicle="br-palio"]').click();await page.locator('[data-yes]').click();
+ await page.waitForFunction(()=>OT_WORLD_PHONE.diagnostics().job);const vehicleOrder=await page.evaluate(()=>OT_WORLD_PHONE.diagnostics().orders.at(-1));assert.equal(vehicleOrder.kind,'vehicle');assert(vehicleOrder.vehicleId);assert(!vehicleBefore.owned.includes(vehicleOrder.vehicleId));
+ for(let i=0;i<200;i++){if(!await page.evaluate(()=>OT_WORLD_PHONE.diagnostics().job))break;await page.evaluate(()=>__PHONE_QA.advance(120));}
+ const carArrival=await page.evaluate(()=>({...__PHONE_QA.goods(),gifts:__PHONE_QA.snapshot().passiveGifts,phone:OT_WORLD_PHONE.diagnostics()}));assert.equal(carArrival.phone.job,null,JSON.stringify(carArrival.phone));assert.equal(carArrival.orders.at(-1).status,'delivered');assert.equal(carArrival.owned.length,vehicleBefore.owned.length+1);assert.equal(carArrival.coins-vehicleBefore.coins,-price+carArrival.gifts.slice(vehicleBefore.gifts.length).reduce((sum,g)=>sum+g.amount,0));report.vehiclePurchase={price,before:vehicleBefore,after:carArrival};await page.evaluate(()=>__PHONE_QA.draw());await page.screenshot({path:out+'/purchased-vehicle-arrived.png'});
  report.layouts=[];
  for(const size of[{width:390,height:844},{width:844,height:390},{width:360,height:740}]){
   await page.setViewportSize(size);await page.locator('#quickToggleBtn').click();await page.locator('#worldPhoneBtn').click();
