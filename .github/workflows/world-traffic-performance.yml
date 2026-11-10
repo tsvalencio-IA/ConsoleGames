@@ -21,6 +21,7 @@ jobs:
         env:
           OT_LIVE_BASELINE: 175ba82b7bdd46637cca6854a32517971d85200a
           OT_LIVE_SECONDS: '15'
+          OT_LIVE_OUT: test-results/world-live-performance
           OT_LIVE_QUALITY: auto
           OT_LIVE_ONLINE: '1'
           OT_LIVE_PROFILE: '1'
@@ -28,4 +29,4 @@ jobs:
         if: always()
         with:
           name: world-traffic-render-performance
-          path: test-results/world-play-performance/
+          path: test-results/world-live-performance/
