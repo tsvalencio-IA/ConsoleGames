@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.25: viaturas estacionam junto ao meio-fio; filas empatadas têm prioridade determinística; curvas congestionadas abrem espaço gradual sem atravessar terceiros; busca de desvio é distribuída entre ticks, e socorro usa a rota da ocorrência.",
     "WAR: calibração espera as duas mãos, navegação e mira compartilham validade, abaixar persiste e perda das duas mãos pausa o combate; preserva o mundo civil.",
     "R28.19: controles independentes de duas mãos no WAR, contato com a pista no voo livre, dança com enquadramento e feedback mais precisos, resposta refinada da raquete e celular com entrega física de veículos por NPC.",
     "R28.19: elimina reescritas redundantes dos controles, evita construir a carroceria invisível ao embarcar e libera aeronaves estacionadas após desembarque, preservando progresso, identidade dos veículos e regras Firebase.",
@@ -298,7 +299,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70655,
+  "assetVersion": 70656,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

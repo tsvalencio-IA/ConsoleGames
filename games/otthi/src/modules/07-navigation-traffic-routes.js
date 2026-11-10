@@ -43,6 +43,7 @@
   function snapTrafficToRoad(group,previous=null){
     if(!group)return false;
     const guided=projectPointToPolyline(group.position,group.userData?.roadPath,group.userData?.roadPathClosed!==false),projection=guided?.point?guided:nearestRoadProjection(group.position),distance=Number(projection?.distance??Infinity),onRoad=pointOnRoad(group.position.x,group.position.z,.08),hardLimit=Number(group.userData?.trafficCorridor||1.35);
+    if(onRoad&&performance.now()<Number(group.userData?.trafficSeparationUntil||0))return true;
     if(projection?.point&&pointOnRoad(projection.point.x,projection.point.z,.05)){
       if(!onRoad||distance>hardLimit){group.position.x=projection.point.x;group.position.z=projection.point.z;return true;}
       if(distance>.12){const correction=Math.min(.42,.12+distance*.16);group.position.x=lerp(group.position.x,projection.point.x,correction);group.position.z=lerp(group.position.z,projection.point.z,correction);}return true;
@@ -85,7 +86,7 @@
   // Oriented body rectangles separate length from lane width. In particular a
   // twelve-metre trailer must not reserve twelve metres of the opposite lane.
   function trafficBody(actor,heading=Number(actor.group?.rotation.y||0),position=actor.group.position){
-    const d=actor.group?.userData?.brazilRoot?.userData||{},fallback={bus:[1.08,3.1],fire:[1,2.35],ambulance:[.86,1.9],moto:[.37,1],bike:[.33,1]}[actor.type]||[.80,1.65],front=Number(d.front??fallback[1]),rear=Number(d.rear??-fallback[1]),half=(front-rear)/2,offset=(front+rear)/2;
+    const d=(actor.group?.userData?.brazilRoot||actor.ride?.userData?.brazilRoot||actor.ref?.ride?.userData?.brazilRoot)?.userData||{},fallback={bus:[1.08,3.1],fire:[1,2.35],ambulance:[.86,1.9],moto:[.37,1],bike:[.33,1]}[actor.type]||[.80,1.65],front=Number(d.front??fallback[1]),rear=Number(d.rear??-fallback[1]),half=(front-rear)/2,offset=(front+rear)/2;
     return{x:position.x+Math.sin(heading)*offset,z:position.z+Math.cos(heading)*offset,w:Number(d.halfWidth??fallback[0]),l:half,s:Math.sin(heading),c:Math.cos(heading)};
   }
   function trafficBodiesOverlap(a,b,margin=.14){
@@ -94,7 +95,7 @@
   }
   function trafficYields(a,b,heading){
     const pa=trafficPriority(a),pb=trafficPriority(b.ref||b);if(pa!==pb)return pa<pb;
-    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200&&Math.abs(aw-bw)>80)return aw>bw;
+    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return Math.abs(aw-bw)>80?aw>bw:String(a.id)>String(b.ref?.id||b.id);
     const h=Number(b.group.rotation.y||0),dot=Math.cos(h-heading),dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z;
     // At an unmarked crossing, yield to the vehicle approaching from the right.
     if(Math.abs(dot)<.72){const side=-dx*Math.cos(heading)+dz*Math.sin(heading);if(Math.abs(side)>.25)return side>0;}
@@ -115,24 +116,34 @@
     const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
+  function trafficOverlapDepth(a,b,margin=.24){
+    const dx=b.x-a.x,dz=b.z-a.z;let depth=Infinity;
+    for(const [x,z]of[[a.c,-a.s],[a.s,a.c],[b.c,-b.s],[b.s,b.c]]){const ra=a.w*Math.abs(x*a.c-z*a.s)+a.l*Math.abs(x*a.s+z*a.c),rb=b.w*Math.abs(x*b.c-z*b.s)+b.l*Math.abs(x*b.s+z*b.c),overlap=ra+rb+margin-Math.abs(dx*x+dz*z);if(overlap<=0)return 0;depth=Math.min(depth,overlap);}return depth;
+  }
   function trafficOverlapBackOff(actor,other,all){
-    if(actor.isPlayer||actor.ref?.phoneDelivery||actor.ref?.incidentLocked)return false;const p=actor.group.position,h=Number(actor.group.rotation.y||0),x=p.x-Math.sin(h)*.22,z=p.z-Math.cos(h)*.22;
-    if(!pointOnRoad(x,z,.05))return false;const body=trafficBody(actor,h,{x,z}),partner=trafficBody(other),current=trafficBody(actor);
-    if(Math.hypot(body.x-partner.x,body.z-partner.z)<=Math.hypot(current.x-partner.x,current.z-partner.z))return false;
-    for(const third of all)if(third!==actor&&third!==other&&trafficBodiesOverlap(body,trafficBody(third),.06))return false;
-    if(typeof nearbyWorldColliders==='function')for(const c of nearbyWorldColliders(x,z,Math.max(body.l,body.w)))if(!c.disabled&&Math.abs(body.x-c.x)<c.w/2+body.w&&Math.abs(body.z-c.z)<c.d/2+body.w)return false;
-    p.x=x;p.z=z;actor.ref.trafficRecoveryUntil=performance.now()+1800;return true;
+    if(actor.isPlayer||actor.ref?.phoneDelivery||actor.ref?.incidentLocked)return false;
+    const p=actor.group.position,h=Number(actor.group.rotation.y||0),body=trafficBody(actor),partner=trafficBody(other),depth=trafficOverlapDepth(body,partner),directions=[[-body.s,-body.c]];
+    // A queue behind a turn can prevent reversing. Use the separating axes to
+    // open a little lateral room rather than leaving the intersection locked.
+    for(const [x,z]of[[body.c,-body.s],[body.s,body.c],[partner.c,-partner.s],[partner.s,partner.c]]){const sign=(body.x-partner.x)*x+(body.z-partner.z)*z>=0?1:-1;directions.push([x*sign,z*sign]);}
+    let best=null;
+    for(const [vx,vz]of directions){const x=p.x+vx*.22,z=p.z+vz*.22;if(!pointOnRoad(x,z,.05))continue;const moved=trafficBody(actor,h,{x,z}),nextDepth=trafficOverlapDepth(moved,partner);const distance=Math.hypot(moved.x-partner.x,moved.z-partner.z);if(nextDepth>depth+.0001||nextDepth>=depth-.0001&&distance<=Math.hypot(body.x-partner.x,body.z-partner.z)+.0001)continue;let blocked=false;
+      for(const third of all){if(third===actor||third===other)continue;const ob=trafficBody(third),oldDepth=trafficOverlapDepth(body,ob,.10),newDepth=trafficOverlapDepth(moved,ob,.10);if(newDepth>oldDepth+.001){blocked=true;break;}}if(blocked)continue;
+      if(typeof nearbyWorldColliders==='function')for(const c of nearbyWorldColliders(x,z,Math.max(body.l,body.w)+1)){if(c.disabled||Number(c.height||2)<.2)continue;const obstacle={x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1};if(trafficOverlapDepth(moved,obstacle,.06)>trafficOverlapDepth(body,obstacle,.06)+.001){blocked=true;break;}}if(blocked)continue;
+      if(!best||nextDepth<best.depth-.0001||Math.abs(nextDepth-best.depth)<.0001&&distance>best.distance)best={x,z,depth:nextDepth,distance,lateral:Math.abs(vx*body.c-vz*body.s)};
+    }
+    if(!best)return false;p.x=best.x;p.z=best.z;const now=performance.now();actor.ref.trafficRecoveryUntil=now+1800;if(best.lateral>.2)(actor.group.userData??={}).trafficSeparationUntil=now+2600;return true;
   }
   function resolveTrafficOverlaps(before){
     // Each moving controller already follows its own road path. Re-projecting
     // every actor here a second time pulled responders back to old patrols.
     world.trafficSnapshot=null;const actors=trafficActorList();
     for(let i=0;i<actors.length;i++)for(const b of nearbyTrafficActors(actors[i].group.position.x,actors[i].group.position.z,22)){
-      const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.06))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
+      const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
-      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.03))trafficOverlapBackOff(y,other,actors);
+      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
+      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,actors))trafficOverlapBackOff(other,y,actors);
     }world.trafficSnapshot=null;
   }
 

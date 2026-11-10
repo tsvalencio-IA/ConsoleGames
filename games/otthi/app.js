@@ -2298,6 +2298,7 @@
   function snapTrafficToRoad(group,previous=null){
     if(!group)return false;
     const guided=projectPointToPolyline(group.position,group.userData?.roadPath,group.userData?.roadPathClosed!==false),projection=guided?.point?guided:nearestRoadProjection(group.position),distance=Number(projection?.distance??Infinity),onRoad=pointOnRoad(group.position.x,group.position.z,.08),hardLimit=Number(group.userData?.trafficCorridor||1.35);
+    if(onRoad&&performance.now()<Number(group.userData?.trafficSeparationUntil||0))return true;
     if(projection?.point&&pointOnRoad(projection.point.x,projection.point.z,.05)){
       if(!onRoad||distance>hardLimit){group.position.x=projection.point.x;group.position.z=projection.point.z;return true;}
       if(distance>.12){const correction=Math.min(.42,.12+distance*.16);group.position.x=lerp(group.position.x,projection.point.x,correction);group.position.z=lerp(group.position.z,projection.point.z,correction);}return true;
@@ -2340,7 +2341,7 @@
   // Oriented body rectangles separate length from lane width. In particular a
   // twelve-metre trailer must not reserve twelve metres of the opposite lane.
   function trafficBody(actor,heading=Number(actor.group?.rotation.y||0),position=actor.group.position){
-    const d=actor.group?.userData?.brazilRoot?.userData||{},fallback={bus:[1.08,3.1],fire:[1,2.35],ambulance:[.86,1.9],moto:[.37,1],bike:[.33,1]}[actor.type]||[.80,1.65],front=Number(d.front??fallback[1]),rear=Number(d.rear??-fallback[1]),half=(front-rear)/2,offset=(front+rear)/2;
+    const d=(actor.group?.userData?.brazilRoot||actor.ride?.userData?.brazilRoot||actor.ref?.ride?.userData?.brazilRoot)?.userData||{},fallback={bus:[1.08,3.1],fire:[1,2.35],ambulance:[.86,1.9],moto:[.37,1],bike:[.33,1]}[actor.type]||[.80,1.65],front=Number(d.front??fallback[1]),rear=Number(d.rear??-fallback[1]),half=(front-rear)/2,offset=(front+rear)/2;
     return{x:position.x+Math.sin(heading)*offset,z:position.z+Math.cos(heading)*offset,w:Number(d.halfWidth??fallback[0]),l:half,s:Math.sin(heading),c:Math.cos(heading)};
   }
   function trafficBodiesOverlap(a,b,margin=.14){
@@ -2349,7 +2350,7 @@
   }
   function trafficYields(a,b,heading){
     const pa=trafficPriority(a),pb=trafficPriority(b.ref||b);if(pa!==pb)return pa<pb;
-    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200&&Math.abs(aw-bw)>80)return aw>bw;
+    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return Math.abs(aw-bw)>80?aw>bw:String(a.id)>String(b.ref?.id||b.id);
     const h=Number(b.group.rotation.y||0),dot=Math.cos(h-heading),dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z;
     // At an unmarked crossing, yield to the vehicle approaching from the right.
     if(Math.abs(dot)<.72){const side=-dx*Math.cos(heading)+dz*Math.sin(heading);if(Math.abs(side)>.25)return side>0;}
@@ -2370,24 +2371,34 @@
     const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
+  function trafficOverlapDepth(a,b,margin=.24){
+    const dx=b.x-a.x,dz=b.z-a.z;let depth=Infinity;
+    for(const [x,z]of[[a.c,-a.s],[a.s,a.c],[b.c,-b.s],[b.s,b.c]]){const ra=a.w*Math.abs(x*a.c-z*a.s)+a.l*Math.abs(x*a.s+z*a.c),rb=b.w*Math.abs(x*b.c-z*b.s)+b.l*Math.abs(x*b.s+z*b.c),overlap=ra+rb+margin-Math.abs(dx*x+dz*z);if(overlap<=0)return 0;depth=Math.min(depth,overlap);}return depth;
+  }
   function trafficOverlapBackOff(actor,other,all){
-    if(actor.isPlayer||actor.ref?.phoneDelivery||actor.ref?.incidentLocked)return false;const p=actor.group.position,h=Number(actor.group.rotation.y||0),x=p.x-Math.sin(h)*.22,z=p.z-Math.cos(h)*.22;
-    if(!pointOnRoad(x,z,.05))return false;const body=trafficBody(actor,h,{x,z}),partner=trafficBody(other),current=trafficBody(actor);
-    if(Math.hypot(body.x-partner.x,body.z-partner.z)<=Math.hypot(current.x-partner.x,current.z-partner.z))return false;
-    for(const third of all)if(third!==actor&&third!==other&&trafficBodiesOverlap(body,trafficBody(third),.06))return false;
-    if(typeof nearbyWorldColliders==='function')for(const c of nearbyWorldColliders(x,z,Math.max(body.l,body.w)))if(!c.disabled&&Math.abs(body.x-c.x)<c.w/2+body.w&&Math.abs(body.z-c.z)<c.d/2+body.w)return false;
-    p.x=x;p.z=z;actor.ref.trafficRecoveryUntil=performance.now()+1800;return true;
+    if(actor.isPlayer||actor.ref?.phoneDelivery||actor.ref?.incidentLocked)return false;
+    const p=actor.group.position,h=Number(actor.group.rotation.y||0),body=trafficBody(actor),partner=trafficBody(other),depth=trafficOverlapDepth(body,partner),directions=[[-body.s,-body.c]];
+    // A queue behind a turn can prevent reversing. Use the separating axes to
+    // open a little lateral room rather than leaving the intersection locked.
+    for(const [x,z]of[[body.c,-body.s],[body.s,body.c],[partner.c,-partner.s],[partner.s,partner.c]]){const sign=(body.x-partner.x)*x+(body.z-partner.z)*z>=0?1:-1;directions.push([x*sign,z*sign]);}
+    let best=null;
+    for(const [vx,vz]of directions){const x=p.x+vx*.22,z=p.z+vz*.22;if(!pointOnRoad(x,z,.05))continue;const moved=trafficBody(actor,h,{x,z}),nextDepth=trafficOverlapDepth(moved,partner);const distance=Math.hypot(moved.x-partner.x,moved.z-partner.z);if(nextDepth>depth+.0001||nextDepth>=depth-.0001&&distance<=Math.hypot(body.x-partner.x,body.z-partner.z)+.0001)continue;let blocked=false;
+      for(const third of all){if(third===actor||third===other)continue;const ob=trafficBody(third),oldDepth=trafficOverlapDepth(body,ob,.10),newDepth=trafficOverlapDepth(moved,ob,.10);if(newDepth>oldDepth+.001){blocked=true;break;}}if(blocked)continue;
+      if(typeof nearbyWorldColliders==='function')for(const c of nearbyWorldColliders(x,z,Math.max(body.l,body.w)+1)){if(c.disabled||Number(c.height||2)<.2)continue;const obstacle={x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1};if(trafficOverlapDepth(moved,obstacle,.06)>trafficOverlapDepth(body,obstacle,.06)+.001){blocked=true;break;}}if(blocked)continue;
+      if(!best||nextDepth<best.depth-.0001||Math.abs(nextDepth-best.depth)<.0001&&distance>best.distance)best={x,z,depth:nextDepth,distance,lateral:Math.abs(vx*body.c-vz*body.s)};
+    }
+    if(!best)return false;p.x=best.x;p.z=best.z;const now=performance.now();actor.ref.trafficRecoveryUntil=now+1800;if(best.lateral>.2)(actor.group.userData??={}).trafficSeparationUntil=now+2600;return true;
   }
   function resolveTrafficOverlaps(before){
     // Each moving controller already follows its own road path. Re-projecting
     // every actor here a second time pulled responders back to old patrols.
     world.trafficSnapshot=null;const actors=trafficActorList();
     for(let i=0;i<actors.length;i++)for(const b of nearbyTrafficActors(actors[i].group.position.x,actors[i].group.position.z,22)){
-      const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.06))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
+      const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
-      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.03))trafficOverlapBackOff(y,other,actors);
+      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
+      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,actors))trafficOverlapBackOff(other,y,actors);
     }world.trafficSnapshot=null;
   }
 
@@ -4851,7 +4862,15 @@
   function currentServiceMissionJob(){return state.career?.activeJob||(typeof activeCoopServiceJob==='function'?activeCoopServiceJob():null);}
   function serviceVehicleAvailable(vehicle,job=null){if(!vehicle||vehicle.occupied||vehicle.incidentTargetId||vehicle.targetFireId||vehicle.group?.visible===false)return false;const token=job?.instanceId||currentServiceMissionJob()?.instanceId||'';return!vehicle.missionReservedFor||vehicle.missionReservedFor===token;}
   function serviceVehicleAppearance(kind){if(kind==='police')return{chassis:0x26384e,primary:0xf4f7fb,primaryDark:0x183d70,secondary:0x215ea8,glass:0x13253a};if(kind==='firefighter')return{chassis:0x263746,primary:0xc93431,primaryDark:0x982622,secondary:0xf2d84d,glass:0x183448};return{chassis:0x263746,primary:0xf6f8fa,primaryDark:0xd83e42,secondary:0xe34848,glass:0x164055};}
-  function safeServiceDepot(kind,index=0){const list=SERVICE_DEPOTS[kind]||SERVICE_DEPOTS.police,base=list[index%list.length]||list[0],projection=nearestRoadProjection(base),point=projection?.point||base;let candidate={x:point.x,z:point.z,heading:base.heading||0};for(let step=0;step<8;step++){world.trafficSnapshot=null;const conflict=trafficActorList().some(actor=>actor.group&&Math.hypot(actor.group.position.x-candidate.x,actor.group.position.z-candidate.z)<Number(actor.radius||1.5)+3.2);if(!conflict)break;candidate={...candidate,z:clamp(candidate.z+(step%2?1:-1)*(4+step),-108,108)};const snapped=nearestRoadProjection(candidate)?.point;if(snapped)candidate={...candidate,x:snapped.x,z:snapped.z};}return candidate;}
+  function safeServiceDepot(kind,index=0){
+    const list=SERVICE_DEPOTS[kind]||SERVICE_DEPOTS.police,base=list[index%list.length]||list[0],projection=nearestRoadProjection(base),point=projection?.point||base,heading=Number(base.heading||0),roads=(typeof WORLD_MAP_ROADS!=='undefined'?WORLD_MAP_ROADS:[]).filter(r=>Math.abs(point.x-r.x)<=r.w/2&&Math.abs(point.z-r.z)<=r.d/2),road=roads.sort((a,b)=>Math.min(a.w,a.d)-Math.min(b.w,b.d))[0],half=road?Math.min(road.w,road.d)/2:4.5,offset=kind==='police'?1.35:Math.max(3.8,half-.45),fx=Math.sin(heading),fz=Math.cos(heading);
+    let fallback={x:point.x-fz*offset,z:point.z+fx*offset,heading};
+    for(const side of[1,-1])for(const along of[0,8,-8,16,-16]){const candidate={x:point.x-fz*offset*side+fx*along,z:point.z+fx*offset*side+fz*along,heading};if(!pointOnRoad(candidate.x,candidate.z,.05))continue;const body={x:candidate.x,z:candidate.z,w:kind==='firefighter'?1.2:1.1,l:kind==='firefighter'?2.5:2.1,s:fx,c:fz};world.trafficSnapshot=null;
+      if(trafficActorList().some(a=>trafficBodiesOverlap(body,trafficBody(a),.25)))continue;
+      if(typeof nearbyWorldColliders==='function'&&nearbyWorldColliders(candidate.x,candidate.z,3).some(c=>!c.disabled&&trafficBodiesOverlap(body,{x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1},.10)))continue;
+      return candidate;
+    }return fallback;
+  }
   function registerServiceVehicle(vehicle,kind,index=0){
     vehicle.kind=kind;vehicle.serviceType=kind;vehicle.label=kind==='police'?'Viatura da Polícia':kind==='firefighter'?'Caminhão dos Bombeiros':'Ambulância de Resgate';vehicle.appearance=serviceVehicleAppearance(kind);vehicle.occupied=false;vehicle.missionReservedFor='';vehicle.radius=kind==='firefighter'?2.45:kind==='paramedic'?2.05:1.75;vehicle.home=safeServiceDepot(kind,index);if(kind==='police'&&vehicle.route?.length){vehicle.route=buildTrafficRoute([vehicle.home,...vehicle.route],true);vehicle.routeIndex=1;}vehicle.group.position.set(vehicle.home.x,.02,vehicle.home.z);vehicle.group.rotation.y=vehicle.home.heading||0;vehicle.group.userData.serviceVehicleId=vehicle.id;vehicle.group.userData.roadPath=vehicle.patrol||vehicle.route||[];
     registerInteractable({id:`service-vehicle-${vehicle.id}`,type:'serviceVehicle',icon:kind==='police'?'🚓':kind==='firefighter'?'🚒':'🚑',label:`Entrar: ${vehicle.label}`,radius:kind==='firefighter'?3.5:3.0,priority:238,getPos:()=>({x:vehicle.group.position.x,z:vehicle.group.position.z}),available:()=>serviceVehicleAvailable(vehicle,currentServiceMissionJob()),action:()=>enterServiceVehicle(vehicle)});return vehicle;
@@ -5048,7 +5067,7 @@
   const trafficImpactMemory=new Map();
   function trafficActualImpact(a,b,now=performance.now()){
     if(now<Number(a.ref?.trafficRecoveryUntil||0)||now<Number(b.ref?.trafficRecoveryUntil||0))return false;
-    const dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z,d=Math.hypot(dx,dz),key=[a.id,b.id].sort().join('|');if(now-Number(trafficImpactMemory.get(key)||-Infinity)<90000)return false;
+    const dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z,d=Math.hypot(dx,dz);if(d>Math.max(8,(Number(a.radius||1.5)+Number(b.radius||1.5))*5))return false;const key=[a.id,b.id].sort().join('|');if(now-Number(trafficImpactMemory.get(key)||-Infinity)<90000)return false;
     if(typeof trafficBody!=='function'||typeof trafficBodiesOverlap!=='function')return d<(a.radius+b.radius)*.55;
     if(!trafficBodiesOverlap(trafficBody(a),trafficBody(b),-.08))return false;const ha=Number(a.group.rotation?.y||0),hb=Number(b.group.rotation?.y||0),closing=((Math.sin(ha)*a.speed-Math.sin(hb)*b.speed)*dx+(Math.cos(ha)*a.speed-Math.cos(hb)*b.speed)*dz)/(d||1);if(closing<(a.isPlayer||b.isPlayer?1.25:1.8))return false;
     trafficImpactMemory.set(key,now);if(trafficImpactMemory.size>200)for(const[k,v]of trafficImpactMemory)if(now-v>90000)trafficImpactMemory.delete(k);return true;

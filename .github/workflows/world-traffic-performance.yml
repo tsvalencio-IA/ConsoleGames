@@ -2,7 +2,7 @@ name: Medir fluidez do mundo antes e depois
 on:
   push:
     branches: ['console-evolution-20261106']
-    paths: ['.github/workflows/world-traffic-performance.yml']
+    paths: ['.github/workflows/world-traffic-performance.yml', 'games/otthi/src/modules/07-navigation-traffic-routes.js', 'games/otthi/src/modules/16-emergency-services.js', 'games/otthi/src/modules/29-game-loop-controls-gamepad.js', 'games/otthi/src/modules/73-world-phone-dispatch.js']
   workflow_dispatch:
 permissions:
   contents: read

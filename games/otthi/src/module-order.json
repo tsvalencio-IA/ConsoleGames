@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "ea243dfb8ce320c6f6c06911a1bb4d4cdb1727a295f8f6587e532324c9ef4a23"
+      "sha256Body": "37b71f1c01bb534f758ec0e1f715d4839eeb23bafd8e9493163a59574f943eae"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "4ad8fb8dc25237a19e1cd7648affdff107e01fab71f1824dee2842a39e0a0744"
+      "sha256Body": "2acf1b7d9d14f3f3478fb9b3781ea8df5b6ad029d3dc6c035de5cb504171d045"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
