@@ -1,0 +1,31 @@
+name: Medir fluidez do mundo antes e depois
+on:
+  push:
+    branches: ['console-evolution-20261106']
+    paths: ['.github/workflows/world-traffic-performance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  comparar-quadros-reais:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: git fetch --depth=1 origin 175ba82b7bdd46637cca6854a32517971d85200a
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node tests/world-play-performance.mjs
+        env:
+          OT_LIVE_BASELINE: 175ba82b7bdd46637cca6854a32517971d85200a
+          OT_LIVE_SECONDS: '15'
+          OT_LIVE_QUALITY: auto
+          OT_LIVE_ONLINE: '1'
+          OT_LIVE_PROFILE: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: world-traffic-render-performance
+          path: test-results/world-play-performance/
