@@ -1,7 +1,7 @@
 /** The player's phone dispatches existing vehicles; ownership, damage and
  * multiplayer occupancy remain in their original records. */
 // @otthi-module-body
- const worldPhone={job:null,lastTick:0,pending:false,loadedOwner:'',driver:null,walkAway:null};
+ const worldPhone={job:null,lastTick:0,pending:false,loadedOwner:'',driver:null,walkAway:null,returning:[],uiAt:0};
 
  class PhoneDriveRoute {
   constructor(points,heading=0){
@@ -12,7 +12,7 @@
    let time=Math.max(0,Math.min(.1,dt));this.blocked=false;
    while(time>0&&!this.arrived){
     const h=Math.min(time,.025);time-=h;const to=this.points[this.index],dx=to.x-this.x,dz=to.z-this.z,d=Math.hypot(dx,dz);
-    if(d<.16){this.x=to.x;this.z=to.z;if(++this.index>=this.points.length){this.arrived=true;this.speed=0;break;}continue;}
+    if(d<.16){if(!canMove(to.x,to.z,this.yaw)){this.speed=0;this.blocked=true;break;}this.x=to.x;this.z=to.z;if(++this.index>=this.points.length){this.arrived=true;this.speed=0;break;}continue;}
     const last=this.index===this.points.length-1,limit=Math.min(maxSpeed,last?Math.sqrt(Math.max(.1,2*2.8*d)):d<5?3:maxSpeed);
     const speed=Math.min(limit,this.speed+2.4*h),distance=Math.min(d,speed*h),yaw=Math.atan2(dx,dz),x=this.x+dx/d*distance,z=this.z+dz/d*distance;
     if(!canMove(x,z,yaw)){this.speed=0;this.blocked=true;break;}
@@ -20,6 +20,49 @@
    }
    return this;
   }
+ }
+
+ // Bounded local A*: every edge is swept through the real vehicle footprint.
+ // A failed search keeps the car stopped; it never moves through a blocker.
+ function phoneFindDetour(from,goals,canTravel,{step=2,maxNodes=1100,radius=46}={}){
+  if(!goals.length)return null;const nodes=[],open=[],best=new Map(),goalDistance=p=>Math.min(...goals.map(g=>Math.hypot(g.x-p.x,g.z-p.z)));
+  const start={x:from.x,z:from.z,yaw:from.yaw||0,g:0,parent:null};start.f=goalDistance(start);nodes.push(start);open.push(start);best.set('0:0:start',0);
+  for(let count=0;open.length&&count<maxNodes;count++){
+   let at=0;for(let i=1;i<open.length;i++)if(open[i].f<open[at].f)at=i;const p=open.splice(at,1)[0];
+   for(let i=0;i<goals.length;i++){const goal=goals[i],distance=Math.hypot(goal.x-p.x,goal.z-p.z);if(distance>step*1.6||!canTravel(p,goal))continue;const path=[{x:goal.x,z:goal.z}];for(let n=p;n;n=n.parent)path.push({x:n.x,z:n.z});return{points:path.reverse(),goalIndex:i,visited:count+1};}
+   for(let dir=0;dir<8;dir++){
+    const angle=dir*Math.PI/4,x=from.x+Math.round((p.x-from.x)/step+Math.sin(angle))*step,z=from.z+Math.round((p.z-from.z)/step+Math.cos(angle))*step;
+    if(Math.hypot(x-from.x,z-from.z)>radius)continue;const turn=Math.abs(Math.atan2(Math.sin(angle-p.yaw),Math.cos(angle-p.yaw)));if(p.parent&&turn>Math.PI*.76)continue;
+    const next={x,z,yaw:angle,parent:p},g=p.g+Math.hypot(x-p.x,z-p.z)+turn*.65,key=Math.round((x-from.x)/step)+':'+Math.round((z-from.z)/step)+':'+dir;
+    if(g>=(best.get(key)??Infinity)||!canTravel(p,next))continue;best.set(key,g);next.g=g;next.f=g+goalDistance(next);open.push(next);
+   }
+  }return null;
+ }
+ function phoneGroundRoute(vehicle,from,target){
+  const core=buildRoutePoints(from,target);if(core.length<2)return core;
+  const route=offsetBrazilianTrafficPath(core,1.35,{closed:false,valid:(x,z)=>v704RoadAt(x,z,.1,false)&&!navBlocked(x,z)});
+  route[0]={x:from.x,z:from.z};route[route.length-1]={x:target.x,z:target.z};return compactRoute(route);
+ }
+ function phoneTravelClear(vehicle,from,to,traffic=true){
+  const dx=to.x-from.x,dz=to.z-from.z,distance=Math.hypot(dx,dz),yaw=distance>.01?Math.atan2(dx,dz):from.yaw||0;
+  for(let i=1,n=Math.max(1,Math.ceil(distance/.55));i<=n;i++){const t=i/n,x=from.x+dx*t,z=from.z+dz*t;
+   // A short driveway connector is permitted. Detours remain on the road.
+   if(distance>1&&!v704RoadAt(x,z,.15,true)&&Math.hypot(x-vehicle.group.position.x,z-vehicle.group.position.z)>6)return false;
+   if(!phoneVehiclePoseClear(vehicle,x,z,yaw,traffic))return false;
+  }return true;
+ }
+ function phoneRecoverRoute(job,dt){
+  job.blockedFor=job.route.blocked?(job.blockedFor||0)+dt:0;job.replanIn=Math.max(0,(job.replanIn||0)-dt);
+  if(job.blockedFor<1.8||job.replanIn>0)return false;job.replanIn=3;
+  const motion=job.route,from={x:motion.x,z:motion.z,yaw:motion.yaw},goals=[];let length=0,last=from;
+  for(let i=motion.index;i<motion.points.length&&length<42;i++){
+   const p=motion.points[i],d=Math.hypot(p.x-last.x,p.z-last.z),samples=Math.max(1,Math.ceil(d/6));
+   for(let n=1;n<=samples;n++){const t=n/samples,x=last.x+(p.x-last.x)*t,z=last.z+(p.z-last.z)*t,travel=length+d*t;if(travel>=9&&travel<=42)goals.push({x,z,index:i});}length+=d;last=p;
+  }
+  if(!goals.length)goals.push({...job.target,index:motion.points.length-1});
+  const detour=phoneFindDetour(from,goals,(a,b)=>phoneTravelClear(job.vehicle,a,b,true));
+  if(!detour)return false;const rejoin=goals[detour.goalIndex],points=compactRoute([...detour.points,...motion.points.slice(rejoin.index)]);
+  job.route=new PhoneDriveRoute(points,motion.yaw);job.reroutes=(job.reroutes||0)+1;job.blockedFor=0;job.waiting=false;return true;
  }
 
  function phoneVehicleProbes(vehicle,yaw){
@@ -31,9 +74,12 @@
  }
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
+  const body=trafficBody(vehicle,yaw,{x,z});
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||state.vehicles?.workshopComponents?.[v.id]?.npcCollectedAt)continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
-   if(Math.abs(groundHeightAt(px,pz)-base)>.65||positionBlockedForPlayer(px,pz,radius,{ignoreActor:vehicle,ignoreTraffic:!includeTraffic}))return false;
+   if(Math.abs(groundHeightAt(px,pz)-base)>.65||positionBlockedForPlayer(px,pz,radius,{ignoreActor:vehicle,ignoreTraffic:true,ignoreParkedVehicles:true}))return false;
    if(Math.hypot(player.x-px,player.z-pz)<.8)return false;
    for(const p of remotePresence.values())if(!p.vehicle&&Math.hypot(Number(p.x)-px,Number(p.z)-pz)<.8)return false;
   }
@@ -65,7 +111,7 @@
   driver.leftLeg.rotation.x=driver.rightLeg.rotation.x=-1.2;driver.leftArm.rotation.x=driver.rightArm.rotation.x=-1;
  }
  function phoneDispatchAllowed(){return running&&!paused&&!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&!otGames.active&&!worldVenues.session;}
- async function phoneDispatchGround(id){
+ async function phoneDispatchGround(id,options={}){
   if(worldPhone.pending||worldPhone.job||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
   const caller=sharedWorldOwnId();worldPhone.pending=true;
   try{
@@ -77,25 +123,29 @@
    const target=phoneGroundDestination(vehicle);if(!target){toast('Não há uma vaga segura próxima. Aproxime-se de uma rua livre e chame novamente.','info',3400);return false;}
    const garage=ensurePlayerGarageState(),stored=!!garage.stored[id]||!!vehicle.garageStored;
    let from={x:vehicle.group.position.x,z:vehicle.group.position.z,yaw:vehicle.group.rotation.y};
-   if(stored){const gate=worldLayoutPoint('homeGarage'),exit=garageDriveOutPoint(vehicle,gate);if(!exit){toast('A saída da garagem está ocupada. Libere a passagem para o motorista.','info',3000);return false;}from={...exit,yaw:exit.heading};}
-   const route=buildRoutePoints(from,target);if(route.length<2||!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,false)){toast('A saída do veículo está bloqueada. Libere a passagem para o motorista.','info',3000);return false;}
+   if(options.from)from={...options.from};
+   else if(stored){const gate=worldLayoutPoint('homeGarage'),exit=garageDriveOutPoint(vehicle,gate);if(!exit){toast('A saída da garagem está ocupada. Libere a passagem para o motorista.','info',3000);return false;}from={...exit,yaw:exit.heading};}
+   const route=phoneGroundRoute(vehicle,from,target);if(route.length<2||!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,false)){toast('A saída do veículo está bloqueada. Libere a passagem para o motorista.','info',3000);return false;}
+   if(options.payment>0&&state.profile.coins<options.payment)return false;
    for(const key of Object.keys(garage.slots))if(garage.slots[key]===id)garage.slots[key]='';
    garage.stored[id]=false;setGarageVehicleStored(vehicle,false);world.playerGarageDisplayFleet?.get(id)&&(world.playerGarageDisplayFleet.get(id).visible=false);
    vehicle.occupied=true;vehicle.phoneDelivery=true;vehicle.group.visible=true;vehicle.group.position.set(from.x,groundHeightAt(from.x,from.z),from.z);vehicle.group.rotation.y=from.yaw;
    const driver=phoneMakeDriver();phoneDriverInVehicle(driver,vehicle);
-   worldPhone.job={id,vehicle,driver,target,route:new PhoneDriveRoute(route,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false};
-   state.vehicles.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target};persistParkedVehicle(vehicle);saveState(true);closeModal();
+   worldPhone.job={id,vehicle,driver,target,route:new PhoneDriveRoute(route,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false,caller:{x:player.x,z:player.z},orderId:options.orderId||''};
+   if(options.payment>0)addCoins(-options.payment);
+   state.vehicles.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target,orderId:options.orderId||''};persistParkedVehicle(vehicle);saveState(true);closeModal();
    toast('Motorista a caminho com '+entry.label+'. A entrega será na vaga marcada.','good',3200);phoneWaypoint(target,'Entrega do meu veículo');return true;
   }finally{worldPhone.pending=false;}
  }
  function phoneWaypoint(point,label){state.waypoint={id:'phone-delivery',name:label,x:point.x,z:point.z,navX:point.x,navZ:point.z,arrived:false};world.routePath=buildRoutePoints(player,state.waypoint);updateWaypointMarker();}
  function phoneFinishGround(cancelled=false){
-  const job=worldPhone.job;if(!job)return;if(worldPhone.walkAway){phoneRemoveDriver(worldPhone.walkAway.driver);worldPhone.walkAway=null;}const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.x=v.group.position.x;v.z=v.group.position.z;v.heading=v.group.rotation.y;v.manualIgnition=true;
+  const job=worldPhone.job;if(!job)return;if(job.kind==='parcel'){if(cancelled)phoneCancelParcel(job);else phoneParcelArrived(job);return;}if(worldPhone.walkAway){phoneRemoveDriver(worldPhone.walkAway.driver);worldPhone.walkAway=null;}const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.x=v.group.position.x;v.z=v.group.position.z;v.heading=v.group.rotation.y;v.manualIgnition=true;
   persistParkedVehicle(v);state.vehicles.phoneDelivery={id:job.id,type:'ground',status:cancelled?'cancelled':'delivered',at:Date.now(),target:job.target};saveState(true);
   const exit=safePointNear(v.x,v.z,{heading:v.heading,ignoreActor:v,radius:.32,distances:[2.5,3.5,5],ignoreTraffic:false});
   if(exit){worldGroup.add(job.driver.group);job.driver.group.position.set(exit.x,exit.y,exit.z);job.driver.group.scale.setScalar(.65);job.driver.group.rotation.y=v.heading+Math.PI/2;job.driver.leftLeg.rotation.x=job.driver.rightLeg.rotation.x=0;worldPhone.walkAway={driver:job.driver,at:performance.now(),yaw:v.heading+Math.PI/2};}
   else phoneRemoveDriver(job.driver);
-  worldPhone.job=null;toast(cancelled?'Entrega interrompida. O veículo ficou estacionado na última posição segura.':'Seu veículo chegou. O motorista desembarcou; você já pode entrar.','good',3200);
+  if(job.orderId){const order=phoneOrders().find(o=>o.id===job.orderId);if(order)order.status=cancelled?'parked':'delivered';saveState(true);}
+  worldPhone.job=null;world.trafficSnapshot=null;toast(cancelled?'Entrega interrompida. O veículo ficou estacionado na última posição segura.':'Seu veículo chegou. O motorista desembarcou; você já pode entrar.','good',3200);
  }
  function phoneAirLandingClear(id,x,z){
   const spec=airOperations.fleet.spec(id),plane=spec?.mode==='plane',width=plane?6:4,length=plane?7:5,ground=groundHeightAt(x,z),bounds=v704WorldBounds();
@@ -181,26 +231,53 @@
  function openWorldPhone(){
   if(!running)return;const owned=garageOwnedEntries(),air=airEnsure()?Object.keys(state.vehicles.aircraft||{}).filter(id=>airOperations.fleet.spec(id)):[],record=state.vehicles.phoneDelivery;
   const groundBusy=!!worldPhone.job,airBusy=Object.values(airOperations.fleet?.data.craft||{}).some(c=>c.status==='delivery'&&c.delivery?.uid===sharedWorldOwnId()),busy=worldPhone.pending||groundBusy||airBusy,allowed=phoneDispatchAllowed();
-  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Escolha um veículo. Um motorista ou piloto traz até uma área segura. Aviões são entregues no aeroporto pela equipe de transporte.</p>${record?`<p class="world-phone-status" role="status">${record.status==='en-route'?'Entrega em andamento':record.status==='delivered'?'Última entrega concluída':record.status==='interrupted'?'A última entrega parou ao encerrar a sessão':'Última entrega interrompida'}</p>`:''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button>`).join('')}</div><h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
+  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Chame um motorista, acompanhe o trajeto e receba suas compras no mundo. Aviões são entregues no aeroporto.</p><div class="world-phone-actions"><button class="btn primary" data-phone-shop>COMPRAR E RECEBER</button><button class="btn" data-phone-store-all>GUARDAR TODOS OS VEÍCULOS DISPONÍVEIS</button><button class="btn" data-phone-track ${phoneDeliveryTracking()?'':'disabled'}>VER MOTORISTA E ROTA NO MAPA</button></div><p class="world-phone-status" data-phone-status role="status">${record?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.'}</p>${worldPhone.job?.kind==='parcel'?'<button class="btn good" data-phone-parcel-receive>RECEBER ENCOMENDA</button>':''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<div class="world-phone-vehicle"><button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button><button class="btn" data-phone-store="${escapeHtml(e.id)}" ${state.vehicles.garage.stored[e.id]||garageStorageBlock(e.id)?'disabled':''}>${state.vehicles.garage.stored[e.id]?'GUARDADO':'GUARDAR'}</button></div>`).join('')}</div><h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
    root.querySelectorAll('[data-phone-ground]').forEach(b=>b.onclick=()=>phoneDispatchGround(b.dataset.phoneGround));root.querySelectorAll('[data-phone-air]').forEach(b=>b.onclick=()=>phoneDispatchAir(b.dataset.phoneAir));root.querySelector('[data-phone-cancel]')?.addEventListener('click',()=>{phoneFinishGround(true);openWorldPhone();});
+   root.querySelector('[data-phone-track]').onclick=()=>{worldPhone.focusMap=true;openMap();};root.querySelector('[data-phone-shop]').onclick=()=>openPhoneShop();
+   root.querySelector('[data-phone-store-all]').onclick=()=>{garageStoreAll();openWorldPhone();};root.querySelectorAll('[data-phone-store]').forEach(b=>b.onclick=()=>{if(storeOwnedVehicle(b.dataset.phoneStore))openWorldPhone();});root.querySelector('[data-phone-parcel-receive]')?.addEventListener('click',()=>{phoneReceiveParcel();openWorldPhone();});phoneUpdateTrackingUI();
   });
+ }
+ function phoneDeliveryTracking(){
+  const job=worldPhone.job;if(job){const route=compactRoute([{x:job.route.x,z:job.route.z},...job.route.points.slice(job.route.index)]);return{id:job.id,kind:job.kind||'ground',x:job.route.x,z:job.route.z,yaw:job.route.yaw,target:{...job.target},route,distance:routeLength(route),waiting:!!job.waiting,ready:!!job.ready,reroutes:job.reroutes||0,label:job.kind==='parcel'?'Sua encomenda':'Seu motorista'};}
+  const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
+  return null;
+ }
+ function phoneTrackingText(t=phoneDeliveryTracking()){return t?t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`:state.vehicles.phoneDelivery?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.';}
+ function phoneUpdateTrackingUI(){
+  const t=phoneDeliveryTracking(),root=els.modalBody,p=root?.querySelector('[data-phone-status]');if(p)p.textContent=phoneTrackingText(t);const track=root?.querySelector('[data-phone-track]');if(track)track.disabled=!t;
+  const receive=root?.querySelector('[data-phone-parcel-receive]');if(receive){receive.disabled=!t?.ready||Math.hypot(player.x-t.x,player.z-t.z)>6;receive.textContent=receive.disabled?'APROXIME-SE DA ENCOMENDA':'RECEBER ENCOMENDA';}
+ }
+ function phoneDrawMiniTracking(){
+  const t=phoneDeliveryTracking(),canvas=els.miniMapCanvas;if(!t||!canvas)return;const {w,h}=miniMapLogicalSize(canvas),ctx=canvas.getContext('2d'),scale=miniMapScale(w,h);
+  ctx.save();ctx.strokeStyle='#ffbd45';ctx.lineWidth=4;ctx.setLineDash([5,3]);ctx.beginPath();for(const [i,p]of t.route.entries()){const q=miniPoint(p.x,p.z,scale,w,h);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}ctx.stroke();ctx.setLineDash([]);
+  const q=miniPoint(t.x,t.z,scale,w,h),x=clamp(q.x,12,w-12),y=clamp(q.y,36,h-12);ctx.translate(x,y);ctx.rotate(Math.atan2(q.x-x,-(q.y-y))||t.yaw);ctx.fillStyle='#ffbd45';ctx.strokeStyle='#102936';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(7,7);ctx.lineTo(-7,7);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+ }
+ function phoneAdvanceJob(job,dt){
+  if(job.ready)return;const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
+  v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;v.currentSpeed=motion.speed;v.speed=7;
+  const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
+  if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
+  phoneRecoverRoute(job,dt);
  }
  function updateWorldPhone(){
   const now=performance.now(),dt=Math.min(.1,Math.max(0,(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
   if(!running||paused||document.hidden)return;
   const airRecord=state.vehicles.phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
   const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';saveState(true);}}
+  updatePhoneOrders(dt);
   const job=worldPhone.job;if(job){
    if(job.owner!==owner){job.vehicle.occupied=false;job.vehicle.phoneDelivery=false;phoneRemoveDriver(job.driver);worldPhone.job=null;return;}
-   const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
-   v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;
-   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);
-   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está aguardando a passagem ficar livre.','info',2500);}else if(!motion.blocked)job.waiting=false;
-   if(now-job.saveAt>1000){job.saveAt=now;persistParkedVehicle(v);saveState();}
-   if(motion.arrived)phoneFinishGround();
+   phoneAdvanceJob(job,dt);const v=job.vehicle;
+   // Follow a walking caller, retaining a safe roadside stop rather than the
+   // stale position where the request was originally made.
+   job.targetCheck=(job.targetCheck||0)+dt;if(job.targetCheck>2){job.targetCheck=0;if(!job.ready&&!player.vehicle&&!currentHouse&&job.caller&&Math.hypot(player.x-job.caller.x,player.z-job.caller.z)>18){const target=phoneGroundDestination(v);if(target){job.target=target;job.caller={x:player.x,z:player.z};job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}}}
+   if(now-job.saveAt>1000){job.saveAt=now;if(job.kind==='parcel')phoneSaveParcelPose(job);else persistParkedVehicle(v);saveState();}
+   if(job.route.arrived&&!job.ready)phoneFinishGround();
   }
   const walk=worldPhone.walkAway;if(walk){const elapsed=(now-walk.at)/1000,p=walk.driver.group.position,x=p.x+Math.sin(walk.yaw)*dt,z=p.z+Math.cos(walk.yaw)*dt;if(!positionBlockedForPlayer(x,z,.25,{ignoreTraffic:false})){p.x=x;p.z=z;p.y=groundHeightAt(x,z);}const step=Math.sin(elapsed*8)*.35;walk.driver.leftLeg.rotation.x=step;walk.driver.rightLeg.rotation.x=-step;walk.driver.leftArm.rotation.x=-step;walk.driver.rightArm.rotation.x=step;if(elapsed>10){phoneRemoveDriver(walk.driver);worldPhone.walkAway=null;}}
+  if(now-worldPhone.uiAt>350){worldPhone.uiAt=now;phoneUpdateTrackingUI();}
  }
  const phonePreviousExpansion=updateWorldExpansion;updateWorldExpansion=function(){phonePreviousExpansion();updateWorldPhone();};
  document.getElementById('worldPhoneBtn')?.addEventListener('click',openWorldPhone);
- window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,last:state.vehicles.phoneDelivery||null})};
+ const phonePreviousMiniMap=drawMiniMap;drawMiniMap=function(){phonePreviousMiniMap();phoneDrawMiniTracking();};
+ window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,tracking:phoneDeliveryTracking(),orders:phoneOrders().map(o=>({...o})),last:state.vehicles.phoneDelivery||null})};

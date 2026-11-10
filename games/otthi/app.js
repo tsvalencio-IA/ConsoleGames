@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.23-oficina-combate-kart';
+  const OTTHI_GAME_WEB_BUILD = '705.28.24-celular-entregas-garagem';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2314,6 +2314,7 @@
     for(const ambulance of world.ambulances||[])if(ambulance.group?.visible)actors.push({id:`ambulance-${ambulance.id}`,type:'ambulance',group:ambulance.group,radius:2.1,speed:Math.abs(ambulance.currentSpeed||0),ref:ambulance});
     for(const vehicle of world.ottoviasTraffic||[])if(!vehicle.taken&&vehicle.group)actors.push({id:`ottovias-${vehicle.id}`,type:vehicle.type||'car',group:vehicle.group,radius:Number(vehicle.radius||1.45),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
     for(const npc of world.npcs||[])if(npc.mobility?.group?.visible&&npc.mobility.type!=='walk')actors.push({id:`npc-${npc.id}`,type:npc.mobility.type,group:npc.mobility.group,radius:npc.mobility.radius||1.25,speed:Math.abs(npc.mobility.currentSpeed||0),ref:npc.mobility});
+    for(const vehicle of world.vehicles||[])if(vehicle.phoneDelivery&&vehicle.group?.visible)actors.push({id:'phone-'+vehicle.id,type:'car',group:vehicle.group,radius:Number(vehicle.radius||1.5),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
     const cells=new Map(),cellSize=12;for(const actor of actors){const key=`${Math.floor(actor.group.position.x/cellSize)}:${Math.floor(actor.group.position.z/cellSize)}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(actor);}world.trafficSpatialCells=cells;world.trafficCellSize=cellSize;world.trafficSnapshot=actors;world.trafficSnapshotAt=now;return actors;
   }
   function nearbyTrafficActors(x,z,radius=18){trafficActorList();const cells=world.trafficSpatialCells;if(!cells)return world.trafficSnapshot||[];const size=world.trafficCellSize||12,minX=Math.floor((x-radius)/size),maxX=Math.floor((x+radius)/size),minZ=Math.floor((z-radius)/size),maxZ=Math.floor((z+radius)/size),near=[];for(let cx=minX;cx<=maxX;cx++)for(let cz=minZ;cz<=maxZ;cz++)for(const actor of cells.get(`${cx}:${cz}`)||[])near.push(actor);return near;}
@@ -2368,10 +2369,10 @@
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function resolveTrafficOverlaps(before){
-    world.trafficSnapshot=null;const actors=trafficActorList();for(const actor of actors)snapTrafficToRoad(actor.group,before?.get(actor.id));
+    world.trafficSnapshot=null;const actors=trafficActorList();for(const actor of actors)if(!actor.ref?.phoneDelivery)snapTrafficToRoad(actor.group,before?.get(actor.id));
     for(let i=0;i<actors.length;i++)for(const b of nearbyTrafficActors(actors[i].group.position.x,actors[i].group.position.z,17)){
       const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.06))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
-      const y=trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a,old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+220;
+      const y=a.ref?.phoneDelivery?b:b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a,old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+220;
       // Resolve a pre-existing overlap by retreating along this lane only. Never
       // push a bus or motorcycle across the centre line or onto the pavement.
       if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.03)&&!y.ref?.incidentLocked){const h=Number(y.group.rotation.y||0),prior={x:y.group.position.x,z:y.group.position.z};for(let n=1;n<=12;n++){y.group.position.x=prior.x-Math.sin(h)*n*.35;y.group.position.z=prior.z-Math.cos(h)*n*.35;if(!trafficBodiesOverlap(trafficBody(y),trafficBody(other),.12)&&pointOnRoad(y.group.position.x,y.group.position.z,.05))break;}snapTrafficToRoad(y.group,old||prior);}
@@ -2745,15 +2746,18 @@
 
   // ===== MODULE: 08a-world-atlas.js =====
  openMap=function(){
-  const focus=navigationFocus(),locations=currentMapLocations(),active=state.waypoint?.id||'',view={x:focus.x,z:focus.z,span:240};let selected=locations.find(l=>l.id===(state.waypoint?.id||''))||locations.find(l=>l.id==='home');
+  let focus=navigationFocus();const locations=currentMapLocations(),active=state.waypoint?.id||'',view={x:focus.x,z:focus.z,span:240};let selected=locations.find(l=>l.id===(state.waypoint?.id||''))||locations.find(l=>l.id==='home');
   const regions=[{name:'Vila OT',x:0,z:0,span:270},...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({name:c.label,...c,span:160})),{name:'Praia e marina',x:-310,z:496,span:235},{name:'Cordilheira e neve',x:360,z:350,span:920},{name:'Aeroporto',x:91,z:-188,span:240},{name:'Mata Grande',x:-630,z:60,span:650}],groups=[...new Set(locations.map(l=>l.group).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  openModal('Mapa e GPS',`<div class="world-atlas" data-atlas-tab="map"><div class="atlas-route-bar"><span><small>GPS</small><b data-atlas-destination>${escapeHtml(state.waypoint?.name||'Sem destino ativo')}</b></span><button data-atlas-cancel ${state.waypoint?'':'disabled'}>Cancelar rota</button></div><nav class="atlas-tabs" aria-label="Painéis do mapa"><button data-atlas-tab-button="map" aria-pressed="true">MAPA</button><button data-atlas-tab-button="places" aria-pressed="false">DESTINOS</button></nav><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Principais destinos</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Pontos nas coordenadas reais. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
+  openModal('Mapa e GPS',`<div class="world-atlas" data-atlas-tab="map"><div class="atlas-route-bar"><span><small>GPS</small><b data-atlas-destination>${escapeHtml(state.waypoint?.name||'Sem destino ativo')}</b></span><button data-atlas-cancel ${state.waypoint?'':'disabled'}>Cancelar rota</button></div><nav class="atlas-tabs" aria-label="Painéis do mapa"><button data-atlas-tab-button="map" aria-pressed="true">MAPA</button><button data-atlas-tab-button="places" aria-pressed="false">DESTINOS</button></nav><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><button data-atlas-delivery>Motorista / encomenda</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><span>Laranja: motorista até você</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Principais destinos</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Pontos nas coordenadas reais. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
    els.modal.classList.add('map-modal','atlas-modal');const svg=root.querySelector('svg'),list=root.querySelector('.atlas-list'),detail=root.querySelector('.atlas-selection'),search=root.querySelector('[data-atlas-search]'),category=root.querySelector('[data-atlas-group]');let clusters=new Map(),lastW=240,lastH=240;const shell=root.querySelector('.world-atlas');root.querySelector('[data-atlas-cancel]').onclick=()=>{clearWaypoint();worldCampaign.route=null;openMap();};root.querySelectorAll('[data-atlas-tab-button]').forEach(b=>b.onclick=()=>{shell.dataset.atlasTab=b.dataset.atlasTabButton;root.querySelectorAll('[data-atlas-tab-button]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));requestAnimationFrame(draw);});
    const code=l=>l?.id==='home'?'CASA':/plane|airbase/.test(l?.id)?'AV':/helicopter/.test(l?.id)?'HE':/marina|boat/.test(l?.id)?'LA':/coast-view/.test(l?.id)?'PR':/snow/.test(l?.id)?'NE':/shop/.test(l?.id)?'LO':/campaign-hq/.test(l?.id)?'QG':/circuit|kart/.test(l?.id)?'KT':/pingpong/.test(l?.id)?'PP':/dance/.test(l?.id)?'DA':/boxing/.test(l?.id)?'BX':/garage|dealer/.test(l?.id)?'GA':'•';
    const essential=l=>['chapter-next','home','shop','workshop','campaign-hq','campaign-airbase','coast-view','marina-costa','snow-lookout','airport-terminal','mountain-balloon'].includes(l.id)||/^(venue-|circuit-|city-)/.test(l.id)||l.id===(state.waypoint?.id||'');
    const norm=t=>String(t||'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();const filtered=()=>{const q=norm(search.value);return locations.filter(l=>(q||!category.value||(category.value==='essential'?essential(l):l.group===category.value))&&(!q||norm(l.name+' '+l.group).includes(q)));};
    const selection=()=>{if(!selected)return;const d=mapLocationDetails(selected);detail.innerHTML=`<small>${escapeHtml(selected.group||'Destino')}</small><h3>${escapeHtml(selected.name)}</h3><p>${escapeHtml(d.description)}</p><footer><span>${mapDistance(selected)} m de você</span><button data-route-selected="${escapeHtml(selected.id)}">TRAÇAR ROTA</button></footer>`;detail.querySelector('button').onclick=()=>setWaypoint(selected.id);};
+   const fitDelivery=()=>{const t=phoneDeliveryTracking();if(!t)return;const r=svg.getBoundingClientRect(),aspect=Math.max(.4,r.width/Math.max(100,r.height)),points=[navigationFocus(),...t.route],xs=points.map(p=>p.x),zs=points.map(p=>p.z),minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);Object.assign(view,{x:(minX+maxX)/2,z:(minZ+maxZ)/2,span:clamp(Math.max(75,(maxX-minX+28),(maxZ-minZ+28)*aspect)*1.15,55,2500)});};
+   root.querySelector('[data-atlas-delivery]').onclick=()=>{fitDelivery();draw();};if(worldPhone.focusMap){worldPhone.focusMap=false;fitDelivery();}
    const draw=()=>{
+    focus=navigationFocus();
     const rect=svg.getBoundingClientRect(),aspect=Math.max(.4,rect.width/Math.max(100,rect.height)),w=view.span,h=w/aspect,left=view.x-w/2,top=-view.z-h/2,px=w/Math.max(260,rect.width),r=14*px;lastW=w;lastH=h;svg.setAttribute('viewBox',`${left} ${top} ${w} ${h}`);
     const square=(x,z,w,d,c)=>`<rect x="${x-w/2}" y="${-z-d/2}" width="${w}" height="${d}" fill="${c}"/>`;let s='<rect x="-5000" y="-5000" width="10000" height="10000" fill="#bfd0b9"/>';
     for(const[id,color]of Object.entries({urban:'#d7d4c7',aurora:'#d9d2c0',costa:'#d2dac4',forest:'#9fbb98',mountain:'#cbd2cb',rural:'#c1c68c',lake:'#75b7ca',lakeNorth:'#75b7ca',ottoviasSnow:'#edf2eb',ottoviasDesert:'#d9c897'})){const z=WORLD_LAYOUT_V704.zones[id];if(z)s+=square(z.x,z.z,z.w,z.d,color);}s+=square(0,710,1000,394,'#6caebf')+square(-310,506,230,22,'#e9d4a4');
@@ -2764,13 +2768,15 @@
     if(state.waypoint){const route=world.routePath.length?world.routePath:navigationRoutePoints(focus,state.waypoint),p=route.map(p=>`${p.x},${-p.z}`).join(' ');s+=`<polyline points="${p}" fill="none" stroke="white" stroke-width="${7*px}"/><polyline points="${p}" fill="none" stroke="#087be0" stroke-width="${4*px}" stroke-linejoin="round"/>`;}
     const points=filtered().filter(l=>l.x>=left-r&&l.x<=left+w+r&&-l.z>=top-r&&-l.z<=top+h+r),cells=new Map(),nodes=[];clusters=new Map();for(const l of points){if(l.id===selected?.id||l.id===(state.waypoint?.id||'')){nodes.push({x:l.x,z:l.z,loc:l});continue;}const k=Math.floor((l.x-left)/(40*px))+':'+Math.floor((-l.z-top)/(40*px));if(!cells.has(k))cells.set(k,[]);cells.get(k).push(l);}for(const items of cells.values())if(items.length===1)nodes.push({x:items[0].x,z:items[0].z,loc:items[0]});else{const n={id:'cluster-'+clusters.size,x:items.reduce((s,l)=>s+l.x,0)/items.length,z:items.reduce((s,l)=>s+l.z,0)/items.length,items};clusters.set(n.id,n);nodes.push(n);}
     for(const n of nodes){const l=n.loc,id=l?.id||n.id,selectedNow=l?.id===selected?.id,color=l?.id===active?'#087be0':selectedNow?'#c66b2e':'#214e59',name=l?.name||n.items.length+' lugares';s+=`<g data-map-marker="${escapeHtml(id)}" role="button" tabindex="0" aria-label="${escapeHtml(name)}" style="cursor:pointer"><title>${escapeHtml(name)}</title><circle cx="${n.x}" cy="${-n.z}" r="${r}" fill="${color}" stroke="#fffdf0" stroke-width="${2*px}"/><text x="${n.x}" y="${-n.z+4*px}" text-anchor="middle" font-family="system-ui" font-size="${(code(l)==='CASA'?8:11)*px}" font-weight="800" fill="white">${n.items?n.items.length:code(l)}</text></g>`;if(l&&(selectedNow||l.id===(state.waypoint?.id||'')))s+=`<text x="${n.x}" y="${-n.z-20*px}" text-anchor="middle" font-family="system-ui" font-size="${12*px}" font-weight="800" fill="#173c48" stroke="#fffdf0" stroke-width="${4*px}" paint-order="stroke">${escapeHtml(l.name)}</text>`;}
+    const delivery=phoneDeliveryTracking();root.querySelector('[data-atlas-delivery]').disabled=!delivery;
+    if(delivery){const points=delivery.route.map(p=>`${p.x},${-p.z}`).join(' ');s+=`<g data-phone-map-tracking role="img" aria-label="${escapeHtml(phoneTrackingText(delivery))}"><polyline data-phone-map-route points="${points}" fill="none" stroke="#fff8e9" stroke-width="${8*px}"/><polyline points="${points}" fill="none" stroke="#b15c00" stroke-width="${4*px}" stroke-dasharray="${9*px} ${4*px}" stroke-linejoin="round"/><circle cx="${delivery.x}" cy="${-delivery.z}" r="${12*px}" fill="#ffbd45" stroke="#173c48" stroke-width="${2*px}"/><path d="M0 ${-8*px}L${6*px} ${6*px}L${-6*px} ${6*px}Z" fill="#173c48" transform="translate(${delivery.x},${-delivery.z}) rotate(${delivery.yaw*180/Math.PI})"/><text x="${delivery.x}" y="${-delivery.z-19*px}" text-anchor="middle" font-family="system-ui" font-size="${12*px}" font-weight="800" fill="#703b00" stroke="#fff8e9" stroke-width="${4*px}" paint-order="stroke">${escapeHtml(delivery.label)} · ${Math.round(delivery.distance)} m</text><circle cx="${delivery.target.x}" cy="${-delivery.target.z}" r="${8*px}" fill="none" stroke="#b15c00" stroke-width="${3*px}"/></g>`;}
     s+=`<g transform="translate(${focus.x},${-focus.z})"><circle r="${10*px}" fill="#167cdb" stroke="white" stroke-width="${3*px}"/><path d="M0 ${-18*px}L${7*px} ${-8*px}L${-7*px} ${-8*px}Z" fill="#173c48" transform="rotate(${(Math.PI-(focus.facing||0))*180/Math.PI})"/></g><text x="${left+16*px}" y="${top+24*px}" font-family="system-ui" font-size="${15*px}" font-weight="900" fill="#173c48">N ↑</text>`;svg.innerHTML=s;root.querySelector('[data-atlas-scale]').textContent=Math.round(w)+' m de largura';
    };
    const select=id=>{const cluster=clusters.get(id);if(cluster){view.x=cluster.x;view.z=cluster.z;view.span=Math.max(55,view.span*.42);draw();return;}const l=locations.find(l=>l.id===id);if(l){selected=l;mapSelectedId=id;view.x=l.x;view.z=l.z;view.span=Math.min(220,view.span);selection();draw();}};
    const renderList=()=>{list.innerHTML=filtered().sort((a,b)=>mapDistance(a)-mapDistance(b)).slice(0,80).map(l=>`<button data-map-list="${escapeHtml(l.id)}"><i>${code(l)}</i><span><b>${escapeHtml(l.name)}</b><small>${escapeHtml(l.group||'Destino')}</small></span><em>${mapDistance(l)} m</em></button>`).join('')||'<p>Nenhum lugar encontrado.</p>';draw();};let suppressUntil=0;
    svg.onclick=e=>{if(performance.now()<suppressUntil)return;const p=e.target.closest('[data-map-marker]');if(p)select(p.dataset.mapMarker);};svg.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){const p=e.target.closest('[data-map-marker]');if(p){e.preventDefault();select(p.dataset.mapMarker);}}};list.onclick=e=>{const p=e.target.closest('[data-map-list]');if(p)select(p.dataset.mapList);};search.oninput=renderList;category.onchange=renderList;
    const zoom=f=>{view.span=clamp(view.span*f,55,2500);draw();};root.querySelector('[data-atlas-plus]').onclick=()=>zoom(.7);root.querySelector('[data-atlas-minus]').onclick=()=>zoom(1.4);root.querySelector('[data-atlas-player]').onclick=()=>{Object.assign(view,{x:focus.x,z:focus.z,span:240});draw();};root.querySelector('[data-atlas-world]').onclick=()=>{const b=v704WorldBounds(),r=svg.getBoundingClientRect();Object.assign(view,{x:(b.minX+b.maxX)/2,z:(b.minZ+b.maxZ)/2,span:Math.max(b.maxX-b.minX,(b.maxZ-b.minZ)*r.width/r.height)*1.05});draw();};root.querySelector('[data-atlas-region]').onchange=e=>{if(e.target.value==='')return;Object.assign(view,regions[Number(e.target.value)]);draw();};root.querySelector('[data-clear-waypoint]')?.addEventListener('click',clearWaypoint);
-   const fingers=new Map();let drag=null;svg.onpointerdown=e=>{fingers.set(e.pointerId,{x:e.clientX,y:e.clientY});svg.setPointerCapture?.(e.pointerId);drag={x:e.clientX,y:e.clientY,cx:view.x,cz:view.z,span:view.span,distance:0};};svg.onpointermove=e=>{if(!fingers.has(e.pointerId)||!drag)return;fingers.set(e.pointerId,{x:e.clientX,y:e.clientY});const rect=svg.getBoundingClientRect();if(fingers.size===2){const[a,b]=[...fingers.values()],distance=Math.hypot(a.x-b.x,a.y-b.y);if(!drag.distance){drag.distance=distance;drag.span=view.span;}view.span=clamp(drag.span*drag.distance/Math.max(1,distance),55,2500);suppressUntil=performance.now()+200;draw();}else{const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>5){view.x=drag.cx-dx*lastW/rect.width;view.z=drag.cz+dy*lastH/rect.height;suppressUntil=performance.now()+200;draw();}}};for(const name of['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(name,e=>{fingers.delete(e.pointerId);drag=null;});svg.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY>0?1.15:.87);},{passive:false});const observer=new ResizeObserver(()=>{if(svg.isConnected&&!els.modal.hidden)draw();else observer.disconnect();});observer.observe(svg);selection();renderList();requestAnimationFrame(draw);
+   const fingers=new Map();let drag=null;svg.onpointerdown=e=>{fingers.set(e.pointerId,{x:e.clientX,y:e.clientY});svg.setPointerCapture?.(e.pointerId);drag={x:e.clientX,y:e.clientY,cx:view.x,cz:view.z,span:view.span,distance:0};};svg.onpointermove=e=>{if(!fingers.has(e.pointerId)||!drag)return;fingers.set(e.pointerId,{x:e.clientX,y:e.clientY});const rect=svg.getBoundingClientRect();if(fingers.size===2){const[a,b]=[...fingers.values()],distance=Math.hypot(a.x-b.x,a.y-b.y);if(!drag.distance){drag.distance=distance;drag.span=view.span;}view.span=clamp(drag.span*drag.distance/Math.max(1,distance),55,2500);suppressUntil=performance.now()+200;draw();}else{const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>5){view.x=drag.cx-dx*lastW/rect.width;view.z=drag.cz+dy*lastH/rect.height;suppressUntil=performance.now()+200;draw();}}};for(const name of['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(name,e=>{fingers.delete(e.pointerId);drag=null;});svg.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY>0?1.15:.87);},{passive:false});const observer=new ResizeObserver(()=>{if(svg.isConnected&&!els.modal.hidden)draw();else observer.disconnect();});observer.observe(svg);selection();renderList();requestAnimationFrame(draw);const liveTimer=setInterval(()=>{if(!svg.isConnected||els.modal.hidden){clearInterval(liveTimer);observer.disconnect();return;}if(phoneDeliveryTracking())draw();},400);
   });
  };
 
@@ -5664,9 +5670,8 @@
     else if(type==='firestation')openFireStationDesk();
     updateHUD();
   }
-  function openShop(){
-    ensureWorldEvolutionState?.();
-    const items=[
+  function worldShopItems(){
+    return [
       {name:'Comida',price:15,key:'food',amount:2,icon:'🍎',group:'Consumíveis'},
       {name:'Água',price:8,key:'water',amount:2,icon:'💧',group:'Consumíveis'},
       {name:'Iscas',price:12,key:'bait',amount:5,icon:'🪱',group:'Pesca'},
@@ -5686,6 +5691,10 @@
       {name:'Enxada',price:38,tool:'hoe',icon:'🧑‍🌾',group:'Ferramentas'},
       {name:'Pá',price:35,tool:'shovel',icon:'🪏',group:'Ferramentas'}
     ];
+  }
+  function openShop(){
+    ensureWorldEvolutionState?.();
+    const items=worldShopItems();
     const cards=items.map((item,i)=>{const owned=item.tool&&state.tools.owned.includes(item.tool);const unique=item.unique&&(state.inventory[item.key]||0)>0;return `<button class="choice shop-choice ${owned||unique?'owned':''}" data-buy="${i}" ${owned||unique?'disabled':''}><b>${item.icon} ${item.name}</b><span>${owned||unique?'Já possui':`${item.price} moedas — ${item.tool?'ferramenta':`+${item.amount}`}`}</span><small>${item.group}</small></button>`;}).join('');
     openModal('Mercadinho da Vila',`<div class="shop-wallet"><span>🪙 Moedas</span><b>${state.profile.coins}</b></div><p class="shop-help">Todos os itens essenciais podem ser comprados aqui, mas também podem ser obtidos jogando, coletando, cavando, plantando e pescando.</p><div class="choice-grid shop-complete-grid">${cards}</div>`,root=>{
       $$('[data-buy]',root).forEach(btn=>btn.onclick=()=>{const item=items[Number(btn.dataset.buy)];if(!item||btn.disabled)return;if(state.profile.coins<item.price){toast('Moedas insuficientes.','warn');return;}addCoins(-item.price);if(item.tool){state.tools.owned=[...new Set([...(state.tools.owned||[]),item.tool])];state.tools.equipped=item.tool;refreshEquippedToolVisual();}else state.inventory[item.key]=(state.inventory[item.key]||0)+item.amount;addXP(5);saveState(true);updateHUD();closeModal();toast(`${item.name} adquirido!`,'good');});
@@ -12467,7 +12476,25 @@ function precompile(T,renderer,scene,camera){
  }
  function garageRoomFloors(entries){const out=[];for(const [heavy,capacity]of[[false,20],[true,6]]){const rows=entries.filter(e=>brazilDepotVehicle(e.id)===heavy);for(let i=0;i<rows.length;i+=capacity)out.push({heavy,entries:rows.slice(i,i+capacity)});}return out.length?out:[{heavy:false,entries:[]}];}
  function garageParkedEntries(){return garageOwnedEntries().filter(e=>state.vehicles.garage.stored[e.id]&&!vehicleById(e.id)?.workshopYardStatus);}
- function garageStoreHere(id){const g=ensurePlayerGarageState(),v=vehicleById(id);if(!state.vehicles.owned.includes(id)||v?.workshopYardStatus)return false;if(player.vehicle){if(player.car.id!==id||player.car.passengerOf)return false;exitVehicle(true);}for(const key of Object.keys(g.slots))if(g.slots[key]===id)g.slots[key]='';g.stored[id]=true;setGarageVehicleStored(v,true);saveState(true);return true;}
+ function garageStorageBlock(id,allowCurrent=false){
+  if(!state.vehicles.owned.includes(id))return 'Não pertence à sua garagem';const v=vehicleById(id),current=player.vehicle&&player.car.id===id;
+  if(v?.phoneDelivery)return 'Motorista em entrega';
+  if(v?.workshopYardStatus||(world.workshopLifts||[]).some(l=>l.vehicleId===id)||world.workshopLift?.vehicleId===id)return 'Em atendimento na oficina';
+  if(current&&(!allowCurrent||player.car.passengerOf||hostedVehiclePassengerUids().length))return 'Em uso — desembarque antes de guardar';
+  if(v?.occupied&&!current)return 'Ocupado';
+  for(const p of remotePresence.values())if(p.vehicle&&String(p.vehicleId||p.vehicleAppearance?.id||'')===id)return 'Em uso por outro jogador';
+  return '';
+ }
+ function garageStoreHere(id){const g=ensurePlayerGarageState(),v=vehicleById(id);if(garageStorageBlock(id,true))return false;if(player.vehicle&&player.car.id===id)exitVehicle(true);for(const key of Object.keys(g.slots))if(g.slots[key]===id)g.slots[key]='';g.stored[id]=true;setGarageVehicleStored(v,true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;saveState(true);return true;}
+ storeOwnedVehicle=function(id,silent=false){const reason=garageStorageBlock(id);if(reason){if(!silent)toast(reason+'.','info',2600);return false;}const ok=garageStoreHere(id);if(ok&&!silent)toast((playerVehicleCatalogEntry(id)?.label||'Veículo')+' guardado na sua garagem.','good',2000);return ok;};
+ function garageStoreAll(){
+  const result={stored:[],already:[],blocked:[]},g=ensurePlayerGarageState();
+  for(const id of [...new Set(state.vehicles.owned)]){const reason=garageStorageBlock(id);if(reason){result.blocked.push({id,reason});continue;}if(g.stored[id]){setGarageVehicleStored(vehicleById(id),true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;result.already.push(id);continue;}if(storeOwnedVehicle(id,true))result.stored.push(id);}
+  syncOwnedGarageDisplayFleet();saveState(true);toast(`${result.stored.length} veículo(s) guardado(s).${result.blocked.length?' '+result.blocked.length+' em uso ou atendimento; veja a lista na garagem.':''}`,'good',3400);return result;
+ }
+ function openGarageVehicleManager(){
+  ensurePlayerGarageState();const entries=garageOwnedEntries();openModal('Minha garagem',`<p>${entries.length} unidades próprias. Os veículos guardados ficam disponíveis nos pisos da garagem e no celular.</p><div class="modal-actions"><button class="btn primary" data-private-garage-gps>IR À GARAGEM DA CASA</button><button class="btn" data-garage-store-all>GUARDAR TODOS OS DISPONÍVEIS</button></div><div class="choice-grid">${entries.map(e=>{const stored=!!state.vehicles.garage.stored[e.id],reason=garageStorageBlock(e.id);return `<article class="choice"><b>${escapeHtml(e.label)} · #${e.unit}</b><span>${escapeHtml(reason||(stored?'Guardado na garagem':'Estacionado no mundo'))}</span><button class="btn" data-garage-store="${escapeHtml(e.id)}" ${stored||reason?'disabled':''}>${stored?'GUARDADO':'GUARDAR'}</button></article>`;}).join('')}</div>`,root=>{root.querySelector('[data-private-garage-gps]').onclick=()=>setWaypoint('my-garage');root.querySelector('[data-garage-store-all]').onclick=()=>{garageStoreAll();openGarageVehicleManager();};root.querySelectorAll('[data-garage-store]').forEach(b=>b.onclick=()=>{storeOwnedVehicle(b.dataset.garageStore);openGarageVehicleManager();});});
+ }
  const garageOldDisplays=syncOwnedGarageDisplayFleet;syncOwnedGarageDisplayFleet=function(){for(const [id,clone]of world.playerGarageDisplayFleet||[])if(state.vehicles.garage.stored[id])clone.visible=false;};
  function garageRememberRoomPose(record,heavy){
   if(!record?.group)return;const g=ensurePlayerGarageState();g.roomParking||={};g.roomParking[record.entry.id]={x:+record.group.position.x.toFixed(3),z:+record.group.position.z.toFixed(3),heading:+record.group.rotation.y.toFixed(4),heavy:!!heavy,at:Date.now()};saveState(true);
@@ -12538,7 +12565,7 @@ function precompile(T,renderer,scene,camera){
  const garageOldVehicleEnter=enterVehicle;enterVehicle=function(v=world.vehicle){const ok=garageOldVehicleEnter(v);if(ok)player.car.ignition=true;return ok;};
  const garageOldVehicleContext=updateVehicleContextButton;updateVehicleContextButton=function(){const target=garageOldVehicleContext();if(els.vehicleActionBtn){els.vehicleActionBtn.dataset.privateGaragePark=String(target?.id==='private-garage-park');if(target?.id==='private-garage-park')els.vehicleActionBtn.classList.remove('pulse');}return target;};
  const garageOldOnlineFleet=multiplayerGarageFleetSnapshot;multiplayerGarageFleetSnapshot=function(...args){return garageOldOnlineFleet(...args).filter(e=>e.status!=='garage');};
- const garageOldOpen=openPlayerGarage;openPlayerGarage=function(){const p=worldLayoutPoint('homeGarage'),home=worldLayoutPoint('home');if(currentHouse&&Math.hypot(currentHouse.x-home.x,currentHouse.z-home.z)<1){closeModal();exitHouse();player.x=p.x+8;player.z=p.z;player.y=groundHeightAt(player.x,player.z);player.vx=player.vy=player.vz=0;rememberSafePlayerPosition(true);return openPersonalGarageRoom();}if(Math.hypot(player.x-p.x,player.z-p.z)<14&&!currentHouse)return openPersonalGarageRoom();const entries=garageOwnedEntries();openModal('Minha garagem',`<p>${entries.length} unidades próprias. A entrada da garagem fica ao lado da sua casa. Cada unidade tem sua vaga física; os pisos são acessíveis pelo elevador.</p><button class="btn primary" data-private-garage-gps>IR À GARAGEM DA CASA</button><div class="choice-grid">${entries.map(e=>`<article class="choice"><b>${escapeHtml(e.label)} · #${e.unit}</b><span>${state.vehicles.garage.stored[e.id]?'Estacionado na garagem':'Em uso / estacionado no mundo'}</span></article>`).join('')}</div>`,root=>root.querySelector('[data-private-garage-gps]').onclick=()=>setWaypoint('my-garage'));};
+ const garageOldOpen=openPlayerGarage;openPlayerGarage=function(){const p=worldLayoutPoint('homeGarage'),home=worldLayoutPoint('home');if(currentHouse&&Math.hypot(currentHouse.x-home.x,currentHouse.z-home.z)<1){closeModal();exitHouse();player.x=p.x+8;player.z=p.z;player.y=groundHeightAt(player.x,player.z);player.vx=player.vy=player.vz=0;rememberSafePlayerPosition(true);return openPersonalGarageRoom();}if(Math.hypot(player.x-p.x,player.z-p.z)<14&&!currentHouse)return openPersonalGarageRoom();return openGarageVehicleManager();};
  const garageOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){garageOldExpansion();garageSyncIgnition();if(!world.playerGarage)return;
   if(!world.playerGarage.privateParkingAction){const p=worldLayoutPoint('homeGarage');registerInteractable({id:'private-garage-park',type:'garage',vehicleOnly:true,icon:'🏠',label:'Estacionar na minha garagem',actionLabel:'Garagem',x:p.x+9,z:p.z,radius:5.5,priority:800,available:()=>player.vehicle&&!player.car.passengerOf&&state.vehicles.owned.includes(player.car.id),action:()=>openPersonalGarageRoom()});world.playerGarage.privateParkingAction=true;}
   for(const i of world.interactables)if(i.id==='player-home-garage'||i.id==='player-home-garage-west'){i.label='Entrar na minha garagem';i.action=()=>openPersonalGarageRoom();}const sign=world.playerGarage.group?.children.find(o=>o.geometry?.type==='PlaneGeometry'&&o.position.y>2);if(sign&&!sign.userData.privateGarage){sign.material.map?.dispose();sign.material.map=signTexture('MINHA GARAGEM · ENTRADA','#173b59','#ffffff');sign.material.needsUpdate=true;sign.userData.privateGarage=true;}};
@@ -13180,7 +13207,7 @@ function precompile(T,renderer,scene,camera){
   }
 
   // ===== MODULE: 73-world-phone-dispatch.js =====
- const worldPhone={job:null,lastTick:0,pending:false,loadedOwner:'',driver:null,walkAway:null};
+ const worldPhone={job:null,lastTick:0,pending:false,loadedOwner:'',driver:null,walkAway:null,returning:[],uiAt:0};
 
  class PhoneDriveRoute {
   constructor(points,heading=0){
@@ -13191,7 +13218,7 @@ function precompile(T,renderer,scene,camera){
    let time=Math.max(0,Math.min(.1,dt));this.blocked=false;
    while(time>0&&!this.arrived){
     const h=Math.min(time,.025);time-=h;const to=this.points[this.index],dx=to.x-this.x,dz=to.z-this.z,d=Math.hypot(dx,dz);
-    if(d<.16){this.x=to.x;this.z=to.z;if(++this.index>=this.points.length){this.arrived=true;this.speed=0;break;}continue;}
+    if(d<.16){if(!canMove(to.x,to.z,this.yaw)){this.speed=0;this.blocked=true;break;}this.x=to.x;this.z=to.z;if(++this.index>=this.points.length){this.arrived=true;this.speed=0;break;}continue;}
     const last=this.index===this.points.length-1,limit=Math.min(maxSpeed,last?Math.sqrt(Math.max(.1,2*2.8*d)):d<5?3:maxSpeed);
     const speed=Math.min(limit,this.speed+2.4*h),distance=Math.min(d,speed*h),yaw=Math.atan2(dx,dz),x=this.x+dx/d*distance,z=this.z+dz/d*distance;
     if(!canMove(x,z,yaw)){this.speed=0;this.blocked=true;break;}
@@ -13199,6 +13226,49 @@ function precompile(T,renderer,scene,camera){
    }
    return this;
   }
+ }
+
+ // Bounded local A*: every edge is swept through the real vehicle footprint.
+ // A failed search keeps the car stopped; it never moves through a blocker.
+ function phoneFindDetour(from,goals,canTravel,{step=2,maxNodes=1100,radius=46}={}){
+  if(!goals.length)return null;const nodes=[],open=[],best=new Map(),goalDistance=p=>Math.min(...goals.map(g=>Math.hypot(g.x-p.x,g.z-p.z)));
+  const start={x:from.x,z:from.z,yaw:from.yaw||0,g:0,parent:null};start.f=goalDistance(start);nodes.push(start);open.push(start);best.set('0:0:start',0);
+  for(let count=0;open.length&&count<maxNodes;count++){
+   let at=0;for(let i=1;i<open.length;i++)if(open[i].f<open[at].f)at=i;const p=open.splice(at,1)[0];
+   for(let i=0;i<goals.length;i++){const goal=goals[i],distance=Math.hypot(goal.x-p.x,goal.z-p.z);if(distance>step*1.6||!canTravel(p,goal))continue;const path=[{x:goal.x,z:goal.z}];for(let n=p;n;n=n.parent)path.push({x:n.x,z:n.z});return{points:path.reverse(),goalIndex:i,visited:count+1};}
+   for(let dir=0;dir<8;dir++){
+    const angle=dir*Math.PI/4,x=from.x+Math.round((p.x-from.x)/step+Math.sin(angle))*step,z=from.z+Math.round((p.z-from.z)/step+Math.cos(angle))*step;
+    if(Math.hypot(x-from.x,z-from.z)>radius)continue;const turn=Math.abs(Math.atan2(Math.sin(angle-p.yaw),Math.cos(angle-p.yaw)));if(p.parent&&turn>Math.PI*.76)continue;
+    const next={x,z,yaw:angle,parent:p},g=p.g+Math.hypot(x-p.x,z-p.z)+turn*.65,key=Math.round((x-from.x)/step)+':'+Math.round((z-from.z)/step)+':'+dir;
+    if(g>=(best.get(key)??Infinity)||!canTravel(p,next))continue;best.set(key,g);next.g=g;next.f=g+goalDistance(next);open.push(next);
+   }
+  }return null;
+ }
+ function phoneGroundRoute(vehicle,from,target){
+  const core=buildRoutePoints(from,target);if(core.length<2)return core;
+  const route=offsetBrazilianTrafficPath(core,1.35,{closed:false,valid:(x,z)=>v704RoadAt(x,z,.1,false)&&!navBlocked(x,z)});
+  route[0]={x:from.x,z:from.z};route[route.length-1]={x:target.x,z:target.z};return compactRoute(route);
+ }
+ function phoneTravelClear(vehicle,from,to,traffic=true){
+  const dx=to.x-from.x,dz=to.z-from.z,distance=Math.hypot(dx,dz),yaw=distance>.01?Math.atan2(dx,dz):from.yaw||0;
+  for(let i=1,n=Math.max(1,Math.ceil(distance/.55));i<=n;i++){const t=i/n,x=from.x+dx*t,z=from.z+dz*t;
+   // A short driveway connector is permitted. Detours remain on the road.
+   if(distance>1&&!v704RoadAt(x,z,.15,true)&&Math.hypot(x-vehicle.group.position.x,z-vehicle.group.position.z)>6)return false;
+   if(!phoneVehiclePoseClear(vehicle,x,z,yaw,traffic))return false;
+  }return true;
+ }
+ function phoneRecoverRoute(job,dt){
+  job.blockedFor=job.route.blocked?(job.blockedFor||0)+dt:0;job.replanIn=Math.max(0,(job.replanIn||0)-dt);
+  if(job.blockedFor<1.8||job.replanIn>0)return false;job.replanIn=3;
+  const motion=job.route,from={x:motion.x,z:motion.z,yaw:motion.yaw},goals=[];let length=0,last=from;
+  for(let i=motion.index;i<motion.points.length&&length<42;i++){
+   const p=motion.points[i],d=Math.hypot(p.x-last.x,p.z-last.z),samples=Math.max(1,Math.ceil(d/6));
+   for(let n=1;n<=samples;n++){const t=n/samples,x=last.x+(p.x-last.x)*t,z=last.z+(p.z-last.z)*t,travel=length+d*t;if(travel>=9&&travel<=42)goals.push({x,z,index:i});}length+=d;last=p;
+  }
+  if(!goals.length)goals.push({...job.target,index:motion.points.length-1});
+  const detour=phoneFindDetour(from,goals,(a,b)=>phoneTravelClear(job.vehicle,a,b,true));
+  if(!detour)return false;const rejoin=goals[detour.goalIndex],points=compactRoute([...detour.points,...motion.points.slice(rejoin.index)]);
+  job.route=new PhoneDriveRoute(points,motion.yaw);job.reroutes=(job.reroutes||0)+1;job.blockedFor=0;job.waiting=false;return true;
  }
 
  function phoneVehicleProbes(vehicle,yaw){
@@ -13210,9 +13280,12 @@ function precompile(T,renderer,scene,camera){
  }
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
+  const body=trafficBody(vehicle,yaw,{x,z});
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||state.vehicles?.workshopComponents?.[v.id]?.npcCollectedAt)continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
-   if(Math.abs(groundHeightAt(px,pz)-base)>.65||positionBlockedForPlayer(px,pz,radius,{ignoreActor:vehicle,ignoreTraffic:!includeTraffic}))return false;
+   if(Math.abs(groundHeightAt(px,pz)-base)>.65||positionBlockedForPlayer(px,pz,radius,{ignoreActor:vehicle,ignoreTraffic:true,ignoreParkedVehicles:true}))return false;
    if(Math.hypot(player.x-px,player.z-pz)<.8)return false;
    for(const p of remotePresence.values())if(!p.vehicle&&Math.hypot(Number(p.x)-px,Number(p.z)-pz)<.8)return false;
   }
@@ -13244,7 +13317,7 @@ function precompile(T,renderer,scene,camera){
   driver.leftLeg.rotation.x=driver.rightLeg.rotation.x=-1.2;driver.leftArm.rotation.x=driver.rightArm.rotation.x=-1;
  }
  function phoneDispatchAllowed(){return running&&!paused&&!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&!otGames.active&&!worldVenues.session;}
- async function phoneDispatchGround(id){
+ async function phoneDispatchGround(id,options={}){
   if(worldPhone.pending||worldPhone.job||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
   const caller=sharedWorldOwnId();worldPhone.pending=true;
   try{
@@ -13256,25 +13329,29 @@ function precompile(T,renderer,scene,camera){
    const target=phoneGroundDestination(vehicle);if(!target){toast('Não há uma vaga segura próxima. Aproxime-se de uma rua livre e chame novamente.','info',3400);return false;}
    const garage=ensurePlayerGarageState(),stored=!!garage.stored[id]||!!vehicle.garageStored;
    let from={x:vehicle.group.position.x,z:vehicle.group.position.z,yaw:vehicle.group.rotation.y};
-   if(stored){const gate=worldLayoutPoint('homeGarage'),exit=garageDriveOutPoint(vehicle,gate);if(!exit){toast('A saída da garagem está ocupada. Libere a passagem para o motorista.','info',3000);return false;}from={...exit,yaw:exit.heading};}
-   const route=buildRoutePoints(from,target);if(route.length<2||!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,false)){toast('A saída do veículo está bloqueada. Libere a passagem para o motorista.','info',3000);return false;}
+   if(options.from)from={...options.from};
+   else if(stored){const gate=worldLayoutPoint('homeGarage'),exit=garageDriveOutPoint(vehicle,gate);if(!exit){toast('A saída da garagem está ocupada. Libere a passagem para o motorista.','info',3000);return false;}from={...exit,yaw:exit.heading};}
+   const route=phoneGroundRoute(vehicle,from,target);if(route.length<2||!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,false)){toast('A saída do veículo está bloqueada. Libere a passagem para o motorista.','info',3000);return false;}
+   if(options.payment>0&&state.profile.coins<options.payment)return false;
    for(const key of Object.keys(garage.slots))if(garage.slots[key]===id)garage.slots[key]='';
    garage.stored[id]=false;setGarageVehicleStored(vehicle,false);world.playerGarageDisplayFleet?.get(id)&&(world.playerGarageDisplayFleet.get(id).visible=false);
    vehicle.occupied=true;vehicle.phoneDelivery=true;vehicle.group.visible=true;vehicle.group.position.set(from.x,groundHeightAt(from.x,from.z),from.z);vehicle.group.rotation.y=from.yaw;
    const driver=phoneMakeDriver();phoneDriverInVehicle(driver,vehicle);
-   worldPhone.job={id,vehicle,driver,target,route:new PhoneDriveRoute(route,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false};
-   state.vehicles.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target};persistParkedVehicle(vehicle);saveState(true);closeModal();
+   worldPhone.job={id,vehicle,driver,target,route:new PhoneDriveRoute(route,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false,caller:{x:player.x,z:player.z},orderId:options.orderId||''};
+   if(options.payment>0)addCoins(-options.payment);
+   state.vehicles.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target,orderId:options.orderId||''};persistParkedVehicle(vehicle);saveState(true);closeModal();
    toast('Motorista a caminho com '+entry.label+'. A entrega será na vaga marcada.','good',3200);phoneWaypoint(target,'Entrega do meu veículo');return true;
   }finally{worldPhone.pending=false;}
  }
  function phoneWaypoint(point,label){state.waypoint={id:'phone-delivery',name:label,x:point.x,z:point.z,navX:point.x,navZ:point.z,arrived:false};world.routePath=buildRoutePoints(player,state.waypoint);updateWaypointMarker();}
  function phoneFinishGround(cancelled=false){
-  const job=worldPhone.job;if(!job)return;if(worldPhone.walkAway){phoneRemoveDriver(worldPhone.walkAway.driver);worldPhone.walkAway=null;}const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.x=v.group.position.x;v.z=v.group.position.z;v.heading=v.group.rotation.y;v.manualIgnition=true;
+  const job=worldPhone.job;if(!job)return;if(job.kind==='parcel'){if(cancelled)phoneCancelParcel(job);else phoneParcelArrived(job);return;}if(worldPhone.walkAway){phoneRemoveDriver(worldPhone.walkAway.driver);worldPhone.walkAway=null;}const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.x=v.group.position.x;v.z=v.group.position.z;v.heading=v.group.rotation.y;v.manualIgnition=true;
   persistParkedVehicle(v);state.vehicles.phoneDelivery={id:job.id,type:'ground',status:cancelled?'cancelled':'delivered',at:Date.now(),target:job.target};saveState(true);
   const exit=safePointNear(v.x,v.z,{heading:v.heading,ignoreActor:v,radius:.32,distances:[2.5,3.5,5],ignoreTraffic:false});
   if(exit){worldGroup.add(job.driver.group);job.driver.group.position.set(exit.x,exit.y,exit.z);job.driver.group.scale.setScalar(.65);job.driver.group.rotation.y=v.heading+Math.PI/2;job.driver.leftLeg.rotation.x=job.driver.rightLeg.rotation.x=0;worldPhone.walkAway={driver:job.driver,at:performance.now(),yaw:v.heading+Math.PI/2};}
   else phoneRemoveDriver(job.driver);
-  worldPhone.job=null;toast(cancelled?'Entrega interrompida. O veículo ficou estacionado na última posição segura.':'Seu veículo chegou. O motorista desembarcou; você já pode entrar.','good',3200);
+  if(job.orderId){const order=phoneOrders().find(o=>o.id===job.orderId);if(order)order.status=cancelled?'parked':'delivered';saveState(true);}
+  worldPhone.job=null;world.trafficSnapshot=null;toast(cancelled?'Entrega interrompida. O veículo ficou estacionado na última posição segura.':'Seu veículo chegou. O motorista desembarcou; você já pode entrar.','good',3200);
  }
  function phoneAirLandingClear(id,x,z){
   const spec=airOperations.fleet.spec(id),plane=spec?.mode==='plane',width=plane?6:4,length=plane?7:5,ground=groundHeightAt(x,z),bounds=v704WorldBounds();
@@ -13360,29 +13437,56 @@ function precompile(T,renderer,scene,camera){
  function openWorldPhone(){
   if(!running)return;const owned=garageOwnedEntries(),air=airEnsure()?Object.keys(state.vehicles.aircraft||{}).filter(id=>airOperations.fleet.spec(id)):[],record=state.vehicles.phoneDelivery;
   const groundBusy=!!worldPhone.job,airBusy=Object.values(airOperations.fleet?.data.craft||{}).some(c=>c.status==='delivery'&&c.delivery?.uid===sharedWorldOwnId()),busy=worldPhone.pending||groundBusy||airBusy,allowed=phoneDispatchAllowed();
-  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Escolha um veículo. Um motorista ou piloto traz até uma área segura. Aviões são entregues no aeroporto pela equipe de transporte.</p>${record?`<p class="world-phone-status" role="status">${record.status==='en-route'?'Entrega em andamento':record.status==='delivered'?'Última entrega concluída':record.status==='interrupted'?'A última entrega parou ao encerrar a sessão':'Última entrega interrompida'}</p>`:''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button>`).join('')}</div><h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
+  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Chame um motorista, acompanhe o trajeto e receba suas compras no mundo. Aviões são entregues no aeroporto.</p><div class="world-phone-actions"><button class="btn primary" data-phone-shop>COMPRAR E RECEBER</button><button class="btn" data-phone-store-all>GUARDAR TODOS OS VEÍCULOS DISPONÍVEIS</button><button class="btn" data-phone-track ${phoneDeliveryTracking()?'':'disabled'}>VER MOTORISTA E ROTA NO MAPA</button></div><p class="world-phone-status" data-phone-status role="status">${record?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.'}</p>${worldPhone.job?.kind==='parcel'?'<button class="btn good" data-phone-parcel-receive>RECEBER ENCOMENDA</button>':''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<div class="world-phone-vehicle"><button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button><button class="btn" data-phone-store="${escapeHtml(e.id)}" ${state.vehicles.garage.stored[e.id]||garageStorageBlock(e.id)?'disabled':''}>${state.vehicles.garage.stored[e.id]?'GUARDADO':'GUARDAR'}</button></div>`).join('')}</div><h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
    root.querySelectorAll('[data-phone-ground]').forEach(b=>b.onclick=()=>phoneDispatchGround(b.dataset.phoneGround));root.querySelectorAll('[data-phone-air]').forEach(b=>b.onclick=()=>phoneDispatchAir(b.dataset.phoneAir));root.querySelector('[data-phone-cancel]')?.addEventListener('click',()=>{phoneFinishGround(true);openWorldPhone();});
+   root.querySelector('[data-phone-track]').onclick=()=>{worldPhone.focusMap=true;openMap();};root.querySelector('[data-phone-shop]').onclick=()=>openPhoneShop();
+   root.querySelector('[data-phone-store-all]').onclick=()=>{garageStoreAll();openWorldPhone();};root.querySelectorAll('[data-phone-store]').forEach(b=>b.onclick=()=>{if(storeOwnedVehicle(b.dataset.phoneStore))openWorldPhone();});root.querySelector('[data-phone-parcel-receive]')?.addEventListener('click',()=>{phoneReceiveParcel();openWorldPhone();});phoneUpdateTrackingUI();
   });
+ }
+ function phoneDeliveryTracking(){
+  const job=worldPhone.job;if(job){const route=compactRoute([{x:job.route.x,z:job.route.z},...job.route.points.slice(job.route.index)]);return{id:job.id,kind:job.kind||'ground',x:job.route.x,z:job.route.z,yaw:job.route.yaw,target:{...job.target},route,distance:routeLength(route),waiting:!!job.waiting,ready:!!job.ready,reroutes:job.reroutes||0,label:job.kind==='parcel'?'Sua encomenda':'Seu motorista'};}
+  const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
+  return null;
+ }
+ function phoneTrackingText(t=phoneDeliveryTracking()){return t?t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`:state.vehicles.phoneDelivery?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.';}
+ function phoneUpdateTrackingUI(){
+  const t=phoneDeliveryTracking(),root=els.modalBody,p=root?.querySelector('[data-phone-status]');if(p)p.textContent=phoneTrackingText(t);const track=root?.querySelector('[data-phone-track]');if(track)track.disabled=!t;
+  const receive=root?.querySelector('[data-phone-parcel-receive]');if(receive){receive.disabled=!t?.ready||Math.hypot(player.x-t.x,player.z-t.z)>6;receive.textContent=receive.disabled?'APROXIME-SE DA ENCOMENDA':'RECEBER ENCOMENDA';}
+ }
+ function phoneDrawMiniTracking(){
+  const t=phoneDeliveryTracking(),canvas=els.miniMapCanvas;if(!t||!canvas)return;const {w,h}=miniMapLogicalSize(canvas),ctx=canvas.getContext('2d'),scale=miniMapScale(w,h);
+  ctx.save();ctx.strokeStyle='#ffbd45';ctx.lineWidth=4;ctx.setLineDash([5,3]);ctx.beginPath();for(const [i,p]of t.route.entries()){const q=miniPoint(p.x,p.z,scale,w,h);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}ctx.stroke();ctx.setLineDash([]);
+  const q=miniPoint(t.x,t.z,scale,w,h),x=clamp(q.x,12,w-12),y=clamp(q.y,36,h-12);ctx.translate(x,y);ctx.rotate(Math.atan2(q.x-x,-(q.y-y))||t.yaw);ctx.fillStyle='#ffbd45';ctx.strokeStyle='#102936';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(7,7);ctx.lineTo(-7,7);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+ }
+ function phoneAdvanceJob(job,dt){
+  if(job.ready)return;const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
+  v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;v.currentSpeed=motion.speed;v.speed=7;
+  const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
+  if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
+  phoneRecoverRoute(job,dt);
  }
  function updateWorldPhone(){
   const now=performance.now(),dt=Math.min(.1,Math.max(0,(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
   if(!running||paused||document.hidden)return;
   const airRecord=state.vehicles.phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
   const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';saveState(true);}}
+  updatePhoneOrders(dt);
   const job=worldPhone.job;if(job){
    if(job.owner!==owner){job.vehicle.occupied=false;job.vehicle.phoneDelivery=false;phoneRemoveDriver(job.driver);worldPhone.job=null;return;}
-   const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
-   v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;
-   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);
-   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está aguardando a passagem ficar livre.','info',2500);}else if(!motion.blocked)job.waiting=false;
-   if(now-job.saveAt>1000){job.saveAt=now;persistParkedVehicle(v);saveState();}
-   if(motion.arrived)phoneFinishGround();
+   phoneAdvanceJob(job,dt);const v=job.vehicle;
+   // Follow a walking caller, retaining a safe roadside stop rather than the
+   // stale position where the request was originally made.
+   job.targetCheck=(job.targetCheck||0)+dt;if(job.targetCheck>2){job.targetCheck=0;if(!job.ready&&!player.vehicle&&!currentHouse&&job.caller&&Math.hypot(player.x-job.caller.x,player.z-job.caller.z)>18){const target=phoneGroundDestination(v);if(target){job.target=target;job.caller={x:player.x,z:player.z};job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}}}
+   if(now-job.saveAt>1000){job.saveAt=now;if(job.kind==='parcel')phoneSaveParcelPose(job);else persistParkedVehicle(v);saveState();}
+   if(job.route.arrived&&!job.ready)phoneFinishGround();
   }
   const walk=worldPhone.walkAway;if(walk){const elapsed=(now-walk.at)/1000,p=walk.driver.group.position,x=p.x+Math.sin(walk.yaw)*dt,z=p.z+Math.cos(walk.yaw)*dt;if(!positionBlockedForPlayer(x,z,.25,{ignoreTraffic:false})){p.x=x;p.z=z;p.y=groundHeightAt(x,z);}const step=Math.sin(elapsed*8)*.35;walk.driver.leftLeg.rotation.x=step;walk.driver.rightLeg.rotation.x=-step;walk.driver.leftArm.rotation.x=-step;walk.driver.rightArm.rotation.x=step;if(elapsed>10){phoneRemoveDriver(walk.driver);worldPhone.walkAway=null;}}
+  if(now-worldPhone.uiAt>350){worldPhone.uiAt=now;phoneUpdateTrackingUI();}
  }
  const phonePreviousExpansion=updateWorldExpansion;updateWorldExpansion=function(){phonePreviousExpansion();updateWorldPhone();};
  document.getElementById('worldPhoneBtn')?.addEventListener('click',openWorldPhone);
- window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,last:state.vehicles.phoneDelivery||null})};
+ const phonePreviousMiniMap=drawMiniMap;drawMiniMap=function(){phonePreviousMiniMap();phoneDrawMiniTracking();};
+ window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,tracking:phoneDeliveryTracking(),orders:phoneOrders().map(o=>({...o})),last:state.vehicles.phoneDelivery||null})};
 
   // ===== MODULE: 74-workshop-npc-service.js =====
  const workshopNpcService={lastAt:0,reorganizeAt:0,graceMs:120000,repairMs:30000,collectionMs:8000};
@@ -13455,5 +13559,89 @@ function precompile(T,renderer,scene,camera){
  const workshopNpcVisibilityBefore=updateParkedVehicleVisibility;
  updateParkedVehicleVisibility=function(...args){workshopNpcVisibilityBefore(...args);for(const v of world.vehicles||[]){v.npcServiceCollected=workshopNpcWasCollected(v);if(v.npcServiceCollected)v.group.visible=false;}};
  window.OT_WORKSHOP_NPC_SERVICE={diagnostics:()=>({graceMs:workshopNpcService.graceMs,repairMs:workshopNpcService.repairMs,collectionMs:workshopNpcService.collectionMs,vehicles:(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&state.vehicles?.workshopComponents?.[v.id]?.npcAutoPhase).map(v=>{const r=state.vehicles.workshopComponents[v.id];return{id:v.id,phase:r.npcAutoPhase,visible:v.group.visible,durability:vehicleDurabilityV704(v),collectedAt:r.npcCollectedAt||0};})})};
+
+  // ===== MODULE: 75-phone-orders.js =====
+ function phoneOrders(){const v=state.vehicles;if(!Array.isArray(v.phoneOrders))v.phoneOrders=[];return v.phoneOrders;}
+ function phoneOrderItem(order){return worldShopItems().find(i=>(i.tool||i.key)===order.itemKey)||null;}
+ function phoneItemUnavailable(item){return !!(item.tool&&state.tools.owned.includes(item.tool)||item.unique&&(state.inventory[item.key]||0)>0||phoneOrders().some(o=>o.kind==='parcel'&&o.itemKey===(item.tool||item.key)&&['queued','en-route','ready'].includes(o.status)&&(item.tool||item.unique)));}
+ function phonePickupPoint(vehicle,origin){
+  const road=nearestRoadProjection(origin);if(!road)return null;const a=NAV_BASE_NODES[road.aId],b=NAV_BASE_NODES[road.bId],d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz);
+  for(const along of[0,6,-6,12,-12,20,-20,30,-30])for(const side of[1.35,-1.35,0]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(v704RoadAt(p.x,p.z,.1,false)&&phoneVehiclePoseClear(vehicle,p.x,p.z,yaw,true))return p;}return null;
+ }
+ function phoneNewOrder(kind,label,price){return{id:'order-'+crypto.randomUUID(),kind,label,price,status:'queued',at:Date.now(),owner:sharedWorldOwnId()};}
+ function phoneCourierVehicle(){
+  const v=vehicleById('phone-parcel-courier')||createToyCar(-30,-20,{id:'phone-parcel-courier',label:'Entrega do Mercadinho',brazilModel:'kombi',bodyType:'utility',primary:0xe3b344,secondary:0x28596a});v.phoneCourier=true;return v;
+ }
+ function phoneReleaseCourier(job){
+  phoneRemoveDriver(job.driver);const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.garageStored=true;v.group.visible=false;v.currentSpeed=0;delete state.vehicles.parked[v.id];world.trafficSnapshot=null;
+ }
+ function phoneStartParcel(order){
+  if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed()||order.owner!==sharedWorldOwnId())return false;
+  const vehicle=phoneCourierVehicle();vehicle.garageStored=true;vehicle.group.visible=false;
+  const shop=MAP_LOCATIONS.find(l=>l.id==='shop')||{x:-30,z:-20},origin={x:Number(shop.navX??shop.x),z:Number(shop.navZ??shop.z)};
+  let from=order.pose&&[order.pose.x,order.pose.z,order.pose.yaw].every(Number.isFinite)?{...order.pose}:null;
+  if(from&&!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,true))return false;
+  from||=phonePickupPoint(vehicle,origin);const target=order.status==='ready'&&order.target?order.target:phoneGroundDestination(vehicle);if(!from||!target)return false;
+  const points=order.status==='ready'?[from,{...from}]:phoneGroundRoute(vehicle,from,target);if(points.length<2)return false;
+  const driver=phoneMakeDriver();vehicle.occupied=true;vehicle.phoneDelivery=true;vehicle.garageStored=false;vehicle.group.position.set(from.x,groundHeightAt(from.x,from.z),from.z);vehicle.group.rotation.y=from.yaw;vehicle.group.visible=true;phoneDriverInVehicle(driver,vehicle);
+  const job={id:vehicle.id,kind:'parcel',orderId:order.id,vehicle,driver,target,origin:order.origin||from,route:new PhoneDriveRoute(points,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false,caller:{x:player.x,z:player.z}};
+  worldPhone.job=job;order.origin=job.origin;order.target=target;if(order.status!=='ready')order.status='en-route';phoneSaveParcelPose(job);saveState(true);world.trafficSnapshot=null;
+  if(order.status==='ready')phoneParcelArrived(job);return true;
+ }
+ function phoneSaveParcelPose(job){const order=phoneOrders().find(o=>o.id===job.orderId);if(order){order.pose={x:job.vehicle.group.position.x,z:job.vehicle.group.position.z,yaw:job.vehicle.group.rotation.y};order.target={...job.target};}}
+ function phoneParcelArrived(job){
+  if(job.ready)return;const order=phoneOrders().find(o=>o.id===job.orderId);if(!order)return;job.ready=true;order.status='ready';phoneSaveParcelPose(job);
+  const v=job.vehicle;let parcel=v.group.userData.phoneParcel;if(!parcel){parcel=campaignBox(v.group,campaignMaterial(0xae793f,.05),0,.5,-2.5,.8,.8,.8);v.group.userData.phoneParcel=parcel;}parcel.visible=true;
+  const id='phone-parcel-pickup';let access=world.interactables.find(i=>i.id===id);if(!access){registerInteractable({id,type:'shop',icon:'📦',label:'Receber minha encomenda',actionLabel:'RECEBER ENCOMENDA',getPos:()=>{const j=worldPhone.job;return j?{x:j.vehicle.group.position.x,z:j.vehicle.group.position.z}:{x:0,z:0};},radius:6,priority:820,available:()=>!!worldPhone.job?.ready&&worldPhone.job.kind==='parcel',action:phoneReceiveParcel});}
+  saveState(true);toast('Sua encomenda chegou. Aproxime-se da van e use RECEBER ENCOMENDA.','good',4000);
+ }
+ function phoneReceiveParcel(){
+  const job=worldPhone.job;if(!job?.ready||job.kind!=='parcel'||Math.hypot(player.x-job.vehicle.group.position.x,player.z-job.vehicle.group.position.z)>6)return false;
+  const order=phoneOrders().find(o=>o.id===job.orderId),item=order&&phoneOrderItem(order);if(!item||order.status!=='ready'||order.owner!==sharedWorldOwnId())return false;
+  // Receipt and item grant are saved in one synchronous transaction. Repeating
+  // the pickup, reopening a menu, or reloading cannot grant the order twice.
+  order.status='delivered';order.receivedAt=Date.now();
+  if(item.tool){state.tools.owned=[...new Set([...state.tools.owned,item.tool])];state.tools.equipped=item.tool;refreshEquippedToolVisual();}else state.inventory[item.key]=(state.inventory[item.key]||0)+item.amount;
+  addXP(5);saveState(true);updateHUD();if(job.vehicle.group.userData.phoneParcel)job.vehicle.group.userData.phoneParcel.visible=false;
+  job.ready=false;job.kind='return';job.target=job.origin;job.route=new PhoneDriveRoute(phoneGroundRoute(job.vehicle,{x:job.route.x,z:job.route.z,yaw:job.route.yaw},job.origin),job.route.yaw);worldPhone.returning.push(job);worldPhone.job=null;toast(item.name+' recebido!','good',2600);return true;
+ }
+ function phoneCancelParcel(job){
+  const order=phoneOrders().find(o=>o.id===job.orderId);if(order&&['queued','en-route','ready'].includes(order.status)){order.status='cancelled';order.refundedAt=Date.now();addCoins(order.price);saveState(true);}phoneReleaseCourier(job);worldPhone.job=null;toast('Compra cancelada e moedas devolvidas.','good',2800);
+ }
+ async function phoneBuyParcel(key){
+  const item=worldShopItems().find(i=>(i.tool||i.key)===key);if(!item||worldPhone.pending||worldPhone.purchasePending||worldPhone.job||!phoneDispatchAllowed()||phoneItemUnavailable(item)||state.profile.coins<item.price)return false;
+  const owner=sharedWorldOwnId();worldPhone.purchasePending=true;
+  try{
+   if(!await confirmModal('Comprar com entrega',`${item.icon} ${item.name} · ${item.price} moedas. O entregador vem do Mercadinho; você recebe a encomenda no mundo.`,'COMPRAR','VOLTAR'))return false;
+   if(owner!==sharedWorldOwnId()||worldPhone.job||!phoneDispatchAllowed()||phoneItemUnavailable(item)||state.profile.coins<item.price)return false;
+   const order=phoneNewOrder('parcel',item.name,item.price);order.itemKey=key;phoneOrders().push(order);addCoins(-item.price);saveState(true);phoneStartParcel(order);closeModal();toast('Compra confirmada. Acompanhe a encomenda no celular e no mapa.','good',3300);return order.id;
+  }finally{worldPhone.purchasePending=false;}
+ }
+ async function phoneBuyVehicle(catalogId){
+  const base=garageOldCatalogEntry(catalogId);if(!base||worldPhone.purchasePending||worldPhone.pending||worldPhone.job||!phoneDispatchAllowed())return false;const owner=sharedWorldOwnId();worldPhone.purchasePending=true;
+  try{
+   const units=garageOwnedEntries().filter(e=>e.catalogId===catalogId);if(units.length>=10||state.profile.coins<base.price)return false;
+   if(!await confirmModal('Comprar veículo com entrega',`${base.label} · ${base.price} moedas. O motorista traz esta nova unidade da concessionária até uma vaga perto de você.`,'COMPRAR','VOLTAR'))return false;
+   if(!await requestBrazilModel(base.model||brazilModelKey(base.id,base.category)))return false;
+   if(owner!==sharedWorldOwnId()||worldPhone.job||!phoneDispatchAllowed()||state.profile.coins<base.price||garageOwnedEntries().filter(e=>e.catalogId===catalogId).length>=10)return false;
+   const unit=garageUnitId(catalogId),id=garageNewInstanceId(catalogId,unit.unit),g=ensurePlayerGarageState(),order=phoneNewOrder('vehicle',base.label,base.price);order.vehicleId=id;order.status='en-route';
+   state.vehicles.instances||={};state.vehicles.instances[id]={catalogId,unit:unit.unit,purchasedAt:Date.now()};state.vehicles.owned.push(id);g.stored[id]=true;g.purchasedAt[id]=Date.now();
+   const vehicle=ensureCatalogVehicle(id),dealer=OTTHI_DEALERS.find(d=>d.category===neighborhoodVehicleCategory(base)),from=vehicle&&dealer&&phonePickupPoint(vehicle,{x:dealer.entryX,z:dealer.entryZ});
+   phoneOrders().push(order);const ok=from&&await phoneDispatchGround(id,{from,payment:base.price,orderId:order.id});
+   if(!ok){state.vehicles.owned=state.vehicles.owned.filter(v=>v!==id);delete state.vehicles.instances[id];delete g.stored[id];delete g.purchasedAt[id];state.vehicles.phoneOrders=phoneOrders().filter(o=>o.id!==order.id);if(vehicle){vehicle.garageStored=true;vehicle.group.visible=false;}saveState(true);toast('Não há saída ou vaga segura para esta entrega. A compra não foi cobrada.','info',3300);return false;}
+   addXP(30);saveState(true);return id;
+  }finally{worldPhone.purchasePending=false;}
+ }
+ function openPhoneShop(tab='items'){
+  const busy=!!worldPhone.job||worldPhone.pending||worldPhone.purchasePending,allowed=phoneDispatchAllowed(),orders=phoneOrders(),pending=orders.filter(o=>['queued','en-route','ready'].includes(o.status));
+  const items=worldShopItems();openModal('📱 Compras com entrega',`<section class="world-phone"><p>Saldo: <b>${state.profile.coins} moedas</b>. Suas compras chegam com um entregador. Receba a encomenda para colocar os itens no inventário.</p><nav class="world-phone-actions"><button class="btn" data-phone-shop-tab="items">MERCADINHO</button><button class="btn" data-phone-shop-tab="vehicles">VEÍCULOS</button><button class="btn" data-phone-back>VOLTAR AO CELULAR</button></nav>${pending.map(o=>`<p class="world-phone-status">${escapeHtml(o.label)} · ${o.status==='ready'?'Chegou — receber no mundo':o.status==='queued'?'Aguardando entregador':'Em entrega'}</p>`).join('')}${busy?'<p>Aguarde a entrega atual antes de fazer outra compra.</p>':''}${!allowed?'<p>Desembarque e fique ao ar livre para solicitar uma entrega.</p>':''}<div class="world-phone-list">${tab==='vehicles'?OTTHI_PLAYER_VEHICLE_CATALOG.map(e=>`<button class="btn" data-phone-buy-vehicle="${escapeHtml(e.id)}" ${busy||!allowed||state.profile.coins<e.price||garageOwnedEntries().filter(u=>u.catalogId===e.id).length>=10?'disabled':''}><span>${e.icon} ${escapeHtml(e.label)}</span><small>${e.price} moedas · comprar nova unidade e receber</small></button>`).join(''):items.map(item=>`<button class="btn" data-phone-buy-item="${escapeHtml(item.tool||item.key)}" ${busy||!allowed||state.profile.coins<item.price||phoneItemUnavailable(item)?'disabled':''}><span>${item.icon} ${item.name}</span><small>${phoneItemUnavailable(item)?'Já possui / já encomendado':`${item.price} moedas · ${item.tool?'ferramenta':item.amount+' unidades'}`}</small></button>`).join('')}</div></section>`,root=>{
+   root.querySelector('[data-phone-back]').onclick=openWorldPhone;root.querySelectorAll('[data-phone-shop-tab]').forEach(b=>b.onclick=()=>openPhoneShop(b.dataset.phoneShopTab));root.querySelectorAll('[data-phone-buy-item]').forEach(b=>b.onclick=()=>phoneBuyParcel(b.dataset.phoneBuyItem));root.querySelectorAll('[data-phone-buy-vehicle]').forEach(b=>b.onclick=()=>phoneBuyVehicle(b.dataset.phoneBuyVehicle));
+  });
+ }
+ function updatePhoneOrders(dt){
+  for(const job of [...worldPhone.returning]){if(job.owner!==sharedWorldOwnId()){phoneReleaseCourier(job);worldPhone.returning=worldPhone.returning.filter(j=>j!==job);continue;}phoneAdvanceJob(job,dt);if(job.route.arrived){phoneReleaseCourier(job);worldPhone.returning=worldPhone.returning.filter(j=>j!==job);}}
+  if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed())return;
+  const order=phoneOrders().find(o=>o.kind==='parcel'&&['queued','en-route','ready'].includes(o.status)&&o.owner===sharedWorldOwnId());if(order){const now=performance.now();if(now-Number(worldPhone.restoreAt||0)<3000)return;worldPhone.restoreAt=now;phoneStartParcel(order);}
+ }
 
 })();

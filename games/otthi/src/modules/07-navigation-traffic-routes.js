@@ -59,6 +59,7 @@
     for(const ambulance of world.ambulances||[])if(ambulance.group?.visible)actors.push({id:`ambulance-${ambulance.id}`,type:'ambulance',group:ambulance.group,radius:2.1,speed:Math.abs(ambulance.currentSpeed||0),ref:ambulance});
     for(const vehicle of world.ottoviasTraffic||[])if(!vehicle.taken&&vehicle.group)actors.push({id:`ottovias-${vehicle.id}`,type:vehicle.type||'car',group:vehicle.group,radius:Number(vehicle.radius||1.45),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
     for(const npc of world.npcs||[])if(npc.mobility?.group?.visible&&npc.mobility.type!=='walk')actors.push({id:`npc-${npc.id}`,type:npc.mobility.type,group:npc.mobility.group,radius:npc.mobility.radius||1.25,speed:Math.abs(npc.mobility.currentSpeed||0),ref:npc.mobility});
+    for(const vehicle of world.vehicles||[])if(vehicle.phoneDelivery&&vehicle.group?.visible)actors.push({id:'phone-'+vehicle.id,type:'car',group:vehicle.group,radius:Number(vehicle.radius||1.5),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
     const cells=new Map(),cellSize=12;for(const actor of actors){const key=`${Math.floor(actor.group.position.x/cellSize)}:${Math.floor(actor.group.position.z/cellSize)}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(actor);}world.trafficSpatialCells=cells;world.trafficCellSize=cellSize;world.trafficSnapshot=actors;world.trafficSnapshotAt=now;return actors;
   }
   function nearbyTrafficActors(x,z,radius=18){trafficActorList();const cells=world.trafficSpatialCells;if(!cells)return world.trafficSnapshot||[];const size=world.trafficCellSize||12,minX=Math.floor((x-radius)/size),maxX=Math.floor((x+radius)/size),minZ=Math.floor((z-radius)/size),maxZ=Math.floor((z+radius)/size),near=[];for(let cx=minX;cx<=maxX;cx++)for(let cz=minZ;cz<=maxZ;cz++)for(const actor of cells.get(`${cx}:${cz}`)||[])near.push(actor);return near;}
@@ -113,10 +114,10 @@
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function resolveTrafficOverlaps(before){
-    world.trafficSnapshot=null;const actors=trafficActorList();for(const actor of actors)snapTrafficToRoad(actor.group,before?.get(actor.id));
+    world.trafficSnapshot=null;const actors=trafficActorList();for(const actor of actors)if(!actor.ref?.phoneDelivery)snapTrafficToRoad(actor.group,before?.get(actor.id));
     for(let i=0;i<actors.length;i++)for(const b of nearbyTrafficActors(actors[i].group.position.x,actors[i].group.position.z,17)){
       const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.06))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
-      const y=trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a,old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+220;
+      const y=a.ref?.phoneDelivery?b:b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a,old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficHoldUntil=performance.now()+220;
       // Resolve a pre-existing overlap by retreating along this lane only. Never
       // push a bus or motorcycle across the centre line or onto the pavement.
       if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.03)&&!y.ref?.incidentLocked){const h=Number(y.group.rotation.y||0),prior={x:y.group.position.x,z:y.group.position.z};for(let n=1;n<=12;n++){y.group.position.x=prior.x-Math.sin(h)*n*.35;y.group.position.z=prior.z-Math.cos(h)*n*.35;if(!trafficBodiesOverlap(trafficBody(y),trafficBody(other),.12)&&pointOnRoad(y.group.position.x,y.group.position.z,.05))break;}snapTrafficToRoad(y.group,old||prior);}

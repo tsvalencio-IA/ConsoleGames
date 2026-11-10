@@ -9,3 +9,5 @@
 .world-phone-list button small{font-size:12px;color:#b4d4d8}
 .world-phone-status{padding:9px 11px;border-radius:10px;background:#22514d;color:#d7f7df}
 .world-phone [data-phone-cancel]{margin-top:16px;width:100%}
+
+.world-phone-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.world-phone-actions .btn{flex:1 1 150px;white-space:normal;min-width:0;overflow-wrap:anywhere}.world-phone-list .world-phone-vehicle{display:grid;grid-template-columns:minmax(0,1fr) minmax(75px,auto);gap:6px;align-items:stretch}.world-phone-list .world-phone-vehicle>button:last-child{width:auto;justify-content:center;align-items:center;font-size:11px}.world-phone [data-phone-parcel-receive]{width:100%;white-space:normal}

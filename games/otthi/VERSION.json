@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.23-oficina-combate-kart",
+  "build": "705.28.24-celular-entregas-garagem",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -251,6 +251,7 @@
   },
   "release": "705.7-r16.8.1-visual-performance-governor-r11-lineage",
   "notes": [
+    "Celular: motorista com desvio seguro e acompanhamento no mapa; guardar todos os veículos disponíveis; compras com entrega física, recibo e recuperação de encomendas pendentes.",
     "Oficina: equipe atende carros de NPCs após espera, devolve ao proprietário e libera as vagas; preserva carros e recompensas do jogador.",
     "R28.22: direção do kart independente da orientação da tela, circuitos com quatro setores, cronômetro de voltas e WAR com materiais de superfície, variações de armas, recuo visual e reação dos adversários à cobertura e aos acertos.",
     "Rastreamento explícito da ponta do brinquedo, treino e calibração em cinco pontos no WAR; física do kart acompanha o tempo real entre quadros, timer da chegada isolado por corrida e gesto com referência facial; acesso civil da Michelle sem o antigo gatilho de lava; matrizes de objetos ocultos atualizadas sob demanda e continuidade das gravações dos motores após decodificação.",
@@ -296,7 +297,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70653,
+  "assetVersion": 70654,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

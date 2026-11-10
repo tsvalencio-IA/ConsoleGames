@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.23-oficina-combate-kart",
+  "build": "705.28.24-celular-entregas-garagem",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "8264ed226537afbf600f2f8b674d5ec93ee9136e7fda61242c2c4633fea39670"
+      "sha256Body": "6d737eac040f41a67d2ab2ee1971c1336dabfda7305ca8d1d6e233dbe04f59be"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "10839a5f7af6bda5912c52f1d3d2b37c137e0204db405d3726f13b5aa8a9aaee"
+      "sha256Body": "d3a5400f51f3d32117cc5efa0fc4b6d8937c25896582fe248e23de0151094a99"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -84,7 +84,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "8c565db1f7fcb7cb65f315c11416c40dea3d02b0b12fc2fbdc69b9ea1fcbf859"
+      "sha256Body": "18be50bb208d8814f883ecaea1d0ce30083b1c87bd70b3eca2f5078f2a6d54f3"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -189,7 +189,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "60cfa5f6f655241ac2473d5f5cfe0d5d812aaf556a81be653e0a27ab4c15c9f6"
+      "sha256Body": "3b298185c3f62cffc79c6756328a0a4220e7cbd0e7ac6c810d6c161bd606ca68"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -545,7 +545,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "5fed4184a8f78c5c23c7d57575d10b6a934ecc0fca8df86e46499cceb0a5f24f"
+      "sha256Body": "c84af8758e6d47ffb78b0b2ed39900f57d8c6b889140025738df97a43bedbb11"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
@@ -609,12 +609,17 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "bbdf310bc18b6e4f3cd2b2a4882c2b05da2b980d8f9ce689cfdec2e676cb729b"
+      "sha256Body": "6262b5c5d7ccbc5d1cb6fb1ca237883aff305cb2eb0a9d45d5d155a2e983d185"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",
       "description": "Atendimento automático e retirada dos carros de NPCs",
       "sha256Body": "b2bbe3976b53f2ea48b55ed9c6269b3e494819d4a7d8c1d3f0d8e18d1c0ad955"
+    },
+    {
+      "file": "src/modules/75-phone-orders.js",
+      "description": "Compras pelo celular, recibos persistentes e entrega física de encomendas",
+      "sha256Body": "54691e8e68ca832f8d37e1715b4bceb1ab5e6288c28d0a5f5bca3a2e6b41c8fc"
     }
   ],
   "styles": [
@@ -815,7 +820,7 @@
     {
       "file": "src/styles/27-world-phone.css",
       "description": "Celular no menu Vida, com lista responsiva de veículos",
-      "sha256Body": "8607dc6c5d17e52056622dad629f3a20c79d1fe35da10f1a13b0c8d033773617"
+      "sha256Body": "c7f4d943f5c3eefb625e2c3acc1f3137f923ce3894ba414c8e7b81cb482d1fc7"
     }
   ]
 }
