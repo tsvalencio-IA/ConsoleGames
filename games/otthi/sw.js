@@ -1,4 +1,4 @@
-const REVISION = '490377db449a8eb1';
+const REVISION = 'b41039decb7d7b28';
 const CACHE = `otthi-v70654-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.28.24-celular-entregas-garagem';

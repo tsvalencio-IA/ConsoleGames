@@ -85,13 +85,13 @@
   }
   return true;
  }
- function phoneGroundDestination(vehicle){
+ function phoneGroundDestination(vehicle,includeTraffic=false,avoid=null){
   const projection=nearestRoadProjection(player);if(!projection||projection.distance>90)return null;
   const a=NAV_BASE_NODES[projection.aId],b=NAV_BASE_NODES[projection.bId],length=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/length,fz=(b.z-a.z)/length,yaw=Math.atan2(fx,fz);
   for(const along of[8,-8,14,-14,22,-22,32,-32])for(const side of[2.5,-2.5,0]){
    const x=projection.point.x+fx*along+fz*side,z=projection.point.z+fz*along-fx*side;
-   if(Math.hypot(player.x-x,player.z-z)<5||!v704RoadAt(x,z,1.5,true))continue;
-   if(phoneVehiclePoseClear(vehicle,x,z,yaw,false))return{x,z,yaw};
+   if(Math.hypot(player.x-x,player.z-z)<5||avoid&&Math.hypot(avoid.x-x,avoid.z-z)<5||!v704RoadAt(x,z,1.5,true))continue;
+   if(phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic))return{x,z,yaw};
   }
   return null;
  }
@@ -112,7 +112,7 @@
  }
  function phoneDispatchAllowed(){return running&&!paused&&!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&!otGames.active&&!worldVenues.session;}
  async function phoneDispatchGround(id,options={}){
-  if(worldPhone.pending||worldPhone.job||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
+  if(worldPhone.pending||worldPhone.job||worldPhone.purchasePending&&!options.orderId||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
   const caller=sharedWorldOwnId();worldPhone.pending=true;
   try{
    const entry=playerVehicleCatalogEntry(id);if(!entry||!await requestBrazilModel(entry.model))return false;
@@ -257,16 +257,19 @@
   v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;v.currentSpeed=motion.speed;v.speed=7;
   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
-  phoneRecoverRoute(job,dt);
+  const recovered=phoneRecoverRoute(job,dt);
+  if(!recovered&&job.blockedFor>12&&job.replanIn===3&&job.kind!=='return'){
+   const target=phoneGroundDestination(v,true,job.target);if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
+  }
  }
  function updateWorldPhone(){
   const now=performance.now(),dt=Math.min(.1,Math.max(0,(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
   if(!running||paused||document.hidden)return;
   const airRecord=state.vehicles.phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
-  const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';saveState(true);}}
+  const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';const order=phoneOrders().find(o=>o.id===state.vehicles.phoneDelivery.orderId);if(order?.kind==='vehicle')order.status='parked';saveState(true);}}
   updatePhoneOrders(dt);
   const job=worldPhone.job;if(job){
-   if(job.owner!==owner){job.vehicle.occupied=false;job.vehicle.phoneDelivery=false;phoneRemoveDriver(job.driver);worldPhone.job=null;return;}
+   if(job.owner!==owner){if(job.kind==='parcel')phoneReleaseCourier(job);else{job.vehicle.occupied=false;job.vehicle.phoneDelivery=false;phoneRemoveDriver(job.driver);}worldPhone.job=null;return;}
    phoneAdvanceJob(job,dt);const v=job.vehicle;
    // Follow a walking caller, retaining a safe roadside stop rather than the
    // stale position where the request was originally made.
