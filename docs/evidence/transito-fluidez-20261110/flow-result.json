@@ -1,0 +1,5500 @@
+{
+  "cases": [
+    {
+      "label": "before",
+      "sample": [
+        {
+          "models": 18,
+          "actors": 52,
+          "stopped": 5,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 80,
+          "stopped": 13,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 17,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 20,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 29,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 35,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 38,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 42,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 43,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 44,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 45,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 79,
+          "stopped": 46,
+          "longQueued": 0,
+          "incidents": 0,
+          "resolved": 0,
+          "active": null
+        }
+      ],
+      "jams": [
+        {
+          "id": "bus-bus-solar-1",
+          "x": 28.35,
+          "z": -1.72,
+          "heading": -1.57,
+          "body": {
+            "x": 28.352528959520313,
+            "z": -1.72,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -1,
+            "c": -1.6081226496766364e-16
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 12,
+          "route": [
+            {
+              "x": -1.72,
+              "z": 10,
+              "stopId": "central-norte",
+              "stopName": "Central Norte"
+            },
+            {
+              "x": -1.72,
+              "z": 18
+            }
+          ],
+          "blockers": [
+            {
+              "id": "police-patrol-1",
+              "forward": 6.69,
+              "side": 0.37,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-solar-2",
+          "x": 15.18,
+          "z": -1.67,
+          "heading": -1.57,
+          "body": {
+            "x": 15.175967059701577,
+            "z": -1.672862309788798,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -0.9999884888296628,
+            "c": 0.004798146326169067
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 0,
+          "index": 13,
+          "route": [
+            {
+              "x": -1.72,
+              "z": 10,
+              "stopId": "central-norte",
+              "stopName": "Central Norte"
+            },
+            {
+              "x": -1.72,
+              "z": 18
+            }
+          ],
+          "blockers": [
+            {
+              "id": "police-patrol-1",
+              "forward": -6.48,
+              "side": 0.35,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-verde-1",
+          "x": -41.82,
+          "z": 0.99,
+          "heading": 1.55,
+          "body": {
+            "x": -41.82293316313363,
+            "z": 0.9923612463156497,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9997346323098835,
+            "c": 0.023036166352544834
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 20,
+          "route": [
+            {
+              "x": 0,
+              "z": -10,
+              "stopId": "central-sul",
+              "stopName": "Central Sul"
+            },
+            {
+              "x": -0.5125191333686631,
+              "z": 1.2812978334216576
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-turismo-1",
+              "forward": 8.41,
+              "side": 0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-verde-2",
+          "x": 63.68,
+          "z": -58.46,
+          "heading": 0,
+          "body": {
+            "x": 63.67573750255727,
+            "z": -58.45671261050727,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -0.001377729454477373,
+            "c": 0.9999990509303248
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 10,
+          "route": [
+            {
+              "x": 0,
+              "z": -10,
+              "stopId": "central-sul",
+              "stopName": "Central Sul"
+            },
+            {
+              "x": -0.5125191333686631,
+              "z": 1.2812978334216576
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ambulance-ambulance-2",
+              "forward": 6.45,
+              "side": 1.33,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-escolar-1",
+          "x": -5.98,
+          "z": -1.18,
+          "heading": -1.57,
+          "body": {
+            "x": -5.976781859480702,
+            "z": -1.18,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -1,
+            "c": 6.123233995736766e-17
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 12,
+          "route": [
+            {
+              "x": -68,
+              "z": 0,
+              "stopId": "escola-sol",
+              "stopName": "Escola Vila do Sol"
+            },
+            {
+              "x": -55,
+              "z": 1.18
+            }
+          ],
+          "blockers": [
+            {
+              "id": "npc-nino",
+              "forward": 8.76,
+              "side": 1.42,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-luna",
+              "forward": 6.29,
+              "side": 2.65,
+              "dot": 0.86,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-circular-1",
+          "x": -25,
+          "z": 1.62,
+          "heading": 1.56,
+          "body": {
+            "x": -25,
+            "z": 1.62,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9999416961044054,
+            "c": 0.01079835134846249
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": 0,
+              "z": 1.62,
+              "stopId": "praca-central",
+              "stopName": "Praça Central"
+            },
+            {
+              "x": 25,
+              "z": 1.62
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-turismo-1",
+              "forward": -8.42,
+              "side": 0.35,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "police-patrol-2",
+              "forward": 6.55,
+              "side": 0.34,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-turismo-1",
+          "x": -33.42,
+          "z": 1.18,
+          "heading": -4.72,
+          "body": {
+            "x": -33.41817313756707,
+            "z": 1.180505153451306,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9999301622927811,
+            "c": 0.011818229018449344
+          },
+          "queue": 0,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 12,
+          "route": [
+            {
+              "x": 0,
+              "z": 10,
+              "stopId": "central-norte",
+              "stopName": "Central Norte"
+            },
+            {
+              "x": 0.4753800657332527,
+              "z": -1.1884501643331318
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-verde-1",
+              "forward": -8.41,
+              "side": 0.09,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-circular-1",
+              "forward": 8.42,
+              "side": -0.34,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "police-patrol-1",
+          "x": 21.66,
+          "z": -1.35,
+          "heading": 11,
+          "body": {
+            "x": 21.66106732300796,
+            "z": -1.3497369266735912,
+            "w": 0.9931535124778748,
+            "l": 2.06,
+            "s": -0.9999999968960958,
+            "c": 0.0000787896465774691
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": 66.35,
+              "z": -18
+            },
+            {
+              "x": 63.65,
+              "z": -12
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-solar-2",
+              "forward": 6.49,
+              "side": -0.32,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-solar-1",
+              "forward": -6.69,
+              "side": -0.37,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "police-patrol-2",
+          "x": -18.45,
+          "z": 1.35,
+          "heading": 1.57,
+          "body": {
+            "x": -18.44652081324843,
+            "z": 1.35,
+            "w": 0.9931535124778748,
+            "l": 2.06,
+            "s": 1,
+            "c": 2.83276944882399e-16
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": -55,
+              "z": 15
+            },
+            {
+              "x": -54.396261646075054,
+              "z": 1.2074767078498863
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-circular-1",
+              "forward": -6.55,
+              "side": -0.27,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-nino",
+              "forward": 3.71,
+              "side": 1.11,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-luna",
+              "forward": 6.18,
+              "side": -0.12,
+              "dot": -0.86,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ambulance-ambulance-1",
+          "x": 65,
+          "z": -44,
+          "heading": 0,
+          "body": {
+            "x": 65,
+            "z": -44,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": 0,
+            "c": 1
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": 65,
+              "z": -44
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ambulance-ambulance-2",
+              "forward": -8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ambulance-ambulance-2",
+          "x": 65,
+          "z": -52,
+          "heading": 0,
+          "body": {
+            "x": 65,
+            "z": -52,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": 0,
+            "c": 1
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": 65,
+              "z": -52
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-verde-2",
+              "forward": -6.46,
+              "side": -1.32,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ambulance-ambulance-1",
+              "forward": 8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-amarelo",
+          "x": -13.69,
+          "z": -124.04,
+          "heading": -5.65,
+          "body": {
+            "x": -13.692369993483737,
+            "z": -124.04482513772241,
+            "w": 0.8681535124778748,
+            "l": 1.6500000000000001,
+            "s": 0.5911559109112986,
+            "c": 0.8065573067021542
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-xre",
+              "forward": -2.87,
+              "side": -0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-veraneio",
+              "forward": 4.39,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-verde",
+          "x": -5.64,
+          "z": -113.05,
+          "heading": -5.65,
+          "body": {
+            "x": -5.63753332812275,
+            "z": -113.05006372731228,
+            "w": 0.9731535315513611,
+            "l": 2.06,
+            "s": 0.5914084871857903,
+            "c": 0.806372123330547
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-chevette",
+              "forward": 4.21,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-maverick",
+              "forward": -4.53,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-attivi",
+              "forward": 7.26,
+              "side": 0.13,
+              "dot": -0.06,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-constellation",
+              "forward": 5.1,
+              "side": 5.16,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-prata",
+          "x": 24.87,
+          "z": -133.04,
+          "heading": 5.16,
+          "body": {
+            "x": 24.869176292746562,
+            "z": -133.03604565913147,
+            "w": 0.9131535291671753,
+            "l": 1.76,
+            "s": -0.9009809732352672,
+            "c": 0.43385860123781206
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": 4.26,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": -2.94,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-doubledeck",
+              "forward": -8.63,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-carga",
+          "x": 6.61,
+          "z": -117.25,
+          "heading": -0.76,
+          "body": {
+            "x": 6.671266196932757,
+            "z": -117.30780151879674,
+            "w": 1.0700000524520874,
+            "l": 1.935,
+            "s": -0.6894588914262036,
+            "c": 0.7243248145917344
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-palio",
+              "forward": -3.98,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-kombi",
+              "forward": 4.31,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-constellation",
+              "forward": 7.39,
+              "side": -0.05,
+              "dot": -0.17,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-aurora-0",
+          "x": 350.22,
+          "z": -88.16,
+          "heading": -4.7,
+          "body": {
+            "x": 350.2180882977251,
+            "z": -88.15842690709945,
+            "w": 0.6703200011014938,
+            "l": 1.73,
+            "s": 0.9999596336511015,
+            "c": -0.00898504693114813
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": -6.46,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": -3.2,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-1",
+              "forward": 7.49,
+              "side": -0.11,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-saveiro",
+              "forward": 4.24,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-aurora-1",
+          "x": 357.71,
+          "z": -88.12,
+          "heading": 0,
+          "body": {
+            "x": 357.7127606750292,
+            "z": -88.11674155324206,
+            "w": 1.02315354347229,
+            "l": 2.06,
+            "s": -0.00026601921425694285,
+            "c": 0.9999999646168882
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-0",
+              "forward": -0.04,
+              "side": -7.49,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-saveiro",
+              "forward": -0.08,
+              "side": -3.26,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-aurora-2",
+          "x": 335.5,
+          "z": -88.03,
+          "heading": -4.7,
+          "body": {
+            "x": 335.5048424828442,
+            "z": -88.02579865965238,
+            "w": 0.8631535172462463,
+            "l": 1.72,
+            "s": 0.9999594681358059,
+            "c": -0.009003448536871135
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": -4.02,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-passat",
+              "forward": -7.98,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-gol",
+              "forward": 2.25,
+              "side": 3.86,
+              "dot": -1,
+              "speed": 6.65,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": 8.26,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": 4.15,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-costa-0",
+          "x": -344.96,
+          "z": 158.11,
+          "heading": -1.56,
+          "body": {
+            "x": -344.96385296817124,
+            "z": 158.11097760991947,
+            "w": 0.9931535124778748,
+            "l": 2.06,
+            "s": -0.9999594759569947,
+            "c": 0.009002579842042512
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-costa-1",
+              "forward": 8.67,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf7",
+              "forward": 4.54,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-hilux",
+              "forward": -4.75,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-costa-1",
+          "x": -353.63,
+          "z": 158.19,
+          "heading": -1.56,
+          "body": {
+            "x": -353.6304669247782,
+            "z": 158.18903725376705,
+            "w": 0.9131535291671753,
+            "l": 1.855,
+            "s": -0.9999595395297107,
+            "c": 0.008995515745573645
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-peugeot206",
+              "forward": 7.89,
+              "side": 1.61,
+              "dot": -0.01,
+              "speed": 6.86,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-uno",
+              "forward": 4.1,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-corolla2021",
+              "forward": 4.9,
+              "side": 0,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf7",
+              "forward": -4.12,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-hornet",
+              "forward": 1.57,
+              "side": 3.52,
+              "dot": -1,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bicycle",
+              "forward": 4.9,
+              "side": 0,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-costa-0",
+              "forward": -8.67,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-uno",
+          "x": -357.73,
+          "z": 158.23,
+          "heading": -1.56,
+          "body": {
+            "x": -357.73201710699607,
+            "z": 158.2259504799493,
+            "w": 0.8581535220146179,
+            "l": 1.615,
+            "s": -0.9999597221911721,
+            "c": 0.008975187761475968
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-peugeot206",
+              "forward": 3.78,
+              "side": 1.61,
+              "dot": -0.01,
+              "speed": 6.86,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-costa-1",
+              "forward": -4.1,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-corolla2021",
+              "forward": 0.8,
+              "side": 0,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf7",
+              "forward": -8.22,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-hornet",
+              "forward": -2.53,
+              "side": 3.52,
+              "dot": -1,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bicycle",
+              "forward": 0.8,
+              "side": 0,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": true
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-kombi",
+          "x": 3.7,
+          "z": -114.19,
+          "heading": -0.76,
+          "body": {
+            "x": 3.704066709720651,
+            "z": -114.18820569851091,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": -0.6896854695125272,
+            "c": 0.7241090754460165
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-chevette",
+              "forward": 8.01,
+              "side": -1.83,
+              "dot": 0.18,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-attivi",
+              "forward": 8.42,
+              "side": 1.19,
+              "dot": -0.99,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-palio",
+              "forward": -8.28,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-carga",
+              "forward": -4.31,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-constellation",
+              "forward": 3.09,
+              "side": -0.05,
+              "dot": -0.17,
+              "speed": 0,
+              "overlap": true
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-golf",
+          "x": 331.49,
+          "z": -87.99,
+          "heading": -4.7,
+          "body": {
+            "x": 331.4894297703417,
+            "z": -87.98946871444542,
+            "w": 0.9131535291671753,
+            "l": 1.76,
+            "s": 0.9999594095403206,
+            "c": -0.009009954038368616
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": 4.02,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-passat",
+              "forward": -3.96,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-gol",
+              "forward": 6.27,
+              "side": 3.86,
+              "dot": -1,
+              "speed": 6.65,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": 8.16,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-chevette",
+          "x": -3.14,
+          "z": -109.65,
+          "heading": -5.65,
+          "body": {
+            "x": -3.144101139414928,
+            "z": -109.65225998965091,
+            "w": 0.8631535172462463,
+            "l": 1.72,
+            "s": 0.5912268957893401,
+            "c": 0.8065052744373721
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-verde",
+              "forward": -4.21,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-maverick",
+              "forward": -8.74,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-attivi",
+              "forward": 3.04,
+              "side": 0.13,
+              "dot": -0.06,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-kombi",
+              "forward": 0.39,
+              "side": 8.2,
+              "dot": 0.18,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-constellation",
+              "forward": 0.89,
+              "side": 5.16,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-hilux",
+          "x": -340.21,
+          "z": 158.07,
+          "heading": -1.56,
+          "body": {
+            "x": -340.2145449115328,
+            "z": 158.06855387739034,
+            "w": 0.9931535124778748,
+            "l": 2.06,
+            "s": -0.999959639982236,
+            "c": 0.008984342301860295
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-costa-0",
+              "forward": 4.75,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-pampa",
+              "forward": -4.25,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-amarok",
+          "x": 21.03,
+          "z": -131.19,
+          "heading": 5.16,
+          "body": {
+            "x": 21.03495718793449,
+            "z": -131.19037142052701,
+            "w": 1.02315354347229,
+            "l": 2.06,
+            "s": -0.9008847103310287,
+            "c": 0.4340584507779782
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-fuel",
+              "forward": 8.04,
+              "side": 2.15,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-prata",
+              "forward": -4.26,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": -7.19,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-saveiro",
+          "x": 354.45,
+          "z": -88.2,
+          "heading": 1.58,
+          "body": {
+            "x": 354.4535174764941,
+            "z": -88.19643656142682,
+            "w": 0.9131535291671753,
+            "l": 1.855,
+            "s": 0.9999595290283957,
+            "c": -0.008996683017034834
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": -7.44,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-0",
+              "forward": -4.24,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-1",
+              "forward": 3.26,
+              "side": -0.11,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-constellation",
+          "x": 1.49,
+          "z": -112.06,
+          "heading": -2.5,
+          "body": {
+            "x": 1.5384855529749821,
+            "z": -111.98702800372816,
+            "w": 1.0700000524520874,
+            "l": 1.935,
+            "s": -0.599234017595188,
+            "c": -0.8005739142369865
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-verde",
+              "forward": 5.15,
+              "side": 5.11,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-chevette",
+              "forward": 0.94,
+              "side": 5.15,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-attivi",
+              "forward": -2.11,
+              "side": 5.05,
+              "dot": 0.05,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-carga",
+              "forward": 1.18,
+              "side": -7.3,
+              "dot": -0.17,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-kombi",
+              "forward": 0.46,
+              "side": -3.05,
+              "dot": -0.17,
+              "speed": 0,
+              "overlap": true
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-veraneio",
+          "x": -11.1,
+          "z": -120.51,
+          "heading": -5.65,
+          "body": {
+            "x": -11.095996107477513,
+            "z": -120.50557011126777,
+            "w": 1.0381535291671753,
+            "l": 2.3649999999999998,
+            "s": 0.5910735905601723,
+            "c": 0.8066176358983889
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-amarelo",
+              "forward": -4.39,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-xre",
+              "forward": -7.26,
+              "side": -0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-maverick",
+              "forward": 4.71,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-pampa",
+          "x": -335.97,
+          "z": 158.03,
+          "heading": -7.84,
+          "body": {
+            "x": -335.9655111817217,
+            "z": 158.03015853002157,
+            "w": 0.8681535124778748,
+            "l": 1.87,
+            "s": -0.9999595527219496,
+            "c": 0.008994049150324855
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-hilux",
+              "forward": 4.25,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-escort",
+          "x": 38.58,
+          "z": -139.64,
+          "heading": 5.16,
+          "body": {
+            "x": 38.58421478989955,
+            "z": -139.6428212239827,
+            "w": 0.8831535577774048,
+            "l": 1.725,
+            "s": -0.9009380314587399,
+            "c": 0.4339477658327678
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-doubledeck",
+              "forward": 6.59,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-tcross",
+          "x": 343.75,
+          "z": -88.1,
+          "heading": 1.58,
+          "body": {
+            "x": 343.7601535793561,
+            "z": -88.10003391892583,
+            "w": 0.9035000205039978,
+            "l": 1.8,
+            "s": 0.9999594107965356,
+            "c": -0.00900981461769585
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": -8.26,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-gol",
+              "forward": -6.01,
+              "side": 3.86,
+              "dot": -1,
+              "speed": 6.65,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": -4.11,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": 3.25,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-0",
+              "forward": 6.46,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-corolla2021",
+          "x": -358.53,
+          "z": 158.23,
+          "heading": -3.14,
+          "body": {
+            "x": -358.5275758807717,
+            "z": 158.23309105692604,
+            "w": 0.9131535291671753,
+            "l": 1.9400000000000002,
+            "s": 0.00260069443045312,
+            "c": -0.9999966181885214
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 5,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-peugeot206",
+              "forward": -1.65,
+              "side": 2.97,
+              "dot": -1,
+              "speed": 6.86,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-costa-1",
+              "forward": 0.06,
+              "side": -4.9,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-uno",
+              "forward": 0.01,
+              "side": -0.8,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-hornet",
+              "forward": -3.48,
+              "side": -3.37,
+              "dot": -0.01,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bicycle",
+              "forward": 0,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": true
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-bmwx1",
+          "x": 339.65,
+          "z": -88.06,
+          "heading": -4.7,
+          "body": {
+            "x": 339.65109712296373,
+            "z": -88.06350617418242,
+            "w": 0.9531535506248474,
+            "l": 1.885,
+            "s": 0.9999596469821386,
+            "c": -0.008983563177093342
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": -4.15,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": -8.16,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-gol",
+              "forward": -1.9,
+              "side": 3.86,
+              "dot": -1,
+              "speed": 6.65,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": 4.11,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": 7.36,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-golf7",
+          "x": -349.51,
+          "z": 158.15,
+          "heading": -1.56,
+          "body": {
+            "x": -349.50762973588365,
+            "z": 158.152044981827,
+            "w": 0.9356535077095032,
+            "l": 1.8350000000000002,
+            "s": -0.9999596354797671,
+            "c": 0.008984843413845632
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 4,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-costa-1",
+              "forward": 4.12,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-uno",
+              "forward": 8.22,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-hornet",
+              "forward": 5.69,
+              "side": 3.52,
+              "dot": -1,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-costa-0",
+              "forward": -4.54,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-palio",
+          "x": 9.42,
+          "z": -120.19,
+          "heading": 5.52,
+          "body": {
+            "x": 9.41780731272866,
+            "z": -120.18719014174683,
+            "w": 0.8460000157356262,
+            "l": 1.649,
+            "s": -0.6896832643890103,
+            "c": 0.7241111757332009
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-carga",
+              "forward": 3.98,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-kombi",
+              "forward": 8.28,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-fuel",
+              "forward": -7.7,
+              "side": -0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-passat",
+          "x": 327.53,
+          "z": -87.95,
+          "heading": -4.7,
+          "body": {
+            "x": 327.52982013333957,
+            "z": -87.95427634203774,
+            "w": 0.8681535124778748,
+            "l": 1.86,
+            "s": 0.9999595503721161,
+            "c": -0.008994310401318826
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": 7.98,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": 3.96,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-maverick",
+          "x": -8.31,
+          "z": -116.7,
+          "heading": -5.65,
+          "body": {
+            "x": -8.313221370823815,
+            "z": -116.70318370718333,
+            "w": 0.9181535243988037,
+            "l": 1.9300000000000002,
+            "s": 0.591240138380463,
+            "c": 0.8064955664898915
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-veraneio",
+              "forward": -4.71,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-verde",
+              "forward": 4.53,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-chevette",
+              "forward": 8.74,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-factor",
+          "x": 27.51,
+          "z": -134.31,
+          "heading": 5.16,
+          "body": {
+            "x": 27.513874086368297,
+            "z": -134.30878094055285,
+            "w": 0.30000001192092896,
+            "l": 0.835,
+            "s": -0.9010124243023717,
+            "c": 0.4337932817054257
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": 7.19,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-prata",
+              "forward": 2.94,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-doubledeck",
+              "forward": -5.7,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-titan",
+          "x": 347.02,
+          "z": -88.13,
+          "heading": -4.7,
+          "body": {
+            "x": 347.0147865899101,
+            "z": -88.12947150772665,
+            "w": 0.30000001192092896,
+            "l": 0.835,
+            "s": 0.9999594989852707,
+            "c": -0.00900002161810606
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 3,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": -3.25,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": -7.36,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-0",
+              "forward": 3.2,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-saveiro",
+              "forward": 7.44,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-xre",
+          "x": -15.42,
+          "z": -126.38,
+          "heading": -5.63,
+          "body": {
+            "x": -15.397843925936725,
+            "z": -126.35766957761103,
+            "w": 0.30000001192092896,
+            "l": 0.905,
+            "s": 0.605028223431092,
+            "c": 0.7962040246392985
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-amarelo",
+              "forward": 2.87,
+              "side": -0.04,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-veraneio",
+              "forward": 7.26,
+              "side": -0.12,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-bicycle",
+          "x": -358.53,
+          "z": 158.23,
+          "heading": -3.15,
+          "body": {
+            "x": -358.5275758807717,
+            "z": 158.23309105692604,
+            "w": 0.24388833343982697,
+            "l": 0.9099999999999999,
+            "s": 0.004905416810641125,
+            "c": -0.9999879683705769
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 5,
+          "route": [
+            {
+              "x": -241.4724241192283,
+              "z": 61.766908943073965
+            },
+            {
+              "x": -242.3,
+              "z": 110
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-peugeot206",
+              "forward": -1.65,
+              "side": 2.97,
+              "dot": -1,
+              "speed": 6.86,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-costa-1",
+              "forward": 0.07,
+              "side": -4.9,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-uno",
+              "forward": 0.01,
+              "side": -0.8,
+              "dot": -0.01,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-corolla2021",
+              "forward": 0,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-hornet",
+              "forward": -3.47,
+              "side": -3.38,
+              "dot": -0.01,
+              "speed": 6.4,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-attivi",
+          "x": -1.24,
+          "z": -107.27,
+          "heading": 2.26,
+          "body": {
+            "x": -1.2423276234535934,
+            "z": -107.27488224794008,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.7707147430931178,
+            "c": -0.6371803392909338
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-verde",
+              "forward": 0.29,
+              "side": 7.25,
+              "dot": -0.06,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-chevette",
+              "forward": 0.05,
+              "side": 3.04,
+              "dot": -0.06,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-kombi",
+              "forward": 8.22,
+              "side": 2.18,
+              "dot": -0.99,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-constellation",
+              "forward": 5.15,
+              "side": 1.86,
+              "dot": 0.05,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-doubledeck",
+          "x": 32.65,
+          "z": -136.78,
+          "heading": 5.16,
+          "body": {
+            "x": 32.64562972294567,
+            "z": -136.78352820236987,
+            "w": 1.2020000219345093,
+            "l": 4.28,
+            "s": -0.9009104128970693,
+            "c": 0.4340051012760473
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-prata",
+              "forward": 8.63,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": 5.7,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-escort",
+              "forward": -6.59,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-fuel",
+          "x": 12.11,
+          "z": -123.02,
+          "heading": 5.52,
+          "body": {
+            "x": 14.724296811050834,
+            "z": -125.76853091373522,
+            "w": 1.1519999504089355,
+            "l": 5.4350000000000005,
+            "s": -0.6894480989839838,
+            "c": 0.7243350873783285
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-palio",
+              "forward": 7.7,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": -8.28,
+              "side": 0.83,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-nino",
+          "x": -14.74,
+          "z": 0.24,
+          "heading": 7.78,
+          "body": {
+            "x": -14.737424966227602,
+            "z": 0.2405151928996237,
+            "w": 0.33,
+            "l": 1,
+            "s": 0.9971781869924772,
+            "c": 0.07507105558333524
+          },
+          "queue": 0,
+          "signal": 0.7079379940987732,
+          "index": 5,
+          "route": [
+            {
+              "x": 4,
+              "z": 0
+            },
+            {
+              "x": -1.2534435326951,
+              "z": -0.50137741307804
+            }
+          ],
+          "blockers": [
+            {
+              "id": "police-patrol-2",
+              "forward": -3.62,
+              "side": -1.38,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-luna",
+              "forward": 2.55,
+              "side": -1.04,
+              "dot": -0.9,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "bus-bus-escolar-1",
+              "forward": 8.63,
+              "side": 2.07,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-luna",
+          "x": -12.27,
+          "z": 1.47,
+          "heading": 4.19,
+          "body": {
+            "x": -12.269485694776785,
+            "z": 1.465216051087516,
+            "w": 0.8,
+            "l": 1.65,
+            "s": -0.8648409740101325,
+            "c": -0.5020459039502317
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -22,
+              "z": -1.35
+            },
+            {
+              "x": -25,
+              "z": -1.35
+            }
+          ],
+          "blockers": [
+            {
+              "id": "police-patrol-2",
+              "forward": 5.4,
+              "side": 3,
+              "dot": -0.86,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-nino",
+              "forward": 2.75,
+              "side": 0.18,
+              "dot": -0.9,
+              "speed": 0,
+              "overlap": true
+            },
+            {
+              "id": "bus-bus-escolar-1",
+              "forward": -4.11,
+              "side": -5.45,
+              "dot": 0.86,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        }
+      ],
+      "incident": "incident-1",
+      "staging": [
+        {
+          "kind": "police",
+          "id": "patrol-1",
+          "correctPath": false,
+          "point": null
+        },
+        {
+          "kind": "paramedic",
+          "id": "ambulance-1",
+          "correctPath": false,
+          "point": null
+        }
+      ],
+      "cleared": true,
+      "held": [
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 42,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 45,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 48,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 49,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 49,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 49,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 49,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 78,
+          "stopped": 50,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 77,
+          "stopped": 52,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 77,
+          "stopped": 52,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 77,
+          "stopped": 51,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 77,
+          "stopped": 52,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        }
+      ],
+      "cpu": [
+        [
+          "updateWorldExpansion",
+          {
+            "ms": 626.4999999996508,
+            "calls": 600
+          }
+        ],
+        [
+          "updateVisualLOD",
+          {
+            "ms": 377.39999999993597,
+            "calls": 38
+          }
+        ],
+        [
+          "updateOttoviasHighway",
+          {
+            "ms": 204.10000000009313,
+            "calls": 600
+          }
+        ],
+        [
+          "updateWorldResidents",
+          {
+            "ms": 153.1999999997788,
+            "calls": 600
+          }
+        ],
+        [
+          "updatePlayer",
+          {
+            "ms": 76.49999999973807,
+            "calls": 600
+          }
+        ],
+        [
+          "resolveTrafficOverlaps",
+          {
+            "ms": 66.99999999979627,
+            "calls": 86
+          }
+        ],
+        [
+          "updateWorldCampaign",
+          {
+            "ms": 58.20000000030268,
+            "calls": 600
+          }
+        ],
+        [
+          "updateNPCs",
+          {
+            "ms": 55.4000000001397,
+            "calls": 86
+          }
+        ],
+        [
+          "updateNavigation",
+          {
+            "ms": 28.599999999831198,
+            "calls": 75
+          }
+        ],
+        [
+          "animateBrazilTransport",
+          {
+            "ms": 24.10000000006403,
+            "calls": 68400
+          }
+        ],
+        [
+          "updateMultiplayer",
+          {
+            "ms": 19.299999999901047,
+            "calls": 86
+          }
+        ],
+        [
+          "updateTransitWorld",
+          {
+            "ms": 13.600000000122236,
+            "calls": 86
+          }
+        ],
+        [
+          "updatePoliceSystem",
+          {
+            "ms": 9.600000000093132,
+            "calls": 86
+          }
+        ],
+        [
+          "updateFireService",
+          {
+            "ms": 4.199999999953434,
+            "calls": 86
+          }
+        ],
+        [
+          "updateTrafficVehicleTaking",
+          {
+            "ms": 2.5000000000582077,
+            "calls": 600
+          }
+        ],
+        [
+          "updateLifeActivities",
+          {
+            "ms": 2.099999999976717,
+            "calls": 86
+          }
+        ],
+        [
+          "updateSharedWorldReplica",
+          {
+            "ms": 1.7999999999592546,
+            "calls": 600
+          }
+        ],
+        [
+          "updateWorldVenues",
+          {
+            "ms": 1,
+            "calls": 600
+          }
+        ],
+        [
+          "updateFamilyCarry",
+          {
+            "ms": 0.9999999999708962,
+            "calls": 600
+          }
+        ],
+        [
+          "updateTrafficIncidents",
+          {
+            "ms": 0.8000000000465661,
+            "calls": 86
+          }
+        ],
+        [
+          "updateHUD",
+          {
+            "ms": 0.5999999999476131,
+            "calls": 10
+          }
+        ],
+        [
+          "updateWorldSportsV704",
+          {
+            "ms": 0.39999999999417923,
+            "calls": 600
+          }
+        ],
+        [
+          "updateNpcSociety",
+          {
+            "ms": 0.10000000000582077,
+            "calls": 86
+          }
+        ],
+        [
+          "updateClouds",
+          {
+            "ms": 0.09999999997671694,
+            "calls": 46
+          }
+        ],
+        [
+          "updateAdventure",
+          {
+            "ms": 0,
+            "calls": 86
+          }
+        ]
+      ],
+      "state": {
+        "checksPerSearchCall": 126,
+        "searchSliceMaxMs": 73,
+        "samples": 34,
+        "contacts": 98,
+        "phone": {
+          "pending": false,
+          "job": null,
+          "tracking": null,
+          "orders": [],
+          "last": {
+            "id": "playmobil-utility",
+            "type": "ground",
+            "status": "delivered",
+            "at": 1794304957416.6667,
+            "target": {
+              "x": 98.89793206047757,
+              "z": 209.6846053036974,
+              "yaw": 1.6745886672519397
+            }
+          }
+        },
+        "owned": [
+          "garage-orange",
+          "playmobil-utility"
+        ],
+        "progress": [
+          {
+            "id": "bus-bus-solar-1",
+            "moved": 14.440154864806667
+          },
+          {
+            "id": "bus-bus-solar-2",
+            "moved": 84.93836525135406
+          },
+          {
+            "id": "bus-bus-verde-1",
+            "moved": 64.15807327167846
+          },
+          {
+            "id": "bus-bus-verde-2",
+            "moved": 23.737727092639417
+          },
+          {
+            "id": "bus-bus-escolar-1",
+            "moved": 89.16583244582102
+          },
+          {
+            "id": "bus-bus-circular-1",
+            "moved": 122.11952575602447
+          },
+          {
+            "id": "bus-bus-turismo-1",
+            "moved": 75.42377140762028
+          },
+          {
+            "id": "police-patrol-1",
+            "moved": 77.30670111090124
+          },
+          {
+            "id": "police-patrol-2",
+            "moved": 125.6747594818116
+          },
+          {
+            "id": "fire-fire-01",
+            "moved": 73.74350416149494
+          },
+          {
+            "id": "fire-fire-02",
+            "moved": 79.65670089850546
+          },
+          {
+            "id": "ambulance-ambulance-1",
+            "moved": 0
+          },
+          {
+            "id": "ambulance-ambulance-2",
+            "moved": 0
+          },
+          {
+            "id": "ottovias-ottovias-azul",
+            "moved": 55.584183096468934
+          },
+          {
+            "id": "ottovias-ottovias-amarelo",
+            "moved": 237.84400973035886
+          },
+          {
+            "id": "ottovias-ottovias-verde",
+            "moved": 271.0086272409592
+          },
+          {
+            "id": "ottovias-ottovias-vinho",
+            "moved": 180.76717244637277
+          },
+          {
+            "id": "ottovias-ottovias-prata",
+            "moved": 303.9435231192002
+          },
+          {
+            "id": "ottovias-ottovias-carga",
+            "moved": 142.4804602548416
+          },
+          {
+            "id": "ottovias-aurora-0",
+            "moved": 114.78147900027183
+          },
+          {
+            "id": "ottovias-aurora-1",
+            "moved": 47.05434128587674
+          },
+          {
+            "id": "ottovias-aurora-2",
+            "moved": 63.88130741484005
+          },
+          {
+            "id": "ottovias-costa-0",
+            "moved": 134.96573096430848
+          },
+          {
+            "id": "ottovias-costa-1",
+            "moved": 101.49855153071387
+          },
+          {
+            "id": "ottovias-costa-2",
+            "moved": 83.13514914662608
+          },
+          {
+            "id": "ottovias-brazil-traffic-fusca",
+            "moved": 38.36348454807229
+          },
+          {
+            "id": "ottovias-regional-0",
+            "moved": 231.25709745615987
+          },
+          {
+            "id": "ottovias-brazil-traffic-gol",
+            "moved": 96.95312624409954
+          },
+          {
+            "id": "ottovias-regional-1",
+            "moved": 202.05509796244658
+          },
+          {
+            "id": "ottovias-brazil-traffic-uno",
+            "moved": 88.06043008888963
+          },
+          {
+            "id": "ottovias-regional-2",
+            "moved": 267.83832738546715
+          },
+          {
+            "id": "ottovias-brazil-traffic-kombi",
+            "moved": 112.10418732049058
+          },
+          {
+            "id": "ottovias-regional-3",
+            "moved": 516.3490481546934
+          },
+          {
+            "id": "ottovias-brazil-traffic-golf",
+            "moved": 54.33106497198475
+          },
+          {
+            "id": "ottovias-regional-4",
+            "moved": 328.526071238617
+          },
+          {
+            "id": "ottovias-brazil-traffic-opala",
+            "moved": 126.7128719702905
+          },
+          {
+            "id": "ottovias-brazil-traffic-chevette",
+            "moved": 225.73380551319295
+          },
+          {
+            "id": "ottovias-regional-5",
+            "moved": 179.42615016454442
+          },
+          {
+            "id": "ottovias-brazil-traffic-s10",
+            "moved": 112.32717264121823
+          },
+          {
+            "id": "ottovias-regional-6",
+            "moved": 284.15408888958706
+          },
+          {
+            "id": "ottovias-brazil-traffic-hilux",
+            "moved": 126.68622679116234
+          },
+          {
+            "id": "ottovias-regional-7",
+            "moved": 377.3463680409273
+          },
+          {
+            "id": "ottovias-brazil-traffic-amarok",
+            "moved": 282.60044699543266
+          },
+          {
+            "id": "ottovias-brazil-traffic-saveiro",
+            "moved": 56.080556002903386
+          },
+          {
+            "id": "ottovias-brazil-traffic-constellation",
+            "moved": 100.04838416927389
+          },
+          {
+            "id": "ottovias-brazil-traffic-veraneio",
+            "moved": 282.473846964464
+          },
+          {
+            "id": "ottovias-brazil-traffic-blazer",
+            "moved": 76.87075879714602
+          },
+          {
+            "id": "ottovias-brazil-traffic-pampa",
+            "moved": 70.78094306197723
+          },
+          {
+            "id": "ottovias-brazil-traffic-escort",
+            "moved": 307.77605661285384
+          },
+          {
+            "id": "ottovias-brazil-traffic-tcross",
+            "moved": 139.56363533752594
+          },
+          {
+            "id": "ottovias-brazil-traffic-peugeot206",
+            "moved": 99.0852751882624
+          },
+          {
+            "id": "ottovias-brazil-traffic-jetta",
+            "moved": 181.07621838957309
+          },
+          {
+            "id": "ottovias-brazil-traffic-corolla2007",
+            "moved": 80.84189560744062
+          },
+          {
+            "id": "ottovias-brazil-traffic-corolla2021",
+            "moved": 0.7040350259799213
+          },
+          {
+            "id": "ottovias-brazil-traffic-civic2011",
+            "moved": 105.78071168869714
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwx1",
+            "moved": 104.80959703945025
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwm3",
+            "moved": 94.07753491383939
+          },
+          {
+            "id": "ottovias-brazil-traffic-ferrari458",
+            "moved": 5.708281016492448
+          },
+          {
+            "id": "ottovias-brazil-traffic-porsche911",
+            "moved": 119.02956488386845
+          },
+          {
+            "id": "ottovias-brazil-traffic-golf7",
+            "moved": 108.04768771388002
+          },
+          {
+            "id": "ottovias-brazil-traffic-palio",
+            "moved": 177.59800990808264
+          },
+          {
+            "id": "ottovias-brazil-traffic-passat",
+            "moved": 51.738445609387334
+          },
+          {
+            "id": "ottovias-brazil-traffic-tempra",
+            "moved": 116.46656053249322
+          },
+          {
+            "id": "ottovias-brazil-traffic-maverick",
+            "moved": 291.76989485421757
+          },
+          {
+            "id": "ottovias-brazil-traffic-landau",
+            "moved": 135.73200485779162
+          },
+          {
+            "id": "ottovias-brazil-traffic-mobylette",
+            "moved": 54.76963877838071
+          },
+          {
+            "id": "ottovias-brazil-traffic-factor",
+            "moved": 310.1279125353495
+          },
+          {
+            "id": "ottovias-brazil-traffic-titan",
+            "moved": 97.78616697893288
+          },
+          {
+            "id": "ottovias-brazil-traffic-hornet",
+            "moved": 125.22534829615782
+          },
+          {
+            "id": "ottovias-brazil-traffic-xre",
+            "moved": 237.57776941240135
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwgs",
+            "moved": 109.09241182919419
+          },
+          {
+            "id": "ottovias-brazil-traffic-bicycle",
+            "moved": 0
+          },
+          {
+            "id": "ottovias-brazil-traffic-dinossauro",
+            "moved": 203.8780734600429
+          },
+          {
+            "id": "ottovias-brazil-traffic-attivi",
+            "moved": 158.92876975512416
+          },
+          {
+            "id": "ottovias-brazil-traffic-doubledeck",
+            "moved": 334.1029962889801
+          },
+          {
+            "id": "ottovias-brazil-traffic-semi",
+            "moved": 83.99730303169449
+          },
+          {
+            "id": "ottovias-brazil-traffic-fuel",
+            "moved": 229.469105004218
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "label": "after",
+      "sample": [
+        {
+          "models": 16,
+          "actors": 59,
+          "stopped": 6,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 18,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 14,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 14,
+          "longQueued": 0,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 14,
+          "longQueued": 1,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 16,
+          "longQueued": 1,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 17,
+          "longQueued": 4,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 21,
+          "longQueued": 4,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 22,
+          "longQueued": 5,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 26,
+          "longQueued": 5,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 22,
+          "longQueued": 7,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 30,
+          "longQueued": 8,
+          "incidents": 2,
+          "resolved": 1,
+          "active": null
+        }
+      ],
+      "jams": [
+        {
+          "id": "bus-bus-solar-2",
+          "x": 57.29,
+          "z": 58.54,
+          "heading": 1.62,
+          "body": {
+            "x": 57.28541710105872,
+            "z": 58.542031840769965,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9987228660051479,
+            "c": -0.05052362732883844
+          },
+          "queue": 9237.500000002445,
+          "state": "WAITING_TRAFFIC",
+          "signal": 0,
+          "index": 4,
+          "route": [
+            {
+              "x": -1.72,
+              "z": 10,
+              "stopId": "central-norte",
+              "stopName": "Central Norte"
+            },
+            {
+              "x": -1.72,
+              "z": 18
+            }
+          ],
+          "blockers": [
+            {
+              "id": "npc-leo",
+              "forward": 5.92,
+              "side": 1.53,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-verde-1",
+          "x": -56.35,
+          "z": -6.74,
+          "heading": 0.02,
+          "body": {
+            "x": -56.35126394396783,
+            "z": -6.743470057538532,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.016535418523229248,
+            "c": 0.9998632806210366
+          },
+          "queue": 104700.00000001167,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 19,
+          "route": [
+            {
+              "x": 0,
+              "z": -10,
+              "stopId": "central-sul",
+              "stopName": "Central Sul"
+            },
+            {
+              "x": -0.5125191333686631,
+              "z": 1.2812978334216576
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-circular-1",
+              "forward": 5.52,
+              "side": -1.1,
+              "dot": 0.33,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-bia",
+              "forward": 6.16,
+              "side": 3.92,
+              "dot": -0.13,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-verde-2",
+          "x": 63.69,
+          "z": -65.32,
+          "heading": -0.27,
+          "body": {
+            "x": 63.685190622209895,
+            "z": -65.31819953604419,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -0.2635170821982437,
+            "c": 0.9646547296259549
+          },
+          "queue": 124019.900000012,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 10,
+          "route": [
+            {
+              "x": 0,
+              "z": -10,
+              "stopId": "central-sul",
+              "stopName": "Central Sul"
+            },
+            {
+              "x": -0.5125191333686631,
+              "z": 1.2812978334216576
+            }
+          ],
+          "blockers": [
+            {
+              "id": "npc-davi",
+              "forward": 3.93,
+              "side": 3.12,
+              "dot": -0.78,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-escolar-1",
+          "x": -46.9,
+          "z": -1.18,
+          "heading": -1.57,
+          "body": {
+            "x": -46.89882665840775,
+            "z": -1.18,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": -1,
+            "c": 6.123233995736766e-17
+          },
+          "queue": 81633.10000001296,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 13,
+          "route": [
+            {
+              "x": -68,
+              "z": 0,
+              "stopId": "escola-sol",
+              "stopName": "Escola Vila do Sol"
+            },
+            {
+              "x": -55,
+              "z": 1.18
+            }
+          ],
+          "blockers": [
+            {
+              "id": "npc-bia",
+              "forward": 5.43,
+              "side": 0.53,
+              "dot": 0.99,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-turismo-1",
+              "forward": 6.53,
+              "side": 3.7,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "police-patrol-1",
+              "forward": -6.83,
+              "side": -0.17,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-circular-1",
+          "x": -57.36,
+          "z": -1.21,
+          "heading": 1.25,
+          "body": {
+            "x": -57.36418105478536,
+            "z": -1.210527038984077,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9477941795452628,
+            "c": 0.31888272643735693
+          },
+          "queue": 105587.70000001174,
+          "state": "WAITING_TRAFFIC",
+          "signal": 1,
+          "index": 14,
+          "route": [
+            {
+              "x": 0,
+              "z": 1.62,
+              "stopId": "praca-central",
+              "stopName": "Praça Central"
+            },
+            {
+              "x": 25,
+              "z": 1.62
+            }
+          ],
+          "blockers": [
+            {
+              "id": "npc-clara",
+              "forward": -5.04,
+              "side": -3.32,
+              "dot": 0.97,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-verde-1",
+              "forward": -0.8,
+              "side": 5.57,
+              "dot": 0.33,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-bia",
+              "forward": 4.95,
+              "side": 1.08,
+              "dot": -0.98,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-turismo-1",
+              "forward": 4.92,
+              "side": -2.28,
+              "dot": 0.92,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "bus-bus-turismo-1",
+          "x": -53.43,
+          "z": 2.52,
+          "heading": -4.62,
+          "body": {
+            "x": -53.43246725813446,
+            "z": 2.5201754936537264,
+            "w": 1.2020000219345093,
+            "l": 3.78,
+            "s": 0.9960939872724105,
+            "c": -0.08829931211369052
+          },
+          "queue": 9.600000000034925,
+          "state": "MOVING",
+          "signal": 1,
+          "index": 12,
+          "route": [
+            {
+              "x": 0,
+              "z": 10,
+              "stopId": "central-norte",
+              "stopName": "Central Norte"
+            },
+            {
+              "x": 0.4753800657332527,
+              "z": -1.1884501643331318
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-circular-1",
+              "forward": -3.59,
+              "side": 4.06,
+              "dot": 0.92,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "npc-bia",
+              "forward": 1.38,
+              "side": 3.06,
+              "dot": -0.98,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-escolar-1",
+              "forward": 6.83,
+              "side": 3.11,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "police-patrol-1",
+          "x": -40.07,
+          "z": -1.35,
+          "heading": 11,
+          "body": {
+            "x": -40.06952632125976,
+            "z": -1.349313046056794,
+            "w": 0.9931535124778748,
+            "l": 2.06,
+            "s": -0.9999999989609749,
+            "c": 0.000045585636060378106
+          },
+          "queue": 51532.86666668036,
+          "signal": 1,
+          "route": [
+            {
+              "x": 66.35,
+              "z": -18
+            },
+            {
+              "x": 63.65,
+              "z": -12
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-escolar-1",
+              "forward": 6.83,
+              "side": 0.17,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ambulance-ambulance-1",
+          "x": 60.95,
+          "z": -44,
+          "heading": 0,
+          "body": {
+            "x": 60.95,
+            "z": -44,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": 0,
+            "c": 1
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": 60.95,
+              "z": -44
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ambulance-ambulance-2",
+              "forward": -8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "fire-fire-02",
+              "forward": 7.95,
+              "side": 0.35,
+              "dot": 0.59,
+              "speed": 4.22,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ambulance-ambulance-2",
+          "x": 60.95,
+          "z": -52,
+          "heading": 0,
+          "body": {
+            "x": 60.95,
+            "z": -52,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": 0,
+            "c": 1
+          },
+          "queue": 0,
+          "signal": 1,
+          "route": [
+            {
+              "x": 60.95,
+              "z": -52
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ambulance-ambulance-1",
+              "forward": 8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-amarelo",
+          "x": -7.36,
+          "z": -115.41,
+          "heading": -5.65,
+          "body": {
+            "x": -7.363858292394476,
+            "z": -115.41058433717626,
+            "w": 0.8681535124778748,
+            "l": 1.6500000000000001,
+            "s": 0.5911463887436403,
+            "c": 0.8065642857673235
+          },
+          "queue": 18126.033333338113,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-veraneio",
+              "forward": 4.83,
+              "side": -0.04,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-maverick",
+              "forward": 8.35,
+              "side": 0.43,
+              "dot": 0,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-xre",
+              "forward": -3.51,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-ottovias-prata",
+          "x": 17.92,
+          "z": -129.12,
+          "heading": 5.52,
+          "body": {
+            "x": 17.921583895559113,
+            "z": -129.12078801711758,
+            "w": 0.9131535291671753,
+            "l": 1.76,
+            "s": -0.6896000499367159,
+            "c": 0.7241904246310351
+          },
+          "queue": 54491.30000001448,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": 4.74,
+              "side": -0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": -3.31,
+              "side": 0.7,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-aurora-2",
+          "x": 241.72,
+          "z": -73.59,
+          "heading": -9.41,
+          "body": {
+            "x": 241.71958451028354,
+            "z": -73.5920982872371,
+            "w": 0.8631535172462463,
+            "l": 1.72,
+            "s": -0.016878990680248458,
+            "c": -0.999857539689338
+          },
+          "queue": 19683.300000005227,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": 8.89,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": 4.4,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": -4.4,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-passat",
+              "forward": -8.91,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-regional-3",
+          "x": 623.97,
+          "z": -398.33,
+          "heading": 1.57,
+          "body": {
+            "x": 623.9738782029211,
+            "z": -398.332661508537,
+            "w": 0.9081535339355469,
+            "l": 1.82,
+            "s": 0.9999999910675677,
+            "c": 0.0001336595098149177
+          },
+          "queue": 361.56666666679666,
+          "signal": 1,
+          "index": 11,
+          "route": [
+            {
+              "x": 360,
+              "z": -40
+            },
+            {
+              "x": 500.963833808162,
+              "z": -37.91169341564896
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-regional-7",
+              "forward": 3.08,
+              "side": -0.56,
+              "dot": -0.04,
+              "speed": 6.94,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-golf",
+          "x": 241.79,
+          "z": -69.19,
+          "heading": -9.41,
+          "body": {
+            "x": 241.79393712459697,
+            "z": -69.19035080709628,
+            "w": 0.9131535291671753,
+            "l": 1.76,
+            "s": -0.016881351396624163,
+            "c": -0.9998574998343632
+          },
+          "queue": 18867.166666671692,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": 4.4,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": 8.8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-passat",
+              "forward": -4.51,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-amarok",
+          "x": 14.65,
+          "z": -125.69,
+          "heading": 5.52,
+          "body": {
+            "x": 14.64605975844006,
+            "z": -125.6891500975583,
+            "w": 1.02315354347229,
+            "l": 2.06,
+            "s": -0.6893815657639601,
+            "c": 0.724398410258354
+          },
+          "queue": 55472.03333334807,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-fuel",
+              "forward": 8.1,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-ottovias-prata",
+              "forward": -4.74,
+              "side": 0.01,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": -8.06,
+              "side": 0.71,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-veraneio",
+          "x": -4.54,
+          "z": -111.49,
+          "heading": -5.64,
+          "body": {
+            "x": -4.543017489328333,
+            "z": -111.48795208263924,
+            "w": 1.0381535291671753,
+            "l": 2.3649999999999998,
+            "s": 0.5959017939367323,
+            "c": 0.8030573155030619
+          },
+          "queue": 9.5,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-amarelo",
+              "forward": -4.83,
+              "side": 0.07,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-maverick",
+              "forward": 3.52,
+              "side": 0.46,
+              "dot": 0.01,
+              "speed": 6.4,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-xre",
+              "forward": -8.34,
+              "side": 0.09,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-escort",
+          "x": 32.46,
+          "z": -136.69,
+          "heading": 5.16,
+          "body": {
+            "x": 32.45766132606442,
+            "z": -136.68886799270973,
+            "w": 0.8831535577774048,
+            "l": 1.725,
+            "s": -0.9010150728931886,
+            "c": 0.43378778039414856
+          },
+          "queue": 1585.5000000004366,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-doubledeck",
+              "forward": 6.99,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-tcross",
+          "x": 241.57,
+          "z": -82.47,
+          "heading": -3.12,
+          "body": {
+            "x": 241.5696084555911,
+            "z": -82.48143564978311,
+            "w": 0.9035000205039978,
+            "l": 1.8,
+            "s": -0.016894347690771572,
+            "c": -0.9998572803235987
+          },
+          "queue": 31843.53333334181,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-0",
+              "forward": 4.28,
+              "side": -0.36,
+              "dot": 0,
+              "speed": 5,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": 3.08,
+              "side": 0.03,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-2",
+              "forward": -8.89,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": -4.49,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-bmwx1",
+          "x": 241.65,
+          "z": -77.99,
+          "heading": -9.41,
+          "body": {
+            "x": 241.64578520226078,
+            "z": -77.98859807879413,
+            "w": 0.9531535506248474,
+            "l": 1.885,
+            "s": -0.016919945801603747,
+            "c": -0.9998568474707121
+          },
+          "queue": 31069.166666674922,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-0",
+              "forward": 8.77,
+              "side": -0.36,
+              "dot": 0,
+              "speed": 5,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-titan",
+              "forward": 7.58,
+              "side": 0.03,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-aurora-2",
+              "forward": -4.4,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": 4.49,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": -8.8,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-passat",
+          "x": 241.87,
+          "z": -64.68,
+          "heading": -9.41,
+          "body": {
+            "x": 241.869982717638,
+            "z": -64.68293315572868,
+            "w": 0.8681535124778748,
+            "l": 1.86,
+            "s": -0.016878951046602735,
+            "c": -0.9998575403584085
+          },
+          "queue": 17680.566666671395,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-2",
+              "forward": 8.91,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-golf",
+              "forward": 4.51,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-factor",
+          "x": 20.71,
+          "z": -131.03,
+          "heading": 5.16,
+          "body": {
+            "x": 20.71518385171493,
+            "z": -131.03554511311975,
+            "w": 0.30000001192092896,
+            "l": 0.835,
+            "s": -0.9010124243023444,
+            "c": 0.4337932817054825
+          },
+          "queue": 36776.70000000979,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-prata",
+              "forward": 3.35,
+              "side": 0.51,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": 7.79,
+              "side": 2.18,
+              "dot": 0.94,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-doubledeck",
+              "forward": -6.04,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-titan",
+          "x": 241.49,
+          "z": -85.57,
+          "heading": -9.42,
+          "body": {
+            "x": 241.4892897419376,
+            "z": -85.56279488465128,
+            "w": 0.30000001192092896,
+            "l": 0.835,
+            "s": -0.006331460631458882,
+            "c": -0.9999799561022572
+          },
+          "queue": 25166.2666666734,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 242.3,
+              "z": -40
+            },
+            {
+              "x": 241.4724241192283,
+              "z": -88.23309105692604
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-aurora-0",
+              "forward": 1.2,
+              "side": -0.37,
+              "dot": 0.01,
+              "speed": 5,
+              "overlap": true
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwgs",
+              "forward": 6.23,
+              "side": 1.69,
+              "dot": 0,
+              "speed": 6.9,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-tcross",
+              "forward": -3.08,
+              "side": -0.06,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-bmwx1",
+              "forward": -7.58,
+              "side": -0.11,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-xre",
+          "x": -9.46,
+          "z": -118.27,
+          "heading": -5.65,
+          "body": {
+            "x": -9.437910103296899,
+            "z": -118.24284380296777,
+            "w": 0.30000001192092896,
+            "l": 0.905,
+            "s": 0.5910733852314624,
+            "c": 0.806617786359202
+          },
+          "queue": 2126.1333333339426,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": -0.13977198681935674,
+              "z": -105.55399023066126
+            },
+            {
+              "x": 21.367532896175106,
+              "z": -125.96718083000998
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-ottovias-amarelo",
+              "forward": 3.51,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-veraneio",
+              "forward": 8.34,
+              "side": -0.04,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-doubledeck",
+          "x": 26.16,
+          "z": -133.66,
+          "heading": 5.16,
+          "body": {
+            "x": 26.15969374180843,
+            "z": -133.65955143159002,
+            "w": 1.2020000219345093,
+            "l": 4.28,
+            "s": -0.9008841227905904,
+            "c": 0.43405967021116865
+          },
+          "queue": 2497.6666666673264,
+          "signal": 1,
+          "index": 23,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-factor",
+              "forward": 6.04,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-escort",
+              "forward": -6.99,
+              "side": 0,
+              "dot": 1,
+              "speed": 0.01,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "ottovias-brazil-traffic-fuel",
+          "x": 6.44,
+          "z": -117.07,
+          "heading": 5.52,
+          "body": {
+            "x": 9.059648670084426,
+            "z": -119.81724401998369,
+            "w": 1.1519999504089355,
+            "l": 5.4350000000000005,
+            "s": -0.6894480999657561,
+            "c": 0.7243350864438425
+          },
+          "queue": 231.9000000000815,
+          "signal": 1,
+          "index": 24,
+          "route": [
+            {
+              "x": -13.504255742168707,
+              "z": -131.9404249831325
+            },
+            {
+              "x": -47.932901889856915,
+              "z": -147.44908102022274
+            }
+          ],
+          "blockers": [
+            {
+              "id": "ottovias-brazil-traffic-palio",
+              "forward": 6.68,
+              "side": -0.47,
+              "dot": 0,
+              "speed": 6.9,
+              "overlap": false
+            },
+            {
+              "id": "ottovias-brazil-traffic-amarok",
+              "forward": -8.1,
+              "side": 0,
+              "dot": 1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-bia",
+          "x": -52.33,
+          "z": -0.65,
+          "heading": -1.69,
+          "body": {
+            "x": -52.32865861824804,
+            "z": -0.6529774791350001,
+            "w": 0.24388833343982697,
+            "l": 0.9099999999999999,
+            "s": -0.9930878478162734,
+            "c": -0.11737344895521411
+          },
+          "queue": 0,
+          "signal": 1,
+          "index": 5,
+          "route": [
+            {
+              "x": 0,
+              "z": -10
+            },
+            {
+              "x": -0.9545941546018392,
+              "z": -0.9545941546018392
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-verde-1",
+              "forward": 4.71,
+              "side": -5.58,
+              "dot": -0.13,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-circular-1",
+              "forward": 5.07,
+              "side": 0.04,
+              "dot": -0.98,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-turismo-1",
+              "forward": 0.72,
+              "side": 3.28,
+              "dot": -0.98,
+              "speed": 0,
+              "overlap": false
+            },
+            {
+              "id": "bus-bus-escolar-1",
+              "forward": -5.33,
+              "side": -1.16,
+              "dot": 0.99,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-clara",
+          "x": -63.2,
+          "z": 0.33,
+          "heading": 7.78,
+          "body": {
+            "x": -63.20280299999324,
+            "z": 0.33303977722820227,
+            "w": 0.24388833343982697,
+            "l": 0.9099999999999999,
+            "s": 0.9973398762946715,
+            "c": 0.07289150260853065
+          },
+          "queue": 104570.03333334501,
+          "signal": 0.15620193128349794,
+          "index": 1,
+          "route": [
+            {
+              "x": -66,
+              "z": 0
+            },
+            {
+              "x": -54.091891728104976,
+              "z": 0.9989190990845243
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-circular-1",
+              "forward": 5.71,
+              "side": 1.97,
+              "dot": 0.97,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-davi",
+          "x": 65.66,
+          "z": -60.7,
+          "heading": -2.73,
+          "body": {
+            "x": 65.65668857281537,
+            "z": -60.7038516109419,
+            "w": 0.6703200011014938,
+            "l": 1.73,
+            "s": -0.40232884842213795,
+            "c": -0.9154952199369019
+          },
+          "queue": 10.299999999988358,
+          "signal": 1,
+          "index": 1,
+          "route": [
+            {
+              "x": 65,
+              "z": -60
+            },
+            {
+              "x": 63.65,
+              "z": -65
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-verde-2",
+              "forward": 5.02,
+              "side": -0.05,
+              "dot": -0.78,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        },
+        {
+          "id": "npc-leo",
+          "x": 63.12,
+          "z": 56.72,
+          "heading": 17.28,
+          "body": {
+            "x": 63.1176000831962,
+            "z": 56.71564324283209,
+            "w": 0.8,
+            "l": 1.65,
+            "s": -0.9999965289192755,
+            "c": -0.0026347958935441043
+          },
+          "queue": 109.53333333338378,
+          "signal": 1,
+          "index": 0,
+          "route": [
+            {
+              "x": 34,
+              "z": 56.65
+            },
+            {
+              "x": 52,
+              "z": 59.35
+            }
+          ],
+          "blockers": [
+            {
+              "id": "bus-bus-solar-2",
+              "forward": 5.83,
+              "side": 1.84,
+              "dot": -1,
+              "speed": 0,
+              "overlap": false
+            }
+          ]
+        }
+      ],
+      "incident": "incident-1",
+      "staging": [
+        {
+          "kind": "police",
+          "id": "patrol-1",
+          "correctPath": true,
+          "point": {
+            "x": 17,
+            "z": 3.3,
+            "yaw": 1.5707963267948966
+          }
+        },
+        {
+          "kind": "paramedic",
+          "id": "ambulance-1",
+          "correctPath": true,
+          "point": {
+            "x": 25,
+            "z": 3.3,
+            "yaw": 1.5707963267948966
+          }
+        }
+      ],
+      "cleared": true,
+      "held": [
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 34,
+          "longQueued": 15,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 36,
+          "longQueued": 15,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 39,
+          "longQueued": 15,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 36,
+          "longQueued": 18,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 32,
+          "longQueued": 18,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 35,
+          "longQueued": 18,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 35,
+          "longQueued": 20,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 36,
+          "longQueued": 20,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 88,
+          "stopped": 38,
+          "longQueued": 20,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 39,
+          "longQueued": 22,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 38,
+          "longQueued": 22,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        },
+        {
+          "models": 44,
+          "actors": 87,
+          "stopped": 41,
+          "longQueued": 22,
+          "incidents": 4,
+          "resolved": 2,
+          "active": null
+        }
+      ],
+      "cpu": [
+        [
+          "updateVisualLOD",
+          {
+            "ms": 360.9000000001979,
+            "calls": 37
+          }
+        ],
+        [
+          "updateWorldExpansion",
+          {
+            "ms": 347.5999999996857,
+            "calls": 300
+          }
+        ],
+        [
+          "updateOttoviasHighway",
+          {
+            "ms": 229.69999999995343,
+            "calls": 600
+          }
+        ],
+        [
+          "updateWorldResidents",
+          {
+            "ms": 97.19999999989523,
+            "calls": 300
+          }
+        ],
+        [
+          "resolveTrafficOverlaps",
+          {
+            "ms": 89.60000000003492,
+            "calls": 86
+          }
+        ],
+        [
+          "updatePlayer",
+          {
+            "ms": 65.09999999916181,
+            "calls": 600
+          }
+        ],
+        [
+          "updateWorldCampaign",
+          {
+            "ms": 54.00000000104774,
+            "calls": 600
+          }
+        ],
+        [
+          "updateNavigation",
+          {
+            "ms": 30.69999999983702,
+            "calls": 75
+          }
+        ],
+        [
+          "updateNPCs",
+          {
+            "ms": 19.600000000209548,
+            "calls": 86
+          }
+        ],
+        [
+          "animateBrazilTransport",
+          {
+            "ms": 15.900000000139698,
+            "calls": 34200
+          }
+        ],
+        [
+          "updateMultiplayer",
+          {
+            "ms": 15.699999999778811,
+            "calls": 86
+          }
+        ],
+        [
+          "updateTransitWorld",
+          {
+            "ms": 6.89999999984866,
+            "calls": 86
+          }
+        ],
+        [
+          "updateTrafficIncidents",
+          {
+            "ms": 3.5,
+            "calls": 86
+          }
+        ],
+        [
+          "updatePoliceSystem",
+          {
+            "ms": 3.3999999999068677,
+            "calls": 86
+          }
+        ],
+        [
+          "updateFireService",
+          {
+            "ms": 3.200000000069849,
+            "calls": 86
+          }
+        ],
+        [
+          "updateTrafficVehicleTaking",
+          {
+            "ms": 2.9000000000814907,
+            "calls": 600
+          }
+        ],
+        [
+          "updateSharedWorldReplica",
+          {
+            "ms": 1.60000000015134,
+            "calls": 600
+          }
+        ],
+        [
+          "updateLifeActivities",
+          {
+            "ms": 1.2000000000698492,
+            "calls": 86
+          }
+        ],
+        [
+          "updateFamilyCarry",
+          {
+            "ms": 1.2000000000116415,
+            "calls": 600
+          }
+        ],
+        [
+          "updateWorldVenues",
+          {
+            "ms": 0.6000000000931323,
+            "calls": 600
+          }
+        ],
+        [
+          "updateHUD",
+          {
+            "ms": 0.6000000000931323,
+            "calls": 9
+          }
+        ],
+        [
+          "updateNpcSociety",
+          {
+            "ms": 0.19999999995343387,
+            "calls": 86
+          }
+        ],
+        [
+          "updateAdventure",
+          {
+            "ms": 0.09999999997671694,
+            "calls": 86
+          }
+        ],
+        [
+          "updateWorldSportsV704",
+          {
+            "ms": 0,
+            "calls": 600
+          }
+        ],
+        [
+          "updateClouds",
+          {
+            "ms": 0,
+            "calls": 46
+          }
+        ]
+      ],
+      "state": {
+        "checksPerSearchCall": 8,
+        "searchSliceMaxMs": 13.300000000046566,
+        "samples": 34,
+        "contacts": 34,
+        "phone": {
+          "pending": false,
+          "job": null,
+          "tracking": null,
+          "orders": [],
+          "last": {
+            "id": "playmobil-utility",
+            "type": "ground",
+            "status": "delivered",
+            "at": 1794304960283.3333,
+            "target": {
+              "x": 98.89793206047757,
+              "z": 209.6846053036974,
+              "yaw": 1.6745886672519397
+            }
+          }
+        },
+        "owned": [
+          "garage-orange",
+          "playmobil-utility"
+        ],
+        "progress": [
+          {
+            "id": "bus-bus-solar-1",
+            "moved": 81.58259871999827
+          },
+          {
+            "id": "bus-bus-solar-2",
+            "moved": 2.3163124413788956
+          },
+          {
+            "id": "bus-bus-verde-1",
+            "moved": 54.33862883225681
+          },
+          {
+            "id": "bus-bus-verde-2",
+            "moved": 23.882397481264423
+          },
+          {
+            "id": "bus-bus-escolar-1",
+            "moved": 115.73870547956778
+          },
+          {
+            "id": "bus-bus-circular-1",
+            "moved": 20.618574668597958
+          },
+          {
+            "id": "bus-bus-turismo-1",
+            "moved": 70.22554653654478
+          },
+          {
+            "id": "police-patrol-1",
+            "moved": 104.0155095465915
+          },
+          {
+            "id": "police-patrol-2",
+            "moved": 65.82579051400583
+          },
+          {
+            "id": "fire-fire-01",
+            "moved": 73.74859555014244
+          },
+          {
+            "id": "fire-fire-02",
+            "moved": 49.44155766116466
+          },
+          {
+            "id": "ambulance-ambulance-1",
+            "moved": 0
+          },
+          {
+            "id": "ambulance-ambulance-2",
+            "moved": 0
+          },
+          {
+            "id": "ottovias-ottovias-azul",
+            "moved": 48.79069656334572
+          },
+          {
+            "id": "ottovias-ottovias-amarelo",
+            "moved": 227.03532439474395
+          },
+          {
+            "id": "ottovias-ottovias-verde",
+            "moved": 53.0857330711333
+          },
+          {
+            "id": "ottovias-ottovias-vinho",
+            "moved": 174.60495846370964
+          },
+          {
+            "id": "ottovias-ottovias-prata",
+            "moved": 299.1750866472416
+          },
+          {
+            "id": "ottovias-ottovias-carga",
+            "moved": 27.05466094817559
+          },
+          {
+            "id": "ottovias-aurora-0",
+            "moved": 37.354023236391086
+          },
+          {
+            "id": "ottovias-aurora-1",
+            "moved": 75.8170968430767
+          },
+          {
+            "id": "ottovias-aurora-2",
+            "moved": 124.6571316348532
+          },
+          {
+            "id": "ottovias-costa-0",
+            "moved": 114.58260781560512
+          },
+          {
+            "id": "ottovias-costa-1",
+            "moved": 12.217655999911976
+          },
+          {
+            "id": "ottovias-costa-2",
+            "moved": 76.48516430222554
+          },
+          {
+            "id": "ottovias-brazil-traffic-fusca",
+            "moved": 29.066435589307222
+          },
+          {
+            "id": "ottovias-regional-0",
+            "moved": 108.48471982483848
+          },
+          {
+            "id": "ottovias-brazil-traffic-gol",
+            "moved": 98.27133139093837
+          },
+          {
+            "id": "ottovias-regional-1",
+            "moved": 200.97696147431816
+          },
+          {
+            "id": "ottovias-brazil-traffic-uno",
+            "moved": 121.80433101629453
+          },
+          {
+            "id": "ottovias-regional-2",
+            "moved": 265.98309877945985
+          },
+          {
+            "id": "ottovias-brazil-traffic-kombi",
+            "moved": 65.65085344144121
+          },
+          {
+            "id": "ottovias-regional-3",
+            "moved": 511.2821999835552
+          },
+          {
+            "id": "ottovias-brazil-traffic-golf",
+            "moved": 119.24377007716699
+          },
+          {
+            "id": "ottovias-regional-4",
+            "moved": 328.4976455612746
+          },
+          {
+            "id": "ottovias-brazil-traffic-opala",
+            "moved": 127.45141998543426
+          },
+          {
+            "id": "ottovias-brazil-traffic-chevette",
+            "moved": 2.7458134219787076
+          },
+          {
+            "id": "ottovias-regional-5",
+            "moved": 180.6962013506807
+          },
+          {
+            "id": "ottovias-brazil-traffic-s10",
+            "moved": 115.70305840526927
+          },
+          {
+            "id": "ottovias-regional-6",
+            "moved": 284.7849858796504
+          },
+          {
+            "id": "ottovias-brazil-traffic-hilux",
+            "moved": 76.25420996675368
+          },
+          {
+            "id": "ottovias-regional-7",
+            "moved": 377.2169987690657
+          },
+          {
+            "id": "ottovias-brazil-traffic-amarok",
+            "moved": 279.09953702072943
+          },
+          {
+            "id": "ottovias-brazil-traffic-saveiro",
+            "moved": 62.006296456747926
+          },
+          {
+            "id": "ottovias-brazil-traffic-constellation",
+            "moved": 76.02871144374797
+          },
+          {
+            "id": "ottovias-brazil-traffic-veraneio",
+            "moved": 272.27928822774373
+          },
+          {
+            "id": "ottovias-brazil-traffic-blazer",
+            "moved": 82.27941373300915
+          },
+          {
+            "id": "ottovias-brazil-traffic-pampa",
+            "moved": 29.920340757466086
+          },
+          {
+            "id": "ottovias-brazil-traffic-escort",
+            "moved": 301.0242937237435
+          },
+          {
+            "id": "ottovias-brazil-traffic-tcross",
+            "moved": 20.119127208948733
+          },
+          {
+            "id": "ottovias-brazil-traffic-peugeot206",
+            "moved": 146.11896179249953
+          },
+          {
+            "id": "ottovias-brazil-traffic-jetta",
+            "moved": 172.2720013324835
+          },
+          {
+            "id": "ottovias-brazil-traffic-corolla2007",
+            "moved": 84.03234729546111
+          },
+          {
+            "id": "ottovias-brazil-traffic-corolla2021",
+            "moved": 87.62015459242888
+          },
+          {
+            "id": "ottovias-brazil-traffic-civic2011",
+            "moved": 128.57659929218855
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwx1",
+            "moved": 102.9794237533861
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwm3",
+            "moved": 102.80542162700235
+          },
+          {
+            "id": "ottovias-brazil-traffic-ferrari458",
+            "moved": 20.68111844861337
+          },
+          {
+            "id": "ottovias-brazil-traffic-porsche911",
+            "moved": 121.28586168707344
+          },
+          {
+            "id": "ottovias-brazil-traffic-golf7",
+            "moved": 132.91112958898105
+          },
+          {
+            "id": "ottovias-brazil-traffic-palio",
+            "moved": 180.6934951172008
+          },
+          {
+            "id": "ottovias-brazil-traffic-passat",
+            "moved": 117.11246168657797
+          },
+          {
+            "id": "ottovias-brazil-traffic-tempra",
+            "moved": 117.31016116709078
+          },
+          {
+            "id": "ottovias-brazil-traffic-maverick",
+            "moved": 286.35494946507714
+          },
+          {
+            "id": "ottovias-brazil-traffic-landau",
+            "moved": 138.45432808444838
+          },
+          {
+            "id": "ottovias-brazil-traffic-mobylette",
+            "moved": 111.89538962944745
+          },
+          {
+            "id": "ottovias-brazil-traffic-factor",
+            "moved": 306.1214805758687
+          },
+          {
+            "id": "ottovias-brazil-traffic-titan",
+            "moved": 8.397383133664402
+          },
+          {
+            "id": "ottovias-brazil-traffic-hornet",
+            "moved": 133.27897966972517
+          },
+          {
+            "id": "ottovias-brazil-traffic-xre",
+            "moved": 225.99570554157413
+          },
+          {
+            "id": "ottovias-brazil-traffic-bmwgs",
+            "moved": 111.51609087093688
+          },
+          {
+            "id": "ottovias-brazil-traffic-bicycle",
+            "moved": 97.63699231802994
+          },
+          {
+            "id": "ottovias-brazil-traffic-dinossauro",
+            "moved": 195.96707774785713
+          },
+          {
+            "id": "ottovias-brazil-traffic-attivi",
+            "moved": 95.76025627977158
+          },
+          {
+            "id": "ottovias-brazil-traffic-doubledeck",
+            "moved": 329.11649952158683
+          },
+          {
+            "id": "ottovias-brazil-traffic-semi",
+            "moved": 77.91365760350739
+          },
+          {
+            "id": "ottovias-brazil-traffic-fuel",
+            "moved": 229.7860370960477
+          },
+          {
+            "id": "npc-ottovias-patrol",
+            "moved": 52.37243838190814
+          },
+          {
+            "id": "npc-nino",
+            "moved": 4.654380694892988
+          },
+          {
+            "id": "npc-luna",
+            "moved": 3.702316306506981
+          },
+          {
+            "id": "npc-teo",
+            "moved": 16.27635895686238
+          },
+          {
+            "id": "npc-bia",
+            "moved": 51.80543532969199
+          },
+          {
+            "id": "npc-maya",
+            "moved": 25.848492341466095
+          },
+          {
+            "id": "npc-clara",
+            "moved": 2.1549964106890696
+          },
+          {
+            "id": "npc-rafa",
+            "moved": 4.018495941214499
+          },
+          {
+            "id": "npc-davi",
+            "moved": 2.3955664546126667
+          },
+          {
+            "id": "npc-leo",
+            "moved": 30.422116052159087
+          }
+        ]
+      },
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Software WebGL and deterministic disposable profiles; no live database or physical phone FPS/temperature."
+  ],
+  "passed": true
+}

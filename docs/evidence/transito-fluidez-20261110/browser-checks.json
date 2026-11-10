@@ -1,0 +1,1153 @@
+[
+  {
+    "runId": 42876780048,
+    "source": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "jobs": [
+      {
+        "id": 130042059271,
+        "name": "pouso",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/flight-runway-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059553,
+        "name": "transito-e-fluidez",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run git fetch --depth=1 origin 175ba82b7bdd46637cca6854a32517971d85200a",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node --test tests/world-traffic-flow.test.mjs tests/world-phone-orders.test.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-traffic-flow-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059637,
+        "name": "atualizacao-da-candidata",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar a candidata HTTPS com progresso existente",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059647,
+        "name": "celular-rotas-e-compras",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node --test tests/world-phone-orders.test.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-phone-orders-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059710,
+        "name": "celular-e-entregas",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-integrity.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/dance-console-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-phone-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-air-fleet-multiplayer-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059714,
+        "name": "kart-precisao-e-copa",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/kart-cup-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059760,
+        "name": "duas-maos",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/war-touch-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/war-dual-hands-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/war-joint-camera-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/war-review-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042059850,
+        "name": "oficina-autonoma",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-workshop-auto-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-workshop-bays-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-civil-browser.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "runId": 42876779731,
+    "source": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "jobs": [
+      {
+        "id": 130042057752,
+        "name": "controles-e-giro",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-integrity.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Comparar todos os pixels das instâncias",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Reproduzir os defeitos da versão recebida",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Conferir controles e dez giros sem recarregar",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042058170,
+        "name": "carga-online",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Comparar partida online isolada sem limitar os desenhos",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042058203,
+        "name": "veiculo-e-motor",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Medir entrada e direcao com motor real e familia",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "runId": 42876779809,
+    "source": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "jobs": [
+      {
+        "id": 130042058243,
+        "name": "mundo",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar navegador de teste",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Servir mundo",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validar frota completa e tráfego aéreo NPC",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Conferir pavimento, comércio, ondas e três minutos de trânsito",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Salvar evidências do mundo",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042058498,
+        "name": "frota-garagem-serra",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar navegador de teste",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Conferir geração determinística do aplicativo",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Embarcar nos helicópteros, aviões e balão com a família",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Repor a frota e testar dois pilotos e troca de autoridade",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Usar mapa móvel, pousar na rua, recolher aeronave e sair da concessionária e garagem",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Salvar evidências da frota, mapa e garagem",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042058506,
+        "name": "embarque",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar navegador de teste",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Embarcar, pilotar, estacionar e explorar o mundo civil",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Salvar evidências de embarque",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 130042058946,
+        "name": "jogabilidade",
+        "status": "in_progress",
+        "conclusion": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar navegador de teste",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Servir console",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verificar motores, câmera e personagens",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validar dança por corpo e inferência real sem câmera de usuário",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Entrar, iniciar e pausar cada um dos cinco jogos",
+            "status": "in_progress",
+            "conclusion": null
+          },
+          {
+            "name": "Jogar com a Família no OTThi e preservar o HQ",
+            "status": "pending",
+            "conclusion": null
+          },
+          {
+            "name": "Salvar evidências visuais",
+            "status": "pending",
+            "conclusion": null
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "pending",
+            "conclusion": null
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "pending",
+            "conclusion": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "runId": 42876779924,
+    "source": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "jobs": [
+      {
+        "id": 130042058465,
+        "name": "camera-e-mundo",
+        "status": "in_progress",
+        "conclusion": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Instalar Chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Servir jogos",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Entrada solo nunca cobre as fases, a calibração ou o jogo",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Reconhecer mãos com o modelo real e jogar pela câmera frontal",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Reconhecer corpo real sem impor cadastro de objeto",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Treino nativo sem objetos, movimento, recalibração e progresso preservado",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Corpo e mão reais na mesma câmera",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Guardar diagnóstico imediato de câmera",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Conferir as três operações em retrato e paisagem",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Atualização completa sem interromper a partida",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Arrastar a câmera e jogar com toques simultâneos no WAR",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Testar ações civis, teleférico, oficina e missões no mundo OT",
+            "status": "in_progress",
+            "conclusion": null
+          },
+          {
+            "name": "Guardar evidências",
+            "status": "pending",
+            "conclusion": null
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "pending",
+            "conclusion": null
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "pending",
+            "conclusion": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "runId": 42876779718,
+    "source": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "jobs": [
+      {
+        "id": 130042057298,
+        "name": "comparar-quadros-reais",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run git fetch --depth=1 origin 175ba82b7bdd46637cca6854a32517971d85200a",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm install --no-save --ignore-scripts playwright@1.56.1",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npx playwright install chromium",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run node tests/world-play-performance.mjs",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "id": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+  "name": "otthi-world-campanha-teste",
+  "url": "otthi-world-campanha-teste-16rm34tp7-thiaguinho-s-projects.vercel.app",
+  "type": "LAMBDAS",
+  "state": "READY",
+  "createdAt": 1794335952010,
+  "creator": {
+    "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+    "username": "tsvalencio-ia"
+  },
+  "project": {
+    "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+    "name": "otthi-world-campanha-teste",
+    "framework": null
+  },
+  "meta": {
+    "githubCommitRef": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "githubCommitSha": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "githubCommitMessage": "Keep player vehicle perception out of self collision and shared NPC replication",
+    "githubRepo": "ConsoleGames",
+    "githubOrg": "tsvalencio-IA"
+  },
+  "alias": [
+    "otthi-world-campanha-teste.vercel.app",
+    "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+    "otthi-world-campanha-teste-git-cdc-c67d05-thiaguinho-s-projects.vercel.app"
+  ],
+  "target": "production",
+  "regions": [
+    "iad1"
+  ],
+  "buildingAt": 1794335953095,
+  "ready": 1794335960321,
+  "readyState": "READY",
+  "aliasError": null
+}

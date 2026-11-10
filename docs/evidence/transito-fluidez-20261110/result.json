@@ -1,0 +1,78 @@
+{
+  "status": "published",
+  "build": "705.28.25-transito-fluidez",
+  "revision": "23767784d2d7a3aa",
+  "runtimeCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "worldUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "productionDeployment": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+  "productionReady": true,
+  "publishedAt": "2026-11-10T18:39:20.321000+00:00",
+  "verifiedAt": "2026-11-10T18:40:45.555Z",
+  "unitTests": {
+    "passed": 441,
+    "failed": 0,
+    "command": "node --test tests/*.test.mjs"
+  },
+  "publicVerifiedFiles": 164,
+  "releaseAssets": 143,
+  "nativeEvolutionRun": 42876780048,
+  "nativeEvolutionJobs": 8,
+  "vehicleOperationalRun": 42876779731,
+  "nativeRenderRun": 42876779718,
+  "artifacts": {
+    "flow": 13790749437,
+    "render": 13791697767,
+    "vehicle": 13790878991
+  },
+  "metrics": {
+    "meanStoppedVehicles": {
+      "before": 33.81818181818182,
+      "after": 19.454545454545453
+    },
+    "finalStoppedVehicles": {
+      "before": 46,
+      "after": 30
+    },
+    "trafficModels": {
+      "before": 44,
+      "after": 44
+    },
+    "retainedNpcs": 138,
+    "routeSearchChecksPerSlice": {
+      "before": 126,
+      "after": 8
+    },
+    "maxRouteSearchMs": {
+      "before": 73,
+      "after": 13.300000000046566
+    },
+    "meanFrameWorkMs": {
+      "before": 31.813265306122272,
+      "after": 27.75137614678894
+    },
+    "meanFrameIntervalMs": {
+      "before": 153.5268041237114,
+      "after": 137.13981481481474
+    },
+    "quality": {
+      "before": "low",
+      "after": "low",
+      "renderScaleBefore": 0.55,
+      "renderScaleAfter": 0.55
+    }
+  },
+  "functionalResults": {
+    "blockedDeliveryArrived": true,
+    "forcedIncidentCleared": true,
+    "respondersFollowIncidentRoute": true,
+    "manualCarAccelerates": true,
+    "manualCarDurability": 100
+  },
+  "limits": [
+    "Browser functions and geometry use disposable isolated profiles; production validation is read-only HTTPS integrity.",
+    "Software WebGL comparison is one measured run per case. Its frame rate and CPU times are not a physical Android FPS, temperature or battery measurement.",
+    "Ordinary signal waits and local traffic queues still exist; no claim of zero congestion or zero stuttering."
+  ],
+  "passed": true
+}

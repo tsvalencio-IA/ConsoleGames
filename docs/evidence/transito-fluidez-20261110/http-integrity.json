@@ -1,0 +1,835 @@
+{
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "build": "705.28.25-transito-fluidez",
+  "revision": "23767784d2d7a3aa",
+  "expected": 164,
+  "deploymentPreparation": "tools/package-world-preview.py: root_site_console and root_site_manifest",
+  "verified": [
+    {
+      "path": "games/otthi/console-world.js",
+      "bytes": 3265,
+      "sha256": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553"
+    },
+    {
+      "path": "games/otthi/console-world.css",
+      "bytes": 5811,
+      "sha256": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d"
+    },
+    {
+      "path": "games/otthi/index.html",
+      "bytes": 15731,
+      "sha256": "5e3a8ecb4d2a79f21940a4986038197e20c8da49698c32e3fd33568d3bea85c8"
+    },
+    {
+      "path": "games/otthi/game-audio.js",
+      "bytes": 4385,
+      "sha256": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413"
+    },
+    {
+      "path": "games/otthi/assets/js/core/safe-pointer.js",
+      "bytes": 641,
+      "sha256": "4f11579e213b1d6704e9b03f3a15dcb4b0738900cc8eadb46a415224045aedb4"
+    },
+    {
+      "path": "games/otthi/assets/vendor/three-r128.min.js",
+      "bytes": 603445,
+      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2"
+    },
+    {
+      "path": "games/otthi/assets/js/core/runtime-config.js",
+      "bytes": 2016,
+      "sha256": "143d9d7cd0fb7d760fe870a4ba70765aa7533a8e9973be7cd2d424bd32f29919"
+    },
+    {
+      "path": "games/otthi/style.css",
+      "bytes": 334296,
+      "sha256": "02113798ec5dc59aa2c8045db37984751b4b0a99e358594c4ffbcce8cb43e340"
+    },
+    {
+      "path": "games/otthi/assets/js/save-db.js",
+      "bytes": 4917,
+      "sha256": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d"
+    },
+    {
+      "path": "games/otthi/firebase-config.js",
+      "bytes": 541,
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+    },
+    {
+      "path": "games/otthi/assets/js/game-account.js",
+      "bytes": 5742,
+      "sha256": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09"
+    },
+    {
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js",
+      "bytes": 111769,
+      "sha256": "4f63035c0787a7dc0ab7c34eff70d0355bfaf1c17fc3fa6654cc7371dc27cd47"
+    },
+    {
+      "path": "games/otthi/family-mascots.js",
+      "bytes": 41544,
+      "sha256": "b88de8922dff3dca4b8c6854035fa86bd81ab85aa14fbb8603c0a0260b2011c9"
+    },
+    {
+      "path": "games/otthi/assets/ot-games-airframes.json",
+      "bytes": 93092,
+      "sha256": "f55736016b3a9566534f12dc15b2865cbd2b12cd7a85161ef8a112cc5a1b0cc6"
+    },
+    {
+      "path": "games/otthi/app.js",
+      "bytes": 2291480,
+      "sha256": "47eb50c694c730e3df021383c75dd45ca71c5d0f9920c4dc2f873a8424ca1728"
+    },
+    {
+      "path": "games/otthi/assets/vendor/GLTFLoader-r128.js",
+      "bytes": 96550,
+      "sha256": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+    },
+    {
+      "path": "games/otthi/assets/vendor/DRACOLoader-r128.js",
+      "bytes": 13453,
+      "sha256": "bbd4a1bb08f05d9c8df1b411644a1fc31a32fdcd36489e5bcdfe6c4fa2b8e4e9"
+    },
+    {
+      "path": "games/otthi/assets/vendor/draco/draco_wasm_wrapper.js",
+      "bytes": 53604,
+      "sha256": "fc724571efc24138ffb7e430fb1c5c59a9760e64c1c3fdb98cc2503d110a3846"
+    },
+    {
+      "path": "games/otthi/assets/vendor/draco/draco_decoder.wasm",
+      "bytes": 194983,
+      "sha256": "32b19d590ca48d4478f74788170c7b713e0addf1f8dbab5cb07e3b2ad5f6e32e"
+    },
+    {
+      "path": "games/otthi/assets/vehicles-credits.html",
+      "bytes": 1411,
+      "sha256": "5be05f32d2fb989a67c6c51aa624a660dfb7eacdbd671f7f44a2f141dc32e75f"
+    },
+    {
+      "path": "games/otthi/assets/world/vehicles/ot-racer.glb",
+      "bytes": 537260,
+      "sha256": "df3109e2cb16c091ad37485972b42444761773a5cbf6c49046d8a558b8a67a6b"
+    },
+    {
+      "path": "games/otthi/assets/world/vehicles/ot-coupe.glb",
+      "bytes": 560592,
+      "sha256": "49a2fa6342b6ca04ea2b99a26ad8f66f0c78f706e0ad0f24ad77cfc52e8ec862"
+    },
+    {
+      "path": "games/otthi/assets/world/vehicles/ferrari-458.glb",
+      "bytes": 1681572,
+      "sha256": "cafe3f48da6797aa9bde75ca768bc5b57db366575fd233e90df186ae988a876e"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/world-hand-controls.js",
+      "bytes": 31668,
+      "sha256": "b508b1896a0ad5717db8d860463f162521912e382a48044fed41f69bf2d06d63"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/world-body-controls.js",
+      "bytes": 5560,
+      "sha256": "e3e69786bd4260ce91f00e6738c373c3796f2573efa1987c5697daadc07130bd"
+    },
+    {
+      "path": "games/otthi/assets/js/world-venue-bridge.js",
+      "bytes": 864,
+      "sha256": "fb051bc7be3cae7fda1294d99ee4905e25f0485ad9530a4e8ecb3346a5eb3a7c"
+    },
+    {
+      "path": "games/otthi/assets/js/world-venue-trip.js",
+      "bytes": 2234,
+      "sha256": "bbd8449d2417c8b10bd5f293b9a5ee188d35fe941d0c247375b4f6716ee150c7"
+    },
+    {
+      "path": "games/otthi/assets/js/ui/shared-modal.js",
+      "bytes": 973,
+      "sha256": "39b82cae4ae7346b0540ca990e71c874e8d1b8e09d42ab1be6d3fa15031b2b5a"
+    },
+    {
+      "path": "games/otthi/assets/js/ui/account-access.js",
+      "bytes": 5412,
+      "sha256": "e9dea6f74ac07b3654b0a8fff8c5ea14663efbb9ca799255426875c917b215ff"
+    },
+    {
+      "path": "games/otthi/assets/js/multiplayer/room-manager.js",
+      "bytes": 7304,
+      "sha256": "ac0b2081c295dd5bde91d81f64aaf810814a4eaa99b2db04d6e0bec7fc1013b4"
+    },
+    {
+      "path": "games/otthi/assets/js/core/performance-guardian.js",
+      "bytes": 2512,
+      "sha256": "12f49b7febf4020a8e5749cf950b2d8fcca3322f5e830fc6dd9c6cd6fe263dd2"
+    },
+    {
+      "path": "games/otthi/assets/js/education/adaptive-learning.js",
+      "bytes": 7627,
+      "sha256": "e50e8610d9dfeaf38cda5930708c1f369175a50e0f9e7a934dc98f5aba384701"
+    },
+    {
+      "path": "games/otthi/manifest.webmanifest",
+      "bytes": 913,
+      "sha256": "11d449b168efbdec8fa31d8a1e117f5f3bac76b504fa65d1580b2d3e74d1920e"
+    },
+    {
+      "path": "games/otthi/assets/js/safety/child-safety.js",
+      "bytes": 1693,
+      "sha256": "efe67c414ea5b80f0e4b1de7ee0e84266f88c47a2020305931d24cf66a7a70d6"
+    },
+    {
+      "path": "games/otthi/icons/icon-192.png",
+      "bytes": 40363,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "games/otthi/icons/icon-192-v2.png",
+      "bytes": 40363,
+      "sha256": "25700d18f1df5711591fb5e99beb5ca37016a714b246bc5054a9441010f8d402"
+    },
+    {
+      "path": "games/otthi/icons/icon-512.png",
+      "bytes": 198828,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "games/otthi/icons/icon-512-v2.png",
+      "bytes": 198828,
+      "sha256": "784257f570076fae31a871e4ef073188a6fb9c8410880ed866e40733078e436a"
+    },
+    {
+      "path": "games/otthi/icons/favicon.png",
+      "bytes": 7007,
+      "sha256": "653f506d96b4563612202fb66398399ea1818fd43fe5b3461b65e37d17b9022f"
+    },
+    {
+      "path": "games/otthi/icons/icon-maskable-512-v2.png",
+      "bytes": 199385,
+      "sha256": "97f401d63901b86a54047f29125885699c6d2dc9e054ac2945cf6935e3d463ee"
+    },
+    {
+      "path": "games/otthi/404.html",
+      "bytes": 265,
+      "sha256": "fa1b7eeb67a2364a67a2c0ea7d2e4ebb58a2a50d8d8f1c05de48931498b36ae8"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-pose-controller.js",
+      "bytes": 4068,
+      "sha256": "2763591b28f1b1b4956018dda8131ac68b7ec63ecb0504c87bb1cd43606bfd6d"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-pose-worker.js",
+      "bytes": 1390,
+      "sha256": "432b66e7f15cbf78bbf5361796e681b8c3cb6b2da75c6a2ca54ff6b1ae854898"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-music.js",
+      "bytes": 7389,
+      "sha256": "5cc162ab83bd2c07c29b93c51a60a17881bf861fb937d3907176ed6127f9b0f2"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-stage.js",
+      "bytes": 7428,
+      "sha256": "46bba43e8abe860f33687df57b9459d7bd3abba5eaf70323b4c9fe1e242da814"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-youtube.js",
+      "bytes": 5964,
+      "sha256": "808967678cd58ad4ba29172c830fd11087e84372e2fb768206833e2b32b4e64b"
+    },
+    {
+      "path": "games/otthi/assets/js/controls/dance-game.js",
+      "bytes": 18758,
+      "sha256": "5a57d826f0dd259136b098710d91d2ab062af487508cea31938f40df57765bad"
+    },
+    {
+      "path": "games/otthi/src/modules/44-world-rhythm.js",
+      "bytes": 14607,
+      "sha256": "c856e4d51d2a36e3040fba29bcce32170ecb98f3a8fb27237bdcf1e46867b01b"
+    },
+    {
+      "path": "games/otthi/../danca/index.html",
+      "bytes": 1252,
+      "sha256": "9f7ad48af65f27fb68e613ea2bc5566f45f1a25c9919f81c0ce2a7e9e70950cc"
+    },
+    {
+      "path": "games/otthi/../danca/app.js",
+      "bytes": 1259,
+      "sha256": "22caf00a51f4ecc5f59f5d8ad4b0dbb587d99c67af1fca0eccddb314006028a4"
+    },
+    {
+      "path": "games/otthi/../danca/style.css",
+      "bytes": 972,
+      "sha256": "3bee42584d154e2b3640e24c28148e32ef5aca11982f8658f4d7a0e4deae731d"
+    },
+    {
+      "path": "games/otthi/assets/pose/vision_bundle.mjs",
+      "bytes": 137735,
+      "sha256": "40f4123dfcd75cfa58add046919cc6f52fde66f009ff582997c09ba54c6ba27c"
+    },
+    {
+      "path": "games/otthi/assets/pose/vision_wasm_internal.js",
+      "bytes": 204284,
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "path": "games/otthi/assets/pose/vision_wasm_nosimd_internal.js",
+      "bytes": 204137,
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "path": "games/otthi/assets/pose/vision_wasm_internal.wasm",
+      "bytes": 9574032,
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "path": "games/otthi/assets/js/core/viewport-manager.js",
+      "bytes": 1923,
+      "sha256": "a9c340b760dd3d3ffeb3ee3ed545f22379fc6d2755457be609160b6e6af7af9b"
+    },
+    {
+      "path": "games/otthi/assets/pose/pose_landmarker_lite.task",
+      "bytes": 5777746,
+      "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+    },
+    {
+      "path": "games/otthi/assets/pose/vision_wasm_nosimd_internal.wasm",
+      "bytes": 9448638,
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    },
+    {
+      "path": "games/otthi/assets/pose/sources.json",
+      "bytes": 1405,
+      "sha256": "fa9be8c1638684f69827db69dbee836dc4058efd3ae72a96127600acea198d30"
+    },
+    {
+      "path": "games/otthi/VERSION.json",
+      "bytes": 40094,
+      "sha256": "a483e099113757b4eaaaed88c6bb98d8b612f5765d396c0058fefe915595b1ba"
+    },
+    {
+      "path": "games/otthi/assets/pose/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "games/otthi/sw.js",
+      "bytes": 14779,
+      "sha256": "d86508096cb51c8a89e6466569f0ca623543357375766de1c97d64a99e779caa"
+    },
+    {
+      "path": "games/otthi/assets/js/world/civil-mission-core.js",
+      "bytes": 11154,
+      "sha256": "cd11be9f39ee2c623ae221c07fd1ab7c301ee45a9c8282a5ad91f16ccd7aca51"
+    },
+    {
+      "path": "games/otthi/assets/js/vehicles/engine-sound.js",
+      "bytes": 4161,
+      "sha256": "ea6a4885a906d34927cd20154a6eaffc65c80395827dd85c265a00e8ebf1038e"
+    },
+    {
+      "path": "games/otthi/recorded-audio.js",
+      "bytes": 14854,
+      "sha256": "6fb979bebfc6cb7afeff7cf2f5ab6dcd343f24a372545d8901267ccb9aa1a9b9"
+    },
+    {
+      "path": "games/otthi/audio/engine-recordings.json",
+      "bytes": 32456,
+      "sha256": "6e4c6616ee0a926b8163fb31a9f399cd2b3fadebfcf2ea7cb2959bfed609609a"
+    },
+    {
+      "path": "games/otthi/audio/CREDITS.txt",
+      "bytes": 5064,
+      "sha256": "54dbab9352e4f96e7724c23e3201e6d8500349dcb067442962b81240d47b764b"
+    },
+    {
+      "path": "games/otthi/audio/engine-road-idle.ogg",
+      "bytes": 24582,
+      "sha256": "4ace075ac4ddcf31b8988b8f10db9f1e97ba1d7d7011c0a6c7c025988643fba7"
+    },
+    {
+      "path": "games/otthi/audio/engine-road-load.ogg",
+      "bytes": 31166,
+      "sha256": "6b532f0f2113cadb36dc6a9eb10eaa590bb3048ba5244fd04bfb94cd8b4985f7"
+    },
+    {
+      "path": "games/otthi/audio/engine-sport-idle.ogg",
+      "bytes": 53204,
+      "sha256": "635331ad8b779f16f4b71e623edb8ef9ad94ad99d6dc19081fae7f03fd22d8f6"
+    },
+    {
+      "path": "games/otthi/audio/engine-classic-load.ogg",
+      "bytes": 27349,
+      "sha256": "901b522975b3b47c62219851d35a6cd230ded25d0ef587ffb3aee40124fdd734"
+    },
+    {
+      "path": "games/otthi/audio/engine-sport-load.ogg",
+      "bytes": 61893,
+      "sha256": "fbb816f1d1575159df43c43b61273379c6be63abeed5490aa4ca065dfd123f7f"
+    },
+    {
+      "path": "games/otthi/audio/engine-classic-idle.ogg",
+      "bytes": 28703,
+      "sha256": "1da86b2d004880cca20cd8f0dedfcacc722c834f3645f7b4eaf14e5eec255e55"
+    },
+    {
+      "path": "games/otthi/audio/engine-heavy-load.ogg",
+      "bytes": 48697,
+      "sha256": "b1d9e30a7fc04581a8912dbab989beb46d55331db9da550341e7dd62c4d034af"
+    },
+    {
+      "path": "games/otthi/audio/engine-heavy-idle.ogg",
+      "bytes": 55014,
+      "sha256": "4547d24888550d38b13e078da8459466294e1469bace9a56a8f2d997f9e8f9e6"
+    },
+    {
+      "path": "games/otthi/audio/engine-moto-load.ogg",
+      "bytes": 32777,
+      "sha256": "68d31cb8f1f7bbada1ff85c33d0a88d468d6c5dafeace58705501fe7591384c5"
+    },
+    {
+      "path": "games/otthi/audio/engine-moto-idle.ogg",
+      "bytes": 34659,
+      "sha256": "2fbc7e7f8569fa615a189409494c9e72753434cd6e1bfaf643ce450c31e57b6e"
+    },
+    {
+      "path": "games/otthi/audio/engine-twin-load.ogg",
+      "bytes": 26473,
+      "sha256": "b5e7b86d90b9e2a640519c99534303072d4a18fd5b0ae9d912664228dbe1d308"
+    },
+    {
+      "path": "games/otthi/audio/engine-twin-idle.ogg",
+      "bytes": 26604,
+      "sha256": "9c5b3f8d75fec16bcbc42e4b716e234df32555a31eb2e7ca8321ae5e1a59c04b"
+    },
+    {
+      "path": "games/otthi/audio/engine-small-moto.ogg",
+      "bytes": 37087,
+      "sha256": "bcb70e69ec8adea3c81034eeb2e48b9bddc0cb97c6a8413935b18b1093f1d5b8"
+    },
+    {
+      "path": "games/otthi/audio/engine-rotor-recorded.ogg",
+      "bytes": 46014,
+      "sha256": "ebcecced8e946367352fb920bff495cc83ed118a8206e7c072f95001936a1d45"
+    },
+    {
+      "path": "games/otthi/audio/engine-jet-recorded.ogg",
+      "bytes": 58369,
+      "sha256": "7bd01e70f79dbc8056bd88779f27b3c58e224b22e477ba9ef65f23e5c3281653"
+    },
+    {
+      "path": "games/otthi/audio/engine-prop-recorded.ogg",
+      "bytes": 68617,
+      "sha256": "4b7b04f11a7281214aafebee136e7ed54a3889350266788b51cc80be96331582"
+    },
+    {
+      "path": "games/otthi/audio/engine-boat-recorded.ogg",
+      "bytes": 65444,
+      "sha256": "d41d01f712c7fb6ba7a32271b637ee43a44a8e0162e1fda16728ffafa8be9079"
+    },
+    {
+      "path": "games/otthi/audio/engine-fiat-load.ogg",
+      "bytes": 25967,
+      "sha256": "9e4f05c79c002151e9dfb3d1d555f73239465fd88318d1da3521f02306d0a494"
+    },
+    {
+      "path": "games/otthi/audio/engine-hornet-idle.ogg",
+      "bytes": 27052,
+      "sha256": "c05925af7130c7cea0af9379dc29e1e92085a278618fc1edacf93e07d81f3a52"
+    },
+    {
+      "path": "games/otthi/audio/engine-fiat-idle.ogg",
+      "bytes": 22250,
+      "sha256": "af1e209900e5f50298bea46c723a670af331d4bd19045c455a221056b6905e4c"
+    },
+    {
+      "path": "games/otthi/audio/engine-inline6-load.ogg",
+      "bytes": 27780,
+      "sha256": "529ab15ff5af6af8c37e30b363a68364d8f35e69ef601bfdb447b75be9830d61"
+    },
+    {
+      "path": "games/otthi/audio/engine-hornet-load.ogg",
+      "bytes": 28560,
+      "sha256": "ebdc179f86a2d3812e173a6d15cca9cef6a352bf5816fa41b113b238bd189ae2"
+    },
+    {
+      "path": "games/otthi/audio/engine-inline6-idle.ogg",
+      "bytes": 26754,
+      "sha256": "0ac6c82e1bade297e594f66d8a5d8ddc81938406860b6df9af82552ca1c587ab"
+    },
+    {
+      "path": "games/otthi/audio/engine-turbo6-idle.ogg",
+      "bytes": 24782,
+      "sha256": "ea46f3b6b311875aec663a584b7669812c2f503e6aa9505360152b7b9041b914"
+    },
+    {
+      "path": "games/otthi/audio/engine-flat6-idle.ogg",
+      "bytes": 25799,
+      "sha256": "0b1bbe7d3bc263935926250229682db08a62a75c7bc45c425d693afa4df18aec"
+    },
+    {
+      "path": "games/otthi/audio/engine-turbo6-load.ogg",
+      "bytes": 25477,
+      "sha256": "41881f51e6036bcbe8d85845b4581031f1f985da2a7d61dfd06dac3449698694"
+    },
+    {
+      "path": "games/otthi/audio/engine-flat6-load.ogg",
+      "bytes": 26314,
+      "sha256": "b83bacd8bfbe692c8241011145360f9304af5860cdb7a0124a977cfa73eabd80"
+    },
+    {
+      "path": "games/otthi/audio/engine-flatplane8-idle.ogg",
+      "bytes": 26209,
+      "sha256": "f91aa3833109f5e48ca9af9bae638f5885d526aecda7f7221bee02695f8e2287"
+    },
+    {
+      "path": "games/otthi/audio/engine-flatplane8-load.ogg",
+      "bytes": 26727,
+      "sha256": "43641b255fb78e6086f98d5ce250af32b7f343854d6444e2c76744656948c267"
+    },
+    {
+      "path": "games/otthi/audio/engine-coach-idle.ogg",
+      "bytes": 25341,
+      "sha256": "248e76db95f6112e1625aaba714fc4df56b838e7fff9ffa187e5d32e7054701e"
+    },
+    {
+      "path": "games/otthi/audio/engine-coach-load.ogg",
+      "bytes": 25460,
+      "sha256": "a743a7d16a8af44442bc73b94919f6d13354b8f94776ad710cc6096a10b72224"
+    },
+    {
+      "path": "games/otthi/audio/engine-triple-idle.ogg",
+      "bytes": 26583,
+      "sha256": "027cf1ae41dd928b7f2160619c651d9d069ffb5a0d1fea09e11f28ab07436076"
+    },
+    {
+      "path": "games/otthi/audio/engine-triple-load.ogg",
+      "bytes": 26510,
+      "sha256": "24c9d94de866b9b4e56132e080e5d7439612c3f4363a299285b639d21ad89699"
+    },
+    {
+      "path": "games/otthi/../atualizar/style.css",
+      "bytes": 1866,
+      "sha256": "dc667d5591ffe4972fd08cd34eb9732a804e5655077591d92d07d8ed268149b1"
+    },
+    {
+      "path": "games/otthi/../atualizar/update.js",
+      "bytes": 4819,
+      "sha256": "d99a25f49940f0be916e60fbb9319395a36904f55906a556414fccf928edcebc"
+    },
+    {
+      "path": "games/otthi/../atualizar/index.html",
+      "bytes": 1160,
+      "sha256": "5e72c9e61491ccf952e8f988606db1ea234654092fadf74ef15a840c2f62a940"
+    },
+    {
+      "path": "games/otthi/../ar/practice-controls.js",
+      "bytes": 2564,
+      "sha256": "c267d82cdc145b545b0497f4a6bd1e987048c5a37a3299cca235e1ca8ebbff14"
+    },
+    {
+      "path": "games/otthi/../ar/war-screen-orientation.js",
+      "bytes": 1633,
+      "sha256": "ca64543048113671526e9e02d62b83fcfa29b232e0c226c9c50bf13396e53604"
+    },
+    {
+      "path": "games/otthi/../ar/hand-controls.js",
+      "bytes": 31655,
+      "sha256": "a0fe07ea02197b8718ac03fbc430eec3f7309de1490630c03dd13b2effc6c926"
+    },
+    {
+      "path": "games/otthi/../ar/hand-tracker-worker.js",
+      "bytes": 2674,
+      "sha256": "01142f7fb63a927ebb183701186ba5be8468bcc8dc62bb51d54ff70946b1aa37"
+    },
+    {
+      "path": "games/otthi/../ar/object-flow.js",
+      "bytes": 3300,
+      "sha256": "fd41108100a633bba1c196ea62326663354880bdda11843703ac34af6181a147"
+    },
+    {
+      "path": "games/otthi/../ar/body-controls.js",
+      "bytes": 7972,
+      "sha256": "b8313f10fc5af734f20df7426906d33f7e438bc30f09c1594791ed9d2b966d9d"
+    },
+    {
+      "path": "games/otthi/../ar/body-tracker-worker.js",
+      "bytes": 1251,
+      "sha256": "ac2a1bed436a688d0c9fd9cd2c6c5f58fccd411c7de8a5c6b0aaf0807f45978b"
+    },
+    {
+      "path": "games/otthi/../ar/object-views.js",
+      "bytes": 2574,
+      "sha256": "06a8342318b8e771d8eb11f6303227ce58ec1db747ea963b2fd783989124ff85"
+    },
+    {
+      "path": "games/otthi/../ar/object-camera-registration.js",
+      "bytes": 8028,
+      "sha256": "7ad50e06aaa174c7261d1458ae38de5a28b430a84e585006c8f01f4a3d166a99"
+    },
+    {
+      "path": "games/otthi/../ar/object-aim.js",
+      "bytes": 3145,
+      "sha256": "b3222925075e74aa5447b1c0fd596381c07699ef09448d38d39558a571109578"
+    },
+    {
+      "path": "games/otthi/../ar/object-training.js",
+      "bytes": 12790,
+      "sha256": "3e45a532c3c30bb08ed865c3f98466cd38cfdf8b1bb54f4718b80632ca21d81e"
+    },
+    {
+      "path": "games/otthi/../ar/object-tracker.js",
+      "bytes": 12438,
+      "sha256": "7a12f278fb40c083528cf6815b9ba5cb374efca6ea468cd6c8d6dd94362d025f"
+    },
+    {
+      "path": "games/otthi/../ar/object-tracker-worker.js",
+      "bytes": 1060,
+      "sha256": "f03fe31c144e52f3c1feee6597866c7cc8334bbc01b804e837cf59f1873faf88"
+    },
+    {
+      "path": "games/otthi/../ar/combat-controls.css",
+      "bytes": 17593,
+      "sha256": "51ec758071b074bec562072d58ff502a99b3b7a25fc30602bba95344a38f43a4"
+    },
+    {
+      "path": "games/otthi/../ar/js/game_ar.js",
+      "bytes": 43327,
+      "sha256": "d4bb059eb68cd8bee6336d1d97e59523094814075b0bd4cdbdcba6925880618e"
+    },
+    {
+      "path": "games/otthi/../ar/sw.js",
+      "bytes": 5484,
+      "sha256": "635bdab3b2f816b7208695db5068a0e65a1e24c31ee4dbb261ee554f63fa19c0"
+    },
+    {
+      "path": "games/otthi/../ar/index.html",
+      "bytes": 27168,
+      "sha256": "d92023b777868fa0b9c48fcd7a637c306b4151ce76207aa5dc4298ecda34ade4"
+    },
+    {
+      "path": "games/otthi/../ar/combat-visuals.js",
+      "bytes": 10556,
+      "sha256": "223879f13781accbf00629fb9d57ba2fe15d94c117dc2a4d517c72765ed7a9e6"
+    },
+    {
+      "path": "games/otthi/../ar/combat-presentation.js",
+      "bytes": 7594,
+      "sha256": "28f5dc4a6577528e4c75c57de867cf91c89bd097c41c7b62710d2be87d762ba8"
+    },
+    {
+      "path": "games/otthi/../ar/multiplayer.js",
+      "bytes": 13945,
+      "sha256": "3876d3008382aed234ee7405fc23d441bb7c61e19332a37eef49a29efe9df275"
+    },
+    {
+      "path": "games/otthi/../ar/world-renderer.js",
+      "bytes": 53691,
+      "sha256": "021d8d14756fd6ed9f4dbdc69a0a7ec5d0b092f08c306aa81c8dbca86136b6c4"
+    },
+    {
+      "path": "games/otthi/../ar/assets/ground/concrete-albedo.jpg",
+      "bytes": 755740,
+      "sha256": "db7c800f1464359b5f359fc743e82ac51b34e014fdfd53844f4af34bb1949229"
+    },
+    {
+      "path": "games/otthi/../ar/assets/ground/sources.json",
+      "bytes": 1044,
+      "sha256": "930686df080e3f2337c6af435f8c31bd4ba207af302b2d7e430526edd01707f0"
+    },
+    {
+      "path": "games/otthi/../ar/assets/ground/concrete-arm.jpg",
+      "bytes": 177301,
+      "sha256": "44e3a0d18db295998c8af56ecc80095821e719e134974609aa92e5436709dabd"
+    },
+    {
+      "path": "games/otthi/../kart/index.html",
+      "bytes": 26109,
+      "sha256": "32064d89f4f20e823b38879747406dbe0e0a04c3c24d3ed81d1534d8e9f06085"
+    },
+    {
+      "path": "games/otthi/../ar/assets/ground/concrete-normal.jpg",
+      "bytes": 909898,
+      "sha256": "28be1f6fa82eeab137c84954bf7ea0f5d8a4434352d01c29f15e20926eb7227e"
+    },
+    {
+      "path": "games/otthi/../kart/sw.js",
+      "bytes": 4111,
+      "sha256": "0ae53cf537c7d4a38a4419c880b5e0bcdcb5802434e1683e901e67b951aa77c9"
+    },
+    {
+      "path": "games/otthi/../voo/sw.js",
+      "bytes": 4288,
+      "sha256": "3beebc188795479a73395903f538c7ae124ffd63f716a31b9ae8baecb64859b5"
+    },
+    {
+      "path": "games/otthi/../kart/js/game_kart.js",
+      "bytes": 153764,
+      "sha256": "c1a8d272a086f6125a278b2f4e95b65919f28e9e9b7dbfeb410eb3ae88953310"
+    },
+    {
+      "path": "games/otthi/../voo/world-renderer.js",
+      "bytes": 53691,
+      "sha256": "021d8d14756fd6ed9f4dbdc69a0a7ec5d0b092f08c306aa81c8dbca86136b6c4"
+    },
+    {
+      "path": "games/otthi/../voo/index.html",
+      "bytes": 26663,
+      "sha256": "eff823aa8fd9ea368aef7ee2685f99174e57007f71819ca936ea04c2d26d0a4e"
+    },
+    {
+      "path": "games/otthi/../ar/combat-infantry.js",
+      "bytes": 3940,
+      "sha256": "0216034f93b22811daf3c68c7b52db82de7d945b20e8067d404c15bc9e14a8c5"
+    },
+    {
+      "path": "games/otthi/../ar/vendor/SkeletonUtils-r128.js",
+      "bytes": 11872,
+      "sha256": "cc2e2e1a3183ab55169d185565f86f43f80c6dfafe73610d991e741ea990ac1a"
+    },
+    {
+      "path": "games/otthi/../ar/vendor/GLTFLoader-r128.js",
+      "bytes": 96550,
+      "sha256": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6"
+    },
+    {
+      "path": "games/otthi/../ar/vendor/RGBELoader-r128.js",
+      "bytes": 12572,
+      "sha256": "f6ba8cf5df528f1fd38b749d46cd7799a40b80d4eb1a5c5c072d31b1eae7f816"
+    },
+    {
+      "path": "games/otthi/../ar/vendor/THREE-LICENSE.txt",
+      "bytes": 1081,
+      "sha256": "7dddf7c5b8fd10ee654db8857d75d104b5557889aa5a91fc4ca545ea7c07062f"
+    },
+    {
+      "path": "games/otthi/../ar/assets/infantry/soldier.glb",
+      "bytes": 2160468,
+      "sha256": "dfb230fc1f942f259dd00281a1186953ad602fc5d69067ce63e24b2aa439736b"
+    },
+    {
+      "path": "games/otthi/../ar/assets/infantry/sources.json",
+      "bytes": 1405,
+      "sha256": "ee039cb44e2f8ac529b7c5047f5d5a810e1e222be18f5c7368d4b0909eb384c1"
+    },
+    {
+      "path": "arcade/index.html",
+      "bytes": 9696,
+      "sha256": "d634d8273c095007826ab1dbe860e721c6c01394f598695f85000ce6fa1b3739"
+    },
+    {
+      "path": "games/otthi/../ar/assets/sky/daylight-1k.hdr",
+      "bytes": 1435119,
+      "sha256": "fd94c84997b8a3c353b62c2125a9b44e19509956986a126e472684432a02d798"
+    },
+    {
+      "path": "games/otthi/../ar/assets/sky/sources.json",
+      "bytes": 538,
+      "sha256": "ce97c90e87ffafe3fe7c86fcf9565922ffd851e8054483aeb472466d678cc6e6"
+    },
+    {
+      "path": "arcade/app.js",
+      "bytes": 19263,
+      "sha256": "89e8fc92140a0d67f211f73d1fe40e2728e49276999e2ecb9787b2771ef60ab3"
+    },
+    {
+      "path": "arcade/sw.js",
+      "bytes": 4723,
+      "sha256": "dfedc0f701d9081c662ef049d8d034aec326fedc7ac1471dbf225eed27fbe786"
+    },
+    {
+      "path": "games/otthi/release-manifest.json",
+      "bytes": 14846,
+      "sha256": "19d7644ef67462875e93ac7c4735315c389997009ae7cf0542353df7bede76dd"
+    },
+    {
+      "path": "arcade/manifest.webmanifest",
+      "bytes": 869,
+      "sha256": "300a9e279c0081fa4cfd1a5714fe5ae45b95b9879133660c068e0921eff1e52f"
+    },
+    {
+      "path": "games/ar/world-renderer.js",
+      "bytes": 53691,
+      "sha256": "021d8d14756fd6ed9f4dbdc69a0a7ec5d0b092f08c306aa81c8dbca86136b6c4"
+    },
+    {
+      "path": "games/ar/js/core.js",
+      "bytes": 29495,
+      "sha256": "da294eb7e561d1fbbe2acde488cd45bd8d8ef6d10cae2442c687ad897eb50800"
+    },
+    {
+      "path": "games/ar/index.html",
+      "bytes": 27168,
+      "sha256": "d92023b777868fa0b9c48fcd7a637c306b4151ce76207aa5dc4298ecda34ade4"
+    },
+    {
+      "path": "games/voo/world-renderer.js",
+      "bytes": 53691,
+      "sha256": "021d8d14756fd6ed9f4dbdc69a0a7ec5d0b092f08c306aa81c8dbca86136b6c4"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "bytes": 43327,
+      "sha256": "d4bb059eb68cd8bee6336d1d97e59523094814075b0bd4cdbdcba6925880618e"
+    },
+    {
+      "path": "games/ar/hand-controls.js",
+      "bytes": 31655,
+      "sha256": "a0fe07ea02197b8718ac03fbc430eec3f7309de1490630c03dd13b2effc6c926"
+    },
+    {
+      "path": "games/ar/control-modes.js",
+      "bytes": 18110,
+      "sha256": "a5a9306d5c94b68ee185311a3c3182d03f17ab064669b6c0ecfa44f3d8936b49"
+    },
+    {
+      "path": "games/ar/mastery-gamepad.js",
+      "bytes": 12488,
+      "sha256": "d8335aa1dbb4332c07f1b1c1e8990e75f75c5f7860855153d078a7d4b01cedaa"
+    },
+    {
+      "path": "games/ar/combat-controls.css",
+      "bytes": 17593,
+      "sha256": "51ec758071b074bec562072d58ff502a99b3b7a25fc30602bba95344a38f43a4"
+    },
+    {
+      "path": "games/ar/sw.js",
+      "bytes": 5484,
+      "sha256": "635bdab3b2f816b7208695db5068a0e65a1e24c31ee4dbb261ee554f63fa19c0"
+    },
+    {
+      "path": "games/voo/sw.js",
+      "bytes": 4288,
+      "sha256": "3beebc188795479a73395903f538c7ae124ffd63f716a31b9ae8baecb64859b5"
+    },
+    {
+      "path": "games/voo/index.html",
+      "bytes": 26663,
+      "sha256": "eff823aa8fd9ea368aef7ee2685f99174e57007f71819ca936ea04c2d26d0a4e"
+    },
+    {
+      "path": "games/voo/js/game_flight.js",
+      "bytes": 132608,
+      "sha256": "b7388c1cfd7dd53ae60119458e7c94139a5d58424a2301c615f6ca46d5a43eb5"
+    },
+    {
+      "path": "games/tenis/index.html",
+      "bytes": 26109,
+      "sha256": "ffaff865460363006d10b3b99fe32d5b9b04554db8d29324877bbf7045c3443b"
+    },
+    {
+      "path": "games/tenis/js/game_tennis.js",
+      "bytes": 66821,
+      "sha256": "5c441334ce471b95ef05e303c2cb228f7c8d448429a1d4e545a3d1ae7538ab61"
+    },
+    {
+      "path": "games/tenis/sw.js",
+      "bytes": 4128,
+      "sha256": "e362161d17921436a615476d422d1b386b2807b800322ab696b6a52bf2be3e7f"
+    }
+  ],
+  "failures": [],
+  "limits": [
+    "Read-only HTTP content verification. No user login, camera, saved account, live room or database mutation."
+  ],
+  "passed": true,
+  "checkedAt": "2026-11-10T18:40:45.555Z"
+}
