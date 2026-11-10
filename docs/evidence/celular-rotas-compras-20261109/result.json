@@ -1,0 +1,613 @@
+{
+  "limits": [
+    "Disposable local profile and isolated RTDB fixture. Native geometry, controls and dispatch code; no live player data.",
+    "Software WebGL confirms rendering and behavior, not physical Android temperature or sustained FPS."
+  ],
+  "before": {
+    "target": {
+      "id": "playmobil-utility",
+      "from": {
+        "x": 48,
+        "z": 217.5,
+        "yaw": 1.6745886672519397
+      },
+      "player": {
+        "x": 90.4747574101838,
+        "z": 206.03767113776456
+      }
+    },
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [],
+      "last": null
+    },
+    "coins": 8000,
+    "passiveGifts": [],
+    "owned": [
+      "garage-orange",
+      "playmobil-utility"
+    ],
+    "damage": {
+      "ottovias-service": 100,
+      "garage-orange": 100,
+      "market-blue": 100,
+      "workshop-red": 100,
+      "home-green": 100,
+      "royal-purple": 100,
+      "gym-yellow": 100,
+      "forest-teal": 100,
+      "city-white": 100,
+      "adventure-black": 100,
+      "country-brown": 100,
+      "city-aurora-coupe-0": 100,
+      "city-aurora-coupe-1": 100,
+      "city-costa-coupe-0": 100,
+      "city-costa-coupe-1": 100,
+      "playmobil-utility": 100
+    },
+    "vehicle": null
+  },
+  "blocker": {
+    "x": 61.09297538733419,
+    "z": 216.48173957186305
+  },
+  "detour": {
+    "reroutes": 1,
+    "distance": 58.29064009759063,
+    "jump": 0.30842400000000625
+  },
+  "ground": {
+    "dispatched": {
+      "phone": {
+        "pending": false,
+        "job": {
+          "id": "playmobil-utility",
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          },
+          "x": 48.00099577710711,
+          "z": 217.49992255691365,
+          "waiting": false,
+          "driverVisible": true
+        },
+        "tracking": {
+          "id": "playmobil-utility",
+          "kind": "ground",
+          "x": 48.00099577710711,
+          "z": 217.49992255691365,
+          "yaw": 1.6484116025450348,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          },
+          "route": [
+            {
+              "x": 48.00099577710711,
+              "z": 217.49992255691365
+            },
+            {
+              "x": 99.3618388633826,
+              "z": 213.5055123847921
+            },
+            {
+              "x": 98.89793206047757,
+              "z": 209.6846053036974
+            }
+          ],
+          "distance": 55.36490072783525,
+          "waiting": false,
+          "ready": false,
+          "reroutes": 0,
+          "label": "Seu motorista"
+        },
+        "orders": [],
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "en-route",
+          "at": 1794276283057,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          },
+          "orderId": ""
+        }
+      },
+      "coins": 8000,
+      "passiveGifts": [],
+      "owned": [
+        "garage-orange",
+        "playmobil-utility"
+      ],
+      "damage": {
+        "ottovias-service": 100,
+        "garage-orange": 100,
+        "market-blue": 100,
+        "workshop-red": 100,
+        "home-green": 100,
+        "royal-purple": 100,
+        "gym-yellow": 100,
+        "forest-teal": 100,
+        "city-white": 100,
+        "adventure-black": 100,
+        "country-brown": 100,
+        "city-aurora-coupe-0": 100,
+        "city-aurora-coupe-1": 100,
+        "city-costa-coupe-0": 100,
+        "city-costa-coupe-1": 100,
+        "playmobil-utility": 100
+      },
+      "vehicle": {
+        "id": "playmobil-utility",
+        "x": 48.00099577710711,
+        "z": 217.49992255691365,
+        "occupied": true
+      }
+    },
+    "arrived": {
+      "phone": {
+        "pending": false,
+        "job": null,
+        "tracking": null,
+        "orders": [],
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "delivered",
+          "at": 1794276301988,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          }
+        }
+      },
+      "coins": 8000,
+      "passiveGifts": [],
+      "owned": [
+        "garage-orange",
+        "playmobil-utility"
+      ],
+      "damage": {
+        "ottovias-service": 100,
+        "garage-orange": 100,
+        "market-blue": 100,
+        "workshop-red": 100,
+        "home-green": 100,
+        "royal-purple": 100,
+        "gym-yellow": 100,
+        "forest-teal": 100,
+        "city-white": 100,
+        "adventure-black": 100,
+        "country-brown": 100,
+        "city-aurora-coupe-0": 100,
+        "city-aurora-coupe-1": 100,
+        "city-costa-coupe-0": 100,
+        "city-costa-coupe-1": 100,
+        "playmobil-utility": 100,
+        "phone-qa-blocker": 100
+      },
+      "vehicle": null
+    }
+  },
+  "storage": {
+    "owned": [
+      "garage-orange",
+      "playmobil-utility",
+      "phone-qa-owned-1",
+      "phone-qa-owned-2",
+      "phone-qa-owned-3",
+      "phone-qa-owned-4"
+    ],
+    "stored": {
+      "playmobil-utility": true,
+      "phone-qa-owned-1": true,
+      "phone-qa-owned-2": true,
+      "phone-qa-owned-3": true,
+      "phone-qa-owned-4": true,
+      "garage-orange": true
+    },
+    "visible": []
+  },
+  "parcelPaid": {
+    "coins": 7993,
+    "food": 3,
+    "orders": [
+      {
+        "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "en-route",
+        "at": 1794276314476,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        }
+      }
+    ],
+    "owned": [
+      "garage-orange",
+      "playmobil-utility",
+      "phone-qa-owned-1",
+      "phone-qa-owned-2",
+      "phone-qa-owned-3",
+      "phone-qa-owned-4"
+    ]
+  },
+  "parcelResumed": {
+    "coins": 7993,
+    "food": 3,
+    "orders": [
+      {
+        "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "en-route",
+        "at": 1794276314476,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": -1.35,
+          "z": 44.65337874933526,
+          "yaw": 0
+        }
+      }
+    ],
+    "owned": [
+      "garage-orange",
+      "playmobil-utility",
+      "phone-qa-owned-1",
+      "phone-qa-owned-2",
+      "phone-qa-owned-3",
+      "phone-qa-owned-4"
+    ]
+  },
+  "parcelReady": {
+    "pending": false,
+    "job": {
+      "id": "phone-parcel-courier",
+      "target": {
+        "x": 98.89298573158106,
+        "z": 209.6851205462908,
+        "yaw": 1.6745886672519397
+      },
+      "x": 98.89298573158106,
+      "z": 209.6851205462908,
+      "waiting": false,
+      "driverVisible": true
+    },
+    "tracking": {
+      "id": "phone-parcel-courier",
+      "kind": "parcel",
+      "x": 98.89298573158106,
+      "z": 209.6851205462908,
+      "yaw": -3.0262030575763013,
+      "target": {
+        "x": 98.89298573158106,
+        "z": 209.6851205462908,
+        "yaw": 1.6745886672519397
+      },
+      "route": [
+        {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908
+        }
+      ],
+      "distance": 0,
+      "waiting": false,
+      "ready": true,
+      "reroutes": 0,
+      "label": "Sua encomenda"
+    },
+    "orders": [
+      {
+        "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "ready",
+        "at": 1794276314476,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": -3.0262030575763013
+        }
+      }
+    ],
+    "last": {
+      "id": "playmobil-utility",
+      "type": "ground",
+      "status": "delivered",
+      "at": 1794276301988,
+      "target": {
+        "x": 98.89793206047757,
+        "z": 209.6846053036974,
+        "yaw": 1.6745886672519397
+      }
+    }
+  },
+  "parcelReceived": {
+    "coins": 7993,
+    "food": 5,
+    "orders": [
+      {
+        "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "delivered",
+        "at": 1794276314476,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": -3.0262030575763013
+        },
+        "receivedAt": 1794276401046
+      }
+    ],
+    "owned": [
+      "garage-orange",
+      "playmobil-utility",
+      "phone-qa-owned-1",
+      "phone-qa-owned-2",
+      "phone-qa-owned-3",
+      "phone-qa-owned-4"
+    ]
+  },
+  "vehiclePurchase": {
+    "price": 1185,
+    "before": {
+      "coins": 7993,
+      "food": 5,
+      "orders": [
+        {
+          "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794276314476,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": 1.6745886672519397
+          },
+          "pose": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": -3.0262030575763013
+          },
+          "receivedAt": 1794276401046
+        }
+      ],
+      "owned": [
+        "garage-orange",
+        "playmobil-utility",
+        "phone-qa-owned-1",
+        "phone-qa-owned-2",
+        "phone-qa-owned-3",
+        "phone-qa-owned-4"
+      ],
+      "gifts": []
+    },
+    "after": {
+      "coins": 6824,
+      "food": 8,
+      "orders": [
+        {
+          "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794276314476,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": 1.6745886672519397
+          },
+          "pose": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": -3.0262030575763013
+          },
+          "receivedAt": 1794276401046
+        },
+        {
+          "id": "order-bda924c5-11de-4293-b74d-f58a02b35eb6",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "delivered",
+          "at": 1794276402805,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-5-c02b1322842d4a6b9638a8401d491006"
+        }
+      ],
+      "owned": [
+        "garage-orange",
+        "playmobil-utility",
+        "phone-qa-owned-1",
+        "phone-qa-owned-2",
+        "phone-qa-owned-3",
+        "phone-qa-owned-4",
+        "unit-br-palio-5-c02b1322842d4a6b9638a8401d491006"
+      ],
+      "gifts": [
+        {
+          "amount": 8,
+          "source": "native NPC society gift",
+          "at": 1794276440935.3333
+        },
+        {
+          "amount": 8,
+          "source": "native NPC society gift",
+          "at": 1794276451967.3333
+        }
+      ],
+      "phone": {
+        "pending": false,
+        "job": null,
+        "tracking": null,
+        "orders": [
+          {
+            "id": "order-cd9eda46-0190-43c4-9a90-1494cdecdf9d",
+            "kind": "parcel",
+            "label": "Comida",
+            "price": 15,
+            "status": "delivered",
+            "at": 1794276314476,
+            "owner": "browser-test-user-123456789012345",
+            "itemKey": "food",
+            "origin": {
+              "x": -22,
+              "z": -1.35,
+              "yaw": 1.5707963267948966
+            },
+            "target": {
+              "x": 98.89298573158106,
+              "z": 209.6851205462908,
+              "yaw": 1.6745886672519397
+            },
+            "pose": {
+              "x": 98.89298573158106,
+              "z": 209.6851205462908,
+              "yaw": -3.0262030575763013
+            },
+            "receivedAt": 1794276401046
+          },
+          {
+            "id": "order-bda924c5-11de-4293-b74d-f58a02b35eb6",
+            "kind": "vehicle",
+            "label": "Fiat Palio Fire Economy Celebration 2011",
+            "price": 1185,
+            "status": "delivered",
+            "at": 1794276402805,
+            "owner": "browser-test-user-123456789012345",
+            "vehicleId": "unit-br-palio-5-c02b1322842d4a6b9638a8401d491006"
+          }
+        ],
+        "last": {
+          "id": "unit-br-palio-5-c02b1322842d4a6b9638a8401d491006",
+          "type": "ground",
+          "status": "delivered",
+          "at": 1794276586204.3333,
+          "target": {
+            "x": 106.38621466865834,
+            "z": 208.90457586534524,
+            "yaw": 1.6745886672519397
+          }
+        }
+      }
+    }
+  },
+  "layouts": [
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "left": 21,
+      "right": 369,
+      "viewport": 390,
+      "scrollWidth": 346,
+      "clientWidth": 346,
+      "groundButtons": 7
+    },
+    {
+      "size": {
+        "width": 844,
+        "height": 390
+      },
+      "left": 19,
+      "right": 825,
+      "viewport": 844,
+      "scrollWidth": 804,
+      "clientWidth": 804,
+      "groundButtons": 7
+    },
+    {
+      "size": {
+        "width": 360,
+        "height": 740
+      },
+      "left": 21,
+      "right": 339,
+      "viewport": 360,
+      "scrollWidth": 316,
+      "clientWidth": 316,
+      "groundButtons": 7
+    }
+  ],
+  "passed": true,
+  "errors": []
+}

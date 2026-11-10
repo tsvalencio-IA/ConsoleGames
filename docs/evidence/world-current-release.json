@@ -1,18 +1,18 @@
 {
-  "status": "Published autonomous NPC workshop, longer and precise Kart races, and revised WAR combat presentation; physical phone verification remains limited",
-  "build": "705.28.23-oficina-combate-kart",
-  "revision": "00b49a044927f542",
-  "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
-  "runtimeWorldCommit": "5f51324be6a284d858dfa198dd668ae722756455",
-  "previewUrl": "https://otthi-world-campanha-teste-naz0xoz4p-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_HwLXTcceh3LSDqpTwQNNfEkXAca2",
+  "status": "Published phone driver recovery, live route tracking, complete owned-vehicle storage, and physical phone purchases with pending-order reload and receipt verification",
+  "build": "705.28.24-celular-entregas-garagem",
+  "revision": "b41039decb7d7b28",
+  "runtimeCommit": "175ba82b7bdd46637cca6854a32517971d85200a",
+  "runtimeWorldCommit": "175ba82b7bdd46637cca6854a32517971d85200a",
+  "previewUrl": "https://otthi-world-campanha-teste-k1tgo53eb-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_B9iFuV1mUL2i4fQKeActVrJDmwzi",
   "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY",
-  "productionSource": "5f51324be6a284d858dfa198dd668ae722756455",
+  "productionDeployment": "dpl_8EQ1N1WrnuiNaADb5Hz75rvUfPCA",
+  "productionSource": "175ba82b7bdd46637cca6854a32517971d85200a",
   "productionReady": true,
-  "productionAcceptanceStatus": "422 unit tests; 164 public hashes; all six final evolution browser jobs succeeded, including NPC workshop collection, reload, Kart precision and installed update.",
+  "productionAcceptanceStatus": "428 unit tests; all seven final evolution browser jobs passed; 164 public file hashes match. Native stopped-car detour, live map, six stored vehicles, pending parcel reload, one receipt and new purchased car arrival passed.",
   "unitTests": {
-    "passed": 422,
+    "passed": 428,
     "failed": 0
   },
   "checks": {
@@ -49,20 +49,22 @@
     "finalSceneryRun": 42375696565,
     "finalSceneryConclusion": "success",
     "previousPublicVerifiedFiles": 129,
-    "evolutionFinalRun": 42659723387,
+    "evolutionFinalRun": 42740140370,
     "evolutionFinalConclusion": "success",
     "evolutionFinalJobs": [
-      "pouso",
-      "duas-maos",
-      "kart-precisao-e-copa",
       "atualizacao-da-candidata",
       "oficina-autonoma",
-      "celular-e-entregas"
+      "pouso",
+      "celular-e-entregas",
+      "celular-rotas-e-compras",
+      "kart-precisao-e-copa",
+      "duas-maos"
     ],
     "realKartCameraRun": 42657634241,
     "realKartCameraConclusion": "success",
     "realKartCameraSource": "748a9a198a56a737676425f2e838f557bc1e3644",
-    "realKartCameraScope": "Kart, WAR and aircraft sources are unchanged between this camera-verified source and the production runtime commit."
+    "realKartCameraScope": "Kart, WAR and aircraft sources are unchanged between this camera-verified source and the production runtime commit.",
+    "phoneOrdersArtifact": 13728194850
   },
   "previewConfiguration": {
     "branch": "console-evolution-20261106",
@@ -80,19 +82,19 @@
     "productionDeployment": "dpl_HwQDkUK4MqmzRsCH3jXdqsbUDdjR",
     "productionSource": "d69afb61c5544c87b0476f6f958c106f0dad5f8e"
   },
-  "evidenceDirectory": "combate-kart-20261109",
-  "productionAcceptanceReport": "combate-kart-20261109/http-integrity.json",
-  "productionHttpIntegrityReport": "combate-kart-20261109/http-integrity.json",
-  "sourceCoherence": "All 143 manifest resources and 164 public file hashes match the publication output.",
-  "publishedAt": "2026-11-09",
-  "publicationPreparation": "Production pinned to runtime commit 5f51324be6a284d858dfa198dd668ae722756455; evidence-only commit does not redeploy product source.",
-  "productionVerifiedAt": "2026-11-09T16:58:20.536Z",
+  "evidenceDirectory": "celular-rotas-compras-20261109",
+  "productionAcceptanceReport": "celular-rotas-compras-20261109/result.json",
+  "productionHttpIntegrityReport": "celular-rotas-compras-20261109/http-integrity.json",
+  "sourceCoherence": "143 manifest resources and 164 published files verified against source.",
+  "publishedAt": "2026-11-10T02:08:42.707Z",
+  "publicationPreparation": "Production is pinned to runtime commit 175ba82b7bdd46637cca6854a32517971d85200a; a subsequent evidence-only commit does not redeploy the runtime.",
+  "productionVerifiedAt": "2026-11-10T02:08:42.707Z",
   "previousReleaseRecord": {
-    "build": "705.28.21-war-revisao",
-    "revision": "4d8e8395e38c85ce",
-    "runtimeCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
-    "productionSource": "1506219af05a8dae04020dc7045c06eaf9409819",
-    "productionDeployment": "dpl_GcVLwTNWBLPTCzM3AUPiusTJSESq"
+    "build": "705.28.23-oficina-combate-kart",
+    "revision": "00b49a044927f542",
+    "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
+    "productionSource": "5f51324be6a284d858dfa198dd668ae722756455",
+    "productionDeployment": "dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY"
   },
   "warRevision": {
     "cache": 54,
@@ -141,5 +143,20 @@
     "gameplayRun": 42431707330,
     "gameplayConclusion": "success",
     "installedUpdateReport": "war-revisao-20261107/installed-update.json"
+  },
+  "phoneDelivery": {
+    "groundDetours": true,
+    "liveMap": true,
+    "completeGarageStorage": true,
+    "parcelResumeAndReceipt": true,
+    "vehiclePurchaseDelivered": true,
+    "mobileViewports": [
+      "390x844",
+      "844x390",
+      "360x740"
+    ],
+    "evidence": "celular-rotas-compras-20261109/result.json",
+    "nativeBrowserRun": 42740140370,
+    "physicalDeviceVerified": false
   }
 }
