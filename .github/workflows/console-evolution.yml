@@ -10,6 +10,23 @@ concurrency:
   group: console-evolution-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  transito-e-fluidez:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: git fetch --depth=1 origin 175ba82b7bdd46637cca6854a32517971d85200a
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node --test tests/world-traffic-flow.test.mjs tests/world-phone-orders.test.mjs
+      - run: node tests/world-traffic-flow-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: world-traffic-flow-and-cpu
+          path: test-results/world-traffic-flow/
   celular-rotas-e-compras:
     runs-on: ubuntu-24.04
     timeout-minutes: 18

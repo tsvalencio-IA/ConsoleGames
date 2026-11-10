@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.24-celular-entregas-garagem',
+    build: '705.28.25-transito-fluidez',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

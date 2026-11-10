@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.24-celular-entregas-garagem",
+  "build": "705.28.25-transito-fluidez",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "6d737eac040f41a67d2ab2ee1971c1336dabfda7305ca8d1d6e233dbe04f59be"
+      "sha256Body": "abdabcfc13bc3fde4f9a6bc8627e5fcbdf5b7f8da616e66c338fb017ec5d1087"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "d3a5400f51f3d32117cc5efa0fc4b6d8937c25896582fe248e23de0151094a99"
+      "sha256Body": "ea243dfb8ce320c6f6c06911a1bb4d4cdb1727a295f8f6587e532324c9ef4a23"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "f8f7324c5afe4ef45cebe306596cee5eb953b5cc3c7d6aacc4a8a10232f94d89"
+      "sha256Body": "4ad8fb8dc25237a19e1cd7648affdff107e01fab71f1824dee2842a39e0a0744"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "050b72b7e5e4ce36222b1bef624e71ad7b012b716a47c0c4a3b431ff6388e639"
+      "sha256Body": "1a0d7eb1d35f58b481eb72d01e56b809383b76b566ef3da906304641dc1cd2ab"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -609,7 +609,7 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "f4c8ade3620764d80e33e38377066c7db0d28c00c31419376372664825008c5c"
+      "sha256Body": "504231dcc9de367d54cc4e5f628a4d114465cec0fc504cccb621e3556221fe1e"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",

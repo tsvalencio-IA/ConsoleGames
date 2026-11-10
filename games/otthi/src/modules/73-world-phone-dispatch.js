@@ -24,20 +24,21 @@
 
  // Bounded local A*: every edge is swept through the real vehicle footprint.
  // A failed search keeps the car stopped; it never moves through a blocker.
- function phoneFindDetour(from,goals,canTravel,{step=2,maxNodes=1100,radius=46}={}){
-  if(!goals.length)return null;const nodes=[],open=[],best=new Map(),goalDistance=p=>Math.min(...goals.map(g=>Math.hypot(g.x-p.x,g.z-p.z)));
-  const start={x:from.x,z:from.z,yaw:from.yaw||0,g:0,parent:null};start.f=goalDistance(start);nodes.push(start);open.push(start);best.set('0:0:start',0);
+ function* phoneDetourSteps(from,goals,canTravel,{step=2,maxNodes=1100,radius=46}={}){
+  if(!goals.length)return null;let checks=0;const open=[],best=new Map(),goalDistance=p=>Math.min(...goals.map(g=>Math.hypot(g.x-p.x,g.z-p.z)));
+  const start={x:from.x,z:from.z,yaw:from.yaw||0,g:0,parent:null};start.f=goalDistance(start);open.push(start);best.set('0:0:start',0);
   for(let count=0;open.length&&count<maxNodes;count++){
    let at=0;for(let i=1;i<open.length;i++)if(open[i].f<open[at].f)at=i;const p=open.splice(at,1)[0];
-   for(let i=0;i<goals.length;i++){const goal=goals[i],distance=Math.hypot(goal.x-p.x,goal.z-p.z);if(distance>step*1.6||!canTravel(p,goal))continue;const path=[{x:goal.x,z:goal.z}];for(let n=p;n;n=n.parent)path.push({x:n.x,z:n.z});return{points:path.reverse(),goalIndex:i,visited:count+1};}
+   for(let i=0;i<goals.length;i++){const goal=goals[i],distance=Math.hypot(goal.x-p.x,goal.z-p.z);if(distance>step*1.6)continue;if(++checks%8===0)yield null;if(!canTravel(p,goal))continue;const path=[{x:goal.x,z:goal.z}];for(let n=p;n;n=n.parent)path.push({x:n.x,z:n.z});return{points:path.reverse(),goalIndex:i,visited:count+1};}
    for(let dir=0;dir<8;dir++){
     const angle=dir*Math.PI/4,x=from.x+Math.round((p.x-from.x)/step+Math.sin(angle))*step,z=from.z+Math.round((p.z-from.z)/step+Math.cos(angle))*step;
     if(Math.hypot(x-from.x,z-from.z)>radius)continue;const turn=Math.abs(Math.atan2(Math.sin(angle-p.yaw),Math.cos(angle-p.yaw)));if(p.parent&&turn>Math.PI*.76)continue;
     const next={x,z,yaw:angle,parent:p},g=p.g+Math.hypot(x-p.x,z-p.z)+turn*.65,key=Math.round((x-from.x)/step)+':'+Math.round((z-from.z)/step)+':'+dir;
-    if(g>=(best.get(key)??Infinity)||!canTravel(p,next))continue;best.set(key,g);next.g=g;next.f=g+goalDistance(next);open.push(next);
+    if(g>=(best.get(key)??Infinity))continue;if(++checks%8===0)yield null;if(!canTravel(p,next))continue;best.set(key,g);next.g=g;next.f=g+goalDistance(next);open.push(next);
    }
   }return null;
  }
+ function phoneFindDetour(...args){const search=phoneDetourSteps(...args);let result;do{result=search.next();}while(!result.done);return result.value;}
  function phoneGroundRoute(vehicle,from,target){
   const core=buildRoutePoints(from,target);if(core.length<2)return core;
   const route=offsetBrazilianTrafficPath(core,1.35,{closed:false,valid:(x,z)=>v704RoadAt(x,z,.1,false)&&!navBlocked(x,z)});
@@ -52,25 +53,34 @@
   }return true;
  }
  function phoneRecoverRoute(job,dt){
-  job.blockedFor=job.route.blocked?(job.blockedFor||0)+dt:0;job.replanIn=Math.max(0,(job.replanIn||0)-dt);
-  if(job.blockedFor<1.8||job.replanIn>0)return false;job.replanIn=3;
-  const motion=job.route,from={x:motion.x,z:motion.z,yaw:motion.yaw},goals=[];let length=0,last=from;
-  for(let i=motion.index;i<motion.points.length&&length<42;i++){
-   const p=motion.points[i],d=Math.hypot(p.x-last.x,p.z-last.z),samples=Math.max(1,Math.ceil(d/6));
-   for(let n=1;n<=samples;n++){const t=n/samples,x=last.x+(p.x-last.x)*t,z=last.z+(p.z-last.z)*t,travel=length+d*t;if(travel>=9&&travel<=42)goals.push({x,z,index:i});}length+=d;last=p;
+  job.blockedFor=job.route.blocked?(job.blockedFor||0)+dt:0;job.replanIn=Math.max(0,(job.replanIn||0)-dt);job.searchFailed=false;
+  if(!job.route.blocked||job.pathSearch&&job.pathSearch.motion!==job.route){job.pathSearch=null;return false;}
+  if(!job.pathSearch){
+   if(job.blockedFor<1.8||job.replanIn>0)return false;const motion=job.route,from={x:motion.x,z:motion.z,yaw:motion.yaw},goals=[];let length=0,last=from;
+   for(let i=motion.index;i<motion.points.length&&length<42;i++){const p=motion.points[i],d=Math.hypot(p.x-last.x,p.z-last.z),samples=Math.max(1,Math.ceil(d/6));for(let n=1;n<=samples;n++){const t=n/samples,x=last.x+(p.x-last.x)*t,z=last.z+(p.z-last.z)*t,travel=length+d*t;if(travel>=9&&travel<=42)goals.push({x,z,index:i});}length+=d;last=p;}
+   if(!goals.length)goals.push({...job.target,index:motion.points.length-1});
+   job.pathSearch={motion,goals,steps:phoneDetourSteps(from,goals,(a,b)=>phoneTravelClear(job.vehicle,a,b,true))};
   }
-  if(!goals.length)goals.push({...job.target,index:motion.points.length-1});
-  const detour=phoneFindDetour(from,goals,(a,b)=>phoneTravelClear(job.vehicle,a,b,true));
-  if(!detour)return false;const rejoin=goals[detour.goalIndex],points=compactRoute([...detour.points,...motion.points.slice(rejoin.index)]);
-  job.route=new PhoneDriveRoute(points,motion.yaw);job.reroutes=(job.reroutes||0)+1;job.blockedFor=0;job.waiting=false;return true;
+  // At most eight swept edge checks per simulation frame, including failure.
+  // The synchronous helper is retained only for deterministic offline tests.
+  const search=job.pathSearch,result=search.steps.next();job.searchSlices=(job.searchSlices||0)+1;if(!result.done)return false;
+  job.pathSearch=null;job.replanIn=3;const detour=result.value;if(!detour){job.searchFailed=true;return false;}
+  const rejoin=search.goals[detour.goalIndex],points=compactRoute([...detour.points,...search.motion.points.slice(rejoin.index)]);
+  job.route=new PhoneDriveRoute(points,search.motion.yaw);job.reroutes=(job.reroutes||0)+1;job.blockedFor=0;job.waiting=false;return true;
  }
 
- function phoneVehicleProbes(vehicle,yaw){
+ const phoneProbeCache=new WeakMap();
+
+ function phoneBuildVehicleProbes(vehicle,yaw){
   const special=brazilDriveProbes(vehicle,yaw);if(special)return special;
   const data=vehicle?.group?.userData?.brazilRoot?.userData||{},front=Number(data.front)||1.8,rear=Number(data.rear)||-1.9,width=Number(data.halfWidth)||.8,points=[];
   for(let z=rear;z<front;z+=.65)for(const x of[-width,0,width])points.push([x*Math.cos(yaw)+z*Math.sin(yaw),-x*Math.sin(yaw)+z*Math.cos(yaw),.22]);
   for(const x of[-width,0,width])points.push([x*Math.cos(yaw)+front*Math.sin(yaw),-x*Math.sin(yaw)+front*Math.cos(yaw),.22]);
   return points;
+ }
+ function phoneVehicleProbes(vehicle,yaw){
+  if(!vehicle||typeof vehicle!=='object')return phoneBuildVehicleProbes(vehicle,yaw);const root=vehicle.group?.userData?.brazilRoot,data=root?.userData||{},signature=[data.front,data.rear,data.halfWidth,vehicle.brazilModel].join(':');let cache=phoneProbeCache.get(vehicle);
+  if(!cache||cache.root!==root||cache.signature!==signature){cache={root,signature,angles:new Map()};phoneProbeCache.set(vehicle,cache);}if(cache.angles.has(yaw))return cache.angles.get(yaw);const result=phoneBuildVehicleProbes(vehicle,yaw);cache.angles.set(yaw,result);if(cache.angles.size>48)cache.angles.delete(cache.angles.keys().next().value);return result;
  }
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
@@ -253,12 +263,12 @@
   const q=miniPoint(t.x,t.z,scale,w,h),x=clamp(q.x,12,w-12),y=clamp(q.y,36,h-12);ctx.translate(x,y);ctx.rotate(Math.atan2(q.x-x,-(q.y-y))||t.yaw);ctx.fillStyle='#ffbd45';ctx.strokeStyle='#102936';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(7,7);ctx.lineTo(-7,7);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
  }
  function phoneAdvanceJob(job,dt){
-  if(job.ready)return;const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
+  if(job.ready)return;if(job.vehicle.incidentLocked){job.route.blocked=true;job.route.speed=0;job.waiting=true;return;}const motion=job.route.step(dt,(x,z,yaw)=>phoneVehiclePoseClear(job.vehicle,x,z,yaw,true),brazilDepotVehicle(job.id)?4:7),v=job.vehicle,oldX=v.group.position.x,oldZ=v.group.position.z;
   v.group.position.set(motion.x,groundHeightAt(motion.x,motion.z),motion.z);v.group.rotation.y=motion.yaw;v.x=motion.x;v.z=motion.z;v.heading=motion.yaw;v.currentSpeed=motion.speed;v.speed=7;
   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
   const recovered=phoneRecoverRoute(job,dt);
-  if(!recovered&&job.blockedFor>12&&job.replanIn===3&&job.kind!=='return'){
+  if(!recovered&&job.blockedFor>12&&job.searchFailed&&job.kind!=='return'){
    const target=phoneGroundDestination(v,true,job.target);if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
   }
  }
@@ -274,7 +284,7 @@
    // Follow a walking caller, retaining a safe roadside stop rather than the
    // stale position where the request was originally made.
    job.targetCheck=(job.targetCheck||0)+dt;if(job.targetCheck>2){job.targetCheck=0;if(!job.ready&&!player.vehicle&&!currentHouse&&job.caller&&Math.hypot(player.x-job.caller.x,player.z-job.caller.z)>18){const target=phoneGroundDestination(v);if(target){job.target=target;job.caller={x:player.x,z:player.z};job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}}}
-   if(now-job.saveAt>1000){job.saveAt=now;if(job.kind==='parcel')phoneSaveParcelPose(job);else persistParkedVehicle(v);saveState();}
+   if(now-job.saveAt>5000&&(!job.savedPose||Math.hypot(v.x-job.savedPose.x,v.z-job.savedPose.z)>.5)){job.saveAt=now;job.savedPose={x:v.x,z:v.z};if(job.kind==='parcel')phoneSaveParcelPose(job);else persistParkedVehicle(v);saveState();}
    if(job.route.arrived&&!job.ready)phoneFinishGround();
   }
   const walk=worldPhone.walkAway;if(walk){const elapsed=(now-walk.at)/1000,p=walk.driver.group.position,x=p.x+Math.sin(walk.yaw)*dt,z=p.z+Math.cos(walk.yaw)*dt;if(!positionBlockedForPlayer(x,z,.25,{ignoreTraffic:false})){p.x=x;p.z=z;p.y=groundHeightAt(x,z);}const step=Math.sin(elapsed*8)*.35;walk.driver.leftLeg.rotation.x=step;walk.driver.rightLeg.rotation.x=-step;walk.driver.leftArm.rotation.x=-step;walk.driver.rightArm.rotation.x=step;if(elapsed>10){phoneRemoveDriver(walk.driver);worldPhone.walkAway=null;}}

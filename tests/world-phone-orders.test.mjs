@@ -11,6 +11,10 @@ test('sealed passage has no invented route, and even the last 16cm never snaps t
  const c=fixture();assert.equal(c.phoneFindDetour({x:0,z:0},[{x:0,z:10}],(a,b)=>b.z<4&&Math.abs(b.x)<3,{maxNodes:180}),null);
  const r=new c.Q.PhoneDriveRoute([{x:0,z:0},{x:0,z:.1}]);r.step(.1,()=>false);assert.equal(r.z,0);assert(!r.arrived);assert(r.blocked);
 });
+test('live detour search yields after at most eight expensive checks, including a completely blocked road',()=>{
+ const c=fixture();let calls=0,slices=0;const search=c.phoneDetourSteps({x:0,z:0},[{x:0,z:35}],(a,b)=>{calls++;return b.z<20&&Math.abs(b.x)<14;},{maxNodes:300});let next;
+ do{calls=0;next=search.next();assert(calls<=8,'a single frame cannot evaluate the entire search: '+calls);slices++;}while(!next.done);assert(slices>20);assert.equal(next.value,null);
+});
 test('parcel pickup grants exactly the purchased quantity once, with no inventory before arrival or a second debit',()=>{
  const c=fixture();Object.assign(c,{state:{vehicles:{phoneOrders:[{id:'one',kind:'parcel',status:'ready',owner:'me',itemKey:'food',price:15}]},inventory:{food:4},tools:{owned:[]}},player:{x:0,z:0},worldShopItems:()=>[{name:'Comida',key:'food',amount:2,price:15}],sharedWorldOwnId:()=> 'me',addXP:()=>{},saveState:()=>{},updateHUD:()=>{},toast:()=>{},phoneGroundRoute:()=>[{x:0,z:0},{x:0,z:10}]});
  const job={id:'van',orderId:'one',kind:'parcel',ready:true,origin:{x:0,z:10},vehicle:{group:{position:{x:0,z:0},userData:{phoneParcel:{visible:true}}}},route:{x:0,z:0,yaw:0}};c.Q.worldPhone.job=job;
