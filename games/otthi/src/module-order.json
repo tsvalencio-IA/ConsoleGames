@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "37b71f1c01bb534f758ec0e1f715d4839eeb23bafd8e9493163a59574f943eae"
+      "sha256Body": "78ef222eb28d3a1b11df8ea5d7ee60d1cbced92730ec90536e4c6c284a78dd21"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -538,7 +538,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Frota aérea por unidade, reposição e recolhimento OT Vias",
-      "sha256Body": "80355c55ea1aa226c8a72f41ff36a309423fa2f36e34ed4218c70f9a8bafa3fa"
+      "sha256Body": "26311631b1e2ae4f16e9767add1b42dccf54f4dc1f5fdc66db19fddfc1c77407"
     },
     {
       "file": "src/modules/62-personal-garage-delivery.js",

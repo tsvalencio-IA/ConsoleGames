@@ -48,15 +48,15 @@
  }
  const airOriginalPose=campaignAircraftPose;
  campaignAircraftPose=function(id){const c=airOperations.fleet?.data.craft[id],spec=airOperations.fleet?.spec(id);return c&&spec?{...spec,...c}:airOriginalPose(id);};
- function airObstacle(id,c){
+ function airObstacle(id,c,includeHeight=true){
   const spec=airOperations.fleet.spec(id),mode=spec.mode||spec.id,cargo=spec.model==='cargo',halfW=mode==='balloon'?1.2:mode==='plane'?(cargo?5.9:3):2,halfL=mode==='plane'?(cargo?5:2.8):mode==='balloon'?1.1:3.5,s=Math.sin(c.yaw),co=Math.cos(c.yaw);
-  return{id,x:c.x,z:c.z,w:halfW,l:halfL,s,c:co,baseY:groundHeightAt(c.x,c.z)};
+  return{id,x:c.x,z:c.z,w:halfW,l:halfL,s,c:co,baseY:includeHeight?groundHeightAt(c.x,c.z):0};
  }
  function airSyncObstacles(){
   if(!airOperations.ready)return;const blocked=new Set();
   for(const [id,c]of Object.entries(airOperations.fleet.data.craft)){
    const solid=c.status==='parked'||c.status==='recovering'&&c.job&&airRecoveryPose(c.job,airNow()).phase!=='carry'&&airRecoveryPose(c.job,airNow()).phase!=='lower';
-   if(!solid)continue;blocked.add(id);const o=airObstacle(id,c);let collider=airOperations.colliders.get(id);
+   if(!solid)continue;blocked.add(id);const o=airObstacle(id,c,false);let collider=airOperations.colliders.get(id);
    if(!collider){collider={aircraftId:id,height:1.6};world.colliders.push(collider);airOperations.colliders.set(id,collider);}
    Object.assign(collider,{x:o.x,z:o.z,w:Math.abs(o.c)*o.w*2+Math.abs(o.s)*o.l*2,d:Math.abs(o.s)*o.w*2+Math.abs(o.c)*o.l*2});
   }
@@ -182,7 +182,7 @@
  const airOldTrafficFactor=trafficSpeedFactor;
  trafficSpeedFactor=function(actor,heading,lookAhead=7){let factor=airOldTrafficFactor(actor,heading,lookAhead);if(!airOperations.ready||factor===0)return factor;const body=trafficBody(actor,heading);
   for(const c of Object.values(airOperations.fleet.data.craft)){
-   if(c.status!=='parked'&&c.status!=='recovering')continue;if(c.job&&['carry','lower','done'].includes(airRecoveryPose(c.job,airNow()).phase))continue;const obstacle=airObstacle(c.id,c),dx=obstacle.x-body.x,dz=obstacle.z-body.z,forward=dx*body.s+dz*body.c,lateral=Math.abs(dx*body.c-dz*body.s),dot=body.s*obstacle.s+body.c*obstacle.c,side=body.w+Math.abs(dot)*obstacle.w+Math.sqrt(Math.max(0,1-dot*dot))*obstacle.l+.5;
+   if(c.status!=='parked'&&c.status!=='recovering')continue;if(c.job&&['carry','lower','done'].includes(airRecoveryPose(c.job,airNow()).phase))continue;const obstacle=airObstacle(c.id,c,false),dx=obstacle.x-body.x,dz=obstacle.z-body.z,forward=dx*body.s+dz*body.c,lateral=Math.abs(dx*body.c-dz*body.s),dot=body.s*obstacle.s+body.c*obstacle.c,side=body.w+Math.abs(dot)*obstacle.w+Math.sqrt(Math.max(0,1-dot*dot))*obstacle.l+.5;
    if(forward>-.2&&lateral<side){const length=Math.abs(dot)*obstacle.l+Math.sqrt(Math.max(0,1-dot*dot))*obstacle.w,clearance=forward-body.l-length-1;factor=Math.min(factor,clamp(clearance/Math.max(2,lookAhead*.7),0,1));}
   }return factor;
  };

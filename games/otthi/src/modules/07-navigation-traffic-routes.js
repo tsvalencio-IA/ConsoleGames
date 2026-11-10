@@ -111,7 +111,7 @@
       if(Math.abs(dot)<.72&&Math.hypot(dx,dz)<lookAhead+body.l+ob.l&&trafficYields(actor,other,heading)){
         for(const t of[.45,.85,1.3]){const future={...body,x:body.x+body.s*Math.max(speed,actor.speed*.6)*t,z:body.z+body.c*Math.max(speed,actor.speed*.6)*t},of={...ob,x:ob.x+ob.s*other.speed*t,z:ob.z+ob.c*other.speed*t};if(trafficBodiesOverlap(future,of,.4)){factor=Math.min(factor,t<.6?0:.35);break;}}
       }
-      if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1)factor=0;
+      if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1){const turning=Math.abs(Math.atan2(Math.sin(heading-Number(actor.group.rotation.y||0)),Math.cos(heading-Number(actor.group.rotation.y||0))))>.35,canCreep=turning&&now-Number(actor.trafficQueuedAt||now)>2200&&!trafficYields(actor,other,heading)&&!trafficBodiesOverlap(trafficBody(actor),ob,.24);factor=Math.min(factor,canCreep?.12:0);}
     }
     const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
   }
@@ -126,10 +126,11 @@
     // A queue behind a turn can prevent reversing. Use the separating axes to
     // open a little lateral room rather than leaving the intersection locked.
     for(const [x,z]of[[body.c,-body.s],[body.s,body.c],[partner.c,-partner.s],[partner.s,partner.c]]){const sign=(body.x-partner.x)*x+(body.z-partner.z)*z>=0?1:-1;directions.push([x*sign,z*sign]);}
+    const nearby=all.filter(third=>third!==actor&&third!==other).map(third=>trafficBody(third)).filter(ob=>Math.abs(ob.x-body.x)<body.l+body.w+ob.l+ob.w+1&&Math.abs(ob.z-body.z)<body.l+body.w+ob.l+ob.w+1).map(ob=>({body:ob,depth:trafficOverlapDepth(body,ob,.10)})),solids=(typeof nearbyWorldColliders==='function'?nearbyWorldColliders(p.x,p.z,Math.max(body.l,body.w)+1):[]).filter(c=>!c.disabled&&Number(c.height||2)>=.2).map(c=>({x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1})).map(ob=>({body:ob,depth:trafficOverlapDepth(body,ob,.06)}));
     let best=null;
     for(const [vx,vz]of directions){const x=p.x+vx*.22,z=p.z+vz*.22;if(!pointOnRoad(x,z,.05))continue;const moved=trafficBody(actor,h,{x,z}),nextDepth=trafficOverlapDepth(moved,partner);const distance=Math.hypot(moved.x-partner.x,moved.z-partner.z);if(nextDepth>depth+.0001||nextDepth>=depth-.0001&&distance<=Math.hypot(body.x-partner.x,body.z-partner.z)+.0001)continue;let blocked=false;
-      for(const third of all){if(third===actor||third===other)continue;const ob=trafficBody(third),oldDepth=trafficOverlapDepth(body,ob,.10),newDepth=trafficOverlapDepth(moved,ob,.10);if(newDepth>oldDepth+.001){blocked=true;break;}}if(blocked)continue;
-      if(typeof nearbyWorldColliders==='function')for(const c of nearbyWorldColliders(x,z,Math.max(body.l,body.w)+1)){if(c.disabled||Number(c.height||2)<.2)continue;const obstacle={x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1};if(trafficOverlapDepth(moved,obstacle,.06)>trafficOverlapDepth(body,obstacle,.06)+.001){blocked=true;break;}}if(blocked)continue;
+      for(const third of nearby)if(trafficOverlapDepth(moved,third.body,.10)>third.depth+.001){blocked=true;break;}if(blocked)continue;
+      for(const solid of solids)if(trafficOverlapDepth(moved,solid.body,.06)>solid.depth+.001){blocked=true;break;}if(blocked)continue;
       if(!best||nextDepth<best.depth-.0001||Math.abs(nextDepth-best.depth)<.0001&&distance>best.distance)best={x,z,depth:nextDepth,distance,lateral:Math.abs(vx*body.c-vz*body.s)};
     }
     if(!best)return false;p.x=best.x;p.z=best.z;const now=performance.now();actor.ref.trafficRecoveryUntil=now+1800;if(best.lateral>.2)(actor.group.userData??={}).trafficSeparationUntil=now+2600;return true;
