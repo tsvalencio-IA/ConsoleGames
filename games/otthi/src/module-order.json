@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "78ef222eb28d3a1b11df8ea5d7ee60d1cbced92730ec90536e4c6c284a78dd21"
+      "sha256Body": "fa00533995b3ae19605620a773aa4b0594a1549293c325475dbb223389924730"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",

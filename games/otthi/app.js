@@ -2316,10 +2316,15 @@
     for(const vehicle of world.ottoviasTraffic||[])if(!vehicle.taken&&vehicle.group)actors.push({id:`ottovias-${vehicle.id}`,type:vehicle.type||'car',group:vehicle.group,radius:Number(vehicle.radius||1.45),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
     for(const npc of world.npcs||[])if(npc.mobility?.group&&npc.mobility.type!=='walk'&&!npc.passengerMode)actors.push({id:`npc-${npc.id}`,type:npc.mobility.type,group:npc.mobility.group,radius:npc.mobility.radius||1.25,speed:Math.abs(npc.mobility.currentSpeed||0),ref:npc.mobility});
     for(const vehicle of world.vehicles||[])if(vehicle.phoneDelivery&&vehicle.group?.visible)actors.push({id:'phone-'+vehicle.id,type:'car',group:vehicle.group,radius:Number(vehicle.radius||1.5),speed:Math.abs(vehicle.currentSpeed||0),ref:vehicle});
-    if(player.vehicle&&!player.car.passengerOf)actors.push({id:'player-car',type:'player',isPlayer:true,group:{position:{x:player.x,z:player.z},rotation:{y:player.car.heading||0},userData:typeof vehicleVisual!=='undefined'?vehicleVisual?.userData||{}:{}},radius:1.7,speed:Math.abs(player.car.speed||0),ref:player.car});
     const cells=new Map(),cellSize=12;for(const actor of actors){const key=`${Math.floor(actor.group.position.x/cellSize)}:${Math.floor(actor.group.position.z/cellSize)}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(actor);}world.trafficSpatialCells=cells;world.trafficCellSize=cellSize;world.trafficSnapshot=actors;world.trafficSnapshotAt=now;return actors;
   }
-  function nearbyTrafficActors(x,z,radius=18){trafficActorList();const cells=world.trafficSpatialCells;if(!cells)return world.trafficSnapshot||[];const size=world.trafficCellSize||12,minX=Math.floor((x-radius)/size),maxX=Math.floor((x+radius)/size),minZ=Math.floor((z-radius)/size),maxZ=Math.floor((z+radius)/size),near=[];for(let cx=minX;cx<=maxX;cx++)for(let cz=minZ;cz<=maxZ;cz++)for(const actor of cells.get(`${cx}:${cz}`)||[])near.push(actor);return near;}
+  function nearbyTrafficActors(x,z,radius=18){
+    trafficActorList();const cells=world.trafficSpatialCells,size=world.trafficCellSize||12,near=[];
+    if(cells){const minX=Math.floor((x-radius)/size),maxX=Math.floor((x+radius)/size),minZ=Math.floor((z-radius)/size),maxZ=Math.floor((z+radius)/size);for(let cx=minX;cx<=maxX;cx++)for(let cz=minZ;cz<=maxZ;cz++)for(const actor of cells.get(`${cx}:${cz}`)||[])near.push(actor);}else near.push(...(world.trafficSnapshot||[]));
+    // NPC perception includes the player's live car. It is not part of the
+    // shared NPC fleet or the player's own physical obstacle list.
+    if(player.vehicle&&!player.car.passengerOf&&Math.hypot(x-player.x,z-player.z)<radius+12)near.push({id:'player-car',type:'player',isPlayer:true,group:{position:{x:player.x,y:player.y,z:player.z},rotation:{y:player.car.heading||0},userData:typeof vehicleVisual!=='undefined'?vehicleVisual?.userData||{}:{}},radius:1.7,speed:Math.abs(player.car.speed||0),ref:player.car});return near;
+  }
   function trafficFootprintOnRoad(actor){
     if(!actor?.group)return false;const dimensions={bus:[1.62,3.0],fire:[1.28,2.45],ambulance:[1.18,2.05],police:[1.03,1.72],car:[.96,1.5],moto:[.58,1.05],bike:[.5,1.0],skate:[.42,.72]}[actor.type]||[1.0,1.55],heading=Number(actor.group.rotation?.y||0),cos=Math.cos(heading),sin=Math.sin(heading),x=actor.group.position.x,z=actor.group.position.z;
     return [[0,0],[-dimensions[0],-dimensions[1]],[dimensions[0],-dimensions[1]],[-dimensions[0],dimensions[1]],[dimensions[0],dimensions[1]]].every(([lx,lz])=>pointOnRoad(x+cos*lx+sin*lz,z-sin*lx+cos*lz,.04));
@@ -2393,13 +2398,13 @@
   function resolveTrafficOverlaps(before){
     // Each moving controller already follows its own road path. Re-projecting
     // every actor here a second time pulled responders back to old patrols.
-    world.trafficSnapshot=null;const actors=trafficActorList();
+    world.trafficSnapshot=null;const actors=trafficActorList(),clearanceActors=player.vehicle?[...actors,...nearbyTrafficActors(player.x,player.z,0).filter(a=>a.isPlayer)]:actors;
     for(let i=0;i<actors.length;i++)for(const b of nearbyTrafficActors(actors[i].group.position.x,actors[i].group.position.z,22)){
-      const a=actors[i];if(a.id>=b.id||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
+      const a=actors[i];if(a.id>=b.id&&!b.isPlayer||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
       y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,actors))trafficOverlapBackOff(other,y,actors);
+      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
     }world.trafficSnapshot=null;
   }
 
