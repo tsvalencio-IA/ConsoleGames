@@ -85,7 +85,7 @@
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
   const body=trafficBody(vehicle,yaw,{x,z});
-  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||state.vehicles?.workshopComponents?.[v.id]?.npcCollectedAt)continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||workshopNpcWasCollected(v))continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
   if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
@@ -252,7 +252,14 @@
   const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
   return null;
  }
- function phoneTrackingText(t=phoneDeliveryTracking()){return t?t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`:state.vehicles.phoneDelivery?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.';}
+ function phoneTrackingText(t=phoneDeliveryTracking()){
+  if(t)return t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`;
+  const status=state.vehicles.phoneDelivery?.status;
+  if(status==='delivered')return'Última entrega concluída';
+  if(status==='interrupted')return'Entrega interrompida ao recarregar. Seu veículo foi preservado; chame o motorista novamente.';
+  if(status==='cancelled')return'Entrega interrompida. Seu veículo ficou estacionado na última posição segura.';
+  return'Escolha um veículo ou faça uma compra.';
+ }
  function phoneUpdateTrackingUI(){
   const t=phoneDeliveryTracking(),root=els.modalBody,p=root?.querySelector('[data-phone-status]');if(p)p.textContent=phoneTrackingText(t);const track=root?.querySelector('[data-phone-track]');if(track)track.disabled=!t;
   const receive=root?.querySelector('[data-phone-parcel-receive]');if(receive){receive.disabled=!t?.ready||Math.hypot(player.x-t.x,player.z-t.z)>6;receive.textContent=receive.disabled?'APROXIME-SE DA ENCOMENDA':'RECEBER ENCOMENDA';}

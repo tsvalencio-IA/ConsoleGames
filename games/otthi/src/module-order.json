@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.25-transito-fluidez",
+  "build": "705.28.26-estabilidade-oficina",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "abdabcfc13bc3fde4f9a6bc8627e5fcbdf5b7f8da616e66c338fb017ec5d1087"
+      "sha256Body": "a25c9b5db746ca43eb84a84d61fba58b40a21d82619673d6839319461bf04d57"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "2acf1b7d9d14f3f3478fb9b3781ea8df5b6ad029d3dc6c035de5cb504171d045"
+      "sha256Body": "550884852f5b07fdcefb4f65d1807905ad52bd5e63d082c924b77b4f5d380362"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -609,7 +609,7 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "504231dcc9de367d54cc4e5f628a4d114465cec0fc504cccb621e3556221fe1e"
+      "sha256Body": "719deac961e722e2a316e27c3ed23cbaf0ac0a94949c72a1eeb8f54f9ceaf200"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",

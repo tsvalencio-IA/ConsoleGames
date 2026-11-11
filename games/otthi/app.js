@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.25-transito-fluidez';
+  const OTTHI_GAME_WEB_BUILD = '705.28.26-estabilidade-oficina';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -5000,7 +5000,7 @@
     const leftLeg=premiumBox(.22,.88,.24,dark,-.18,.44,0,officer),rightLeg=premiumBox(.22,.88,.24,dark,.18,.44,0,officer),leftArm=premiumBox(.18,.78,.2,uniform,-.45,1.25,0,officer),rightArm=premiumBox(.18,.78,.2,uniform,.45,1.25,0,officer);officer.scale.set(.86,.7,.86);return{group:officer,leftLeg,rightLeg,leftArm,rightArm,inside,threshold,outside};
   }
   function removeRoadsidePoliceOfficer(alert){
-    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);alert.officer=null;
+    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);disposeDetachedVisual(alert.officer.group);alert.officer=null;
   }
   function beginPoliceRoadsideStop(alert,car){
     if(!alert||alert.phase!=='pursuit')return false;const now=performance.now();alert.phase='officer-exiting';alert.phaseAt=now;alert.officer=createRoadsidePoliceOfficer(car);alert.officerSpeech='';alert.officerSpeechAt=0;setPoliceRoadsideDoor(car,0);car.currentSpeed=0;clearPolicePursuit(car);clearMovementInputs();if(player.vehicle){player.car.speed=0;player.vx=0;player.vz=0;}updateSafetyPanel('Viatura posicionada • porta abrindo');toast('🚓 Pare no local: a viatura encostou e o policial vai descer.','warn',2400);return true;
@@ -5108,7 +5108,7 @@
   function resolveTrafficIncident(incident){
     if(!incident||incident.resolved)return;incident.resolved=true;incident.group.visible=false;releaseIncidentActorStates(incident);for(const car of world.policeCars){if(car.incidentTargetId===incident.id){car.incidentTargetId='';car.responseRoute=[];car.responseIndex=0;}}for(const ambulance of world.ambulances){if(ambulance.incidentTargetId===incident.id){ambulance.incidentTargetId='';ambulance.responseRoute=[];ambulance.responseIndex=0;}}for(const truck of world.fireTrucks){if(truck.incidentTargetId===incident.id){truck.incidentTargetId='';truck.responseRoute=[];truck.responseIndex=0;}}
     const job=state.career?.activeJob,kind=serviceKindForJob(job);if(job&&job.emergencyIncidentId===incident.id){if(incident.tasks[kind]&&!incident.forcedClear)completeActiveJob();else{job.emergencyIncidentId='';job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;setMissionState(job,MISSION_STATES.ACCEPTED,'incident-cleared-autonomously');}}
-    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);},1200);toast(incident.forcedClear?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
+    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);disposeDetachedVisual(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);const actionIndex=world.interactables.findIndex(action=>action.id===`assist-${incident.id}`);if(actionIndex>=0)world.interactables.splice(actionIndex,1);},1200);toast(incident.forcedClear?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
   }
   function updateTrafficIncidents(dt){
     const now=performance.now(),incident=world.activeIncident;for(const ambulance of world.ambulances){const responding=!!ambulance.incidentTargetId;ambulance.lightA.visible=responding&&Math.floor(now/220)%2===0;ambulance.lightB.visible=responding&&!ambulance.lightA.visible;if(!incident&&!ambulance.occupied&&!ambulance.missionReservedFor)returnServiceVehicleHome(ambulance,dt);}
@@ -13335,7 +13335,7 @@ function precompile(T,renderer,scene,camera){
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
   const body=trafficBody(vehicle,yaw,{x,z});
-  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||state.vehicles?.workshopComponents?.[v.id]?.npcCollectedAt)continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||workshopNpcWasCollected(v))continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
   if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
@@ -13502,7 +13502,14 @@ function precompile(T,renderer,scene,camera){
   const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
   return null;
  }
- function phoneTrackingText(t=phoneDeliveryTracking()){return t?t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`:state.vehicles.phoneDelivery?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.';}
+ function phoneTrackingText(t=phoneDeliveryTracking()){
+  if(t)return t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`;
+  const status=state.vehicles.phoneDelivery?.status;
+  if(status==='delivered')return'Última entrega concluída';
+  if(status==='interrupted')return'Entrega interrompida ao recarregar. Seu veículo foi preservado; chame o motorista novamente.';
+  if(status==='cancelled')return'Entrega interrompida. Seu veículo ficou estacionado na última posição segura.';
+  return'Escolha um veículo ou faça uma compra.';
+ }
  function phoneUpdateTrackingUI(){
   const t=phoneDeliveryTracking(),root=els.modalBody,p=root?.querySelector('[data-phone-status]');if(p)p.textContent=phoneTrackingText(t);const track=root?.querySelector('[data-phone-track]');if(track)track.disabled=!t;
   const receive=root?.querySelector('[data-phone-parcel-receive]');if(receive){receive.disabled=!t?.ready||Math.hypot(player.x-t.x,player.z-t.z)>6;receive.textContent=receive.disabled?'APROXIME-SE DA ENCOMENDA':'RECEBER ENCOMENDA';}
