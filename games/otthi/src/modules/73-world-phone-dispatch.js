@@ -112,7 +112,7 @@
  }
  function phoneRemoveDriver(driver){
   if(!driver)return;driver.group.parent?.remove(driver.group);
-  driver.group.traverse(o=>{if(o.material?.userData.phoneDriverOwned)o.material.dispose();});
+  disposeDetachedVisual(driver.group);
  }
  function phoneDriverInVehicle(driver,vehicle){
   if(driver.group.parent!==vehicle.group)vehicle.group.add(driver.group);

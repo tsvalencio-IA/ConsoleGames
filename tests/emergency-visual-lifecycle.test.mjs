@@ -5,10 +5,10 @@ import vm from 'node:vm';
 
 const read=name=>fs.readFileSync('games/otthi/src/modules/'+name,'utf8');
 function functionSource(source,name){
-  const start=source.indexOf('  function '+name+'(');
+  const start=source.indexOf('function '+name+'(');
   assert(start>=0,name);
-  const end=source.indexOf('\n  function ',start+3);
-  return source.slice(start,end<0?undefined:end);
+  const next=source.slice(start).match(/\n +function /);
+  return source.slice(start,next?start+next.index:undefined);
 }
 function fixture(){
   const module={exports:{}};
@@ -21,6 +21,8 @@ function fixture(){
   vm.runInContext(visual.slice(visual.indexOf('  function mat('),visual.indexOf('  function addSoftHighlight('))+visual.slice(visual.indexOf('  function box('),visual.indexOf('  function makeWindow('))+functionSource(visual,'registerInteractable'),c);
   const emergency=read('16-emergency-services.js');
   for(const name of ['createIncidentVisual','createTrafficIncidentAt','resolveTrafficIncident','policeRoadsideLocalPoint','createRoadsidePoliceOfficer','removeRoadsidePoliceOfficer'])vm.runInContext(functionSource(emergency,name),c);
+  const phone=read('73-world-phone-dispatch.js');
+  for(const name of ['phoneMakeDriver','phoneRemoveDriver'])vm.runInContext(functionSource(phone,name),c);
   return{c,world,worldGroup,state,timers,THREE,flush(){for(const timer of timers.splice(0)){assert.equal(timer.ms,1200);timer.fn();}}};
 }
 
@@ -63,4 +65,23 @@ test('repeated roadside officer removal releases its outline registrations witho
     assert.equal(f.worldGroup.children.length,1);
     assert.equal(f.worldGroup.children[0],persistent);
   }
+});
+
+test('twenty telephone driver cycles release outlines and their cloned clothing materials while retaining shared scenery',()=>{
+  const f=fixture(),persistent=f.c.premiumBox(.68,.88,.38,0x183c68),outlines=f.world.outlines.length;
+  let sharedDisposals=0,ownedCreated=0,ownedDisposed=0;
+  persistent.geometry.addEventListener('dispose',()=>sharedDisposals++);
+  persistent.material.addEventListener('dispose',()=>sharedDisposals++);
+  for(let i=0;i<20;i++){
+    const driver=f.c.phoneMakeDriver();
+    driver.group.traverse(o=>{if(o.material?.userData.phoneDriverOwned){ownedCreated++;o.material.addEventListener('dispose',()=>ownedDisposed++);}});
+    f.c.phoneRemoveDriver(driver);
+    assert.equal(driver.group.parent,null);
+  }
+  assert.equal(f.world.outlines.length,outlines,'completed drivers cannot retain outlines in the visual registry');
+  assert.equal(ownedCreated,80);
+  assert.equal(ownedDisposed,ownedCreated,'each cloned clothing material is disposed exactly once');
+  assert.equal(sharedDisposals,0,'shared officer geometry and original clothing material remain alive');
+  assert.equal(f.worldGroup.children.length,1);
+  assert.equal(f.worldGroup.children[0],persistent);
 });

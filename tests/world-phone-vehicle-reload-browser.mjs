@@ -26,7 +26,8 @@ const hook = `
   retry:id=>phoneDispatchGround(id),
   vehicle:id=>{const v=vehicleById(id);return v?{id:v.id,visible:v.group.visible,occupied:v.occupied,phoneDelivery:!!v.phoneDelivery,x:v.group.position.x,z:v.group.position.z}:null;}
  };`;
-const report = {limits: [
+const {build, revision} = JSON.parse(fs.readFileSync('games/otthi/release-manifest.json', 'utf8'));
+const report = {build, revision, limits: [
   'Chromium with local realtime fixture and disposable save; no live account or database writes.',
   'Clock and player positioning are test fixtures; native purchase, delivery, save, reload and retry code run unchanged.',
   'Ground vehicles stop safely on reload and need a new driver call. Paid parcels have a separate automatic resume flow.',
@@ -54,6 +55,9 @@ try {
     await page.goto(server.origin + '/games/otthi/');
     await page.locator('#playBtn').click();
     await page.waitForFunction(() => window.__CITY_QA?.cap() && OTTHOS_TEST_API.getGame().running && document.getElementById('modal').hidden, null, {timeout: 120000});
+    // The expansion runs at 30 Hz. Let its first native updates restore the
+    // delivery state before reading it immediately after the start button.
+    await page.evaluate(() => __PHONE_RELOAD_QA.advance(4));
   };
   await boot();
   await page.evaluate(() => __PHONE_RELOAD_QA.prepare());
@@ -66,6 +70,7 @@ try {
   await page.locator('[data-yes]').click();
   await page.waitForFunction(() => OT_WORLD_PHONE.diagnostics().job);
   const paid = await page.evaluate(() => __PHONE_RELOAD_QA.snapshot()), order = paid.phone.orders.at(-1), id = order.vehicleId;
+  console.log('Native vehicle purchase accepted', id);
   assert.equal(order.kind, 'vehicle');
   assert.equal(order.status, 'en-route');
   assert.equal(paid.coins - before.coins, -before.price + paid.gifts.slice(before.gifts.length).reduce((a, b) => a + b, 0));
@@ -76,24 +81,28 @@ try {
   assert(travelling.phone.job, 'reload must occur during the actual delivery');
   await boot();
   const reloaded = await page.evaluate(() => __PHONE_RELOAD_QA.snapshot());
+  console.log('Native reload status', reloaded.phone.last.status);
   assert.equal(reloaded.phone.job, null);
   assert.equal(reloaded.phone.last.status, 'interrupted');
   assert.equal(reloaded.phone.orders.at(-1).status, 'parked');
-  assert.equal(reloaded.coins, travelling.coins, 'reload cannot debit the purchase again');
+  assert.equal(reloaded.coins - travelling.coins, reloaded.gifts.reduce((a, b) => a + b, 0), 'reload cannot debit the purchase again; only independently observed NPC gifts may change the balance');
   assert.deepEqual(reloaded.owned, paid.owned);
   assert.deepEqual(reloaded.instances[id], paid.instances[id]);
   assert.match(reloaded.text, /interrompida ao recarregar/);
   assert.match(reloaded.text, /chame o motorista novamente/);
-  const parked = await page.evaluate(id => __PHONE_RELOAD_QA.vehicle(id), id);
-  assert(parked?.visible);
-  assert(!parked.occupied && !parked.phoneDelivery);
-  assert(Math.hypot(parked.x - travelling.parked[id].x, parked.z - travelling.parked[id].z) < .05, 'reload restores the last saved safe pose');
+  const parked = reloaded.parked[id];
+  assert.deepEqual(parked, travelling.parked[id], 'reload preserves the last saved safe pose even if the vehicle model is still lazy');
   await page.evaluate(() => __PHONE_RELOAD_QA.prepare());
   await page.locator('#quickToggleBtn').click();
   await page.locator('#worldPhoneBtn').click();
   await page.screenshot({path: out + '/interrupted-phone.png'});
   await page.locator('[data-phone-ground="' + id + '"]').click();
   await page.waitForFunction(() => OT_WORLD_PHONE.diagnostics().job);
+  const recalled = await page.evaluate(() => __PHONE_RELOAD_QA.snapshot());
+  assert(Math.hypot(recalled.phone.job.x - parked.x, recalled.phone.job.z - parked.z) < .8, 'the native retry starts at the last saved pose, without teleporting the car to a garage slot');
+  const retryVehicle = await page.evaluate(id => __PHONE_RELOAD_QA.vehicle(id), id);
+  assert(retryVehicle?.visible && retryVehicle.occupied && retryVehicle.phoneDelivery);
+  console.log('Native driver retry accepted');
   for (let i = 0; i < 200; i++) {
     if (!await page.evaluate(() => OT_WORLD_PHONE.diagnostics().job)) break;
     await page.evaluate(() => __PHONE_RELOAD_QA.advance(120));
@@ -102,11 +111,11 @@ try {
   assert.equal(arrived.phone.job, null);
   assert.equal(arrived.phone.last.status, 'delivered');
   assert.deepEqual(arrived.owned, paid.owned);
-  assert.equal(arrived.coins - reloaded.coins, arrived.gifts.reduce((a, b) => a + b, 0), 'retry has no extra purchase debit or refund');
+  assert.equal(arrived.coins - reloaded.coins, arrived.gifts.slice(reloaded.gifts.length).reduce((a, b) => a + b, 0), 'retry has no extra purchase debit or refund');
   const delivered = await page.evaluate(id => __PHONE_RELOAD_QA.vehicle(id), id);
   assert(delivered.visible && !delivered.occupied && !delivered.phoneDelivery);
   assert.deepEqual(errors, []);
-  Object.assign(report, {passed: true, before, paid, travelling, reloaded, parked, arrived, delivered, errors});
+  Object.assign(report, {passed: true, before, paid, travelling, reloaded, parked, recalled, retryVehicle, arrived, delivered, errors});
   fs.writeFileSync(out + '/result.json', JSON.stringify(report, null, 2));
   console.log('PASS purchased vehicle survives mid-delivery reload, explains interruption, accepts another driver call and arrives with one purchase debit');
 } catch (error) {

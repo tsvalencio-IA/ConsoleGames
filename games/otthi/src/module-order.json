@@ -609,7 +609,7 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "719deac961e722e2a316e27c3ed23cbaf0ac0a94949c72a1eeb8f54f9ceaf200"
+      "sha256Body": "74bb4d6d150a922500b675dafbdd71e88d26be7af62bef54d7d276ce3376ceed"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",

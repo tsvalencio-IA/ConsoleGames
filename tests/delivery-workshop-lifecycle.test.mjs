@@ -6,9 +6,9 @@ import vm from 'node:vm';
 const read = name => fs.readFileSync('games/otthi/src/modules/' + name, 'utf8');
 const serviceSource = read('74-workshop-npc-service.js');
 function extract(source, name) {
-  const start = source.indexOf(' function ' + name + '(');
+  const start = source.search(new RegExp(' (?:async )?function ' + name + '\\('));
   assert(start >= 0, name);
-  let end = source.indexOf('{', start) + 1, depth = 1;
+  let end = source.indexOf('){', start) + 2, depth = 1;
   for (; depth; end++) {
     if (source[end] === '{') depth++;
     if (source[end] === '}') depth--;
