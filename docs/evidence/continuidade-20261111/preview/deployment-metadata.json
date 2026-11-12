@@ -1,0 +1,34 @@
+{
+  "observedAt": "2026-11-11T19:17:14Z",
+  "source": "Authenticated Vercel get_deployment",
+  "deployments": [
+    {
+      "id": "dpl_5AhVkSqxgjC1hFsbDDUPfznR81Wu",
+      "url": "otthi-world-campanha-teste-90nej7ddt-thiaguinho-s-projects.vercel.app",
+      "state": "READY",
+      "target": null,
+      "interpretedEnvironment": "preview",
+      "branch": "continuation-20261111",
+      "commit": "1d7088cee900f5dfa4097f92fa9737e7897ccdc3",
+      "source": "git",
+      "aliases": [
+        "otthi-world-campanha-teste-git-con-57ed35-thiaguinho-s-projects.vercel.app"
+      ]
+    },
+    {
+      "id": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+      "url": "otthi-world-campanha-teste-16rm34tp7-thiaguinho-s-projects.vercel.app",
+      "state": "READY",
+      "target": "production",
+      "interpretedEnvironment": "production",
+      "branch": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+      "commit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+      "source": null,
+      "aliases": [
+        "otthi-world-campanha-teste.vercel.app",
+        "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+        "otthi-world-campanha-teste-git-cdc-c67d05-thiaguinho-s-projects.vercel.app"
+      ]
+    }
+  ]
+}

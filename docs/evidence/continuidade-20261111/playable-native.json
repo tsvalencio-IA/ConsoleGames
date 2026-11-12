@@ -1,0 +1,261 @@
+{
+  "completed": 3,
+  "expected": 7,
+  "failures": [
+    {
+      "slug": "kart",
+      "message": "page.waitForFunction: Timeout 15000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:196:18",
+      "diagnostic": {
+        "stage": {
+          "loading": "hidden",
+          "phase": "wii-container hidden",
+          "menu": "wii-container hidden"
+        },
+        "system": {
+          "active": "drive",
+          "starting": false,
+          "epoch": 1
+        },
+        "video": {
+          "ready": 0,
+          "paused": true,
+          "mode": "controls"
+        },
+        "kart": {
+          "state": "RACE",
+          "status": "RACING",
+          "raceState": "RUNNING",
+          "lap": 1,
+          "player": {
+            "lap": 1,
+            "position": 1,
+            "finished": false
+          },
+          "pos": 32104.76380463341,
+          "speed": 155.22942894383948,
+          "x": 0.25422553022888356,
+          "steer": 0,
+          "target": 0,
+          "inertia": 0.006804276735499373,
+          "manual": {
+            "left": false,
+            "right": false,
+            "throttle": true,
+            "brake": false,
+            "drift": false,
+            "rear": false,
+            "itemQueued": false
+          },
+          "inputActive": true,
+          "spin": 0,
+          "networkPaused": false,
+          "track": 1,
+          "settings": {
+            "camera": "chase",
+            "distance": "far",
+            "difficulty": "normal",
+            "sensitivity": 1,
+            "smoothing": 0.62,
+            "autoAccelerate": false,
+            "assist": true,
+            "steeringAssist": "light",
+            "controlSize": 1,
+            "controlOpacity": 0.92,
+            "controlInset": 8,
+            "effectsVolume": 0.7,
+            "engineVolume": 0.6,
+            "alertVolume": 0.7,
+            "quality": "auto"
+          },
+          "tap": {
+            "ticks": 46,
+            "released": -0.017781032890368732,
+            "final": -0.03454403365763901
+          }
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "slug": "kart",
+      "device": "landscape-844",
+      "message": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:229:18",
+      "diagnostic": {
+        "stage": {
+          "loading": "hidden",
+          "phase": "wii-container hidden",
+          "menu": "wii-container hidden"
+        },
+        "system": {
+          "active": "drive",
+          "starting": false,
+          "epoch": 1
+        },
+        "video": {
+          "ready": 0,
+          "paused": true,
+          "mode": "controls"
+        },
+        "kart": {
+          "state": "RACE",
+          "status": "RACING",
+          "raceState": "RUNNING",
+          "lap": 1,
+          "player": {
+            "lap": 1,
+            "position": 1,
+            "finished": false
+          },
+          "pos": 28050,
+          "speed": 0,
+          "x": 0,
+          "steer": 0,
+          "target": 0,
+          "inertia": 0,
+          "manual": {
+            "left": false,
+            "right": false,
+            "throttle": false,
+            "brake": false,
+            "drift": false,
+            "rear": false,
+            "itemQueued": false
+          },
+          "inputActive": false,
+          "spin": 0,
+          "networkPaused": false,
+          "track": 1,
+          "settings": {
+            "camera": "chase",
+            "distance": "far",
+            "difficulty": "normal",
+            "sensitivity": 1,
+            "smoothing": 0.62,
+            "autoAccelerate": false,
+            "assist": true,
+            "steeringAssist": "light",
+            "controlSize": 1,
+            "controlOpacity": 0.92,
+            "controlInset": 8,
+            "effectsVolume": 0.7,
+            "engineVolume": 0.6,
+            "alertVolume": 0.7,
+            "quality": "auto"
+          },
+          "tap": {
+            "ticks": 46,
+            "released": -0.017781032890368732,
+            "final": -0.03454403365763901
+          }
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "slug": "kart",
+      "device": "desktop-885",
+      "message": "page.waitForFunction: Timeout 180000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:468:18",
+      "diagnostic": {
+        "stage": {
+          "loading": "hidden",
+          "phase": "wii-container hidden",
+          "menu": "wii-container hidden"
+        },
+        "system": {
+          "active": "drive",
+          "starting": false,
+          "epoch": 1,
+          "paused": false
+        },
+        "video": {
+          "ready": 0,
+          "paused": true,
+          "mode": "controls"
+        },
+        "kart": {
+          "state": "RACE",
+          "status": "RACING",
+          "raceState": "RUNNING",
+          "lap": 2,
+          "player": {
+            "lap": 2,
+            "position": 1,
+            "finished": false
+          },
+          "pos": 87838.4084871983,
+          "speed": 155.60810810810597,
+          "x": 0.2582227309344659,
+          "steer": 0,
+          "target": 0,
+          "inertia": 0,
+          "manual": {
+            "left": false,
+            "right": false,
+            "throttle": true,
+            "brake": false,
+            "drift": false,
+            "rear": false,
+            "itemQueued": false
+          },
+          "inputActive": true,
+          "spin": 0,
+          "networkPaused": false,
+          "track": 1,
+          "settings": {
+            "camera": "chase",
+            "distance": "near",
+            "difficulty": "normal",
+            "sensitivity": 1,
+            "smoothing": 0.62,
+            "autoAccelerate": false,
+            "assist": true,
+            "steeringAssist": "light",
+            "controlSize": 1,
+            "controlOpacity": 0.92,
+            "controlInset": 8,
+            "effectsVolume": 0.7,
+            "engineVolume": 0.6,
+            "alertVolume": 0.7,
+            "quality": "auto"
+          },
+          "tap": {
+            "ticks": 46,
+            "released": -0.017781032890368732,
+            "final": -0.03454403365763901
+          },
+          "race": {
+            "ticks": 3020,
+            "maxOffset": 0.43846921670729927,
+            "finished": false,
+            "startedAt": 62328.09999999998
+          }
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "slug": "ar",
+      "message": "page.waitForFunction: Timeout 4000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:261:19",
+      "diagnostic": {
+        "stage": {
+          "loading": "hidden",
+          "phase": "wii-container hidden",
+          "menu": "wii-container hidden"
+        },
+        "system": {
+          "active": "ar_truck_sim",
+          "starting": false,
+          "epoch": 1
+        },
+        "video": {
+          "ready": 0,
+          "paused": true,
+          "mode": "controls"
+        },
+        "arGame": "PLAYING",
+        "kart": null
+      },
+      "pageErrors": []
+    }
+  ]
+}

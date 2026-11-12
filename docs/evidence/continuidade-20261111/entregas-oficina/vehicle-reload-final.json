@@ -1,0 +1,767 @@
+{
+  "build": "705.28.26-estabilidade-oficina",
+  "revision": "60705b1100cc8a14",
+  "limits": [
+    "Chromium with local realtime fixture and disposable save; no live account or database writes.",
+    "Clock and player positioning are test fixtures; native purchase, delivery, save, reload and retry code run unchanged.",
+    "Ground vehicles stop safely on reload and need a new driver call. Paid parcels have a separate automatic resume flow.",
+    "Software WebGL does not certify physical mobile performance."
+  ],
+  "passed": true,
+  "before": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [],
+      "last": null
+    },
+    "coins": 8000,
+    "gifts": [],
+    "owned": [
+      "garage-orange"
+    ],
+    "instances": {},
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      }
+    },
+    "price": 1185,
+    "text": "Escolha um veículo ou faça uma compra."
+  },
+  "paid": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "x": -309.35,
+        "z": 11,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "kind": "ground",
+        "x": -309.35,
+        "z": 11,
+        "yaw": 0,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "route": [
+          {
+            "x": -309.35,
+            "z": 11
+          },
+          {
+            "x": -306.65119975373983,
+            "z": 11.0569025103891
+          },
+          {
+            "x": -307.51436143858405,
+            "z": -19.74037498132743
+          },
+          {
+            "x": -225,
+            "z": -21
+          },
+          {
+            "x": -223.69494794238696,
+            "z": -55.345454956426984
+          },
+          {
+            "x": -234,
+            "z": -53.65
+          },
+          {
+            "x": -168.47820653452322,
+            "z": -53.73753474885869
+          },
+          {
+            "x": -169.34957832265096,
+            "z": -30.033739458066275
+          },
+          {
+            "x": -171.35,
+            "z": 25
+          },
+          {
+            "x": -169.33721463271038,
+            "z": 80.18535648374204
+          },
+          {
+            "x": -157.181576072843,
+            "z": 126.65297625078166
+          },
+          {
+            "x": -126.5912587214276,
+            "z": 157.2136363229303
+          },
+          {
+            "x": -78.13704347881809,
+            "z": 165.3430260924172
+          },
+          {
+            "x": -28.0264655011615,
+            "z": 167.34974055923658
+          },
+          {
+            "x": 23.0275677117865,
+            "z": 166.93641627753894
+          },
+          {
+            "x": 23.293348751384908,
+            "z": 221.15027997149855
+          },
+          {
+            "x": 99.34113870170795,
+            "z": 213.5085269339344
+          },
+          {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974
+          }
+        ],
+        "distance": 736.484572573524,
+        "waiting": false,
+        "ready": false,
+        "reroutes": 0,
+        "label": "Seu motorista"
+      },
+      "orders": [
+        {
+          "id": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "en-route",
+          "at": 1794508836584.6667,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+        }
+      ],
+      "last": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "type": "ground",
+        "status": "en-route",
+        "at": 1794508836838.6667,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "orderId": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05"
+      }
+    },
+    "coins": 6815,
+    "gifts": [],
+    "owned": [
+      "garage-orange",
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+    ],
+    "instances": {
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "catalogId": "br-palio",
+        "unit": 1,
+        "purchasedAt": 1794508836585.6667
+      }
+    },
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      },
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "x": -309.35,
+        "z": 11,
+        "heading": 0
+      }
+    },
+    "price": 1185,
+    "text": "Seu motorista · 736 m até a entrega"
+  },
+  "travelling": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "x": -306.98810686843734,
+        "z": -0.9638139816219669,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "kind": "ground",
+        "x": -306.98810686843734,
+        "z": -0.9638139816219669,
+        "yaw": -3.1135727813777003,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "route": [
+          {
+            "x": -306.98810686843734,
+            "z": -0.9638139816219669
+          },
+          {
+            "x": -307.51436143858405,
+            "z": -19.74037498132743
+          },
+          {
+            "x": -225,
+            "z": -21
+          },
+          {
+            "x": -223.69494794238696,
+            "z": -55.345454956426984
+          },
+          {
+            "x": -234,
+            "z": -53.65
+          },
+          {
+            "x": -168.47820653452322,
+            "z": -53.73753474885869
+          },
+          {
+            "x": -169.34957832265096,
+            "z": -30.033739458066275
+          },
+          {
+            "x": -171.35,
+            "z": 25
+          },
+          {
+            "x": -169.33721463271038,
+            "z": 80.18535648374204
+          },
+          {
+            "x": -157.181576072843,
+            "z": 126.65297625078166
+          },
+          {
+            "x": -126.5912587214276,
+            "z": 157.2136363229303
+          },
+          {
+            "x": -78.13704347881809,
+            "z": 165.3430260924172
+          },
+          {
+            "x": -28.0264655011615,
+            "z": 167.34974055923658
+          },
+          {
+            "x": 23.0275677117865,
+            "z": 166.93641627753894
+          },
+          {
+            "x": 23.293348751384908,
+            "z": 221.15027997149855
+          },
+          {
+            "x": 99.34113870170795,
+            "z": 213.5085269339344
+          },
+          {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974
+          }
+        ],
+        "distance": 721.7597356690478,
+        "waiting": false,
+        "ready": false,
+        "reroutes": 0,
+        "label": "Seu motorista"
+      },
+      "orders": [
+        {
+          "id": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "en-route",
+          "at": 1794508836584.6667,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+        }
+      ],
+      "last": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "type": "ground",
+        "status": "en-route",
+        "at": 1794508836838.6667,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "orderId": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05"
+      }
+    },
+    "coins": 6815,
+    "gifts": [],
+    "owned": [
+      "garage-orange",
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+    ],
+    "instances": {
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "catalogId": "br-palio",
+        "unit": 1,
+        "purchasedAt": 1794508836585.6667
+      }
+    },
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      },
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "x": -309.34,
+        "z": 11,
+        "heading": 1.55
+      }
+    },
+    "price": 1185,
+    "text": "Seu motorista · 722 m até a entrega"
+  },
+  "reloaded": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "parked",
+          "at": 1794508836584.6667,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+        }
+      ],
+      "last": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "type": "ground",
+        "status": "interrupted",
+        "at": 1794508836838.6667,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "orderId": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05"
+      }
+    },
+    "coins": 6815,
+    "gifts": [],
+    "owned": [
+      "garage-orange",
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+    ],
+    "instances": {
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "catalogId": "br-palio",
+        "unit": 1,
+        "purchasedAt": 1794508836585.6667
+      }
+    },
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      },
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "x": -309.34,
+        "z": 11,
+        "heading": 1.55
+      }
+    },
+    "price": 1185,
+    "text": "Entrega interrompida ao recarregar. Seu veículo foi preservado; chame o motorista novamente."
+  },
+  "parked": {
+    "x": -309.34,
+    "z": 11,
+    "heading": 1.55
+  },
+  "recalled": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "x": -309.34,
+        "z": 11,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "kind": "ground",
+        "x": -309.34,
+        "z": 11,
+        "yaw": 1.55,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "route": [
+          {
+            "x": -309.34,
+            "z": 11
+          },
+          {
+            "x": -306.6511820686919,
+            "z": 11.056481750873525
+          },
+          {
+            "x": -307.51436143858405,
+            "z": -19.74037498132743
+          },
+          {
+            "x": -225,
+            "z": -21
+          },
+          {
+            "x": -223.69494794238696,
+            "z": -55.345454956426984
+          },
+          {
+            "x": -234,
+            "z": -53.65
+          },
+          {
+            "x": -168.47820653452322,
+            "z": -53.73753474885869
+          },
+          {
+            "x": -169.34957832265096,
+            "z": -30.033739458066275
+          },
+          {
+            "x": -171.35,
+            "z": 25
+          },
+          {
+            "x": -169.33721463271038,
+            "z": 80.18535648374204
+          },
+          {
+            "x": -157.181576072843,
+            "z": 126.65297625078166
+          },
+          {
+            "x": -126.5912587214276,
+            "z": 157.2136363229303
+          },
+          {
+            "x": -78.13704347881809,
+            "z": 165.3430260924172
+          },
+          {
+            "x": -28.0264655011615,
+            "z": 167.34974055923658
+          },
+          {
+            "x": 23.0275677117865,
+            "z": 166.93641627753894
+          },
+          {
+            "x": 23.293348751384908,
+            "z": 221.15027997149855
+          },
+          {
+            "x": 99.34113870170795,
+            "z": 213.5085269339344
+          },
+          {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974
+          }
+        ],
+        "distance": 736.4741635165213,
+        "waiting": false,
+        "ready": false,
+        "reroutes": 0,
+        "label": "Seu motorista"
+      },
+      "orders": [
+        {
+          "id": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "parked",
+          "at": 1794508836584.6667,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+        }
+      ],
+      "last": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "type": "ground",
+        "status": "en-route",
+        "at": 1794508896830.3335,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        },
+        "orderId": ""
+      }
+    },
+    "coins": 6815,
+    "gifts": [],
+    "owned": [
+      "garage-orange",
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+    ],
+    "instances": {
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "catalogId": "br-palio",
+        "unit": 1,
+        "purchasedAt": 1794508836585.6667
+      }
+    },
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      },
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "x": -309.34,
+        "z": 11,
+        "heading": 1.55
+      }
+    },
+    "price": 1185,
+    "text": "Seu motorista · 736 m até a entrega"
+  },
+  "retryVehicle": {
+    "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+    "visible": true,
+    "occupied": true,
+    "phoneDelivery": true,
+    "x": -309.34,
+    "z": 11
+  },
+  "arrived": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-9ed6cf65-6019-4173-85fe-3bdfee548b05",
+          "kind": "vehicle",
+          "label": "Fiat Palio Fire Economy Celebration 2011",
+          "price": 1185,
+          "status": "parked",
+          "at": 1794508836584.6667,
+          "owner": "browser-test-user-123456789012345",
+          "vehicleId": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+        }
+      ],
+      "last": {
+        "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+        "type": "ground",
+        "status": "delivered",
+        "at": 1794509029715.6667,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        }
+      }
+    },
+    "coins": 6823,
+    "gifts": [
+      8
+    ],
+    "owned": [
+      "garage-orange",
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2"
+    ],
+    "instances": {
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "catalogId": "br-palio",
+        "unit": 1,
+        "purchasedAt": 1794508836585.6667
+      }
+    },
+    "parked": {
+      "garage-orange": {
+        "x": -30.5,
+        "z": 43.2,
+        "heading": 1.571
+      },
+      "workshop-red": {
+        "x": 30.81,
+        "z": -22.86,
+        "heading": -1.571
+      },
+      "home-green": {
+        "x": 14.52,
+        "z": 36.93,
+        "heading": 3.142
+      },
+      "royal-purple": {
+        "x": 76.52,
+        "z": 29.07,
+        "heading": 0
+      },
+      "city-white": {
+        "x": 12.27,
+        "z": -12,
+        "heading": -1.571
+      },
+      "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2": {
+        "x": 98.9,
+        "z": 209.68,
+        "heading": -3.026
+      }
+    },
+    "price": 1185,
+    "text": "Última entrega concluída"
+  },
+  "delivered": {
+    "id": "unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2",
+    "visible": true,
+    "occupied": false,
+    "phoneDelivery": false,
+    "x": 98.89793206047757,
+    "z": 209.6846053036974
+  },
+  "errors": []
+}

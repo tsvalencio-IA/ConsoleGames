@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-11-11T19:06:15.922822+00:00",
+  "results": [
+    {
+      "name": "arcade",
+      "error": "Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://otthi-world-campanha-teste.vercel.app/arcade/\nCall log:\n  - navigating to \"https://otthi-world-campanha-teste.vercel.app/arcade/\", waiting until \"domcontentloaded\"\n",
+      "errors": [],
+      "requestFailures": [
+        {
+          "url": "https://otthi-world-campanha-teste.vercel.app/arcade/",
+          "failure": "net::ERR_CERT_AUTHORITY_INVALID"
+        }
+      ]
+    },
+    {
+      "name": "otthi",
+      "error": "Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://otthi-world-campanha-teste.vercel.app/games/otthi/\nCall log:\n  - navigating to \"https://otthi-world-campanha-teste.vercel.app/games/otthi/\", waiting until \"domcontentloaded\"\n",
+      "errors": [],
+      "requestFailures": [
+        {
+          "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+          "failure": "net::ERR_CERT_AUTHORITY_INVALID"
+        }
+      ]
+    }
+  ]
+}

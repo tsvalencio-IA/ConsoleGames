@@ -1,0 +1,65 @@
+{
+  "observedAt": "2026-11-11T19:05:34.519062+00:00",
+  "records": [
+    {
+      "name": "arcade",
+      "url": "https://otthi-world-campanha-teste.vercel.app/arcade/",
+      "status": 200,
+      "headers": {
+        "accept-ranges": "bytes",
+        "access-control-allow-origin": "*",
+        "age": "0",
+        "cache-control": "no-store, max-age=0",
+        "cdn-cache-control": "no-store",
+        "content-disposition": "inline; filename=\"arcade\"",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Wed, 11 Nov 2026 19:05:33 GMT",
+        "etag": "\"7bbdda1bdd8d94d4a0f603558ca2d122\"",
+        "last-modified": "Wed, 11 Nov 2026 19:05:33 GMT",
+        "server": "envoy",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-vercel-cache": "MISS",
+        "x-vercel-id": "cle1::wt4ww-1794423933532-a8cab588d2a6",
+        "content-length": "9696",
+        "x-envoy-upstream-service-time": "343",
+        "connection": "close"
+      },
+      "bytes": 9696
+    },
+    {
+      "name": "otthi",
+      "url": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+      "status": 200,
+      "headers": {
+        "accept-ranges": "bytes",
+        "access-control-allow-origin": "*",
+        "age": "0",
+        "cache-control": "no-store, max-age=0",
+        "cdn-cache-control": "no-store",
+        "content-disposition": "inline; filename=\"otthi\"",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Wed, 11 Nov 2026 19:05:34 GMT",
+        "etag": "\"a1cc7e11db96d23c39acc5fd085c4ad6\"",
+        "last-modified": "Wed, 11 Nov 2026 19:05:34 GMT",
+        "server": "envoy",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-vercel-cache": "MISS",
+        "x-vercel-id": "cle1::65nkb-1794423933948-df215667e5c5",
+        "content-length": "15731",
+        "x-envoy-upstream-service-time": "329",
+        "connection": "close"
+      },
+      "bytes": 15731
+    },
+    {
+      "name": "version",
+      "url": "https://otthi-world-campanha-teste.vercel.app/version.json",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "name": "manifest",
+      "url": "https://otthi-world-campanha-teste.vercel.app/manifest.webmanifest",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ]
+}

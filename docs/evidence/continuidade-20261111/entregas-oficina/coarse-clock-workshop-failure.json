@@ -1,0 +1,195 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: city-white\n+ actual - expected\n\n+ 'repairing'\n- 'delivered'\n\n    at file:///workspace/work/ConsoleGames/tests/world-workshop-auto-browser.mjs:23:79",
+  "errors": [],
+  "state": {
+    "bays": {
+      "ready": true,
+      "selected": 1,
+      "bays": [
+        {
+          "id": 0,
+          "x": 19.75,
+          "z": -18.75,
+          "height": 2.35,
+          "raised": true,
+          "busy": false,
+          "vehicleId": "garage-orange",
+          "controlX": 21.67,
+          "controlZ": -18.6,
+          "mechanic": "mecanico-oficina",
+          "action": false
+        },
+        {
+          "id": 1,
+          "x": 25,
+          "z": -18.75,
+          "height": 0,
+          "raised": false,
+          "busy": false,
+          "vehicleId": "",
+          "controlX": 26.92,
+          "controlZ": -18.6,
+          "mechanic": "workshop-mechanic-bay-2",
+          "action": false
+        }
+      ]
+    },
+    "auto": {
+      "graceMs": 120000,
+      "repairMs": 30000,
+      "collectionMs": 8000,
+      "vehicles": [
+        {
+          "id": "market-blue",
+          "phase": "delivered",
+          "visible": false,
+          "durability": 100,
+          "collectedAt": 1794509273103
+        },
+        {
+          "id": "workshop-red",
+          "phase": "delivered",
+          "visible": false,
+          "durability": 100,
+          "collectedAt": 1794509273103
+        },
+        {
+          "id": "city-white",
+          "phase": "repairing",
+          "visible": false,
+          "durability": 20,
+          "collectedAt": 0
+        },
+        {
+          "id": "traffic-ottovias-azul",
+          "phase": "repairing",
+          "visible": false,
+          "durability": 20,
+          "collectedAt": 0
+        },
+        {
+          "id": "traffic-ottovias-amarelo",
+          "phase": "waiting",
+          "visible": false,
+          "durability": 20,
+          "collectedAt": 0
+        },
+        {
+          "id": "traffic-ottovias-verde",
+          "phase": "waiting",
+          "visible": false,
+          "durability": 20,
+          "collectedAt": 0
+        }
+      ]
+    },
+    "owned": {
+      "bay": {
+        "vehicleId": "garage-orange",
+        "height": 2.35,
+        "raised": true,
+        "disassembly": {
+          "vehicleId": "garage-orange",
+          "wheels": {},
+          "parts": {
+            "engine": true
+          }
+        }
+      },
+      "damage": 35,
+      "parts": {
+        "parts": {
+          "engine": 28,
+          "brakes": 31,
+          "suspension": 28,
+          "steering": 39,
+          "electrical": 39,
+          "cooling": 39
+        },
+        "lastDurability": 35,
+        "lastDamageAt": 1794508991808,
+        "serviceOpenedAt": 1794508991804,
+        "serviceCompletedAt": 0,
+        "serviceStatus": "pending",
+        "unrepairable": false,
+        "ownerType": "user",
+        "ownerName": "Jogador OCAL",
+        "bayId": 0
+      }
+    },
+    "economy": {
+      "profile": {
+        "coins": 4321,
+        "xp": 321
+      },
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "goldOre": 0,
+        "goldBar": 0,
+        "food": 2,
+        "water": 2,
+        "crystals": 0,
+        "blocks": 4,
+        "fences": 2,
+        "keys": 0,
+        "fishingRod": 1,
+        "bait": 5,
+        "seeds": 6,
+        "wheat": 0,
+        "carrots": 0,
+        "clay": 0,
+        "rawFish": 0,
+        "cookedFish": 0,
+        "forestResources": 0
+      },
+      "repairs": 0
+    },
+    "claims": [
+      "ottovias-azul",
+      "ottovias-amarelo",
+      "ottovias-verde"
+    ],
+    "cars": [
+      {
+        "id": "city-white",
+        "status": "pending",
+        "x": 47,
+        "z": -18
+      },
+      {
+        "id": "traffic-ottovias-azul",
+        "status": "pending",
+        "x": 47,
+        "z": -18
+      },
+      {
+        "id": "traffic-ottovias-amarelo",
+        "status": "pending",
+        "x": 40.800000000000004,
+        "z": -18
+      },
+      {
+        "id": "traffic-ottovias-verde",
+        "status": "pending",
+        "x": 53.2,
+        "z": -18
+      }
+    ],
+    "overlaps": [],
+    "actors": [
+      {
+        "id": "ottovias-azul",
+        "taken": true
+      },
+      {
+        "id": "ottovias-amarelo",
+        "taken": true
+      },
+      {
+        "id": "ottovias-verde",
+        "taken": true
+      }
+    ]
+  }
+}
