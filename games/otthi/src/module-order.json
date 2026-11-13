@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.26-estabilidade-oficina",
+  "build": "705.28.27-evolucao-integrada",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a25c9b5db746ca43eb84a84d61fba58b40a21d82619673d6839319461bf04d57"
+      "sha256Body": "c7ee3927e6c7f6a79ec497fccf10c87790779519080bfd92476ffb47009d8ef7"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "e71b46375e6865ba0c2c7ed9c359131e7346d2b4c3bff3ddffee8188d7bf02f7"
+      "sha256Body": "0c01a192aad0dfa67619fcd8dda4d3a7e0d36a379ed2d5009aee3a3111b4e636"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -70,7 +70,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "fa00533995b3ae19605620a773aa4b0594a1549293c325475dbb223389924730"
+      "sha256Body": "b89c1364a18474ea881d4f9967c8beb85042cc3499f05f6c35136f3e03571d5d"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -287,7 +287,7 @@
       "startLine": 5680,
       "endLine": 5801,
       "description": "Fundação OTTHI World, PBR local, diagnóstico e painel das cinco etapas",
-      "sha256Body": "211ea9bac0f0afe3c37215c9f4e49d79f4645532ae8ae4c15979c3216b7c7133"
+      "sha256Body": "b616cc1c9e6e8b87170756e2fadec7b8b890e2142914ed82bf663349f601a0d0"
     },
     {
       "file": "src/modules/34-avatar-studio-professional-v3.js",
@@ -336,7 +336,7 @@
       "startLine": 6058,
       "endLine": 6122,
       "description": "Poderes originais, circuito de plataforma e aventura",
-      "sha256Body": "a4e83de8cef4f4be7e4467c6c56446feb2fb3edc75246fb2bc296556db60402a"
+      "sha256Body": "e0789fd187bcec52d99c3db3d9ef6fa24f577fc88e43c4632c3213ce985d24d6"
     },
     {
       "file": "src/modules/38-otthi-world-integration-bootstrap.js",
@@ -609,7 +609,7 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "74bb4d6d150a922500b675dafbdd71e88d26be7af62bef54d7d276ce3376ceed"
+      "sha256Body": "218f39e80ceaf71544b935732710fe10fe00f96148220589f0dfa111aec32fed"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",
@@ -620,6 +620,11 @@
       "file": "src/modules/75-phone-orders.js",
       "description": "Compras pelo celular, recibos persistentes e entrega física de encomendas",
       "sha256Body": "54691e8e68ca832f8d37e1715b4bceb1ab5e6288c28d0a5f5bca3a2e6b41c8fc"
+    },
+    {
+      "file": "src/modules/76-player-journey.js",
+      "description": "Voluntary progression through existing civilian adventures and services",
+      "sha256Body": "967133e1ec8298aacb3165d0b4d86213cec4f85aa3b717481825252b33c44080"
     }
   ],
   "styles": [
@@ -821,6 +826,11 @@
       "file": "src/styles/27-world-phone.css",
       "description": "Celular no menu Vida, com lista responsiva de veículos",
       "sha256Body": "c7f4d943f5c3eefb625e2c3acc1f3137f923ce3894ba414c8e7b81cb482d1fc7"
+    },
+    {
+      "file": "src/styles/28-player-journey.css",
+      "description": "Responsive native player journey panel",
+      "sha256Body": "d43799ec7bc7f9f58d49cf8fceba7d3ee7f038a34acb15d7dc5369f31d6db2ae"
     }
   ]
 }

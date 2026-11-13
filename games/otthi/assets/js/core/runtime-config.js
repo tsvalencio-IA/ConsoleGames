@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.26-estabilidade-oficina',
+    build: '705.28.27-evolucao-integrada',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

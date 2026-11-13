@@ -2,7 +2,7 @@
 
 **by thIAguinho Soluções Digitais e Otto MMP Ferri**
 
-Estado atual e caminho para continuar (12/11/2026): [registro de continuidade](docs/evidence/continuidade-20261111/README.md). A base consolidada é `console-evolution-20261106` em `6258e61`; `main` ainda não reúne essa evolução. O console atual tem oito entradas, incluindo [Dança](games/danca/), acrescentada após a integração original dos sete jogos descrita abaixo.
+Estado atual: [evolução integrada705.28.27](docs/evidence/evolucao-20261112/README.md) e [registro de progresso](docs/evidence/evolucao-20261112/PROGRESS.md). A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console atual tem oito entradas, incluindo [Dança](games/danca/), acrescentada após a integração original dos sete jogos descrita abaixo.
 
 **[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
 

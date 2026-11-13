@@ -275,8 +275,12 @@
   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
   const recovered=phoneRecoverRoute(job,dt);
-  if(!recovered&&job.blockedFor>12&&job.searchFailed&&job.kind!=='return'){
-   const target=phoneGroundDestination(v,true,job.target);if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
+  if(!recovered&&job.blockedFor>12&&job.searchFailed){
+   // A customer may occupy the courier's original return curb while it is
+   // away. Find another real stop at the shop instead of holding every paid
+   // order behind that one occupied destination indefinitely.
+   const returning=job.kind==='return',target=returning?phonePickupPoint(v,job.origin):phoneGroundDestination(v,true,job.target);
+   if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(!returning&&state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
   }
  }
  function updateWorldPhone(){

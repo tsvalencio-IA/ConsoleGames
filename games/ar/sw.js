@@ -3,7 +3,7 @@
 // Release 2026-10-28: body-guided hand crop, hands-free advance, distinct operations.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v54";
+const CACHE=PREFIX+"pro-control-v55";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",
@@ -24,7 +24,7 @@ const FILES=[
 "./recorded-audio.js?v=20261029-continuity5","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/engine-recordings.json","./audio/engine-road-idle.ogg","./audio/engine-road-load.ogg","./audio/engine-classic-idle.ogg","./audio/engine-classic-load.ogg","./audio/engine-sport-idle.ogg","./audio/engine-sport-load.ogg","./audio/engine-heavy-idle.ogg","./audio/engine-heavy-load.ogg","./audio/engine-moto-idle.ogg","./audio/engine-moto-load.ogg","./audio/engine-twin-idle.ogg","./audio/engine-twin-load.ogg","./audio/engine-small-moto.ogg","./audio/engine-rotor-recorded.ogg","./audio/engine-prop-recorded.ogg","./audio/engine-jet-recorded.ogg","./audio/engine-boat-recorded.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261109-tactical4","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261029-entry5","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
 "./combat-infantry.js?v=20261109-infantry1","./combat-infantry.js","./vendor/GLTFLoader-r128.js","./vendor/SkeletonUtils-r128.js","./vendor/RGBELoader-r128.js","./vendor/THREE-LICENSE.txt","./assets/infantry/soldier.glb","./assets/infantry/sources.json","./assets/sky/daylight-1k.hdr","./assets/sky/sources.json",
 "./combat-presentation.js?v=20261109-tactical4","./combat-presentation.js","./assets/ground/concrete-albedo.jpg","./assets/ground/concrete-normal.jpg","./assets/ground/concrete-arm.jpg","./assets/ground/sources.json",
-"./multiplayer.js","./multiplayer.css","./practice-controls.js","./war-screen-orientation.js","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./war-screen-orientation.js","./js/game_ar.js","./arcade-enhancements.js",
+"./multiplayer.js","./multiplayer.css","./practice-controls.js","./war-screen-orientation.js","./front-controls.js","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./war-screen-orientation.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",
 "./studio-fx.js","./studio-fx.css","./studio-scenes.js",

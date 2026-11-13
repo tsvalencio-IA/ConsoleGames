@@ -159,6 +159,7 @@
         },
 
         resetPhysics: function() {
+            this.racecraftTrial=null;
             this.lastTime=performance.now();this.physicsAccumulator=0;this.raceElapsed=0;this.lapStartedAt=0;this.lapTimes=[];this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
             this.steeringFrame=null;this.steeringFrameAt=null;this.virtualWheel={x:0,y:0,r:60,opacity:0,isHigh:false};this.cameraItemGesture=null;this.seenOnlineImpacts=new Set();
             this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
@@ -672,6 +673,7 @@
                 if(!this.isOnline) { this.rivals = this.localBots; } 
                 else if (this.isHost) { this.localBots.forEach((b, i) => { this.dbRef.child('players/bot_' + i).set({ pos: 0, x: b.x, speed: 0, lap: 1, status: 'RACING', finishTime: 0, charId: b.charId, name: b.name, kartId: 0, lastSeen: firebase.database.ServerValue.TIMESTAMP }); }); }
             }
+            window.KartRacecraftEvaluation?.start(this,trackLength);
         },
 
         update: function(ctx, w, h, pose) {
@@ -733,6 +735,7 @@
             
             if(this.isOnline&&this.status==='FINISHED'){this.raceState='FINISHED';this.syncMultiplayer(true);return;}
             if (this.status === 'FINISHED' && this.state !== 'GAMEOVER' && this.state !== 'SPECTATE_WAIT') {
+                window.KartRacecraftEvaluation?.finish(this);
                 this.state = 'SPECTATE_WAIT'; 
                 let isWin = false;
                 if (this.currentFase.mode === 'RACE' && this.finalRank <= this.currentFase.targetRank) isWin = true;
@@ -1173,6 +1176,7 @@
             d.visualTilt += ((d.steer * 8) - d.visualTilt) * 0.15; d.visualTilt = Math.max(-12, Math.min(12, d.visualTilt)); 
             
             d.score += d.speed * 0.01;
+            window.KartRacecraftEvaluation?.tick(d,trackLength);
             particles.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.l--; if(p.l <= 0) particles.splice(i, 1); });
         },
 
@@ -1255,6 +1259,16 @@
                 }
             }
 
+            // Project each current rival once. Preserve original painter order
+            // within a road segment, including live multiplayer snapshots.
+            const rivalsBySegment=new Map();
+            for(const r of d.rivals){
+                const ahead=((Number(r.lap)-Number(d.lap))*trackLength+Number(r.pos)-Number(d.pos))*view.direction+view.depth*CONF.SEGMENT_LENGTH;
+                if(!Number.isFinite(ahead)||ahead<=0||ahead>=view.drawDistance*CONF.SEGMENT_LENGTH)continue;
+                const posAhead=ahead/CONF.SEGMENT_LENGTH,n=Math.floor(posAhead+view.fraction);
+                if(!rivalsBySegment.has(n))rivalsBySegment.set(n,[]);
+                rivalsBySegment.get(n).push({r,posAhead});
+            }
             for(let n = view.drawDistance - 1; n >= 0; n--) {
                 const coord = segmentCoords[n]; if(!coord) continue;
                 
@@ -1290,11 +1304,7 @@
                 }
 
                 // Actual rivals only: use authoritative lap + track positions.
-                d.rivals.forEach(r => {
-                    const ahead=((Number(r.lap)-Number(d.lap))*trackLength+Number(r.pos)-Number(d.pos))*view.direction+view.depth*CONF.SEGMENT_LENGTH;
-                    if(!Number.isFinite(ahead)||ahead<=0||ahead>=view.drawDistance*CONF.SEGMENT_LENGTH)return;
-                    const posAhead=ahead/CONF.SEGMENT_LENGTH;
-                    if(Math.floor(posAhead+view.fraction)!==n)return;
+                for(const {r,posAhead} of rivalsBySegment.get(n)||[]){
                     const t=Math.max(0,Math.min(1,posAhead+view.fraction-n));
                     const far=segmentCoords[Math.min(n+1,segmentCoords.length-1)]||coord;
                     const lerp=(a,b,t)=>a+(b-a)*t;
@@ -1303,7 +1313,7 @@
                     const spriteScale=Math.max(w*.00006,w*.0022*scale*1.55);
                     this.drawKartSprite(ctx,screenX,lerp(coord.y,far.y,t),spriteScale,0,0,r.spinAngle||0,r.color,r.charId,r.kartId);
                     if(scale>.025){ctx.save();ctx.font='bold '+Math.max(10,Math.min(13,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.shadowColor='#001';ctx.shadowBlur=4;ctx.fillText(String(r.name||'RIVAL').slice(0,16),screenX,lerp(coord.y,far.y,t)-130*spriteScale-9);ctx.restore();}
-                });
+                }
             }
 
             d.projectiles.forEach(p => {
@@ -1524,6 +1534,7 @@
             if(d.driftSparks>0){const ready=d.driftSparks>70;ctx.textAlign='center';ctx.font='bold 11px Arial';ctx.fillStyle=ready?'#9beee8':'#ebd5a5';ctx.fillText(ready?'SOLTE O DRIFT · IMPULSO PRONTO':'DRIFT · '+Math.min(100,Math.floor(d.driftSparks/70*100))+'%',w/2,h*.76,Math.min(320,w-20));}
             if(window.ArcadeControls?.mode==='camera'&&d.item){ctx.fillStyle='#e5f7eb';ctx.textAlign='center';ctx.font='bold 12px Arial';const progress=d.cameraItemGesture?.progress||0;ctx.fillText(progress?'USANDO ITEM · '+Math.round(progress*100)+'%':d.cameraItemGesture?.consumed?'VOLTE A MÃO AO VOLANTE PARA USAR OUTRO ITEM':!d.cameraItemGesture?.armed?'MANTENHA AS DUAS MÃOS NO VOLANTE PARA PREPARAR':'ITEM: LEVE UMA MÃO À CABEÇA POR 0,35s',w/2,h<500?h*.79:h*.84,w-24);}
             if(d.trackingLost&&d.status==='RACING'){ctx.fillStyle='rgba(6,18,32,.88)';ctx.fillRect(w*.08,h*.40,w*.84,64);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 15px Arial';ctx.fillText('CÂMERA SEM PILOTO',w/2,h*.40+24,w*.8);ctx.font='12px Arial';ctx.fillText('Mostre as duas mãos para acelerar e dirigir.',w/2,h*.40+46,w*.8);}
+            window.KartRacecraftEvaluation?.draw(ctx,w,h,d);
             ctx.restore();
         },
         renderUI: function(ctx, w, h) {

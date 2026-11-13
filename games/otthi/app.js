@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.26-estabilidade-oficina';
+  const OTTHI_GAME_WEB_BUILD = '705.28.27-evolucao-integrada';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2006,7 +2006,7 @@
   function otthiHomeLotIndex(){let hash=2166136261;for(const char of otthiHomeIdentity()){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return(hash>>>0)%OTTHI_PERSONAL_HOME_LOTS.length;}
   function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*23:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
   function v704PersonalHomeLotAt(x,z,margin=0){return OTTHI_PERSONAL_HOME_LOTS.some(lot=>Math.abs(Number(x)-lot.x)<=5.2+margin&&Math.abs(Number(z)-lot.z)<=4.3+margin);}
-  function worldLayoutPoint(id,fallback={x:0,z:0}){const personal=otthiPersonalHomeLot();if(id==='home')return{...personal.home};if(id==='spawn')return{...personal.spawn};if(id==='homeGarage')return{...personal.garage};const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
+  function worldLayoutPoint(id,fallback={x:0,z:0}){if(id==='home'||id==='spawn'||id==='homeGarage'){const personal=otthiPersonalHomeLot();return{...(id==='home'?personal.home:id==='spawn'?personal.spawn:personal.garage)};}const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
   function worldLayoutRect(id){const zone=WORLD_LAYOUT_V704.zones[id];return zone?{...zone}:null;}
   function worldLayoutStructure(id){const item=WORLD_LAYOUT_V704.structures.find(entry=>entry.id===id);if(!item)return null;const p=item.point?worldLayoutPoint(item.point):item;return{...item,x:Number(item.x??p.x),z:Number(item.z??p.z)};}
   function v704RectOverlap(a,b,margin=0){return Math.abs(Number(a.x)-Number(b.x))<(Number(a.w)+Number(b.w))/2+margin&&Math.abs(Number(a.z)-Number(b.z))<(Number(a.d)+Number(b.d))/2+margin;}
@@ -2355,7 +2355,9 @@
   }
   function trafficYields(a,b,heading){
     const pa=trafficPriority(a),pb=trafficPriority(b.ref||b);if(pa!==pb)return pa<pb;
-    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return Math.abs(aw-bw)>80?aw>bw:String(a.id)>String(b.ref?.id||b.id);
+    // Aged queues need one total order. A pairwise time tolerance can make
+    // three close arrivals yield in a circle, even after the recovery delay.
+    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return aw!==bw?aw>bw:String(a.id)>String(b.ref?.id||b.id);
     const h=Number(b.group.rotation.y||0),dot=Math.cos(h-heading),dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z;
     // At an unmarked crossing, yield to the vehicle approaching from the right.
     if(Math.abs(dot)<.72){const side=-dx*Math.cos(heading)+dz*Math.sin(heading);if(Math.abs(side)>.25)return side>0;}
@@ -2373,7 +2375,15 @@
       }
       if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1){const turning=Math.abs(Math.atan2(Math.sin(heading-Number(actor.group.rotation.y||0)),Math.cos(heading-Number(actor.group.rotation.y||0))))>.35,canCreep=turning&&now-Number(actor.trafficQueuedAt||now)>2200&&!trafficYields(actor,other,heading)&&!trafficBodiesOverlap(trafficBody(actor),ob,.24);factor=Math.min(factor,canCreep?.12:0);}
     }
-    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
+    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);
+    if(result<.2){actor.trafficQueuedAt||=now;actor.trafficQueuePose||={x:actor.group.position.x,z:actor.group.position.z};}
+    else if(result>.5&&actor.trafficQueuedAt){
+      // Permission to move is speculative: the overlap resolver may rewind the
+      // next pose. Only real progress releases the vehicle's queue age.
+      const queued=actor.trafficQueuePose||(actor.trafficQueuePose={x:actor.group.position.x,z:actor.group.position.z});
+      if(Math.hypot(actor.group.position.x-queued.x,actor.group.position.z-queued.z)>=.8){actor.trafficQueuedAt=0;actor.trafficQueuePose=null;}
+    }
+    return result;
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function trafficOverlapDepth(a,b,margin=.24){
@@ -2403,8 +2413,12 @@
       const a=actors[i];if(a.id>=b.id&&!b.isPlayer||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
-      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
+      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficQueuePose||={x:y.group.position.x,z:y.group.position.z};y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
+      // Rewinding can remove the immediate overlap without making the next
+      // steering pose possible. Old repeated attempts still need the same
+      // small, collision-checked clearance used for an existing contact.
+      const agedRetry=!!old&&performance.now()-Number(y.ref.trafficQueuedAt||performance.now())>2200;
+      if((trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)||agedRetry)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
     }world.trafficSnapshot=null;
   }
 
@@ -8409,11 +8423,15 @@
     errors:[]
   };
 
+  function normalizeWorldHeroRecord(value){
+    return{selectedPower:value?.selectedPower||'energyPulse',unlocked:Array.isArray(value?.unlocked)?value.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(value?.mastery||{})},challengeBest:Number(value?.challengeBest||0),challengeWins:Number(value?.challengeWins||0),energy:Number.isFinite(value?.energy)?clamp(value.energy,0,100):100,lastUse:Number(value?.lastUse||0)};
+  }
+
   function ensureOtthiWorldState(){
     state.settings={...(state.settings||{}),worldRender:state.settings?.worldRender!==false,worldDetails:state.settings?.worldDetails!==false,worldDayCycle:!!state.settings?.worldDayCycle,worldOutlines:state.settings?.worldOutlines!=='off'};
     state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3',bodyStyle:state.avatar?.bodyStyle||'lego',face:state.avatar?.face||'face-happy-01',hair:state.avatar?.hair||'hair-short-01',torso:state.avatar?.torso||'world-jacket-01',legs:state.avatar?.legs||'world-pants-01',shoes:state.avatar?.shoes||'world-sneakers-01'});
     state.vehicles={...(state.vehicles||{}),owned:[...new Set(['garage-orange',...(state.vehicles?.owned||[])])],primaryId:state.vehicles?.primaryId||'garage-orange',parked:{...(state.vehicles?.parked||{})},modularParts:{...(state.vehicles?.modularParts||{})},partDurability:{...(state.vehicles?.partDurability||{})},garage:{...(state.vehicles?.garage||{}),slots:{'1':'garage-orange',...(state.vehicles?.garage?.slots||{})},stored:{...(state.vehicles?.garage?.stored||{})},purchasedAt:{'garage-orange':0,...(state.vehicles?.garage?.purchasedAt||{})}}};
-    state.adventures={...(state.adventures||{}),hero:{selectedPower:state.adventures?.hero?.selectedPower||'energyPulse',unlocked:Array.isArray(state.adventures?.hero?.unlocked)?state.adventures.hero.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(state.adventures?.hero?.mastery||{})},challengeBest:Number(state.adventures?.hero?.challengeBest||0),challengeWins:Number(state.adventures?.hero?.challengeWins||0),energy:Number.isFinite(state.adventures?.hero?.energy)?clamp(state.adventures.hero.energy,0,100):100,lastUse:Number(state.adventures?.hero?.lastUse||0)}};
+    state.adventures={...(state.adventures||{}),hero:normalizeWorldHeroRecord(state.adventures?.hero)};
     return state;
   }
 
@@ -9092,7 +9110,13 @@ function build(T,key,H){
     skyLeap:Object.freeze({id:'skyLeap',icon:'⬆',name:'Salto celeste',cost:28,cooldown:2600,description:'Super salto para plataformas e áreas verticais.'}),
     magnetWave:Object.freeze({id:'magnetWave',icon:'◎',name:'Onda magnética',cost:30,cooldown:3600,description:'Atrai cristais e enfraquece monstros ao redor.'})
   });
-  function worldHeroState(){ensureOtthiWorldState();return state.adventures.hero;}
+  function worldHeroState(){
+    // Bootstrap and garage operations normalize the complete world. A hero
+    // animation/read must not clone every owned vehicle and account setting.
+    if(!state.adventures||!state.vehicles||!state.avatar||!state.settings)ensureOtthiWorldState();
+    state.adventures={...state.adventures,hero:normalizeWorldHeroRecord(state.adventures.hero)};
+    return state.adventures.hero;
+  }
   function heroPowerUnlocked(id){return worldHeroState().unlocked.includes(id);}
   function heroPowerReady(power){const hero=worldHeroState();return performance.now()-Number(hero.lastUse||0)>=power.cooldown&&hero.energy>=power.cost;}
   function createHeroPulseVisual(color=0x5de6ff,radius=5){
@@ -9143,12 +9167,22 @@ function build(T,key,H){
       if(challenge.active&&challenge.collected===challenge.tokens.length&&Math.hypot(player.x-5,player.z-89)<2.4&&player.y>8)completeWorldHeroChallenge();
       if(challenge.active&&player.y<-.5){const safe=challenge.lastCheckpoint||challenge.start;player.x=safe.x;player.z=safe.z;player.y=safe.y+.35;player.vx=player.vz=player.vy=0;player.grounded=true;toast('Retorno ao último cristal do circuito.','warn',1300);}
     }
-    updateWorldHeroHud();
+    updateWorldHeroHud(state.adventures.hero);
   }
   function ensureWorldHeroHud(){
     if(document.getElementById('worldHeroBtn'))return;const button=document.createElement('button');button.id='worldHeroBtn';button.className='world-hero-action';button.type='button';button.setAttribute('aria-label','Usar poder OTTHI');button.innerHTML='<b data-world-hero-icon>⚡</b><span data-world-hero-energy>100</span>';button.onclick=()=>activateWorldHeroPower();document.getElementById('game')?.appendChild(button);
   }
-  function updateWorldHeroHud(){const button=document.getElementById('worldHeroBtn');if(!button)return;const hero=worldHeroState(),power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse;button.querySelector('[data-world-hero-icon]').textContent=power.icon;button.querySelector('[data-world-hero-energy]').textContent=Math.round(hero.energy);button.disabled=hero.energy<power.cost;button.title=`${power.name} • ${Math.round(hero.energy)}%`;}
+  function updateWorldHeroHud(hero=worldHeroState()){
+    const button=document.getElementById('worldHeroBtn');if(!button)return;
+    const power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse,energy=String(Math.round(hero.energy)),disabled=hero.energy<power.cost,title=`${power.name} • ${energy}%`;
+    // These nodes belong to this HUD element, so a rebuilt game gets fresh
+    // references. Stable simulation steps do not rewrite unchanged DOM.
+    const nodes=button.otthiHeroNodes||(button.otthiHeroNodes={icon:button.querySelector('[data-world-hero-icon]'),energy:button.querySelector('[data-world-hero-energy]')});
+    if(nodes.icon.textContent!==power.icon)nodes.icon.textContent=power.icon;
+    if(nodes.energy.textContent!==energy)nodes.energy.textContent=energy;
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(button.title!==title)button.title=title;
+  }
 
   // ===== MODULE: 38-otthi-world-integration-bootstrap.js =====
   const legacyWorldInitMaterials=initMaterials;
@@ -13525,8 +13559,12 @@ function precompile(T,renderer,scene,camera){
   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
   const recovered=phoneRecoverRoute(job,dt);
-  if(!recovered&&job.blockedFor>12&&job.searchFailed&&job.kind!=='return'){
-   const target=phoneGroundDestination(v,true,job.target);if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
+  if(!recovered&&job.blockedFor>12&&job.searchFailed){
+   // A customer may occupy the courier's original return curb while it is
+   // away. Find another real stop at the shop instead of holding every paid
+   // order behind that one occupied destination indefinitely.
+   const returning=job.kind==='return',target=returning?phonePickupPoint(v,job.origin):phoneGroundDestination(v,true,job.target);
+   if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(!returning&&state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
   }
  }
  function updateWorldPhone(){
@@ -13707,5 +13745,64 @@ function precompile(T,renderer,scene,camera){
   if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed())return;
   const order=phoneOrders().find(o=>o.kind==='parcel'&&['queued','en-route','ready'].includes(o.status)&&o.owner===sharedWorldOwnId());if(order){const now=performance.now();if(now-Number(worldPhone.restoreAt||0)<3000)return;worldPhone.restoreAt=now;phoneStartParcel(order);}
  }
+
+  // ===== MODULE: 76-player-journey.js =====
+ const PLAYER_JOURNEY_ROUTE=Object.freeze([
+  {type:'neighbors',purpose:'Conheça os vizinhos e complete um circuito de entregas a pé.'},
+  {type:'beach',purpose:'Viaje até a orla e ajude a cuidar da praia.'},
+  {type:'snow',purpose:'Encontre os chalés e leve cobertores à comunidade da neve.'},
+  {type:'cable',purpose:'Use o teleférico, ajude no mirante e faça a viagem de volta.'},
+  {type:'fire',purpose:'Pratique o atendimento com a equipe dos bombeiros.'},
+  {type:'police',purpose:'Organize a travessia e acompanhe o morador em segurança.'},
+  {type:'balloon',purpose:'Prepare o balão, visite as paisagens e volte para pousar.'}
+ ]);
+ function playerJourneySnapshot(){
+  if(!ensureCivilMissions())return{ready:false};
+  const definitions=OTCivilMissionCore.definitions,completed=state.civilWorld.completedTypes||{},current=civilCurrent();
+  const rows=PLAYER_JOURNEY_ROUTE.filter(item=>definitions[item.type]).map(item=>{const count=Number(completed[item.type]);return{...item,title:definitions[item.type].title,icon:definitions[item.type].icon,region:definitions[item.type].region,count:Number.isFinite(count)&&count>0?Math.floor(count):0};});
+  const done=rows.filter(item=>item.count>0).length,difficulty=done===0?'easy':done<4?'normal':'hard',next=rows.find(item=>!item.count)||rows.reduce((best,item)=>!best||item.count<best.count?item:best,null),p=current&&current.book.progress(current.r.id,current.uid);
+  const owned=[...new Set((state.vehicles?.owned||[]).map(String))],stored=owned.filter(id=>state.vehicles?.garage?.stored?.[id]);
+  const owner=sharedWorldOwnId(),orders=(state.vehicles?.phoneOrders||[]).filter(order=>order.owner===owner&&order.kind==='parcel'),tracking=phoneDeliveryTracking();
+  return{ready:true,profile:String(civilSoloUid()),rows,done,total:rows.length,difficulty,difficultyLabel:OTCivilMissionCore.difficulties[difficulty].label,next:next?{...next,reward:definitions[next.type].reward+(difficulty==='hard'?50:0)}:null,
+   current:current?{id:current.r.id,type:current.r.type,status:current.r.status,mode:current.r.mode,title:p?.definition?.title||'',phase:current.r.phase,steps:p?.definition?.steps.length||0,step:p?.step?.title||'',count:p?.count||0,quota:p?.quota||0}:null,
+   resources:{owned:owned.length,stored:stored.length,parcelPending:orders.filter(order=>['queued','en-route','ready'].includes(order.status)).length,parcelReady:!!tracking?.ready,familyPark:!!state.familyAdventure?.flags?.park}};
+ }
+ async function playerJourneyStart(type){
+  const snapshot=playerJourneySnapshot();if(!snapshot.ready||!snapshot.rows.some(row=>row.type===type))return false;
+  if(snapshot.current&&['active','lobby'].includes(snapshot.current.status)){openCivilMissionDetails();return false;}
+  // Difficulty is changed only by this explicit, labelled player action.
+  state.civilWorld.difficulty=snapshot.difficulty;
+  await civilCreateMission(type,'solo');
+  return civilCurrent()?.r.type===type&&civilCurrent()?.r.status==='active';
+ }
+ function openPlayerJourney(){
+  if(!running)return false;const snapshot=playerJourneySnapshot();if(!snapshot.ready){toast('As aventuras estão sendo preparadas. Aguarde um instante.','info',2200);return false;}
+  const active=snapshot.current&&['active','lobby'].includes(snapshot.current.status),next=snapshot.next,escape=escapeHtml;
+  const current=active?`<section class="player-journey-current"><span class="player-journey-kicker">EM ANDAMENTO</span><h3>${escape(snapshot.current.title)}</h3><p>${escape(snapshot.current.status==='lobby'?'Prepare a dupla no painel da missão.':snapshot.current.step||'Conclua sua etapa para continuar.')}${snapshot.current.quota?' · '+snapshot.current.count+'/'+snapshot.current.quota:''}</p><button class="btn primary" data-journey-continue>CONTINUAR MISSÃO E GPS</button></section>`:'';
+  const suggestion=!active&&next?`<section class="player-journey-current"><span class="player-journey-kicker">${snapshot.done===snapshot.total?'PRÓXIMO DESAFIO':'PRÓXIMO PASSO SUGERIDO'}</span><h3>${next.icon} ${escape(next.title)}</h3><p>${escape(next.purpose)}</p><p class="player-journey-reward">${escape(snapshot.difficultyLabel)} · ${next.reward} moedas ao concluir</p><button class="btn primary" data-journey-start="${next.type}">${snapshot.done===snapshot.total?'REPETIR':'COMEÇAR'} EM ${escape(snapshot.difficultyLabel.toUpperCase())}</button></section>`:'';
+  const progress=snapshot.total?Math.round(snapshot.done/snapshot.total*100):0;
+  openModal('Meu caminho no mundo',`<section class="player-journey"><p>Uma sugestão de percurso para conhecer o mundo. Você pode escolher outra aventura ou continuar explorando quando quiser.</p><div class="player-journey-progress"><b>${snapshot.done}/${snapshot.total} aventuras conhecidas</b><span>${snapshot.done===0?'Comece com uma tarefa curta.':snapshot.done===snapshot.total?'Todas as regiões visitadas em aventuras. Tente os desafios ou uma dupla.':'Seu progresso continua salvo entre as aventuras.'}</span><div class="player-journey-meter" role="progressbar" aria-label="Aventuras conhecidas" aria-valuemin="0" aria-valuemax="${snapshot.total}" aria-valuenow="${snapshot.done}"><i style="width:${progress}%"></i></div></div>${current}${suggestion}<h3>Seu percurso · escolha livre</h3><ol class="player-journey-list">${snapshot.rows.map((row,index)=>`<li class="${row.count?'is-done':''}"><span class="player-journey-number" aria-hidden="true">${row.count?'✓':index+1}</span><div><b>${row.icon} ${escape(row.title)}</b><small>${escape(row.region)}${row.count?' · concluída '+row.count+(row.count===1?' vez':' vezes'):''}</small><p>${escape(row.purpose)}</p><button class="btn compact" data-journey-start="${row.type}" ${active?'disabled':''}>${row.count?'REPETIR':'JOGAR'} · ${escape(snapshot.difficultyLabel.toUpperCase())}</button></div></li>`).join('')}</ol><h3>Prepare seu passeio</h3><div class="player-journey-resources"><button class="choice" data-journey-phone><b>📱 Celular e entregas</b><span>${snapshot.resources.parcelReady?'Encomenda chegou: aproxime-se para receber.':snapshot.resources.parcelPending?snapshot.resources.parcelPending+' encomenda(s) em andamento.':'Chame seu veículo ou compre e receba no mundo.'}</span></button><button class="choice" data-journey-garage><b>🚗 Minha garagem</b><span>${snapshot.resources.owned} veículo(s) próprio(s) · ${snapshot.resources.stored} guardado(s).</span></button><button class="choice" data-journey-family><b>🐾 Família</b><span>${snapshot.resources.familyPark?'Passeio até o parque concluído. Brinque e explore com a família.':'Reúna a família para passear até o parque.'}</span></button></div><div class="player-journey-actions"><button class="btn" data-journey-all>TODAS AS AVENTURAS E DUPLAS</button><button class="btn" data-journey-map>MAPA E GPS</button><button class="btn" data-journey-explore>CONTINUAR EXPLORANDO</button></div></section>`,root=>{
+   root.querySelectorAll('[data-journey-start]').forEach(button=>button.onclick=()=>playerJourneyStart(button.dataset.journeyStart));
+   root.querySelector('[data-journey-continue]')?.addEventListener('click',openCivilMissionDetails);
+   root.querySelector('[data-journey-phone]').onclick=openWorldPhone;root.querySelector('[data-journey-garage]').onclick=openPlayerGarage;root.querySelector('[data-journey-family]').onclick=()=>{closeModal();window.OTTHI_FAMILY.open();};
+   root.querySelector('[data-journey-all]').onclick=()=>openCivilMissions();root.querySelector('[data-journey-map]').onclick=()=>{closeModal();openMap();};root.querySelector('[data-journey-explore]').onclick=closeModal;
+  });return true;
+ }
+ const playerJourneyDirectoryBefore=worldExploreDirectoryHtml;
+ worldExploreDirectoryHtml=function(...args){const s=playerJourneySnapshot();return`<section class="player-journey-entry"><div><b>Meu caminho no mundo</b><span>${s.ready?s.done+'/'+s.total+' aventuras conhecidas':'Descubra aventuras e atividades no seu ritmo.'}</span></div><button class="btn primary" data-journey-open>VER PRÓXIMO PASSO</button></section>`+playerJourneyDirectoryBefore(...args);};
+ const playerJourneyBindBefore=worldExploreBindDirectory;
+ worldExploreBindDirectory=function(root,...args){playerJourneyBindBefore(root,...args);root.querySelector('[data-journey-open]')?.addEventListener('click',openPlayerJourney);};
+ const playerJourneyHudBefore=updateCivilHUD;
+ updateCivilHUD=function(){
+  if(!civilMissions.ready)return;const current=civilCurrent();if(current&&['active','lobby'].includes(current.r.status)){playerJourneyHudBefore();return;}
+  const snapshot=playerJourneySnapshot(),next=snapshot.next;if(!snapshot.ready||!next){playerJourneyHudBefore();return;}
+  const values=[[els.missionChapter,'SEU PRÓXIMO PASSO'],[els.missionTitle,next.icon+' '+next.title],[els.missionStep,(snapshot.done===snapshot.total?'Repita em Desafio ou jogue em dupla.':snapshot.difficultyLabel+' · '+next.reward+' moedas ao concluir.')+' Toque para abrir Meu caminho.']];
+  for(const[element,value]of values)if(element.textContent!==value)element.textContent=value;
+  const width=Math.round(snapshot.done/Math.max(1,snapshot.total)*100)+'%';if(els.missionFill.style.width!==width)els.missionFill.style.width=width;
+  els.missionCard.title='Meu caminho: aventuras, veículos e exploração';const label=els.missionTitle.textContent+'. '+els.missionStep.textContent;if(els.missionCard.getAttribute('aria-label')!==label)els.missionCard.setAttribute('aria-label',label);
+ };
+ updateMissionHUD=updateCivilHUD;
+ openObjectivesPanel=function(){const c=civilCurrent();return c&&['active','lobby'].includes(c.r.status)?openCivilMissionDetails():openPlayerJourney();};
+ window.OT_PLAYER_JOURNEY={open:openPlayerJourney,diagnostics:playerJourneySnapshot};
 
 })();

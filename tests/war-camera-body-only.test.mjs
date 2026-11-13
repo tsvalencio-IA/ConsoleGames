@@ -53,5 +53,5 @@ test('WAR: no stale hand can bypass calibration, and object bundles stay unused'
  assert.equal(s.game.state,'HAND_CALIBRATION');
  assert(!/src="object-(aim|training|camera-registration)\.js/.test(page));
  assert(!/\.\/object-(flow|views|camera-registration|aim|training|tracker|tracker-worker)\.js/.test(sw));
- assert(/hand-controls\.js\?v=20261107-war-revisao1/.test(page));
+ assert(/hand-controls\.js\?v=20261112-frontal1/.test(page));
 });

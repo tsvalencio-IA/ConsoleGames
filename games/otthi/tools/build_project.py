@@ -88,6 +88,10 @@ RELEASE_FILES += [path for path in ['../ar/index.html', '../ar/sw.js', '../ar/js
 RELEASE_FILES += ['../ar/combat-infantry.js', '../ar/vendor/GLTFLoader-r128.js', '../ar/vendor/SkeletonUtils-r128.js', '../ar/vendor/RGBELoader-r128.js', '../ar/vendor/THREE-LICENSE.txt', '../ar/assets/infantry/soldier.glb', '../ar/assets/infantry/sources.json', '../ar/assets/sky/daylight-1k.hdr', '../ar/assets/sky/sources.json']
 
 
+# Native evaluation dependencies travel with the same verified release.
+RELEASE_FILES += [path for path in ['../ar/front-controls.js', '../ar/control-modes.js', '../ar/control-modes.css', '../kart/racecraft-evaluation.js'] if path not in RELEASE_FILES]
+
+
 def body_after_marker(path: Path, marker: str) -> str:
     text = path.read_text('utf-8')
     if marker not in text:

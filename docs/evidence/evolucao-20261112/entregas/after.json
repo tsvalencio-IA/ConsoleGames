@@ -1,0 +1,951 @@
+{
+  "mode": "after",
+  "baseline": "fed801c",
+  "appSha256": "b3aa830870d388bbf17bdfddbde5cdb76aec8a1f495a5ed9fca0d07fd8f0a346",
+  "limits": [
+    "Native engine, geometry, buying, payments, receiving, driver movement and save/reload; disposable local realtime fixture. No production account.",
+    "Clock is advanced at 60 simulation steps per second. Rendering is capped during the inspection; this is not a frame-rate or physical-device measurement.",
+    "Before uses the compiled version26. After substitutes only modules73 and75 from the working tree in that same compiled baseline."
+  ],
+  "fixture": {
+    "origin": {
+      "x": -22,
+      "z": -12.7
+    },
+    "caller": {
+      "x": 3,
+      "z": -7
+    }
+  },
+  "initial": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [],
+      "last": null
+    },
+    "returning": [],
+    "coins": 8000,
+    "food": 2,
+    "gifts": [],
+    "maxStep": 0,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "firstReady": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "phone-parcel-courier",
+        "target": {
+          "x": 2.5,
+          "z": 1,
+          "yaw": 0
+        },
+        "x": 2.5,
+        "z": 1,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "phone-parcel-courier",
+        "kind": "parcel",
+        "x": 2.5,
+        "z": 1,
+        "yaw": 2.038829880853232,
+        "target": {
+          "x": 2.5,
+          "z": 1,
+          "yaw": 0
+        },
+        "route": [
+          {
+            "x": 2.5,
+            "z": 1
+          }
+        ],
+        "distance": 0,
+        "waiting": false,
+        "ready": true,
+        "reroutes": 0,
+        "label": "Sua encomenda"
+      },
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "ready",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          }
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7985,
+    "food": 2,
+    "gifts": [],
+    "maxStep": 0.5098524933329234,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": {
+      "kind": "parcel",
+      "caller": {
+        "x": 3,
+        "z": -7
+      },
+      "target": {
+        "x": 2.5,
+        "z": 1,
+        "yaw": 0
+      },
+      "ready": true
+    }
+  },
+  "blocker": {
+    "position": {
+      "x": -22,
+      "z": 1.35,
+      "yaw": 1.5707963267948966
+    },
+    "occupied": true,
+    "alternative": {
+      "x": -22,
+      "z": -1.35,
+      "yaw": 1.5707963267948966
+    }
+  },
+  "firstReceived": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        }
+      ],
+      "last": null
+    },
+    "returning": [
+      {
+        "kind": "return",
+        "target": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "origin": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "x": 2.5037964952963163,
+        "z": 0.9829366310702579,
+        "arrived": false,
+        "blocked": false,
+        "blockedFor": 0,
+        "reroutes": 0,
+        "searchSlices": 0
+      }
+    ],
+    "coins": 7985,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0.5098524933329234,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "secondPaid": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "queued",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food"
+        }
+      ],
+      "last": null
+    },
+    "returning": [
+      {
+        "kind": "return",
+        "target": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "origin": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "x": 2.760197511576708,
+        "z": -0.16945914273690615,
+        "arrived": false,
+        "blocked": false,
+        "blockedFor": 0,
+        "reroutes": 0,
+        "searchSlices": 0
+      }
+    ],
+    "coins": 7970,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0.5098524933329234,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "afterReturn": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "phone-parcel-courier",
+        "target": {
+          "x": 2.5,
+          "z": 13.5,
+          "yaw": 0
+        },
+        "x": -22,
+        "z": -1.35,
+        "waiting": true,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "phone-parcel-courier",
+        "kind": "parcel",
+        "x": -22,
+        "z": -1.35,
+        "yaw": 1.5707963267948966,
+        "target": {
+          "x": 2.5,
+          "z": 13.5,
+          "yaw": 0
+        },
+        "route": [
+          {
+            "x": -22,
+            "z": -1.35
+          },
+          {
+            "x": -22.082685379637045,
+            "z": 1.3474654459370294
+          },
+          {
+            "x": -0.706071896800997,
+            "z": 1.1506356836756988
+          },
+          {
+            "x": -1.3274307067290212,
+            "z": 13.745820501246115
+          },
+          {
+            "x": 2.5,
+            "z": 13.5
+          }
+        ],
+        "distance": 40.522070944103746,
+        "waiting": true,
+        "ready": false,
+        "reroutes": 0,
+        "label": "Sua encomenda"
+      },
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "en-route",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 13.5,
+            "yaw": 0
+          },
+          "pose": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          }
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7970,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0.5098524933329234,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": {
+      "kind": "parcel",
+      "caller": {
+        "x": 2.5,
+        "z": 5.5
+      },
+      "target": {
+        "x": 2.5,
+        "z": 13.5,
+        "yaw": 0
+      },
+      "ready": false
+    }
+  },
+  "movedCaller": {
+    "x": 8,
+    "z": -64,
+    "distance": 69.71728623519421
+  },
+  "followed": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "phone-parcel-courier",
+        "target": {
+          "x": 2.5,
+          "z": -56,
+          "yaw": 0
+        },
+        "x": -21.333138352003953,
+        "z": -1.35,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "phone-parcel-courier",
+        "kind": "parcel",
+        "x": -21.333138352003953,
+        "z": -1.35,
+        "yaw": 1.5707963267948966,
+        "target": {
+          "x": 2.5,
+          "z": -56,
+          "yaw": 0
+        },
+        "route": [
+          {
+            "x": -21.333138352003953,
+            "z": -1.35
+          },
+          {
+            "x": -20,
+            "z": -1.35
+          },
+          {
+            "x": -18,
+            "z": -1.35
+          },
+          {
+            "x": -16,
+            "z": -1.35
+          },
+          {
+            "x": -14,
+            "z": -1.35
+          },
+          {
+            "x": -12,
+            "z": -1.35
+          },
+          {
+            "x": -10,
+            "z": -1.35
+          },
+          {
+            "x": -8,
+            "z": 0.6499999999999999
+          },
+          {
+            "x": -4.879518082273783,
+            "z": 1.12049812692762
+          },
+          {
+            "x": 0.8548710168473045,
+            "z": 1.0448423539244835
+          },
+          {
+            "x": 1.35,
+            "z": -18
+          },
+          {
+            "x": 1.3470878778805164,
+            "z": -55.91137579750786
+          },
+          {
+            "x": 2.5,
+            "z": -56
+          }
+        ],
+        "distance": 81.17117319791197,
+        "waiting": false,
+        "ready": false,
+        "reroutes": 1,
+        "label": "Sua encomenda"
+      },
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "en-route",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 13.5,
+            "yaw": 0
+          },
+          "pose": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          }
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7970,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0.5098524933329234,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": {
+      "kind": "parcel",
+      "caller": {
+        "x": 8,
+        "z": -64
+      },
+      "target": {
+        "x": 2.5,
+        "z": -56,
+        "yaw": 0
+      },
+      "ready": false
+    }
+  },
+  "reloaded": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "en-route",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 13.5,
+            "yaw": 0
+          },
+          "pose": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          }
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7970,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "secondReady": {
+    "phone": {
+      "pending": false,
+      "job": {
+        "id": "phone-parcel-courier",
+        "target": {
+          "x": 2.5,
+          "z": -56,
+          "yaw": 0
+        },
+        "x": 2.5,
+        "z": -56,
+        "waiting": false,
+        "driverVisible": true
+      },
+      "tracking": {
+        "id": "phone-parcel-courier",
+        "kind": "parcel",
+        "x": 2.5,
+        "z": -56,
+        "yaw": 1.647515321790077,
+        "target": {
+          "x": 2.5,
+          "z": -56,
+          "yaw": 0
+        },
+        "route": [
+          {
+            "x": 2.5,
+            "z": -56
+          }
+        ],
+        "distance": 0,
+        "waiting": false,
+        "ready": true,
+        "reroutes": 0,
+        "label": "Sua encomenda"
+      },
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "ready",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 1.647515321790077
+          }
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7970,
+    "food": 4,
+    "gifts": [],
+    "maxStep": 0.6134333333385644,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": {
+      "kind": "parcel",
+      "caller": {
+        "x": 8,
+        "z": -64
+      },
+      "target": {
+        "x": 2.5,
+        "z": -56,
+        "yaw": 0
+      },
+      "ready": true
+    }
+  },
+  "final": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 1.647515321790077
+          },
+          "receivedAt": 1794527205192.3335
+        }
+      ],
+      "last": null
+    },
+    "returning": [
+      {
+        "kind": "return",
+        "target": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "origin": {
+          "x": -22,
+          "z": -1.35,
+          "yaw": 1.5707963267948966
+        },
+        "x": 2.4018915171158026,
+        "z": -56.00226009551363,
+        "arrived": false,
+        "blocked": false,
+        "blockedFor": 0,
+        "reroutes": 0,
+        "searchSlices": 0
+      }
+    ],
+    "coins": 7970,
+    "food": 6,
+    "gifts": [],
+    "maxStep": 0.6134333333385644,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "finalReload": {
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-b62e497d-9165-4e06-8e8b-7bc95a80e21c",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527126486.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": 1,
+            "yaw": 2.038829880853232
+          },
+          "receivedAt": 1794527134365.6667
+        },
+        {
+          "id": "order-7592155a-9baa-4603-af57-bdaa533545dc",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794527135750.6667,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": -1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 0
+          },
+          "pose": {
+            "x": 2.5,
+            "z": -56,
+            "yaw": 1.647515321790077
+          },
+          "receivedAt": 1794527205192.3335
+        }
+      ],
+      "last": null
+    },
+    "returning": [],
+    "coins": 7970,
+    "food": 6,
+    "gifts": [],
+    "maxStep": 0,
+    "foodItem": {
+      "price": 15,
+      "amount": 2
+    },
+    "owner": "browser-test-user-123456789012345",
+    "job": null
+  },
+  "passed": true,
+  "errors": []
+}
