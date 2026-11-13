@@ -9,3 +9,9 @@ Após aquecimento no ciclo 2 até ciclo 12: variação 0 em objetos, geometrias,
 Posições, danos e incidentes são preparação de cenário. Rotas, colisões, atendimento, reparo, coleta, guarda, compra, recebimento e save/reload usam as funções nativas. Desenho limitado e relógio controlado: não medeFPS. Nenhuma conta real, regra ou banco de produção foi escrito.
 
 `multiplayer.json` usa dois clientes sobre relay RTDB local, sem certificar conectividade de uma sala real. `update-25-to-27.json` verifica atualização, configuração antiga e offline com perfil preservado. `mobile-layout.json` mede dez mudanças de viewport sem sensor físico. `unit-470.log` registra as regressões.
+
+## Sessão ampliada final
+
+`endurance-60-cycles.json`: 60 incidentes consecutivos e 65 etapas passaram. 359,202 s de parede; 1.366,57 s (22,78 min) de simulação nativa, mais 221 s explicitamente adiantados para oficina. Relógio controlado e desenho limitado: não equivale a 22 min de renderização em telefone.
+
+Do ciclo 2 ao 60, variação zero nas contagens de objetos, contornos, ações, geometrias e materiais. Heap retido após GC variou +139.152 bytes. Dos 60 atendimentos, 59 usaram o prazo de contingência nativo. Os dois participantes e os vínculos das equipes foram liberados em todos os ciclos. Essa observação amplia a cobertura de acúmulo; não garante estabilidade indefinida.

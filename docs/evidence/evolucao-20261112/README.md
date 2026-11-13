@@ -1,6 +1,8 @@
 # Evolução integrada 705.28.27
 
-Continuação da candidata **705.28.26**, sem reiniciar o diagnóstico. Revisão `d4a223e1aa501f02`. O registro de publicação será acrescentado a `release.json`, com commit exato e opção de retorno.
+Continuação da candidata **705.28.26**, sem reiniciar o diagnóstico. Revisão `d4a223e1aa501f02`. [Publicação registrada](release.json): commit `be11c3ac22f70c6ae726c9edb24d34049cad0a52`, produção pronta,168 arquivos conferidos e dois atalhos nativos adicionais verificados. A produção anterior continua disponível para retorno.
+
+[JOGAR MUNDO ABERTO](https://otthi-world-campanha-teste.vercel.app/games/otthi/) · [Console](https://otthi-world-campanha-teste.vercel.app/arcade/) · [WAR frontal](https://otthi-world-campanha-teste.vercel.app/arcade/previews/war-native-20261112.html) · [Kart disputa](https://otthi-world-campanha-teste.vercel.app/arcade/previews/kart-native-20261112.html).
 
 ## O que mudou no jogo
 
@@ -22,7 +24,7 @@ WAR e Kart recebem experiências opcionais **dentro dos jogos reais**, mantendo 
 | Trânsito | Mesma cena de 180 s,44 modelos e 138 NPCs. Quatro ônibus antes praticamente parados voltaram a progredir. Ainda existem filas e contatos. | [Comparação](transito/README.md) |
 | Entregas | Antes: retorno bloqueado por 341 s. Depois: retorno alternativo, segunda compra, jogador em movimento, recarga e recebimento único. | [Relatório](entregas/README.md) |
 | Oficina/garagem | Seis NPCs reparados e retirados automaticamente; carro próprio elevado/desmontado preservado; propriedade/economia conservadas na recarga. | [Sessão](integracao/native-12-cycles.json) |
-| Socorro/recursos | Doze incidentes com dois participantes reais cada, liberados ao final. Entre ciclos 2 e 12, crescimento zero nas contagens de objetos, geometrias, materiais, ações e contornos. Quatro ocorrências usaram contingência. | [Método e limites](integracao/README.md) |
+| Socorro/recursos | Sessões de 12 e 60 incidentes com dois participantes reais cada. Contagens de recursos estáveis; participantes liberados. O estresse ampliado usou contingência em 59/60 casos, portanto chegada física do socorro não está homologada. | [Método e limites](integracao/README.md) |
 | Jornada | Primeira aventura nativa concluída, próxima sugerida, recompensa única e recarga. Quatro tamanhos de tela. | [Dados](jornada/native.json), [captura](jornada/next-objective.png) |
 | Multiplayer | Dois clientes nativos: aeronaves distintas, troca de autoridade e reutilização das aeronaves estacionadas. RTDB local descartável. | [Dados](integracao/multiplayer.json) |
 | Atualização | Produção25→27: atualização segura, recuperação da configuração antiga, perfil preservado e abertura offline coerente. | [Dados](integracao/update-25-to-27.json) |
@@ -42,3 +44,7 @@ Aquém de uma homologação física: FPS sustentado, calor, bateria, câmera, la
 [Preservação](preservation.json): os 143 arquivos anteriores do manifesto continuam presentes; a nova versão tem 147. Arquivos de Firebase/regras/calibração identificados na árvore não mudaram. Não houve migração ou escrita no banco real. Os oito jogos e atividades continuam incluídos no pacote. As versões anteriores e a candidata26 permanecem disponíveis para retorno.
 
 Antes de continuar, consultar este registro, `release.json` e `PROGRESS.md`, confirmar a versão publicada e então editar. Não reintroduzir a correção baseada em mock incompleto: o construtor nativo já restaura `state.vehicles.parked`.
+
+## Conferência depois da publicação
+
+O endereço habitual passou pela [integridade de168 arquivos](production-http-integrity.json) e por [abertura e percurso nativos no navegador](production-native-browser.json): embarque, órbita/cabine/seguimento, decolagem, retrato/paisagem, mapa e retorno ao mundo/orla. Sem interceptar o código ou limitar o desenho; serviços externos de conta foram bloqueados e o perfil era descartável. A [captura em paisagem](production-landscape-flight.png) mostra o mundo publicado. [Atalhos e retorno](launchers-and-rollback.json) responderam HTTP200 com as revisões esperadas. Essa conferência não mede desempenho físico nem valida contas reais.

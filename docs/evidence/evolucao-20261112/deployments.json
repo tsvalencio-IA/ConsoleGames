@@ -1,0 +1,75 @@
+{
+  "production": {
+    "id": "dpl_Ef2T1Lh5EpgBSfL8aHG43njK3oeN",
+    "name": "otthi-world-campanha-teste",
+    "url": "otthi-world-campanha-teste-apoex67ff-thiaguinho-s-projects.vercel.app",
+    "type": "LAMBDAS",
+    "state": "READY",
+    "createdAt": 1794530090383,
+    "creator": {
+      "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+      "username": "tsvalencio-ia"
+    },
+    "project": {
+      "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+      "name": "otthi-world-campanha-teste",
+      "framework": null
+    },
+    "meta": {
+      "githubCommitRef": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+      "githubCommitSha": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+      "githubCommitMessage": "Evolve world recovery and player objectives with native WAR and Kart evaluations",
+      "githubRepo": "ConsoleGames",
+      "githubOrg": "tsvalencio-IA"
+    },
+    "alias": [
+      "otthi-world-campanha-teste.vercel.app",
+      "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+      "otthi-world-campanha-teste-git-be1-1939c6-thiaguinho-s-projects.vercel.app"
+    ],
+    "target": "production",
+    "regions": [
+      "iad1"
+    ],
+    "buildingAt": 1794530091900,
+    "ready": 1794530104331,
+    "readyState": "READY",
+    "aliasError": null
+  },
+  "preview": {
+    "id": "dpl_869aG2ftbQK2iMVXuXBaWjqcNAB1",
+    "name": "otthi-world-campanha-teste",
+    "url": "otthi-world-campanha-teste-fyci95lax-thiaguinho-s-projects.vercel.app",
+    "type": "LAMBDAS",
+    "state": "READY",
+    "createdAt": 1794529909462,
+    "creator": {
+      "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+      "username": "tsvalencio-ia"
+    },
+    "project": {
+      "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+      "name": "otthi-world-campanha-teste",
+      "framework": null
+    },
+    "meta": {
+      "githubCommitRef": "continuation-20261111",
+      "githubCommitSha": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+      "githubCommitMessage": "Evolve world recovery and player objectives with native WAR and Kart evaluations",
+      "githubRepo": "ConsoleGames",
+      "githubOrg": "tsvalencio-IA"
+    },
+    "alias": [
+      "otthi-world-campanha-teste-git-con-57ed35-thiaguinho-s-projects.vercel.app"
+    ],
+    "target": null,
+    "regions": [
+      "iad1"
+    ],
+    "buildingAt": 1794529910862,
+    "ready": 1794529922168,
+    "readyState": "READY",
+    "source": "git",
+    "aliasError": null
+  }
+}
