@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.27-evolucao-integrada';
+  const OTTHI_GAME_WEB_BUILD = '705.28.28-maos-livres-tela-limpa';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -457,7 +457,7 @@
     career: { title: 'Morador da Vila', level: 1, xp: 0, completed: 0, activeJob: null, lastMission:null, completedMissionTokens:[] },
     social: { invited: [], gifts: 0, jokes: 0, arguments: 0, chatHiddenBefore:0 },
     abilities: { scaleMode: 'normal', crouched: false, mastery: { miniDash:0, superJump:0, giantSlam:0, stealth:0, magnetSpin:0 } },
-    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'axe', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
+    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'none', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
     account: { linked:false, accountId:'', username:'', lastCloudSync:0 },
     gm: { appliedGrantIds: [], lastGrantAt: 0 },
     safety: { incidents:0, safeStops:0, lessons:0, lastIncident:0 },
@@ -2227,6 +2227,7 @@
   }
 
   const TOOL_DEFS={
+    none:{icon:'✋',name:'Mãos vazias',description:'Guarda a ferramenta para passear. Todas continuam no inventário.'},
     axe:{icon:'🪓',name:'Machado',description:'Corta árvores e coleta madeira.'},
     pickaxe:{icon:'⛏️',name:'Picareta',description:'Extrai pedra e minério de ouro.'},
     bucket:{icon:'🪣',name:'Balde',description:'Retira água limpa do poço.'},
@@ -2235,14 +2236,15 @@
   };
   function equippedTool(){return TOOL_DEFS[state.tools?.equipped]||TOOL_DEFS.axe;}
   function equipTool(id){
-    if(!TOOL_DEFS[id]||!state.tools.owned.includes(id))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
+    if(!TOOL_DEFS[id]||(id!=='none'&&!state.tools.owned.includes(id)))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(id==='none'?'Mãos vazias. Ferramentas guardadas.':`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
   }
   function openToolbelt(){
     openModal('Ferramentas',`<div class="tool-grid">${Object.entries(TOOL_DEFS).map(([id,tool])=>`<button class="tool-card ${state.tools.equipped===id?'active':''}" data-equip-tool="${id}"><span>${tool.icon}</span><b>${tool.name}</b><small>${tool.description}</small><em>${state.tools.equipped===id?'Em uso':'Equipar'}</em></button>`).join('')}</div><div class="resource-summary"><span>🪵 ${state.tools.harvested.wood||0}</span><span>🪨 ${state.tools.harvested.stone||0}</span><span>🟨 ${state.tools.harvested.gold||0}</span><span>💧 ${state.tools.harvested.water||0}</span><span>🪱 ${state.tools.harvested.bait||0}</span><span>🌾 ${state.tools.harvested.crops||0}</span><span>🟫 ${state.tools.harvested.clay||0}</span></div>`,root=>{$$('[data-equip-tool]',root).forEach(btn=>btn.onclick=()=>{equipTool(btn.dataset.equipTool);closeModal();});});
   }
   function refreshEquippedToolVisual(){
-    if(!playerModel?.userData?.parts?.rightArm)return;
-    const arm=playerModel.userData.parts.rightArm;if(toolVisual){toolVisual.parent?.remove(toolVisual);toolVisual=null;}
+    if(toolVisual){const previous=toolVisual;previous.parent?.remove(previous);toolVisual=null;disposeDetachedVisual(previous);}
+    if(state.tools?.equipped==='none'||!playerModel?.userData?.parts?.rightArm)return;
+    const arm=playerModel.userData.parts.rightArm;
     toolVisual=new THREE.Group();toolVisual.position.set(0,-1.12,.14);toolVisual.rotation.z=-.18;arm.add(toolVisual);
     const type=state.tools?.equipped||'axe',wood=materials.wood||0x8c542c,metal=materials.metal||0x8d9aa6;
     if(type==='bucket'){
@@ -7934,7 +7936,7 @@
   }
   function sharedWorkshopReconcile(dt=0){const now=performance.now();if(now-sharedWorldRuntime.yardAt<650)return;sharedWorldRuntime.yardAt=now;let moved=false;for(const entry of sharedWorkshopEntries().filter(item=>item.local&&item.vehicle?.group)){const assigned=sharedWorkshopYardPose(entry.uid,entry.id,entry.status,entry.bodyType),vehicle=entry.vehicle,pose=assigned&&workshopYardSlotSafe(assigned,vehicle)&&workshopYardSlotFree(assigned,vehicle)?assigned:workshopFindYardSlot(entry.status,vehicle);if(!pose||Math.hypot(vehicle.group.position.x-pose.x,vehicle.group.position.z-pose.z)<.12)continue;vehicle.group.position.set(pose.x,pose.y,pose.z);vehicle.group.rotation.y=pose.heading;vehicle.x=pose.x;vehicle.z=pose.z;vehicle.heading=pose.heading;vehicle.workshopYardSlot=pose.id;const record=state.vehicles?.workshopComponents?.[entry.id];if(record)record.yardSlot=pose.id;if(typeof persistParkedVehicle==='function')persistParkedVehicle(vehicle);moved=true;}if(moved)saveState(true);if(now-sharedWorldRuntime.liftAt>650){sharedWorldRuntime.liftAt=now;sharedWorkshopResolveLiftConflict();}}
 
-  function sharedWorldBuildGhostTool(ghost,type){const hand=ghost?.userData?.familyAvatar?.byName?.hand1,arm=hand||ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool?.parent)ghost.userData.remoteTool.parent.remove(ghost.userData.remoteTool);const root=new THREE.Group();root.position.set(0,hand?-.13:-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
+  function sharedWorldBuildGhostTool(ghost,type){const hand=ghost?.userData?.familyAvatar?.byName?.hand1,arm=hand||ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool){const previous=ghost.userData.remoteTool;previous.parent?.remove(previous);ghost.userData.remoteTool=null;disposeDetachedVisual(previous);}ghost.userData.remoteToolId=clean;if(clean==='none')return null;const root=new THREE.Group();root.position.set(0,hand?-.13:-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
   function sharedWorldSkillAura(ghost){if(ghost.userData.sharedSkillAura)return ghost.userData.sharedSkillAura;const material=renderMat(0x6fe9ff,{emissive:0x2d9ed0,emissiveIntensity:.8,transparent:true,opacity:.68}),ring=new THREE.Mesh(new THREE.TorusGeometry(.82,.07,8,28),material);ring.rotation.x=Math.PI/2;ring.position.y=.08;ring.visible=false;ghost.add(ring);ghost.userData.sharedSkillAura=ring;return ring;}
   function sharedWorldCarSignals(ghost){if(ghost.userData.sharedCarSignals?.root?.parent===ghost.userData.carVisual)return ghost.userData.sharedCarSignals;ghost.userData.sharedCarSignals=null;const root=new THREE.Group(),red=box(.42,.14,.24,renderMat(0xe93445,{emissive:0xe93445,emissiveIntensity:1.2}),-.26,1.34,-.12,root),blue=box(.42,.14,.24,renderMat(0x35a9ff,{emissive:0x35a9ff,emissiveIntensity:1.2}),.26,1.34,-.12,root),turbo=box(.72,.16,.08,renderMat(0xff9a35,{emissive:0xff5c18,emissiveIntensity:1.35}),0,.48,-1.54,root);root.visible=false;ghost.userData.carVisual?.add(root);ghost.userData.sharedCarSignals={root,red,blue,turbo};return ghost.userData.sharedCarSignals;}
   function sharedWorldApplyGhostAppearance(ghost,target,{carDriver=false,carPassenger=false,passengerSeat=null,boatDriver=false}={}){
@@ -13804,5 +13806,60 @@ function precompile(T,renderer,scene,camera){
  updateMissionHUD=updateCivilHUD;
  openObjectivesPanel=function(){const c=civilCurrent();return c&&['active','lobby'].includes(c.r.status)?openCivilMissionDetails():openPlayerJourney();};
  window.OT_PLAYER_JOURNEY={open:openPlayerJourney,diagnostics:playerJourneySnapshot};
+
+  // ===== MODULE: 77-exploration-hud.js =====
+ const explorationHud={slots:new Map(),nodes:{},ready:false};
+ function explorationHudMove(node,parent,move){
+  if(!node||!parent)return;
+  let marker=explorationHud.slots.get(node);
+  if(!marker){marker=document.createComment('exploration-hud-slot');node.before(marker);explorationHud.slots.set(node,marker);}
+  if(move){if(node.parentNode!==parent)parent.append(node);}
+  else if(marker.parentNode&&node.previousSibling!==marker)marker.parentNode.insertBefore(node,marker.nextSibling);
+ }
+ function closeExplorationPanels(){state.ui.quickOpen=false;state.ui.skillsOpen=false;syncMobilePanels();}
+ function setExplorationHudMode(mode){
+  clearMovementInputs();state.settings.worldHud=mode==='full'?'full':'clean';closeExplorationPanels();syncExplorationHud();saveState();
+ }
+ function ensureExplorationMenu(){
+  if(explorationHud.ready)return;const bar=els.quickBar;if(!bar)return;
+  const header=document.createElement('div');header.className='exploration-menu-header';header.innerHTML='<b>Menu do mundo</b><button type="button" id="worldMenuClose" aria-label="Fechar menu">✕<span>Fechar</span></button>';header.querySelector('button').onclick=closeExplorationPanels;bar.prepend(header);
+  const empty=document.createElement('button');empty.id='emptyHandsBtn';empty.type='button';empty.innerHTML='👐<span>Mãos vazias</span>';empty.onclick=()=>{equipTool('none');closeExplorationPanels();updateContext(true);};bar.insertBefore(empty,els.toolsBtn);
+  const layout=document.createElement('button');layout.id='worldHudModeBtn';layout.type='button';layout.onclick=()=>setExplorationHudMode(state.settings.worldHud==='full'?'clean':'full');bar.append(layout);
+  const backdrop=document.createElement('button');backdrop.type='button';backdrop.id='worldMenuBackdrop';backdrop.tabIndex=-1;backdrop.setAttribute('aria-label','Fechar menu e voltar ao mundo');backdrop.onclick=closeExplorationPanels;els.game.append(backdrop);
+  const closeSkills=document.createElement('button');closeSkills.id='worldSkillsClose';closeSkills.className='skill-btn';closeSkills.type='button';closeSkills.innerHTML='<b>✕</b><span>Fechar</span>';closeSkills.onclick=closeExplorationPanels;els.secondaryActions.prepend(closeSkills);
+  els.quickToggleBtn.innerHTML='☰<span>Menu</span>';els.quickToggleBtn.setAttribute('aria-label','Abrir menu do mundo');els.quickToggleBtn.setAttribute('aria-controls','quickBar');els.skillsToggleBtn.setAttribute('aria-controls','secondaryActions');els.secondaryActions.id='secondaryActions';
+  bar.addEventListener('click',event=>{const button=event.target.closest('button');if(!button||button.closest('.camera-controls')||button===layout||button===els.skillsToggleBtn)return;state.ui.quickOpen=false;syncMobilePanels();});
+  const before=els.quickToggleBtn.onclick;els.quickToggleBtn.onclick=event=>{clearMovementInputs();before?.(event);if(state.ui.quickOpen)bar.scrollTop=0;};
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&els.modal.hidden&&(state.ui.quickOpen||state.ui.skillsOpen)){event.preventDefault();event.stopImmediatePropagation();closeExplorationPanels();els.quickToggleBtn.focus();}},{capture:true});
+  explorationHud.ready=true;explorationHud.nodes={layout,empty,backdrop};
+ }
+ function syncExplorationHud(){
+  ensureExplorationMenu();if(!explorationHud.ready)return;
+  const clean=state.settings.worldHud!=='full',body=document.body,activity=!!(player.vehicle||player.boating||player.transit.mode||buildMode||activeRace||(typeof otGames!=='undefined'&&otGames.active)||body.classList.contains('mode-fishing')||body.classList.contains('mode-sport-controls'));
+  body.classList.toggle('world-hud-clean',clean);body.classList.toggle('world-hud-walking',clean&&!activity);
+  const mission=typeof civilCurrent==='function'?civilCurrent():null,objective=!!(mission&&['active','lobby'].includes(mission.r.status)||state.career?.activeJob||state.waypoint||buildMode);body.classList.toggle('world-hud-objective',objective);
+  for(const id of ['worldCampaignBtn','worldHeroBtn'])if(!explorationHud.nodes[id])explorationHud.nodes[id]=document.getElementById(id);
+  const hero=explorationHud.nodes.worldHeroBtn,heroChallenge=!!world.worldProfessional?.heroAdventure?.active;
+  explorationHudMove(explorationHud.nodes.worldCampaignBtn,els.quickBar,clean);
+  explorationHudMove(els.multiplayerBadge,els.quickBar,clean);
+  explorationHudMove(els.skillsToggleBtn,els.quickBar,clean);
+  explorationHudMove(els.cameraResetBtn?.parentElement,els.quickBar,clean&&!activity);
+  explorationHudMove(els.specialBtn,els.secondaryActions,clean&&!activity);
+  explorationHudMove(hero,els.secondaryActions,clean&&!heroChallenge);
+  if(hero&&!hero.querySelector('.exploration-hero-caption')){const caption=document.createElement('small');caption.className='exploration-hero-caption';caption.textContent='Herói';hero.append(caption);}
+  const layout=explorationHud.nodes.layout,label=clean?'Mostrar todos os comandos':'Usar tela limpa';if(layout.dataset.mode!==(clean?'clean':'full')){layout.dataset.mode=clean?'clean':'full';layout.innerHTML='▦<span>'+label+'</span>';layout.setAttribute('aria-label',label);}
+  const empty=state.tools?.equipped==='none';setControlAttribute(explorationHud.nodes.empty,'aria-pressed',String(empty));
+  setControlText($('span',els.toolsBtn),clean?'Ferramentas':equippedTool().name);setControlAttribute(els.toolsBtn,'title','Ferramenta atual: '+equippedTool().name);
+  setControlAttribute(els.quickToggleBtn,'aria-expanded',String(!!state.ui.quickOpen));setControlAttribute(els.skillsToggleBtn,'aria-expanded',String(!!state.ui.skillsOpen));
+  // Keep melee available near an enemy; an empty street needs no attack button.
+  const enemyNear=!activity&&(world.enemies||[]).some(enemy=>!enemy.dead&&Math.hypot(player.x-enemy.group.position.x,player.z-enemy.group.position.z)<=2.35);
+  body.classList.toggle('world-hud-action-idle',clean&&!activity&&!currentContext&&!enemyNear);
+  if(!activity&&!currentContext){setControlText($('span',els.actionBtn),empty?'Soco':'Atacar');setControlText($('b',els.actionBtn),empty?'👊':'✋');}
+ }
+ const explorationPanelsBefore=syncMobilePanels;
+ syncMobilePanels=function(...args){explorationPanelsBefore(...args);syncExplorationHud();};
+ const explorationContextBefore=updateContext;
+ updateContext=function(...args){const result=explorationContextBefore(...args);syncExplorationHud();return result;};
+ window.OT_EXPLORATION_HUD={setMode:setExplorationHudMode,diagnostics:()=>({mode:state.settings.worldHud==='full'?'full':'clean',walking:document.body.classList.contains('world-hud-walking'),menuOpen:!!state.ui.quickOpen,skillsOpen:!!state.ui.skillsOpen,emptyHands:state.tools?.equipped==='none'})};
 
 })();

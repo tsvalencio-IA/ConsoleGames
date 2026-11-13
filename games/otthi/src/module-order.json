@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.27-evolucao-integrada",
+  "build": "705.28.28-maos-livres-tela-limpa",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "c7ee3927e6c7f6a79ec497fccf10c87790779519080bfd92476ffb47009d8ef7"
+      "sha256Body": "fed5cacea0189a3e421ab4aae968c97f367c8739507825ee40839e48c6667249"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -21,7 +21,7 @@
       "startLine": 369,
       "endLine": 488,
       "description": "Normalização, merge, tombstones e persistência das construções",
-      "sha256Body": "bdba1506500fcee093f1c1520f879b5edab60b615b5598edc1e13dd4bdd7ce01"
+      "sha256Body": "04a5208169f0cf621dc992a454678636d40bd2893b769db33862f4b949736d61"
     },
     {
       "file": "src/modules/02-state-save-cloud-account.js",
@@ -63,7 +63,7 @@
       "startLine": 1316,
       "endLine": 1454,
       "description": "Missões, objetivos, perfil, HUD, inventário e ferramentas",
-      "sha256Body": "0e122e411aef5685062d7c4702c85c034c833d8d036cb0e944ed660bdbf11fd2"
+      "sha256Body": "021e76c1fad546a40991d051301698be7a85b14555a30ec18a4b386d48ce5fcd"
     },
     {
       "file": "src/modules/07-navigation-traffic-routes.js",
@@ -259,7 +259,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "be9c5e4e5a65a902e7efe63a212f7f12ff45cd42f2049360b82755ac3c8b3b50"
+      "sha256Body": "7a1b46996651267af1ea4f5534c5d9502631ced6117ea4a185c4e378d8fe19d4"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
@@ -625,6 +625,11 @@
       "file": "src/modules/76-player-journey.js",
       "description": "Voluntary progression through existing civilian adventures and services",
       "sha256Body": "967133e1ec8298aacb3165d0b4d86213cec4f85aa3b717481825252b33c44080"
+    },
+    {
+      "file": "src/modules/77-exploration-hud.js",
+      "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
+      "sha256Body": "3d07daeaf21378861fbdc5458f6c2a1b722bc323851e123388c24255eb7b23c0"
     }
   ],
   "styles": [
@@ -831,6 +836,11 @@
       "file": "src/styles/28-player-journey.css",
       "description": "Responsive native player journey panel",
       "sha256Body": "d43799ec7bc7f9f58d49cf8fceba7d3ee7f038a34acb15d7dc5369f31d6db2ae"
+    },
+    {
+      "file": "src/styles/29-exploration-hud.css",
+      "description": "Menu de exploração e HUD compacto sem remoção de funções",
+      "sha256Body": "fc49ade5979924379959dc58b1b61ff245bfd2e4d14f15ee838d46bb2072c902"
     }
   ]
 }

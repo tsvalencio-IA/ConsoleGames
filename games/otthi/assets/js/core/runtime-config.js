@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.27-evolucao-integrada',
+    build: '705.28.28-maos-livres-tela-limpa',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',
