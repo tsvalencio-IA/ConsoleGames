@@ -6,17 +6,23 @@ import {readFileSync,existsSync,mkdirSync,writeFileSync} from 'node:fs';
 import {resolve,extname} from 'node:path';
 import {execFileSync} from 'node:child_process';
 const root=process.cwd(),prefix='games/otthi/',oldSha=process.env.WORLD_OLD_SHA||'8554d2a9204abc5e8be2244d61a533281155de8f';
-const oldFile=p=>execFileSync('git',['show',oldSha+':'+prefix+p],{maxBuffer:90000000});
+const oldFile=p=>execFileSync('git',['show',oldSha+':'+resolve(root,prefix,p).slice(root.length+1)],{maxBuffer:90000000});
 const oldManifest=JSON.parse(oldFile('release-manifest.json')),current=JSON.parse(readFileSync(prefix+'release-manifest.json'));
 const oldFiles=new Map([['release-manifest.json',oldFile('release-manifest.json')]]);
-for(const p of Object.keys(oldManifest.files))oldFiles.set(p,oldFile(p));
+for(const p of Object.keys(oldManifest.files)){
+ const body=oldFile(p);oldFiles.set(p,body);
+ // The release also verifies sibling games. Serve their old bytes while
+ // installing the old worker, rather than mixing them with the new checkout.
+ oldFiles.set(resolve(root,prefix,p).slice(root.length+1),body);
+}
+oldFiles.set(prefix+'release-manifest.json',oldFiles.get('release-manifest.json'));
 let release='current';const errors=[],results=[];
 const mime={'.js':'text/javascript','.json':'application/json','.html':'text/html','.css':'text/css','.webmanifest':'application/manifest+json','.png':'image/png','.svg':'image/svg+xml','.glb':'model/gltf-binary'};
 const server=createServer((req,res)=>{
  try{
   const path=decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\//,'').replace(/\/$/,'/index.html'),file=resolve(root,path);
   if(!file.startsWith(root+'/')){res.writeHead(403).end();return;}
-  const local=path.startsWith(prefix)?path.slice(prefix.length):null,body=release==='old'&&oldFiles.has(local)?oldFiles.get(local):existsSync(file)?readFileSync(file):null;
+  const local=path.startsWith(prefix)?path.slice(prefix.length):null,oldKey=oldFiles.has(path)?path:local,body=release==='old'&&oldFiles.has(oldKey)?oldFiles.get(oldKey):existsSync(file)?readFileSync(file):null;
   if(!body){res.writeHead(404).end();return;}
   res.writeHead(200,{'Content-Type':mime[extname(file)]||'application/octet-stream','Cache-Control':'no-store'});res.end(body);
  }catch{res.writeHead(500).end();}

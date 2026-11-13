@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-11-11T19:17:14.293238+00:00",
+  "transport": "Python urllib with environment CA; TLS verification enabled",
+  "results": [
+    {
+      "path": "/arcade/",
+      "status": 200,
+      "finalUrl": "https://otthi-world-campanha-teste-90nej7ddt-thiaguinho-s-projects.vercel.app/arcade/",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 9696
+    },
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "finalUrl": "https://otthi-world-campanha-teste-90nej7ddt-thiaguinho-s-projects.vercel.app/games/otthi/",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 15735
+    },
+    {
+      "path": "/arcade/previews/war-controls-20261111.html",
+      "status": 200,
+      "finalUrl": "https://otthi-world-campanha-teste-90nej7ddt-thiaguinho-s-projects.vercel.app/arcade/previews/war-controls-20261111.html",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 24099
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "verifiedOn": "2026-11-12",
+  "branch": "continuation-20261111",
+  "baseline": "6258e611f8a426e9779299d900455079d03c6279",
+  "runtimeCommit": "cbfcb1af2a29fc26f084a9e3f82dd63663f71f7a",
+  "build": "705.28.26-estabilidade-oficina",
+  "revision": "60705b1100cc8a14",
+  "preview": {
+    "deployment": "dpl_98AQw9GzdB2ULdyWzrG88MeqxcQU",
+    "state": "READY",
+    "target": "preview",
+    "origin": "https://otthi-world-campanha-teste-r4f7ol3ct-thiaguinho-s-projects.vercel.app",
+    "filesVerified": 164,
+    "fileHashFailures": 0
+  },
+  "productionUnchanged": {
+    "deployment": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+    "runtimeCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+    "build": "705.28.25-transito-fluidez",
+    "state": "READY"
+  },
+  "unitTests": {
+    "pass": 445,
+    "fail": 0
+  },
+  "focusedTests": {
+    "pass": 26,
+    "fail": 0
+  },
+  "physicalDeviceVerified": false,
+  "liveFirebaseVerified": false,
+  "realYoutubePlaybackVerified": false,
+  "rollbackTag": "baseline-20261111-6258e61",
+  "vehiclePurchaseReloadRetry": {
+    "passed": true,
+    "evidence": "entregas-oficina/vehicle-reload-final.json"
+  },
+  "workshopAutomatic": {
+    "passed": true,
+    "npcCars": 6,
+    "reloadPreserved": true,
+    "screenshots": false,
+    "evidence": "entregas-oficina/workshop-functional-final.json"
+  }
+}

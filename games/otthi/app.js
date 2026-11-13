@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.25-transito-fluidez';
+  const OTTHI_GAME_WEB_BUILD = '705.28.28-maos-livres-tela-limpa';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -457,7 +457,7 @@
     career: { title: 'Morador da Vila', level: 1, xp: 0, completed: 0, activeJob: null, lastMission:null, completedMissionTokens:[] },
     social: { invited: [], gifts: 0, jokes: 0, arguments: 0, chatHiddenBefore:0 },
     abilities: { scaleMode: 'normal', crouched: false, mastery: { miniDash:0, superJump:0, giantSlam:0, stealth:0, magnetSpin:0 } },
-    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'axe', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
+    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'none', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
     account: { linked:false, accountId:'', username:'', lastCloudSync:0 },
     gm: { appliedGrantIds: [], lastGrantAt: 0 },
     safety: { incidents:0, safeStops:0, lessons:0, lastIncident:0 },
@@ -2006,7 +2006,7 @@
   function otthiHomeLotIndex(){let hash=2166136261;for(const char of otthiHomeIdentity()){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return(hash>>>0)%OTTHI_PERSONAL_HOME_LOTS.length;}
   function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*23:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
   function v704PersonalHomeLotAt(x,z,margin=0){return OTTHI_PERSONAL_HOME_LOTS.some(lot=>Math.abs(Number(x)-lot.x)<=5.2+margin&&Math.abs(Number(z)-lot.z)<=4.3+margin);}
-  function worldLayoutPoint(id,fallback={x:0,z:0}){const personal=otthiPersonalHomeLot();if(id==='home')return{...personal.home};if(id==='spawn')return{...personal.spawn};if(id==='homeGarage')return{...personal.garage};const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
+  function worldLayoutPoint(id,fallback={x:0,z:0}){if(id==='home'||id==='spawn'||id==='homeGarage'){const personal=otthiPersonalHomeLot();return{...(id==='home'?personal.home:id==='spawn'?personal.spawn:personal.garage)};}const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
   function worldLayoutRect(id){const zone=WORLD_LAYOUT_V704.zones[id];return zone?{...zone}:null;}
   function worldLayoutStructure(id){const item=WORLD_LAYOUT_V704.structures.find(entry=>entry.id===id);if(!item)return null;const p=item.point?worldLayoutPoint(item.point):item;return{...item,x:Number(item.x??p.x),z:Number(item.z??p.z)};}
   function v704RectOverlap(a,b,margin=0){return Math.abs(Number(a.x)-Number(b.x))<(Number(a.w)+Number(b.w))/2+margin&&Math.abs(Number(a.z)-Number(b.z))<(Number(a.d)+Number(b.d))/2+margin;}
@@ -2227,6 +2227,7 @@
   }
 
   const TOOL_DEFS={
+    none:{icon:'✋',name:'Mãos vazias',description:'Guarda a ferramenta para passear. Todas continuam no inventário.'},
     axe:{icon:'🪓',name:'Machado',description:'Corta árvores e coleta madeira.'},
     pickaxe:{icon:'⛏️',name:'Picareta',description:'Extrai pedra e minério de ouro.'},
     bucket:{icon:'🪣',name:'Balde',description:'Retira água limpa do poço.'},
@@ -2235,14 +2236,15 @@
   };
   function equippedTool(){return TOOL_DEFS[state.tools?.equipped]||TOOL_DEFS.axe;}
   function equipTool(id){
-    if(!TOOL_DEFS[id]||!state.tools.owned.includes(id))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
+    if(!TOOL_DEFS[id]||(id!=='none'&&!state.tools.owned.includes(id)))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(id==='none'?'Mãos vazias. Ferramentas guardadas.':`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
   }
   function openToolbelt(){
     openModal('Ferramentas',`<div class="tool-grid">${Object.entries(TOOL_DEFS).map(([id,tool])=>`<button class="tool-card ${state.tools.equipped===id?'active':''}" data-equip-tool="${id}"><span>${tool.icon}</span><b>${tool.name}</b><small>${tool.description}</small><em>${state.tools.equipped===id?'Em uso':'Equipar'}</em></button>`).join('')}</div><div class="resource-summary"><span>🪵 ${state.tools.harvested.wood||0}</span><span>🪨 ${state.tools.harvested.stone||0}</span><span>🟨 ${state.tools.harvested.gold||0}</span><span>💧 ${state.tools.harvested.water||0}</span><span>🪱 ${state.tools.harvested.bait||0}</span><span>🌾 ${state.tools.harvested.crops||0}</span><span>🟫 ${state.tools.harvested.clay||0}</span></div>`,root=>{$$('[data-equip-tool]',root).forEach(btn=>btn.onclick=()=>{equipTool(btn.dataset.equipTool);closeModal();});});
   }
   function refreshEquippedToolVisual(){
-    if(!playerModel?.userData?.parts?.rightArm)return;
-    const arm=playerModel.userData.parts.rightArm;if(toolVisual){toolVisual.parent?.remove(toolVisual);toolVisual=null;}
+    if(toolVisual){const previous=toolVisual;previous.parent?.remove(previous);toolVisual=null;disposeDetachedVisual(previous);}
+    if(state.tools?.equipped==='none'||!playerModel?.userData?.parts?.rightArm)return;
+    const arm=playerModel.userData.parts.rightArm;
     toolVisual=new THREE.Group();toolVisual.position.set(0,-1.12,.14);toolVisual.rotation.z=-.18;arm.add(toolVisual);
     const type=state.tools?.equipped||'axe',wood=materials.wood||0x8c542c,metal=materials.metal||0x8d9aa6;
     if(type==='bucket'){
@@ -2355,7 +2357,9 @@
   }
   function trafficYields(a,b,heading){
     const pa=trafficPriority(a),pb=trafficPriority(b.ref||b);if(pa!==pb)return pa<pb;
-    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return Math.abs(aw-bw)>80?aw>bw:String(a.id)>String(b.ref?.id||b.id);
+    // Aged queues need one total order. A pairwise time tolerance can make
+    // three close arrivals yield in a circle, even after the recovery delay.
+    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return aw!==bw?aw>bw:String(a.id)>String(b.ref?.id||b.id);
     const h=Number(b.group.rotation.y||0),dot=Math.cos(h-heading),dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z;
     // At an unmarked crossing, yield to the vehicle approaching from the right.
     if(Math.abs(dot)<.72){const side=-dx*Math.cos(heading)+dz*Math.sin(heading);if(Math.abs(side)>.25)return side>0;}
@@ -2373,7 +2377,15 @@
       }
       if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1){const turning=Math.abs(Math.atan2(Math.sin(heading-Number(actor.group.rotation.y||0)),Math.cos(heading-Number(actor.group.rotation.y||0))))>.35,canCreep=turning&&now-Number(actor.trafficQueuedAt||now)>2200&&!trafficYields(actor,other,heading)&&!trafficBodiesOverlap(trafficBody(actor),ob,.24);factor=Math.min(factor,canCreep?.12:0);}
     }
-    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
+    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);
+    if(result<.2){actor.trafficQueuedAt||=now;actor.trafficQueuePose||={x:actor.group.position.x,z:actor.group.position.z};}
+    else if(result>.5&&actor.trafficQueuedAt){
+      // Permission to move is speculative: the overlap resolver may rewind the
+      // next pose. Only real progress releases the vehicle's queue age.
+      const queued=actor.trafficQueuePose||(actor.trafficQueuePose={x:actor.group.position.x,z:actor.group.position.z});
+      if(Math.hypot(actor.group.position.x-queued.x,actor.group.position.z-queued.z)>=.8){actor.trafficQueuedAt=0;actor.trafficQueuePose=null;}
+    }
+    return result;
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function trafficOverlapDepth(a,b,margin=.24){
@@ -2403,8 +2415,12 @@
       const a=actors[i];if(a.id>=b.id&&!b.isPlayer||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
-      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
+      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficQueuePose||={x:y.group.position.x,z:y.group.position.z};y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
+      // Rewinding can remove the immediate overlap without making the next
+      // steering pose possible. Old repeated attempts still need the same
+      // small, collision-checked clearance used for an existing contact.
+      const agedRetry=!!old&&performance.now()-Number(y.ref.trafficQueuedAt||performance.now())>2200;
+      if((trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)||agedRetry)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
     }world.trafficSnapshot=null;
   }
 
@@ -5000,7 +5016,7 @@
     const leftLeg=premiumBox(.22,.88,.24,dark,-.18,.44,0,officer),rightLeg=premiumBox(.22,.88,.24,dark,.18,.44,0,officer),leftArm=premiumBox(.18,.78,.2,uniform,-.45,1.25,0,officer),rightArm=premiumBox(.18,.78,.2,uniform,.45,1.25,0,officer);officer.scale.set(.86,.7,.86);return{group:officer,leftLeg,rightLeg,leftArm,rightArm,inside,threshold,outside};
   }
   function removeRoadsidePoliceOfficer(alert){
-    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);alert.officer=null;
+    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);disposeDetachedVisual(alert.officer.group);alert.officer=null;
   }
   function beginPoliceRoadsideStop(alert,car){
     if(!alert||alert.phase!=='pursuit')return false;const now=performance.now();alert.phase='officer-exiting';alert.phaseAt=now;alert.officer=createRoadsidePoliceOfficer(car);alert.officerSpeech='';alert.officerSpeechAt=0;setPoliceRoadsideDoor(car,0);car.currentSpeed=0;clearPolicePursuit(car);clearMovementInputs();if(player.vehicle){player.car.speed=0;player.vx=0;player.vz=0;}updateSafetyPanel('Viatura posicionada • porta abrindo');toast('🚓 Pare no local: a viatura encostou e o policial vai descer.','warn',2400);return true;
@@ -5108,7 +5124,7 @@
   function resolveTrafficIncident(incident){
     if(!incident||incident.resolved)return;incident.resolved=true;incident.group.visible=false;releaseIncidentActorStates(incident);for(const car of world.policeCars){if(car.incidentTargetId===incident.id){car.incidentTargetId='';car.responseRoute=[];car.responseIndex=0;}}for(const ambulance of world.ambulances){if(ambulance.incidentTargetId===incident.id){ambulance.incidentTargetId='';ambulance.responseRoute=[];ambulance.responseIndex=0;}}for(const truck of world.fireTrucks){if(truck.incidentTargetId===incident.id){truck.incidentTargetId='';truck.responseRoute=[];truck.responseIndex=0;}}
     const job=state.career?.activeJob,kind=serviceKindForJob(job);if(job&&job.emergencyIncidentId===incident.id){if(incident.tasks[kind]&&!incident.forcedClear)completeActiveJob();else{job.emergencyIncidentId='';job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;setMissionState(job,MISSION_STATES.ACCEPTED,'incident-cleared-autonomously');}}
-    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);},1200);toast(incident.forcedClear?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
+    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);disposeDetachedVisual(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);const actionIndex=world.interactables.findIndex(action=>action.id===`assist-${incident.id}`);if(actionIndex>=0)world.interactables.splice(actionIndex,1);},1200);toast(incident.forcedClear?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
   }
   function updateTrafficIncidents(dt){
     const now=performance.now(),incident=world.activeIncident;for(const ambulance of world.ambulances){const responding=!!ambulance.incidentTargetId;ambulance.lightA.visible=responding&&Math.floor(now/220)%2===0;ambulance.lightB.visible=responding&&!ambulance.lightA.visible;if(!incident&&!ambulance.occupied&&!ambulance.missionReservedFor)returnServiceVehicleHome(ambulance,dt);}
@@ -7920,7 +7936,7 @@
   }
   function sharedWorkshopReconcile(dt=0){const now=performance.now();if(now-sharedWorldRuntime.yardAt<650)return;sharedWorldRuntime.yardAt=now;let moved=false;for(const entry of sharedWorkshopEntries().filter(item=>item.local&&item.vehicle?.group)){const assigned=sharedWorkshopYardPose(entry.uid,entry.id,entry.status,entry.bodyType),vehicle=entry.vehicle,pose=assigned&&workshopYardSlotSafe(assigned,vehicle)&&workshopYardSlotFree(assigned,vehicle)?assigned:workshopFindYardSlot(entry.status,vehicle);if(!pose||Math.hypot(vehicle.group.position.x-pose.x,vehicle.group.position.z-pose.z)<.12)continue;vehicle.group.position.set(pose.x,pose.y,pose.z);vehicle.group.rotation.y=pose.heading;vehicle.x=pose.x;vehicle.z=pose.z;vehicle.heading=pose.heading;vehicle.workshopYardSlot=pose.id;const record=state.vehicles?.workshopComponents?.[entry.id];if(record)record.yardSlot=pose.id;if(typeof persistParkedVehicle==='function')persistParkedVehicle(vehicle);moved=true;}if(moved)saveState(true);if(now-sharedWorldRuntime.liftAt>650){sharedWorldRuntime.liftAt=now;sharedWorkshopResolveLiftConflict();}}
 
-  function sharedWorldBuildGhostTool(ghost,type){const hand=ghost?.userData?.familyAvatar?.byName?.hand1,arm=hand||ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool?.parent)ghost.userData.remoteTool.parent.remove(ghost.userData.remoteTool);const root=new THREE.Group();root.position.set(0,hand?-.13:-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
+  function sharedWorldBuildGhostTool(ghost,type){const hand=ghost?.userData?.familyAvatar?.byName?.hand1,arm=hand||ghost?.userData?.limbs?.rightArm,clean=TOOL_DEFS?.[type]?String(type):'axe';if(!arm)return null;if(ghost.userData.remoteToolId===clean&&ghost.userData.remoteTool?.parent===arm)return ghost.userData.remoteTool;if(ghost.userData.remoteTool){const previous=ghost.userData.remoteTool;previous.parent?.remove(previous);ghost.userData.remoteTool=null;disposeDetachedVisual(previous);}ghost.userData.remoteToolId=clean;if(clean==='none')return null;const root=new THREE.Group();root.position.set(0,hand?-.13:-.78,.08);root.rotation.z=-.18;arm.add(root);const wood=renderMat(0x8c542c,{roughness:.8}),metal=renderMat(0x9aa7b3,{metalness:.42,roughness:.36});if(clean==='bucket'){const bucket=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.32,9,1,true),metal);bucket.position.y=-.12;root.add(bucket);}else{box(.09,.72,.09,wood,0,-.12,0,root);if(clean==='axe'){box(.4,.24,.12,metal,.14,.2,0,root);box(.15,.14,.14,metal,-.11,.2,0,root);}else if(clean==='hoe'){box(.54,.09,.1,metal,.14,.2,0,root);box(.1,.28,.1,metal,-.1,.08,0,root);}else if(clean==='shovel'){const blade=new THREE.Mesh(new THREE.CylinderGeometry(.18,.25,.28,6),metal);blade.position.y=.22;blade.scale.z=.45;root.add(blade);}else{box(.58,.13,.13,metal,0,.2,0,root);}}ghost.userData.remoteTool=root;ghost.userData.remoteToolId=clean;return root;}
   function sharedWorldSkillAura(ghost){if(ghost.userData.sharedSkillAura)return ghost.userData.sharedSkillAura;const material=renderMat(0x6fe9ff,{emissive:0x2d9ed0,emissiveIntensity:.8,transparent:true,opacity:.68}),ring=new THREE.Mesh(new THREE.TorusGeometry(.82,.07,8,28),material);ring.rotation.x=Math.PI/2;ring.position.y=.08;ring.visible=false;ghost.add(ring);ghost.userData.sharedSkillAura=ring;return ring;}
   function sharedWorldCarSignals(ghost){if(ghost.userData.sharedCarSignals?.root?.parent===ghost.userData.carVisual)return ghost.userData.sharedCarSignals;ghost.userData.sharedCarSignals=null;const root=new THREE.Group(),red=box(.42,.14,.24,renderMat(0xe93445,{emissive:0xe93445,emissiveIntensity:1.2}),-.26,1.34,-.12,root),blue=box(.42,.14,.24,renderMat(0x35a9ff,{emissive:0x35a9ff,emissiveIntensity:1.2}),.26,1.34,-.12,root),turbo=box(.72,.16,.08,renderMat(0xff9a35,{emissive:0xff5c18,emissiveIntensity:1.35}),0,.48,-1.54,root);root.visible=false;ghost.userData.carVisual?.add(root);ghost.userData.sharedCarSignals={root,red,blue,turbo};return ghost.userData.sharedCarSignals;}
   function sharedWorldApplyGhostAppearance(ghost,target,{carDriver=false,carPassenger=false,passengerSeat=null,boatDriver=false}={}){
@@ -8409,11 +8425,15 @@
     errors:[]
   };
 
+  function normalizeWorldHeroRecord(value){
+    return{selectedPower:value?.selectedPower||'energyPulse',unlocked:Array.isArray(value?.unlocked)?value.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(value?.mastery||{})},challengeBest:Number(value?.challengeBest||0),challengeWins:Number(value?.challengeWins||0),energy:Number.isFinite(value?.energy)?clamp(value.energy,0,100):100,lastUse:Number(value?.lastUse||0)};
+  }
+
   function ensureOtthiWorldState(){
     state.settings={...(state.settings||{}),worldRender:state.settings?.worldRender!==false,worldDetails:state.settings?.worldDetails!==false,worldDayCycle:!!state.settings?.worldDayCycle,worldOutlines:state.settings?.worldOutlines!=='off'};
     state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3',bodyStyle:state.avatar?.bodyStyle||'lego',face:state.avatar?.face||'face-happy-01',hair:state.avatar?.hair||'hair-short-01',torso:state.avatar?.torso||'world-jacket-01',legs:state.avatar?.legs||'world-pants-01',shoes:state.avatar?.shoes||'world-sneakers-01'});
     state.vehicles={...(state.vehicles||{}),owned:[...new Set(['garage-orange',...(state.vehicles?.owned||[])])],primaryId:state.vehicles?.primaryId||'garage-orange',parked:{...(state.vehicles?.parked||{})},modularParts:{...(state.vehicles?.modularParts||{})},partDurability:{...(state.vehicles?.partDurability||{})},garage:{...(state.vehicles?.garage||{}),slots:{'1':'garage-orange',...(state.vehicles?.garage?.slots||{})},stored:{...(state.vehicles?.garage?.stored||{})},purchasedAt:{'garage-orange':0,...(state.vehicles?.garage?.purchasedAt||{})}}};
-    state.adventures={...(state.adventures||{}),hero:{selectedPower:state.adventures?.hero?.selectedPower||'energyPulse',unlocked:Array.isArray(state.adventures?.hero?.unlocked)?state.adventures.hero.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(state.adventures?.hero?.mastery||{})},challengeBest:Number(state.adventures?.hero?.challengeBest||0),challengeWins:Number(state.adventures?.hero?.challengeWins||0),energy:Number.isFinite(state.adventures?.hero?.energy)?clamp(state.adventures.hero.energy,0,100):100,lastUse:Number(state.adventures?.hero?.lastUse||0)}};
+    state.adventures={...(state.adventures||{}),hero:normalizeWorldHeroRecord(state.adventures?.hero)};
     return state;
   }
 
@@ -9092,7 +9112,13 @@ function build(T,key,H){
     skyLeap:Object.freeze({id:'skyLeap',icon:'⬆',name:'Salto celeste',cost:28,cooldown:2600,description:'Super salto para plataformas e áreas verticais.'}),
     magnetWave:Object.freeze({id:'magnetWave',icon:'◎',name:'Onda magnética',cost:30,cooldown:3600,description:'Atrai cristais e enfraquece monstros ao redor.'})
   });
-  function worldHeroState(){ensureOtthiWorldState();return state.adventures.hero;}
+  function worldHeroState(){
+    // Bootstrap and garage operations normalize the complete world. A hero
+    // animation/read must not clone every owned vehicle and account setting.
+    if(!state.adventures||!state.vehicles||!state.avatar||!state.settings)ensureOtthiWorldState();
+    state.adventures={...state.adventures,hero:normalizeWorldHeroRecord(state.adventures.hero)};
+    return state.adventures.hero;
+  }
   function heroPowerUnlocked(id){return worldHeroState().unlocked.includes(id);}
   function heroPowerReady(power){const hero=worldHeroState();return performance.now()-Number(hero.lastUse||0)>=power.cooldown&&hero.energy>=power.cost;}
   function createHeroPulseVisual(color=0x5de6ff,radius=5){
@@ -9143,12 +9169,22 @@ function build(T,key,H){
       if(challenge.active&&challenge.collected===challenge.tokens.length&&Math.hypot(player.x-5,player.z-89)<2.4&&player.y>8)completeWorldHeroChallenge();
       if(challenge.active&&player.y<-.5){const safe=challenge.lastCheckpoint||challenge.start;player.x=safe.x;player.z=safe.z;player.y=safe.y+.35;player.vx=player.vz=player.vy=0;player.grounded=true;toast('Retorno ao último cristal do circuito.','warn',1300);}
     }
-    updateWorldHeroHud();
+    updateWorldHeroHud(state.adventures.hero);
   }
   function ensureWorldHeroHud(){
     if(document.getElementById('worldHeroBtn'))return;const button=document.createElement('button');button.id='worldHeroBtn';button.className='world-hero-action';button.type='button';button.setAttribute('aria-label','Usar poder OTTHI');button.innerHTML='<b data-world-hero-icon>⚡</b><span data-world-hero-energy>100</span>';button.onclick=()=>activateWorldHeroPower();document.getElementById('game')?.appendChild(button);
   }
-  function updateWorldHeroHud(){const button=document.getElementById('worldHeroBtn');if(!button)return;const hero=worldHeroState(),power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse;button.querySelector('[data-world-hero-icon]').textContent=power.icon;button.querySelector('[data-world-hero-energy]').textContent=Math.round(hero.energy);button.disabled=hero.energy<power.cost;button.title=`${power.name} • ${Math.round(hero.energy)}%`;}
+  function updateWorldHeroHud(hero=worldHeroState()){
+    const button=document.getElementById('worldHeroBtn');if(!button)return;
+    const power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse,energy=String(Math.round(hero.energy)),disabled=hero.energy<power.cost,title=`${power.name} • ${energy}%`;
+    // These nodes belong to this HUD element, so a rebuilt game gets fresh
+    // references. Stable simulation steps do not rewrite unchanged DOM.
+    const nodes=button.otthiHeroNodes||(button.otthiHeroNodes={icon:button.querySelector('[data-world-hero-icon]'),energy:button.querySelector('[data-world-hero-energy]')});
+    if(nodes.icon.textContent!==power.icon)nodes.icon.textContent=power.icon;
+    if(nodes.energy.textContent!==energy)nodes.energy.textContent=energy;
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(button.title!==title)button.title=title;
+  }
 
   // ===== MODULE: 38-otthi-world-integration-bootstrap.js =====
   const legacyWorldInitMaterials=initMaterials;
@@ -13335,7 +13371,7 @@ function precompile(T,renderer,scene,camera){
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
   const body=trafficBody(vehicle,yaw,{x,z});
-  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||state.vehicles?.workshopComponents?.[v.id]?.npcCollectedAt)continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||workshopNpcWasCollected(v))continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
   if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
@@ -13362,7 +13398,7 @@ function precompile(T,renderer,scene,camera){
  }
  function phoneRemoveDriver(driver){
   if(!driver)return;driver.group.parent?.remove(driver.group);
-  driver.group.traverse(o=>{if(o.material?.userData.phoneDriverOwned)o.material.dispose();});
+  disposeDetachedVisual(driver.group);
  }
  function phoneDriverInVehicle(driver,vehicle){
   if(driver.group.parent!==vehicle.group)vehicle.group.add(driver.group);
@@ -13502,7 +13538,14 @@ function precompile(T,renderer,scene,camera){
   const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
   return null;
  }
- function phoneTrackingText(t=phoneDeliveryTracking()){return t?t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`:state.vehicles.phoneDelivery?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.';}
+ function phoneTrackingText(t=phoneDeliveryTracking()){
+  if(t)return t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`;
+  const status=state.vehicles.phoneDelivery?.status;
+  if(status==='delivered')return'Última entrega concluída';
+  if(status==='interrupted')return'Entrega interrompida ao recarregar. Seu veículo foi preservado; chame o motorista novamente.';
+  if(status==='cancelled')return'Entrega interrompida. Seu veículo ficou estacionado na última posição segura.';
+  return'Escolha um veículo ou faça uma compra.';
+ }
  function phoneUpdateTrackingUI(){
   const t=phoneDeliveryTracking(),root=els.modalBody,p=root?.querySelector('[data-phone-status]');if(p)p.textContent=phoneTrackingText(t);const track=root?.querySelector('[data-phone-track]');if(track)track.disabled=!t;
   const receive=root?.querySelector('[data-phone-parcel-receive]');if(receive){receive.disabled=!t?.ready||Math.hypot(player.x-t.x,player.z-t.z)>6;receive.textContent=receive.disabled?'APROXIME-SE DA ENCOMENDA':'RECEBER ENCOMENDA';}
@@ -13518,8 +13561,12 @@ function precompile(T,renderer,scene,camera){
   const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of v.group.userData.wheels||[])wheel.rotation.x-=travel*3;animateBrazilTransport(v.group);world.trafficSnapshot=null;
   if(motion.blocked&&!job.waiting){job.waiting=true;toast('O motorista está buscando passagem para continuar a entrega.','info',2500);}else if(!motion.blocked)job.waiting=false;
   const recovered=phoneRecoverRoute(job,dt);
-  if(!recovered&&job.blockedFor>12&&job.searchFailed&&job.kind!=='return'){
-   const target=phoneGroundDestination(v,true,job.target);if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
+  if(!recovered&&job.blockedFor>12&&job.searchFailed){
+   // A customer may occupy the courier's original return curb while it is
+   // away. Find another real stop at the shop instead of holding every paid
+   // order behind that one occupied destination indefinitely.
+   const returning=job.kind==='return',target=returning?phonePickupPoint(v,job.origin):phoneGroundDestination(v,true,job.target);
+   if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(!returning&&state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
   }
  }
  function updateWorldPhone(){
@@ -13700,5 +13747,119 @@ function precompile(T,renderer,scene,camera){
   if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed())return;
   const order=phoneOrders().find(o=>o.kind==='parcel'&&['queued','en-route','ready'].includes(o.status)&&o.owner===sharedWorldOwnId());if(order){const now=performance.now();if(now-Number(worldPhone.restoreAt||0)<3000)return;worldPhone.restoreAt=now;phoneStartParcel(order);}
  }
+
+  // ===== MODULE: 76-player-journey.js =====
+ const PLAYER_JOURNEY_ROUTE=Object.freeze([
+  {type:'neighbors',purpose:'Conheça os vizinhos e complete um circuito de entregas a pé.'},
+  {type:'beach',purpose:'Viaje até a orla e ajude a cuidar da praia.'},
+  {type:'snow',purpose:'Encontre os chalés e leve cobertores à comunidade da neve.'},
+  {type:'cable',purpose:'Use o teleférico, ajude no mirante e faça a viagem de volta.'},
+  {type:'fire',purpose:'Pratique o atendimento com a equipe dos bombeiros.'},
+  {type:'police',purpose:'Organize a travessia e acompanhe o morador em segurança.'},
+  {type:'balloon',purpose:'Prepare o balão, visite as paisagens e volte para pousar.'}
+ ]);
+ function playerJourneySnapshot(){
+  if(!ensureCivilMissions())return{ready:false};
+  const definitions=OTCivilMissionCore.definitions,completed=state.civilWorld.completedTypes||{},current=civilCurrent();
+  const rows=PLAYER_JOURNEY_ROUTE.filter(item=>definitions[item.type]).map(item=>{const count=Number(completed[item.type]);return{...item,title:definitions[item.type].title,icon:definitions[item.type].icon,region:definitions[item.type].region,count:Number.isFinite(count)&&count>0?Math.floor(count):0};});
+  const done=rows.filter(item=>item.count>0).length,difficulty=done===0?'easy':done<4?'normal':'hard',next=rows.find(item=>!item.count)||rows.reduce((best,item)=>!best||item.count<best.count?item:best,null),p=current&&current.book.progress(current.r.id,current.uid);
+  const owned=[...new Set((state.vehicles?.owned||[]).map(String))],stored=owned.filter(id=>state.vehicles?.garage?.stored?.[id]);
+  const owner=sharedWorldOwnId(),orders=(state.vehicles?.phoneOrders||[]).filter(order=>order.owner===owner&&order.kind==='parcel'),tracking=phoneDeliveryTracking();
+  return{ready:true,profile:String(civilSoloUid()),rows,done,total:rows.length,difficulty,difficultyLabel:OTCivilMissionCore.difficulties[difficulty].label,next:next?{...next,reward:definitions[next.type].reward+(difficulty==='hard'?50:0)}:null,
+   current:current?{id:current.r.id,type:current.r.type,status:current.r.status,mode:current.r.mode,title:p?.definition?.title||'',phase:current.r.phase,steps:p?.definition?.steps.length||0,step:p?.step?.title||'',count:p?.count||0,quota:p?.quota||0}:null,
+   resources:{owned:owned.length,stored:stored.length,parcelPending:orders.filter(order=>['queued','en-route','ready'].includes(order.status)).length,parcelReady:!!tracking?.ready,familyPark:!!state.familyAdventure?.flags?.park}};
+ }
+ async function playerJourneyStart(type){
+  const snapshot=playerJourneySnapshot();if(!snapshot.ready||!snapshot.rows.some(row=>row.type===type))return false;
+  if(snapshot.current&&['active','lobby'].includes(snapshot.current.status)){openCivilMissionDetails();return false;}
+  // Difficulty is changed only by this explicit, labelled player action.
+  state.civilWorld.difficulty=snapshot.difficulty;
+  await civilCreateMission(type,'solo');
+  return civilCurrent()?.r.type===type&&civilCurrent()?.r.status==='active';
+ }
+ function openPlayerJourney(){
+  if(!running)return false;const snapshot=playerJourneySnapshot();if(!snapshot.ready){toast('As aventuras estão sendo preparadas. Aguarde um instante.','info',2200);return false;}
+  const active=snapshot.current&&['active','lobby'].includes(snapshot.current.status),next=snapshot.next,escape=escapeHtml;
+  const current=active?`<section class="player-journey-current"><span class="player-journey-kicker">EM ANDAMENTO</span><h3>${escape(snapshot.current.title)}</h3><p>${escape(snapshot.current.status==='lobby'?'Prepare a dupla no painel da missão.':snapshot.current.step||'Conclua sua etapa para continuar.')}${snapshot.current.quota?' · '+snapshot.current.count+'/'+snapshot.current.quota:''}</p><button class="btn primary" data-journey-continue>CONTINUAR MISSÃO E GPS</button></section>`:'';
+  const suggestion=!active&&next?`<section class="player-journey-current"><span class="player-journey-kicker">${snapshot.done===snapshot.total?'PRÓXIMO DESAFIO':'PRÓXIMO PASSO SUGERIDO'}</span><h3>${next.icon} ${escape(next.title)}</h3><p>${escape(next.purpose)}</p><p class="player-journey-reward">${escape(snapshot.difficultyLabel)} · ${next.reward} moedas ao concluir</p><button class="btn primary" data-journey-start="${next.type}">${snapshot.done===snapshot.total?'REPETIR':'COMEÇAR'} EM ${escape(snapshot.difficultyLabel.toUpperCase())}</button></section>`:'';
+  const progress=snapshot.total?Math.round(snapshot.done/snapshot.total*100):0;
+  openModal('Meu caminho no mundo',`<section class="player-journey"><p>Uma sugestão de percurso para conhecer o mundo. Você pode escolher outra aventura ou continuar explorando quando quiser.</p><div class="player-journey-progress"><b>${snapshot.done}/${snapshot.total} aventuras conhecidas</b><span>${snapshot.done===0?'Comece com uma tarefa curta.':snapshot.done===snapshot.total?'Todas as regiões visitadas em aventuras. Tente os desafios ou uma dupla.':'Seu progresso continua salvo entre as aventuras.'}</span><div class="player-journey-meter" role="progressbar" aria-label="Aventuras conhecidas" aria-valuemin="0" aria-valuemax="${snapshot.total}" aria-valuenow="${snapshot.done}"><i style="width:${progress}%"></i></div></div>${current}${suggestion}<h3>Seu percurso · escolha livre</h3><ol class="player-journey-list">${snapshot.rows.map((row,index)=>`<li class="${row.count?'is-done':''}"><span class="player-journey-number" aria-hidden="true">${row.count?'✓':index+1}</span><div><b>${row.icon} ${escape(row.title)}</b><small>${escape(row.region)}${row.count?' · concluída '+row.count+(row.count===1?' vez':' vezes'):''}</small><p>${escape(row.purpose)}</p><button class="btn compact" data-journey-start="${row.type}" ${active?'disabled':''}>${row.count?'REPETIR':'JOGAR'} · ${escape(snapshot.difficultyLabel.toUpperCase())}</button></div></li>`).join('')}</ol><h3>Prepare seu passeio</h3><div class="player-journey-resources"><button class="choice" data-journey-phone><b>📱 Celular e entregas</b><span>${snapshot.resources.parcelReady?'Encomenda chegou: aproxime-se para receber.':snapshot.resources.parcelPending?snapshot.resources.parcelPending+' encomenda(s) em andamento.':'Chame seu veículo ou compre e receba no mundo.'}</span></button><button class="choice" data-journey-garage><b>🚗 Minha garagem</b><span>${snapshot.resources.owned} veículo(s) próprio(s) · ${snapshot.resources.stored} guardado(s).</span></button><button class="choice" data-journey-family><b>🐾 Família</b><span>${snapshot.resources.familyPark?'Passeio até o parque concluído. Brinque e explore com a família.':'Reúna a família para passear até o parque.'}</span></button></div><div class="player-journey-actions"><button class="btn" data-journey-all>TODAS AS AVENTURAS E DUPLAS</button><button class="btn" data-journey-map>MAPA E GPS</button><button class="btn" data-journey-explore>CONTINUAR EXPLORANDO</button></div></section>`,root=>{
+   root.querySelectorAll('[data-journey-start]').forEach(button=>button.onclick=()=>playerJourneyStart(button.dataset.journeyStart));
+   root.querySelector('[data-journey-continue]')?.addEventListener('click',openCivilMissionDetails);
+   root.querySelector('[data-journey-phone]').onclick=openWorldPhone;root.querySelector('[data-journey-garage]').onclick=openPlayerGarage;root.querySelector('[data-journey-family]').onclick=()=>{closeModal();window.OTTHI_FAMILY.open();};
+   root.querySelector('[data-journey-all]').onclick=()=>openCivilMissions();root.querySelector('[data-journey-map]').onclick=()=>{closeModal();openMap();};root.querySelector('[data-journey-explore]').onclick=closeModal;
+  });return true;
+ }
+ const playerJourneyDirectoryBefore=worldExploreDirectoryHtml;
+ worldExploreDirectoryHtml=function(...args){const s=playerJourneySnapshot();return`<section class="player-journey-entry"><div><b>Meu caminho no mundo</b><span>${s.ready?s.done+'/'+s.total+' aventuras conhecidas':'Descubra aventuras e atividades no seu ritmo.'}</span></div><button class="btn primary" data-journey-open>VER PRÓXIMO PASSO</button></section>`+playerJourneyDirectoryBefore(...args);};
+ const playerJourneyBindBefore=worldExploreBindDirectory;
+ worldExploreBindDirectory=function(root,...args){playerJourneyBindBefore(root,...args);root.querySelector('[data-journey-open]')?.addEventListener('click',openPlayerJourney);};
+ const playerJourneyHudBefore=updateCivilHUD;
+ updateCivilHUD=function(){
+  if(!civilMissions.ready)return;const current=civilCurrent();if(current&&['active','lobby'].includes(current.r.status)){playerJourneyHudBefore();return;}
+  const snapshot=playerJourneySnapshot(),next=snapshot.next;if(!snapshot.ready||!next){playerJourneyHudBefore();return;}
+  const values=[[els.missionChapter,'SEU PRÓXIMO PASSO'],[els.missionTitle,next.icon+' '+next.title],[els.missionStep,(snapshot.done===snapshot.total?'Repita em Desafio ou jogue em dupla.':snapshot.difficultyLabel+' · '+next.reward+' moedas ao concluir.')+' Toque para abrir Meu caminho.']];
+  for(const[element,value]of values)if(element.textContent!==value)element.textContent=value;
+  const width=Math.round(snapshot.done/Math.max(1,snapshot.total)*100)+'%';if(els.missionFill.style.width!==width)els.missionFill.style.width=width;
+  els.missionCard.title='Meu caminho: aventuras, veículos e exploração';const label=els.missionTitle.textContent+'. '+els.missionStep.textContent;if(els.missionCard.getAttribute('aria-label')!==label)els.missionCard.setAttribute('aria-label',label);
+ };
+ updateMissionHUD=updateCivilHUD;
+ openObjectivesPanel=function(){const c=civilCurrent();return c&&['active','lobby'].includes(c.r.status)?openCivilMissionDetails():openPlayerJourney();};
+ window.OT_PLAYER_JOURNEY={open:openPlayerJourney,diagnostics:playerJourneySnapshot};
+
+  // ===== MODULE: 77-exploration-hud.js =====
+ const explorationHud={slots:new Map(),nodes:{},ready:false};
+ function explorationHudMove(node,parent,move){
+  if(!node||!parent)return;
+  let marker=explorationHud.slots.get(node);
+  if(!marker){marker=document.createComment('exploration-hud-slot');node.before(marker);explorationHud.slots.set(node,marker);}
+  if(move){if(node.parentNode!==parent)parent.append(node);}
+  else if(marker.parentNode&&node.previousSibling!==marker)marker.parentNode.insertBefore(node,marker.nextSibling);
+ }
+ function closeExplorationPanels(){state.ui.quickOpen=false;state.ui.skillsOpen=false;syncMobilePanels();}
+ function setExplorationHudMode(mode){
+  clearMovementInputs();state.settings.worldHud=mode==='full'?'full':'clean';closeExplorationPanels();syncExplorationHud();saveState();
+ }
+ function ensureExplorationMenu(){
+  if(explorationHud.ready)return;const bar=els.quickBar;if(!bar)return;
+  const header=document.createElement('div');header.className='exploration-menu-header';header.innerHTML='<b>Menu do mundo</b><button type="button" id="worldMenuClose" aria-label="Fechar menu">✕<span>Fechar</span></button>';header.querySelector('button').onclick=closeExplorationPanels;bar.prepend(header);
+  const empty=document.createElement('button');empty.id='emptyHandsBtn';empty.type='button';empty.innerHTML='👐<span>Mãos vazias</span>';empty.onclick=()=>{equipTool('none');closeExplorationPanels();updateContext(true);};bar.insertBefore(empty,els.toolsBtn);
+  const layout=document.createElement('button');layout.id='worldHudModeBtn';layout.type='button';layout.onclick=()=>setExplorationHudMode(state.settings.worldHud==='full'?'clean':'full');bar.append(layout);
+  const backdrop=document.createElement('button');backdrop.type='button';backdrop.id='worldMenuBackdrop';backdrop.tabIndex=-1;backdrop.setAttribute('aria-label','Fechar menu e voltar ao mundo');backdrop.onclick=closeExplorationPanels;els.game.append(backdrop);
+  const closeSkills=document.createElement('button');closeSkills.id='worldSkillsClose';closeSkills.className='skill-btn';closeSkills.type='button';closeSkills.innerHTML='<b>✕</b><span>Fechar</span>';closeSkills.onclick=closeExplorationPanels;els.secondaryActions.prepend(closeSkills);
+  els.quickToggleBtn.innerHTML='☰<span>Menu</span>';els.quickToggleBtn.setAttribute('aria-label','Abrir menu do mundo');els.quickToggleBtn.setAttribute('aria-controls','quickBar');els.skillsToggleBtn.setAttribute('aria-controls','secondaryActions');els.secondaryActions.id='secondaryActions';
+  bar.addEventListener('click',event=>{const button=event.target.closest('button');if(!button||button.closest('.camera-controls')||button===layout||button===els.skillsToggleBtn)return;state.ui.quickOpen=false;syncMobilePanels();});
+  const before=els.quickToggleBtn.onclick;els.quickToggleBtn.onclick=event=>{clearMovementInputs();before?.(event);if(state.ui.quickOpen)bar.scrollTop=0;};
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&els.modal.hidden&&(state.ui.quickOpen||state.ui.skillsOpen)){event.preventDefault();event.stopImmediatePropagation();closeExplorationPanels();els.quickToggleBtn.focus();}},{capture:true});
+  explorationHud.ready=true;explorationHud.nodes={layout,empty,backdrop};
+ }
+ function syncExplorationHud(){
+  ensureExplorationMenu();if(!explorationHud.ready)return;
+  const clean=state.settings.worldHud!=='full',body=document.body,activity=!!(player.vehicle||player.boating||player.transit.mode||buildMode||activeRace||(typeof otGames!=='undefined'&&otGames.active)||body.classList.contains('mode-fishing')||body.classList.contains('mode-sport-controls'));
+  body.classList.toggle('world-hud-clean',clean);body.classList.toggle('world-hud-walking',clean&&!activity);
+  const mission=typeof civilCurrent==='function'?civilCurrent():null,objective=!!(mission&&['active','lobby'].includes(mission.r.status)||state.career?.activeJob||state.waypoint||buildMode);body.classList.toggle('world-hud-objective',objective);
+  for(const id of ['worldCampaignBtn','worldHeroBtn'])if(!explorationHud.nodes[id])explorationHud.nodes[id]=document.getElementById(id);
+  const hero=explorationHud.nodes.worldHeroBtn,heroChallenge=!!world.worldProfessional?.heroAdventure?.active;
+  explorationHudMove(explorationHud.nodes.worldCampaignBtn,els.quickBar,clean);
+  explorationHudMove(els.multiplayerBadge,els.quickBar,clean);
+  explorationHudMove(els.skillsToggleBtn,els.quickBar,clean);
+  explorationHudMove(els.cameraResetBtn?.parentElement,els.quickBar,clean&&!activity);
+  explorationHudMove(els.specialBtn,els.secondaryActions,clean&&!activity);
+  explorationHudMove(hero,els.secondaryActions,clean&&!heroChallenge);
+  if(hero&&!hero.querySelector('.exploration-hero-caption')){const caption=document.createElement('small');caption.className='exploration-hero-caption';caption.textContent='Herói';hero.append(caption);}
+  const layout=explorationHud.nodes.layout,label=clean?'Mostrar todos os comandos':'Usar tela limpa';if(layout.dataset.mode!==(clean?'clean':'full')){layout.dataset.mode=clean?'clean':'full';layout.innerHTML='▦<span>'+label+'</span>';layout.setAttribute('aria-label',label);}
+  const empty=state.tools?.equipped==='none';setControlAttribute(explorationHud.nodes.empty,'aria-pressed',String(empty));
+  setControlText($('span',els.toolsBtn),clean?'Ferramentas':equippedTool().name);setControlAttribute(els.toolsBtn,'title','Ferramenta atual: '+equippedTool().name);
+  setControlAttribute(els.quickToggleBtn,'aria-expanded',String(!!state.ui.quickOpen));setControlAttribute(els.skillsToggleBtn,'aria-expanded',String(!!state.ui.skillsOpen));
+  // Keep melee available near an enemy; an empty street needs no attack button.
+  const enemyNear=!activity&&(world.enemies||[]).some(enemy=>!enemy.dead&&Math.hypot(player.x-enemy.group.position.x,player.z-enemy.group.position.z)<=2.35);
+  body.classList.toggle('world-hud-action-idle',clean&&!activity&&!currentContext&&!enemyNear);
+  if(!activity&&!currentContext){setControlText($('span',els.actionBtn),empty?'Soco':'Atacar');setControlText($('b',els.actionBtn),empty?'👊':'✋');}
+ }
+ const explorationPanelsBefore=syncMobilePanels;
+ syncMobilePanels=function(...args){explorationPanelsBefore(...args);syncExplorationHud();};
+ const explorationContextBefore=updateContext;
+ updateContext=function(...args){const result=explorationContextBefore(...args);syncExplorationHud();return result;};
+ window.OT_EXPLORATION_HUD={setMode:setExplorationHudMode,diagnostics:()=>({mode:state.settings.worldHud==='full'?'full':'clean',walking:document.body.classList.contains('world-hud-walking'),menuOpen:!!state.ui.quickOpen,skillsOpen:!!state.ui.skillsOpen,emptyHands:state.tools?.equipped==='none'})};
 
 })();

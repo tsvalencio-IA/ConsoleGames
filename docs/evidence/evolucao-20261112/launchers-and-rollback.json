@@ -1,0 +1,26 @@
+{
+  "origin": "https://otthi-world-campanha-teste.vercel.app/",
+  "launchers": [
+    {
+      "path": "arcade/previews/war-native-20261112.html",
+      "status": 200,
+      "sha256": "168f58e5797c547c4668651be3a90bae69d6a498c5541e20aed86ec770d1433f",
+      "bytes": 2132
+    },
+    {
+      "path": "arcade/previews/kart-native-20261112.html",
+      "status": 200,
+      "sha256": "286aec6b592f9bea5863560e563dda0bf057313b9585f6ab44f2fdeaf1bc96e3",
+      "bytes": 2017
+    }
+  ],
+  "rollback": {
+    "url": "https://otthi-world-campanha-teste-16rm34tp7-thiaguinho-s-projects.vercel.app/games/otthi/release-manifest.json",
+    "status": 200,
+    "build": "705.28.25-transito-fluidez",
+    "revision": "23767784d2d7a3aa",
+    "deployment": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa"
+  },
+  "passed": true,
+  "checkedAt": "2026-11-13T00:35:34.767Z"
+}

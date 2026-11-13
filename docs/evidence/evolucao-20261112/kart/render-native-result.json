@@ -1,0 +1,966 @@
+{
+  "cases": [
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 1440,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 4,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 2400,
+        "rivals": 4
+      },
+      "after": {
+        "rivalFieldReads": 8,
+        "rivals": 4
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": false,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "low",
+      "rear": true,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 8640,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": false,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 0,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 0,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 1,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 1,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 2,
+      "lap": 1,
+      "pos": 27000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    },
+    {
+      "quality": "high",
+      "rear": true,
+      "track": 2,
+      "lap": 3,
+      "pos": 680000,
+      "rivalCount": 24,
+      "changedChannels": 0,
+      "maxDifference": 0,
+      "channels": 1316640,
+      "before": {
+        "rivalFieldReads": 14400,
+        "rivals": 24
+      },
+      "after": {
+        "rivalFieldReads": 48,
+        "rivals": 24
+      }
+    }
+  ],
+  "timings": [
+    {
+      "label": "before",
+      "samples": [
+        2.930000000074506,
+        4.780000000074506,
+        9.55,
+        7.860000000149012,
+        2.85,
+        8.559999999776483,
+        4.75,
+        10.060000000149012,
+        3.9,
+        6.459999999776483,
+        12.769999999925494,
+        2.969999999925494
+      ],
+      "meanMs": 6.4533333333209155,
+      "medianMs": 6.459999999776483,
+      "p95Ms": 12.769999999925494
+    },
+    {
+      "label": "after",
+      "samples": [
+        7.0699999999254945,
+        6.860000000149012,
+        6.210000000149011,
+        3.1,
+        5.8,
+        2.6,
+        6.230000000074506,
+        8.229999999701977,
+        6.190000000223518,
+        3.1,
+        7.110000000149012,
+        2.6300000000745056
+      ],
+      "meanMs": 5.427500000037255,
+      "medianMs": 6.210000000149011,
+      "p95Ms": 8.229999999701977
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Real Chromium Canvas2D pixels and render throughput only. Isolated renderer fixture; no native RAF cadence, full game performance, physical camera, mobile thermal or phone FPS claim.",
+    "Initialization/menu/audio are fixture stubs. Both renderers execute unchanged native drawing functions and identical authoritative rival snapshots. No road segments, sprites, effects or rivals are omitted.",
+    "Timing may share this three-CPU runner with independent functional checks; report the samples without asserting a universal speedup."
+  ],
+  "passed": true,
+  "browser": "141.0.7390.37"
+}

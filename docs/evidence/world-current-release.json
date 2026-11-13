@@ -1,152 +1,66 @@
 {
-  "status": "Published dense-traffic recovery, corrected emergency routes and curbside depots, incremental phone detours, reduced background update cost and verified manual driving",
-  "build": "705.28.25-transito-fluidez",
-  "revision": "23767784d2d7a3aa",
-  "runtimeCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
-  "runtimeWorldCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
-  "previewUrl": "https://otthi-world-campanha-teste-r43byb5oy-thiaguinho-s-projects.vercel.app",
-  "previewDeployment": "dpl_3ys3cmHreQpGFAXuDyiD4RvpR72H",
+  "status": "Published empty hands and a compact exploration HUD; public source hashes verified",
+  "build": "705.28.28-maos-livres-tela-limpa",
+  "revision": "6f64398fafb8a424",
+  "assetVersion": 70661,
+  "runtimeCommit": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "runtimeWorldCommit": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "productionSource": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "appSha256": "cc288dec7c285d34c818634e9875d9d3d78ab78f59fda69cec313f1372a8c3d2",
   "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
-  "productionDeployment": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
-  "productionSource": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+  "worldUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "consoleUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/",
+  "productionDeployment": "dpl_HUk8uTXxWwLLWWyouXGm2px4sU2x",
+  "immutableProductionUrl": "https://otthi-world-campanha-teste-ia50hltjj-thiaguinho-s-projects.vercel.app",
   "productionReady": true,
-  "productionAcceptanceStatus": "441 unit tests passed; all eight console evolution jobs, three mobile/control/vehicle jobs and native frame comparison passed; 164 production hashes verified.",
+  "previewUrl": "https://otthi-world-campanha-teste-duaigti4n-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_H6W6vYf9agkwBJAJ5xTQoT755GrX",
+  "publishedAt": "2026-11-13T10:52:05.690000+00:00",
+  "productionVerifiedAt": "2026-11-13T10:52:34.376Z",
+  "checks": {
+    "releaseAssets": 147,
+    "publicVerifiedFiles": 168,
+    "httpFailures": 0,
+    "unitTestsPassed": 474,
+    "unitTestsFailed": 0,
+    "nativeHudStages": 8,
+    "nativeHudViewports": 4,
+    "desktopFinePointer": true,
+    "mobileViewportTransitions": 10,
+    "upgradeFrom27AndOffline": true,
+    "publicNativeUi": true
+  },
   "unitTests": {
-    "passed": 441,
+    "passed": 474,
     "failed": 0,
     "command": "node --test tests/*.test.mjs"
   },
-  "checks": {
-    "releaseAssets": 143,
-    "publicVerifiedFiles": 164,
-    "evolutionFinalRun": 42876780048,
-    "evolutionFinalConclusion": "success",
-    "evolutionFinalJobs": [
-      "pouso",
-      "transito-e-fluidez",
-      "atualizacao-da-candidata",
-      "celular-rotas-e-compras",
-      "celular-e-entregas",
-      "kart-precisao-e-copa",
-      "duas-maos",
-      "oficina-autonoma"
-    ],
-    "mobileLayoutRun": 42876779731,
-    "mobileLayoutConclusion": "success",
-    "viewportChanges": 10,
-    "vehicleOperationalMeasurementRun": 42876779731,
-    "vehicleOperationalMeasurementJob": 130042058203,
-    "vehicleOperationalConclusion": "success",
-    "trafficPerformanceRun": 42876779718,
-    "trafficPerformanceConclusion": "success",
-    "trafficFlowRun": 42876780048,
-    "trafficFlowConclusion": "success",
-    "trafficFlowArtifact": 13790749437,
-    "renderPerformanceArtifact": 13791697767,
-    "vehicleOperationalArtifact": 13790878991
-  },
-  "previewConfiguration": {
-    "branch": "console-evolution-20261106",
-    "VERCEL_PREVIEW_FEEDBACK_ENABLED": "0"
-  },
   "physicalAndroidApproved": false,
-  "limitations": [
-    "Physical Android/iPhone camera precision, temperature, sustained FPS and installed user cache were not measured.",
-    "Software WebGL and compatible rendering validate functional behavior and geometry, not physical-device performance.",
-    "The WAR web game is not equivalent in production scale or graphics to Call of Duty 2026."
-  ],
+  "evidenceDirectory": "tela-limpa-20261113",
+  "productionHttpIntegrityReport": "tela-limpa-20261113/production-http-integrity.json",
+  "rollback": {
+    "build": "705.28.27-evolucao-integrada",
+    "revision": "d4a223e1aa501f02",
+    "runtimeCommit": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+    "deployment": "dpl_Ef2T1Lh5EpgBSfL8aHG43njK3oeN",
+    "immutableUrl": "https://otthi-world-campanha-teste-apoex67ff-thiaguinho-s-projects.vercel.app",
+    "tag": "release-705.28.27",
+    "method": "Vercel request_rollback to the recorded deployment; no save deletion or database restore."
+  },
   "previousProduction": {
-    "build": "705.28.24-celular-entregas-garagem",
-    "revision": "b41039decb7d7b28",
-    "productionDeployment": "dpl_8EQ1N1WrnuiNaADb5Hz75rvUfPCA",
-    "productionSource": "175ba82b7bdd46637cca6854a32517971d85200a"
+    "build": "705.28.27-evolucao-integrada",
+    "revision": "d4a223e1aa501f02",
+    "runtimeCommit": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+    "productionDeployment": "dpl_Ef2T1Lh5EpgBSfL8aHG43njK3oeN",
+    "record": "tela-limpa-20261113/previous-production.json"
   },
-  "evidenceDirectory": "transito-fluidez-20261110",
-  "productionAcceptanceReport": "transito-fluidez-20261110/result.json",
-  "productionHttpIntegrityReport": "transito-fluidez-20261110/http-integrity.json",
-  "sourceCoherence": "143 release assets and 164 public files verified against source.",
-  "publishedAt": "2026-11-10T18:39:20.321000+00:00",
-  "publicationPreparation": "Production is pinned to runtime commit cdc695f04f62dd67fe28ec94ea5edaca73474f95; a subsequent evidence-only commit does not redeploy the runtime.",
-  "productionVerifiedAt": "2026-11-10T18:40:45.555Z",
-  "previousReleaseRecord": {
-    "build": "705.28.23-oficina-combate-kart",
-    "revision": "00b49a044927f542",
-    "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
-    "productionSource": "5f51324be6a284d858dfa198dd668ae722756455",
-    "productionDeployment": "dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY"
-  },
-  "warRevision": {
-    "cache": 54,
-    "visualViews": 40,
-    "releasedBattlefields": 14,
-    "evidence": "combate-kart-20261109/verification.json",
-    "physicalDeviceVerified": false
-  },
-  "previousDanceBase": {
-    "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
-    "revision": "defa5c4df1748e8e",
-    "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt"
-  },
-  "danceConsole": {
-    "cards": 8,
-    "directUrl": "https://otthi-world-campanha-teste.vercel.app/games/danca/",
-    "browserRun": 42434156049,
-    "browserStep": "Run node tests/dance-console-browser.mjs",
-    "browserStepConclusion": "success",
-    "existingDanceRun": 42434156033,
-    "existingDanceStepConclusion": "success",
-    "publicFiles": 138,
-    "liveAudioConfirmed": false,
-    "physicalDeviceVerified": false
-  },
-  "previousWarRevision": {
-    "cache": 51,
-    "entry": "20261107-war-revisao2",
-    "unitTests": 404,
-    "evolutionRun": 42431707266,
-    "evolutionConclusion": "success",
-    "handAndWorldRun": 42431707221,
-    "installedUpdateStep": "success",
-    "sceneryRun": 42431707196,
-    "sceneryConclusion": "success",
-    "visualViews": 16,
-    "publicFiles": 132,
-    "manualPublicTraining": {
-      "shots": 1,
-      "hits": 1,
-      "ammo": 29
-    },
-    "evidence": "war-revisao-20261107/README.md",
-    "physicalDeviceVerified": false,
-    "handAndWorldConclusion": "success",
-    "gameplayRun": 42431707330,
-    "gameplayConclusion": "success",
-    "installedUpdateReport": "war-revisao-20261107/installed-update.json"
-  },
-  "phoneDelivery": {
-    "groundDetours": true,
-    "liveMap": true,
-    "completeGarageStorage": true,
-    "parcelResumeAndReceipt": true,
-    "vehiclePurchaseDelivered": true,
-    "mobileViewports": [
-      "390x844",
-      "844x390",
-      "360x740"
-    ],
-    "evidence": "celular-rotas-compras-20261109/result.json",
-    "nativeBrowserRun": 42876780048,
-    "physicalDeviceVerified": false
-  },
-  "trafficRecovery": {
-    "nativeBrowserRun": 42876780048,
-    "nativeVehicleRun": 42876779731,
-    "nativePerformanceRun": 42876779718,
-    "boundedChecksPerRouteSlice": 8,
-    "curbsideRescueDepots": true,
-    "separateIncidentStaging": true,
-    "incrementalSideClearance": true,
-    "physicalDeviceVerified": false,
-    "evidence": "transito-fluidez-20261110/result.json"
-  }
+  "limits": [
+    "Viewport and native control checks in software Chromium. No claim of physical phone FPS, thermal, battery or touch/camera certification.",
+    "No production account or database mutation. UI smoke tests use disposable local profiles and block external account services.",
+    "The earlier physical emergency-dispatch limitation remains documented in evolucao-20261112; this change does not claim to resolve it."
+  ],
+  "publicationPreparation": "Production pinned to the tested application commit; later evidence/test-only commits do not change published game bytes.",
+  "productionNativeUiStatus": "passed: existing axe retained, Menu stores the tool, native reload retains empty hands, native toolbelt restores axe, Menu stores it again; inventory/property preserved",
+  "productionNativeUiCheckedAt": "2026-11-13T10:55:38.551Z",
+  "productionAcceptanceStatus": "474 regressions, eight exact-source native HUD stages, ten viewport transitions, real worker27→28/offline,168 public hashes and native public UI/reload passed. Physical-device performance not certified."
 }

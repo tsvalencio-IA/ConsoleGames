@@ -20,6 +20,7 @@ const hub={
    const previous=document.activeElement;
    overlay.innerHTML='<div class="input-mode-panel"><div class="input-mode-eyebrow">thIAguinho ARCADE</div><h2>COMO VOCÊ QUER JOGAR?</h2><p>Você pode jogar sem câmera. Escolha a opção que preferir para esta partida.</p><div class="input-mode-options"><button type="button" data-mode="controls"><strong>🎮 CONTROLES</strong><small>Toque na tela ou use o teclado. Sem acesso à câmera.</small></button><button type="button" data-mode="camera"><strong>📷 CÂMERA</strong><small>Use seus movimentos. A câmera só será solicitada após esta escolha.</small></button></div><button type="button" data-mode="cancel" class="input-mode-cancel">VOLTAR ÀS FASES</button><span class="input-mode-foot">A escolha pode ser alterada antes da próxima partida.</span></div>';
    if(id==="ar_truck_sim"){overlay.querySelector('[data-mode="camera"] small').textContent="Apoie o celular e calibre as duas mãos. A esquerda anda e gira; a direita mira e atira ao juntar polegar e indicador. O modo corpo + mão direita também está disponível na calibração.";overlay.querySelector('[data-mode="controls"] small').textContent="Arraste na cena para olhar. Joystick para andar, botões para atirar e aproximar a mira.";}
+   if(id==='ar_truck_sim')window.WarFrontControl?.choice(overlay);
    document.body.appendChild(overlay);
    const stored=(()=>{try{return localStorage.getItem(key)}catch{return null}})();
    const first=overlay.querySelector(stored==="camera"?'[data-mode="camera"]':'[data-mode="controls"]');
@@ -28,14 +29,14 @@ const hub={
    const close=choice=>{
     if(settled)return;settled=true;
     overlay.remove();
-    if(choice!=="cancel"){hub.mode=choice;try{localStorage.setItem(key,choice)}catch{}}
+    if(choice!=="cancel"){if(id==='ar_truck_sim'&&overlay.querySelector('[data-war-front-mode]'))window.WarFrontControl?.select(overlay.querySelector('[data-war-front-mode]').value);hub.mode=choice;try{localStorage.setItem(key,choice)}catch{}}
     if(previous?.isConnected)previous.focus({preventScroll:true});
     resolve(choice==="cancel"?null:choice);
    };
    overlay.addEventListener("click",e=>{const choice=e.target.closest("[data-mode]")?.dataset.mode;if(choice)close(choice)});
    overlay.addEventListener("keydown",e=>{
      if(e.key==="Escape"){e.preventDefault();close("cancel")}
-     if(e.key==="Tab"){const a=[...overlay.querySelectorAll("button")];const pos=a.indexOf(document.activeElement);if(!e.shiftKey&&pos===a.length-1){e.preventDefault();a[0].focus()}else if(e.shiftKey&&pos===0){e.preventDefault();a.at(-1).focus()}}
+     if(e.key==="Tab"){const a=[...overlay.querySelectorAll("button,select")];const pos=a.indexOf(document.activeElement);if(!e.shiftKey&&pos===a.length-1){e.preventDefault();a[0].focus()}else if(e.shiftKey&&pos===0){e.preventDefault();a.at(-1).focus()}}
    });
   });
  },
@@ -165,15 +166,15 @@ const hub={
   const previousControl=surface.dataset.control;surface.dataset.control='look';surface.classList.add('combat-look-surface');
   let owner=null,lastX=0,lastY=0;
   const enabled=()=>hub.mode==='controls'&&window.System?.activeGame?.logic===logic&&!window.System.paused&&logic.state==='PLAYING'&&!root.hidden&&!$('#game-ui')?.classList.contains('hidden');
-  const reset=()=>{const pointer=owner;owner=null;logic.lookPointerActive=false;try{if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer)}catch{}};
+  const reset=()=>{const pointer=owner;owner=null;logic.lookPointerActive=false;logic.frontControls?.release();try{if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer)}catch{}};
   const down=e=>{
-   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0)||e.clientX<surface.getBoundingClientRect().left+surface.getBoundingClientRect().width*.45)return;
-   e.preventDefault();e.stopPropagation();owner=e.pointerId;lastX=e.clientX;lastY=e.clientY;logic.lookPointerActive=true;
+   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0)||(!logic.frontControls&&e.clientX<surface.getBoundingClientRect().left+surface.getBoundingClientRect().width*.45))return;
+   e.preventDefault();e.stopPropagation();owner=e.pointerId;lastX=e.clientX;lastY=e.clientY;logic.lookPointerActive=true;if(logic.frontControls){const r=surface.getBoundingClientRect();logic.frontControls.pointer((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);}
    try{if(e.isTrusted)surface.setPointerCapture(e.pointerId)}catch{}
   };
   const move=e=>{
    if(owner!==e.pointerId)return;if(!enabled()){reset();return;}e.preventDefault();e.stopPropagation();
-   const r=surface.getBoundingClientRect();logic.lookBy(e.clientX-lastX,e.clientY-lastY,r.width,r.height);lastX=e.clientX;lastY=e.clientY;
+   const r=surface.getBoundingClientRect();if(logic.frontControls)logic.frontControls.pointer((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);else logic.lookBy(e.clientX-lastX,e.clientY-lastY,r.width,r.height);lastX=e.clientX;lastY=e.clientY;
   };
   const end=e=>{if(owner===e.pointerId)reset()};
   const hide=()=>{if(document.hidden)reset()};

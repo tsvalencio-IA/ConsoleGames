@@ -1,6 +1,6 @@
 /* Real workshop queue, damage, bays, traffic claims and save reload; only time/travel are fixtures. */
 import{chromium}from'playwright';import fs from'node:fs';import assert from'node:assert/strict';import{multiplayerServer}from'./helpers/multiplayer-browser-fixture.mjs';import{installCityInspection}from'./helpers/world-city-inspection.mjs';
-const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']}),out='test-results/workshop-auto';fs.mkdirSync(out,{recursive:true});let page;const errors=[];
+const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']}),out='test-results/workshop-auto';fs.mkdirSync(out,{recursive:true});let page;const errors=[],capture=process.env.OT_WORKSHOP_CAPTURE!=='0';
 const source=fs.readFileSync('games/otthi/app.js','utf8'),end=source.lastIndexOf('})();'),hook=`
 window.__WORKSHOP_AUTO_QA={
  setup:()=>{const owned=vehicleById('garage-orange');workshopSelectBay(world.workshopLifts[0]);workshopStageParkedVehicle(owned);const l=world.workshopLifts[0];l.raised=true;l.height=l.maxHeight;l.platform.position.y=l.height;owned.group.position.y=groundHeightAt(l.x,l.z)+l.height;owned.occupied=true;l.disassembly.parts.engine=true;setVehicleDurabilityV704(owned,35,'test-owned');workshopComponentRecord(owned);
@@ -17,12 +17,18 @@ try{
  page=await c.newPage();page.on('pageerror',e=>errors.push(e.stack));await installCityInspection(page,{appSource:source.slice(0,end)+hook+source.slice(end),capDuringBoot:true});
  const boot=async()=>{await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();await page.waitForFunction(()=>__CITY_QA?.cap(),null,{timeout:120000});await page.waitForFunction(()=>OT_WORKSHOP_BAYS.diagnostics().ready&&OT_CIVIL_COMMUNITY.diagnostics().ready,null,{timeout:120000});};
  await boot();const ids=await page.evaluate(()=>__WORKSHOP_AUTO_QA.setup()),before=await page.evaluate(()=>__WORKSHOP_AUTO_QA.snapshot());assert.equal(ids.length,6);assert.deepEqual(before.overlaps,[]);assert.equal(before.bays.bays[0].vehicleId,'garage-orange');assert.equal(before.bays.bays[1].vehicleId,'workshop-red');
- await page.evaluate(()=>__CITY_QA.render(34,-18,65));await page.screenshot({path:out+'/separate-queue.png'});
- await page.evaluate(()=>__WORKSHOP_AUTO_QA.advance(121000));for(let cycle=0;cycle<4;cycle++){await page.evaluate(()=>__WORKSHOP_AUTO_QA.advance(31000));await page.evaluate(()=>__WORKSHOP_AUTO_QA.advance(9000));}
+ if(capture){await page.evaluate(()=>__CITY_QA.render(34,-18,65));await page.screenshot({path:out+'/separate-queue.png'});}
+ // Tick the native queue through its deadlines instead of skipping whole
+ // service phases in a handful of updates. Bound the unattended session.
+ let elapsedMs=0;
+ for(;elapsedMs<600000;elapsedMs+=1000){
+  await page.evaluate(()=>__WORKSHOP_AUTO_QA.advance(1000));
+  if(elapsedMs%30000===0){const sample=await page.evaluate(()=>__WORKSHOP_AUTO_QA.snapshot());console.log('WORKSHOP QUEUE',elapsedMs,JSON.stringify(sample.auto.vehicles.map(v=>({id:v.id,phase:v.phase}))));if(ids.every(id=>sample.auto.vehicles.some(v=>v.id===id&&v.phase==='delivered')))break;}
+ }
  await page.evaluate(()=>__WORKSHOP_AUTO_QA.save());const after=await page.evaluate(()=>__WORKSHOP_AUTO_QA.snapshot());
  for(const id of ids){const row=after.auto.vehicles.find(v=>v.id===id);assert.equal(row?.phase,'delivered',id);assert.equal(row.durability,100,id);assert.equal(row.visible,false,id);}
  assert.deepEqual(after.overlaps,[]);assert.deepEqual(after.claims,[]);assert(after.actors.every(a=>!a.taken));assert.equal(after.bays.bays[1].vehicleId,'');assert.deepEqual(after.owned,before.owned);assert.deepEqual(after.economy,before.economy);
- await page.evaluate(()=>__CITY_QA.render(34,-18,65));await page.screenshot({path:out+'/npc-cars-collected.png'});await boot();const reloaded=await page.evaluate(()=>__WORKSHOP_AUTO_QA.snapshot());
+ if(capture){await page.evaluate(()=>__CITY_QA.render(34,-18,65));await page.screenshot({path:out+'/npc-cars-collected.png'});}await boot();const reloaded=await page.evaluate(()=>__WORKSHOP_AUTO_QA.snapshot());
  for(const id of ids){const row=reloaded.auto.vehicles.find(v=>v.id===id);if(row)assert.equal(row.visible,false,id+' cannot return as a duplicate after reload');}assert.deepEqual(reloaded.owned,after.owned);assert.deepEqual(reloaded.economy,after.economy);assert.deepEqual(errors,[]);
- fs.writeFileSync(out+'/result.json',JSON.stringify({passed:true,ids,before,after,reloaded,errors,limits:['Disposable Chromium save. Time is advanced; native servicing, positions, health, traffic claims and persistence run unchanged. No live account.']},null,2));console.log('PASS 6 separated NPC cars repair and return automatically, including raised/disassembled car; owner traffic resumes, owned raised car and economy survive reload');
+ fs.writeFileSync(out+'/result.json',JSON.stringify({passed:true,screenshots:capture,simulatedMs:elapsedMs,ids,before,after,reloaded,errors,limits:['Disposable Chromium save. Time is advanced; native servicing, positions, health, traffic claims and persistence run unchanged. No live account.','OT_WORKSHOP_CAPTURE=0 omits native rendering and screenshots; functional assertions remain identical.']},null,2));console.log('PASS 6 separated NPC cars repair and return automatically, including raised/disassembled car; owner traffic resumes, owned raised car and economy survive reload');
 }catch(error){fs.writeFileSync(out+'/failure.json',JSON.stringify({error:error.stack,errors,state:await page?.evaluate(()=>window.__WORKSHOP_AUTO_QA?.snapshot()).catch(()=>null)},null,2));throw error;}finally{await browser.close();await server.close();}

@@ -1,0 +1,66 @@
+{
+  "status": "Published empty hands and a compact exploration HUD; public source hashes verified",
+  "build": "705.28.28-maos-livres-tela-limpa",
+  "revision": "6f64398fafb8a424",
+  "assetVersion": 70661,
+  "runtimeCommit": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "runtimeWorldCommit": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "productionSource": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "appSha256": "cc288dec7c285d34c818634e9875d9d3d78ab78f59fda69cec313f1372a8c3d2",
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "worldUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "consoleUrl": "https://otthi-world-campanha-teste.vercel.app/arcade/",
+  "productionDeployment": "dpl_HUk8uTXxWwLLWWyouXGm2px4sU2x",
+  "immutableProductionUrl": "https://otthi-world-campanha-teste-ia50hltjj-thiaguinho-s-projects.vercel.app",
+  "productionReady": true,
+  "previewUrl": "https://otthi-world-campanha-teste-duaigti4n-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_H6W6vYf9agkwBJAJ5xTQoT755GrX",
+  "publishedAt": "2026-11-13T10:52:05.690000+00:00",
+  "productionVerifiedAt": "2026-11-13T10:52:34.376Z",
+  "checks": {
+    "releaseAssets": 147,
+    "publicVerifiedFiles": 168,
+    "httpFailures": 0,
+    "unitTestsPassed": 474,
+    "unitTestsFailed": 0,
+    "nativeHudStages": 8,
+    "nativeHudViewports": 4,
+    "desktopFinePointer": true,
+    "mobileViewportTransitions": 10,
+    "upgradeFrom27AndOffline": true,
+    "publicNativeUi": true
+  },
+  "unitTests": {
+    "passed": 474,
+    "failed": 0,
+    "command": "node --test tests/*.test.mjs"
+  },
+  "physicalAndroidApproved": false,
+  "evidenceDirectory": "tela-limpa-20261113",
+  "productionHttpIntegrityReport": "tela-limpa-20261113/production-http-integrity.json",
+  "rollback": {
+    "build": "705.28.27-evolucao-integrada",
+    "revision": "d4a223e1aa501f02",
+    "runtimeCommit": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+    "deployment": "dpl_Ef2T1Lh5EpgBSfL8aHG43njK3oeN",
+    "immutableUrl": "https://otthi-world-campanha-teste-apoex67ff-thiaguinho-s-projects.vercel.app",
+    "tag": "release-705.28.27",
+    "method": "Vercel request_rollback to the recorded deployment; no save deletion or database restore."
+  },
+  "previousProduction": {
+    "build": "705.28.27-evolucao-integrada",
+    "revision": "d4a223e1aa501f02",
+    "runtimeCommit": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+    "productionDeployment": "dpl_Ef2T1Lh5EpgBSfL8aHG43njK3oeN",
+    "record": "tela-limpa-20261113/previous-production.json"
+  },
+  "limits": [
+    "Viewport and native control checks in software Chromium. No claim of physical phone FPS, thermal, battery or touch/camera certification.",
+    "No production account or database mutation. UI smoke tests use disposable local profiles and block external account services.",
+    "The earlier physical emergency-dispatch limitation remains documented in evolucao-20261112; this change does not claim to resolve it."
+  ],
+  "publicationPreparation": "Production pinned to the tested application commit; later evidence/test-only commits do not change published game bytes.",
+  "productionNativeUiStatus": "passed: existing axe retained, Menu stores the tool, native reload retains empty hands, native toolbelt restores axe, Menu stores it again; inventory/property preserved",
+  "productionNativeUiCheckedAt": "2026-11-13T10:55:38.551Z",
+  "productionAcceptanceStatus": "474 regressions, eight exact-source native HUD stages, ten viewport transitions, real worker27→28/offline,168 public hashes and native public UI/reload passed. Physical-device performance not certified."
+}

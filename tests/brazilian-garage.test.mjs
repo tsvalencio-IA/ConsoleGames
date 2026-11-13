@@ -28,7 +28,7 @@ test('fleet: another owner of the same vehicle ID has independent paint and cann
 });
 
 test('garage normalization preserves the completed layout migration and display assignments',()=>{
- const code=readFileSync('games/otthi/src/modules/33-otthi-world-professional-core.js','utf8'),a=code.indexOf('  function ensureOtthiWorldState(){'),b=code.indexOf('  function worldPbrPath(',a),c=vm.createContext({});
+ const code=readFileSync('games/otthi/src/modules/33-otthi-world-professional-core.js','utf8'),a=code.indexOf('  function normalizeWorldHeroRecord('),b=code.indexOf('  function worldPbrPath(',a),c=vm.createContext({});
  vm.runInContext(`const state={settings:{},avatar:{},vehicles:{owned:['garage-orange'],parked:{'garage-orange':{x:18,z:42}},garage:{layoutVersion:2,slots:{'1':'garage-orange'},stored:{},displaySlots:{'4':'br-fusca'}}}};const normalizeAvatarV2=x=>x,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));`,c);vm.runInContext(code.slice(a,b),c);
  const result=vm.runInContext(`ensureOtthiWorldState();ensureOtthiWorldState();({migration:state.vehicles.garage.layoutVersion,display:state.vehicles.garage.displaySlots['4'],parked:state.vehicles.parked['garage-orange'].x});`,c);assert.equal(result.migration,2);assert.equal(result.display,'br-fusca');assert.equal(result.parked,18);
 });

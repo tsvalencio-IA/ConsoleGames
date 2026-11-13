@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "build": "705.28.26-estabilidade-oficina",
+  "revision": "60705b1100cc8a14",
+  "results": [
+    {
+      "scenario": "stale-config",
+      "automaticRecovery": true,
+      "preserved": true
+    },
+    {
+      "scenario": "real-worker-upgrade",
+      "waitedForPageReady": true,
+      "preserved": true
+    },
+    {
+      "scenario": "offline-after-upgrade",
+      "coherent": true,
+      "preserved": true
+    }
+  ],
+  "errors": []
+}

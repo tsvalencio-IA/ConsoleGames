@@ -1,0 +1,290 @@
+{
+  "observedAt": "2026-11-11T19:18:05.002370+00:00",
+  "browser": "Chromium headless, 960x640",
+  "networkMode": "Playwright routes fulfilled by Python urllib using verified environment CA. Native Chromium TLS and WebSockets are not verified. All non-GET/HEAD requests prevented.",
+  "scope": "Initial menus only; no gameplay, camera, accounts or multiplayer interactions.",
+  "results": [
+    {
+      "name": "arcade",
+      "path": "/arcade/",
+      "status": 200,
+      "state": {
+        "title": "thIAguinho ARCADE — Console de 8 jogos",
+        "build": null,
+        "revision": null,
+        "viewport": [
+          960,
+          640
+        ],
+        "bodyWidth": 960,
+        "text": "Ir para a biblioteca de jogos\n⌂\n◇\n⚡\n♡\nSEU ESPAÇO PARA JOGAR\nBem-vindo ao thIAguinho Arcade\n⌕\nBuscar jogos\nJ\nJogador\nPerfil local\n⌄\nUM CONSOLE • VÁRIOS MUNDOS\nSeu próximo mundo\ncomeça aqui.\n\nExplore, corra, voe, dispute partidas e viva aventuras. Escolha seu jogo e continue de onde ele já funciona.\n\n▶ Jogar OTThi World\n↗\nExplorar jogos ↓\nInstalar no Android ↓\n\nAPK para Android 7.0 ou superior. Os jogos usam internet.\n\n08 experiências\n08 jogos instalados\n✚\n●\n ●\n✦\n✧\n✦\n▣\n8 jogos\nBiblioteca do console\n◇\n3 origens\n8 jogos no console\n☆\n0 favoritos\nSalvos neste navegador\nESCOLHA SUA AVENTURA\nBiblioteca de jogos 08\nTodos\nUniversos 3D\nAção e esportes\nFavoritos\nJOGUE NO CONSOLE\n♡\nMUNDO ABERTO\nOTThi World\n\nCrie sua vida na Vila do Sol, explore bairros, aprenda e encontre amigos.\n\n↗ OTThi-World3\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nUNIVERSO 3D\nAventuras em Família 3D\n\nCorra pelo parque, brinque com Luna e Liz e descubra estrelas e desafios.\n\n↗ hq\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nCORRIDA\nKart Legends\n\nAcelere, faça curvas, use o turbo e conquiste o primeiro lugar.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nESPORTE COM CÂMERA\nBoxing Pro\n\nLute usando a câmera ou os botões de toque. Defenda, ataque e vença o campeonato.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nTÊNIS DE MESA\nPing Pong Wii\n\nDispute rallies usando o dedo ou a câmera e vença partidas desafiadoras.\n\n✦ Desafio de hoje • 0/1 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nCOMBATE TÁTICO\nWAR Combate\n\nCâmera com a mão ou joystick esquerdo e câmera livre por toque. Três operações e cobertura.\n\n✦ Desafio de hoje • 0/1 missões\n↗ GAME\nJogar agora ↗\n🎵\nJOGUE NO CONSOLE\n♡\nDANÇA COM CÂMERA\nDança\n\nEscolha sua música do YouTube, acompanhe o professor e dance com o corpo inteiro.\n\n↗ OTThi-World3\nJogar agora ↗\n✈️\nJOGUE NO CONSOLE\n♡\nSIMULADOR DE VOO\nAero Strike WAR\n\nPilote caças e helicópteros sobre cidades com trânsito e combate no solo.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nTUDO ORGANIZADO\nUma biblioteca. Jogos de verdade.\n\nEscolha um jogo, cumpra missões, supere seus recordes e volte ao console quando quiser. Cada aventura mantém seu progresso.\n\n© 2026 thIAguinho GAME CONSOLE\nby thIAguinho Soluções Digitais & Otto MMP Ferri\nConheça o projeto ↗",
+        "headings": [
+          "Seu próximo mundo\ncomeça aqui.",
+          "Biblioteca de jogos 08",
+          "OTThi World",
+          "Aventuras em Família 3D",
+          "Kart Legends",
+          "Boxing Pro",
+          "Ping Pong Wii",
+          "WAR Combate",
+          "Dança",
+          "Aero Strike WAR",
+          "Uma biblioteca. Jogos de verdade.",
+          "Seu perfil de jogador"
+        ],
+        "links": [
+          {
+            "text": "Ir para a biblioteca de jogos",
+            "href": "#biblioteca"
+          },
+          {
+            "text": "",
+            "href": "./"
+          },
+          {
+            "text": "▶ Jogar OTThi World\n↗",
+            "href": "../games/atualizar/"
+          },
+          {
+            "text": "Instalar no Android ↓",
+            "href": "./instalar/"
+          },
+          {
+            "text": "↗ OTThi-World3",
+            "href": "https://github.com/tsvalencio-IA/OTThi-World3"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/atualizar/"
+          },
+          {
+            "text": "↗ hq",
+            "href": "https://github.com/tsvalencio-IA/hq"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/familia/3d/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/kart/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/boxe/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/tenis/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/ar/"
+          },
+          {
+            "text": "↗ OTThi-World3",
+            "href": "https://github.com/tsvalencio-IA/OTThi-World3"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/danca/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/voo/"
+          },
+          {
+            "text": "Conheça o projeto ↗",
+            "href": "https://github.com/tsvalencio-IA/ConsoleGames"
+          }
+        ],
+        "buttons": [
+          "⌂",
+          "◇",
+          "⚡",
+          "♡",
+          "⬇",
+          "J\nJogador\nPerfil local\n⌄",
+          "Explorar jogos ↓",
+          "Todos",
+          "Universos 3D",
+          "Ação e esportes",
+          "Favoritos",
+          "♡",
+          "♡",
+          "♡",
+          "♡",
+          "♡",
+          "♡",
+          "♡",
+          "♡",
+          "✕",
+          "Mostrar",
+          "Entrar na minha conta",
+          "Sair da conta"
+        ]
+      },
+      "pageErrors": [],
+      "failedHttp": [],
+      "preventedWrites": []
+    },
+    {
+      "name": "otthi",
+      "path": "/games/otthi/",
+      "status": 200,
+      "state": {
+        "title": "OTTHI World V705",
+        "build": "705.28.26-estabilidade-oficina",
+        "revision": "becf18164ea4bdb9",
+        "viewport": [
+          960,
+          640
+        ],
+        "bodyWidth": 960,
+        "text": "AVENTURA • AMIGOS • CRIAÇÃO\n\nOTTHI WORLD\n🔥\nOtthos em 3D\nAbra somente quando quiser.\nAbrir 3D / AR\nMUNDO ABERTO\nVila do Sol\n\nExplore, aprenda e jogue com seus amigos.\n\n▶ JOGAR\nCONTINUAR\n← Todos os jogos\n👤\nJOGADOR\nEscolher nome\nConta local\nNÍVEL\n1\nMOEDAS\n500\nREPUTAÇÃO\n0\nMEDALHAS\n0\nInstalar aplicativo\nÍcone OTTHI World no celular\n📱\n3D / AR\n🎓\nAcademia\nMatemática • Português • Inglês\n🧠\nTrilha adaptativa\nAprende com os acertos e erros\n🏘️\nBairros online\nCasas e amigos por região\n🏅\nColeção\n👕\nPersonagem\n🔐\nMinha conta\nSalvar em outros aparelhos\n🧩\nMoldes 3D\n❓\nAjuda\n⚙\nConfig.\n↻ Salvar e atualizar jogo\n\nVersão 705.28.26-estabilidade-oficina\n\nToque em Instalar para adicionar o OTTHOS ao celular.\n\nPowered by thIAguinho Soluções Digitais\n← Console\nNível 1 • Medalhas 0\n♪ FX ON",
+        "headings": [
+          "OTTHI WORLD",
+          "Vila do Sol",
+          "Janela"
+        ],
+        "links": [
+          {
+            "text": "← Todos os jogos",
+            "href": "../../arcade/"
+          },
+          {
+            "text": "🎮 Console",
+            "href": "../../arcade/"
+          },
+          {
+            "text": "← Console",
+            "href": "../../arcade/"
+          }
+        ],
+        "buttons": [
+          "Abrir 3D / AR",
+          "📱 Ver em AR",
+          "▶ JOGAR",
+          "CONTINUAR",
+          "👤\nJOGADOR\nEscolher nome\nConta local",
+          "Instalar aplicativo\nÍcone OTTHI World no celular",
+          "📱\n3D / AR",
+          "🎓\nAcademia\nMatemática • Português • Inglês",
+          "🧠\nTrilha adaptativa\nAprende com os acertos e erros",
+          "🏘️\nBairros online\nCasas e amigos por região",
+          "🏅\nColeção",
+          "👕\nPersonagem",
+          "🔐\nMinha conta\nSalvar em outros aparelhos",
+          "🧩\nMoldes 3D",
+          "❓\nAjuda",
+          "⚙\nConfig.",
+          "↻ Salvar e atualizar jogo",
+          "❤️",
+          "Solo",
+          "☰Vida",
+          "OTGames",
+          "👕Personagem",
+          "🎒Itens",
+          "📱Celular",
+          "🧱Construir",
+          "🪓Ferramentas",
+          "🗺Mapa",
+          "🎓Desafios",
+          "🌐Online",
+          "📰Notícias",
+          "🏘️Bairros",
+          "⚙Menu",
+          "\n        \n        Mapa da VilaToque para escolher um destino\n        ▲\n      ",
+          "+",
+          "↑",
+          "↓",
+          "◎",
+          "-",
+          "⚡Habilidades",
+          "▼Abaixar",
+          "◱Mini",
+          "NNormal",
+          "⬡Grande",
+          "↻Girar",
+          "🏃Correr",
+          "🔥Poder",
+          "✋Ação",
+          "⬆Pular",
+          "🎫Ação veicular",
+          "⚡100",
+          "Recusar",
+          "Aceitar e jogar",
+          "✕",
+          "♪ FX ON"
+        ]
+      },
+      "pageErrors": [],
+      "failedHttp": [],
+      "preventedWrites": []
+    },
+    {
+      "name": "war-preview",
+      "path": "/arcade/previews/war-controls-20261111.html",
+      "status": 200,
+      "state": {
+        "title": "WAR · Prévia de controles",
+        "build": null,
+        "revision": null,
+        "viewport": [
+          960,
+          640
+        ],
+        "bodyWidth": 960,
+        "text": "WAR · ESTUDO DE INTERAÇÃO 01\nOlhar para a câmera. Girar no jogo.\n\nPrévia de controles — não é o jogo publicado.\n\nCâmera simulada por ponteiro. Não usa câmera real, conta, Firebase nem progresso.\nOPERAÇÃO RÁDIO SILENCIOSO\n93 vida · 12/12 · 0/3\n01:57\nDISPARAR · Espaço\nRECARREGAR · R\nABAIXAR · C\nPAUSAR\nREINICIAR\n1 / Neutralize os três sentinelas\n\nDepois, aproxime-se do rádio verde e pressione E ou o botão “ATIVAR RÁDIO”. Sem recompensa ou gravação.\n\nATIVAR RÁDIO · E\n\nObjetivo e combate aqui servem para avaliar o controle. A arte e o cenário desta prévia são desenhos simples, independentes dos recursos atuais do WAR.\n\n1 · Mão direita simulada\n\nArraste o ponto. No centro, a mão move a mira. Mantenha na faixa lateral por 350 ms para começar a girar a visão. Volte ao centro para parar.\n\nGIRO ← · MIRA ESTÁVEL · → GIRO\nCentro: giro parado\nCENTRALIZAR MÃO\n\nVocê continuaria de frente para a câmera física. Não há rotação corporal nesta proposta.\n\nVisão 270° · mão 0%\n2 · Deslocamento curto\n\nBotões simulam pequenos comandos do corpo, mantendo o jogador no enquadramento. A calibração e o gesto de avançar precisam de avaliação física.\n\n↑ Avançar\n← Lado\n↓ Recuar\nLado →\n\nWASD andar · ← → giro manual\nEspaço tiro · R recarga · C cobertura\nTambém pode mover a mira pelo cenário e clicar para disparar.\n\nCompare duas opções\nGIRO CONTÍNUO\nPASSOS DE 45°\n\nBorda sustentada por 350 ms inicia giro contínuo. Voltar ao centro interrompe imediatamente.\n\nA mira central fica disponível para combate preciso; abaixar reduz o dano recebido nesta simulação.\n\nCritérios antes de integrar ao WAR\n\nA versão atual do console permanece intacta. A proposta precisa de decisão antes de mudar a mecânica real.",
+        "headings": [
+          "Olhar para a câmera. Girar no jogo.",
+          "",
+          "1 / Neutralize os três sentinelas",
+          "1 · Mão direita simulada",
+          "2 · Deslocamento curto",
+          "Compare duas opções"
+        ],
+        "links": [],
+        "buttons": [
+          "Repetir operação",
+          "DISPARAR · Espaço",
+          "RECARREGAR · R",
+          "ABAIXAR · C",
+          "PAUSAR",
+          "REINICIAR",
+          "ATIVAR RÁDIO · E",
+          "CENTRALIZAR MÃO",
+          "↑ Avançar",
+          "← Lado",
+          "↓ Recuar",
+          "Lado →",
+          "GIRO CONTÍNUO",
+          "PASSOS DE 45°"
+        ]
+      },
+      "pageErrors": [],
+      "failedHttp": [],
+      "preventedWrites": []
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "label": "after",
+  "initial": {
+    "outlines": 5270,
+    "actions": 799,
+    "incidents": 0
+  },
+  "samples": [
+    {
+      "cycle": 1,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 2,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 3,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 4,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 5,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 6,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 7,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 8,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 9,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 10,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 11,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    },
+    {
+      "cycle": 12,
+      "outlines": 0,
+      "actions": 0,
+      "incidents": 0,
+      "allocatedGeometries": 9,
+      "remainingGeometries": 6
+    }
+  ],
+  "officerRetainedOutlines": 0,
+  "uniqueCreated": 36,
+  "uniqueDisposed": 36,
+  "renderer": "WebKit WebGL",
+  "errors": []
+}

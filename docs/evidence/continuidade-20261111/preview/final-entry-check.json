@@ -1,0 +1,28 @@
+{
+  "origin": "https://otthi-world-campanha-teste-r4f7ol3ct-thiaguinho-s-projects.vercel.app",
+  "runtimeCommit": "cbfcb1af2a29fc26f084a9e3f82dd63663f71f7a",
+  "build": "705.28.26-estabilidade-oficina",
+  "revision": "60705b1100cc8a14",
+  "entries": [
+    {
+      "path": "/arcade/",
+      "status": 200,
+      "bytes": 9696,
+      "sha256": "d634d8273c095007826ab1dbe860e721c6c01394f598695f85000ce6fa1b3739"
+    },
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "bytes": 15735,
+      "sha256": "623d9aedfc180ae1ae3132f78e41b570606b7697930cf80da6e27cb1d3a57c3f"
+    },
+    {
+      "path": "/arcade/previews/war-controls-20261111.html",
+      "status": 200,
+      "bytes": 26226,
+      "sha256": "c32224736b587c3d0f41e7289926e975dc294d0a316170246c8522477605eeb2"
+    }
+  ],
+  "standalonePreviewExactBytes": true,
+  "transport": "Python urllib with TLS verification; read-only, no account or game state actions."
+}

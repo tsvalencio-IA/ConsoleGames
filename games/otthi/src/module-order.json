@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.25-transito-fluidez",
+  "build": "705.28.28-maos-livres-tela-limpa",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "abdabcfc13bc3fde4f9a6bc8627e5fcbdf5b7f8da616e66c338fb017ec5d1087"
+      "sha256Body": "fed5cacea0189a3e421ab4aae968c97f367c8739507825ee40839e48c6667249"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -21,7 +21,7 @@
       "startLine": 369,
       "endLine": 488,
       "description": "Normalização, merge, tombstones e persistência das construções",
-      "sha256Body": "bdba1506500fcee093f1c1520f879b5edab60b615b5598edc1e13dd4bdd7ce01"
+      "sha256Body": "04a5208169f0cf621dc992a454678636d40bd2893b769db33862f4b949736d61"
     },
     {
       "file": "src/modules/02-state-save-cloud-account.js",
@@ -56,21 +56,21 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "e71b46375e6865ba0c2c7ed9c359131e7346d2b4c3bff3ddffee8188d7bf02f7"
+      "sha256Body": "0c01a192aad0dfa67619fcd8dda4d3a7e0d36a379ed2d5009aee3a3111b4e636"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
       "startLine": 1316,
       "endLine": 1454,
       "description": "Missões, objetivos, perfil, HUD, inventário e ferramentas",
-      "sha256Body": "0e122e411aef5685062d7c4702c85c034c833d8d036cb0e944ed660bdbf11fd2"
+      "sha256Body": "021e76c1fad546a40991d051301698be7a85b14555a30ec18a4b386d48ce5fcd"
     },
     {
       "file": "src/modules/07-navigation-traffic-routes.js",
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "fa00533995b3ae19605620a773aa4b0594a1549293c325475dbb223389924730"
+      "sha256Body": "b89c1364a18474ea881d4f9967c8beb85042cc3499f05f6c35136f3e03571d5d"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "2acf1b7d9d14f3f3478fb9b3781ea8df5b6ad029d3dc6c035de5cb504171d045"
+      "sha256Body": "550884852f5b07fdcefb4f65d1807905ad52bd5e63d082c924b77b4f5d380362"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -259,7 +259,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Autoridade compartilhada de NPCs e trânsito, oficina global e estado visual multiplayer",
-      "sha256Body": "be9c5e4e5a65a902e7efe63a212f7f12ff45cd42f2049360b82755ac3c8b3b50"
+      "sha256Body": "7a1b46996651267af1ea4f5534c5d9502631ced6117ea4a185c4e378d8fe19d4"
     },
     {
       "file": "src/modules/29-game-loop-controls-gamepad.js",
@@ -287,7 +287,7 @@
       "startLine": 5680,
       "endLine": 5801,
       "description": "Fundação OTTHI World, PBR local, diagnóstico e painel das cinco etapas",
-      "sha256Body": "211ea9bac0f0afe3c37215c9f4e49d79f4645532ae8ae4c15979c3216b7c7133"
+      "sha256Body": "b616cc1c9e6e8b87170756e2fadec7b8b890e2142914ed82bf663349f601a0d0"
     },
     {
       "file": "src/modules/34-avatar-studio-professional-v3.js",
@@ -336,7 +336,7 @@
       "startLine": 6058,
       "endLine": 6122,
       "description": "Poderes originais, circuito de plataforma e aventura",
-      "sha256Body": "a4e83de8cef4f4be7e4467c6c56446feb2fb3edc75246fb2bc296556db60402a"
+      "sha256Body": "e0789fd187bcec52d99c3db3d9ef6fa24f577fc88e43c4632c3213ce985d24d6"
     },
     {
       "file": "src/modules/38-otthi-world-integration-bootstrap.js",
@@ -609,7 +609,7 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "504231dcc9de367d54cc4e5f628a4d114465cec0fc504cccb621e3556221fe1e"
+      "sha256Body": "218f39e80ceaf71544b935732710fe10fe00f96148220589f0dfa111aec32fed"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",
@@ -620,6 +620,16 @@
       "file": "src/modules/75-phone-orders.js",
       "description": "Compras pelo celular, recibos persistentes e entrega física de encomendas",
       "sha256Body": "54691e8e68ca832f8d37e1715b4bceb1ab5e6288c28d0a5f5bca3a2e6b41c8fc"
+    },
+    {
+      "file": "src/modules/76-player-journey.js",
+      "description": "Voluntary progression through existing civilian adventures and services",
+      "sha256Body": "967133e1ec8298aacb3165d0b4d86213cec4f85aa3b717481825252b33c44080"
+    },
+    {
+      "file": "src/modules/77-exploration-hud.js",
+      "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
+      "sha256Body": "3d07daeaf21378861fbdc5458f6c2a1b722bc323851e123388c24255eb7b23c0"
     }
   ],
   "styles": [
@@ -821,6 +831,16 @@
       "file": "src/styles/27-world-phone.css",
       "description": "Celular no menu Vida, com lista responsiva de veículos",
       "sha256Body": "c7f4d943f5c3eefb625e2c3acc1f3137f923ce3894ba414c8e7b81cb482d1fc7"
+    },
+    {
+      "file": "src/styles/28-player-journey.css",
+      "description": "Responsive native player journey panel",
+      "sha256Body": "d43799ec7bc7f9f58d49cf8fceba7d3ee7f038a34acb15d7dc5369f31d6db2ae"
+    },
+    {
+      "file": "src/styles/29-exploration-hud.css",
+      "description": "Menu de exploração e HUD compacto sem remoção de funções",
+      "sha256Body": "fc49ade5979924379959dc58b1b61ff245bfd2e4d14f15ee838d46bb2072c902"
     }
   ]
 }

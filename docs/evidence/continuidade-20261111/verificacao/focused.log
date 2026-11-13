@@ -1,0 +1,34 @@
+✔ a collected NPC that returns for another service blocks the delivery driver again (3.518037ms)
+✔ twenty complete fire-incident cycles release temporary objects and retain shared scenery resources (63.799795ms)
+✔ repeated roadside officer removal releases its outline registrations without affecting the player scenery (13.683566ms)
+✔ twenty telephone driver cycles release outlines and their cloned clothing materials while retaining shared scenery (14.685401ms)
+✔ unattended NPC service repairs and returns the car, releases traffic and keeps the player economy/garage unchanged (3.572137ms)
+✔ an ongoing manual operation defers automatic service, and a resumed claim can reuse a returned traffic car (0.817202ms)
+✔ a vehicle marked unrepairable is collected by tow without inventing a successful repair (0.67332ms)
+✔ collection closes the service before lift recovery and leaves an empty bay in its canonical saved form (0.8291ms)
+✔ driver finds a continuous swept detour around a stopped car and still reaches the caller (6.739999ms)
+✔ sealed passage has no invented route, and even the last 16cm never snaps through a blocker (5.119093ms)
+✔ live detour search yields after at most eight expensive checks, including a completely blocked road (8.285202ms)
+✔ parcel pickup grants exactly the purchased quantity once, with no inventory before arrival or a second debit (1.308726ms)
+✔ a parcel cannot be collected remotely or by a different profile; cancellation refunds only once (0.903209ms)
+✔ unique tools cannot be ordered again while paid and pending, or after receipt (0.785706ms)
+✔ bulk storage handles every duplicate instance, hides collection clones, and preserves active deliveries and workshop disassembly (1.2098ms)
+✔ a responder open path has no invented last-to-first segment across buildings (2.788374ms)
+✔ four queued approaches eventually have a unique oldest priority instead of a cycle of yielding to the right (1.761012ms)
+✔ collision resolution never reprojects unrelated cars or teleports a queue backwards by several metres (1.432769ms)
+✔ response controller replaces its patrol path before moving along the actual incident route (0.932212ms)
+✔ safety overlap correction cannot manufacture another accident, while a fresh real moving impact remains detectable (1.097104ms)
+✔ cars queued on the same simulation tick break an equal-age crossing cycle deterministically (0.7203ms)
+✔ a crowded bend can separate sideways without backing into the queue or crossing another body (1.900226ms)
+✔ stationary rescue vehicles park beside the curb leaving the travelling lane open (2.386292ms)
+✔ impact broad phase rejects a distant pair before allocating detailed rectangles (0.906644ms)
+✔ an older priority vehicle can begin a slow clear turn while the lower-priority approach waits (4.511339ms)
+✔ the player car is visible to NPC perception but cannot collide with itself or join the shared NPC fleet (1.688295ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 418.84751

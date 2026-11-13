@@ -1,0 +1,362 @@
+{
+  "seconds": 179.99999999998678,
+  "actors": 87,
+  "models": 44,
+  "npcs": 138,
+  "stopped": 43,
+  "queued": 28,
+  "contacts": 1,
+  "moved": [
+    {
+      "id": "bus-bus-solar-1",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-solar-2",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-verde-1",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-verde-2",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-escolar-1",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-circular-1",
+      "distance": 0
+    },
+    {
+      "id": "bus-bus-turismo-1",
+      "distance": 0
+    },
+    {
+      "id": "police-patrol-1",
+      "distance": 0
+    },
+    {
+      "id": "police-patrol-2",
+      "distance": 0
+    },
+    {
+      "id": "fire-fire-01",
+      "distance": 0
+    },
+    {
+      "id": "fire-fire-02",
+      "distance": 0
+    },
+    {
+      "id": "ambulance-ambulance-1",
+      "distance": 0
+    },
+    {
+      "id": "ambulance-ambulance-2",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-ottovias-azul",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-ottovias-amarelo",
+      "distance": 0.000014716259969855692
+    },
+    {
+      "id": "ottovias-ottovias-verde",
+      "distance": 55.83931094004119
+    },
+    {
+      "id": "ottovias-ottovias-vinho",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-ottovias-prata",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-ottovias-carga",
+      "distance": 61.792182320340075
+    },
+    {
+      "id": "ottovias-aurora-0",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-aurora-1",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-aurora-2",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-costa-0",
+      "distance": 49.914913778455656
+    },
+    {
+      "id": "ottovias-costa-1",
+      "distance": 45.04323006415487
+    },
+    {
+      "id": "ottovias-costa-2",
+      "distance": 31.268218372342368
+    },
+    {
+      "id": "ottovias-brazil-traffic-fusca",
+      "distance": 1.963911552930234
+    },
+    {
+      "id": "ottovias-regional-0",
+      "distance": 61.000000000016556
+    },
+    {
+      "id": "ottovias-brazil-traffic-gol",
+      "distance": 53.0229745703749
+    },
+    {
+      "id": "ottovias-regional-1",
+      "distance": 62.20000000000045
+    },
+    {
+      "id": "ottovias-brazil-traffic-uno",
+      "distance": 34.83170993781069
+    },
+    {
+      "id": "ottovias-regional-2",
+      "distance": 63.40000000000309
+    },
+    {
+      "id": "ottovias-brazil-traffic-kombi",
+      "distance": 5.079546895480335
+    },
+    {
+      "id": "ottovias-regional-3",
+      "distance": 64.6000000000006
+    },
+    {
+      "id": "ottovias-brazil-traffic-golf",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-regional-4",
+      "distance": 0.8993389538867446
+    },
+    {
+      "id": "ottovias-brazil-traffic-opala",
+      "distance": 63.891772680493354
+    },
+    {
+      "id": "ottovias-brazil-traffic-chevette",
+      "distance": 65.67253417656597
+    },
+    {
+      "id": "ottovias-regional-5",
+      "distance": 39.427155170996805
+    },
+    {
+      "id": "ottovias-brazil-traffic-s10",
+      "distance": 61.013291340928845
+    },
+    {
+      "id": "ottovias-regional-6",
+      "distance": 25.302590332005742
+    },
+    {
+      "id": "ottovias-brazil-traffic-hilux",
+      "distance": 0.6446350154327714
+    },
+    {
+      "id": "ottovias-regional-7",
+      "distance": 0.8723570625463218
+    },
+    {
+      "id": "ottovias-brazil-traffic-amarok",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-saveiro",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-constellation",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-veraneio",
+      "distance": 67.83170692590024
+    },
+    {
+      "id": "ottovias-brazil-traffic-blazer",
+      "distance": 66.23921015229718
+    },
+    {
+      "id": "ottovias-brazil-traffic-pampa",
+      "distance": 49.87024989353067
+    },
+    {
+      "id": "ottovias-brazil-traffic-escort",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-tcross",
+      "distance": 0.000001321052609197638
+    },
+    {
+      "id": "ottovias-brazil-traffic-peugeot206",
+      "distance": 63.83255098945964
+    },
+    {
+      "id": "ottovias-brazil-traffic-jetta",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-corolla2007",
+      "distance": 64.12310298266902
+    },
+    {
+      "id": "ottovias-brazil-traffic-corolla2021",
+      "distance": 33.84848429193079
+    },
+    {
+      "id": "ottovias-brazil-traffic-civic2011",
+      "distance": 1.5802838646714026
+    },
+    {
+      "id": "ottovias-brazil-traffic-bmwx1",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-bmwm3",
+      "distance": 54.88279520366703
+    },
+    {
+      "id": "ottovias-brazil-traffic-ferrari458",
+      "distance": 56.41420041363958
+    },
+    {
+      "id": "ottovias-brazil-traffic-porsche911",
+      "distance": 63.88526280579799
+    },
+    {
+      "id": "ottovias-brazil-traffic-golf7",
+      "distance": 45.01909706859067
+    },
+    {
+      "id": "ottovias-brazil-traffic-palio",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-passat",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-tempra",
+      "distance": 63.85722888155136
+    },
+    {
+      "id": "ottovias-brazil-traffic-maverick",
+      "distance": 63.074263402954024
+    },
+    {
+      "id": "ottovias-brazil-traffic-landau",
+      "distance": 66.386247661949
+    },
+    {
+      "id": "ottovias-brazil-traffic-mobylette",
+      "distance": 45.00000000000186
+    },
+    {
+      "id": "ottovias-brazil-traffic-factor",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-titan",
+      "distance": 0.019233383863684176
+    },
+    {
+      "id": "ottovias-brazil-traffic-hornet",
+      "distance": 63.89064596378758
+    },
+    {
+      "id": "ottovias-brazil-traffic-xre",
+      "distance": 0.06495293001830942
+    },
+    {
+      "id": "ottovias-brazil-traffic-bmwgs",
+      "distance": 55.471584642769855
+    },
+    {
+      "id": "ottovias-brazil-traffic-bicycle",
+      "distance": 28.160600617835016
+    },
+    {
+      "id": "ottovias-brazil-traffic-dinossauro",
+      "distance": 0.12586407629914487
+    },
+    {
+      "id": "ottovias-brazil-traffic-attivi",
+      "distance": 54.42738391710933
+    },
+    {
+      "id": "ottovias-brazil-traffic-doubledeck",
+      "distance": 0
+    },
+    {
+      "id": "ottovias-brazil-traffic-semi",
+      "distance": 56.0716020648942
+    },
+    {
+      "id": "ottovias-brazil-traffic-fuel",
+      "distance": 0
+    },
+    {
+      "id": "npc-ottovias-patrol",
+      "distance": 54.672650726528865
+    },
+    {
+      "id": "npc-nino",
+      "distance": 0
+    },
+    {
+      "id": "npc-luna",
+      "distance": 12.652672835546218
+    },
+    {
+      "id": "npc-teo",
+      "distance": 0
+    },
+    {
+      "id": "npc-bia",
+      "distance": 0
+    },
+    {
+      "id": "npc-maya",
+      "distance": 0.6599999999999886
+    },
+    {
+      "id": "npc-clara",
+      "distance": 11.760568257104781
+    },
+    {
+      "id": "npc-rafa",
+      "distance": 0.21999999999999842
+    },
+    {
+      "id": "npc-davi",
+      "distance": 13.623212722600076
+    },
+    {
+      "id": "npc-leo",
+      "distance": 10.791558718704183
+    }
+  ],
+  "cycles": [],
+  "incidents": 1,
+  "resolved": 0
+}
