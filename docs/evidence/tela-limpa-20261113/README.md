@@ -1,6 +1,10 @@
 # Mãos vazias e tela limpa — 705.28.28
 
-Continuação da produção 705.28.27, preservando os 147 arquivos de release, ferramentas, inventário, progresso, contas e os oito jogos. Publicação e retorno serão registrados em `release.json`.
+Continuação da produção 705.28.27, preservando os 147 arquivos de release, ferramentas, inventário, progresso, contas e os oito jogos. [Publicação registrada](release.json): 705.28.28, revisão `6f64398fafb8a424`, aplicação `2e3f1be286e74c0f998b81d7ba2a01147afc82a1`. Produção pronta; 168 arquivos públicos conferidos. A 27 permanece disponível para retorno.
+
+**[JOGAR NO ENDEREÇO HABITUAL](https://otthi-world-campanha-teste.vercel.app/games/otthi/)**
+
+[Antes em retrato](before/portrait.png) · [Depois em retrato](after-portrait.png) · [Depois em paisagem](after-landscape.png) · [Menu](menu-portrait.png).
 
 ## Como usar
 
@@ -28,7 +32,7 @@ Contagem de botões reais visíveis durante passeio livre, sem contar o cartão 
 - **474 regressões passaram**, incluindo novas verificações de normalização do save, propriedade, coleta e modelo local/remoto sem ferramenta. [Log](unit-474.log).
 - Dez mudanças de viewport/orientação sem sobreposição nos critérios medidos, mantendo identidade, família e saldo. O fluxo de teste agora abre MUNDO/GPS pelo Menu e usa o botão Fechar. [Relatório](mobile-layout.json).
 - Atualização da produção 27 para28: worker espera a página segura, configuração antiga é recuperada, perfil preservado e abertura offline coerente. [Relatório](update-27-to-28.json).
-- Ensaio nativo completo do novo Menu, ferramentas, poderes, GPS, recargas e controles contextuais em fechamento; dados finais serão acrescentados antes da publicação.
+- [Ensaio nativo completo aprovado](native-final.json): 24 controles do Menu alcançáveis nos quatro tamanhos; GPS ativo visível; câmera; oito habilidades, incluindo ambos os poderes; machado→mãos vazias→andar com joystick/teclado→recarga→reequipamento; preferência completa/limpa salva; saída de veículo e cancelamento de construção. Contexto separado de PC com mouse/teclado também passou.
 
 Os testes encontraram e corrigiram três problemas antes da publicação: cabeçalho do Menu encobrindo alvo de foco, linhas antigas fixas causando sobreposição na paisagem e distância do GPS ainda escondida pelo CSS legado. Relatórios iniciais são conservados; não foram tratados como versões aprovadas.
 
@@ -39,3 +43,9 @@ Ambiente: Linux/Chromium, WebGL por software, perfis descartáveis e RTDB local.
 Fontes: módulos 01/06/28a para `none`,77 para composição e estilos29 para layout. `none` é um ID explícito, evitando o fallback de uma string vazia para machado. A apresentação reorganiza os mesmos elementos e handlers nativos; o modo completo restaura os locais originais. Menus são criados uma vez, e as escritas estáveis usam os helpers existentes.
 
 [Preservação](preservation.json) compara Firebase, regras, conta, saveDB e RTDB com a produção 27. O registro anterior continua em `../evolucao-20261112/`, incluindo suas limitações reais. Consultar primeiro `PROGRESS.md` e `release.json` antes de retomar trabalho.
+
+## Conferência no endereço publicado
+
+[Prévia](public-preview.json) e [produção habitual](public-production.json) passaram usando o código público e renderização nativa, sem interceptar o runtime nem limitar desenhos. O perfil descartável começou com machado salvo: Menu→Mãos vazias, recarga mantendo a escolha, Ferramentas→machado e novo retorno às mãos vazias. O modelo desapareceu/reapareceu e a propriedade/recursos permaneceram iguais. Serviços externos de conta foram bloqueados; não houve escrita em dados reais. [Captura da produção](production-empty-hands.png). Essa verificação não mede FPS ou aparelho físico.
+
+[Integridade HTTP](production-http-integrity.json):168 arquivos correspondem à fonte testada. [Retorno27](rollback-http.json) continua acessível. A produção está fixada no commit de aplicação; commits posteriores de evidência/teste não mudam os bytes do jogo publicado.

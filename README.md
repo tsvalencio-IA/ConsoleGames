@@ -2,7 +2,7 @@
 
 **by thIAguinho Soluções Digitais e Otto MMP Ferri**
 
-Estado atual: [evolução integrada705.28.27](docs/evidence/evolucao-20261112/README.md) e [registro de progresso](docs/evidence/evolucao-20261112/PROGRESS.md). A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console atual tem oito entradas, incluindo [Dança](games/danca/), acrescentada após a integração original dos sete jogos descrita abaixo.
+Estado atual: [mãos vazias e tela limpa 705.28.28](docs/evidence/tela-limpa-20261113/README.md) e [registro de progresso](docs/evidence/tela-limpa-20261113/PROGRESS.md). A [evolução integrada anterior](docs/evidence/evolucao-20261112/README.md) permanece documentada, incluindo suas limitações. A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console atual tem oito entradas, incluindo [Dança](games/danca/), acrescentada após a integração original dos sete jogos descrita abaixo.
 
 **[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
 

@@ -1,5 +1,7 @@
 # Registro de continuidade — 705.28.27
 
+Atualização posterior de 13/11/2026: [mãos vazias e tela limpa 705.28.28](../tela-limpa-20261113/PROGRESS.md). Este registro conserva o histórico da 27 e as pendências de socorro; consultar a versão atual antes de editar.
+
 Base 26 preservada: `fed801c71b0466ed6a8072ff9b79bd7ffaabc0a7`, runtime `cbfcb1a`, revisão `60705b1100cc8a14`. Branch `continuation-20261111`; `main` não reúne a evolução anterior. Tag de retorno `baseline-20261112-7052826`. O [relatório integrado](README.md) é a referência desta fase.
 
 Implementado: ordem de filas e recuperação segura, retorno alternativo da van, redução de trabalho repetido de terreno/herói/HUD, Meu caminho com aventuras nativas, WAR frontal e Kart disputa opcionais. Revisão `d4a223e1aa501f02`, 147 arquivos, todos os 143 anteriores mantidos. Firebase e calibrações preservados.
