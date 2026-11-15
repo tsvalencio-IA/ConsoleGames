@@ -4,6 +4,8 @@
 
 Estado atual: [mãos vazias e tela limpa 705.28.28](docs/evidence/tela-limpa-20261113/README.md) e [registro de progresso](docs/evidence/tela-limpa-20261113/PROGRESS.md). A [evolução integrada anterior](docs/evidence/evolucao-20261112/README.md) permanece documentada, incluindo suas limitações. A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console atual tem oito entradas, incluindo [Dança](games/danca/), acrescentada após a integração original dos sete jogos descrita abaixo.
 
+Continuação técnica: a [candidata 705.28.29](docs/evidence/estabilidade-socorro-20261113/README.md) está salva em prévia separada e **não foi homologada**. A produção permanece na 705.28.28; falhas físicas do socorro e validações de desempenho/WAR/Kart estão registradas como pendentes.
+
 **[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
 
 > O console original continua em `/ConsoleGames/`, mas o **novo Arcade** usa a URL `/ConsoleGames/arcade/`, seu próprio `manifest.webmanifest` com ID `/ConsoleGames/arcade/`, ícones PNG 192/512, service worker e cache próprios. O novo endereço deve ser aberto em uma aba do navegador (fora do aplicativo antigo) para que o navegador possa oferecê-lo como instalação separada. Nenhum jogo, ID de Firebase ou conta original foi alterado para criar essa instalação.

@@ -2,7 +2,7 @@
 
 **Entrega integrada ainda incompleta. Candidata29 não homologada e não promovida à produção.**
 
-A produção preservada é705.28.28, revisão6f64398fafb8a424, runtime2e3f1be286e74c0f998b81d7ba2a01147afc82a1. Mãos vazias, tela limpa, Meu caminho, dados/Firebase e os oito jogos continuam preservados. A candidata compilada é705.28.29-camera-socorro-jogabilidade, revisão3227043b294bd89d. Seu registro de prévia será acrescentado a preview.json.
+A produção preservada é705.28.28, revisão6f64398fafb8a424, runtime2e3f1be286e74c0f998b81d7ba2a01147afc82a1. Mãos vazias, tela limpa, Meu caminho, dados/Firebase e os oito jogos continuam preservados. A candidata compilada é705.28.29-camera-socorro-jogabilidade, revisão3227043b294bd89d. A [prévia separada, não homologada](https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/arcade/previews/estabilidade-20261115.html) está acessível. O [registro](preview.json) identifica o commit exato e a produção preservada; a [verificação HTTP](preview-http-integrity.json) confirmou 171/171 arquivos, sem aprovar jogabilidade ou desempenho.
 
 ## Resultados comprovados
 
@@ -32,3 +32,7 @@ Celular físico: FPS sustentado, aquecimento/bateria, driverGPU, câmera corpora
 ## Como continuar sem recomeçar
 
 Consultar PROGRESS.md e checkpoints camera-progress.md, rescue-progress.md, war-progress.md e kart-progress.md. A fonte está modular; não editar app.js manualmente. Fonte de produção é28; commit de candidata/prévia deve ser consultado em preview.json. O teste longo é tests/world-native-endurance-browser.mjs; o teste de câmera é tests/world-camera-angle-profile.mjs. A raiz assumiu as frentes após limites dos agentes; existem alterações ainda não validadas e isso deve continuar explícito.
+
+## Ambiente e verificação em celular
+
+A base longa usou Chromium 141.0.7390.37 em Linux x64, renderização SwiftShader, 3 CPUs disponíveis (AMD EPYC 9V74), aproximadamente 10,45 GB de RAM e viewport 393 × 852. Isso emula a tela e o toque, não o desempenho do aparelho. O [roteiro de celular](CELULAR.md) está preparado; não exige programação.

@@ -16,3 +16,5 @@ Medidas de aparelho físico ainda não disponíveis: FPS sustentado, temperatura
 ## Fechamento solicitado pelo usuário em15/11/2026
 
 Produção28 preservada. Candidata29 compilada3227043b294bd89d,150 arquivos, abertura nativa/hands/HUD/Meu caminho passou e14 testes focados passaram. NÃO homologada: socorro isolado só3/5 físico; sessão longa da candidata e partidas novasWAR/Kart pendentes. A base nativa15min foi concluída e está em native-baseline-28.json. Detalhes finais e bloqueios em README.md. Não publicar esta candidata como entrega concluída. Conservar todo trabalho em commit/PR e prévia separada, com metadados em preview.json; não modificar o recibo global da produção28.
+
+Prévia publicada separadamente: https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/arcade/previews/estabilidade-20261115.html; aplicação 13715335884aea153479089b4d2c127539dfcd80, deployment dpl_AYFVYiiEAsHfx6yodnZdTVz8bo1u. Verificação HTTP 171/171 arquivos; páginas de entrada/mundo/WAR/Kart responderam 200. Isso verifica publicação da prévia, sem concluir aceitação. Alias habitual confirmado na produção28. Não há teste longo rodando em segundo plano.

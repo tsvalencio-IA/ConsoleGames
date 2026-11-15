@@ -1,0 +1,33 @@
+{
+  "status": "Preview only; candidate incomplete and not approved for production",
+  "approved": false,
+  "productionPromoted": false,
+  "build": "705.28.29-camera-socorro-jogabilidade",
+  "revision": "3227043b294bd89d",
+  "runtimeCommit": "13715335884aea153479089b4d2c127539dfcd80",
+  "deployment": "dpl_AYFVYiiEAsHfx6yodnZdTVz8bo1u",
+  "ready": true,
+  "origin": "https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app",
+  "reviewUrl": "https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/arcade/previews/estabilidade-20261115.html",
+  "worldUrl": "https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/games/otthi/",
+  "warUrl": "https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/games/ar/",
+  "kartDuelUrl": "https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/games/kart/?kart_eval=duelo",
+  "publicVerifiedFiles": 171,
+  "httpFailures": 0,
+  "httpCheckedAt": "2026-11-15T14:53:25.261Z",
+  "entryAndGamePagesHttp200": true,
+  "productionPreserved": {
+    "build": "705.28.28-maos-livres-tela-limpa",
+    "runtimeCommit": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+    "deployment": "dpl_HUk8uTXxWwLLWWyouXGm2px4sU2x",
+    "worldUrl": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+    "immutableUrl": "https://otthi-world-campanha-teste-ia50hltjj-thiaguinho-s-projects.vercel.app",
+    "aliasVerifiedAt": "2026-11-15T14:54:31.678503+00:00"
+  },
+  "limits": [
+    "Two of five isolated rescue scenarios still use contingency.",
+    "Candidate native endurance session and camera before/after comparison not completed.",
+    "Complete matches of the new WAR and Kart changes not completed.",
+    "Physical mobile performance and controls not certified."
+  ]
+}
