@@ -1,0 +1,2809 @@
+{
+  "base": "https://otthi-world-campanha-teste.vercel.app/games/otthi/",
+  "build": "705.28.28-maos-livres-tela-limpa",
+  "revision": "6f64398fafb8a424",
+  "browser": "141.0.7390.37",
+  "limits": [
+    "Published native app and WebGL, no source interception, renderer cap, simulation clock changes or position changes.",
+    "Disposable local profile; external account, analytics and database requests blocked.",
+    "Chromium software WebGL and emulated mobile viewport; no physical-phone FPS, heat, battery, camera or installed-cache claim."
+  ],
+  "initial": {
+    "tools": {
+      "equipped": "axe",
+      "owned": [
+        "axe",
+        "pickaxe",
+        "bucket",
+        "hoe",
+        "shovel"
+      ],
+      "harvested": {
+        "wood": 7,
+        "stone": 0,
+        "gold": 0,
+        "water": 0,
+        "bait": 0,
+        "crops": 0,
+        "clay": 0
+      },
+      "resources": [
+        {
+          "id": "tree--79.9--21.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.5--79.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--114.1--70.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--81.3--32.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--113.0--77.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--98.7--26.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.6--52.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.7--62.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.8--48.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--120.8--85.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.6--71.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.1--53.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--84.1--19.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.3--15.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.3--18.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.5--84.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--119.4--86.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.4--32.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--94.7--16.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--70.5--35.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.2--52.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.4--81.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.7--58.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--68.8--52.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.0--20.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.9--23.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--110.8--20.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--80.2--55.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--117.8--31.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.4--17.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--102.1--35.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.4--80.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--106.7--24.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--80.8--62.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.7--29.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.7--35.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.0--23.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.7--91.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--78.4--35.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--99.8--51.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.8--49.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--21.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--87.6--76.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--98.4--21.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.6--23.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--100.0--19.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--38.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--104.9--24.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--28.0--102.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--45.6--91.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--39.6--92.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--31.7--95.2",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.8--81.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--45.8--83.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--73.5--84.5",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--68.0--102.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--43.6--79.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--31.2--86.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--27.3--103.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--33.3--82.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--23.1--101.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--26.6--100.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--52.9--115.2",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--29.1--100.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--29.9--75.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--70.5--82.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "gold-0",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-1",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-2",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-3",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-4",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-5",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        }
+      ]
+    },
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": false
+    },
+    "avatar": {
+      "id": "thiago",
+      "bones": 24,
+      "meshVisible": true,
+      "baseHidden": true,
+      "position": [
+        -18,
+        0,
+        39
+      ],
+      "arm": [
+        0,
+        0,
+        -0.07613150443389599,
+        "YXZ"
+      ],
+      "leg": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "toolInHand": true
+    },
+    "coherent": true
+  },
+  "empty": {
+    "tools": {
+      "equipped": "none",
+      "owned": [
+        "axe",
+        "pickaxe",
+        "bucket",
+        "hoe",
+        "shovel"
+      ],
+      "harvested": {
+        "wood": 7,
+        "stone": 0,
+        "gold": 0,
+        "water": 0,
+        "bait": 0,
+        "crops": 0,
+        "clay": 0
+      },
+      "resources": [
+        {
+          "id": "tree--79.9--21.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.5--79.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--114.1--70.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--81.3--32.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--113.0--77.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--98.7--26.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.6--52.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.7--62.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.8--48.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--120.8--85.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.6--71.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.1--53.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--84.1--19.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.3--15.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.3--18.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.5--84.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--119.4--86.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.4--32.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--94.7--16.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--70.5--35.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.2--52.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.4--81.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.7--58.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--68.8--52.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.0--20.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.9--23.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--110.8--20.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--80.2--55.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--117.8--31.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.4--17.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--102.1--35.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.4--80.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--106.7--24.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--80.8--62.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.7--29.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.7--35.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.0--23.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.7--91.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--78.4--35.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--99.8--51.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.8--49.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--21.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--87.6--76.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--98.4--21.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.6--23.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--100.0--19.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--38.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--104.9--24.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--28.0--102.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--45.6--91.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--39.6--92.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--31.7--95.2",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.8--81.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--45.8--83.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--73.5--84.5",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--68.0--102.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--43.6--79.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--31.2--86.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--27.3--103.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--33.3--82.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--23.1--101.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--26.6--100.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--52.9--115.2",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--29.1--100.4",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--29.9--75.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--70.5--82.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "gold-0",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-1",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-2",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-3",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-4",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-5",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        }
+      ]
+    },
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "avatar": {
+      "id": "thiago",
+      "bones": 24,
+      "meshVisible": true,
+      "baseHidden": true,
+      "position": [
+        -18,
+        0,
+        39
+      ],
+      "arm": [
+        0,
+        0,
+        -0.061287108007146984,
+        "YXZ"
+      ],
+      "leg": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "toolInHand": false
+    },
+    "coherent": true
+  },
+  "reloaded": {
+    "tools": {
+      "equipped": "none",
+      "owned": [
+        "axe",
+        "pickaxe",
+        "bucket",
+        "hoe",
+        "shovel"
+      ],
+      "harvested": {
+        "wood": 7,
+        "stone": 0,
+        "gold": 0,
+        "water": 0,
+        "bait": 0,
+        "crops": 0,
+        "clay": 0
+      },
+      "resources": [
+        {
+          "id": "tree--96.9--19.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.0--54.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--86.6--30.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--78.7--37.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.8--18.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.7--72.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.1--79.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.8--60.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--106.2--35.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--29.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--89.3--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.6--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--68.8--92.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--85.0--55.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.7--46.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.9--75.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--73.3--36.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.5--38.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.6--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.3--43.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.2--77.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--79.5--53.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--119.7--35.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.0--46.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.3--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--82.2--60.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--95.4--20.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--72.7--64.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.4--33.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.1--45.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.8--47.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.1--75.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--83.2--67.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--87.4--71.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.0--24.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.1--90.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--109.3--84.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.5--87.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.5--44.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.8--73.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.6--61.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.1--51.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.4--84.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--102.9--32.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.6--41.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--104.8--75.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.3--74.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--81.2--76.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--16.6--85.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--38.3--74.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--23.9--74.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--40.9--101.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.4--77.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--68.5--103.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--20.1--96.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.3--84.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.3--87.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.7--104.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.2--76.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--65.1--78.1",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--73.0--77.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--26.4--96.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.0--80.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.2--89.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.2--112.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--63.7--81.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "gold-0",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-1",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-2",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-3",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-4",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-5",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        }
+      ]
+    },
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "avatar": {
+      "id": "thiago",
+      "bones": 24,
+      "meshVisible": true,
+      "baseHidden": true,
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "arm": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "leg": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "toolInHand": false
+    },
+    "coherent": true
+  },
+  "reequipped": {
+    "tools": {
+      "equipped": "axe",
+      "owned": [
+        "axe",
+        "pickaxe",
+        "bucket",
+        "hoe",
+        "shovel"
+      ],
+      "harvested": {
+        "wood": 7,
+        "stone": 0,
+        "gold": 0,
+        "water": 0,
+        "bait": 0,
+        "crops": 0,
+        "clay": 0
+      },
+      "resources": [
+        {
+          "id": "tree--96.9--19.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.0--54.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--86.6--30.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--78.7--37.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.8--18.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.7--72.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.1--79.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.8--60.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--106.2--35.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--29.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--89.3--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.6--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--68.8--92.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--85.0--55.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.7--46.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.9--75.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--73.3--36.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.5--38.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.6--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.3--43.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.2--77.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--79.5--53.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--119.7--35.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.0--46.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.3--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--82.2--60.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--95.4--20.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--72.7--64.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.4--33.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.1--45.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.8--47.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.1--75.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--83.2--67.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--87.4--71.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.0--24.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.1--90.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--109.3--84.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.5--87.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.5--44.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.8--73.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.6--61.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.1--51.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.4--84.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--102.9--32.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.6--41.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--104.8--75.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.3--74.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--81.2--76.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--16.6--85.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--38.3--74.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--23.9--74.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--40.9--101.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.4--77.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--68.5--103.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--20.1--96.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.3--84.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.3--87.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.7--104.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.2--76.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--65.1--78.1",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--73.0--77.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--26.4--96.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.0--80.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.2--89.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.2--112.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--63.7--81.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "gold-0",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-1",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-2",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-3",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-4",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-5",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        }
+      ]
+    },
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": false
+    },
+    "avatar": {
+      "id": "thiago",
+      "bones": 24,
+      "meshVisible": true,
+      "baseHidden": true,
+      "position": [
+        -18,
+        0,
+        39
+      ],
+      "arm": [
+        0,
+        0,
+        -0.07141985180843247,
+        "YXZ"
+      ],
+      "leg": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "toolInHand": true
+    },
+    "coherent": true
+  },
+  "final": {
+    "tools": {
+      "equipped": "none",
+      "owned": [
+        "axe",
+        "pickaxe",
+        "bucket",
+        "hoe",
+        "shovel"
+      ],
+      "harvested": {
+        "wood": 7,
+        "stone": 0,
+        "gold": 0,
+        "water": 0,
+        "bait": 0,
+        "crops": 0,
+        "clay": 0
+      },
+      "resources": [
+        {
+          "id": "tree--96.9--19.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.0--54.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--86.6--30.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--78.7--37.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.8--18.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.7--72.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--116.1--79.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.8--60.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--106.2--35.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--115.1--29.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--89.3--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.6--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--68.8--92.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--85.0--55.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.7--46.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.9--75.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--73.3--36.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--67.5--38.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--93.6--24.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.3--43.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.2--77.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--79.5--53.9",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--119.7--35.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.0--46.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.3--64.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--82.2--60.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--95.4--20.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--72.7--64.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--75.4--33.2",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.1--45.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.8--47.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--76.1--75.5",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--83.2--67.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--87.4--71.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--97.0--24.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--107.1--90.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--109.3--84.3",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--69.5--87.6",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.5--44.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--77.8--73.0",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--65.6--61.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--88.1--51.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--71.4--84.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--102.9--32.8",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--101.6--41.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--104.8--75.7",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--66.3--74.4",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "tree--81.2--76.1",
+          "type": "wood",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--16.6--85.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--38.3--74.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--23.9--74.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--40.9--101.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.4--77.3",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--68.5--103.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--20.1--96.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.3--84.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.3--87.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.7--104.9",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.2--76.7",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--65.1--78.1",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--73.0--77.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--26.4--96.0",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--15.0--80.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--67.2--89.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--17.2--112.8",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "rock--63.7--81.6",
+          "type": "stone",
+          "hits": 0,
+          "hitsNeeded": 2,
+          "collected": false
+        },
+        {
+          "id": "gold-0",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-1",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-2",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-3",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-4",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        },
+        {
+          "id": "gold-5",
+          "type": "gold",
+          "hits": 0,
+          "hitsNeeded": 3,
+          "collected": false
+        }
+      ]
+    },
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "avatar": {
+      "id": "thiago",
+      "bones": 24,
+      "meshVisible": true,
+      "baseHidden": true,
+      "position": [
+        -18,
+        0,
+        39
+      ],
+      "arm": [
+        0,
+        0,
+        -0.05609131628423842,
+        "YXZ"
+      ],
+      "leg": [
+        0,
+        0,
+        0,
+        "YXZ"
+      ],
+      "toolInHand": false
+    },
+    "coherent": true
+  },
+  "passed": true,
+  "errors": [],
+  "checkedAt": "2026-11-13T10:55:38.551Z"
+}

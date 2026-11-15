@@ -33,11 +33,15 @@
     errors:[]
   };
 
+  function normalizeWorldHeroRecord(value){
+    return{selectedPower:value?.selectedPower||'energyPulse',unlocked:Array.isArray(value?.unlocked)?value.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(value?.mastery||{})},challengeBest:Number(value?.challengeBest||0),challengeWins:Number(value?.challengeWins||0),energy:Number.isFinite(value?.energy)?clamp(value.energy,0,100):100,lastUse:Number(value?.lastUse||0)};
+  }
+
   function ensureOtthiWorldState(){
     state.settings={...(state.settings||{}),worldRender:state.settings?.worldRender!==false,worldDetails:state.settings?.worldDetails!==false,worldDayCycle:!!state.settings?.worldDayCycle,worldOutlines:state.settings?.worldOutlines!=='off'};
     state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3',bodyStyle:state.avatar?.bodyStyle||'lego',face:state.avatar?.face||'face-happy-01',hair:state.avatar?.hair||'hair-short-01',torso:state.avatar?.torso||'world-jacket-01',legs:state.avatar?.legs||'world-pants-01',shoes:state.avatar?.shoes||'world-sneakers-01'});
     state.vehicles={...(state.vehicles||{}),owned:[...new Set(['garage-orange',...(state.vehicles?.owned||[])])],primaryId:state.vehicles?.primaryId||'garage-orange',parked:{...(state.vehicles?.parked||{})},modularParts:{...(state.vehicles?.modularParts||{})},partDurability:{...(state.vehicles?.partDurability||{})},garage:{...(state.vehicles?.garage||{}),slots:{'1':'garage-orange',...(state.vehicles?.garage?.slots||{})},stored:{...(state.vehicles?.garage?.stored||{})},purchasedAt:{'garage-orange':0,...(state.vehicles?.garage?.purchasedAt||{})}}};
-    state.adventures={...(state.adventures||{}),hero:{selectedPower:state.adventures?.hero?.selectedPower||'energyPulse',unlocked:Array.isArray(state.adventures?.hero?.unlocked)?state.adventures.hero.unlocked:['energyPulse','velocityDash','guardianShield'],mastery:{energyPulse:0,velocityDash:0,guardianShield:0,skyLeap:0,magnetWave:0,...(state.adventures?.hero?.mastery||{})},challengeBest:Number(state.adventures?.hero?.challengeBest||0),challengeWins:Number(state.adventures?.hero?.challengeWins||0),energy:Number.isFinite(state.adventures?.hero?.energy)?clamp(state.adventures.hero.energy,0,100):100,lastUse:Number(state.adventures?.hero?.lastUse||0)}};
+    state.adventures={...(state.adventures||{}),hero:normalizeWorldHeroRecord(state.adventures?.hero)};
     return state;
   }
 

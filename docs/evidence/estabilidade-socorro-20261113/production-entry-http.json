@@ -1,0 +1,55 @@
+{
+  "origin": "https://otthi-world-campanha-teste.vercel.app",
+  "checkedAt": "2026-11-15T15:29:31.581Z",
+  "passed": true,
+  "pages": [
+    {
+      "path": "/arcade/",
+      "status": 200,
+      "bytes": 9696
+    },
+    {
+      "path": "/games/otthi/",
+      "status": 200,
+      "bytes": 15742
+    },
+    {
+      "path": "/games/familia/3d/",
+      "status": 200,
+      "bytes": 59885
+    },
+    {
+      "path": "/games/kart/",
+      "status": 200,
+      "bytes": 26243
+    },
+    {
+      "path": "/games/boxe/",
+      "status": 200,
+      "bytes": 26183
+    },
+    {
+      "path": "/games/tenis/",
+      "status": 200,
+      "bytes": 26109
+    },
+    {
+      "path": "/games/ar/",
+      "status": 200,
+      "bytes": 27264
+    },
+    {
+      "path": "/games/voo/",
+      "status": 200,
+      "bytes": 26666
+    },
+    {
+      "path": "/games/danca/",
+      "status": 200,
+      "bytes": 1252
+    }
+  ],
+  "limits": [
+    "HTTP availability of the console and eight game entries. No complete game, multiplayer or account certification."
+  ]
+}

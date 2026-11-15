@@ -125,6 +125,7 @@
   }
 
   const TOOL_DEFS={
+    none:{icon:'✋',name:'Mãos vazias',description:'Guarda a ferramenta para passear. Todas continuam no inventário.'},
     axe:{icon:'🪓',name:'Machado',description:'Corta árvores e coleta madeira.'},
     pickaxe:{icon:'⛏️',name:'Picareta',description:'Extrai pedra e minério de ouro.'},
     bucket:{icon:'🪣',name:'Balde',description:'Retira água limpa do poço.'},
@@ -133,14 +134,15 @@
   };
   function equippedTool(){return TOOL_DEFS[state.tools?.equipped]||TOOL_DEFS.axe;}
   function equipTool(id){
-    if(!TOOL_DEFS[id]||!state.tools.owned.includes(id))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
+    if(!TOOL_DEFS[id]||(id!=='none'&&!state.tools.owned.includes(id)))return false;state.tools.equipped=id;saveState(true);refreshEquippedToolVisual();if(els.toolsBtn){els.toolsBtn.firstChild.textContent=TOOL_DEFS[id].icon;$('span',els.toolsBtn).textContent=TOOL_DEFS[id].name;}toast(id==='none'?'Mãos vazias. Ferramentas guardadas.':`${TOOL_DEFS[id].name} equipado.`,'good',1200);return true;
   }
   function openToolbelt(){
     openModal('Ferramentas',`<div class="tool-grid">${Object.entries(TOOL_DEFS).map(([id,tool])=>`<button class="tool-card ${state.tools.equipped===id?'active':''}" data-equip-tool="${id}"><span>${tool.icon}</span><b>${tool.name}</b><small>${tool.description}</small><em>${state.tools.equipped===id?'Em uso':'Equipar'}</em></button>`).join('')}</div><div class="resource-summary"><span>🪵 ${state.tools.harvested.wood||0}</span><span>🪨 ${state.tools.harvested.stone||0}</span><span>🟨 ${state.tools.harvested.gold||0}</span><span>💧 ${state.tools.harvested.water||0}</span><span>🪱 ${state.tools.harvested.bait||0}</span><span>🌾 ${state.tools.harvested.crops||0}</span><span>🟫 ${state.tools.harvested.clay||0}</span></div>`,root=>{$$('[data-equip-tool]',root).forEach(btn=>btn.onclick=()=>{equipTool(btn.dataset.equipTool);closeModal();});});
   }
   function refreshEquippedToolVisual(){
-    if(!playerModel?.userData?.parts?.rightArm)return;
-    const arm=playerModel.userData.parts.rightArm;if(toolVisual){toolVisual.parent?.remove(toolVisual);toolVisual=null;}
+    if(toolVisual){const previous=toolVisual;previous.parent?.remove(previous);toolVisual=null;disposeDetachedVisual(previous);}
+    if(state.tools?.equipped==='none'||!playerModel?.userData?.parts?.rightArm)return;
+    const arm=playerModel.userData.parts.rightArm;
     toolVisual=new THREE.Group();toolVisual.position.set(0,-1.12,.14);toolVisual.rotation.z=-.18;arm.add(toolVisual);
     const type=state.tools?.equipped||'axe',wood=materials.wood||0x8c542c,metal=materials.metal||0x8d9aa6;
     if(type==='bucket'){

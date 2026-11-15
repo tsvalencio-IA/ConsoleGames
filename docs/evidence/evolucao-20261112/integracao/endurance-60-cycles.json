@@ -1,0 +1,5559 @@
+{
+  "build": "705.28.27-evolucao-integrada",
+  "revision": "d4a223e1aa501f02",
+  "appSha256": "f2c61803a765383df805f30c760adbb716cd0d1968e769dc0e6cb72278a3f47f",
+  "cyclesRequested": 60,
+  "stages": [
+    {
+      "name": "pause-resume-pointer-release",
+      "passed": true
+    },
+    {
+      "name": "blocked-owned-car-delivery",
+      "passed": true,
+      "prepared": {
+        "id": "playmobil-utility",
+        "from": {
+          "x": 48,
+          "z": 217.5,
+          "yaw": 1.6745886672519397
+        },
+        "player": {
+          "x": 90.4747574101838,
+          "z": 206.03767113776456
+        }
+      },
+      "blocker": {
+        "x": 61.09223343576419,
+        "z": 216.48179727455485
+      },
+      "held": {
+        "pending": false,
+        "job": null,
+        "tracking": null,
+        "orders": [],
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "delivered",
+          "at": 1794529639096,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          }
+        }
+      },
+      "arrived": {
+        "pending": false,
+        "job": null,
+        "tracking": null,
+        "orders": [],
+        "last": {
+          "id": "playmobil-utility",
+          "type": "ground",
+          "status": "delivered",
+          "at": 1794529639096,
+          "target": {
+            "x": 98.89793206047757,
+            "z": 209.6846053036974,
+            "yaw": 1.6745886672519397
+          }
+        }
+      },
+      "maxStep": 0.45606857332904505
+    },
+    {
+      "name": "paid-parcel-reload-receipt-return",
+      "passed": true,
+      "order": {
+        "id": "order-9726cbfd-1b56-4a86-af5e-0ab25e6c02f0",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "delivered",
+        "at": 1794529662767.3333,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": -3.026203057576298
+        },
+        "receivedAt": 1794529765330
+      },
+      "price": 15,
+      "amount": 2
+    },
+    {
+      "name": "workshop-autonomous-six-and-player-preserved",
+      "passed": true,
+      "ids": [
+        "workshop-red",
+        "market-blue",
+        "city-white",
+        "traffic-ottovias-azul",
+        "traffic-ottovias-amarelo",
+        "traffic-ottovias-verde"
+      ],
+      "before": {
+        "bays": {
+          "ready": true,
+          "selected": 1,
+          "bays": [
+            {
+              "id": 0,
+              "x": 19.75,
+              "z": -18.75,
+              "height": 2.35,
+              "raised": true,
+              "busy": false,
+              "vehicleId": "garage-orange",
+              "controlX": 21.67,
+              "controlZ": -18.6,
+              "mechanic": "mecanico-oficina",
+              "action": false
+            },
+            {
+              "id": 1,
+              "x": 25,
+              "z": -18.75,
+              "height": 2.35,
+              "raised": true,
+              "busy": false,
+              "vehicleId": "workshop-red",
+              "controlX": 26.92,
+              "controlZ": -18.6,
+              "mechanic": "workshop-mechanic-bay-2",
+              "action": false
+            }
+          ]
+        },
+        "auto": {
+          "graceMs": 120000,
+          "repairMs": 30000,
+          "collectionMs": 8000,
+          "vehicles": []
+        },
+        "owned": {
+          "bay": {
+            "vehicleId": "garage-orange",
+            "height": 2.35,
+            "raised": true,
+            "disassembly": {
+              "vehicleId": "garage-orange",
+              "wheels": {},
+              "parts": {
+                "engine": true
+              }
+            }
+          },
+          "damage": 35,
+          "parts": {
+            "parts": {
+              "engine": 28,
+              "brakes": 31,
+              "suspension": 28,
+              "steering": 39,
+              "electrical": 39,
+              "cooling": 39
+            },
+            "lastDurability": 35,
+            "lastDamageAt": 1794529828528,
+            "serviceOpenedAt": 1794529828526,
+            "serviceCompletedAt": 0,
+            "serviceStatus": "pending",
+            "unrepairable": false,
+            "ownerType": "user",
+            "ownerName": "Jogador 2345",
+            "bayId": 0
+          }
+        },
+        "claims": [
+          "ottovias-azul",
+          "ottovias-amarelo",
+          "ottovias-verde"
+        ],
+        "actors": [
+          {
+            "id": "ottovias-azul",
+            "taken": true
+          },
+          {
+            "id": "ottovias-amarelo",
+            "taken": true
+          },
+          {
+            "id": "ottovias-verde",
+            "taken": true
+          }
+        ],
+        "overlaps": []
+      },
+      "after": {
+        "bays": {
+          "ready": true,
+          "selected": 1,
+          "bays": [
+            {
+              "id": 0,
+              "x": 19.75,
+              "z": -18.75,
+              "height": 2.35,
+              "raised": true,
+              "busy": false,
+              "vehicleId": "garage-orange",
+              "controlX": 21.67,
+              "controlZ": -18.6,
+              "mechanic": "mecanico-oficina",
+              "action": false
+            },
+            {
+              "id": 1,
+              "x": 25,
+              "z": -18.75,
+              "height": 0,
+              "raised": false,
+              "busy": false,
+              "vehicleId": "",
+              "controlX": 26.92,
+              "controlZ": -18.6,
+              "mechanic": "workshop-mechanic-bay-2",
+              "action": false
+            }
+          ]
+        },
+        "auto": {
+          "graceMs": 120000,
+          "repairMs": 30000,
+          "collectionMs": 8000,
+          "vehicles": [
+            {
+              "id": "market-blue",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794529988946
+            },
+            {
+              "id": "workshop-red",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794529988946
+            },
+            {
+              "id": "city-white",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794530019369
+            },
+            {
+              "id": "traffic-ottovias-azul",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794530019369
+            },
+            {
+              "id": "traffic-ottovias-amarelo",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794530049760
+            },
+            {
+              "id": "traffic-ottovias-verde",
+              "phase": "delivered",
+              "visible": false,
+              "durability": 100,
+              "collectedAt": 1794530049760
+            }
+          ]
+        },
+        "owned": {
+          "bay": {
+            "vehicleId": "garage-orange",
+            "height": 2.35,
+            "raised": true,
+            "disassembly": {
+              "vehicleId": "garage-orange",
+              "wheels": {},
+              "parts": {
+                "engine": true
+              }
+            }
+          },
+          "damage": 35,
+          "parts": {
+            "parts": {
+              "engine": 28,
+              "brakes": 31,
+              "suspension": 28,
+              "steering": 39,
+              "electrical": 39,
+              "cooling": 39
+            },
+            "lastDurability": 35,
+            "lastDamageAt": 1794529828528,
+            "serviceOpenedAt": 1794529828526,
+            "serviceCompletedAt": 0,
+            "serviceStatus": "pending",
+            "unrepairable": false,
+            "ownerType": "user",
+            "ownerName": "Jogador 2345",
+            "bayId": 0
+          }
+        },
+        "claims": [],
+        "actors": [
+          {
+            "id": "ottovias-azul",
+            "taken": false
+          },
+          {
+            "id": "ottovias-amarelo",
+            "taken": false
+          },
+          {
+            "id": "ottovias-verde",
+            "taken": false
+          }
+        ],
+        "overlaps": []
+      }
+    },
+    {
+      "name": "garage-and-session-reload",
+      "passed": true,
+      "stored": {
+        "id": "playmobil-utility",
+        "stored": true,
+        "visible": false,
+        "occupied": false,
+        "lazy": true
+      }
+    },
+    {
+      "name": "autonomous-incident-1",
+      "passed": true,
+      "id": "incident-1",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22419.666666666617,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": 17,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-bia",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-2",
+      "passed": true,
+      "id": "incident-2",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 18613.93333333529,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": false,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": 17,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-3",
+      "passed": true,
+      "id": "incident-3",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22512.066666662467,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-4",
+      "passed": true,
+      "id": "incident-4",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22481.433333336317,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-5",
+      "passed": true,
+      "id": "incident-5",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22500.63333333972,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-6",
+      "passed": true,
+      "id": "incident-6",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22434.2000000049,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-7",
+      "passed": true,
+      "id": "incident-7",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22425.400000000343,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-8",
+      "passed": true,
+      "id": "incident-8",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22545.69999998802,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-9",
+      "passed": true,
+      "id": "incident-9",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22470.73333332443,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-10",
+      "passed": true,
+      "id": "incident-10",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22465.299999989365,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-11",
+      "passed": true,
+      "id": "incident-11",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22505.199999987904,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-12",
+      "passed": true,
+      "id": "incident-12",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22480.766666656767,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-13",
+      "passed": true,
+      "id": "incident-13",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22460.999999988533,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-14",
+      "passed": true,
+      "id": "incident-14",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22523.066666681378,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-15",
+      "passed": true,
+      "id": "incident-15",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22446.500000022876,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-16",
+      "passed": true,
+      "id": "incident-16",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22513.8666666926,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-17",
+      "passed": true,
+      "id": "incident-17",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22506.600000024657,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-18",
+      "passed": true,
+      "id": "incident-18",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22456.90000002162,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-19",
+      "passed": true,
+      "id": "incident-19",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22520.33333335584,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-20",
+      "passed": true,
+      "id": "incident-20",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22448.666666689387,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -1,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -9,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-21",
+      "passed": true,
+      "id": "incident-21",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22426.96666669048,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-22",
+      "passed": true,
+      "id": "incident-22",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22518.63333335682,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-23",
+      "passed": true,
+      "id": "incident-23",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22495.800000023562,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-24",
+      "passed": true,
+      "id": "incident-24",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22445.400000021793,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-25",
+      "passed": true,
+      "id": "incident-25",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22442.900000025402,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-26",
+      "passed": true,
+      "id": "incident-26",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22466.13333335705,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-27",
+      "passed": true,
+      "id": "incident-27",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22461.099999980535,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-28",
+      "passed": true,
+      "id": "incident-28",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22539.166666621342,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-29",
+      "passed": true,
+      "id": "incident-29",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22488.76666661841,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-30",
+      "passed": true,
+      "id": "incident-30",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22427.566666622995,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-31",
+      "passed": true,
+      "id": "incident-31",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22519.49999995448,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-32",
+      "passed": true,
+      "id": "incident-32",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22463.099999951548,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-33",
+      "passed": true,
+      "id": "incident-33",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22416.39999995241,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-34",
+      "passed": true,
+      "id": "incident-34",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22435.966666621156,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-35",
+      "passed": true,
+      "id": "incident-35",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22418.799999955692,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-36",
+      "passed": true,
+      "id": "incident-36",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22538.03333328711,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-37",
+      "passed": true,
+      "id": "incident-37",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22522.499999954365,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-38",
+      "passed": true,
+      "id": "incident-38",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22535.36666662013,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-39",
+      "passed": true,
+      "id": "incident-39",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22520.433333285968,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-40",
+      "passed": true,
+      "id": "incident-40",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22468.966666617314,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-41",
+      "passed": true,
+      "id": "incident-41",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22416.5333332906,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-42",
+      "passed": true,
+      "id": "incident-42",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22452.333333286922,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-43",
+      "passed": true,
+      "id": "incident-43",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22563.39999995276,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-44",
+      "passed": true,
+      "id": "incident-44",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22469.733333286364,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-45",
+      "passed": true,
+      "id": "incident-45",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22382.26666661864,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-46",
+      "passed": true,
+      "id": "incident-46",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22542.63333328883,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-47",
+      "passed": true,
+      "id": "incident-47",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22534.633333284408,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-48",
+      "passed": true,
+      "id": "incident-48",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22461.49999995483,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-49",
+      "passed": true,
+      "id": "incident-49",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22572.06666661892,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-50",
+      "passed": true,
+      "id": "incident-50",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22439.833333287854,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-51",
+      "passed": true,
+      "id": "incident-51",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22440.899999951944,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-52",
+      "passed": true,
+      "id": "incident-52",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22482.966666617896,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-53",
+      "passed": true,
+      "id": "incident-53",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22458.200000002515,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-54",
+      "passed": true,
+      "id": "incident-54",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22407.60000009369,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-55",
+      "passed": true,
+      "id": "incident-55",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22424.933333422523,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-56",
+      "passed": true,
+      "id": "incident-56",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22486.833333424525,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-57",
+      "passed": true,
+      "id": "incident-57",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22422.566666757222,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-58",
+      "passed": true,
+      "id": "incident-58",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22560.90000008815,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": -3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-59",
+      "passed": true,
+      "id": "incident-59",
+      "fire": false,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22515.600000092527,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    },
+    {
+      "name": "autonomous-incident-60",
+      "passed": true,
+      "id": "incident-60",
+      "fire": true,
+      "required": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "ageMs": 22507.866666760994,
+      "arrived": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "tasks": {
+        "police": true,
+        "paramedic": true,
+        "firefighter": true
+      },
+      "forcedClear": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "central-backup"
+      },
+      "staging": {
+        "police": {
+          "x": -10,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 34,
+          "z": 3.3,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "actors": [
+        {
+          "id": "mobility-teo",
+          "wasLocked": true
+        },
+        {
+          "id": "mobility-nino",
+          "wasLocked": true
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "cycle": 0,
+      "objects": 23199,
+      "geometries": 6736,
+      "materials": 2500,
+      "textures": 622,
+      "outlines": 5275,
+      "actions": 800,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 0,
+      "disposed": 0,
+      "npcs": 138,
+      "trafficModels": 3,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 492361501,
+        "total": 495426349
+      },
+      "heapUsedAfterGc": 64994324,
+      "heapTotalAfterGc": 70258688
+    },
+    {
+      "cycle": 1,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 1,
+      "disposed": 1,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 496845299,
+        "total": 501901867
+      },
+      "heapUsedAfterGc": 69129356,
+      "heapTotalAfterGc": 74190848
+    },
+    {
+      "cycle": 2,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 4,
+      "disposed": 4,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497761503,
+        "total": 501887931
+      },
+      "heapUsedAfterGc": 70043112,
+      "heapTotalAfterGc": 74190848
+    },
+    {
+      "cycle": 3,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 5,
+      "disposed": 5,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497546063,
+        "total": 501988011
+      },
+      "heapUsedAfterGc": 69830008,
+      "heapTotalAfterGc": 74452992
+    },
+    {
+      "cycle": 4,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 8,
+      "disposed": 8,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497122224,
+        "total": 502260696
+      },
+      "heapUsedAfterGc": 69403804,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 5,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 9,
+      "disposed": 9,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497036712,
+        "total": 502240268
+      },
+      "heapUsedAfterGc": 69321664,
+      "heapTotalAfterGc": 74715136
+    },
+    {
+      "cycle": 6,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 12,
+      "disposed": 12,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498372987,
+        "total": 502381767
+      },
+      "heapUsedAfterGc": 70656152,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 7,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 13,
+      "disposed": 13,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497532792,
+        "total": 502567948
+      },
+      "heapUsedAfterGc": 69817744,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 8,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 16,
+      "disposed": 16,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499092571,
+        "total": 502287559
+      },
+      "heapUsedAfterGc": 69285336,
+      "heapTotalAfterGc": 74715136
+    },
+    {
+      "cycle": 9,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 17,
+      "disposed": 17,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499254759,
+        "total": 502432779
+      },
+      "heapUsedAfterGc": 69452200,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 10,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 20,
+      "disposed": 20,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497870206,
+        "total": 502504646
+      },
+      "heapUsedAfterGc": 70152892,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 11,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 21,
+      "disposed": 21,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497611977,
+        "total": 502506469
+      },
+      "heapUsedAfterGc": 69896728,
+      "heapTotalAfterGc": 74977280
+    },
+    {
+      "cycle": 12,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 24,
+      "disposed": 24,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497443337,
+        "total": 502525089
+      },
+      "heapUsedAfterGc": 69725852,
+      "heapTotalAfterGc": 75239424
+    },
+    {
+      "cycle": 13,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 25,
+      "disposed": 25,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499125650,
+        "total": 502776806
+      },
+      "heapUsedAfterGc": 69567092,
+      "heapTotalAfterGc": 75239424
+    },
+    {
+      "cycle": 14,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 28,
+      "disposed": 28,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498830850,
+        "total": 502680738
+      },
+      "heapUsedAfterGc": 71113364,
+      "heapTotalAfterGc": 75239424
+    },
+    {
+      "cycle": 15,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 29,
+      "disposed": 29,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498791321,
+        "total": 502727653
+      },
+      "heapUsedAfterGc": 71076072,
+      "heapTotalAfterGc": 75239424
+    },
+    {
+      "cycle": 16,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 32,
+      "disposed": 32,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497584126,
+        "total": 500690082
+      },
+      "heapUsedAfterGc": 69866640,
+      "heapTotalAfterGc": 73142272
+    },
+    {
+      "cycle": 17,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 33,
+      "disposed": 33,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497967577,
+        "total": 500728801
+      },
+      "heapUsedAfterGc": 70252772,
+      "heapTotalAfterGc": 73142272
+    },
+    {
+      "cycle": 18,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 36,
+      "disposed": 36,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498472215,
+        "total": 502840591
+      },
+      "heapUsedAfterGc": 70754612,
+      "heapTotalAfterGc": 75239424
+    },
+    {
+      "cycle": 19,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 37,
+      "disposed": 37,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497721965,
+        "total": 500831201
+      },
+      "heapUsedAfterGc": 70008168,
+      "heapTotalAfterGc": 73142272
+    },
+    {
+      "cycle": 20,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 40,
+      "disposed": 40,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497663881,
+        "total": 500690081
+      },
+      "heapUsedAfterGc": 69946836,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 21,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 41,
+      "disposed": 41,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497636110,
+        "total": 500806630
+      },
+      "heapUsedAfterGc": 69920852,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 22,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 44,
+      "disposed": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497941671,
+        "total": 500731155
+      },
+      "heapUsedAfterGc": 70224064,
+      "heapTotalAfterGc": 73142272
+    },
+    {
+      "cycle": 23,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 45,
+      "disposed": 45,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497866818,
+        "total": 500782054
+      },
+      "heapUsedAfterGc": 70151560,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 24,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 48,
+      "disposed": 48,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497996795,
+        "total": 500796695
+      },
+      "heapUsedAfterGc": 70279184,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 25,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 49,
+      "disposed": 49,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497727113,
+        "total": 500831209
+      },
+      "heapUsedAfterGc": 70011852,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 26,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 52,
+      "disposed": 52,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498298226,
+        "total": 500829350
+      },
+      "heapUsedAfterGc": 70580728,
+      "heapTotalAfterGc": 73142272
+    },
+    {
+      "cycle": 27,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 53,
+      "disposed": 53,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498221718,
+        "total": 500823014
+      },
+      "heapUsedAfterGc": 70506460,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 28,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 56,
+      "disposed": 56,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498471526,
+        "total": 500849830
+      },
+      "heapUsedAfterGc": 69897036,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 29,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 57,
+      "disposed": 57,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498419646,
+        "total": 500876266
+      },
+      "heapUsedAfterGc": 70705076,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 30,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 60,
+      "disposed": 60,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498477500,
+        "total": 500874404
+      },
+      "heapUsedAfterGc": 69921416,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 31,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 61,
+      "disposed": 61,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498485514,
+        "total": 500884458
+      },
+      "heapUsedAfterGc": 69918740,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 32,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 64,
+      "disposed": 64,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498221806,
+        "total": 500886694
+      },
+      "heapUsedAfterGc": 70504988,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 33,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 65,
+      "disposed": 65,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498061185,
+        "total": 500884453
+      },
+      "heapUsedAfterGc": 70347036,
+      "heapTotalAfterGc": 73404416
+    },
+    {
+      "cycle": 34,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 68,
+      "disposed": 68,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498559630,
+        "total": 500907170
+      },
+      "heapUsedAfterGc": 69939500,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 35,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 69,
+      "disposed": 69,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498013773,
+        "total": 500974565
+      },
+      "heapUsedAfterGc": 70299188,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 36,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 72,
+      "disposed": 72,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498424306,
+        "total": 500989094
+      },
+      "heapUsedAfterGc": 70707480,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 37,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 73,
+      "disposed": 73,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499054270,
+        "total": 503268330
+      },
+      "heapUsedAfterGc": 71339680,
+      "heapTotalAfterGc": 76025856
+    },
+    {
+      "cycle": 38,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 76,
+      "disposed": 76,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497943654,
+        "total": 501206182
+      },
+      "heapUsedAfterGc": 70228284,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 39,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 77,
+      "disposed": 77,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497805001,
+        "total": 500954089
+      },
+      "heapUsedAfterGc": 70090412,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 40,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 80,
+      "disposed": 80,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497925298,
+        "total": 500997286
+      },
+      "heapUsedAfterGc": 70207800,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 41,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 81,
+      "disposed": 81,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497889081,
+        "total": 501003241
+      },
+      "heapUsedAfterGc": 70174268,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 42,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 84,
+      "disposed": 84,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497902849,
+        "total": 503127205
+      },
+      "heapUsedAfterGc": 70185800,
+      "heapTotalAfterGc": 75763712
+    },
+    {
+      "cycle": 43,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 85,
+      "disposed": 85,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498327361,
+        "total": 501052393
+      },
+      "heapUsedAfterGc": 70612548,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 44,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 88,
+      "disposed": 88,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498832258,
+        "total": 501071014
+      },
+      "heapUsedAfterGc": 70068996,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 45,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 89,
+      "disposed": 89,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498204521,
+        "total": 501068777
+      },
+      "heapUsedAfterGc": 70489708,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 46,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 92,
+      "disposed": 92,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498048132,
+        "total": 500968612
+      },
+      "heapUsedAfterGc": 70330636,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 47,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 93,
+      "disposed": 93,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498720093,
+        "total": 501003241
+      },
+      "heapUsedAfterGc": 70072744,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 48,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 96,
+      "disposed": 96,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498564338,
+        "total": 501013674
+      },
+      "heapUsedAfterGc": 70846836,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 49,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 97,
+      "disposed": 97,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498773141,
+        "total": 501298157
+      },
+      "heapUsedAfterGc": 70075928,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 50,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 100,
+      "disposed": 100,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498567013,
+        "total": 501214377
+      },
+      "heapUsedAfterGc": 70849960,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 51,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 101,
+      "disposed": 101,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497885494,
+        "total": 501048302
+      },
+      "heapUsedAfterGc": 70170228,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 52,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 104,
+      "disposed": 104,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498291338,
+        "total": 501329066
+      },
+      "heapUsedAfterGc": 70573836,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 53,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 105,
+      "disposed": 105,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498864058,
+        "total": 501335022
+      },
+      "heapUsedAfterGc": 70101560,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 54,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 108,
+      "disposed": 108,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498209049,
+        "total": 501341353
+      },
+      "heapUsedAfterGc": 70492428,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 55,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 109,
+      "disposed": 109,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498199768,
+        "total": 501355496
+      },
+      "heapUsedAfterGc": 70484508,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 56,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 112,
+      "disposed": 112,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498810781,
+        "total": 501394601
+      },
+      "heapUsedAfterGc": 70138724,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 57,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 113,
+      "disposed": 113,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 497923011,
+        "total": 501097567
+      },
+      "heapUsedAfterGc": 70209088,
+      "heapTotalAfterGc": 73666560
+    },
+    {
+      "cycle": 58,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 116,
+      "disposed": 116,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 498058346,
+        "total": 501370026
+      },
+      "heapUsedAfterGc": 70340844,
+      "heapTotalAfterGc": 73928704
+    },
+    {
+      "cycle": 59,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 117,
+      "disposed": 117,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499676146,
+        "total": 503444462
+      },
+      "heapUsedAfterGc": 70111920,
+      "heapTotalAfterGc": 76025856
+    },
+    {
+      "cycle": 60,
+      "objects": 24796,
+      "geometries": 7113,
+      "materials": 2811,
+      "textures": 660,
+      "outlines": 5597,
+      "actions": 846,
+      "incidents": 0,
+      "active": "",
+      "incidentActions": [],
+      "created": 120,
+      "disposed": 120,
+      "npcs": 138,
+      "trafficModels": 44,
+      "vehicles": 23,
+      "ghosts": 0,
+      "renderer": {
+        "geometries": 0,
+        "textures": 0
+      },
+      "heap": {
+        "used": 499697317,
+        "total": 503532713
+      },
+      "heapUsedAfterGc": 70182264,
+      "heapTotalAfterGc": 76025856
+    }
+  ],
+  "limits": [
+    "Disposable Chromium mobile viewport and native modular world over local RTDB/SSE. No production account, database or permissions test.",
+    "Clock advances in native 60 Hz simulation steps. Drawing is capped; simulation duration and wall duration are reported separately. No physical-device FPS, temperature or battery claim.",
+    "Player/vehicle positions and damaged workshop fixtures are prepared before each scenario. Actual routes, collision predicates, responders, repair/collection, storage, purchase, receipt and save/reload run unchanged.",
+    "Incidents are created through the native incident constructor; native responders and central backup decide completion. The test records forced-clear/arrival details instead of claiming every responder physically arrived.",
+    "Heap samples use the same CDP collectGarbage command after warm-up and after each settled cycle. They are laboratory retained-heap observations, not mobile memory limits."
+  ],
+  "initial": {
+    "player": {
+      "x": -18,
+      "z": 39,
+      "vehicle": false,
+      "vehicleId": ""
+    },
+    "coins": 18000,
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "goldOre": 0,
+      "goldBar": 0,
+      "food": 2,
+      "water": 2,
+      "crystals": 0,
+      "blocks": 4,
+      "fences": 2,
+      "keys": 0,
+      "fishingRod": 1,
+      "bait": 5,
+      "seeds": 6,
+      "wheat": 0,
+      "carrots": 0,
+      "clay": 0,
+      "rawFish": 0,
+      "cookedFish": 0,
+      "forestResources": 0
+    },
+    "gifts": [],
+    "owned": [
+      "garage-orange"
+    ],
+    "instances": {},
+    "stored": {},
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [],
+      "last": null
+    },
+    "orders": [],
+    "jump": 0,
+    "damage": {
+      "ottovias-service": 100,
+      "garage-orange": 100,
+      "market-blue": 100,
+      "workshop-red": 100,
+      "home-green": 100,
+      "royal-purple": 100,
+      "gym-yellow": 100,
+      "forest-teal": 100,
+      "city-white": 100,
+      "adventure-black": 100,
+      "country-brown": 100,
+      "city-aurora-coupe-0": 100,
+      "city-aurora-coupe-1": 100,
+      "city-costa-coupe-0": 100,
+      "city-costa-coupe-1": 100
+    },
+    "profileId": "integrated-session",
+    "needs": {
+      "hunger": 91.65333333333334,
+      "energy": 91.75999999999999,
+      "fun": 85.86666666666665,
+      "hygiene": 87.85066666666668
+    },
+    "network": {
+      "configured": true,
+      "connected": true,
+      "uid": "browser-test-user-123456789012345",
+      "room": "bairro-central",
+      "count": 1,
+      "capacity": 10,
+      "roomCounts": {
+        "bairro-central": 1,
+        "bairro-floresta": 0,
+        "bairro-lago": 0,
+        "bairro-montanha": 0,
+        "bairro-escola": 0
+      },
+      "players": [
+        {
+          "uid": "browser-test-user-123456789012345",
+          "name": "Jogador 2345",
+          "room": "bairro-central",
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "r": 0,
+          "color": 5953791,
+          "vehiclePassengerUids": [],
+          "vehiclePassengerUid": "",
+          "vehiclePassengerCount": 0,
+          "vehicleSeatCapacity": 3,
+          "avatar": {
+            "v": 3,
+            "renderMode": "",
+            "bodyStyle": "",
+            "skinTone": "",
+            "face": "",
+            "hair": "",
+            "hairColor": "",
+            "torso": "",
+            "legs": "",
+            "shoes": "",
+            "hat": "",
+            "back": "",
+            "pattern": "",
+            "primaryColor": "",
+            "secondaryColor": "",
+            "outfit": "",
+            "accessory": "",
+            "uniform": ""
+          },
+          "avatarSig": "",
+          "emoteType": "",
+          "emoteSeq": 0,
+          "updatedAt": 1794529593009
+        }
+      ],
+      "parental": {
+        "multiplayerEnabled": true,
+        "communicationEnabled": true,
+        "chatEnabled": true,
+        "sessionLimitMinutes": 0
+      }
+    },
+    "paused": false,
+    "modal": false,
+    "input": {
+      "joyX": 0,
+      "joyZ": 0,
+      "accelerate": false,
+      "brake": false,
+      "touchSprint": false
+    }
+  },
+  "resourceComparison": {
+    "warmCycle": 2,
+    "lastCycle": 60,
+    "objectDelta": 0,
+    "outlineDelta": 0,
+    "actionDelta": 0,
+    "geometryDelta": 0,
+    "materialDelta": 0,
+    "retainedHeapDelta": 139152
+  },
+  "final": {
+    "player": {
+      "x": 98.89,
+      "z": 214.19,
+      "vehicle": false,
+      "vehicleId": ""
+    },
+    "coins": 18073,
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "goldOre": 0,
+      "goldBar": 0,
+      "food": 20,
+      "water": 2,
+      "crystals": 0,
+      "blocks": 4,
+      "fences": 2,
+      "keys": 0,
+      "fishingRod": 1,
+      "bait": 5,
+      "seeds": 6,
+      "wheat": 0,
+      "carrots": 0,
+      "clay": 0,
+      "rawFish": 0,
+      "cookedFish": 0,
+      "forestResources": 0
+    },
+    "gifts": [
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 8,
+        "food": 0
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      },
+      {
+        "coins": 0,
+        "food": 1
+      }
+    ],
+    "owned": [
+      "garage-orange",
+      "playmobil-utility"
+    ],
+    "instances": {},
+    "stored": {
+      "playmobil-utility": true,
+      "garage-orange": false
+    },
+    "phone": {
+      "pending": false,
+      "job": null,
+      "tracking": null,
+      "orders": [
+        {
+          "id": "order-9726cbfd-1b56-4a86-af5e-0ab25e6c02f0",
+          "kind": "parcel",
+          "label": "Comida",
+          "price": 15,
+          "status": "delivered",
+          "at": 1794529662767.3333,
+          "owner": "browser-test-user-123456789012345",
+          "itemKey": "food",
+          "origin": {
+            "x": -22,
+            "z": 1.35,
+            "yaw": 1.5707963267948966
+          },
+          "target": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": 1.6745886672519397
+          },
+          "pose": {
+            "x": 98.89298573158106,
+            "z": 209.6851205462908,
+            "yaw": -3.026203057576298
+          },
+          "receivedAt": 1794529765330
+        }
+      ],
+      "last": {
+        "id": "playmobil-utility",
+        "type": "ground",
+        "status": "delivered",
+        "at": 1794529639096,
+        "target": {
+          "x": 98.89793206047757,
+          "z": 209.6846053036974,
+          "yaw": 1.6745886672519397
+        }
+      }
+    },
+    "orders": [
+      {
+        "id": "order-9726cbfd-1b56-4a86-af5e-0ab25e6c02f0",
+        "kind": "parcel",
+        "label": "Comida",
+        "price": 15,
+        "status": "delivered",
+        "at": 1794529662767.3333,
+        "owner": "browser-test-user-123456789012345",
+        "itemKey": "food",
+        "origin": {
+          "x": -22,
+          "z": 1.35,
+          "yaw": 1.5707963267948966
+        },
+        "target": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": 1.6745886672519397
+        },
+        "pose": {
+          "x": 98.89298573158106,
+          "z": 209.6851205462908,
+          "yaw": -3.026203057576298
+        },
+        "receivedAt": 1794529765330
+      }
+    ],
+    "jump": 0,
+    "damage": {
+      "ottovias-service": 100,
+      "garage-orange": 35,
+      "market-blue": 100,
+      "workshop-red": 100,
+      "home-green": 100,
+      "royal-purple": 100,
+      "gym-yellow": 100,
+      "forest-teal": 100,
+      "city-white": 100,
+      "adventure-black": 100,
+      "country-brown": 100,
+      "city-aurora-coupe-0": 100,
+      "city-aurora-coupe-1": 100,
+      "city-costa-coupe-0": 100,
+      "city-costa-coupe-1": 100,
+      "playmobil-utility": 100,
+      "session-road-blocker": 100,
+      "phone-parcel-courier": 100,
+      "traffic-ottovias-azul": 100,
+      "traffic-ottovias-amarelo": 100,
+      "traffic-ottovias-verde": 100
+    },
+    "profileId": "integrated-session",
+    "needs": {
+      "hunger": 3.1146666666672895,
+      "energy": 30.463999999997785,
+      "fun": 51.813333333331244,
+      "hygiene": 49.71093333333755
+    },
+    "network": {
+      "configured": true,
+      "connected": true,
+      "uid": "browser-test-user-123456789012345",
+      "room": "bairro-central",
+      "count": 0,
+      "capacity": 10,
+      "roomCounts": {
+        "bairro-central": 0,
+        "bairro-floresta": 0,
+        "bairro-lago": 0,
+        "bairro-montanha": 0,
+        "bairro-escola": 0
+      },
+      "players": [],
+      "parental": {
+        "multiplayerEnabled": true,
+        "communicationEnabled": true,
+        "chatEnabled": true,
+        "sessionLimitMinutes": 0
+      }
+    },
+    "paused": false,
+    "modal": false,
+    "input": {
+      "joyX": 0,
+      "joyZ": 0,
+      "accelerate": false,
+      "brake": false,
+      "touchSprint": false
+    }
+  },
+  "observedPageErrors": [],
+  "wallDurationMs": 359202,
+  "nativeSimulationFrames": 81994,
+  "nativeSimulationSeconds": 1366.5666666666666,
+  "workshopClockAdvancedMs": 221000,
+  "passed": true
+}

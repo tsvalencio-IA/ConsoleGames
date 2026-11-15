@@ -1,0 +1,607 @@
+{
+  "build": "705.28.28-maos-livres-tela-limpa",
+  "revision": "6f64398fafb8a424",
+  "browserContext": {
+    "isMobile": true,
+    "hasTouch": true,
+    "deviceScaleFactor": 1
+  },
+  "viewports": [],
+  "stages": [
+    {
+      "name": "native-atlas-route-and-visible-gps",
+      "passed": true,
+      "gps": [
+        {
+          "width": 393,
+          "height": 852,
+          "name": "Rota: OTTOVIAS — trecho Praia",
+          "distance": "393 m • 18 m até a curva",
+          "active": true,
+          "nameVisible": true,
+          "distanceVisible": true
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "Rota: OTTOVIAS — trecho Praia",
+          "distance": "393 m • 18 m até a curva",
+          "active": true,
+          "nameVisible": true,
+          "distanceVisible": true
+        }
+      ]
+    },
+    {
+      "name": "camera-menu-native-handlers",
+      "passed": true
+    },
+    {
+      "name": "all-skills-and-both-powers-accessible",
+      "passed": true
+    },
+    {
+      "name": "empty-hands-native-menu-movement-and-reload",
+      "passed": true,
+      "before": {
+        "hud": {
+          "mode": "clean",
+          "walking": true,
+          "menuOpen": false,
+          "skillsOpen": false,
+          "emptyHands": true
+        },
+        "tool": "none",
+        "owned": [
+          "axe",
+          "pickaxe",
+          "bucket",
+          "hoe",
+          "shovel"
+        ],
+        "harvested": {
+          "wood": 0,
+          "stone": 0,
+          "gold": 0,
+          "water": 0,
+          "bait": 0,
+          "crops": 0,
+          "clay": 0
+        },
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "goldOre": 0,
+          "goldBar": 0,
+          "food": 2,
+          "water": 2,
+          "crystals": 0,
+          "blocks": 4,
+          "fences": 2,
+          "keys": 0,
+          "fishingRod": 1,
+          "bait": 5,
+          "seeds": 6,
+          "wheat": 0,
+          "carrots": 0,
+          "clay": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "forestResources": 0
+        },
+        "vehicles": [
+          "garage-orange"
+        ],
+        "coins": 2345,
+        "toolVisual": false,
+        "toolAttached": false,
+        "player": {
+          "x": -18,
+          "z": 39
+        },
+        "camera": {
+          "zoom": 0,
+          "pitch": 0.28,
+          "yaw": 3.141592653589793
+        },
+        "build": null,
+        "context": null
+      },
+      "empty": {
+        "hud": {
+          "mode": "clean",
+          "walking": true,
+          "menuOpen": false,
+          "skillsOpen": false,
+          "emptyHands": true
+        },
+        "tool": "none",
+        "owned": [
+          "axe",
+          "pickaxe",
+          "bucket",
+          "hoe",
+          "shovel"
+        ],
+        "harvested": {
+          "wood": 0,
+          "stone": 0,
+          "gold": 0,
+          "water": 0,
+          "bait": 0,
+          "crops": 0,
+          "clay": 0
+        },
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "goldOre": 0,
+          "goldBar": 0,
+          "food": 2,
+          "water": 2,
+          "crystals": 0,
+          "blocks": 4,
+          "fences": 2,
+          "keys": 0,
+          "fishingRod": 1,
+          "bait": 5,
+          "seeds": 6,
+          "wheat": 0,
+          "carrots": 0,
+          "clay": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "forestResources": 0
+        },
+        "vehicles": [
+          "garage-orange"
+        ],
+        "coins": 2345,
+        "toolVisual": false,
+        "toolAttached": false,
+        "player": {
+          "x": -18,
+          "z": 39
+        },
+        "camera": {
+          "zoom": 0,
+          "pitch": 0.28,
+          "yaw": 3.141592653589793
+        },
+        "build": null,
+        "context": null
+      },
+      "moveBefore": {
+        "x": 0,
+        "z": 4
+      },
+      "moveAfter": {
+        "x": -4.1311525418357435,
+        "z": 4
+      },
+      "reloaded": {
+        "hud": {
+          "mode": "clean",
+          "walking": true,
+          "menuOpen": false,
+          "skillsOpen": false,
+          "emptyHands": true
+        },
+        "tool": "none",
+        "owned": [
+          "axe",
+          "pickaxe",
+          "bucket",
+          "hoe",
+          "shovel"
+        ],
+        "harvested": {
+          "wood": 0,
+          "stone": 0,
+          "gold": 0,
+          "water": 0,
+          "bait": 0,
+          "crops": 0,
+          "clay": 0
+        },
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "goldOre": 0,
+          "goldBar": 0,
+          "food": 2,
+          "water": 2,
+          "crystals": 0,
+          "blocks": 4,
+          "fences": 2,
+          "keys": 0,
+          "fishingRod": 1,
+          "bait": 5,
+          "seeds": 6,
+          "wheat": 0,
+          "carrots": 0,
+          "clay": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "forestResources": 0
+        },
+        "vehicles": [
+          "garage-orange"
+        ],
+        "coins": 2345,
+        "toolVisual": false,
+        "toolAttached": false,
+        "player": {
+          "x": -2.08,
+          "z": 4
+        },
+        "camera": {
+          "zoom": 0,
+          "pitch": 0.28,
+          "yaw": 3.142
+        },
+        "build": null,
+        "context": null
+      }
+    },
+    {
+      "name": "native-toolbelt-re-equips-owned-axe",
+      "passed": true
+    },
+    {
+      "name": "full-layout-and-clean-preference-persist",
+      "passed": true,
+      "full": {
+        "width": 393,
+        "height": 852,
+        "buttons": [
+          {
+            "id": "needsToggleBtn",
+            "label": "Mostrar necessidades",
+            "rect": {
+              "x": 174.5,
+              "y": 5,
+              "w": 44,
+              "h": 44,
+              "right": 218.5,
+              "bottom": 49
+            }
+          },
+          {
+            "id": "multiplayerBadge",
+            "label": "Status multiplayer",
+            "rect": {
+              "x": 311.359375,
+              "y": 43,
+              "w": 75.640625,
+              "h": 24,
+              "right": 387,
+              "bottom": 67
+            }
+          },
+          {
+            "id": "quickToggleBtn",
+            "label": "Abrir menu do mundo",
+            "rect": {
+              "x": 342,
+              "y": 156,
+              "w": 44,
+              "h": 44,
+              "right": 386,
+              "bottom": 200
+            }
+          },
+          {
+            "id": "miniNav",
+            "label": "Abrir mapa e navegação",
+            "rect": {
+              "x": 236,
+              "y": 70,
+              "w": 150,
+              "h": 80,
+              "right": 386,
+              "bottom": 150
+            }
+          },
+          {
+            "id": "cameraNearBtn",
+            "label": "Aproximar câmera",
+            "rect": {
+              "x": 246,
+              "y": 204,
+              "w": 44,
+              "h": 44,
+              "right": 290,
+              "bottom": 248
+            }
+          },
+          {
+            "id": "cameraPitchUpBtn",
+            "label": "Levantar câmera e olhar mais para baixo",
+            "rect": {
+              "x": 294,
+              "y": 204,
+              "w": 44,
+              "h": 44,
+              "right": 338,
+              "bottom": 248
+            }
+          },
+          {
+            "id": "cameraPitchDownBtn",
+            "label": "Abaixar câmera e olhar para o horizonte",
+            "rect": {
+              "x": 342,
+              "y": 204,
+              "w": 44,
+              "h": 44,
+              "right": 386,
+              "bottom": 248
+            }
+          },
+          {
+            "id": "cameraResetBtn",
+            "label": "Centralizar câmera",
+            "rect": {
+              "x": 246,
+              "y": 252,
+              "w": 44,
+              "h": 44,
+              "right": 290,
+              "bottom": 296
+            }
+          },
+          {
+            "id": "cameraFarBtn",
+            "label": "Afastar câmera",
+            "rect": {
+              "x": 294,
+              "y": 252,
+              "w": 44,
+              "h": 44,
+              "right": 338,
+              "bottom": 296
+            }
+          },
+          {
+            "id": "skillsToggleBtn",
+            "label": "Abrir habilidades",
+            "rect": {
+              "x": 160.5,
+              "y": 787,
+              "w": 72,
+              "h": 56,
+              "right": 232.5,
+              "bottom": 843
+            }
+          },
+          {
+            "id": "runBtn",
+            "label": "🏃Correr",
+            "rect": {
+              "x": 257,
+              "y": 716,
+              "w": 61,
+              "h": 61,
+              "right": 318,
+              "bottom": 777
+            }
+          },
+          {
+            "id": "specialBtn",
+            "label": "🔥Poder",
+            "rect": {
+              "x": 324,
+              "y": 716,
+              "w": 61,
+              "h": 61,
+              "right": 385,
+              "bottom": 777
+            }
+          },
+          {
+            "id": "actionBtn",
+            "label": "✋Atacar",
+            "rect": {
+              "x": 257,
+              "y": 783,
+              "w": 61,
+              "h": 61,
+              "right": 318,
+              "bottom": 844
+            }
+          },
+          {
+            "id": "jumpBtn",
+            "label": "⬆Pular",
+            "rect": {
+              "x": 324,
+              "y": 783,
+              "w": 61,
+              "h": 61,
+              "right": 385,
+              "bottom": 844
+            }
+          },
+          {
+            "id": "worldHeroBtn",
+            "label": "Usar poder OTTHI",
+            "rect": {
+              "x": 323,
+              "y": 642,
+              "w": 52,
+              "h": 52,
+              "right": 375,
+              "bottom": 694
+            }
+          },
+          {
+            "id": "worldCampaignBtn",
+            "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+            "rect": {
+              "x": 234,
+              "y": 156,
+              "w": 103,
+              "h": 44,
+              "right": 337,
+              "bottom": 200
+            }
+          }
+        ],
+        "issues": [],
+        "body": "otthi-world-shell otthi-v705-world otthi-portrait ui-portrait ui-compact otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world"
+      },
+      "cleanAgain": {
+        "width": 393,
+        "height": 852,
+        "buttons": [
+          {
+            "id": "needsToggleBtn",
+            "label": "Mostrar necessidades",
+            "rect": {
+              "x": 174.5,
+              "y": 5,
+              "w": 44,
+              "h": 44,
+              "right": 218.5,
+              "bottom": 49
+            }
+          },
+          {
+            "id": "quickToggleBtn",
+            "label": "Abrir menu do mundo",
+            "rect": {
+              "x": 341,
+              "y": 66,
+              "w": 44,
+              "h": 44,
+              "right": 385,
+              "bottom": 110
+            }
+          },
+          {
+            "id": "miniNav",
+            "label": "Abrir mapa e navegação",
+            "rect": {
+              "x": 261,
+              "y": 66,
+              "w": 72,
+              "h": 44,
+              "right": 333,
+              "bottom": 110
+            }
+          },
+          {
+            "id": "runBtn",
+            "label": "🏃Correr",
+            "rect": {
+              "x": 257,
+              "y": 716,
+              "w": 61,
+              "h": 61,
+              "right": 318,
+              "bottom": 777
+            }
+          },
+          {
+            "id": "jumpBtn",
+            "label": "⬆Pular",
+            "rect": {
+              "x": 324,
+              "y": 783,
+              "w": 61,
+              "h": 61,
+              "right": 385,
+              "bottom": 844
+            }
+          }
+        ],
+        "issues": [],
+        "body": "otthi-world-shell otthi-v705-world otthi-portrait ui-portrait ui-compact otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world world-hud-clean world-hud-walking world-hud-action-idle"
+      }
+    },
+    {
+      "name": "native-vehicle-exit-and-construction-cancel-preserved",
+      "passed": true,
+      "vehicle": {
+        "x": 56,
+        "z": -109.2,
+        "active": true,
+        "heading": 1.5707963267948966,
+        "vehicleId": "ottovias-service"
+      }
+    }
+  ],
+  "limits": [
+    "Native menus, pointer/keyboard input, tool visual, state persistence and viewport layout in Chromium with a disposable local RTDB fixture. No production account or database writes.",
+    "Drawing is capped during functional checks and rendered natively for captures. No physical phone, touch-latency, FPS, camera or thermal certification.",
+    "Historical baseline button counts come from the pinned 705.28.27 viewport report; the test also compares full/clean modes of this actual build. Player placement uses the existing QA teleport API only before movement/control scenarios."
+  ],
+  "initial": {
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "tool": "none",
+    "owned": [
+      "axe",
+      "pickaxe",
+      "bucket",
+      "hoe",
+      "shovel"
+    ],
+    "harvested": {
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "water": 0,
+      "bait": 0,
+      "crops": 0,
+      "clay": 0
+    },
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "goldOre": 0,
+      "goldBar": 0,
+      "food": 2,
+      "water": 2,
+      "crystals": 0,
+      "blocks": 4,
+      "fences": 2,
+      "keys": 0,
+      "fishingRod": 1,
+      "bait": 5,
+      "seeds": 6,
+      "wheat": 0,
+      "carrots": 0,
+      "clay": 0,
+      "rawFish": 0,
+      "cookedFish": 0,
+      "forestResources": 0
+    },
+    "vehicles": [
+      "garage-orange"
+    ],
+    "coins": 2345,
+    "toolVisual": false,
+    "toolAttached": false,
+    "player": {
+      "x": -18,
+      "z": 39
+    },
+    "camera": {
+      "zoom": 0,
+      "pitch": 0.28,
+      "yaw": 0
+    },
+    "build": null,
+    "context": null
+  },
+  "errors": [],
+  "passed": true,
+  "diagnosticOnly": true
+}

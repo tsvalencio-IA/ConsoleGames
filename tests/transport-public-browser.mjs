@@ -2,7 +2,7 @@
  * remote account/analytics SDKs blocked. Only travel setup uses the public QA API. */
 import {chromium} from 'playwright';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {browserNetwork,browserContextNetwork} from './helpers/browser-network.mjs';
-const base='https://otthi-world-campanha-teste.vercel.app/games/otthi/',origin=new URL(base).origin,out='test-results/transport-public-browser';fs.mkdirSync(out,{recursive:true});
+const base=process.env.WORLD_PUBLIC_BASE||'https://otthi-world-campanha-teste.vercel.app/games/otthi/',origin=new URL(base).origin,out=process.env.WORLD_PUBLIC_OUT||'test-results/transport-public-browser';fs.mkdirSync(out,{recursive:true});
 const expected=JSON.parse(fs.readFileSync('games/otthi/VERSION.json'));
 const browser=await chromium.launch({...browserNetwork(base),executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 let page;const errors=[],report={browser:browser.version(),base};

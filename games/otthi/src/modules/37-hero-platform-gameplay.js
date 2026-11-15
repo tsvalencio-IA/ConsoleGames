@@ -11,7 +11,13 @@
     skyLeap:Object.freeze({id:'skyLeap',icon:'⬆',name:'Salto celeste',cost:28,cooldown:2600,description:'Super salto para plataformas e áreas verticais.'}),
     magnetWave:Object.freeze({id:'magnetWave',icon:'◎',name:'Onda magnética',cost:30,cooldown:3600,description:'Atrai cristais e enfraquece monstros ao redor.'})
   });
-  function worldHeroState(){ensureOtthiWorldState();return state.adventures.hero;}
+  function worldHeroState(){
+    // Bootstrap and garage operations normalize the complete world. A hero
+    // animation/read must not clone every owned vehicle and account setting.
+    if(!state.adventures||!state.vehicles||!state.avatar||!state.settings)ensureOtthiWorldState();
+    state.adventures={...state.adventures,hero:normalizeWorldHeroRecord(state.adventures.hero)};
+    return state.adventures.hero;
+  }
   function heroPowerUnlocked(id){return worldHeroState().unlocked.includes(id);}
   function heroPowerReady(power){const hero=worldHeroState();return performance.now()-Number(hero.lastUse||0)>=power.cooldown&&hero.energy>=power.cost;}
   function createHeroPulseVisual(color=0x5de6ff,radius=5){
@@ -62,9 +68,19 @@
       if(challenge.active&&challenge.collected===challenge.tokens.length&&Math.hypot(player.x-5,player.z-89)<2.4&&player.y>8)completeWorldHeroChallenge();
       if(challenge.active&&player.y<-.5){const safe=challenge.lastCheckpoint||challenge.start;player.x=safe.x;player.z=safe.z;player.y=safe.y+.35;player.vx=player.vz=player.vy=0;player.grounded=true;toast('Retorno ao último cristal do circuito.','warn',1300);}
     }
-    updateWorldHeroHud();
+    updateWorldHeroHud(state.adventures.hero);
   }
   function ensureWorldHeroHud(){
     if(document.getElementById('worldHeroBtn'))return;const button=document.createElement('button');button.id='worldHeroBtn';button.className='world-hero-action';button.type='button';button.setAttribute('aria-label','Usar poder OTTHI');button.innerHTML='<b data-world-hero-icon>⚡</b><span data-world-hero-energy>100</span>';button.onclick=()=>activateWorldHeroPower();document.getElementById('game')?.appendChild(button);
   }
-  function updateWorldHeroHud(){const button=document.getElementById('worldHeroBtn');if(!button)return;const hero=worldHeroState(),power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse;button.querySelector('[data-world-hero-icon]').textContent=power.icon;button.querySelector('[data-world-hero-energy]').textContent=Math.round(hero.energy);button.disabled=hero.energy<power.cost;button.title=`${power.name} • ${Math.round(hero.energy)}%`;}
+  function updateWorldHeroHud(hero=worldHeroState()){
+    const button=document.getElementById('worldHeroBtn');if(!button)return;
+    const power=OTTHI_WORLD_HERO_POWERS[hero.selectedPower]||OTTHI_WORLD_HERO_POWERS.energyPulse,energy=String(Math.round(hero.energy)),disabled=hero.energy<power.cost,title=`${power.name} • ${energy}%`;
+    // These nodes belong to this HUD element, so a rebuilt game gets fresh
+    // references. Stable simulation steps do not rewrite unchanged DOM.
+    const nodes=button.otthiHeroNodes||(button.otthiHeroNodes={icon:button.querySelector('[data-world-hero-icon]'),energy:button.querySelector('[data-world-hero-energy]')});
+    if(nodes.icon.textContent!==power.icon)nodes.icon.textContent=power.icon;
+    if(nodes.energy.textContent!==energy)nodes.energy.textContent=energy;
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(button.title!==title)button.title=title;
+  }

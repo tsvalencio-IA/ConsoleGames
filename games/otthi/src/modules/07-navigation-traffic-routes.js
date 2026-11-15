@@ -100,7 +100,9 @@
   }
   function trafficYields(a,b,heading){
     const pa=trafficPriority(a),pb=trafficPriority(b.ref||b);if(pa!==pb)return pa<pb;
-    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return Math.abs(aw-bw)>80?aw>bw:String(a.id)>String(b.ref?.id||b.id);
+    // Aged queues need one total order. A pairwise time tolerance can make
+    // three close arrivals yield in a circle, even after the recovery delay.
+    const now=performance.now(),aw=Number(a.trafficQueuedAt||now),bw=Number((b.ref||b).trafficQueuedAt||now);if(Math.min(aw,bw)<now-2200)return aw!==bw?aw>bw:String(a.id)>String(b.ref?.id||b.id);
     const h=Number(b.group.rotation.y||0),dot=Math.cos(h-heading),dx=b.group.position.x-a.group.position.x,dz=b.group.position.z-a.group.position.z;
     // At an unmarked crossing, yield to the vehicle approaching from the right.
     if(Math.abs(dot)<.72){const side=-dx*Math.cos(heading)+dz*Math.sin(heading);if(Math.abs(side)>.25)return side>0;}
@@ -118,7 +120,15 @@
       }
       if(trafficBodiesOverlap(body,ob,.12)&&forward>-.1){const turning=Math.abs(Math.atan2(Math.sin(heading-Number(actor.group.rotation.y||0)),Math.cos(heading-Number(actor.group.rotation.y||0))))>.35,canCreep=turning&&now-Number(actor.trafficQueuedAt||now)>2200&&!trafficYields(actor,other,heading)&&!trafficBodiesOverlap(trafficBody(actor),ob,.24);factor=Math.min(factor,canCreep?.12:0);}
     }
-    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);if(result<.2){actor.trafficQueuedAt||=now;}else if(result>.5)actor.trafficQueuedAt=0;return result;
+    const result=clamp(Math.min(factor,trafficPedestrianFactor(actor,heading,lookAhead),typeof cityTrafficSignalFactor==='function'?cityTrafficSignalFactor(actor,heading,lookAhead):1),0,1);
+    if(result<.2){actor.trafficQueuedAt||=now;actor.trafficQueuePose||={x:actor.group.position.x,z:actor.group.position.z};}
+    else if(result>.5&&actor.trafficQueuedAt){
+      // Permission to move is speculative: the overlap resolver may rewind the
+      // next pose. Only real progress releases the vehicle's queue age.
+      const queued=actor.trafficQueuePose||(actor.trafficQueuePose={x:actor.group.position.x,z:actor.group.position.z});
+      if(Math.hypot(actor.group.position.x-queued.x,actor.group.position.z-queued.z)>=.8){actor.trafficQueuedAt=0;actor.trafficQueuePose=null;}
+    }
+    return result;
   }
   function captureTrafficPositions(){const before=new Map();world.trafficSnapshot=null;for(const actor of trafficActorList())before.set(actor.id,{x:actor.group.position.x,z:actor.group.position.z,heading:Number(actor.group.rotation.y||0)});return before;}
   function trafficOverlapDepth(a,b,margin=.24){
@@ -148,8 +158,12 @@
       const a=actors[i];if(a.id>=b.id&&!b.isPlayer||!trafficBodiesOverlap(trafficBody(a),trafficBody(b),.24))continue;if(a.ref?.incidentLocked&&b.ref?.incidentLocked)continue;
       const y=a.isPlayer||a.ref?.phoneDelivery?b:b.isPlayer||b.ref?.phoneDelivery?a:trafficYields(a.ref,b,Number(a.group.rotation.y||0))?a:b,other=y===a?b:a;if(y.isPlayer||y.ref?.phoneDelivery)continue;
       const old=before?.get(y.id);if(old){y.group.position.x=old.x;y.group.position.z=old.z;y.group.rotation.y=old.heading;}
-      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
-      if(trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
+      y.ref.currentSpeed=0;y.ref.cachedSpeedFactor=0;y.ref.trafficQueuedAt||=performance.now();y.ref.trafficQueuePose||={x:y.group.position.x,z:y.group.position.z};y.ref.trafficHoldUntil=performance.now()+180;y.ref.trafficRecoveryUntil=performance.now()+1800;
+      // Rewinding can remove the immediate overlap without making the next
+      // steering pose possible. Old repeated attempts still need the same
+      // small, collision-checked clearance used for an existing contact.
+      const agedRetry=!!old&&performance.now()-Number(y.ref.trafficQueuedAt||performance.now())>2200;
+      if((trafficBodiesOverlap(trafficBody(y),trafficBody(other),.24)||agedRetry)&&!trafficOverlapBackOff(y,other,clearanceActors))trafficOverlapBackOff(other,y,clearanceActors);
     }world.trafficSnapshot=null;
   }
 

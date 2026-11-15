@@ -1,0 +1,158 @@
+[
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "checks": [
+      "scene and hand simultaneously visible",
+      "scene and move buttons simultaneously visible",
+      "no stage/input intersection",
+      "hand dwell changes view; release centers",
+      "move input changes player position",
+      "no horizontal scroll"
+    ],
+    "layout": {
+      "view": {
+        "left": 16,
+        "top": 124,
+        "right": 374,
+        "bottom": 435,
+        "width": 358,
+        "height": 311
+      },
+      "canvas": {
+        "left": 17,
+        "top": 155,
+        "right": 373,
+        "bottom": 345,
+        "width": 356,
+        "height": 190
+      },
+      "hand": {
+        "left": 27,
+        "top": 496.375,
+        "right": 180,
+        "bottom": 596.375,
+        "width": 153,
+        "height": 100
+      },
+      "move": {
+        "left": 261.59375,
+        "top": 486.1875,
+        "right": 311.390625,
+        "bottom": 528.1875,
+        "width": 49.796875,
+        "height": 42
+      },
+      "width": 390,
+      "height": 844,
+      "scroll": 390
+    },
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 740
+    },
+    "checks": [
+      "scene and hand simultaneously visible",
+      "scene and move buttons simultaneously visible",
+      "no stage/input intersection",
+      "hand dwell changes view; release centers",
+      "move input changes player position",
+      "no horizontal scroll"
+    ],
+    "layout": {
+      "view": {
+        "left": 16,
+        "top": 148,
+        "right": 344,
+        "bottom": 459,
+        "width": 328,
+        "height": 311
+      },
+      "canvas": {
+        "left": 17,
+        "top": 179,
+        "right": 343,
+        "bottom": 369,
+        "width": 326,
+        "height": 190
+      },
+      "hand": {
+        "left": 27,
+        "top": 520.375,
+        "right": 165,
+        "bottom": 620.375,
+        "width": 138,
+        "height": 100
+      },
+      "move": {
+        "left": 239.09375,
+        "top": 510.1875,
+        "right": 288.890625,
+        "bottom": 552.1875,
+        "width": 49.796875,
+        "height": 42
+      },
+      "width": 360,
+      "height": 740,
+      "scroll": 360
+    },
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 844,
+      "height": 390
+    },
+    "checks": [
+      "scene and hand simultaneously visible",
+      "scene and move buttons simultaneously visible",
+      "no stage/input intersection",
+      "hand dwell changes view; release centers",
+      "move input changes player position",
+      "no horizontal scroll"
+    ],
+    "layout": {
+      "view": {
+        "left": 16,
+        "top": 60,
+        "right": 546,
+        "bottom": 291,
+        "width": 530,
+        "height": 231
+      },
+      "canvas": {
+        "left": 17,
+        "top": 91,
+        "right": 545,
+        "bottom": 241,
+        "width": 528,
+        "height": 150
+      },
+      "hand": {
+        "left": 569,
+        "top": 93.1875,
+        "right": 817,
+        "bottom": 183.1875,
+        "width": 248,
+        "height": 90
+      },
+      "move": {
+        "left": 653,
+        "top": 318.375,
+        "right": 733,
+        "bottom": 360.375,
+        "width": 80,
+        "height": 42
+      },
+      "width": 844,
+      "height": 390,
+      "scroll": 844
+    },
+    "errors": []
+  }
+]

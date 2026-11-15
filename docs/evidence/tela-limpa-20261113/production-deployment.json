@@ -1,0 +1,37 @@
+{
+  "id": "dpl_HUk8uTXxWwLLWWyouXGm2px4sU2x",
+  "name": "otthi-world-campanha-teste",
+  "url": "otthi-world-campanha-teste-ia50hltjj-thiaguinho-s-projects.vercel.app",
+  "type": "LAMBDAS",
+  "state": "READY",
+  "createdAt": 1794567114977,
+  "creator": {
+    "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+    "username": "tsvalencio-ia"
+  },
+  "project": {
+    "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+    "name": "otthi-world-campanha-teste",
+    "framework": null
+  },
+  "meta": {
+    "githubCommitRef": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+    "githubCommitSha": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+    "githubCommitMessage": "Add empty hands and a compact exploration HUD with all controls preserved",
+    "githubRepo": "ConsoleGames",
+    "githubOrg": "tsvalencio-IA"
+  },
+  "alias": [
+    "otthi-world-campanha-teste.vercel.app",
+    "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+    "otthi-world-campanha-teste-git-2e3-e87aa7-thiaguinho-s-projects.vercel.app"
+  ],
+  "target": "production",
+  "regions": [
+    "iad1"
+  ],
+  "buildingAt": 1794567115961,
+  "ready": 1794567125690,
+  "readyState": "READY",
+  "aliasError": null
+}

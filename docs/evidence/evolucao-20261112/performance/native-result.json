@@ -1,0 +1,4523 @@
+{
+  "browser": "141.0.7390.37",
+  "cases": [
+    {
+      "frame": {
+        "samples": 70,
+        "mean": 281.49000000001064,
+        "p50": 277.80000000074506,
+        "p95": 531.5,
+        "max": 698.8999999985099,
+        "over100": 59,
+        "over250": 46
+      },
+      "work": {
+        "samples": 71,
+        "mean": 55.80422535187132,
+        "p50": 61,
+        "p95": 92.90000000223517,
+        "max": 105.89999999850988,
+        "over100": 2,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 47,
+        "mean": 73.25531914893617,
+        "p50": 73,
+        "p95": 100,
+        "max": 108,
+        "over100": 2,
+        "over250": 0
+      },
+      "renderMs": {
+        "samples": 71,
+        "mean": 22.198591549264293,
+        "p50": 14.399999998509884,
+        "p95": 52.399999998509884,
+        "max": 70.59999999776483,
+        "over100": 0,
+        "over250": 0
+      },
+      "matrixMs": {
+        "samples": 71,
+        "mean": 7.00281690124055,
+        "p50": 4.100000001490116,
+        "p95": 36.80000000074506,
+        "max": 53,
+        "over100": 0,
+        "over250": 0
+      },
+      "details": [
+        {
+          "ms": 12.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 404,
+          "triangles": 492069,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 18.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 408,
+          "triangles": 492369,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 384,
+          "triangles": 485801,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 385,
+          "triangles": 485801,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 366,
+          "triangles": 484223,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 54.69999999925494,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 370,
+          "triangles": 484247,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 376,
+          "triangles": 484283,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 382,
+          "triangles": 484319,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 19,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 389,
+          "triangles": 484367,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 387,
+          "triangles": 484343,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 387,
+          "triangles": 484343,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 51.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 388,
+          "triangles": 484355,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 388,
+          "triangles": 484355,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 391,
+          "triangles": 484379,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 47.69999999925494,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 392,
+          "triangles": 484391,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 52.19999999925494,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 401,
+          "triangles": 484905,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 70.59999999776483,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 408,
+          "triangles": 484919,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 407,
+          "triangles": 484911,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 42.30000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 408,
+          "triangles": 484923,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 42.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 411,
+          "triangles": 484987,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 413,
+          "triangles": 484999,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 415,
+          "triangles": 485035,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 420,
+          "triangles": 485095,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.200000002980232,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 420,
+          "triangles": 485095,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 47.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 422,
+          "triangles": 485131,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 426,
+          "triangles": 485169,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 51.400000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 428,
+          "triangles": 485247,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 430,
+          "triangles": 485259,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 48.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 432,
+          "triangles": 485297,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 432,
+          "triangles": 485297,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 432,
+          "triangles": 485287,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 432,
+          "triangles": 485337,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 52.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 437,
+          "triangles": 485525,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 436,
+          "triangles": 487478,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 441,
+          "triangles": 487574,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 436,
+          "triangles": 488058,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 441,
+          "triangles": 488118,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 8.400000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 441,
+          "triangles": 488154,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 52.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 447,
+          "triangles": 488903,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 452,
+          "triangles": 488975,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 460,
+          "triangles": 489419,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 46.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 465,
+          "triangles": 489469,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 469,
+          "triangles": 489509,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 441,
+          "triangles": 488275,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 442,
+          "triangles": 488287,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 447,
+          "triangles": 488337,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 449,
+          "triangles": 488357,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.700000002980232,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 454,
+          "triangles": 488407,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 39.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 457,
+          "triangles": 488433,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 8.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 462,
+          "triangles": 489001,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 464,
+          "triangles": 489015,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 471,
+          "triangles": 489099,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 18.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 478,
+          "triangles": 489179,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 485,
+          "triangles": 489263,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 47.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 492,
+          "triangles": 489347,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 498,
+          "triangles": 489419,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 508,
+          "triangles": 489529,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 44.80000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 513,
+          "triangles": 489585,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 520,
+          "triangles": 489669,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 533,
+          "triangles": 489815,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 50.80000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 537,
+          "triangles": 489853,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 545,
+          "triangles": 489939,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 548,
+          "triangles": 489975,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.599999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 551,
+          "triangles": 490011,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 559,
+          "triangles": 490097,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 20.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 565,
+          "triangles": 490297,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 571,
+          "triangles": 490359,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 46.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 580,
+          "triangles": 490447,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 583,
+          "triangles": 490483,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 583,
+          "triangles": 490483,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 582,
+          "triangles": 490471,
+          "preparation": {
+            "models": 44,
+            "ms": 9655
+          },
+          "scenePreparation": {
+            "ms": 2540,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        }
+      ],
+      "preparation": {
+        "models": 44,
+        "ms": 9655
+      },
+      "scenePreparation": {
+        "ms": 2540,
+        "programs": 78,
+        "lightingVariants": 2
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "quality": "low",
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -9.37,
+            "y": 0,
+            "z": 74.94,
+            "r": 0.236,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794528677798,
+            "type": "position",
+            "id": "live-profile-local",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -9.37,
+            "vehicleY": 0,
+            "vehicleZ": 74.94,
+            "vehicleR": 0.236,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "axe",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 2.7,
+        "simulationHz": 22
+      },
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "family": {
+        "ready": true,
+        "home": {
+          "x": -38,
+          "z": -24
+        },
+        "actors": [
+          {
+            "id": "thiago",
+            "x": -6.618532454360995,
+            "z": 86.42278144016308,
+            "bones": 24,
+            "vertices": 164562,
+            "uniqueVertices": 31956,
+            "drawCalls": 1
+          },
+          {
+            "id": "thamis",
+            "x": -8.387647528074433,
+            "z": 83.97920335036036,
+            "bones": 25,
+            "vertices": 226968,
+            "uniqueVertices": 43480,
+            "drawCalls": 1
+          },
+          {
+            "id": "luna",
+            "x": -7.269402130796839,
+            "z": 83.71082445501374,
+            "bones": 13,
+            "vertices": 205176,
+            "uniqueVertices": 46812,
+            "drawCalls": 1
+          },
+          {
+            "id": "liz",
+            "x": -6.151156733519244,
+            "z": 83.4424455596671,
+            "bones": 13,
+            "vertices": 209400,
+            "uniqueVertices": 47082,
+            "drawCalls": 1
+          }
+        ],
+        "progress": {
+          "party": {
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ]
+          },
+          "toy": "ball",
+          "deliveries": {
+            "luna": 0,
+            "liz": 0
+          },
+          "flags": {}
+        },
+        "party": {
+          "owner": "browser-test-user-123456789012345",
+          "controller": "thiago",
+          "members": [
+            "thiago",
+            "thamis",
+            "luna",
+            "liz"
+          ]
+        },
+        "ride": null,
+        "seated": [],
+        "authority": true,
+        "ball": null
+      },
+      "game": {
+        "running": true,
+        "paused": false,
+        "currentHouse": null,
+        "cameraMode": "openworld",
+        "player": {
+          "x": -6.618532454360995,
+          "y": 0,
+          "z": 86.42278144016308,
+          "vx": 1.3229999999999997,
+          "vy": 0,
+          "vz": 5.512499999999998,
+          "facing": 0.23554498072086336,
+          "grounded": true,
+          "vehicle": false,
+          "sitUntil": 0,
+          "lastGrounded": 57620.60000000149,
+          "lastSafeX": -6.816982454360996,
+          "lastSafeY": 0,
+          "lastSafeZ": 85.59590644016306,
+          "lastSafeAt": 57590.800000000745,
+          "invalidSince": 0,
+          "jumpBuffer": 0,
+          "airJumpAvailable": true,
+          "lastJumpWasAir": false,
+          "attackUntil": 0,
+          "damageUntil": 0,
+          "shieldUntil": 0,
+          "skillDashUntil": 0,
+          "scaleMode": "normal",
+          "crouched": false,
+          "spinUntil": 0,
+          "preVehicleAbilities": null,
+          "hornUntil": 0,
+          "emoteUntil": 0,
+          "emoteType": "",
+          "emoteSeq": 0,
+          "boating": false,
+          "transit": {
+            "mode": "",
+            "busId": "",
+            "requestStop": false,
+            "metroUntil": 0
+          },
+          "boat": {
+            "heading": 0,
+            "speed": 0,
+            "steerVisual": 0,
+            "passengerOf": "",
+            "passengerUid": "",
+            "passengerBotId": "",
+            "hostMissingAt": 0
+          },
+          "car": {
+            "id": "",
+            "kind": "car",
+            "label": "Carro",
+            "heading": 3.141592653589793,
+            "speed": 0,
+            "steerVisual": 0,
+            "drift": 0,
+            "_prevSpeed": 0,
+            "turboUntil": 0,
+            "sirenActive": false,
+            "utilityCooldownUntil": 0,
+            "passengerOf": "",
+            "passengerUid": "",
+            "passengerUids": [],
+            "passengerBotId": "",
+            "hostMissingAt": 0
+          },
+          "recoveryReason": "",
+          "swimming": false,
+          "nextRecoveryScanAt": 57870.70000000298
+        },
+        "objects": {
+          "houses": 32,
+          "npcs": 138,
+          "enemies": 0,
+          "interactables": 846,
+          "builds": 0,
+          "vehicles": 23,
+          "buses": 7,
+          "metroStations": 7,
+          "policeCars": 2,
+          "resources": 72,
+          "school": true,
+          "policeStation": true,
+          "mine": true,
+          "well": true
+        }
+      },
+      "render": {
+        "calls": 582,
+        "triangles": 490471
+      },
+      "hotspots": [
+        {
+          "us": 15399450,
+          "functionName": "(idle)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 631347,
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 231507,
+          "functionName": "updateVisualLOD",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 3167,
+          "columnNumber": 26
+        },
+        {
+          "us": 181968,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 3140,
+          "columnNumber": 39
+        },
+        {
+          "us": 178441,
+          "functionName": "At",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 344288
+        },
+        {
+          "us": 137029,
+          "functionName": "At",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 344288
+        },
+        {
+          "us": 133448,
+          "functionName": "fetch",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 118394,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 3140,
+          "columnNumber": 39
+        },
+        {
+          "us": 99493,
+          "functionName": "renderBufferDirect",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 342794
+        },
+        {
+          "us": 86078,
+          "functionName": "",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 243894
+        },
+        {
+          "us": 86071,
+          "functionName": "visualWorldMatrix",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 266,
+          "columnNumber": 28
+        },
+        {
+          "us": 73839,
+          "functionName": "projectPointToPolyline",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 2292,
+          "columnNumber": 33
+        },
+        {
+          "us": 73804,
+          "functionName": "snapTrafficToRoad",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 2297,
+          "columnNumber": 28
+        },
+        {
+          "us": 65328,
+          "functionName": "updateOttoviasTraffic",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 4555,
+          "columnNumber": 32
+        },
+        {
+          "us": 64877,
+          "functionName": "setup",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 243585
+        },
+        {
+          "us": 64428,
+          "functionName": "compose",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 53168
+        },
+        {
+          "us": 59804,
+          "functionName": "v704RoadAt",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 2038,
+          "columnNumber": 21
+        },
+        {
+          "us": 59209,
+          "functionName": "multiplyMatrices",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 49646
+        },
+        {
+          "us": 53578,
+          "functionName": "Ct",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 345722
+        },
+        {
+          "us": 51825,
+          "functionName": "nearbyWorldHighwaySegments",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 13122,
+          "columnNumber": 37
+        },
+        {
+          "us": 50819,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 3140,
+          "columnNumber": 39
+        },
+        {
+          "us": 49556,
+          "functionName": "getBoundingClientRect",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 44799,
+          "functionName": "updateCivilMissions",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 12913,
+          "columnNumber": 29
+        },
+        {
+          "us": 44460,
+          "functionName": "nearbyTrafficActors",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 2320,
+          "columnNumber": 30
+        },
+        {
+          "us": 43687,
+          "functionName": "nearestInteractable",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 7467,
+          "columnNumber": 30
+        },
+        {
+          "us": 43601,
+          "functionName": "resolveCollisions",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 7163,
+          "columnNumber": 28
+        },
+        {
+          "us": 41376,
+          "functionName": "professionalTerrainHeightAt",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 9346,
+          "columnNumber": 38
+        },
+        {
+          "us": 40452,
+          "functionName": "traverseVisible",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 62968
+        },
+        {
+          "us": 39057,
+          "functionName": "trafficSpeedFactor",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 12460,
+          "columnNumber": 28
+        },
+        {
+          "us": 38957,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 3140,
+          "columnNumber": 39
+        },
+        {
+          "us": 38601,
+          "functionName": "multiplyMatrices",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70659",
+          "lineNumber": 5,
+          "columnNumber": 49646
+        },
+        {
+          "us": 37451,
+          "functionName": "professionalTerrainHeightAt",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 9346,
+          "columnNumber": 38
+        },
+        {
+          "us": 37387,
+          "functionName": "updateWorldEvolution",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 9436,
+          "columnNumber": 31
+        },
+        {
+          "us": 37209,
+          "functionName": "civilCablePoint",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 12746,
+          "columnNumber": 25
+        },
+        {
+          "us": 36341,
+          "functionName": "(garbage collector)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 36315,
+          "functionName": "workshopMechanicActionSnapshot",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 12979,
+          "columnNumber": 106
+        },
+        {
+          "us": 35475,
+          "functionName": "ensureOtthiWorldState",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 8411,
+          "columnNumber": 32
+        },
+        {
+          "us": 35356,
+          "functionName": "drawMiniMap",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 13551,
+          "columnNumber": 60
+        },
+        {
+          "us": 35216,
+          "functionName": "airSyncObstacles",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 12332,
+          "columnNumber": 26
+        },
+        {
+          "us": 35153,
+          "functionName": "updateTrafficIncidents",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70659&release=world-20261028-3",
+          "lineNumber": 5112,
+          "columnNumber": 33
+        }
+      ],
+      "drawRoots": [
+        [
+          "Group:MeshStandardMaterial",
+          344
+        ],
+        [
+          "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+          46
+        ],
+        [
+          "BoxGeometry:MeshStandardMaterial",
+          42
+        ],
+        [
+          "CAMPAIGN_PARKED_AIRCRAFT",
+          15
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/world/textures/wood-basecolor.png",
+          12
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/textures/roof-v628.png",
+          11
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+          10
+        ],
+        [
+          "ACTIVITY_VENUE_dance",
+          9
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/world/textures/wood-basecolor.png",
+          8
+        ],
+        [
+          "OT_CIVIL_AIRPORT",
+          6
+        ],
+        [
+          "OTTHI_OTTOVIAS_OPERATIONS",
+          5
+        ],
+        [
+          "OTTHOS_PLAYER",
+          4
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/world/textures/stone-basecolor.png",
+          4
+        ],
+        [
+          "OTTHI_OTTOVIAS_HIGHWAY_NETWORK",
+          4
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/textures/brick-v628.png",
+          4
+        ],
+        [
+          "OTTHI_CONTINUOUS_ROAD_SURFACE",
+          4
+        ],
+        [
+          "CircleGeometry:MeshBasicMaterial",
+          4
+        ],
+        [
+          "OTTHI_LOD_backdrop--24--206",
+          3
+        ]
+      ],
+      "label": "before",
+      "errors": []
+    },
+    {
+      "frame": {
+        "samples": 70,
+        "mean": 283.1314285714179,
+        "p50": 269,
+        "p95": 744.6000000014901,
+        "max": 946.5,
+        "over100": 47,
+        "over250": 39
+      },
+      "work": {
+        "samples": 71,
+        "mean": 50.71549295775697,
+        "p50": 51.19999999925494,
+        "p95": 84.30000000074506,
+        "max": 94.30000000074506,
+        "over100": 0,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 38,
+        "mean": 71.3157894736842,
+        "p50": 72,
+        "p95": 94,
+        "max": 96,
+        "over100": 0,
+        "over250": 0
+      },
+      "renderMs": {
+        "samples": 69,
+        "mean": 22.075362318883773,
+        "p50": 16.699999999254942,
+        "p95": 51.600000001490116,
+        "max": 59.5,
+        "over100": 0,
+        "over250": 0
+      },
+      "matrixMs": {
+        "samples": 69,
+        "mean": 7.260869565379361,
+        "p50": 4.599999997764826,
+        "p95": 30.599999997764826,
+        "max": 46.5,
+        "over100": 0,
+        "over250": 0
+      },
+      "details": [
+        {
+          "ms": 9.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 396,
+          "triangles": 491957,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 397,
+          "triangles": 491969,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 21.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 405,
+          "triangles": 492069,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 410,
+          "triangles": 492381,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 59.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 412,
+          "triangles": 492421,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 387,
+          "triangles": 485813,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 389,
+          "triangles": 485825,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 366,
+          "triangles": 484211,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 375,
+          "triangles": 484261,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.400000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 382,
+          "triangles": 484309,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 26.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 396,
+          "triangles": 503477,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 18.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 397,
+          "triangles": 515097,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 397,
+          "triangles": 515097,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 21.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 397,
+          "triangles": 515097,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 398,
+          "triangles": 515109,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 15.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 404,
+          "triangles": 523489,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 51.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 407,
+          "triangles": 523941,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 29.399999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 420,
+          "triangles": 524027,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 21.799999997019768,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 418,
+          "triangles": 523997,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 417,
+          "triangles": 523985,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 27.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 421,
+          "triangles": 524033,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 24,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 422,
+          "triangles": 524073,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 36.80000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 422,
+          "triangles": 524073,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 37.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 424,
+          "triangles": 524097,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.299999997019768,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 428,
+          "triangles": 524145,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 8.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 431,
+          "triangles": 528353,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 40.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 433,
+          "triangles": 528377,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 20.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 436,
+          "triangles": 532585,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 443,
+          "triangles": 532677,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 440,
+          "triangles": 532665,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 442,
+          "triangles": 532677,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.799999997019768,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 445,
+          "triangles": 532703,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 446,
+          "triangles": 532715,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.700000002980232,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 445,
+          "triangles": 532703,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 446,
+          "triangles": 532715,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.800000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 444,
+          "triangles": 532721,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 53.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 446,
+          "triangles": 532745,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 444,
+          "triangles": 532769,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 23,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 449,
+          "triangles": 534758,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 447,
+          "triangles": 534794,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 453,
+          "triangles": 535502,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 48.30000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 453,
+          "triangles": 535538,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 27.300000000745058,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 455,
+          "triangles": 535714,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 457,
+          "triangles": 541764,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 13.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 467,
+          "triangles": 591651,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 46.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 470,
+          "triangles": 591687,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 16.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 477,
+          "triangles": 592107,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 19.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 484,
+          "triangles": 596353,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 42.19999999925494,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 493,
+          "triangles": 608057,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 58.100000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 467,
+          "triangles": 606847,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 9.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 474,
+          "triangles": 606911,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 17.199999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 481,
+          "triangles": 606981,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.5,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 486,
+          "triangles": 607031,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 18.699999999254942,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 488,
+          "triangles": 607045,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 41.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 491,
+          "triangles": 611761,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 23.700000002980232,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 496,
+          "triangles": 615993,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 50.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 501,
+          "triangles": 616043,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 8.900000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 506,
+          "triangles": 616099,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 8.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 509,
+          "triangles": 616135,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 14,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 515,
+          "triangles": 616207,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.400000002235174,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 519,
+          "triangles": 616255,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11.899999998509884,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 525,
+          "triangles": 616327,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 527,
+          "triangles": 616351,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 10.600000001490116,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 533,
+          "triangles": 616423,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 42.80000000074506,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 542,
+          "triangles": 616521,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 40,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 547,
+          "triangles": 616577,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 12.299999997019768,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 552,
+          "triangles": 616637,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 11,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 566,
+          "triangles": 616795,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        },
+        {
+          "ms": 40.099999997764826,
+          "beforePrograms": 93,
+          "afterPrograms": 93,
+          "lights": {
+            "HemisphereLight": 1,
+            "DirectionalLight": 2
+          },
+          "calls": 571,
+          "triangles": 616845,
+          "preparation": {
+            "models": 44,
+            "ms": 7214
+          },
+          "scenePreparation": {
+            "ms": 767,
+            "programs": 78,
+            "lightingVariants": 2
+          }
+        }
+      ],
+      "preparation": {
+        "models": 44,
+        "ms": 7214
+      },
+      "scenePreparation": {
+        "ms": 767,
+        "programs": 78,
+        "lightingVariants": 2
+      },
+      "catalog": 44,
+      "npcs": 138,
+      "trafficModels": 44,
+      "quality": "low",
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -10.98,
+            "y": 0,
+            "z": 68.23,
+            "r": 0.236,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794528735267,
+            "type": "position",
+            "id": "live-profile-local",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -10.98,
+            "vehicleY": 0,
+            "vehicleZ": 68.23,
+            "vehicleR": 0.236,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "axe",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      },
+      "governor": {
+        "mode": "auto",
+        "tier": "low",
+        "renderScale": 0.55,
+        "pressure": 100,
+        "protections": 1,
+        "recoveries": 0,
+        "reason": "fps-pressure",
+        "rafHz": 3.6,
+        "simulationHz": 23.5
+      },
+      "drawingBuffer": {
+        "width": 172,
+        "height": 374,
+        "dpr": 0.44000000000000006
+      },
+      "family": {
+        "ready": true,
+        "home": {
+          "x": -38,
+          "z": -24
+        },
+        "actors": [
+          {
+            "id": "thiago",
+            "x": -8.051782454361003,
+            "z": 80.45090644016297,
+            "bones": 24,
+            "vertices": 164562,
+            "uniqueVertices": 31956,
+            "drawCalls": 1
+          },
+          {
+            "id": "thamis",
+            "x": -9.776797528074441,
+            "z": 78.19107835036026,
+            "bones": 25,
+            "vertices": 226968,
+            "uniqueVertices": 43480,
+            "drawCalls": 1
+          },
+          {
+            "id": "luna",
+            "x": -8.658552130796846,
+            "z": 77.92269945501363,
+            "bones": 13,
+            "vertices": 205176,
+            "uniqueVertices": 46812,
+            "drawCalls": 1
+          },
+          {
+            "id": "liz",
+            "x": -7.540306733519251,
+            "z": 77.654320559667,
+            "bones": 13,
+            "vertices": 209400,
+            "uniqueVertices": 47082,
+            "drawCalls": 1
+          }
+        ],
+        "progress": {
+          "party": {
+            "controller": "thiago",
+            "members": [
+              "thiago",
+              "thamis",
+              "luna",
+              "liz"
+            ]
+          },
+          "toy": "ball",
+          "deliveries": {
+            "luna": 0,
+            "liz": 0
+          },
+          "flags": {}
+        },
+        "party": {
+          "owner": "browser-test-user-123456789012345",
+          "controller": "thiago",
+          "members": [
+            "thiago",
+            "thamis",
+            "luna",
+            "liz"
+          ]
+        },
+        "ride": null,
+        "seated": [],
+        "authority": true,
+        "ball": null
+      },
+      "game": {
+        "running": true,
+        "paused": false,
+        "currentHouse": null,
+        "cameraMode": "openworld",
+        "player": {
+          "x": -8.051782454361003,
+          "y": 0,
+          "z": 80.45090644016297,
+          "vx": 1.3229999999999997,
+          "vy": 0,
+          "vz": 5.512499999999998,
+          "facing": 0.23554498072086336,
+          "grounded": true,
+          "vehicle": false,
+          "sitUntil": 0,
+          "lastGrounded": 54900.199999999255,
+          "lastSafeX": -8.206132454361004,
+          "lastSafeY": 0,
+          "lastSafeZ": 79.80778144016296,
+          "lastSafeAt": 54877.800000000745,
+          "invalidSince": 0,
+          "jumpBuffer": 0,
+          "airJumpAvailable": true,
+          "lastJumpWasAir": false,
+          "attackUntil": 0,
+          "damageUntil": 0,
+          "shieldUntil": 0,
+          "skillDashUntil": 0,
+          "scaleMode": "normal",
+          "crouched": false,
+          "spinUntil": 0,
+          "preVehicleAbilities": null,
+          "hornUntil": 0,
+          "emoteUntil": 0,
+          "emoteType": "",
+          "emoteSeq": 0,
+          "boating": false,
+          "transit": {
+            "mode": "",
+            "busId": "",
+            "requestStop": false,
+            "metroUntil": 0
+          },
+          "boat": {
+            "heading": 0,
+            "speed": 0,
+            "steerVisual": 0,
+            "passengerOf": "",
+            "passengerUid": "",
+            "passengerBotId": "",
+            "hostMissingAt": 0
+          },
+          "car": {
+            "id": "",
+            "kind": "car",
+            "label": "Carro",
+            "heading": 3.141592653589793,
+            "speed": 0,
+            "steerVisual": 0,
+            "drift": 0,
+            "_prevSpeed": 0,
+            "turboUntil": 0,
+            "sirenActive": false,
+            "utilityCooldownUntil": 0,
+            "passengerOf": "",
+            "passengerUid": "",
+            "passengerUids": [],
+            "passengerBotId": "",
+            "hostMissingAt": 0
+          },
+          "recoveryReason": "",
+          "swimming": false,
+          "nextRecoveryScanAt": 55157.699999999255
+        },
+        "objects": {
+          "houses": 32,
+          "npcs": 138,
+          "enemies": 0,
+          "interactables": 846,
+          "builds": 0,
+          "vehicles": 23,
+          "buses": 7,
+          "metroStations": 7,
+          "policeCars": 2,
+          "resources": 72,
+          "school": true,
+          "policeStation": true,
+          "mine": true,
+          "well": true
+        }
+      },
+      "render": {
+        "calls": 571,
+        "triangles": 616845
+      },
+      "hotspots": [
+        {
+          "us": 15810983,
+          "functionName": "(idle)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 682060,
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 230463,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 3154,
+          "columnNumber": 39
+        },
+        {
+          "us": 135661,
+          "functionName": "At",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 344288
+        },
+        {
+          "us": 129400,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 3154,
+          "columnNumber": 39
+        },
+        {
+          "us": 128655,
+          "functionName": "visualWorldMatrix",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 266,
+          "columnNumber": 28
+        },
+        {
+          "us": 126607,
+          "functionName": "updateManagedOutlineVisibility",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 273,
+          "columnNumber": 41
+        },
+        {
+          "us": 120416,
+          "functionName": "updateVisualLOD",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 3181,
+          "columnNumber": 26
+        },
+        {
+          "us": 118053,
+          "functionName": "(garbage collector)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 97140,
+          "functionName": "fetch",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 84424,
+          "functionName": "",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 243894
+        },
+        {
+          "us": 83351,
+          "functionName": "At",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 344288
+        },
+        {
+          "us": 70434,
+          "functionName": "projectPointToPolyline",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 2292,
+          "columnNumber": 33
+        },
+        {
+          "us": 68735,
+          "functionName": "setup",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 243585
+        },
+        {
+          "us": 67305,
+          "functionName": "renderBufferDirect",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 342794
+        },
+        {
+          "us": 66833,
+          "functionName": "updateVisibleWorldMatrices",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 3154,
+          "columnNumber": 39
+        },
+        {
+          "us": 58366,
+          "functionName": "visualWorldMatrix",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 266,
+          "columnNumber": 28
+        },
+        {
+          "us": 52684,
+          "functionName": "updatePlayer",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 7227,
+          "columnNumber": 23
+        },
+        {
+          "us": 50977,
+          "functionName": "Ct",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 345722
+        },
+        {
+          "us": 48795,
+          "functionName": "gameLoop",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 8052,
+          "columnNumber": 19
+        },
+        {
+          "us": 47594,
+          "functionName": "nearestInteractable",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 7481,
+          "columnNumber": 30
+        },
+        {
+          "us": 42586,
+          "functionName": "v705NpcSeparation",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 7370,
+          "columnNumber": 28
+        },
+        {
+          "us": 42341,
+          "functionName": "action",
+          "scriptId": "5",
+          "url": "",
+          "lineNumber": 4,
+          "columnNumber": 46
+        },
+        {
+          "us": 41128,
+          "functionName": "v704RoadAt",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 2038,
+          "columnNumber": 21
+        },
+        {
+          "us": 38469,
+          "functionName": "texImage2D",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 38370,
+          "functionName": "traverseVisible",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 62968
+        },
+        {
+          "us": 38275,
+          "functionName": "At",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 344288
+        },
+        {
+          "us": 38092,
+          "functionName": "updateWorldAirTraffic",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 12011,
+          "columnNumber": 31
+        },
+        {
+          "us": 37173,
+          "functionName": "updatePlayer",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 11728,
+          "columnNumber": 23
+        },
+        {
+          "us": 36461,
+          "functionName": "Yi",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 258561
+        },
+        {
+          "us": 36233,
+          "functionName": "refreshMaterialUniforms",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 331370
+        },
+        {
+          "us": 36212,
+          "functionName": "collectNearbyCrystals",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 7332,
+          "columnNumber": 32
+        },
+        {
+          "us": 35710,
+          "functionName": "ensureOtthiWorldState",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 8429,
+          "columnNumber": 32
+        },
+        {
+          "us": 35282,
+          "functionName": "setFromEuler",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 23343
+        },
+        {
+          "us": 35013,
+          "functionName": "set",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 83972
+        },
+        {
+          "us": 34426,
+          "functionName": "pixelStorei",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "us": 34243,
+          "functionName": "snapTrafficToRoad",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:41083/games/otthi/app.js?v=70660&release=world-20261028-3",
+          "lineNumber": 2297,
+          "columnNumber": 28
+        },
+        {
+          "us": 34216,
+          "functionName": "Cr.setValue",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 263296
+        },
+        {
+          "us": 34003,
+          "functionName": "toArray",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 34516
+        },
+        {
+          "us": 33365,
+          "functionName": "traverseVisible",
+          "scriptId": "12",
+          "url": "http://127.0.0.1:41083/games/otthi/assets/vendor/three-r128.min.js?v=70660",
+          "lineNumber": 5,
+          "columnNumber": 62968
+        }
+      ],
+      "drawRoots": [
+        [
+          "Group:MeshStandardMaterial",
+          336
+        ],
+        [
+          "BoxGeometry:MeshStandardMaterial",
+          43
+        ],
+        [
+          "OTTHI_OTTOVIAS_PEDESTRIAN_BRIDGE",
+          39
+        ],
+        [
+          "CAMPAIGN_PARKED_AIRCRAFT",
+          15
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/world/textures/wood-basecolor.png",
+          12
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/textures/roof-v628.png",
+          11
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/world/textures/sidewalk-basecolor.png",
+          11
+        ],
+        [
+          "ACTIVITY_VENUE_dance",
+          9
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/world/textures/wood-basecolor.png",
+          8
+        ],
+        [
+          "OT_CIVIL_AIRPORT",
+          6
+        ],
+        [
+          "OTTHOS_PLAYER",
+          4
+        ],
+        [
+          "Group:http://127.0.0.1:41083/games/otthi/assets/world/textures/stone-basecolor.png",
+          4
+        ],
+        [
+          "OTTHI_OTTOVIAS_HIGHWAY_NETWORK",
+          4
+        ],
+        [
+          "BoxGeometry:http://127.0.0.1:41083/games/otthi/assets/textures/brick-v628.png",
+          4
+        ],
+        [
+          "OTTHI_CONTINUOUS_ROAD_SURFACE",
+          4
+        ],
+        [
+          "CircleGeometry:MeshBasicMaterial",
+          4
+        ],
+        [
+          "OTTHI_LOD_backdrop--24--206",
+          3
+        ],
+        [
+          "OTTHI_LOD_backdrop--54--207",
+          3
+        ]
+      ],
+      "label": "after",
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases."
+  ],
+  "passed": true
+}

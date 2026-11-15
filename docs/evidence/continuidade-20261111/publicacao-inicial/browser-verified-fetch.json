@@ -1,0 +1,142 @@
+{
+  "networkMode": "Playwright routed requests fulfilled from Python urllib with environment CA verification; not native Chromium TLS or websocket verification",
+  "observedAt": "2026-11-11T19:07:42.997112+00:00",
+  "results": [
+    {
+      "name": "arcade",
+      "status": 200,
+      "state": {
+        "title": "thIAguinho ARCADE — Console de 8 jogos",
+        "text": "Ir para a biblioteca de jogos\nthIAguinho\nARCADE CONSOLE\nNAVEGAÇÃO\n⌂\nInício\n◇\nUniversos 3D\n⚡\nAção e esportes\n♡\nFavoritos\n✦\n8 aventuras reunidas\n\nCada jogo permanece em seu projeto original.\n\nConsole v1.0\nSEU ESPAÇO PARA JOGAR\nBem-vindo ao thIAguinho Arcade\n⌕\nBuscar jogos\nJ\nJogador\nPerfil local\n⌄\nUM CONSOLE • VÁRIOS MUNDOS\nSeu próximo mundo\ncomeça aqui.\n\nExplore, corra, voe, dispute partidas e viva aventuras. Escolha seu jogo e continue de onde ele já funciona.\n\n▶ Jogar OTThi World\n↗\nExplorar jogos ↓\nInstalar no Android ↓\n\nAPK para Android 7.0 ou superior. Os jogos usam internet.\n\n08 experiências\n08 jogos instalados\n✚\n●\n ●\n✦\n✧\n✦\n▣\n8 jogos\nBiblioteca do console\n◇\n3 origens\n8 jogos no console\n☆\n0 favoritos\nSalvos neste navegador\nESCOLHA SUA AVENTURA\nBiblioteca de jogos 08\nTodos\nUniversos 3D\nAção e esportes\nFavoritos\nJOGUE NO CONSOLE\n♡\nMUNDO ABERTO\nOTThi World\n\nCrie sua vida na Vila do Sol, explore bairros, aprenda e encontre amigos.\n\n↗ OTThi-World3\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nUNIVERSO 3D\nAventuras em Família 3D\n\nCorra pelo parque, brinque com Luna e Liz e descubra estrelas e desafios.\n\n↗ hq\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nCORRIDA\nKart Legends\n\nAcelere, faça curvas, use o turbo e conquiste o primeiro lugar.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nESPORTE COM CÂMERA\nBoxing Pro\n\nLute usando a câmera ou os botões de toque. Defenda, ataque e vença o campeonato.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nTÊNIS DE MESA\nPing Pong Wii\n\nDispute rallies usando o dedo ou a câmera e vença partidas desafiadoras.\n\n✦ Desafio de hoje • 0/1 vitórias\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nCOMBATE TÁTICO\nWAR Combate\n\nCâmera com a mão ou joystick esquerdo e câmera livre por toque. Três operações e cobertura.\n\n✦ Desafio de hoje • 0/1 missões\n↗ GAME\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nDANÇA COM CÂMERA\nDança\n\nEscolha sua música do YouTube, acompanhe o professor e dance com o corpo inteiro.\n\n↗ OTThi-World3\nJogar agora ↗\nJOGUE NO CONSOLE\n♡\nSIMULADOR DE VOO\nAero Strike WAR\n\nPilote caças e helicópteros sobre cidades com trânsito e combate no solo.\n\n✦ Desafio de hoje • 0/2 vitórias\n↗ GAME\nJogar agora ↗\nTUDO ORGANIZADO\nUma biblioteca. Jogos de verdade.\n\nEscolha um jogo, cumpra missões, supere seus recordes e volte ao console quando quiser. Cada aventura mantém seu progresso.\n\n①\nEscolha um jogo\n②\nEntre no jogo escolhido\n③\nVolte ao console quando quiser\n© 2026 thIAguinho GAME CONSOLE\nby thIAguinho Soluções Digitais & Otto MMP Ferri\nConheça o projeto ↗",
+        "build": null,
+        "revision": null,
+        "viewport": [
+          1365,
+          768
+        ],
+        "bodyWidth": 1365,
+        "links": [
+          {
+            "text": "Ir para a biblioteca de jogos",
+            "href": "#biblioteca"
+          },
+          {
+            "text": "thIAguinho\nARCADE CONSOLE",
+            "href": "./"
+          },
+          {
+            "text": "▶ Jogar OTThi World\n↗",
+            "href": "../games/atualizar/"
+          },
+          {
+            "text": "Instalar no Android ↓",
+            "href": "./instalar/"
+          },
+          {
+            "text": "↗ OTThi-World3",
+            "href": "https://github.com/tsvalencio-IA/OTThi-World3"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/atualizar/"
+          },
+          {
+            "text": "↗ hq",
+            "href": "https://github.com/tsvalencio-IA/hq"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/familia/3d/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/kart/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/boxe/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/tenis/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/ar/"
+          },
+          {
+            "text": "↗ OTThi-World3",
+            "href": "https://github.com/tsvalencio-IA/OTThi-World3"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/danca/"
+          },
+          {
+            "text": "↗ GAME",
+            "href": "https://github.com/tsvalencio-IA/GAME"
+          },
+          {
+            "text": "Jogar agora ↗",
+            "href": "../games/voo/"
+          },
+          {
+            "text": "Conheça o projeto ↗",
+            "href": "https://github.com/tsvalencio-IA/ConsoleGames"
+          }
+        ],
+        "canvases": 0
+      },
+      "errors": [],
+      "requestFailures": []
+    },
+    {
+      "name": "otthi",
+      "status": 200,
+      "state": {
+        "title": "OTTHI World V705",
+        "text": "AVENTURA • AMIGOS • CRIAÇÃO\n\nOTTHI WORLD\n\nExplore, aprenda, jogue e crie seu próprio mundo.\n\n🔥\nOtthos em 3D\nAbra somente quando quiser.\nAbrir 3D / AR\nMUNDO ABERTO\nVila do Sol\n\nExplore, aprenda e jogue com seus amigos.\n\n▶ JOGAR\nCONTINUAR\n← Todos os jogos\n👤\nJOGADOR\nEscolher nome\nConta local\nNÍVEL\n1\nMOEDAS\n500\nREPUTAÇÃO\n0\nMEDALHAS\n0\nInstalar aplicativo\nÍcone OTTHI World no celular\n📱\n3D / AR\n🎓\nAcademia\nMatemática • Português • Inglês\n🧠\nTrilha adaptativa\nAprende com os acertos e erros\n🏘️\nBairros online\nCasas e amigos por região\n🏅\nColeção\n👕\nPersonagem\n🔐\nMinha conta\nSalvar em outros aparelhos\n🧩\nMoldes 3D\n❓\nAjuda\n⚙\nConfig.\n↻ Salvar e atualizar jogo\n\nVersão 705.28.25-transito-fluidez\n\nToque em Instalar para adicionar o OTTHOS ao celular.\n\nPowered by thIAguinho Soluções Digitais\n← Console\nNível 1 • Medalhas 0\n♪ FX ON",
+        "build": "705.28.25-transito-fluidez",
+        "revision": "23767784d2d7a3aa",
+        "viewport": [
+          1365,
+          768
+        ],
+        "bodyWidth": 1365,
+        "links": [
+          {
+            "text": "← Todos os jogos",
+            "href": "../../arcade/"
+          },
+          {
+            "text": "🎮 Console",
+            "href": "../../arcade/"
+          },
+          {
+            "text": "← Console",
+            "href": "../../arcade/"
+          }
+        ],
+        "canvases": 1
+      },
+      "errors": [],
+      "requestFailures": []
+    }
+  ]
+}

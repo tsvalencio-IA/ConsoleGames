@@ -91,7 +91,7 @@
     career: { title: 'Morador da Vila', level: 1, xp: 0, completed: 0, activeJob: null, lastMission:null, completedMissionTokens:[] },
     social: { invited: [], gifts: 0, jokes: 0, arguments: 0, chatHiddenBefore:0 },
     abilities: { scaleMode: 'normal', crouched: false, mastery: { miniDash:0, superJump:0, giantSlam:0, stealth:0, magnetSpin:0 } },
-    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'axe', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
+    tools: { owned: ['axe','pickaxe','bucket','hoe','shovel'], equipped: 'none', harvested: { wood:0, stone:0, gold:0, water:0, bait:0, crops:0, clay:0 } },
     account: { linked:false, accountId:'', username:'', lastCloudSync:0 },
     gm: { appliedGrantIds: [], lastGrantAt: 0 },
     safety: { incidents:0, safeStops:0, lessons:0, lastIncident:0 },

@@ -1,0 +1,252 @@
+{
+  "deployment": {
+    "id": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+    "name": "otthi-world-campanha-teste",
+    "url": "otthi-world-campanha-teste-16rm34tp7-thiaguinho-s-projects.vercel.app",
+    "type": "LAMBDAS",
+    "state": "READY",
+    "createdAt": 1794335952010,
+    "creator": {
+      "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+      "username": "tsvalencio-ia"
+    },
+    "project": {
+      "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+      "name": "otthi-world-campanha-teste",
+      "framework": null
+    },
+    "meta": {
+      "githubCommitRef": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+      "githubCommitSha": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+      "githubCommitMessage": "Keep player vehicle perception out of self collision and shared NPC replication",
+      "githubRepo": "ConsoleGames",
+      "githubOrg": "tsvalencio-IA"
+    },
+    "alias": [
+      "otthi-world-campanha-teste.vercel.app",
+      "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+      "otthi-world-campanha-teste-git-cdc-c67d05-thiaguinho-s-projects.vercel.app"
+    ],
+    "target": "production",
+    "regions": [
+      "iad1"
+    ],
+    "buildingAt": 1794335953095,
+    "ready": 1794335960321,
+    "readyState": "READY",
+    "aliasError": null
+  },
+  "project": {
+    "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+    "name": "otthi-world-campanha-teste",
+    "framework": null,
+    "accountId": "team_W3UyY5ss3Shyv78KRMndjust",
+    "createdAt": 1792706250437,
+    "updatedAt": 1794335960604,
+    "nodeVersion": "24.x",
+    "live": false,
+    "latestDeployment": {
+      "id": "dpl_6MaksgFgE1Tf6ZrUZnGvSKYuP12x",
+      "url": "otthi-world-campanha-teste-pnw5jtr32-thiaguinho-s-projects.vercel.app",
+      "createdAt": 1794336246192,
+      "readyState": "READY",
+      "target": null
+    },
+    "domains": [
+      "otthi-world-campanha-teste.vercel.app",
+      "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+      "otthi-world-campanha-teste-git-cdc-c67d05-thiaguinho-s-projects.vercel.app"
+    ],
+    "passwordProtection": {
+      "enabled": false,
+      "deploymentType": null
+    },
+    "ssoProtection": {
+      "enabled": false,
+      "deploymentType": null
+    },
+    "trustedIps": {
+      "enabled": false,
+      "deploymentType": null,
+      "addresses": [],
+      "protectionMode": null
+    }
+  },
+  "recent": {
+    "pagination": {
+      "count": 8,
+      "next": 1794305966667,
+      "prev": 1794336246192
+    },
+    "deployments": [
+      {
+        "id": "dpl_6MaksgFgE1Tf6ZrUZnGvSKYuP12x",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-pnw5jtr32-thiaguinho-s-projects.vercel.app",
+        "created": 1794336246192,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "6258e611f8a426e9779299d900455079d03c6279",
+          "githubCommitMessage": "Record published traffic recovery, measured frame work and verified manual driving [skip ci]",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/6MaksgFgE1Tf6ZrUZnGvSKYuP12x",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-16rm34tp7-thiaguinho-s-projects.vercel.app",
+        "created": 1794335952010,
+        "state": "READY",
+        "target": "production",
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+          "githubCommitSha": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+          "githubCommitMessage": "Keep player vehicle perception out of self collision and shared NPC replication",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/8u99crzy7sLwM2UkGtJiSwE7SLLa",
+        "isRollbackCandidate": true
+      },
+      {
+        "id": "dpl_3ys3cmHreQpGFAXuDyiD4RvpR72H",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-r43byb5oy-thiaguinho-s-projects.vercel.app",
+        "created": 1794335741832,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+          "githubCommitMessage": "Keep player vehicle perception out of self collision and shared NPC replication",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/3ys3cmHreQpGFAXuDyiD4RvpR72H",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_GV3bZM7bAyqRXVe7eMc5j1wUVikv",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-9ta4fxxdo-thiaguinho-s-projects.vercel.app",
+        "created": 1794307175913,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "cd2df1ed2d44b5ae635f5ebcc530d8f5bb77c0ff",
+          "githubCommitMessage": "Remove repeated terrain scans from road braking and allow safe priority turns to clear",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/GV3bZM7bAyqRXVe7eMc5j1wUVikv",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_3EWJhdMVSfnN1tLhX79AJnDcnKaz",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-hk93whlwz-thiaguinho-s-projects.vercel.app",
+        "created": 1794306900063,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "50d316c04a150ae77783c21615bc366b49b492f0",
+          "githubCommitMessage": "Clear native traffic bends gradually and park idle rescue units out of travelling lanes",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/3EWJhdMVSfnN1tLhX79AJnDcnKaz",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_6so8yZmAKpWtf5tc4w9JvVLbCav5",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-phsh4k84l-thiaguinho-s-projects.vercel.app",
+        "created": 1794306406048,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "7feef3440493229cf06713bab4bafbc5a8c96a7b",
+          "githubCommitMessage": "Inspect stationary native traffic blockers and retain real rendering measurements",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/6so8yZmAKpWtf5tc4w9JvVLbCav5",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_8hoiKLtkQi9FEy2AiZd7DdrEzn51",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-kv3oznxwh-thiaguinho-s-projects.vercel.app",
+        "created": 1794306111168,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "9e957bb9941d202c3644a19c73f6bf0c7054fb09",
+          "githubCommitMessage": "Verify delivery receipts independently of observed NPC gifts and newly spawned car damage records",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/8hoiKLtkQi9FEy2AiZd7DdrEzn51",
+        "isRollbackCandidate": false
+      },
+      {
+        "id": "dpl_aKq7w6bYYBYorVfY7AmEtjgjZtjc",
+        "name": "otthi-world-campanha-teste",
+        "url": "otthi-world-campanha-teste-amuokv86q-thiaguinho-s-projects.vercel.app",
+        "created": 1794305966667,
+        "state": "READY",
+        "target": null,
+        "creator": {
+          "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+          "username": "tsvalencio-ia"
+        },
+        "meta": {
+          "githubCommitRef": "console-evolution-20261106",
+          "githubCommitSha": "21ad68264987940a22d7856638bc17ed13570837",
+          "githubCommitMessage": "Measure native frame, CPU and rendering pressure against the published traffic runtime",
+          "githubRepo": "ConsoleGames",
+          "githubOrg": "tsvalencio-IA"
+        },
+        "inspectorUrl": "https://vercel.com/thiaguinho-s-projects/otthi-world-campanha-teste/aKq7w6bYYBYorVfY7AmEtjgjZtjc",
+        "isRollbackCandidate": false
+      }
+    ]
+  }
+}

@@ -27,13 +27,59 @@
   }
   document.addEventListener('visibilitychange',()=>{usageLastTickAt=Date.now();perf.loopAcc=perf.renderAcc=perf.cameraAcc=0;clock?.getDelta();if(typeof familyWorld!=='undefined')familyWorld.lastWall=performance.now();},{passive:true});
   const nextPaint=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+  async function prepareExpandedWorldForRendering(){
+    const started=performance.now();
+    const prepare=action=>{const wasRunning=running;try{running=true;return action();}finally{running=wasRunning;}};
+    showWorldLoading(85,'Preparando bairros, moradores e trânsito...');await nextPaint();
+    prepare(()=>updateWorldExpansion());
+    // Traffic is normally populated over several playing frames. During the
+    // loading screen its already-prepared models can be placed in short batches
+    // through the same clear-pose constructor, without advancing simulation.
+    const expected=typeof completeTraffic!=='undefined'?Object.keys(window.OTBrazilVehicles?.catalog||{}).length:0;
+    for(let i=0;i<expected;i++){
+      const before=completeTraffic.created.size;completeTraffic.nextAt=0;prepare(()=>ensureCompleteBrazilTraffic());
+      if(completeTraffic.created.size===before)break;
+      if(i%4===3)await nextPaint();
+    }
+    lockStableSceneVisibility();freezeWorldFrustumCulling();updateCamera(1);
+    perf.expandedScenePreparation={ms:Math.round(performance.now()-started),npcs:world.npcs.length,trafficModels:typeof completeTraffic!=='undefined'?completeTraffic.created.size:0};
+  }
   async function prepareWorldFirstFrame(){
-    showWorldLoading(85,'Preparando a primeira imagem do mundo...');await nextPaint();
+    await prepareExpandedWorldForRendering();
+    showWorldLoading(86,'Preparando os ângulos da câmera...');await nextPaint();
     const start=performance.now();updateCamera(1);
-    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);let lightingVariants=1;
-    try{const prepared=precompileWorldLighting();perf.vehicleShaderTemplates=prepared.templates;lightingVariants=prepared.lightingVariants;renderer.render(scene,camera);}
-    finally{restoreLights?.();restoreHome?.();}
-    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants};
+    const plan=worldLightingPreparationPlan(),preparationStart=performance.now();let lightingVariants=0;
+    for(const[countIndex,count]of plan.pointLightBuckets.entries()){
+      showWorldLoading(86+Math.round(countIndex/Math.max(1,plan.pointLightBuckets.length)*9),`Preparando câmera · ${countIndex+1}/${plan.pointLightBuckets.length}`);await nextPaint();
+      const prepared=precompileWorldLighting({pointLights:count});perf.vehicleShaderTemplates=prepared.templates;lightingVariants++;
+    }
+    worldLightBudget.preparation={...plan,ms:Math.round(performance.now()-preparationStart)};
+    const gpuWarmup=await warmWorldCameraViews();
+    const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
+    try{renderer.render(scene,camera);}finally{restoreLights?.();restoreHome?.();}
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants,pointLightBuckets:[...plan.pointLightBuckets],expanded:perf.expandedScenePreparation,gpuWarmup};
+  }
+  async function warmWorldCameraViews(){
+    // compile() does not necessarily upload geometry/textures or finish driver
+    // pipelines. Paint the actual nearby views while loading owns the screen.
+    // A tiny viewport keeps pixel work small; the context/framebuffer, objects,
+    // lights and materials are the same ones the first playable frame uses.
+    const started=performance.now(),saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),scissorTest=renderer.getScissorTest(),before={...renderer.info.memory,programs:renderer.info.programs.length};
+    const views=[];for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5])views.push({pitch,yaw});
+    try{
+      renderer.setScissorTest(false);
+      for(const[index,view]of views.entries()){
+        showWorldLoading(96+Math.floor(index/views.length*3),`Preparando imagens · ${index+1}/${views.length}`);await nextPaint();
+        cameraYaw=view.yaw;cameraPitch=view.pitch;cameraZoom=saved.zoom;updateCamera(1);updateVisualLOD();
+        renderer.setViewport(0,0,2,2);
+        const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
+        try{renderer.render(scene,camera);renderer.getContext().finish();}finally{restoreLights?.();restoreHome?.();}
+      }
+    }finally{
+      cameraYaw=saved.yaw;cameraPitch=saved.pitch;cameraZoom=saved.zoom;camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);camera.fov=saved.fov;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);updateVisualLOD();lockStableSceneVisibility();
+      renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(scissorTest);
+    }
+    return{views:views.length,ms:Math.round(performance.now()-started),before,after:{...renderer.info.memory,programs:renderer.info.programs.length}};
   }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
@@ -74,6 +120,15 @@
     return perf.mobile?(qualityTier()==='low'?30:qualityTier()==='balanced'?45:60):60;
   }
   function targetSimulationFrameRate(){return paused?15:60;}
+  function advanceWorldFrameSimulation(elapsed){
+    // Slow rendered frames must not turn a real minute into a few seconds of
+    // driving. Keep normal60Hz steps; under pressure recover at most .6s with
+    // bounded steps no larger than the existing30Hz physics interval.
+    const time=Number.isFinite(elapsed)?Math.max(0,elapsed):0,interval=Math.max(1/targetSimulationFrameRate(),Math.min(1/30,time/18)),available=Number(perf.loopAcc||0)+time;
+    perf.loopAcc=Math.min(.6,available);perf.catchUpDroppedSeconds=Number(perf.catchUpDroppedSeconds||0)+Math.max(0,available-.6);
+    let steps=0;while(running&&perf.loopAcc+1e-9>=interval&&steps<18){perf.loopAcc=Math.max(0,perf.loopAcc-interval);stepWorldSimulation(interval);steps++;}
+    perf.catchUpStepsMax=Math.max(Number(perf.catchUpStepsMax||0),steps);return steps;
+  }
   function sampleRafCadence(rawDt){
     perf.rafSampleAcc+=rawDt;perf.rafFrames++;if(perf.rafSampleAcc>=1.5){perf.rafHz=perf.rafFrames/Math.max(.001,perf.rafSampleAcc);perf.rafSampleAcc=0;perf.rafFrames=0;}
   }
@@ -86,7 +141,7 @@
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
-      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();perf.expansionAcc=Number(perf.expansionAcc||0)+dt;if(perf.expansionAcc>=1/30){perf.expansionAcc%=1/30;if(typeof updateWorldExpansion==='function')updateWorldExpansion();}if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
+      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();perf.expansionAcc=Number(perf.expansionAcc||0)+dt;if(perf.expansionAcc>=1/30){const accumulated=perf.expansionAcc;perf.expansionAcc%=1/30;perf.expansionStep=accumulated-perf.expansionAcc;try{if(typeof updateWorldExpansion==='function')updateWorldExpansion();}finally{perf.expansionStep=0;}}if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
       if(typeof updateFamilyCarry==='function')updateFamilyCarry();
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
@@ -100,10 +155,10 @@
       if(perf.uiAcc>=uiRate){const step=perf.uiAcc;perf.uiAcc=0;updateCareerMissions();if(typeof updateCoopMissions==='function')updateCoopMissions(step);updateNeeds(step);updateNavigation(step);}
 
       perf.trafficAcc+=dt;const trafficRate=tier==='high'?1/24:tier==='balanced'?1/15:1/10;
-      if(perf.trafficAcc>=trafficRate){const trafficStep=Math.min(.1,perf.trafficAcc);perf.trafficAcc=0;if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){const trafficBefore=captureTrafficPositions();updateTransitWorld(trafficStep);perf.trafficTicks++;updatePoliceSystem(trafficStep);updateFireService(trafficStep);resolveTrafficOverlaps(trafficBefore);updateTrafficIncidents(trafficStep);}}
+      if(perf.trafficAcc>=trafficRate){const trafficStep=Math.min(.1,perf.trafficAcc);perf.trafficAcc=Math.max(0,perf.trafficAcc-trafficStep);if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){const trafficBefore=captureTrafficPositions();updateTransitWorld(trafficStep);perf.trafficTicks++;updatePoliceSystem(trafficStep);updateFireService(trafficStep);resolveTrafficOverlaps(trafficBefore);updateTrafficIncidents(trafficStep);}}
 
       perf.aiAcc+=dt;const aiRate=tier==='high'?1/20:tier==='balanced'?1/14:1/9;
-      if(perf.aiAcc>=aiRate){const step=Math.min(.11,perf.aiAcc);perf.aiAcc=0;if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){updateNPCs(step);perf.aiTicks++;updateNpcSociety(step);}if(!(typeof otGames!=='undefined'&&otGames.active))updateEnemies(step);updateMultiplayer(step);updateLifeActivities(step);if(!(typeof otGames!=='undefined'&&otGames.active))updateAdventure(step);}
+      if(perf.aiAcc>=aiRate){const step=Math.min(.11,perf.aiAcc);perf.aiAcc=Math.max(0,perf.aiAcc-step);if(typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority()){updateNPCs(step);perf.aiTicks++;updateNpcSociety(step);}if(!(typeof otGames!=='undefined'&&otGames.active))updateEnemies(step);updateMultiplayer(step);updateLifeActivities(step);if(!(typeof otGames!=='undefined'&&otGames.active))updateAdventure(step);}
 
       perf.lodAcc+=dt;const lodRate=tier==='high'?1/10:tier==='balanced'?1/6:1/4;
       if(perf.lodAcc>=lodRate){const step=perf.lodAcc;perf.lodAcc=0;updateVisualLOD(step);}
@@ -126,8 +181,7 @@
     sampleRafCadence(Math.min(1,elapsed));samplePerformance(elapsed);
     // Fixed physics steps catch up with real time when a rendered frame is slow.
     // The cap prevents a long background pause from replaying minutes of input.
-    const simulationInterval=1/targetSimulationFrameRate();perf.loopAcc=Math.min(.15,perf.loopAcc+elapsed);
-    let steps=0;while(running&&perf.loopAcc>=simulationInterval&&steps<8){perf.loopAcc-=simulationInterval;stepWorldSimulation(simulationInterval);steps++;}
+    advanceWorldFrameSimulation(elapsed);
     if(!running)return;
     if(otGames.active&&otGames.handSession?.busy&&performance.now()-Number(otGames.handSession.frameSent||0)<700)return;
     const renderInterval=1/targetRenderFrameRate();perf.renderAcc+=elapsed;if(perf.renderAcc+1e-9<renderInterval)return;perf.renderAcc=Math.max(0,perf.renderAcc-renderInterval)%renderInterval;perf.renderedFrames++;
@@ -212,7 +266,7 @@
     if(!hasValidPlayerName()){openPlayerNameModal(true,()=>startGame(resetPosition));return;}
     await saveState(true);showWorldLoading(12,'Protegendo o progresso...');await nextPaint();showScreen('game');showWorldLoading(28,'Organizando o bairro...');await nextPaint();
     state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;syncMobilePanels();els.game.classList.remove('needs-expanded');els.missionCard.classList.remove('expanded');
-    try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,'Construindo ruas, casas e transportes...');await nextPaint();if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(88,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
+    try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,'Construindo ruas, casas e transportes...');await nextPaint();if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(97,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
     if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}toast('Bem-vindo à Vila do Sol!','good',2200);
   }

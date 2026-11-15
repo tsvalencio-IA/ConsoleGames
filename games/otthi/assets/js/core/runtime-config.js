@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.25-transito-fluidez',
+    build: '705.28.29-camera-socorro-jogabilidade',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

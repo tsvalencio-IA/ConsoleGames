@@ -1,0 +1,32 @@
+✔ twenty complete fire-incident cycles release temporary objects and retain shared scenery resources (100.304775ms)
+✔ repeated roadside officer removal releases its outline registrations without affecting the player scenery (17.248129ms)
+✔ twenty telephone driver cycles release outlines and their cloned clothing materials while retaining shared scenery (18.718764ms)
+✔ driver finds a continuous swept detour around a stopped car and still reaches the caller (9.360998ms)
+✔ sealed passage has no invented route, and even the last 16cm never snaps through a blocker (7.654738ms)
+✔ live detour search yields after at most eight expensive checks, including a completely blocked road (10.252882ms)
+✔ parcel pickup grants exactly the purchased quantity once, with no inventory before arrival or a second debit (2.114072ms)
+✔ a parcel cannot be collected remotely or by a different profile; cancellation refunds only once (1.196651ms)
+✔ unique tools cannot be ordered again while paid and pending, or after receipt (1.095983ms)
+✔ bulk storage handles every duplicate instance, hides collection clones, and preserves active deliveries and workshop disassembly (1.848411ms)
+✔ a responder open path has no invented last-to-first segment across buildings (2.331271ms)
+✔ four queued approaches eventually have a unique oldest priority instead of a cycle of yielding to the right (1.637361ms)
+✔ collision resolution never reprojects unrelated cars or teleports a queue backwards by several metres (1.591202ms)
+✔ response controller replaces its patrol path before moving along the actual incident route (1.082373ms)
+✔ safety overlap correction cannot manufacture another accident, while a fresh real moving impact remains detectable (0.986533ms)
+✔ cars queued on the same simulation tick break an equal-age crossing cycle deterministically (0.674764ms)
+✔ a crowded bend can separate sideways without backing into the queue or crossing another body (2.644833ms)
+✔ stationary rescue vehicles park beside the curb leaving the travelling lane open (1.633074ms)
+✔ impact broad phase rejects a distant pair before allocating detailed rectangles (1.603881ms)
+✔ an older priority vehicle can begin a slow clear turn while the lower-priority approach waits (1.878164ms)
+✔ the player car is visible to NPC perception but cannot collide with itself or join the shared NPC fleet (2.313015ms)
+✔ three long-waiting approaches arriving within100ms cannot form an aged priority cycle (3.182394ms)
+✔ aged queue ordering remains transitive across close arrival times and exact simultaneous ties (7.628179ms)
+✔ incident responders retain priority over older civilian queues (0.852375ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 504.396459

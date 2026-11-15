@@ -1,0 +1,145 @@
+{
+  "checkedAt": "2026-11-12T23:47:59.433Z",
+  "passed": true,
+  "cases": [
+    {
+      "kind": "training-intent",
+      "mode": "legacy",
+      "rightTurnsRight": true,
+      "dwell": false,
+      "oneStep": false,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    },
+    {
+      "kind": "training-intent",
+      "mode": "step",
+      "rightTurnsRight": true,
+      "dwell": true,
+      "oneStep": true,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    },
+    {
+      "kind": "training-intent",
+      "mode": "continuous",
+      "rightTurnsRight": true,
+      "dwell": true,
+      "oneStep": false,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Real native WAR gameplay and browser input; pointer simulates an in-frame hand.",
+    "No physical camera, MediaPipe recognition, phone ergonomics or sustained device performance claim.",
+    "Complete patrol uses existing solo easy difficulty, relaxed protection and recovery, explicitly selected through the settings UI.",
+    "No enemy/player/objective/HP/renderer/time writes; the route planner only reads covers and native telemetry."
+  ]
+}

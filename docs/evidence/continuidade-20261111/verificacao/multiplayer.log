@@ -1,0 +1,3 @@
+PASS two native pilots use distinct helicopters after one shared base replenishment
+PASS world authority handoff preserves both occupied units and the pending replacement clock
+PASS parked helicopter and plane are reused by a different player after the guest walking presence arrives

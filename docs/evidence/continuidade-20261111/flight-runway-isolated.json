@@ -1,0 +1,105 @@
+{
+  "limits": [
+    "A disposable solo Chromium profile. The approach position is prepared; native frame updates and touch controls are preserved. No physical motion sensor or phone camera is exercised."
+  ],
+  "landed": {
+    "ship": {
+      "hp": 100,
+      "maxHp": 100,
+      "speed": 75.00527007709823,
+      "x": 0,
+      "y": 8,
+      "z": -894.6608472552897,
+      "vx": 0,
+      "vy": 0,
+      "vz": 74.98489075607259,
+      "pitch": 0,
+      "yaw": 0,
+      "roll": 0,
+      "gForce": 0.6184999641117448,
+      "mach": 0.22043416174332972,
+      "alpha": 0.0074104416027217885,
+      "isStalling": false,
+      "inputs": {
+        "pitch": 0,
+        "roll": 0
+      },
+      "afterburner": false,
+      "engineHealth": 100,
+      "wingHealth": 100,
+      "structuralIntegrity": 100,
+      "engineHeat": 0
+    },
+    "quality": "smooth",
+    "guide": {
+      "altitude": 0,
+      "speed": 74.98489075607259,
+      "sink": 0,
+      "onRunway": true,
+      "aligned": true,
+      "level": true,
+      "gentle": true,
+      "cue": "NO SOLO • REDUZA A POTÊNCIA PARA PARAR"
+    }
+  },
+  "braked": {
+    "hp": 100,
+    "maxHp": 100,
+    "speed": 25.17644393226753,
+    "x": 0,
+    "y": 8,
+    "z": -827.217505753331,
+    "vx": 0,
+    "vy": 0,
+    "vz": 24.864304331089542,
+    "pitch": 0,
+    "yaw": 0,
+    "roll": 0,
+    "gForce": 0.06604952117904724,
+    "mach": 0.0739914388361828,
+    "alpha": 0,
+    "isStalling": false,
+    "inputs": {
+      "pitch": 0,
+      "roll": 0
+    },
+    "afterburner": false,
+    "engineHealth": 100,
+    "wingHealth": 100,
+    "structuralIntegrity": 100,
+    "engineHeat": 0
+  },
+  "groundAcceleration": {
+    "speed": 69.7713821625169,
+    "cue": "DECOLAGEM • CABRE SUAVEMENTE"
+  },
+  "secondTakeoff": {
+    "hp": 100,
+    "maxHp": 100,
+    "speed": 89.64504223185324,
+    "x": 0,
+    "y": 10.46965636093843,
+    "z": -692.030808335751,
+    "vx": 0,
+    "vy": 8.894434265799807,
+    "vz": 90.83497725456508,
+    "pitch": 0.12165865987720449,
+    "yaw": 0,
+    "roll": 0,
+    "gForce": 3.5000187846234647,
+    "mach": 0.26346521373240417,
+    "alpha": 0.033522165743917975,
+    "isStalling": false,
+    "inputs": {
+      "pitch": 0.10536169625232168,
+      "roll": 0
+    },
+    "afterburner": false,
+    "engineHealth": 100,
+    "wingHealth": 100,
+    "structuralIntegrity": 100,
+    "engineHeat": 0
+  },
+  "passed": true,
+  "errors": []
+}

@@ -1,0 +1,4 @@
+Native vehicle purchase accepted unit-br-palio-1-1dd52e0f556f452fa5bbb66f2f846df2
+Native reload status interrupted
+Native driver retry accepted
+PASS purchased vehicle survives mid-delivery reload, explains interruption, accepts another driver call and arrives with one purchase debit

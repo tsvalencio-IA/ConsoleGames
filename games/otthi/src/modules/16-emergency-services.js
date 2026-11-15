@@ -40,7 +40,7 @@
   function safeServiceDepot(kind,index=0){
     const list=SERVICE_DEPOTS[kind]||SERVICE_DEPOTS.police,base=list[index%list.length]||list[0],projection=nearestRoadProjection(base),point=projection?.point||base,heading=Number(base.heading||0),roads=(typeof WORLD_MAP_ROADS!=='undefined'?WORLD_MAP_ROADS:[]).filter(r=>Math.abs(point.x-r.x)<=r.w/2&&Math.abs(point.z-r.z)<=r.d/2),road=roads.sort((a,b)=>Math.min(a.w,a.d)-Math.min(b.w,b.d))[0],half=road?Math.min(road.w,road.d)/2:4.5,offset=kind==='police'?1.35:Math.max(3.8,half-.45),fx=Math.sin(heading),fz=Math.cos(heading);
     let fallback={x:point.x-fz*offset,z:point.z+fx*offset,heading};
-    for(const side of[1,-1])for(const along of[0,8,-8,16,-16]){const candidate={x:point.x-fz*offset*side+fx*along,z:point.z+fx*offset*side+fz*along,heading};if(!pointOnRoad(candidate.x,candidate.z,.05))continue;const body={x:candidate.x,z:candidate.z,w:kind==='firefighter'?1.2:1.1,l:kind==='firefighter'?2.5:2.1,s:fx,c:fz};world.trafficSnapshot=null;
+    for(const side of[1,-1])for(const along of[0,8,-8,16,-16]){const candidate={x:point.x-fz*offset*side+fx*along,z:point.z+fx*offset*side+fz*along,heading:side===1?heading:heading+Math.PI};if(!pointOnRoad(candidate.x,candidate.z,.05))continue;const body=incidentResponderBody({serviceType:kind},candidate.x,candidate.z,candidate.heading);if([[-body.w,-body.l],[body.w,-body.l],[-body.w,body.l],[body.w,body.l]].some(([lx,lz])=>!v704RoadAt(candidate.x+fz*lx+fx*lz,candidate.z-fx*lx+fz*lz,.05,true)))continue;world.trafficSnapshot=null;
       if(trafficActorList().some(a=>trafficBodiesOverlap(body,trafficBody(a),.25)))continue;
       if(typeof nearbyWorldColliders==='function'&&nearbyWorldColliders(candidate.x,candidate.z,3).some(c=>!c.disabled&&trafficBodiesOverlap(body,{x:c.x,z:c.z,w:c.w/2,l:c.d/2,s:0,c:1},.10)))continue;
       return candidate;
@@ -169,7 +169,7 @@
     const leftLeg=premiumBox(.22,.88,.24,dark,-.18,.44,0,officer),rightLeg=premiumBox(.22,.88,.24,dark,.18,.44,0,officer),leftArm=premiumBox(.18,.78,.2,uniform,-.45,1.25,0,officer),rightArm=premiumBox(.18,.78,.2,uniform,.45,1.25,0,officer);officer.scale.set(.86,.7,.86);return{group:officer,leftLeg,rightLeg,leftArm,rightArm,inside,threshold,outside};
   }
   function removeRoadsidePoliceOfficer(alert){
-    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);alert.officer=null;
+    const car=world.policeCars?.find(item=>item.id===alert?.carId);setPoliceRoadsideDoor(car,0);if(!alert?.officer)return;worldGroup?.remove(alert.officer.group);disposeDetachedVisual(alert.officer.group);alert.officer=null;
   }
   function beginPoliceRoadsideStop(alert,car){
     if(!alert||alert.phase!=='pursuit')return false;const now=performance.now();alert.phase='officer-exiting';alert.phaseAt=now;alert.officer=createRoadsidePoliceOfficer(car);alert.officerSpeech='';alert.officerSpeechAt=0;setPoliceRoadsideDoor(car,0);car.currentSpeed=0;clearPolicePursuit(car);clearMovementInputs();if(player.vehicle){player.car.speed=0;player.vx=0;player.vz=0;}updateSafetyPanel('Viatura posicionada • porta abrindo');toast('🚓 Pare no local: a viatura encostou e o policial vai descer.','warn',2400);return true;
@@ -227,12 +227,110 @@
     if(!alert&&player.vehicle&&!player.car.passengerOf&&Math.abs(player.car.speed)>1.4&&!['police','firefighter','paramedic'].includes(player.car.kind)){const hit=world.policeCars.find(car=>!car.occupied&&Math.hypot(player.x-car.group.position.x,player.z-car.group.position.z)<2.45);if(hit)startPoliceAlert(hit);}
     if(!alert){for(const car of world.policeCars){if(car.occupied||car.missionReservedFor||car.npcTarget||car.incidentTargetId)continue;const npc=world.npcs.find(item=>item.mobility&&['car','moto'].includes(item.mobility.type)&&now>Number(item.policeCooldown||0)&&Math.hypot(item.group.position.x-car.group.position.x,item.group.position.z-car.group.position.z)<2.0);if(npc){car.npcTarget=npc.id;car.npcChaseUntil=now+6500;npc.policeCooldown=now+45000;break;}}}
   }
-  function moveIncidentResponder(vehicle,target,dt){if(performance.now()<Number(vehicle.trafficHoldUntil||0)){vehicle.currentSpeed=0;return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);}
-    if(!vehicle.responseRoute?.length){vehicle.responseRoute=buildRoutePoints({x:vehicle.group.position.x,z:vehicle.group.position.z},target);vehicle.responseIndex=1;vehicle.group.userData.roadPath=vehicle.responseRoute;vehicle.group.userData.roadPathClosed=false;}
-    const point=vehicle.responseRoute[vehicle.responseIndex];if(!point)return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);
-    const dx=point.x-vehicle.group.position.x,dz=point.z-vehicle.group.position.z,d=Math.hypot(dx,dz);if(d<.45){vehicle.responseIndex++;if(vehicle.responseIndex>=vehicle.responseRoute.length)return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);return moveIncidentResponder(vehicle,target,dt);}
-    const heading=Math.atan2(dx,dz),factor=trafficSpeedFactor(vehicle,heading,8),targetSpeed=vehicle.speed*factor;vehicle.currentSpeed=lerp(Number(vehicle.currentSpeed||0),targetSpeed,Math.min(1,dt*4));const move=Math.min(d,vehicle.currentSpeed*dt),previous={x:vehicle.group.position.x,z:vehicle.group.position.z};if(move>.0001){vehicle.group.position.x+=dx/d*move;vehicle.group.position.z+=dz/d*move;snapTrafficToRoad(vehicle.group,previous);vehicle.group.rotation.y=lerpAngle(vehicle.group.rotation.y,heading,Math.min(1,dt*6));for(const wheel of vehicle.wheels||[])wheel.rotation.x-=move*2.3;}return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);
+  function incidentResponderBody(vehicle,x,z,yaw){
+    const kind=vehicle.serviceType||vehicle.kind,dimensions=kind==='firefighter'?[1.2,2.5]:kind==='paramedic'?[1.14,2.15]:[1.06,1.95];
+    return{x,z,w:dimensions[0],l:dimensions[1],s:Math.sin(yaw),c:Math.cos(yaw)};
   }
+  function incidentResponderPoseClear(vehicle,x,z,yaw,includeTraffic=true){
+    const body=incidentResponderBody(vehicle,x,z,yaw),radius=Math.hypot(body.w,body.l),base=groundHeightAt(x,z),depotConnector=vehicle.home&&Math.hypot(x-vehicle.home.x,z-vehicle.home.z)<8;
+    for(const other of world.vehicles||[]){if(other===vehicle||!other.group?.visible||other.garageStored||state.vehicles?.garage?.stored?.[other.id]||(typeof workshopNpcWasCollected==='function'&&workshopNpcWasCollected(other)))continue;if(trafficBodiesOverlap(body,trafficBody(other),.12))return false;}
+    if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,radius+12))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
+    for(const collider of nearbyWorldColliders(x,z,radius+.3)){if(collider.disabled||Number(collider.height||2)<.2)continue;if(trafficBodiesOverlap(body,{x:collider.x,z:collider.z,w:collider.w/2,l:collider.d/2,s:0,c:1},.10))return false;}
+    for(const [lx,lz]of [[-body.w,-body.l],[body.w,-body.l],[-body.w,body.l],[body.w,body.l],[0,0]]){const px=x+body.c*lx+body.s*lz,pz=z-body.s*lx+body.c*lz;if(!(pointOnRoad(px,pz,.05)||depotConnector&&v704RoadAt(px,pz,.05,true))||Math.abs(groundHeightAt(px,pz)-base)>.65)return false;}
+    const nearPerson=p=>{const dx=Number(p.x)-x,dz=Number(p.z)-z,side=Math.max(0,Math.abs(dx*body.c-dz*body.s)-body.w),forward=Math.max(0,Math.abs(dx*body.s+dz*body.c)-body.l);return Math.hypot(side,forward)<.65;};
+    if(!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&nearPerson(player))return false;
+    for(const p of remotePresence.values())if(!p.vehicle&&!p.boating&&!p.transitMode&&nearPerson(p))return false;
+    return true;
+  }
+  function incidentResponderTravelClear(vehicle,from,to,includeTraffic=true){
+    const dx=to.x-from.x,dz=to.z-from.z,distance=Math.hypot(dx,dz),yaw=distance>.01?Math.atan2(dx,dz):Number(from.yaw||0);
+    // PhoneDriveRoute applies the segment heading before its first tiny step.
+    // Sampling only after .65m accepted turns whose rear cannot rotate at the
+    // starting curb; those paths then failed on every real movement step.
+    for(let i=0,n=Math.max(1,Math.ceil(distance/.65));i<=n;i++){const t=i/n;if(!incidentResponderPoseClear(vehicle,from.x+dx*t,from.z+dz*t,yaw,includeTraffic))return false;}
+    return true;
+  }
+  function incidentResponderDeparture(vehicle,from){
+    const road=nearestRoadProjection(from);if(!road||road.distance<1.7)return null;
+    const yaw=Number(vehicle.group.rotation.y||0),fx=Math.sin(yaw),fz=Math.cos(yaw);
+    // Long vehicles leave a curb longitudinally. A perpendicular connection
+    // to the GPS centreline rotates their rear through the road edge.
+    for(const length of[2,4,6,8,12,18,24])for(const lane of[0,1.35]){
+      const projected=nearestRoadProjection({x:from.x+fx*length,z:from.z+fz*length});if(!projected)continue;
+      const point={x:projected.point.x-fz*lane,z:projected.point.z+fx*lane};
+      const heading=Math.atan2(point.x-from.x,point.z-from.z);
+      if(Math.cos(heading-yaw)<.35||!incidentResponderPoseClear(vehicle,from.x,from.z,heading,false))continue;
+      if(incidentResponderTravelClear(vehicle,from,point,false))return point;
+    }return null;
+  }
+  function incidentResponderRoute(vehicle,target){
+    const from={x:vehicle.group.position.x,z:vehicle.group.position.z},departure=incidentResponderDeparture(vehicle,from),start=departure||from,build=to=>typeof phoneGroundRoute==='function'?phoneGroundRoute(vehicle,start,to):buildRoutePoints(start,to);
+    let route=build(target);
+    if(Number.isFinite(target.yaw)&&route.length>1){
+      const fx=Math.sin(target.yaw),fz=Math.cos(target.yaw);let sign=1;
+      for(let i=route.length-2;i>=0;i--){const along=(target.x-route[i].x)*fx+(target.z-route[i].z)*fz;if(Math.abs(along)>1){sign=along<0?-1:1;break;}}
+      const approach={x:target.x-fx*sign*12,z:target.z-fz*sign*12};
+      if(incidentResponderPoseClear(vehicle,approach.x,approach.z,target.yaw,false)){
+        route=build(approach);
+        // Merge longitudinally rather than rotating a long truck sideways
+        // against the curb at the last centerline projection.
+        while(route.length>2&&Math.hypot(route.at(-2).x-approach.x,route.at(-2).z-approach.z)<6)route.splice(-2,1);
+        route.push({x:target.x,z:target.z});
+      }
+    }
+    while(route.length>2&&Math.hypot(route[1].x-start.x,route[1].z-start.z)<6)route.splice(1,1);
+    return compactRoute(departure?[from,...route]:route);
+  }
+  function setIncidentResponderRoute(vehicle,target,points=null){
+    const route=points||incidentResponderRoute(vehicle,target),motion=new PhoneDriveRoute(route,Number(vehicle.group.rotation.y||0));
+    vehicle.responseJob={vehicle,target:{...target},route:motion,blockedFor:0,replanIn:0,reroutes:0,pathSearch:null};vehicle.responseRoute=motion.points;vehicle.responseIndex=motion.index;
+    vehicle.group.userData.roadPath=motion.points;vehicle.group.userData.roadPathClosed=false;
+    return vehicle.responseJob;
+  }
+  function recoverIncidentResponder(job,dt){
+    const motion=job.route;job.blockedFor=motion.blocked?(job.blockedFor||0)+dt:0;job.replanIn=Math.max(0,(job.replanIn||0)-dt);
+    if(!motion.blocked){job.pathSearch=null;return false;}
+    if(!job.pathSearch){
+      if(job.blockedFor<1.8||job.replanIn>0)return false;
+      const from={x:motion.x,z:motion.z,yaw:motion.yaw},goals=[];let length=0,last=from;
+      for(let i=motion.index;i<motion.points.length&&length<42;i++){const p=motion.points[i],d=Math.hypot(p.x-last.x,p.z-last.z),samples=Math.max(1,Math.ceil(d/6));for(let n=1;n<=samples;n++){const t=n/samples,travel=length+d*t;if(travel>=7&&travel<=42)goals.push({x:last.x+(p.x-last.x)*t,z:last.z+(p.z-last.z)*t,index:i});}length+=d;last=p;}
+      if(!goals.length)goals.push({...job.target,index:motion.points.length-1});
+      job.pathSearch={motion,goals,steps:phoneDetourSteps(from,goals,(a,b)=>incidentResponderTravelClear(job.vehicle,a,b))};
+    }
+    // The traffic controller runs less often than the courier controller.
+    // One eight-edge yield per traffic tick left searches unfinished for an
+    // entire attendance. Give it a small measured budget, never an unbounded
+    // synchronous A* traversal on the player's frame.
+    let result;const searchAt=performance.now();
+    for(let slice=0;slice<4;slice++){result=job.pathSearch.steps.next();job.searchSlices=(job.searchSlices||0)+1;if(result.done||performance.now()-searchAt>=2.5)break;}
+    if(!result.done)return false;
+    const search=job.pathSearch;job.pathSearch=null;job.replanIn=3;job.searchFailed=!result.value;if(!result.value)return false;
+    const detour=result.value,rejoin=search.goals[detour.goalIndex];job.route=new PhoneDriveRoute(compactRoute([...detour.points,...motion.points.slice(rejoin.index)]),motion.yaw);job.reroutes++;job.blockedFor=0;return true;
+  }
+  function moveIncidentResponder(vehicle,target,dt){
+    const distance=Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z),arrival=vehicle.serviceType==='firefighter'?2.1:1.8;
+    if(distance<arrival){vehicle.currentSpeed=0;if(vehicle.responseJob)vehicle.responseJob.route.speed=0;return distance;}
+    let job=vehicle.responseJob;if(!job||Math.hypot(job.target.x-target.x,job.target.z-target.z)>.2)job=setIncidentResponderRoute(vehicle,target);
+    const motion=job.route;motion.x=vehicle.group.position.x;motion.z=vehicle.group.position.z;
+    if(performance.now()<Number(vehicle.trafficHoldUntil||0)){vehicle.currentSpeed=0;motion.speed=0;return Math.hypot(motion.x-target.x,motion.z-target.z);}
+    const point=motion.points[motion.index]||target,heading=Math.atan2(point.x-motion.x,point.z-motion.z),factor=trafficSpeedFactor(vehicle,heading,8),oldX=motion.x,oldZ=motion.z;
+    motion.step(dt,(x,z,yaw)=>incidentResponderPoseClear(vehicle,x,z,yaw,true),Math.max(0,vehicle.speed*factor));
+    // A traffic stop also needs a bounded search after waiting; it must not be
+    // mistaken for progress merely because the collision sweep did not run.
+    motion.blocked||=factor<.035&&!motion.arrived;
+    vehicle.group.position.set(motion.x,groundHeightAt(motion.x,motion.z)+.02,motion.z);vehicle.group.rotation.y=motion.yaw;vehicle.currentSpeed=motion.speed;
+    const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of vehicle.wheels||[])wheel.rotation.x-=travel*2.3;
+    const incident=world.activeIncident;if(incident?.id===vehicle.incidentTargetId){
+      incident.travelProgress||={};const key=target.x+':'+target.z;let progress=incident.travelProgress[vehicle.serviceType];
+      if(!progress||progress.target!==key)progress=incident.travelProgress[vehicle.serviceType]={target:key,bestDistance:distance,lastAtMs:Number(incident.serviceElapsedMs||0)};
+      const remaining=Math.hypot(motion.x-target.x,motion.z-target.z);if(remaining<progress.bestDistance-.4){progress.bestDistance=remaining;progress.lastAtMs=Number(incident.serviceElapsedMs||0);}
+    }
+    world.trafficSnapshot=null;recoverIncidentResponder(job,dt);
+    if(job.blockedFor>6&&job.searchFailed){const incident=world.activeIncident;if(incident?.id===vehicle.incidentTargetId){const alternate=incidentResponderPoint(incident,vehicle.serviceType,vehicle,true),route=incidentResponderRoute(vehicle,alternate),first=route[1];if(first&&incidentResponderTravelClear(vehicle,{x:vehicle.group.position.x,z:vehicle.group.position.z},first,false)){const count=job.reroutes;job=setIncidentResponderRoute(vehicle,alternate,route);job.reroutes=count+1;}}}
+    vehicle.responseRoute=job.route.points;vehicle.responseIndex=job.route.index;vehicle.group.userData.roadPath=job.route.points;
+    return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);
+  }
+  window.OT_EMERGENCY_SERVICE={diagnostics:()=>({active:world.activeIncident?{id:world.activeIncident.id,simulationMs:Number(world.activeIncident.serviceElapsedMs||0),physicalArrivals:structuredClone(world.activeIncident.physicalArrivals||{}),contingencyEvents:structuredClone(world.activeIncident.contingencyEvents||[])}:null,history:structuredClone(world.emergencyServiceHistory||[]),physicalCompleted:Number(state.cityServices.physicalRescuesCompleted||0),contingencyCompleted:Number(state.cityServices.contingencyRescuesCompleted||0)})};
   function incidentServiceLabel(kind){return kind==='police'?'Polícia':kind==='firefighter'?'Bombeiros':'Resgate';}
   function lockIncidentActor(record,incident){const ref=record?.ref;if(!ref)return;incident.actorStates.push({ref,incidentUntil:ref.incidentUntil||0,currentSpeed:Number(ref.currentSpeed||0),state:ref.state||''});ref.incidentLocked=true;ref.incidentUntil=Number.MAX_SAFE_INTEGER;ref.currentSpeed=0;if(ref===player.car){player.car.speed=0;player.vx=0;player.vz=0;}if(ref.route&&typeof setBusState==='function'&&String(record.type)==='bus')setBusState(ref,BUS_STATES.ACCIDENT,'traffic-incident');}
   function separateIncidentActors(a,b){
@@ -249,43 +347,71 @@
   }
   function createIncidentVisual(x,z,fire=false){const group=new THREE.Group();group.position.set(x,0,z);worldGroup.add(group);for(const ox of [-1.55,-.52,.52,1.55]){premiumCylinder(.18,.72,0xf47b20,ox,.36,.95,group,8);premiumBox(.52,.1,.52,0xffffff,ox,.16,.95,group);}premiumBox(3.8,.08,.14,0xf5c542,0,.72,.95,group);if(fire){for(const ox of [-.4,.4]){const flame=new THREE.Mesh(new THREE.ConeGeometry(.3,.85,7),renderMat(0xff6a2f,{emissive:0xd83b12,emissiveIntensity:1.3}));flame.position.set(ox,.48,0);group.add(flame);}}const beacon=new THREE.Mesh(new THREE.TorusGeometry(2.35,.07,8,40),renderMat(0xffc928,{emissive:0xc07800,emissiveIntensity:.55,transparent:true,opacity:.8}));beacon.rotation.x=Math.PI/2;beacon.position.y=.08;group.add(beacon);return group;}
   function createTrafficIncidentAt(x,z,severity='minor',actors=[]){
-    if(world.activeIncident||currentHouse)return null;if(actors.length>=2&&trafficIncidentWorkshopProtected(x,z)){clearWorkshopTrafficChoke(actors[0],actors[1]);return null;}const now=performance.now(),fire=severity==='fire',projection=nearestRoadProjection({x,z})?.point||{x,z},group=createIncidentVisual(x,z,fire),incident={id:`incident-${++world.emergencySeq}`,x,z,navX:projection.x,navZ:projection.z,group,fire,startedAt:now,resolved:false,required:{police:true,paramedic:true,firefighter:true},arrived:{police:false,paramedic:false,firefighter:false},tasks:{police:false,paramedic:false,firefighter:false},playerAssigned:{},responders:{},actorStates:[],actors:actors.map(item=>item.ref).filter(Boolean),readyAt:0,lastDispatchAt:now,backupAt:now+10000,hardClearAt:now+22000};world.activeIncident=incident;world.trafficIncidents.push(incident);if(actors.length>=2)separateIncidentActors(actors[0],actors[1]);for(const actor of actors)lockIncidentActor(actor,incident);if(actors.some(actor=>actor.id==='player-car')){player.car.speed=0;state.stats.accidentsHelped=(state.stats.accidentsHelped||0)+1;}
+    if(world.activeIncident||currentHouse)return null;if(actors.length>=2&&trafficIncidentWorkshopProtected(x,z)){clearWorkshopTrafficChoke(actors[0],actors[1]);return null;}const now=performance.now(),fire=severity==='fire',projection=nearestRoadProjection({x,z})?.point||{x,z},group=createIncidentVisual(x,z,fire),incident={id:`incident-${++world.emergencySeq}`,x,z,navX:projection.x,navZ:projection.z,group,fire,startedAt:now,resolved:false,required:{police:true,paramedic:true,firefighter:true},arrived:{police:false,paramedic:false,firefighter:false},tasks:{police:false,paramedic:false,firefighter:false},playerAssigned:{},responders:{},actorStates:[],actors:actors.map(item=>item.ref).filter(Boolean),physicalArrivals:{},contingencyEvents:[],dispatches:{},serviceElapsedMs:0,serviceBudgetMs:30000,readyAt:0,lastDispatchAt:now,backupAt:now+10000,hardClearAt:now+30000};world.activeIncident=incident;world.trafficIncidents.push(incident);if(actors.length>=2)separateIncidentActors(actors[0],actors[1]);for(const actor of actors)lockIncidentActor(actor,incident);if(actors.some(actor=>actor.id==='player-car')){player.car.speed=0;state.stats.accidentsHelped=(state.stats.accidentsHelped||0)+1;}
     registerInteractable({id:`assist-${incident.id}`,type:'trafficIncident',icon:fire?'🔥':'🚑',label:fire?'Atender acidente e princípio de incêndio':'Atender acidente com segurança',radius:5.4,priority:252,getPos:()=>({x:incident.x,z:incident.z}),available:()=>world.activeIncident===incident&&!incident.resolved,action:()=>assistTrafficIncident(incident)});
     dispatchIncidentResponders(incident);state.cityServices.emergencyCalls=(state.cityServices.emergencyCalls||0)+1;toast(fire?'🚨 Acidente com princípio de incêndio: polícia, resgate e bombeiros acionados.':'🚨 Acidente: veículos parados; polícia, resgate e bombeiros acionados.','warn',3400);saveState();return incident;
   }
   function createTrafficIncident(a,b,severity='minor'){if(!a||!b)return null;const x=(a.group.position.x+b.group.position.x)/2,z=(a.group.position.z+b.group.position.z)/2;return createTrafficIncidentAt(x,z,severity,[a,b]);}
   function ensureActiveTrafficIncident(force=false){if(world.activeIncident)return world.activeIncident;if(!force)return null;const site=TRAINING_INCIDENT_SITES[world.emergencySeq%TRAINING_INCIDENT_SITES.length],projection=nearestRoadProjection(site)?.point||site;return createTrafficIncidentAt(projection.x,projection.z,'minor',[]);}
-  function incidentResponderPoint(incident,kind,vehicle){
-    incident.staging||={};if(incident.staging[kind])return incident.staging[kind];const road=nearestRoadProjection({x:incident.navX,z:incident.navZ}),a=road&&NAV_BASE_NODES[road.aId],b=road&&NAV_BASE_NODES[road.bId];if(!a||!b)return{x:incident.navX,z:incident.navZ};
+  function incidentResponderPoint(incident,kind,vehicle,reselect=false){
+    incident.staging||={};if(reselect)delete incident.staging[kind];if(incident.staging[kind])return incident.staging[kind];const road=nearestRoadProjection({x:incident.navX,z:incident.navZ}),a=road&&NAV_BASE_NODES[road.aId],b=road&&NAV_BASE_NODES[road.bId];if(!a||!b)return{x:incident.navX,z:incident.navZ};
     const d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz),offset=kind==='police'?9:kind==='paramedic'?17:26;
-    for(const along of[offset,-offset,offset+9,-offset-9])for(const side of[3.3,-3.3,2.5,-2.5,1.35,-1.35]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(!pointOnRoad(p.x,p.z,.05))continue;if(typeof phoneVehiclePoseClear==='function'&&!phoneVehiclePoseClear(vehicle,p.x,p.z,yaw,true))continue;if(Object.values(incident.staging).some(q=>Math.hypot(q.x-p.x,q.z-p.z)<8))continue;incident.staging[kind]=p;return p;}
+    for(const along of[offset,-offset,offset+9,-offset-9])for(const side of[2.5,-2.5,1.35,-1.35,3.3,-3.3]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(!pointOnRoad(p.x,p.z,.05))continue;if(!incidentResponderPoseClear(vehicle,p.x,p.z,yaw,true))continue;if(Object.values(incident.staging).some(q=>Math.hypot(q.x-p.x,q.z-p.z)<8))continue;incident.staging[kind]=p;return p;}
     return{x:incident.navX-fx*offset,z:incident.navZ-fz*offset};
   }
   function dispatchIncidentResponder(incident,kind){
     const job=state.career?.activeJob;if(job&&serviceKindForJob(job)===kind){incident.playerAssigned[kind]=true;job.emergencyIncidentId=incident.id;job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;reserveMissionServiceVehicle(job,{waypoint:true});return null;}
-    const vehicle=serviceVehiclePools(kind).find(v=>serviceVehicleAvailable(v,null));if(!vehicle)return null;vehicle.incidentTargetId=incident.id;vehicle.responseRoute=[];vehicle.responseIndex=0;incident.responders[kind]=vehicle.id;return vehicle;
+    const candidates=serviceVehiclePools(kind).filter(v=>serviceVehicleAvailable(v,null)).map(vehicle=>{const target=incidentResponderPoint(incident,kind,vehicle,true),route=incidentResponderRoute(vehicle,target);return{vehicle,target,route,distance:routeLength(route)};}).sort((a,b)=>a.distance-b.distance||String(a.vehicle.id).localeCompare(String(b.vehicle.id)));
+    const selected=candidates[0];if(!selected)return null;const {vehicle,target,route,distance}=selected;incident.staging[kind]={...target};vehicle.incidentTargetId=incident.id;setIncidentResponderRoute(vehicle,target,route);incident.responders[kind]=vehicle.id;
+    incident.dispatches||={};(incident.dispatches[kind]||=[]).push({vehicleId:vehicle.id,at:performance.now(),distance,from:{x:vehicle.group.position.x,z:vehicle.group.position.z},target:{...target}});
+    incident.serviceBudgetMs=Math.max(Number(incident.serviceBudgetMs||30000),Math.min(90000,18000+distance/Math.max(1,vehicle.speed)*2200));incident.hardClearAt=incident.startedAt+incident.serviceBudgetMs;return vehicle;
   }
   function dispatchIncidentResponders(incident){dispatchIncidentResponder(incident,'police');dispatchIncidentResponder(incident,'paramedic');dispatchIncidentResponder(incident,'firefighter');incident.lastDispatchAt=performance.now();}
   function incidentResponderActive(incident,kind){const id=String(incident?.responders?.[kind]||'');if(!id)return false;return serviceVehiclePools(kind).some(v=>String(v.id)===id&&String(v.incidentTargetId||'')===String(incident.id));}
   function retryIncidentResponders(incident,now){if(!incident||incident.resolved||now-Number(incident.lastDispatchAt||0)<2400)return;incident.lastDispatchAt=now;for(const kind of ['police','paramedic','firefighter']){if(!incident.required[kind]||incident.arrived[kind]||incident.tasks[kind]||incident.playerAssigned[kind])continue;if(!incidentResponderActive(incident,kind)){incident.responders[kind]='';dispatchIncidentResponder(incident,kind);}}}
-  function autonomousIncidentBackup(incident,now){if(!incident||incident.resolved)return;const playerWait=Object.values(incident.playerAssigned||{}).some(Boolean),backupAt=Number(incident.backupAt||incident.startedAt+10000),hardClearAt=Math.min(Number(incident.hardClearAt||Infinity),Number(incident.startedAt??now)+(playerWait?30000:22000));if(now>=backupAt){for(const kind of ['police','paramedic','firefighter']){if(!incident.required[kind]||incident.tasks[kind]||incident.playerAssigned[kind])continue;if(!incidentResponderActive(incident,kind)){incident.arrived[kind]=true;incident.tasks[kind]=true;incident.responders[kind]='central-backup';}}}if(now>=hardClearAt){for(const kind of ['police','paramedic','firefighter'])if(incident.required[kind]){incident.arrived[kind]=true;incident.tasks[kind]=true;}incident.forcedClear=true;}}
+  function recordIncidentContingency(incident,kind,reason,now){
+    incident.contingencyEvents||=[];if(incident.contingencyEvents.some(event=>event.kind===kind&&event.reason===reason))return;
+    incident.contingencyEvents.push({kind,reason,at:now,simulationMs:Number(incident.serviceElapsedMs||0),vehicleId:String(incident.responders?.[kind]||'')});
+  }
+  function autonomousIncidentBackup(incident,now){
+    if(!incident||incident.resolved)return;
+    const required=Object.keys(incident.required||{}).filter(kind=>incident.required[kind]);
+    // A completed physical attendance keeps its normal short clearing phase.
+    // Crossing the travel deadline during that phase must not rewrite it as
+    // a timeout after every responder already arrived and finished the task.
+    if(required.length&&required.every(kind=>incident.arrived[kind]&&incident.tasks[kind]))return;
+    const simulated=Number.isFinite(incident.serviceElapsedMs)?incident.serviceElapsedMs:now-incident.startedAt,serviceNow=incident.startedAt+simulated,budget=Math.max(30000,Number(incident.serviceBudgetMs||30000)),maximumBudget=Math.min(120000,budget*1.8),wallSafety=Math.max(90000,maximumBudget*3);
+    if(serviceNow>=Number(incident.backupAt||incident.startedAt+10000))for(const kind of ['police','paramedic','firefighter']){
+      if(!incident.required[kind]||incident.tasks[kind]||incident.playerAssigned[kind]||incidentResponderActive(incident,kind))continue;
+      recordIncidentContingency(incident,kind,'unavailable',now);incident.arrived[kind]=true;incident.tasks[kind]=true;incident.responders[kind]='central-backup';
+    }
+    const advancing=Object.keys(incident.required||{}).some(kind=>incident.required[kind]&&!incident.tasks[kind]&&incidentResponderActive(incident,kind)&&Number(incident.travelProgress?.[kind]?.lastAtMs||0)>simulated-12000);
+    const expired=simulated>=maximumBudget||simulated>=budget&&!advancing,wallExpired=now-incident.startedAt>=wallSafety;if(!expired&&!wallExpired)return;
+    for(const kind of ['police','paramedic','firefighter'])if(incident.required[kind]&&!incident.tasks[kind]){recordIncidentContingency(incident,kind,wallExpired?'wall-safety':'travel-budget',now);incident.arrived[kind]=true;incident.tasks[kind]=true;}
+    incident.forcedClear=true;
+  }
+  function recordPhysicalIncidentArrival(incident,kind,vehicle,distance,now){
+    incident.physicalArrivals||={};if(incident.physicalArrivals[kind])return;
+    incident.physicalArrivals[kind]={vehicleId:String(vehicle?.id||state.career?.activeJob?.serviceVehicleId||''),at:now,simulationMs:Number(incident.serviceElapsedMs||0),distance,x:vehicle?.group?.position?.x??player.x,z:vehicle?.group?.position?.z??player.z,source:vehicle?'autonomous':'player',afterContingency:!!incident.forcedClear||!!incident.contingencyEvents?.some(event=>event.kind===kind)};
+  }
   function assistTrafficIncident(incident){
     if(!incident||incident.resolved||world.activeIncident!==incident){toast('A ocorrência já foi encerrada.','good');return false;}const job=state.career?.activeJob,kind=serviceKindForJob(job);if(!kind||job.emergencyIncidentId!==incident.id){toast('A área está isolada. Aceite uma missão de emergência para ajudar.','warn',2400);return false;}if(!job.serviceVehicleArrived){toast(`Chegue com ${kind==='police'?'a viatura':kind==='firefighter'?'o caminhão dos bombeiros':'a ambulância'} antes de iniciar o atendimento.`,'warn',2500);return false;}if(player.vehicle){toast('Estacione, saia do veículo e use AÇÃO junto à ocorrência.','warn',2200);return false;}if(Math.hypot(player.x-incident.x,player.z-incident.z)>5.5){toast('Aproxime-se da área sinalizada.','warn');return false;}incident.tasks[kind]=true;job.sceneTaskCompleted=true;setMissionState(job,MISSION_STATES.RETURNING,'scene-secured');player.sitUntil=performance.now()+1800;for(let i=0;i<7;i++)setTimeout(()=>spawnDust(incident.x+(Math.random()-.5)*2.5,incident.z+(Math.random()-.5)*2.5,kind==='firefighter'?0x68d8ff:kind==='paramedic'?0xe9f5ff:0xf6d148),i*100);toast(kind==='police'?'Área isolada e trânsito protegido.':kind==='firefighter'?(incident.fire?'Princípio de incêndio controlado.':'Risco de incêndio verificado e área protegida.'):'Primeiros socorros concluídos com segurança.','good',2300);saveState(true);return true;
   }
-  function markPlayerIncidentArrival(incident){const job=state.career?.activeJob,kind=serviceKindForJob(job);if(!job||!kind||job.emergencyIncidentId!==incident.id||!isDrivingServiceVehicle(kind))return false;const distance=Math.hypot(player.x-incident.navX,player.z-incident.navZ);if(distance>5.2)return false;if(!incident.arrived[kind]){incident.arrived[kind]=true;job.serviceVehicleArrived=true;setMissionState(job,MISSION_STATES.ACTION_REQUIRED,'assist-incident');state.waypoint={id:`assist-${incident.id}`,name:'Área do acidente',x:incident.x,z:incident.z,navX:incident.navX,navZ:incident.navZ,arrived:true};updateWaypointMarker();updateNavigation(0,true);toast('Veículo posicionado. Estacione, saia e use AÇÃO na área sinalizada.','good',3000);saveState(true);}return true;}
+  function markPlayerIncidentArrival(incident){const job=state.career?.activeJob,kind=serviceKindForJob(job);if(!job||!kind||job.emergencyIncidentId!==incident.id||!isDrivingServiceVehicle(kind))return false;const distance=Math.hypot(player.x-incident.navX,player.z-incident.navZ);if(distance>5.2)return false;recordPhysicalIncidentArrival(incident,kind,null,distance,performance.now());if(!incident.arrived[kind]){incident.arrived[kind]=true;job.serviceVehicleArrived=true;setMissionState(job,MISSION_STATES.ACTION_REQUIRED,'assist-incident');state.waypoint={id:`assist-${incident.id}`,name:'Área do acidente',x:incident.x,z:incident.z,navX:incident.navX,navZ:incident.navZ,arrived:true};updateWaypointMarker();updateNavigation(0,true);toast('Veículo posicionado. Estacione, saia e use AÇÃO na área sinalizada.','good',3000);saveState(true);}return true;}
   function releaseIncidentActorStates(incident){const now=performance.now();for(const [index,saved]of (incident.actorStates||[]).entries()){const ref=saved.ref;if(!ref)continue;ref.incidentLocked=false;ref.incidentUntil=now+900+index*1400;ref.trafficHoldUntil=now+900+index*1400;ref.trafficRecoveryUntil=now+10000;ref.currentSpeed=Math.max(0,Math.min(Number(saved.currentSpeed||0),1.8));if(saved.state===BUS_STATES.ACCIDENT||ref.state===BUS_STATES.ACCIDENT)setBusState(ref,BUS_STATES.MOVING,'incident-cleared');}const records=(incident.actorStates||[]).map((saved,i)=>({id:`release-${i}`,type:'release',ref:saved.ref,group:saved.ref?.group||null,radius:Number(saved.ref?.radius||1.6),speed:Number(saved.currentSpeed||0)})).filter(x=>x.group);if(records.length>=2){separateIncidentActors(records[0],records[1]);separateIncidentActors(records[0],records[1]);}}
   function resolveTrafficIncident(incident){
-    if(!incident||incident.resolved)return;incident.resolved=true;incident.group.visible=false;releaseIncidentActorStates(incident);for(const car of world.policeCars){if(car.incidentTargetId===incident.id){car.incidentTargetId='';car.responseRoute=[];car.responseIndex=0;}}for(const ambulance of world.ambulances){if(ambulance.incidentTargetId===incident.id){ambulance.incidentTargetId='';ambulance.responseRoute=[];ambulance.responseIndex=0;}}for(const truck of world.fireTrucks){if(truck.incidentTargetId===incident.id){truck.incidentTargetId='';truck.responseRoute=[];truck.responseIndex=0;}}
+    if(!incident||incident.resolved)return;incident.resolved=true;incident.group.visible=false;releaseIncidentActorStates(incident);for(const car of world.policeCars){if(car.incidentTargetId===incident.id){car.incidentTargetId='';car.responseRoute=[];car.responseIndex=0;car.responseJob=null;}}for(const ambulance of world.ambulances){if(ambulance.incidentTargetId===incident.id){ambulance.incidentTargetId='';ambulance.responseRoute=[];ambulance.responseIndex=0;ambulance.responseJob=null;}}for(const truck of world.fireTrucks){if(truck.incidentTargetId===incident.id){truck.incidentTargetId='';truck.responseRoute=[];truck.responseIndex=0;truck.responseJob=null;}}
     const job=state.career?.activeJob,kind=serviceKindForJob(job);if(job&&job.emergencyIncidentId===incident.id){if(incident.tasks[kind]&&!incident.forcedClear)completeActiveJob();else{job.emergencyIncidentId='';job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;setMissionState(job,MISSION_STATES.ACCEPTED,'incident-cleared-autonomously');}}
-    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);},1200);toast(incident.forcedClear?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
+    const required=Object.keys(incident.required||{}).filter(kind=>incident.required[kind]),physical=required.length>0&&required.every(kind=>incident.physicalArrivals?.[kind]),contingency=!!incident.forcedClear||!!incident.contingencyEvents?.length;incident.completionMode=contingency?'contingency':physical?'physical':'unclassified';world.emergencyServiceHistory||=[];world.emergencyServiceHistory.push({id:incident.id,x:incident.x,z:incident.z,startedAt:incident.startedAt,resolvedAt:performance.now(),simulationMs:Number(incident.serviceElapsedMs||0),mode:incident.completionMode,physicalArrivals:{...(incident.physicalArrivals||{})},contingencyEvents:(incident.contingencyEvents||[]).map(event=>({...event})),dispatches:incident.dispatches||{}});if(world.emergencyServiceHistory.length>64)world.emergencyServiceHistory.splice(0,world.emergencyServiceHistory.length-64);if(physical&&!contingency&&!incident.forcedClear)state.cityServices.physicalRescuesCompleted=(state.cityServices.physicalRescuesCompleted||0)+1;if(contingency)state.cityServices.contingencyRescuesCompleted=(state.cityServices.contingencyRescuesCompleted||0)+1;
+    state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);disposeDetachedVisual(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);const actionIndex=world.interactables.findIndex(action=>action.id===`assist-${incident.id}`);if(actionIndex>=0)world.interactables.splice(actionIndex,1);},1200);toast((incident.forcedClear||contingency)?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
   }
   function updateTrafficIncidents(dt){
     const now=performance.now(),incident=world.activeIncident;for(const ambulance of world.ambulances){const responding=!!ambulance.incidentTargetId;ambulance.lightA.visible=responding&&Math.floor(now/220)%2===0;ambulance.lightB.visible=responding&&!ambulance.lightA.visible;if(!incident&&!ambulance.occupied&&!ambulance.missionReservedFor)returnServiceVehicleHome(ambulance,dt);}
     if(incident){
-      incident.lastDispatchAt=Number(incident.lastDispatchAt||incident.startedAt||now);incident.backupAt=Number(incident.backupAt||Number(incident.startedAt??now)+10000);incident.hardClearAt=Math.min(Number(incident.hardClearAt||Infinity),Number(incident.startedAt??now)+22000);retryIncidentResponders(incident,now);autonomousIncidentBackup(incident,now);markPlayerIncidentArrival(incident);const targetFor=(kind,v)=>incidentResponderPoint(incident,kind,v);
-      for(const car of world.policeCars.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){if(moveIncidentResponder(car,targetFor('police',car),dt)<1.8){incident.arrived.police=true;if(!incident.playerAssigned.police&&now-incident.startedAt>1800)incident.tasks.police=true;}}
-      for(const ambulance of world.ambulances.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){if(moveIncidentResponder(ambulance,targetFor('paramedic',ambulance),dt)<1.8){incident.arrived.paramedic=true;if(!incident.playerAssigned.paramedic&&now-incident.startedAt>1800)incident.tasks.paramedic=true;}}
-      for(const truck of world.fireTrucks.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){if(moveIncidentResponder(truck,targetFor('firefighter',truck),dt)<2.1){incident.arrived.firefighter=true;if(!incident.playerAssigned.firefighter&&now-incident.startedAt>1800)incident.tasks.firefighter=true;}}
+      incident.lastDispatchAt=Number(incident.lastDispatchAt||incident.startedAt||now);incident.backupAt=Number(incident.backupAt||Number(incident.startedAt??now)+10000);incident.serviceElapsedMs=Number(incident.serviceElapsedMs||0)+Math.max(0,Math.min(.1,dt))*1000;incident.hardClearAt=Number(incident.startedAt??now)+Math.max(30000,Number(incident.serviceBudgetMs||30000));retryIncidentResponders(incident,now);autonomousIncidentBackup(incident,now);markPlayerIncidentArrival(incident);const targetFor=(kind,v)=>incidentResponderPoint(incident,kind,v);
+      for(const car of world.policeCars.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){const distance=moveIncidentResponder(car,targetFor('police',car),dt);if(distance<1.8){recordPhysicalIncidentArrival(incident,'police',car,distance,now);incident.arrived.police=true;if(!incident.playerAssigned.police&&now-incident.startedAt>1800)incident.tasks.police=true;}}
+      for(const ambulance of world.ambulances.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){const distance=moveIncidentResponder(ambulance,targetFor('paramedic',ambulance),dt);if(distance<1.8){recordPhysicalIncidentArrival(incident,'paramedic',ambulance,distance,now);incident.arrived.paramedic=true;if(!incident.playerAssigned.paramedic&&now-incident.startedAt>1800)incident.tasks.paramedic=true;}}
+      for(const truck of world.fireTrucks.filter(c=>c.incidentTargetId===incident.id&&!c.occupied)){const distance=moveIncidentResponder(truck,targetFor('firefighter',truck),dt);if(distance<2.1){recordPhysicalIncidentArrival(incident,'firefighter',truck,distance,now);incident.arrived.firefighter=true;if(!incident.playerAssigned.firefighter&&now-incident.startedAt>1800)incident.tasks.firefighter=true;}}
       const required=Object.keys(incident.required).filter(kind=>incident.required[kind]),complete=required.every(kind=>incident.arrived[kind]&&incident.tasks[kind]);if(complete){incident.readyAt=incident.readyAt||now;if(now-incident.readyAt>(incident.forcedClear?350:1900))resolveTrafficIncident(incident);}else incident.readyAt=0;return;
     }
     if(now<Number(world.nextTrafficIncidentAt||0))return;updateTrafficIncidents.acc=(updateTrafficIncidents.acc||0)+dt;if(updateTrafficIncidents.acc<.18)return;updateTrafficIncidents.acc=0;const actors=trafficActorList().filter(a=>a.speed>1.4&&now>=Number(a.ref?.incidentUntil||0)&&!a.ref?.incidentLocked);if(player.vehicle&&!player.car.passengerOf&&Math.abs(player.car.speed)>1.4&&!actors.some(a=>a.id==='player-car'))actors.push({id:'player-car',type:'player',group:{position:{x:player.x,z:player.z},rotation:{y:player.car.heading},userData:{brazilRoot:vehicleVisual?.userData?.brazilRoot}},radius:1.7,speed:Math.abs(player.car.speed),ref:player.car,isPlayer:true});

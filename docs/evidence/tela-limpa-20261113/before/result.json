@@ -1,0 +1,460 @@
+{
+  "revision": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+  "results": [
+    {
+      "width": 393,
+      "height": 852,
+      "body": "otthi-portrait otthi-world-shell otthi-v705-world ui-portrait ui-compact otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world",
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "label": "Mostrar necessidades",
+          "x": 174.5,
+          "y": 5,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "multiplayerBadge",
+          "label": "Status multiplayer",
+          "x": 311.359375,
+          "y": 43,
+          "w": 75.640625,
+          "h": 24
+        },
+        {
+          "id": "quickToggleBtn",
+          "label": "Abrir menu de vida",
+          "x": 342,
+          "y": 156,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "miniNav",
+          "label": "Abrir mapa e navegação",
+          "x": 236,
+          "y": 70,
+          "w": 150,
+          "h": 80
+        },
+        {
+          "id": "cameraNearBtn",
+          "label": "Aproximar câmera",
+          "x": 246,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraPitchUpBtn",
+          "label": "Levantar câmera e olhar mais para baixo",
+          "x": 294,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraPitchDownBtn",
+          "label": "Abaixar câmera e olhar para o horizonte",
+          "x": 342,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraResetBtn",
+          "label": "Centralizar câmera",
+          "x": 246,
+          "y": 252,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraFarBtn",
+          "label": "Afastar câmera",
+          "x": 294,
+          "y": 252,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "skillsToggleBtn",
+          "label": "Abrir habilidades",
+          "x": 160.5,
+          "y": 787,
+          "w": 72,
+          "h": 56
+        },
+        {
+          "id": "runBtn",
+          "label": "🏃Correr",
+          "x": 257,
+          "y": 716,
+          "w": 61,
+          "h": 61
+        },
+        {
+          "id": "specialBtn",
+          "label": "🔥Poder",
+          "x": 324,
+          "y": 716,
+          "w": 61,
+          "h": 61
+        },
+        {
+          "id": "actionBtn",
+          "label": "⚔Espada",
+          "x": 257,
+          "y": 783,
+          "w": 61,
+          "h": 61
+        },
+        {
+          "id": "jumpBtn",
+          "label": "⬆Pular",
+          "x": 324,
+          "y": 783,
+          "w": 61,
+          "h": 61
+        },
+        {
+          "id": "worldHeroBtn",
+          "label": "Usar poder OTTHI",
+          "x": 323,
+          "y": 642,
+          "w": 52,
+          "h": 52
+        },
+        {
+          "id": "worldCampaignBtn",
+          "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+          "x": 234,
+          "y": 156,
+          "w": 103,
+          "h": 44
+        }
+      ]
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "body": "otthi-world-shell otthi-v705-world ui-compact otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world otthi-landscape ui-landscape ui-short ui-ultra-short ui-tiny",
+      "buttons": [
+        {
+          "id": "multiplayerBadge",
+          "label": "Status multiplayer",
+          "x": 763,
+          "y": 45,
+          "w": 82,
+          "h": 23
+        },
+        {
+          "id": "quickToggleBtn",
+          "label": "Abrir menu de vida",
+          "x": 666,
+          "y": 48,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "miniNav",
+          "label": "Abrir mapa e navegação",
+          "x": 717,
+          "y": 72,
+          "w": 128,
+          "h": 56
+        },
+        {
+          "id": "skillsToggleBtn",
+          "label": "Abrir habilidades",
+          "x": 109,
+          "y": 344,
+          "w": 44,
+          "h": 42
+        },
+        {
+          "id": "runBtn",
+          "label": "🏃Correr",
+          "x": 758,
+          "y": 300,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "specialBtn",
+          "label": "🔥Poder",
+          "x": 804,
+          "y": 300,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "actionBtn",
+          "label": "⚔Espada",
+          "x": 758,
+          "y": 346,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "jumpBtn",
+          "label": "⬆Pular",
+          "x": 804,
+          "y": 346,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "worldHeroBtn",
+          "label": "Usar poder OTTHI",
+          "x": 714,
+          "y": 298,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "worldCampaignBtn",
+          "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+          "x": 582,
+          "y": 96,
+          "w": 103,
+          "h": 42
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "body": "otthi-world-shell otthi-v705-world ui-compact otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world ui-tiny otthi-portrait ui-portrait ui-narrow",
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "label": "Mostrar necessidades",
+          "x": 138,
+          "y": 5,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "multiplayerBadge",
+          "label": "Status multiplayer",
+          "x": 238.359375,
+          "y": 43,
+          "w": 75.640625,
+          "h": 24
+        },
+        {
+          "id": "quickToggleBtn",
+          "label": "Abrir menu de vida",
+          "x": 269,
+          "y": 156,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "miniNav",
+          "label": "Abrir mapa e navegação",
+          "x": 185,
+          "y": 70,
+          "w": 128,
+          "h": 80
+        },
+        {
+          "id": "cameraNearBtn",
+          "label": "Aproximar câmera",
+          "x": 173,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraPitchUpBtn",
+          "label": "Levantar câmera e olhar mais para baixo",
+          "x": 221,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraPitchDownBtn",
+          "label": "Abaixar câmera e olhar para o horizonte",
+          "x": 269,
+          "y": 204,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraResetBtn",
+          "label": "Centralizar câmera",
+          "x": 173,
+          "y": 252,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "cameraFarBtn",
+          "label": "Afastar câmera",
+          "x": 221,
+          "y": 252,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "skillsToggleBtn",
+          "label": "Abrir habilidades",
+          "x": 124,
+          "y": 503,
+          "w": 72,
+          "h": 56
+        },
+        {
+          "id": "runBtn",
+          "label": "🏃Correr",
+          "x": 210,
+          "y": 458,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "id": "specialBtn",
+          "label": "🔥Poder",
+          "x": 264,
+          "y": 458,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "id": "actionBtn",
+          "label": "⚔Espada",
+          "x": 210,
+          "y": 512,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "id": "jumpBtn",
+          "label": "⬆Pular",
+          "x": 264,
+          "y": 512,
+          "w": 48,
+          "h": 48
+        },
+        {
+          "id": "worldHeroBtn",
+          "label": "Usar poder OTTHI",
+          "x": 250,
+          "y": 384,
+          "w": 52,
+          "h": 52
+        },
+        {
+          "id": "worldCampaignBtn",
+          "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+          "x": 161,
+          "y": 156,
+          "w": 103,
+          "h": 44
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "body": "otthi-world-shell otthi-v705-world otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world otthi-landscape ui-landscape",
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "label": "Mostrar necessidades",
+          "x": 334.1875,
+          "y": 4,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "multiplayerBadge",
+          "label": "Status multiplayer",
+          "x": 1191,
+          "y": 45,
+          "w": 82,
+          "h": 23
+        },
+        {
+          "id": "quickToggleBtn",
+          "label": "Abrir menu de vida",
+          "x": 1071,
+          "y": 48,
+          "w": 44,
+          "h": 44
+        },
+        {
+          "id": "miniNav",
+          "label": "Abrir mapa e navegação",
+          "x": 1123,
+          "y": 72,
+          "w": 150,
+          "h": 76
+        },
+        {
+          "id": "skillsToggleBtn",
+          "label": "Abrir habilidades",
+          "x": 137,
+          "y": 671,
+          "w": 44,
+          "h": 42
+        },
+        {
+          "id": "runBtn",
+          "label": "🏃Correr",
+          "x": 1166,
+          "y": 607,
+          "w": 50,
+          "h": 50
+        },
+        {
+          "id": "specialBtn",
+          "label": "🔥Poder",
+          "x": 1222,
+          "y": 607,
+          "w": 50,
+          "h": 50
+        },
+        {
+          "id": "actionBtn",
+          "label": "⚔Espada",
+          "x": 1166,
+          "y": 663,
+          "w": 50,
+          "h": 50
+        },
+        {
+          "id": "jumpBtn",
+          "label": "⬆Pular",
+          "x": 1222,
+          "y": 663,
+          "w": 50,
+          "h": 50
+        },
+        {
+          "id": "worldHeroBtn",
+          "label": "Usar poder OTTHI",
+          "x": 1122,
+          "y": 615,
+          "w": 40,
+          "h": 40
+        },
+        {
+          "id": "worldCampaignBtn",
+          "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+          "x": 1010,
+          "y": 96,
+          "w": 103,
+          "h": 42
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Disposable local world, viewport emulation, software WebGL, drawing capped. Native JavaScript/CSS/index pinned to production705.28.27. No production account or physical phone."
+  ]
+}

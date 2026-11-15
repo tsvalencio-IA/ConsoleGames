@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-11T19:13:23.234Z",
+  "scope": "Chromium headless; player real do YouTube; nenhuma câmera, conta ou áudio ouvido pelo agente.",
+  "samples": [],
+  "networkErrors": [
+    {
+      "url": "https://otthi-world-campanha-teste.vercel.app",
+      "error": "net::ERR_CERT_AUTHORITY_INVALID"
+    }
+  ],
+  "pageErrors": [],
+  "failure": "page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://otthi-world-campanha-teste.vercel.app/games/danca/\nCall log:\n\u001b[2m  - navigating to \"https://otthi-world-campanha-teste.vercel.app/games/danca/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+  "text": ""
+}

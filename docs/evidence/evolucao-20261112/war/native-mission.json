@@ -1,0 +1,3581 @@
+{
+  "kind": "full-native-patrol",
+  "passed": true,
+  "wallMs": 120098,
+  "initial": {
+    "career": {
+      "wins": 0,
+      "kills": 0,
+      "completed": {},
+      "weapon": "rifle"
+    },
+    "profile": {
+      "xp": 0,
+      "coins": 0,
+      "level": 1
+    },
+    "careerKey": "thia:ar-combat:v1:local-3a8981dc-58f3-47b4-a81b-f0f07a21b34e",
+    "settings": {
+      "camera": "chase",
+      "distance": "far",
+      "difficulty": "easy",
+      "sensitivity": 1,
+      "adsSensitivity": 1,
+      "combatAimAssist": true,
+      "combatFireMode": "manual",
+      "combatProtection": "relaxed",
+      "combatRecovery": true,
+      "smoothing": 0.62,
+      "autoAccelerate": false,
+      "assist": true,
+      "steeringAssist": "light",
+      "controlSize": 1,
+      "controlOpacity": 0.92,
+      "controlInset": 8,
+      "effectsVolume": 0.7,
+      "engineVolume": 0.6,
+      "alertVolume": 0.7,
+      "quality": "auto"
+    }
+  },
+  "victory": {
+    "state": "VICTORY",
+    "training": false,
+    "front": true,
+    "frontMode": "continuous",
+    "handAim": {
+      "x": 0.5,
+      "y": 0.48,
+      "fresh": false
+    },
+    "player": {
+      "x": 11.821148498610636,
+      "z": 61.895946887974034,
+      "yaw": 0.3315,
+      "pitch": 0,
+      "hp": 100
+    },
+    "ray": {
+      "yaw": 0.3315,
+      "pitch": 0
+    },
+    "projectionOfAim": {
+      "x": 422,
+      "y": 187.2,
+      "s": 17.16,
+      "z": 20
+    },
+    "wave": 2,
+    "elapsed": 76.2415999999799,
+    "stats": {
+      "kills": 7,
+      "hits": 21,
+      "shots": 27,
+      "reloads": 1,
+      "blocks": 0,
+      "missions": 1
+    },
+    "ammo": 15,
+    "reserve": 168,
+    "reload": 0,
+    "covers": [
+      {
+        "x": -11,
+        "z": 15,
+        "w": 8,
+        "d": 10,
+        "h": 3
+      },
+      {
+        "x": 10,
+        "z": 17,
+        "w": 7,
+        "d": 9,
+        "h": 3
+      },
+      {
+        "x": -14,
+        "z": 38,
+        "w": 10,
+        "d": 9,
+        "h": 3
+      },
+      {
+        "x": 8,
+        "z": 43,
+        "w": 6,
+        "d": 3,
+        "h": 1.3
+      },
+      {
+        "x": -22,
+        "z": 26,
+        "w": 5,
+        "d": 4,
+        "h": 1.4
+      },
+      {
+        "x": 21,
+        "z": 45,
+        "w": 5,
+        "d": 3,
+        "h": 1.2
+      },
+      {
+        "x": 0,
+        "z": 54,
+        "w": 5,
+        "d": 2,
+        "h": 1.1
+      }
+    ],
+    "enemies": [],
+    "objective": {
+      "phase": "complete",
+      "progress": 0.8,
+      "required": 0.8,
+      "secured": 2
+    },
+    "goal": {
+      "x": 12,
+      "z": 62
+    },
+    "eye": 1.8,
+    "width": 844,
+    "height": 390,
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 844,
+      "height": 390
+    },
+    "settings": {
+      "camera": "chase",
+      "distance": "far",
+      "difficulty": "easy",
+      "sensitivity": 1,
+      "adsSensitivity": 1,
+      "combatAimAssist": true,
+      "combatFireMode": "manual",
+      "combatProtection": "relaxed",
+      "combatRecovery": true,
+      "smoothing": 0.62,
+      "autoAccelerate": false,
+      "assist": true,
+      "steeringAssist": "light",
+      "controlSize": 1,
+      "controlOpacity": 0.92,
+      "controlInset": 8,
+      "effectsVolume": 0.7,
+      "engineVolume": 0.6,
+      "alertVolume": 0.7,
+      "quality": "auto"
+    },
+    "profile": {
+      "xp": 0,
+      "coins": 0,
+      "level": 1
+    },
+    "careerKey": "thia:ar-combat:v1:local-3a8981dc-58f3-47b4-a81b-f0f07a21b34e",
+    "career": {
+      "wins": 1,
+      "kills": 7,
+      "completed": {
+        "patrol": true
+      },
+      "weapon": "rifle"
+    }
+  },
+  "after": {
+    "state": null,
+    "resultLocked": true,
+    "profile": {
+      "xp": 400,
+      "coins": 140,
+      "level": 2
+    },
+    "result": "SUCESSO"
+  },
+  "restored": {
+    "career": "{\"wins\":1,\"kills\":7,\"completed\":{\"patrol\":true},\"weapon\":\"rifle\"}",
+    "profile": {
+      "xp": 400,
+      "coins": 140,
+      "level": 2
+    },
+    "solo": "{\"version\":1,\"username\":\"Jogador local\",\"playerId\":\"local-3a8981dc-58f3-47b4-a81b-f0f07a21b34e\",\"xp\":400,\"level\":2,\"coins\":140,\"arSave\":{\"upgrades\":{\"engine\":1,\"battery\":1,\"radar\":1,\"chassis\":1,\"scout\":false}}}"
+  },
+  "trace": [
+    {
+      "ms": 5775,
+      "elapsed": 0.7705999999977657,
+      "x": 0,
+      "z": 0,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 0,
+      "objective": {
+        "phase": "approach",
+        "progress": 0,
+        "required": 0,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 0,
+        "hits": 0,
+        "shots": 0,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 6561,
+      "elapsed": 1.2201999999992557,
+      "x": 0,
+      "z": 2.161250000000001,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 0,
+      "objective": {
+        "phase": "approach",
+        "progress": 0,
+        "required": 0,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 0,
+        "hits": 0,
+        "shots": 0,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 7270,
+      "elapsed": 1.8213999999985087,
+      "x": 0,
+      "z": 6.06904999999516,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 0,
+      "objective": {
+        "phase": "approach",
+        "progress": 0,
+        "required": 0,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 0,
+        "hits": 0,
+        "shots": 0,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 8251,
+      "elapsed": 2.3509999999999973,
+      "x": 0,
+      "z": 2.6266499999854727,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 0,
+        "hits": 0,
+        "shots": 0,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 3
+    },
+    {
+      "ms": 8979,
+      "elapsed": 2.884799999997015,
+      "x": 0,
+      "z": 2.6266499999854727,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 1,
+        "hits": 3,
+        "shots": 4,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 2
+    },
+    {
+      "ms": 9853,
+      "elapsed": 3.3847999999970133,
+      "x": 0,
+      "z": 2.6266499999854727,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 2,
+        "hits": 6,
+        "shots": 7,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 1
+    },
+    {
+      "ms": 10769,
+      "elapsed": 3.8759999999962664,
+      "x": 0,
+      "z": 2.6266499999854727,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 11,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 11377,
+      "elapsed": 4.344499999996265,
+      "x": 0,
+      "z": 4.046899999985474,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 12046,
+      "elapsed": 4.594499999996264,
+      "x": 0,
+      "z": 5.671899999985475,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 12680,
+      "elapsed": 4.8444999999962635,
+      "x": 0,
+      "z": 7.296899999985476,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 13457,
+      "elapsed": 5.094499999996263,
+      "x": 0,
+      "z": 8.921899999985468,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 14344,
+      "elapsed": 5.344499999996262,
+      "x": -1.1490485194281397,
+      "z": 10.07094851941361,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 0,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 15145,
+      "elapsed": 5.84449999999626,
+      "x": -2.298097038856279,
+      "z": 7.296899999985475,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 15843,
+      "elapsed": 6.344499999996258,
+      "x": 8.326672684688674e-17,
+      "z": 7.296899999985475,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 16542,
+      "elapsed": 6.844499999996256,
+      "x": -1.1490485194281397,
+      "z": 10.07094851941361,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 17275,
+      "elapsed": 7.344499999996255,
+      "x": -2.298097038856279,
+      "z": 7.296899999985475,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 18049,
+      "elapsed": 7.844499999996253,
+      "x": 8.326672684688674e-17,
+      "z": 7.296899999985475,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 18660,
+      "elapsed": 8.34449999999627,
+      "x": -1.1490485194281397,
+      "z": 10.07094851941361,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 19543,
+      "elapsed": 9.094499999996307,
+      "x": -1.1490485194281397,
+      "z": 6.147851480557333,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 20451,
+      "elapsed": 9.844499999996344,
+      "x": -1.1490485194281397,
+      "z": 10.07094851941361,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 21346,
+      "elapsed": 10.58369999999936,
+      "x": -1.1490485194281397,
+      "z": 6.218051480537961,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 22062,
+      "elapsed": 11.083699999999386,
+      "x": 8.326672684688674e-17,
+      "z": 8.992099999966095,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 22954,
+      "elapsed": 11.333699999999398,
+      "x": -1.1490485194281397,
+      "z": 10.141148519394237,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 23568,
+      "elapsed": 11.798500000000166,
+      "x": -2.298097038856279,
+      "z": 7.59589999996126,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 24355,
+      "elapsed": 12.506399999998711,
+      "x": 8.326672684688674e-17,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 25451,
+      "elapsed": 13.006399999998736,
+      "x": -2.298097038856279,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 26254,
+      "elapsed": 13.256399999998749,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 27182,
+      "elapsed": 13.506399999998761,
+      "x": -1.1490485194281397,
+      "z": 6.173201480523432,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 27967,
+      "elapsed": 13.756399999998774,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 28647,
+      "elapsed": 14.006399999998786,
+      "x": 8.326672684688674e-17,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 29355,
+      "elapsed": 14.506399999998811,
+      "x": -2.298097038856279,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 30049,
+      "elapsed": 15.006399999998836,
+      "x": -1.1490485194281397,
+      "z": 6.173201480523432,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 30745,
+      "elapsed": 15.50639999999886,
+      "x": 8.326672684688674e-17,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 31464,
+      "elapsed": 16.006399999998884,
+      "x": -2.298097038856279,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 32557,
+      "elapsed": 16.506399999998855,
+      "x": -1.1490485194281397,
+      "z": 6.173201480523432,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 33468,
+      "elapsed": 17.006399999998827,
+      "x": 8.326672684688674e-17,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 34750,
+      "elapsed": 17.5063999999988,
+      "x": -2.298097038856279,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 35469,
+      "elapsed": 17.756399999998784,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 36150,
+      "elapsed": 18.00639999999877,
+      "x": -1.1490485194281397,
+      "z": 6.173201480523432,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 36848,
+      "elapsed": 18.256399999998756,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 37575,
+      "elapsed": 18.50639999999874,
+      "x": 8.326672684688674e-17,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 38377,
+      "elapsed": 18.756399999998727,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 39347,
+      "elapsed": 19.2563999999987,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 40176,
+      "elapsed": 19.75639999999867,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 41065,
+      "elapsed": 20.256399999998642,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 42170,
+      "elapsed": 20.756399999998614,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 43382,
+      "elapsed": 21.256399999998585,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 44658,
+      "elapsed": 21.756399999998557,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 45661,
+      "elapsed": 22.25639999999853,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 46276,
+      "elapsed": 22.7563999999985,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 47048,
+      "elapsed": 23.25639999999847,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 47652,
+      "elapsed": 23.756399999998443,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 48360,
+      "elapsed": 24.256399999998415,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 49248,
+      "elapsed": 24.756399999998386,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 49963,
+      "elapsed": 25.256399999998358,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 51046,
+      "elapsed": 25.75639999999833,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 52147,
+      "elapsed": 26.2563999999983,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 53257,
+      "elapsed": 26.756399999998273,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 54156,
+      "elapsed": 27.256399999998244,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 55150,
+      "elapsed": 27.756399999998216,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 55949,
+      "elapsed": 28.256399999998187,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 56743,
+      "elapsed": 28.75639999999816,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 57373,
+      "elapsed": 29.25639999999813,
+      "x": -1.1490485194281397,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 58046,
+      "elapsed": 29.756399999998102,
+      "x": -2.298097038856279,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 59044,
+      "elapsed": 30.256399999998074,
+      "x": 8.326672684688674e-17,
+      "z": 7.322249999951574,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 59751,
+      "elapsed": 30.756399999998045,
+      "x": 8.326672684688674e-17,
+      "z": 10.572249999951556,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 60843,
+      "elapsed": 31.256399999998017,
+      "x": -2.298097038856279,
+      "z": 10.572249999951556,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 61543,
+      "elapsed": 31.75639999999799,
+      "x": -1.1490485194281397,
+      "z": 7.798201480523426,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 62342,
+      "elapsed": 32.25639999999796,
+      "x": -1.1490485194281397,
+      "z": 7.798201480523426,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 63150,
+      "elapsed": 32.75639999999793,
+      "x": -3.447145558284421,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 64047,
+      "elapsed": 33.2563999999979,
+      "x": -0.673097038856278,
+      "z": 11.245347038807852,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 64780,
+      "elapsed": 33.756399999997875,
+      "x": -0.673097038856278,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 65640,
+      "elapsed": 34.256399999997846,
+      "x": -3.447145558284421,
+      "z": 10.09629851937971,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 66452,
+      "elapsed": 34.75639999999782,
+      "x": -0.673097038856278,
+      "z": 11.245347038807852,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 67378,
+      "elapsed": 35.25639999999779,
+      "x": -0.673097038856278,
+      "z": 8.947249999951568,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 68060,
+      "elapsed": 35.741599999997014,
+      "x": -3.3791218859308505,
+      "z": 10.02827484702614,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 68961,
+      "elapsed": 36.241599999996986,
+      "x": -0.6050733665027077,
+      "z": 11.177323366454281,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 69658,
+      "elapsed": 36.74159999999696,
+      "x": -0.6050733665027077,
+      "z": 8.879226327597998,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 70461,
+      "elapsed": 37.24159999999693,
+      "x": -3.3791218859308505,
+      "z": 10.02827484702614,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 71175,
+      "elapsed": 37.7415999999969,
+      "x": -0.6050733665027077,
+      "z": 11.177323366454281,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 71975,
+      "elapsed": 38.24159999999687,
+      "x": -0.6050733665027077,
+      "z": 8.879226327597998,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 72861,
+      "elapsed": 38.74159999999684,
+      "x": -3.3791218859308505,
+      "z": 10.02827484702614,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 73560,
+      "elapsed": 39.241599999996815,
+      "x": -0.6050733665027077,
+      "z": 11.177323366454281,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 74342,
+      "elapsed": 39.74159999999679,
+      "x": -0.6050733665027077,
+      "z": 8.879226327597998,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 75054,
+      "elapsed": 40.24159999999676,
+      "x": -3.3791218859308505,
+      "z": 10.02827484702614,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 75847,
+      "elapsed": 40.74159999999673,
+      "x": -0.6050733665027077,
+      "z": 11.177323366454281,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 76545,
+      "elapsed": 41.2415999999967,
+      "x": -0.6050733665027077,
+      "z": 8.879226327597998,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 77253,
+      "elapsed": 41.74159999999667,
+      "x": -3.3791218859308505,
+      "z": 10.02827484702614,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 78043,
+      "elapsed": 42.241599999996644,
+      "x": -0.6050733665027077,
+      "z": 11.177323366454281,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 78650,
+      "elapsed": 42.741599999996616,
+      "x": -0.6050733665027077,
+      "z": 8.879226327597998,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 79349,
+      "elapsed": 43.447399999997316,
+      "x": -1.7014260218052542,
+      "z": 11.615027880483652,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 80183,
+      "elapsed": 44.21409999999653,
+      "x": -2.7939413540741063,
+      "z": 15.614881360434298,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 81044,
+      "elapsed": 45.03049999999499,
+      "x": -1.98179386054572,
+      "z": 13.338148567579964,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 81646,
+      "elapsed": 45.67799999999495,
+      "x": -1.9615706066277556,
+      "z": 16.780045542081155,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 82341,
+      "elapsed": 46.26929999999567,
+      "x": -2.1748340118267695,
+      "z": 13.800161908428734,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 83052,
+      "elapsed": 46.97429999999564,
+      "x": -1.1837157265834828,
+      "z": 16.10883019366718,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 83763,
+      "elapsed": 47.75839999999708,
+      "x": -4.170684595211627,
+      "z": 16.42624906230016,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 84468,
+      "elapsed": 48.25839999999705,
+      "x": -1.8725875563553438,
+      "z": 16.42624906230016,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 85072,
+      "elapsed": 48.92299999999851,
+      "x": -3.778169620981823,
+      "z": 18.11283806293467,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 85861,
+      "elapsed": 49.71469999999772,
+      "x": -2.0058771846261303,
+      "z": 18.243395674796364,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 86492,
+      "elapsed": 50.2335999999962,
+      "x": -3.7616233223123317,
+      "z": 17.347111003104093,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 87170,
+      "elapsed": 51.00479999999541,
+      "x": -3.40495866189211,
+      "z": 20.8916958758326,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 87972,
+      "elapsed": 51.806899999993135,
+      "x": -1.4373279772336347,
+      "z": 24.578303145555576,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "secure",
+        "progress": 0.29036666666592165,
+        "required": 0.8,
+        "secured": 0
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 88587,
+      "elapsed": 52.40439999999311,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "approach",
+        "progress": 0.8,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 89243,
+      "elapsed": 52.99279999999159,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 1,
+      "objective": {
+        "phase": "approach",
+        "progress": 0.8,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 9,
+        "shots": 12,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 89941,
+      "elapsed": 53.751299999991545,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 3,
+        "hits": 11,
+        "shots": 14,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 4
+    },
+    {
+      "ms": 90546,
+      "elapsed": 54.29449999999077,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 5,
+        "hits": 15,
+        "shots": 18,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 2
+    },
+    {
+      "ms": 91276,
+      "elapsed": 54.99239999998924,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "combat",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 5,
+        "hits": 17,
+        "shots": 21,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 2
+    },
+    {
+      "ms": 92053,
+      "elapsed": 55.7033999999892,
+      "x": -4.1835539386668925,
+      "z": 25.564186775224922,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 26,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 92859,
+      "elapsed": 56.402099999988415,
+      "x": -5.54816746298192,
+      "z": 28.36126002583648,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 93642,
+      "elapsed": 57.126999999986886,
+      "x": -2.7342090767121383,
+      "z": 26.299487457684904,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 94361,
+      "elapsed": 57.80639999998535,
+      "x": -5.321555912259184,
+      "z": 28.377074183310544,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 94978,
+      "elapsed": 58.306399999985324,
+      "x": -2.4006356422015416,
+      "z": 29.802109191991494,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 95592,
+      "elapsed": 58.946799999983796,
+      "x": -3.3044643773127214,
+      "z": 26.598647077530536,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 96271,
+      "elapsed": 59.62779999998376,
+      "x": -2.354716115745068,
+      "z": 30.04425791672163,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 97070,
+      "elapsed": 60.39839999998148,
+      "x": -4.394839822203438,
+      "z": 27.525272894505914,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 97778,
+      "elapsed": 61.134899999981435,
+      "x": -1.9498011458400357,
+      "z": 27.34884976597296,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 98543,
+      "elapsed": 61.89769999998215,
+      "x": -2.6583784350822603,
+      "z": 31.300593219836582,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 99279,
+      "elapsed": 62.63619999998211,
+      "x": -1.1230647944317802,
+      "z": 34.697706656472725,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 99943,
+      "elapsed": 63.30429999998356,
+      "x": 0.8334215493154657,
+      "z": 34.794724086975904,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 100747,
+      "elapsed": 64.09329999998353,
+      "x": -0.09551878275401623,
+      "z": 37.0914914260132,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 101446,
+      "elapsed": 64.77759999998051,
+      "x": -0.8208394005071928,
+      "z": 34.90538032529319,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 102178,
+      "elapsed": 65.50159999998047,
+      "x": 2.687233859020738,
+      "z": 37.60694414488775,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 102972,
+      "elapsed": 66.29819999997818,
+      "x": 1.4134748451548247,
+      "z": 38.48187775358095,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 103747,
+      "elapsed": 67.06079999997962,
+      "x": 1.081640616543307,
+      "z": 40.73340457147627,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 104449,
+      "elapsed": 67.78089999998107,
+      "x": 1.9808964634054689,
+      "z": 40.99607558293942,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 105243,
+      "elapsed": 68.51309999998028,
+      "x": 4.565947899842254,
+      "z": 43.50337657679911,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 105845,
+      "elapsed": 69.13279999997951,
+      "x": 3.377588680655359,
+      "z": 46.28858783991899,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 106482,
+      "elapsed": 69.78789999997723,
+      "x": 5.565455831161729,
+      "z": 47.12744582210331,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 107144,
+      "elapsed": 70.42629999997942,
+      "x": 5.354428348435087,
+      "z": 48.87132723119815,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 107844,
+      "elapsed": 71.1387999999794,
+      "x": 6.526072953766028,
+      "z": 52.1806569539369,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 108649,
+      "elapsed": 71.93679999997937,
+      "x": 5.641627691021307,
+      "z": 52.13612843287657,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 109346,
+      "elapsed": 72.62679999997933,
+      "x": 7.009392414792054,
+      "z": 52.92592525106185,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 109980,
+      "elapsed": 73.28069999997778,
+      "x": 4.93367629013026,
+      "z": 54.06376689892298,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 110642,
+      "elapsed": 73.939899999977,
+      "x": 8.78461757416991,
+      "z": 55.942533054365825,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 111245,
+      "elapsed": 74.54509999997997,
+      "x": 8.472527018236201,
+      "z": 57.53543156237211,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 111853,
+      "elapsed": 75.15889999997695,
+      "x": 11.037321793378883,
+      "z": 58.13059478437828,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    },
+    {
+      "ms": 112551,
+      "elapsed": 75.85409999997991,
+      "x": 9.90307752127278,
+      "z": 60.96017389894021,
+      "yaw": 0.3315,
+      "hp": 100,
+      "wave": 2,
+      "objective": {
+        "phase": "extract",
+        "progress": 0.47440000000223514,
+        "required": 0.8,
+        "secured": 1
+      },
+      "stats": {
+        "kills": 7,
+        "hits": 21,
+        "shots": 27,
+        "reloads": 1,
+        "blocks": 0,
+        "missions": 0
+      },
+      "active": 0
+    }
+  ],
+  "actualInput": [
+    "native solo/phase/settings UI",
+    "keyboard WASD and arrows",
+    "pointer position while held",
+    "Space and reload"
+  ],
+  "errors": [],
+  "externalBlocked": [
+    {
+      "url": "https://cdn.tailwindcss.com/",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://cdn.tailwindcss.com/",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+      "method": "GET",
+      "type": "script"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "origin": "http://127.0.0.1:38547",
+  "checkedAt": "2026-11-12T23:45:38.682Z",
+  "cases": [
+    {
+      "kind": "training-intent",
+      "mode": "legacy",
+      "rightTurnsRight": true,
+      "dwell": false,
+      "oneStep": false,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    },
+    {
+      "kind": "training-intent",
+      "mode": "step",
+      "rightTurnsRight": true,
+      "dwell": true,
+      "oneStep": true,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    },
+    {
+      "kind": "training-intent",
+      "mode": "continuous",
+      "rightTurnsRight": true,
+      "dwell": true,
+      "oneStep": false,
+      "releaseStops": true,
+      "errors": [],
+      "externalBlocked": [
+        {
+          "url": "https://cdn.tailwindcss.com/",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&family=Roboto:wght@300;400;500;700&display=swap",
+          "method": "GET",
+          "type": "stylesheet"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js",
+          "method": "GET",
+          "type": "script"
+        },
+        {
+          "url": "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js",
+          "method": "GET",
+          "type": "script"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Real native WAR gameplay and browser input; pointer simulates an in-frame hand.",
+    "No physical camera, MediaPipe recognition, phone ergonomics or sustained device performance claim.",
+    "Complete patrol uses existing solo easy difficulty, relaxed protection and recovery, explicitly selected through the settings UI.",
+    "No enemy/player/objective/HP/renderer/time writes; the route planner only reads covers and native telemetry."
+  ],
+  "failure": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#arcade-pause')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" id=\"arcade-pause\" aria-label=\"Pausar a partida\">Ⅱ PAUSA</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" data-practice=\"restart\">RECOMEÇAR</button> from <section class=\"war-practice\" aria-label=\"Treino de mira e movimentos\">…</section> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" data-practice=\"restart\">RECOMEÇAR</button> from <section class=\"war-practice\" aria-label=\"Treino de mira e movimentos\">…</section> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    36 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button type=\"button\" data-practice=\"restart\">RECOMEÇAR</button> from <section class=\"war-practice\" aria-label=\"Treino de mira e movimentos\">…</section> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at chooseSettings (/workspace/work/ConsoleGames/tests/war-front-mission-browser.mjs:85:35)\n    at async completeMission (/workspace/work/ConsoleGames/tests/war-front-mission-browser.mjs:157:14)\n    at async file:///workspace/work/ConsoleGames/tests/war-front-mission-browser.mjs:221:2",
+  "passed": false,
+  "last": {
+    "state": "PLAYING",
+    "training": true,
+    "front": true,
+    "frontMode": "continuous",
+    "handAim": {
+      "x": 0.5,
+      "y": 0.48,
+      "fresh": false
+    },
+    "player": {
+      "x": 0,
+      "z": 0,
+      "yaw": 0.40448000000119255,
+      "pitch": 0,
+      "hp": 100
+    },
+    "ray": {
+      "yaw": 0.40448000000119255,
+      "pitch": 0
+    },
+    "projectionOfAim": {
+      "x": 422,
+      "y": 187.2,
+      "s": 17.160000000000004,
+      "z": 19.999999999999996
+    },
+    "wave": 0,
+    "elapsed": 34.39889999999787,
+    "stats": {
+      "kills": 0,
+      "hits": 0,
+      "shots": 0,
+      "reloads": 0,
+      "blocks": 0,
+      "missions": 0
+    },
+    "ammo": 30,
+    "reserve": 9999,
+    "reload": 0,
+    "covers": [],
+    "enemies": [
+      {
+        "id": "practice:0",
+        "kind": "practice",
+        "x": 0,
+        "y": 1.8,
+        "z": 20,
+        "hp": 1,
+        "screen": {
+          "x": 275.0815389222802,
+          "y": 187.2,
+          "s": 18.666231154510374,
+          "z": 18.386143252976463
+        }
+      }
+    ],
+    "objective": {
+      "phase": "approach",
+      "progress": 0,
+      "required": 0,
+      "secured": 0
+    },
+    "goal": {
+      "x": 0,
+      "z": 20
+    },
+    "eye": 1.8,
+    "width": 844,
+    "height": 390,
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 844,
+      "height": 390
+    },
+    "settings": {
+      "camera": "chase",
+      "distance": "far",
+      "difficulty": "easy",
+      "sensitivity": 1,
+      "adsSensitivity": 1,
+      "combatAimAssist": true,
+      "combatFireMode": "manual",
+      "combatProtection": "relaxed",
+      "combatRecovery": true,
+      "smoothing": 0.62,
+      "autoAccelerate": false,
+      "assist": true,
+      "steeringAssist": "light",
+      "controlSize": 1,
+      "controlOpacity": 0.92,
+      "controlInset": 8,
+      "effectsVolume": 0.7,
+      "engineVolume": 0.6,
+      "alertVolume": 0.7,
+      "quality": "auto"
+    },
+    "profile": {
+      "xp": 0,
+      "coins": 0,
+      "level": 1
+    },
+    "careerKey": "thia:ar-combat:v1:local-bb2770a8-748e-472f-92ed-a36e27abcd77",
+    "career": {}
+  }
+}

@@ -1,0 +1,2966 @@
+{
+  "label": "after",
+  "revision": null,
+  "cases": [
+    {
+      "width": 393,
+      "height": 852,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 174.5,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 218.5,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 341,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 385,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 261,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 333,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 257,
+            "y": 716,
+            "w": 61,
+            "h": 61,
+            "right": 318,
+            "bottom": 777
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 324,
+            "y": 783,
+            "w": 61,
+            "h": 61,
+            "right": 385,
+            "bottom": 844
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566320854,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "orientation": "landscape",
+      "screen": "landscape-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 852,
+        "h": 393,
+        "right": 852,
+        "bottom": 393
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 852,
+        "h": 393,
+        "right": 852,
+        "bottom": 393
+      },
+      "buttons": [
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 800,
+            "y": 48,
+            "w": 44,
+            "h": 44,
+            "right": 844,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 720,
+            "y": 48,
+            "w": 72,
+            "h": 44,
+            "right": 792,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 758,
+            "y": 300,
+            "w": 40,
+            "h": 40,
+            "right": 798,
+            "bottom": 340
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 804,
+            "y": 346,
+            "w": 40,
+            "h": 40,
+            "right": 844,
+            "bottom": 386
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566320854,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 393,
+      "height": 852,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 174.5,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 218.5,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 341,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 385,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 261,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 333,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 257,
+            "y": 716,
+            "w": 61,
+            "h": 61,
+            "right": 318,
+            "bottom": 777
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 324,
+            "y": 783,
+            "w": 61,
+            "h": 61,
+            "right": 385,
+            "bottom": 844
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566326757,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 568,
+        "right": 320,
+        "bottom": 568
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 320,
+        "h": 568,
+        "right": 320,
+        "bottom": 568
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 138,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 182,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 268,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 312,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 188,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 260,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 210,
+            "y": 458,
+            "w": 48,
+            "h": 48,
+            "right": 258,
+            "bottom": 506
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 264,
+            "y": 512,
+            "w": 48,
+            "h": 48,
+            "right": 312,
+            "bottom": 560
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566326757,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 568,
+      "height": 320,
+      "orientation": "landscape",
+      "screen": "landscape-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 568,
+        "h": 320,
+        "right": 568,
+        "bottom": 320
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 568,
+        "h": 320,
+        "right": 568,
+        "bottom": 320
+      },
+      "buttons": [
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 516,
+            "y": 48,
+            "w": 44,
+            "h": 44,
+            "right": 560,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 436,
+            "y": 48,
+            "w": 72,
+            "h": 44,
+            "right": 508,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 474,
+            "y": 227,
+            "w": 40,
+            "h": 40,
+            "right": 514,
+            "bottom": 267
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 520,
+            "y": 273,
+            "w": 40,
+            "h": 40,
+            "right": 560,
+            "bottom": 313
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566326757,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 740,
+        "right": 360,
+        "bottom": 740
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 740,
+        "right": 360,
+        "bottom": 740
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 158,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 202,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 308,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 352,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 228,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 300,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 242,
+            "y": 622,
+            "w": 52,
+            "h": 52,
+            "right": 294,
+            "bottom": 674
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 300,
+            "y": 680,
+            "w": 52,
+            "h": 52,
+            "right": 352,
+            "bottom": 732
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566332840,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 740,
+      "height": 360,
+      "orientation": "landscape",
+      "screen": "landscape-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 740,
+        "h": 360,
+        "right": 740,
+        "bottom": 360
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 740,
+        "h": 360,
+        "right": 740,
+        "bottom": 360
+      },
+      "buttons": [
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 688,
+            "y": 48,
+            "w": 44,
+            "h": 44,
+            "right": 732,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 608,
+            "y": 48,
+            "w": 72,
+            "h": 44,
+            "right": 680,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 646,
+            "y": 267,
+            "w": 40,
+            "h": 40,
+            "right": 686,
+            "bottom": 307
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 692,
+            "y": 313,
+            "w": 40,
+            "h": 40,
+            "right": 732,
+            "bottom": 353
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566332840,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 412,
+      "height": 915,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 412,
+        "h": 915,
+        "right": 412,
+        "bottom": 915
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 412,
+        "h": 915,
+        "right": 412,
+        "bottom": 915
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 184,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 228,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 360,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 404,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 280,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 352,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 270,
+            "y": 773,
+            "w": 64,
+            "h": 64,
+            "right": 334,
+            "bottom": 837
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 340,
+            "y": 843,
+            "w": 64,
+            "h": 64,
+            "right": 404,
+            "bottom": 907
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566332840,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 915,
+      "height": 412,
+      "orientation": "landscape",
+      "screen": "landscape-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 915,
+        "h": 412,
+        "right": 915,
+        "bottom": 412
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 915,
+        "h": 412,
+        "right": 915,
+        "bottom": 412
+      },
+      "buttons": [
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 863,
+            "y": 48,
+            "w": 44,
+            "h": 44,
+            "right": 907,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 783,
+            "y": 48,
+            "w": 72,
+            "h": 44,
+            "right": 855,
+            "bottom": 92
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 802.125,
+            "y": 300.125,
+            "w": 49.4375,
+            "h": 49.4375,
+            "right": 851.5625,
+            "bottom": 349.5625
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 857.5625,
+            "y": 355.5625,
+            "w": 49.4375,
+            "h": 49.4375,
+            "right": 907,
+            "bottom": 405
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566332840,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    },
+    {
+      "width": 393,
+      "height": 852,
+      "orientation": "portrait",
+      "screen": "portrait-primary",
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "w": 393,
+        "h": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "text": "❤️",
+          "rect": {
+            "x": 174.5,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 218.5,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "text": "☰Menu",
+          "rect": {
+            "x": 341,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 385,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "text": "GPS da VilaToque para escolher o destino\n        ▲",
+          "rect": {
+            "x": 261,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 333,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "text": "🏃Correr",
+          "rect": {
+            "x": 257,
+            "y": 716,
+            "w": 61,
+            "h": 61,
+            "right": 318,
+            "bottom": 777
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "text": "⬆Pular",
+          "rect": {
+            "x": 324,
+            "y": 783,
+            "w": 61,
+            "h": 61,
+            "right": 385,
+            "bottom": 844
+          }
+        }
+      ],
+      "issues": [],
+      "network": {
+        "configured": true,
+        "connected": true,
+        "uid": "browser-test-user-123456789012345",
+        "room": "bairro-central",
+        "count": 1,
+        "capacity": 10,
+        "roomCounts": {
+          "bairro-central": 1,
+          "bairro-floresta": 0,
+          "bairro-lago": 0,
+          "bairro-montanha": 0,
+          "bairro-escola": 0
+        },
+        "players": [
+          {
+            "uid": "browser-test-user-123456789012345",
+            "name": "Jogador 2345",
+            "room": "bairro-central",
+            "x": -18,
+            "y": 0,
+            "z": 39,
+            "r": 3.142,
+            "color": 1206230,
+            "vehiclePassengerUids": [],
+            "vehiclePassengerUid": "",
+            "vehiclePassengerCount": 0,
+            "vehicleSeatCapacity": 3,
+            "avatar": {
+              "v": 3,
+              "renderMode": "otthi-world-v3",
+              "bodyStyle": "family-thiago",
+              "skinTone": "tone-03",
+              "face": "face-happy-01",
+              "hair": "hair-none",
+              "hairColor": "#352317",
+              "torso": "world-jacket-01",
+              "legs": "world-pants-01",
+              "shoes": "world-sneakers-01",
+              "hat": "none",
+              "back": "none",
+              "pattern": "none",
+              "primaryColor": "#1267d6",
+              "secondaryColor": "#111827",
+              "outfit": "classic",
+              "accessory": "none",
+              "uniform": "none"
+            },
+            "avatarSig": "otthi-world-v3|family-thiago|tone-03|face-happy-01|hair-none|#352317|world-jacket-01|world-pants-01|world-sneakers-01|none|none|none|#1267d6|#111827|classic|none|none",
+            "emoteType": "",
+            "emoteSeq": 0,
+            "updatedAt": 1794566332840,
+            "type": "position",
+            "id": "world-mobile-layout",
+            "vehicle": false,
+            "vehicleId": "",
+            "vehicleRole": "",
+            "vehiclePassengerOf": "",
+            "vehiclePassengerBotId": "",
+            "vehicleX": -18,
+            "vehicleY": 0,
+            "vehicleZ": 39,
+            "vehicleR": 3.142,
+            "vehicleSpeed": 0,
+            "vehiclePrimaryColor": 15895074,
+            "vehicleSecondaryColor": 698296,
+            "vehicleBodyType": "small",
+            "vehicleKind": "car",
+            "vehicleLabel": "Veículo",
+            "vehicleAppearance": {
+              "id": "",
+              "label": "Veículo",
+              "theme": "lego",
+              "bodyType": "small",
+              "kind": "car",
+              "brazilModel": "",
+              "appearance": {
+                "chassis": 2504782,
+                "primary": 15895074,
+                "primaryDark": 13130518,
+                "secondary": 698296,
+                "glass": 1521227
+              },
+              "parts": {
+                "theme": "lego",
+                "bodyType": "small",
+                "kind": "car",
+                "body": "classic",
+                "hood": "flat",
+                "roof": "standard",
+                "wheels": "city",
+                "rear": "none",
+                "lights": "warm",
+                "primary": "#f28a22",
+                "secondary": "#0aa7b8",
+                "accent": "#f5d84d"
+              },
+              "durability": 100
+            },
+            "vehicleAppearanceSig": "remote|lego|small|car||2504782|15895074|13130518|698296|1521227|100|lego|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "sirenActive": false,
+            "turboActive": false,
+            "impactSeq": 0,
+            "parkedVehicleId": "",
+            "parkedVehicleVisible": false,
+            "parkedVehicleX": 12.27,
+            "parkedVehicleY": 0,
+            "parkedVehicleZ": -12,
+            "parkedVehicleR": -1.571,
+            "parkedVehiclePrimaryColor": 0,
+            "parkedVehicleSecondaryColor": 0,
+            "parkedVehicleBodyType": "",
+            "parkedVehicleKind": "",
+            "parkedVehicleAppearanceSig": "",
+            "parkedVehicleWorkshop": false,
+            "parkedVehicleLiftHeight": 0,
+            "parkedVehicleRemovedWheels": "",
+            "parkedVehicleRemovedParts": "",
+            "parkedVehicleYardStatus": "",
+            "parkedVehicleOwnerName": "",
+            "garageFleet": [
+              {
+                "id": "garage-orange",
+                "x": -30.5,
+                "y": 0,
+                "z": 43.2,
+                "r": 1.571,
+                "status": "",
+                "label": "Volkswagen Gol GTI 1991",
+                "primary": 15895074,
+                "secondary": 698296,
+                "bodyType": "small",
+                "kind": "car",
+                "appearance": {
+                  "id": "garage-orange",
+                  "label": "Volkswagen Gol GTI 1991",
+                  "theme": "lego",
+                  "bodyType": "small",
+                  "kind": "car",
+                  "brazilModel": "gol",
+                  "appearance": {
+                    "chassis": 2504782,
+                    "primary": 15895074,
+                    "primaryDark": 15895074,
+                    "secondary": 698296,
+                    "glass": 1521227
+                  },
+                  "parts": {
+                    "theme": "brasil",
+                    "bodyType": "small",
+                    "kind": "car",
+                    "body": "classic",
+                    "hood": "flat",
+                    "roof": "standard",
+                    "wheels": "city",
+                    "rear": "none",
+                    "lights": "warm",
+                    "primary": "#f28a22",
+                    "secondary": "#0aa7b8",
+                    "accent": "#f5d84d"
+                  },
+                  "durability": 100
+                },
+                "appearanceSig": "garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d"
+              }
+            ],
+            "garageFleetSig": "garage-orange:-30.5:0:43.2:1.571::garage-orange|lego|small|car|gol|2504782|15895074|15895074|698296|1521227|100|brasil|small|car|classic|flat|standard|city|none|warm|#f28a22|#0aa7b8|#f5d84d",
+            "workshopActionActive": false,
+            "workshopActionSeq": 0,
+            "workshopActionSig": "0:idle|",
+            "workshopBays": [],
+            "sharedAuthority": "",
+            "sharedSceneSig": "v2",
+            "familyParty": {
+              "controller": "thiago",
+              "members": [
+                "thiago",
+                "thamis",
+                "luna",
+                "liz"
+              ]
+            },
+            "vehicleFamilySeats": 0,
+            "vehiclePassengerGroups": {},
+            "boatFamilySeats": 0,
+            "familyTravelSig": "thiago|thiago|thamis|luna|liz|||0|0|false",
+            "trafficTaken": [],
+            "boating": false,
+            "boatId": "",
+            "boatRole": "",
+            "passengerOf": "",
+            "boatPassengerUid": "",
+            "boatPassengerBotId": "",
+            "transitMode": "",
+            "scaleMode": "normal",
+            "crouched": false,
+            "toolId": "none",
+            "activeSkill": "",
+            "skillRemaining": 0,
+            "actionMode": ""
+          }
+        ],
+        "parental": {
+          "multiplayerEnabled": true,
+          "communicationEnabled": true,
+          "chatEnabled": true,
+          "sessionLimitMinutes": 0
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "issues": [],
+  "limits": [
+    "Emulated viewport and native browser orientation events, not a physical phone sensor test."
+  ],
+  "online": {
+    "configured": true,
+    "connected": true,
+    "uid": "browser-test-user-123456789012345",
+    "room": "bairro-central",
+    "count": 1,
+    "capacity": 10,
+    "roomCounts": {
+      "bairro-central": 1,
+      "bairro-floresta": 0,
+      "bairro-lago": 0,
+      "bairro-montanha": 0,
+      "bairro-escola": 0
+    },
+    "players": [
+      {
+        "uid": "browser-test-user-123456789012345",
+        "name": "Jogador 2345",
+        "room": "bairro-central",
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "r": 0,
+        "color": 5953791,
+        "vehiclePassengerUids": [],
+        "vehiclePassengerUid": "",
+        "vehiclePassengerCount": 0,
+        "vehicleSeatCapacity": 3,
+        "avatar": {
+          "v": 3,
+          "renderMode": "",
+          "bodyStyle": "",
+          "skinTone": "",
+          "face": "",
+          "hair": "",
+          "hairColor": "",
+          "torso": "",
+          "legs": "",
+          "shoes": "",
+          "hat": "",
+          "back": "",
+          "pattern": "",
+          "primaryColor": "",
+          "secondaryColor": "",
+          "outfit": "",
+          "accessory": "",
+          "uniform": ""
+        },
+        "avatarSig": "",
+        "emoteType": "",
+        "emoteSeq": 0,
+        "updatedAt": 1794566302335
+      }
+    ],
+    "parental": {
+      "multiplayerEnabled": true,
+      "communicationEnabled": true,
+      "chatEnabled": true,
+      "sessionLimitMinutes": 0
+    }
+  },
+  "nativeButtonsPassed": true,
+  "passed": true
+}

@@ -1,0 +1,68 @@
+{
+  "baseline": "6258e611f8a426e9779299d900455079d03c6279",
+  "candidateRuntime": "cbfcb1af2a29fc26f084a9e3f82dd63663f71f7a",
+  "releaseFilesBefore": 143,
+  "releaseFilesAfter": 143,
+  "sameManifestPaths": true,
+  "deletedTrackedFiles": [],
+  "unchangedContracts": [
+    {
+      "path": "firebase-config.js",
+      "unchanged": true,
+      "sha256": "b14cf6312b0240fcace8acc031a2e48df290432c8ab43a003295c66d5f6216e0"
+    },
+    {
+      "path": "games/otthi/firebase-config.js",
+      "unchanged": true,
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144"
+    },
+    {
+      "path": "games/otthi/firebase-database.rules.json",
+      "unchanged": true,
+      "sha256": "1189eb28061f5d604d52a4361553392e38a11ab2b1ba1eb03ebf22421efd29f7"
+    },
+    {
+      "path": "games/otthi/assets/js/game-account.js",
+      "unchanged": true,
+      "sha256": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09"
+    },
+    {
+      "path": "games/otthi/assets/js/multiplayer-rtdb.js",
+      "unchanged": true,
+      "sha256": "4f63035c0787a7dc0ab7c34eff70d0355bfaf1c17fc3fa6654cc7371dc27cd47"
+    },
+    {
+      "path": "games/otthi/src/modules/74-workshop-npc-service.js",
+      "unchanged": true,
+      "sha256": "8ecf037def6bcdec9a24dd467ecdd8eb7e5a3398cd9f5f908b17d93ad50c4f0d"
+    },
+    {
+      "path": "games/kart/js/game_kart.js",
+      "unchanged": true,
+      "sha256": "c1a8d272a086f6125a278b2f4e95b65919f28e9e9b7dbfeb410eb3ae88953310"
+    },
+    {
+      "path": "games/ar/js/game_ar.js",
+      "unchanged": true,
+      "sha256": "d4bb059eb68cd8bee6336d1d97e59523094814075b0bd4cdbdcba6925880618e"
+    },
+    {
+      "path": "games/voo/js/game_flight.js",
+      "unchanged": true,
+      "sha256": "b7388c1cfd7dd53ae60119458e7c94139a5d58424a2301c615f6ca46d5a43eb5"
+    },
+    {
+      "path": "games/tenis/js/game_tennis.js",
+      "unchanged": true,
+      "sha256": "5c441334ce471b95ef05e303c2cb228f7c8d448429a1d4e545a3d1ae7538ab61"
+    },
+    {
+      "path": "games/danca/app.js",
+      "unchanged": true,
+      "sha256": "22caf00a51f4ecc5f59f5d8ad4b0dbb587d99c67af1fca0eccddb314006028a4"
+    }
+  ],
+  "limits": [
+    "Byte preservation does not establish production database permissions, physical camera precision or sustained phone performance."
+  ]
+}

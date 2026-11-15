@@ -2,6 +2,10 @@
 
 **by thIAguinho Soluções Digitais e Otto MMP Ferri**
 
+Estado atual: [705.28.29 publicada com autorização explícita](docs/evidence/estabilidade-socorro-20261113/README.md), mantendo as limitações técnicas registradas. [Jogo habitual](https://otthi-world-campanha-teste.vercel.app/games/otthi/) e [recibo da publicação](docs/evidence/world-current-release.json). Mãos vazias, tela limpa e Meu caminho permanecem; a [705.28.28](docs/evidence/tela-limpa-20261113/README.md) está preservada para retorno. A publicação não conclui a validação prolongada, o socorro físico restante ou as partidas completas das novas alterações de WAR/Kart.
+
+A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console tem oito entradas, incluindo [Dança](games/danca/). A [evolução integrada anterior](docs/evidence/evolucao-20261112/README.md) e seus limites permanecem documentados.
+
 **[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
 
 > O console original continua em `/ConsoleGames/`, mas o **novo Arcade** usa a URL `/ConsoleGames/arcade/`, seu próprio `manifest.webmanifest` com ID `/ConsoleGames/arcade/`, ícones PNG 192/512, service worker e cache próprios. O novo endereço deve ser aberto em uma aba do navegador (fora do aplicativo antigo) para que o navegador possa oferecê-lo como instalação separada. Nenhum jogo, ID de Firebase ou conta original foi alterado para criar essa instalação.

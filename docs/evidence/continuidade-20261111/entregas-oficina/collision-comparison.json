@@ -1,0 +1,17 @@
+{
+  "baseline": "6258e611f8a426e9779299d900455079d03c6279",
+  "results": {
+    "before": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "expectedFailure": true
+    },
+    "after": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0
+    }
+  },
+  "scope": "Deterministic VM collision lifecycle only: collected NPC, reopened service, player ownership, active local claim and player driving. Overlap is deliberately true to isolate exclusion rules. No saved-pose constructor stub is used; no native teleport defect is claimed."
+}

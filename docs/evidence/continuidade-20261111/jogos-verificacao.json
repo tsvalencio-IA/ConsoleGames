@@ -1,0 +1,683 @@
+{
+  "base": "6258e611f8a426e9779299d900455079d03c6279",
+  "date": "2026-11-11",
+  "cameraPhysical": false,
+  "productionDatabase": false,
+  "checks": [
+    {
+      "name": "dance-console",
+      "status": "passed",
+      "evidence": {
+        "passed": true,
+        "eightCards": true,
+        "directEntry": true,
+        "viewports": 4,
+        "youtubeFixture": true,
+        "playerRetained": true,
+        "bufferingFreezesClock": true,
+        "manualPause": true,
+        "cameraStopped": true,
+        "otherSavesPreserved": true,
+        "errors": [],
+        "limits": [
+          "Synthetic YouTube state and pose fixtures; does not certify physical device performance or live video availability."
+        ]
+      }
+    },
+    {
+      "name": "dance-music",
+      "status": "passed",
+      "evidence": {
+        "passed": true,
+        "audio": [
+          {
+            "level": 0,
+            "bpm": 108,
+            "voices": 119,
+            "rms": 0.02737195515426729,
+            "peak": 0.39934152364730835,
+            "bins": [
+              0.025539536282634594,
+              0.028697453351400278,
+              0.023685251311655803,
+              0.028347908745513278,
+              0.026815696949899742,
+              0.03432900805315048,
+              0.02470401580173423,
+              0.02489301009515066,
+              0.020146686702581584,
+              0.03403490621078666,
+              0.027642515040340893,
+              0.03396497541916526,
+              0.02773123927416193,
+              0.02718055063165939,
+              0.03208911874624203,
+              0.0003947035782796526
+            ]
+          },
+          {
+            "level": 1,
+            "bpm": 120,
+            "voices": 165,
+            "rms": 0.028171516034690845,
+            "peak": 0.40524259209632874,
+            "bins": [
+              0.025252923074550352,
+              0.02943381338251437,
+              0.02381835397362796,
+              0.028192939984083117,
+              0.0269287970044301,
+              0.03367651662847537,
+              0.025959676845514753,
+              0.030386624960344288,
+              0.03374121345115367,
+              0.028430707005609915,
+              0.03354628116512072,
+              0.028247542265011426,
+              0.027275728026976455,
+              0.03210437639307025,
+              0.02703136488352152,
+              0.00010865941515131563
+            ]
+          },
+          {
+            "level": 2,
+            "bpm": 132,
+            "voices": 188,
+            "rms": 0.032208031671988546,
+            "peak": 0.38114622235298157,
+            "bins": [
+              0.025112471537459616,
+              0.028822575063964892,
+              0.03527077428960158,
+              0.03721976353549254,
+              0.03346633739054604,
+              0.025494460259162948,
+              0.030106687502041138,
+              0.044702271617990064,
+              0.028040800661663343,
+              0.03325794669280013,
+              0.036557136089171674,
+              0.02684011849237145,
+              0.039115445670951425,
+              0.031042486880739528,
+              0.037245725034872966,
+              0.0014969078233283708
+            ]
+          }
+        ],
+        "playing": {
+          "title": "Passos ao Sol",
+          "bpm": 108,
+          "custom": false,
+          "position": 0,
+          "enabled": true,
+          "playing": true,
+          "audioState": "running",
+          "steps": 2,
+          "voices": 8,
+          "resyncs": 0,
+          "error": ""
+        },
+        "paused": {
+          "title": "Passos ao Sol",
+          "bpm": 108,
+          "custom": false,
+          "position": 0,
+          "enabled": true,
+          "playing": false,
+          "audioState": "suspended",
+          "steps": 2,
+          "voices": 8,
+          "resyncs": 0,
+          "error": ""
+        },
+        "resumed": {
+          "title": "Passos ao Sol",
+          "bpm": 108,
+          "custom": false,
+          "position": 0,
+          "enabled": true,
+          "playing": true,
+          "audioState": "running",
+          "steps": 3,
+          "voices": 9,
+          "resyncs": 0,
+          "error": ""
+        },
+        "muted": {
+          "title": "Passos ao Sol",
+          "bpm": 108,
+          "custom": false,
+          "position": 0,
+          "enabled": false,
+          "playing": false,
+          "audioState": "suspended",
+          "steps": 3,
+          "voices": 9,
+          "resyncs": 0,
+          "error": ""
+        },
+        "limits": [
+          "Rendered PCM and scheduler; physical Android speakers not tested."
+        ]
+      }
+    },
+    {
+      "name": "flight-runway-browser",
+      "status": "failed-current-runner",
+      "evidence": {
+        "limits": [
+          "A disposable solo Chromium profile. The approach position is prepared; native frame updates and touch controls are preserved. No physical motion sensor or phone camera is exercised."
+        ],
+        "landed": {
+          "ship": {
+            "hp": 100,
+            "maxHp": 100,
+            "speed": 72.21316997127205,
+            "x": 0,
+            "y": 8,
+            "z": -888.8920210221148,
+            "vx": 0,
+            "vy": 0,
+            "vz": 69.53995165683862,
+            "pitch": 0,
+            "yaw": 0,
+            "roll": 0,
+            "gForce": 0.5433925971688278,
+            "mach": 0.2122283974444922,
+            "alpha": 0,
+            "isStalling": false,
+            "inputs": {
+              "pitch": 0,
+              "roll": 0
+            },
+            "afterburner": false,
+            "engineHealth": 100,
+            "wingHealth": 100,
+            "structuralIntegrity": 100,
+            "engineHeat": 0
+          },
+          "quality": "smooth",
+          "guide": {
+            "altitude": 0,
+            "speed": 69.53995165683862,
+            "sink": 0,
+            "onRunway": true,
+            "aligned": true,
+            "level": true,
+            "gentle": true,
+            "cue": "NO SOLO • REDUZA A POTÊNCIA PARA PARAR"
+          }
+        },
+        "failure": "page.waitForFunction: Timeout 30000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/flight-runway-browser.mjs:19:13",
+        "errors": [],
+        "state": {
+          "state": "PLAYING",
+          "mode": "FREE",
+          "ship": {
+            "hp": 100,
+            "maxHp": 100,
+            "speed": 55.08527039113696,
+            "x": 0,
+            "y": 8,
+            "z": -866.6333443758167,
+            "vx": 0,
+            "vy": 0,
+            "vz": 53.04888102918839,
+            "pitch": 0,
+            "yaw": 0,
+            "roll": 0,
+            "gForce": 0.31619272181388036,
+            "mach": 0.1618909495672095,
+            "alpha": 0,
+            "isStalling": false,
+            "inputs": {
+              "pitch": 0,
+              "roll": 0
+            },
+            "afterburner": false,
+            "engineHealth": 100,
+            "wingHealth": 100,
+            "structuralIntegrity": 100,
+            "engineHeat": 0
+          },
+          "onGround": true,
+          "throttle": 0,
+          "controls": [
+            "pedalLeft",
+            "pedalRight",
+            "left",
+            "up",
+            "down",
+            "right",
+            "boost",
+            "missile",
+            "fire",
+            "powerDown",
+            "powerUp",
+            "hover",
+            "start",
+            "joystick",
+            "collective"
+          ]
+        }
+      },
+      "interpretation": "Primeira tentativa sob carga concorrente: pouso nativo suave confirmado, timeout na frenagem e zero erros JS. A única repetição posterior isolada completou pouso, frenagem e nova decolagem; a falha inicial foi mantida como evidência do runner, não ocultada."
+    },
+    {
+      "name": "youtube-live",
+      "status": "blocked-before-player",
+      "evidence": {
+        "at": "2026-11-11T19:13:23.234Z",
+        "scope": "Chromium headless; player real do YouTube; nenhuma câmera, conta ou áudio ouvido pelo agente.",
+        "samples": [],
+        "networkErrors": [
+          {
+            "url": "https://otthi-world-campanha-teste.vercel.app",
+            "error": "net::ERR_CERT_AUTHORITY_INVALID"
+          }
+        ],
+        "pageErrors": [],
+        "failure": "page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://otthi-world-campanha-teste.vercel.app/games/danca/\nCall log:\n\u001b[2m  - navigating to \"https://otthi-world-campanha-teste.vercel.app/games/danca/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "text": ""
+      },
+      "interpretation": "Chromium não confiou na CA do proxy ao abrir a origem pública; reprodução real não foi exercitada. Não é falha comprovada de YouTube ou jogo."
+    },
+    {
+      "name": "playable-five",
+      "status": "partial-with-timeouts",
+      "evidence": {
+        "completed": 3,
+        "expected": 7,
+        "failures": [
+          {
+            "slug": "kart",
+            "message": "page.waitForFunction: Timeout 15000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:196:18",
+            "diagnostic": {
+              "stage": {
+                "loading": "hidden",
+                "phase": "wii-container hidden",
+                "menu": "wii-container hidden"
+              },
+              "system": {
+                "active": "drive",
+                "starting": false,
+                "epoch": 1
+              },
+              "video": {
+                "ready": 0,
+                "paused": true,
+                "mode": "controls"
+              },
+              "kart": {
+                "state": "RACE",
+                "status": "RACING",
+                "raceState": "RUNNING",
+                "lap": 1,
+                "player": {
+                  "lap": 1,
+                  "position": 1,
+                  "finished": false
+                },
+                "pos": 32104.76380463341,
+                "speed": 155.22942894383948,
+                "x": 0.25422553022888356,
+                "steer": 0,
+                "target": 0,
+                "inertia": 0.006804276735499373,
+                "manual": {
+                  "left": false,
+                  "right": false,
+                  "throttle": true,
+                  "brake": false,
+                  "drift": false,
+                  "rear": false,
+                  "itemQueued": false
+                },
+                "inputActive": true,
+                "spin": 0,
+                "networkPaused": false,
+                "track": 1,
+                "settings": {
+                  "camera": "chase",
+                  "distance": "far",
+                  "difficulty": "normal",
+                  "sensitivity": 1,
+                  "smoothing": 0.62,
+                  "autoAccelerate": false,
+                  "assist": true,
+                  "steeringAssist": "light",
+                  "controlSize": 1,
+                  "controlOpacity": 0.92,
+                  "controlInset": 8,
+                  "effectsVolume": 0.7,
+                  "engineVolume": 0.6,
+                  "alertVolume": 0.7,
+                  "quality": "auto"
+                },
+                "tap": {
+                  "ticks": 46,
+                  "released": -0.017781032890368732,
+                  "final": -0.03454403365763901
+                }
+              }
+            },
+            "pageErrors": []
+          },
+          {
+            "slug": "kart",
+            "device": "landscape-844",
+            "message": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:229:18",
+            "diagnostic": {
+              "stage": {
+                "loading": "hidden",
+                "phase": "wii-container hidden",
+                "menu": "wii-container hidden"
+              },
+              "system": {
+                "active": "drive",
+                "starting": false,
+                "epoch": 1
+              },
+              "video": {
+                "ready": 0,
+                "paused": true,
+                "mode": "controls"
+              },
+              "kart": {
+                "state": "RACE",
+                "status": "RACING",
+                "raceState": "RUNNING",
+                "lap": 1,
+                "player": {
+                  "lap": 1,
+                  "position": 1,
+                  "finished": false
+                },
+                "pos": 28050,
+                "speed": 0,
+                "x": 0,
+                "steer": 0,
+                "target": 0,
+                "inertia": 0,
+                "manual": {
+                  "left": false,
+                  "right": false,
+                  "throttle": false,
+                  "brake": false,
+                  "drift": false,
+                  "rear": false,
+                  "itemQueued": false
+                },
+                "inputActive": false,
+                "spin": 0,
+                "networkPaused": false,
+                "track": 1,
+                "settings": {
+                  "camera": "chase",
+                  "distance": "far",
+                  "difficulty": "normal",
+                  "sensitivity": 1,
+                  "smoothing": 0.62,
+                  "autoAccelerate": false,
+                  "assist": true,
+                  "steeringAssist": "light",
+                  "controlSize": 1,
+                  "controlOpacity": 0.92,
+                  "controlInset": 8,
+                  "effectsVolume": 0.7,
+                  "engineVolume": 0.6,
+                  "alertVolume": 0.7,
+                  "quality": "auto"
+                },
+                "tap": {
+                  "ticks": 46,
+                  "released": -0.017781032890368732,
+                  "final": -0.03454403365763901
+                }
+              }
+            },
+            "pageErrors": []
+          },
+          {
+            "slug": "kart",
+            "device": "desktop-885",
+            "message": "page.waitForFunction: Timeout 180000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:468:18",
+            "diagnostic": {
+              "stage": {
+                "loading": "hidden",
+                "phase": "wii-container hidden",
+                "menu": "wii-container hidden"
+              },
+              "system": {
+                "active": "drive",
+                "starting": false,
+                "epoch": 1,
+                "paused": false
+              },
+              "video": {
+                "ready": 0,
+                "paused": true,
+                "mode": "controls"
+              },
+              "kart": {
+                "state": "RACE",
+                "status": "RACING",
+                "raceState": "RUNNING",
+                "lap": 2,
+                "player": {
+                  "lap": 2,
+                  "position": 1,
+                  "finished": false
+                },
+                "pos": 87838.4084871983,
+                "speed": 155.60810810810597,
+                "x": 0.2582227309344659,
+                "steer": 0,
+                "target": 0,
+                "inertia": 0,
+                "manual": {
+                  "left": false,
+                  "right": false,
+                  "throttle": true,
+                  "brake": false,
+                  "drift": false,
+                  "rear": false,
+                  "itemQueued": false
+                },
+                "inputActive": true,
+                "spin": 0,
+                "networkPaused": false,
+                "track": 1,
+                "settings": {
+                  "camera": "chase",
+                  "distance": "near",
+                  "difficulty": "normal",
+                  "sensitivity": 1,
+                  "smoothing": 0.62,
+                  "autoAccelerate": false,
+                  "assist": true,
+                  "steeringAssist": "light",
+                  "controlSize": 1,
+                  "controlOpacity": 0.92,
+                  "controlInset": 8,
+                  "effectsVolume": 0.7,
+                  "engineVolume": 0.6,
+                  "alertVolume": 0.7,
+                  "quality": "auto"
+                },
+                "tap": {
+                  "ticks": 46,
+                  "released": -0.017781032890368732,
+                  "final": -0.03454403365763901
+                },
+                "race": {
+                  "ticks": 3020,
+                  "maxOffset": 0.43846921670729927,
+                  "finished": false,
+                  "startedAt": 62328.09999999998
+                }
+              }
+            },
+            "pageErrors": []
+          },
+          {
+            "slug": "ar",
+            "message": "page.waitForFunction: Timeout 4000ms exceeded.\n    at /workspace/work/ConsoleGames/tests/playable-smoke.mjs:261:19",
+            "diagnostic": {
+              "stage": {
+                "loading": "hidden",
+                "phase": "wii-container hidden",
+                "menu": "wii-container hidden"
+              },
+              "system": {
+                "active": "ar_truck_sim",
+                "starting": false,
+                "epoch": 1
+              },
+              "video": {
+                "ready": 0,
+                "paused": true,
+                "mode": "controls"
+              },
+              "arGame": "PLAYING",
+              "kart": null
+            },
+            "pageErrors": []
+          }
+        ]
+      },
+      "passedGames": [
+        "boxe",
+        "tenis",
+        "voo"
+      ],
+      "limits": [
+        "Três cenários aprovados entre sete; os três formatos Kart e a recarga de WAR atingiram prazos do runner.",
+        "Não certifica partida completa de Kart nem recarga dentro do prazo em WAR. Não demonstra defeito físico de controle ou desempenho Android.",
+        "Toques reais do protocolo Chromium, poses/negação de câmera simuladas e serviços externos isolados. Nenhum aparelho físico."
+      ]
+    },
+    {
+      "name": "flight-runway-browser-isolated-retry",
+      "status": "passed",
+      "evidence": {
+        "limits": [
+          "A disposable solo Chromium profile. The approach position is prepared; native frame updates and touch controls are preserved. No physical motion sensor or phone camera is exercised."
+        ],
+        "landed": {
+          "ship": {
+            "hp": 100,
+            "maxHp": 100,
+            "speed": 75.00527007709823,
+            "x": 0,
+            "y": 8,
+            "z": -894.6608472552897,
+            "vx": 0,
+            "vy": 0,
+            "vz": 74.98489075607259,
+            "pitch": 0,
+            "yaw": 0,
+            "roll": 0,
+            "gForce": 0.6184999641117448,
+            "mach": 0.22043416174332972,
+            "alpha": 0.0074104416027217885,
+            "isStalling": false,
+            "inputs": {
+              "pitch": 0,
+              "roll": 0
+            },
+            "afterburner": false,
+            "engineHealth": 100,
+            "wingHealth": 100,
+            "structuralIntegrity": 100,
+            "engineHeat": 0
+          },
+          "quality": "smooth",
+          "guide": {
+            "altitude": 0,
+            "speed": 74.98489075607259,
+            "sink": 0,
+            "onRunway": true,
+            "aligned": true,
+            "level": true,
+            "gentle": true,
+            "cue": "NO SOLO • REDUZA A POTÊNCIA PARA PARAR"
+          }
+        },
+        "braked": {
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 25.17644393226753,
+          "x": 0,
+          "y": 8,
+          "z": -827.217505753331,
+          "vx": 0,
+          "vy": 0,
+          "vz": 24.864304331089542,
+          "pitch": 0,
+          "yaw": 0,
+          "roll": 0,
+          "gForce": 0.06604952117904724,
+          "mach": 0.0739914388361828,
+          "alpha": 0,
+          "isStalling": false,
+          "inputs": {
+            "pitch": 0,
+            "roll": 0
+          },
+          "afterburner": false,
+          "engineHealth": 100,
+          "wingHealth": 100,
+          "structuralIntegrity": 100,
+          "engineHeat": 0
+        },
+        "groundAcceleration": {
+          "speed": 69.7713821625169,
+          "cue": "DECOLAGEM • CABRE SUAVEMENTE"
+        },
+        "secondTakeoff": {
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 89.64504223185324,
+          "x": 0,
+          "y": 10.46965636093843,
+          "z": -692.030808335751,
+          "vx": 0,
+          "vy": 8.894434265799807,
+          "vz": 90.83497725456508,
+          "pitch": 0.12165865987720449,
+          "yaw": 0,
+          "roll": 0,
+          "gForce": 3.5000187846234647,
+          "mach": 0.26346521373240417,
+          "alpha": 0.033522165743917975,
+          "isStalling": false,
+          "inputs": {
+            "pitch": 0.10536169625232168,
+            "roll": 0
+          },
+          "afterburner": false,
+          "engineHealth": 100,
+          "wingHealth": 100,
+          "structuralIntegrity": 100,
+          "engineHeat": 0
+        },
+        "passed": true,
+        "errors": []
+      },
+      "interpretation": "Única repetição após encerrar suíte pesada. Posição de aproximação preparada; pouso, frenagem e segunda decolagem executados pela física e controles nativos, sem substituir renderização. Sem aparelho físico."
+    }
+  ],
+  "preview": {
+    "path": "arcade/previews/war-controls-20261111.html",
+    "status": "proposal-only",
+    "verificationFiles": [
+      "war-preview-verification.json",
+      "war-preview-mobile-input.json"
+    ],
+    "physicalCamera": false,
+    "integratedIntoCurrentWar": false
+  }
+}

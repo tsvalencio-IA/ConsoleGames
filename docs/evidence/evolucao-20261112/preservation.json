@@ -1,0 +1,41 @@
+{
+  "baseline": "fed801c71b0466ed6a8072ff9b79bd7ffaabc0a7",
+  "releaseAssetsBefore": 143,
+  "releaseAssetsAfter": 147,
+  "removedReleaseFiles": [],
+  "protectedFiles": [
+    {
+      "path": "arcade/firebase-config.js",
+      "sha256": "b14cf6312b0240fcace8acc031a2e48df290432c8ab43a003295c66d5f6216e0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/evidence/entrada-calibracao-fluidez-20261029/v11-production-calibration-failure.log",
+      "sha256": "7ea3abae5f9caab90c0cb276287d260e621e7a8f143f5ba24d1e05b1ee8b9173",
+      "unchanged": true
+    },
+    {
+      "path": "docs/evidence/war-body-hand-20261028/joint-calibration.png",
+      "sha256": "8952d811322f49626ea5f5e9f04542d1375d8eca9cb34c211a172b186f335c17",
+      "unchanged": true
+    },
+    {
+      "path": "firebase-config.js",
+      "sha256": "b14cf6312b0240fcace8acc031a2e48df290432c8ab43a003295c66d5f6216e0",
+      "unchanged": true
+    },
+    {
+      "path": "games/otthi/firebase-config.js",
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
+      "unchanged": true
+    },
+    {
+      "path": "games/otthi/firebase-database.rules.json",
+      "sha256": "1189eb28061f5d604d52a4361553392e38a11ab2b1ba1eb03ebf22421efd29f7",
+      "unchanged": true
+    }
+  ],
+  "limits": [
+    "Source hash comparison; no production database mutation or physical-device certification."
+  ]
+}

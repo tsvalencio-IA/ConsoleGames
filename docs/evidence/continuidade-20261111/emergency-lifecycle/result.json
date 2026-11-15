@@ -1,0 +1,232 @@
+{
+  "baseline": "6258e611f8a426e9779299d900455079d03c6279",
+  "comparison": "Same baseline application, replacing only the two native emergency cleanup functions from the edited module.",
+  "limits": [
+    "Disposable local Firebase fixture, native Chromium WebGL with software rendering. Repeated emergency lifecycle stress, not elapsed gameplay or physical-phone performance."
+  ],
+  "cases": [
+    {
+      "label": "before",
+      "initial": {
+        "outlines": 5270,
+        "actions": 799,
+        "incidents": 0
+      },
+      "samples": [
+        {
+          "cycle": 1,
+          "outlines": 9,
+          "actions": 1,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 9
+        },
+        {
+          "cycle": 2,
+          "outlines": 18,
+          "actions": 2,
+          "incidents": 0,
+          "allocatedGeometries": 12,
+          "remainingGeometries": 12
+        },
+        {
+          "cycle": 3,
+          "outlines": 27,
+          "actions": 3,
+          "incidents": 0,
+          "allocatedGeometries": 15,
+          "remainingGeometries": 15
+        },
+        {
+          "cycle": 4,
+          "outlines": 36,
+          "actions": 4,
+          "incidents": 0,
+          "allocatedGeometries": 18,
+          "remainingGeometries": 18
+        },
+        {
+          "cycle": 5,
+          "outlines": 45,
+          "actions": 5,
+          "incidents": 0,
+          "allocatedGeometries": 21,
+          "remainingGeometries": 21
+        },
+        {
+          "cycle": 6,
+          "outlines": 54,
+          "actions": 6,
+          "incidents": 0,
+          "allocatedGeometries": 24,
+          "remainingGeometries": 24
+        },
+        {
+          "cycle": 7,
+          "outlines": 63,
+          "actions": 7,
+          "incidents": 0,
+          "allocatedGeometries": 27,
+          "remainingGeometries": 27
+        },
+        {
+          "cycle": 8,
+          "outlines": 72,
+          "actions": 8,
+          "incidents": 0,
+          "allocatedGeometries": 30,
+          "remainingGeometries": 30
+        },
+        {
+          "cycle": 9,
+          "outlines": 81,
+          "actions": 9,
+          "incidents": 0,
+          "allocatedGeometries": 33,
+          "remainingGeometries": 33
+        },
+        {
+          "cycle": 10,
+          "outlines": 90,
+          "actions": 10,
+          "incidents": 0,
+          "allocatedGeometries": 36,
+          "remainingGeometries": 36
+        },
+        {
+          "cycle": 11,
+          "outlines": 99,
+          "actions": 11,
+          "incidents": 0,
+          "allocatedGeometries": 39,
+          "remainingGeometries": 39
+        },
+        {
+          "cycle": 12,
+          "outlines": 108,
+          "actions": 12,
+          "incidents": 0,
+          "allocatedGeometries": 42,
+          "remainingGeometries": 42
+        }
+      ],
+      "officerRetainedOutlines": 96,
+      "uniqueCreated": 36,
+      "uniqueDisposed": 0,
+      "renderer": "WebKit WebGL",
+      "errors": []
+    },
+    {
+      "label": "after",
+      "initial": {
+        "outlines": 5270,
+        "actions": 799,
+        "incidents": 0
+      },
+      "samples": [
+        {
+          "cycle": 1,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 2,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 3,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 4,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 5,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 6,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 7,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 8,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 9,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 10,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 11,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        },
+        {
+          "cycle": 12,
+          "outlines": 0,
+          "actions": 0,
+          "incidents": 0,
+          "allocatedGeometries": 9,
+          "remainingGeometries": 6
+        }
+      ],
+      "officerRetainedOutlines": 0,
+      "uniqueCreated": 36,
+      "uniqueDisposed": 36,
+      "renderer": "WebKit WebGL",
+      "errors": []
+    }
+  ],
+  "passed": true
+}

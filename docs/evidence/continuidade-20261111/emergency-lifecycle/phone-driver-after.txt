@@ -1,0 +1,11 @@
+✔ twenty complete fire-incident cycles release temporary objects and retain shared scenery resources (92.555508ms)
+✔ repeated roadside officer removal releases its outline registrations without affecting the player scenery (19.694829ms)
+✔ twenty telephone driver cycles release outlines and their cloned clothing materials while retaining shared scenery (17.819749ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 215.834913

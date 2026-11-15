@@ -1,0 +1,791 @@
+{
+  "build": "705.28.28-maos-livres-tela-limpa",
+  "revision": "9758f197823e251f",
+  "viewports": [
+    {
+      "width": 393,
+      "height": 852,
+      "buttons": [
+        {
+          "id": "needsToggleBtn",
+          "label": "Mostrar necessidades",
+          "rect": {
+            "x": 174.5,
+            "y": 5,
+            "w": 44,
+            "h": 44,
+            "right": 218.5,
+            "bottom": 49
+          }
+        },
+        {
+          "id": "quickToggleBtn",
+          "label": "Abrir menu do mundo",
+          "rect": {
+            "x": 341,
+            "y": 66,
+            "w": 44,
+            "h": 44,
+            "right": 385,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "miniNav",
+          "label": "Abrir mapa e navegação",
+          "rect": {
+            "x": 261,
+            "y": 66,
+            "w": 72,
+            "h": 44,
+            "right": 333,
+            "bottom": 110
+          }
+        },
+        {
+          "id": "runBtn",
+          "label": "🏃Correr",
+          "rect": {
+            "x": 257,
+            "y": 716,
+            "w": 61,
+            "h": 61,
+            "right": 318,
+            "bottom": 777
+          }
+        },
+        {
+          "id": "jumpBtn",
+          "label": "⬆Pular",
+          "rect": {
+            "x": 324,
+            "y": 783,
+            "w": 61,
+            "h": 61,
+            "right": 385,
+            "bottom": 844
+          }
+        }
+      ],
+      "issues": [],
+      "body": "otthi-portrait otthi-world-shell otthi-v705-world ui-portrait ui-compact world-hud-clean world-hud-walking world-hud-action-idle otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world",
+      "baseline7052827Buttons": 16,
+      "menuControls": [
+        {
+          "id": "worldMenuClose",
+          "x": 289.5625,
+          "y": 79,
+          "w": 78.4375,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": ""
+        },
+        {
+          "id": "ot-games-button",
+          "x": 25,
+          "y": 139,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": ""
+        },
+        {
+          "id": "avatarGameBtn",
+          "x": 142,
+          "y": 139,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "avatarGameBtn"
+        },
+        {
+          "id": "inventoryBtn",
+          "x": 259,
+          "y": 139,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "inventoryBtn"
+        },
+        {
+          "id": "worldPhoneBtn",
+          "x": 25,
+          "y": 211,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "worldPhoneBtn"
+        },
+        {
+          "id": "buildBtn",
+          "x": 142,
+          "y": 211,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "buildBtn"
+        },
+        {
+          "id": "emptyHandsBtn",
+          "x": 259,
+          "y": 211,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "emptyHandsBtn"
+        },
+        {
+          "id": "toolsBtn",
+          "x": 25,
+          "y": 283,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "toolsBtn"
+        },
+        {
+          "id": "mapBtn",
+          "x": 142,
+          "y": 283,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "mapBtn"
+        },
+        {
+          "id": "dailyBtn",
+          "x": 259,
+          "y": 283,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "dailyBtn"
+        },
+        {
+          "id": "onlineBtn",
+          "x": 25,
+          "y": 355,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "onlineBtn"
+        },
+        {
+          "id": "newsQuickBtn",
+          "x": 142,
+          "y": 355,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "newsQuickBtn"
+        },
+        {
+          "id": "neighborhoodQuickBtn",
+          "x": 259,
+          "y": 355,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "neighborhoodQuickBtn"
+        },
+        {
+          "id": "gameSettingsBtn",
+          "x": 25,
+          "y": 427,
+          "w": 109,
+          "h": 75.171875,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "gameSettingsBtn"
+        },
+        {
+          "id": "worldHudModeBtn",
+          "x": 259,
+          "y": 427,
+          "w": 109,
+          "h": 75.171875,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": ""
+        },
+        {
+          "id": "multiplayerBadge",
+          "x": 25,
+          "y": 510.171875,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": ""
+        },
+        {
+          "id": "skillsToggleBtn",
+          "x": 142,
+          "y": 510.171875,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": ""
+        },
+        {
+          "id": "cameraNearBtn",
+          "x": 202.53125,
+          "y": 603.171875,
+          "w": 44,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "cameraNearBtn"
+        },
+        {
+          "id": "cameraPitchUpBtn",
+          "x": 202.53125,
+          "y": 653.171875,
+          "w": 44,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "cameraPitchUpBtn"
+        },
+        {
+          "id": "cameraPitchDownBtn",
+          "x": 202.53125,
+          "y": 703.171875,
+          "w": 44,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "cameraPitchDownBtn"
+        },
+        {
+          "id": "cameraResetBtn",
+          "x": 202.53125,
+          "y": 753.171875,
+          "w": 44,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "cameraResetBtn"
+        },
+        {
+          "id": "cameraFarBtn",
+          "x": 202.53125,
+          "y": 785.171875,
+          "w": 44,
+          "h": 44,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "cameraFarBtn"
+        },
+        {
+          "id": "family-world-entry",
+          "x": 25,
+          "y": 753.171875,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "family-world-entry"
+        },
+        {
+          "id": "worldCampaignBtn",
+          "x": 142,
+          "y": 753.171875,
+          "w": 109,
+          "h": 64,
+          "inViewport": true,
+          "hit": true,
+          "coveredBy": "worldCampaignBtn"
+        }
+      ]
+    }
+  ],
+  "stages": [],
+  "limits": [
+    "Native menus, pointer/keyboard input, tool visual, state persistence and viewport layout in Chromium with a disposable local RTDB fixture. No production account or database writes.",
+    "Drawing is capped during functional checks and rendered natively for captures. No physical phone, touch-latency, FPS, camera or thermal certification.",
+    "Historical baseline button counts come from the pinned 705.28.27 viewport report; the test also compares full/clean modes of this actual build. Player placement uses the existing QA teleport API only before movement/control scenarios."
+  ],
+  "initial": {
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": false,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "tool": "none",
+    "owned": [
+      "axe",
+      "pickaxe",
+      "bucket",
+      "hoe",
+      "shovel"
+    ],
+    "harvested": {
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "water": 0,
+      "bait": 0,
+      "crops": 0,
+      "clay": 0
+    },
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "goldOre": 0,
+      "goldBar": 0,
+      "food": 2,
+      "water": 2,
+      "crystals": 0,
+      "blocks": 4,
+      "fences": 2,
+      "keys": 0,
+      "fishingRod": 1,
+      "bait": 5,
+      "seeds": 6,
+      "wheat": 0,
+      "carrots": 0,
+      "clay": 0,
+      "rawFish": 0,
+      "cookedFish": 0,
+      "forestResources": 0
+    },
+    "vehicles": [
+      "garage-orange"
+    ],
+    "coins": 2345,
+    "toolVisual": false,
+    "toolAttached": false,
+    "player": {
+      "x": -18,
+      "z": 39
+    },
+    "camera": {
+      "zoom": 0,
+      "pitch": 0.28,
+      "yaw": 0
+    },
+    "build": null,
+    "context": null
+  },
+  "passed": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Control must be visible and hittable: {\"id\":\"ot-games-button\",\"x\":109,\"y\":9,\"w\":152.5,\"h\":64,\"inViewport\":true,\"hit\":false,\"coveredBy\":\"exploration-menu-header\"}\n    at accessible (file:///workspace/work/ConsoleGames/tests/world-clean-hud-browser.mjs:41:435)\n    at async file:///workspace/work/ConsoleGames/tests/world-clean-hud-browser.mjs:54:130",
+  "errors": [],
+  "last": {
+    "hud": {
+      "mode": "clean",
+      "walking": true,
+      "menuOpen": true,
+      "skillsOpen": false,
+      "emptyHands": true
+    },
+    "tool": "none",
+    "owned": [
+      "axe",
+      "pickaxe",
+      "bucket",
+      "hoe",
+      "shovel"
+    ],
+    "harvested": {
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "water": 0,
+      "bait": 0,
+      "crops": 0,
+      "clay": 0
+    },
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "goldOre": 0,
+      "goldBar": 0,
+      "food": 2,
+      "water": 2,
+      "crystals": 0,
+      "blocks": 4,
+      "fences": 2,
+      "keys": 0,
+      "fishingRod": 1,
+      "bait": 5,
+      "seeds": 6,
+      "wheat": 0,
+      "carrots": 0,
+      "clay": 0,
+      "rawFish": 0,
+      "cookedFish": 0,
+      "forestResources": 0
+    },
+    "vehicles": [
+      "garage-orange"
+    ],
+    "coins": 2345,
+    "toolVisual": false,
+    "toolAttached": false,
+    "player": {
+      "x": -18,
+      "z": 39
+    },
+    "camera": {
+      "zoom": 0,
+      "pitch": 0.28,
+      "yaw": 0
+    },
+    "build": null,
+    "context": null
+  },
+  "layout": {
+    "width": 852,
+    "height": 393,
+    "buttons": [
+      {
+        "id": "quickToggleBtn",
+        "label": "Abrir menu do mundo",
+        "rect": {
+          "x": 800,
+          "y": 48,
+          "w": 44,
+          "h": 44,
+          "right": 844,
+          "bottom": 92
+        }
+      },
+      {
+        "id": "worldMenuClose",
+        "label": "Fechar menu",
+        "rect": {
+          "x": 664.5625,
+          "y": 8,
+          "w": 78.4375,
+          "h": 44,
+          "right": 743,
+          "bottom": 52
+        }
+      },
+      {
+        "id": "ot-games-button",
+        "label": "OT Games: explorar, pilotar e ajudar",
+        "rect": {
+          "x": 109,
+          "y": 9,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 73
+        }
+      },
+      {
+        "id": "avatarGameBtn",
+        "label": "👕Personagem",
+        "rect": {
+          "x": 269.5,
+          "y": 9,
+          "w": 152.5,
+          "h": 64,
+          "right": 422,
+          "bottom": 73
+        }
+      },
+      {
+        "id": "inventoryBtn",
+        "label": "🎒Itens",
+        "rect": {
+          "x": 430,
+          "y": 9,
+          "w": 152.5,
+          "h": 64,
+          "right": 582.5,
+          "bottom": 73
+        }
+      },
+      {
+        "id": "worldPhoneBtn",
+        "label": "📱Celular",
+        "rect": {
+          "x": 590.5,
+          "y": 9,
+          "w": 152.5,
+          "h": 64,
+          "right": 743,
+          "bottom": 73
+        }
+      },
+      {
+        "id": "buildBtn",
+        "label": "🧱Construir",
+        "rect": {
+          "x": 109,
+          "y": 63,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 127
+        }
+      },
+      {
+        "id": "emptyHandsBtn",
+        "label": "👐Mãos vazias",
+        "rect": {
+          "x": 269.5,
+          "y": 63,
+          "w": 152.5,
+          "h": 64,
+          "right": 422,
+          "bottom": 127
+        }
+      },
+      {
+        "id": "toolsBtn",
+        "label": "✋Ferramentas",
+        "rect": {
+          "x": 430,
+          "y": 63,
+          "w": 152.5,
+          "h": 64,
+          "right": 582.5,
+          "bottom": 127
+        }
+      },
+      {
+        "id": "mapBtn",
+        "label": "🗺Mapa",
+        "rect": {
+          "x": 590.5,
+          "y": 63,
+          "w": 152.5,
+          "h": 64,
+          "right": 743,
+          "bottom": 127
+        }
+      },
+      {
+        "id": "dailyBtn",
+        "label": "🎓Desafios",
+        "rect": {
+          "x": 109,
+          "y": 117,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 181
+        }
+      },
+      {
+        "id": "onlineBtn",
+        "label": "🌐Online",
+        "rect": {
+          "x": 269.5,
+          "y": 117,
+          "w": 152.5,
+          "h": 64,
+          "right": 422,
+          "bottom": 181
+        }
+      },
+      {
+        "id": "newsQuickBtn",
+        "label": "📰Notícias",
+        "rect": {
+          "x": 430,
+          "y": 117,
+          "w": 152.5,
+          "h": 64,
+          "right": 582.5,
+          "bottom": 181
+        }
+      },
+      {
+        "id": "neighborhoodQuickBtn",
+        "label": "🏘️Bairros",
+        "rect": {
+          "x": 590.5,
+          "y": 117,
+          "w": 152.5,
+          "h": 64,
+          "right": 743,
+          "bottom": 181
+        }
+      },
+      {
+        "id": "gameSettingsBtn",
+        "label": "⚙Menu",
+        "rect": {
+          "x": 109,
+          "y": 171,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 235
+        }
+      },
+      {
+        "id": "worldHudModeBtn",
+        "label": "Mostrar todos os comandos",
+        "rect": {
+          "x": 430,
+          "y": 171,
+          "w": 152.5,
+          "h": 64,
+          "right": 582.5,
+          "bottom": 235
+        }
+      },
+      {
+        "id": "multiplayerBadge",
+        "label": "Status multiplayer",
+        "rect": {
+          "x": 590.5,
+          "y": 171,
+          "w": 152.5,
+          "h": 64,
+          "right": 743,
+          "bottom": 235
+        }
+      },
+      {
+        "id": "skillsToggleBtn",
+        "label": "Abrir habilidades",
+        "rect": {
+          "x": 109,
+          "y": 225,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 289
+        }
+      },
+      {
+        "id": "cameraNearBtn",
+        "label": "Aproximar câmera",
+        "rect": {
+          "x": 220.71875,
+          "y": 280.5,
+          "w": 44,
+          "h": 44,
+          "right": 264.71875,
+          "bottom": 324.5
+        }
+      },
+      {
+        "id": "cameraPitchUpBtn",
+        "label": "Levantar câmera e olhar mais para baixo",
+        "rect": {
+          "x": 326.359375,
+          "y": 280.5,
+          "w": 44,
+          "h": 44,
+          "right": 370.359375,
+          "bottom": 324.5
+        }
+      },
+      {
+        "id": "cameraPitchDownBtn",
+        "label": "Abaixar câmera e olhar para o horizonte",
+        "rect": {
+          "x": 432,
+          "y": 280.5,
+          "w": 44,
+          "h": 44,
+          "right": 476,
+          "bottom": 324.5
+        }
+      },
+      {
+        "id": "cameraResetBtn",
+        "label": "Centralizar câmera",
+        "rect": {
+          "x": 537.640625,
+          "y": 280.5,
+          "w": 44,
+          "h": 44,
+          "right": 581.640625,
+          "bottom": 324.5
+        }
+      },
+      {
+        "id": "cameraFarBtn",
+        "label": "Afastar câmera",
+        "rect": {
+          "x": 643.28125,
+          "y": 280.5,
+          "w": 44,
+          "h": 44,
+          "right": 687.28125,
+          "bottom": 324.5
+        }
+      },
+      {
+        "id": "family-world-entry",
+        "label": "Encontrar Thiago, Thamis, Luna e Liz",
+        "rect": {
+          "x": 109,
+          "y": 333,
+          "w": 152.5,
+          "h": 64,
+          "right": 261.5,
+          "bottom": 397
+        }
+      },
+      {
+        "id": "worldCampaignBtn",
+        "label": "Abrir destinos, aviões, helicópteros, balões, lanchas, praia e neve",
+        "rect": {
+          "x": 269.5,
+          "y": 333,
+          "w": 152.5,
+          "h": 64,
+          "right": 422,
+          "bottom": 397
+        }
+      },
+      {
+        "id": "runBtn",
+        "label": "🏃Correr",
+        "rect": {
+          "x": 758,
+          "y": 300,
+          "w": 40,
+          "h": 40,
+          "right": 798,
+          "bottom": 340
+        }
+      },
+      {
+        "id": "jumpBtn",
+        "label": "⬆Pular",
+        "rect": {
+          "x": 804,
+          "y": 346,
+          "w": 40,
+          "h": 40,
+          "right": 844,
+          "bottom": 386
+        }
+      }
+    ],
+    "issues": [
+      "covered:runBtn:worldMenuBackdrop",
+      "covered:jumpBtn:worldMenuBackdrop",
+      "covered:missionCard:buildBtn",
+      "covered:joystick:worldMenuBackdrop"
+    ],
+    "body": "otthi-world-shell otthi-v705-world ui-compact world-hud-clean world-hud-walking world-hud-action-idle otthi-world-render otthi-world-details otthi-v702-world otthi-v704-world campaign-world otthi-landscape ui-landscape ui-short ui-ultra-short ui-tiny quick-open"
+  }
+}

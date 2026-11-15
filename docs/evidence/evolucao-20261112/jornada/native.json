@@ -1,0 +1,431 @@
+{
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "modal": {
+        "x": 0,
+        "y": 0,
+        "right": 390,
+        "bottom": 844
+      }
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false,
+      "modal": {
+        "x": 0,
+        "y": 0,
+        "right": 844,
+        "bottom": 390
+      }
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "modal": {
+        "x": 0,
+        "y": 0,
+        "right": 360,
+        "bottom": 740
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "overflow": false,
+      "modal": {
+        "x": 0,
+        "y": 0,
+        "right": 1280,
+        "bottom": 720
+      }
+    }
+  ],
+  "limits": [
+    "Native world, guide, mission actions, rewards and save/reload in disposable local RTDB. No production account.",
+    "Travel between task sites is inspection positioning; 60Hz native steps advance the work clock with drawing capped. Not a physical-device performance or human fun rating."
+  ],
+  "before": {
+    "guide": {
+      "ready": true,
+      "profile": "browser-test-user-123456789012345",
+      "rows": [
+        {
+          "type": "neighbors",
+          "purpose": "Conheça os vizinhos e complete um circuito de entregas a pé.",
+          "title": "Boas-vindas à vizinhança",
+          "icon": "🏘️",
+          "region": "Nova Aurora",
+          "count": 0
+        },
+        {
+          "type": "beach",
+          "purpose": "Viaje até a orla e ajude a cuidar da praia.",
+          "title": "Uma praia para todos",
+          "icon": "🏖️",
+          "region": "Costa Verde",
+          "count": 0
+        },
+        {
+          "type": "snow",
+          "purpose": "Encontre os chalés e leve cobertores à comunidade da neve.",
+          "title": "Calor nos Picos Nevados",
+          "icon": "❄️",
+          "region": "Neve",
+          "count": 0
+        },
+        {
+          "type": "cable",
+          "purpose": "Use o teleférico, ajude no mirante e faça a viagem de volta.",
+          "title": "Uma viagem até as nuvens",
+          "icon": "🚡",
+          "region": "Cordilheira",
+          "count": 0
+        },
+        {
+          "type": "fire",
+          "purpose": "Pratique o atendimento com a equipe dos bombeiros.",
+          "title": "Bombeiros: cuidado com a orla",
+          "icon": "🚒",
+          "region": "Praia e cidade",
+          "count": 0
+        },
+        {
+          "type": "police",
+          "purpose": "Organize a travessia e acompanhe o morador em segurança.",
+          "title": "Polícia: caminho seguro",
+          "icon": "🚓",
+          "region": "Nova Aurora",
+          "count": 0
+        },
+        {
+          "type": "balloon",
+          "purpose": "Prepare o balão, visite as paisagens e volte para pousar.",
+          "title": "Festival de balões",
+          "icon": "🎈",
+          "region": "Montanhas",
+          "count": 0
+        }
+      ],
+      "done": 0,
+      "total": 7,
+      "difficulty": "easy",
+      "difficultyLabel": "Passeio",
+      "next": {
+        "type": "neighbors",
+        "purpose": "Conheça os vizinhos e complete um circuito de entregas a pé.",
+        "title": "Boas-vindas à vizinhança",
+        "icon": "🏘️",
+        "region": "Nova Aurora",
+        "count": 0,
+        "reward": 160
+      },
+      "current": null,
+      "resources": {
+        "owned": 1,
+        "stored": 0,
+        "parcelPending": 0,
+        "parcelReady": false,
+        "familyPark": false
+      }
+    },
+    "coins": 1234,
+    "receipts": {},
+    "completed": {},
+    "gifts": [],
+    "mission": null
+  },
+  "completed": {
+    "guide": {
+      "ready": true,
+      "profile": "browser-test-user-123456789012345",
+      "rows": [
+        {
+          "type": "neighbors",
+          "purpose": "Conheça os vizinhos e complete um circuito de entregas a pé.",
+          "title": "Boas-vindas à vizinhança",
+          "icon": "🏘️",
+          "region": "Nova Aurora",
+          "count": 1
+        },
+        {
+          "type": "beach",
+          "purpose": "Viaje até a orla e ajude a cuidar da praia.",
+          "title": "Uma praia para todos",
+          "icon": "🏖️",
+          "region": "Costa Verde",
+          "count": 0
+        },
+        {
+          "type": "snow",
+          "purpose": "Encontre os chalés e leve cobertores à comunidade da neve.",
+          "title": "Calor nos Picos Nevados",
+          "icon": "❄️",
+          "region": "Neve",
+          "count": 0
+        },
+        {
+          "type": "cable",
+          "purpose": "Use o teleférico, ajude no mirante e faça a viagem de volta.",
+          "title": "Uma viagem até as nuvens",
+          "icon": "🚡",
+          "region": "Cordilheira",
+          "count": 0
+        },
+        {
+          "type": "fire",
+          "purpose": "Pratique o atendimento com a equipe dos bombeiros.",
+          "title": "Bombeiros: cuidado com a orla",
+          "icon": "🚒",
+          "region": "Praia e cidade",
+          "count": 0
+        },
+        {
+          "type": "police",
+          "purpose": "Organize a travessia e acompanhe o morador em segurança.",
+          "title": "Polícia: caminho seguro",
+          "icon": "🚓",
+          "region": "Nova Aurora",
+          "count": 0
+        },
+        {
+          "type": "balloon",
+          "purpose": "Prepare o balão, visite as paisagens e volte para pousar.",
+          "title": "Festival de balões",
+          "icon": "🎈",
+          "region": "Montanhas",
+          "count": 0
+        }
+      ],
+      "done": 1,
+      "total": 7,
+      "difficulty": "normal",
+      "difficultyLabel": "Aventura",
+      "next": {
+        "type": "beach",
+        "purpose": "Viaje até a orla e ajude a cuidar da praia.",
+        "title": "Uma praia para todos",
+        "icon": "🏖️",
+        "region": "Costa Verde",
+        "count": 0,
+        "reward": 150
+      },
+      "current": {
+        "id": "solo-9979c776-7611-45e1-991d-c490efe0e513",
+        "type": "neighbors",
+        "status": "completed",
+        "mode": "solo",
+        "title": "Boas-vindas à vizinhança",
+        "phase": 3,
+        "steps": 3,
+        "step": "",
+        "count": 0,
+        "quota": 0
+      },
+      "resources": {
+        "owned": 1,
+        "stored": 0,
+        "parcelPending": 0,
+        "parcelReady": false,
+        "familyPark": false
+      }
+    },
+    "coins": 1394,
+    "receipts": {
+      "solo-9979c776-7611-45e1-991d-c490efe0e513": 1794528379102.3333
+    },
+    "completed": {
+      "neighbors": 1
+    },
+    "gifts": [],
+    "mission": {
+      "id": "solo-9979c776-7611-45e1-991d-c490efe0e513",
+      "type": "neighbors",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "browser-test-user-123456789012345",
+      "status": "completed",
+      "phase": 3,
+      "members": {
+        "browser-test-user-123456789012345": {
+          "ready": true,
+          "joinedAt": 1794528363959.6667
+        }
+      },
+      "counts": {
+        "0:browser-test-user-123456789012345": 1,
+        "1:browser-test-user-123456789012345": 1,
+        "2:browser-test-user-123456789012345": 1
+      },
+      "tokens": {
+        "0:browser-test-user-123456789012345:aurora-market": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528367724.3333
+        },
+        "1:browser-test-user-123456789012345:neighbor-home-0": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528374397
+        },
+        "2:browser-test-user-123456789012345:aurora-market": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528379073.6667
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1794528363959.6667,
+      "updatedAt": 1794528379073.6667,
+      "completedAt": 1794528379073.6667
+    }
+  },
+  "reloaded": {
+    "guide": {
+      "ready": true,
+      "profile": "browser-test-user-123456789012345",
+      "rows": [
+        {
+          "type": "neighbors",
+          "purpose": "Conheça os vizinhos e complete um circuito de entregas a pé.",
+          "title": "Boas-vindas à vizinhança",
+          "icon": "🏘️",
+          "region": "Nova Aurora",
+          "count": 1
+        },
+        {
+          "type": "beach",
+          "purpose": "Viaje até a orla e ajude a cuidar da praia.",
+          "title": "Uma praia para todos",
+          "icon": "🏖️",
+          "region": "Costa Verde",
+          "count": 0
+        },
+        {
+          "type": "snow",
+          "purpose": "Encontre os chalés e leve cobertores à comunidade da neve.",
+          "title": "Calor nos Picos Nevados",
+          "icon": "❄️",
+          "region": "Neve",
+          "count": 0
+        },
+        {
+          "type": "cable",
+          "purpose": "Use o teleférico, ajude no mirante e faça a viagem de volta.",
+          "title": "Uma viagem até as nuvens",
+          "icon": "🚡",
+          "region": "Cordilheira",
+          "count": 0
+        },
+        {
+          "type": "fire",
+          "purpose": "Pratique o atendimento com a equipe dos bombeiros.",
+          "title": "Bombeiros: cuidado com a orla",
+          "icon": "🚒",
+          "region": "Praia e cidade",
+          "count": 0
+        },
+        {
+          "type": "police",
+          "purpose": "Organize a travessia e acompanhe o morador em segurança.",
+          "title": "Polícia: caminho seguro",
+          "icon": "🚓",
+          "region": "Nova Aurora",
+          "count": 0
+        },
+        {
+          "type": "balloon",
+          "purpose": "Prepare o balão, visite as paisagens e volte para pousar.",
+          "title": "Festival de balões",
+          "icon": "🎈",
+          "region": "Montanhas",
+          "count": 0
+        }
+      ],
+      "done": 1,
+      "total": 7,
+      "difficulty": "normal",
+      "difficultyLabel": "Aventura",
+      "next": {
+        "type": "beach",
+        "purpose": "Viaje até a orla e ajude a cuidar da praia.",
+        "title": "Uma praia para todos",
+        "icon": "🏖️",
+        "region": "Costa Verde",
+        "count": 0,
+        "reward": 150
+      },
+      "current": {
+        "id": "solo-9979c776-7611-45e1-991d-c490efe0e513",
+        "type": "neighbors",
+        "status": "completed",
+        "mode": "solo",
+        "title": "Boas-vindas à vizinhança",
+        "phase": 3,
+        "steps": 3,
+        "step": "",
+        "count": 0,
+        "quota": 0
+      },
+      "resources": {
+        "owned": 1,
+        "stored": 0,
+        "parcelPending": 0,
+        "parcelReady": false,
+        "familyPark": false
+      }
+    },
+    "coins": 1394,
+    "receipts": {
+      "solo-9979c776-7611-45e1-991d-c490efe0e513": 1794528379102.3333
+    },
+    "completed": {
+      "neighbors": 1
+    },
+    "gifts": [],
+    "mission": {
+      "id": "solo-9979c776-7611-45e1-991d-c490efe0e513",
+      "type": "neighbors",
+      "mode": "solo",
+      "difficulty": "easy",
+      "host": "browser-test-user-123456789012345",
+      "status": "completed",
+      "phase": 3,
+      "members": {
+        "browser-test-user-123456789012345": {
+          "ready": true,
+          "joinedAt": 1794528363959.6667
+        }
+      },
+      "counts": {
+        "0:browser-test-user-123456789012345": 1,
+        "1:browser-test-user-123456789012345": 1,
+        "2:browser-test-user-123456789012345": 1
+      },
+      "tokens": {
+        "0:browser-test-user-123456789012345:aurora-market": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528367724.3333
+        },
+        "1:browser-test-user-123456789012345:neighbor-home-0": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528374397
+        },
+        "2:browser-test-user-123456789012345:aurora-market": {
+          "uid": "browser-test-user-123456789012345",
+          "at": 1794528379073.6667
+        }
+      },
+      "pending": {},
+      "rides": {},
+      "createdAt": 1794528363959.6667,
+      "updatedAt": 1794528379073.6667,
+      "completedAt": 1794528379073.6667
+    }
+  },
+  "passed": true,
+  "actions": 3,
+  "errors": []
+}

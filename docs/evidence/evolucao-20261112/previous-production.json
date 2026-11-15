@@ -1,0 +1,152 @@
+{
+  "status": "Published dense-traffic recovery, corrected emergency routes and curbside depots, incremental phone detours, reduced background update cost and verified manual driving",
+  "build": "705.28.25-transito-fluidez",
+  "revision": "23767784d2d7a3aa",
+  "runtimeCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+  "runtimeWorldCommit": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+  "previewUrl": "https://otthi-world-campanha-teste-r43byb5oy-thiaguinho-s-projects.vercel.app",
+  "previewDeployment": "dpl_3ys3cmHreQpGFAXuDyiD4RvpR72H",
+  "productionUrl": "https://otthi-world-campanha-teste.vercel.app",
+  "productionDeployment": "dpl_8u99crzy7sLwM2UkGtJiSwE7SLLa",
+  "productionSource": "cdc695f04f62dd67fe28ec94ea5edaca73474f95",
+  "productionReady": true,
+  "productionAcceptanceStatus": "441 unit tests passed; all eight console evolution jobs, three mobile/control/vehicle jobs and native frame comparison passed; 164 production hashes verified.",
+  "unitTests": {
+    "passed": 441,
+    "failed": 0,
+    "command": "node --test tests/*.test.mjs"
+  },
+  "checks": {
+    "releaseAssets": 143,
+    "publicVerifiedFiles": 164,
+    "evolutionFinalRun": 42876780048,
+    "evolutionFinalConclusion": "success",
+    "evolutionFinalJobs": [
+      "pouso",
+      "transito-e-fluidez",
+      "atualizacao-da-candidata",
+      "celular-rotas-e-compras",
+      "celular-e-entregas",
+      "kart-precisao-e-copa",
+      "duas-maos",
+      "oficina-autonoma"
+    ],
+    "mobileLayoutRun": 42876779731,
+    "mobileLayoutConclusion": "success",
+    "viewportChanges": 10,
+    "vehicleOperationalMeasurementRun": 42876779731,
+    "vehicleOperationalMeasurementJob": 130042058203,
+    "vehicleOperationalConclusion": "success",
+    "trafficPerformanceRun": 42876779718,
+    "trafficPerformanceConclusion": "success",
+    "trafficFlowRun": 42876780048,
+    "trafficFlowConclusion": "success",
+    "trafficFlowArtifact": 13790749437,
+    "renderPerformanceArtifact": 13791697767,
+    "vehicleOperationalArtifact": 13790878991
+  },
+  "previewConfiguration": {
+    "branch": "console-evolution-20261106",
+    "VERCEL_PREVIEW_FEEDBACK_ENABLED": "0"
+  },
+  "physicalAndroidApproved": false,
+  "limitations": [
+    "Physical Android/iPhone camera precision, temperature, sustained FPS and installed user cache were not measured.",
+    "Software WebGL and compatible rendering validate functional behavior and geometry, not physical-device performance.",
+    "The WAR web game is not equivalent in production scale or graphics to Call of Duty 2026."
+  ],
+  "previousProduction": {
+    "build": "705.28.24-celular-entregas-garagem",
+    "revision": "b41039decb7d7b28",
+    "productionDeployment": "dpl_8EQ1N1WrnuiNaADb5Hz75rvUfPCA",
+    "productionSource": "175ba82b7bdd46637cca6854a32517971d85200a"
+  },
+  "evidenceDirectory": "transito-fluidez-20261110",
+  "productionAcceptanceReport": "transito-fluidez-20261110/result.json",
+  "productionHttpIntegrityReport": "transito-fluidez-20261110/http-integrity.json",
+  "sourceCoherence": "143 release assets and 164 public files verified against source.",
+  "publishedAt": "2026-11-10T18:39:20.321000+00:00",
+  "publicationPreparation": "Production is pinned to runtime commit cdc695f04f62dd67fe28ec94ea5edaca73474f95; a subsequent evidence-only commit does not redeploy the runtime.",
+  "productionVerifiedAt": "2026-11-10T18:40:45.555Z",
+  "previousReleaseRecord": {
+    "build": "705.28.23-oficina-combate-kart",
+    "revision": "00b49a044927f542",
+    "runtimeCommit": "5f51324be6a284d858dfa198dd668ae722756455",
+    "productionSource": "5f51324be6a284d858dfa198dd668ae722756455",
+    "productionDeployment": "dpl_AsVkWsyUbnzr9sQKn3oME6M7NTNY"
+  },
+  "warRevision": {
+    "cache": 54,
+    "visualViews": 40,
+    "releasedBattlefields": 14,
+    "evidence": "combate-kart-20261109/verification.json",
+    "physicalDeviceVerified": false
+  },
+  "previousDanceBase": {
+    "runtimeCommit": "d3e7248e10e8e1e6bcc7b57d9c118fa0e28e34f6",
+    "revision": "defa5c4df1748e8e",
+    "productionDeployment": "dpl_56uzcMDgNEGZNU8zU4FZuXKMznkt"
+  },
+  "danceConsole": {
+    "cards": 8,
+    "directUrl": "https://otthi-world-campanha-teste.vercel.app/games/danca/",
+    "browserRun": 42434156049,
+    "browserStep": "Run node tests/dance-console-browser.mjs",
+    "browserStepConclusion": "success",
+    "existingDanceRun": 42434156033,
+    "existingDanceStepConclusion": "success",
+    "publicFiles": 138,
+    "liveAudioConfirmed": false,
+    "physicalDeviceVerified": false
+  },
+  "previousWarRevision": {
+    "cache": 51,
+    "entry": "20261107-war-revisao2",
+    "unitTests": 404,
+    "evolutionRun": 42431707266,
+    "evolutionConclusion": "success",
+    "handAndWorldRun": 42431707221,
+    "installedUpdateStep": "success",
+    "sceneryRun": 42431707196,
+    "sceneryConclusion": "success",
+    "visualViews": 16,
+    "publicFiles": 132,
+    "manualPublicTraining": {
+      "shots": 1,
+      "hits": 1,
+      "ammo": 29
+    },
+    "evidence": "war-revisao-20261107/README.md",
+    "physicalDeviceVerified": false,
+    "handAndWorldConclusion": "success",
+    "gameplayRun": 42431707330,
+    "gameplayConclusion": "success",
+    "installedUpdateReport": "war-revisao-20261107/installed-update.json"
+  },
+  "phoneDelivery": {
+    "groundDetours": true,
+    "liveMap": true,
+    "completeGarageStorage": true,
+    "parcelResumeAndReceipt": true,
+    "vehiclePurchaseDelivered": true,
+    "mobileViewports": [
+      "390x844",
+      "844x390",
+      "360x740"
+    ],
+    "evidence": "celular-rotas-compras-20261109/result.json",
+    "nativeBrowserRun": 42876780048,
+    "physicalDeviceVerified": false
+  },
+  "trafficRecovery": {
+    "nativeBrowserRun": 42876780048,
+    "nativeVehicleRun": 42876779731,
+    "nativePerformanceRun": 42876779718,
+    "boundedChecksPerRouteSlice": 8,
+    "curbsideRescueDepots": true,
+    "separateIncidentStaging": true,
+    "incrementalSideClearance": true,
+    "physicalDeviceVerified": false,
+    "evidence": "transito-fluidez-20261110/result.json"
+  }
+}

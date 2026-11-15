@@ -8,13 +8,36 @@
     // zero. Zero irradiance contributes zero to diffuse, specular and coating.
     chunks.lights_fragment_begin=source.replace('RE_Direct( directLight, geometry, material, reflectedLight );','if ( directLight.visible ) { // OTTHI_VISIBLE_POINT_LIGHT\n\t\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t\t}');
   }
-  function precompileWorldLighting(){
+  function worldLightingPreparationPlan(){
+    // Interior lamps can become visible later, and camera culling temporarily
+    // hides ordinary lamps. Count the installed population, not one frustum.
+    const glowsEnabled=typeof visualQualityProfile==='function'&&typeof qualityTier==='function'?visualQualityProfile(qualityTier()).glows:(world.glows||[]).some(light=>light?.visible)||worldLightBudget.stats.total>0;
+    let population=0;const seen=new Set();
+    if(glowsEnabled)for(const light of world.glows||[]){
+      if(!light?.isPointLight||seen.has(light)||!light.layers.test(camera.layers))continue;
+      let parent=light.parent;while(parent&&parent!==scene)parent=parent.parent;
+      if(parent===scene){seen.add(light);population++;}
+    }
+    const pointLightBuckets=[0];if(population){for(let count=16;count<=Math.max(16,Math.ceil(population/8)*8);count+=8)pointLightBuckets.push(count);}
+    return{population,pointLightBuckets};
+  }
+  function precompileWorldLighting(options={}){
     const compile=()=>{
       const templates=window.OTBrazilVehicles?.precompile?.(THREE,renderer,scene,camera);
       if(!templates)renderer.compile(scene,camera);
       return Number(templates||0);
     };
     const lights=[],temporary=[];
+    if(Number.isFinite(options.pointLights)){
+      const states=[];scene.traverse(object=>{if(object.isPointLight){states.push([object,object.visible]);object.visible=false;}});
+      // These zero-intensity lamps exist only while compiling. Actual frames
+      // keep the original lights, visibility, culling and attenuation intact.
+      const count=Math.max(0,Math.floor(options.pointLights));
+      try{
+        for(let i=0;i<count;i++){const light=new THREE.PointLight(0x000000,0,1,1);scene.add(light);temporary.push(light);}
+        return{templates:compile(),lightingVariants:1,pointLightBuckets:[count]};
+      }finally{for(const light of temporary)scene.remove(light);for(const[light,visible]of states)light.visible=visible;}
+    }
     scene.traverseVisible(object=>{if(object.isPointLight&&object.layers.test(camera.layers))lights.push(object);});
     // An initial view with no contributing lamps still needs the normal lit
     // program when the camera turns. Prepare it only under the loading screen;
@@ -60,4 +83,4 @@
     budget.stats={total,active,culled:hidden.length,padded};
     return()=>{for(const light of hidden)light.visible=true;for(let i=0;i<padded;i++)scene.remove(budget.padding[i]);};
   }
-  window.OTTHI_LIGHT_BUDGET={diagnostics:()=>({...worldLightBudget.stats})};
+  window.OTTHI_LIGHT_BUDGET={diagnostics:()=>({...worldLightBudget.stats}),preparation:()=>({...worldLightBudget.preparation,pointLightBuckets:[...(worldLightBudget.preparation?.pointLightBuckets||[])]})};

@@ -1,0 +1,176 @@
+{
+  "cases": [
+    {
+      "initial": {
+        "practice": true,
+        "trial": {
+          "trackLength": 336000,
+          "passes": 0,
+          "drifts": 0,
+          "items": 0,
+          "contacts": 0,
+          "offroadSeconds": 0,
+          "eligible": {},
+          "passed": {},
+          "lastContactAt": null,
+          "lastOffroadAt": null,
+          "lastItem": null,
+          "finished": false,
+          "rank": 0,
+          "lapTimes": [],
+          "nearest": {
+            "id": "cpu0",
+            "name": "PIPO",
+            "gap": 4529.424845060655
+          },
+          "contactHeld": false
+        },
+        "rivals": [
+          {
+            "id": "cpu0",
+            "pos": 4529.424845060655
+          },
+          {
+            "id": "cpu1",
+            "pos": 7017.838945229025
+          },
+          {
+            "id": "cpu2",
+            "pos": 9508.996079295603
+          },
+          {
+            "id": "cpu3",
+            "pos": 12011.347812474924
+          }
+        ],
+        "phase": "f1",
+        "coins": 0,
+        "xp": 0
+      },
+      "finish": {
+        "status": "FINISHED",
+        "physicalFinish": true,
+        "ticks": 6488,
+        "maxOffset": 0.5376020044010457,
+        "lapTimes": [
+          36.18333333333256,
+          35.983333333331295,
+          35.999999999997954
+        ],
+        "rank": 1,
+        "trial": {
+          "trackLength": 336000,
+          "passes": 3,
+          "drifts": 1,
+          "items": 38,
+          "contacts": 0,
+          "offroadSeconds": 0,
+          "eligible": {},
+          "passed": {
+            "cpu0:1": true,
+            "cpu1:1": true,
+            "cpu3:1": true
+          },
+          "lastContactAt": null,
+          "lastOffroadAt": null,
+          "lastItem": "banana",
+          "finished": true,
+          "rank": 1,
+          "lapTimes": [
+            36.18333333333256,
+            35.983333333331295,
+            35.999999999997954
+          ],
+          "nearest": {
+            "id": "cpu1",
+            "name": "BOLT",
+            "gap": 90471.14386461966
+          },
+          "contactHeld": false,
+          "lastLap": {
+            "number": 3,
+            "seconds": 35.999999999997954,
+            "delta": 0.016666666666658614
+          },
+          "completed": true
+        },
+        "itemUses": 38,
+        "rivals": [
+          {
+            "id": "cpu0",
+            "pos": 152985.05849086682,
+            "lap": 3,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu1",
+            "pos": 90597.15555197501,
+            "lap": 3,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu2",
+            "pos": 241433.13687917008,
+            "lap": 2,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu3",
+            "pos": 317394.803814503,
+            "lap": 2,
+            "status": "RACING"
+          }
+        ],
+        "cameraRequests": 0
+      },
+      "result": {
+        "rewardCalls": 1,
+        "coins": 2016,
+        "xp": 5162,
+        "save": {
+          "version": 1,
+          "username": "Jogador local",
+          "playerId": "local-52cfb37f-3d7c-4cfe-a2e7-044bc890d128",
+          "xp": 5162,
+          "level": 6,
+          "coins": 2016,
+          "arSave": {
+            "upgrades": {
+              "engine": 1,
+              "battery": 1,
+              "radar": 1,
+              "chassis": 1,
+              "scout": false
+            }
+          },
+          "kartSave": {
+            "garage": [
+              {
+                "modelId": 0
+              }
+            ],
+            "activeKartIdx": 0,
+            "upgrades": {
+              "engine": 1,
+              "tires": 1,
+              "suspension": 1
+            }
+          }
+        },
+        "resultText": "DESAFIO DE DISPUTA CONCLUÍDO\n\n1º lugar · 3/2 ultrapassagens limpas · 1/1 impulso de drift\n\n38 itens usados · 0 contatos · 0.0 s fora do asfalto\n\nVoltas: 36.2 s / 36.0 s / 36.0 s\n\nTente repetir com menos contatos ou uma volta melhor.",
+        "width": 844,
+        "viewport": 844
+      },
+      "saved": {
+        "coins": 2016,
+        "xp": 5162
+      },
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Chromium native menus, controls, physics, four AI rivals, items and result/reward flow. Fresh local practice; no live account or database writes.",
+    "The renderer is stopped between explicit native physics batches. Simulated race time is accelerated; this is not native RAF performance or physical camera/gameplay approval."
+  ],
+  "passed": true
+}

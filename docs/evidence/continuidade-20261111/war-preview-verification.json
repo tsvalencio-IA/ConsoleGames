@@ -1,0 +1,73 @@
+[
+  {
+    "viewport": "1280x900",
+    "checks": [
+      "tiro atinge sentinela",
+      "recarga completa",
+      "350ms de confirmação",
+      "giro contínuo para ao recentrar",
+      "45 graus apenas uma vez por gesto",
+      "abaixar",
+      "pausa congela o tempo"
+    ],
+    "errors": []
+  },
+  {
+    "mission": "complete",
+    "snapshot": {
+      "x": 9.526057292410394,
+      "y": 2.7689434988356805,
+      "angle": 4.6903936732050955,
+      "aim": {
+        "x": 0,
+        "y": 0
+      },
+      "mode": "continuous",
+      "yawHold": 0,
+      "life": 65,
+      "ammo": 6,
+      "reloading": 0,
+      "paused": false,
+      "finished": true,
+      "targets": [
+        {
+          "x": 2.5,
+          "y": 6.8,
+          "hp": 0
+        },
+        {
+          "x": 7.3,
+          "y": 7.5,
+          "hp": 0
+        },
+        {
+          "x": 9.5,
+          "y": 3.8,
+          "hp": 0
+        }
+      ],
+      "time": 105.01750000000091
+    }
+  },
+  {
+    "viewport": "390x844",
+    "layout": {
+      "width": 390,
+      "scroll": 390
+    }
+  },
+  {
+    "viewport": "844x390",
+    "layout": {
+      "width": 844,
+      "scroll": 844
+    }
+  },
+  {
+    "viewport": "360x740",
+    "layout": {
+      "width": 360,
+      "scroll": 360
+    }
+  }
+]

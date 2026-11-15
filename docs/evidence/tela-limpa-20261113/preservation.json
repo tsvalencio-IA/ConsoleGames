@@ -1,0 +1,46 @@
+{
+  "baseline": "be11c3ac22f70c6ae726c9edb24d34049cad0a52",
+  "releaseFilesBefore": 147,
+  "releaseFilesAfter": 147,
+  "removed": [],
+  "files": [
+    {
+      "file": "firebase-config.js",
+      "sha256": "b14cf6312b0240fcace8acc031a2e48df290432c8ab43a003295c66d5f6216e0",
+      "unchanged": true
+    },
+    {
+      "file": "arcade/firebase-config.js",
+      "sha256": "b14cf6312b0240fcace8acc031a2e48df290432c8ab43a003295c66d5f6216e0",
+      "unchanged": true
+    },
+    {
+      "file": "games/otthi/firebase-config.js",
+      "sha256": "ec5ce13a71981c62e5a0db2c3137d9dc742ffaa02b779469939e3204fc868144",
+      "unchanged": true
+    },
+    {
+      "file": "games/otthi/firebase-database.rules.json",
+      "sha256": "1189eb28061f5d604d52a4361553392e38a11ab2b1ba1eb03ebf22421efd29f7",
+      "unchanged": true
+    },
+    {
+      "file": "games/otthi/assets/js/save-db.js",
+      "sha256": "a8d20a89451eb15571754118814d286b1b00de664e14639b1ee4d5264eb6ff0d",
+      "unchanged": true
+    },
+    {
+      "file": "games/otthi/assets/js/game-account.js",
+      "sha256": "ab5727fec37a4b64a954eb5c83c86e01f5e63dd0c5fa3209ab8a5c1c84942b09",
+      "unchanged": true
+    },
+    {
+      "file": "games/otthi/assets/js/multiplayer-rtdb.js",
+      "sha256": "4f63035c0787a7dc0ab7c34eff70d0355bfaf1c17fc3fa6654cc7371dc27cd47",
+      "unchanged": true
+    }
+  ],
+  "limits": [
+    "No production account or database mutation. Save normalization, local reload, tool inventory and remote tool state covered by disposable tests."
+  ]
+}
