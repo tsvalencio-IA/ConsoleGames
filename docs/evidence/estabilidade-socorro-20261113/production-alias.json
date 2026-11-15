@@ -1,0 +1,41 @@
+{
+  "result": {
+    "deployment": {
+      "id": "dpl_EpsN8ysCoPZzTENRvXJxvS2YMVfg",
+      "name": "otthi-world-campanha-teste",
+      "url": "otthi-world-campanha-teste-axxnbc4z6-thiaguinho-s-projects.vercel.app",
+      "type": "LAMBDAS",
+      "state": "READY",
+      "createdAt": 1794756495445,
+      "creator": {
+        "uid": "E1uX8rQDEvyHkuIEKCk7uRDl",
+        "username": "tsvalencio-ia"
+      },
+      "project": {
+        "id": "prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm",
+        "name": "otthi-world-campanha-teste",
+        "framework": null
+      },
+      "meta": {
+        "githubCommitRef": "13715335884aea153479089b4d2c127539dfcd80",
+        "githubCommitSha": "13715335884aea153479089b4d2c127539dfcd80",
+        "githubCommitMessage": "Preserve candidate29 recovery and gameplay work with explicit validation blockers",
+        "githubRepo": "ConsoleGames",
+        "githubOrg": "tsvalencio-IA"
+      },
+      "alias": [
+        "otthi-world-campanha-teste.vercel.app",
+        "otthi-world-campanha-teste-thiaguinho-s-projects.vercel.app",
+        "otthi-world-campanha-teste-git-137-bc339e-thiaguinho-s-projects.vercel.app"
+      ],
+      "target": "production",
+      "regions": [
+        "iad1"
+      ],
+      "buildingAt": 1794756496672,
+      "ready": 1794756507912,
+      "readyState": "READY",
+      "aliasError": null
+    }
+  }
+}

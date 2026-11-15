@@ -29,5 +29,12 @@
     "Candidate native endurance session and camera before/after comparison not completed.",
     "Complete matches of the new WAR and Kart changes not completed.",
     "Physical mobile performance and controls not certified."
-  ]
+  ],
+  "subsequentPublication": {
+    "authorizedByOwner": true,
+    "productionDeployment": "dpl_EpsN8ysCoPZzTENRvXJxvS2YMVfg",
+    "runtimeCommit": "13715335884aea153479089b4d2c127539dfcd80",
+    "record": "publication.json",
+    "technicalAcceptanceComplete": false
+  }
 }

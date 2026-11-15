@@ -1,5 +1,8 @@
 # Fechamento solicitado — 15/11/2026
 
+> Atualização de 15/11/2026: depois do fechamento abaixo, o responsável autorizou explicitamente a publicação com as limitações informadas. A 705.28.29 foi publicada no [endereço habitual](https://otthi-world-campanha-teste.vercel.app/games/otthi/), a partir do mesmo código da prévia. Isso não conclui a homologação técnica. A 705.28.28 foi preservada como retorno; o [registro da publicação](publication.json) e o [recibo anterior](previous-production-28.json) identificam as duas versões. Os resultados e bloqueios abaixo continuam válidos; referências à produção 28 descrevem o fechamento anterior à autorização.
+
+
 **Entrega integrada ainda incompleta. Candidata29 não homologada e não promovida à produção.**
 
 A produção preservada é705.28.28, revisão6f64398fafb8a424, runtime2e3f1be286e74c0f998b81d7ba2a01147afc82a1. Mãos vazias, tela limpa, Meu caminho, dados/Firebase e os oito jogos continuam preservados. A candidata compilada é705.28.29-camera-socorro-jogabilidade, revisão3227043b294bd89d. A [prévia separada, não homologada](https://otthi-world-campanha-teste-32ymp5zkx-thiaguinho-s-projects.vercel.app/arcade/previews/estabilidade-20261115.html) está acessível. O [registro](preview.json) identifica o commit exato e a produção preservada; a [verificação HTTP](preview-http-integrity.json) confirmou 171/171 arquivos, sem aprovar jogabilidade ou desempenho.
@@ -36,3 +39,11 @@ Consultar PROGRESS.md e checkpoints camera-progress.md, rescue-progress.md, war-
 ## Ambiente e verificação em celular
 
 A base longa usou Chromium 141.0.7390.37 em Linux x64, renderização SwiftShader, 3 CPUs disponíveis (AMD EPYC 9V74), aproximadamente 10,45 GB de RAM e viewport 393 × 852. Isso emula a tela e o toque, não o desempenho do aparelho. O [roteiro de celular](CELULAR.md) está preparado; não exige programação.
+
+## Conferência após publicação autorizada
+
+O alias habitual está READY no deployment `dpl_EpsN8ysCoPZzTENRvXJxvS2YMVfg`, commit `13715335884aea153479089b4d2c127539dfcd80`. [171/171 arquivos](production-http-integrity.json) correspondem à fonte. O console e as oito entradas responderam HTTP 200.
+
+A [verificação nativa pública](production-native-ui.json) confirmou ferramenta anterior, tela limpa, mãos vazias com modelo correto, persistência após recarga, reequipar e inventário preservado. [Captura](production-empty-hands.png). A [entrada pública de recuperação](production-recovery.json) instalou/abriu a revisão atual e preservou moedas, grupo familiar e outra chave local no perfil descartável; cabeçalhos no-store e entrada automática do console passaram. Isso não substitui uma migração de cache instalado 28→29, uso offline ou contas reais.
+
+Publicação autorizada e homologação técnica permanecem campos separados. Nenhuma falha de socorro, partida pendente ou medição de celular foi dada como resolvida por publicar. O recibo global agora identifica corretamente a produção 29 e mantém a 28 como retorno.
