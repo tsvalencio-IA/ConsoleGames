@@ -31,7 +31,8 @@
  // never changes the direction of the rifle or the elbow articulation.
  function aim(root,bone,child,x,y,z){
   if(!bone||!child)return;
-  root.updateMatrixWorld(true);
+  // Each conversion below updates the needed ancestor chain. Rebuilding all
+  // bones before every arm/leg aim repeated the same whole-body work.
   end.copy(child.getWorldPosition(vector));bone.worldToLocal(end);
   target.set(x,y,z);root.localToWorld(target);bone.worldToLocal(target);
   if(end.lengthSq()<1e-8||target.lengthSq()<1e-8)return;

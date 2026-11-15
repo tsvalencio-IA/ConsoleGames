@@ -357,6 +357,9 @@ window.System = {
                         sys.loopEpoch++;
                         sys.activeGame=game;
                         if(game.logic.init)game.logic.init(fase);
+                        const preparedEpoch=sys.loopEpoch;
+                        if(game.logic.prepare)await game.logic.prepare(fase,message=>{document.getElementById('loading-text').innerText=message;});
+                        if(sys.activeGame!==game||sys.loopEpoch!==preparedEpoch)throw new Error('Preparação cancelada.');
                         window.ArcadeControls?.activate(game);
                         document.getElementById('loading').classList.add('hidden');
                         document.getElementById('game-ui').classList.remove('hidden');

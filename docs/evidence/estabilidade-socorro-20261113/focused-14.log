@@ -1,0 +1,22 @@
+✔ WAR imported infantry: ancestor-only aim preserves 72 real animation poses without repeatedly walking the whole actor (200.281045ms)
+✔ WAR: diagonal movement slides along solid cover instead of swallowing both axes (4.739895ms)
+✔ WAR: sliding cannot cross a solid corner or tunnel through a thin barrier (1.08695ms)
+✔ WAR: blocked movement no longer plays a false walking cadence (2.180379ms)
+✔ WAR: a look drag can begin in the free left side and keeps one independent owner (1.373121ms)
+✔ slow rendered frames retain real simulation time using bounded physical steps (2.778759ms)
+✔ ordinary60Hz frames keep their original cadence and long stalls cannot replay minutes of input (2.311982ms)
+✔ couriers consume simulation expansion time even when several updates share one rendered timestamp (1.111636ms)
+✔ a long responder exits a curb along the road instead of rotating its rear outside it (3.24863ms)
+✔ hidden parked instances do not become phantom blockers, and visible bodies still block (1.577601ms)
+✔ a slow render clock cannot consume the simulated service budget, and real wall safety remains bounded (1.59052ms)
+✔ service-budget fallback is separate from physical arrival and is recorded only once per role (0.785075ms)
+✔ fallback never increments the physical completion counter, even if every vehicle subsequently arrives (1.866366ms)
+✔ a player-driven response records the player position and its assigned vehicle, not the parked depot pose (0.702744ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 509.756213

@@ -168,7 +168,10 @@ const hub={
   const enabled=()=>hub.mode==='controls'&&window.System?.activeGame?.logic===logic&&!window.System.paused&&logic.state==='PLAYING'&&!root.hidden&&!$('#game-ui')?.classList.contains('hidden');
   const reset=()=>{const pointer=owner;owner=null;logic.lookPointerActive=false;logic.frontControls?.release();try{if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer)}catch{}};
   const down=e=>{
-   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0)||(!logic.frontControls&&e.clientX<surface.getBoundingClientRect().left+surface.getBoundingClientRect().width*.45))return;
+   // UI buttons and the movement stick own their pointers before the canvas.
+   // Any remaining battlefield area must accept a look gesture, including the
+   // upper-left side and mouse drags. Reserving45% made that area unresponsive.
+   if(owner!==null||!enabled()||(e.pointerType==='mouse'&&e.button!==0))return;
    e.preventDefault();e.stopPropagation();owner=e.pointerId;lastX=e.clientX;lastY=e.clientY;logic.lookPointerActive=true;if(logic.frontControls){const r=surface.getBoundingClientRect();logic.frontControls.pointer((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);}
    try{if(e.isTrusted)surface.setPointerCapture(e.pointerId)}catch{}
   };

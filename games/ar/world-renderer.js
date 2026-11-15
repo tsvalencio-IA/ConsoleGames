@@ -114,8 +114,9 @@ class World{
   this.canvas.addEventListener('webglcontextrestored',()=>{this.dispose();cache.delete(game)});
   this.scene=new T.Scene();this.scene.scale.z=-1;this.camera=new T.PerspectiveCamera();this.textures=textureSet();this.materials=[];
   this.static=new Batch(this.scene);this.dynamic=new Batch(this.scene,true);this.smokes=[];this.aircraft=new Map();this.aircraftTemplates=new Map();
+  this.assetTasks=[];this.assetsPending=0;this.assetFailures=0;
   this.createMaterials();if(type==='combat')this.loadGroundMaterials();this.lighting();
-  if(type==='flight')this.buildFlight();else{this.buildCombat();if(!this.low)window.OTCombatActors?.ensure();this.loadSky();}this.static.finish();
+  if(type==='flight')this.buildFlight();else{this.buildCombat();if(!this.low&&!game.training){const infantry=window.OTCombatActors?.ensure();if(infantry?.then)this.assetTasks.push(infantry);}this.loadSky();}this.static.finish();
  }
  material(color,map=null,metal=.05,rough=.88){const m=new T.MeshStandardMaterial({color,map,metalness:metal,roughness:rough});m.color.convertSRGBToLinear();this.materials.push(m);return m}
  createMaterials(){
@@ -136,16 +137,45 @@ class World{
   this.groundMaps=0;this.groundTextures=[];const base=new URL('assets/ground/',document.baseURI),loader=new T.TextureLoader();
   for(const [file,property,srgb] of [['concrete-albedo.jpg','map',true],['concrete-normal.jpg','normalMap',false],['concrete-arm.jpg','roughnessMap',false]]){
    if(this.low&&property==='normalMap')continue;
-   loader.load(new URL(file,base).href,texture=>{if(this.disposed){texture.dispose();return;}texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.set(22,44);texture.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());if(srgb)texture.encoding=T.sRGBEncoding;this.groundTextures.push(texture);this.m.battleFloor[property]=texture;if(property==='normalMap')this.m.battleFloor.normalScale.set(.35,.35);this.m.battleFloor.needsUpdate=true;this.groundMaps++;},undefined,()=>{});
+   this.assetsPending++;
+   this.assetTasks.push(new Promise(resolve=>loader.load(new URL(file,base).href,texture=>{
+    this.assetsPending--;if(this.disposed){texture.dispose();resolve(false);return;}
+    texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.set(22,44);texture.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());if(srgb)texture.encoding=T.sRGBEncoding;this.groundTextures.push(texture);this.m.battleFloor[property]=texture;if(property==='normalMap')this.m.battleFloor.normalScale.set(.35,.35);this.m.battleFloor.needsUpdate=true;this.groundMaps++;resolve(true);
+   },undefined,()=>{this.assetsPending--;this.assetFailures++;resolve(false);})));
   }
  }
  loadSky(){
   if(!T.RGBELoader||typeof URL==='undefined'||!document.baseURI)return;
-  new T.RGBELoader().setDataType(T.UnsignedByteType).load(new URL('assets/sky/daylight-1k.hdr',document.baseURI).href,texture=>{
-   if(this.disposed){texture.dispose();return;}
+  this.assetsPending++;
+  this.assetTasks.push(new Promise(resolve=>new T.RGBELoader().setDataType(T.UnsignedByteType).load(new URL('assets/sky/daylight-1k.hdr',document.baseURI).href,texture=>{
+   this.assetsPending--;if(this.disposed){texture.dispose();resolve(false);return;}
    texture.mapping=T.EquirectangularReflectionMapping;this.skyTexture=texture;
-   if(!this.low){const generator=new T.PMREMGenerator(this.renderer);this.skyEnvironment=generator.fromEquirectangular(texture);this.scene.environment=this.skyEnvironment.texture;this.weaponScene.environment=this.skyEnvironment.texture;generator.dispose();}
-  },undefined,()=>{});
+   if(!this.low){const generator=new T.PMREMGenerator(this.renderer);try{this.skyEnvironment=generator.fromEquirectangular(texture);this.scene.environment=this.skyEnvironment.texture;this.weaponScene.environment=this.skyEnvironment.texture;}finally{generator.dispose();}}
+   resolve(true);
+  },undefined,()=>{this.assetsPending--;this.assetFailures++;resolve(false);})));
+ }
+ async prepareCombat(progress){
+  if(this.type!=='combat'||this.disposed)return false;
+  if(this.preparation)return this.preparation;
+  const started=clock();let timer;
+  progress?.('CARREGANDO MATERIAIS DO CAMPO...');
+  try{await Promise.race([Promise.allSettled(this.assetTasks),new Promise(resolve=>{timer=setTimeout(resolve,8000);})]);}finally{clearTimeout(timer);}
+  if(this.disposed)return false;
+  const paint=()=>typeof requestAnimationFrame==='function'?new Promise(resolve=>requestAnimationFrame(resolve)):Promise.resolve();
+  progress?.('PREPARANDO CENÁRIO E MIRA...');await paint();
+  this.updateActors();
+  // Prepare the real infantry shader without inventing an enemy or advancing
+  // mission time. Retain one detached template until renderer disposal so its
+  // compiled materials stay reusable, without updating hidden bones per frame.
+  if(!this.game.training){
+   this.infantryWarmup=!this.low&&window.OTCombatActors?.ready?window.OTCombatActors.create():window.OTCombatArt?.infantry?.(0);
+   if(this.infantryWarmup)this.scene.add(this.infantryWarmup);
+  }
+  try{this.renderer.compile?.(this.scene,this.camera);}finally{this.infantryWarmup?.parent?.remove(this.infantryWarmup);}
+  progress?.('PREPARANDO ARMA E ILUMINAÇÃO...');await paint();
+  this.renderer.compile?.(this.weaponScene,this.weaponCamera);
+  this.preparation={durationMs:clock()-started,assetsPending:this.assetsPending,assetFailures:this.assetFailures,groundMaps:this.groundMaps||0,photographicSky:!!this.skyTexture,infantryReady:!!window.OTCombatActors?.ready,programs:this.renderer.info.programs?.length||0};
+  this.game.worldPreparation={...this.preparation};return this.preparation;
  }
  lighting(){
   this.scene.add(new T.HemisphereLight('#c4dfeb','#776750',.8));
@@ -527,21 +557,24 @@ class World{
   return true;
  }
  dispose(){
-  if(this.disposed)return;this.disposed=true;for(const model of this.infantryModels?.values()||[]){model.parent?.remove(model);if(model.userData.importedCombat)window.OTCombatActors?.dispose(model);else model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}this.infantryModels?.clear();this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
+  if(this.disposed)return;this.disposed=true;if(this.infantryWarmup){this.infantryWarmup.parent?.remove(this.infantryWarmup);if(this.infantryWarmup.userData.importedCombat)window.OTCombatActors?.dispose(this.infantryWarmup);else this.infantryWarmup.traverse(o=>{o.geometry?.dispose();for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[])m.dispose();});this.infantryWarmup=null;}for(const model of this.infantryModels?.values()||[]){model.parent?.remove(model);if(model.userData.importedCombat)window.OTCombatActors?.dispose(model);else model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}this.infantryModels?.clear();this.static.dispose();this.dynamic.dispose();this.weaponBatch?.dispose();
   this.scene.traverse(o=>{if(o.geometry&&!o.geometry.userData.sharedCombat&&!Object.values(geometries).includes(o.geometry))o.geometry.dispose()});this.skyEnvironment?.dispose();this.skyTexture?.dispose();
   for(const template of this.aircraftTemplates.values())template.traverse(o=>o.geometry?.dispose());this.aircraft.clear();this.aircraftTemplates.clear();
   this.weaponScene?.traverse(o=>{o.geometry?.dispose();for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[])m.dispose();});
   for(const m of this.materials){m.map?.dispose();m.dispose();}for(const tx of Object.values(this.textures).flat())tx.dispose();for(const tx of this.groundTextures||[])tx.dispose();this.sky.material.dispose();this.renderer.dispose();this.renderer.forceContextLoss?.();
  }
 }
+function ensureWorld(type,game){
+  let world=cache.get(game);if(world&&(world.disposed||world.type!==type||world.quality!==(window.ArcadePlaySettings?.get().quality||'auto')||type==='combat'&&world.mission!==game.mission?.id)){world.dispose();cache.delete(game);world=null}
+  if(!world){world=new World(game,type);cache.set(game,world)}return world;
+}
 function render(type,game,ctx,w,h,camera=false){
  if(failed.has(game))return false;
- try{
-  let world=cache.get(game);if(world&&(world.disposed||world.type!==type||world.quality!==(window.ArcadePlaySettings?.get().quality||'auto')||type==='combat'&&world.mission!==game.mission?.id)){world.dispose();cache.delete(game);world=null}
-  if(!world){world=new World(game,type);cache.set(game,world)}return world.render(ctx,w,h,camera);
+ try{return ensureWorld(type,game).render(ctx,w,h,camera);
  }catch(error){cache.get(game)?.dispose();cache.delete(game);failed.add(game);console.warn('Cenário 3D indisponível, usando renderização compatível.',error.message);return false}
 }
 window.ArcadeWorldRenderer={
+ async prepareCombat(game,progress){if(failed.has(game))return false;try{return await ensureWorld('combat',game).prepareCombat(progress);}catch(error){cache.get(game)?.dispose();cache.delete(game);failed.add(game);console.warn('Preparação3D indisponível, usando cenário compatível.',error.message);return false;}},
  flight:(game,ctx,w,h)=>render('flight',game,ctx,w,h),combat:(game,ctx,w,h,camera)=>render('combat',game,ctx,w,h,camera),
  release(game){cache.get(game)?.dispose();cache.delete(game);failed.delete(game);delete game.worldVisual},
  hasAircraft(game,body){return !cache.get(game)?.lost&&cache.get(game)?.aircraft.has(body)||false},

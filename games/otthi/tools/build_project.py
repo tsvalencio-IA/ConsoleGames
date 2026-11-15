@@ -90,6 +90,7 @@ RELEASE_FILES += ['../ar/combat-infantry.js', '../ar/vendor/GLTFLoader-r128.js',
 
 # Native evaluation dependencies travel with the same verified release.
 RELEASE_FILES += [path for path in ['../ar/front-controls.js', '../ar/control-modes.js', '../ar/control-modes.css', '../kart/racecraft-evaluation.js'] if path not in RELEASE_FILES]
+RELEASE_FILES += [path for path in ['../ar/js/core.js', '../ar/play-settings.js', '../kart/racecraft-duel.js'] if path not in RELEASE_FILES]
 
 
 def body_after_marker(path: Path, marker: str) -> str:

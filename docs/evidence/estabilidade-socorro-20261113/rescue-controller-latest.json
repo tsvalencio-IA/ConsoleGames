@@ -1,0 +1,408 @@
+{
+  "scope": "Isolated controller experiment: native geometry/movement, full fixture population; simulation clock advanced and render capped. Not the complete integrated candidate or a physical-device measurement.",
+  "scenarios": [
+    {
+      "id": "incident-1",
+      "site": {
+        "x": 8,
+        "z": 0
+      },
+      "age": 53096.39999999795,
+      "forced": false,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": 17,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "physical": [
+        {
+          "incident": "incident-1",
+          "role": "police",
+          "id": "patrol-1",
+          "distance": 1.599929353494904,
+          "at": 36904.86666666645,
+          "x": 18.599929353494904,
+          "z": 2.500000000000001
+        },
+        {
+          "incident": "incident-1",
+          "role": "firefighter",
+          "id": "fire-01",
+          "distance": 1.8891060209769992,
+          "at": 41762.000000000146,
+          "x": 35.46762755900812,
+          "z": 1.3105501664502988
+        },
+        {
+          "incident": "incident-1",
+          "role": "paramedic",
+          "id": "ambulance-1",
+          "distance": 1.664678978914285,
+          "at": 75369.4333333313,
+          "x": 26.664678978914285,
+          "z": 2.5000000000000004
+        }
+      ],
+      "fallback": [],
+      "nativeTelemetry": {
+        "police": {
+          "vehicleId": "patrol-1",
+          "at": 36904.6666666665,
+          "simulationMs": 9700,
+          "distance": 1.599929353494904,
+          "x": 18.599929353494904,
+          "z": 2.500000000000001,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "firefighter": {
+          "vehicleId": "fire-01",
+          "at": 41761.90000000005,
+          "simulationMs": 13500,
+          "distance": 1.8891060209769992,
+          "x": 35.46762755900812,
+          "z": 1.3105501664502988,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "paramedic": {
+          "vehicleId": "ambulance-1",
+          "at": 75369.33333333144,
+          "simulationMs": 39800,
+          "distance": 1.664678978914285,
+          "x": 26.664678978914285,
+          "z": 2.5000000000000004,
+          "source": "autonomous",
+          "afterContingency": false
+        }
+      }
+    },
+    {
+      "id": "incident-2",
+      "site": {
+        "x": 8,
+        "z": 0
+      },
+      "age": 15745.233333333206,
+      "forced": false,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": 17,
+          "z": -2.5,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": 25,
+          "z": -2.5,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": 34,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "physical": [
+        {
+          "incident": "incident-2",
+          "role": "firefighter",
+          "id": "fire-01",
+          "distance": 1.9004728859898148,
+          "at": 85550.73333333016,
+          "x": 32.151655632678995,
+          "z": 2.0579363279173792
+        },
+        {
+          "incident": "incident-2",
+          "role": "police",
+          "id": "patrol-1",
+          "distance": 1.5528892731616173,
+          "at": 88793.09999999637,
+          "x": 18.337065275735675,
+          "z": -1.7102395659933962
+        },
+        {
+          "incident": "incident-2",
+          "role": "paramedic",
+          "id": "ambulance-1",
+          "distance": 1.5250978578715468,
+          "at": 94466.23333333028,
+          "x": 26.525097857871547,
+          "z": -2.499999999999999
+        }
+      ],
+      "fallback": [],
+      "nativeTelemetry": {
+        "firefighter": {
+          "vehicleId": "fire-01",
+          "at": 85550.33333333026,
+          "simulationMs": 3800,
+          "distance": 1.9004728859898148,
+          "x": 32.151655632678995,
+          "z": 2.0579363279173792,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "police": {
+          "vehicleId": "patrol-1",
+          "at": 88792.89999999641,
+          "simulationMs": 6300,
+          "distance": 1.5528892731616173,
+          "x": 18.337065275735675,
+          "z": -1.7102395659933962,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "paramedic": {
+          "vehicleId": "ambulance-1",
+          "at": 94465.83333333037,
+          "simulationMs": 10700,
+          "distance": 1.5250978578715468,
+          "x": 26.525097857871547,
+          "z": -2.499999999999999,
+          "source": "autonomous",
+          "afterContingency": false
+        }
+      }
+    },
+    {
+      "id": "incident-3",
+      "site": {
+        "x": -28,
+        "z": 0
+      },
+      "age": 46410.70000001219,
+      "forced": true,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -19,
+          "z": -2.5,
+          "yaw": 1.5707963267948966
+        },
+        "paramedic": {
+          "x": -11,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        },
+        "firefighter": {
+          "x": -2,
+          "z": 2.5,
+          "yaw": 1.5707963267948966
+        }
+      },
+      "physical": [
+        {
+          "incident": "incident-3",
+          "role": "police",
+          "id": "patrol-1",
+          "distance": 1.5999293534949075,
+          "at": 111961.466666668,
+          "x": -17.400070646505092,
+          "z": -2.499999999999999
+        }
+      ],
+      "fallback": [
+        {
+          "incident": "incident-3",
+          "at": 145640.40000001012,
+          "forced": true,
+          "responders": {
+            "police": "patrol-1",
+            "paramedic": "ambulance-1",
+            "firefighter": "fire-01"
+          },
+          "tasks": {
+            "police": true,
+            "paramedic": true,
+            "firefighter": true
+          }
+        }
+      ],
+      "nativeTelemetry": {
+        "police": {
+          "vehicleId": "patrol-1",
+          "at": 111961.26666666781,
+          "simulationMs": 9500,
+          "distance": 1.5999293534949075,
+          "x": -17.400070646505092,
+          "z": -2.499999999999999,
+          "source": "autonomous",
+          "afterContingency": false
+        }
+      }
+    },
+    {
+      "id": "incident-4",
+      "site": {
+        "x": 68,
+        "z": 24
+      },
+      "age": 56136.79999998331,
+      "forced": true,
+      "responders": {
+        "police": "patrol-2",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-02"
+      },
+      "staging": {
+        "police": {
+          "x": 65.11765992901154,
+          "z": 33.255556688389255,
+          "yaw": 0.0787839609891438
+        },
+        "paramedic": {
+          "x": 65.74727981237162,
+          "z": 41.23074187761701,
+          "yaw": 0.0787839609891438
+        },
+        "firefighter": {
+          "x": 70.29366005346758,
+          "z": 49.899820646631184,
+          "yaw": 0.0787839609891438
+        }
+      },
+      "physical": [],
+      "fallback": [
+        {
+          "incident": "incident-4",
+          "at": 205152.9999999946,
+          "forced": true,
+          "responders": {
+            "police": "patrol-2",
+            "paramedic": "ambulance-1",
+            "firefighter": "fire-02"
+          },
+          "tasks": {
+            "police": true,
+            "paramedic": true,
+            "firefighter": true
+          }
+        }
+      ],
+      "nativeTelemetry": {}
+    },
+    {
+      "id": "incident-5",
+      "site": {
+        "x": 0,
+        "z": -42
+      },
+      "age": 62696.699999966775,
+      "forced": false,
+      "responders": {
+        "police": "patrol-1",
+        "paramedic": "ambulance-1",
+        "firefighter": "fire-01"
+      },
+      "staging": {
+        "police": {
+          "x": -2.5,
+          "z": -33,
+          "yaw": 0
+        },
+        "paramedic": {
+          "x": -2.5,
+          "z": -25,
+          "yaw": 0
+        },
+        "firefighter": {
+          "x": -2.5,
+          "z": -16,
+          "yaw": 0
+        }
+      },
+      "physical": [
+        {
+          "incident": "incident-5",
+          "role": "firefighter",
+          "id": "fire-01",
+          "distance": 1.916955312808648,
+          "at": 226476.53333331735,
+          "x": -2.5,
+          "z": -14.083044687191352
+        },
+        {
+          "incident": "incident-5",
+          "role": "paramedic",
+          "id": "ambulance-1",
+          "distance": 1.7955324221087245,
+          "at": 240366.66666664326,
+          "x": -2.5,
+          "z": -23.204467577891275
+        },
+        {
+          "incident": "incident-5",
+          "role": "police",
+          "id": "patrol-1",
+          "distance": 1.5354522297738633,
+          "at": 268799.99999996135,
+          "x": -2.5,
+          "z": -31.464547770226137
+        }
+      ],
+      "fallback": [],
+      "nativeTelemetry": {
+        "firefighter": {
+          "vehicleId": "fire-01",
+          "at": 226476.13333331744,
+          "simulationMs": 14300,
+          "distance": 1.916955312808648,
+          "x": -2.5,
+          "z": -14.083044687191352,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "paramedic": {
+          "vehicleId": "ambulance-1",
+          "at": 240366.3666666432,
+          "simulationMs": 25300,
+          "distance": 1.7955324221087245,
+          "x": -2.5,
+          "z": -23.204467577891275,
+          "source": "autonomous",
+          "afterContingency": false
+        },
+        "police": {
+          "vehicleId": "patrol-1",
+          "at": 268799.7999999614,
+          "simulationMs": 47700,
+          "distance": 1.5354522297738633,
+          "x": -2.5,
+          "z": -31.464547770226137,
+          "source": "autonomous",
+          "afterContingency": false
+        }
+      }
+    }
+  ],
+  "fullyPhysicalWithoutFallback": 3,
+  "scenarioCount": 5,
+  "approved": false
+}

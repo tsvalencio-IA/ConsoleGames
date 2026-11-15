@@ -47,6 +47,7 @@ const Game={
   this.gun=gun;this.ammo=gun.mag;this.reserve=gun.reserve;this.reloadTime=0;this.career.weapon=gun.id;this.saveCareer();if(!initial)window.ArcadeWorldRenderer?.release(this);return true;
  },
  saveCareer(){if(this.training)return;try{localStorage.setItem(this.careerKey,JSON.stringify(this.career))}catch{}},
+ async prepare(fase,progress){const result=await window.ArcadeWorldRenderer?.prepareCombat?.(this,progress);this.lastTime=performance.now();return result;},
  resetOperation(){this.covers=this.mission.covers.map(c=>({...c}));if(!this.training){const extra={patrol:[{x:-22,z:26,w:5,h:1.4,d:4,type:'crate'},{x:21,z:45,w:5,h:1.2,d:3,type:'crate'},{x:0,z:54,w:5,h:1.1,d:2,type:'barrier'}],city:[{x:-20,z:34,w:5,h:1.3,d:2,type:'barrier'},{x:19,z:18,w:5,h:1.2,d:3,type:'planter'},{x:12,z:56,w:5,h:1.2,d:2,type:'barrier'}],extraction:[{x:21,z:18,w:5,h:1.2,d:2,type:'stone'},{x:-22,z:38,w:5,h:1.3,d:2,type:'stone'},{x:17,z:64,w:4,h:1.2,d:3,type:'crate'}]};this.covers.push(...(extra[this.mission.id]||[]).map(c=>({...c})));}this.objective={phase:'approach',progress:0,required:0,secured:0};},
  reload(){if(this.state!=='PLAYING'||this.reloadTime>0||this.ammo>=this.gun.mag||this.reserve<=0)return false;this.reloadTime=this.gun.reload;window.GameAudio?.effect('reload');return true;},
  spawnPosition(x,z,radius=.8){const free=(px,pz)=>px>=-26&&px<=26&&pz>=0&&pz<=69&&!this.covers.some(c=>Math.abs(px-c.x)<c.w/2+radius&&Math.abs(pz-c.z)<c.d/2+radius)&&!this.enemies.some(e=>e.active&&Math.hypot(px-e.x,pz-e.z)<1.7);if(free(x,z))return{x,z};for(let r=2;r<=24;r+=2)for(let i=0;i<12;i++){const px=x+Math.cos(i*Math.PI/6)*r,pz=z+Math.sin(i*Math.PI/6)*r;if(free(px,pz))return{x:px,z:pz};}throw Error('Não há posição livre neste setor.');},
@@ -210,6 +211,18 @@ const Game={
   }
   e.stride=(e.stride||0)+moved*5;e.moving=moved>.001;
  },
+ movePlayer(dx,dz){
+  const p=this.player,startX=p.x,startZ=p.z,steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.22));
+  const clear=(x,z)=>!this.covers.some(c=>Math.abs(x-c.x)<c.w/2+.35&&Math.abs(z-c.z)<c.d/2+.35);
+  // Contact blocks the inward component; it must not swallow the thumb's
+  // tangential movement along a container. Small steps retain solid corners.
+  for(let i=0;i<steps;i++){
+   const x=clamp(p.x+dx/steps,-29,29),z=clamp(p.z+dz/steps,-9,72);
+   if(clear(x,z)){p.x=x;p.z=z;}
+   else{if(clear(x,p.z))p.x=x;if(clear(p.x,z))p.z=z;}
+  }
+  return Math.hypot(p.x-startX,p.z-startZ);
+ },
  step(dt){
   this.autoWalking=false;
   if(this.frontControls&&(this.state!=='PLAYING'||this.handSession&&!this.handAim?.fresh))this.frontControls.release();
@@ -243,9 +256,8 @@ const Game={
   const length=Math.max(1,Math.hypot(mx,mz));mx/=length;mz/=length;
   if(!cameraInput){p.yaw=angle(p.yaw+(Number(!!this.keys.arrowright)-Number(!!this.keys.arrowleft))*1.5*dt*sensitivity);
   p.pitch=clamp(p.pitch+(Number(!!this.keys.arrowup)-Number(!!this.keys.arrowdown))*dt,-.8,.8);}
-  this.sprinting=!cameraInput&&!cover&&!this.aiming&&!this.fireHeld&&!this.autoFireLock&&mz>.65&&!!(this.sprintHeld||this.keys.shift);const speed=cover?1.9:this.aiming?3.6:this.sprinting?9:6.5,nx=clamp(p.x+(Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,-29,29),nz=clamp(p.z+(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt,-9,72);
-
-  if(!this.covers.some(c=>Math.abs(nx-c.x)<c.w/2+.35&&Math.abs(nz-c.z)<c.d/2+.35)){this.autoWalking=Math.hypot(nx-p.x,nz-p.z)>.0001;p.x=nx;p.z=nz;}
+  this.sprinting=!cameraInput&&!cover&&!this.aiming&&!this.fireHeld&&!this.autoFireLock&&mz>.65&&!!(this.sprintHeld||this.keys.shift);const speed=cover?1.9:this.aiming?3.6:this.sprinting?9:6.5;
+  this.autoWalking=this.movePlayer((Math.cos(p.yaw)*mx+Math.sin(p.yaw)*mz)*speed*dt,(-Math.sin(p.yaw)*mx+Math.cos(p.yaw)*mz)*speed*dt)>.0001;
   if(cameraInput&&!this.handSession.dualHands&&this.handSession.autoAdvance&&!cover&&Math.hypot(mx,mz)<.15)this.cameraWalk(dt);
   this.shotCooldown=Math.max(-.05,this.shotCooldown-dt);
   if(this.reloadTime>0){this.reloadTime=Math.max(0,this.reloadTime-dt);if(this.reloadTime===0){const n=Math.min(this.gun.mag-this.ammo,this.reserve);this.ammo+=n;this.reserve-=n;this.stats.reloads++;}}
@@ -284,7 +296,7 @@ const Game={
   if(!this.net&&p.hp>0&&p.hp<100&&window.ArcadePlaySettings?.get()?.combatRecovery===true&&this.elapsed-this.lastDamageAt>=5)
    p.hp=Math.min(100,p.hp+5*dt);
   for(const f of this.particles){f.life-=dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.z+=f.vz*dt;}this.particles=this.particles.filter(f=>f.life>0);
-  const moving=this.autoWalking||(!cameraInput&&Math.hypot(mx,mz)>.15);
+  const moving=this.autoWalking;
   if(moving&&this.elapsed-this.lastStepSound>(cover?.55:this.sprinting?.23:.36)){this.lastStepSound=this.elapsed;window.GameAudio?.effect('step',.55);}
   if(p.hp<=0&&!this.net)this.finish(false);
  },
@@ -409,6 +421,7 @@ const Game={
   ctx.restore();
  },
  cleanup(){
+  delete this.worldPreparation;
   document.body?.classList?.remove('war-playing');this.practiceUI?.dispose();this.practiceUI=null;
   this.net?.dispose();this.net=null;
   this.handSession?.dispose();this.handSession=null;this.handAim=null;

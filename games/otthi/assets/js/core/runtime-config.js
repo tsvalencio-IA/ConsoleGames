@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.28-maos-livres-tela-limpa',
+    build: '705.28.29-camera-socorro-jogabilidade',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

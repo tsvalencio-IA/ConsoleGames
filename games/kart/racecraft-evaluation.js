@@ -8,7 +8,7 @@
   start(g,length){
    document.getElementById?.('kart-racecraft-result')?.remove();
    g.racecraftTrial=null;
-   if(!enabled||g.isOnline||!window.ConsolePractice?.active||g.currentFase?.mode!=='RACE')return;
+   if(!(enabled||window.KartDuelEvaluation?.enabled)||g.isOnline||!window.ConsolePractice?.active||g.currentFase?.mode!=='RACE')return;
    // A visible chase start creates real passes instead of crediting tied grids.
    g.localBots.forEach((r,i)=>{r.pos=Math.min(length*.12,4500+i*2500);});
    g.racecraftTrial={trackLength:length,passes:0,drifts:0,items:0,contacts:0,offroadSeconds:0,eligible:{},passed:{},lastContactAt:-Infinity,lastOffroadAt:-Infinity,lastItem:null,finished:false,rank:0,lapTimes:[],nearest:null};
@@ -59,7 +59,7 @@
    document.querySelector?.('#screen-over .results-container')?.append(panel);
   },
   draw(ctx,w,h,g){
-   const t=g.racecraftTrial;if(!t||t.finished||g.isOnline)return;
+   const t=g.racecraftTrial;if(!t||t.finished||g.isOnline||g.duelTrial)return;
    const x=Math.max(12,w-230),y=h<500?88:151,width=Math.min(218,w-24);
    ctx.save();ctx.fillStyle='rgba(7,26,34,.88)';ctx.fillRect(x,y,width,66);ctx.textAlign='left';ctx.font='bold 10px Arial';ctx.fillStyle='#d5efdf';
    ctx.fillText('DISPUTA · '+Math.min(goals.passes,t.passes)+'/2 LIMPAS · '+Math.min(goals.drift,t.drifts)+'/1 DRIFT',x+9,y+15,width-18);

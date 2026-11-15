@@ -283,8 +283,8 @@
    if(target){job.target=target;job.route=new PhoneDriveRoute(phoneGroundRoute(v,{x:v.x,z:v.z,yaw:v.heading},target),v.heading);job.blockedFor=0;job.reroutes=(job.reroutes||0)+1;if(!returning&&state.waypoint?.id==='phone-delivery')phoneWaypoint(target,'Entrega até você');}
   }
  }
- function updateWorldPhone(){
-  const now=performance.now(),dt=Math.min(.1,Math.max(0,(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
+ function updateWorldPhone(simulationStep=Number(typeof perf!=='undefined'?perf.expansionStep||0:0)){
+  const now=performance.now(),dt=Math.min(.1,Math.max(0,simulationStep>0?simulationStep:(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
   if(!running||paused||document.hidden)return;
   const airRecord=state.vehicles.phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
   const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';const order=phoneOrders().find(o=>o.id===state.vehicles.phoneDelivery.orderId);if(order?.kind==='vehicle')order.status='parked';saveState(true);}}

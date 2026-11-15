@@ -1,0 +1,6123 @@
+{
+  "revision": "2e3f1be286e74c0f998b81d7ba2a01147afc82a1",
+  "label": "before",
+  "mode": "draw",
+  "quality": "low",
+  "browser": "141.0.7390.37",
+  "samples": [
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0,
+      "pitch": -0.55,
+      "lodMs": 17.700000000186265,
+      "position": [
+        -18,
+        1.6920011353290922,
+        48
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 87,
+      "firstDraw": {
+        "ms": 2078.8000000000466,
+        "beforePrograms": 87,
+        "programs": 93,
+        "newPrograms": 6,
+        "compileShader": 12,
+        "linkProgram": 6,
+        "bufferData": 52,
+        "texImage2D": 6,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 424,
+        "triangles": 497601,
+        "geometries": 347,
+        "textures": 77
+      },
+      "repeatDraw": {
+        "ms": 37.699999999953434,
+        "beforePrograms": 93,
+        "programs": 93,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 424,
+        "triangles": 497601,
+        "geometries": 347,
+        "textures": 77
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0.7853981633974483,
+      "pitch": -0.55,
+      "lodMs": 15.400000000139698,
+      "position": [
+        -24.36395908392848,
+        1.6920000000003472,
+        45.36396183704937
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 93,
+      "firstDraw": {
+        "ms": 888.6999999999534,
+        "beforePrograms": 93,
+        "programs": 94,
+        "newPrograms": 1,
+        "compileShader": 2,
+        "linkProgram": 1,
+        "bufferData": 1386,
+        "texImage2D": 67,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 645,
+        "triangles": 756270,
+        "geometries": 648,
+        "textures": 140
+      },
+      "repeatDraw": {
+        "ms": 14.900000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 645,
+        "triangles": 756270,
+        "geometries": 648,
+        "textures": 140
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.55,
+      "lodMs": 10.699999999953434,
+      "position": [
+        -26.999999193628966,
+        1.692,
+        39.00000194675069
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 1044.6999999999534,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 764,
+        "texImage2D": 55,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1127,
+        "triangles": 614657,
+        "geometries": 817,
+        "textures": 191
+      },
+      "repeatDraw": {
+        "ms": 19,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1127,
+        "triangles": 614657,
+        "geometries": 817,
+        "textures": 191
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 2.356194490192345,
+      "pitch": -0.55,
+      "lodMs": 10.600000000093132,
+      "position": [
+        -24.36396183704912,
+        1.692,
+        32.63604091607211
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 51.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 437,
+        "texImage2D": 12,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 316,
+        "triangles": 522877,
+        "geometries": 924,
+        "textures": 199
+      },
+      "repeatDraw": {
+        "ms": 8.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 316,
+        "triangles": 522877,
+        "geometries": 924,
+        "textures": 199
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.141592653589793,
+      "pitch": -0.55,
+      "lodMs": 6.2999999998137355,
+      "position": [
+        -18.000001946750693,
+        1.692,
+        30.000000806371034
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 15,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 180,
+        "texImage2D": 15,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 362,
+        "triangles": 509348,
+        "geometries": 966,
+        "textures": 210
+      },
+      "repeatDraw": {
+        "ms": 6.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 362,
+        "triangles": 509348,
+        "geometries": 966,
+        "textures": 210
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.9269908169872414,
+      "pitch": -0.55,
+      "lodMs": 39.5,
+      "position": [
+        -11.636040916072115,
+        1.692,
+        32.63603816295088
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 930.6999999999534,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 272,
+        "texImage2D": 28,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 716,
+        "triangles": 564237,
+        "geometries": 1034,
+        "textures": 234
+      },
+      "repeatDraw": {
+        "ms": 58.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 716,
+        "triangles": 564237,
+        "geometries": 1034,
+        "textures": 234
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 4.71238898038469,
+      "pitch": -0.55,
+      "lodMs": 8.399999999906868,
+      "position": [
+        -9.000000806371034,
+        1.692,
+        38.99999805324931
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 24.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 520,
+        "texImage2D": 14,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 334,
+        "triangles": 594739,
+        "geometries": 1147,
+        "textures": 244
+      },
+      "repeatDraw": {
+        "ms": 10.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 334,
+        "triangles": 594739,
+        "geometries": 1147,
+        "textures": 244
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 5.497787143782138,
+      "pitch": -0.55,
+      "lodMs": 34.300000000046566,
+      "position": [
+        -11.63603816295088,
+        1.692,
+        45.36395908392788
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 409.29999999981374,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 346,
+        "texImage2D": 15,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 500,
+        "triangles": 648767,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 12.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 500,
+        "triangles": 648767,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0,
+      "pitch": 0.28,
+      "lodMs": 11.400000000139698,
+      "position": [
+        -17.999998053249307,
+        5.403409390986698,
+        47.999999193628966
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 37.5999999998603,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 384,
+        "triangles": 491121,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 10.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 384,
+        "triangles": 491121,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0.7853981633974483,
+      "pitch": 0.28,
+      "lodMs": 9.099999999860302,
+      "position": [
+        -24.363959083927888,
+        5.403410526315443,
+        45.36396183704912
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 565,
+        "triangles": 746533,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 14.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 565,
+        "triangles": 746533,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 1.5707963267948966,
+      "pitch": 0.28,
+      "lodMs": 46.60000000009313,
+      "position": [
+        -26.999999193628966,
+        5.40341052631579,
+        39.00000194675069
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 19.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1113,
+        "triangles": 611145,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 2369.8000000000466,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1113,
+        "triangles": 611145,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 2.356194490192345,
+      "pitch": 0.28,
+      "lodMs": 22.5999999998603,
+      "position": [
+        -24.36396183704912,
+        5.40341052631579,
+        32.63604091607211
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 13.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 267,
+        "triangles": 515123,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 16.200000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 267,
+        "triangles": 515123,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.141592653589793,
+      "pitch": 0.28,
+      "lodMs": 22.5,
+      "position": [
+        -18.000001946750693,
+        5.40341052631579,
+        30.000000806371034
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 8.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 329,
+        "triangles": 505790,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 9.700000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 329,
+        "triangles": 505790,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.9269908169872414,
+      "pitch": 0.28,
+      "lodMs": 7.5,
+      "position": [
+        -11.636040916072115,
+        5.40341052631579,
+        32.63603816295088
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 661,
+        "triangles": 559643,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 9.900000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 661,
+        "triangles": 559643,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 4.71238898038469,
+      "pitch": 0.28,
+      "lodMs": 27.399999999906868,
+      "position": [
+        -9.000000806371034,
+        5.40341052631579,
+        38.99999805324931
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 8.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 325,
+        "triangles": 594673,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 10.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 325,
+        "triangles": 594673,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 5.497787143782138,
+      "pitch": 0.28,
+      "lodMs": 10.399999999906868,
+      "position": [
+        -11.63603816295088,
+        5.40341052631579,
+        45.36395908392788
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 13.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 472,
+        "triangles": 635711,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 11.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 472,
+        "triangles": 635711,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0,
+      "pitch": 1.35,
+      "lodMs": 6.199999999953434,
+      "position": [
+        -17.999998053249307,
+        10.187998536382977,
+        47.999999193628966
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 106,
+        "triangles": 473517,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.7999999998137355,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 106,
+        "triangles": 473517,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 0.7853981633974483,
+      "pitch": 1.35,
+      "lodMs": 6,
+      "position": [
+        -24.363959083927888,
+        10.187999999999553,
+        45.36396183704912
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.400000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 82,
+        "triangles": 473371,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 82,
+        "triangles": 473371,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 1.5707963267948966,
+      "pitch": 1.35,
+      "lodMs": 6.099999999860302,
+      "position": [
+        -26.999999193628966,
+        10.188,
+        39.00000194675069
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 105,
+        "triangles": 482427,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 105,
+        "triangles": 482427,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 2.356194490192345,
+      "pitch": 1.35,
+      "lodMs": 5.7000000001862645,
+      "position": [
+        -24.36396183704912,
+        10.188,
+        32.63604091607211
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 121,
+        "triangles": 474331,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 121,
+        "triangles": 474331,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.141592653589793,
+      "pitch": 1.35,
+      "lodMs": 5.699999999953434,
+      "position": [
+        -18.000001946750693,
+        10.188,
+        30.000000806371034
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.099999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 106,
+        "triangles": 480563,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 37,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 106,
+        "triangles": 480563,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 3.9269908169872414,
+      "pitch": 1.35,
+      "lodMs": 6,
+      "position": [
+        -11.636040916072115,
+        10.188,
+        32.63603816295088
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.2000000001862645,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 118,
+        "triangles": 536515,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 118,
+        "triangles": 536515,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 4.71238898038469,
+      "pitch": 1.35,
+      "lodMs": 5.599999999860302,
+      "position": [
+        -9.000000806371034,
+        10.188,
+        38.99999805324931
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 8.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 129,
+        "triangles": 558249,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 4.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 129,
+        "triangles": 558249,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "home",
+      "x": -18,
+      "z": 39,
+      "yaw": 5.497787143782138,
+      "pitch": 1.35,
+      "lodMs": 5.400000000139698,
+      "position": [
+        -11.63603816295088,
+        10.188,
+        45.36395908392788
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 163,
+        "triangles": 473949,
+        "geometries": 1228,
+        "textures": 255
+      },
+      "repeatDraw": {
+        "ms": 35.60000000009313,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 163,
+        "triangles": 473949,
+        "geometries": 1228,
+        "textures": 255
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0,
+      "pitch": -0.55,
+      "lodMs": 6.5,
+      "position": [
+        7.99999399329036,
+        1.692002598946115,
+        9.000011123819466
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 515,
+        "texImage2D": 10,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 319,
+        "triangles": 566185,
+        "geometries": 1346,
+        "textures": 261
+      },
+      "repeatDraw": {
+        "ms": 7.2000000001862645,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 319,
+        "triangles": 566185,
+        "geometries": 1346,
+        "textures": 261
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0.7853981633974483,
+      "pitch": -0.55,
+      "lodMs": 6,
+      "position": [
+        1.6360409160696818,
+        1.6920000000007949,
+        6.363961837052769
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 693.6000000000931,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 513,
+        "texImage2D": 9,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 626,
+        "triangles": 889711,
+        "geometries": 1460,
+        "textures": 266
+      },
+      "repeatDraw": {
+        "ms": 15.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 626,
+        "triangles": 889711,
+        "geometries": 1460,
+        "textures": 266
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.55,
+      "lodMs": 6.7000000001862645,
+      "position": [
+        -0.9999991936289668,
+        1.692,
+        0.000001946750694090723
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 37.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 114,
+        "texImage2D": 11,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 986,
+        "triangles": 625927,
+        "geometries": 1483,
+        "textures": 273
+      },
+      "repeatDraw": {
+        "ms": 16.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 986,
+        "triangles": 625927,
+        "geometries": 1483,
+        "textures": 273
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 2.356194490192345,
+      "pitch": -0.55,
+      "lodMs": 16.699999999953434,
+      "position": [
+        1.6360381629508804,
+        1.692,
+        -6.3639590839278855
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 9,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 69,
+        "texImage2D": 8,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 405,
+        "triangles": 564228,
+        "geometries": 1499,
+        "textures": 277
+      },
+      "repeatDraw": {
+        "ms": 47.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 405,
+        "triangles": 564228,
+        "geometries": 1499,
+        "textures": 277
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.141592653589793,
+      "pitch": -0.55,
+      "lodMs": 9.699999999953434,
+      "position": [
+        7.999998053249305,
+        1.692,
+        -8.999999193628966
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 13.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 44,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 443,
+        "triangles": 584295,
+        "geometries": 1509,
+        "textures": 278
+      },
+      "repeatDraw": {
+        "ms": 12,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 443,
+        "triangles": 584295,
+        "geometries": 1509,
+        "textures": 278
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.9269908169872414,
+      "pitch": -0.55,
+      "lodMs": 5.899999999906868,
+      "position": [
+        14.363959083927885,
+        1.692,
+        -6.36396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 12.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 158,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 919,
+        "triangles": 566301,
+        "geometries": 1542,
+        "textures": 279
+      },
+      "repeatDraw": {
+        "ms": 12.700000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 919,
+        "triangles": 566301,
+        "geometries": 1542,
+        "textures": 279
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 4.71238898038469,
+      "pitch": -0.55,
+      "lodMs": 7.400000000139698,
+      "position": [
+        16.999999193628966,
+        1.692,
+        -0.000001946750695191405
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 18.4000000001397,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 102,
+        "texImage2D": 13,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 450,
+        "triangles": 694535,
+        "geometries": 1573,
+        "textures": 288
+      },
+      "repeatDraw": {
+        "ms": 1687,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 450,
+        "triangles": 694535,
+        "geometries": 1573,
+        "textures": 288
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 5.497787143782138,
+      "pitch": -0.55,
+      "lodMs": 40.199999999953434,
+      "position": [
+        14.36396183704912,
+        1.692,
+        6.363959083927884
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 240.80000000004657,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 74,
+        "texImage2D": 6,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 315,
+        "triangles": 525373,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 11.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 315,
+        "triangles": 525373,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0,
+      "pitch": 0.28,
+      "lodMs": 7.5,
+      "position": [
+        8.000001946750693,
+        5.403409390986698,
+        8.999999193628966
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.099999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 255,
+        "triangles": 560881,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 6.2000000001862645,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 255,
+        "triangles": 560881,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0.7853981633974483,
+      "pitch": 0.28,
+      "lodMs": 6.100000000093132,
+      "position": [
+        1.6360409160721148,
+        5.403410526315443,
+        6.3639618370491196
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 9.900000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 584,
+        "triangles": 870233,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 9.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 584,
+        "triangles": 870233,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "pitch": 0.28,
+      "lodMs": 6.800000000046566,
+      "position": [
+        -0.9999991936289668,
+        5.40341052631579,
+        0.000001946750694089422
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 969,
+        "triangles": 625745,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 9,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 969,
+        "triangles": 625745,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 2.356194490192345,
+      "pitch": 0.28,
+      "lodMs": 5.7000000001862645,
+      "position": [
+        1.6360381629508804,
+        5.40341052631579,
+        -6.3639590839278855
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.599999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 361,
+        "triangles": 535206,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 361,
+        "triangles": 535206,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.141592653589793,
+      "pitch": 0.28,
+      "lodMs": 6.600000000093132,
+      "position": [
+        7.999998053249305,
+        5.40341052631579,
+        -8.999999193628966
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 425,
+        "triangles": 580895,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 6,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 425,
+        "triangles": 580895,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.9269908169872414,
+      "pitch": 0.28,
+      "lodMs": 6.199999999953434,
+      "position": [
+        14.363959083927885,
+        5.40341052631579,
+        -6.36396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 3159.600000000093,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 898,
+        "triangles": 567923,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 1421.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 898,
+        "triangles": 567923,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 4.71238898038469,
+      "pitch": 0.28,
+      "lodMs": 63.9000000001397,
+      "position": [
+        16.999999193628966,
+        5.40341052631579,
+        -0.000001946750695191405
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.600000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 394,
+        "triangles": 669963,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 9.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 394,
+        "triangles": 669963,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 5.497787143782138,
+      "pitch": 0.28,
+      "lodMs": 7,
+      "position": [
+        14.36396183704912,
+        5.40341052631579,
+        6.363959083927884
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 9.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 278,
+        "triangles": 496449,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 8.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 278,
+        "triangles": 496449,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0,
+      "pitch": 1.35,
+      "lodMs": 6.199999999953434,
+      "position": [
+        8.000001946750693,
+        10.187998536382977,
+        8.999999193628966
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.2000000001862645,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 114,
+        "triangles": 544799,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 114,
+        "triangles": 544799,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 0.7853981633974483,
+      "pitch": 1.35,
+      "lodMs": 7.199999999953434,
+      "position": [
+        1.6360409160721148,
+        10.187999999999553,
+        6.3639618370491196
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 243,
+        "triangles": 594489,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.400000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 243,
+        "triangles": 594489,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "pitch": 1.35,
+      "lodMs": 38.800000000046566,
+      "position": [
+        -0.9999991936289668,
+        10.188,
+        0.000001946750694089422
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 101,
+        "triangles": 484389,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 101,
+        "triangles": 484389,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 2.356194490192345,
+      "pitch": 1.35,
+      "lodMs": 6.699999999953434,
+      "position": [
+        1.6360381629508804,
+        10.188,
+        -6.3639590839278855
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 127,
+        "triangles": 482429,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 3.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 127,
+        "triangles": 482429,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.141592653589793,
+      "pitch": 1.35,
+      "lodMs": 6.399999999906868,
+      "position": [
+        7.999998053249305,
+        10.188,
+        -8.999999193628966
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 100,
+        "triangles": 477397,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 100,
+        "triangles": 477397,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 3.9269908169872414,
+      "pitch": 1.35,
+      "lodMs": 6.300000000046566,
+      "position": [
+        14.363959083927885,
+        10.188,
+        -6.36396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.2999999998137355,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 136,
+        "triangles": 490711,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 136,
+        "triangles": 490711,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 4.71238898038469,
+      "pitch": 1.35,
+      "lodMs": 5.400000000139698,
+      "position": [
+        16.999999193628966,
+        10.188,
+        -0.000001946750695191405
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.400000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 142,
+        "triangles": 491205,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 4.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 142,
+        "triangles": 491205,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "crossing",
+      "x": 8,
+      "z": 0,
+      "yaw": 5.497787143782138,
+      "pitch": 1.35,
+      "lodMs": 7,
+      "position": [
+        14.36396183704912,
+        10.188,
+        6.363959083927884
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 81,
+        "triangles": 473089,
+        "geometries": 1589,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 3.8999999999068677,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 81,
+        "triangles": 473089,
+        "geometries": 1589,
+        "textures": 290
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0,
+      "pitch": -0.55,
+      "lodMs": 39.5,
+      "position": [
+        -21.999988876179692,
+        1.692002598946115,
+        -3.6999969214115622
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 66,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 414,
+        "triangles": 484920,
+        "geometries": 1615,
+        "textures": 290
+      },
+      "repeatDraw": {
+        "ms": 11,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 414,
+        "triangles": 484920,
+        "geometries": 1615,
+        "textures": 290
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0.7853981633974483,
+      "pitch": -0.55,
+      "lodMs": 9.299999999813735,
+      "position": [
+        -28.36395908392508,
+        1.6920000000007949,
+        -6.336038162949691
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 13.700000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 118,
+        "texImage2D": 13,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 521,
+        "triangles": 544977,
+        "geometries": 1644,
+        "textures": 299
+      },
+      "repeatDraw": {
+        "ms": 11.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 521,
+        "triangles": 544977,
+        "geometries": 1644,
+        "textures": 299
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.55,
+      "lodMs": 7.899999999906868,
+      "position": [
+        -30.999999193628966,
+        1.692,
+        -12.699998053249306
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5711,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1274,
+        "triangles": 797923,
+        "geometries": 1644,
+        "textures": 299
+      },
+      "repeatDraw": {
+        "ms": 51.39999999990687,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1274,
+        "triangles": 797923,
+        "geometries": 1644,
+        "textures": 299
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 2.356194490192345,
+      "pitch": -0.55,
+      "lodMs": 6.199999999953434,
+      "position": [
+        -28.36396183704912,
+        1.692,
+        -19.063959083927884
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 13,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 766,
+        "triangles": 593977,
+        "geometries": 1647,
+        "textures": 300
+      },
+      "repeatDraw": {
+        "ms": 13.700000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 766,
+        "triangles": 593977,
+        "geometries": 1647,
+        "textures": 300
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.141592653589793,
+      "pitch": -0.55,
+      "lodMs": 7,
+      "position": [
+        -22.000001946750693,
+        1.692,
+        -21.699999193628965
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 37.60000000009313,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 36,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 624,
+        "triangles": 516629,
+        "geometries": 1655,
+        "textures": 301
+      },
+      "repeatDraw": {
+        "ms": 9,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 624,
+        "triangles": 516629,
+        "geometries": 1655,
+        "textures": 301
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.9269908169872414,
+      "pitch": -0.55,
+      "lodMs": 5.699999999953434,
+      "position": [
+        -15.636040916072115,
+        1.692,
+        -19.06396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 2598.600000000093,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 20,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1046,
+        "triangles": 662726,
+        "geometries": 1659,
+        "textures": 302
+      },
+      "repeatDraw": {
+        "ms": 3801.6999999999534,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1046,
+        "triangles": 662726,
+        "geometries": 1659,
+        "textures": 302
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 4.71238898038469,
+      "pitch": -0.55,
+      "lodMs": 8.099999999860302,
+      "position": [
+        -13.000000806371034,
+        1.692,
+        -12.700001946750694
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 14.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 72,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 481,
+        "triangles": 641675,
+        "geometries": 1678,
+        "textures": 302
+      },
+      "repeatDraw": {
+        "ms": 7.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 481,
+        "triangles": 641675,
+        "geometries": 1678,
+        "textures": 302
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 5.497787143782138,
+      "pitch": -0.55,
+      "lodMs": 7.5,
+      "position": [
+        -15.63603816295088,
+        1.692,
+        -6.336040916072116
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 339.4000000001397,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 8,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 432,
+        "triangles": 533349,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 9.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 432,
+        "triangles": 533349,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0,
+      "pitch": 0.28,
+      "lodMs": 7,
+      "position": [
+        -21.999998053249307,
+        5.403409390986698,
+        -3.7000008063710323
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 9.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 403,
+        "triangles": 482835,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 8.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 403,
+        "triangles": 482835,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0.7853981633974483,
+      "pitch": 0.28,
+      "lodMs": 10,
+      "position": [
+        -28.363959083927888,
+        5.403410526315443,
+        -6.33603816295088
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 492,
+        "triangles": 538977,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 11.599999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 492,
+        "triangles": 538977,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 1.5707963267948966,
+      "pitch": 0.28,
+      "lodMs": 34.699999999953434,
+      "position": [
+        -30.999999193628966,
+        5.40341052631579,
+        -12.699998053249306
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 22.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1141,
+        "triangles": 735705,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 22,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1141,
+        "triangles": 735705,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 2.356194490192345,
+      "pitch": 0.28,
+      "lodMs": 8,
+      "position": [
+        -28.36396183704912,
+        5.40341052631579,
+        -19.063959083927884
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 22.799999999813735,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 713,
+        "triangles": 583652,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 5418,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 713,
+        "triangles": 583652,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.141592653589793,
+      "pitch": 0.28,
+      "lodMs": 17.800000000046566,
+      "position": [
+        -22.000001946750693,
+        5.40341052631579,
+        -21.699999193628965
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.799999999813735,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 569,
+        "triangles": 512329,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 12.099999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 569,
+        "triangles": 512329,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.9269908169872414,
+      "pitch": 0.28,
+      "lodMs": 10.799999999813735,
+      "position": [
+        -15.636040916072115,
+        5.40341052631579,
+        -19.06396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1039,
+        "triangles": 654298,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 10.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 1039,
+        "triangles": 654298,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 4.71238898038469,
+      "pitch": 0.28,
+      "lodMs": 6.599999999860302,
+      "position": [
+        -13.000000806371034,
+        5.40341052631579,
+        -12.700001946750694
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 2131.1999999999534,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 426,
+        "triangles": 632929,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 44.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 426,
+        "triangles": 632929,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 5.497787143782138,
+      "pitch": 0.28,
+      "lodMs": 8.399999999906868,
+      "position": [
+        -15.63603816295088,
+        5.40341052631579,
+        -6.336040916072116
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 15.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 396,
+        "triangles": 524471,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 7.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 396,
+        "triangles": 524471,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0,
+      "pitch": 1.35,
+      "lodMs": 38.700000000186265,
+      "position": [
+        -21.999998053249307,
+        10.187998536382977,
+        -3.7000008063710323
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 359,
+        "triangles": 475953,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 9.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 359,
+        "triangles": 475953,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 0.7853981633974483,
+      "pitch": 1.35,
+      "lodMs": 8.800000000046566,
+      "position": [
+        -28.363959083927888,
+        10.187999999999553,
+        -6.33603816295088
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 285,
+        "triangles": 476237,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 4.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 285,
+        "triangles": 476237,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 1.5707963267948966,
+      "pitch": 1.35,
+      "lodMs": 6.399999999906868,
+      "position": [
+        -30.999999193628966,
+        10.188,
+        -12.699998053249306
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.2000000001862645,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 206,
+        "triangles": 474093,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 5.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 206,
+        "triangles": 474093,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 2.356194490192345,
+      "pitch": 1.35,
+      "lodMs": 6.2000000001862645,
+      "position": [
+        -28.36396183704912,
+        10.188,
+        -19.063959083927884
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 269,
+        "triangles": 481191,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 9.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 269,
+        "triangles": 481191,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.141592653589793,
+      "pitch": 1.35,
+      "lodMs": 10.899999999906868,
+      "position": [
+        -22.000001946750693,
+        10.188,
+        -21.699999193628965
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 8.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 203,
+        "triangles": 478057,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 8.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 203,
+        "triangles": 478057,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 3.9269908169872414,
+      "pitch": 1.35,
+      "lodMs": 10.599999999860302,
+      "position": [
+        -15.636040916072115,
+        10.188,
+        -19.06396183704912
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 14.099999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 228,
+        "triangles": 494591,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 5.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 228,
+        "triangles": 494591,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 4.71238898038469,
+      "pitch": 1.35,
+      "lodMs": 5.899999999906868,
+      "position": [
+        -13.000000806371034,
+        10.188,
+        -12.700001946750694
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 40.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 233,
+        "triangles": 625285,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 845.6000000000931,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 233,
+        "triangles": 625285,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "downtown",
+      "x": -22,
+      "z": -12.7,
+      "yaw": 5.497787143782138,
+      "pitch": 1.35,
+      "lodMs": 10.399999999906868,
+      "position": [
+        -15.63603816295088,
+        10.188,
+        -6.336040916072116
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 802.7999999998137,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 290,
+        "triangles": 476855,
+        "geometries": 1680,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 10.699999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 290,
+        "triangles": 476855,
+        "geometries": 1680,
+        "textures": 303
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0,
+      "pitch": -0.55,
+      "lodMs": 12.100000000093132,
+      "position": [
+        -339.9999007763114,
+        1.692002598946115,
+        517.9998396043884
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 166,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 425,
+        "triangles": 494283,
+        "geometries": 1721,
+        "textures": 303
+      },
+      "repeatDraw": {
+        "ms": 9.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 425,
+        "triangles": 494283,
+        "geometries": 1721,
+        "textures": 303
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0.7853981633974483,
+      "pitch": -0.55,
+      "lodMs": 16.0999999998603,
+      "position": [
+        -346.3639590838981,
+        1.6920000000007949,
+        515.3639618370004
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 1275.8000000000466,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 332,
+        "texImage2D": 6,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 2956,
+        "triangles": 1131996,
+        "geometries": 1807,
+        "textures": 305
+      },
+      "repeatDraw": {
+        "ms": 711.9000000001397,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 2956,
+        "triangles": 1131996,
+        "geometries": 1807,
+        "textures": 305
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.55,
+      "lodMs": 14.600000000093132,
+      "position": [
+        -348.999999193629,
+        1.692,
+        509.0000019467507
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 1112,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 330,
+        "texImage2D": 5,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 184,
+        "triangles": 520897,
+        "geometries": 1891,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 19.299999999813735,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 184,
+        "triangles": 520897,
+        "geometries": 1891,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 2.356194490192345,
+      "pitch": -0.55,
+      "lodMs": 15.199999999953434,
+      "position": [
+        -346.3639618370491,
+        1.692,
+        502.63604091607215
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.7999999998137355,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 44,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 60,
+        "triangles": 473137,
+        "geometries": 1902,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 4.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 60,
+        "triangles": 473137,
+        "geometries": 1902,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.141592653589793,
+      "pitch": -0.55,
+      "lodMs": 8.900000000139698,
+      "position": [
+        -340.0000019467507,
+        1.692,
+        500.000000806371
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 48,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 67,
+        "triangles": 473625,
+        "geometries": 1914,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 3.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 67,
+        "triangles": 473625,
+        "geometries": 1914,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.9269908169872414,
+      "pitch": -0.55,
+      "lodMs": 10.699999999953434,
+      "position": [
+        -333.63604091607215,
+        1.692,
+        502.6360381629509
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 142,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 94,
+        "triangles": 475269,
+        "geometries": 1951,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 5.900000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 94,
+        "triangles": 475269,
+        "geometries": 1951,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 4.71238898038469,
+      "pitch": -0.55,
+      "lodMs": 36.699999999953434,
+      "position": [
+        -331.000000806371,
+        1.692,
+        508.9999980532493
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 13.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 232,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 120,
+        "triangles": 477201,
+        "geometries": 2011,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 8.700000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 120,
+        "triangles": 477201,
+        "geometries": 2011,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 5.497787143782138,
+      "pitch": -0.55,
+      "lodMs": 14,
+      "position": [
+        -333.6360381629509,
+        1.692,
+        515.363959083928
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": -0.55,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 133,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 98,
+        "triangles": 481973,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 4.099999999860302,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 98,
+        "triangles": 481973,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0,
+      "pitch": 0.28,
+      "lodMs": 8.199999999953434,
+      "position": [
+        -339.9999980532493,
+        5.403409390986698,
+        517.9999991936289
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 9.399999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 383,
+        "triangles": 493767,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 4.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 383,
+        "triangles": 493767,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0.7853981633974483,
+      "pitch": 0.28,
+      "lodMs": 6.5,
+      "position": [
+        -346.36395908392785,
+        5.403410526315443,
+        515.3639618370491
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 28.5999999998603,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 2827,
+        "triangles": 1118935,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 4356,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 2827,
+        "triangles": 1118935,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 1.5707963267948966,
+      "pitch": 0.28,
+      "lodMs": 40.5,
+      "position": [
+        -348.999999193629,
+        5.40341052631579,
+        509.0000019467507
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 16.799999999813735,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 165,
+        "triangles": 516645,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 682.8999999999069,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 165,
+        "triangles": 516645,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 2.356194490192345,
+      "pitch": 0.28,
+      "lodMs": 6.300000000046566,
+      "position": [
+        -346.3639618370491,
+        5.40341052631579,
+        502.63604091607215
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 272.80000000004657,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 63,
+        "triangles": 473245,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 10.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 63,
+        "triangles": 473245,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.141592653589793,
+      "pitch": 0.28,
+      "lodMs": 14.599999999860302,
+      "position": [
+        -340.0000019467507,
+        5.40341052631579,
+        500.000000806371
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 67,
+        "triangles": 473625,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 5.400000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 67,
+        "triangles": 473625,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.9269908169872414,
+      "pitch": 0.28,
+      "lodMs": 40.89999999990687,
+      "position": [
+        -333.63604091607215,
+        5.40341052631579,
+        502.6360381629509
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 11,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 94,
+        "triangles": 475269,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 6.7999999998137355,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 94,
+        "triangles": 475269,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 4.71238898038469,
+      "pitch": 0.28,
+      "lodMs": 9.099999999860302,
+      "position": [
+        -331.000000806371,
+        5.40341052631579,
+        508.9999980532493
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 121,
+        "triangles": 477213,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 7.600000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 121,
+        "triangles": 477213,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 5.497787143782138,
+      "pitch": 0.28,
+      "lodMs": 5.7000000001862645,
+      "position": [
+        -333.6360381629509,
+        5.40341052631579,
+        515.363959083928
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 0.28,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 38.9000000001397,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 97,
+        "triangles": 481925,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 6.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 97,
+        "triangles": 481925,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0,
+      "pitch": 1.35,
+      "lodMs": 6.199999999953434,
+      "position": [
+        -339.9999980532493,
+        10.187998536382977,
+        517.9999991936289
+      ],
+      "cameraYaw": 0,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.100000000093132,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 83,
+        "triangles": 476855,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 3.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 83,
+        "triangles": 476855,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 0.7853981633974483,
+      "pitch": 1.35,
+      "lodMs": 5.699999999953434,
+      "position": [
+        -346.36395908392785,
+        10.187999999999553,
+        515.3639618370491
+      ],
+      "cameraYaw": 0.7853981633974483,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 5.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 52,
+        "triangles": 477271,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 3.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 52,
+        "triangles": 477271,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 1.5707963267948966,
+      "pitch": 1.35,
+      "lodMs": 38.39999999990687,
+      "position": [
+        -348.999999193629,
+        10.188,
+        509.0000019467507
+      ],
+      "cameraYaw": 1.5707963267948966,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 10.200000000186265,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 83,
+        "triangles": 478349,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 5.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 83,
+        "triangles": 478349,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 2.356194490192345,
+      "pitch": 1.35,
+      "lodMs": 5.699999999953434,
+      "position": [
+        -346.3639618370491,
+        10.188,
+        502.63604091607215
+      ],
+      "cameraYaw": 2.356194490192345,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 7.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 49,
+        "triangles": 472187,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 6.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 49,
+        "triangles": 472187,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.141592653589793,
+      "pitch": 1.35,
+      "lodMs": 7,
+      "position": [
+        -340.0000019467507,
+        10.188,
+        500.000000806371
+      ],
+      "cameraYaw": 3.141592653589793,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 35.800000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 61,
+        "triangles": 473277,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 9.199999999953434,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 61,
+        "triangles": 473277,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 3.9269908169872414,
+      "pitch": 1.35,
+      "lodMs": 8.699999999953434,
+      "position": [
+        -333.63604091607215,
+        10.188,
+        502.6360381629509
+      ],
+      "cameraYaw": 3.9269908169872414,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 6.300000000046566,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 49,
+        "triangles": 472187,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 5.899999999906868,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 49,
+        "triangles": 472187,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 4.71238898038469,
+      "pitch": 1.35,
+      "lodMs": 9.600000000093132,
+      "position": [
+        -331.000000806371,
+        10.188,
+        508.9999980532493
+      ],
+      "cameraYaw": 4.71238898038469,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.400000000139698,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 65,
+        "triangles": 473433,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 3.8999999999068677,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 65,
+        "triangles": 473433,
+        "geometries": 2045,
+        "textures": 306
+      }
+    },
+    {
+      "name": "coast",
+      "x": -340,
+      "z": 509,
+      "yaw": 5.497787143782138,
+      "pitch": 1.35,
+      "lodMs": 5.800000000046566,
+      "position": [
+        -333.6360381629509,
+        10.188,
+        515.363959083928
+      ],
+      "cameraYaw": 5.497787143782138,
+      "cameraPitch": 1.35,
+      "lights": {
+        "total": 0,
+        "active": 0,
+        "culled": 0,
+        "padded": 0
+      },
+      "pointLights": 0,
+      "programs": 94,
+      "firstDraw": {
+        "ms": 4.5,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 65,
+        "triangles": 473433,
+        "geometries": 2045,
+        "textures": 306
+      },
+      "repeatDraw": {
+        "ms": 3,
+        "beforePrograms": 94,
+        "programs": 94,
+        "newPrograms": 0,
+        "compileShader": 0,
+        "linkProgram": 0,
+        "bufferData": 0,
+        "texImage2D": 4,
+        "lights": {
+          "total": 0,
+          "active": 0,
+          "culled": 0,
+          "padded": 0
+        },
+        "calls": 65,
+        "triangles": 473433,
+        "geometries": 2045,
+        "textures": 306
+      }
+    }
+  ],
+  "limits": [
+    "Local disposable account and RTDB. No production account or database mutation.",
+    "Native renderer, frozen simulation and fixed camera poses. This isolates angle-dependent rendering; it is not whole-game RAF, sustained FPS or phone performance.",
+    "Scan time may run alongside diagnostics and is not a before/after performance comparison. Only separately scheduled comparison runs may be compared."
+  ],
+  "initial": {
+    "quality": "low",
+    "glows": 115,
+    "visibleGlows": 0,
+    "programs": 87,
+    "catalog": 44,
+    "npcs": 138,
+    "buffer": {
+      "width": 243,
+      "height": 528,
+      "dpr": 0.62
+    },
+    "shaderCalls": {
+      "compileShader": 0,
+      "linkProgram": 0,
+      "bufferData": 0,
+      "texImage2D": 0
+    },
+    "scenePreparation": {
+      "ms": 2686,
+      "programs": 78,
+      "lightingVariants": 2
+    },
+    "vehiclePreparation": {
+      "models": 44,
+      "ms": 9521
+    }
+  },
+  "final": {
+    "quality": "low",
+    "glows": 115,
+    "visibleGlows": 0,
+    "programs": 94,
+    "catalog": 44,
+    "npcs": 138,
+    "buffer": {
+      "width": 243,
+      "height": 528,
+      "dpr": 0.62
+    },
+    "shaderCalls": {
+      "compileShader": 14,
+      "linkProgram": 7,
+      "bufferData": 7306,
+      "texImage2D": 999
+    },
+    "scenePreparation": {
+      "ms": 2686,
+      "programs": 78,
+      "lightingVariants": 2
+    },
+    "vehiclePreparation": {
+      "models": 44,
+      "ms": 9521
+    }
+  },
+  "pointLightBuckets": [
+    0
+  ],
+  "errors": [],
+  "passed": true
+}
