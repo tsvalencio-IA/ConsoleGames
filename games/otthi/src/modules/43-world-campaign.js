@@ -41,12 +41,20 @@
     o.position.set(x,y,z);o.castShadow=true;root.add(o);return o;
   }
   function campaignSign(root,title,subtitle,y){
-    const c=document.createElement('canvas');c.width=512;c.height=160;
-    const x=c.getContext('2d');x.fillStyle='#102d37';x.fillRect(0,0,512,160);
+    // Power-of-two backing and non-mipmapped text prevent blank signs on
+    // WebGL implementations with strict canvas texture sampling rules.
+    // Scale the ORIGINAL artwork into the new backing so signage is unchanged.
+    const c=document.createElement('canvas');c.width=512;c.height=256;
+    const x=c.getContext('2d');x.scale(1,256/160);
+    x.fillStyle='#102d37';x.fillRect(0,0,512,160);
     x.strokeStyle='#b3ddc7';x.lineWidth=8;x.strokeRect(7,7,498,146);
     x.textAlign='center';x.fillStyle='#f1f6e8';x.font='bold 43px Arial';x.fillText(title,256,72);
     x.fillStyle='#a2d5c5';x.font='bold 24px Arial';x.fillText(subtitle,256,119);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(10,3),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
+    const texture=new THREE.CanvasTexture(c);
+    texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;
+    texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;
+    texture.encoding=THREE.sRGBEncoding;texture.needsUpdate=true;
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(10,3),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide}));
     m.position.y=y;root.add(m);return m;
   }
   function campaignCollider(site,x,z,w,d,height){
