@@ -66,6 +66,8 @@
     // lights and materials are the same ones the first playable frame uses.
     const started=performance.now(),saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),scissorTest=renderer.getScissorTest(),before={...renderer.info.memory,programs:renderer.info.programs.length};
     const views=[];for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5])views.push({pitch,yaw});
+    // Preserve all twelve camera views, but synchronize the WebGL driver in batches of four.
+    const gl=renderer.getContext();
     try{
       renderer.setScissorTest(false);
       for(const[index,view]of views.entries()){
@@ -73,7 +75,7 @@
         cameraYaw=view.yaw;cameraPitch=view.pitch;cameraZoom=saved.zoom;updateCamera(1);updateVisualLOD();
         renderer.setViewport(0,0,2,2);
         const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-        try{renderer.render(scene,camera);renderer.getContext().finish();}finally{restoreLights?.();restoreHome?.();}
+        try{renderer.render(scene,camera);if((index+1)%4===0||index===views.length-1)gl.finish();}finally{restoreLights?.();restoreHome?.();}
       }
     }finally{
       cameraYaw=saved.yaw;cameraPitch=saved.pitch;cameraZoom=saved.zoom;camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);camera.fov=saved.fov;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);updateVisualLOD();lockStableSceneVisibility();
@@ -90,7 +92,8 @@
     if(imported.length)await Promise.race([Promise.all(imported.map(key=>requestBrazilModel(key))).finally(()=>clearTimeout(timer)),new Promise(resolve=>{timer=setTimeout(resolve,4000);})]);
     let prepared=0;
     for(const key of keys){
-      showWorldLoading(50+Math.floor(prepared/Math.max(1,keys.length)*34),'Preparando veículos · '+(prepared+1)+' de '+keys.length);await nextPaint();
+      // Keep every vehicle; update the loading progress once every four models.
+      if(prepared%4===0){showWorldLoading(50+Math.floor(prepared/Math.max(1,keys.length)*34),'Preparando veículos · '+(prepared+1)+' a '+Math.min(keys.length,prepared+4)+' de '+keys.length);await nextPaint();}
       if(!window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key))fleet.prepare(THREE,key);
       prepared++;
     }
