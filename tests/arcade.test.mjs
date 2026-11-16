@@ -74,7 +74,8 @@ test("instalação única mantém navegação pelos oito jogos no ARCADE",()=>{
 test("Android: botão de instalação referencia o APK íntegro com a versão publicada",()=>{
  const release=JSON.parse(read("arcade/downloads/release.json"));
  const apk=readFileSync(new URL("arcade/downloads/"+release.file,root));
- assert(html.includes('href="./downloads/'+release.file+'" download'));
+ assert(html.includes('id="android-apk-link" href="./instalar/"'),'The console must open the existing install guide instead of downloading a second APK');
+ assert(read('arcade/instalar/index.html').includes('id="download-apk"'),'The genuine APK download remains available on the installer page');
  assert.equal(apk.subarray(0,4).toString('hex'),'504b0304');
  assert.equal(apk.length,release.bytes);
  assert.equal(createHash('sha256').update(apk).digest('hex'),release.sha256);

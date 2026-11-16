@@ -44,10 +44,13 @@ def root_site_console(document):
     """Use a real HTML entry when a chat or an embedded browser opens the link."""
     if android_release() is None:
         return document
+    canonical = 'href="./instalar/"'
+    if document.count(canonical) == 1:
+        return document
     original = 'href="./downloads/thIAguinho-ARCADE.apk" download'
     if document.count(original) != 1:
         raise RuntimeError('Android installation button was not found')
-    return document.replace(original, 'href="./instalar/"')
+    return document.replace(original, canonical)
 
 
 def root_site_installer(document):
