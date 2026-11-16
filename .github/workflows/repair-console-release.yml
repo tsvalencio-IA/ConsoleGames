@@ -1,0 +1,42 @@
+name: Reparar release unificada sem sobrescrever produção
+on:
+  push:
+    branches: [release/console-unificado-20261116]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: "!contains(github.event.head_commit.message, 'repair(canonical):')"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restaurar arquivos intactos da base homologada
+        run: |
+          git fetch origin 9541a010d10fc120e4bd62460a8b1f3340d91992
+          git checkout 9541a010d10fc120e4bd62460a8b1f3340d91992 -- arcade/index.html arcade/manifest.webmanifest arcade/sw.js games/ar/index.html games/atualizar/update.js games/boxe/index.html games/danca/index.html games/familia/3d/index.html games/kart/index.html games/kart/js/game_kart.js games/otthi/index.html games/otthi/release-manifest.json games/otthi/sw.js games/tenis/index.html games/voo/index.html tests/arcade.test.mjs tests/games.test.mjs vercel.json .github/workflows/console-integrated-review.yml
+      - name: Corrigir links, instalação, atualizador e HUD do Kart
+        run: python3 tools/repair-canonical-release.py
+      - name: Gerar runtime oficial e manifesto íntegro
+        run: python3 games/otthi/tools/build_project.py
+      - name: Validar sintaxe e regressão
+        run: |
+          node --check arcade/canonical-navigation.js
+          node --check games/kart/js/game_kart.js
+          node --test tests/arcade.test.mjs tests/games.test.mjs tests/world-integrity.test.mjs
+          git diff --check
+      - name: Commitar apenas na branch de homologação
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add arcade games tests vercel.json .github/workflows/console-integrated-review.yml
+          git commit -m 'repair(canonical): reconstruir arquivos íntegros e navegação unificada'
+          git push origin HEAD:release/console-unificado-20261116
