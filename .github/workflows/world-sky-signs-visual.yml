@@ -19,6 +19,8 @@ jobs:
           python-version: '3.12'
       - name: Build official modular world
         run: python3 games/otthi/tools/build_project.py
+      - name: Verify labels, mirrored sides and panorama filters
+        run: node --test tests/world-campaign.test.mjs tests/world-gpu-texture-compatibility.test.mjs
       - name: Browser runtime
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
