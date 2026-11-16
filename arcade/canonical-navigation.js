@@ -9,7 +9,10 @@ const names=new Set(['otthi','kart','tenis','boxe','ar','voo','danca','familia']
 const canonicalPath=url=>{
  const u=new URL(url,location.href),path=u.pathname.replace(/^\/ConsoleGames(?=\/)/,'');
  if(u.origin!==location.origin&&!/^(?:otthi-world-campanha-teste(?:-[a-z0-9-]+)?\.vercel\.app|tsvalencio-ia\.github\.io)$/i.test(u.hostname))return null;
- if(/^\/(?:arcade(?:\/|$)|console(?:\.html|\/|$))/.test(path))return consoleUrl.href;
+ if(path==='/arcade'||path==='/arcade/'||/^\/console(?:\.html|\/|$)/.test(path))return consoleUrl.href;
+ // Installer, offline recovery and downloads are real console subroutes.
+ // Never collapse them back to /arcade/, or users cannot install/update.
+ if(path.startsWith('/arcade/'))return new URL(path.slice(1)+u.search+u.hash,root).href;
  const match=/^\/games\/([^/]+)(?:\/|$)/.exec(path);
  if(match&&names.has(match[1]))return new URL(path.replace(/^\/+/,'')+u.search+u.hash,root).href;
  return null;
