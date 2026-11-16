@@ -115,6 +115,14 @@
       for(const x of [21.5,24.5])box(line,x,.21,4,.35,.02,4);box(line,23,.21,4,3,.02,.35);
       for(let x=-39;x<40;x+=8)for(const z of [-.4,8.4])campaignCylinder(root,line,x,.25,z,.12,.35);
       const sign=campaignSign(root,'AEROPORTO OT','HANGARES · PISTA · HELIPONTO',8);if(sign)sign.position.z=-7;
+      // Reuse the existing open-front western hangar; preserve all runway geometry.
+      const academySign=campaignSign(root,'ACADEMIA DE AVIAÇÃO','SIMULADOR · MISSÕES · PILOTAGEM',6);
+      academySign.position.set(-25,6,-7.4);
+      box(steel,-29,1,-13,3.2,1.8,1.35);box(glass,-29,2.05,-12.95,3,.16,1.3);
+      box(line,-25,.17,-9,8,.025,.13);
+      registerInteractable({id:'ot-flight-academy',type:'activity-venue',icon:'✈️',
+        label:'Entrar · Academia de Aviação',x:site.x-25,z:site.z-7.2,radius:4.5,priority:220,
+        available:()=>!otGames.active&&!player.vehicle&&!worldVenues.session,action:openFlightAcademy});
     }else{
       box(road,0,.04,0,15.8,.08,9.8);
       for(const x of [-5,5]){wall(green,x,1.25,2.8,4,2.5,3);box(steel,x,2.65,2.8,4.4,.3,3.4);box(glass,x,1.6,1.2,2,1,.1);}
@@ -123,6 +131,22 @@
       const sign=campaignSign(root,'CENTRO DE VISITANTES','TRILHAS · NATUREZA · PASSEIOS',5);if(sign)sign.position.z=0;
     }
     campaignBatch(root);worldGroup.add(root);worldCampaign.landmarks.push({site,root});
+  }
+  function openFlightAcademy(){
+    if(otGames.active||player.vehicle||worldVenues.session)return false;
+    const record=venueRecords().aviation||{played:0,wins:0,best:0};
+    const numbers='<p>Seu histórico: '+Math.max(0,Number(record.played)||0)+' missões · '+Math.max(0,Number(record.wins)||0)+' concluídas.</p>';
+    const html='<p>Academia de Aviação dentro do hangar. Abra o simulador com sua calibração original ou embarque em um avião para voar pelo OTTHI.</p>'+numbers+
+      '<div class="choice-grid">'+
+      '<button class="choice" data-flight-academy="sim"><b>✈️ SIMULADOR AERO STRIKE</b><span>Escola, patrulha, resgate, reportagem, emergência e porta-aviões</span></button>'+
+      '<button class="choice" data-flight-academy="world"><b>🛩️ VOAR NO MUNDO ABERTO</b><span>Localize a aeronave, embarque e use a câmera frontal</span></button>'+
+      '<button class="choice" data-flight-academy="map"><b>🗺️ ESCOLHER AERONAVE</b><span>Visite o terminal do aeroporto</span></button></div>';
+    openModal('Academia de Aviação OT',html,ui=>{
+      ui.querySelector('[data-flight-academy="sim"]').onclick=()=>{closeModal();venueOpen('aviation');};
+      ui.querySelector('[data-flight-academy="world"]').onclick=()=>{closeModal();setWaypoint('campaign-plane');toast('Siga o GPS até o avião. Embarque com AÇÃO e ative CÂMERA FRONTAL.','info',4500);};
+      ui.querySelector('[data-flight-academy="map"]').onclick=()=>{closeModal();openAirportDepartures();};
+    });
+    return true;
   }
   async function campaignLoadAircraft(){
     if(worldCampaign.loadingAircraft||worldCampaign.aircraft)return;
