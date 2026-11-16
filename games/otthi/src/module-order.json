@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.29-camera-socorro-jogabilidade",
+  "build": "705.28.30-aviacao-presenca-unificada",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "a0697e23a8dfa2f8ab047c854080cff8e2eacc181ae9923893303c000c8c5138"
+      "sha256Body": "93189953f7643f1ac322572ecb19d80990c69fee04729ef866affcda2c795f93"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
