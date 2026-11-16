@@ -1,0 +1,33 @@
+name: Ajustar escopo instalado sem novo aplicativo
+on:
+  push:
+    branches: [release/console-unificado-20261116]
+permissions:
+  contents: write
+jobs:
+  finish:
+    if: "github.event.head_commit.message == 'Fix hosted PWA install scope without changing id'"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Aplicar ajuste PWA preservando ID original
+        run: python3 tools/fix-hosted-pwa.py
+      - name: Regerar manifesto e executar regressões
+        run: |
+          python3 games/otthi/tools/build_project.py
+          node --test tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs tests/world-integrity.test.mjs
+          git diff --check
+      - name: Salvar correção somente na branch isolada
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add arcade/manifest.webmanifest arcade/sw.js tools/package-world-preview.py tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs games/otthi
+          git commit -m 'fix(pwa): manter identidade instalada e escopo da Vercel'
+          git push origin HEAD:release/console-unificado-20261116
