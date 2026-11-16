@@ -4,6 +4,8 @@ on:
     paths:
       - 'arcade/instalar/**'
       - 'arcade/index.html'
+      - 'arcade/canonical-navigation.js'
+      - 'tests/console-installer-navigation.test.mjs'
       - 'arcade/sw.js'
       - 'arcade/downloads/**'
       - 'tools/package-world-preview.py'
