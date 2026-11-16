@@ -31,7 +31,7 @@ function fixture(){
     ui:{querySelector(){return {hidden:true}}},kills:0,goal:0};
   const context={
     window:{},document,THREE:three,OT_CHILD_WORLD:true,openCivilMissions(){context.civilOpened=(context.civilOpened||0)+1;},worldGroup:new Group(),scene:new Group(),player,
-    otGames,running:true,paused:false,state:{profile:{playerId:'test-player'}},cameraYaw:0,
+    otGames,registerInteractable(){},running:true,paused:false,state:{profile:{playerId:'test-player'}},cameraYaw:0,
     v704WorldBounds:()=>({minX:-290,maxX:290,minZ:-290,maxZ:290}),groundHeightAt:()=>0,
     safeLocalGet:key=>saved.get(key)||null,
     safeLocalSet:(key,value)=>saved.set(key,value),
@@ -75,7 +75,7 @@ test('civil geography keeps the same landmarks and parked flight bases',()=>{
 test('all permanent world signs use visible POT textures compatible with WebGL1 and WebGL2',()=>{
  const f=fixture();f.tick();
  const signs=f.context.worldGroup.children.flatMap(root=>root.children).filter(obj=>obj?.material?.config?.map?.canvas);
- assert.equal(signs.length,3,'the three world signs must remain in the scene');
+ assert.equal(signs.length,4,'existing world signs and aviation academy sign must remain');
  for(const sign of signs){
    const texture=sign.material.config.map;
    assert.equal(texture.canvas.width,512);assert.equal(texture.canvas.height,256);
