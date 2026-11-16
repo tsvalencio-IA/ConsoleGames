@@ -10207,6 +10207,7 @@ function build(T,key,H){
     for(const [actor,until]of g.trafficHolds)actor.trafficHoldUntil=until;g.trafficHolds.clear();
     playerGroup.visible=g.entry.playerVisible;if(contactShadow)contactShadow.visible=g.entry.shadowVisible;if(toolVisual)toolVisual.visible=g.entry.toolVisible;camera.position.copy(g.entry.camera);camera.quaternion.copy(g.entry.rotation);camera.fov=g.entry.fov;camera.near=g.entry.near??.05;camera.updateProjectionMatrix();cameraYaw=g.entry.cameraYaw;cameraPitch=g.entry.cameraPitch;cameraZoom=g.entry.cameraZoom;
     if(options.exitPoint){player.x=options.exitPoint.x;player.y=options.exitPoint.y;player.z=options.exitPoint.z;player.facing=g.body.yaw;player.vx=player.vy=player.vz=0;player.grounded=true;rememberSafePlayerPosition(true);savePlayerPosition(true);saveState(true);}
+    g.flightSession?.dispose();g.flightSession=null;g.flightVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.flightVideo?.remove();g.flightVideo=null;g.flightCameraMode=false;g.flightPoseFresh=false;g.flightEpoch=(g.flightEpoch||0)+1;
     g.handMode=false;g.active=false;g.mode='peace';g.body=null;g.enemies=[];g.bullets=[];g.effects=[];if(typeof campaignSyncAircraft==='function')campaignSyncAircraft();if(world.routeGuide)world.routeGuide.visible=!!state.waypoint;if(world.waypointMarker)world.waypointMarker.visible=!!state.waypoint;document.body.classList.remove('ot-games-active');delete document.body.dataset.otGameMode;clearMovementInputs();updateVisualLOD();updateCamera(.1);updateContext(true);
   }
   function otGamesBindPress(el,fn){let pressedAt=-Infinity;el?.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(el.disabled)return;pressedAt=performance.now();fn(e);});el?.addEventListener('click',e=>{e.preventDefault();if(!el.disabled&&performance.now()-pressedAt>650)fn(e);});}
@@ -10248,6 +10249,74 @@ function build(T,key,H){
       g.handSession=window.WarHandControl.start(g,{host:{video},isPaused:()=>paused||!running,onManual:()=>{video.srcObject?.getTracks().forEach(t=>t.stop());video.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');otGamesClearInput();}});
     }catch(error){stream?.getTracks().forEach(t=>t.stop());if(current()){g.cameraVideo?.remove();g.cameraVideo=null;g.handMode=false;g.ui?.classList.remove('ot-hands');g.state='PLAYING';toast('Câmera: '+(error?.message||'não foi possível iniciar')+'. Os controles continuam ativos.','warn',3000);}}
   }
+  async function otGamesStartFlightCamera(){
+    const g=otGames;if(!g.active||g.mode!=='plane')return;
+    if(g.flightCameraMode){
+      g.flightSession?.dispose();g.flightSession=null;
+      g.flightVideo?.srcObject?.getTracks().forEach(t=>t.stop());g.flightVideo?.remove();g.flightVideo=null;
+      g.flightCameraMode=false;g.flightPoseFresh=false;g.flightNeutral=null;g.flightInput={x:0,y:0};
+      toast('Controles manuais restaurados.','info',2400);return;
+    }
+    const epoch=g.flightEpoch=(g.flightEpoch||0)+1,current=()=>g.active&&g.mode==='plane'&&g.flightEpoch===epoch;let stream;
+    try{
+      if(!window.WarBodyControl)await new Promise((ok,fail)=>{
+        const script=document.createElement('script');script.src=new URL('assets/js/controls/world-body-controls.js?v='+encodeURIComponent(OTTHI_GAME_WEB_BUILD),OTTHI_GAME_LIVE_BASE).href;
+        script.onload=ok;script.onerror=()=>fail(Error('reconhecimento corporal indisponível'));document.head.append(script);
+      });
+      if(!current())return;
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
+      if(!current()){stream.getTracks().forEach(t=>t.stop());return;}
+      const video=g.flightVideo=document.createElement('video');
+      video.autoplay=true;video.muted=true;video.playsInline=true;
+      video.style.cssText='position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none';
+      video.srcObject=stream;document.body.append(video);await video.play();
+      if(!current()){stream.getTracks().forEach(t=>t.stop());video.remove();return;}
+      g.flightSession=window.WarBodyControl.start(g);g.flightNeutral=null;g.flightCalibrateFrames=0;
+      g.flightInput={x:0,y:0};g.flightPoseFresh=false;g.flightCameraMode=true;
+      toast('Câmera ativa. Mantenha os braços neutros e incline as mãos para virar e subir.','info',4200);
+    }catch(err){
+      stream?.getTracks().forEach(t=>t.stop());g.flightSession?.dispose();g.flightSession=null;g.flightVideo?.remove();g.flightVideo=null;
+      g.flightCameraMode=false;g.flightPoseFresh=false;if(current())toast('Câmera: '+(err?.message||'indisponível')+'. Joystick preservado.','warn',3500);
+    }
+  }
+  function otGamesFlightPose(dt){
+    const g=otGames;if(!g.flightCameraMode||!g.flightSession)return;
+    const now=performance.now();g.flightSession.tick(g.flightVideo,now,paused);
+    const ctrl=g.flightSession.controller,pts=ctrl?.landmarks;
+    if(!Array.isArray(pts)||now-ctrl.lastAt>1100){g.flightPoseFresh=false;return;}
+    const left=pts[15],right=pts[16];
+    if(!left||!right||(left.visibility||0)<.55||(right.visibility||0)<.55||
+       ![left.x,right.x,left.y,right.y].every(Number.isFinite)){g.flightPoseFresh=false;return;}
+    const lx=1-left.x,rx=1-right.x,ly=left.y,ry=right.y;
+    const bank=Math.atan2(rx>lx?ry-ly:ly-ry,Math.max(.001,Math.abs(rx-lx)));
+    const avgX=(rx+lx)/2,avgY=(ly+ry)/2;
+    if(!g.flightNeutral){g.flightNeutral={x:avgX,y:avgY,bank};g.flightCalibrateFrames=0;}
+    if(g.flightCalibrateFrames<8){
+      g.flightCalibrateFrames++;const n=g.flightNeutral;
+      n.x+=(avgX-n.x)*.25;n.y+=(avgY-n.y)*.25;n.bank+=(bank-n.bank)*.25;
+      g.flightPoseFresh=false;return;
+    }
+    const n=g.flightNeutral,roll=clamp((avgX-n.x)/.16+(bank-n.bank)*1.2,-1,1),pitch=clamp(-(avgY-n.y)/.09,-1,1),blend=1-Math.exp(-Math.max(.001,dt)*10);
+    g.flightInput.x+=(roll-g.flightInput.x)*blend;g.flightInput.y+=(pitch-g.flightInput.y)*blend;g.flightPoseFresh=true;
+  }
+  function otGamesPlaneCrash(label){
+    const g=otGames;if(!g.active||g.mode!=='plane'||g.state!=='PLAYING')return;
+    g.body.hp=0;g.state='DEFEAT';g.notice=label;g.body.vx=g.body.vy=g.body.vz=0;g.airspeed=0;otGamesExplosion(g.body);
+    if(g.armed)otGamesSaveResult(false);
+    try{navigator.vibrate?.([120,60,200]);}catch{}
+    toast(label+' · Volte ao mundo ou repita a missão.','warn',3500);
+  }
+  function otGamesFlightHitsBuilding(a,b){
+    for(const box of otGames.obstacles||[]){
+      if(!box?.min||!box.max)continue;let t0=0,t1=1,hit=true;
+      for(const key of ['x','y','z']){
+        const delta=b[key]-a[key],lo=box.min[key]-1.1,hi=box.max[key]+1.1;
+        if(Math.abs(delta)<1e-8){if(a[key]<lo||a[key]>hi){hit=false;break;}}
+        else{let l=(lo-a[key])/delta,h=(hi-a[key])/delta;if(l>h)[l,h]=[h,l];
+          t0=Math.max(t0,l);t1=Math.min(t1,h);if(t0>t1){hit=false;break;}}
+      }if(hit)return true;
+    }return false;
+  }
   function otGamesBuildControls(){
     const g=otGames,root=g.ui=document.createElement('section');g.inputResets=[];g.aiming=false;root.id='ot-games-hud';root.setAttribute('aria-label','Controles OT Games');
     root.innerHTML='<header><button data-ot="menu">OT GAMES</button><span data-ot-status></span><button data-ot="peace">VOLTAR AO MUNDO</button></header><div class="ot-games-reticle" aria-label="Mira"><i></i><i></i></div><div class="ot-games-mission" role="status"></div><div class="ot-games-stick" data-ot="move" role="group" aria-label="'+(g.mode==='ground'?'Joystick de movimento':'Manche de voo')+'"><i></i><small>'+(g.mode==='ground'?'MOVER':'MANCHE')+'</small></div><button data-ot="fire">ATIRAR</button><button data-ot="reload">RECARREGAR</button><button data-ot="camera">CÂMERA FRONTAL</button><div class="ot-games-collective" data-ot="collective" role="slider" tabindex="0" aria-label="Coletivo: centro paira, acima sobe, abaixo desce" aria-valuemin="0" aria-valuemax="100"><i></i><small>COLETIVO</small></div><button data-ot="pedal-left">↶ PEDAL</button><button data-ot="pedal-right">PEDAL ↷</button>';
@@ -10255,11 +10324,11 @@ function build(T,key,H){
     root.insertAdjacentHTML('beforeend','<button data-ot="crouch" aria-pressed="false">ABAIXAR</button><button data-ot="land">POUSAR</button><button data-ot="disembark">SAIR DA AERONAVE</button>');
     root.insertAdjacentHTML('beforeend','<button data-ot="ads" aria-pressed="false">MIRAR</button><button data-ot="map">MAPA / GPS</button>');
     document.body.append(root);otGamesBindPress(root.querySelector('[data-ot="peace"]'),()=>otGamesLeave());otGamesBindPress(root.querySelector('[data-ot="menu"]'),otGamesChoose);otGamesBindPress(root.querySelector('[data-ot="retry"]'),()=>typeof worldCampaign!=='undefined'&&worldCampaign.mission?campaignRetry():otGamesEnter(g.mode,{armed:g.armed,difficulty:g.difficulty}));
-    otGamesBindPress(root.querySelector('[data-ot="camera"]'),otGamesStartCamera);
+    otGamesBindPress(root.querySelector('[data-ot="camera"]'),()=>g.mode==='plane'?otGamesStartFlightCamera():otGamesStartCamera());
     otGamesBindPress(root.querySelector('[data-ot="map"]'),()=>{const power=g.collective;otGamesClearInput();g.collective=power;openMap();});
     otGamesBindPress(root.querySelector('[data-ot="crouch"]'),otGamesToggleCrouch);otGamesBindPress(root.querySelector('[data-ot="land"]'),otGamesLandingAction);otGamesBindPress(root.querySelector('[data-ot="disembark"]'),otGamesDisembark);
     root.querySelector('[data-ot="crouch"]').hidden=g.mode!=='ground';for(const name of ['land','disembark'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode==='ground';
-    for(const name of ['ads','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=g.mode!=='ground';
+    for(const name of ['ads','reload','camera'])root.querySelector('[data-ot="'+name+'"]').hidden=name==='camera'?!['ground','plane'].includes(g.mode):g.mode!=='ground';
     for(const name of ['collective','pedal-left','pedal-right'])root.querySelector('[data-ot="'+name+'"]').hidden=!['helicopter','balloon'].includes(g.mode)&&!(name==='collective'&&g.mode==='plane');
     if(g.mode==='plane'){const lever=root.querySelector('[data-ot="collective"]');lever.setAttribute('aria-label','Potência do avião: deslize para acelerar ou reduzir');lever.querySelector('small').textContent='POTÊNCIA';}
     if(g.mode==='balloon'){root.querySelector('[data-ot="move"] small').textContent='DESLOCAR';const lever=root.querySelector('[data-ot="collective"]');lever.setAttribute('aria-label','Aquecimento: acima do centro sobe, abaixo desce');lever.querySelector('small').textContent='AQUECER';}
@@ -10301,7 +10370,9 @@ function build(T,key,H){
   function updateOtGames(dt){
     const g=otGames;if(!g.active)return;if(typeof els!=='undefined'&&els.modal&&!els.modal.hidden){const power=g.collective;otGamesClearInput();g.collective=power;otGamesCamera(dt);return;}if(g.handSession?.controller)g.handAim=g.handSession.controller.read(performance.now());g.autoWalking=false;
     if(g.state!=='PLAYING'||(g.handSession&&!g.handSession.dualHands&&!g.handAim?.fresh)||(g.handSession?.dualHands&&!g.handAim?.fresh&&!g.handSession.controller.navigation.read(performance.now()).fresh)){if(g.handSession&&!g.handAim?.present)g.lock=null;g.hudDirty=true;return;}
-    const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(g.move.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(g.move.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
+    if(g.mode==='plane'&&g.flightCameraMode)otGamesFlightPose(dt);
+    const flightInput=g.mode==='plane'&&g.flightPoseFresh?g.flightInput:g.move;
+    const b=g.body,k=g.keys,handOnly=g.mode==='ground'&&g.handMode,x=handOnly?0:clamp(flightInput.x+Number(k.has('KeyD')||k.has('ArrowRight'))-Number(k.has('KeyA')||k.has('ArrowLeft')),-1,1),y=handOnly?0:clamp(flightInput.y+Number(k.has('KeyW')||k.has('ArrowUp'))-Number(k.has('KeyS')||k.has('ArrowDown')),-1,1),blend=1-Math.exp(-dt*4),bounds=v704WorldBounds();g.elapsed+=dt;g.cooldown=Math.max(0,g.cooldown-dt);
     if(g.reload>0){g.reload=Math.max(0,g.reload-dt);if(g.reload===0){const n=Math.min(30-g.ammo,g.reserve);g.ammo+=n;g.reserve-=n;}}
     const before={x:b.x,y:b.y,z:b.z};
     if(g.mode==='ground'){
@@ -10350,8 +10421,11 @@ function build(T,key,H){
       const floor=groundHeightAt(b.x,b.z)+campaignAircraftHeight(g.aircraftId||g.mode),landable=otGamesCanLand(g.mode,b);
       if(g.mode==='helicopter'||g.mode==='balloon'){g.onGround=g.collective<=.52&&b.y<=floor+.12&&b.vy<=.8&&Math.hypot(b.vx,b.vz)<3&&landable;g.flightPhase=g.onGround?'landed':'airborne';if(g.onGround){b.y=floor;b.vy=0;if(g.landingAssist){g.collective=.5;g.landingAssist=false;}}}
       if(g.mode==='plane'&&!g.onGround&&b.y<=floor+.15&&b.vy<-.05&&b.vy>-6&&g.airspeed<24&&Math.abs(b.roll)<.22&&Math.abs(b.pitch)<.22&&landable){g.onGround=true;g.flightPhase='landed';b.y=floor;b.vy=0;b.pitch=0;}
+      if(b.y<floor&&g.mode==='plane'&&!g.onGround&&!landable&&(b.vy< -4||g.airspeed>17)){otGamesPlaneCrash('COLISÃO COM O SOLO');return;}
       if(b.y<floor){b.y=floor;b.vy=0;if(g.armed&&!g.onGround)b.hp=Math.max(0,b.hp-18*dt);}
-      b.y=clamp(b.y,floor,Math.max(320,floor+120));
+      b.y=clamp(b.y,floor,g.mode==='plane'?Math.max(720,floor+350):Math.max(320,floor+120));
+      if(g.mode==='plane'&&!g.onGround&&otGamesFlightHitsBuilding(before,b)){otGamesPlaneCrash('COLISÃO COM EDIFÍCIO');return;}
+      if(g.mode==='plane'&&!g.onGround&&g.enemies.some(e=>e.active&&otGamesSegmentDistance(before,b,e)<(e.radius||3)+1)){otGamesPlaneCrash('COLISÃO ENTRE AERONAVES');return;}
       if(g.obstacles.some(box=>box.containsPoint(new THREE.Vector3(b.x,b.y,b.z)))){b.x=before.x;b.z=before.z;b.vx=b.vz=0;if(g.armed)b.hp=Math.max(0,b.hp-28*dt);}
       if(b.x<bounds.minX+4||b.x>bounds.maxX-4||b.z<bounds.minZ+4||b.z>bounds.maxZ-4){g.notice='LIMITE DO MAPA · VIRE PARA O BAIRRO';b.yaw+=dt*1.4;}else g.notice='';
       if(g.aircraft){g.aircraft.position.set(b.x,b.y,b.z);g.aircraft.rotation.order='YXZ';g.aircraft.rotation.set(-b.pitch,b.yaw,b.roll);for(const r of g.aircraft.userData.rotors||[])r.group.rotation[r.axis]=g.elapsed*r.speed;const flame=g.aircraft.userData.flame;if(flame){flame.visible=g.collective>.52;flame.scale.y=.65+g.collective*.7;}const rotor=g.aircraft.getObjectByName('rotor'),tail=g.aircraft.getObjectByName('tail');if(rotor)rotor.rotation.y=g.elapsed*35;if(tail)tail.rotation.x=g.elapsed*65;}
@@ -10425,7 +10499,7 @@ function build(T,key,H){
       marker.hidden=!visible;marker.classList.toggle('attacking',e.aim<.65);marker.classList.toggle('secondary',e!==primary);marker.style.left=(p.x*.5+.5)*100+'%';marker.style.top=(-p.y*.5+.5)*100+'%';marker.textContent=e===primary?(e.kind==='tank'?'BLINDADO':e.kind==='drone'?'DRONE':e.aim<.65?'DISPARO IMINENTE':'ALVO')+' · '+Math.round(Math.hypot(e.x-g.body.x,e.z-g.body.z))+' m':'';
     }
     const result=g.ui.querySelector('.ot-games-result');result.hidden=!['VICTORY','DEFEAT','SPAWN_BLOCKED'].includes(g.state);result.querySelector('strong').textContent=g.state==='VICTORY'?'MISSÃO CONCLUÍDA':g.state==='DEFEAT'?'TENTE NOVAMENTE':'ÁREA SEM SETOR LIVRE';result.querySelector('p').textContent=g.kills+'/'+g.goal+' alvos · '+(g.state==='VICTORY'?'Vitória salva. Escolha outra missão ou volte à família.':g.notice||'Use a cobertura das casas e alinhe a mira antes de disparar.');
-    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(leverHeight-28))+'px';
+    g.ui.classList.toggle('ot-hands',!!g.handMode);g.ui.querySelector('[data-ot="camera"]').textContent=g.mode==='plane'?(g.flightCameraMode?'DESLIGAR CÂMERA':'CÂMERA FRONTAL'):g.handSession?'CALIBRAR MÃO':'CÂMERA FRONTAL';lever.setAttribute('aria-valuenow',Math.round(g.collective*100));lever.querySelector('i').style.top=(14+(1-g.collective)*(leverHeight-28))+'px';
     if(g.mode==='plane')g.ui.querySelector('[data-ot-status]').textContent='AVIÃO · '+Math.round(g.airspeed*3.6)+' km/h · '+(g.onGround?'NA PISTA':'EM VOO');
     const leave=g.ui.querySelector('[data-ot="disembark"]');leave.disabled=!otGamesCanDisembark();const crew=g.ui.querySelector('[data-ot="crew"]');if(crew){crew.hidden=typeof remotePresence==='undefined'||remotePresence.size===0;crew.disabled=!g.onGround;}const land=g.ui.querySelector('[data-ot="land"]');land.disabled=!!g.onGround;land.textContent=g.onGround?'NO SOLO':g.landingAssist?'CANCELAR POUSO':'POUSAR';land.setAttribute('aria-pressed',String(!!g.landingAssist));const crouch=g.ui.querySelector('[data-ot="crouch"]');crouch.textContent=g.crouched?'LEVANTAR':'ABAIXAR';crouch.setAttribute('aria-pressed',String(!!g.crouched));
     const ads=g.ui.querySelector('[data-ot="ads"]');ads.setAttribute('aria-pressed',String(!!g.aiming));ads.classList.toggle('selected',!!g.aiming);
@@ -10488,13 +10562,27 @@ function build(T,key,H){
     o.position.set(x,y,z);o.castShadow=true;root.add(o);return o;
   }
   function campaignSign(root,title,subtitle,y){
-    const c=document.createElement('canvas');c.width=512;c.height=160;
-    const x=c.getContext('2d');x.fillStyle='#102d37';x.fillRect(0,0,512,160);
+    // Power-of-two backing and non-mipmapped text prevent blank signs on
+    // WebGL implementations with strict canvas texture sampling rules.
+    // Scale the ORIGINAL artwork into the new backing so signage is unchanged.
+    const c=document.createElement('canvas');c.width=512;c.height=256;
+    const x=c.getContext('2d');x.scale(1,256/160);
+    x.fillStyle='#102d37';x.fillRect(0,0,512,160);
     x.strokeStyle='#b3ddc7';x.lineWidth=8;x.strokeRect(7,7,498,146);
     x.textAlign='center';x.fillStyle='#f1f6e8';x.font='bold 43px Arial';x.fillText(title,256,72);
     x.fillStyle='#a2d5c5';x.font='bold 24px Arial';x.fillText(subtitle,256,119);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(10,3),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
-    m.position.y=y;root.add(m);return m;
+    const texture=new THREE.CanvasTexture(c);
+    texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;
+    texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;
+    texture.encoding=THREE.sRGBEncoding;texture.needsUpdate=true;
+    // A single DoubleSide textured plane mirrors letters on its reverse.
+    // Keep the public sign object and its transforms, but add an inexpensive
+    // back-facing copy sharing the same geometry, material and texture.
+    const geometry=new THREE.PlaneGeometry(10,3);
+    const material=new THREE.MeshBasicMaterial({map:texture,side:THREE.FrontSide});
+    const m=new THREE.Mesh(geometry,material),reverse=new THREE.Mesh(geometry,material);
+    reverse.rotation.y=Math.PI;reverse.position.z=-.015;
+    m.add(reverse);m.position.y=y;root.add(m);return m;
   }
   function campaignCollider(site,x,z,w,d,height){
     const c={x:site.x+x,z:site.z+z,w,d,height,campaignSite:site.id};
@@ -10548,6 +10636,14 @@ function build(T,key,H){
       for(const x of [21.5,24.5])box(line,x,.21,4,.35,.02,4);box(line,23,.21,4,3,.02,.35);
       for(let x=-39;x<40;x+=8)for(const z of [-.4,8.4])campaignCylinder(root,line,x,.25,z,.12,.35);
       const sign=campaignSign(root,'AEROPORTO OT','HANGARES · PISTA · HELIPONTO',8);if(sign)sign.position.z=-7;
+      // Reuse the existing open-front western hangar; preserve all runway geometry.
+      const academySign=campaignSign(root,'ACADEMIA DE AVIAÇÃO','SIMULADOR · MISSÕES · PILOTAGEM',6);
+      academySign.position.set(-25,6,-7.4);
+      box(steel,-29,1,-13,3.2,1.8,1.35);box(glass,-29,2.05,-12.95,3,.16,1.3);
+      box(line,-25,.17,-9,8,.025,.13);
+      registerInteractable({id:'ot-flight-academy',type:'activity-venue',icon:'✈️',
+        label:'Entrar · Academia de Aviação',x:site.x-25,z:site.z-7.2,radius:4.5,priority:220,
+        available:()=>!otGames.active&&!player.vehicle&&!worldVenues.session,action:openFlightAcademy});
     }else{
       box(road,0,.04,0,15.8,.08,9.8);
       for(const x of [-5,5]){wall(green,x,1.25,2.8,4,2.5,3);box(steel,x,2.65,2.8,4.4,.3,3.4);box(glass,x,1.6,1.2,2,1,.1);}
@@ -10556,6 +10652,22 @@ function build(T,key,H){
       const sign=campaignSign(root,'CENTRO DE VISITANTES','TRILHAS · NATUREZA · PASSEIOS',5);if(sign)sign.position.z=0;
     }
     campaignBatch(root);worldGroup.add(root);worldCampaign.landmarks.push({site,root});
+  }
+  function openFlightAcademy(){
+    if(otGames.active||player.vehicle||worldVenues.session)return false;
+    const record=venueRecords().aviation||{played:0,wins:0,best:0};
+    const numbers='<p>Seu histórico: '+Math.max(0,Number(record.played)||0)+' missões · '+Math.max(0,Number(record.wins)||0)+' concluídas.</p>';
+    const html='<p>Academia de Aviação dentro do hangar. Abra o simulador com sua calibração original ou embarque em um avião para voar pelo OTTHI.</p>'+numbers+
+      '<div class="choice-grid">'+
+      '<button class="choice" data-flight-academy="sim"><b>✈️ SIMULADOR AERO STRIKE</b><span>Escola, patrulha, resgate, reportagem, emergência e porta-aviões</span></button>'+
+      '<button class="choice" data-flight-academy="world"><b>🛩️ VOAR NO MUNDO ABERTO</b><span>Localize a aeronave, embarque e use a câmera frontal</span></button>'+
+      '<button class="choice" data-flight-academy="map"><b>🗺️ ESCOLHER AERONAVE</b><span>Visite o terminal do aeroporto</span></button></div>';
+    openModal('Academia de Aviação OT',html,ui=>{
+      ui.querySelector('[data-flight-academy="sim"]').onclick=()=>{closeModal();venueOpen('aviation');};
+      ui.querySelector('[data-flight-academy="world"]').onclick=()=>{closeModal();setWaypoint('campaign-plane');toast('Siga o GPS até o avião. Embarque com AÇÃO e ative CÂMERA FRONTAL.','info',4500);};
+      ui.querySelector('[data-flight-academy="map"]').onclick=()=>{closeModal();openAirportDepartures();};
+    });
+    return true;
   }
   async function campaignLoadAircraft(){
     if(worldCampaign.loadingAircraft||worldCampaign.aircraft)return;
@@ -10872,7 +10984,12 @@ function build(T,key,H){
 
   // ===== MODULE: 45-world-activity-venues.js =====
   const worldVenues={ready:false,landmarks:[],session:null};
-  const WORLD_ACTIVITY_VENUES=Object.freeze({...WORLD_LAYOUT_V704.activityVenues,...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
+  const WORLD_ACTIVITY_VENUES=Object.freeze({...WORLD_LAYOUT_V704.activityVenues,
+    aviation:Object.freeze({id:'aviation',activity:'Academia de Aviação OT',label:'Hangar de pilotos · Aeroporto OT',
+      icon:'✈️',slug:'voo',gameId:'usarmy_flight_sim',
+      x:WORLD_CAMPAIGN_SITES.airbase.x-25,z:WORLD_CAMPAIGN_SITES.airbase.z-12.5,
+      navX:WORLD_CAMPAIGN_SITES.airbase.x-25,navZ:WORLD_CAMPAIGN_SITES.airbase.z-7.2}),
+    ...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
   function venueMapLocations(){return Object.values(WORLD_ACTIVITY_VENUES).map(v=>({id:'venue-'+v.id,name:v.label,icon:v.icon,group:'Esportes e dança',x:v.x,z:v.z,navX:v.navX,navZ:v.navZ,missionTarget:true,description:v.activity+' dentro do bairro. Vá até a entrada para jogar e depois continuar o passeio.',actions:['Marque a rota no GPS','Caminhe até a entrada','Use a ação Entrar']}));}
   function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>Os autódromos abrem o mesmo Kart Legends do console. O estádio e as quadras continuam no mapa.</p>';}
   function venueBindDirectory(root){root.querySelectorAll('[data-venue-route]').forEach(b=>b.onclick=()=>setWaypoint('venue-'+b.dataset.venueRoute));}
@@ -12280,7 +12397,7 @@ function precompile(T,renderer,scene,camera){
  const CITY_SHOP_STOCK=Object.freeze({fastfood:[{id:'burger',name:'Hambúrguer da casa',price:14,hunger:38},{id:'combo',name:'Combo para a viagem',price:28,hunger:48,food:2},{id:'juice',name:'Suco gelado',price:6,hunger:10,water:1}],market:[{id:'groceries',name:'Sacola de alimentos',price:20,food:5},{id:'water',name:'Água para a viagem',price:8,water:3},{id:'snack',name:'Lanche fresco',price:9,hunger:25}],cafe:[{id:'bread',name:'Pão na chapa',price:7,hunger:22},{id:'breakfast',name:'Café da manhã',price:15,hunger:40},{id:'pack',name:'Pães para levar',price:12,food:3}]});
  function cityPurchase(id,itemId){const shop=cityCoast.shops.get(id),item=shop&&CITY_SHOP_STOCK[shop.kind]?.find(x=>x.id===itemId);if(!item||!Number.isSafeInteger(item.price)||item.price<1)return false;if(Number(state.profile.coins)<item.price){toast('Moedas insuficientes.','warn');return false;}addCoins(-item.price);for(const key of['food','water'])if(item[key])state.inventory[key]=Math.min(999,Math.max(0,Number(state.inventory[key]||0))+item[key]);if(item.hunger)state.needs.hunger=clamp(Number(state.needs.hunger||0)+item.hunger,0,100);cityCoast.purchases++;saveState(true);updateHUD();toast(item.name+' comprado.','good');return true;}
  function openCityShop(id){const shop=cityCoast.shops.get(id);if(!shop||player.vehicle||otGames.active)return false;const stock=CITY_SHOP_STOCK[shop.kind];openModal(shop.label,'<p>'+shop.description+'</p><p>Saldo: <b>'+state.profile.coins+' moedas</b></p><div class="choice-grid">'+stock.map(item=>'<button class="choice" data-city-order="'+item.id+'"><b>'+item.name+'</b><span>'+item.price+' moedas'+(item.hunger?' · recupera a fome':' · para sua mochila')+'</span></button>').join('')+'</div><button class="btn" data-city-close>VOLTAR À RUA</button>',root=>{let busy=false;root.querySelectorAll('[data-city-order]').forEach(button=>button.onclick=()=>{if(busy||button.disabled||!root.isConnected)return;busy=true;button.disabled=true;if(cityPurchase(id,button.dataset.cityOrder)){const item=stock.find(i=>i.id===button.dataset.cityOrder);closeModal();cityOrderPerformance(shop,item);}else{busy=false;button.disabled=false;}});root.querySelector('[data-city-close]').onclick=closeModal;});return true;}
- function citySign(root,text,x,y,z,width,face=1,background='#173d48',height=.65){const canvas=document.createElement('canvas');canvas.width=768;canvas.height=128;const c=canvas.getContext('2d');c.fillStyle=background;c.fillRect(0,0,768,128);c.fillStyle='#fff2d8';c.font='800 72px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(text,384,65,735);const texture=new THREE.CanvasTexture(canvas);texture.encoding=THREE.sRGBEncoding;const m=new THREE.Mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshStandardMaterial({map:texture,roughness:.7,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.y=face===1?0:Math.PI;root.add(m);return m;}
+ function citySign(root,text,x,y,z,width,face=1,background='#173d48',height=.65){const canvas=document.createElement('canvas');canvas.width=768;canvas.height=128;const c=canvas.getContext('2d');c.fillStyle=background;c.fillRect(0,0,768,128);c.fillStyle='#fff2d8';c.font='800 72px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(text,384,65,735);const texture=new THREE.CanvasTexture(canvas);texture.encoding=THREE.sRGBEncoding;texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;texture.needsUpdate=true;const m=new THREE.Mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshStandardMaterial({map:texture,roughness:.7,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.y=face===1?0:Math.PI;root.add(m);return m;}
  function cityTable(root,x,z){const wood=campaignMaterial(0xa17f50),metal=campaignMaterial(0x3c555d,.25);campaignCylinder(root,metal,x,.42,z,.07,.84);campaignBox(root,wood,x,.85,z,1.3,.10,1.1);for(const side of[-1,1]){campaignBox(root,wood,x+side*.95,.43,z,.57,.10,.65);campaignBox(root,wood,x+side*1.17,.75,z,.08,.65,.65);for(const dz of[-.23,.23])campaignBox(root,metal,x+side*.95,.21,z+dz,.07,.42,.07);}}
  function cityCommercialNPC(id,name,x,z,color,route=null,shop=null){const npc=createNPC(id,name,x,z,color,0);npc.cityCommercial=true;npc.stationary=!route;npc.commerceRoute=route;npc.commerceShop=shop;npc.group.scale.multiplyScalar(.78);if(shop){const target=world.interactables.find(i=>i.id==='npc-'+id);if(target){target.label='Pedir com '+name;target.action=()=>openCityShop(shop);}}cityCoast.citizens.push(npc);return npc;}
  function createCityShops(city){const root=new THREE.Group();root.name='CITY_COMMERCE_'+city.id;worldGroup.add(root);const paving=campaignMaterial(0xd2c5ac,.02,'sidewalk'),glass=campaignMaterial(0x274d57,.3),trim=campaignMaterial(0xe8ddbf),kinds=['fastfood','market','cafe','market'],labels=['OT BURGER','MERCADO OT','CAFÉ DA PRAÇA','CONVENIÊNCIA'];
@@ -13058,7 +13175,7 @@ function precompile(T,renderer,scene,camera){
  function civilSkyEnvironment(){
   if(civilCommunity.sky||!renderer)return;const canvas=document.createElement('canvas');canvas.width=512;canvas.height=256;const c=canvas.getContext('2d'),gradient=c.createLinearGradient(0,0,0,256);gradient.addColorStop(0,'#4c7eae');gradient.addColorStop(.48,'#b7d5dd');gradient.addColorStop(.54,'#dbe2d2');gradient.addColorStop(1,'#566e57');c.fillStyle=gradient;c.fillRect(0,0,512,256);
   for(let i=0;i<12;i++){c.fillStyle='rgba(255,255,250,.45)';c.beginPath();c.ellipse((i*79+21)%512,64+(i%4)*11,14+(i%3)*8,3+(i%2)*2,0,0,Math.PI*2);c.fill();}const sun=c.createRadialGradient(380,60,1,380,60,31);sun.addColorStop(0,'rgba(255,244,215,.95)');sun.addColorStop(1,'rgba(255,244,215,0)');c.fillStyle=sun;c.fillRect(345,25,70,70);
-  const texture=new THREE.CanvasTexture(canvas);texture.encoding=THREE.sRGBEncoding;texture.mapping=THREE.EquirectangularReflectionMapping;const sky=new THREE.Mesh(new THREE.SphereGeometry(1500,32,20),new THREE.MeshBasicMaterial({map:texture,side:THREE.BackSide,fog:false,depthWrite:false,toneMapped:false}));sky.name='CIVIL_SKY_PANORAMA';sky.renderOrder=-1000;sky.frustumCulled=false;scene.add(sky);civilCommunity.sky=sky;
+  const texture=new THREE.CanvasTexture(canvas);texture.encoding=THREE.sRGBEncoding;texture.mapping=THREE.UVMapping;texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;texture.needsUpdate=true;const sky=new THREE.Mesh(new THREE.SphereGeometry(1500,32,20),new THREE.MeshBasicMaterial({map:texture,side:THREE.BackSide,fog:false,depthWrite:false,toneMapped:false}));sky.name='CIVIL_SKY_PANORAMA';sky.renderOrder=-1000;sky.frustumCulled=false;scene.add(sky);civilCommunity.sky=sky;
   try{if(qualityTier()!=='high')return;const generator=new THREE.PMREMGenerator(renderer);civilCommunity.environment=generator.fromEquirectangular(texture);scene.environment=civilCommunity.environment.texture;generator.dispose();}catch{}
  }
  function createCivilCommunity(){
