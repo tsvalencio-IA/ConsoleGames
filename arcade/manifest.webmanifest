@@ -1,7 +1,7 @@
 {
-  "name": "thIAguinho ARCADE — Console de 7 jogos",
+  "name": "thIAguinho ARCADE — Console de 8 jogos",
   "short_name": "thIAguinho ARCADE",
-  "description": "Console independente com sete aventuras, por thIAguinho Soluções Digitais e Otto MMP Ferri.",
+  "description": "Console unificado com oito jogos e o OTTHI World.",
   "lang": "pt-BR",
   "id": "/ConsoleGames/arcade/",
   "start_url": "/ConsoleGames/arcade/?app=arcade",
