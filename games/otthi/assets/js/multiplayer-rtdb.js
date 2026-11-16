@@ -8,7 +8,7 @@ const GM_MAX_ADD=1000000,GM_MAX_ITEMS=40,GM_CLAIM_TTL_MS=10*60*1000;
 const sanitizeRoom=value=>{const clean=String(value||'bairro-central').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').slice(0,32);return VALID_ROOM_SET.has(clean)?clean:'bairro-central'};
 let ROOM_ID='bairro-central',WORLD=`rooms/${ROOM_ID}`;
 const currentRoom=()=>ROOM_ID;
-let api=null,app=null,auth=null,db=null,user=null,connected=false,connecting=null,connectionRepairing=null,presenceSweepTimer=0,refs={},unsubs=[],roomCountUnsubs=[],lastPresence=null,presenceWrite=0,slotTouchAt=0,progressTimer=0,pendingProgress=null,housesCache={},presenceCache={},roomCountsCache={},challengeCache={},sessionCache={},requestCache={},requestCooldown=new Map(),campfireCache={},extensionCache={},boatCache={},coopMissionCache={},blockedCache={},gmAdminCache={uid:'',allowed:false,checkedAt:0},accountModeration=null,parentalControls=guestParentalControls(),reauthenticatedAt=0,serverTimeOffset=0,activeBoatLock='',boatTouchAt=0,motionV2Cache={},worldV2Cache=null,worldAuthorityV2Cache=null,sportMatchesV2Cache={},motionV2Write=0,worldV2Write=0,eventV2Seq=0,networkBytesUp=0,networkBytesDown=0,networkWrites=0,networkReads=0,sportAuthorityTouch=new Map();
+let api=null,app=null,auth=null,db=null,user=null,connected=false,connecting=null,connectionRepairing=null,presenceSweepTimer=0,refs={},unsubs=[],roomCountUnsubs=[],lastPresence=null,presenceWrite=0,slotTouchAt=0,progressTimer=0,pendingProgress=null,housesCache={},presenceCache={},roomCountsCache={},challengeCache={},sessionCache={},requestCache={},requestCooldown=new Map(),campfireCache={},extensionCache={},boatCache={},coopMissionCache={},blockedCache={},gmAdminCache={uid:'',allowed:false,checkedAt:0},accountModeration=null,parentalControls=guestParentalControls(),reauthenticatedAt=0,serverTimeOffset=0,activeBoatLock='',boatTouchAt=0,motionV2Cache={},worldV2Cache=null,worldAuthorityV2Cache=null,sportMatchesV2Cache={},motionV2Write=0,worldV2Write=0,eventV2Seq=0,networkBytesUp=0,networkBytesDown=0,networkWrites=0,networkReads=0,sportAuthorityTouch=new Map(),presencePending=new Map(),presenceHeartbeatTimer=0,lastPresenceResume=0;
 const dispatch=(name,detail)=>window.dispatchEvent(new CustomEvent(name,{detail}));
 function containsPrivateData(text=''){return/(?:https?:\/\/|www\.|@[a-z0-9.-]+\.|\b\d{8,}\b|\(?\d{2}\)?\s*9?\d{4}[-\s]?\d{4})/i.test(String(text))}
 function sanitizePublicName(value='Jogador'){
@@ -96,9 +96,55 @@ async function reserveRoomSlotIndividually(f,{room,capacity,name,nowClient,nowSe
   }
   return null;
 }
-function stopPresenceSweep(){if(presenceSweepTimer){clearInterval(presenceSweepTimer);presenceSweepTimer=0;}}
-function sweepStalePresence(){const at=serverNow();for(const[uid,value]of Object.entries(presenceCache)){if(uid===user?.uid)continue;if(!presenceIsFresh(value,at)){delete presenceCache[uid];dispatch('otthos:mp-leave',{uid,stale:true})}}}
-function startPresenceSweep(){stopPresenceSweep();presenceSweepTimer=setInterval(sweepStalePresence,10000);}
+// A missing heartbeat is a signal problem, not evidence that the player chose to leave.
+const PRESENCE_REJOIN_GRACE_MS=20000;
+function markPresenceInterrupted(uid,reason='connection'){
+  uid=String(uid||'');
+  if(!uid||uid===user?.uid||isBlocked(uid))return false;
+  if(presencePending.has(uid))return false;
+  // Preserve the last rendered avatar while reconnecting, but never count it as online.
+  if(!presenceCache[uid])return false;
+  presencePending.set(uid,{at:performance.now(),reason});
+  delete presenceCache[uid];
+  dispatch('otthos:mp-interrupted',{uid,reason});
+  return true;
+}
+function restorePresence(uid){
+  const pending=presencePending.delete(String(uid||''));
+  if(pending)dispatch('otthos:mp-restored',{uid});
+  return pending;
+}
+function stopPresenceSweep(){
+  if(presenceSweepTimer){clearInterval(presenceSweepTimer);presenceSweepTimer=0;}
+  if(presenceHeartbeatTimer){clearInterval(presenceHeartbeatTimer);presenceHeartbeatTimer=0;}
+}
+function sweepStalePresence(){
+  const at=serverNow(),now=performance.now();
+  for(const[uid,value]of Object.entries(presenceCache))if(uid!==user?.uid&&!presenceIsFresh(value,at))markPresenceInterrupted(uid,'heartbeat');
+  for(const[uid,pending]of presencePending)if(now-pending.at>=PRESENCE_REJOIN_GRACE_MS){
+    presencePending.delete(uid);
+    dispatch('otthos:mp-leave',{uid,stale:true,reason:pending.reason});
+  }
+}
+function startPresenceSweep(){
+  stopPresenceSweep();
+  presenceSweepTimer=setInterval(sweepStalePresence,5000);
+  // Independent of requestAnimationFrame: GPU loading and paused simulation
+  // must not silently starve the room slot/presence heartbeat.
+  presenceHeartbeatTimer=setInterval(()=>{
+    if(connected&&refs.presence&&lastPresence&&typeof document!=='undefined'&&!document.hidden)publish(lastPresence,false);
+  },9000);
+}
+async function resumeOnlinePresence(reason='foreground'){
+  if(!connected||!api||!refs.presence||!multiplayerAllowed()||typeof document!=='undefined'&&document.hidden)return false;
+  const now=performance.now();
+  if(now-lastPresenceResume<5000)return false;
+  lastPresenceResume=now;
+  return recoverOnlineSession(reason).catch(error=>{listenerError('retorno online')(error);return false});
+}
+if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeOnlinePresence('foreground')});
+window.addEventListener('pageshow',()=>resumeOnlinePresence('pageshow'));
+window.addEventListener('online',()=>resumeOnlinePresence('network-online'));
 async function ensureRoomReservation(f=api){
   if(!f||!db||!user||!multiplayerAllowed())return{ok:false,error:'Sessão online indisponível.'};
   if(connectionRepairing)return connectionRepairing;
@@ -220,9 +266,21 @@ async function connect(options={}){
       unsubs.push(f.onValue(refs.moderation,s=>{const record=normalizeModeration(s.val());accountModeration=record;if(!record)return;dispatch('otthi:account-moderated',{...record,uid:user?.uid||''});setTimeout(()=>disconnect().catch(()=>{}),0)},listenerError('moderação da conta')));
       unsubs.push(f.onValue(f.ref(db,'.info/serverTimeOffset'),s=>{serverTimeOffset=Number(s.val()||0)}));
       unsubs.push(f.onValue(f.ref(db,'.info/connected'),async s=>{const networkOnline=s.val()===true&&multiplayerAllowed();connected=networkOnline;if(networkOnline){const reservation=await ensureRoomReservation(f).catch(()=>null);if(!reservation?.ok){connected=false;stopPresenceSweep();dispatch('otthos:mp-status',status({mode:'offline',disabled:!!reservation?.disabled,full:!!reservation?.full,error:reservation?.error||'Não foi possível recuperar a vaga online.'}));return;}await f.onDisconnect(refs.presence).remove().catch(()=>{});await f.onDisconnect(refs.motionV2).remove().catch(()=>{});await f.onDisconnect(refs.slot).remove().catch(()=>{});await f.update(refs.profile,{name:ownName(),updatedAt:f.serverTimestamp()});await publish(lastPresence,true);startPresenceSweep()}else stopPresenceSweep();dispatch('otthos:mp-status',status({mode:connected?'firebase-public':'offline',disabled:!multiplayerAllowed(),error:connected?'':multiplayerAllowed()?'Sem conexão':'O modo online foi desativado pelos responsáveis.'}))},listenerError('conexão')));
-      const emit=s=>{if(s.key===user.uid||isBlocked(s.key))return;const value=s.val()||{};if(!presenceIsFresh(value)){delete presenceCache[s.key];dispatch('otthos:mp-leave',{uid:s.key,stale:true});return;}presenceCache[s.key]=value;dispatch('otthos:mp-player',{uid:s.key,...value})};
-      unsubs.push(f.onChildAdded(refs.presences,emit,listenerError('presença')));unsubs.push(f.onChildChanged(refs.presences,emit,listenerError('presença')));unsubs.push(f.onChildRemoved(refs.presences,s=>{delete presenceCache[s.key];dispatch('otthos:mp-leave',{uid:s.key})},listenerError('presença')));
-      unsubs.push(f.onValue(refs.presences,s=>{presenceCache=Object.fromEntries(Object.entries(s.val()||{}).filter(([uid,value])=>!isBlocked(uid)&&presenceIsFresh(value)));dispatch('otthos:mp-status',status({mode:'firebase-public',count:Object.keys(presenceCache).length}))},listenerError('lista de presença')));
+      const emit=s=>{if(s.key===user.uid||isBlocked(s.key))return;const value=s.val()||{};
+        if(!presenceIsFresh(value)){markPresenceInterrupted(s.key,'heartbeat');return;}
+        restorePresence(s.key);presenceCache[s.key]=value;dispatch('otthos:mp-player',{uid:s.key,...value});};
+      unsubs.push(f.onChildAdded(refs.presences,emit,listenerError('presença')));unsubs.push(f.onChildChanged(refs.presences,emit,listenerError('presença')));unsubs.push(f.onChildRemoved(refs.presences,s=>markPresenceInterrupted(s.key,'connection'),listenerError('presença')));
+      unsubs.push(f.onValue(refs.presences,s=>{
+        const next={},all=s.val()||{},now=serverNow();
+        for(const[uid,value]of Object.entries(all)){
+          if(uid===user?.uid||isBlocked(uid))continue;
+          if(presenceIsFresh(value,now)){next[uid]=value;restorePresence(uid);}
+          else markPresenceInterrupted(uid,'heartbeat');
+        }
+        for(const uid of Object.keys(presenceCache))if(!next[uid])markPresenceInterrupted(uid,'snapshot');
+        presenceCache=next;
+        dispatch('otthos:mp-status',status({mode:'firebase-public',count:Object.keys(next).length}));
+      },listenerError('lista de presença')));
       const emitMotionV2=s=>{if(s.key===user.uid||isBlocked(s.key))return;const value=sanitizeMotionV2(s.val()||{});value.updatedAt=Number(s.val()?.updatedAt||0);value.receivedAt=performance.now();motionV2Cache[s.key]=value;countNet('down',value);dispatch('otthi:motion-v2',{uid:s.key,...value})};
       unsubs.push(f.onChildAdded(refs.motionsV2,emitMotionV2,listenerError('movimento V2')));unsubs.push(f.onChildChanged(refs.motionsV2,emitMotionV2,listenerError('movimento V2')));unsubs.push(f.onChildRemoved(refs.motionsV2,s=>{delete motionV2Cache[s.key];dispatch('otthi:motion-v2-leave',{uid:s.key})},listenerError('movimento V2')));
       unsubs.push(f.onValue(refs.worldAuthorityV2,s=>{worldAuthorityV2Cache=s.val()||null;countNet('down',worldAuthorityV2Cache||{});dispatch('otthi:world-authority-v2',worldAuthorityV2Cache||{})},listenerError('autoridade de mundo V2')));
@@ -561,5 +619,5 @@ async function setRoom(room){
 }
 async function syncLearning(payload={}){if(!connected||!user||!refs.learning)return false;try{const clean={schema:1,subjects:payload.subjects||{},streak:Number(payload.streak||0),totalAnswered:Number(payload.totalAnswered||0),updatedAt:api.serverTimestamp(),updatedAtClient:Date.now()};await api.set(refs.learning,clean);return true}catch(error){listenerError('aprendizado')(error);return false}}
 async function loadLearning(){if(!db||!api||!user)return null;try{const snap=await api.get(api.ref(db,`${ROOT}/users/${user.uid}/learning`));return snap.exists()?snap.val():null}catch(error){listenerError('leitura do aprendizado')(error);return null}}
-async function disconnect(){stopPresenceSweep();connectionRepairing=null;const reservation=refs.slot?{slotRef:refs.slot,uid:user?.uid}:null;if(activeBoatLock)await releaseBoat(activeBoatLock).catch(()=>{});for(const type of SPORT_V2_TYPES)await leaveSportMatchV2(type).catch(()=>{});for(const u of unsubs.splice(0)){try{u()}catch{}}for(const u of roomCountUnsubs.splice(0)){try{u()}catch{}}if(refs.presence&&api)await api.remove(refs.presence).catch(()=>{});if(refs.motionV2&&api)await api.remove(refs.motionV2).catch(()=>{});if(reservation)await rollbackRoomSlot(reservation);connected=false;refs={};presenceCache={};motionV2Cache={};worldV2Cache=null;worldAuthorityV2Cache=null;sportMatchesV2Cache={};housesCache={};challengeCache={};sessionCache={};requestCache={};campfireCache={};extensionCache={};boatCache={};coopMissionCache={};activeBoatLock='';dispatch('otthos:mp-status',status({mode:'offline',disabled:!multiplayerAllowed()}))}
-window.OTTHOS_RTDB={configured:validConfig(getConfig()),uid:'',getConfig,configure,disable,connect,publish,publishMotionV2,publishWorldV2,claimWorldAuthorityV2,sendEventV2,claimSportAuthorityV2,joinSportMatchV2,leaveSportMatchV2,publishSportStateV2,publishSportInputV2,networkStats,serverNowMs:()=>serverNow(),syncProgress,loadGameAccount,saveGameAccount,accountStatus,setAccountPersistence,createPlayerAccount,signInPlayerAccount,reauthenticateAccount,signOutPlayerAccount,isCurrentUserGM,gmListUsers,gmReadUser,gmCreateGrant,gmSetUserBlocked,gmDeleteUserData,gmListAudit,claimGMGrant,completeGMGrant,normalizeUsername,sanitizePublicName,approvedPhrases:()=>APPROVED_CHAT_PHRASES.slice(),getGuardianSettings,saveGuardianSettings,blockPlayer,unblockPlayer,reportPlayer,isPlayerBlocked,getBlockedPlayers,recordActivity,getActivityAudit,sendChat,deleteOwnChatMessages,sendGift,sendInteraction,sendSocialRequest,respondSocialRequest,completeSocialRequest,cancelSocialRequest,expireSocialRequests,syncCampfires,syncHouseExtensions,claimBoat,releaseBoat,sendGameChallenge,respondGameChallenge,submitGameResult,finalizeGameSession,getGameSession,closeGameSession,claimHouse,setHouseLock,setDisplayName,createCoopMission,joinCoopMission,updateCoopParticipant,setCoopMissionStatus,updateCoopMissionProgress,leaveCoopMission,getCoopMissions,setRoom,getRoom:currentRoom,getRoomCounts:()=>({...roomCountsCache}),refreshRoomCounts,roomCapacity,syncLearning,loadLearning,disconnect,status,connected:()=>connected,getHouses:()=>({...housesCache}),getChallenges:()=>({...challengeCache}),getSessions:()=>({...sessionCache}),getSocialRequests:()=>({...requestCache}),getPresence:uid=>uid?(isBlocked(uid)?null:presenceCache[uid]||null):Object.fromEntries(Object.entries(presenceCache).filter(([id])=>!isBlocked(id))),getMotionV2:uid=>uid?(isBlocked(uid)?null:motionV2Cache[uid]||null):Object.fromEntries(Object.entries(motionV2Cache).filter(([id])=>!isBlocked(id))),getWorldV2:()=>worldV2Cache?{...worldV2Cache}:null,getWorldAuthorityV2:()=>worldAuthorityV2Cache?{...worldAuthorityV2Cache}:null,getSportMatchesV2:()=>({...sportMatchesV2Cache}),getCampfires:()=>({...campfireCache}),getHouseExtensions:()=>({...extensionCache}),getBoats:()=>({...boatCache}),__testing:Object.freeze({fixedRoomSlotKeys,slotIsFresh,roomSlotCount,reserveSlotSnapshot,reserveSlotRecord})};dispatch('otthos:rtdb-ready',status());
+async function disconnect(){stopPresenceSweep();presencePending.clear();connectionRepairing=null;const reservation=refs.slot?{slotRef:refs.slot,uid:user?.uid}:null;if(activeBoatLock)await releaseBoat(activeBoatLock).catch(()=>{});for(const type of SPORT_V2_TYPES)await leaveSportMatchV2(type).catch(()=>{});for(const u of unsubs.splice(0)){try{u()}catch{}}for(const u of roomCountUnsubs.splice(0)){try{u()}catch{}}if(refs.presence&&api)await api.remove(refs.presence).catch(()=>{});if(refs.motionV2&&api)await api.remove(refs.motionV2).catch(()=>{});if(reservation)await rollbackRoomSlot(reservation);connected=false;refs={};presenceCache={};motionV2Cache={};worldV2Cache=null;worldAuthorityV2Cache=null;sportMatchesV2Cache={};housesCache={};challengeCache={};sessionCache={};requestCache={};campfireCache={};extensionCache={};boatCache={};coopMissionCache={};activeBoatLock='';dispatch('otthos:mp-status',status({mode:'offline',disabled:!multiplayerAllowed()}))}
+window.OTTHOS_RTDB={configured:validConfig(getConfig()),uid:'',getConfig,configure,disable,connect,publish,publishMotionV2,publishWorldV2,claimWorldAuthorityV2,sendEventV2,claimSportAuthorityV2,joinSportMatchV2,leaveSportMatchV2,publishSportStateV2,publishSportInputV2,networkStats,serverNowMs:()=>serverNow(),syncProgress,loadGameAccount,saveGameAccount,accountStatus,setAccountPersistence,createPlayerAccount,signInPlayerAccount,reauthenticateAccount,signOutPlayerAccount,isCurrentUserGM,gmListUsers,gmReadUser,gmCreateGrant,gmSetUserBlocked,gmDeleteUserData,gmListAudit,claimGMGrant,completeGMGrant,normalizeUsername,sanitizePublicName,approvedPhrases:()=>APPROVED_CHAT_PHRASES.slice(),getGuardianSettings,saveGuardianSettings,blockPlayer,unblockPlayer,reportPlayer,isPlayerBlocked,getBlockedPlayers,recordActivity,getActivityAudit,sendChat,deleteOwnChatMessages,sendGift,sendInteraction,sendSocialRequest,respondSocialRequest,completeSocialRequest,cancelSocialRequest,expireSocialRequests,syncCampfires,syncHouseExtensions,claimBoat,releaseBoat,sendGameChallenge,respondGameChallenge,submitGameResult,finalizeGameSession,getGameSession,closeGameSession,claimHouse,setHouseLock,setDisplayName,createCoopMission,joinCoopMission,updateCoopParticipant,setCoopMissionStatus,updateCoopMissionProgress,leaveCoopMission,getCoopMissions,setRoom,getRoom:currentRoom,getRoomCounts:()=>({...roomCountsCache}),refreshRoomCounts,roomCapacity,syncLearning,loadLearning,disconnect,status,connected:()=>connected,getHouses:()=>({...housesCache}),getChallenges:()=>({...challengeCache}),getSessions:()=>({...sessionCache}),getSocialRequests:()=>({...requestCache}),getPresence:uid=>uid?(isBlocked(uid)?null:presenceCache[uid]||null):Object.fromEntries(Object.entries(presenceCache).filter(([id])=>!isBlocked(id))),getMotionV2:uid=>uid?(isBlocked(uid)?null:motionV2Cache[uid]||null):Object.fromEntries(Object.entries(motionV2Cache).filter(([id])=>!isBlocked(id))),getWorldV2:()=>worldV2Cache?{...worldV2Cache}:null,getWorldAuthorityV2:()=>worldAuthorityV2Cache?{...worldAuthorityV2Cache}:null,getSportMatchesV2:()=>({...sportMatchesV2Cache}),getCampfires:()=>({...campfireCache}),getHouseExtensions:()=>({...extensionCache}),getBoats:()=>({...boatCache}),__testing:Object.freeze({fixedRoomSlotKeys,slotIsFresh,roomSlotCount,reserveSlotSnapshot,reserveSlotRecord,markPresenceInterrupted,restorePresence,sweepStalePresence,presenceIsFresh})};dispatch('otthos:rtdb-ready',status());
