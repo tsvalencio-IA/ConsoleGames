@@ -54,8 +54,14 @@
     texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;
     texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;
     texture.encoding=THREE.sRGBEncoding;texture.needsUpdate=true;
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(10,3),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide}));
-    m.position.y=y;root.add(m);return m;
+    // A single DoubleSide textured plane mirrors letters on its reverse.
+    // Keep the public sign object and its transforms, but add an inexpensive
+    // back-facing copy sharing the same geometry, material and texture.
+    const geometry=new THREE.PlaneGeometry(10,3);
+    const material=new THREE.MeshBasicMaterial({map:texture,side:THREE.FrontSide});
+    const m=new THREE.Mesh(geometry,material),reverse=new THREE.Mesh(geometry,material);
+    reverse.rotation.y=Math.PI;reverse.position.z=-.015;
+    m.add(reverse);m.position.y=y;root.add(m);return m;
   }
   function campaignCollider(site,x,z,w,d,height){
     const c={x:site.x+x,z:site.z+z,w,d,height,campaignSite:site.id};

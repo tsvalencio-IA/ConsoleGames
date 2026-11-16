@@ -15,7 +15,7 @@ function fixture(){
   class Geometry{constructor(...dimensions){this.dimensions=dimensions;}}
   class Material{constructor(config){this.config=config;}}
   const three={Group,Mesh,BoxGeometry:Geometry,CylinderGeometry:Geometry,PlaneGeometry:Geometry,
-    MeshStandardMaterial:Material,MeshBasicMaterial:Material,CanvasTexture:class{constructor(c){this.canvas=c}},DoubleSide:2,LinearFilter:'linear',ClampToEdgeWrapping:'clamp',sRGBEncoding:'srgb'};
+    MeshStandardMaterial:Material,MeshBasicMaterial:Material,CanvasTexture:class{constructor(c){this.canvas=c}},DoubleSide:2,FrontSide:'front',LinearFilter:'linear',ClampToEdgeWrapping:'clamp',sRGBEncoding:'srgb'};
   const element=tag=>({
     tag,style:{},hidden:false,children:[],innerHTML:'',textContent:'',attrs:{},
     classList:{add(){},toggle(){}},addEventListener(){},setAttribute(k,v){this.attrs[k]=v;},
@@ -82,5 +82,11 @@ test('all permanent world signs use visible POT textures compatible with WebGL1 
    assert.equal(texture.generateMipmaps,false);
    assert.equal(texture.minFilter,'linear');assert.equal(texture.magFilter,'linear');
    assert.equal(texture.wrapS,'clamp');assert.equal(texture.wrapT,'clamp');
+   assert.equal(sign.material.config.side,'front');
+   assert.equal(sign.children.length,1,'a single reverse plate is required');
+   const reverse=sign.children[0];
+   assert.equal(reverse.material,sign.material,'both sides must share one texture');
+   assert.equal(reverse.geometry,sign.geometry);
+   assert.equal(reverse.rotation.y,Math.PI,'back text must face its viewer rather than mirror');
  }
 });
