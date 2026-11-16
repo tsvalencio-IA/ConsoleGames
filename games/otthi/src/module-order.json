@@ -154,7 +154,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "9e063e3c0642ba027e631bf5c06fa941c8a338f5384d2d443c558ff0fe5988a7"
+      "sha256Body": "2d5cfeaf5c941f5e920da6684fc21270e066a8d58215b2683dfc5b3b9a90a758"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -266,14 +266,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "1f0666f8bb5375ea8b4f954af78822f6bc4754f9ecdae450666da9a5af5a7fc4"
+      "sha256Body": "1623cd144fd4aa25b3ae87c4ae2c97e996c6a40f2b2a5b97d9bf540a38c8ac48"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "d28d2fde0ef98978b67436af30c89d93b86e9668a327052a147e5960d48df755"
+      "sha256Body": "f68223d1bd0c495911ac34e63518ff518a8077a70ab9406e6e2c23deb6a499fd"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -599,7 +599,7 @@
       "description": "Luzes de alcance finito fora da imagem e cálculo físico de luz zero",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "ee7d8834d9135b54e8147c72c245bc205baf02630002d0d5ec39e11407a067d4"
+      "sha256Body": "99fe3c3784faa17f92b503ab4e0c8686cf4cc61b13fda798327139507f7dc1f7"
     },
     {
       "file": "src/modules/72-static-instance-culling.js",
