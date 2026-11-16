@@ -1,0 +1,34 @@
+name: Preservar IDs existentes Pages e Vercel
+on:
+  push:
+    branches: [release/console-unificado-20261116]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: "github.event.head_commit.message == 'Preserve original installed PWA IDs on both origins'"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preservar exatamente as duas identidades historicas
+        run: python3 tools/restore-original-pwa-id.py
+      - name: Verificar identidade no fonte e no pacote hospedado
+        run: |
+          node --test tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs
+          python3 games/otthi/tools/build_project.py
+          node --test tests/world-integrity.test.mjs
+          git diff --check
+      - name: Gravar apenas na branch de release
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add arcade/manifest.webmanifest arcade/sw.js tools/package-world-preview.py tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs games/otthi
+          git commit -m 'fix(pwa): preserve existing Vercel id /arcade/ and Pages id'
+          git push origin HEAD:release/console-unificado-20261116
