@@ -26,7 +26,7 @@ jobs:
           node --test tests/*.test.mjs
   browser:
     name: Oito jogos e layout em 4 resolucoes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
