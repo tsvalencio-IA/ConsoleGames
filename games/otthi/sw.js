@@ -1,4 +1,4 @@
-const REVISION = '3227043b294bd89d';
+const REVISION = 'bb9d074ac69a6577';
 const CACHE = `otthi-v70662-${REVISION}`;
 const CACHE_PREFIXES = ['otthi-','otthi-game-web-','otthos-life-world-main-'];
 const BUILD = '705.28.29-camera-socorro-jogabilidade';

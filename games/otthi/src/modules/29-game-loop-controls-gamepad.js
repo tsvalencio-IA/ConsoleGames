@@ -9,6 +9,9 @@
  */
 // @otthi-module-body
   let usageLastTickAt=Date.now(),usageLastSaveAt=Date.now(),sessionLimitHandled=false,worldInitializationReady=false;
+  // Read-only preparation timings for physical-device comparisons.
+  const otthiBootMetrics={startedAt:performance.now(),lighting:[],views:[],events:[]};
+  window.OTTHI_BOOT_METRICS={snapshot:()=>JSON.parse(JSON.stringify(otthiBootMetrics))};
   function updatePlayUsage(){
     const now=Date.now(),elapsed=clamp((now-usageLastTickAt)/1000,0,5);usageLastTickAt=now;
     if(!running||paused||document.hidden)return;
@@ -48,16 +51,59 @@
     await prepareExpandedWorldForRendering();
     showWorldLoading(86,'Preparando os ângulos da câmera...');await nextPaint();
     const start=performance.now();updateCamera(1);
-    const plan=worldLightingPreparationPlan(),preparationStart=performance.now();let lightingVariants=0;
-    for(const[countIndex,count]of plan.pointLightBuckets.entries()){
-      showWorldLoading(86+Math.round(countIndex/Math.max(1,plan.pointLightBuckets.length)*9),`Preparando câmera · ${countIndex+1}/${plan.pointLightBuckets.length}`);await nextPaint();
+    const plan=worldLightingPreparationPlan(),scan=scanWorldCameraLightCounts();
+    // Explicit reversible comparison switch. Fast is used only in this isolated preview.
+    const forceFull=new URLSearchParams(location.search).get('cameraFull')==='1';
+    const critical=forceFull?plan.pointLightBuckets:criticalWorldLightingBuckets(plan,scan);
+    const preparationStart=performance.now();let lightingVariants=0;
+    for(const[countIndex,count]of critical.entries()){
+      showWorldLoading(86+Math.round(countIndex/Math.max(1,critical.length)*9),`Preparando câmera · ${countIndex+1}/${critical.length}`);await nextPaint();
+      const started=performance.now(),programs=renderer.info.programs.length;
       const prepared=precompileWorldLighting({pointLights:count});perf.vehicleShaderTemplates=prepared.templates;lightingVariants++;
+      markLightingBucketPrepared(count);
+      otthiBootMetrics.lighting.push({index:countIndex+1,total:critical.length,lights:count,ms:Math.round(performance.now()-started),programs:renderer.info.programs.length-programs});
     }
-    worldLightBudget.preparation={...plan,ms:Math.round(performance.now()-preparationStart)};
+    const lightingMs=Math.round(performance.now()-preparationStart);
+    worldLightBudget.preparation={...plan,criticalBuckets:[...critical],scan,ms:lightingMs,mode:forceFull?'full':'fast-preview'};
+    otthiBootMetrics.events.push({event:'camera-precompile',ms:lightingMs,total:critical.length,possible:plan.pointLightBuckets.length});
     const gpuWarmup=await warmWorldCameraViews();
     const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
     try{renderer.render(scene,camera);}finally{restoreLights?.();restoreHome?.();}
-    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants,pointLightBuckets:[...plan.pointLightBuckets],expanded:perf.expandedScenePreparation,gpuWarmup};
+    perf.scenePreparation={ms:Math.round(performance.now()-start),programs:renderer.info.programs.length,lightingVariants,pointLightBuckets:[...plan.pointLightBuckets],criticalLightBuckets:[...critical],expanded:perf.expandedScenePreparation,gpuWarmup};
+  }
+  // Count lights in all twelve startup views without drawing a pixel or
+  // mutating the scene. Used to choose an initial shader subset only.
+  function scanWorldCameraLightCounts(){
+    const saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},samples=[];let maxActive=0;
+    try{
+      for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5]){
+        cameraYaw=yaw;cameraPitch=pitch;cameraZoom=saved.zoom;updateCamera(1);
+        const active=countWorldPointLightsForView(camera);
+        samples.push({pitch,yaw,active});maxActive=Math.max(active,maxActive);
+      }
+    }finally{
+      cameraYaw=saved.yaw;cameraPitch=saved.pitch;cameraZoom=saved.zoom;
+      camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);camera.fov=saved.fov;
+      camera.updateProjectionMatrix();camera.updateMatrixWorld(true);updateVisualLOD();
+    }
+    return{maxActive,samples};
+  }
+  function criticalWorldLightingBuckets(plan,scan){
+    // Higher buckets remain available on demand; no light or object is capped.
+    const limit=Math.max(64,lightingBucketFor(scan.maxActive+16));
+    const critical=plan.pointLightBuckets.filter(x=>x<=limit);
+    return critical.length?critical:[0];
+  }
+  function warmDeferredWorldLighting(){
+    if(!running||!paused||!pauseMenuOpen)return null;
+    const plan=worldLightBudget.preparation;
+    const pending=plan?.pointLightBuckets?.find(count=>!worldLightBudget.preparedBuckets.has(count));
+    if(pending===undefined)return null;
+    const started=performance.now();
+    try{precompileWorldLighting({pointLights:pending});markLightingBucketPrepared(pending);}
+    catch(error){console.warn('[OTTHI CAMERA] Falha preparando variante adiada:',error);return null;}
+    const result={event:'deferred-lighting',lights:pending,ms:Math.round(performance.now()-started)};
+    otthiBootMetrics.events.push(result);return result;
   }
   async function warmWorldCameraViews(){
     // compile() does not necessarily upload geometry/textures or finish driver
@@ -66,6 +112,11 @@
     // lights and materials are the same ones the first playable frame uses.
     const started=performance.now(),saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),scissorTest=renderer.getScissorTest(),before={...renderer.info.memory,programs:renderer.info.programs.length};
     const views=[];for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5])views.push({pitch,yaw});
+    // The same complete 12-view grid remains available for diagnostics.
+    // Adaptive preheat can stop only after sampling at least seven views.
+    const fullWarmup=new URLSearchParams(location.search).get('cameraFull')==='1';
+    let quietViews=0,skippedViews=0;
+    const gl=renderer.getContext();
     try{
       renderer.setScissorTest(false);
       for(const[index,view]of views.entries()){
@@ -73,13 +124,25 @@
         cameraYaw=view.yaw;cameraPitch=view.pitch;cameraZoom=saved.zoom;updateCamera(1);updateVisualLOD();
         renderer.setViewport(0,0,2,2);
         const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-        try{renderer.render(scene,camera);renderer.getContext().finish();}finally{restoreLights?.();restoreHome?.();}
+        const viewStart=performance.now(),memoryBefore={...renderer.info.memory},programsBefore=renderer.info.programs.length;
+        try{renderer.render(scene,camera);if((index+1)%4===0||index===views.length-1)gl.finish();}finally{restoreLights?.();restoreHome?.();}
+        const added={programs:renderer.info.programs.length-programsBefore,geometries:renderer.info.memory.geometries-memoryBefore.geometries,textures:renderer.info.memory.textures-memoryBefore.textures};
+        otthiBootMetrics.views.push({view:index+1,total:views.length,ms:Math.round(performance.now()-viewStart),...added});
+        quietViews=(added.programs===0&&added.geometries===0&&added.textures===0)?quietViews+1:0;
+        // Avoid assuming the remaining directions are redundant before 7 views;
+        // this deliberately follows the measured Manus baseline (12 -> 7)
+        // while allowing comparison against the original via ?cameraFull=1.
+        if(!fullWarmup&&index>=6&&quietViews>=3){
+          gl.finish();skippedViews=views.length-index-1;
+          showWorldLoading(99,'Finalizando imagens e controles...');await nextPaint();break;
+        }
       }
     }finally{
       cameraYaw=saved.yaw;cameraPitch=saved.pitch;cameraZoom=saved.zoom;camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);camera.fov=saved.fov;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);updateVisualLOD();lockStableSceneVisibility();
       renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(scissorTest);
     }
-    return{views:views.length,ms:Math.round(performance.now()-started),before,after:{...renderer.info.memory,programs:renderer.info.programs.length}};
+    otthiBootMetrics.events.push({event:'camera-views',preparedViews:views.length-skippedViews,skippedViews,fullWarmup});
+    return{views:views.length,preparedViews:views.length-skippedViews,skippedViews,ms:Math.round(performance.now()-started),before,after:{...renderer.info.memory,programs:renderer.info.programs.length}};
   }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
@@ -90,7 +153,8 @@
     if(imported.length)await Promise.race([Promise.all(imported.map(key=>requestBrazilModel(key))).finally(()=>clearTimeout(timer)),new Promise(resolve=>{timer=setTimeout(resolve,4000);})]);
     let prepared=0;
     for(const key of keys){
-      showWorldLoading(50+Math.floor(prepared/Math.max(1,keys.length)*34),'Preparando veículos · '+(prepared+1)+' de '+keys.length);await nextPaint();
+      // Keep every vehicle; update the loading progress once every four models.
+      if(prepared%4===0){showWorldLoading(50+Math.floor(prepared/Math.max(1,keys.length)*34),'Preparando veículos · '+(prepared+1)+' a '+Math.min(keys.length,prepared+4)+' de '+keys.length);await nextPaint();}
       if(!window.OTBrazilImports?.requires(key)||window.OTBrazilImports.ready(key))fleet.prepare(THREE,key);
       prepared++;
     }

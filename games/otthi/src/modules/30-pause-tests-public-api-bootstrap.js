@@ -35,6 +35,8 @@
       $('[data-update-game]',root).onclick=openOtthiUpdateRecovery;
       $('[data-menu]',root).onclick=()=>{pauseMenuOpen=false;paused=false;closeModal();stopGame();};
     });
+    // Finish one missing lighting variant only while the game is paused.
+    setTimeout(()=>{if(pauseMenuOpen&&paused)warmDeferredWorldLighting();},150);
   }
   els.gameSettingsBtn.addEventListener('contextmenu',e=>e.preventDefault());
 

@@ -9,7 +9,7 @@ const base="http://127.0.0.1:4173/";
 const games=[
  ["kart","drive"],["boxe","box_pro"],["tenis","tennis"],
  ["ar","ar_truck_sim"],["voo","usarmy_flight_sim"],
- ["otthi","otthi"],["familia/3d","familia"]
+ ["otthi","otthi"],["familia/3d","familia"],["danca","danca"]
 ];
 const sizes=[
  {name:"mobile-360",width:360,height:740},
@@ -52,13 +52,18 @@ try{
       await page.goto(base+"games/"+slug+"/",{waitUntil:"domcontentloaded",timeout:45000});
       const expected=slug==="familia/3d"?"familia":id;
       if(slug==="familia/3d")assert((await page.title()).includes("thIAguinho"),"HQ não carregou título");
+      else if(slug==="danca")assert((await page.title()).includes("Dança"),"Dança não carregou título");
       else if(slug==="otthi")assert((await page.title()).includes("OTTHI"),"OTThi não carregou título");
       else {
         const configured=await page.evaluate(()=>window.CONSOLE_GAME_ID||null);
         assert.equal(configured,id,"Jogo GAME com ID diferente: "+slug);
       }
       // Every game must load its own production sound/render layer.
-      if(slug==="otthi"||slug==="familia/3d"){
+      if(slug==="danca"){
+        await page.waitForFunction(()=>!!window.THIAGUINHO_DANCE?.diagnostics,null,{timeout:12000});
+        assert.equal(await page.locator('[data-dance-home]').count(),1,"Dança não oferece retorno à seleção de aulas");
+        assert.equal(await page.locator('a[href="../../arcade/"]').count(),1,"Dança não oferece retorno ao console");
+      }else if(slug==="otthi"||slug==="familia/3d"){
         await page.waitForSelector("#studio-world-sound",{timeout:12000});
         const selector=slug==="otthi"?"#world-console-toolbar #studio-world-sound":"#overlay .panel #studio-world-sound";
         assert.equal(await page.locator(selector).count(),1,"World audio switch misplaced: "+slug);
@@ -130,7 +135,7 @@ try{
     }
     await context.close();
   }
-  console.log("Layout smoke OK: "+attempts+" checks, 7 games, 2 consoles, 4 viewports.");
+  console.log("Layout smoke OK: "+attempts+" checks, 8 games, 2 consoles, 4 viewports.");
 }finally{
   await browser.close();
 }

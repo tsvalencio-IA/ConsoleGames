@@ -291,6 +291,9 @@
         },
 
         processPose: function(pose, w, h) {
+            // Camera adapters may return an array of detections, an array
+            // of landmarks or the established {keypoints} object.
+            if (Array.isArray(pose)) pose=Array.isArray(pose[0]?.keypoints)?pose[0]:{keypoints:pose};
             this.pose = pose;
             const settings=window.ArcadePlaySettings?.get()||{sensitivity:1,smoothing:.62};
             const poseDt=Math.max(8,Math.min(650,performance.now()-(this.poseAt??performance.now()-16.67))),velocityScale=16.67/poseDt;
@@ -302,8 +305,10 @@
             const video=window.System?.video;
             const videoW=Math.max(1,Number(video?.videoWidth)||640);
             const videoH=Math.max(1,Number(video?.videoHeight)||480);
-            const mappedX=(point)=>640*(1-Number(point.x)/videoW);
-            const mappedY=(point)=>480*Number(point.y)/videoH;
+            const allPoints=Array.isArray(pose?.keypoints)?pose.keypoints.filter(k=>Number.isFinite(k?.x)&&Number.isFinite(k?.y)):[];
+            const unitCoords=allPoints.length>=2&&allPoints.every(k=>k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
+            const mappedX=(point)=>640*(1-(unitCoords?Number(point.x):Number(point.x)/videoW));
+            const mappedY=(point)=>480*(unitCoords?Number(point.y):Number(point.y)/videoH);
             const racketScale=MathCore.project(0,-200,-CONF.TABLE_L/2-300,w,h).s||1,visibleRange=Math.min(CONF.TABLE_W*1.2,Math.max(CONF.TABLE_W*.55,(w/2-32)/racketScale));
             if (this.useMouse) {
                 let nx = MathCore.clamp(.5+(this.mouseX / w-.5)*settings.sensitivity, 0, 1); let ny = MathCore.clamp(this.mouseY / h, 0, 1);
