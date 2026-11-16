@@ -112,7 +112,10 @@
     // lights and materials are the same ones the first playable frame uses.
     const started=performance.now(),saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),scissorTest=renderer.getScissorTest(),before={...renderer.info.memory,programs:renderer.info.programs.length};
     const views=[];for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5])views.push({pitch,yaw});
-    // Preserve all twelve camera views, but synchronize the WebGL driver in batches of four.
+    // The same complete 12-view grid remains available for diagnostics.
+    // Adaptive preheat can stop only after sampling at least seven views.
+    const fullWarmup=new URLSearchParams(location.search).get('cameraFull')==='1';
+    let quietViews=0,skippedViews=0;
     const gl=renderer.getContext();
     try{
       renderer.setScissorTest(false);
@@ -121,15 +124,25 @@
         cameraYaw=view.yaw;cameraPitch=view.pitch;cameraZoom=saved.zoom;updateCamera(1);updateVisualLOD();
         renderer.setViewport(0,0,2,2);
         const restoreHome=prepareHomeRender(),restoreLights=prepareWorldPointLights(camera);
-        const viewStart=performance.now();
+        const viewStart=performance.now(),memoryBefore={...renderer.info.memory},programsBefore=renderer.info.programs.length;
         try{renderer.render(scene,camera);if((index+1)%4===0||index===views.length-1)gl.finish();}finally{restoreLights?.();restoreHome?.();}
-        otthiBootMetrics.views.push({view:index+1,total:views.length,ms:Math.round(performance.now()-viewStart)});
+        const added={programs:renderer.info.programs.length-programsBefore,geometries:renderer.info.memory.geometries-memoryBefore.geometries,textures:renderer.info.memory.textures-memoryBefore.textures};
+        otthiBootMetrics.views.push({view:index+1,total:views.length,ms:Math.round(performance.now()-viewStart),...added});
+        quietViews=(added.programs===0&&added.geometries===0&&added.textures===0)?quietViews+1:0;
+        // Avoid assuming the remaining directions are redundant before 7 views;
+        // this deliberately follows the measured Manus baseline (12 -> 7)
+        // while allowing comparison against the original via ?cameraFull=1.
+        if(!fullWarmup&&index>=6&&quietViews>=3){
+          gl.finish();skippedViews=views.length-index-1;
+          showWorldLoading(99,'Finalizando imagens e controles...');await nextPaint();break;
+        }
       }
     }finally{
       cameraYaw=saved.yaw;cameraPitch=saved.pitch;cameraZoom=saved.zoom;camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);camera.fov=saved.fov;camera.updateProjectionMatrix();camera.updateMatrixWorld(true);updateVisualLOD();lockStableSceneVisibility();
       renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(scissorTest);
     }
-    return{views:views.length,ms:Math.round(performance.now()-started),before,after:{...renderer.info.memory,programs:renderer.info.programs.length}};
+    otthiBootMetrics.events.push({event:'camera-views',preparedViews:views.length-skippedViews,skippedViews,fullWarmup});
+    return{views:views.length,preparedViews:views.length-skippedViews,skippedViews,ms:Math.round(performance.now()-started),before,after:{...renderer.info.memory,programs:renderer.info.programs.length}};
   }
   async function prepareVehicleTemplates(){
     const fleet=window.OTBrazilVehicles;if(!fleet?.prepare||perf.vehicleTemplatesReady)return;
