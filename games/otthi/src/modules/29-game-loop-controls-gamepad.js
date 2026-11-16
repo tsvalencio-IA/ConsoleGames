@@ -112,6 +112,11 @@
     // lights and materials are the same ones the first playable frame uses.
     const started=performance.now(),saved={yaw:cameraYaw,pitch:cameraPitch,zoom:cameraZoom,position:camera.position.clone(),quaternion:camera.quaternion.clone(),fov:camera.fov},viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),scissorTest=renderer.getScissorTest(),before={...renderer.info.memory,programs:renderer.info.programs.length};
     const views=[];for(const pitch of[-.55,.28,1.35])for(const yaw of[0,Math.PI/2,Math.PI,Math.PI*1.5])views.push({pitch,yaw});
+    // Preserve all 12 angles, but compile the player's ACTUAL entry view first.
+    // The adaptive stop must not waste the fast path on a far-away pitch.
+    const yawDistance=(a,b)=>Math.abs(Math.atan2(Math.sin(a-b),Math.cos(a-b)));
+    const priority=view=>Math.abs(view.pitch-saved.pitch)*4+yawDistance(view.yaw,saved.yaw);
+    views.sort((a,b)=>priority(a)-priority(b));
     // The same complete 12-view grid remains available for diagnostics.
     // Adaptive preheat can stop only after sampling at least seven views.
     const fullWarmup=new URLSearchParams(location.search).get('cameraFull')==='1';
