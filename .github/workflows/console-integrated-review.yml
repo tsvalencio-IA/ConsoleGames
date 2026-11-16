@@ -1,0 +1,68 @@
+name: Homologacao integrada dos oito jogos
+on:
+  pull_request:
+    branches: [continuation-20261111]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit:
+    name: Build oficial e testes de regressao
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerar a release OTTHI a partir dos modulos
+        run: python3 games/otthi/tools/build_project.py
+      - name: Validar bundle, integridade e testes
+        run: |
+          node --check games/otthi/app.js
+          node --test tests/*.test.mjs
+  browser:
+    name: Oito jogos e layout em 4 resolucoes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preparar build modular
+        run: python3 games/otthi/tools/build_project.py
+      - name: Preparar Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Servir versao local sem Firebase
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/console-http.log 2>&1 &
+          sleep 2
+      - name: Verificar console e 8 jogos
+        run: node tests/browser-smoke.mjs
+      - name: Entrar nas cinco campanhas e retornar aos menus
+        run: node tests/solo-entry-browser.mjs
+      - name: Corrida completa de tres voltas com rivais reais do motor
+        run: node tests/kart-racecraft-browser.mjs
+      - name: Jogar Familia com tres toques, duas buscas e salvar progresso
+        run: node tests/hq-play-browser.mjs
+      - name: Jogar Danca com camera simulada e progressao
+        run: node tests/dance-console-browser.mjs
+      - name: Entrar no mundo OTTHI e validar uma sessao real em Chromium
+        run: node tests/world-candidate-smoke-browser.mjs
+      - name: Guardar screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: consolegames-8-jogos-4-telas
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 14

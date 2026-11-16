@@ -1,0 +1,50 @@
+name: Flight Academy — build and regression (isolated)
+on:
+  push:
+    branches: [feat/flight-academy-integrated-20261116]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-and-test:
+    if: "!startsWith(github.event.head_commit.message, 'build(academy):')"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/flight-academy-integrated-20261116
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Official modular world build
+        run: python3 games/otthi/tools/build_project.py
+      - name: Flight and world JavaScript syntax
+        run: |
+          node --check games/voo/js/game_flight.js
+          node --check games/voo/js/flight-operations.js
+          node --check games/voo/js/flight-world-return.js
+          node --check games/otthi/app.js
+          node --check games/otthi/src/modules/42-ot-games-modes.js
+          node --check games/otthi/src/modules/43-world-campaign.js
+          node --check games/otthi/src/modules/45-world-activity-venues.js
+          node --check games/otthi/assets/js/world-venue-trip.js
+      - name: Entire unit regression suite, including flight
+        run: |
+          node --test tests/*.test.mjs
+          git diff --check
+      - name: Save generated world bundle in isolated branch
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add games/otthi/app.js games/otthi/index.html games/otthi/sw.js games/otthi/release-manifest.json games/otthi/src/module-order.json games/otthi/style.css
+          if git diff --cached --quiet; then
+            echo "Derived files already match source."
+          else
+            git commit -m 'build(academy): regenerate verified OTTHI world bundle'
+            git push origin HEAD:feat/flight-academy-integrated-20261116
+          fi

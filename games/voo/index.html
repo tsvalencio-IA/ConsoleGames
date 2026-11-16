@@ -6,7 +6,7 @@
     <title>Aero Strike WAR • thIAguinho ARCADE</title>
     
     <!-- Conexão com o PWA (Instalador Nativo) -->
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="../../arcade/manifest.webmanifest">
     <meta name="theme-color" content="#1a1a24">
     <link rel="apple-touch-icon" href="./icon.svg">
     <link rel="icon" type="image/svg+xml" href="./icon.svg">
@@ -406,7 +406,10 @@
 
     <script src="vendor/three-r128.min.js"></script>
     <script src="world-renderer.js?v=20261114-shared-prep1"></script>
-    <script src="./js/game_flight.js?v=20261107-runway3"></script>
+    <script src="./js/flight-operations.js?v=20261116-academy1"></script>
+    <script src="./js/game_flight.js?v=20261116-academy1"></script>
+    <script src="../otthi/assets/js/world-venue-trip.js?v=20261116-flight1"></script>
+    <script src="./js/flight-world-return.js?v=20261116-flight1"></script>
 
     <script>setInterval(() => { const now = new Date(); const el = document.getElementById('clock'); if(el) el.innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); }, 1000);</script>
 
@@ -426,5 +429,5 @@
   <script src="./studio-fx.js"></script>
   <script src="./studio-scenes.js"></script>
   <script src="./mastery-gamepad.js"></script>
-<link rel="stylesheet" href="./play-settings.css"><script src="./play-settings.js"></script><script src="./local-practice.js?v=20261029-entry5"></script></body>
+<link rel="stylesheet" href="./play-settings.css"><script src="./play-settings.js"></script><script src="./local-practice.js?v=20261029-entry5"></script><script src="../../arcade/canonical-navigation.js" data-console-canonical="1"></script></body>
 </html>

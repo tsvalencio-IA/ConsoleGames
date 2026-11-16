@@ -15,13 +15,13 @@ function fixture(){
   class Geometry{constructor(...dimensions){this.dimensions=dimensions;}}
   class Material{constructor(config){this.config=config;}}
   const three={Group,Mesh,BoxGeometry:Geometry,CylinderGeometry:Geometry,PlaneGeometry:Geometry,
-    MeshStandardMaterial:Material,MeshBasicMaterial:Material,CanvasTexture:class{constructor(c){this.canvas=c}},DoubleSide:2};
+    MeshStandardMaterial:Material,MeshBasicMaterial:Material,CanvasTexture:class{constructor(c){this.canvas=c}},DoubleSide:2,FrontSide:'front',LinearFilter:'linear',ClampToEdgeWrapping:'clamp',sRGBEncoding:'srgb'};
   const element=tag=>({
     tag,style:{},hidden:false,children:[],innerHTML:'',textContent:'',attrs:{},
     classList:{add(){},toggle(){}},addEventListener(){},setAttribute(k,v){this.attrs[k]=v;},
     append(o){this.children.push(o);},prepend(o){this.children.unshift(o);},
     querySelector(){return {textContent:'',hidden:false}},getContext(){return {
-      fillRect(){},strokeRect(){},fillText(){},set font(v){},set fillStyle(v){},set strokeStyle(v){},set textAlign(v){},set lineWidth(v){}
+      scale(){},fillRect(){},strokeRect(){},fillText(){},set font(v){},set fillStyle(v){},set strokeStyle(v){},set textAlign(v){},set lineWidth(v){}
     }}
   });
   const body=element('body'),head=element('head'),quickBar=element('quickBar'),game=element('game');
@@ -31,7 +31,7 @@ function fixture(){
     ui:{querySelector(){return {hidden:true}}},kills:0,goal:0};
   const context={
     window:{},document,THREE:three,OT_CHILD_WORLD:true,openCivilMissions(){context.civilOpened=(context.civilOpened||0)+1;},worldGroup:new Group(),scene:new Group(),player,
-    otGames,running:true,paused:false,state:{profile:{playerId:'test-player'}},cameraYaw:0,
+    otGames,registerInteractable(){},running:true,paused:false,state:{profile:{playerId:'test-player'}},cameraYaw:0,
     v704WorldBounds:()=>({minX:-290,maxX:290,minZ:-290,maxZ:290}),groundHeightAt:()=>0,
     safeLocalGet:key=>saved.get(key)||null,
     safeLocalSet:(key,value)=>saved.set(key,value),
@@ -70,4 +70,23 @@ test('old military checkpoints never resume or grant a reward in the civilian wo
 });
 test('civil geography keeps the same landmarks and parked flight bases',()=>{
  const f=fixture();f.tick();const sites=f.api.sites();assert.equal(sites.length,3);assert(sites.every(s=>!/quartel|militar|tático|combate/i.test(s.label)));assert(f.api.parked().length>=9);assert(f.api.diagnostics().landmarks.every(l=>l.attached));
+});
+
+test('all permanent world signs use visible POT textures compatible with WebGL1 and WebGL2',()=>{
+ const f=fixture();f.tick();
+ const signs=f.context.worldGroup.children.flatMap(root=>root.children).filter(obj=>obj?.material?.config?.map?.canvas);
+ assert.equal(signs.length,4,'existing world signs and aviation academy sign must remain');
+ for(const sign of signs){
+   const texture=sign.material.config.map;
+   assert.equal(texture.canvas.width,512);assert.equal(texture.canvas.height,256);
+   assert.equal(texture.generateMipmaps,false);
+   assert.equal(texture.minFilter,'linear');assert.equal(texture.magFilter,'linear');
+   assert.equal(texture.wrapS,'clamp');assert.equal(texture.wrapT,'clamp');
+   assert.equal(sign.material.config.side,'front');
+   assert.equal(sign.children.length,1,'a single reverse plate is required');
+   const reverse=sign.children[0];
+   assert.equal(reverse.material,sign.material,'both sides must share one texture');
+   assert.equal(reverse.geometry,sign.geometry);
+   assert.equal(reverse.rotation.y,Math.PI,'back text must face its viewer rather than mirror');
+ }
 });

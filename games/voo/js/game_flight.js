@@ -225,7 +225,7 @@
             let saved={};try{saved=JSON.parse(localStorage.getItem(this.careerKey)||'{}')||{};}catch{}
             if(window.Profile?.flightSave&&typeof window.Profile.flightSave==='object')saved=window.Profile.flightSave;
             for(const key of Object.keys(this.upgrades))this.upgrades[key]=Math.max(1,Math.min(5,Math.floor(Number(saved.upgrades?.[key])||1)));
-            this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school};
+            this.flightCareer={kills:Math.max(0,Number(saved.kills)||0),school:!!saved.school,missions:(saved.missions&&typeof saved.missions==='object'&&!Array.isArray(saved.missions))?saved.missions:{}};
             this.flightSchool=null;this.onGround=false;this.manualThrottle=1;this.airframe='falcon';this.selectAirframe(saved.airframe||'falcon');
             this.currentStats = JSON.parse(JSON.stringify(BASE_PLANE_STATS));
             
@@ -258,6 +258,7 @@
             this.net.uid = baseUid + "_" + sessionSuffix;
 
             this.mode = (faseData && faseData.mode) ? faseData.mode : 'SINGLE';
+            window.FlightOperations?.start(this,faseData);
             this.flightSchool=faseData?.school?{stage:'takeoff',gate:0,complete:false,lastMessage:''}:null;
             if(this.flightSchool&&this.isHelicopter())this.airframe='falcon';
             this._initBattleWorld();
@@ -486,6 +487,7 @@
             this.entities = [];
             this.bullets = [];
             this.missiles = [];
+            window.FlightOperations?.onStart(this);
         },
 
         update: function(ctx, w, h, pose) {
@@ -562,6 +564,7 @@
                     return this.session.kills*100;
                 }
 
+                const flightBefore={x:this.ship.x,y:this.ship.y,z:this.ship.z};
                 if (this.ship.hp < this.ship.maxHp) {
                     let hpRatio = this.ship.hp / this.ship.maxHp;
                     if (hpRatio < 0.4) {
@@ -734,6 +737,7 @@
                 this._updateBullets(dt);
                 this._updateMissiles(dt); 
                 this._cleanupFx();
+                window.FlightOperations?.update(this,dt,flightBefore);
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
@@ -782,9 +786,10 @@
 
             if(window.ArcadeControls?.mode==='controls'&&this.manualStick?.active){trgRoll=this.manualStick.x*(window.ArcadePlaySettings?.get().sensitivity??1);trgPitch=this.manualStick.y*(window.ArcadePlaySettings?.get().sensitivity??1);inputDetected=Math.hypot(this.manualStick.x,this.manualStick.y)>.001;}
             let pts = null;
-            if (pose && Array.isArray(pose)) pts = pose;
-            else if (pose && pose.keypoints) pts = pose.keypoints;
-            else if (pose && Array.isArray(pose) && pose[0] && pose[0].keypoints) pts = pose[0].keypoints;
+            // MoveNet is supplied either as {keypoints}, [keypoints] or
+            // [{keypoints}]. Do not silently drop a valid array of poses.
+            if (Array.isArray(pose)) pts = Array.isArray(pose[0]?.keypoints) ? pose[0].keypoints : pose;
+            else if (Array.isArray(pose?.keypoints)) pts = pose.keypoints;
 
             if (window.ArcadeControls?.mode!=='controls' && pts && pts.length > 0) {
                 let rightWrist = null, leftWrist = null;
@@ -798,10 +803,14 @@
                 if (rightWrist && leftWrist) {
                     inputDetected = true;
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
-                    let rx = (1 - ((rightWrist.x || 0) / videoW)) * w;
-                    let ry = ((rightWrist.y || 0) / videoH) * h;
-                    let lx = (1 - ((leftWrist.x || 0) / videoW)) * w;
-                    let ly = ((leftWrist.y || 0) / videoH) * h;
+                    // Accept normalized [0,1] poses as well as video pixels
+                    // without changing the already-approved mirror convention.
+                    const unitCoords=[rightWrist,leftWrist].every(k=>Number.isFinite(k.x)&&Number.isFinite(k.y)&&k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
+                    const fx=k=>unitCoords?k.x:k.x/videoW,fy=k=>unitCoords?k.y:k.y/videoH;
+                    let rx = (1 - fx(rightWrist)) * w;
+                    let ry = fy(rightWrist) * h;
+                    let lx = (1 - fx(leftWrist)) * w;
+                    let ly = fy(leftWrist) * h;
                     
                     // Anatomical wrist names swap sides in the mirrored view.
                     // A level pair must always yield zero, never atan2(0,-span)=π.
@@ -1295,7 +1304,10 @@
             this.state = res;
             GameSfx.stop();
             setTimeout(() => {
-                if (window.System && window.System.gameOver) window.System.gameOver(this.session.kills*100,res==='VICTORY',0);
+                if (window.System && window.System.gameOver) {
+                    const bonus=this.flightOperation?.done?Math.round(350+Math.max(0,600-this.flightOperation.elapsed*2)):0;
+                    window.System.gameOver(this.session.kills*100+bonus,res==='VICTORY',0);
+                }
                 else if (window.System && window.System.home) window.System.home();
             }, 2000);
         },
@@ -1312,6 +1324,7 @@
             if(g.onRunway&&g.aligned&&g.level&&g.speed<130&&g.altitude<70&&this.pilot.throttle<.55&&this.ship.vy<0)this.ship.vy=Math.max(this.ship.vy,-Math.max(1.2,Math.min(6,g.altitude*.16)));
         },
         _updateRunwayLanding: function(dt){
+            if(window.FlightOperations?.carrierGround(this,dt))return;
             const p=this.ship,g=this._landingGuidance();
             if(this.onGround){
                 if(!g.onRunway||g.speed>65&&p.pitch>.04){this.onGround=false;return;}
@@ -1577,10 +1590,12 @@
             }
             
             this._drawWorld(ctx,w,h);
+            window.FlightOperations?.drawWorld(ctx,w,h,this);
             this._drawEntities(ctx,w,h);
             if(this.flightSchool||this.mode==='FREE'&&!this.isHelicopter())this._drawSchool(ctx,w,h);
             if(window.ArcadePlaySettings?.get().camera!=='cockpit')this._drawOwnPlane(ctx,w,h);
             this._drawHUD(ctx,w,h);
+            window.FlightOperations?.drawHud(ctx,w,h,this);
             if(window.ArcadePlaySettings?.get().camera==='cockpit')this._drawCockpit(ctx,w,h);
             ctx.restore();
             
@@ -2065,6 +2080,11 @@
                     { id: 'training', name: 'CAMPANHA SOLO', desc: 'Destrua as ameaças e evolua o seu caça.', mode: 'SINGLE', reqLvl: 1 },
                     { id: 'free', name: 'VOO LIVRE', desc: 'Explore o cenário e treine manobras.', mode: 'FREE', reqLvl: 1 },
                     { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse cinco arcos e pratique a aproximação e o pouso.', mode: 'FREE', school:true, reqLvl: 1 },
+                    { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Patrulhe três pontos e retorne à base.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
+                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe pontos turísticos em voo estável.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
+                    { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Encontre o chamado de socorro e regresse.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
+                    { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor avariado: pouse em segurança.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
+                    { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Decole do convés, patrulhe e pouse no navio.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
                     { id: 'coop', name: 'CO-OP ESQUADRÃO', desc: 'Junte-se a aliados para abater o ACE.', mode: 'COOP', reqLvl: 1 },
                     { id: 'pvp', name: 'COMBATE PVP', desc: 'Batalha aérea multijogador.', mode: 'PVP', reqLvl: 1 }
                 ]

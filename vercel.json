@@ -339,5 +339,24 @@
       "source": "/android/thIAguinho-ARCADE-OT.apk",
       "destination": "/arcade/downloads/thIAguinho-ARCADE-OT.apk"
     }
+  ],
+  "buildCommand": "python3 games/otthi/tools/build_project.py",
+  "outputDirectory": ".",
+  "redirects": [
+    {
+      "source": "/console.html",
+      "destination": "/arcade/",
+      "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/arcade",
+      "destination": "/arcade/",
+      "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/arcade/",
+      "destination": "/arcade/",
+      "permanent": false
+    }
   ]
 }

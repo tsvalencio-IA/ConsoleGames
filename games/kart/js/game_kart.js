@@ -159,7 +159,7 @@
         },
 
         resetPhysics: function() {
-            this.racecraftTrial=null;this.duelTrial=null;
+            this.racecraftTrial=null;this.duelTrial=null;this.cameraRearGesture=false;this.rearGestureFrames=0;
             this.lastTime=performance.now();this.physicsAccumulator=0;this.raceElapsed=0;this.lapStartedAt=0;this.lapTimes=[];this.collisionContacts=new Set();this.roadCurve=0;this.steeringHelp=0;this.trackingLost=false;this.turboLock=false;this.gestureTimer=0;
             this.steeringFrame=null;this.steeringFrameAt=null;this.virtualWheel={x:0,y:0,r:60,opacity:0,isHigh:false};this.cameraItemGesture=null;this.seenOnlineImpacts=new Set();
             this.speed = 0; this.pos = 0; this.playerX = 0; this.steer = 0; this.targetSteer = 0; this.cameraX = 0; this.driftSparks = 0; this.driftBoosts=0; this.slipstreamTimer = 0;
@@ -939,6 +939,20 @@
                 const sample=pose?.cameraFrame??window.System?.video?.currentTime,now=performance.now();
                 if(Number.isFinite(sample)&&this.steeringFrame!==sample){this.steeringFrame=sample;this.steeringFrameAt=now;}
                 const freshSteering=!Number.isFinite(sample)||now-(this.steeringFrameAt??now)<550;
+                // Pose tracks wrists, not individual fingers; use a deliberate
+                // two-arm spread at shoulder height, never call it palm tracking.
+                // Raising both wrists above the nose still triggers legacy turbo.
+                this.rearGestureFrames=this.rearGestureFrames||0;
+                const points=pose?.keypoints||[],get=name=>points.find(p=>p.name===name);
+                const l=get('left_wrist'),r=get('right_wrist'),ls=get('left_shoulder'),rs=get('right_shoulder'),nosePt=get('nose');
+                const good=[l,r,ls,rs,nosePt].every(p=>p?.score>.30&&Number.isFinite(p.x)&&Number.isFinite(p.y));
+                const span=good?Math.abs(ls.x-rs.x):0;
+                const spread=good&&span>25&&Math.abs(l.x-r.x)>span*1.6
+                  &&Math.abs(l.y-ls.y)<span*.8&&Math.abs(r.y-rs.y)<span*.8
+                  &&l.y>nosePt.y&&r.y>nosePt.y;
+                this.rearGestureFrames=spread&&freshSteering?Math.min(12,this.rearGestureFrames+1):Math.max(0,this.rearGestureFrames-3);
+                this.cameraRearGesture=this.rearGestureFrames>=8;
+
                 if(window.ArcadeControls?.mode!=='controls' && pose && pose.keypoints && freshSteering) {
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
                     const map=pt=>({x:(1-pt.x/videoW)*w,y:pt.y/videoH*h});
@@ -1219,7 +1233,7 @@
         cameraView: function(w,h){
             const opts=playOptions(),target={near:2.4,medium:4.5,far:7.5}[opts.distance]||7.5;
             this.cameraDepth=Number.isFinite(this.cameraDepth)?this.cameraDepth+(target-this.cameraDepth)*.1:target;
-            const direction=window.ArcadeControls?.mode==='controls'&&this.arcadeManual?.rear?-1:1,depth=this.cameraDepth;
+            const direction=(window.ArcadeControls?.mode==='controls'&&this.arcadeManual?.rear)||this.cameraRearGesture?-1:1,depth=this.cameraDepth;
             const baseFloat=this.pos/CONF.SEGMENT_LENGTH-direction*depth;
             const base=direction===1?Math.floor(baseFloat):Math.ceil(baseFloat);
             return {depth,direction,base,fraction:Math.abs(baseFloat-base),horizon:h*.30,drawDistance:opts.quality==='low'?180:CONF.DRAW_DISTANCE};
@@ -1373,7 +1387,7 @@
                   this.playerScreen={x,y,scale,roadX:a.x+(b.x-a.x)*t,roadHalfWidth:w*1.5*scale};
                   this.drawKartSprite(ctx,x,y+d.bounce,w*.0022*scale*1.55,d.steer,d.visualTilt*.45,d.spinAngle,CHARACTERS[d.selectedChar].color,d.selectedChar,myKartId);
                 }
-                if(d.arcadeManual?.rear){ctx.save();ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText('OLHANDO PARA TRÁS',w/2,h*.27);ctx.restore();}
+                if(d.arcadeManual?.rear||this.cameraRearGesture){ctx.save();ctx.font='bold 12px Arial';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText('OLHANDO PARA TRÁS',w/2,h*.27);ctx.restore();}
             }
         },
 
@@ -1654,10 +1668,10 @@
             }
 
             if (minimapPath.length > 0) {
-                const mapX = w <= 520 ? 10 : 25, mapY = w <= 520 ? 172 : 190, mapSize = w <= 520 ? 78 : 130; ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; ctx.fillRect(mapX, mapY, mapSize, mapSize); ctx.save(); ctx.translate(mapX + mapSize/2, mapY + mapSize/2);
+                const mapX=w<=520?10:25,mapSize=w<=520?Math.min(112,Math.max(94,w*.24)):130,mapY=Math.min(h-mapSize-18,w<=520?Math.max(106,h*.21):190); ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; ctx.fillRect(mapX, mapY, mapSize, mapSize); ctx.save(); ctx.translate(mapX + mapSize/2, mapY + mapSize/2);
                 const scale = Math.min((mapSize-20)/minimapBounds.w, (mapSize-20)/minimapBounds.h); ctx.scale(scale, scale); ctx.translate(-(minimapBounds.minX+minimapBounds.maxX)/2, -(minimapBounds.minZ+minimapBounds.maxZ)/2);
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = 10; ctx.beginPath(); minimapPath.forEach((p, i) => { if(i===0) ctx.moveTo(p.x, p.z); else ctx.lineTo(p.x, p.z); }); ctx.closePath(); ctx.stroke();
-                const drawDot = (pos, c, r) => { const idx = Math.floor((pos/trackLength) * minimapPath.length) % minimapPath.length; const pt = minimapPath[idx]; if(pt){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(pt.x, pt.z, r, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.lineWidth=2; ctx.stroke(); } };
+                ctx.strokeStyle = '#effbff'; ctx.lineWidth = 3/scale; ctx.beginPath(); minimapPath.forEach((p, i) => { if(i===0) ctx.moveTo(p.x, p.z); else ctx.lineTo(p.x, p.z); }); ctx.closePath(); ctx.stroke();
+                const drawDot = (pos, c, r) => { const idx = Math.floor((pos/trackLength) * minimapPath.length) % minimapPath.length; const pt = minimapPath[idx]; if(pt){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(pt.x, pt.z, r/scale, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.lineWidth=1.2/scale; ctx.stroke(); } };
                 d.rivals.forEach(r => drawDot(r.pos, r.status==='FINISHED' ? '#0f0' : (r.color||'#ffee00'), 22)); drawDot(d.pos, '#ff0000', 26); ctx.restore();
             }
 

@@ -41,13 +41,27 @@
     o.position.set(x,y,z);o.castShadow=true;root.add(o);return o;
   }
   function campaignSign(root,title,subtitle,y){
-    const c=document.createElement('canvas');c.width=512;c.height=160;
-    const x=c.getContext('2d');x.fillStyle='#102d37';x.fillRect(0,0,512,160);
+    // Power-of-two backing and non-mipmapped text prevent blank signs on
+    // WebGL implementations with strict canvas texture sampling rules.
+    // Scale the ORIGINAL artwork into the new backing so signage is unchanged.
+    const c=document.createElement('canvas');c.width=512;c.height=256;
+    const x=c.getContext('2d');x.scale(1,256/160);
+    x.fillStyle='#102d37';x.fillRect(0,0,512,160);
     x.strokeStyle='#b3ddc7';x.lineWidth=8;x.strokeRect(7,7,498,146);
     x.textAlign='center';x.fillStyle='#f1f6e8';x.font='bold 43px Arial';x.fillText(title,256,72);
     x.fillStyle='#a2d5c5';x.font='bold 24px Arial';x.fillText(subtitle,256,119);
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(10,3),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
-    m.position.y=y;root.add(m);return m;
+    const texture=new THREE.CanvasTexture(c);
+    texture.generateMipmaps=false;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;
+    texture.wrapS=THREE.ClampToEdgeWrapping;texture.wrapT=THREE.ClampToEdgeWrapping;
+    texture.encoding=THREE.sRGBEncoding;texture.needsUpdate=true;
+    // A single DoubleSide textured plane mirrors letters on its reverse.
+    // Keep the public sign object and its transforms, but add an inexpensive
+    // back-facing copy sharing the same geometry, material and texture.
+    const geometry=new THREE.PlaneGeometry(10,3);
+    const material=new THREE.MeshBasicMaterial({map:texture,side:THREE.FrontSide});
+    const m=new THREE.Mesh(geometry,material),reverse=new THREE.Mesh(geometry,material);
+    reverse.rotation.y=Math.PI;reverse.position.z=-.015;
+    m.add(reverse);m.position.y=y;root.add(m);return m;
   }
   function campaignCollider(site,x,z,w,d,height){
     const c={x:site.x+x,z:site.z+z,w,d,height,campaignSite:site.id};
@@ -101,6 +115,14 @@
       for(const x of [21.5,24.5])box(line,x,.21,4,.35,.02,4);box(line,23,.21,4,3,.02,.35);
       for(let x=-39;x<40;x+=8)for(const z of [-.4,8.4])campaignCylinder(root,line,x,.25,z,.12,.35);
       const sign=campaignSign(root,'AEROPORTO OT','HANGARES · PISTA · HELIPONTO',8);if(sign)sign.position.z=-7;
+      // Reuse the existing open-front western hangar; preserve all runway geometry.
+      const academySign=campaignSign(root,'ACADEMIA DE AVIAÇÃO','SIMULADOR · MISSÕES · PILOTAGEM',6);
+      academySign.position.set(-25,6,-7.4);
+      box(steel,-29,1,-13,3.2,1.8,1.35);box(glass,-29,2.05,-12.95,3,.16,1.3);
+      box(line,-25,.17,-9,8,.025,.13);
+      registerInteractable({id:'ot-flight-academy',type:'activity-venue',icon:'✈️',
+        label:'Entrar · Academia de Aviação',x:site.x-25,z:site.z-7.2,radius:4.5,priority:220,
+        available:()=>!otGames.active&&!player.vehicle&&!worldVenues.session,action:openFlightAcademy});
     }else{
       box(road,0,.04,0,15.8,.08,9.8);
       for(const x of [-5,5]){wall(green,x,1.25,2.8,4,2.5,3);box(steel,x,2.65,2.8,4.4,.3,3.4);box(glass,x,1.6,1.2,2,1,.1);}
@@ -109,6 +131,22 @@
       const sign=campaignSign(root,'CENTRO DE VISITANTES','TRILHAS · NATUREZA · PASSEIOS',5);if(sign)sign.position.z=0;
     }
     campaignBatch(root);worldGroup.add(root);worldCampaign.landmarks.push({site,root});
+  }
+  function openFlightAcademy(){
+    if(otGames.active||player.vehicle||worldVenues.session)return false;
+    const record=venueRecords().aviation||{played:0,wins:0,best:0};
+    const numbers='<p>Seu histórico: '+Math.max(0,Number(record.played)||0)+' missões · '+Math.max(0,Number(record.wins)||0)+' concluídas.</p>';
+    const html='<p>Academia de Aviação dentro do hangar. Abra o simulador com sua calibração original ou embarque em um avião para voar pelo OTTHI.</p>'+numbers+
+      '<div class="choice-grid">'+
+      '<button class="choice" data-flight-academy="sim"><b>✈️ SIMULADOR AERO STRIKE</b><span>Escola, patrulha, resgate, reportagem, emergência e porta-aviões</span></button>'+
+      '<button class="choice" data-flight-academy="world"><b>🛩️ VOAR NO MUNDO ABERTO</b><span>Localize a aeronave, embarque e use a câmera frontal</span></button>'+
+      '<button class="choice" data-flight-academy="map"><b>🗺️ ESCOLHER AERONAVE</b><span>Visite o terminal do aeroporto</span></button></div>';
+    openModal('Academia de Aviação OT',html,ui=>{
+      ui.querySelector('[data-flight-academy="sim"]').onclick=()=>{closeModal();venueOpen('aviation');};
+      ui.querySelector('[data-flight-academy="world"]').onclick=()=>{closeModal();setWaypoint('campaign-plane');toast('Siga o GPS até o avião. Embarque com AÇÃO e ative CÂMERA FRONTAL.','info',4500);};
+      ui.querySelector('[data-flight-academy="map"]').onclick=()=>{closeModal();openAirportDepartures();};
+    });
+    return true;
   }
   async function campaignLoadAircraft(){
     if(worldCampaign.loadingAircraft||worldCampaign.aircraft)return;

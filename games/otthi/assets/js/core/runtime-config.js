@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.29-camera-socorro-jogabilidade',
+    build: '705.28.30-aviacao-presenca-unificada',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

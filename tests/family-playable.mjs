@@ -52,7 +52,7 @@ try{
  await page.locator('[data-world-avatar-value="family-thiago"]').click();
  assert(await page.locator('[data-world-avatar-custom]').isHidden());
  await page.locator('[data-world-avatar-save]').click();
- await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thiago'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:15000});
+ await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thiago'&&window.OTTHI_FAMILY.playerAvatar().baseHidden,null,{timeout:15000});
  assert(await page.evaluate(()=>window.OTTHI_FAMILY.playerAvatar().baseHidden),'The original avatar overlaps the family model');
  async function moveCharacter(id){
   const before=await page.evaluate(()=>window.OTTHOS_TEST_API.getGame().player),joystick=page.locator('#joystick'),box=await joystick.boundingBox();
@@ -76,7 +76,7 @@ try{
  await chooseParty('thamis',['thamis']);
  await page.waitForFunction(()=>window.OTTHI_FAMILY.playerAvatar()?.id==='thamis',null,{timeout:15000});
  await page.reload({waitUntil:'domcontentloaded'});await page.locator('#playBtn').click();
- await page.waitForFunction(()=>window.__CITY_QA?.cap(1)&&window.OTTHOS_TEST_API?.getGame().running&&window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().toolInHand,null,{timeout:120000});
+ await page.waitForFunction(()=>window.__CITY_QA?.cap(1)&&window.OTTHOS_TEST_API?.getGame().running&&window.OTTHI_FAMILY.playerAvatar()?.id==='thamis'&&window.OTTHI_FAMILY.playerAvatar().baseHidden,null,{timeout:120000});
  assert.deepEqual(await page.evaluate(()=>window.OTTHI_FAMILY.diagnostics().progress.party),{controller:'thamis',members:['thamis']});
  await page.waitForFunction(()=>window.OTTHI_FAMILY.diagnostics().party.members.join(',')==='thamis',null,{timeout:15000});
  await moveCharacter('thamis');

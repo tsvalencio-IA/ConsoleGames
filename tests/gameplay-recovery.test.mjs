@@ -55,7 +55,7 @@ test('Vercel packaging gives the installed console a real root URL while preserv
   assert.equal(manifest.id,'/arcade/');assert.equal(manifest.scope,'/');
   assert.equal(new URL(manifest.start_url,'https://test.example/arcade/').pathname,'/arcade/');
   assert.equal(readFileSync('arcade/manifest.webmanifest','utf8'),original);
-  assert.equal(JSON.parse(original).id,'/ConsoleGames/arcade/');
+  assert.equal(JSON.parse(original).id,'/arcade/');
   const consoleHtml=readFileSync('arcade/index.html','utf8');
   const consoleProgram="import runpy; m=runpy.run_path('tools/package-world-preview.py'); print(m['root_site_console'](open('arcade/index.html').read()))";
   const packagedHtml=execFileSync('python3',['-c',consoleProgram],{encoding:'utf8'});

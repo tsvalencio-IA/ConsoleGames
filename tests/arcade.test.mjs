@@ -13,8 +13,8 @@ const app=read("arcade/app.js");
 const sw=read("arcade/sw.js");
 
 test("app ARCADE tem link, ID, nome, escopo e inicialização próprios",()=>{
-  assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
-  assert.equal(arcadeManifest.scope,"/ConsoleGames/");
+  assert.equal(arcadeManifest.id,"/arcade/");
+  assert.equal(arcadeManifest.scope,"/");
   assert(arcadeManifest.start_url.startsWith(arcadeManifest.scope));
   assert.notEqual(arcadeManifest.id,oldManifest.id);
   assert.notEqual(arcadeManifest.name,oldManifest.name);
@@ -58,7 +58,7 @@ test("Firebase OTThi é idêntico entre console raiz e app ARCADE",()=>{
   assert(sw.includes("./icon-192.png")&&sw.includes("./icon-512.png"));
 });
 
-test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
+test("instalação única mantém navegação pelos oito jogos no ARCADE",()=>{
  for(const name of ["kart","boxe","tenis","ar","voo"]){
   assert(read("games/"+name+"/arcade-enhancements.js").includes('back.href="../../arcade/"'));
   assert(read("games/"+name+"/arcade-pause.js").includes('href="../../arcade/" data-action="exit"'));
@@ -67,14 +67,15 @@ test("instalação única mantém navegação pelos sete jogos no ARCADE",()=>{
  assert(read("games/otthi/console-world.js").includes('link.href="../../arcade/"'));
  assert(read("games/familia/console-world.js").includes('back.href=mode==="familia"?"../../../arcade/"'));
  assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");
- assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
- assert.equal(arcadeManifest.scope,"/ConsoleGames/");
+ assert.equal(arcadeManifest.id,"/arcade/");
+ assert.equal(arcadeManifest.scope,"/");
 });
 
 test("Android: botão de instalação referencia o APK íntegro com a versão publicada",()=>{
  const release=JSON.parse(read("arcade/downloads/release.json"));
  const apk=readFileSync(new URL("arcade/downloads/"+release.file,root));
- assert(html.includes('href="./downloads/'+release.file+'" download'));
+ assert(html.includes('id="android-apk-link" href="./instalar/"'),'The console must open the existing install guide instead of downloading a second APK');
+ assert(read('arcade/instalar/index.html').includes('id="download-apk"'),'The genuine APK download remains available on the installer page');
  assert.equal(apk.subarray(0,4).toString('hex'),'504b0304');
  assert.equal(apk.length,release.bytes);
  assert.equal(createHash('sha256').update(apk).digest('hex'),release.sha256);

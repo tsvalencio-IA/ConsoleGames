@@ -9,19 +9,19 @@
  async function workerRelease(worker){if(!worker)return null;return new Promise(resolve=>{const channel=new MessageChannel(),done=value=>{clearTimeout(timer);channel.port1.close();resolve(value);},timer=setTimeout(()=>done(null),700);channel.port1.onmessage=e=>done(e.data);try{worker.postMessage({type:'OTTHI_GET_RELEASE'},[channel.port2]);}catch{done(null);}});}
  navigator.serviceWorker?.addEventListener('message',event=>{const data=event.data;let trusted=false;try{trusted=new URL(event.source.scriptURL).pathname===new URL('sw.js',world).pathname;}catch{}if(!trusted||data?.type!=='OTTHI_UPDATE_PROGRESS'||data.revision!==expected?.revision||state.phase!=='installing'||workerError)return;Object.assign(state,{done:data.done,total:data.total,reused:data.reused});if(data.error){workerError=data.error;return;}progress.value=8+80*(data.done/Math.max(1,data.total));status.textContent='Preparando a versão atual… '+Math.round(data.done/Math.max(1,data.total)*100)+'%';});
  async function run(){
-  if(running)return;running=true;workerError='';retry.hidden=back.hidden=true;document.getElementById('title').textContent='Atualizando seu mundo';status.textContent='Conferindo a versão disponível…';progress.value=4;state.phase='checking';state.error='';
+  if(running)return;running=true;workerError='';retry.hidden=true;back.hidden=false;document.getElementById('title').textContent='Atualizando seu mundo';status.textContent='Conferindo a versão disponível…';progress.value=4;state.phase='checking';state.error='';
   try{
    expected=await release();Object.assign(state,{build:expected.build,revision:expected.revision});version.textContent='Versão '+expected.build;state.phase='installing';
    if('serviceWorker' in navigator){
     const registration=await navigator.serviceWorker.register(new URL('sw.js',world),{scope:world.href,updateViaCache:'none'});await registration.update().catch(()=>{});
-    const deadline=Date.now()+150000;let ready=false;
+    const deadline=Date.now()+25000;let ready=false;
     while(Date.now()<deadline){
      if(workerError)throw Error(workerError);
      registration.waiting?.postMessage({type:'SKIP_WAITING'});
      if(registration.active?.state==='activated'){const active=await workerRelease(registration.active);if(active?.build===expected.build&&active?.revision===expected.revision){ready=true;break;}}
      await delay(200);
     }
-    if(!ready)throw Error('Update timeout');
+    if(!ready){console.warn('[OTTHI UPDATE] Worker pending: verify release HTML.');state.workerPending=true;}
    }
    state.phase='verifying';status.textContent='Confirmando a abertura da versão atual…';progress.value=92;
    const index=await fresh('index.html'),bytes=await index.arrayBuffer(),hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==expected.files['index.html'])throw Error('Page/release mismatch');

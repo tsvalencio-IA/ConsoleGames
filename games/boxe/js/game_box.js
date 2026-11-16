@@ -488,8 +488,12 @@
         },
 
         processInput: function(input, w, h, dt) {
-            if (!input || !input.keypoints) return;
-            const kp = input.keypoints;
+            if(Array.isArray(input))input=Array.isArray(input[0]?.keypoints)?input[0]:{keypoints:input};
+            if (!Array.isArray(input?.keypoints)) return;
+            const raw=input.keypoints,coordinates=raw.filter(k=>Number.isFinite(k?.x)&&Number.isFinite(k?.y));
+            const normalized=coordinates.length>=2&&coordinates.every(k=>k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
+            const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
+            const kp=normalized?raw.map(k=>({...k,x:Number(k.x)*videoW,y:Number(k.y)*videoH})):raw;
             const p = this.p1.pose;
             const smooth = CONF.SMOOTHING;
 

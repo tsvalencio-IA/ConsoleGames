@@ -1,0 +1,33 @@
+name: Corrigir identidade PWA servida diretamente pela Vercel
+on:
+  push:
+    branches: [release/console-unificado-20261116]
+permissions:
+  contents: write
+jobs:
+  manifest:
+    if: "github.event.head_commit.message == 'Correct Vercel hosted PWA id to existing /arcade/'"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restaurar PWA id original /arcade/
+        run: python3 tools/fix-vercel-pwa-identity.py
+      - name: Comprovar build e identificador do manifesto
+        run: |
+          node --test tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs
+          python3 -c "import json; m=json.load(open('arcade/manifest.webmanifest')); assert (m['id'],m['scope'],m['start_url'])==('/arcade/','/','/arcade/')"
+          git diff --check
+      - name: Commitar preservando os aplicativos
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add arcade/manifest.webmanifest arcade/sw.js tests/arcade.test.mjs tests/gameplay-recovery.test.mjs tests/console-canonical-release.test.mjs
+          git commit -m 'fix(pwa): restore installed Vercel identity /arcade/'
+          git push origin HEAD:release/console-unificado-20261116

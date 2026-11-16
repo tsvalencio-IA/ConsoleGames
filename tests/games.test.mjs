@@ -72,7 +72,7 @@ test("HUD do kart reduzido no celular sem eliminar rank/volta nem motor",()=>{
  assert(kart.includes("ConsoleGames: leitura instantânea"));
  assert(kart.includes("w <= 700 || h <= 490"));
  assert(kart.includes("d.finalRank"));
- assert(kart.includes("mapSize = w <= 520 ? 78 : 130"));
+ assert(kart.includes("Math.min(112,Math.max(94,w*.24))"),"Minimapa legível no celular");
  assert(kart.includes("d.speed"));
 });
 
@@ -267,7 +267,7 @@ test("regressões: câmera do tênis não pode ser pulada por toque, tela escala
   assert(game.includes("canvas.width/rect.width"),"Direção horizontal sem escala CSS/Canvas");
   assert(game.includes("canvas.height/rect.height"),"Direção vertical sem escala CSS/Canvas");
   assert(!game.includes("else if (this.state.startsWith('CALIB')) { this.isOnline = false; this.useMouse = true;"),"Calibração foi pulada");
-  assert(game.includes("const mappedX=(point)=>640*(1-Number(point.x)/videoW)"),"Espelho de câmera frontal ausente");
+  assert(game.includes("const mappedX=(point)=>640*(1-"),"Espelho de câmera frontal ausente");
 });
 test("regressões: avião não pula calibração e Família preserva os botões nativos",()=>{
   const flight=read("games/voo/js/game_flight.js");

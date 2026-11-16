@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.29-camera-socorro-jogabilidade",
+  "build": "705.28.30-aviacao-presenca-unificada",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.30: Academia de Aviação conectada ao hangar existente, novas missões e operações de voo, correção de presença multiplayer no celular e atualização do console PWA sem alterar IDs, progresso ou controles aprovados.",
     "R28.29: preparação da câmera e recursos antes da partida, recuperação limitada do relógio da simulação e dos motoristas, rotas físicas do socorro com contingência separada e correções de controle/disputa no WAR/Kart.",
     "R28.28: mãos vazias persistentes sem perder ferramentas; menu de exploração reúne atalhos, câmera e habilidades, mantendo controles contextuais e opção de tela completa.",
     "R28.25: viaturas estacionam junto ao meio-fio; filas empatadas têm prioridade determinística; curvas congestionadas abrem espaço gradual sem atravessar terceiros; busca de desvio é distribuída entre ticks, e socorro usa a rota da ocorrência.",
@@ -301,7 +302,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70662,
+  "assetVersion": 70663,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
