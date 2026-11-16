@@ -1,0 +1,35 @@
+name: OTTHI Sky and signs visual smoke
+on:
+  push:
+    branches: [fix/otthi-sky-signs-gpu-20261116]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build official modular world
+        run: python3 games/otthi/tools/build_project.py
+      - name: Browser runtime
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Compare high and low GPU quality at Ping Pong hall
+        run: node tests/world-sky-signs-browser.mjs
+      - name: Save screenshots and proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: otthi-sky-and-signs-low-high
+          path: test-results/world-gpu-sky-signs/
+          retention-days: 14
+          if-no-files-found: warn
