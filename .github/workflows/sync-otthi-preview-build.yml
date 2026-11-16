@@ -1,0 +1,42 @@
+name: Sincronizar build modular OTTHI na preview
+on:
+  push:
+    branches:
+      - preview/console-correcao-integrada-20261116
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.ref == 'refs/heads/preview/console-correcao-integrada-20261116'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: preview/console-correcao-integrada-20261116
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerar arquivos derivados, preservando arquivos-fonte
+        run: python3 games/otthi/tools/build_project.py
+      - name: Validar sintaxe e integridade
+        run: |
+          node --check games/otthi/app.js
+          node --test tests/world-integrity.test.mjs tests/world-light-budget.test.mjs tests/world-camera-adaptive-preheat.test.mjs
+          git diff --check
+      - name: Salvar apenas arquivos derivados na branch isolada
+        run: |
+          git config user.name 'ConsoleGames Build Bot'
+          git config user.email 'console-build@users.noreply.github.com'
+          git add games/otthi/app.js games/otthi/style.css games/otthi/sw.js games/otthi/index.html games/otthi/release-manifest.json games/otthi/src/module-order.json
+          if git diff --cached --quiet; then
+            echo "Build idêntico, sem commit adicional."
+          else
+            git commit -m 'chore(otthi): sincronizar build gerado da prévia integrada'
+            git push origin HEAD:preview/console-correcao-integrada-20261116
+          fi
