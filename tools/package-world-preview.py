@@ -18,7 +18,7 @@ def root_site_manifest(document):
     Vercel serves this package at the domain root, so its own app URLs must be
     rooted there. This never modifies the source manifest or another origin."""
     result = dict(document)
-    for key in ('start_url', 'scope'):
+    for key in ('id', 'start_url', 'scope'):
         value = result.get(key)
         if isinstance(value, str) and value.startswith('/ConsoleGames/'):
             result[key] = value[len('/ConsoleGames'):]

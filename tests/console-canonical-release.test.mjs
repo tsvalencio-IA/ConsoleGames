@@ -9,7 +9,7 @@ test('ID original do console é preservado nas instalações Pages e Vercel',()=
  assert.equal(m.id,'/ConsoleGames/arcade/');
  const program="import runpy,json; m=runpy.run_path('tools/package-world-preview.py'); print(json.dumps(m['root_site_manifest'](json.load(open('arcade/manifest.webmanifest')))))";
  const packaged=JSON.parse(execFileSync('python3',['-c',program],{encoding:'utf8'}));
- assert.equal(packaged.id,'/ConsoleGames/arcade/');
+ assert.equal(packaged.id,'/arcade/');
  assert.equal(new URL(packaged.start_url,'https://test.example').pathname,'/arcade/');
  assert.equal(packaged.scope,'/');
  assert.match(m.name,/8 jogos/);

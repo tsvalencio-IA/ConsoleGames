@@ -14,7 +14,7 @@ const sw=read("arcade/sw.js");
 
 test("app ARCADE tem link, ID, nome, escopo e inicialização próprios",()=>{
   assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
-  assert.equal(arcadeManifest.scope,"/");
+  assert.equal(arcadeManifest.scope,"/ConsoleGames/");
   assert(arcadeManifest.start_url.startsWith(arcadeManifest.scope));
   assert.notEqual(arcadeManifest.id,oldManifest.id);
   assert.notEqual(arcadeManifest.name,oldManifest.name);
@@ -68,7 +68,7 @@ test("instalação única mantém navegação pelos oito jogos no ARCADE",()=>{
  assert(read("games/familia/console-world.js").includes('back.href=mode==="familia"?"../../../arcade/"'));
  assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");
  assert.equal(arcadeManifest.id,"/ConsoleGames/arcade/");
- assert.equal(arcadeManifest.scope,"/");
+ assert.equal(arcadeManifest.scope,"/ConsoleGames/");
 });
 
 test("Android: botão de instalação referencia o APK íntegro com a versão publicada",()=>{
