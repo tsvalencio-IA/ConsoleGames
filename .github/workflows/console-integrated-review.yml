@@ -27,7 +27,7 @@ jobs:
   browser:
     name: Oito jogos e layout em 4 resolucoes
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -48,11 +48,21 @@ jobs:
           sleep 2
       - name: Verificar console e 8 jogos
         run: node tests/browser-smoke.mjs
+      - name: Entrar nas cinco campanhas e retornar aos menus
+        run: node tests/solo-entry-browser.mjs
+      - name: Corrida completa de tres voltas com rivais reais do motor
+        run: node tests/kart-racecraft-browser.mjs
+      - name: Jogar Familia com tres toques, duas buscas e salvar progresso
+        run: node tests/hq-play-browser.mjs
+      - name: Jogar Danca com camera simulada e progressao
+        run: node tests/dance-console-browser.mjs
+      - name: Entrar no mundo OTTHI e validar uma sessao real em Chromium
+        run: node tests/world-candidate-smoke-browser.mjs
       - name: Guardar screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: consolegames-8-jogos-4-telas
-          path: test-results/mobile/
+          path: test-results/
           if-no-files-found: ignore
           retention-days: 14
