@@ -2,12 +2,11 @@ import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 const origin=process.env.CONSOLE_TEST_ORIGIN||'http://127.0.0.1:4173';
 const paths=['/arcade/','/games/otthi/','/games/kart/','/games/tenis/','/games/boxe/','/games/ar/','/games/voo/','/games/danca/','/games/familia/3d/'];
-const browser=await chromium.launch({headless:true,args:['--disable-gpu','--use-gl=angle','--use-angle=swiftshader']});
+const browser=await chromium.launch({headless:true,args:['--disable-gpu','--use-angle=swiftshader']});
 try{
- const context=await browser.newContext({viewport:{width:393,height:852},serviceWorkers:'block',permissions:[]});
+ const context=await browser.newContext({viewport:{width:393,height:852},serviceWorkers:'block'});
  await context.route(/https?:\/\//,route=>{
-  const host=new URL(route.request().url).host;
-  if(host==='127.0.0.1:4173')return route.continue();
+  if(new URL(route.request().url).host==='127.0.0.1:4173')return route.continue();
   return route.abort();
  });
  for(const path of paths){
@@ -16,11 +15,22 @@ try{
    const response=await page.goto(origin+path,{waitUntil:'domcontentloaded',timeout:45000});
    assert.equal(response.status(),200,path);
    await page.waitForFunction(()=>Boolean(window.OTTHI_CANONICAL?.consoleUrl),null,{timeout:30000});
-   const initial=await page.evaluate(()=>{
-    const manifest=document.querySelector('link[rel="manifest"]');
-    return {href:manifest?.href,consoleUrl:window.OTTHI_CANONICAL.consoleUrl};
+   const state=await page.evaluate(()=>({
+    manifest:document.querySelector('link[rel="manifest"]')?.href,
+    consoleUrl:window.OTTHI_CANONICAL.consoleUrl
+   }));
+   assert.equal(new URL(state.manifest).pathname,'/arcade/manifest.webmanifest',path);
+   assert.equal(state.consoleUrl,origin+'/arcade/',path);
+   const corrected=await page.evaluate(async()=>{
+    const a=document.createElement('a');
+    a.href='https://otthi-world-campanha-teste.vercel.app/ConsoleGames/arcade/';
+    document.body.appendChild(a);
+    for(let i=0;i<50&&a.href!==location.origin+'/arcade/';i++)await new Promise(ok=>setTimeout(ok,20));
+    return a.href;
    });
-   assert.equal(new URL(initial.href).pathname,'/arcade/manifest.webmanifest',path);
-   assert.equal(initial.consoleUrl,origin+'/arcade/',path);
-   const redirected=await page.evaluate(async()=>{
-    const link=document.createElement('a');link.href='https://otthi-world-campanha¶»§q«^
+   assert.equal(corrected,origin+'/arcade/',path);
+   console.log('CANONICAL OK',path);
+  }finally{await page.close();}
+ }
+ await context.close();
+}finally{await browser.close();}
