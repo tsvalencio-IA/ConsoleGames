@@ -320,13 +320,13 @@
     motion.blocked||=factor<.035&&!motion.arrived;
     vehicle.group.position.set(motion.x,groundHeightAt(motion.x,motion.z)+.02,motion.z);vehicle.group.rotation.y=motion.yaw;vehicle.currentSpeed=motion.speed;
     const travel=Math.hypot(motion.x-oldX,motion.z-oldZ);for(const wheel of vehicle.wheels||[])wheel.rotation.x-=travel*2.3;
-    const incident=world.activeIncident;if(incident?.id===vehicle.incidentTargetId){
+    const incident=world.activeIncident;if(incident&&incident.id===vehicle.incidentTargetId){
       incident.travelProgress||={};const key=target.x+':'+target.z;let progress=incident.travelProgress[vehicle.serviceType];
       if(!progress||progress.target!==key)progress=incident.travelProgress[vehicle.serviceType]={target:key,bestDistance:distance,lastAtMs:Number(incident.serviceElapsedMs||0)};
       const remaining=Math.hypot(motion.x-target.x,motion.z-target.z);if(remaining<progress.bestDistance-.4){progress.bestDistance=remaining;progress.lastAtMs=Number(incident.serviceElapsedMs||0);}
     }
     world.trafficSnapshot=null;recoverIncidentResponder(job,dt);
-    if(job.blockedFor>6&&job.searchFailed){const incident=world.activeIncident;if(incident?.id===vehicle.incidentTargetId){const alternate=incidentResponderPoint(incident,vehicle.serviceType,vehicle,true),route=incidentResponderRoute(vehicle,alternate),first=route[1];if(first&&incidentResponderTravelClear(vehicle,{x:vehicle.group.position.x,z:vehicle.group.position.z},first,false)){const count=job.reroutes;job=setIncidentResponderRoute(vehicle,alternate,route);job.reroutes=count+1;}}}
+    if(job.blockedFor>6&&job.searchFailed){const incident=world.activeIncident;if(incident&&incident.id===vehicle.incidentTargetId){const alternate=incidentResponderPoint(incident,vehicle.serviceType,vehicle,true),route=incidentResponderRoute(vehicle,alternate),first=route[1];if(first&&incidentResponderTravelClear(vehicle,{x:vehicle.group.position.x,z:vehicle.group.position.z},first,false)){const count=job.reroutes;job=setIncidentResponderRoute(vehicle,alternate,route);job.reroutes=count+1;}}}
     vehicle.responseRoute=job.route.points;vehicle.responseIndex=job.route.index;vehicle.group.userData.roadPath=job.route.points;
     return Math.hypot(vehicle.group.position.x-target.x,vehicle.group.position.z-target.z);
   }

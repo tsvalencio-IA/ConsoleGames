@@ -782,9 +782,10 @@
 
             if(window.ArcadeControls?.mode==='controls'&&this.manualStick?.active){trgRoll=this.manualStick.x*(window.ArcadePlaySettings?.get().sensitivity??1);trgPitch=this.manualStick.y*(window.ArcadePlaySettings?.get().sensitivity??1);inputDetected=Math.hypot(this.manualStick.x,this.manualStick.y)>.001;}
             let pts = null;
-            if (pose && Array.isArray(pose)) pts = pose;
-            else if (pose && pose.keypoints) pts = pose.keypoints;
-            else if (pose && Array.isArray(pose) && pose[0] && pose[0].keypoints) pts = pose[0].keypoints;
+            // MoveNet is supplied either as {keypoints}, [keypoints] or
+            // [{keypoints}]. Do not silently drop a valid array of poses.
+            if (Array.isArray(pose)) pts = Array.isArray(pose[0]?.keypoints) ? pose[0].keypoints : pose;
+            else if (Array.isArray(pose?.keypoints)) pts = pose.keypoints;
 
             if (window.ArcadeControls?.mode!=='controls' && pts && pts.length > 0) {
                 let rightWrist = null, leftWrist = null;
@@ -798,10 +799,14 @@
                 if (rightWrist && leftWrist) {
                     inputDetected = true;
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
-                    let rx = (1 - ((rightWrist.x || 0) / videoW)) * w;
-                    let ry = ((rightWrist.y || 0) / videoH) * h;
-                    let lx = (1 - ((leftWrist.x || 0) / videoW)) * w;
-                    let ly = ((leftWrist.y || 0) / videoH) * h;
+                    // Accept normalized [0,1] poses as well as video pixels
+                    // without changing the already-approved mirror convention.
+                    const unitCoords=[rightWrist,leftWrist].every(k=>Number.isFinite(k.x)&&Number.isFinite(k.y)&&k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
+                    const fx=k=>unitCoords?k.x:k.x/videoW,fy=k=>unitCoords?k.y:k.y/videoH;
+                    let rx = (1 - fx(rightWrist)) * w;
+                    let ry = fy(rightWrist) * h;
+                    let lx = (1 - fx(leftWrist)) * w;
+                    let ly = fy(leftWrist) * h;
                     
                     // Anatomical wrist names swap sides in the mirrored view.
                     // A level pair must always yield zero, never atan2(0,-span)=π.

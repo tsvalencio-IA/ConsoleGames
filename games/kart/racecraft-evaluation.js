@@ -10,7 +10,13 @@
    g.racecraftTrial=null;
    if(!(enabled||window.KartDuelEvaluation?.enabled)||g.isOnline||!window.ConsolePractice?.active||g.currentFase?.mode!=='RACE')return;
    // A visible chase start creates real passes instead of crediting tied grids.
-   g.localBots.forEach((r,i)=>{r.pos=Math.min(length*.12,4500+i*2500);});
+   g.localBots.forEach((r,i)=>{
+    r.pos=Math.min(length*.12,4500+i*2500);
+    // Distinct natural cruising pace by rival. Reduce the existing AI
+    // multiplier, never write live speed/position/lap/reward to grant passes.
+    r.ai_speedMult*=([.87,.89,.91,.94][i%4]);
+    r.ai_targetLane=(i%2===0?-.90:.90);
+   });
    g.racecraftTrial={trackLength:length,passes:0,drifts:0,items:0,contacts:0,offroadSeconds:0,eligible:{},passed:{},lastContactAt:-Infinity,lastOffroadAt:-Infinity,lastItem:null,finished:false,rank:0,lapTimes:[],nearest:null};
    g.pushMsg('PERSEGUIÇÃO: 2 ULTRAPASSAGENS LIMPAS + 1 DRIFT','#c7ead2',18);
   },
