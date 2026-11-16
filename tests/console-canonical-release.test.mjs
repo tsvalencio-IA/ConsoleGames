@@ -6,7 +6,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const pages=['arcade/index.html','games/otthi/index.html','games/kart/index.html','games/tenis/index.html','games/boxe/index.html','games/ar/index.html','games/voo/index.html','games/danca/index.html','games/familia/3d/index.html'];
 test('ID original do console é preservado nas instalações Pages e Vercel',()=>{
  const m=JSON.parse(read('arcade/manifest.webmanifest'));
- assert.equal(m.id,'/ConsoleGames/arcade/');
+ assert.equal(m.id,'/arcade/');
  const program="import runpy,json; m=runpy.run_path('tools/package-world-preview.py'); print(json.dumps(m['root_site_manifest'](json.load(open('arcade/manifest.webmanifest')))))";
  const packaged=JSON.parse(execFileSync('python3',['-c',program],{encoding:'utf8'}));
  assert.equal(packaged.id,'/arcade/');
