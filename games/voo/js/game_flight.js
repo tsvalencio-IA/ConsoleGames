@@ -762,9 +762,7 @@
                 this._updateMissiles(dt); 
                 this._cleanupFx();
                 window.FlightOperations?.update(this,dt,flightBefore);
-                // A distant player photographs by holding one arm raised for 0.4 s.
-                // Pose coordinates come from the existing camera detector; no second model is loaded.
-                // The remote shutter now uses independently tracked OPEN fingers, not a raised arm.
+                // Camera mode keeps wrist steering separate from hand-open actions. Finger gestures are decoded in _readPose.
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
@@ -829,7 +827,7 @@
             this.pilot.handControls={...fingers};
             this.pilot.trackingStatus=cameraMode?(motion?.status||'lost'):'manual';
             if (cameraMode && !trusted) {
-                this.pilot.active=false;this.ship.afterburner=false;
+                this.pilot.active=false;this.pilot.handMode='unknown';this.ship.afterburner=false;
                 this.pilot.targetRoll=0;this.pilot.targetPitch=0;
                 this.ship.inputs.pitch=0;this.ship.inputs.roll=0;
                 return;
@@ -990,7 +988,7 @@
             if (this.combat.missileCd > 0) this.combat.missileCd -= dt;
 
             if ((this.pilot.missileHeld || (window.ArcadeControls?.mode!=='camera'&&this.pilot.headTilt)) && this.combat.missileCd <= 0) {
-                if (Math.random() < 0.95) { 
+                {
                     this.missiles.push({
                         x: this.ship.x, y: this.ship.y-50, z: this.ship.z,
                         vx: this.ship.vx+Math.sin(this.ship.yaw)*Math.cos(this.ship.pitch)*760, vy: this.ship.vy+Math.sin(this.ship.pitch)*760, vz: this.ship.vz+Math.cos(this.ship.yaw)*Math.cos(this.ship.pitch)*760,
