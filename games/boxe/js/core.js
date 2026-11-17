@@ -232,7 +232,7 @@ window.Profile = {
 window.System = {
     playerId: 'p_' + Math.floor(Math.random()*10000), 
     activeGame: null, loopId: null, loopEpoch: 0, busyEpoch: null, resultLocked: false, isStarting: false,
-    canvas: null, video: null, detector: null,
+    canvas: null, video: null, detector: null, playerLock:null,
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
@@ -384,7 +384,8 @@ window.System = {
                 if (!isAr && system.detector && system.video?.readyState === 4) {
                     try {
                         const people = await system.detector.estimatePoses(system.video, {flipHorizontal:false});
-                        if (people?.length) pose = people[0];
+                        if(window.ConsolePlayerMotionLock&&!system.playerLock)system.playerLock=new window.ConsolePlayerMotionLock.PlayerLock();
+                        pose=system.playerLock?system.playerLock.observe(people,performance.now()):(people?.length===1?people[0]:null);
                     } catch (error) {
                         if (!system.lastPoseWarning || performance.now()-system.lastPoseWarning > 15000) {
                             console.warn('Leitura de movimento temporariamente indisponível:',error);
@@ -422,6 +423,7 @@ window.System = {
     stopGame: () => {
         window.ArcadeControls?.removeControls();
         window.System.paused=false;
+        window.System.playerLock?.reset();
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
         window.System.loopId=null;
@@ -509,7 +511,8 @@ window.onload = async () => {
       window.System.detectorPromise = (async () => {
         await tf.ready();
         const result = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, {
-          modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING
+          modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+          enableTracking:true,multiPoseMaxDimension:256,minPoseScore:.25
         });
         window.System.detector = result;
         return result;
