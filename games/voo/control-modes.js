@@ -179,7 +179,7 @@ const hub={
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡ TURBO","Acelerar com turbo"),key("missile","◎ MÍSSIL","Disparar míssil após travar a mira"),
      {id:"fire",text:"ATIRAR",label:"Segurar para atirar mesmo sem mira travada",down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
-     {id:"photo",text:"📷 FOTOGRAFAR",label:"Fotografar o objetivo do Repórter Aéreo",down:photo},
+     {id:"photo",text:"📷 FOTO",label:"Fotografar o objetivo do Repórter Aéreo",down:photo},
      {id:"powerDown",text:"− POT",label:"Reduzir potência do motor",down:()=>logic.manualThrottle=Math.max(0,(logic.manualThrottle??1)-.15)},
      {id:"powerUp",text:"+ POT",label:"Aumentar potência do motor",down:()=>logic.manualThrottle=Math.min(1,(logic.manualThrottle??1)+.15)},
      {id:"hover",text:"PAIRAR",label:"Estabilizar altitude do helicóptero; solte o joystick para pairar",down:()=>{if(logic.isHelicopter?.()){logic.manualThrottle=.5;logic.ship.vy=0;}}},
