@@ -132,7 +132,7 @@
   if(handDetector)return handDetector;
   if(handsLoad)return handsLoad;
   handsLoad=(async()=>{
-   if(!window.handPoseDetection)await script('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@0.1.0/dist/hand-pose-detection.min.js');
+   if(!window.handPoseDetection)await script('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@2.0.1/dist/hand-pose-detection.min.js');
    if(!window.handPoseDetection?.createDetector)throw Error('Hand model unavailable');
    if(window.tf?.ready)await window.tf.ready();
    handDetector=await window.handPoseDetection.createDetector(window.handPoseDetection.SupportedModels.MediaPipeHands,{runtime:'tfjs',modelType:'lite',maxHands:2});
