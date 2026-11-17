@@ -35,7 +35,7 @@
  function associateHands(pose,detectedHands){
   const p=profile(pose),assigned={left:null,right:null};
   if(!p||!Array.isArray(detectedHands))return assigned;
-  const maxD=Math.max(26,p.scale*1.32),candidates=[];
+  const maxD=Math.max(18,p.scale*.68),candidates=[];
   for(const hand of detectedHands){
    if(!hand?.keypoints?.length)continue;
    const wrist=hand.keypoints[0];
@@ -48,6 +48,9 @@
   candidates.sort((a,b)=>a.d-b.d);
   const used=new Set();
   for(const c of candidates)if(!assigned[c.side]&&!used.has(c.hand)){
+   // A second hand at nearly the same wrist position makes attribution unsafe.
+   const ambiguous=candidates.some(other=>other!==c&&other.side===c.side&&other.hand!==c.hand&&other.d<maxD&&Math.abs(other.d-c.d)<maxD*.19);
+   if(ambiguous)continue;
    assigned[c.side]={state:classifyHand(c.hand),hand:c.hand,distance:c.d};used.add(c.hand);
   }
   return assigned;
@@ -75,9 +78,9 @@
     const p=candidates[0],same=this.candidate&&(this.candidate.id==null||p.id==null||p.id===this.candidate.id)&&distance(this.candidate,p)<p.scale*.8&&p.scale/this.candidate.scale>.60&&p.scale/this.candidate.scale<1.6;
     if(!same){this.candidate=p;this.candidateSince=time;}
     else this.candidate=p;
-    this.pose=p.pose;this.reason='CADASTRANDO JOGADOR • MANTENHA AS DUAS MÃOS VISÍVEIS';
+    this.pose=null;this.reason='CADASTRANDO JOGADOR • MANTENHA AS DUAS MÃOS VISÍVEIS';
     if(time-this.candidateSince>=1100){
-     this.status='locked';this.id=p.id;this.anchor=p;this.lastSeen=time;this.reason='JOGADOR TRAVADO';
+     this.status='locked';this.id=p.id;this.anchor=p;this.lastSeen=time;this.pose=p.pose;this.reason='JOGADOR TRAVADO';
     }
     return this.pose;
    }
