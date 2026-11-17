@@ -699,7 +699,7 @@
                     const onRunway=Math.abs(this.ship.x)<105&&Math.abs(this.ship.z)<3000;
                     if(this.flightSchool.stage==='takeoff'&&this.ship.speed<65){this.ship.y=8;this.ship.vy=0;}
                     if(this.ship.y<8){
-                      const gentle=onRunway&&this.ship.speed<120&&Math.abs(this.ship.vy)<10&&Math.abs(this.ship.roll)<.35;
+                      const gentle=this._landingGuidance().gentle; // Includes runway position, aligned heading, level wings, safe speed and sink rate.
                       this.ship.y=8;this.ship.vy=0;
                       if(this.flightSchool.stage==='landing'&&gentle)this._completeFlightSchool();
                       else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
