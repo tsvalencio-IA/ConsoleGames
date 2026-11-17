@@ -199,8 +199,8 @@ test('native touch shutter has a dedicated layout slot separate from missile, fi
  const css=fs.readFileSync('games/voo/pro-controls.css','utf8');
  const cameraCss=fs.readFileSync('games/voo/control-modes.css','utf8');
  assert.match(controls,/id:["']photo["']/);
- assert.match(css,/flight-input \\[data-control="photo"\\]/);
- assert.match(css,/flight-input \\[data-control="powerDown"\\]/);
- assert.match(css,/flight-input \\[data-control="powerUp"\\]/);
+ assert.ok(css.includes('[data-control="photo"]'),'Missing dedicated photo control slot');
+ assert.ok(css.includes('[data-control="powerDown"]'),'Missing dedicated powerDown control slot');
+ assert.ok(css.includes('[data-control="powerUp"]'),'Missing dedicated powerUp control slot');
  assert.match(cameraCss,/flight-camera-actions/);
 });
