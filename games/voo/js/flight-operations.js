@@ -13,10 +13,10 @@ function segmentBox(a,b,box,r=0){
  }return true;
 }
 function segmentDistance(a,b,p){let dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,l=dx*dx+dy*dy+dz*dz,t=l?clamp(((p.x-a.x)*dx+(p.y-a.y)*dy+(p.z-a.z)*dz)/l,0,1):0;return Math.hypot(a.x+dx*t-p.x,a.y+dy*t-p.y,a.z+dz*t-p.z);}
-function start(g,phase){g.flightOperation=labels[phase?.operation]?{kind:phase.operation,stage:'ready',index:0,elapsed:0,stable:0,done:false,photos:[],lastPhoto:null}:null;g.flightPhotos=[];}
+function start(g,phase){g.flightOperation=labels[phase?.operation]?{kind:phase.operation,stage:'ready',index:0,elapsed:0,stable:0,done:false,photos:[],lastPhoto:null,rescued:false,readyWindow:0,gesture:{armed:true,held:0,released:0}}:null;g.flightPhotos=[];}
 function onStart(g){
  const op=g.flightOperation;if(!op)return;
- op.stage=op.kind==='carrier'?'catapult':op.kind==='emergency'?'return':'route';op.elapsed=0;op.index=0;op.stable=0;
+ op.stage=op.kind==='carrier'?'catapult':op.kind==='emergency'?'return':'route';op.elapsed=0;op.index=0;op.stable=0;op.rescued=false;op.readyWindow=0;op.gesture={armed:true,held:0,released:0};
  if(op.kind==='carrier'){Object.assign(g.ship,{x:carrier.x,y:carrier.y+9,z:carrier.z-carrier.l*.43,vx:0,vy:0,vz:0,speed:0,pitch:0,yaw:0,roll:0});g.onGround=true;g.pilot.throttle=1;g.manualThrottle=1;}
  else if(op.kind==='emergency'){Object.assign(g.ship,{x:240,y:680,z:-3400,yaw:0,pitch:0,roll:0});g.ship.engineHealth=Math.min(g.ship.engineHealth,32);}
  else Object.assign(g.ship,{x:0,y:650,z:-2200,yaw:0,pitch:0,roll:0});
@@ -55,17 +55,29 @@ function detectImpact(g,b){
  return null;
 }
 function finish(g){
- const o=g.flightOperation;if(!o||o.done||g.state!=='PLAYING')return;o.done=true;
+ const o=g.flightOperation;if(!o||o.done||g.state!=='PLAYING')return false;
+ const count=routes[o.kind]?.length||0;
+ // A medal is a receipt for an entire mission, never for an interrupted node.
+ if(o.kind==='reporter'&&(o.photos.length!==count||o.index!==count))return false;
+ if(['patrol','rescue','carrier'].includes(o.kind)&&o.index!==count)return false;
+ if(o.kind==='rescue'&&!o.rescued)return false;
+ if(o.kind==='carrier'&&o.stage!=='landed')return false;
+ if(o.kind==='emergency'&&g.landingQuality!=='smooth')return false;
+ o.done=true;
  const old=g.flightCareer.missions||{},prev=old[o.kind]||{};
- g.flightCareer.missions={...old,[o.kind]:{completed:(Number(prev.completed)||0)+1,bestTime:Math.min(Number(prev.bestTime)||Infinity,Math.round(o.elapsed)),medal:o.elapsed<160?'OURO':o.elapsed<240?'PRATA':'BRONZE'}};
- if(o.kind==='reporter'&&o.photos.length!==routes.reporter.length){o.done=false;return;}
-  if(o.kind==='reporter')g.flightCareer.missions.reporter.photos=o.photos.length;
-  g.session.xp+=350;g._saveCareer();g._endGame('VICTORY');
+ g.flightCareer.missions={...old,[o.kind]:{
+  completed:(Number(prev.completed)||0)+1,
+  bestTime:Math.min(Number(prev.bestTime)||Infinity,Math.round(o.elapsed)),
+  medal:o.elapsed<160?'OURO':o.elapsed<240?'PRATA':'BRONZE',
+  ...(o.kind==='reporter'?{photos:o.photos.length}:{}),
+  ...(o.kind==='rescue'?{rescued:true}:{})
+ }};
+ g.session.xp+=350;g._saveCareer();g._endGame('VICTORY');return true;
 }
 function update(g,dt,before){
  if(g.state!=='PLAYING')return;
  const hit=detectImpact(g,before);if(hit){impact(g,hit);return;}
- const o=g.flightOperation,p=g.ship;if(!o)return;o.elapsed+=dt;
+ const o=g.flightOperation,p=g.ship;if(!o)return;o.elapsed+=dt;o.readyWindow=Math.max(0,(o.readyWindow||0)-Math.max(0,dt));
  if(o.kind==='carrier'&&o.stage==='return'&&!g.onGround&&Math.abs(p.x-carrier.x)<carrier.w*.45&&Math.abs(p.z-carrier.z)<carrier.l*.46&&before?.y>carrier.y+9&&p.y<=carrier.y+9){
   if(Math.hypot(p.vx,p.vz)>=175||Math.abs(p.vy)>=13||Math.abs(p.roll)>=.36||Math.abs(Math.sin(p.yaw))>=.30){impact(g,'POUSO NAVAL INSEGURO');return;}
   p.y=carrier.y+9;p.vy=0;g.onGround=true;o.stage='landed';g.pilot.throttle=0;g.manualThrottle=0;
@@ -74,19 +86,28 @@ function update(g,dt,before){
  if(o.stage==='return'){
    const atBase=Math.abs(p.x)<105&&Math.abs(p.z)<3000&&Math.abs(p.y-8)<16;
    if(o.kind!=='carrier'&&atBase&&g.onGround&&Math.hypot(p.vx,p.vz)<30){
-    if(o.kind==='emergency'&&g.landingQuality==='firm'){impact(g,'POUSO DE EMERGÊNCIA INSEGURO');return;}
+    if(o.kind==='emergency'&&g.landingQuality!=='smooth'){impact(g,'POUSO DE EMERGÊNCIA INSEGURO');return;}
     finish(g);
    }
    return;
   }
  if(o.stage!=='route')return;
- const target=routes[o.kind]?.[o.index];if(!target){o.stage='return';return;}
- if(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)> (o.kind==='reporter'?700:650)||Math.abs(p.roll)>.48){o.stable=0;return;}
+ const target=routes[o.kind]?.[o.index];
+ if(!target){if(o.kind!=='reporter'||o.photos.length===routes.reporter.length)o.stage='return';return;}
+ if(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)>(o.kind==='reporter'?700:650)){
+  o.stable=0;o.readyWindow=0;return;
+ }
+ if(Math.abs(p.roll)>.48){o.stable=0;return;}
  o.stable+=dt;
-  // No automatic success for the aerial reporter: the player must press the shutter.
-  if(o.kind==='reporter')return;
-  if(o.kind==='rescue'&&o.stable<3.5)return;
- o.index++;o.stable=0;if(o.index>=routes[o.kind].length)o.stage='return';
+ if(o.kind==='reporter'){
+  if(o.stable>=1)o.readyWindow=1.4;
+  return;
+ }
+ const wait=o.kind==='rescue'?3.5:o.kind==='patrol'?1.0:o.kind==='carrier'?1.0:0;
+ if(o.stable<wait)return;
+ if(o.kind==='rescue')o.rescued=true;
+ o.index++;o.stable=0;
+ if(o.index>=routes[o.kind].length)o.stage='return';
 }
 function capturePhoto(g){
   const o=g?.flightOperation,p=g?.ship;
@@ -94,7 +115,7 @@ function capturePhoto(g){
   const target=routes.reporter[o.index];
   if(!target)return {ok:false,reason:'TODAS AS FOTOS JÁ FORAM TIRADAS'};
   if(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)>700)return {ok:false,reason:'APROXIME-SE DO PONTO FOTOGRÁFICO'};
-  if(Math.abs(p.roll)>.48||o.stable<1)return {ok:false,reason:'ESTABILIZE O AVIÃO POR 1 SEGUNDO'};
+  if(o.stable<1&&o.readyWindow<=0)return {ok:false,reason:'ESTABILIZE O AVIÃO POR 1 SEGUNDO'};
   // Snapshot of the rendered game only, not the player's webcam.
   let thumbnail=null;
   try{
@@ -106,11 +127,42 @@ function capturePhoto(g){
    }
   }catch{thumbnail=null;}
   const photo={point:o.index+1,at:Date.now(),x:p.x,y:p.y,z:p.z,thumbnail};
-  o.photos.push(photo);g.flightPhotos=o.photos;o.index++;o.stable=0;
+  o.photos.push(photo);g.flightPhotos=o.photos;o.index++;o.stable=0;o.readyWindow=0;
   o.lastPhoto={at:performance.now(),point:photo.point};
   if(o.index>=routes.reporter.length)o.stage='return';
   window.System?.msg?.('FOTO '+photo.point+'/'+routes.reporter.length+' REGISTRADA'+(o.stage==='return'?' • RETORNE À BASE':''),'#89ffcb');
   return {ok:true,point:photo.point,complete:o.stage==='return',thumbnail:!!thumbnail};
+}
+function cameraPhotoGesture(g,pose,dt){
+ const o=g?.flightOperation;
+ if(o?.kind!=='reporter'||o.done||o.stage!=='route'||g.state!=='PLAYING')return false;
+ const gesture=o.gesture||(o.gesture={armed:true,held:0,released:0});
+ // Reuse the same pose the flight model already computed; no new video processing.
+ const pts=Array.isArray(pose)?(Array.isArray(pose[0]?.keypoints)?pose[0].keypoints:pose):pose?.keypoints;
+ if(!Array.isArray(pts)||!pts.length){gesture.held=0;return false;}
+ const joint=(key,index)=>pts.find(p=>p&&(p.name===key||p.part===key))||pts[index];
+ const lw=joint('left_wrist',9),rw=joint('right_wrist',10),ls=joint('left_shoulder',5),rs=joint('right_shoulder',6);
+ const reliable=[lw,rw,ls,rs].every(p=>p&&Number(p.score??p.confidence??0)>.33&&Number.isFinite(p.y));
+ if(!reliable){gesture.held=0;return false;}
+ const unit=[lw,rw,ls,rs].every(p=>p.y>=0&&p.y<=1);
+ const height=unit?1:(window.System?.video?.videoHeight||480);
+ // Raising ONE arm clearly over shoulder height does not require touching the phone.
+ const leftUp=ls.y-lw.y>.105*height,rightUp=rs.y-rw.y>.105*height;
+ const leftDown=lw.y>=ls.y-.04*height,rightDown=rw.y>=rs.y-.04*height;
+ const raised=(leftUp&&rightDown)||(rightUp&&leftDown);
+ if(!raised){
+  gesture.held=0;
+  if(leftDown&&rightDown){gesture.released+=Math.max(0,dt);if(gesture.released>=.2)gesture.armed=true;}
+  return false;
+ }
+ gesture.released=0;
+ gesture.held+=Math.max(0,dt);
+ if(!gesture.armed||gesture.held<.4)return false;
+ const result=capturePhoto(g);
+ if(result.ok){gesture.armed=false;gesture.held=0;return true;}
+ // Do not repeatedly show an error while a distant player is holding up a hand.
+ if(gesture.held>=.4&&gesture.held<.5)window.System?.msg?.(result.reason,'#ffcf68');
+ return false;
 }
 function drawWorld(ctx,w,h,g){
  if(Math.hypot(g.ship.x-carrier.x,g.ship.z-carrier.z)>23000)return;
@@ -132,9 +184,9 @@ function drawHud(ctx,w,h,g){
   const arrow=!t?'':Math.abs(delta)<.25?'↑':Math.abs(delta)>2.85?'↓':delta>0?'→':'←';
   const alt=t?Math.round(t.y-g.ship.y):0;
   const altitudeCue=t&&o.stage==='route'&&Math.abs(alt)>130?(alt>0?' · SUBA '+alt+' m':' · DESÇA '+Math.abs(alt)+' m'):'';
-  const ready=o.kind==='reporter'&&o.stage==='route'&&o.stable>=1;
+  const ready=o.kind==='reporter'&&o.stage==='route'&&(o.stable>=1||o.readyWindow>0);
   const stage=o.stage==='catapult'?'DECOLE DO CONVÉS':o.stage==='return'?'RETORNE À BASE E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+'/'+(routes[o.kind]?.length||1);
-  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?'FOTOGRAFE AGORA':o.stable>0?'ESTABILIZE PARA FOTOGRAFAR':'APROXIME-SE DO ALVO'):'';
+  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?(window.ArcadeControls?.mode==='camera'?'ERGA UMA MÃO PARA FOTO':'APERTE FOTOGRAFAR'):o.stable>0?'ESTABILIZE PARA FOTO':'APROXIME-SE DO ALVO'):o.kind==='rescue'&&o.stage==='route'?'PAIRAR PARA RESGATAR':o.kind==='patrol'&&o.stage==='route'?'MANTENHA 1 S NO PONTO':o.kind==='carrier'&&o.stage==='route'?'MANTENHA 1 S NO PONTO':'';
   const top=h<530?83:102;
   ctx.fillStyle='rgba(5,30,44,.84)';ctx.fillRect(w*.06,top,w*.88,46);
   ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(labels[o.kind]+' · '+stage,w/2,top+17,w*.83);
@@ -152,5 +204,5 @@ function drawHud(ctx,w,h,g){
   if(g.flightImpact&&performance.now()-g.flightImpact.at<1500){ctx.fillStyle='rgba(255,86,25,.27)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffe6a9';ctx.textAlign='center';ctx.font='bold 19px Arial';ctx.fillText(g.flightImpact.text,w/2,h*.41,w-18);}
  ctx.restore();
 }
-window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,capturePhoto,update,drawWorld,drawHud});
+window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,capturePhoto,cameraPhotoGesture,update,drawWorld,drawHud});
 })();
