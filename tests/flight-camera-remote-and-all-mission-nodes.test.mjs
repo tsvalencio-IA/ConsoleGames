@@ -139,3 +139,28 @@ test('failed school landing has a recovery path, not a permanent retry dead end'
  assert.match(game,/this\._startMission\(\);this\.flightSchool\.retries=attempts/);
  assert.match(game,/_schoolGatePassed\(flightBefore,gate\)/);
 });
+
+test('PvP simultaneous hits use atomic RTDB updates and credit a single confirmed kill',async()=>{
+ let logic;
+ const window={System:{registerGame(id,_title,_icon,g){if(id==='usarmy_flight_sim')logic=g;}}};
+ vm.runInNewContext(fs.readFileSync('games/voo/js/game_flight.js','utf8'),
+  {window,performance:{now:()=>1000},console,setInterval(){throw Error('register failure')}});
+ let hp=10,credited=0,updates=0;
+ window.DB={ref(path){assert.match(path,/sessions\\/flight_PVP\\/players\\/enemy\\/hp/);return{transaction(fn){
+  updates++;const next=fn(hp);
+  if(next===undefined)return Promise.resolve({committed:false,snapshot:{val:()=>hp}});
+  hp=next;return Promise.resolve({committed:true,snapshot:{val:()=>hp}});
+ }}}}};
+ const g=Object.create(logic);g.mode='PVP';g.state='PLAYING';
+ g.net={uid:'me',players:{enemy:{x:0,y:0,z:100,hp:10}}};
+ g.entities=[];g.ship={x:0,y:200,z:0};
+ g._fx=()=>{};g._pvpKill=()=>{credited++;};
+ for(let i=0;i<2;i++){
+  g.bullets=[{x:0,y:0,z:0,vx:0,vy:0,vz:200,isEnemy:false,life:2}];
+  g._updateBullets(.5);
+ }
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(updates,2);
+ assert.equal(hp,0,'the RTDB value must never go negative');
+ assert.equal(credited,1,'only the winning health transition earns a kill');
+});
