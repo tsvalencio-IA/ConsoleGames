@@ -216,6 +216,7 @@
         init: function(faseData) {
             window.ArcadeWorldRenderer?.release(this);
             this._cleanupNet();
+            this.net.sharedData={wave:1,teamKills:0,bossDefeated:false};
             
             this.lastTime = performance.now();
             this.session = { kills: 0, cash:Number(window.Profile?.coins)||0, goal: 15, wave: 1, xp:Number(window.Profile?.xp)||0 };
@@ -264,7 +265,13 @@
             this._initBattleWorld();
             
             if (!this.keysBound) {
-                window.addEventListener('keydown', (e) => this.keys[e.key] = true);
+                window.addEventListener('keydown', (e) => {
+                    this.keys[e.key] = true;
+                    if((e.key==='p'||e.key==='P')&&!e.repeat&&!e.target?.closest?.('input,textarea,select')){
+                        const result=window.FlightOperations?.capturePhoto?.(this);
+                        if(result&&!result.ok)window.System?.msg?.(result.reason,'#ffcf68');
+                    }
+                });
                 window.addEventListener('keyup', (e) => this.keys[e.key] = false);
                 this.keysBound = true;
             }
@@ -381,7 +388,7 @@
                                 
                                 if (connectedUIDs.length === 1) {
                                     self.net.sessionRef.child('state').set('LOBBY');
-                                    self.net.sharedRef.set({ wave: 1, teamKills: 0 });
+                                    self.net.sharedRef.set({ wave: 1, teamKills: 0, bossDefeated: false });
                                 }
                             } else {
                                 self.net.isHost = false;
@@ -465,7 +472,7 @@
             else if (y > h*0.85) {
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.isHost && this.net.sessionRef) {
                     this.net.sessionRef.child('state').set('PLAYING');
-                    if (this.net.sharedRef) this.net.sharedRef.set({ wave: 1, teamKills: 0 }); 
+                    if (this.net.sharedRef) this.net.sharedRef.set({ wave: 1, teamKills: 0, bossDefeated:false }); 
                 } else if (this.mode === 'SINGLE' || this.mode === 'FREE') { 
                     this.state = 'CALIBRATION'; this.timer = 5.0; 
                 }
@@ -692,15 +699,24 @@
                     const onRunway=Math.abs(this.ship.x)<105&&Math.abs(this.ship.z)<3000;
                     if(this.flightSchool.stage==='takeoff'&&this.ship.speed<65){this.ship.y=8;this.ship.vy=0;}
                     if(this.ship.y<8){
-                      const gentle=onRunway&&this.ship.speed<120&&Math.abs(this.ship.vy)<10&&Math.abs(this.ship.roll)<.35;
+                      const gentle=this._landingGuidance().gentle; // Includes runway position, aligned heading, level wings, safe speed and sink rate.
                       this.ship.y=8;this.ship.vy=0;
-                      if(this.flightSchool.stage==='landing'&&gentle){this.flightSchool.complete=true;this.flightSchool.stage='complete';this.ship.pitch=0;this.manualThrottle=0;this.flightCareer.school=true;this._saveCareer();}
-                      else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
+                      if(this.flightSchool.stage==='landing'&&gentle)this._completeFlightSchool();
+                      else if(this.flightSchool.stage!=='takeoff'&&!gentle){if(this.flightSchool.stage!=='retry'){this.flightSchool.stage='retry';this.flightSchool.retryTimer=2;}}
                     }
                     if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
                     if(this.ship.y>95&&this.flightSchool.stage==='takeoff')this.flightSchool.stage='gates';
                     const gate=this._schoolGates()[this.flightSchool.gate];
-                    if(this.flightSchool.stage==='gates'&&gate&&Math.hypot(this.ship.x-gate.x,this.ship.y-gate.y,this.ship.z-gate.z)<330){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
+                    if(this.flightSchool.stage==='gates'&&gate&&this._schoolGatePassed(flightBefore,gate)){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
+                    if(this.flightSchool.stage==='retry'){
+                        this.flightSchool.retryTimer=(Number(this.flightSchool.retryTimer)||0)-dt;
+                        this.manualThrottle=0;this.pilot.throttle=0;
+                        if(this.flightSchool.retryTimer<=0){
+                            const attempts=Math.max(0,Number(this.flightSchool.retries)||0)+1;
+                            this._startMission();this.flightSchool.retries=attempts;
+                            window.System?.msg?.('TREINAMENTO REINICIADO • TENTE UM POUSO MAIS SUAVE','#f4c57a');
+                        }
+                    }
                 }
                 const floor=this.isHelicopter()?14:50;
                 if(!this.flightSchool&&this.mode==='FREE'&&!this.isHelicopter())this._updateRunwayLanding(dt);
@@ -738,6 +754,9 @@
                 this._updateMissiles(dt); 
                 this._cleanupFx();
                 window.FlightOperations?.update(this,dt,flightBefore);
+                // A distant player photographs by holding one arm raised for 0.4 s.
+                // Pose coordinates come from the existing camera detector; no second model is loaded.
+                if(this.state==='PLAYING'&&this.flightOperation?.kind==='reporter'&&window.ArcadeControls?.mode==='camera')window.FlightOperations?.cameraPhotoGesture?.(this,pose,dt);
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
@@ -911,14 +930,21 @@
 
             let firingState = false;
 
-            if ((window.ArcadeControls?.mode!=='controls'||this.manualFireHeld||this.keys['f']||(heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false)) && this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
-                this.combat.vulcanCd = performance.now();
-                const speed=1400,t=this.combat.target,ship=this.ship;
-                const origin={x:ship.x+Math.cos(ship.yaw)*(heli?12:60),y:ship.y-(heli?8:20),z:ship.z-Math.sin(ship.yaw)*(heli?12:60)};
-                const lead=this._leadShot(origin,t,speed),dx=lead.x-origin.x,dy=lead.y-origin.y,dz=lead.z-origin.z,d=Math.hypot(dx,dy,dz)||1;
+            const cameraGesture=window.ArcadeControls?.mode==='camera'&&this.pilot.headTilt;
+            const automaticHeli=heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false&&this.combat.locked;
+            const gunTrigger=Boolean(this.manualFireHeld||this.keys['f']||this.keys['F']||cameraGesture||automaticHeli);
+            // Cannon is a free-fire weapon; only homing missiles require target lock.
+            if(gunTrigger&&performance.now()-this.combat.vulcanCd>80){
+                this.combat.vulcanCd=performance.now();
+                const speed=1400,ship=this.ship;
+                const fx=Math.sin(ship.yaw)*Math.cos(ship.pitch),fy=Math.sin(ship.pitch),fz=Math.cos(ship.yaw)*Math.cos(ship.pitch);
+                const origin={x:ship.x+fx*(heli?12:60),y:ship.y+fy*(heli?12:60)-(heli?5:12),z:ship.z+fz*(heli?12:60)};
+                const t=this.combat.locked?this.combat.target:null;
+                const lead=t?this._leadShot(origin,t,speed):{x:origin.x+fx*4000,y:origin.y+fy*4000,z:origin.z+fz*4000};
+                const dx=lead.x-origin.x,dy=lead.y-origin.y,dz=lead.z-origin.z,d=Math.hypot(dx,dy,dz)||1;
                 this.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:ship.vx+dx/d*speed,vy:ship.vy+dy/d*speed,vz:ship.vz+dz/d*speed,isEnemy:false,life:Math.min(24,Math.max(2,d/speed+1))});
                 GameSfx.play('vulcan');
-                firingState = true;
+                firingState=true;
             }
 
             if (this.combat.missileCd > 0) this.combat.missileCd -= dt;
@@ -1068,11 +1094,12 @@
         },
 
         _updateMissionSystem: function() {
-            if (this.mode === 'PVP' || this.mode === 'FREE') return;
+            if (this.state !== 'PLAYING' || this.mode === 'PVP' || this.mode === 'FREE') return;
             
             let currentKills = this.session.kills;
             if (this.mode === 'COOP' && this.net.sharedData) {
-                currentKills = this.net.sharedData.teamKills || this.session.kills;
+                const sharedKills=Number(this.net.sharedData.teamKills);
+                if(Number.isFinite(sharedKills)&&sharedKills>=0)currentKills=sharedKills;
             }
 
             if (currentKills >= 15 && this.session.wave === 1) {
@@ -1090,7 +1117,8 @@
                     type: 'boss', state: 'ENGAGE', x: this.ship.x + fX*12000, y: this.ship.y+2000, z: this.ship.z + fZ*12000, 
                     vx: -fX*350, vy: 0, vz: -fZ*350, hp: 2000, yaw: this.ship.yaw + Math.PI, roll: 0, pitch: 0, isBoss: true, active: true, stateTimer: 0, engineHealth: 100, wingHealth: 100, structuralIntegrity: 100 
                 });
-            } else if (currentKills >= 31 && this.session.wave === 3) {
+            } else if (currentKills >= 31 && this.session.wave === 3 &&
+                (this.bossDefeated === true || (this.mode === 'COOP' && this.net.sharedData?.bossDefeated === true))) {
                 this.session.xp += 1000; 
                 this._endGame('VICTORY');
             }
@@ -1138,7 +1166,9 @@
                     for (let e of this.entities) {
                         if(b.life<=0)break;
                         if (Math.hypot(b.x-e.x, b.y-e.y, b.z-e.z) < (e.isBoss? 300 : 150)) {
-                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
+                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.mode === 'COOP' || this.net.isHost) {
+                                // Co-op guests must actually damage their encountered enemies;
+                                // a confirmed elimination is added atomically to shared team kills.
                                 e.hp -= 50; 
                                 let randHit = Math.random();
                                 if (randHit < 0.3) e.engineHealth -= 10;
@@ -1158,11 +1188,15 @@
                                 b.life=0;
                                 this._fx(this.net.players[uid].x,this.net.players[uid].y,this.net.players[uid].z,'#f90',4,50);
                                 if (window.DB && window.DB.ref) {
-                                    let newHp = this.net.players[uid].hp - 10;
-                                    window.DB.ref(`sessions/flight_${this.mode}/players/${uid}/hp`).set(newHp);
-                                    if (newHp <= 0 && this.state === 'PLAYING') {
-                                        this._pvpKill(uid);
-                                    }
+                                    // RTDB transaction keeps simultaneous hits from overwriting each other.
+                                    window.DB.ref(`sessions/flight_${this.mode}/players/${uid}/hp`)
+                                        .transaction(current=>{
+                                            const hp=Number(current);
+                                            if(!Number.isFinite(hp)||hp<=0)return;
+                                            return Math.max(0,hp-10);
+                                        },null,false).then(result=>{
+                                            if(result?.committed&&Number(result.snapshot?.val())===0&&this.state==='PLAYING')this._pvpKill(uid);
+                                        }).catch(error=>console.error('PVP HIT SYNC ERROR',error));
                                 }
                             }
                         });
@@ -1274,7 +1308,8 @@
             const id=window.System?.playerId;if(window.DB&&id){window.DB.ref('users/'+id+'/coins').set(this.session.cash);window.DB.ref('users/'+id+'/xp').transaction(x=>(Number(x)||0)+100);}return true;
         },
         _kill: function(t, rew) {
-            if(t.rewarded)return;t.rewarded=true;if(t.isBoss)this.bossDefeated=true;
+            if(t.rewarded)return;t.rewarded=true;
+            if(t.isBoss){this.bossDefeated=true;if(this.mode==='COOP'&&this.net.sharedRef)this.net.sharedRef.update({bossDefeated:true});}
             GameSfx.play('boom');
             this._fx(t.x,t.y,t.z,'#f33',40,300);
             this._fx(t.x,t.y,t.z,'#234',30,600);
@@ -1288,9 +1323,9 @@
             this.flightCareer.kills++;this._saveCareer();
             if(window.Profile){window.Profile.coins=this.session.cash;window.Profile.xp=this.session.xp;}
             
-            if (this.mode === 'COOP' && this.net.sharedRef) {
-                let teamKills = (this.net.sharedData.teamKills || 0) + 1;
-                this.net.sharedRef.update({ teamKills: teamKills });
+            if (this.mode === 'COOP' && this.net.sharedRef?.child) {
+                // An RTDB transaction prevents two pilots from losing a simultaneous kill.
+                this.net.sharedRef.child('teamKills').transaction(current=>Math.max(0,Number(current)||0)+1);
             }
 
             let realId = window.System && window.System.playerId;
@@ -1300,7 +1335,21 @@
             }
         },
 
+        _completeFlightSchool: function() {
+            if(!this.flightSchool||this.flightSchool.stage!=='landing'||this.flightSchool.complete||this.state!=='PLAYING')return false;
+            this.flightSchool.complete=true;this.flightSchool.stage='complete';
+            this.ship.pitch=0;this.manualThrottle=0;this.pilot.throttle=0;
+            this.flightCareer.school=true;
+            const missions=this.flightCareer.missions&&typeof this.flightCareer.missions==='object'?this.flightCareer.missions:{};
+            const previous=missions.school||{};
+            this.flightCareer.missions={...missions,school:{...previous,completed:Math.max(0,Number(previous.completed)||0)+1}};
+            this._saveCareer();
+            this._endGame('VICTORY');
+            return true;
+        },
+
         _endGame: function(res) {
+            if(this.state==='VICTORY'||this.state==='GAMEOVER')return;
             this.state = res;
             GameSfx.stop();
             setTimeout(() => {
@@ -1338,6 +1387,18 @@
             }else if(!g.onRunway&&p.y<50){p.y=50;p.vy=Math.max(0,p.vy);if(p.pitch<0)p.pitch=0;}
         },
         _schoolGates: function(){return[{x:0,y:230,z:0},{x:1000,y:450,z:1900},{x:2300,y:480,z:0},{x:1200,y:300,z:-2600},{x:0,y:120,z:-2300}];},
+        _schoolGatePassed: function(before,gate){
+            // Passing near a ring is not enough: the aircraft must cross its plane
+            // in the intended route direction, inside its visible aperture.
+            if(!before||!gate||!this.flightSchool)return false;
+            const gates=this._schoolGates(),n=this.flightSchool.gate,from=n?gates[n-1]:{z:-2200};
+            const direction=Math.sign(gate.z-from.z)||1,travel=this.ship.z-before.z;
+            if(!Number.isFinite(travel)||Math.abs(travel)<1e-6||travel*direction<=0)return false;
+            const t=(gate.z-before.z)/travel;
+            if(t<0||t>1)return false;
+            const x=before.x+(this.ship.x-before.x)*t,y=before.y+(this.ship.y-before.y)*t;
+            return Math.hypot(x-gate.x,y-gate.y)<=300;
+        },
         _drawSchool: function(ctx,w,h){
             const quad=(points,color)=>{const pp=points.map(p=>this._projectView(...p,w,h));if(pp.some(p=>!p.visible))return;ctx.beginPath();pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
             // One continuous runway at ground level, rendered in the same camera space.
@@ -1346,8 +1407,8 @@
             if(!school){if(Math.abs(this.ship.x)<1200&&Math.abs(this.ship.z)<4200&&this.ship.y<350){ctx.save();ctx.fillStyle='rgba(6,21,37,.86)';ctx.fillRect(guideX,guideY,guideW,40);ctx.fillStyle='#d9f1ed';ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillText(guide.cue,w/2,guideY+15,guideW-16);ctx.font='11px Arial';ctx.fillText(Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m · descida '+guide.sink.toFixed(1)+' m/s',w/2,guideY+31,guideW-16);ctx.restore();}return;}
             const gate=this._schoolGates()[school.gate];
             if(school.stage==='gates'&&gate){const center=this._projectView(gate.x,gate.y,gate.z,w,h);if(center.visible){const radius=Math.min(w*.28,Math.max(7,300*center.s));ctx.strokeStyle='#88e9e1';ctx.lineWidth=3;ctx.beginPath();ctx.arc(center.x,center.y,radius,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText((school.gate+1)+'/5',center.x,center.y-radius-10);}else{ctx.fillStyle='#ffdc88';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('VIRE PARA O PRÓXIMO ARCO',w/2,h*.30);}}
-            const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'APROXIMAÇÃO INSTÁVEL • use Pausa → Escolher fase para repetir'};
-            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,guideY,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(school.stage==='landing'?guide.cue+' · '+Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m':labels[school.stage]||'',w/2,guideY+21,w*.82);ctx.restore();
+            const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'POUSO INVÁLIDO • NOVA TENTATIVA EM INSTANTES'};
+            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,guideY,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(school.stage==='landing'?guide.cue+' · '+Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m':school.stage==='retry'?'POUSO INVÁLIDO • RETORNO AO INÍCIO EM '+Math.max(0,Math.ceil(school.retryTimer||0))+'s':labels[school.stage]||'',w/2,guideY+21,w*.82);ctx.restore();
         },
         updateAudio: function(){
             const active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden;
@@ -1983,10 +2044,10 @@
                 if (this.combat.target) {
                     if (this.combat.locked) {
                         ctx.fillStyle = "#ffcf68"; ctx.font = "bold "+Math.min(16,Math.max(10,w*.029))+"px Arial"; ctx.textAlign = "center";
-                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"SEGURE ATIRAR • ◎ MÍSSIL":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
+                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"ATIRAR LIVRE • ◎ MÍSSIL GUIADO":"JUNTE AS MÃOS PARA ATIRAR",0,-50,Math.max(95,w*.62));
                     } else {
                         ctx.fillStyle = "#ffcc00"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
-                        ctx.fillText("TRAVANDO MIRA...",0,-50,Math.max(95,w*.62));
+                        ctx.fillText("CANHÃO LIVRE • MÍSSIL AGUARDA TRAVA",0,-50,Math.max(95,w*.62));
                     }
                 }
 
@@ -2047,7 +2108,7 @@
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
             ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
             ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR COM TRAVA • ◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':this.flightOperation?.kind==='reporter'?'REPÓRTER: ERGA UMA MÃO PARA FOTOGRAFAR':'JUNTE AS MÃOS PARA ATIRAR • MÍSSIL COM TRAVA.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
@@ -2079,12 +2140,12 @@
                 phases: [
                     { id: 'training', name: 'CAMPANHA SOLO', desc: 'Destrua as ameaças e evolua o seu caça.', mode: 'SINGLE', reqLvl: 1 },
                     { id: 'free', name: 'VOO LIVRE', desc: 'Explore o cenário e treine manobras.', mode: 'FREE', reqLvl: 1 },
-                    { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse cinco arcos e pratique a aproximação e o pouso.', mode: 'FREE', school:true, reqLvl: 1 },
-                    { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Patrulhe três pontos e retorne à base.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
-                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe pontos turísticos em voo estável.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
-                    { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Encontre o chamado de socorro e regresse.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
-                    { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor avariado: pouse em segurança.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
-                    { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Decole do convés, patrulhe e pouse no navio.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
+                    { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse os cinco arcos na direção correta e pouse na pista com segurança.', mode: 'FREE', school:true, reqLvl: 1 },
+                    { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Identifique e estabilize a aeronave em cada um dos três pontos; retorne à pista.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
+                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe três cidades. Na câmera, erga uma mão para tirar foto sem tocar no celular.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
+                    { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Localize o sinal SOS, estabilize por 3,5 s, registre o resgate e retorne à base.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
+                    { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor com potência reduzida: alcance a pista, faça um pouso suave e pare.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
+                    { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Acelere no convés, alcance o ponto da missão e retorne para um pouso naval suave.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
                     { id: 'coop', name: 'CO-OP ESQUADRÃO', desc: 'Junte-se a aliados para abater o ACE.', mode: 'COOP', reqLvl: 1 },
                     { id: 'pvp', name: 'COMBATE PVP', desc: 'Batalha aérea multijogador.', mode: 'PVP', reqLvl: 1 }
                 ]

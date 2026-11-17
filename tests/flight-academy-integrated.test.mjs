@@ -31,7 +31,7 @@ test('carrier catapult and soft deck landing are functional, hard landing crashe
  assert.equal(g.onGround,true);assert.equal(g.flightOperation.stage,'catapult');
  for(let i=0;i<260&&g.onGround;i++)f.carrierGround(g,.06);
  assert.equal(g.onGround,false);assert.equal(g.flightOperation.stage,'route');
- const p=game();f.start(p,{operation:'carrier'});f.onStart(p);p.onGround=false;p.flightOperation.stage='return';
+ const p=game();f.start(p,{operation:'carrier'});f.onStart(p);p.onGround=false;p.flightOperation.stage='return';p.flightOperation.index=f.routes.carrier.length; // Completed patrol waypoint before naval approach
  Object.assign(p.ship,{x:f.carrier.x,y:f.carrier.y+7,z:f.carrier.z,vx:30,vy:-5,vz:50,roll:0,yaw:0});
  f.update(p,.016,{x:p.ship.x,y:f.carrier.y+25,z:p.ship.z});
  assert.equal(p.flightOperation.stage,'landed');assert.equal(p.onGround,true);
@@ -44,7 +44,15 @@ test('patrol, reporter and rescue have achievable objectives and recorded grades
  const f=flightOps();
  for(const kind of ['patrol','reporter','rescue']){
   const g=game();f.start(g,{operation:kind});f.onStart(g);
-  for(const wp of f.routes[kind]){Object.assign(g.ship,{...wp,vx:40,vy:0,vz:0,roll:0});for(let k=0;k<5;k++)f.update(g,1,{...g.ship});}
+  for(const wp of f.routes[kind]){
+   Object.assign(g.ship,{...wp,vx:40,vy:0,vz:0,roll:0});
+   const previous=g.flightOperation.index;
+   for(let k=0;k<5;k++)f.update(g,1,{...g.ship});
+   if(kind==='reporter'){
+    assert.equal(g.flightOperation.index,previous,'reporter must not skip the shutter');
+    assert.equal(f.capturePhoto(g).ok,true,'the photo button should record the valid site');
+   }
+  }
   assert.equal(g.flightOperation.stage,'return');
   g.onGround=true;Object.assign(g.ship,{x:0,y:8,z:0,vx:0,vy:0,vz:0});f.update(g,1,{...g.ship});
   assert.equal(g.state,'VICTORY');assert.equal(g.flightCareer.missions[kind].completed,1);assert.equal(g.flightCareer.missions.school.completed,1);assert.equal(g.saveCount,1);
@@ -60,5 +68,5 @@ test('approved original camera calibration, existing arcade phases and OTTHI bri
  assert.match(hangar,/id:'ot-flight-academy'/);assert.match(venue,/aviation:Object\.freeze/);assert.match(trip,/aviation:'usarmy_flight_sim'/);
  const html=read('games/voo/index.html'),sw=read('games/voo/sw.js');
  assert.match(html,/flight-operations\.js\?v=/);assert.match(html,/flight-world-return\.js\?v=/);
- assert.match(sw,/flight-academy-v35/);
+ assert.match(sw,/flight-academy-v42-pilot-restored/);
 });

@@ -26,6 +26,7 @@ jobs:
       - name: Flight and world JavaScript syntax
         run: |
           node --check games/voo/js/game_flight.js
+          node --check games/voo/control-modes.js
           node --check games/voo/js/flight-operations.js
           node --check games/voo/js/flight-world-return.js
           node --check games/otthi/app.js

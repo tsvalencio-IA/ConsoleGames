@@ -140,3 +140,44 @@ body.kart-racing .hud-score-box,body.kart-racing .arcade-topline,body.kart-racin
 #arcade-pause-modal [data-career-panel]{display:grid;gap:8px;padding:12px;border:1px solid #83c9e466;border-radius:12px;background:#061525;text-align:left;font-size:12px}
 #arcade-pause-modal [data-career-panel][hidden]{display:none!important}
 #arcade-pause-modal [data-career-panel] .studio-mastery-task{display:flex;justify-content:space-between;gap:10px}
+
+/* Flight mission actions have dedicated slots; no default absolute-position stacking. */
+.input-game-controls.flight-input [data-control="photo"]{
+ right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 12px);
+ bottom:calc(var(--act) + 10px);
+ width:calc(var(--act)*1.24);
+ height:var(--act);
+ min-width:58px;
+ border-radius:14px;
+ font:900 clamp(9px,2vw,12px)/1.05 system-ui;
+ background:linear-gradient(145deg,#17766a,#135169);
+ border-color:#a6fce2;
+}
+.input-game-controls.flight-input [data-control="powerDown"],
+.input-game-controls.flight-input [data-control="powerUp"]{
+ bottom:calc(clamp(104px,calc(31vw * var(--play-control-size,1)),144px) + 16px);
+ left:max(8px,env(safe-area-inset-left,0px));
+ width:48px;height:44px;
+ font:900 12px/1 system-ui;
+ border-radius:12px;
+}
+.input-game-controls.flight-input [data-control="powerUp"]{
+ left:calc(max(8px,env(safe-area-inset-left,0px)) + 54px);
+}
+@media(max-height:460px){
+ .input-game-controls.flight-input [data-control="photo"]{
+  bottom:56px;min-width:58px;height:44px;
+ }
+ .input-game-controls.flight-input [data-control="powerDown"],
+ .input-game-controls.flight-input [data-control="powerUp"]{
+  bottom:116px;width:45px;min-width:45px;height:42px;
+ }
+}
+
+@media(max-width:340px){
+ .input-game-controls.flight-input [data-control="photo"]{
+  width:44px;min-width:44px;padding:3px 1px;
+  right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 2px);
+  font-size:9px;
+ }
+}
