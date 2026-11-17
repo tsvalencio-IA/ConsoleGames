@@ -44,7 +44,15 @@ test('patrol, reporter and rescue have achievable objectives and recorded grades
  const f=flightOps();
  for(const kind of ['patrol','reporter','rescue']){
   const g=game();f.start(g,{operation:kind});f.onStart(g);
-  for(const wp of f.routes[kind]){Object.assign(g.ship,{...wp,vx:40,vy:0,vz:0,roll:0});for(let k=0;k<5;k++)f.update(g,1,{...g.ship});}
+  for(const wp of f.routes[kind]){
+   Object.assign(g.ship,{...wp,vx:40,vy:0,vz:0,roll:0});
+   const previous=g.flightOperation.index;
+   for(let k=0;k<5;k++)f.update(g,1,{...g.ship});
+   if(kind==='reporter'){
+    assert.equal(g.flightOperation.index,previous,'reporter must not skip the shutter');
+    assert.equal(f.capturePhoto(g).ok,true,'the photo button should record the valid site');
+   }
+  }
   assert.equal(g.flightOperation.stage,'return');
   g.onGround=true;Object.assign(g.ship,{x:0,y:8,z:0,vx:0,vy:0,vz:0});f.update(g,1,{...g.ship});
   assert.equal(g.state,'VICTORY');assert.equal(g.flightCareer.missions[kind].completed,1);assert.equal(g.flightCareer.missions.school.completed,1);assert.equal(g.saveCount,1);
