@@ -176,8 +176,8 @@ body.kart-racing .hud-score-box,body.kart-racing .arcade-topline,body.kart-racin
 
 @media(max-width:340px){
  .input-game-controls.flight-input [data-control="photo"]{
-  width:52px;min-width:52px;
-  right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 8px);
+  width:44px;min-width:44px;padding:3px 1px;
+  right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 2px);
   font-size:9px;
  }
 }
