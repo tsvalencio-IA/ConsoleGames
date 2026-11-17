@@ -265,7 +265,13 @@
             this._initBattleWorld();
             
             if (!this.keysBound) {
-                window.addEventListener('keydown', (e) => this.keys[e.key] = true);
+                window.addEventListener('keydown', (e) => {
+                    this.keys[e.key] = true;
+                    if((e.key==='p'||e.key==='P')&&!e.repeat&&!e.target?.closest?.('input,textarea,select')){
+                        const result=window.FlightOperations?.capturePhoto?.(this);
+                        if(result&&!result.ok)window.System?.msg?.(result.reason,'#ffcf68');
+                    }
+                });
                 window.addEventListener('keyup', (e) => this.keys[e.key] = false);
                 this.keysBound = true;
             }
@@ -466,7 +472,7 @@
             else if (y > h*0.85) {
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.isHost && this.net.sessionRef) {
                     this.net.sessionRef.child('state').set('PLAYING');
-                    if (this.net.sharedRef) this.net.sharedRef.set({ wave: 1, teamKills: 0 }); 
+                    if (this.net.sharedRef) this.net.sharedRef.set({ wave: 1, teamKills: 0, bossDefeated:false }); 
                 } else if (this.mode === 'SINGLE' || this.mode === 'FREE') { 
                     this.state = 'CALIBRATION'; this.timer = 5.0; 
                 }
@@ -912,14 +918,21 @@
 
             let firingState = false;
 
-            if ((window.ArcadeControls?.mode!=='controls'||this.manualFireHeld||this.keys['f']||(heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false)) && this.combat.locked && this.combat.target && performance.now() - this.combat.vulcanCd > 80) {
-                this.combat.vulcanCd = performance.now();
-                const speed=1400,t=this.combat.target,ship=this.ship;
-                const origin={x:ship.x+Math.cos(ship.yaw)*(heli?12:60),y:ship.y-(heli?8:20),z:ship.z-Math.sin(ship.yaw)*(heli?12:60)};
-                const lead=this._leadShot(origin,t,speed),dx=lead.x-origin.x,dy=lead.y-origin.y,dz=lead.z-origin.z,d=Math.hypot(dx,dy,dz)||1;
+            const cameraGesture=window.ArcadeControls?.mode==='camera'&&this.pilot.headTilt;
+            const automaticHeli=heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false&&this.combat.locked;
+            const gunTrigger=Boolean(this.manualFireHeld||this.keys['f']||this.keys['F']||cameraGesture||automaticHeli);
+            // Cannon is a free-fire weapon; only homing missiles require target lock.
+            if(gunTrigger&&performance.now()-this.combat.vulcanCd>80){
+                this.combat.vulcanCd=performance.now();
+                const speed=1400,ship=this.ship;
+                const fx=Math.sin(ship.yaw)*Math.cos(ship.pitch),fy=Math.sin(ship.pitch),fz=Math.cos(ship.yaw)*Math.cos(ship.pitch);
+                const origin={x:ship.x+fx*(heli?12:60),y:ship.y+fy*(heli?12:60)-(heli?5:12),z:ship.z+fz*(heli?12:60)};
+                const t=this.combat.locked?this.combat.target:null;
+                const lead=t?this._leadShot(origin,t,speed):{x:origin.x+fx*4000,y:origin.y+fy*4000,z:origin.z+fz*4000};
+                const dx=lead.x-origin.x,dy=lead.y-origin.y,dz=lead.z-origin.z,d=Math.hypot(dx,dy,dz)||1;
                 this.bullets.push({x:origin.x,y:origin.y,z:origin.z,vx:ship.vx+dx/d*speed,vy:ship.vy+dy/d*speed,vz:ship.vz+dz/d*speed,isEnemy:false,life:Math.min(24,Math.max(2,d/speed+1))});
                 GameSfx.play('vulcan');
-                firingState = true;
+                firingState=true;
             }
 
             if (this.combat.missileCd > 0) this.combat.missileCd -= dt;
@@ -2001,10 +2014,10 @@
                 if (this.combat.target) {
                     if (this.combat.locked) {
                         ctx.fillStyle = "#ffcf68"; ctx.font = "bold "+Math.min(16,Math.max(10,w*.029))+"px Arial"; ctx.textAlign = "center";
-                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"SEGURE ATIRAR • ◎ MÍSSIL":"JUNTE AS MÃOS PARA ATIRAR!",0,-50,Math.max(95,w*.62));
+                        ctx.fillText(window.ArcadeControls?.mode==="controls"?"ATIRAR LIVRE • ◎ MÍSSIL GUIADO":"JUNTE AS MÃOS PARA ATIRAR",0,-50,Math.max(95,w*.62));
                     } else {
                         ctx.fillStyle = "#ffcc00"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
-                        ctx.fillText("TRAVANDO MIRA...",0,-50,Math.max(95,w*.62));
+                        ctx.fillText("CANHÃO LIVRE • MÍSSIL AGUARDA TRAVA",0,-50,Math.max(95,w*.62));
                     }
                 }
 
@@ -2065,7 +2078,7 @@
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
             ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
             ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR COM TRAVA • ◎ MÍSSIL • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR MÍSSEIS.',w/2,h*0.53,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR • MÍSSIL COM TRAVA.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
