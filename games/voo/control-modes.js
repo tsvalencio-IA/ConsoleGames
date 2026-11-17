@@ -149,7 +149,7 @@ const hub={
    const reset=()=>{logic.manualFireHeld=false};
    window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);
    hub.releases.push(()=>{reset();clearInterval(timer);window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset)});
-   hub.showTip('JUNTE AS MÃOS OU SEGURE ATIRAR • MÍSSIL EXIGE TRAVA • FOTOGRAFE NO REPÓRTER');
+   hub.showTip('DIREITA ABERTA: FOTO • ESQUERDA ABERTA: MÍSSIL • AS DUAS ABERTAS: FREAR');
  },
  flightControls(logic){
    const tapStart=()=>{
@@ -193,7 +193,7 @@ const hub={
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));
-   hub.showTip("MANCHE + ATIRAR LIVRE • MÍSSIL EXIGE TRAVA • REPÓRTER: FOTOGRAFE OS ALVOS");
+   hub.showTip("MANCHE + ATIRAR LIVRE • MÍSSIL GUIADO COM TRAVA • FOTO NO REPÓRTER");
  },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[
