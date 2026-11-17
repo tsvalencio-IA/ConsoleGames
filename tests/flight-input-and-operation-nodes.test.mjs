@@ -84,9 +84,9 @@ test('Cannon: controller fire works with no target and no lock',()=>{
   assert(g.bullets[0].vz>0,'gun projectile travels forward');
   assert.equal(g.missiles.length,0,'missiles still require target lock');
 });
-test('Cannon: camera joined-hands gesture shoots without a locked target',()=>{
+test('Cannon: camera on-screen fire trigger shoots without a locked target',()=>{
   const {g,window}=nativeFlight();
-  window.ArcadeControls.mode='camera';g.pilot.headTilt=true;
+  window.ArcadeControls.mode='camera';g.manualFireHeld=true;
   g._processCombat(.016,800,600);
   assert.equal(g.bullets.length,1);
   assert.equal(g.missiles.length,0);
