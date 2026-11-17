@@ -13,7 +13,7 @@ function segmentBox(a,b,box,r=0){
  }return true;
 }
 function segmentDistance(a,b,p){let dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,l=dx*dx+dy*dy+dz*dz,t=l?clamp(((p.x-a.x)*dx+(p.y-a.y)*dy+(p.z-a.z)*dz)/l,0,1):0;return Math.hypot(a.x+dx*t-p.x,a.y+dy*t-p.y,a.z+dz*t-p.z);}
-function start(g,phase){g.flightOperation=labels[phase?.operation]?{kind:phase.operation,stage:'ready',index:0,elapsed:0,stable:0,done:false}:null;}
+function start(g,phase){g.flightOperation=labels[phase?.operation]?{kind:phase.operation,stage:'ready',index:0,elapsed:0,stable:0,done:false,photos:[],lastPhoto:null}:null;g.flightPhotos=[];}
 function onStart(g){
  const op=g.flightOperation;if(!op)return;
  op.stage=op.kind==='carrier'?'catapult':op.kind==='emergency'?'return':'route';op.elapsed=0;op.index=0;op.stable=0;
@@ -58,7 +58,9 @@ function finish(g){
  const o=g.flightOperation;if(!o||o.done||g.state!=='PLAYING')return;o.done=true;
  const old=g.flightCareer.missions||{},prev=old[o.kind]||{};
  g.flightCareer.missions={...old,[o.kind]:{completed:(Number(prev.completed)||0)+1,bestTime:Math.min(Number(prev.bestTime)||Infinity,Math.round(o.elapsed)),medal:o.elapsed<160?'OURO':o.elapsed<240?'PRATA':'BRONZE'}};
- g.session.xp+=350;g._saveCareer();g._endGame('VICTORY');
+ if(o.kind==='reporter'&&o.photos.length!==routes.reporter.length){o.done=false;return;}
+  if(o.kind==='reporter')g.flightCareer.missions.reporter.photos=o.photos.length;
+  g.session.xp+=350;g._saveCareer();g._endGame('VICTORY');
 }
 function update(g,dt,before){
  if(g.state!=='PLAYING')return;
@@ -69,12 +71,46 @@ function update(g,dt,before){
   p.y=carrier.y+9;p.vy=0;g.onGround=true;o.stage='landed';g.pilot.throttle=0;g.manualThrottle=0;
  }
  if(o.stage==='landed'){if(Math.hypot(p.vx,p.vz)<15)finish(g);return;}
- if(o.stage==='return'){if(o.kind!=='carrier'&&g.onGround&&Math.hypot(p.vx,p.vz)<30)finish(g);return;}
+ if(o.stage==='return'){
+   const atBase=Math.abs(p.x)<105&&Math.abs(p.z)<3000&&Math.abs(p.y-8)<16;
+   if(o.kind!=='carrier'&&atBase&&g.onGround&&Math.hypot(p.vx,p.vz)<30){
+    if(o.kind==='emergency'&&g.landingQuality==='firm'){impact(g,'POUSO DE EMERGÊNCIA INSEGURO');return;}
+    finish(g);
+   }
+   return;
+  }
  if(o.stage!=='route')return;
  const target=routes[o.kind]?.[o.index];if(!target){o.stage='return';return;}
  if(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)> (o.kind==='reporter'?700:650)||Math.abs(p.roll)>.48){o.stable=0;return;}
- o.stable+=dt;if((o.kind==='rescue'&&o.stable<3.5)||(o.kind==='reporter'&&o.stable<1))return;
+ o.stable+=dt;
+  // No automatic success for the aerial reporter: the player must press the shutter.
+  if(o.kind==='reporter')return;
+  if(o.kind==='rescue'&&o.stable<3.5)return;
  o.index++;o.stable=0;if(o.index>=routes[o.kind].length)o.stage='return';
+}
+function capturePhoto(g){
+  const o=g?.flightOperation,p=g?.ship;
+  if(!o||o.kind!=='reporter'||g.state!=='PLAYING'||o.done||o.stage!=='route')return {ok:false,reason:'FOTO DISPONÍVEL APENAS NA MISSÃO REPÓRTER AÉREO'};
+  const target=routes.reporter[o.index];
+  if(!target)return {ok:false,reason:'TODAS AS FOTOS JÁ FORAM TIRADAS'};
+  if(Math.hypot(p.x-target.x,p.y-target.y,p.z-target.z)>700)return {ok:false,reason:'APROXIME-SE DO PONTO FOTOGRÁFICO'};
+  if(Math.abs(p.roll)>.48||o.stable<1)return {ok:false,reason:'ESTABILIZE O AVIÃO POR 1 SEGUNDO'};
+  // Snapshot of the rendered game only, not the player's webcam.
+  let thumbnail=null;
+  try{
+   const source=window.System?.canvas;
+   if(source?.width&&source?.height&&typeof document!=='undefined'){
+    const canvas=document.createElement('canvas');canvas.width=320;canvas.height=Math.max(1,Math.round(320*source.height/source.width));
+    canvas.getContext('2d')?.drawImage(source,0,0,canvas.width,canvas.height);
+    thumbnail=canvas.toDataURL('image/jpeg',.67);
+   }
+  }catch{thumbnail=null;}
+  const photo={point:o.index+1,at:Date.now(),x:p.x,y:p.y,z:p.z,thumbnail};
+  o.photos.push(photo);g.flightPhotos=o.photos;o.index++;o.stable=0;
+  o.lastPhoto={at:performance.now(),point:photo.point};
+  if(o.index>=routes.reporter.length)o.stage='return';
+  window.System?.msg?.('FOTO '+photo.point+'/'+routes.reporter.length+' REGISTRADA'+(o.stage==='return'?' • RETORNE À BASE':''),'#89ffcb');
+  return {ok:true,point:photo.point,complete:o.stage==='return',thumbnail:!!thumbnail};
 }
 function drawWorld(ctx,w,h,g){
  if(Math.hypot(g.ship.x-carrier.x,g.ship.z-carrier.z)>23000)return;
@@ -90,12 +126,15 @@ function drawHud(ctx,w,h,g){
  const o=g.flightOperation;if(!o&&!g.flightImpact)return;ctx.save();
  if(o&&!o.done){
   const t=routes[o.kind]?.[o.index],d=t?Math.round(Math.hypot(g.ship.x-t.x,g.ship.z-t.z))+' m':'';
-  const message=labels[o.kind]+' · '+(o.stage==='catapult'?'AUMENTE A POTÊNCIA':o.stage==='return'?'RETORNE E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+' · '+d);
+  const ready=o.kind==='reporter'&&o.stage==='route'&&o.stable>=1;
+   const hint=o.kind==='reporter'?'FOTOS '+o.photos.length+'/'+routes.reporter.length+' · '+(ready?'FOTOGRAFE AGORA':o.stable>0?'MANTENHA VOO ESTÁVEL':'APROXIME-SE DO ALVO'):'';
+   const message=labels[o.kind]+' · '+(o.stage==='catapult'?'AUMENTE A POTÊNCIA':o.stage==='return'?'RETORNE À PISTA E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+' · '+d)+(hint?' · '+hint:'');
   ctx.fillStyle='rgba(5,30,44,.8)';ctx.fillRect(w*.06,h<530?95:110,w*.88,30);
   ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(message,w/2,(h<530?95:110)+20,w*.83);
  }
- if(g.flightImpact&&performance.now()-g.flightImpact.at<1500){ctx.fillStyle='rgba(255,86,25,.27)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffe6a9';ctx.textAlign='center';ctx.font='bold 19px Arial';ctx.fillText(g.flightImpact.text,w/2,h*.41,w-18);}
+ if(o?.lastPhoto&&performance.now()-o.lastPhoto.at<260){ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(0,0,w,h);}
+  if(g.flightImpact&&performance.now()-g.flightImpact.at<1500){ctx.fillStyle='rgba(255,86,25,.27)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffe6a9';ctx.textAlign='center';ctx.font='bold 19px Arial';ctx.fillText(g.flightImpact.text,w/2,h*.41,w-18);}
  ctx.restore();
 }
-window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,update,drawWorld,drawHud});
+window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,capturePhoto,update,drawWorld,drawHud});
 })();
