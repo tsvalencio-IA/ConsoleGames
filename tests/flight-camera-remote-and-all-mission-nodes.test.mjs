@@ -146,7 +146,7 @@ test('PvP simultaneous hits use atomic RTDB updates and credit a single confirme
  vm.runInNewContext(fs.readFileSync('games/voo/js/game_flight.js','utf8'),
   {window,performance:{now:()=>1000},console,setInterval(){throw Error('register failure')}});
  let hp=10,credited=0,updates=0;
- window.DB={ref(path){assert.match(path,/sessions\\/flight_PVP\\/players\\/enemy\\/hp/);return{transaction(fn){
+ window.DB={ref(path){assert.equal(path,'sessions/flight_PVP/players/enemy/hp');return{transaction(fn){
   updates++;const next=fn(hp);
   if(next===undefined)return Promise.resolve({committed:false,snapshot:{val:()=>hp}});
   hp=next;return Promise.resolve({committed:true,snapshot:{val:()=>hp}});
