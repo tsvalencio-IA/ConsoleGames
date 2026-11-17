@@ -234,7 +234,7 @@ window.Profile = {
 window.System = {
     playerId: 'p_' + Math.floor(Math.random()*10000), 
     activeGame: null, loopId: null, loopEpoch: 0, busyEpoch: null, resultLocked: false, isStarting: false,
-    canvas: null, video: null, detector: null, playerLock:null, handDetector:null, handsLastAt:0,
+    canvas: null, video: null, detector: null, playerLock:null, handDetector:null, handsLastAt:0,handsBusy:false,
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
@@ -399,13 +399,20 @@ window.System = {
                         if(window.ConsolePlayerMotionLock && !system.playerLock)system.playerLock=new window.ConsolePlayerMotionLock.PlayerLock();
                         pose=system.playerLock?system.playerLock.observe(people,performance.now()):(people?.length===1?people[0]:null);
                         if(system.playerLock&&system.handDetector){
-                            if(pose&&performance.now()-system.handsLastAt>=140){
+                            if(pose&&!system.handsBusy&&performance.now()-system.handsLastAt>=140){
                                 system.handsLastAt=performance.now();
-                                try{
-                                    const hands=await system.handDetector.estimateHands(system.video,{flipHorizontal:false});
-                                    if(system.loopEpoch!==epoch||system.activeGame!==game)return;
-                                    system.playerLock.hands(hands,performance.now());
-                                }catch(error){system.playerLock.hands([],performance.now());}
+                                system.handsBusy=true;
+                                const tracker=system.playerLock,framePose=pose,started=performance.now();
+                                // Hand inference runs outside the render loop: slow phones keep drawing.
+                                Promise.resolve().then(()=>system.handDetector.estimateHands(system.video,{flipHorizontal:false}))
+                                  .then(hands=>{
+                                      if(system.loopEpoch===epoch&&system.activeGame===game&&system.playerLock===tracker&&
+                                         tracker.status==='locked'&&performance.now()-started<700)
+                                          tracker.hands(hands,performance.now(),framePose);
+                                  }).catch(error=>{
+                                      if(system.loopEpoch===epoch&&system.activeGame===game&&system.playerLock===tracker)
+                                          tracker.hands([],performance.now());
+                                  }).finally(()=>{system.handsBusy=false;});
                             }
                             if(pose)pose.consoleMotion=system.playerLock.snapshot(performance.now());
                         }
@@ -446,7 +453,7 @@ window.System = {
     stopGame: () => {
         window.ArcadeControls?.removeControls();
         window.System.paused=false;
-        window.System.playerLock?.reset();window.System.handsLastAt=0;
+        window.System.playerLock?.reset();window.System.handsLastAt=0;window.System.handsBusy=false;
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
         window.System.loopId=null;
