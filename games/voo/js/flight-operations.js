@@ -105,7 +105,7 @@ function update(g,dt,before){
  }
  const wait=o.kind==='rescue'?3.5:o.kind==='patrol'?1.0:o.kind==='carrier'?1.0:0;
  if(o.stable<wait)return;
- if(o.kind==='rescue')o.rescued=true;
+ if(o.kind==='rescue'){o.rescued=true;window.System?.msg?.('VÍTIMA RESGATADA • VOLTE À BASE','#9cfac6');}
  o.index++;o.stable=0;
  if(o.index>=routes[o.kind].length)o.stage='return';
 }
@@ -176,6 +176,14 @@ function drawWorld(ctx,w,h,g){
  f([[x-W,y,z-L],[x+W,y,z-L],[x+W,y,z+L],[x-W,y,z+L]],'#596770');
  for(let a=-L+35;a<L-35;a+=95)f([[x-3,y+.3,z+a],[x+3,y+.3,z+a],[x+3,y+.3,z+a+45],[x-3,y+.3,z+a+45]],'#ecde8b');
  f([[x+W-50,y,z-130],[x+W-12,y,z-130],[x+W-12,y+75,z-130],[x+W-50,y+75,z-130]],'#81979a');
+ const op=g.flightOperation;
+ if(op?.kind==='rescue'&&!op.rescued&&typeof g._projectView==='function'){
+  const target=routes.rescue[0],marker=g._projectView(target.x,25,target.z,w,h);
+  if(marker.visible&&marker.x>=0&&marker.x<=w&&marker.y>=0&&marker.y<=h){
+   ctx.save();ctx.globalAlpha=.76+.18*Math.sin(performance.now()/280);ctx.strokeStyle='#ffd06e';ctx.fillStyle='#ffdf94';ctx.lineWidth=3;
+   ctx.beginPath();ctx.arc(marker.x,marker.y,12,0,Math.PI*2);ctx.stroke();ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('SOS • RESGATE',marker.x,marker.y-23,w*.46);ctx.restore();
+  }
+ }
 }
 function drawHud(ctx,w,h,g){
  const o=g.flightOperation;if(!o&&!g.flightImpact)return;ctx.save();
@@ -189,7 +197,7 @@ function drawHud(ctx,w,h,g){
   const altitudeCue=t&&o.stage==='route'&&Math.abs(alt)>130?(alt>0?' · SUBA '+alt+' m':' · DESÇA '+Math.abs(alt)+' m'):'';
   const ready=o.kind==='reporter'&&o.stage==='route'&&(o.stable>=1||o.readyWindow>0);
   const stage=o.stage==='catapult'?'DECOLE DO CONVÉS':o.stage==='return'?'RETORNE À BASE E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+'/'+(routes[o.kind]?.length||1);
-  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?(window.ArcadeControls?.mode==='camera'?'ERGA UMA MÃO PARA FOTO':'APERTE FOTOGRAFAR'):o.stable>0?'ESTABILIZE PARA FOTO':'APROXIME-SE DO ALVO'):o.kind==='rescue'&&o.stage==='route'?'PAIRAR PARA RESGATAR':o.kind==='patrol'&&o.stage==='route'?'MANTENHA 1 S NO PONTO':o.kind==='carrier'&&o.stage==='route'?'MANTENHA 1 S NO PONTO':'';
+  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?(window.ArcadeControls?.mode==='camera'?'ERGA UMA MÃO PARA FOTO':'APERTE FOTOGRAFAR'):o.stable>0?'ESTABILIZE PARA FOTO':'APROXIME-SE DO ALVO'):o.kind==='rescue'?(o.rescued?'VÍTIMA A BORDO':o.stage==='route'?'RESGATE '+o.stable.toFixed(1)+'/3.5 s':''):o.kind==='patrol'&&o.stage==='route'?'OBSERVAÇÃO '+o.stable.toFixed(1)+'/1 s':o.kind==='carrier'&&o.stage==='route'?'PATRULHA '+o.stable.toFixed(1)+'/1 s':'';
   const top=h<530?83:102;
   ctx.fillStyle='rgba(5,30,44,.84)';ctx.fillRect(w*.06,top,w*.88,46);
   ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(labels[o.kind]+' · '+stage,w/2,top+17,w*.83);
