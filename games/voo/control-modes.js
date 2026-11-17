@@ -50,6 +50,7 @@ const hub={
   if(id==="ar_truck_sim"){hub.arControls(logic);return;}
   if(hub.mode!=="controls"){
    if(id==="box_pro")logic.touchMode=false;
+   if(id==="usarmy_flight_sim")hub.flightCameraActions(logic);
    return;
   }
   if(id==="drive")return;
@@ -100,7 +101,7 @@ const hub={
    document.body.append(root);hub.buttons=root;
    const watch=setInterval(()=>{
      const s=window.System;
-     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && (hub.mode==="controls"||id==="ar_truck_sim");
+     const visible=s?.activeGame?.id===id && !$("#game-ui")?.classList.contains("hidden") && (hub.mode==="controls"||id==="ar_truck_sim"||(kind==="flight-camera-actions"&&hub.mode==="camera"));
      root.hidden=!visible;
      if(!s?.activeGame){clearInterval(watch);root.remove();hub.buttons=null;}
    },200);
@@ -137,6 +138,19 @@ const hub={
    window.addEventListener('blur',release);window.addEventListener('resize',release);window.addEventListener('arcade:release-inputs',release);const interval=setInterval(refresh,160);
    hub.releases.push(()=>{release();clearInterval(interval);window.removeEventListener('blur',release);window.removeEventListener('resize',release);window.removeEventListener('arcade:release-inputs',release)});refresh();
  },
+ flightCameraActions(logic){
+   const photo=()=>{const result=window.FlightOperations?.capturePhoto?.(logic);if(result&&!result.ok)window.System?.msg?.(result.reason,'#ffcf68');};
+   const root=hub.createControls('flight-camera-actions',[
+    {id:'fire',text:'ATIRAR',label:'Segure para disparar o canhão sem travar a mira',down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
+    {id:'photo',text:'📷 FOTOGRAFAR',label:'Fotografar o objetivo do Repórter Aéreo',down:photo}
+   ]);
+   const refresh=()=>{const shutter=root.querySelector('[data-control="photo"]');if(shutter)shutter.hidden=logic.state!=='PLAYING'||logic.flightOperation?.kind!=='reporter'||logic.flightOperation?.stage!=='route';const gun=root.querySelector('[data-control="fire"]');if(gun)gun.hidden=logic.state!=='PLAYING';};
+   refresh();const timer=setInterval(refresh,160);
+   const reset=()=>{logic.manualFireHeld=false};
+   window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);
+   hub.releases.push(()=>{reset();clearInterval(timer);window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset)});
+   hub.showTip('JUNTE AS MÃOS OU SEGURE ATIRAR • MÍSSIL EXIGE TRAVA • FOTOGRAFE NO REPÓRTER');
+ },
  flightControls(logic){
    const tapStart=()=>{
      // Do not hold Space for 350ms: that crosses two engine phases
@@ -156,6 +170,7 @@ const hub={
      const map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight",boost:"Shift",missile:" "};
      const k=map[id];return {id,text,label:name||text,down:()=>{logic.keys[k]=true},up:()=>{logic.keys[k]=false}};
    };
+   const photo=()=>{const result=window.FlightOperations?.capturePhoto?.(logic);if(result&&!result.ok)window.System?.msg?.(result.reason,'#ffcf68');};
    const pedals=new Set(),setPedal=()=>logic.manualPedal=(pedals.has('right')?1:0)-(pedals.has('left')?1:0);
    const flightRoot=hub.createControls("flight-input",[
      {id:'pedalLeft',text:'↶ PEDAL',label:'Pedal esquerdo: girar helicóptero à esquerda',down:()=>{pedals.add('left');setPedal();},up:()=>{pedals.delete('left');setPedal();}},
@@ -163,7 +178,8 @@ const hub={
      key("left","◀","Virar à esquerda"),key("up","▲","Subir"),
      key("down","▼","Descer"),key("right","▶","Virar à direita"),
      key("boost","⚡ TURBO","Acelerar com turbo"),key("missile","◎ MÍSSIL","Disparar míssil após travar a mira"),
-     {id:"fire",text:"ATIRAR",label:"Segurar para atirar após travar a mira",down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
+     {id:"fire",text:"ATIRAR",label:"Segurar para atirar mesmo sem mira travada",down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
+     {id:"photo",text:"📷 FOTOGRAFAR",label:"Fotografar o objetivo do Repórter Aéreo",down:photo},
      {id:"powerDown",text:"− POT",label:"Reduzir potência do motor",down:()=>logic.manualThrottle=Math.max(0,(logic.manualThrottle??1)-.15)},
      {id:"powerUp",text:"+ POT",label:"Aumentar potência do motor",down:()=>logic.manualThrottle=Math.min(1,(logic.manualThrottle??1)+.15)},
      {id:"hover",text:"PAIRAR",label:"Estabilizar altitude do helicóptero; solte o joystick para pairar",down:()=>{if(logic.isHelicopter?.()){logic.manualThrottle=.5;logic.ship.vy=0;}}},
@@ -173,11 +189,11 @@ const hub={
    hub.flightJoystick(logic,flightRoot);hub.helicopterCollective(logic,flightRoot);
    const clearFlight=()=>{logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
    window.addEventListener('blur',clearFlight);window.addEventListener('arcade:release-inputs',clearFlight);hub.releases.push(()=>{clearFlight();window.removeEventListener('blur',clearFlight);window.removeEventListener('arcade:release-inputs',clearFlight)});
-   const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();flightRoot.classList.toggle('heli-controls',heli);for(const name of ['pedalLeft','pedalRight','collective'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=!heli||logic.state!=='PLAYING';for(const name of ['powerUp','powerDown'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=heli||logic.state!=='PLAYING';const caption=flightRoot.querySelector('.flight-stick small');if(caption)caption.textContent=heli?'MANCHE CÍCLICO':'JOYSTICK';const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Manche cíclico: inclinar para os lados e avançar ou recuar; pedais giram, coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const boost=flightRoot.querySelector('[data-control="boost"]');if(boost&&heli)boost.hidden=true;const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
+   const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();flightRoot.classList.toggle('heli-controls',heli);for(const name of ['pedalLeft','pedalRight','collective'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=!heli||logic.state!=='PLAYING';for(const name of ['powerUp','powerDown'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=heli||logic.state!=='PLAYING';const caption=flightRoot.querySelector('.flight-stick small');if(caption)caption.textContent=heli?'MANCHE CÍCLICO':'JOYSTICK';const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Manche cíclico: inclinar para os lados e avançar ou recuar; pedais giram, coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const boost=flightRoot.querySelector('[data-control="boost"]');if(boost&&heli)boost.hidden=true;const shutter=flightRoot.querySelector('[data-control="photo"]');if(shutter)shutter.hidden=logic.state!=="PLAYING"||logic.flightOperation?.kind!=="reporter"||logic.flightOperation?.stage!=="route";const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));
-   hub.showTip("HELICÓPTERO: MANCHE + COLETIVO + PEDAIS • MIRA ASSISTIDA NOS AJUSTES • TOQUES SIMULTÂNEOS");
+   hub.showTip("MANCHE + ATIRAR LIVRE • MÍSSIL EXIGE TRAVA • REPÓRTER: FOTOGRAFE OS ALVOS");
  },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[
