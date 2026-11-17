@@ -501,6 +501,7 @@
             try {
                 const now = performance.now();
                 let dt = (now - this.lastTime) / 1000;
+                const realDt=Math.max(0,Math.min(.25,dt));
                 this.lastTime = now;
                 
                 if (dt > 0.05) dt = 0.05; 
@@ -546,9 +547,9 @@
 
                 if (this.state === 'CALIBRATION') {
                     if(window.ArcadeControls?.mode==='controls')this.timer=5.0;
-                    else if(this.pilot.active&&this.pilot.calibratedHands)this.timer-=dt;
+                    else if(this.pilot.active&&this.pilot.calibratedHands)this.timer-=realDt;
                     else {
-                        this.timer += dt * 2; 
+                        this.timer += realDt * 2; 
                         if (this.timer > 5.0) this.timer = 5.0;
                     }
                     
@@ -568,6 +569,13 @@
 
                 if (this.state === 'GAMEOVER' || this.state === 'VICTORY') {
                     this._drawEnd(ctx, w, h);
+                    return this.session.kills*100;
+                }
+
+                if(window.ArcadeControls?.mode==='camera'&&!this.pilot.active){
+                    // Freeze the aircraft, mission clock and all weapons while the locked pilot is missing.
+                    // Neither a bystander nor an uncertain wrist/hand can move this craft.
+                    this._draw(ctx,w,h);this._drawPilotHands(ctx,w,h);
                     return this.session.kills*100;
                 }
 
@@ -777,6 +785,7 @@
                 }
 
                 this._draw(ctx, w, h);
+                if(window.ArcadeControls?.mode==='camera')this._drawPilotHands(ctx,w,h);
                 return this.session.kills*100;
 
             } catch (err) {
@@ -868,11 +877,7 @@
 
                     let handsDist = Math.hypot(rx - lx, ry - ly);
                     // Steering remains attached to wrists; finger gestures are separate.
-                    if (false && handsDist > w * 0.5) {
-                        this.ship.afterburner = true; 
-                    } else {
-                        this.ship.afterburner = false;
-                    }
+                    this.ship.afterburner=false;
                 }
             }
 
@@ -887,7 +892,7 @@
                 this.pilot.handMode=mode;
                 if(mode==='brake')this.manualThrottle=Math.max(.04,(this.manualThrottle??.6)-dt*1.1);
                 else if(mode==='power')this.manualThrottle=Math.min(1,(this.manualThrottle??.6)+dt*.8);
-                if(mode==='photo'&&prev!=='photo'){
+                if(mode==='photo'&&prev!=='photo'&&this.flightOperation?.kind==='reporter'){
                     const photo=window.FlightOperations?.capturePhoto?.(this);
                     if(photo&&!photo.ok&&photo.reason)window.System?.msg?.(photo.reason,'#ffe0a2');
                 }
@@ -2135,25 +2140,63 @@
             }
         },
 
+        _drawPilotHands: function(ctx,w,h){
+            if(window.ArcadeControls?.mode!=='camera')return;
+            const frame=window.System?.playerLock?.snapshot?.();
+            const left=this.pilot.handControls?.left||'unknown',right=this.pilot.handControls?.right||'unknown';
+            const fmt=v=>v==='open'?'ABERTA':v==='closed'?'FECHADA':'SEM LEITURA';
+            const label=frame?.status==='locked'
+                ?'JOGADOR TRAVADO  |  ESQUERDA: '+fmt(left)+'  |  DIREITA: '+fmt(right)
+                :frame?.status==='selecting'?'CADASTRANDO JOGADOR • FIQUE NO CENTRO'
+                :'RASTREAMENTO PERDIDO • COMANDOS SUSPENSOS';
+            const inset=Math.max(10,w*.04),y=Math.max(8,h*.03);
+            ctx.save();ctx.fillStyle='rgba(3,16,32,.87)';ctx.fillRect(inset,y,w-2*inset,30);
+            ctx.font='bold '+Math.max(10,Math.min(14,w*.017))+'px Arial';ctx.textAlign='center';
+            ctx.fillStyle=frame?.status==='locked'?'#b5ffe7':'#ffe39c';
+            ctx.fillText(label,w/2,y+20,w-2*inset-16);
+            if(frame?.status==='lost'){
+                ctx.fillStyle='rgba(2,12,27,.78)';ctx.fillRect(w*.1,h*.42,w*.8,76);
+                ctx.font='bold '+Math.max(13,Math.min(22,w*.035))+'px Arial';
+                ctx.fillStyle='#ffe29c';ctx.fillText('JOGADOR PERDIDO • VOO EM PAUSA',w/2,h*.42+28,w*.76);
+                ctx.font='bold 12px Arial';ctx.fillText('VOLTE AO ENQUADRAMENTO • NÃO TROCAMOS DE PESSOA',w/2,h*.42+53,w*.76);
+            }else if(frame?.status==='locked'&&this.state==='PLAYING'){
+                const instruction=this.pilot.handMode==='photo'?'FOTO • DIREITA ABERTA'
+                    :this.pilot.handMode==='missile'?'MÍSSIL • ESQUERDA ABERTA'
+                    :this.pilot.handMode==='brake'?'AMBAS ABERTAS • REDUZIR POTÊNCIA'
+                    :this.pilot.handMode==='power'?'AMBAS FECHADAS • ACELERAR':'MANTENHA O MANCHE • CONTROLE PELOS PUNHOS';
+                ctx.fillStyle='#fff9dc';ctx.font='bold 11px Arial';
+                ctx.fillText(instruction+' · '+Math.round((this.pilot.throttle||0)*100)+'% POTÊNCIA',w/2,y+45,w*.84);
+            }
+            ctx.restore();
+        },
         _drawCalib: function(ctx,w,h){
             let sc = Math.min(1, w / 600); 
             
             ctx.fillStyle='rgba(0,10,15,0.95)';ctx.fillRect(0,0,w,h);
             ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.strokeRect(50*sc,50*sc,w-100*sc,h-100*sc);
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
-            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
-            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':this.flightOperation?.kind==='reporter'?'REPÓRTER: ERGA UMA MÃO PARA FOTOGRAFAR':'JUNTE AS MÃOS PARA ATIRAR • MÍSSIL COM TRAVA.',w/2,h*0.53,Math.max(130,w-28));
+            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'REGISTRE O JOGADOR • OMBROS E DUAS MÃOS VISÍVEIS',w/2,h*.38,Math.max(130,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'FECHE AS DUAS MÃOS COMO SE SEGURASSE O MANCHE',w/2,h*0.48,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':this.flightOperation?.kind==='reporter'?'MÃO DIREITA ABERTA: FOTO':'ESQUERDA ABERTA: MÍSSIL • AMBAS FECHADAS: ACELERAR',w/2,h*0.53,Math.max(130,w-28));
             
+            if(window.ArcadeControls?.mode==='camera'){
+                const body=window.System?.playerLock?.snapshot?.();
+                const hands=this.pilot.handControls||{};
+                const fmt=x=>x==='closed'?'FECHADA':x==='open'?'ABERTA':'NÃO IDENTIFICADA';
+                ctx.fillStyle=body?.status==='locked'?'#9fffd4':'#ffe08c';
+                ctx.font='bold '+Math.max(12,16*sc)+'px Arial';
+                ctx.fillText('JOGADOR: '+(body?.status==='locked'?'TRAVADO':body?.status==='selecting'?'CADASTRANDO':'AGUARDANDO MESMO JOGADOR'),w/2,h*.57,w*.88);
+                ctx.fillText('MÃO ESQUERDA: '+fmt(hands.left)+'  |  DIREITA: '+fmt(hands.right),w/2,h*.61,w*.88);
+            }
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
             
-            if (this.pilot.active) {
+            if (this.pilot.active && (window.ArcadeControls?.mode==='controls'||this.pilot.calibratedHands)) {
                 ctx.fillStyle='#00ffcc';ctx.fillRect(w/2-200*sc,h*0.65,400*sc*pct,15*sc);
                 ctx.fillText(`MANTENHA A POSIÇÃO (${Math.ceil(this.timer)}s)`, w/2, h*0.75);
             } else {
                 ctx.fillStyle='#ff0000';
-                ctx.fillText(window.ArcadeControls?.mode==='controls'?'CONFIRA OS COMANDOS E TOQUE EM INICIAR':'AGUARDANDO MÃOS NA CÂMERA...', w/2, h*0.75,Math.max(130,w-28));
+                ctx.fillText(window.ArcadeControls?.mode==='controls'?'CONFIRA OS COMANDOS E TOQUE EM INICIAR':'FECHE AMBAS AS MÃOS ATÉ SEREM RECONHECIDAS', w/2, h*0.75,Math.max(130,w-28));
             }
         },
 
@@ -2177,7 +2220,7 @@
                     { id: 'free', name: 'VOO LIVRE', desc: 'Explore o cenário e treine manobras.', mode: 'FREE', reqLvl: 1 },
                     { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse os cinco arcos na direção correta e pouse na pista com segurança.', mode: 'FREE', school:true, reqLvl: 1 },
                     { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Identifique e estabilize a aeronave em cada um dos três pontos; retorne à pista.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
-                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe três cidades. Na câmera, erga uma mão para tirar foto sem tocar no celular.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
+                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe três cidades: mão DIREITA aberta (esquerda fechada), sem soltar o manche.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
                     { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Localize o sinal SOS, estabilize por 3,5 s, registre o resgate e retorne à base.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
                     { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor com potência reduzida: alcance a pista, faça um pouso suave e pare.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
                     { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Acelere no convés, alcance o ponto da missão e retorne para um pouso naval suave.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
