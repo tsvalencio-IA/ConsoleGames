@@ -16,7 +16,7 @@ function segmentDistance(a,b,p){let dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,l=dx*dx+dy*
 function start(g,phase){g.flightOperation=labels[phase?.operation]?{kind:phase.operation,stage:'ready',index:0,elapsed:0,stable:0,done:false,photos:[],lastPhoto:null,rescued:false,readyWindow:0,gesture:{armed:true,held:0,released:0}}:null;g.flightPhotos=[];}
 function onStart(g){
  const op=g.flightOperation;if(!op)return;
- op.stage=op.kind==='carrier'?'catapult':op.kind==='emergency'?'return':'route';op.elapsed=0;op.index=0;op.stable=0;op.rescued=false;op.readyWindow=0;op.gesture={armed:true,held:0,released:0};
+ op.stage=op.kind==='carrier'?'catapult':op.kind==='emergency'?'return':'route';op.elapsed=0;op.index=0;op.stable=0;op.rescued=false;op.readyWindow=0;op.lastOpTime=null;op.gesture={armed:true,held:0,released:0};
  if(op.kind==='carrier'){Object.assign(g.ship,{x:carrier.x,y:carrier.y+9,z:carrier.z-carrier.l*.43,vx:0,vy:0,vz:0,speed:0,pitch:0,yaw:0,roll:0});g.onGround=true;g.pilot.throttle=1;g.manualThrottle=1;}
  else if(op.kind==='emergency'){Object.assign(g.ship,{x:240,y:680,z:-3400,yaw:0,pitch:0,roll:0});g.ship.engineHealth=Math.min(g.ship.engineHealth,32);}
  else Object.assign(g.ship,{x:0,y:650,z:-2200,yaw:0,pitch:0,roll:0});
@@ -77,7 +77,9 @@ function finish(g){
 function update(g,dt,before){
  if(g.state!=='PLAYING')return;
  const hit=detectImpact(g,before);if(hit){impact(g,hit);return;}
- const o=g.flightOperation,p=g.ship;if(!o)return;o.elapsed+=dt;o.readyWindow=Math.max(0,(o.readyWindow||0)-Math.max(0,dt));
+ const o=g.flightOperation,p=g.ship;if(!o)return;
+ const now=performance.now(),realDt=o.lastOpTime!=null&&now>o.lastOpTime?Math.min(.25,(now-o.lastOpTime)/1000):Math.max(0,dt);
+ o.lastOpTime=now;o.elapsed+=realDt;o.readyWindow=Math.max(0,(o.readyWindow||0)-realDt);
  if(o.kind==='carrier'&&o.stage==='return'&&!g.onGround&&Math.abs(p.x-carrier.x)<carrier.w*.45&&Math.abs(p.z-carrier.z)<carrier.l*.46&&before?.y>carrier.y+9&&p.y<=carrier.y+9){
   if(Math.hypot(p.vx,p.vz)>=175||Math.abs(p.vy)>=13||Math.abs(p.roll)>=.36||Math.abs(Math.sin(p.yaw))>=.30){impact(g,'POUSO NAVAL INSEGURO');return;}
   p.y=carrier.y+9;p.vy=0;g.onGround=true;o.stage='landed';g.pilot.throttle=0;g.manualThrottle=0;
@@ -98,7 +100,7 @@ function update(g,dt,before){
   o.stable=0;o.readyWindow=0;return;
  }
  if(Math.abs(p.roll)>.48){o.stable=0;return;}
- o.stable+=dt;
+ o.stable+=realDt;
  if(o.kind==='reporter'){
   if(o.stable>=1)o.readyWindow=1.4;
   return;
@@ -137,6 +139,8 @@ function cameraPhotoGesture(g,pose,dt){
  const o=g?.flightOperation;
  if(o?.kind!=='reporter'||o.done||o.stage!=='route'||g.state!=='PLAYING')return false;
  const gesture=o.gesture||(o.gesture={armed:true,held:0,released:0});
+ const now=performance.now(),step=gesture.lastAt!=null&&now>gesture.lastAt?Math.min(.25,(now-gesture.lastAt)/1000):Math.max(0,dt);
+ gesture.lastAt=now;
  // Reuse the same pose the flight model already computed; no new video processing.
  const pts=Array.isArray(pose)?(Array.isArray(pose[0]?.keypoints)?pose[0].keypoints:pose):pose?.keypoints;
  if(!Array.isArray(pts)||!pts.length){gesture.held=0;return false;}
@@ -155,11 +159,11 @@ function cameraPhotoGesture(g,pose,dt){
  const raised=(leftUp&&rightDown)||(rightUp&&leftDown);
  if(!raised){
   gesture.held=0;
-  if(leftDown&&rightDown){gesture.released+=Math.max(0,dt);if(gesture.released>=.2)gesture.armed=true;}
+  if(leftDown&&rightDown){gesture.released+=step;if(gesture.released>=.2)gesture.armed=true;}
   return false;
  }
  gesture.released=0;
- gesture.held+=Math.max(0,dt);
+ gesture.held+=step;
  if(!gesture.armed||gesture.held<.4)return false;
  const result=capturePhoto(g);
  if(result.ok){gesture.armed=false;gesture.held=0;return true;}
