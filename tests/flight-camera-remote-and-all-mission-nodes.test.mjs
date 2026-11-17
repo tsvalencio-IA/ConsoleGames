@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const source=fs.readFileSync('games/voo/js/flight-operations.js','utf8');
-function flightOps(){
+function flightOps(clock=()=>1000){
  const window={System:{msg(){}},ArcadeControls:{mode:'camera'}};
- vm.runInNewContext(source,{window,performance:{now:()=>1000},navigator:{vibrate(){}},console});
+ vm.runInNewContext(source,{window,performance:{now:clock},navigator:{vibrate(){}},console});
  return {f:window.FlightOperations,window};
 }
 function g(){
@@ -163,4 +163,20 @@ test('PvP simultaneous hits use atomic RTDB updates and credit a single confirme
  assert.equal(updates,2);
  assert.equal(hp,0,'the RTDB value must never go negative');
  assert.equal(credited,1,'only the winning health transition earns a kill');
+});
+
+test('remote photography works at low frame rate and small body-image scale',()=>{
+ let now=1000;const {f}=flightOps(()=>now),game=g();
+ f.start(game,{operation:'reporter'});f.onStart(game);
+ Object.assign(game.ship,f.routes.reporter[0]);
+ // A 5 fps camera must not stretch a one-second objective into four seconds.
+ for(let i=0;i<6;i++){now+=200;f.update(game,.05,{...game.ship});}
+ assert(game.flightOperation.stable>=1,'hold timer uses actual elapsed seconds, not clamped physics delta');
+ const pose={keypoints:Array.from({length:17},(_,i)=>({
+  name:({5:'left_shoulder',6:'right_shoulder',9:'left_wrist',10:'right_wrist'})[i]||'other',
+  x:200+(i%2)*35,y:i===5||i===6?180:i===9?159:i===10?205:250,score:.94
+ }))};
+ for(let i=0;i<4;i++){now+=200;f.cameraPhotoGesture(game,pose,.05);}
+ assert.equal(game.flightOperation.photos.length,1,'camera should recognize small raised-arm motion from a distant player');
+ assert.equal(game.flightOperation.photos[0].site,'PORTO AZUL');
 });
