@@ -404,7 +404,7 @@
             
             this.net.sessionRef.child('state').on('value', snap => {
                 if (snap.val() === 'HANGAR' && self.state === 'LOBBY') self.state = 'HANGAR';
-                if (snap.val() === 'PLAYING' && self.state === 'HANGAR') { self.state = 'CALIBRATION'; self.timer = 5.0; }
+                if (snap.val() === 'PLAYING' && self.state === 'HANGAR') { self.state = 'CALIBRATION'; self.timer = 2.5; }
             });
         },
 
@@ -474,7 +474,7 @@
                     this.net.sessionRef.child('state').set('PLAYING');
                     if (this.net.sharedRef) this.net.sharedRef.set({ wave: 1, teamKills: 0, bossDefeated:false }); 
                 } else if (this.mode === 'SINGLE' || this.mode === 'FREE') { 
-                    this.state = 'CALIBRATION'; this.timer = 5.0; 
+                    this.state = 'CALIBRATION'; this.timer = 2.5; 
                 }
             }
         },
@@ -534,7 +534,7 @@
                 if (this.state === 'HANGAR') {
                     if (this.keys[' ']) {
                         if (this.mode === 'SINGLE' || this.mode === 'FREE') { 
-                            this.state = 'CALIBRATION'; this.timer = 5.0; 
+                            this.state = 'CALIBRATION'; this.timer = 2.5; 
                         } else if (this.net.isHost && this.net.sessionRef) { 
                             this.net.sessionRef.child('state').set('PLAYING'); 
                         }
@@ -546,12 +546,10 @@
                 this._readPose(pose, w, h, dt); 
 
                 if (this.state === 'CALIBRATION') {
-                    if(window.ArcadeControls?.mode==='controls')this.timer=5.0;
-                    else if(this.pilot.active&&this.pilot.calibratedHands)this.timer-=realDt;
-                    else {
-                        this.timer += realDt * 2; 
-                        if (this.timer > 5.0) this.timer = 5.0;
-                    }
+                    if(window.ArcadeControls?.mode==='controls')this.timer=2.5;
+                    else if(this.pilot.active&&this.pilot.calibratedHands)this.timer=Math.max(0,this.timer-realDt);
+                    // Do not erase several seconds of valid calibration because one camera frame was missed.
+                    // The active pose still must belong to the previously selected player.
                     
                     this._drawCalib(ctx, w, h);
                     if ((window.ArcadeControls?.mode==='controls' && this.keys[' ']) ||
@@ -804,7 +802,7 @@
             let trgRoll = 0, trgPitch = 0, inputDetected = false;
             this.pilot.headTilt = false;
             this.pilot.missileHeld=false;
-            this.pilot.calibratedHands=false; 
+            this.pilot.calibratedHands=false; // means TWO WRISTS are currently visible, not finger classification 
             
             if (this.keys['ArrowUp']) trgPitch = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowDown']) trgPitch = -(window.ArcadePlaySettings?.get().sensitivity??1);
             if (this.keys['ArrowRight']) trgRoll = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowLeft']) trgRoll = -(window.ArcadePlaySettings?.get().sensitivity??1);
@@ -837,8 +835,8 @@
                 for (let i = 0; i < pts.length; i++) {
                     let k = pts[i];
                     if (!k) continue;
-                    if ((k.name === 'right_wrist' || k.part === 'right_wrist' || i === 10) && k.score > 0.3) rightWrist = k;
-                    if ((k.name === 'left_wrist' || k.part === 'left_wrist' || i === 9) && k.score > 0.3) leftWrist = k;
+                    if ((k.name === 'right_wrist' || k.part === 'right_wrist' || i === 10) && Number(k.score??k.confidence??0) >= .17 && Number.isFinite(k.x) && Number.isFinite(k.y)) rightWrist = k;
+                    if ((k.name === 'left_wrist' || k.part === 'left_wrist' || i === 9) && Number(k.score??k.confidence??0) >= .17 && Number.isFinite(k.x) && Number.isFinite(k.y)) leftWrist = k;
                 }
                 
                 if (rightWrist && leftWrist) {
@@ -864,10 +862,12 @@
                     if(!this.pilot.handNeutral)this.pilot.handNeutral={x:avgX,y:avgY,bank};
                     const neutral=this.pilot.handNeutral;
                     if(this.state==='CALIBRATION'){
-                        if(fingers.left==='closed'&&fingers.right==='closed'){
-                            neutral.x+=(avgX-neutral.x)*.055;neutral.y+=(avgY-neutral.y)*.055;neutral.bank+=(bank-neutral.bank)*.055;
-                            this.pilot.calibratedHands=true;
-                        }
+                        // Actual calibration is for BOTH WRIST POSITIONS and the locked player.
+                        // Finger classification remains an optional layer for actions after starting.
+                        neutral.x+=(avgX-neutral.x)*.055;
+                        neutral.y+=(avgY-neutral.y)*.055;
+                        neutral.bank+=(bank-neutral.bank)*.055;
+                        this.pilot.calibratedHands=true;
                     }
                     const rollInput=(avgX-neutral.x)/.16+(bank-neutral.bank)*1.2;
                     trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
@@ -2206,8 +2206,8 @@
             ctx.fillStyle='rgba(0,10,15,0.95)';ctx.fillRect(0,0,w,h);
             ctx.strokeStyle='rgba(0,255,204,0.2)';ctx.lineWidth=2;ctx.strokeRect(50*sc,50*sc,w-100*sc,h-100*sc);
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
-            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'REGISTRE O JOGADOR • OMBROS E DUAS MÃOS VISÍVEIS',w/2,h*.38,Math.max(130,w-28));
-            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'FECHE AS DUAS MÃOS COMO SE SEGURASSE O MANCHE',w/2,h*0.48,Math.max(130,w-28));
+            ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'FIQUE NO CENTRO • MOSTRE OMBROS E DOIS PUNHOS',w/2,h*.38,Math.max(130,w-28));
+            ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'MANTENHA OS PUNHOS EM POSIÇÃO DE MANCHE',w/2,h*0.48,Math.max(130,w-28));
             ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':this.flightOperation?.kind==='reporter'?'MÃO DIREITA ABERTA: FOTO':'ESQUERDA ABERTA: MÍSSIL • AMBAS FECHADAS: ACELERAR',w/2,h*0.53,Math.max(130,w-28));
             
             if(window.ArcadeControls?.mode==='camera'){
@@ -2217,9 +2217,9 @@
                 ctx.fillStyle=body?.status==='locked'?'#9fffd4':'#ffe08c';
                 ctx.font='bold '+Math.max(12,16*sc)+'px Arial';
                 ctx.fillText('JOGADOR: '+(body?.status==='locked'?'TRAVADO':body?.status==='selecting'?'CADASTRANDO':'AGUARDANDO MESMO JOGADOR'),w/2,h*.57,w*.88);
-                ctx.fillText('MÃO ESQUERDA: '+fmt(hands.left)+'  |  DIREITA: '+fmt(hands.right),w/2,h*.61,w*.88);
+                ctx.fillText('DEDOS: ESQUERDA '+fmt(hands.left)+'  |  DIREITA '+fmt(hands.right),w/2,h*.61,w*.88);
             }
-            let pct=1-(this.timer/5.0);
+            let pct=1-(this.timer/2.5);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
             
             if (this.pilot.active && (window.ArcadeControls?.mode==='controls'||this.pilot.calibratedHands)) {
@@ -2227,7 +2227,7 @@
                 ctx.fillText(`MANTENHA A POSIÇÃO (${Math.ceil(this.timer)}s)`, w/2, h*0.75);
             } else {
                 ctx.fillStyle='#ff0000';
-                ctx.fillText(window.ArcadeControls?.mode==='controls'?'CONFIRA OS COMANDOS E TOQUE EM INICIAR':'FECHE AMBAS AS MÃOS ATÉ SEREM RECONHECIDAS', w/2, h*0.75,Math.max(130,w-28));
+                ctx.fillText(window.ArcadeControls?.mode==='controls'?'CONFIRA OS COMANDOS E TOQUE EM INICIAR':'MOSTRE OS DOIS PUNHOS • DEDOS NÃO BLOQUEIAM O VOO', w/2, h*0.75,Math.max(130,w-28));
             }
         },
 
