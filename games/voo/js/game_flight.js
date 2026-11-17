@@ -216,6 +216,7 @@
         init: function(faseData) {
             window.ArcadeWorldRenderer?.release(this);
             this._cleanupNet();
+            this.net.sharedData={wave:1,teamKills:0,bossDefeated:false};
             
             this.lastTime = performance.now();
             this.session = { kills: 0, cash:Number(window.Profile?.coins)||0, goal: 15, wave: 1, xp:Number(window.Profile?.xp)||0 };
@@ -381,7 +382,7 @@
                                 
                                 if (connectedUIDs.length === 1) {
                                     self.net.sessionRef.child('state').set('LOBBY');
-                                    self.net.sharedRef.set({ wave: 1, teamKills: 0 });
+                                    self.net.sharedRef.set({ wave: 1, teamKills: 0, bossDefeated: false });
                                 }
                             } else {
                                 self.net.isHost = false;
@@ -694,7 +695,7 @@
                     if(this.ship.y<8){
                       const gentle=onRunway&&this.ship.speed<120&&Math.abs(this.ship.vy)<10&&Math.abs(this.ship.roll)<.35;
                       this.ship.y=8;this.ship.vy=0;
-                      if(this.flightSchool.stage==='landing'&&gentle){this.flightSchool.complete=true;this.flightSchool.stage='complete';this.ship.pitch=0;this.manualThrottle=0;this.flightCareer.school=true;this._saveCareer();}
+                      if(this.flightSchool.stage==='landing'&&gentle)this._completeFlightSchool();
                       else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
                     }
                     if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
@@ -1068,11 +1069,12 @@
         },
 
         _updateMissionSystem: function() {
-            if (this.mode === 'PVP' || this.mode === 'FREE') return;
+            if (this.state !== 'PLAYING' || this.mode === 'PVP' || this.mode === 'FREE') return;
             
             let currentKills = this.session.kills;
             if (this.mode === 'COOP' && this.net.sharedData) {
-                currentKills = this.net.sharedData.teamKills || this.session.kills;
+                const sharedKills=Number(this.net.sharedData.teamKills);
+                if(Number.isFinite(sharedKills)&&sharedKills>=0)currentKills=sharedKills;
             }
 
             if (currentKills >= 15 && this.session.wave === 1) {
@@ -1090,7 +1092,8 @@
                     type: 'boss', state: 'ENGAGE', x: this.ship.x + fX*12000, y: this.ship.y+2000, z: this.ship.z + fZ*12000, 
                     vx: -fX*350, vy: 0, vz: -fZ*350, hp: 2000, yaw: this.ship.yaw + Math.PI, roll: 0, pitch: 0, isBoss: true, active: true, stateTimer: 0, engineHealth: 100, wingHealth: 100, structuralIntegrity: 100 
                 });
-            } else if (currentKills >= 31 && this.session.wave === 3) {
+            } else if (currentKills >= 31 && this.session.wave === 3 &&
+                (this.bossDefeated === true || (this.mode === 'COOP' && this.net.sharedData?.bossDefeated === true))) {
                 this.session.xp += 1000; 
                 this._endGame('VICTORY');
             }
@@ -1274,7 +1277,8 @@
             const id=window.System?.playerId;if(window.DB&&id){window.DB.ref('users/'+id+'/coins').set(this.session.cash);window.DB.ref('users/'+id+'/xp').transaction(x=>(Number(x)||0)+100);}return true;
         },
         _kill: function(t, rew) {
-            if(t.rewarded)return;t.rewarded=true;if(t.isBoss)this.bossDefeated=true;
+            if(t.rewarded)return;t.rewarded=true;
+            if(t.isBoss){this.bossDefeated=true;if(this.mode==='COOP'&&this.net.sharedRef)this.net.sharedRef.update({bossDefeated:true});}
             GameSfx.play('boom');
             this._fx(t.x,t.y,t.z,'#f33',40,300);
             this._fx(t.x,t.y,t.z,'#234',30,600);
@@ -1288,9 +1292,9 @@
             this.flightCareer.kills++;this._saveCareer();
             if(window.Profile){window.Profile.coins=this.session.cash;window.Profile.xp=this.session.xp;}
             
-            if (this.mode === 'COOP' && this.net.sharedRef) {
-                let teamKills = (this.net.sharedData.teamKills || 0) + 1;
-                this.net.sharedRef.update({ teamKills: teamKills });
+            if (this.mode === 'COOP' && this.net.sharedRef?.child) {
+                // An RTDB transaction prevents two pilots from losing a simultaneous kill.
+                this.net.sharedRef.child('teamKills').transaction(current=>Math.max(0,Number(current)||0)+1);
             }
 
             let realId = window.System && window.System.playerId;
@@ -1300,7 +1304,21 @@
             }
         },
 
+        _completeFlightSchool: function() {
+            if(!this.flightSchool||this.flightSchool.stage!=='landing'||this.flightSchool.complete||this.state!=='PLAYING')return false;
+            this.flightSchool.complete=true;this.flightSchool.stage='complete';
+            this.ship.pitch=0;this.manualThrottle=0;this.pilot.throttle=0;
+            this.flightCareer.school=true;
+            const missions=this.flightCareer.missions&&typeof this.flightCareer.missions==='object'?this.flightCareer.missions:{};
+            const previous=missions.school||{};
+            this.flightCareer.missions={...missions,school:{...previous,completed:Math.max(0,Number(previous.completed)||0)+1}};
+            this._saveCareer();
+            this._endGame('VICTORY');
+            return true;
+        },
+
         _endGame: function(res) {
+            if(this.state==='VICTORY'||this.state==='GAMEOVER')return;
             this.state = res;
             GameSfx.stop();
             setTimeout(() => {
