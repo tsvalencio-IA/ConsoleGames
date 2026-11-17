@@ -412,7 +412,7 @@ window.System = {
                                   }).catch(error=>{
                                       if(system.loopEpoch===epoch&&system.activeGame===game&&system.playerLock===tracker)
                                           tracker.hands([],performance.now());
-                                  }).finally(()=>{system.handsBusy=false;});
+                                  }).finally(()=>{if(system.loopEpoch===epoch)system.handsBusy=false;});
                             }
                             if(pose)pose.consoleMotion=system.playerLock.snapshot(performance.now());
                         }
