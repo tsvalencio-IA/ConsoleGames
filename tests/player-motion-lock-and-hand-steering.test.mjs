@@ -25,8 +25,8 @@ function hand(x,y,open){
 test('locks one registered player and never switches to a passerby',()=>{
  const {PlayerLock}=motion(),lock=new PlayerLock(),pilot=pose(31),bystander=pose(44,360);
  assert.equal(lock.observe([pilot],0),null,'registration is not instant');
- assert.equal(lock.observe([pilot],650),null);
- assert.equal(lock.observe([pilot],1200)?.id,31);
+ assert.equal(lock.observe([pilot],650)?.id,31,'shorter registration must still select the correct player');
+ assert.equal(lock.observe([pilot],1200)?.id,31,'stable ID remains locked after enrollment');
  assert.equal(lock.status,'locked');
  assert.equal(lock.observe([bystander,pilot],1350)?.id,31,'a second person cannot seize the player lock');
  assert.equal(lock.observe([bystander],1500),null,'other person cannot impersonate registered player');
