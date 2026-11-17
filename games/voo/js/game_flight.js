@@ -702,12 +702,21 @@
                       const gentle=this._landingGuidance().gentle; // Includes runway position, aligned heading, level wings, safe speed and sink rate.
                       this.ship.y=8;this.ship.vy=0;
                       if(this.flightSchool.stage==='landing'&&gentle)this._completeFlightSchool();
-                      else if(this.flightSchool.stage!=='takeoff'&&!gentle){this.flightSchool.stage='retry';}
+                      else if(this.flightSchool.stage!=='takeoff'&&!gentle){if(this.flightSchool.stage!=='retry'){this.flightSchool.stage='retry';this.flightSchool.retryTimer=2;}}
                     }
                     if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
                     if(this.ship.y>95&&this.flightSchool.stage==='takeoff')this.flightSchool.stage='gates';
                     const gate=this._schoolGates()[this.flightSchool.gate];
                     if(this.flightSchool.stage==='gates'&&gate&&this._schoolGatePassed(flightBefore,gate)){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
+                    if(this.flightSchool.stage==='retry'){
+                        this.flightSchool.retryTimer=(Number(this.flightSchool.retryTimer)||0)-dt;
+                        this.manualThrottle=0;this.pilot.throttle=0;
+                        if(this.flightSchool.retryTimer<=0){
+                            const attempts=Math.max(0,Number(this.flightSchool.retries)||0)+1;
+                            this._startMission();this.flightSchool.retries=attempts;
+                            window.System?.msg?.('TREINAMENTO REINICIADO • TENTE UM POUSO MAIS SUAVE','#f4c57a');
+                        }
+                    }
                 }
                 const floor=this.isHelicopter()?14:50;
                 if(!this.flightSchool&&this.mode==='FREE'&&!this.isHelicopter())this._updateRunwayLanding(dt);
@@ -1394,8 +1403,8 @@
             if(!school){if(Math.abs(this.ship.x)<1200&&Math.abs(this.ship.z)<4200&&this.ship.y<350){ctx.save();ctx.fillStyle='rgba(6,21,37,.86)';ctx.fillRect(guideX,guideY,guideW,40);ctx.fillStyle='#d9f1ed';ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillText(guide.cue,w/2,guideY+15,guideW-16);ctx.font='11px Arial';ctx.fillText(Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m · descida '+guide.sink.toFixed(1)+' m/s',w/2,guideY+31,guideW-16);ctx.restore();}return;}
             const gate=this._schoolGates()[school.gate];
             if(school.stage==='gates'&&gate){const center=this._projectView(gate.x,gate.y,gate.z,w,h);if(center.visible){const radius=Math.min(w*.28,Math.max(7,300*center.s));ctx.strokeStyle='#88e9e1';ctx.lineWidth=3;ctx.beginPath();ctx.arc(center.x,center.y,radius,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText((school.gate+1)+'/5',center.x,center.y-radius-10);}else{ctx.fillStyle='#ffdc88';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('VIRE PARA O PRÓXIMO ARCO',w/2,h*.30);}}
-            const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'APROXIMAÇÃO INSTÁVEL • use Pausa → Escolher fase para repetir'};
-            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,guideY,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(school.stage==='landing'?guide.cue+' · '+Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m':labels[school.stage]||'',w/2,guideY+21,w*.82);ctx.restore();
+            const labels={takeoff:'DECOLAGEM • acelere; acima de 235 km/h, suba suavemente',gates:'CURVAS • atravesse o arco '+(school.gate+1)+'/5',landing:'POUSO • alinhe à pista, reduza potência e desça suavemente',complete:'TREINAMENTO CONCLUÍDO • decolagem, curvas e pouso',retry:'POUSO INVÁLIDO • NOVA TENTATIVA EM INSTANTES'};
+            ctx.save();ctx.fillStyle='rgba(6,21,37,.85)';ctx.fillRect(w*.07,guideY,w*.86,33);ctx.fillStyle=school.complete?'#a6f1bd':'#e4f5ff';ctx.font='bold '+Math.min(14,Math.max(10,w*.028))+'px Arial';ctx.textAlign='center';ctx.fillText(school.stage==='landing'?guide.cue+' · '+Math.round(guide.speed*3.6)+' km/h · '+Math.round(guide.altitude)+' m':school.stage==='retry'?'POUSO INVÁLIDO • RETORNO AO INÍCIO EM '+Math.max(0,Math.ceil(school.retryTimer||0))+'s':labels[school.stage]||'',w/2,guideY+21,w*.82);ctx.restore();
         },
         updateAudio: function(){
             const active=this.state==='PLAYING'&&!window.System?.paused&&!document.hidden;
