@@ -116,3 +116,26 @@ test('school: only actual passage through five arcs in the right order counts',(
  assert.equal(attempt(3,{x:1200,y:300,z:-2590},{x:1200,y:300,z:-2610}),true);
  assert.equal(attempt(4,{x:0,y:120,z:-2310},{x:0,y:120,z:-2290}),true);
 });
+
+test('co-op second pilot can damage live enemies instead of silently losing hits',()=>{
+ let logic;const window={System:{registerGame(id,_title,_icon,g){if(id==='usarmy_flight_sim')logic=g;}}};
+ vm.runInNewContext(fs.readFileSync('games/voo/js/game_flight.js','utf8'),
+  {window,performance:{now:()=>1000},console,setInterval(){throw Error('register failure')}});
+ const game=Object.create(logic);game.mode='COOP';game.state='PLAYING';
+ game.session={kills:0,xp:0,cash:0};game.net={isHost:false,players:{}};
+ game.ship={x:0,y:400,z:0};game.flightCareer={kills:0};
+ game.entities=[{x:0,y:0,z:100,hp:50,engineHealth:100,wingHealth:100,structuralIntegrity:100,isBoss:false}];
+ game.bullets=[{x:0,y:0,z:0,vx:0,vy:0,vz:200,isEnemy:false,life:10}];
+ game._fx=()=>{};game._worldOccludes=()=>false;
+ game._kill=enemy=>{game.session.kills++;enemy.rewarded=true;};
+ game._updateBullets(.5);
+ assert.equal(game.entities[0].hp,0);
+ assert.equal(game.session.kills,1);
+});
+test('failed school landing has a recovery path, not a permanent retry dead end',()=>{
+ const game=fs.readFileSync('games/voo/js/game_flight.js','utf8');
+ assert.match(game,/this\.flightSchool\.retryTimer=2/);
+ assert.match(game,/if\(this\.flightSchool\.retryTimer<=0\)/);
+ assert.match(game,/this\._startMission\(\);this\.flightSchool\.retries=attempts/);
+ assert.match(game,/_schoolGatePassed\(flightBefore,gate\)/);
+});
