@@ -1188,11 +1188,15 @@
                                 b.life=0;
                                 this._fx(this.net.players[uid].x,this.net.players[uid].y,this.net.players[uid].z,'#f90',4,50);
                                 if (window.DB && window.DB.ref) {
-                                    let newHp = this.net.players[uid].hp - 10;
-                                    window.DB.ref(`sessions/flight_${this.mode}/players/${uid}/hp`).set(newHp);
-                                    if (newHp <= 0 && this.state === 'PLAYING') {
-                                        this._pvpKill(uid);
-                                    }
+                                    // RTDB transaction keeps simultaneous hits from overwriting each other.
+                                    window.DB.ref(`sessions/flight_${this.mode}/players/${uid}/hp`)
+                                        .transaction(current=>{
+                                            const hp=Number(current);
+                                            if(!Number.isFinite(hp)||hp<=0)return;
+                                            return Math.max(0,hp-10);
+                                        },null,false).then(result=>{
+                                            if(result?.committed&&Number(result.snapshot?.val())===0&&this.state==='PLAYING')this._pvpKill(uid);
+                                        }).catch(error=>console.error('PVP HIT SYNC ERROR',error));
                                 }
                             }
                         });
