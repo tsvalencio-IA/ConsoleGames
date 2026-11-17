@@ -24,3 +24,9 @@
 @media(prefers-reduced-motion:reduce){.input-game-controls .input-control{transition:none}}
 
 .input-mode-tip{top:max(88px,calc(env(safe-area-inset-top,0px) + 88px));max-width:min(310px,calc(100vw - 24px));font-size:11px;line-height:1.3}@media(max-height:480px){.input-mode-tip{top:76px;max-width:48vw;font-size:10px}}
+
+/* Aerial reporter photo and independent cannon: accessible in camera and touch modes. */
+.input-game-controls.flight-camera-actions{left:max(10px,env(safe-area-inset-left,0px));right:auto;bottom:max(70px,calc(env(safe-area-inset-bottom,0px) + 70px));width:auto;max-width:calc(100vw - 20px);transform:none;justify-content:flex-start}
+.input-game-controls [data-control="photo"]{background:linear-gradient(145deg,#14675e,#123d50);border-color:#8bf9cf;color:#fff}
+.input-game-controls .input-control[hidden]{display:none!important}
+@media(max-height:470px){.input-game-controls.flight-camera-actions{bottom:max(50px,calc(env(safe-area-inset-bottom,0px) + 50px))}}
