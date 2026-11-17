@@ -143,7 +143,7 @@ body.kart-racing .hud-score-box,body.kart-racing .arcade-topline,body.kart-racin
 
 /* Flight mission actions have dedicated slots; no default absolute-position stacking. */
 .input-game-controls.flight-input [data-control="photo"]{
- right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 0px);
+ right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 12px);
  bottom:calc(var(--act) + 10px);
  width:calc(var(--act)*1.24);
  height:var(--act);
@@ -171,5 +171,13 @@ body.kart-racing .hud-score-box,body.kart-racing .arcade-topline,body.kart-racin
  .input-game-controls.flight-input [data-control="powerDown"],
  .input-game-controls.flight-input [data-control="powerUp"]{
   bottom:116px;width:45px;min-width:45px;height:42px;
+ }
+}
+
+@media(max-width:340px){
+ .input-game-controls.flight-input [data-control="photo"]{
+  width:52px;min-width:52px;
+  right:calc(max(8px,env(safe-area-inset-right,0px)) + var(--act) + 8px);
+  font-size:9px;
  }
 }
