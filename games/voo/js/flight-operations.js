@@ -146,9 +146,12 @@ function cameraPhotoGesture(g,pose,dt){
  if(!reliable){gesture.held=0;return false;}
  const unit=[lw,rw,ls,rs].every(p=>p.y>=0&&p.y<=1);
  const height=unit?1:(window.System?.video?.videoHeight||480);
- // Raising ONE arm clearly over shoulder height does not require touching the phone.
- const leftUp=ls.y-lw.y>.105*height,rightUp=rs.y-rw.y>.105*height;
- const leftDown=lw.y>=ls.y-.04*height,rightDown=rw.y>=rs.y-.04*height;
+ // Scale the gesture to apparent shoulder width: it must work at TV/camera distance.
+ const shoulderWidth=Math.hypot(Number(ls.x)-Number(rs.x),ls.y-rs.y);
+ const lift=Math.max(.015*height,Math.min(.085*height,shoulderWidth*.62));
+ // Raising ONE arm above shoulder level leaves the other arm available for balance.
+ const leftUp=ls.y-lw.y>lift,rightUp=rs.y-rw.y>lift;
+ const leftDown=lw.y>=ls.y-.025*height,rightDown=rw.y>=rs.y-.025*height;
  const raised=(leftUp&&rightDown)||(rightUp&&leftDown);
  if(!raised){
   gesture.held=0;
