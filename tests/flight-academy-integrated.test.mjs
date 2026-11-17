@@ -31,7 +31,7 @@ test('carrier catapult and soft deck landing are functional, hard landing crashe
  assert.equal(g.onGround,true);assert.equal(g.flightOperation.stage,'catapult');
  for(let i=0;i<260&&g.onGround;i++)f.carrierGround(g,.06);
  assert.equal(g.onGround,false);assert.equal(g.flightOperation.stage,'route');
- const p=game();f.start(p,{operation:'carrier'});f.onStart(p);p.onGround=false;p.flightOperation.stage='return';
+ const p=game();f.start(p,{operation:'carrier'});f.onStart(p);p.onGround=false;p.flightOperation.stage='return';p.flightOperation.index=f.routes.carrier.length; // Completed patrol waypoint before naval approach
  Object.assign(p.ship,{x:f.carrier.x,y:f.carrier.y+7,z:f.carrier.z,vx:30,vy:-5,vz:50,roll:0,yaw:0});
  f.update(p,.016,{x:p.ship.x,y:f.carrier.y+25,z:p.ship.z});
  assert.equal(p.flightOperation.stage,'landed');assert.equal(p.onGround,true);
