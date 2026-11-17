@@ -121,17 +121,34 @@
     id:this.id};
   }
  }
- let handsLoad=null,handDetector=null;
+ let handsLoad=null,handDetector=null,poseRuntimeLoad=null;
  const script=src=>new Promise((resolve,reject)=>{
   if(typeof document==='undefined')return reject(Error('DOM unavailable'));
   const el=document.createElement('script');el.src=src;el.async=true;el.crossOrigin='anonymous';
   el.onload=()=>resolve();el.onerror=()=>reject(Error('Unable to load hand tracker'));
   document.head.appendChild(el);
  });
+ async function loadPoseRuntime(){
+  if(window.tf&&window.poseDetection)return;
+  if(poseRuntimeLoad)return poseRuntimeLoad;
+  poseRuntimeLoad=(async()=>{
+   const queued=[...document.querySelectorAll('script[data-motion-src]')].map(el=>el.dataset.motionSrc).filter(Boolean);
+   if(!queued.length)throw Error('No motion library sources');
+   for(const src of queued){
+    if(src.includes('tfjs-core')&&window.tf)continue;
+    if(src.includes('pose-detection')&&window.poseDetection)continue;
+    await script(src);
+   }
+   if(!window.tf||!window.poseDetection)throw Error('Body detector libraries unavailable');
+  })().catch(e=>{poseRuntimeLoad=null;throw e;});
+  return poseRuntimeLoad;
+ }
+ if(!window.ConsoleMotionRuntime)window.ConsoleMotionRuntime={load:loadPoseRuntime};
  async function loadHands(){
   if(handDetector)return handDetector;
   if(handsLoad)return handsLoad;
   handsLoad=(async()=>{
+   await loadPoseRuntime();
    if(!window.handPoseDetection)await script('https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@2.0.1/dist/hand-pose-detection.min.js');
    if(!window.handPoseDetection?.createDetector)throw Error('Hand model unavailable');
    if(window.tf?.ready)await window.tf.ready();
@@ -140,5 +157,5 @@
   })().catch(e=>{handsLoad=null;throw e;});
   return handsLoad;
  }
- window.ConsolePlayerMotionLock=Object.freeze({PlayerLock,profile,classifyHand,associateHands,loadHands,getHandDetector:()=>handDetector});
+ window.ConsolePlayerMotionLock=Object.freeze({PlayerLock,profile,classifyHand,associateHands,loadHands,loadPoseRuntime,getHandDetector:()=>handDetector});
 })();
