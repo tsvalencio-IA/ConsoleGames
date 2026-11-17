@@ -56,12 +56,12 @@
   constructor(){
    this.status='selecting';this.id=null;this.pose=null;this.anchor=null;
    this.candidate=null;this.candidateSince=0;this.lastSeen=0;this.reason='POSICIONE-SE SOZINHO NO CENTRO';this.recoverySince=0;
-   this.recoveryCandidate=null;this.handStates={left:'unknown',right:'unknown'};this.lastHandsAt=0;
+   this.recoveryCandidate=null;this.handStates={left:'unknown',right:'unknown'};this.handCandidates={left:null,right:null};this.lastHandsAt=0;
   }
   reset(){
    this.status='selecting';this.id=null;this.pose=null;this.anchor=null;this.candidate=null;
    this.candidateSince=0;this.lastSeen=0;this.recoverySince=0;this.recoveryCandidate=null;
-   this.handStates={left:'unknown',right:'unknown'};this.lastHandsAt=0;
+   this.handStates={left:'unknown',right:'unknown'};this.handCandidates={left:null,right:null};this.lastHandsAt=0;
    this.reason='POSICIONE-SE SOZINHO NO CENTRO';
   }
   observe(poses,time=now()){
@@ -91,7 +91,7 @@
    // If the tracker loses its persistent id, do not silently migrate to another person.
    if(!match.length){
     this.status='lost';this.pose=null;
-    this.handStates={left:'unknown',right:'unknown'};
+    this.handStates={left:'unknown',right:'unknown'};this.handCandidates={left:null,right:null};
     this.reason='JOGADOR FORA DO RASTREIO • NÃO TROCAR POR OUTRA PESSOA';
     return null;
    }
@@ -107,7 +107,16 @@
     this.handStates={left:'unknown',right:'unknown'};return this.handStates;
    }
    const assigned=associateHands(this.pose,hands);
-   this.handStates={left:assigned.left?.state||'unknown',right:assigned.right?.state||'unknown'};
+   // Two consecutive consistent frames before a switch avoid accidental commands
+   // from one bad classifier frame or a hand passing over another body.
+   for(const side of ['left','right']){
+    const raw=assigned[side]?.state||'unknown',previous=this.handStates[side];
+    if(raw==='unknown'){this.handStates[side]='unknown';this.handCandidates[side]=null;continue;}
+    if(raw===previous){this.handCandidates[side]=null;continue;}
+    const pending=this.handCandidates[side];
+    if(!pending||pending.state!==raw)this.handCandidates[side]={state:raw,count:1};
+    else{pending.count++;if(pending.count>=2){this.handStates[side]=raw;this.handCandidates[side]=null;}}
+   }
    this.lastHandsAt=time;
    return this.handStates;
   }
