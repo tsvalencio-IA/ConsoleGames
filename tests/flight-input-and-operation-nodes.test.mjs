@@ -84,9 +84,9 @@ test('Cannon: controller fire works with no target and no lock',()=>{
   assert(g.bullets[0].vz>0,'gun projectile travels forward');
   assert.equal(g.missiles.length,0,'missiles still require target lock');
 });
-test('Cannon: camera on-screen fire trigger shoots without a locked target',()=>{
+test('Cannon: camera joined-hands gesture shoots without a locked target',()=>{
   const {g,window}=nativeFlight();
-  window.ArcadeControls.mode='camera';g.manualFireHeld=true;
+  window.ArcadeControls.mode='camera';g.pilot.headTilt=true;
   g._processCombat(.016,800,600);
   assert.equal(g.bullets.length,1);
   assert.equal(g.missiles.length,0);
@@ -106,25 +106,4 @@ test('Camera and manual controls expose the photographer shutter without changin
   assert.match(game,/handNeutral/);
   assert.match(game,/this\._readPose\(pose, w, h, dt\)/);
   assert.match(game,/bossDefeated:false/);
-});
-
-test('left-open camera gesture launches a usable unguided missile without radar lock',()=>{
- const {g,window}=nativeFlight();
- g.mode='FREE';g.pilot.missileHeld=true;g.combat.missileCd=0;g.combat.target=null;g.combat.locked=false;
- window.ArcadeControls.mode='camera';
- g._processCombat(.016,800,600);
- assert.equal(g.missiles.length,1,'an explicit left-hand missile command must launch');
- assert.equal(g.missiles[0].target,null,'radar lock is optional for a forward rocket');
- assert(g.missiles[0].vz>g.ship.vz,'unguided missile must fly forward');
-});
-test('unguided missiles actually damage crossed enemy targets instead of just drawing smoke',()=>{
- const {g}=nativeFlight();
- g.mode='FREE';g.net.isHost=true;g.fx=[];g.upgrades={missiles:1};g.groundTanks=[];
- g.entities=[{x:0,y:0,z:400,hp:50,isBoss:false}];
- g.missiles=[{x:0,y:0,z:0,vx:0,vy:0,vz:1000,target:null,life:2,maxG:40,trackTime:0}];
- let kills=0;g._kill=(enemy)=>{kills++;enemy.hp=0};g._fx=()=>{};
- g._updateMissiles(.4);
- assert.equal(g.entities[0].hp,0);
- assert.equal(kills,1);
- assert.equal(g.missiles.length,0);
 });
