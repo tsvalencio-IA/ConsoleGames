@@ -150,7 +150,7 @@ test('PvP simultaneous hits use atomic RTDB updates and credit a single confirme
   updates++;const next=fn(hp);
   if(next===undefined)return Promise.resolve({committed:false,snapshot:{val:()=>hp}});
   hp=next;return Promise.resolve({committed:true,snapshot:{val:()=>hp}});
- }}}}};
+ }}}};
  const g=Object.create(logic);g.mode='PVP';g.state='PLAYING';
  g.net={uid:'me',players:{enemy:{x:0,y:0,z:100,hp:10}}};
  g.entities=[];g.ship={x:0,y:200,z:0};
