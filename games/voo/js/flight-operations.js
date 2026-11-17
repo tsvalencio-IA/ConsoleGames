@@ -1,7 +1,7 @@
 /* Aero Strike WAR operations — additive, preserves original gesture calibration. */
 (()=>{'use strict';
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),carrier=Object.freeze({x:2600,z:8800,y:72,w:240,l:1020});
-const routes={patrol:[{x:1000,y:600,z:2500},{x:4300,y:700,z:6100},{x:-1100,y:600,z:3700}],reporter:[{x:2500,y:500,z:1000},{x:9500,y:600,z:14000},{x:-12500,y:600,z:17000}],rescue:[{x:1200,y:400,z:4800}],carrier:[{x:carrier.x,y:780,z:carrier.z+3000}]};
+const routes={patrol:[{x:1000,y:600,z:2500},{x:4300,y:700,z:6100},{x:-1100,y:600,z:3700}],reporter:[{x:0,y:500,z:2500,site:'PORTO AZUL'},{x:9500,y:600,z:14000,site:'NOVA AURORA'},{x:-14000,y:600,z:17000,site:'SERRA NORTE'}],rescue:[{x:1200,y:400,z:4800}],carrier:[{x:carrier.x,y:780,z:carrier.z+3000}]};
 const labels={patrol:'PATRULHA AÉREA',reporter:'REPÓRTER AÉREO',rescue:'RESGATE AÉREO',emergency:'EMERGÊNCIA',carrier:'PORTA-AVIÕES'};
 function segmentBox(a,b,box,r=0){
  let t0=0,t1=1;
@@ -126,11 +126,11 @@ function capturePhoto(g){
     thumbnail=canvas.toDataURL('image/jpeg',.67);
    }
   }catch{thumbnail=null;}
-  const photo={point:o.index+1,at:Date.now(),x:p.x,y:p.y,z:p.z,thumbnail};
+  const photo={point:o.index+1,site:target.site,at:Date.now(),x:p.x,y:p.y,z:p.z,thumbnail};
   o.photos.push(photo);g.flightPhotos=o.photos;o.index++;o.stable=0;o.readyWindow=0;
   o.lastPhoto={at:performance.now(),point:photo.point};
   if(o.index>=routes.reporter.length)o.stage='return';
-  window.System?.msg?.('FOTO '+photo.point+'/'+routes.reporter.length+' REGISTRADA'+(o.stage==='return'?' • RETORNE À BASE':''),'#89ffcb');
+  window.System?.msg?.('FOTO '+photo.point+'/'+routes.reporter.length+' · '+photo.site+' REGISTRADA'+(o.stage==='return'?' • RETORNE À BASE':''),'#89ffcb');
   return {ok:true,point:photo.point,complete:o.stage==='return',thumbnail:!!thumbnail};
 }
 function cameraPhotoGesture(g,pose,dt){
@@ -199,7 +199,7 @@ function drawHud(ctx,w,h,g){
    const marker=g._projectView(t.x,t.y,t.z,w,h);
    if(marker?.visible&&Number.isFinite(marker.x)&&Number.isFinite(marker.y)&&marker.x>30&&marker.x<w-30&&marker.y>top+65&&marker.y<h-65){
     ctx.strokeStyle=ready?'#a8ffd0':'#ffe1a3';ctx.lineWidth=2;ctx.beginPath();ctx.arc(marker.x,marker.y,19,0,Math.PI*2);ctx.stroke();
-    ctx.fillStyle='#fff';ctx.fillText(o.kind==='reporter'?'FOTO '+(o.index+1):o.stage==='return'?'BASE':'PONTO '+(o.index+1),marker.x,marker.y-26);
+    ctx.fillStyle='#fff';ctx.fillText(o.kind==='reporter'?(t.site||'FOTO '+(o.index+1)):o.stage==='return'?'BASE':'PONTO '+(o.index+1),marker.x,marker.y-26);
    }
   }
  }
