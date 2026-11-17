@@ -68,5 +68,5 @@ test('approved original camera calibration, existing arcade phases and OTTHI bri
  assert.match(hangar,/id:'ot-flight-academy'/);assert.match(venue,/aviation:Object\.freeze/);assert.match(trip,/aviation:'usarmy_flight_sim'/);
  const html=read('games/voo/index.html'),sw=read('games/voo/sw.js');
  assert.match(html,/flight-operations\.js\?v=/);assert.match(html,/flight-world-return\.js\?v=/);
- assert.match(sw,/flight-academy-v36-photo-nodes/);
+ assert.match(sw,/flight-academy-v37-mission-nodes/);
 });
