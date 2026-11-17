@@ -745,6 +745,9 @@
                 this._updateMissiles(dt); 
                 this._cleanupFx();
                 window.FlightOperations?.update(this,dt,flightBefore);
+                // A distant player photographs by holding one arm raised for 0.4 s.
+                // Pose coordinates come from the existing camera detector; no second model is loaded.
+                if(this.state==='PLAYING'&&this.flightOperation?.kind==='reporter'&&window.ArcadeControls?.mode==='camera')window.FlightOperations?.cameraPhotoGesture?.(this,pose,dt);
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
