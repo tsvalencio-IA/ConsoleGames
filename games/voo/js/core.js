@@ -234,7 +234,7 @@ window.Profile = {
 window.System = {
     playerId: 'p_' + Math.floor(Math.random()*10000), 
     activeGame: null, loopId: null, loopEpoch: 0, busyEpoch: null, resultLocked: false, isStarting: false,
-    canvas: null, video: null, detector: null, playerLock:null, handDetector:null, handsLastAt:0,handsBusy:false,
+    canvas: null, video: null, detector: null,
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
@@ -339,15 +339,6 @@ window.System = {
                                 }
                             }
                         }
-                        if(window.ArcadeControls?.mode==='camera'&&game.id==='usarmy_flight_sim'){
-                            sys.playerLock?.reset();sys.handsLastAt=0;
-                            // Starting the game must NEVER wait for a second, heavier finger model.
-                            // Body steering/calibration works first; finger actions activate once loaded.
-                            Promise.resolve().then(()=>sys.ensureHandDetector?.()).then(detector=>{
-                                if(!detector&&sys.activeGame===game&&window.ArcadeControls?.mode==='camera')
-                                    sys.msg('DEDOS INDISPONÍVEIS • PILOTE COM OS PUNHOS E USE OS BOTÕES DE AÇÃO');
-                            }).catch(error=>console.warn('Falha opcional do detector de dedos:',error));
-                        }
                         document.getElementById('loading-text').innerText='CARREGANDO CENÁRIO...';
                         // Revalidar permissão e nível após carregamento assíncrono.
                         const access=window.Profile.role==='admin'||window.Profile.permissions?.[game.id]===true;
@@ -395,26 +386,7 @@ window.System = {
                 if (!isAr && system.detector && system.video?.readyState === 4) {
                     try {
                         const people = await system.detector.estimatePoses(system.video, {flipHorizontal:false});
-                        if(window.ConsolePlayerMotionLock && !system.playerLock)system.playerLock=new window.ConsolePlayerMotionLock.PlayerLock();
-                        pose=system.playerLock?system.playerLock.observe(people,performance.now()):(people?.length===1?people[0]:null);
-                        if(system.playerLock&&system.handDetector){
-                            if(pose&&!system.handsBusy&&performance.now()-system.handsLastAt>=140){
-                                system.handsLastAt=performance.now();
-                                system.handsBusy=true;
-                                const tracker=system.playerLock,framePose=pose,started=performance.now();
-                                // Hand inference runs outside the render loop: slow phones keep drawing.
-                                Promise.resolve().then(()=>system.handDetector.estimateHands(system.video,{flipHorizontal:false}))
-                                  .then(hands=>{
-                                      if(system.loopEpoch===epoch&&system.activeGame===game&&system.playerLock===tracker&&
-                                         tracker.status==='locked'&&performance.now()-started<700)
-                                          tracker.hands(hands,performance.now(),framePose);
-                                  }).catch(error=>{
-                                      if(system.loopEpoch===epoch&&system.activeGame===game&&system.playerLock===tracker)
-                                          tracker.hands([],performance.now());
-                                  }).finally(()=>{if(system.loopEpoch===epoch)system.handsBusy=false;});
-                            }
-                            if(pose)pose.consoleMotion=system.playerLock.snapshot(performance.now());
-                        }
+                        if (people?.length) pose = people[0];
                     } catch (error) {
                         if (!system.lastPoseWarning || performance.now()-system.lastPoseWarning > 15000) {
                             console.warn('Leitura de movimento temporariamente indisponível:',error);
@@ -452,7 +424,6 @@ window.System = {
     stopGame: () => {
         window.ArcadeControls?.removeControls();
         window.System.paused=false;
-        window.System.playerLock?.reset();window.System.handsLastAt=0;window.System.handsBusy=false;
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
         window.System.loopId=null;
@@ -540,21 +511,13 @@ window.onload = async () => {
       window.System.detectorPromise = (async () => {
         await tf.ready();
         const result = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, {
-          modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
-          enableTracking:true,multiPoseMaxDimension:256,minPoseScore:.25
+          modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING
         });
         window.System.detector = result;
         return result;
       })().catch(error => { console.warn('Sensor de movimento indisponível:', error); return null; })
       .finally(() => { window.System.detectorPromise = null; });
       return window.System.detectorPromise;
-    };
-
-    window.System.ensureHandDetector=async()=>{
-      if(window.System.handDetector)return window.System.handDetector;
-      if(!window.ConsolePlayerMotionLock)return null;
-      try{const detector=await window.ConsolePlayerMotionLock.loadHands();window.System.handDetector=detector;return detector;}
-      catch(error){console.warn('Detector de dedos indisponível:',error);return null;}
     };
 
     if(window.ConsolePractice?.active)return;
