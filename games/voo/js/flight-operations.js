@@ -152,7 +152,7 @@ function cameraPhotoGesture(g,pose,dt){
  const height=unit?1:(window.System?.video?.videoHeight||480);
  // Scale the gesture to apparent shoulder width: it must work at TV/camera distance.
  const shoulderWidth=Math.hypot(Number(ls.x)-Number(rs.x),ls.y-rs.y);
- const lift=Math.max(.015*height,Math.min(.085*height,shoulderWidth*.62));
+ const lift=Math.max(.015*height,Math.min(.085*height,shoulderWidth*.48));
  // Raising ONE arm above shoulder level leaves the other arm available for balance.
  const leftUp=ls.y-lw.y>lift,rightUp=rs.y-rw.y>lift;
  const leftDown=lw.y>=ls.y-.025*height,rightDown=rw.y>=rs.y-.025*height;
