@@ -180,3 +180,27 @@ test('remote photography works at low frame rate and small body-image scale',()=
  assert.equal(game.flightOperation.photos.length,1,'camera should recognize small raised-arm motion from a distant player');
  assert.equal(game.flightOperation.photos[0].site,'PORTO AZUL');
 });
+
+test('reporter mission targets are the three real procedurally rendered cities',()=>{
+ const {f}=flightOps();
+ let logic;const window={System:{registerGame(id,_title,_icon,g){if(id==='usarmy_flight_sim')logic=g;}}};
+ vm.runInNewContext(fs.readFileSync('games/voo/js/game_flight.js','utf8'),
+  {window,performance:{now:()=>1000},console,setInterval(){throw Error('register failure')}});
+ const instance=Object.create(logic);instance._initBattleWorld();
+ for(const [i,target] of f.routes.reporter.entries()){
+  const city=instance.battleCities[i];
+  assert.equal(target.x,city.x);
+  assert.equal(target.z,city.z);
+  assert.equal(target.site,city.name);
+ }
+});
+test('native touch shutter has a dedicated layout slot separate from missile, fire and power',()=>{
+ const controls=fs.readFileSync('games/voo/control-modes.js','utf8');
+ const css=fs.readFileSync('games/voo/pro-controls.css','utf8');
+ const cameraCss=fs.readFileSync('games/voo/control-modes.css','utf8');
+ assert.match(controls,/id:["']photo["']/);
+ assert.match(css,/flight-input \\[data-control="photo"\\]/);
+ assert.match(css,/flight-input \\[data-control="powerDown"\\]/);
+ assert.match(css,/flight-input \\[data-control="powerUp"\\]/);
+ assert.match(cameraCss,/flight-camera-actions/);
+});
