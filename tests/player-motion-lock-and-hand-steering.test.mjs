@@ -87,6 +87,10 @@ test('flight actions obey left/right priority while independent wrists still ste
  assert.equal(first.pitch,second.pitch,'right open hand must not interrupt climb controls');
  assert.equal(photos,1);
  read('closed','open');assert.equal(photos,1,'photo fires once per opening');
+ read('unknown','unknown');read('closed','open');
+ assert.equal(photos,1,'brief classification loss must not repeat the same photograph');
+ read('closed','closed');read('closed','open');
+ assert.equal(photos,2,'closing and reopening the right hand re-arms the shutter');
  read('open','closed');assert.equal(g.pilot.missileHeld,true,'left-open hand fires missile');
  const before=g.manualThrottle;
  read('open','open');assert.equal(g.pilot.missileHeld,false,'both open means brake, not missile');
