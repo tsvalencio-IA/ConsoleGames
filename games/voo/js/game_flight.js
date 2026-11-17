@@ -1157,7 +1157,9 @@
                     for (let e of this.entities) {
                         if(b.life<=0)break;
                         if (Math.hypot(b.x-e.x, b.y-e.y, b.z-e.z) < (e.isBoss? 300 : 150)) {
-                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
+                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.mode === 'COOP' || this.net.isHost) {
+                                // Co-op guests must actually damage their encountered enemies;
+                                // a confirmed elimination is added atomically to shared team kills.
                                 e.hp -= 50; 
                                 let randHit = Math.random();
                                 if (randHit < 0.3) e.engineHealth -= 10;
