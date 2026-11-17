@@ -2108,7 +2108,7 @@
             ctx.fillStyle='#00ffcc';ctx.textAlign='center';ctx.font=`bold ${30*sc}px "Russo One", Arial`;ctx.fillText('CALIBRAÇÃO DE VOO',w/2,h*0.3);
             ctx.fillStyle='#fff';ctx.font=`bold ${20*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'JOYSTICK À ESQUERDA • INICIAR PARA VOAR.':'POSICIONE AS DUAS MÃOS FRENTE À CÂMERA.',w/2,h*0.4,Math.max(130,w-28));
             ctx.fillStyle='#f1c40f';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?(this.isHelicopter()?'JOYSTICK GUIA • POTÊNCIA CONTROLA ALTITUDE • PAIRAR ESTABILIZA.':'ARRASTE NA DIAGONAL PARA CURVAR E SUBIR.'):'GIRE COMO UM VOLANTE PARA CURVAR. PUXE PARA SUBIR.',w/2,h*0.48,Math.max(130,w-28));
-            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':'JUNTE AS MÃOS PARA ATIRAR • MÍSSIL COM TRAVA.',w/2,h*0.53,Math.max(130,w-28));
+            ctx.fillStyle='#ff5555';ctx.font=`bold ${16*sc}px Arial`;ctx.fillText(window.ArcadeControls?.mode==='controls'?'ATIRAR LIVRE • ◎ MÍSSIL COM TRAVA • ⚡ TURBO':this.flightOperation?.kind==='reporter'?'REPÓRTER: ERGA UMA MÃO PARA FOTOGRAFAR':'JUNTE AS MÃOS PARA ATIRAR • MÍSSIL COM TRAVA.',w/2,h*0.53,Math.max(130,w-28));
             
             let pct=1-(this.timer/5.0);
             ctx.fillStyle='#111';ctx.fillRect(w/2-200*sc,h*0.65,400*sc,15*sc);
@@ -2140,12 +2140,12 @@
                 phases: [
                     { id: 'training', name: 'CAMPANHA SOLO', desc: 'Destrua as ameaças e evolua o seu caça.', mode: 'SINGLE', reqLvl: 1 },
                     { id: 'free', name: 'VOO LIVRE', desc: 'Explore o cenário e treine manobras.', mode: 'FREE', reqLvl: 1 },
-                    { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse cinco arcos e pratique a aproximação e o pouso.', mode: 'FREE', school:true, reqLvl: 1 },
-                    { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Patrulhe três pontos e retorne à base.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
-                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe pontos turísticos em voo estável.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
-                    { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Encontre o chamado de socorro e regresse.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
-                    { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor avariado: pouse em segurança.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
-                    { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Decole do convés, patrulhe e pouse no navio.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
+                    { id: 'flight-school', name: 'ESCOLA DE VOO', desc: 'Decole, atravesse os cinco arcos na direção correta e pouse na pista com segurança.', mode: 'FREE', school:true, reqLvl: 1 },
+                    { id: 'flight-patrol', name: 'PATRULHA AÉREA', desc: 'Identifique e estabilize a aeronave em cada um dos três pontos; retorne à pista.', mode: 'FREE', operation:'patrol', reqLvl: 1 },
+                    { id: 'flight-reporter', name: 'REPÓRTER AÉREO', desc: 'Fotografe três cidades. Na câmera, erga uma mão para tirar foto sem tocar no celular.', mode: 'FREE', operation:'reporter', reqLvl: 1 },
+                    { id: 'flight-rescue', name: 'RESGATE AÉREO', desc: 'Localize o sinal SOS, estabilize por 3,5 s, registre o resgate e retorne à base.', mode: 'FREE', operation:'rescue', reqLvl: 1 },
+                    { id: 'flight-emergency', name: 'POUSO DE EMERGÊNCIA', desc: 'Motor com potência reduzida: alcance a pista, faça um pouso suave e pare.', mode: 'FREE', operation:'emergency', reqLvl: 1 },
+                    { id: 'flight-carrier', name: 'OPERAÇÃO PORTA-AVIÕES', desc: 'Acelere no convés, alcance o ponto da missão e retorne para um pouso naval suave.', mode: 'FREE', operation:'carrier', reqLvl: 1 },
                     { id: 'coop', name: 'CO-OP ESQUADRÃO', desc: 'Junte-se a aliados para abater o ACE.', mode: 'COOP', reqLvl: 1 },
                     { id: 'pvp', name: 'COMBATE PVP', desc: 'Batalha aérea multijogador.', mode: 'PVP', reqLvl: 1 }
                 ]
