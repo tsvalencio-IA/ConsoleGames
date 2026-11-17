@@ -201,7 +201,7 @@ function drawHud(ctx,w,h,g){
   const altitudeCue=t&&o.stage==='route'&&Math.abs(alt)>130?(alt>0?' · SUBA '+alt+' m':' · DESÇA '+Math.abs(alt)+' m'):'';
   const ready=o.kind==='reporter'&&o.stage==='route'&&(o.stable>=1||o.readyWindow>0);
   const stage=o.stage==='catapult'?'DECOLE DO CONVÉS':o.stage==='return'?'RETORNE À BASE E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+'/'+(routes[o.kind]?.length||1);
-  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?(window.ArcadeControls?.mode==='camera'?'ABRA A MÃO DIREITA PARA FOTO':'APERTE FOTOGRAFAR'):o.stable>0?'ESTABILIZE PARA FOTO':'APROXIME-SE DO ALVO'):o.kind==='rescue'?(o.rescued?'VÍTIMA A BORDO':o.stage==='route'?'RESGATE '+o.stable.toFixed(1)+'/3.5 s':''):o.kind==='patrol'&&o.stage==='route'?'OBSERVAÇÃO '+o.stable.toFixed(1)+'/1 s':o.kind==='carrier'&&o.stage==='route'?'PATRULHA '+o.stable.toFixed(1)+'/1 s':'';
+  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?(window.ArcadeControls?.mode==='camera'?'ERGA UMA MÃO PARA FOTO':'APERTE FOTOGRAFAR'):o.stable>0?'ESTABILIZE PARA FOTO':'APROXIME-SE DO ALVO'):o.kind==='rescue'?(o.rescued?'VÍTIMA A BORDO':o.stage==='route'?'RESGATE '+o.stable.toFixed(1)+'/3.5 s':''):o.kind==='patrol'&&o.stage==='route'?'OBSERVAÇÃO '+o.stable.toFixed(1)+'/1 s':o.kind==='carrier'&&o.stage==='route'?'PATRULHA '+o.stable.toFixed(1)+'/1 s':'';
   const top=h<530?83:102;
   ctx.fillStyle='rgba(5,30,44,.84)';ctx.fillRect(w*.06,top,w*.88,46);
   ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(labels[o.kind]+' · '+stage,w/2,top+17,w*.83);
