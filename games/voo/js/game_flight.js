@@ -236,7 +236,7 @@
                 inputs: {pitch:0, roll:0}, afterburner: false,
                 engineHealth: 100, wingHealth: 100, structuralIntegrity: 100, engineHeat: 0 
             };
-            this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0 };
+            this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0, handControls:{left:'unknown',right:'unknown'},missileHeld:false,calibratedHands:false };
             this.manualPedal=0;this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
             this.combat = { target: null, locked: false, lockTimer: 0, vulcanCd: 0, missileCd: 0 };
             
@@ -546,7 +546,7 @@
 
                 if (this.state === 'CALIBRATION') {
                     if(window.ArcadeControls?.mode==='controls')this.timer=5.0;
-                    else if(this.pilot.active)this.timer-=dt;
+                    else if(this.pilot.active&&this.pilot.calibratedHands)this.timer-=dt;
                     else {
                         this.timer += dt * 2; 
                         if (this.timer > 5.0) this.timer = 5.0;
@@ -554,7 +554,7 @@
                     
                     this._drawCalib(ctx, w, h);
                     if ((window.ArcadeControls?.mode==='controls' && this.keys[' ']) ||
-                       (window.ArcadeControls?.mode!=='controls' && this.pilot.active && this.timer <= 0)) {
+                       (window.ArcadeControls?.mode!=='controls' && this.pilot.active && this.pilot.calibratedHands && this.timer <= 0)) {
                         this.currentStats.thrust = BASE_PLANE_STATS.thrust + ((this.upgrades.engine - 1) * 50000);
                         this.ship.maxHp = 100 + ((this.upgrades.armor - 1) * 100);
                         this.ship.hp = this.ship.maxHp;
@@ -756,7 +756,7 @@
                 window.FlightOperations?.update(this,dt,flightBefore);
                 // A distant player photographs by holding one arm raised for 0.4 s.
                 // Pose coordinates come from the existing camera detector; no second model is loaded.
-                if(this.state==='PLAYING'&&this.flightOperation?.kind==='reporter'&&window.ArcadeControls?.mode==='camera')window.FlightOperations?.cameraPhotoGesture?.(this,pose,dt);
+                // The remote shutter now uses independently tracked OPEN fingers, not a raised arm.
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
@@ -795,7 +795,9 @@
 
         _readPose: function(pose, w, h, dt) {
             let trgRoll = 0, trgPitch = 0, inputDetected = false;
-            this.pilot.headTilt = false; 
+            this.pilot.headTilt = false;
+            this.pilot.missileHeld=false;
+            this.pilot.calibratedHands=false; 
             
             if (this.keys['ArrowUp']) trgPitch = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowDown']) trgPitch = -(window.ArcadePlaySettings?.get().sensitivity??1);
             if (this.keys['ArrowRight']) trgRoll = (window.ArcadePlaySettings?.get().sensitivity??1); else if (this.keys['ArrowLeft']) trgRoll = -(window.ArcadePlaySettings?.get().sensitivity??1);
@@ -810,6 +812,19 @@
             if (Array.isArray(pose)) pts = Array.isArray(pose[0]?.keypoints) ? pose[0].keypoints : pose;
             else if (Array.isArray(pose?.keypoints)) pts = pose.keypoints;
 
+            const cameraMode=window.ArcadeControls?.mode==='camera';
+            const lock=window.System?.playerLock?.snapshot?.();
+            const motion=pose?.consoleMotion||lock;
+            const trusted=cameraMode&&motion?.status==='locked'&&!!pose;
+            const fingers=trusted?(motion?.hands||{left:'unknown',right:'unknown'}):{left:'unknown',right:'unknown'};
+            this.pilot.handControls={...fingers};
+            this.pilot.trackingStatus=cameraMode?(motion?.status||'lost'):'manual';
+            if (cameraMode && !trusted) {
+                this.pilot.active=false;this.ship.afterburner=false;
+                this.pilot.targetRoll=0;this.pilot.targetPitch=0;
+                this.ship.inputs.pitch=0;this.ship.inputs.roll=0;
+                return;
+            }
             if (window.ArcadeControls?.mode!=='controls' && pts && pts.length > 0) {
                 let rightWrist = null, leftWrist = null;
                 for (let i = 0; i < pts.length; i++) {
@@ -842,17 +857,18 @@
                     if(!this.pilot.handNeutral)this.pilot.handNeutral={x:avgX,y:avgY,bank};
                     const neutral=this.pilot.handNeutral;
                     if(this.state==='CALIBRATION'){
-                        neutral.x+=(avgX-neutral.x)*.05;neutral.y+=(avgY-neutral.y)*.05;neutral.bank+=(bank-neutral.bank)*.05;
+                        if(fingers.left==='closed'&&fingers.right==='closed'){
+                            neutral.x+=(avgX-neutral.x)*.055;neutral.y+=(avgY-neutral.y)*.055;neutral.bank+=(bank-neutral.bank)*.055;
+                            this.pilot.calibratedHands=true;
+                        }
                     }
                     const rollInput=(avgX-neutral.x)/.16+(bank-neutral.bank)*1.2;
                     trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
                     trgPitch=Math.max(-1,Math.min(1,-(avgY-neutral.y)/.09));
 
                     let handsDist = Math.hypot(rx - lx, ry - ly);
-                    if (handsDist < w * 0.25 && this.state === 'PLAYING') {
-                        this.pilot.headTilt = true; 
-                    }
-                    if (handsDist > w * 0.5) {
+                    // Steering remains attached to wrists; finger gestures are separate.
+                    if (false && handsDist > w * 0.5) {
                         this.ship.afterburner = true; 
                     } else {
                         this.ship.afterburner = false;
@@ -860,9 +876,28 @@
                 }
             }
 
+            if(cameraMode&&trusted&&this.state==='PLAYING'){
+                const left=fingers.left,right=fingers.right;
+                const bothOpen=left==='open'&&right==='open';
+                const bothClosed=left==='closed'&&right==='closed';
+                const rightOnly=right==='open'&&left==='closed';
+                const leftOnly=left==='open'&&right==='closed';
+                const prev=this.pilot.handMode||'unknown';
+                const mode=bothOpen?'brake':bothClosed?'power':rightOnly?'photo':leftOnly?'missile':'unknown';
+                this.pilot.handMode=mode;
+                if(mode==='brake')this.manualThrottle=Math.max(.04,(this.manualThrottle??.6)-dt*1.1);
+                else if(mode==='power')this.manualThrottle=Math.min(1,(this.manualThrottle??.6)+dt*.8);
+                if(mode==='photo'&&prev!=='photo'){
+                    const photo=window.FlightOperations?.capturePhoto?.(this);
+                    if(photo&&!photo.ok&&photo.reason)window.System?.msg?.(photo.reason,'#ffe0a2');
+                }
+                this.pilot.missileHeld=mode==='missile';
+                this.pilot.throttle=this.manualThrottle??.6;
+                // A hand gesture must not modify trgRoll/trgPitch calculated above.
+            } else if(cameraMode)this.pilot.handMode='unknown';
             if(this.isHelicopter()&&window.ArcadeControls?.mode==='camera'){
                 // In camera play raised hands mean climb, not a nose-down cyclic.
-                this.pilot.throttle=inputDetected?Math.max(.08,Math.min(.92,.5+trgPitch*.42)):.5;
+                this.pilot.throttle=inputDetected?Math.max(.08,Math.min(.92,this.manualThrottle??.5)):.5;
                 trgPitch=inputDetected&&this.state==='PLAYING'?.32:0;
             }
             if (inputDetected) {
@@ -930,8 +965,8 @@
 
             let firingState = false;
 
-            const cameraGesture=window.ArcadeControls?.mode==='camera'&&this.pilot.headTilt;
-            const automaticHeli=heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false&&this.combat.locked;
+            const cameraGesture=false; // Opening a hand never interrupts steering or fires the cannon.
+            const automaticHeli=window.ArcadeControls?.mode!=='camera'&&heli&&assisted&&window.ArcadePlaySettings?.get().heliAutoFire!==false&&this.combat.locked;
             const gunTrigger=Boolean(this.manualFireHeld||this.keys['f']||this.keys['F']||cameraGesture||automaticHeli);
             // Cannon is a free-fire weapon; only homing missiles require target lock.
             if(gunTrigger&&performance.now()-this.combat.vulcanCd>80){
@@ -949,12 +984,12 @@
 
             if (this.combat.missileCd > 0) this.combat.missileCd -= dt;
 
-            if (this.combat.locked && this.pilot.headTilt && this.combat.missileCd <= 0) {
+            if ((this.pilot.missileHeld || (window.ArcadeControls?.mode!=='camera'&&this.pilot.headTilt)) && this.combat.missileCd <= 0) {
                 if (Math.random() < 0.95) { 
                     this.missiles.push({
                         x: this.ship.x, y: this.ship.y-50, z: this.ship.z,
-                        vx: this.ship.vx, vy: this.ship.vy, vz: this.ship.vz,
-                        target: this.combat.target, life: 10, maxG: 40 + (this.upgrades.missiles * 5), trackTime: 0
+                        vx: this.ship.vx+Math.sin(this.ship.yaw)*Math.cos(this.ship.pitch)*760, vy: this.ship.vy+Math.sin(this.ship.pitch)*760, vz: this.ship.vz+Math.cos(this.ship.yaw)*Math.cos(this.ship.pitch)*760,
+                        target: this.combat.locked?this.combat.target:null, life: 10, maxG: 40 + (this.upgrades.missiles * 5), trackTime: 0
                     });
                     GameSfx.play('missile');
                     if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
