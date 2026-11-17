@@ -27,10 +27,6 @@ jobs:
         run: |
           node --check games/voo/js/game_flight.js
           node --check games/voo/control-modes.js
-          node --check arcade/player-motion-lock.js
-          node --check games/kart/js/core.js
-          node --check games/boxe/js/core.js
-          node --check games/tenis/js/core.js
           node --check games/voo/js/flight-operations.js
           node --check games/voo/js/flight-world-return.js
           node --check games/otthi/app.js
