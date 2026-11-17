@@ -236,7 +236,7 @@
                 inputs: {pitch:0, roll:0}, afterburner: false,
                 engineHealth: 100, wingHealth: 100, structuralIntegrity: 100, engineHeat: 0 
             };
-            this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0, handControls:{left:'unknown',right:'unknown'},missileHeld:false,calibratedHands:false };
+            this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0, handControls:{left:'unknown',right:'unknown'},missileHeld:false,calibratedHands:false,photoArmed:true };
             this.manualPedal=0;this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
             this.combat = { target: null, locked: false, lockTimer: 0, vulcanCd: 0, missileCd: 0 };
             
@@ -885,12 +885,13 @@
                 const bothClosed=left==='closed'&&right==='closed';
                 const rightOnly=right==='open'&&left==='closed';
                 const leftOnly=left==='open'&&right==='closed';
-                const prev=this.pilot.handMode||'unknown';
                 const mode=bothOpen?'brake':bothClosed?'power':rightOnly?'photo':leftOnly?'missile':'unknown';
                 this.pilot.handMode=mode;
+                if(right==='closed'&&left!=='unknown')this.pilot.photoArmed=true;
                 if(mode==='brake')this.manualThrottle=Math.max(.04,(this.manualThrottle??.6)-dt*1.1);
                 else if(mode==='power')this.manualThrottle=Math.min(1,(this.manualThrottle??.6)+dt*.8);
-                if(mode==='photo'&&prev!=='photo'&&this.flightOperation?.kind==='reporter'){
+                if(mode==='photo'&&this.pilot.photoArmed!==false&&this.flightOperation?.kind==='reporter'){
+                    this.pilot.photoArmed=false;
                     const photo=window.FlightOperations?.capturePhoto?.(this);
                     if(photo&&!photo.ok&&photo.reason)window.System?.msg?.(photo.reason,'#ffe0a2');
                 }
