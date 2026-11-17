@@ -125,12 +125,28 @@ function drawWorld(ctx,w,h,g){
 function drawHud(ctx,w,h,g){
  const o=g.flightOperation;if(!o&&!g.flightImpact)return;ctx.save();
  if(o&&!o.done){
-  const t=routes[o.kind]?.[o.index],d=t?Math.round(Math.hypot(g.ship.x-t.x,g.ship.z-t.z))+' m':'';
+  const t=o.stage==='return'?(o.kind==='carrier'?{x:carrier.x,y:carrier.y+140,z:carrier.z}:{x:0,y:120,z:0}):routes[o.kind]?.[o.index];
+  const dist=t?Math.round(Math.hypot(g.ship.x-t.x,g.ship.z-t.z)):null;
+  const bearing=t?Math.atan2(t.x-g.ship.x,t.z-g.ship.z):0;
+  const delta=t?Math.atan2(Math.sin(bearing-g.ship.yaw),Math.cos(bearing-g.ship.yaw)):0;
+  const arrow=!t?'':Math.abs(delta)<.25?'↑':Math.abs(delta)>2.85?'↓':delta>0?'→':'←';
+  const alt=t?Math.round(t.y-g.ship.y):0;
+  const altitudeCue=t&&o.stage==='route'&&Math.abs(alt)>130?(alt>0?' · SUBA '+alt+' m':' · DESÇA '+Math.abs(alt)+' m'):'';
   const ready=o.kind==='reporter'&&o.stage==='route'&&o.stable>=1;
-   const hint=o.kind==='reporter'?'FOTOS '+o.photos.length+'/'+routes.reporter.length+' · '+(ready?'FOTOGRAFE AGORA':o.stable>0?'MANTENHA VOO ESTÁVEL':'APROXIME-SE DO ALVO'):'';
-   const message=labels[o.kind]+' · '+(o.stage==='catapult'?'AUMENTE A POTÊNCIA':o.stage==='return'?'RETORNE À PISTA E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+' · '+d)+(hint?' · '+hint:'');
-  ctx.fillStyle='rgba(5,30,44,.8)';ctx.fillRect(w*.06,h<530?95:110,w*.88,30);
-  ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(message,w/2,(h<530?95:110)+20,w*.83);
+  const stage=o.stage==='catapult'?'DECOLE DO CONVÉS':o.stage==='return'?'RETORNE À BASE E POUSE':o.stage==='landed'?'PARE NO CONVÉS':'PONTO '+(o.index+1)+'/'+(routes[o.kind]?.length||1);
+  const hint=o.kind==='reporter'&&o.stage==='route'?(ready?'FOTOGRAFE AGORA':o.stable>0?'ESTABILIZE PARA FOTOGRAFAR':'APROXIME-SE DO ALVO'):'';
+  const top=h<530?83:102;
+  ctx.fillStyle='rgba(5,30,44,.84)';ctx.fillRect(w*.06,top,w*.88,46);
+  ctx.textAlign='center';ctx.font='bold 12px Arial';ctx.fillStyle='#c9faf3';ctx.fillText(labels[o.kind]+' · '+stage,w/2,top+17,w*.83);
+  ctx.font='bold 11px Arial';ctx.fillStyle=ready?'#a8ffd0':'#ffe1a3';
+  ctx.fillText((arrow?arrow+' '+dist+' m':'')+altitudeCue+(hint?' · '+hint:'')+(o.kind==='reporter'?' · '+o.photos.length+'/3 FOTOS':''),w/2,top+36,w*.83);
+  if(t&&typeof g._projectView==='function'){
+   const marker=g._projectView(t.x,t.y,t.z,w,h);
+   if(marker?.visible&&Number.isFinite(marker.x)&&Number.isFinite(marker.y)&&marker.x>30&&marker.x<w-30&&marker.y>top+65&&marker.y<h-65){
+    ctx.strokeStyle=ready?'#a8ffd0':'#ffe1a3';ctx.lineWidth=2;ctx.beginPath();ctx.arc(marker.x,marker.y,19,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.fillText(o.kind==='reporter'?'FOTO '+(o.index+1):o.stage==='return'?'BASE':'PONTO '+(o.index+1),marker.x,marker.y-26);
+   }
+  }
  }
  if(o?.lastPhoto&&performance.now()-o.lastPhoto.at<260){ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(0,0,w,h);}
   if(g.flightImpact&&performance.now()-g.flightImpact.at<1500){ctx.fillStyle='rgba(255,86,25,.27)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffe6a9';ctx.textAlign='center';ctx.font='bold 19px Arial';ctx.fillText(g.flightImpact.text,w/2,h*.41,w-18);}
