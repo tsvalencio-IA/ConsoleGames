@@ -105,11 +105,11 @@
    this.status='locked';this.pose=best.pose;this.anchor=best;this.lastSeen=time;this.reason='JOGADOR TRAVADO';
    return this.pose;
   }
-  hands(hands,time=now()){
-   if(this.status!=='locked'||!this.pose){
+  hands(hands,time=now(),framePose=this.pose){
+   if(this.status!=='locked'||!this.pose||(this.id!=null&&framePose?.id!==this.id)){
     this.handStates={left:'unknown',right:'unknown'};return this.handStates;
    }
-   const assigned=associateHands(this.pose,hands);
+   const assigned=associateHands(framePose,hands);
    // Two consecutive consistent frames before a switch avoid accidental commands
    // from one bad classifier frame or a hand passing over another body.
    for(const side of ['left','right']){
