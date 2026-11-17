@@ -142,19 +142,14 @@ const hub={
    const photo=()=>{const result=window.FlightOperations?.capturePhoto?.(logic);if(result&&!result.ok)window.System?.msg?.(result.reason,'#ffcf68');};
    const root=hub.createControls('flight-camera-actions',[
     {id:'fire',text:'ATIRAR',label:'Segure para disparar o canhão sem travar a mira',down:()=>logic.manualFireHeld=true,up:()=>logic.manualFireHeld=false},
-    {id:'photo',text:'📷 FOTOGRAFAR',label:'Fotografar o objetivo do Repórter Aéreo',down:photo},
-    {id:'recalibrate',text:'REGULAR MÃOS',label:'Recadastrar jogador e as mãos sem reiniciar a missão',down:()=>{
-      window.System?.playerLock?.reset();logic.pilot.handNeutral=null;
-      logic.pilot.active=false;logic.pilot.missileHeld=false;logic.pilot.handMode='unknown';logic.manualFireHeld=false;
-      window.System?.msg?.('MOSTRE O CORPO E AS DUAS MÃOS PARA RECADASTRAR','#b5ffcb');
-    }}
+    {id:'photo',text:'📷 FOTOGRAFAR',label:'Fotografar o objetivo do Repórter Aéreo',down:photo}
    ]);
-   const refresh=()=>{const shutter=root.querySelector('[data-control="photo"]');if(shutter)shutter.hidden=logic.state!=='PLAYING'||logic.flightOperation?.kind!=='reporter'||logic.flightOperation?.stage!=='route';const gun=root.querySelector('[data-control="fire"]');if(gun)gun.hidden=logic.state!=='PLAYING';const rec=root.querySelector('[data-control="recalibrate"]');if(rec)rec.hidden=logic.state!=='PLAYING';};
+   const refresh=()=>{const shutter=root.querySelector('[data-control="photo"]');if(shutter)shutter.hidden=logic.state!=='PLAYING'||logic.flightOperation?.kind!=='reporter'||logic.flightOperation?.stage!=='route';const gun=root.querySelector('[data-control="fire"]');if(gun)gun.hidden=logic.state!=='PLAYING';};
    refresh();const timer=setInterval(refresh,160);
    const reset=()=>{logic.manualFireHeld=false};
    window.addEventListener('blur',reset);window.addEventListener('arcade:release-inputs',reset);
    hub.releases.push(()=>{reset();clearInterval(timer);window.removeEventListener('blur',reset);window.removeEventListener('arcade:release-inputs',reset)});
-   hub.showTip('DIREITA ABERTA: FOTO • ESQUERDA ABERTA: MÍSSIL • AS DUAS ABERTAS: FREAR');
+   hub.showTip('JUNTE AS MÃOS OU SEGURE ATIRAR • MÍSSIL EXIGE TRAVA • FOTOGRAFE NO REPÓRTER');
  },
  flightControls(logic){
    const tapStart=()=>{
@@ -198,7 +193,7 @@ const hub={
    refreshFlight();
    const interval=setInterval(refreshFlight,160);
    hub.releases.push(()=>clearInterval(interval));
-   hub.showTip("MANCHE + ATIRAR LIVRE • MÍSSIL GUIADO COM TRAVA • FOTO NO REPÓRTER");
+   hub.showTip("MANCHE + ATIRAR LIVRE • MÍSSIL EXIGE TRAVA • REPÓRTER: FOTOGRAFE OS ALVOS");
  },
  arControls(logic){
   const root=hub.createControls('ar-input combat-input',[
