@@ -340,14 +340,13 @@ window.System = {
                             }
                         }
                         if(window.ArcadeControls?.mode==='camera'&&game.id==='usarmy_flight_sim'){
-                            const handDetector=await sys.ensureHandDetector?.();
-                            if(!handDetector){
-                                window.ArcadeControls?.setMode('controls');
-                                sys.video?.srcObject?.getTracks?.().forEach(t=>t.stop());
-                                if(sys.video)sys.video.srcObject=null;
-                                sys.currentCameraMode=null;
-                                sys.msg('DETECTOR DAS MÃOS INDISPONÍVEL • CONTROLES MANUAIS ATIVADOS');
-                            }else{sys.playerLock?.reset();sys.handsLastAt=0;}
+                            sys.playerLock?.reset();sys.handsLastAt=0;
+                            // Starting the game must NEVER wait for a second, heavier finger model.
+                            // Body steering/calibration works first; finger actions activate once loaded.
+                            Promise.resolve().then(()=>sys.ensureHandDetector?.()).then(detector=>{
+                                if(!detector&&sys.activeGame===game&&window.ArcadeControls?.mode==='camera')
+                                    sys.msg('DEDOS INDISPONÍVEIS • PILOTE COM OS PUNHOS E USE OS BOTÕES DE AÇÃO');
+                            }).catch(error=>console.warn('Falha opcional do detector de dedos:',error));
                         }
                         document.getElementById('loading-text').innerText='CARREGANDO CENÁRIO...';
                         // Revalidar permissão e nível após carregamento assíncrono.
