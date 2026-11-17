@@ -5,14 +5,16 @@
  const now=()=>typeof performance!=='undefined'?performance.now():Date.now();
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  const point=(pose,name,index)=>pose?.keypoints?.find(p=>p&&(p.name===name||p.part===name))||pose?.keypoints?.[index];
- const good=p=>p&&Number(p.score??p.confidence??0)>=.37&&Number.isFinite(p.x)&&Number.isFinite(p.y);
+ const good=p=>p&&Number(p.score??p.confidence??0)>=.27&&Number.isFinite(p.x)&&Number.isFinite(p.y);
+ const wristGood=p=>p&&Number(p.score??p.confidence??0)>=.17&&Number.isFinite(p.x)&&Number.isFinite(p.y);
  function profile(p){
   const ls=point(p,'left_shoulder',5),rs=point(p,'right_shoulder',6),lw=point(p,'left_wrist',9),rw=point(p,'right_wrist',10);
-  if(![ls,rs,lw,rw].every(good))return null;
+  // Shoulders establish ownership; weak wrist confidence must not make person registration impossible.
+  if(![ls,rs].every(good))return null;
   const width=Math.hypot(ls.x-rs.x,ls.y-rs.y);
-  if(width<7)return null;
+  if(width<5)return null;
   const x=(ls.x+rs.x)/2,y=(ls.y+rs.y)/2,scale=width;
-  return {pose:p,x,y,scale,id:p.id??null,ls,rs,lw,rw};
+  return {pose:p,x,y,scale,id:p.id??null,ls,rs,lw:wristGood(lw)?lw:null,rw:wristGood(rw)?rw:null};
  }
  function distance(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
  function classifyHand(hand){
@@ -34,7 +36,7 @@
  }
  function associateHands(pose,detectedHands){
   const p=profile(pose),assigned={left:null,right:null};
-  if(!p||!Array.isArray(detectedHands))return assigned;
+  if(!p||!p.lw||!p.rw||!Array.isArray(detectedHands))return assigned;
   const maxD=Math.max(18,p.scale*.68),candidates=[];
   for(const hand of detectedHands){
    if(!hand?.keypoints?.length)continue;
@@ -72,14 +74,15 @@
    if(this.status==='selecting'){
     if(candidates.length!==1){
      this.candidate=null;this.candidateSince=0;this.pose=null;
-     this.reason=candidates.length?'UMA PESSOA POR VEZ PARA CALIBRAR':'MOSTRE OS OMBROS E AS DUAS MÃOS';
+     this.reason=candidates.length?'UMA PESSOA POR VEZ PARA CALIBRAR':'MOSTRE OS OMBROS À CÂMERA';
      return null;
     }
-    const p=candidates[0],same=this.candidate&&(this.candidate.id==null||p.id==null||p.id===this.candidate.id)&&distance(this.candidate,p)<p.scale*.8&&p.scale/this.candidate.scale>.60&&p.scale/this.candidate.scale<1.6;
+    const p=candidates[0],same=this.candidate&&distance(this.candidate,p)<p.scale*.95&&p.scale/this.candidate.scale>.52&&p.scale/this.candidate.scale<1.85;
+    // Registration uses torso continuity: provider-generated ids can change during acquisition.
     if(!same){this.candidate=p;this.candidateSince=time;}
     else this.candidate=p;
     this.pose=null;this.reason='CADASTRANDO JOGADOR • MANTENHA AS DUAS MÃOS VISÍVEIS';
-    if(time-this.candidateSince>=1100){
+    if(time-this.candidateSince>=650){
      this.status='locked';this.id=p.id;this.anchor=p;this.lastSeen=time;this.pose=p.pose;this.reason='JOGADOR TRAVADO';
     }
     return this.pose;
