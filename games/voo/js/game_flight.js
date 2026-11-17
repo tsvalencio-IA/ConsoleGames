@@ -1263,15 +1263,18 @@
                     if (dist < 100) { 
                         if (m.target.isPlayer && this.mode==='PVP') {
                             if (window.DB && window.DB.ref) {
-                                let newHp = m.target.hp - 50;
-                                window.DB.ref(`sessions/flight_${this.mode}/players/${m.target.uid}/hp`).set(newHp);
-                                if (newHp <= 0 && this.state === 'PLAYING') {
-                                    this._pvpKill(m.target.uid);
-                                }
+                                window.DB.ref(`sessions/flight_${this.mode}/players/${m.target.uid}/hp`)
+                                    .transaction(current=>{
+                                        const hp=Number(current);
+                                        if(!Number.isFinite(hp)||hp<=0)return;
+                                        return Math.max(0,hp-50);
+                                    },null,false).then(result=>{
+                                        if(result?.committed&&Number(result.snapshot?.val())===0&&this.state==='PLAYING')this._pvpKill(m.target.uid);
+                                    }).catch(error=>console.error('PVP MISSILE SYNC ERROR',error));
                             }
                             this._fx(m.target.x,m.target.y,m.target.z,'#f33',40,300);
                         } else if (!m.target.isPlayer) {
-                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.net.isHost) {
+                            if (this.mode === 'SINGLE' || this.mode === 'FREE' || this.mode === 'COOP' || this.net.isHost) {
                                 if(m.target.groundTank){this._damageGroundTank(m.target,400+this.upgrades.missiles*100);}else m.target.hp -= 400 + (this.upgrades.missiles * 100);
                                 if (m.target.hp <= 0) this._kill(m.target, m.target.isBoss?2000:300);
                             }
@@ -1313,7 +1316,36 @@
                 let vDirX = m.vx/V, vDirY = m.vy/V, vDirZ = m.vz/V;
                 m.vx += vDirX * 800 * dt; m.vy += vDirY * 800 * dt; m.vz += vDirZ * 800 * dt;
 
+                const beforeMissile={x:m.x,y:m.y,z:m.z};
                 m.x += m.vx*dt; m.y += m.vy*dt; m.z += m.vz*dt; m.life -= dt;
+                // Rockets fired without a radar lock still damage targets they actually hit.
+                if(!m.target&&m.life>0){
+                    const strength=400+this.upgrades.missiles*100;
+                    for(const enemy of this.entities||[]){
+                        if(!(enemy.hp>0)||this._segmentDistance(beforeMissile,m,enemy)>(enemy.isBoss?180:95))continue;
+                        if(['SINGLE','FREE','COOP'].includes(this.mode)||this.net.isHost){
+                            enemy.hp-=strength;
+                            if(enemy.hp<=0)this._kill(enemy,enemy.isBoss?2000:300);
+                        }
+                        this._fx(enemy.x,enemy.y,enemy.z,'#f33',35,220);
+                        m.life=0;break;
+                    }
+                    if(m.life>0&&this.mode==='SINGLE')for(const tank of this.groundTanks||[]){
+                        if(tank.active&&this._segmentDistance(beforeMissile,m,tank)<55){
+                            this._damageGroundTank(tank,strength);this._fx(tank.x,tank.y,tank.z,'#f33',30,180);
+                            m.life=0;break;
+                        }
+                    }
+                    if(m.life>0&&this.mode==='PVP'&&this.net.players)for(const [uid,player]of Object.entries(this.net.players)){
+                        if(uid===this.net.uid||!(player.hp>0)||this._segmentDistance(beforeMissile,m,player)>=100)continue;
+                        m.life=0;this._fx(player.x,player.y,player.z,'#f33',35,220);
+                        window.DB?.ref?.(`sessions/flight_${this.mode}/players/${uid}/hp`)
+                            .transaction(current=>{const hp=Number(current);if(!Number.isFinite(hp)||hp<=0)return;return Math.max(0,hp-50);},null,false)
+                            .then(result=>{if(result?.committed&&Number(result.snapshot?.val())===0&&this.state==='PLAYING')this._pvpKill(uid);})
+                            .catch(error=>console.error('PVP ROCKET SYNC ERROR',error));
+                        break;
+                    }
+                }
                 this.fx.push(createParticle(m.x, m.y, m.z, 'rgba(255,200,100,0.8)', 8, 0.5, 'smoke'));
                 if (m.life <= 0) this.missiles.splice(i,1);
             }
