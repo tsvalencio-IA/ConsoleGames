@@ -707,7 +707,7 @@
                     if(this.flightSchool.stage==='complete'){this.ship.vx*=.97;this.ship.vz*=.97;this.pilot.targetPitch=0;this.pilot.targetRoll=0;}
                     if(this.ship.y>95&&this.flightSchool.stage==='takeoff')this.flightSchool.stage='gates';
                     const gate=this._schoolGates()[this.flightSchool.gate];
-                    if(this.flightSchool.stage==='gates'&&gate&&Math.hypot(this.ship.x-gate.x,this.ship.y-gate.y,this.ship.z-gate.z)<330){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
+                    if(this.flightSchool.stage==='gates'&&gate&&this._schoolGatePassed(flightBefore,gate)){this.flightSchool.gate++;if(this.flightSchool.gate===this._schoolGates().length)this.flightSchool.stage='landing';}
                 }
                 const floor=this.isHelicopter()?14:50;
                 if(!this.flightSchool&&this.mode==='FREE'&&!this.isHelicopter())this._updateRunwayLanding(dt);
@@ -1372,6 +1372,18 @@
             }else if(!g.onRunway&&p.y<50){p.y=50;p.vy=Math.max(0,p.vy);if(p.pitch<0)p.pitch=0;}
         },
         _schoolGates: function(){return[{x:0,y:230,z:0},{x:1000,y:450,z:1900},{x:2300,y:480,z:0},{x:1200,y:300,z:-2600},{x:0,y:120,z:-2300}];},
+        _schoolGatePassed: function(before,gate){
+            // Passing near a ring is not enough: the aircraft must cross its plane
+            // in the intended route direction, inside its visible aperture.
+            if(!before||!gate||!this.flightSchool)return false;
+            const gates=this._schoolGates(),n=this.flightSchool.gate,from=n?gates[n-1]:{z:-2200};
+            const direction=Math.sign(gate.z-from.z)||1,travel=this.ship.z-before.z;
+            if(!Number.isFinite(travel)||Math.abs(travel)<1e-6||travel*direction<=0)return false;
+            const t=(gate.z-before.z)/travel;
+            if(t<0||t>1)return false;
+            const x=before.x+(this.ship.x-before.x)*t,y=before.y+(this.ship.y-before.y)*t;
+            return Math.hypot(x-gate.x,y-gate.y)<=300;
+        },
         _drawSchool: function(ctx,w,h){
             const quad=(points,color)=>{const pp=points.map(p=>this._projectView(...p,w,h));if(pp.some(p=>!p.visible))return;ctx.beginPath();pp.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
             // One continuous runway at ground level, rendered in the same camera space.
