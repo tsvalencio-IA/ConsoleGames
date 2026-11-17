@@ -46,7 +46,7 @@ test('Reporter: every node requires a real photo press; proximity alone never ad
 test('Patrol: all three ordered nodes, then land at the base only',()=>{
   const f=flightOperations(),g=operationGame();f.start(g,{operation:'patrol'});f.onStart(g);
   for(const [i,p] of f.routes.patrol.entries()){
-    Object.assign(g.ship,{...p,vx:20,vy:0,vz:0,roll:0});f.update(g,.1,{...g.ship});
+    Object.assign(g.ship,{...p,vx:20,vy:0,vz:0,roll:0});for(let k=0;k<11;k++)f.update(g,.1,{...g.ship});
     assert.equal(g.flightOperation.index,i+1);
   }
   assert.equal(g.flightOperation.stage,'return');
