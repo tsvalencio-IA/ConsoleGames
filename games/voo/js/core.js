@@ -234,7 +234,7 @@ window.Profile = {
 window.System = {
     playerId: 'p_' + Math.floor(Math.random()*10000), 
     activeGame: null, loopId: null, loopEpoch: 0, busyEpoch: null, resultLocked: false, isStarting: false,
-    canvas: null, video: null, detector: null,
+    canvas: null, video: null, detector: null, playerLock:null, handDetector:null, handsLastAt:0,
     currentCameraMode: null,
 
     switchCamera: async (facingMode) => {
@@ -339,6 +339,16 @@ window.System = {
                                 }
                             }
                         }
+                        if(window.ArcadeControls?.mode==='camera'&&game.id==='usarmy_flight_sim'){
+                            const handDetector=await sys.ensureHandDetector?.();
+                            if(!handDetector){
+                                window.ArcadeControls?.setMode('controls');
+                                sys.video?.srcObject?.getTracks?.().forEach(t=>t.stop());
+                                if(sys.video)sys.video.srcObject=null;
+                                sys.currentCameraMode=null;
+                                sys.msg('DETECTOR DAS MÃOS INDISPONÍVEL • CONTROLES MANUAIS ATIVADOS');
+                            }else{sys.playerLock?.reset();sys.handsLastAt=0;}
+                        }
                         document.getElementById('loading-text').innerText='CARREGANDO CENÁRIO...';
                         // Revalidar permissão e nível após carregamento assíncrono.
                         const access=window.Profile.role==='admin'||window.Profile.permissions?.[game.id]===true;
@@ -386,7 +396,19 @@ window.System = {
                 if (!isAr && system.detector && system.video?.readyState === 4) {
                     try {
                         const people = await system.detector.estimatePoses(system.video, {flipHorizontal:false});
-                        if (people?.length) pose = people[0];
+                        if(window.ConsolePlayerMotionLock && !system.playerLock)system.playerLock=new window.ConsolePlayerMotionLock.PlayerLock();
+                        pose=system.playerLock?system.playerLock.observe(people,performance.now()):(people?.length===1?people[0]:null);
+                        if(system.playerLock&&system.handDetector){
+                            if(pose&&performance.now()-system.handsLastAt>=140){
+                                system.handsLastAt=performance.now();
+                                try{
+                                    const hands=await system.handDetector.estimateHands(system.video,{flipHorizontal:false});
+                                    if(system.loopEpoch!==epoch||system.activeGame!==game)return;
+                                    system.playerLock.hands(hands,performance.now());
+                                }catch(error){system.playerLock.hands([],performance.now());}
+                            }
+                            if(pose)pose.consoleMotion=system.playerLock.snapshot(performance.now());
+                        }
                     } catch (error) {
                         if (!system.lastPoseWarning || performance.now()-system.lastPoseWarning > 15000) {
                             console.warn('Leitura de movimento temporariamente indisponível:',error);
@@ -424,6 +446,7 @@ window.System = {
     stopGame: () => {
         window.ArcadeControls?.removeControls();
         window.System.paused=false;
+        window.System.playerLock?.reset();window.System.handsLastAt=0;
         window.System.loopEpoch++;
         if(window.System.loopId) cancelAnimationFrame(window.System.loopId);
         window.System.loopId=null;
@@ -511,13 +534,21 @@ window.onload = async () => {
       window.System.detectorPromise = (async () => {
         await tf.ready();
         const result = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, {
-          modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING
+          modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+          enableTracking:true,multiPoseMaxDimension:256,minPoseScore:.25
         });
         window.System.detector = result;
         return result;
       })().catch(error => { console.warn('Sensor de movimento indisponível:', error); return null; })
       .finally(() => { window.System.detectorPromise = null; });
       return window.System.detectorPromise;
+    };
+
+    window.System.ensureHandDetector=async()=>{
+      if(window.System.handDetector)return window.System.handDetector;
+      if(!window.ConsolePlayerMotionLock)return null;
+      try{const detector=await window.ConsolePlayerMotionLock.loadHands();window.System.handDetector=detector;return detector;}
+      catch(error){console.warn('Detector de dedos indisponível:',error);return null;}
     };
 
     if(window.ConsolePractice?.active)return;
