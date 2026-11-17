@@ -96,3 +96,23 @@ test('carrier: cannot receive medal until catapult, waypoint and arrested landin
  assert.equal(game.state,'VICTORY');
  assert.equal(game.flightCareer.missions.carrier.completed,1);
 });
+
+test('school: only actual passage through five arcs in the right order counts',()=>{
+ let logic;const window={System:{registerGame(id,_title,_icon,g){if(id==='usarmy_flight_sim')logic=g;}}};
+ vm.runInNewContext(fs.readFileSync('games/voo/js/game_flight.js','utf8'),
+  {window,performance:{now:()=>1000},console,setInterval(){throw Error('register failure')}});
+ const game=Object.create(logic),gates=game._schoolGates();
+ game.flightSchool={stage:'gates',gate:0};game.ship={x:0,y:230,z:0};
+ const attempt=(gate,before,after)=>{
+  game.flightSchool.gate=gate;Object.assign(game.ship,after);
+  return game._schoolGatePassed(before,gates[gate]);
+ };
+ assert.equal(attempt(0,{x:0,y:230,z:-20},{x:0,y:230,z:20}),true);
+ assert.equal(attempt(0,{x:0,y:230,z:20},{x:0,y:230,z:-20}),false,'opposite direction is not a completed arc');
+ assert.equal(attempt(0,{x:400,y:230,z:-20},{x:400,y:230,z:20}),false,'fly-by beside the arc is not progress');
+ assert.equal(attempt(0,{x:0,y:230,z:-15},{x:0,y:230,z:-5}),false,'proximity without crossing is not progress');
+ assert.equal(attempt(1,{x:1000,y:450,z:1890},{x:1000,y:450,z:1910}),true);
+ assert.equal(attempt(2,{x:2300,y:480,z:10},{x:2300,y:480,z:-10}),true);
+ assert.equal(attempt(3,{x:1200,y:300,z:-2590},{x:1200,y:300,z:-2610}),true);
+ assert.equal(attempt(4,{x:0,y:120,z:-2310},{x:0,y:120,z:-2290}),true);
+});
