@@ -336,6 +336,8 @@
         <button class="wii-oval-btn" onclick="document.getElementById('phase-screen').classList.add('hidden'); document.getElementById('menu-screen').classList.remove('hidden');" style="margin-top: clamp(20px, 5vh, 40px);">VOLTAR AO MENU</button>
     </div>
 
+    <!-- Keep the duplicate system score accessible without covering the native hangar/back control. -->
+    <style>#game-ui>.hud-score-box{width:1px;height:1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}</style>
     <!-- HUD DO JOGO -->
     <div id="game-ui" class="hidden">
         <div class="hud-score-box">
@@ -407,7 +409,7 @@
     <script src="vendor/three-r128.min.js"></script>
     <script src="world-renderer.js?v=20261114-shared-prep1"></script>
     <script src="./js/flight-operations.js?v=20261117-pilot-restored1"></script>
-    <script src="./js/game_flight.js?v=20261117-pilot-restored1"></script>
+    <script src="./js/game_flight.js?v=20261117-start-latch1"></script>
     <script src="../otthi/assets/js/world-venue-trip.js?v=20261116-flight1"></script>
     <script src="./js/flight-world-return.js?v=20261116-flight1"></script>
 
@@ -424,7 +426,7 @@
         }
     </script>
   <script src="./arcade-enhancements.js"></script>
-  <script src="./control-modes.js?v=20261117-pilot-restored1"></script>
+  <script src="./control-modes.js?v=20261117-start-latch1"></script>
   <script src="./arcade-pause.js"></script>
   <script src="./studio-fx.js"></script>
   <script src="./studio-scenes.js"></script>

@@ -158,12 +158,10 @@ const hub={
      if(logic.state==="HANGAR" && (logic.mode==="SINGLE"||logic.mode==="FREE")){
        logic.state="CALIBRATION";logic.timer=5;
      }else if(logic.state==="CALIBRATION"){
-       logic.keys[" "]=true;
-       window.setTimeout(()=>{logic.keys[" "]=false},110);
+       logic.manualStartState=logic.state;
      }else if(logic.state==="LOBBY"||logic.state==="HANGAR"){
        // Network modes retain the original host/ready rules.
-       logic.keys[" "]=true;
-       window.setTimeout(()=>{logic.keys[" "]=false},110);
+       logic.manualStartState=logic.state;
      }
    };
    const key=(id,text,name)=>{
@@ -187,7 +185,7 @@ const hub={
    ]);
    for(const name of ["left","right","up","down"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=true;
    hub.flightJoystick(logic,flightRoot);hub.helicopterCollective(logic,flightRoot);
-   const clearFlight=()=>{logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
+   const clearFlight=()=>{logic.manualStartState=null;logic.manualFireHeld=false;for(const key of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Shift',' ','f'])logic.keys[key]=false};
    window.addEventListener('blur',clearFlight);window.addEventListener('arcade:release-inputs',clearFlight);hub.releases.push(()=>{clearFlight();window.removeEventListener('blur',clearFlight);window.removeEventListener('arcade:release-inputs',clearFlight)});
    const refreshFlight=()=>{const heli=!!logic.isHelicopter?.();flightRoot.classList.toggle('heli-controls',heli);for(const name of ['pedalLeft','pedalRight','collective'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=!heli||logic.state!=='PLAYING';for(const name of ['powerUp','powerDown'])flightRoot.querySelector('[data-control="'+name+'"]').hidden=heli||logic.state!=='PLAYING';const caption=flightRoot.querySelector('.flight-stick small');if(caption)caption.textContent=heli?'MANCHE CÍCLICO':'JOYSTICK';const hover=flightRoot.querySelector('[data-control="hover"]');if(hover)hover.hidden=!heli||logic.state!=='PLAYING';const stick=flightRoot.querySelector('[data-control="joystick"]');stick?.setAttribute('aria-label',heli?'Manche cíclico: inclinar para os lados e avançar ou recuar; pedais giram, coletivo controla altitude':'Joystick de avião: virar e subir ou descer');for(const name of ["fire","missile","boost"])flightRoot.querySelector('[data-control="'+name+'"]').hidden=logic.state!=="PLAYING";const boost=flightRoot.querySelector('[data-control="boost"]');if(boost&&heli)boost.hidden=true;const shutter=flightRoot.querySelector('[data-control="photo"]');if(shutter)shutter.hidden=logic.state!=="PLAYING"||logic.flightOperation?.kind!=="reporter"||logic.flightOperation?.stage!=="route";const start=flightRoot.querySelector('[data-control="start"]');if(start)start.hidden=!["HANGAR","LOBBY","CALIBRATION"].includes(logic.state)};
    refreshFlight();

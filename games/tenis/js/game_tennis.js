@@ -715,8 +715,13 @@
 
         renderHUD: function(ctx, w, h) {
             if(['IDLE','SERVE','RALLY'].includes(this.state)){ctx.save();ctx.textAlign='center';ctx.fillStyle='#e6f3ff';ctx.font='bold 12px Arial';ctx.fillText(this.score.p1>=10&&this.score.p2>=10?'EMPATE · SAQUE ALTERNADO':this.server==='p1'?'SEU SAQUE':'SAQUE DO ADVERSÁRIO',w/2,Math.max(104,h*.18),w*.8);ctx.restore();}
-            ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold " + Math.min(60,Math.max(28,w*.09)) + "px 'Russo One'"; ctx.shadowColor = "black"; ctx.shadowBlur = 10;
-            ctx.fillText(this.score.p1, Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.fillText(this.score.p2, w - Math.min(60,Math.max(35,w*.12)), Math.max(42,Math.min(80,h*.13))); ctx.shadowBlur = 0;
+            // Both scores share a reserved corner, clear of settings, home and
+            // pause. The old opposite corners sat underneath the console HUD.
+            ctx.save();ctx.fillStyle='rgba(9,25,42,.86)';ctx.fillRect(8,8,116,60);
+            ctx.textAlign='center';ctx.fillStyle='#c8ddeb';ctx.font='bold 9px Arial';
+            ctx.fillText('VOCÊ',36,24,48);ctx.fillText(this.isOnline?'RIVAL':'CPU',96,24,48);
+            ctx.fillStyle='white';ctx.font="bold 30px 'Russo One'";
+            ctx.fillText(this.score.p1,36,57,48);ctx.fillText(this.score.p2,96,57,48);ctx.restore();
             
             if (this.msgs && this.msgs.length > 0) {
                 for (let i = this.msgs.length - 1; i >= 0; i--) {

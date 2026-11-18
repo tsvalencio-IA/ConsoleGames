@@ -31,15 +31,27 @@ test('flight: level mirrored wrists are neutral, lowering the screen-right wrist
  for(let i=0;i<25;i++)g._readPose(pose(200,200),390,844,1/60);assert(Math.abs(g.pilot.targetRoll)<.001,'Level hands cannot command a permanent turn');
  for(let i=0;i<25;i++)g._readPose(pose(170,230),390,844,1/60);assert(g.pilot.targetRoll>.2);
 });
-test('flight: only continuous sight acquisition of one enemy permits fire; losing or switching targets stops it',()=>{
+test('flight: a touch start survives a slow frame, is consumed once and never skips camera calibration',()=>{
+ const {game:g,window,advance}=engine('voo','game_flight');g.init({mode:'FREE'});
+ g._drawHangar=()=>{};g._drawCalib=()=>{};g._draw=()=>{};
+ const step=()=>{advance(800);g.update(canvas(),390,844,null);};
+ g.manualStartState='HANGAR';step();assert.equal(g.state,'CALIBRATION');assert.equal(g.manualStartState,null);
+ step();assert.equal(g.state,'CALIBRATION','The first press cannot leak into the next phase');
+ g.manualStartState='CALIBRATION';step();assert.equal(g.state,'PLAYING');assert.equal(g.manualStartState,null);assert(!g.keys[' ']);assert.equal(g.missiles.length,0);
+ window.ArcadeControls.mode='camera';g.state='CALIBRATION';g.timer=5;g.pilot.active=false;
+ g.manualStartState='CALIBRATION';step();assert.equal(g.state,'CALIBRATION','A touch request cannot bypass live camera calibration');
+});
+test('flight: continuous sight acquisition permits guided missiles; losing or switching targets resets the lock',()=>{
  const {game:g,advance,window}=engine('voo','game_flight');g.init({mode:'SINGLE'});window.ArcadeControls.mode='camera';g.entities=[{type:'jet',x:1800,y:3000,z:4000,hp:150,vx:0,vy:0,vz:0}];
  const step=()=>{advance(1000/60);g._processCombat(1/60,390,844)};
  for(let i=0;i<100;i++)step();assert.equal(g.bullets.length,0,'Enemies away from the sight cannot trigger automatic fire');
  g.entities[0].x=0;for(let i=0;i<38;i++)step();assert.equal(g.bullets.length,0,'Acquisition must last 650ms');
- step();step();assert(g.combat.locked&&g.bullets.length>0);
- const before=g.bullets.length;g.entities=[{...g.entities[0]}];step();assert(!g.combat.locked);assert.equal(g.bullets.length,before,'Switching enemies resets acquisition');
- g.entities[0].x=4000;for(let i=0;i<15;i++)step();assert(!g.combat.locked);assert.equal(g.bullets.length,before);
- g.entities=[];g.mode='COOP';g.net.players={ally:{x:0,y:3000,z:4000,hp:100}};for(let i=0;i<60;i++)step();assert.equal(g.bullets.length,before,'An ally is never a fire target');
+ step();step();assert(g.combat.locked);assert.equal(g.bullets.length,0,'A jet never fires solely because a target is locked');
+ g.pilot.headTilt=true;step();assert.equal(g.missiles.length,1,'The approved camera trigger launches a guided missile after acquisition');
+ g.pilot.headTilt=false;
+ const before=g.missiles.length;g.entities=[{...g.entities[0]}];step();assert(!g.combat.locked);assert.equal(g.missiles.length,before,'Switching enemies resets acquisition');
+ g.entities[0].x=4000;g.pilot.headTilt=true;for(let i=0;i<15;i++)step();assert(!g.combat.locked);assert.equal(g.missiles.length,before);
+ g.entities=[];g.mode='COOP';g.net.players={ally:{x:0,y:3000,z:4000,hp:100}};for(let i=0;i<60;i++)step();assert.equal(g.missiles.length,before,'An ally is never a guided-missile target');
 });
 test('flight: airframes and paid upgrades persist; bank and XP are numeric and one kill cannot pay twice',()=>{
  const {game:g,window,timers,storage}=engine('voo','game_flight');window.Profile.coins='12000';window.Profile.xp='500';g.init({mode:'SINGLE'});
@@ -95,6 +107,17 @@ test('tennis: pointer and calibrated camera edge positions keep the racket insid
  for(const x of [0,390]){g.mouseX=x;for(let i=0;i<30;i++){advance(17);g.processPose(null,390,844);}const scale=390*1.8/((2400-200)*Math.sin(.35)+(5000-1620)*Math.cos(.35));const screenX=195+g.p1.x*scale;assert(screenX>=28&&screenX<=362,'Racket must not disappear beyond a screen edge');}
  window.ArcadeControls.mode='camera';g.useMouse=false;g.calib={tlX:0,tlY:0,brX:640,brY:480};const pose={keypoints:[{name:'right_wrist',score:1,x:0,y:200},{name:'right_elbow',score:1,x:10,y:300}]};for(let i=0;i<30;i++){advance(17);g.processPose(pose,390,844);}assert(g.p1.x<1200,'Calibrated hand must use the same visible physical range');
 });
+test('tennis: native match scores share the left HUD slot and remain readable at deuce without covering top-right controls',()=>{
+ const {game:g}=engine('tenis','game_tennis');g.score={p1:12,p2:11};g.state='RALLY';g.msgs=[];
+ for(const [w,h] of [[320,740],[390,844],[667,375],[1280,800]]){
+  const c=canvas();g.renderHUD(c,w,h);
+  const scores=c.operations.filter(([op,value])=>op==='fillText'&&(value===12||value===11));
+  assert.equal(scores.length,2);
+  assert(scores.every(([,value,x,y,maxWidth])=>x-maxWidth/2>=8&&x+maxWidth/2<=124&&y<=68));
+  assert(c.operations.some(([op,value])=>op==='fillText'&&value==='VOCÊ'));
+  assert(c.operations.some(([op,value])=>op==='fillText'&&value==='CPU'));
+ }
+});
 test('camera: mirrored steering stays neutral with level hands and uses actual camera dimensions',()=>{
  const {game:g,window}=engine('kart','game_kart');g.currentFase={id:'arcade',mode:'RACE'};g.buildTrack(0);g.resetPhysics();window.ArcadeControls.mode='camera';window.System.video={videoWidth:1280,videoHeight:960};
  const pose=(a,b)=>({keypoints:[{name:'left_wrist',score:1,x:900,y:a},{name:'right_wrist',score:1,x:380,y:b}]});
@@ -122,7 +145,7 @@ test('OTThi: the family portrait fits all four at different depths after fetchin
  assert.equal(result.length,0,JSON.stringify(result));
 });
 
-test('flight: analog diagonal strength and manual trigger remain independent; bullets still require a lock',()=>{
+test('flight: analog diagonal strength and manual cannon remain independent of missile target lock',()=>{
  const {game:g,advance}=engine('voo','game_flight');g.init({mode:'SINGLE'});g.manualStick={active:true,x:.45,y:.25};
  for(let i=0;i<30;i++)g._readPose(null,390,844,1/60);
  assert(g.pilot.targetRoll>.4&&g.pilot.targetRoll<.5);assert(g.pilot.targetPitch>.2&&g.pilot.targetPitch<.3);
@@ -131,5 +154,5 @@ test('flight: analog diagonal strength and manual trigger remain independent; bu
  for(let i=0;i<45;i++)step();assert(g.combat.locked);assert.equal(g.bullets.length,0,'Manual mode must wait for the trigger');
  g.manualFireHeld=true;step();assert(g.bullets.length>0);const count=g.bullets.length;
  g.manualFireHeld=false;for(let i=0;i<10;i++)step();assert.equal(g.bullets.length,count);
- g.manualFireHeld=true;g.entities[0].x=4000;for(let i=0;i<10;i++)step();assert.equal(g.bullets.length,count,'A trigger cannot bypass target lock');
+ g.manualFireHeld=true;g.entities[0].x=4000;g.pilot.headTilt=true;for(let i=0;i<10;i++)step();assert(!g.combat.locked);assert(g.bullets.length>count,'The manual cannon remains available without a target lock');assert.equal(g.missiles.length,0,'Guided missiles still require target acquisition');
 });

@@ -237,7 +237,7 @@
                 engineHealth: 100, wingHealth: 100, structuralIntegrity: 100, engineHeat: 0 
             };
             this.pilot = { active: false, baseY: 0, targetRoll: 0, targetPitch: 0, headTilt: false, throttle: 1.0 };
-            this.manualPedal=0;this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
+            this.manualPedal=0;this.manualStartState=null;this.manualFireHeld=false;this.manualStick={x:0,y:0,active:false};this.entities = []; this.bullets = []; this.missiles = []; this.clouds = []; this.scenery = []; this.fx = []; this.floaters = [];
             this.combat = { target: null, locked: false, lockTimer: 0, vulcanCd: 0, missileCd: 0 };
             
             for (let i = 0; i < 50; i++) {
@@ -427,6 +427,7 @@
         cleanup: function() {
             GameSfx.stop();
             this._cleanupNet();
+            this.manualStartState=null;
             this.state = 'INIT';
         },
 
@@ -516,8 +517,13 @@
                 if (!Number.isFinite(this.ship.yaw))   this.ship.yaw = 0;
                 if (!Number.isFinite(this.ship.roll))  this.ship.roll = 0;
 
+                // Consume a touch start once, in the phase that requested it.
+                // A slow frame must not lose a 110 ms synthetic key pulse or
+                // reuse a hangar press to skip the calibration screen.
+                const startPressed=this.keys[' ']||this.manualStartState===this.state;
+                this.manualStartState=null;
                 if (this.state === 'LOBBY') { 
-                    if (this.keys[' ']) {
+                    if (startPressed) {
                         if (this.mode === 'SINGLE' || this.mode === 'FREE') {
                             this.state = 'HANGAR';
                         } else if (this.net.isHost && Object.keys(this.net.players).length > 0) { 
@@ -531,7 +537,7 @@
                 }
 
                 if (this.state === 'HANGAR') {
-                    if (this.keys[' ']) {
+                    if (startPressed) {
                         if (this.mode === 'SINGLE' || this.mode === 'FREE') { 
                             this.state = 'CALIBRATION'; this.timer = 5.0; 
                         } else if (this.net.isHost && this.net.sessionRef) { 
@@ -553,7 +559,7 @@
                     }
                     
                     this._drawCalib(ctx, w, h);
-                    if ((window.ArcadeControls?.mode==='controls' && this.keys[' ']) ||
+                    if ((window.ArcadeControls?.mode==='controls' && startPressed) ||
                        (window.ArcadeControls?.mode!=='controls' && this.pilot.active && this.timer <= 0)) {
                         this.currentStats.thrust = BASE_PLANE_STATS.thrust + ((this.upgrades.engine - 1) * 50000);
                         this.ship.maxHp = 100 + ((this.upgrades.armor - 1) * 100);

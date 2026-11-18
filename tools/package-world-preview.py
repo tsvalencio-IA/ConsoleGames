@@ -10,7 +10,7 @@ import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'dist-world'
-DIRECTORIES = ('games', 'arcade', 'covers', 'enhancements')
+DIRECTORIES = ('games', 'arcade', 'covers', 'enhancements', 'escola')
 
 
 def root_site_manifest(document):
@@ -108,7 +108,8 @@ def package(output=OUTPUT):
                 'games/ar/vendor/hand-tracker/vision_wasm_internal.wasm',
                 'games/danca/index.html', 'games/danca/app.js', 'games/danca/style.css',
                 'arcade/index.html', 'console.html', 'arcade/instalar/index.html',
-                'arcade/instalar/install.js', 'games/familia/3d/index.html']
+                'arcade/instalar/install.js', 'games/familia/3d/index.html',
+                'escola/index.html', 'escola/app.js', 'escola/learning-core.js', 'escola/style.css']
     for path in required:
         if not (output / path).is_file():
             raise RuntimeError('Missing deployment resource: ' + path)

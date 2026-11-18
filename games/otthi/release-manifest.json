@@ -1,10 +1,10 @@
 {
   "version": 705,
   "build": "705.28.30-aviacao-presenca-unificada",
-  "revision": "72c84d2063641ce2",
+  "revision": "534ba7d8d0a12515",
   "algorithm": "SHA-256",
   "files": {
-    "index.html": "7c18ac06edb0b261d30d57762da08ebf89fdd2108bcc1434692746dcbc7013de",
+    "index.html": "76a84115d2ed6eea3449124815fd294211b3629556fd4ff1d58360c956a01aea",
     "game-audio.js": "77d165675150a619289551b5b25e7887e01da320a2b96ee0ac9c4f7ebfdd7413",
     "console-world.js": "f4a42f23fdd0948e13c6b3a5f247cd4a4c63c9067221cd53384a1b79ee17b553",
     "console-world.css": "ad21d61c1d5e392008ff141a940e92129859224f48625632693b20808b45f96d",
@@ -65,7 +65,7 @@
     "assets/pose/sources.json": "fa9be8c1638684f69827db69dbee836dc4058efd3ae72a96127600acea198d30",
     "assets/pose/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "VERSION.json": "2db9f43df636bf8339e916a4e1bd754096e09045f33015f95fd1daf5a7fc4cc3",
-    "sw.js": "d47afb8d5992167d23c8a917beb9c4eed37053c4992c3c642086a8ec32b0a972",
+    "sw.js": "54b511e1db46a9722463665ba0cddf2ffb57231289f71d618b3aa7c3a4801913",
     "assets/js/world/civil-mission-core.js": "cd11be9f39ee2c623ae221c07fd1ab7c301ee45a9c8282a5ad91f16ccd7aca51",
     "assets/js/vehicles/engine-sound.js": "ea6a4885a906d34927cd20154a6eaffc65c80395827dd85c265a00e8ebf1038e",
     "recorded-audio.js": "6fb979bebfc6cb7afeff7cf2f5ab6dcd343f24a372545d8901267ccb9aa1a9b9",
@@ -132,11 +132,11 @@
     "../ar/assets/ground/concrete-normal.jpg": "28be1f6fa82eeab137c84954bf7ea0f5d8a4434352d01c29f15e20926eb7227e",
     "../ar/assets/ground/concrete-arm.jpg": "44e3a0d18db295998c8af56ecc80095821e719e134974609aa92e5436709dabd",
     "../ar/assets/ground/sources.json": "930686df080e3f2337c6af435f8c31bd4ba207af302b2d7e430526edd01707f0",
-    "../kart/index.html": "67f3a439d59c52f7817c1ec5e9911f4c8c4e088660ed02a6dfb3ac5d8759889b",
-    "../kart/sw.js": "6609ee042fff8465a7389c115c060315854072a659ff2976f1b290ea7294323c",
+    "../kart/index.html": "a912abd7168ddb9a06e99776a60a432b952475385793b085fd526e5cdc58b7fb",
+    "../kart/sw.js": "6b7225a9c3cf51e8cc5dfdc0425b41028796b8df8dde93f7a00640b122478d3d",
     "../kart/js/game_kart.js": "c8f4f2f2e6b5e2d1e7b3b914492422971a2f84b4c9a871e82ccfc56669b3b951",
-    "../voo/index.html": "29b06dbafb5f712246e3881b0138405ecd5aa93dc17f8c1b39679a0597c61393",
-    "../voo/sw.js": "3a8abae2f8b264d4b7103fe11961b50a14bde4166f7fc36f07c092ffad9a75a4",
+    "../voo/index.html": "0d9e18489e0a17d7463cc0a38fc3f3cea65d305883007b8460493887dae66873",
+    "../voo/sw.js": "7a085f33e148645934261953b8b331d633c24eefaaf2ec994dde89a1b8becda6",
     "../voo/world-renderer.js": "32d69f15a98ca7e1bfe935b520ae8bc6854b13f122152bfab96d0db73f35be2e",
     "../ar/combat-infantry.js": "6282e006e540745a27394d0aae8c0c77064684a8af46ba56250db418aa7a742c",
     "../ar/vendor/GLTFLoader-r128.js": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
@@ -153,6 +153,11 @@
     "../kart/racecraft-evaluation.js": "eef280446ec7e1850de13093484ec39e62be5484ded21130c68dc2598a0e2087",
     "../ar/js/core.js": "ed781ed6de34a64276124851357ca3611f84de582dcb1aab9aa168455bd5f108",
     "../ar/play-settings.js": "e9af53df7fdde8efded3293ec28c2a7967beb66cbecb75dfa62df5fe5b0aa54a",
-    "../kart/racecraft-duel.js": "bae9d6356b55e82d0619b109e324e9887f5b59d449179242ba9f043b387bb57f"
+    "../kart/racecraft-duel.js": "bae9d6356b55e82d0619b109e324e9887f5b59d449179242ba9f043b387bb57f",
+    "../voo/js/game_flight.js": "4f0037e23ae06cb01cdcec32fb2dd00ccfe84881a0a67616085e62287e2cc522",
+    "../voo/control-modes.js": "a4a728ba963dfeef8d883c8af169f46290bb9ee458e728147cc61b648dcb45b5",
+    "../tenis/index.html": "f88716ca6679fc845322e543d3706944c155508dfd4653bb3b5e568732309aac",
+    "../tenis/js/game_tennis.js": "a61ed5866189bd3ae10dc27dff9b4bd834165b9ce41a5d7ad9d72a7254ef6916",
+    "../tenis/sw.js": "27883d2c38774e8dc738f4469dcb4cc901b1af9e65530cc848bf7186dd446b77"
   }
 }

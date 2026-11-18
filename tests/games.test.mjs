@@ -5,6 +5,7 @@ import {execFileSync} from "node:child_process";
 const here=path=>new URL("../"+path,import.meta.url);
 const read=path=>readFileSync(here(path),"utf8");
 const loadsScript=(html,path)=>[...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/g)].some(([,src])=>new URL(src,'https://game.test/').pathname===new URL(path,'https://game.test/').pathname);
+const loadsStyle=(html,path)=>[...html.matchAll(/<link\b[^>]*\bhref=["']([^"']+)["']/g)].some(([,href])=>new URL(href,'https://game.test/').pathname===new URL(path,'https://game.test/').pathname);
 const installed=[
   {slug:"kart",id:"drive",file:"game_kart.js"},
   {slug:"boxe",id:"box_pro",file:"game_box.js"},
@@ -191,7 +192,7 @@ test("cinco jogos pedem permissão para câmera somente depois de escolha explí
   const html=read(root+"index.html"),core=read(root+"js/core.js");
   const input=read(root+"control-modes.js"),css=read(root+"control-modes.css");
   assert(loadsScript(html,'./control-modes.js'));
-  assert(html.includes('href="./control-modes.css"'));
+  assert(loadsStyle(html,'./control-modes.css'));
   assert(core.includes("await window.ArcadeControls.choose(game)"));
   assert(core.includes("window.ArcadeControls?.mode==='camera'"));
   assert(input.includes('data-mode="controls"')&&input.includes('data-mode="camera"'));
@@ -238,7 +239,8 @@ test("regressões: kart sem bolas laterais falsas e adversários projetados pela
 test("regressões: voo exige confirmação no modo manual e presença em câmera",()=>{
  const js=read("games/voo/js/game_flight.js");
  const controls=read("games/voo/control-modes.js");
- assert(js.includes("window.ArcadeControls?.mode==='controls' && this.keys[' ']"));
+ assert(js.includes("window.ArcadeControls?.mode==='controls' && startPressed"));
+ assert(js.includes("this.keys[' ']||this.manualStartState===this.state"));
  assert(js.includes("window.ArcadeControls?.mode!=='controls' && this.pilot.active"));
  assert(js.includes("if(window.ArcadeControls?.mode==='controls')this.timer=5.0"));
  assert(controls.includes('logic.state="CALIBRATION"')||controls.includes('logic.state="CALIBRATION"'.replaceAll('"',"'"))||controls.includes('logic.state="CALIBRATION";'));

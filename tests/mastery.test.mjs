@@ -4,6 +4,7 @@ import {readFileSync} from "node:fs";
 import vm from "node:vm";
 import {execFileSync} from "node:child_process";
 const read=p=>readFileSync(p,"utf8");
+const loadsStyle=(html,path)=>[...html.matchAll(/<link\b[^>]*\bhref=["']([^"']+)["']/g)].some(([,href])=>new URL(href,'https://game.test/').pathname===new URL(path,'https://game.test/').pathname);
 const entries=[["kart","drive"],["boxe","box_pro"],["tenis","tennis"],["ar","ar_truck_sim"],["voo","usarmy_flight_sim"]];
 test("cada jogo possui desafios nativos, gamepad e PWA atualizado",()=>{
  for(const [slug,id] of entries){
@@ -15,14 +16,14 @@ test("cada jogo possui desafios nativos, gamepad e PWA atualizado",()=>{
    assert(html.includes('window.CONSOLE_GAME_ID="'+id+'"'),slug+" perdeu identidade");
    assert(html.includes('src="./mastery-gamepad.js"'),slug+" sem missões/gamepad");
    assert(html.includes('href="./mastery-gamepad.css"'),slug+" sem CSS de missões");
-   const cacheValid=slug==='voo'?/const CACHE=PREFIX\+"flight-academy-v\d+"/.test(sw)&&sw.includes('flight-operations.js')&&sw.includes('flight-world-return.js'):/const CACHE=PREFIX\+"pro-control-v\d+"/.test(sw);
+   const cacheValid=slug==='voo'?/const CACHE=PREFIX\+"flight-academy-v\d+(?:-[a-z0-9-]+)?"/.test(sw)&&sw.includes('flight-operations.js')&&sw.includes('flight-world-return.js'):/const CACHE=PREFIX\+"pro-control-v\d+(?:-[a-z0-9-]+)?"/.test(sw);
    assert(cacheValid&&sw.includes('mastery-gamepad.js')&&sw.includes('mastery-gamepad.css'),slug+" offline desatualizado");
    assert(code.includes("const goalDefs"),slug+" sem desafios verificáveis");
    assert(code.includes("window.System?.activeGame"),slug+" sem isolamento de jogo");
    assert(code.includes("navigator.getGamepads"),slug+" sem gamepad físico");
    assert(code.includes("localStorage.setItem"),slug+" sem persistência local");
    assert(!code.includes("firebase.database(")&&!code.includes("window.Profile.save"),slug+" não pode afetar Firebase");
-   assert(html.includes('href="./pro-controls.css"'),slug+" missing ergonomic controllers");
+   assert(loadsStyle(html,'./pro-controls.css'),slug+" missing ergonomic controllers");
    assert(css.includes("prefers-reduced-motion")&&css.includes("safe-area-inset"),slug+" layout inseguro");
    execFileSync(process.execPath,["--check",base+"mastery-gamepad.js"]);
  }
