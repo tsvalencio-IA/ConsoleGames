@@ -37,3 +37,16 @@ O Chromium deste ambiente não inicializou WebGL; WAR e avião usaram a renderiz
 Não há aprovação de câmera física, FPS de Android, latência corporal ou multiplayer com pessoas. Nenhum teste local equivale a essas validações. Não houve alteração de Firebase, credenciais ou produção.
 
 Este registro permite retomar exatamente o trabalho; não certifica que os oito jogos estejam completos.
+
+## Resultado posterior — validação no runner e integridade em staging
+
+Código publicado no commit `fdd6cf8c2d364e0fb2c38a4beac30ee588447f5b`.
+O workflow [44211538045](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/44211538045) concluiu com sucesso os dois jobs: build/regressão e oito jogos/quatro resoluções. Passaram entrada nas cinco campanhas, corrida nativa completa de três voltas, Família com três toques/duas buscas/salvamento, Dança com pose simulada e sessão nativa do OTTHI. Isso supera a restrição local de WebGL para testes de software; não equivale a hardware Android ou câmera corporal real.
+
+O primeiro deployment de staging acrescentava, depois de `</html>`, o script oficial de comentários `https://vercel.live/_next-live/feedback/feedback.js`. A comparação do conteúdo servido com o fonte comprovou essa única diferença. A proteção SHA-256 corretamente recusou a alteração. Foi desativado `enablePreviewFeedback` exclusivamente no projeto de testes `prj_wKaHtyk7Pb3vsb9KsnKerxS8bOKm`; nenhum verificador foi enfraquecido.
+
+Nova prévia: https://otthi-world-campanha-teste-dvxb87kk4-thiaguinho-s-projects.vercel.app/arcade/
+
+Deployment `dpl_KyxZnxVJnmpot1GMn7xFhfcLgCjc`, mesmo commit de código. O HTML publicado deixou de conter o script injetado; seu SHA-256 voltou a ser exatamente `76a84115d2ed6eea3449124815fd294211b3629556fd4ff1d58360c956a01aea`, igual ao manifesto. Reteste pelo navegador: atualização completou e abriu `games/otthi/?otthi_update=534ba7d8d0a12515`.
+
+Artefato de evidências do CI: `consolegames-8-jogos-4-telas`, ID `14385867855`, vinculado ao mesmo commit. Os resultados do runner são preservados em `ci-result.json`.
