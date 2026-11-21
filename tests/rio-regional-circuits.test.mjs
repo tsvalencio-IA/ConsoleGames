@@ -21,7 +21,7 @@ function fixture(){
   const citySign=()=>({rotation:{y:0}}),createSignpost=()=>{},registerInteractable=item=>world.interactables.push(item);
   function enterVehicle(v){if(!v||v.occupied)return false;vehicle=v;v.occupied=true;player.vehicle=true;player.car={speed:0,heading:0};return true;}
   const currentVehicleRef=()=>vehicle;
-  const setControlText=()=>{},setControlAttribute=()=>{};
+  const $=()=>null,setControlText=()=>{},setControlAttribute=()=>{};
   const toast=()=>{},beep=()=>{},vibrate=()=>{},setWaypoint=()=>{};
   const addXP=xp=>state.profile.xp+=xp,addCoins=coins=>state.profile.coins+=coins,saveState=()=>saves++;
   function openModal(title,html,onReady){menu={title,html,onReady};}
@@ -105,4 +105,21 @@ test('native ordered sectors finish both events and issue rewards only once per 
  assert.equal(result.saves,2);assert.equal(result.output[0].coins,672);assert.equal(result.output[1].coins,672);
  assert.equal(result.output[1].xp,502);assert.equal(result.records.mirassol.runs,1);assert.equal(result.records.cedral.runs,1);
  assert(result.records.mirassol.bestTime>result.records.cedral.bestTime);
+});
+
+test('replaying Mirassol detaches and reuses the same three rival models',()=>{
+ const run=fixture();
+ const result=plain(run(`(()=>{
+  const k=createKartCircuitV704(RIO_REGIONAL_CIRCUITS.mirassol);SPORTS_V705.kart=k;
+  const baseline=worldGroup.children.length,restarts=[];
+  for(let i=0;i<20;i++){
+   startKartRaceV704();
+   const models=k.ai.map(rival=>rival.group.id),onGrid=worldGroup.children.length-baseline;
+   stopSportV704(false);
+   restarts.push({models,onGrid,remaining:worldGroup.children.length-baseline});
+  }
+  return restarts;
+ })()`));
+ assert.equal(new Set(result[0].models).size,3);
+ assert.deepEqual(result,Array(20).fill({...result[0],onGrid:3,remaining:0}));
 });

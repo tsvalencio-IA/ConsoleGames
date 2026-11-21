@@ -5352,7 +5352,48 @@
     if(!regional)createSignpost(entrance.x,entrance.z+1.2,'🏁 '+spec.label.toUpperCase(),Math.PI);
     return k;
   }
-  function startKartRaceV704(mode='solo'){if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}const k=SPORTS_V705.kart;if(!k||k.active)return;let kart=currentVehicleRef?.();if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0,g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;k.difficulty=k.regionalOptions?.difficulty||SPORTS_V705.difficulty||'normal';k.assist=k.regionalOptions?.assist||SPORTS_V705.assist;document.body.classList.add('world-race-active');configureSportControlsV705('kart');k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;for(const a of k.ai)worldGroup.remove(a.group);k.ai=[];for(let i=0;i<(mode==='time'?0:3);i++){const gr=new THREE.Group(),gg=k.grid[i+1];gr.position.set(gg.x,0,gg.z);worldGroup.add(gr);box(1.48,.2,2.02,[0x7d58c9,0xf28a22,0x138d83][i],0,.3,0,gr);box(.68,.32,.62,0x26384e,0,.56,-.25,gr);const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));helmet.position.set(0,.93,-.28);gr.add(helmet);for(const [x,z]of[[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){const w=cylinder(.28,.23,0x111827,x,.25,z,gr,12);w.rotation.z=Math.PI/2;}if(typeof worldRacerAttach==='function')worldRacerAttach(gr,[0x7d58c9,0xf28a22,0x138d83][i],'racer');k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/k.curve.getLength(),baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/k.curve.getLength(),lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});}SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');toast(k.spec?.mode==='time'?'2 voltas no cronômetro. Faça todos os setores e cruze a chegada.':'3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);}
+  function startKartRaceV704(mode='solo'){
+    if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}
+    if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}
+    const k=SPORTS_V705.kart;
+    if(!k||k.active)return;
+    let kart=currentVehicleRef?.();
+    if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}
+    if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}
+    const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0;
+    const g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];
+    v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;
+    player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;
+    k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;
+    k.difficulty=k.regionalOptions?.difficulty||SPORTS_V705.difficulty||'normal';
+    k.assist=k.regionalOptions?.assist||SPORTS_V705.assist;
+    document.body.classList.add('world-race-active');configureSportControlsV705('kart');
+    k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;
+    for(const a of k.ai)worldGroup.remove(a.group);
+    k.ai=[];
+    const rivals=k.spec?.regional?(k.rivalModels??=[]):null;
+    for(let i=0;i<(mode==='time'?0:3);i++){
+      const gg=k.grid[i+1],paint=[0x7d58c9,0xf28a22,0x138d83][i];
+      let gr=rivals?.[i];
+      if(!gr){
+        gr=new THREE.Group();
+        box(1.48,.2,2.02,paint,0,.3,0,gr);
+        box(.68,.32,.62,0x26384e,0,.56,-.25,gr);
+        const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));
+        helmet.position.set(0,.93,-.28);gr.add(helmet);
+        for(const [x,z] of [[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){
+          const wheel=cylinder(.28,.23,0x111827,x,.25,z,gr,12);wheel.rotation.z=Math.PI/2;
+        }
+        if(rivals)rivals[i]=gr;
+      }
+      if(!gr.userData.racerAsset&&typeof worldRacerAttach==='function')worldRacerAttach(gr,paint,'racer');
+      gr.position.set(gg.x,0,gg.z);gr.rotation.y=0;worldGroup.add(gr);
+      const length=k.curve.getLength();
+      k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/length,baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/length,lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});
+    }
+    SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');
+    toast(k.spec?.mode==='time'?'2 voltas no cronômetro. Faça todos os setores e cruze a chegada.':'3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);
+  }
   function updateKartRaceV704(dt){const k=SPORTS_V705.kart;if(!k?.active)return;const onlineV2=k.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'),guestV2=onlineV2&&typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('kart');if(guestV2)v705ApplySportReplica('kart',dt);const counting=k.countdown>0;k.countdown-=dt;if(k.countdown>0){player.car.speed=0;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),String(Math.ceil(k.countdown)));if(onlineV2&&!guestV2)v705PublishSport({type:'kart'});return;}const now=performance.now();if(k.spec?.regional&&counting)k.startAt=k.lapStartAt=now;if(!guestV2)for(const ai of k.ai){if(ai.finished)continue;const curvePenalty=clamp(v705KartCurvature(k,ai.t)*2.6,0,.42),nearPlayer=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z)<3.2?1.035:1;ai.t+=ai.baseSpeed*ai.skill*(1-curvePenalty)*nearPlayer*dt;if(ai.t>=1){ai.t-=1;ai.lap++;if(ai.lap>=(k.spec?.laps||3))ai.finished=true;}const p=k.curve.getPointAt(ai.t),tan=k.curve.getTangentAt(ai.t),nx=-tan.z,nz=tan.x;ai.group.position.set(p.x+nx*ai.lane,0,p.z+nz*ai.lane);ai.group.rotation.y=Math.atan2(tan.x,tan.z);const contact=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z);if(contact<1.55){const dx=player.x-ai.group.position.x,dz=player.z-ai.group.position.z,n=Math.max(.01,Math.hypot(dx,dz));player.x=ai.group.position.x+dx/n*1.62;player.z=ai.group.position.z+dz/n*1.62;player.car.speed*=.72;ai.t=(ai.t+.0025)%1;if(now>Number(k.lastContactAt||0)){k.lastContactAt=now+650;vibrate(28);beep(145,55,'square');}}}
     const cp=k.checkpoints[k.expected],d=cp?Math.hypot(player.x-cp.x,player.z-cp.z):Infinity;if(d<5.4){if(k.expected===0){k.lap++;const lapTime=(now-k.lapStartAt)/1000;k.lapStartAt=now;if(k.lap>1||lapTime>3)k.best=!k.best?lapTime:Math.min(k.best,lapTime);k.expected=1;toast(`Volta ${k.lap}/${k.spec?.laps||3} • ${lapTime.toFixed(1)}s`,'good',1100);if(k.lap>=(k.spec?.laps||3)){
       k.active=false;

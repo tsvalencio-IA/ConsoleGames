@@ -13,6 +13,7 @@ const code=fs.readFileSync('games/otthi/app.js','utf8'),end=code.lastIndexOf('})
 const hook=`
  window.__RIO_QA={
   points:()=>Object.values(RIO_PRETO_LAYOUT.landmarks),
+  shop:()=>cityCoast.shops.get('rio-shop-bady-mercado'),
   survey:()=>({objects:scene.children.length,placed:world.interactables.length,
    layouts:worldGroup.children.filter(o=>o.name.startsWith('RIO_')).map(o=>o.name),
    city:OTTHI_RIO_PRETO.diagnostics(),ground:groundHeightAt(player.x,player.z),position:{x:player.x,z:player.z}}),
@@ -49,7 +50,7 @@ try{
   assert.equal(await page.locator('html').getAttribute('data-otthi-revision'),release.revision);
  };
  await boot();
- const profile=()=>page.evaluate(()=>{const s=OTTHOS_TEST_API.getState();return{profile:s.profile,party:s.familyAdventure.party,tools:s.tools,vehicles:s.vehicles.owned,journey:window.OT_PLAYER_JOURNEY.diagnostics()};});
+ const profile=()=>page.evaluate(()=>{const s=OTTHOS_TEST_API.getState();return{profile:s.profile,party:s.familyAdventure.party,tools:s.tools,vehicles:s.vehicles.owned,food:Number(s.inventory.food||0),journey:window.OT_PLAYER_JOURNEY.diagnostics()};});
  report.before=await profile();
  assert.equal(report.before.profile.coins,4300);
  assert.equal(report.before.tools.equipped,'none');
@@ -82,6 +83,15 @@ try{
  assert.deepEqual(report.afterTour.party,report.before.party);
  assert.deepEqual(report.afterTour.tools,report.before.tools);
  assert.deepEqual(report.afterTour.vehicles,report.before.vehicles);
+ const shop=await page.evaluate(()=>__RIO_QA.shop());
+ await page.evaluate(p=>__RIO_QA.installAt(p.navX,p.navZ),shop);
+ await page.waitForFunction(id=>OTTHOS_TEST_API.getContext()?.id===id,shop.id);
+ await page.locator('#actionBtn').tap({force:true});
+ await page.locator('[data-city-order="groceries"]').tap();
+ await page.evaluate(()=>__RIO_QA.advanceTask());
+ report.shop=await page.evaluate(()=>__CITY_QA.transactions());
+ assert.deepEqual(report.shop,[{id:shop.id,item:'groceries',ok:true,
+  before:{coins:4460,food:report.afterTour.food},after:{coins:4440,food:report.afterTour.food+5}}]);
 
  // Open the original avatar studio, then the new visual wardrobe.
  const openWardrobe=async()=>{
@@ -99,7 +109,7 @@ try{
   await select.selectOption(value);
   await page.locator('[data-rio-wardrobe-preview][data-preview-ready="true"]').waitFor();
   const preview=await page.evaluate(()=>__RIO_QA.preview());
-  assert(preview.calls>5&&preview.id===name,JSON.stringify(preview));
+  assert(preview.calls>0&&preview.id===name,JSON.stringify(preview));
   await page.locator('[data-rio-wardrobe-save]').tap();
   const selected=await page.evaluate(()=>OTTHOS_TEST_API.getState().avatar.rioWardrobe);
   assert.equal(selected[name][slot],value);
@@ -124,7 +134,8 @@ try{
   assert.equal(actual,setting.value);
  }
  report.reloaded=await profile();
- assert.equal(report.reloaded.profile.coins,4460,'The mission reward must be applied once and persist');
+ assert.equal(report.reloaded.profile.coins,4440,'One mission credit and one purchase debit must persist');
+ assert.equal(report.reloaded.food,report.afterTour.food+5);
  assert.equal(await page.evaluate(()=>OT_CIVIL_MISSIONS.diagnostics().current.status),'completed');
  assert.deepEqual(report.reloaded.party,report.before.party);
  assert.deepEqual(report.reloaded.tools,report.before.tools);

@@ -141,7 +141,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "59fb1f4385e8645fd59a0633af35dbc4a18bb7dd2d76349340002a1ba1d35a0d"
+      "sha256Body": "cc9b0340bd489924a66871e396be75d2ef9ffa15a2f2d1baf624c48369ac6d95"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
