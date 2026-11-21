@@ -71,9 +71,15 @@ try{
    const canvas=page.locator('#game-canvas');let rect=await canvas.boundingBox();
    if(await page.evaluate(()=>window.System.activeGame.logic.state)==='MODE_SELECT')await canvas.tap({position:{x:rect.width*.5,y:rect.height*.3}});
    await page.waitForFunction(()=>window.System.activeGame.logic.state==='LOBBY');rect=await canvas.boundingBox();await canvas.tap({position:{x:rect.width*.5,y:rect.height*.92}});
-   await page.waitForFunction(()=>window.System.activeGame.logic.state==='RACE'&&window.System.activeGame.logic.inputActive&&window.__wheelPaints>2,null,{timeout:45000});
    assert.equal(await page.locator('.kart-input:visible').count(),0,'Camera steering must not be replaced by manual buttons');
-   const before=await page.evaluate(()=>({...window.__lastWheelPaint,paints:window.__wheelPaints,model:tf.version_core,backend:tf.getBackend(),wheel:window.System.activeGame.logic.virtualWheel,position:window.System.activeGame.logic.pos}));
+   // The detector can lose a frame between Playwright calls. Read the wheel
+   // in the same instant that fresh steering and the visible paint are verified.
+   const ready=await page.waitForFunction(()=>{
+    const g=window.System.activeGame.logic,paint=window.__lastWheelPaint;
+    if(g.state!=='RACE'||!g.inputActive||window.__wheelPaints<=2||!(paint?.alpha>.9)||g.virtualWheel.r<=20||g.pos<=0)return false;
+    return{...paint,paints:window.__wheelPaints,model:tf.version_core,backend:tf.getBackend(),wheel:{...g.virtualWheel},position:g.pos};
+   },null,{timeout:45000});
+   const before=await ready.jsonValue();await ready.dispose();
    console.log('REAL CAMERA WHEEL READY',spec.id,before.model,before.backend);
    assert(before.alpha>.9);assert(before.wheel.r>20);assert(before.position>0);await page.screenshot({path:output+'/'+spec.id+'-hands-wheel.png'});
    await page.evaluate(()=>{window.__handOffsetX=45;window.__handOffsetY=-20;});

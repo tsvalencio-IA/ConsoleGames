@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "commit": "3105ec543593e8e558a082411c59356264dd3444",
+  "checkedAt": "2026-11-21T08:49:27.878Z",
+  "browser": "141.0.7390.37",
+  "mode": "mobile Chromium emulation",
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "url": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/instalar/",
+  "metadata": [
+    {
+      "url": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/downloads/release-ot.json",
+      "status": 200
+    },
+    {
+      "url": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/downloads/release.json",
+      "status": 200
+    }
+  ],
+  "productionApkHidden": true,
+  "packageInstructionsHidden": true,
+  "browserEntryVisible": true,
+  "browserEntry": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/",
+  "status": "Abra o console no navegador para jogar nesta versão.",
+  "runtimeErrors": []
+}

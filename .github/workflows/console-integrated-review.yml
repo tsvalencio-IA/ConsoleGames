@@ -60,6 +60,12 @@ jobs:
         run: node tests/dance-console-browser.mjs
       - name: Entrar no mundo OTTHI e validar uma sessao real em Chromium
         run: node tests/world-candidate-smoke-browser.mjs
+      - name: Completar missão de foto pelo gesto no Aero Strike
+        run: node tests/flight-reporter-gesture-browser.mjs
+      - name: Fotografar durante voo de balão e conferir recarga
+        run: node tests/balloon-photo-browser.mjs
+      - name: Conferir isolamento dos caches entre instalações
+        run: node tests/console-cache-isolation-browser.mjs
       - name: Guardar screenshots
         if: always()
         uses: actions/upload-artifact@v4

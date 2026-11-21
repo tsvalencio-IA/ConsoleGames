@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 const origin=process.env.CONSOLE_TEST_ORIGIN||'http://127.0.0.1:4173';
+const expectedOrigin=new URL(origin).origin;
 const paths=['/arcade/','/games/otthi/','/games/kart/','/games/tenis/','/games/boxe/','/games/ar/','/games/voo/','/games/danca/','/games/familia/3d/'];
 const browser=await chromium.launch({headless:true,args:['--disable-gpu','--use-angle=swiftshader']});
 try{
  const context=await browser.newContext({viewport:{width:393,height:852},serviceWorkers:'block'});
  await context.route(/https?:\/\//,route=>{
-  if(new URL(route.request().url).host==='127.0.0.1:4173')return route.continue();
+  if(new URL(route.request().url()).origin===expectedOrigin)return route.continue();
   return route.abort();
  });
  for(const path of paths){

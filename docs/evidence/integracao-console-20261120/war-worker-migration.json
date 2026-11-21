@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-21T08:46:38.418Z",
+  "oldWorker": 34,
+  "newWorker": "pro-control-v56-integracao20261120",
+  "legacyInitialization": "preinstalled-state fixture; old fetch and activation preserved",
+  "newWorkerImplementation": "unmodified candidate pro-control-v56-integracao20261120",
+  "transport": "HTTP/1",
+  "cachedResources": 123,
+  "matchNotInterrupted": true,
+  "activatesAfterExit": true,
+  "careerAndWeaponPreserved": true,
+  "coins": 4321,
+  "otherStoragePreserved": true,
+  "errors": [],
+  "limits": [
+    "Disposable Chromium solo profile, no physical Android. Legacy warmup is seeded; new shell installation is real and complete."
+  ]
+}

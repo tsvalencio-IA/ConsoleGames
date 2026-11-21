@@ -1,0 +1,68 @@
+{
+  "build": "705.28.31-integracao-console",
+  "revision": "98dd1de73eca5329",
+  "browser": "141.0.7390.37",
+  "mode": "trips",
+  "checks": [
+    {
+      "mount": "http://127.0.0.1:39941/",
+      "passed": false,
+      "url": "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329",
+      "verified": [
+        "portal:pingpong",
+        "portal:dance",
+        "portal:boxing"
+      ],
+      "visits": [
+        "http://127.0.0.1:39941/console.html",
+        "http://127.0.0.1:39941/arcade/",
+        "http://127.0.0.1:39941/games/atualizar/",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329&otthi_probe=1795250995116",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/games/boxe/?otVenue=8b00fde4-fcd5-4e60-aac4-2034827d1275&venuePage=1",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=8b00fde4-fcd5-4e60-aac4-2034827d1275",
+        "http://127.0.0.1:39941/games/otthi/?otthi_update=98dd1de73eca5329"
+      ],
+      "failures": [],
+      "errors": [],
+      "visible": "1\nConsole QA\n❤️\n🪙\n4321\n🏘️ Boas-vindas à vizinhança\n☰\nMenu\n✈️\nEntrar · Academia de Aviação\nToque em AÇÃO\n🏃\nCorrer\n✈️\nAção\n⬆\nPular\nBem-vindo à Vila do Sol!",
+      "failure": "page.waitForFunction: Timeout 35000ms exceeded.\n    at portal (/workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:236:20)\n    at async runMount (/workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:261:9)\n    at async file:///workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:308:11"
+    },
+    {
+      "mount": "http://127.0.0.1:39941/preview-build/",
+      "passed": false,
+      "url": "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+      "verified": [
+        "portal:pingpong",
+        "portal:dance",
+        "portal:boxing"
+      ],
+      "visits": [
+        "http://127.0.0.1:39941/preview-build/console.html",
+        "http://127.0.0.1:39941/preview-build/arcade/",
+        "http://127.0.0.1:39941/preview-build/games/atualizar/",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otthi_probe=1795251108687",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:39941/preview-build/games/boxe/?otVenue=3b240aa6-3b9d-46bf-b336-8838f766f28c&venuePage=1",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=3b240aa6-3b9d-46bf-b336-8838f766f28c",
+        "http://127.0.0.1:39941/preview-build/games/otthi/?otthi_update=98dd1de73eca5329"
+      ],
+      "failures": [],
+      "errors": [],
+      "visible": "1\nConsole QA\n❤️\n🪙\n4321\n🏘️ Boas-vindas à vizinhança\n☰\nMenu\n✈️\nEntrar · Academia de Aviação\nToque em AÇÃO\n🏃\nCorrer\n✈️\nAção\n⬆\nPular\nBem-vindo à Vila do Sol!",
+      "failure": "page.waitForFunction: Timeout 35000ms exceeded.\n    at portal (/workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:236:20)\n    at async runMount (/workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:261:9)\n    at async file:///workspace/work/ConsoleGames/tests/console-integrated-navigation-browser.mjs:308:11"
+    }
+  ],
+  "limits": [
+    "Chromium uses a portrait touch viewport or a desktop viewport with a mouse. No physical phone, APK or camera inference is exercised.",
+    "External network is blocked for the disposable contexts. The local account and saves are test profiles.",
+    "Portal travel uses the normal AÇÃO menu after placing the test avatar by the venue. Route checks do not certify complete matches or performance.",
+    "A single native source asset per game is byte-checked in this browser suite. The full manifest needs its own integrity audit."
+  ],
+  "passed": false,
+  "checkedAt": "2026-11-21T08:53:15.514Z"
+}

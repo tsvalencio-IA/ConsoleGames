@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:45271",
+  "mounts": [
+    {
+      "mount": "/",
+      "appId": "http://127.0.0.1:45271/arcade/",
+      "start": "http://127.0.0.1:45271/arcade/",
+      "scope": "http://127.0.0.1:45271/"
+    },
+    {
+      "mount": "/ConsoleGames",
+      "appId": "http://127.0.0.1:45271/ConsoleGames/arcade/",
+      "start": "http://127.0.0.1:45271/ConsoleGames/arcade/",
+      "scope": "http://127.0.0.1:45271/ConsoleGames/"
+    }
+  ],
+  "limits": [
+    "Actual local Chromium service workers and cache storage. Probe pages avoid loading game engines.",
+    "The browser reports each computed app ID. Physical Android installation was not run."
+  ],
+  "cdp": {
+    "id": {},
+    "parsed": {
+      "url": "http://127.0.0.1:45271/ConsoleGames/arcade/manifest.webmanifest",
+      "manifest": {
+        "backgroundColor": "rgba(8,18,38,1)",
+        "description": "Console unificado com oito jogos e o OTTHI World.",
+        "display": "kStandalone",
+        "icons": [
+          {
+            "url": "http://127.0.0.1:45271/ConsoleGames/arcade/icon-192-v2.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          },
+          {
+            "url": "http://127.0.0.1:45271/ConsoleGames/arcade/icon-512-v2.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          },
+          {
+            "url": "http://127.0.0.1:45271/ConsoleGames/arcade/icon-maskable-512-v2.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          }
+        ],
+        "id": "http://127.0.0.1:45271/ConsoleGames/arcade/",
+        "name": "thIAguinho ARCADE — Console de 8 jogos",
+        "orientation": "ANY",
+        "preferRelatedApplications": false,
+        "scope": "http://127.0.0.1:45271/ConsoleGames/",
+        "startUrl": "http://127.0.0.1:45271/ConsoleGames/arcade/",
+        "themeColor": "rgba(16,49,91,1)"
+      },
+      "parsed": {
+        "scope": "http://127.0.0.1:45271/ConsoleGames/"
+      }
+    }
+  },
+  "cacheNames": [
+    "thiaguinho-console-static-v10@%2F",
+    "thiaguinho-arcade-shell-v21@%2Farcade%2F",
+    "thia-arcade-voo-flight-academy-v43-hud-clear1-integracao20261120@%2Fgames%2Fvoo%2F",
+    "universo-thiaguinho-3d-pwa-v19-integracao@%2Fgames%2Ffamilia%2F3d%2F",
+    "thiaguinho-console-static-v10@%2FConsoleGames%2F",
+    "thiaguinho-arcade-shell-v21@%2FConsoleGames%2Farcade%2F",
+    "thia-arcade-voo-flight-academy-v43-hud-clear1-integracao20261120@%2FConsoleGames%2Fgames%2Fvoo%2F",
+    "universo-thiaguinho-3d-pwa-v19-integracao@%2FConsoleGames%2Fgames%2Ffamilia%2F3d%2F"
+  ],
+  "unavailableNavigations": [
+    {
+      "destination": "/games/uncached/",
+      "error": "page.goto: net::ERR_INTERNET_DISCONNECTED at http://127.0.0.1:45271/games/uncached/"
+    },
+    {
+      "destination": "/arcade/instalar/",
+      "error": "page.goto: net::ERR_INTERNET_DISCONNECTED at http://127.0.0.1:45271/arcade/instalar/"
+    },
+    {
+      "destination": "/games/voo/unknown/",
+      "error": "page.goto: net::ERR_FAILED at http://127.0.0.1:45271/games/voo/unknown/"
+    }
+  ],
+  "offline": "Exact router available from both mounts and four worker scopes. Unknown versions, destinations and installer retain their own failures."
+}

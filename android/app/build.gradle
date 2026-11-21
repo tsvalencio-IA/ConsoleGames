@@ -5,11 +5,6 @@ def previewConsole = providers.gradleProperty('consolePreviewUrl').orNull
 if (previewConsole != null && !(previewConsole ==~ /https:\/\/[A-Za-z0-9.-]+(?:\/[A-Za-z0-9._-]+)*\/arcade\//)) {
     throw new GradleException('consolePreviewUrl deve ser uma URL HTTPS terminada em /arcade/')
 }
-androidComponents {
-    beforeVariants(selector().withFlavor('server', 'preview')) { variant ->
-        variant.enable = previewConsole != null
-    }
-}
 android {
     namespace 'br.com.thiaguinhosolucoes.arcade'
     compileSdk 35
@@ -26,10 +21,12 @@ android {
     flavorDimensions 'server'
     productFlavors {
         production { dimension 'server' }
-        preview {
-            dimension 'server'
-            applicationIdSuffix '.preview'
-            buildConfigField 'String', 'CONSOLE_URL', '"' + previewConsole + '?android=1"'
+        if (previewConsole != null) {
+            preview {
+                dimension 'server'
+                applicationIdSuffix '.preview'
+                buildConfigField 'String', 'CONSOLE_URL', '"' + previewConsole + '?android=1"'
+            }
         }
         recovery {
             dimension 'server'

@@ -1,0 +1,50 @@
+{
+  "origin": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app",
+  "checks": [
+    {
+      "from": "/arcade/",
+      "to": "/arcade/",
+      "status": 200
+    },
+    {
+      "from": "/games/atualizar/",
+      "to": "/games/atualizar/",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/voo/?qa=1",
+      "to": "/games/voo/?qa=1",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/otthi/?family=1",
+      "to": "/games/otthi/?family=1",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/familia/3d/?qa=1",
+      "to": "/games/familia/3d/?qa=1",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/arcade/instalar/",
+      "to": "/arcade/instalar/",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/arcade/",
+      "to": "/arcade/",
+      "status": 200
+    },
+    {
+      "from": "/console.html",
+      "to": "/arcade/",
+      "status": 200
+    }
+  ],
+  "checkedAt": "2026-11-21T08:48:16.786Z",
+  "production": {
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2"
+  }
+}

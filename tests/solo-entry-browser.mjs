@@ -23,7 +23,10 @@ try{
   await p.evaluate(()=>{const menu=document.getElementById('menu-screen'),observer=new MutationObserver(()=>{if(!menu.classList.contains('hidden')){observer.disconnect();System.openPhases(Games.find(g=>g.id===CONSOLE_GAME_ID));}});observer.observe(menu,{attributes:true,attributeFilter:['class']});AuthApp.currentUser={uid:'browser-test-user-123456789012345'};window.__notifyAccount(AuthApp.currentUser);});
   await p.locator('#phase-screen:not(.hidden)').waitFor();assert(!await p.locator('#solo-entry').isVisible(),slug+' phase entry overlay');
   await p.locator('#phase-grid .mission-card:not(.locked)').first().click();await p.locator('[data-mode="controls"]').click();
-  await p.waitForFunction(()=>!!System.activeGame);assert(!await p.locator('#solo-entry').isVisible(),slug+' gameplay entry overlay');
+  // The game object exists during async loading. Wait for the playable UI
+  // before testing logout, so a pending preparation cannot reopen phases.
+  await p.waitForFunction(()=>!!System.activeGame&&!System.isStarting&&!document.getElementById('game-ui').classList.contains('hidden'));
+  assert(!await p.locator('#solo-entry').isVisible(),slug+' gameplay entry overlay');
   await p.evaluate(()=>{System.menu();AuthApp.currentUser=null;window.__notifyAccount(null);});await p.locator('#auth-screen:not(.hidden)').waitFor();await p.locator('[data-solo-start]').waitFor();
   await p.locator('[data-solo-start]').click();await p.waitForFunction(()=>ConsolePractice.active);assert.equal(await p.locator('#solo-entry').count(),0);
   assert.deepEqual(errors,[]);report.cases.push({slug,inlineEntry:true,directAccountPhases:true,controls:true,signOut:true,solo:true,errors});console.log('PASS solo entry',slug);await c.close();

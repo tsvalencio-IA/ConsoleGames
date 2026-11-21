@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "origin": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app",
+  "verifiedAt": "2026-11-21T08:49:00.977807+00:00",
+  "commit": "3105ec543593e8e558a082411c59356264dd3444",
+  "verification": "HTTPS GET redirects followed with trailing slash and query string",
+  "routes": [
+    {
+      "entry": "/ConsoleGames/games/otthi/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/otthi/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/familia/3d/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/familia/3d/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/kart/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/kart/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/boxe/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/boxe/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/tenis/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/tenis/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/ar/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/ar/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/voo/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/voo/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/danca/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/danca/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/games/atualizar/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/atualizar/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/arcade/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/console.html?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/?preview_qa=1",
+      "passed": true
+    },
+    {
+      "entry": "/ConsoleGames/arcade/instalar/?preview_qa=1",
+      "status": 200,
+      "landed": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/instalar/?preview_qa=1",
+      "passed": true
+    }
+  ]
+}

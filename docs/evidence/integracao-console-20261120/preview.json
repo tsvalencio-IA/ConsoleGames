@@ -1,0 +1,33 @@
+{
+  "branch": "fix/integracao-console-20261120",
+  "baseline": "4ce95d1f72712cc506577a272778f0b9ee0e8eee",
+  "gameSourceCommit": "bc097848cb3b1f616352f8502b9714516084f888",
+  "previewCommit": "3105ec543593e8e558a082411c59356264dd3444",
+  "previewDeployment": "dpl_8XTDiTfCQneM8mgSDTYiteTxC31V",
+  "target": "preview",
+  "build": "705.28.31-integracao-console",
+  "revision": "98dd1de73eca5329",
+  "links": {
+    "console": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/",
+    "world": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/atualizar/",
+    "flight": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/voo/"
+  },
+  "checks": {
+    "releaseManifest": 175,
+    "httpHashesVerified": 180,
+    "httpAliases": 8,
+    "unitTestsPassed": 579,
+    "unitTestsFailed": 0,
+    "unitDurationMs": 146688.89
+  },
+  "production": {
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2"
+  },
+  "limits": [
+    "No physical device or APK installation; only packaged byte download and browser checks.",
+    "Camera poses, lighting proxy and capture are controlled in Chromium; physical sensor/device tests pending.",
+    "No production publish or live Firebase writes."
+  ],
+  "checkedAt": "2026-11-21T08:48:20.939Z"
+}

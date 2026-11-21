@@ -103,18 +103,24 @@ public final class ArcadeSmoke extends Instrumentation {
     @Override public void onStart() {
         Bundle result=new Bundle();
         try {
-            if(!MainActivity.isGameUrl(Uri.parse(MainActivity.CONSOLE_URL)))throw new AssertionError("Wrong app destination");
+            Uri console = Uri.parse(MainActivity.CONSOLE_URL);
+            if(!MainActivity.isGameUrl(console))throw new AssertionError("Wrong app destination");
+            String prefix = console.getPath().substring(0, console.getPath().length() - "/arcade/".length());
+            Uri dance = console.buildUpon().path(prefix + "/games/danca/").clearQuery().build();
+            if(!MainActivity.isGameUrl(dance))throw new AssertionError("Game outside configured deployment");
+            Uri foreign = dance.buildUpon().authority("another-deployment.example").build();
+            if(MainActivity.isGameUrl(foreign))throw new AssertionError("Cross-deployment game URL accepted");
             if(MainActivity.isGameUrl(Uri.parse("https://tsvalencio-ia.github.io.evil.test/ConsoleGames/")))throw new AssertionError("Untrusted navigation");
             Intent intent=new Intent(getTargetContext(),MainActivity.class);intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             MainActivity activity=(MainActivity)startActivitySync(intent);
-            waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
+            waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===8");
             if(getTargetContext().checkSelfPermission(android.Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)throw new AssertionError("Camera requested before choosing camera mode");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
             waitForAppWindow();openLibrary(activity);waitFor(activity,"document.getElementById('biblioteca').getBoundingClientRect().top<180 && scrollY>100");
             waitForIdleSync();Thread.sleep(800);
             screenshot("android-portrait.png");
             runOnMainSync(() -> currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
-            waitFor(activity,"innerWidth>innerHeight && document.querySelectorAll('#games-grid [data-game]').length===7");
+            waitFor(activity,"innerWidth>innerHeight && document.querySelectorAll('#games-grid [data-game]').length===8");
             waitFor(activity,"document.documentElement.scrollWidth<=innerWidth+2");
             waitForAppWindow();waitForIdleSync();Thread.sleep(800);
             screenshot("android-landscape.png");
@@ -137,9 +143,9 @@ public final class ArcadeSmoke extends Instrumentation {
                 waitFor(activity,"window.GameAudio?.diagnostics().state==='running' && document.documentElement.scrollWidth<=innerWidth+2");
                 screenshot("android-native-"+game[0]+".png");
                 tap(activity,"#arcade-pause");tap(activity,"#arcade-pause-modal [data-action='exit']");
-                waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===7");
+                waitFor(activity,"document.querySelectorAll('#games-grid [data-game]').length===8");
             }
-            result.putString("stream","Android: installed, seven games, original five engines entered with native touch, running audio contexts, WAR firing, console return, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
+            result.putString("stream","Android: installed, eight games, original five engines entered with native touch, running audio contexts, WAR firing, console return, portrait/landscape, HTTPS navigation, no unsolicited camera request.\n");
             finish(-1,result);
         } catch(Throwable error) {try{screenshot("android-failure.png");report("Android failure at "+checkpoint+" "+evaluate(currentActivity,"JSON.stringify({url:location.href,state:window.System?.activeGame?.logic.state,audio:window.GameAudio?.diagnostics(),lastEvents:window.__androidTouches})"));}catch(Exception ignored){}result.putString("stream",checkpoint+": "+android.util.Log.getStackTraceString(error)+"\n");finish(0,result);}
     }
