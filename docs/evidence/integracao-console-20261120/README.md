@@ -33,3 +33,5 @@ O percurso Console → Mundo Aberto → atividade → Mundo Aberto → Console f
 O teste completo do catálogo hospedado rodou antes dos últimos ajustes de redirecionamento. Os 180 arquivos conferidos da prévia final mantêm os mesmos hashes. Na prévia final, 26 URLs com e sem barra e cinco entradas abertas como favoritos no Chromium foram verificadas diretamente. [Favoritos no navegador](preview-bookmarks-browser.json)
 
 [Execução Android após corrigir a contagem dos jogos](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/44887096115).
+
+Uma repetição do CI detectou um contato a mais no roteiro do Kart. O ajuste colocou todos os ensaios no mesmo quadro inicial após o botão nativo iniciar a corrida. O motor, as exigências do desafio e o limite de contatos não mudaram. Três repetições locais passaram, com três voltas, dois passes limpos, um pagamento e recarga do progresso. [Resultado da corrida](kart-race.json)

@@ -1,0 +1,172 @@
+{
+  "cases": [
+    {
+      "initial": {
+        "practice": true,
+        "trial": {
+          "trackLength": 336000,
+          "passes": 0,
+          "drifts": 0,
+          "items": 0,
+          "contacts": 0,
+          "offroadSeconds": 0,
+          "eligible": {},
+          "passed": {},
+          "lastContactAt": null,
+          "lastOffroadAt": null,
+          "lastItem": null,
+          "finished": false,
+          "rank": 0,
+          "lapTimes": [],
+          "nearest": null
+        },
+        "rivals": [
+          {
+            "id": "cpu0",
+            "pos": 4500
+          },
+          {
+            "id": "cpu1",
+            "pos": 7000
+          },
+          {
+            "id": "cpu2",
+            "pos": 9500
+          },
+          {
+            "id": "cpu3",
+            "pos": 12000
+          }
+        ],
+        "phase": "f1",
+        "coins": 0,
+        "xp": 0
+      },
+      "finish": {
+        "status": "FINISHED",
+        "physicalFinish": true,
+        "ticks": 6488,
+        "maxOffset": 0.5376020044010457,
+        "lapTimes": [
+          36.14999999999923,
+          35.983333333331295,
+          35.999999999997954
+        ],
+        "rank": 1,
+        "trial": {
+          "trackLength": 336000,
+          "passes": 4,
+          "drifts": 1,
+          "items": 46,
+          "contacts": 0,
+          "offroadSeconds": 0,
+          "eligible": {},
+          "passed": {
+            "cpu2:1": true,
+            "cpu0:1": true,
+            "cpu1:1": true,
+            "cpu3:1": true
+          },
+          "lastContactAt": null,
+          "lastOffroadAt": null,
+          "lastItem": null,
+          "finished": true,
+          "rank": 1,
+          "lapTimes": [
+            36.14999999999923,
+            35.983333333331295,
+            35.999999999997954
+          ],
+          "nearest": {
+            "id": "cpu2",
+            "name": "ATLAS",
+            "gap": 127762.19027693779
+          },
+          "contactHeld": false,
+          "lastLap": {
+            "number": 3,
+            "seconds": 35.999999999997954,
+            "delta": 0.016666666666658614
+          },
+          "completed": true
+        },
+        "itemUses": 46,
+        "rivals": [
+          {
+            "id": "cpu0",
+            "pos": 185607.2899865798,
+            "lap": 3,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu1",
+            "pos": 188203.48013863692,
+            "lap": 3,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu2",
+            "pos": 127888.20196429313,
+            "lap": 3,
+            "status": "RACING"
+          },
+          {
+            "id": "cpu3",
+            "pos": 199825.90325495985,
+            "lap": 3,
+            "status": "RACING"
+          }
+        ],
+        "cameraRequests": 0
+      },
+      "result": {
+        "rewardCalls": 1,
+        "coins": 2016,
+        "xp": 5162,
+        "save": {
+          "version": 1,
+          "username": "Jogador local",
+          "playerId": "local-f6de4ea3-136b-425e-98be-a3d74ea75202",
+          "xp": 5162,
+          "level": 6,
+          "coins": 2016,
+          "arSave": {
+            "upgrades": {
+              "engine": 1,
+              "battery": 1,
+              "radar": 1,
+              "chassis": 1,
+              "scout": false
+            }
+          },
+          "kartSave": {
+            "garage": [
+              {
+                "modelId": 0
+              }
+            ],
+            "activeKartIdx": 0,
+            "upgrades": {
+              "engine": 1,
+              "tires": 1,
+              "suspension": 1
+            }
+          }
+        },
+        "resultText": "DESAFIO DE DISPUTA CONCLUÍDO\n\n1º lugar · 4/2 ultrapassagens limpas · 1/1 impulso de drift\n\n46 itens usados · 0 contatos · 0.0 s fora do asfalto\n\nVoltas: 36.1 s / 36.0 s / 36.0 s\n\nTente repetir com menos contatos ou uma volta melhor.",
+        "width": 844,
+        "viewport": 844
+      },
+      "saved": {
+        "coins": 2016,
+        "xp": 5162
+      },
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Chromium native menus, controls, physics, four AI rivals, items and result/reward flow. Fresh local practice; no live account or database writes.",
+    "The renderer is stopped between explicit native physics batches. Simulated race time is accelerated; this is not native RAF performance or physical camera/gameplay approval."
+  ],
+  "passed": true
+}

@@ -17,9 +17,19 @@ try{
  await page.waitForFunction(()=>System.activeGame?.id==='drive'&&System.activeGame.logic.state==='MODE_SELECT');
  const canvas=page.locator('#game-canvas'),box=await canvas.boundingBox();
  await page.mouse.click(box.x+box.width*.5,box.y+box.height*.48);await page.waitForFunction(()=>System.activeGame.logic.state==='LOBBY');
+ await page.evaluate(()=>{
+  const game=System.activeGame.logic,start=game.startRace;
+  game.startRace=function(...args){
+   const result=start.apply(this,args);
+   // Begin the controlled race on the same physics tick on fast and slow hosts.
+   // Let the original start button and grid initialization run first.
+   cancelAnimationFrame(System.loopId);System.loopId=null;System.loopEpoch++;
+   return result;
+  };
+ });
  await page.mouse.click(box.x+box.width*.5,box.y+box.height*.92);await page.waitForFunction(()=>System.activeGame.logic.state==='RACE');
  const initial=await page.evaluate(()=>{
-  const g=System.activeGame.logic;cancelAnimationFrame(System.loopId);System.loopId=null;System.loopEpoch++;
+  const g=System.activeGame.logic;
   window.__RACE_QA={g,ticks:0,maxOffset:0,side:1,held:{},itemUses:0,rewardCalls:0,heldRelease:null};
   const reward=Profile.addReward;Profile.addReward=function(...args){__RACE_QA.rewardCalls++;return reward.apply(this,args);};
   return{practice:ConsolePractice.active,trial:KartRacecraftEvaluation.snapshot(g),rivals:g.localBots.map(r=>({id:r.id,pos:r.pos})),phase:g.currentFase.id,coins:Profile.coins,xp:Profile.xp};
