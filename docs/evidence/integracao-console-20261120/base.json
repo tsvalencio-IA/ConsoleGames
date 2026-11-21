@@ -1,0 +1,53 @@
+{
+  "baseline": "4ce95d1f72712cc506577a272778f0b9ee0e8eee",
+  "baselineBranch": "fix/console-recuperacao-20261117",
+  "productionWorldObserved": {
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2",
+    "appSha256": "c8ae731723d168689b2398675eddf5ca349a92cf1040ca472e7dddb05b3bc90d",
+    "matchesWorldBytesInCommit": "e54c9797dd69d0bad95e95ec92e43ecd656ec836"
+  },
+  "priorLocalCheckpoint": "6a5660a",
+  "games": {
+    "otthi": {
+      "engine": "games/otthi/app.js",
+      "sourceCommit": "82cbd239bab702205cc1dae5508bae462f42961a",
+      "sha256": "c8ae731723d168689b2398675eddf5ca349a92cf1040ca472e7dddb05b3bc90d"
+    },
+    "familia": {
+      "engine": "games/familia/3d/index.html",
+      "sourceCommit": "9a4ff5523af5258e888dc5d06e2c02e7173b32af",
+      "sha256": "d58803b6e597f0afd64ab602f620b2e1a42e6a56bde42d7e3d5c262b048dc195"
+    },
+    "kart": {
+      "engine": "games/kart/js/game_kart.js",
+      "sourceCommit": "9a4ff5523af5258e888dc5d06e2c02e7173b32af",
+      "sha256": "c8f4f2f2e6b5e2d1e7b3b914492422971a2f84b4c9a871e82ccfc56669b3b951"
+    },
+    "boxe": {
+      "engine": "games/boxe/js/game_box.js",
+      "sourceCommit": "a3031510d81af2febb4d99fe9d251dcfe2fa9dc9",
+      "sha256": "94a496989029676af03563fc3d05ec69a63bded4ca0e3c3fd7122f5690142fe5"
+    },
+    "tenis": {
+      "engine": "games/tenis/js/game_tennis.js",
+      "sourceCommit": "fdd6cf8c2d364e0fb2c38a4beac30ee588447f5b",
+      "sha256": "a61ed5866189bd3ae10dc27dff9b4bd834165b9ce41a5d7ad9d72a7254ef6916"
+    },
+    "ar": {
+      "engine": "games/ar/js/game_ar.js",
+      "sourceCommit": "13715335884aea153479089b4d2c127539dfcd80",
+      "sha256": "16007da82fb65304e0c465ba80554d53d52e63b3cabd67a3ac80698653dbf7aa"
+    },
+    "voo": {
+      "engine": "games/voo/js/game_flight.js",
+      "sourceCommit": "fdd6cf8c2d364e0fb2c38a4beac30ee588447f5b",
+      "sha256": "4f0037e23ae06cb01cdcec32fb2dd00ccfe84881a0a67616085e62287e2cc522"
+    },
+    "danca": {
+      "engine": "games/danca/app.js",
+      "sourceCommit": "1506219af05a8dae04020dc7045c06eaf9409819",
+      "sha256": "22caf00a51f4ecc5f59f5d8ad4b0dbb587d99c67af1fca0eccddb314006028a4"
+    }
+  }
+}

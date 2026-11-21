@@ -11,12 +11,19 @@ const arcadeManifest=JSON.parse(read("arcade/manifest.webmanifest"));
 const html=read("arcade/index.html");
 const app=read("arcade/app.js");
 const sw=read("arcade/sw.js");
+const resolveInstall=(manifest,url)=>{
+  const start=new URL(manifest.start_url,url);
+  return {id:new URL(manifest.id||start.href,start.origin).pathname,scope:new URL(manifest.scope,url).pathname};
+};
 
 test("app ARCADE tem link, ID, nome, escopo e inicialização próprios",()=>{
-  assert.equal(arcadeManifest.id,"/arcade/");
-  assert.equal(arcadeManifest.scope,"/");
-  assert(arcadeManifest.start_url.startsWith(arcadeManifest.scope));
-  assert.notEqual(arcadeManifest.id,oldManifest.id);
+  const origin='https://console.example';
+  for(const prefix of ['', '/ConsoleGames']){
+    const arcade=resolveInstall(arcadeManifest,origin+prefix+'/arcade/manifest.webmanifest');
+    const legacy=resolveInstall(oldManifest,origin+prefix+'/manifest.webmanifest');
+    assert.deepEqual(arcade,{id:prefix+'/arcade/',scope:prefix+'/'});
+    assert.notEqual(arcade.id,legacy.id);
+  }
   assert.notEqual(arcadeManifest.name,oldManifest.name);
   assert.match(arcadeManifest.name,/ARCADE/);
   assert.match(html,/rel="manifest" href="\.\/manifest\.webmanifest"/);
@@ -38,10 +45,10 @@ test("oito jogos da nova instalação abrem no repositório correto",()=>{
 });
 
 test("instalação arcade usa um service worker com cache isolado",()=>{
-  assert.match(sw,/const CACHE="thiaguinho-arcade-shell-v\d+"/);
+  assert.match(sw,/const CACHE=PREFIX\+SHELL_VERSION\+MOUNT/);
   assert(!sw.includes('thiaguinho-console-static-v3'));
   assert(sw.includes("self.registration.scope"));
-  assert(sw.includes("url.origin!==self.location.origin"));
+  assert(sw.includes("url.origin!==scope.origin"));
   assert(app.includes('navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"})'));
   assert(existsSync(new URL("arcade/sw.js",root)));
   execFileSync(process.execPath,["--check",new URL("arcade/app.js",root).pathname]);
@@ -67,8 +74,7 @@ test("instalação única mantém navegação pelos oito jogos no ARCADE",()=>{
  assert(read("games/otthi/console-world.js").includes('link.href="../../arcade/"'));
  assert(read("games/familia/console-world.js").includes('back.href=mode==="familia"?"../../../arcade/"'));
  assert(!read("games/familia/3d/console-world.js").includes('parent.appendChild(link);'),"Não sobrepor os controles originais da Família");
- assert.equal(arcadeManifest.id,"/arcade/");
- assert.equal(arcadeManifest.scope,"/");
+ assert.deepEqual(resolveInstall(arcadeManifest,'https://console.example/arcade/manifest.webmanifest'),{id:'/arcade/',scope:'/'});
 });
 
 test("Android: botão de instalação referencia o APK íntegro com a versão publicada",()=>{

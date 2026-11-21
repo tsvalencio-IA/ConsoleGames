@@ -1,6 +1,6 @@
 /** One mission director for the present civilian world: local solo and shared co-op. */
 // @otthi-module-body
- const civilMissions={ready:false,solo:null,shared:null,seq:0,waiters:new Map(),task:null,room:'',snapshotKey:'',authority:'',hudKey:'',lastSave:0,routeKey:'',syncingRoute:false};
+ const civilMissions={ready:false,solo:null,shared:null,seq:0,waiters:new Map(),task:null,starting:false,room:'',snapshotKey:'',authority:'',hudKey:'',lastSave:0,routeKey:'',syncingRoute:false};
  function civilNetUid(){return String(window.OTTHOS_RTDB?.uid||sharedWorldOwnId());}
  function civilSoloUid(){return String(window.OTTHOS_RTDB?.uid||state.account?.accountId||state.profile?.playerId||'local');}
  function civilOnline(){return !!window.OTTHOS_RTDB?.connected?.()&&!!window.OTTHOS_RTDB?.uid&&multiplayerV2Enabled();}
@@ -69,6 +69,42 @@
   if(p.step.requiresRide&&!p.record.rides[current.uid]?.[p.step.requiresRide]){const station=p.step.requiresRide==='cable-up'?'base':'top';return{id:'civil-cable-boarding',label:'Embarcar na '+CIVIL_CABLE[station].label,name:'Teleférico · embarque',...CIVIL_CABLE[station],x:CIVIL_CABLE[station].x+3.2,z:CIVIL_CABLE[station].z+3.4,boarding:true};}
   for(const id of p.step.targets){const token=`${p.record.phase}:${p.step.sharedSubjects?'team':current.uid}:${id}`;if(!p.record.tokens[token])return civilSubject(id,current.uid);}return null;
  }
+ // The photo follows the balloon's real body, including any unvisited nearby
+ // panorama. GPS may keep its suggested order without hiding another valid stop.
+ function civilNearbyFlightTarget(current=civilCurrent()){
+  const p=current&&current.book.progress(current.r.id,current.uid);if(!p?.step?.vehicle||!otGames.active||otGames.mode!==p.step.vehicle||p.count>=p.quota)return null;
+  const actor=civilActor(current.uid);if(!actor)return null;
+  let target=null,distance=Infinity;
+  for(const id of p.step.targets){if(!current.book.eligible(current.r.id,current.uid,current.r.phase,id))continue;const point=civilSubject(id,current.uid);if(!point)continue;const d=Math.hypot(actor.x-point.x,actor.z-point.z);if(d<distance){target=point;distance=d;}}
+  return target;
+ }
+ function civilSyncTaskButton(current=civilCurrent()){
+  let button=document.getElementById('civil-mission-task');if(!button){button=document.createElement('button');button.id='civil-mission-task';button.type='button';button.className='btn primary';}
+  // Aircraft controls live above #game, whose children are intentionally hidden
+  // while piloting. Move this same action into that active layer and back.
+  const host=otGames.active&&otGames.ui?otGames.ui:document.getElementById('game');if(button.parentNode!==host)host.append(button);
+  const p=current&&current.book.progress(current.r.id,current.uid),flying=!!(otGames.active&&p?.step?.vehicle===otGames.mode),target=flying?civilNearbyFlightTarget(current):civilAvailableTarget(current),focus=otGamesFocus(),near=!!target&&Math.hypot(focus.x-target.x,focus.z-target.z)<(target.radius||3.4)+.5;
+  button.hidden=!current||current.r.status!=='active'||!near||!!target?.boarding||!!currentHouse||!!civilCommunity.ride||otGames.active&&!flying||!flying&&!!civilMissions.task;
+  const valid=flying&&target&&civilValidateTask(current.book,current.r.id,current.uid,current.r.phase,target.id),task=civilMissions.task;
+  button.disabled=!!civilMissions.starting||!!task||flying&&!valid;
+  button.textContent=flying?task?.air?task.finishing?'Confirmando foto…':'Registrando · '+Math.min(99,Math.floor((airNow()-task.started)/task.duration*100))+'%':civilMissions.starting?'Preparando foto…':!civilTeamReady(current.r)?'Aguardando a dupla':!valid?'Suba · mínimo '+Number(target?.minAltitude||10)+' m':'📷 Tirar foto':p?.step?.action||'AÇÃO';
+  button.title=flying?'Permaneça sobre o panorama enquanto a foto é registrada. Atalho: F.':'';if(flying)button.setAttribute('aria-keyshortcuts','F');else button.removeAttribute('aria-keyshortcuts');
+  button.onclick=()=>civilTaskAt(target?.id);return button;
+ }
+ function civilTriggerFlightPhoto(){
+  if(!otGames.active||otGames.mode!=='balloon'||paused||!running||!els.modal.hidden)return false;
+  const button=civilSyncTaskButton();if(button.hidden||button.disabled)return false;button.click();return true;
+ }
+ window.addEventListener('keydown',event=>{
+  if(!otGames.active||otGames.mode!=='balloon'||event.code!=='KeyF'||event.target.closest?.('input,select,textarea,[contenteditable="true"]'))return;
+  event.preventDefault();event.stopImmediatePropagation();if(!event.repeat)civilTriggerFlightPhoto();
+ },true);
+ const civilFlightHudBefore=otGamesUpdateHUD;otGamesUpdateHUD=function(...args){
+  const result=civilFlightHudBefore(...args),current=civilCurrent(),p=current&&current.book.progress(current.r.id,current.uid);
+  if(otGames.active&&otGames.mode==='balloon'&&current?.r.status==='active'&&p?.definition){
+   const message=otGames.ui?.querySelector('.ot-games-mission');if(message)message.textContent=!civilTeamReady(current.r)?'Aguardando a dupla reconectar. Progresso preservado.':p.count>=p.quota?'Sua parte foi registrada. Aguardando a dupla.':p.step?.vehicle?'📷 '+p.step.title+' · '+p.count+'/'+p.quota+' · F ou Tirar foto no panorama':p.step?.title||p.definition.title;
+  }return result;
+ };
  function civilMissionLocation(){const p=civilAvailableTarget();return p?{...p,id:'civil-objective',name:p.label||p.name,label:p.label||p.name,navX:p.x,navZ:p.z,icon:p.icon||'🤝',group:'Missão atual',description:civilCurrent()?.book.progress(civilCurrent().r.id,civilCurrent().uid)?.step?.title||''}:null;}
  function civilRoute(force=false){const c=civilCurrent(),p=civilMissionLocation(),key=c?.r.id+':'+c?.r.phase+':'+p?.label;if(!p||!state.civilWorld.routeEnabled)return;if(force||key!==civilMissions.routeKey){civilMissions.routeKey=key;civilMissions.syncingRoute=true;setWaypoint('civil-objective');civilMissions.syncingRoute=false;}}
  const civilClearWaypointBefore=clearWaypoint;clearWaypoint=function(...args){if(!civilMissions.syncingRoute&&state.civilWorld&&state.waypoint?.id==='civil-objective')state.civilWorld.routeEnabled=false;return civilClearWaypointBefore(...args);};
@@ -101,8 +137,8 @@
   if(!running)return;openModal('OT GAMES · nosso mundo',worldExploreDirectoryHtml()+'<div class="modal-actions"><button class="btn primary" data-civil-missions>MISSÕES INDIVIDUAIS E COOP</button><button class="btn" data-civil-family>FAMÍLIA</button><button class="btn" data-civil-map>MAPA E GPS</button></div>',root=>{worldExploreBindDirectory(root);root.querySelector('[data-civil-missions]').onclick=()=>openCivilMissions();root.querySelector('[data-civil-family]').onclick=()=>{closeModal();window.OTTHI_FAMILY.open();};root.querySelector('[data-civil-map]').onclick=()=>{closeModal();openMap();};});
  }
  async function civilTaskAt(subject){
-  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.task||characterActivities.session)return;
-  const data={id:c.r.id,phase:c.r.phase,subject};if(!await civilCommand('begin',data)){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
+  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.starting||civilMissions.task||characterActivities.session)return;
+  const data={id:c.r.id,phase:c.r.phase,subject};let accepted=false;civilMissions.starting=true;try{accepted=await civilCommand('begin',data);}finally{civilMissions.starting=false;}if(!accepted){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}const active=civilCurrent();if(!active||active.r.id!==data.id||active.r.phase!==data.phase||!civilValidateTask(active.book,data.id,active.uid,data.phase,subject)){civilCommand('cancel-task',data).catch(()=>{});return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
   if(otGames.active){civilMissions.task={...data,air:true,started:airNow(),duration};return;}
   const kind=subject.startsWith('fire-training')?'civil-hose':subject.startsWith('crossing-cone')?'civil-cone':subject==='crossing-neighbor'?'civil-escort':subject.startsWith('beach-litter')?'civil-pickup':'civil-deliver',point=kind==='civil-escort'?{x:309,z:46}:{x:player.x,z:player.z},pose={x:point.x,y:groundHeightAt(point.x,point.z),z:point.z,yaw:Math.atan2(target.x-player.x,target.z-player.z)};
   const started=beginCharacterActivity(kind,{target:point,pose,commit:()=>{civilCommand('finish',data).then(ok=>{if(!ok)toast('A etapa não foi confirmada. O progresso anterior continua salvo.','warn');});civilMissions.task=null;return true;}});
@@ -112,10 +148,9 @@
   if(!ensureCivilMissions())return;civilCheckRoom();civilApplyShared();civilPruneTransit();civilRebindSolo();const shared=civilMissions.shared.data,own=civilNetUid(),claim=shared.transit?.clients?.[own];
   if(claim&&!civilCommunity.ride){civilCommunity.ride={...claim};civilCommunity.waiting=null;clearMovementInputs();}
   const c=civilCurrent(),p=c&&c.book.progress(c.r.id,c.uid);if(c&&c.r.status==='completed'&&!state.civilWorld.rewardReceipts[c.r.id]){state.civilWorld.rewardReceipts[c.r.id]=Date.now();state.civilWorld.completedTypes[c.r.type]=(state.civilWorld.completedTypes[c.r.type]||0)+1;const amount=p.definition.reward+(c.r.difficulty==='hard'?50:0);addCoins(amount);addXP(50);awardMedal(p.definition.title);civilPersist();toast('Aventura concluída! +'+amount+' moedas.','good',4000);}
-  if(civilMissions.task){const t=civilMissions.task;if(!c||c.r.id!==t.id||!civilTeamReady(c.r)||!civilValidateTask(c.book,t.id,c.uid,t.phase,t.subject)||!t.air&&!characterActivities.session){civilCommand('cancel-task',t).catch(()=>{});if(characterActivities.session?.kind.startsWith('civil-'))stopCharacterActivity();civilMissions.task=null;}else if(t.air&&airNow()-t.started>=t.duration){civilMissions.task=null;civilCommand('finish',t).catch(()=>{});}}
+  if(civilMissions.task){const t=civilMissions.task;if(!t.finishing){if(!c||c.r.id!==t.id||!civilTeamReady(c.r)||!civilValidateTask(c.book,t.id,c.uid,t.phase,t.subject)||!t.air&&!characterActivities.session){civilCommand('cancel-task',t).catch(()=>{});if(characterActivities.session?.kind.startsWith('civil-'))stopCharacterActivity();civilMissions.task=null;}else if(t.air&&airNow()-t.started>=t.duration){t.finishing=true;civilCommand('finish',t).then(ok=>{toast(ok?'📷 Paisagem registrada!':'A foto não foi confirmada. Tente novamente no panorama.',ok?'good':'warn',2400);}).catch(()=>{}).finally(()=>{if(civilMissions.task===t)civilMissions.task=null;});}}}
   for(const[id,mesh]of civilCommunity.props)if(id.startsWith('beach-litter-'))mesh.visible=!(c?.r.type==='beach'&&c.r.tokens['1:team:'+id]);
-  let button=document.getElementById('civil-mission-task');if(!button){button=document.createElement('button');button.id='civil-mission-task';button.className='btn primary';document.getElementById('game').append(button);}const target=civilAvailableTarget(c),near=!!target&&Math.hypot(otGamesFocus().x-target.x,otGamesFocus().z-target.z)<(target.radius||3.4)+.5;
-  button.hidden=!c||c.r.status!=='active'||!near||target.boarding||!!civilMissions.task||!!currentHouse||!!civilCommunity.ride;button.textContent=p?.step?.action||'AÇÃO';button.onclick=()=>civilTaskAt(target?.id);
+  civilSyncTaskButton(c);
   updateCivilHUD();if(c?.r.status==='active')civilRoute();
   if(airNow()-civilMissions.lastSave>8000){civilMissions.lastSave=airNow();civilPersist();}
  }

@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync, existsSync} from "node:fs";
 import {execFileSync} from "node:child_process";
+import vm from "node:vm";
 
 const read = path => readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const html=read("index.html"), js=read("app.js"), css=read("styles.css"), sw=read("sw.js");
@@ -53,14 +54,23 @@ test("páginas possuem navegação acessível, links seguros, nomes e assinatura
   assert.match(css,/@media\(max-width:720px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });
-test("PWA está no escopo do console e não tenta cachear jogos externos",()=>{
+test("PWA do console legado deixa jogos e outros destinos com seus próprios workers",async()=>{
   assert.equal(manifest.start_url,"./");
   assert.equal(manifest.scope,"./");
   assert(manifest.icons.some(icon=>existsSync(new URL("../"+icon.src,import.meta.url))));
-  assert.match(sw,/url\.origin!==self\.location\.origin/);
-  assert.match(sw,/request\.mode==="navigate"/);
-  assert(!sw.includes("OTThi-World3/"));
-  assert(!sw.includes("GAME/"));
+  const scope='https://console.test/ConsoleGames/',handlers={};
+  const self={registration:{scope},addEventListener:(type,handler)=>handlers[type]=handler};
+  const caches={open:async()=>({match:async key=>key===scope+'index.html'?new Response('shell da versão local'):null})};
+  vm.runInNewContext(sw,{self,caches,fetch:async()=>{throw Error('offline')},URL,Response});
+  const navigate=url=>{
+    let response;
+    handlers.fetch({request:{url,method:'GET',mode:'navigate'},respondWith:value=>response=value});
+    return response;
+  };
+  assert.equal(navigate('https://games.example/'),undefined);
+  assert.equal(navigate(scope+'games/voo/'),undefined);
+  assert.equal(navigate(scope+'arcade/instalar/'),undefined);
+  assert.equal(await (await navigate(scope+'?pwa=1')).text(),'shell da versão local');
 });
 
 

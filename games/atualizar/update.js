@@ -1,6 +1,12 @@
 /* Runs outside /games/otthi/: an old game worker cannot serve its own old index here. */
 (()=>{'use strict';
- const world=new URL('../otthi/',location.href),status=document.getElementById('status'),progress=document.getElementById('progress'),version=document.getElementById('version'),retry=document.getElementById('retry'),back=document.getElementById('back');
+ const world=new URL(window.OTTHI_CANONICAL?.game('otthi')||'../otthi/',location.href),status=document.getElementById('status'),progress=document.getElementById('progress'),version=document.getElementById('version'),retry=document.getElementById('retry'),back=document.getElementById('back');
+ const destination=new URL(world);
+ destination.search=location.search;
+ destination.hash=location.hash;
+ destination.searchParams.delete('otthi_update');
+ destination.searchParams.delete('otthi_probe');
+ back.href=destination.href;
  let running=false,expected=null,workerError='';
  const state=window.OTTHI_UPDATE_STATE={phase:'checking',build:'',revision:'',done:0,total:0,reused:0};
  const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -26,7 +32,7 @@
    state.phase='verifying';status.textContent='Confirmando a abertura da versão atual…';progress.value=92;
    const index=await fresh('index.html'),bytes=await index.arrayBuffer(),hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');if(hash!==expected.files['index.html'])throw Error('Page/release mismatch');
    try{sessionStorage.setItem('otthi:last-recovery',JSON.stringify({build:expected.build,revision:expected.revision,at:Date.now(),reused:state.reused,done:state.done,total:state.total}));}catch{}
-   progress.value=100;state.phase='ready';status.textContent='Versão atual confirmada. Abrindo seu mundo…';const target=new URL(world);target.searchParams.set('otthi_update',expected.revision);target.searchParams.set('otthi_probe',String(Date.now()));location.replace(target.href);
+   progress.value=100;state.phase='ready';status.textContent='Versão atual confirmada. Abrindo seu mundo…';const target=new URL(destination);target.searchParams.set('otthi_update',expected.revision);target.searchParams.set('otthi_probe',String(Date.now()));location.replace(target.href);
   }catch(error){state.phase='error';progress.value=0;state.error=String(error?.message||error);document.getElementById('title').textContent='Vamos tentar novamente';status.textContent=navigator.onLine?'Não foi possível concluir a atualização. Seu jogo anterior e seus dados foram preservados.':'Conecte-se à internet para baixar a atualização. Seus dados continuam neste aparelho.';retry.hidden=back.hidden=false;console.warn('[OTTHI UPDATE]',error?.message||error);}
   finally{running=false;}
  }

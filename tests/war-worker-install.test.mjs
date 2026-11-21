@@ -6,7 +6,8 @@ function fixture(fail=false){
  const caches={async delete(k){return store.delete(k)},async keys(){return[...store.keys()]},async open(k){if(!store.has(k))store.set(k,new Map());const items=store.get(k);return{async put(path,response){items.set(path,await response.consume())}}}};
  const self={registration:{scope:'http://game.test/games/ar/'},clients:{claim:async()=>{}},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting(){throw Error('a running match must acknowledge activation first')}};
  const Request=class{constructor(path,options){this.url=new URL(path,self.registration.scope).href;this.options=options}};
- vm.runInNewContext(fs.readFileSync('games/ar/sw.js','utf8')+'\nself.files=FILES.slice();self.cacheName=CACHE;',{self,caches,fetch,Request,URL,Response:{error(){}}});
+ const context=vm.createContext({self,caches,fetch,Request,URL,Response:{error(){}},importScripts(){vm.runInContext(fs.readFileSync('arcade/game-cache.js','utf8'),context);}});
+ vm.runInContext(fs.readFileSync('games/ar/sw.js','utf8')+"\nself.files=[...new Set(FILES)];self.cacheName=CACHE+'@'+encodeURIComponent(new URL(self.registration.scope).pathname);",context);
  let pending;handlers.install({waitUntil:p=>pending=p});return{self,store,pending,old,peak:()=>peak,count:()=>count};
 }
 test('WAR worker: a six-connection transport finishes installing every resource by draining response bodies as they arrive',async()=>{

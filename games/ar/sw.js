@@ -3,7 +3,7 @@
 // Release 2026-10-28: body-guided hand crop, hands-free advance, distinct operations.
 "use strict";
 const PREFIX="thia-arcade-ar-";
-const CACHE=PREFIX+"pro-control-v56";
+const CACHE=PREFIX+"pro-control-v56-integracao20261120";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",
@@ -21,61 +21,36 @@ const FILES=[
 "./audio/engine-coach-load.ogg",
 "./audio/engine-triple-idle.ogg",
 "./audio/engine-triple-load.ogg",
-"./recorded-audio.js?v=20261029-continuity5","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/engine-recordings.json","./audio/engine-road-idle.ogg","./audio/engine-road-load.ogg","./audio/engine-classic-idle.ogg","./audio/engine-classic-load.ogg","./audio/engine-sport-idle.ogg","./audio/engine-sport-load.ogg","./audio/engine-heavy-idle.ogg","./audio/engine-heavy-load.ogg","./audio/engine-moto-idle.ogg","./audio/engine-moto-load.ogg","./audio/engine-twin-idle.ogg","./audio/engine-twin-load.ogg","./audio/engine-small-moto.ogg","./audio/engine-rotor-recorded.ogg","./audio/engine-prop-recorded.ogg","./audio/engine-jet-recorded.ogg","./audio/engine-boat-recorded.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261109-tactical4","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261029-entry5","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
+"./recorded-audio.js?v=20261029-continuity5","./recorded-audio.js","./audio/rifle-1.ogg","./audio/rifle-2.ogg","./audio/smg-1.ogg","./audio/smg-2.ogg","./audio/marksman.ogg","./audio/engine-car.ogg","./audio/engine-moto.ogg","./audio/engine-heli.ogg","./audio/engine-recordings.json","./audio/engine-road-idle.ogg","./audio/engine-road-load.ogg","./audio/engine-classic-idle.ogg","./audio/engine-classic-load.ogg","./audio/engine-sport-idle.ogg","./audio/engine-sport-load.ogg","./audio/engine-heavy-idle.ogg","./audio/engine-heavy-load.ogg","./audio/engine-moto-idle.ogg","./audio/engine-moto-load.ogg","./audio/engine-twin-idle.ogg","./audio/engine-twin-load.ogg","./audio/engine-small-moto.ogg","./audio/engine-rotor-recorded.ogg","./audio/engine-prop-recorded.ogg","./audio/engine-jet-recorded.ogg","./audio/engine-boat-recorded.ogg","./audio/CREDITS.txt","./audio/sources.json","./combat-visuals.js?v=20261109-tactical4","./combat-visuals.js","./account-access.js","./local-practice.js?v=20261120-route1","./","./index.html","./game-audio.js","./game-audio.js?v=20261023-3","./manifest.json","./icon.svg","./world-renderer.js","./vendor/three-r128.min.js","./icon-192.png","./icon-512.png",
 "./combat-infantry.js?v=20261109-infantry1","./combat-infantry.js","./vendor/GLTFLoader-r128.js","./vendor/SkeletonUtils-r128.js","./vendor/RGBELoader-r128.js","./vendor/THREE-LICENSE.txt","./assets/infantry/soldier.glb","./assets/infantry/sources.json","./assets/sky/daylight-1k.hdr","./assets/sky/sources.json",
 "./combat-presentation.js?v=20261109-tactical4","./combat-presentation.js","./assets/ground/concrete-albedo.jpg","./assets/ground/concrete-normal.jpg","./assets/ground/concrete-arm.jpg","./assets/ground/sources.json",
 "./multiplayer.js","./multiplayer.css","./practice-controls.js","./war-screen-orientation.js","./front-controls.js","./hand-controls.js","./body-controls.js","./body-tracker-worker.js","./hand-tracker-worker.js","./combat-controls.css","./js/core.js","./war-screen-orientation.js","./js/game_ar.js","./arcade-enhancements.js",
 "./arcade-enhancements.css","./arcade-pause.js","./arcade-pause.css",
 "./control-modes.js","./control-modes.css",
 "./studio-fx.js","./studio-fx.css","./studio-scenes.js",
-"./mastery-gamepad.js","./mastery-gamepad.css","./pro-controls.css","./play-settings.js","./play-settings.css"];
-self.addEventListener("install",event=>{
-  event.waitUntil((async()=>{
-    // Drain each response into the new cache immediately. Holding every body
-    // until Promise.all(fetch(...)) can exhaust HTTP/1 connection slots.
-    await caches.delete(CACHE);const cache=await caches.open(CACHE);let next=0,failed=false;
-    const results=await Promise.allSettled(Array.from({length:Math.min(4,FILES.length)},async()=>{
-      while(!failed&&next<FILES.length){
-        const path=FILES[next++];
-        try{
-          const response=await fetch(new Request(path,{cache:"no-store"}));
-          if(!response.ok)throw Error('Incomplete game shell: '+path+' HTTP '+response.status);
-          await cache.put(path,response);
-        }catch(error){failed=true;throw error;}
-      }
-    }));
-    const rejected=results.find(result=>result.status==='rejected');
-    if(rejected){await caches.delete(CACHE);throw rejected.reason;}
-    // The ready menu acknowledges activation. Never replace a game mid-match.
-  })());
-});
-self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting();});
-self.addEventListener("activate",event=>{
-  event.waitUntil((async()=>{
-    const keys=await caches.keys();
-    await Promise.all(keys.filter(key=>key.startsWith(PREFIX)&&key!==CACHE).map(key=>caches.delete(key)));
-    await self.clients.claim();
-  })());
-});
-self.addEventListener("fetch",event=>{
-  const req=event.request;
-  if(req.method!=="GET")return;
-  const url=new URL(req.url);
-  const scope=new URL(self.registration.scope);
-  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
-  event.respondWith((async()=>{
-    const cache=await caches.open(CACHE);
-    try{
-      const response=await fetch(req,{cache:"no-store"});
-      if(response.ok && (/\.(?:js|mjs|wasm|task)$/.test(url.pathname)||url.pathname.endsWith(".css")||url.pathname.endsWith(".html")||req.mode==="navigate")){
-        event.waitUntil(cache.put(req,response.clone()));
-      }
-      return response;
-    }catch(error){
-      const hit=await cache.match(req)||await cache.match(req,{ignoreSearch:true});
-      if(hit)return hit;
-      if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
-      return Response.error();
-    }
-  })());
-});
+"./mastery-gamepad.js","./mastery-gamepad.css","./pro-controls.css","./play-settings.js","./play-settings.css",
+// Exact references from this game entry, including its shared console routes.
+  '../../arcade/manifest.webmanifest',
+  './arcade-pause.css?v=20261024-war4',
+  './combat-controls.css?v=20261114-jogabilidade1',
+  './account-access.js?v=20261024-head1',
+  './js/core.js?v=20261114-jogabilidade1',
+  './war-screen-orientation.js?v=20261102-rotate1',
+  './js/admin.js',
+  './combat-infantry.js?v=20261114-jogabilidade1',
+  './world-renderer.js?v=20261114-jogabilidade1',
+  './body-controls.js?v=20261029-body7',
+  './front-controls.js?v=20261114-jogabilidade1',
+  './hand-controls.js?v=20261114-jogabilidade1',
+  './practice-controls.js?v=20261114-jogabilidade1',
+  './multiplayer.css?v=20261024-mp1',
+  './multiplayer.js?v=20261028-mp2',
+  './js/game_ar.js?v=20261114-jogabilidade1',
+  './control-modes.js?v=20261114-jogabilidade1',
+  './arcade-pause.js?v=20261024-war4',
+  './play-settings.css?v=20261114-jogabilidade1',
+  './play-settings.js?v=20261114-jogabilidade1',
+  '../../arcade/canonical-navigation.js?v=20261120'
+];
+importScripts('../../arcade/game-cache.js?v=20261120');
+installGameCache({prefix:PREFIX,versionedCache:CACHE,files:FILES});

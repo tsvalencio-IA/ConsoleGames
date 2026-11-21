@@ -1,0 +1,86 @@
+{
+  "browser": "141.0.7390.37",
+  "photos": [
+    {
+      "point": 1,
+      "site": "PORTO AZUL",
+      "thumbnailBytes": 11455,
+      "axes": {
+        "pitch": 0,
+        "roll": 0
+      },
+      "roll": 0,
+      "pitch": 0,
+      "weapon": false,
+      "boost": false
+    },
+    {
+      "point": 2,
+      "site": "NOVA AURORA",
+      "thumbnailBytes": 29783,
+      "axes": {
+        "pitch": 0,
+        "roll": 0
+      },
+      "roll": 0,
+      "pitch": 0,
+      "weapon": false,
+      "boost": false
+    },
+    {
+      "point": 3,
+      "site": "SERRA NORTE",
+      "thumbnailBytes": 29687,
+      "axes": {
+        "pitch": 0,
+        "roll": 0
+      },
+      "roll": 0,
+      "pitch": 0,
+      "weapon": false,
+      "boost": false
+    }
+  ],
+  "limits": [
+    "Local Chromium profile with external network and accounts blocked.",
+    "Browser camera device is synthetic. The detector supplies scripted keypoints at intervals of 20 or 180 ms, covering confidence and scale variation without claiming recognition under physical lighting.",
+    "The three approaches and the runway entry position are set by the harness. Calibration, native updates, shutters, stability checks, landing and save are run normally."
+  ],
+  "result": {
+    "state": "VICTORY",
+    "landingQuality": "smooth",
+    "career": {
+      "kills": 0,
+      "school": false,
+      "missions": {
+        "reporter": {
+          "completed": 1,
+          "bestTime": 7,
+          "medal": "OURO",
+          "photos": 3
+        }
+      }
+    },
+    "saved": {
+      "kills": 0,
+      "school": false,
+      "missions": {
+        "reporter": {
+          "completed": 1,
+          "bestTime": 7,
+          "medal": "OURO",
+          "photos": 3
+        }
+      },
+      "upgrades": {
+        "engine": 1,
+        "missiles": 1,
+        "armor": 1
+      },
+      "airframe": "falcon"
+    },
+    "camera": "camera"
+  },
+  "passed": true,
+  "errors": []
+}

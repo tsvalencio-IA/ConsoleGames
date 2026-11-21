@@ -1,4 +1,15 @@
 plugins { id 'com.android.application' }
+
+def productionConsole = 'https://otthi-world-campanha-teste.vercel.app/arcade/'
+def previewConsole = providers.gradleProperty('consolePreviewUrl').orNull
+if (previewConsole != null && !(previewConsole ==~ /https:\/\/[A-Za-z0-9.-]+(?:\/[A-Za-z0-9._-]+)*\/arcade\//)) {
+    throw new GradleException('consolePreviewUrl deve ser uma URL HTTPS terminada em /arcade/')
+}
+androidComponents {
+    beforeVariants(selector().withFlavor('server', 'preview')) { variant ->
+        variant.enable = previewConsole != null
+    }
+}
 android {
     namespace 'br.com.thiaguinhosolucoes.arcade'
     compileSdk 35
@@ -9,17 +20,21 @@ android {
         versionCode 1
         versionName '1.0.0'
         testInstrumentationRunner 'br.com.thiaguinhosolucoes.arcade.ArcadeSmoke'
-        buildConfigField 'String', 'CONSOLE_URL', '"https://tsvalencio-ia.github.io/ConsoleGames/arcade/?android=1"'
+        buildConfigField 'String', 'CONSOLE_URL', '"' + productionConsole + '?android=1"'
     }
     buildFeatures { buildConfig true }
     flavorDimensions 'server'
     productFlavors {
         production { dimension 'server' }
+        preview {
+            dimension 'server'
+            applicationIdSuffix '.preview'
+            buildConfigField 'String', 'CONSOLE_URL', '"' + previewConsole + '?android=1"'
+        }
         recovery {
             dimension 'server'
             versionCode 3
             versionName '1.2.0'
-            buildConfigField 'String', 'CONSOLE_URL', '"https://otthi-world-campanha-teste.vercel.app/arcade/?android=1"'
         }
     }
     buildTypes { release { minifyEnabled false } }

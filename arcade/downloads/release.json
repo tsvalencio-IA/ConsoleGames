@@ -7,5 +7,6 @@
   "file": "thIAguinho-ARCADE.apk",
   "sha256": "26f29deaa0a4fc95b1a0b97855a1eb4106b77775924dc9e2e7d5d32386126474",
   "bytes": 57991,
-  "requiresInternet": true
+  "requiresInternet": true,
+  "consoleUrl": "https://tsvalencio-ia.github.io/ConsoleGames/arcade/?android=1"
 }

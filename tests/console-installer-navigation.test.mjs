@@ -31,3 +31,20 @@ test('same-origin installation navigation is never silently rewritten to the gam
  assert(v[0].endsWith('/arcade/instalar/'));
  assert(v[1].endsWith('/arcade/downloads/thIAguinho-ARCADE.apk'));
 });
+test('a preview mounted below a path keeps legacy links in that exact console',()=>{
+ const origin='https://otthi-world-campanha-teste-candidate.vercel.app';
+ const mount=origin+'/avaliacao/';
+ assert.deepEqual(canonicalized([
+   'https://otthi-world-campanha-teste.vercel.app/arcade/?favorites=1#biblioteca',
+   '/ConsoleGames/games/voo/?mode=sol',
+   '/games/familia/',
+   new URL('games/atualizar/?ot-games=plane',mount).href,
+   'https://example.org/games/kart/'
+ ], mount+'arcade/'),[
+   mount+'arcade/?favorites=1#biblioteca',
+   mount+'games/voo/?mode=sol',
+   mount+'games/familia/3d/',
+   mount+'games/atualizar/?ot-games=plane',
+   'https://example.org/games/kart/'
+ ]);
+});

@@ -1,7 +1,7 @@
 name: Homologacao integrada dos oito jogos
 on:
   push:
-    branches: [fix/console-recuperacao-20261117]
+    branches: [fix/console-recuperacao-20261117, fix/integracao-console-20261120]
   pull_request:
     branches: [continuation-20261111]
   workflow_dispatch:

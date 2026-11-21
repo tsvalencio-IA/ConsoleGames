@@ -12,6 +12,7 @@ const data={token:'test-trip-123456789',id:'pingpong',gameId:'tennis',playerId:'
 test('venue trips require the matching origin, game, player and unexpired token',()=>{
  const {api,session}=fixture();assert(api.begin(data));assert(api.current(data.token,'tennis'));assert.equal(api.current('wrong','tennis'),null);assert.equal(api.current(data.token,'box_pro'),null);
  assert.equal(api.begin({...data,returnUrl:'https://foreign.test/games/otthi/'}),null);assert.equal(api.begin({...data,gameId:'drive'}),null);assert.equal(api.begin({...data,recordKey:'users/real-account'}),null);
+ assert.equal(api.begin({...data,returnUrl:'https://example.test/another-release/games/otthi/'}),null);
  const expired={...data,version:1,created:Date.now()-7*60*60*1000};session.set('thia:world-venue:trip:v1',JSON.stringify(expired));assert.equal(api.current(),null);
 });
 test('native result survives navigation, applies once, and never changes the world save or balance',()=>{

@@ -93,11 +93,7 @@ def package(output=OUTPUT):
     console_path.write_text(root_site_console(console_path.read_text('utf-8')), encoding='utf-8')
     installer_path = output / 'arcade/instalar/index.html'
     installer_path.write_text(root_site_installer(installer_path.read_text('utf-8')), encoding='utf-8')
-    (output / 'index.html').write_text('''<!doctype html><html lang="pt-BR"><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>OTThi World</title>
-<meta http-equiv="refresh" content="0;url=games/otthi/">
-<script>location.replace((navigator.onLine?'./games/atualizar/':'./games/otthi/')+location.search+location.hash)</script>
-<body><a href="games/otthi/">Entrar no OTThi World</a><p>Powered by thIAguinho Soluções Digitais</p></body></html>''', encoding='utf-8')
+    shutil.copy2(ROOT / 'index.html', output / 'index.html')
     required = ['games/atualizar/index.html', 'games/atualizar/update.js', 'games/atualizar/style.css', 'games/otthi/app.js', 'games/otthi/release-manifest.json',
                 'games/ar/practice-controls.js', 'games/ar/war-screen-orientation.js', 'games/ar/hand-controls.js', 'games/ar/hand-tracker-worker.js',
                 'games/ar/object-views.js', 'games/ar/object-camera-registration.js',

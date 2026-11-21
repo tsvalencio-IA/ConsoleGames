@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.30-aviacao-presenca-unificada';
+  const OTTHI_GAME_WEB_BUILD = '705.28.31-integracao-console';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -1015,7 +1015,10 @@
       if(typeof otGames!=='undefined'&&otGames.active)otGamesLeave({preserveCampaign:true});
       if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
       if(running)savePlayerPosition(true);await persistBeforeOtthiReload();
-      location.replace(new URL('../atualizar/',OTTHI_GAME_LIVE_BASE).href);return true;
+      const current=new URL(location.href),recovery=new URL('../atualizar/',OTTHI_GAME_LIVE_BASE);
+      recovery.search=current.search;recovery.hash=current.hash;
+      recovery.searchParams.delete('otthi_update');recovery.searchParams.delete('otthi_probe');
+      location.replace(recovery.href);return true;
     }catch(error){otthiUpdateReloading=false;toast('Não foi possível guardar a atualização. Tente novamente.','warn',3000);return false;}
   }
 
@@ -1714,6 +1717,12 @@
       plane:{id:'plane',mode:'plane',model:'light',livery:'tour',height:.92,label:'Embarque no avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},
       helicopter:{id:'helicopter',mode:'helicopter',model:'helicopter',livery:'tour',height:1.0,label:'Embarque no helicóptero',x:50,z:-165,yaw:0,radius:6}
     }),
+    // Decorative buildings occupy real space too. Keep the complete skyline,
+    // with the northern row clear of the snow pass, chalets and balloon basket.
+    skyline:Object.freeze([
+      [-112,-205,12,12,10,0xe77a32,0xffd75a],[-84,-207,11,17,9,0x35a8e8,0xffffff],[-54,-207,13,14,9,0x8b5cf6,0xf4d35e],[-24,-206,11,18,9,0x46b96a,0xffffff],[24,-248,12,16,9,0xe84a6f,0xffef98],[58,-248,13,20,10,0x2f7fd8,0xffffff],[96,-248,12,14,10,0xf09c35,0x45d7ff],
+      [-108,205,13,16,10,0x4f9fd7,0xffffff],[-74,188,11,19,9,0xe86a3d,0xffed84],[-36,184,12,14,9,0x65b85d,0xffffff],[5,199,12,18,10,0x8a62d4,0x5ee7ff],[58,198,13,15,9,0xe44a4a,0xffffff],[102,192,11,20,10,0x3b91d1,0xffed84]
+    ].map(([x,z,w,h,d,color,accent])=>Object.freeze({x,z,w,h,d,color,accent}))),
     cities:Object.freeze({
       aurora:{id:'aurora',label:'Nova Aurora',x:300,z:-40,color:0x638fa9},
       costa:{id:'costa',label:'Costa Verde',x:-300,z:110,color:0x58a38f}
@@ -1977,6 +1986,9 @@
       {id:'police-west',kind:'house',point:'policeWest',w:9,d:7,margin:1.4},
       {id:'fire-station',kind:'house',point:'fireStation',w:9,d:7,margin:1.4},
       {id:'cabin',kind:'house',point:'cabin',w:9,d:7,margin:1.2},
+      {id:'civil-snow-home-0',kind:'civil-home',x:-12,z:202,w:9,d:7,margin:1.0},
+      {id:'civil-snow-home-1',kind:'civil-home',x:-36,z:202,w:9,d:7,margin:1.0},
+      {id:'civil-snow-home-2',kind:'civil-home',x:-60,z:202,w:9,d:7,margin:1.0},
       {id:'stadium',kind:'sport',point:'sports',w:62,d:43,margin:.5},
       {id:'football-field',kind:'sport-inner',point:'sports',w:42,d:18,margin:0,inside:'stadium'},
       {id:'volley',kind:'sport',point:'volley',w:14,d:22,margin:.6},
@@ -2035,7 +2047,9 @@
     }
     return false;
   }
-  function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin,len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
+  function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin;
+    if(Math.max(seg.a.x,seg.b.x)+width<rect.x-rect.w/2||Math.min(seg.a.x,seg.b.x)-width>rect.x+rect.w/2||Math.max(seg.a.z,seg.b.z)+width<rect.z-rect.d/2||Math.min(seg.a.z,seg.b.z)-width>rect.z+rect.d/2)continue;
+    const len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
   function v704RoadAt(x,z,margin=0,includeSidewalk=false){
     const px=Number(x),pz=Number(z),side=includeSidewalk?2.7:0;
     // Same inclusive footprints, without allocating a point and spreading an
@@ -2079,7 +2093,9 @@
     for(const item of structures.filter(s=>!['terrain'].includes(s.kind)))for(const hazard of water)if(v704RectOverlap(item,hazard,.1))problems.push({type:'structure-in-water',a:item.id,b:hazard.id});
     for(const path of WORLD_LAYOUT_V704.paths){const rect=v704PathRect(path);for(const structure of structures){if(['construction-zone'].includes(structure.id)||path.destination===structure.id)continue;const startInside=v704PointInRect({x:path.x1,z:path.z1},structure,.1),endInside=v704PointInRect({x:path.x2,z:path.z2},structure,.1);if(!startInside&&!endInside&&v704RectOverlap(rect,structure,.2))problems.push({type:'path-through-structure',a:path.id,b:structure.id});}}
     for(const sign of WORLD_LAYOUT_V704.signs||[]){const point=sign.kind==='highway'?v704HighwaySignPoint(sign):{x:Number(sign.x),z:Number(sign.z)};if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.z)){problems.push({type:'sign-invalid',a:sign.id});continue;}if(point.x<bounds.minX||point.x>bounds.maxX||point.z<bounds.minZ||point.z>bounds.maxZ)problems.push({type:'sign-out-of-bounds',a:sign.id});if(sign.kind==='guide'){if(roads.some(road=>v704PointInRect(point,road,.18)))problems.push({type:'guide-sign-on-road',a:sign.id});for(const highway of WORLD_LAYOUT_V704.highways||[])if(v704HighwayIntersectsRect(highway.id,{x:point.x,z:point.z,w:.3,d:.3},.1))problems.push({type:'guide-sign-on-highway',a:sign.id,b:highway.id});for(const hazard of water)if(v704PointInRect(point,hazard,.2))problems.push({type:'guide-sign-in-water',a:sign.id,b:hazard.id});for(const structure of structures)if(structure.kind!=='construction'&&v704PointInRect(point,structure,.15))problems.push({type:'guide-sign-in-structure',a:sign.id,b:structure.id});}else if(sign.kind==='highway'){const highway=v704HighwayById(sign.highwayId);if(!highway)problems.push({type:'highway-sign-route-missing',a:sign.id,b:sign.highwayId});}}
-    return{version:704,passed:problems.length===0,problems,roads:roads.length,highways:(WORLD_LAYOUT_V704.highways||[]).length,structures:structures.length,zones:Object.keys(WORLD_LAYOUT_V704.zones).length,paths:WORLD_LAYOUT_V704.paths.length,signs:(WORLD_LAYOUT_V704.signs||[]).length};
+    const backdrops=WORLD_LAYOUT_V704.skyline.map(p=>({id:'backdrop-'+p.x+'-'+p.z,x:p.x,z:p.z,w:p.w+.3,d:p.d+1}));
+    problems.push(...v704BackdropAudit(backdrops,structures));
+    return{version:704,passed:problems.length===0,problems,roads:roads.length,highways:(WORLD_LAYOUT_V704.highways||[]).length,structures:structures.length,backdrops:backdrops.length,zones:Object.keys(WORLD_LAYOUT_V704.zones).length,paths:WORLD_LAYOUT_V704.paths.length,signs:(WORLD_LAYOUT_V704.signs||[]).length};
   }
   function v704ActualHouseRect(house){
     if(!house)return null;
@@ -2093,6 +2109,16 @@
     while(queue.length){const index=queue.shift(),node=nodes[index];if(v704RoadAt(node.x,node.z,.85,true))return true;for(const next of [node.peer,...nodes.map((other,otherIndex)=>otherIndex!==index&&Math.hypot(other.x-node.x,other.z-node.z)<=1.15?otherIndex:-1).filter(otherIndex=>otherIndex>=0)])if(!visited.has(next)){visited.add(next);queue.push(next);}}
     return false;
   }
+  function v704BackdropAudit(backdrops,structures){
+    const problems=[],roads=WORLD_LAYOUT_V704.roads.map(r=>v704RoadFootprint(r,true));
+    for(const p of backdrops){
+      for(const r of roads)if(v704RectOverlap(p,r,.65))problems.push({type:'backdrop-on-road',a:p.id,b:r.id});
+      for(const r of WORLD_LAYOUT_V704.highways)if(v704HighwayIntersectsRect(r.id,p,.65))problems.push({type:'backdrop-on-highway',a:p.id,b:r.id});
+      for(const s of structures)if(!['terrain','construction'].includes(s.kind)&&v704RectOverlap(p,s,.65))problems.push({type:'backdrop-on-structure',a:p.id,b:s.id});
+    }
+    for(let i=0;i<backdrops.length;i++)for(let j=i+1;j<backdrops.length;j++)if(v704RectOverlap(backdrops[i],backdrops[j],.65))problems.push({type:'backdrop-overlap',a:backdrops[i].id,b:backdrops[j].id});
+    return problems;
+  }
   function v704RuntimeWorldAudit(){
     const problems=[],roads=WORLD_LAYOUT_V704.roads.map(road=>v704RoadFootprint(road,true)),protectedRects=v704ProtectedRectangles(),houses=(world?.houses||[]).map(v704ActualHouseRect).filter(Boolean),vehicles=world?.vehicles||[],hazards=world?.hazards||[];
     const add=(type,a,b='',detail='')=>problems.push({type,a:String(a||''),b:String(b||''),detail:String(detail||'')});
@@ -2105,7 +2131,9 @@
     const spawn=worldLayoutPoint('spawn');if(typeof positionBlockedForPlayer==='function'&&positionBlockedForPlayer(spawn.x,spawn.z,.42,{ignoreTraffic:true,allowWater:false}))add('spawn-blocked','spawn');
     const important=['sportsEntrance','footballEntrance','volleyEntrance','footvolleyEntrance','kartEntrance','farmEntrance','castleEntrance','mountainEntrance','constructionEntrance','ottoviasEntry','ottoviasOperationsAccess','ottoviasTollSouth','ottoviasTollField','ottoviasTollBeach'];for(const id of important){const p=worldLayoutPoint(id);if(typeof nearestRoadProjection==='function'){const projection=nearestRoadProjection(p),pathConnected=v704PathConnectedToRoad(p);if((!projection||projection.distance>18||projection.clear===false)&&!pathConnected)add('destination-inaccessible',id,'road-or-path',projection?`distance=${projection.distance.toFixed(1)}`:'no-projection');}}
     const names={};worldGroup?.traverse?.(object=>{const name=String(object.name||'');if(name)names[name]=(names[name]||0)+1;});for(const name of['OTTHI_V702_FARM','OTTHI_V702_MOUNTAIN','OTTHI_V704_SPORTS','OTTHI_V704_KART'])if((names[name]||0)>1)add('duplicate-world-system',name,String(names[name]));
-    const result={version:704,passed:problems.length===0,problems,houses:houses.length,vehicles:vehicles.length,colliders:world?.colliders?.length||0,hazards:hazards.length,interactables:world?.interactables?.length||0,at:Date.now()};world.layoutAuditRuntime=result;if(!result.passed)console.error('[OTTHI V704] auditoria geométrica do mundo real',problems);return result;
+    const backdrops=(world?.landmarks||[]).filter(g=>g.userData?.backdropFootprint).map(g=>({id:g.name,x:g.position.x,z:g.position.z,...g.userData.backdropFootprint}));
+    for(const p of v704BackdropAudit(backdrops,houses))add(p.type,p.a,p.b);
+    const result={version:704,passed:problems.length===0,problems,houses:houses.length,backdrops:backdrops.length,vehicles:vehicles.length,colliders:world?.colliders?.length||0,hazards:hazards.length,interactables:world?.interactables?.length||0,at:Date.now()};world.layoutAuditRuntime=result;if(!result.passed)console.error('[OTTHI V704] auditoria geométrica do mundo real',problems);return result;
   }
   window.OTTHI_WORLD_LAYOUT_V704={layout:WORLD_LAYOUT_V704,point:worldLayoutPoint,zone:worldLayoutRect,structure:worldLayoutStructure,staticAudit:v704StaticWorldAudit,runtimeAudit:v704RuntimeWorldAudit,audit:v704StaticWorldAudit,roadAt:v704RoadAt,highwayAt:v704HighwayAt,highwayById:v704HighwayById,highwaySignPoint:v704HighwaySignPoint,highwaySegments:v704HighwaySegments,reservedAt:v704ReservedAt,buildAllowedAt:v704BuildAllowedAt,constructionSlot:v704NearestConstructionSlot,zonesAt:v704ZoneAt,bounds:v704WorldBounds,clamp:v704ClampWorldPoint};
 
@@ -4444,7 +4472,7 @@
     box(w*.54,.28,.42,renderMat(accent,{roughness:.58}),0,.86,front+(z<0?.18:-.18),high);
     box(w*.7,.22,d*.35,dark,0,h+.47,0,high);
     box(w,h,d,main,0,h/2,0,low);box(w+.3,.35,d+.3,dark,0,h+.18,0,low);box(w*.62,h*.58,.06,windowMat,0,h*.55,front,low);
-    const g=createManagedLOD(`backdrop-${x}-${z}`,high,low,{distance:68,category:'backdrop'});g.position.set(x,0,z);worldGroup.add(g);world.landmarks.push(g);return g;
+    const g=createManagedLOD(`backdrop-${x}-${z}`,high,low,{distance:68,category:'backdrop'});g.position.set(x,0,z);g.userData.backdropFootprint={w:w+.3,d:d+1};worldGroup.add(g);world.landmarks.push(g);return g;
   }
   function createFloatingIsland(x,y,z,scale=1){
     const g=new THREE.Group();g.position.set(x,y,z);worldGroup.add(g);premiumBox(8*scale,1.2*scale,7*scale,0x4ba944,0,0,0,g);premiumBox(6.8*scale,.5*scale,6.2*scale,0x7bd45b,0,.82*scale,0,g);
@@ -4454,9 +4482,7 @@
     const coinMat=mat(0xffd52e,{emissive:0xb26b00,emissiveIntensity:.32,metalness:.18,roughness:.3});points.forEach(([x,z],i)=>{const c=new THREE.Mesh(new THREE.TorusGeometry(.34,.11,7,14),coinMat);c.position.set(x,1.15+Math.sin(i*.7)*.18,z);c.rotation.y=Math.PI/2;worldGroup.add(c);world.landmarks.push(c);});
   }
   function createCommercialDistrict(){
-    // Skyline deslocado para fora dos novos limites da OTTOVIAS: nenhum prédio decorativo invade a rodovia ou os biomas.
-    [[-112,-205,12,12,10,0xe77a32,0xffd75a],[-84,-207,11,17,9,0x35a8e8,0xffffff],[-54,-207,13,14,9,0x8b5cf6,0xf4d35e],[-24,-206,11,18,9,0x46b96a,0xffffff],[24,-248,12,16,9,0xe84a6f,0xffef98],[58,-248,13,20,10,0x2f7fd8,0xffffff],[96,-248,12,14,10,0xf09c35,0x45d7ff]].forEach(v=>createBackdropBuilding(...v));
-    [[-108,205,13,16,10,0x4f9fd7,0xffffff],[-74,207,11,19,9,0xe86a3d,0xffed84],[-36,207,12,14,9,0x65b85d,0xffffff],[18,207,12,18,10,0x8a62d4,0x5ee7ff],[58,207,13,15,9,0xe44a4a,0xffffff],[102,205,11,20,10,0x3b91d1,0xffed84]].forEach(v=>createBackdropBuilding(...v));
+    for(const p of WORLD_LAYOUT_V704.skyline)createBackdropBuilding(p.x,p.z,p.w,p.h,p.d,p.color,p.accent);
     createFloatingIsland(-188,36,-294,.75);createFloatingIsland(18,48,-315,.9);createFloatingIsland(190,30,-305,.65);
     [[-28,-28],[-38,-28],[38,-28],[48,-28],[-28,44],[-38,44],[22,44],[32,44]].forEach(([x,z])=>{if(!v704ReservedAt(x,z,.8))createStreetTree(x,z,.72);});
     createCoinTrail([[72,-35],[77,-39],[82,-43],[87,-47],[92,-51],[97,-55]]);
@@ -8256,7 +8282,16 @@
   }
   function showWorldLoading(progress,label){
     const value=clamp(Math.round(Number(progress)||0),0,100);
-    openModal('Preparando o mundo',`<div class="parent-gate"><span>🌎</span><h3>${label}</h3><p>Seu progresso já está protegido neste aparelho.</p><div class="mission-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><i style="width:${value}%"></i></div><small>${value}%</small></div>`);
+    const loading=els.modalBody?.querySelector('[data-world-loading]');
+    if(loading&&!els.modal.hidden&&els.modalTitle.textContent==='Preparando o mundo'){
+      loading.querySelector('h3').textContent=label;
+      const bar=loading.querySelector('[role="progressbar"]');
+      bar.setAttribute('aria-valuenow',String(value));
+      bar.firstElementChild.style.width=value+'%';
+      loading.querySelector('small').textContent=value+'%';
+    }else{
+      openModal('Preparando o mundo',`<div class="parent-gate" data-world-loading><span>🌎</span><h3>${escapeHtml(label)}</h3><p>Seu progresso já está protegido neste aparelho.</p><div class="mission-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><i style="width:${value}%"></i></div><small>${value}%</small></div>`);
+    }
     if(els.modalClose)els.modalClose.hidden=true;
   }
   function showWorldLoadFailure(error,resetPosition){
@@ -8436,7 +8471,7 @@
       if(otGames.active)otGamesLeave({preserveCampaign:true});
       if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
       savePlayerPosition(true);await saveState(true);
-      location.assign(new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
+      location.assign(window.OTTHI_CANONICAL?.consoleUrl || new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
     }catch(error){consoleLeaving=false;toast('Não foi possível guardar a saída. Tente novamente.','warn',2500);}
   }};
 
@@ -9653,8 +9688,19 @@ function build(T,key,H){
   }
 
   const extendedTerrainRoads=v704HighwaySegments().filter(s=>s.a.y!==undefined||s.b.y!==undefined);
+  const terrainRoadRadius=32;
+  const terrainRoadCells=new Map(),emptyTerrainRoadCell=[];
+  for(const {a,b,width,shoulder} of extendedTerrainRoads){
+    const dx=b.x-a.x,dz=b.z-a.z;
+    const seg={a,b,dx,dz,invLengthSquared:1/(dx*dx+dz*dz||1),rise:Number(b.y||0)-Number(a.y||0),height:Number(a.y||0),edge:width/2+shoulder+1.4,loX:Math.min(a.x,b.x)-terrainRoadRadius,hiX:Math.max(a.x,b.x)+terrainRoadRadius,loZ:Math.min(a.z,b.z)-terrainRoadRadius,hiZ:Math.max(a.z,b.z)+terrainRoadRadius};
+    for(let ix=Math.floor(seg.loX/terrainRoadRadius);ix<=Math.floor(seg.hiX/terrainRoadRadius);ix++)for(let iz=Math.floor(seg.loZ/terrainRoadRadius);iz<=Math.floor(seg.hiZ/terrainRoadRadius);iz++){
+      const key=ix+':'+iz;
+      if(!terrainRoadCells.has(key))terrainRoadCells.set(key,[]);
+      terrainRoadCells.get(key).push(seg);
+    }
+  }
   function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){if(Math.abs(x-p.x)>=p.rx||Math.abs(z-p.z)>=p.rz)continue;const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
-  function professionalTerrainHeightAt(x,z){
+  function professionalTerrainHeightAt(x,z,roadbedClearance=0){
     if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
     const mountainPoint=worldLayoutPoint('mountain',{x:-88,z:104}),nx=(x-mountainPoint.x)/24,nz=(z-mountainPoint.z)/20,r=Math.hypot(nx,nz);let mountain=0;
@@ -9662,9 +9708,27 @@ function build(T,key,H){
     // Colinas do deserto, baixas o suficiente para não cobrir prédios ou vias.
     let dune=0;if(x>70&&z>-61&&z<-24){const a=Math.max(0,1-Math.hypot((x-91)/25,(z+42)/20));dune=Math.max(0,Math.sin((x+z)*.12)*.45+.55)*a*2.1;}
     let height=Math.max(0,mountain,dune,mountainRangeHeightAt(x,z));
-    // Raised mountain passes and the terrain share exactly the same height.
-    let nearest=null;for(const seg of extendedTerrainRoads){if(x<Math.min(seg.a.x,seg.b.x)-32||x>Math.max(seg.a.x,seg.b.x)+32||z<Math.min(seg.a.z,seg.b.z)-32||z>Math.max(seg.a.z,seg.b.z)+32)continue;const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
-    if(nearest){const edge=nearest.seg.width/2+nearest.seg.shoulder+1.4,t=clamp((nearest.distance-edge)/24,0,1),grade=lerp(Number(nearest.seg.a.y||0),Number(nearest.seg.b.y||0),nearest.t);height=lerp(grade,height,t*t*(3-2*t));}
+    // A hard nearest-segment switch made wheel height jump by over a metre
+    // beside mountain junctions. Adjacent grades now meet continuously. A
+    // centreline's inverse-distance weight still preserves its design grade.
+    let roadWeight=0,roadGrade=0,roadEdgeDistance=Infinity;
+    const cell=terrainRoadCells.get(Math.floor(x/terrainRoadRadius)+':'+Math.floor(z/terrainRoadRadius))||emptyTerrainRoadCell;
+    for(const seg of cell){
+      if(x<seg.loX||x>seg.hiX||z<seg.loZ||z>seg.hiZ)continue;
+      const ax=x-seg.a.x,az=z-seg.a.z,t=clamp((ax*seg.dx+az*seg.dz)*seg.invLengthSquared,0,1);
+      const dx=ax-seg.dx*t,dz=az-seg.dz*t,d2=dx*dx+dz*dz;
+      if(d2>=terrainRoadRadius*terrainRoadRadius)continue;
+      const distance=Math.sqrt(d2),fade=1-distance/terrainRoadRadius,weight=fade*fade*fade*fade/Math.max(1e-8,d2);
+      roadWeight+=weight;roadGrade+=weight*(seg.height+seg.rise*t);
+      roadEdgeDistance=Math.min(roadEdgeDistance,distance-seg.edge);
+    }
+    if(roadWeight){const t=clamp(roadEdgeDistance/24,0,1);height=lerp(roadGrade/roadWeight,height,t*t*(3-2*t));}
+    if(roadbedClearance>0){
+      // Coarse terrain triangles can interpolate into the pavement. A shallow
+      // cut beneath the raised road tapers back to the scenery past its edge.
+      const t=clamp(roadEdgeDistance/3,0,1);
+      height-=Math.min(roadbedClearance,Math.max(0,height-.07))*(1-t*t*(3-2*t));
+    }
     const launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
   }
   function v702TextureMaterial(pack,color,options={}){
@@ -11067,7 +11131,8 @@ function build(T,key,H){
   // Keep the original 2D game in this tab. A failed activity request must leave
   // the city and its return button available, rather than a browser error page.
   function venueOpenDocument(s){
-    const url=new URL('../'+s.venue.slug+'/index.html',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);
+    const baseUrl=window.OTTHI_CANONICAL?.game(s.venue.slug) || new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);
+    const url=new URL('index.html',baseUrl);url.searchParams.set('otVenue',s.token);
     let request=null,timer=0,attempt=0,closed=false;
     const main=s.ui.querySelector('main'),status=s.ui.querySelector('[data-venue-loading]');
     const account=document.createElement('button');account.type='button';account.dataset.venueAccount='';account.textContent='CONTA ONLINE';account.disabled=true;s.ui.querySelector('header').insertBefore(account,s.ui.querySelector('[data-venue-close]'));
@@ -11108,7 +11173,7 @@ function build(T,key,H){
     if(worldVenues.session!==s)return;
     const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.venue.gameId||(s.id==='pingpong'?'tennis':'box_pro'),label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
     if(!trip){s.leaving=false;if(status)status.textContent='Não foi possível guardar o retorno. Volte ao mundo e tente novamente.';return;}
-    s.cleanup?.();const url=new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
+    s.cleanup?.();const url=new URL(window.OTTHI_CANONICAL?.game(s.venue.slug) || '../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
   function venueOpen(id){
     const v=WORLD_ACTIVITY_VENUES[id];
@@ -12075,16 +12140,106 @@ function precompile(T,renderer,scene,camera){
  function roadJoinedPoint(route,index,offset){const p=route.points,n=roadNormal(p[index],p[(index+1)%p.length]);if(!route.closed&&index===0)return{x:p[0].x+n.x*offset,z:p[0].z+n.z*offset};if(!route.closed&&index===p.length-1){const q=roadNormal(p[index-1],p[index]);return{x:p[index].x+q.x*offset,z:p[index].z+q.z*offset};}const prev=roadNormal(p[(index-1+p.length)%p.length],p[index]),len=Math.hypot(n.x+prev.x,n.z+prev.z)||1,m={x:(n.x+prev.x)/len,z:(n.z+prev.z)/len},dot=m.x*n.x+m.z*n.z,scale=offset*clamp(1/Math.max(.1,dot),1,1.8);return{x:p[index].x+m.x*scale,z:p[index].z+m.z*scale};}
  function roadJunctionAt(x,z,route,index,margin=1.1){const a=route.points[index],b=route.points[(index+1)%route.points.length],dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz)||1;for(const other of(worldRoadContinuity.routes||worldRoadRoutes())){if(other.id===route.id)continue;for(let i=0;i<other.points.length-(other.closed?0:1);i++){const c=other.points[i],d=other.points[(i+1)%other.points.length],ox=d.x-c.x,oz=d.z-c.z,ol=Math.hypot(ox,oz)||1;if(Math.abs((dx*ox+dz*oz)/(len*ol))>.985)continue;const q=projectPointToSegment({x,z},c,d);if(Math.hypot(x-q.x,z-q.z)<other.width/2+margin)return true;}}return false;}
  function createWorldRoadContinuity(){
-  if(worldRoadContinuity.ready||!worldExpansion.ready)return;const root=new THREE.Group();root.name='OTTHI_CONTINUOUS_ROAD_SURFACE';worldGroup.add(root);const routes=worldRoadRoutes();worldRoadContinuity.routes=routes;const parts={asphalt:[],shoulder:[],white:[],yellow:[]},uv={asphalt:[],shoulder:[],white:[],yellow:[]};
-  const triangle=(kind,a,b,c,h)=>{for(const p of[a,b,c]){parts[kind].push(p.x,professionalTerrainHeightAt(p.x,p.z)+h,p.z);uv[kind].push(p.x*.22,p.z*.22);}},strip=(kind,a,b,c,d,h)=>{triangle(kind,a,b,c,h);triangle(kind,a,c,d,h);};
-  const ribbon=(r,i,offset,width,kind,h,from=0,to=1)=>{const j=(i+1)%r.points.length,a=roadJoinedPoint(r,i,offset+width/2),b=roadJoinedPoint(r,j,offset+width/2),c=roadJoinedPoint(r,j,offset-width/2),d=roadJoinedPoint(r,i,offset-width/2),n=Math.max(1,Math.ceil(Math.hypot(r.points[j].x-r.points[i].x,r.points[j].z-r.points[i].z)*(to-from)/2)),at=(a,b,t)=>({x:lerp(a.x,b.x,t),z:lerp(a.z,b.z,t)});for(let k=0;k<n;k++){const t=from+(to-from)*k/n,u=from+(to-from)*(k+1)/n;strip(kind,at(a,b,t),at(a,b,u),at(d,c,u),at(d,c,t),h);}};
-  const disc=(p,r,kind,h)=>{for(let k=0;k<28;k++){const a=k*Math.PI/14,b=(k+1)*Math.PI/14;triangle(kind,p,{x:p.x+Math.cos(b)*r,z:p.z+Math.sin(b)*r},{x:p.x+Math.cos(a)*r,z:p.z+Math.sin(a)*r},h);}};
-  for(const r of routes){for(let i=0;i<r.points.length-(r.closed?0:1);i++){if(r.shoulder)ribbon(r,i,0,r.width+r.shoulder*2,'shoulder',.064);ribbon(r,i,0,r.width+.10,'asphalt',.105);const a=r.points[i],b=r.points[(i+1)%r.points.length],length=Math.hypot(b.x-a.x,b.z-a.z),mark=(offset,width,kind,dash=false)=>{let start=null;const n=Math.max(1,Math.ceil(length/.8));for(let k=0;k<=n;k++){const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i,1.1)&&(!dash||(t*length)%6.5<3.5);if(valid&&start===null)start=t;if(!valid&&start!==null){ribbon(r,i,offset,width,kind,.114,start,t);start=null;}}};mark(-.13,.095,'yellow',r.kind==='street');mark(.13,.095,'yellow',r.kind==='street');mark(-r.width/2+.38,.10,'white');mark(r.width/2-.38,.10,'white');if(r.width>=12.3){mark(-3.15,.08,'white',true);mark(3.15,.08,'white',true);}}for(const p of r.points){if(r.shoulder)disc(p,(r.width+r.shoulder*2)/2,'shoulder',.064);disc(p,(r.width+.10)/2,'asphalt',.105);}}
+  if(worldRoadContinuity.ready||!worldExpansion.ready)return;
+  const root=new THREE.Group();root.name='OTTHI_CONTINUOUS_ROAD_SURFACE';worldGroup.add(root);
+  const routes=worldRoadRoutes();worldRoadContinuity.routes=routes;
+  const layers=()=>({asphalt:[],shoulder:[],white:[],yellow:[]});
+  const base={parts:layers(),uv:layers()},regions=new Map();
+  let regional=false;
+  function triangle(kind,a,b,c,h){
+   let batch=base;
+   if(regional){
+    // Keep the finer mountain geometry out of the render budget from town.
+    // A whole triangle belongs to one cell, so batching cannot open seams.
+    const cellSize=128,key=Math.floor((a.x+b.x+c.x)/(3*cellSize))+'_'+Math.floor((a.z+b.z+c.z)/(3*cellSize));
+    if(!regions.has(key))regions.set(key,{parts:layers(),uv:layers()});
+    batch=regions.get(key);
+   }
+   for(const p of[a,b,c]){
+    batch.parts[kind].push(p.x,(p.roadY??professionalTerrainHeightAt(p.x,p.z))+h,p.z);
+    batch.uv[kind].push(p.x*.22,p.z*.22);
+   }
+  }
+  const strip=(kind,a,b,c,d,h)=>{triangle(kind,a,b,c,h);triangle(kind,a,c,d,h);};
+  const interpolate=(a,b,t)=>({x:lerp(a.x,b.x,t),z:lerp(a.z,b.z,t)});
+  const gradedRoutes=new Set(routes.filter(r=>r.points.some(p=>Number(p.y)!==0&&Number.isFinite(p.y))));
+  function gradedRow(left,right,bands){
+   const points=Array.from({length:bands+1},(_,i)=>{
+    const t=i/bands,p=interpolate(left,right,t);return {...p,t,roadY:professionalTerrainHeightAt(p.x,p.z)};
+   });
+   // Preserve a shared edge between strips and discard only samples which are
+   // within tolerance of that edge's piecewise-linear height.
+   const row=[points[0]];
+   function appendSpan(start,end){
+    let split=-1,error=.01;
+    for(let i=start+1;i<end;i++){
+     const deviation=Math.abs(points[i].roadY-lerp(points[start].roadY,points[end].roadY,(i-start)/(end-start)));
+     if(deviation>error){error=deviation;split=i;}
+    }
+    if(split>=0){appendSpan(start,split);appendSpan(split,end);}else row.push(points[end]);
+   }
+   appendSpan(0,bands);return row;
+  }
+  const ribbon=(r,i,offset,width,kind,h,from=0,to=1)=>{
+   const j=(i+1)%r.points.length,a=roadJoinedPoint(r,i,offset+width/2),b=roadJoinedPoint(r,j,offset+width/2),c=roadJoinedPoint(r,j,offset-width/2),d=roadJoinedPoint(r,i,offset-width/2);
+   const length=Math.hypot(r.points[j].x-r.points[i].x,r.points[j].z-r.points[i].z),graded=gradedRoutes.has(r),steps=Math.max(1,Math.ceil(length*(to-from)/(graded?1:2)));
+   // A two-triangle strip spanning the whole carriageway missed the cross
+   // slope at merges. Sample the same terrain used by the wheels across it.
+   const bands=graded?Math.max(1,Math.ceil(width/1.1)):1;
+   const rowAt=t=>{const left=interpolate(a,b,t),right=interpolate(d,c,t);return graded?gradedRow(left,right,bands):[{...left,t:0},{...right,t:1}];};
+   let prior=rowAt(from);
+   for(let k=1;k<=steps;k++){
+    const row=rowAt(lerp(from,to,k/steps));
+    let p=0,q=0;
+    while(p<prior.length-1||q<row.length-1){
+     if(q<row.length-1&&(p===prior.length-1||row[q+1].t<=prior[p+1].t))triangle(kind,prior[p],row[q],row[++q],h);
+     else triangle(kind,prior[p],row[q],prior[++p],h);
+    }
+    prior=row;
+   }
+  };
+  const disc=(p,r,kind,h,graded)=>{
+   const rings=graded?Math.ceil(r/1.1):1,sides=28;
+   for(let k=0;k<sides;k++){
+    const a=k*Math.PI*2/sides,b=(k+1)*Math.PI*2/sides,point=(angle,distance)=>({x:p.x+Math.cos(angle)*distance,z:p.z+Math.sin(angle)*distance});
+    triangle(kind,p,point(b,r/rings),point(a,r/rings),h);
+    for(let j=1;j<rings;j++)strip(kind,point(a,j*r/rings),point(b,j*r/rings),point(b,(j+1)*r/rings),point(a,(j+1)*r/rings),h);
+   }
+  };
+  for(const r of routes){
+   const graded=gradedRoutes.has(r);
+   regional=graded;
+   for(let i=0;i<r.points.length-(r.closed?0:1);i++){
+    if(r.shoulder)ribbon(r,i,0,r.width+r.shoulder*2,'shoulder',.064);
+    ribbon(r,i,0,r.width+.10,'asphalt',.105);
+    const a=r.points[i],b=r.points[(i+1)%r.points.length],length=Math.hypot(b.x-a.x,b.z-a.z);
+    const mark=(offset,width,kind,dash=false)=>{
+     let start=null;const n=Math.max(1,Math.ceil(length/.8));
+     for(let k=0;k<=n;k++){
+      const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i,1.1)&&(!dash||(t*length)%6.5<3.5);
+      if(valid&&start===null)start=t;
+      if(!valid&&start!==null){ribbon(r,i,offset,width,kind,graded?.132:.114,start,t);start=null;}
+     }
+    };
+    mark(-.13,.095,'yellow',r.kind==='street');mark(.13,.095,'yellow',r.kind==='street');mark(-r.width/2+.38,.10,'white');mark(r.width/2-.38,.10,'white');
+    if(r.width>=12.3){mark(-3.15,.08,'white',true);mark(3.15,.08,'white',true);}
+   }
+   for(const p of r.points){
+    if(r.shoulder)disc(p,(r.width+r.shoulder*2)/2,'shoulder',.064,graded);
+    disc(p,(r.width+.10)/2,'asphalt',.105,graded);
+   }
+  }
+  regional=false;
   const paint=(x,z,w,d)=>strip('white',{x:x-w/2,z:z-d/2},{x:x+w/2,z:z-d/2},{x:x+w/2,z:z+d/2},{x:x-w/2,z:z+d/2},.117);
   for(const j of CITY_SIGNALS)for(const sign of[-1,1]){for(let u=-j.ns/2+.5;u<j.ns/2-.5;u+=.95)paint(j.x+u,j.z+sign*(j.ew/2+1.05),.5,1.5);for(let u=-j.ew/2+.5;u<j.ew/2-.5;u+=.95)paint(j.x+sign*(j.ns/2+1.05),j.z+u,1.5,.5);paint(j.x-sign*j.ns/4,j.z+sign*(j.ew/2+2.15),j.ns/2-.65,.18);paint(j.x+sign*(j.ns/2+2.15),j.z+sign*j.ew/4,.18,j.ew/2-.65);}
   const asphalt=new THREE.MeshStandardMaterial({color:0x747b80,roughness:.94,side:THREE.DoubleSide});try{asphalt.map=loadWorldTexture('road','basecolor',{repeat:[1,1],color:true});asphalt.normalMap=loadWorldTexture('road','normal',{repeat:[1,1]});asphalt.normalScale.set(.24,.24);asphalt.roughnessMap=loadWorldTexture('road','roughness',{repeat:[1,1]});}catch{}
-  const mats={asphalt,shoulder:new THREE.MeshStandardMaterial({color:0x88918b,roughness:1,side:THREE.DoubleSide}),white:new THREE.MeshStandardMaterial({color:0xe4e6d9,roughness:.85,side:THREE.DoubleSide}),yellow:new THREE.MeshStandardMaterial({color:0xe8bd36,roughness:.86,side:THREE.DoubleSide})},counts={};
-  for(const[kind,vertices]of Object.entries(parts)){const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv[kind],2));geo.computeVertexNormals();geo.computeBoundingSphere();const mesh=new THREE.Mesh(geo,mats[kind]);mesh.name='ROAD_NETWORK_'+kind.toUpperCase();mesh.frustumCulled=false;mesh.receiveShadow=true;mesh.userData.criticalSurface=true;root.add(mesh);counts[kind]=vertices.length/9;}
+  const mats={asphalt,shoulder:new THREE.MeshStandardMaterial({color:0x88918b,roughness:1,side:THREE.DoubleSide}),white:new THREE.MeshStandardMaterial({color:0xe4e6d9,roughness:.85,side:THREE.DoubleSide}),yellow:new THREE.MeshStandardMaterial({color:0xe8bd36,roughness:.86,side:THREE.DoubleSide})};
+  const counts={asphalt:0,shoulder:0,white:0,yellow:0};
+  for(const [key,{parts,uv}] of [['',base],...regions])for(const [kind,vertices] of Object.entries(parts)){
+   if(!vertices.length)continue;
+   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv[kind],2));geo.computeVertexNormals();geo.computeBoundingSphere();
+   const mesh=new THREE.Mesh(geo,mats[kind]);mesh.name='ROAD_NETWORK_'+kind.toUpperCase()+(key?'_'+key:'');mesh.frustumCulled=!!key;mesh.receiveShadow=true;mesh.userData.criticalSurface=!key;root.add(mesh);counts[kind]+=vertices.length/9;
+  }
   for(const b of WORLD_LAYOUT_V704.roadBridges)for(const side of[-1,1]){const mat=new THREE.MeshStandardMaterial({color:0x92a4aa,roughness:.65,metalness:.25}),rail=new THREE.Mesh(new THREE.BoxGeometry(b.deckLength,.12,.12),mat);rail.position.set(b.x,b.deckHeight+.7,b.z+side*(b.width/2+.2));root.add(rail);for(const x of[-b.deckLength/2,b.deckLength/2]){const post=new THREE.Mesh(new THREE.BoxGeometry(.18,.8,.18),mat);post.position.set(b.x+x,b.deckHeight+.35,b.z+side*(b.width/2+.2));root.add(post);}}
   worldRoadContinuity.ready=true;worldRoadContinuity.root=root;worldRoadContinuity.geometry=counts;
  }
@@ -13047,7 +13202,7 @@ function precompile(T,renderer,scene,camera){
  const SNOW_TRAIL=Object.freeze([{id:'snow-trail-0',name:'Entrada dos Picos Nevados',x:0,z:260},{id:'snow-trail-1',name:'Passo da Neve',x:50,z:330},{id:'snow-trail-2',name:'Mirante da Cordilheira',x:10,z:410},{id:'snow-trail-3',name:'Refúgio Oeste',x:-110,z:410},{id:'snow-trail-4',name:'Retorno aos chalés',x:20,z:180}]);
  function cordilleraChunk(cx,cz,size=92){
   const segments=40,geometry=new THREE.PlaneGeometry(size,size,segments,segments);geometry.rotateX(-Math.PI/2);const positions=geometry.attributes.position,colors=[];let peak=0;
-  for(let i=0;i<positions.count;i++){const x=cx+positions.getX(i),z=cz+positions.getZ(i),y=professionalTerrainHeightAt(x,z);positions.setY(i,y-.025);peak=Math.max(peak,y);const range=(WORLD_LAYOUT_V704.mountainRanges||[]).filter(p=>Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz)<1.05).sort((a,b)=>b.height-a.height)[0],snow=range?.snow||x<190&&z>235;
+  for(let i=0;i<positions.count;i++){const x=cx+positions.getX(i),z=cz+positions.getZ(i),y=professionalTerrainHeightAt(x,z,.35);positions.setY(i,y-.025);peak=Math.max(peak,y);const range=(WORLD_LAYOUT_V704.mountainRanges||[]).filter(p=>Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz)<1.05).sort((a,b)=>b.height-a.height)[0],snow=range?.snow||x<190&&z>235;
    const color=new THREE.Color(snow?(y>28?0xe6edf0:y>9?0xc1d1d1:0xabc3b8):y>54?0x929c97:y>22?0x718376:0x6a9861).convertSRGBToLinear();const grain=.92+Math.sin(x*.53+Math.cos(z*.39))*.07;color.multiplyScalar(grain);colors.push(color.r,color.g,color.b);}
   geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.95,side:THREE.DoubleSide});const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(cx,0,cz);mesh.receiveShadow=true;mesh.name='OT_CORDILLERA_'+cx+'_'+cz;worldGroup.add(mesh);cordillera.chunks.push({mesh,x:cx,z:cz,peak});
  }
@@ -13230,7 +13385,7 @@ function precompile(T,renderer,scene,camera){
  window.OT_CIVIL_COMMUNITY={diagnostics:()=>({ready:civilCommunity.ready,houses:civilCommunity.houses.map(h=>({id:h.id,x:h.x,z:h.z,interactive:neighborhoodHome.houses.has(h.id)})),targets:[...civilCommunity.targets.values()].map(p=>({...p})),cable:{stations:CIVIL_CABLE,cabins:civilCommunity.cabins.map(c=>({id:c.index,...civilCableTiming(c.index),position:c.group.position.toArray()})),ride:civilCommunity.ride,waiting:civilCommunity.waiting},surfers:civilCommunity.surfers.map(s=>({id:s.npc.id,position:s.npc.group.position.toArray(),visible:s.npc.group.visible,board:s.board.visible})),seaTraffic:civilCommunity.seaTraffic.map(b=>({name:b.group.name,position:b.group.position.toArray(),visible:b.group.visible,crew:b.crew.length})),balloons:cordillera.balloons.length,sky:!!civilCommunity.sky,environment:!!scene?.environment,sledders:civilCommunity.sledders.map(s=>({id:s.npc.id,position:s.npc.group.position.toArray()}))})};
 
   // ===== MODULE: 66-civil-missions.js =====
- const civilMissions={ready:false,solo:null,shared:null,seq:0,waiters:new Map(),task:null,room:'',snapshotKey:'',authority:'',hudKey:'',lastSave:0,routeKey:'',syncingRoute:false};
+ const civilMissions={ready:false,solo:null,shared:null,seq:0,waiters:new Map(),task:null,starting:false,room:'',snapshotKey:'',authority:'',hudKey:'',lastSave:0,routeKey:'',syncingRoute:false};
  function civilNetUid(){return String(window.OTTHOS_RTDB?.uid||sharedWorldOwnId());}
  function civilSoloUid(){return String(window.OTTHOS_RTDB?.uid||state.account?.accountId||state.profile?.playerId||'local');}
  function civilOnline(){return !!window.OTTHOS_RTDB?.connected?.()&&!!window.OTTHOS_RTDB?.uid&&multiplayerV2Enabled();}
@@ -13299,6 +13454,42 @@ function precompile(T,renderer,scene,camera){
   if(p.step.requiresRide&&!p.record.rides[current.uid]?.[p.step.requiresRide]){const station=p.step.requiresRide==='cable-up'?'base':'top';return{id:'civil-cable-boarding',label:'Embarcar na '+CIVIL_CABLE[station].label,name:'Teleférico · embarque',...CIVIL_CABLE[station],x:CIVIL_CABLE[station].x+3.2,z:CIVIL_CABLE[station].z+3.4,boarding:true};}
   for(const id of p.step.targets){const token=`${p.record.phase}:${p.step.sharedSubjects?'team':current.uid}:${id}`;if(!p.record.tokens[token])return civilSubject(id,current.uid);}return null;
  }
+ // The photo follows the balloon's real body, including any unvisited nearby
+ // panorama. GPS may keep its suggested order without hiding another valid stop.
+ function civilNearbyFlightTarget(current=civilCurrent()){
+  const p=current&&current.book.progress(current.r.id,current.uid);if(!p?.step?.vehicle||!otGames.active||otGames.mode!==p.step.vehicle||p.count>=p.quota)return null;
+  const actor=civilActor(current.uid);if(!actor)return null;
+  let target=null,distance=Infinity;
+  for(const id of p.step.targets){if(!current.book.eligible(current.r.id,current.uid,current.r.phase,id))continue;const point=civilSubject(id,current.uid);if(!point)continue;const d=Math.hypot(actor.x-point.x,actor.z-point.z);if(d<distance){target=point;distance=d;}}
+  return target;
+ }
+ function civilSyncTaskButton(current=civilCurrent()){
+  let button=document.getElementById('civil-mission-task');if(!button){button=document.createElement('button');button.id='civil-mission-task';button.type='button';button.className='btn primary';}
+  // Aircraft controls live above #game, whose children are intentionally hidden
+  // while piloting. Move this same action into that active layer and back.
+  const host=otGames.active&&otGames.ui?otGames.ui:document.getElementById('game');if(button.parentNode!==host)host.append(button);
+  const p=current&&current.book.progress(current.r.id,current.uid),flying=!!(otGames.active&&p?.step?.vehicle===otGames.mode),target=flying?civilNearbyFlightTarget(current):civilAvailableTarget(current),focus=otGamesFocus(),near=!!target&&Math.hypot(focus.x-target.x,focus.z-target.z)<(target.radius||3.4)+.5;
+  button.hidden=!current||current.r.status!=='active'||!near||!!target?.boarding||!!currentHouse||!!civilCommunity.ride||otGames.active&&!flying||!flying&&!!civilMissions.task;
+  const valid=flying&&target&&civilValidateTask(current.book,current.r.id,current.uid,current.r.phase,target.id),task=civilMissions.task;
+  button.disabled=!!civilMissions.starting||!!task||flying&&!valid;
+  button.textContent=flying?task?.air?task.finishing?'Confirmando foto…':'Registrando · '+Math.min(99,Math.floor((airNow()-task.started)/task.duration*100))+'%':civilMissions.starting?'Preparando foto…':!civilTeamReady(current.r)?'Aguardando a dupla':!valid?'Suba · mínimo '+Number(target?.minAltitude||10)+' m':'📷 Tirar foto':p?.step?.action||'AÇÃO';
+  button.title=flying?'Permaneça sobre o panorama enquanto a foto é registrada. Atalho: F.':'';if(flying)button.setAttribute('aria-keyshortcuts','F');else button.removeAttribute('aria-keyshortcuts');
+  button.onclick=()=>civilTaskAt(target?.id);return button;
+ }
+ function civilTriggerFlightPhoto(){
+  if(!otGames.active||otGames.mode!=='balloon'||paused||!running||!els.modal.hidden)return false;
+  const button=civilSyncTaskButton();if(button.hidden||button.disabled)return false;button.click();return true;
+ }
+ window.addEventListener('keydown',event=>{
+  if(!otGames.active||otGames.mode!=='balloon'||event.code!=='KeyF'||event.target.closest?.('input,select,textarea,[contenteditable="true"]'))return;
+  event.preventDefault();event.stopImmediatePropagation();if(!event.repeat)civilTriggerFlightPhoto();
+ },true);
+ const civilFlightHudBefore=otGamesUpdateHUD;otGamesUpdateHUD=function(...args){
+  const result=civilFlightHudBefore(...args),current=civilCurrent(),p=current&&current.book.progress(current.r.id,current.uid);
+  if(otGames.active&&otGames.mode==='balloon'&&current?.r.status==='active'&&p?.definition){
+   const message=otGames.ui?.querySelector('.ot-games-mission');if(message)message.textContent=!civilTeamReady(current.r)?'Aguardando a dupla reconectar. Progresso preservado.':p.count>=p.quota?'Sua parte foi registrada. Aguardando a dupla.':p.step?.vehicle?'📷 '+p.step.title+' · '+p.count+'/'+p.quota+' · F ou Tirar foto no panorama':p.step?.title||p.definition.title;
+  }return result;
+ };
  function civilMissionLocation(){const p=civilAvailableTarget();return p?{...p,id:'civil-objective',name:p.label||p.name,label:p.label||p.name,navX:p.x,navZ:p.z,icon:p.icon||'🤝',group:'Missão atual',description:civilCurrent()?.book.progress(civilCurrent().r.id,civilCurrent().uid)?.step?.title||''}:null;}
  function civilRoute(force=false){const c=civilCurrent(),p=civilMissionLocation(),key=c?.r.id+':'+c?.r.phase+':'+p?.label;if(!p||!state.civilWorld.routeEnabled)return;if(force||key!==civilMissions.routeKey){civilMissions.routeKey=key;civilMissions.syncingRoute=true;setWaypoint('civil-objective');civilMissions.syncingRoute=false;}}
  const civilClearWaypointBefore=clearWaypoint;clearWaypoint=function(...args){if(!civilMissions.syncingRoute&&state.civilWorld&&state.waypoint?.id==='civil-objective')state.civilWorld.routeEnabled=false;return civilClearWaypointBefore(...args);};
@@ -13331,8 +13522,8 @@ function precompile(T,renderer,scene,camera){
   if(!running)return;openModal('OT GAMES · nosso mundo',worldExploreDirectoryHtml()+'<div class="modal-actions"><button class="btn primary" data-civil-missions>MISSÕES INDIVIDUAIS E COOP</button><button class="btn" data-civil-family>FAMÍLIA</button><button class="btn" data-civil-map>MAPA E GPS</button></div>',root=>{worldExploreBindDirectory(root);root.querySelector('[data-civil-missions]').onclick=()=>openCivilMissions();root.querySelector('[data-civil-family]').onclick=()=>{closeModal();window.OTTHI_FAMILY.open();};root.querySelector('[data-civil-map]').onclick=()=>{closeModal();openMap();};});
  }
  async function civilTaskAt(subject){
-  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.task||characterActivities.session)return;
-  const data={id:c.r.id,phase:c.r.phase,subject};if(!await civilCommand('begin',data)){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
+  if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.starting||civilMissions.task||characterActivities.session)return;
+  const data={id:c.r.id,phase:c.r.phase,subject};let accepted=false;civilMissions.starting=true;try{accepted=await civilCommand('begin',data);}finally{civilMissions.starting=false;}if(!accepted){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}const active=civilCurrent();if(!active||active.r.id!==data.id||active.r.phase!==data.phase||!civilValidateTask(active.book,data.id,active.uid,data.phase,subject)){civilCommand('cancel-task',data).catch(()=>{});return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
   if(otGames.active){civilMissions.task={...data,air:true,started:airNow(),duration};return;}
   const kind=subject.startsWith('fire-training')?'civil-hose':subject.startsWith('crossing-cone')?'civil-cone':subject==='crossing-neighbor'?'civil-escort':subject.startsWith('beach-litter')?'civil-pickup':'civil-deliver',point=kind==='civil-escort'?{x:309,z:46}:{x:player.x,z:player.z},pose={x:point.x,y:groundHeightAt(point.x,point.z),z:point.z,yaw:Math.atan2(target.x-player.x,target.z-player.z)};
   const started=beginCharacterActivity(kind,{target:point,pose,commit:()=>{civilCommand('finish',data).then(ok=>{if(!ok)toast('A etapa não foi confirmada. O progresso anterior continua salvo.','warn');});civilMissions.task=null;return true;}});
@@ -13342,10 +13533,9 @@ function precompile(T,renderer,scene,camera){
   if(!ensureCivilMissions())return;civilCheckRoom();civilApplyShared();civilPruneTransit();civilRebindSolo();const shared=civilMissions.shared.data,own=civilNetUid(),claim=shared.transit?.clients?.[own];
   if(claim&&!civilCommunity.ride){civilCommunity.ride={...claim};civilCommunity.waiting=null;clearMovementInputs();}
   const c=civilCurrent(),p=c&&c.book.progress(c.r.id,c.uid);if(c&&c.r.status==='completed'&&!state.civilWorld.rewardReceipts[c.r.id]){state.civilWorld.rewardReceipts[c.r.id]=Date.now();state.civilWorld.completedTypes[c.r.type]=(state.civilWorld.completedTypes[c.r.type]||0)+1;const amount=p.definition.reward+(c.r.difficulty==='hard'?50:0);addCoins(amount);addXP(50);awardMedal(p.definition.title);civilPersist();toast('Aventura concluída! +'+amount+' moedas.','good',4000);}
-  if(civilMissions.task){const t=civilMissions.task;if(!c||c.r.id!==t.id||!civilTeamReady(c.r)||!civilValidateTask(c.book,t.id,c.uid,t.phase,t.subject)||!t.air&&!characterActivities.session){civilCommand('cancel-task',t).catch(()=>{});if(characterActivities.session?.kind.startsWith('civil-'))stopCharacterActivity();civilMissions.task=null;}else if(t.air&&airNow()-t.started>=t.duration){civilMissions.task=null;civilCommand('finish',t).catch(()=>{});}}
+  if(civilMissions.task){const t=civilMissions.task;if(!t.finishing){if(!c||c.r.id!==t.id||!civilTeamReady(c.r)||!civilValidateTask(c.book,t.id,c.uid,t.phase,t.subject)||!t.air&&!characterActivities.session){civilCommand('cancel-task',t).catch(()=>{});if(characterActivities.session?.kind.startsWith('civil-'))stopCharacterActivity();civilMissions.task=null;}else if(t.air&&airNow()-t.started>=t.duration){t.finishing=true;civilCommand('finish',t).then(ok=>{toast(ok?'📷 Paisagem registrada!':'A foto não foi confirmada. Tente novamente no panorama.',ok?'good':'warn',2400);}).catch(()=>{}).finally(()=>{if(civilMissions.task===t)civilMissions.task=null;});}}}
   for(const[id,mesh]of civilCommunity.props)if(id.startsWith('beach-litter-'))mesh.visible=!(c?.r.type==='beach'&&c.r.tokens['1:team:'+id]);
-  let button=document.getElementById('civil-mission-task');if(!button){button=document.createElement('button');button.id='civil-mission-task';button.className='btn primary';document.getElementById('game').append(button);}const target=civilAvailableTarget(c),near=!!target&&Math.hypot(otGamesFocus().x-target.x,otGamesFocus().z-target.z)<(target.radius||3.4)+.5;
-  button.hidden=!c||c.r.status!=='active'||!near||target.boarding||!!civilMissions.task||!!currentHouse||!!civilCommunity.ride;button.textContent=p?.step?.action||'AÇÃO';button.onclick=()=>civilTaskAt(target?.id);
+  civilSyncTaskButton(c);
   updateCivilHUD();if(c?.r.status==='active')civilRoute();
   if(airNow()-civilMissions.lastSave>8000){civilMissions.lastSave=airNow();civilPersist();}
  }

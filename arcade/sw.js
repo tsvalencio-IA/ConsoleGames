@@ -1,17 +1,36 @@
-/* thIAguinho ARCADE: PWA autónomo. O service worker NÃO controla os sete jogos.
-   Scope: /ConsoleGames/arcade/ - ID diferente do console anterior. */
+/* The console worker owns its shell. Each game keeps its own cache. */
 "use strict";
-const CACHE="thiaguinho-arcade-shell-v20";
-const SHELL=["./canonical-navigation.js","./account-access.js","./update.js","./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png","./icon-192-v2.png","./icon-512-v2.png","./icon-maskable-512-v2.png"];
+const SHELL_VERSION=21;
+const PREFIX="thiaguinho-arcade-shell-v";
+const SCOPE=new URL(self.registration.scope);
+const MOUNT='@'+encodeURIComponent(SCOPE.pathname);
+const CACHE=PREFIX+SHELL_VERSION+MOUNT;
+const SHELL=["./canonical-navigation.js?v=20261120","./account-access.js","./account-access.js?v=20261024-head1","./update.js","./","./index.html","./app.js","./styles.css","./firebase-config.js","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png","./icon-192-v2.png","./icon-512-v2.png","./icon-maskable-512-v2.png"];
+async function fillShell(cache){
+  const requests=SHELL.map(path=>new Request(new URL(path,self.registration.scope),{cache:'no-store',redirect:'error'}));
+  await cache.addAll(requests);
+}
 self.addEventListener("install",event=>{
-  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(fillShell).then(()=>self.skipWaiting()));
 });
 self.addEventListener("activate",event=>{
-  event.waitUntil((async()=>{try{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith("thiaguinho-arcade-shell-")&&key!==CACHE).map(key=>caches.delete(key)));}catch{}await self.clients.claim();})());
+  event.waitUntil((async()=>{
+    try{
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(key=>key.startsWith(PREFIX)&&key!==CACHE).map(async key=>{
+        const entries=key.includes('@')?null:await (await caches.open(key)).keys();
+        if(entries?entries.length&&entries.every(request=>request.url.startsWith(SCOPE.href)):key.endsWith(MOUNT))await caches.delete(key);
+      }));
+    }catch{}
+    await self.clients.claim();
+  })());
 });
-self.addEventListener('message',event=>{if(event.data?.type==='ARCADE_HEALTH')event.ports?.[0]?.postMessage({type:'ARCADE_HEALTH',version:20});});
+self.addEventListener('message',event=>{if(event.data?.type==='ARCADE_HEALTH')event.ports?.[0]?.postMessage({type:'ARCADE_HEALTH',version:SHELL_VERSION});});
 async function cachedResponse(request,navigation){
-  try{const cache=await caches.open(CACHE);return await cache.match(request)||await cache.match(request,{ignoreSearch:true})||(navigation?await cache.match('./index.html'):null)||null;}catch{return null;}
+  try{
+    const cache=await caches.open(CACHE);
+    return navigation ? await cache.match('./index.html') : await cache.match(request);
+  }catch{return null;}
 }
 async function navigationResponse(response){
   if(!response.redirected)return response;
@@ -29,9 +48,10 @@ async function networkFirst(event,navigation){
   try{
     const response=await fetch(request,{cache:"no-store"});
     if(response.type==='opaqueredirect')return response;
-    if(!response.ok)throw Error('Console HTTP '+response.status);
-    const url=new URL(request.url),shell=SHELL.some(path=>new URL(path,self.registration.scope).pathname===url.pathname);
-    if(shell){const copy=response.clone();event.waitUntil(caches.open(CACHE).then(cache=>cache.put(request,copy)).catch(()=>{}));}
+    if(!response.ok)return response;
+    if(navigation)event.waitUntil(caches.open(CACHE).then(async cache=>{
+      if(!await cache.match('./index.html'))await fillShell(cache);
+    }).catch(()=>{}));
     return navigation?await navigationResponse(response):response;
   }catch{
     const cached=await cachedResponse(request,navigation);
@@ -42,14 +62,15 @@ async function networkFirst(event,navigation){
 self.addEventListener("fetch",event=>{
   const request=event.request;
   if(request.method!=="GET")return;
-  const url=new URL(request.url),scopePath=new URL(self.registration.scope).pathname;
-  if(url.origin!==self.location.origin||!url.pathname.startsWith(scopePath))return;
-  // Leave installation and binary downloads to the browser. A failed APK request
-  // must never become the cached console HTML via the navigation fallback below.
-  if(url.pathname.startsWith(scopePath+"downloads/")||url.pathname.startsWith(scopePath+"instalar/"))return;
+  const url=new URL(request.url),scope=SCOPE;
+  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
   if(request.mode==="navigate"){
+    // Preview pages, installers and downloads own their own responses. The
+    // console shell can never impersonate them when the connection drops.
+    if(url.pathname!==scope.pathname&&url.pathname!==new URL('index.html',scope).pathname)return;
     event.respondWith(networkFirst(event,true));
     return;
   }
+  if(!SHELL.some(path=>new URL(path,scope).href===url.href))return;
   event.respondWith(networkFirst(event,false));
 });

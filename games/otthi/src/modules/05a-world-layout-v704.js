@@ -40,6 +40,12 @@
       plane:{id:'plane',mode:'plane',model:'light',livery:'tour',height:.92,label:'Embarque no avião',x:-5,z:-165,yaw:Math.PI/2,radius:6},
       helicopter:{id:'helicopter',mode:'helicopter',model:'helicopter',livery:'tour',height:1.0,label:'Embarque no helicóptero',x:50,z:-165,yaw:0,radius:6}
     }),
+    // Decorative buildings occupy real space too. Keep the complete skyline,
+    // with the northern row clear of the snow pass, chalets and balloon basket.
+    skyline:Object.freeze([
+      [-112,-205,12,12,10,0xe77a32,0xffd75a],[-84,-207,11,17,9,0x35a8e8,0xffffff],[-54,-207,13,14,9,0x8b5cf6,0xf4d35e],[-24,-206,11,18,9,0x46b96a,0xffffff],[24,-248,12,16,9,0xe84a6f,0xffef98],[58,-248,13,20,10,0x2f7fd8,0xffffff],[96,-248,12,14,10,0xf09c35,0x45d7ff],
+      [-108,205,13,16,10,0x4f9fd7,0xffffff],[-74,188,11,19,9,0xe86a3d,0xffed84],[-36,184,12,14,9,0x65b85d,0xffffff],[5,199,12,18,10,0x8a62d4,0x5ee7ff],[58,198,13,15,9,0xe44a4a,0xffffff],[102,192,11,20,10,0x3b91d1,0xffed84]
+    ].map(([x,z,w,h,d,color,accent])=>Object.freeze({x,z,w,h,d,color,accent}))),
     cities:Object.freeze({
       aurora:{id:'aurora',label:'Nova Aurora',x:300,z:-40,color:0x638fa9},
       costa:{id:'costa',label:'Costa Verde',x:-300,z:110,color:0x58a38f}
@@ -303,6 +309,9 @@
       {id:'police-west',kind:'house',point:'policeWest',w:9,d:7,margin:1.4},
       {id:'fire-station',kind:'house',point:'fireStation',w:9,d:7,margin:1.4},
       {id:'cabin',kind:'house',point:'cabin',w:9,d:7,margin:1.2},
+      {id:'civil-snow-home-0',kind:'civil-home',x:-12,z:202,w:9,d:7,margin:1.0},
+      {id:'civil-snow-home-1',kind:'civil-home',x:-36,z:202,w:9,d:7,margin:1.0},
+      {id:'civil-snow-home-2',kind:'civil-home',x:-60,z:202,w:9,d:7,margin:1.0},
       {id:'stadium',kind:'sport',point:'sports',w:62,d:43,margin:.5},
       {id:'football-field',kind:'sport-inner',point:'sports',w:42,d:18,margin:0,inside:'stadium'},
       {id:'volley',kind:'sport',point:'volley',w:14,d:22,margin:.6},
@@ -361,7 +370,9 @@
     }
     return false;
   }
-  function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin,len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
+  function v704HighwayIntersectsRect(highwayId,rect,margin=0){for(const seg of v704HighwaySegments().filter(x=>x.highwayId===highwayId)){const width=seg.width/2+seg.shoulder+margin;
+    if(Math.max(seg.a.x,seg.b.x)+width<rect.x-rect.w/2||Math.min(seg.a.x,seg.b.x)-width>rect.x+rect.w/2||Math.max(seg.a.z,seg.b.z)+width<rect.z-rect.d/2||Math.min(seg.a.z,seg.b.z)-width>rect.z+rect.d/2)continue;
+    const len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
   function v704RoadAt(x,z,margin=0,includeSidewalk=false){
     const px=Number(x),pz=Number(z),side=includeSidewalk?2.7:0;
     // Same inclusive footprints, without allocating a point and spreading an
@@ -405,7 +416,9 @@
     for(const item of structures.filter(s=>!['terrain'].includes(s.kind)))for(const hazard of water)if(v704RectOverlap(item,hazard,.1))problems.push({type:'structure-in-water',a:item.id,b:hazard.id});
     for(const path of WORLD_LAYOUT_V704.paths){const rect=v704PathRect(path);for(const structure of structures){if(['construction-zone'].includes(structure.id)||path.destination===structure.id)continue;const startInside=v704PointInRect({x:path.x1,z:path.z1},structure,.1),endInside=v704PointInRect({x:path.x2,z:path.z2},structure,.1);if(!startInside&&!endInside&&v704RectOverlap(rect,structure,.2))problems.push({type:'path-through-structure',a:path.id,b:structure.id});}}
     for(const sign of WORLD_LAYOUT_V704.signs||[]){const point=sign.kind==='highway'?v704HighwaySignPoint(sign):{x:Number(sign.x),z:Number(sign.z)};if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.z)){problems.push({type:'sign-invalid',a:sign.id});continue;}if(point.x<bounds.minX||point.x>bounds.maxX||point.z<bounds.minZ||point.z>bounds.maxZ)problems.push({type:'sign-out-of-bounds',a:sign.id});if(sign.kind==='guide'){if(roads.some(road=>v704PointInRect(point,road,.18)))problems.push({type:'guide-sign-on-road',a:sign.id});for(const highway of WORLD_LAYOUT_V704.highways||[])if(v704HighwayIntersectsRect(highway.id,{x:point.x,z:point.z,w:.3,d:.3},.1))problems.push({type:'guide-sign-on-highway',a:sign.id,b:highway.id});for(const hazard of water)if(v704PointInRect(point,hazard,.2))problems.push({type:'guide-sign-in-water',a:sign.id,b:hazard.id});for(const structure of structures)if(structure.kind!=='construction'&&v704PointInRect(point,structure,.15))problems.push({type:'guide-sign-in-structure',a:sign.id,b:structure.id});}else if(sign.kind==='highway'){const highway=v704HighwayById(sign.highwayId);if(!highway)problems.push({type:'highway-sign-route-missing',a:sign.id,b:sign.highwayId});}}
-    return{version:704,passed:problems.length===0,problems,roads:roads.length,highways:(WORLD_LAYOUT_V704.highways||[]).length,structures:structures.length,zones:Object.keys(WORLD_LAYOUT_V704.zones).length,paths:WORLD_LAYOUT_V704.paths.length,signs:(WORLD_LAYOUT_V704.signs||[]).length};
+    const backdrops=WORLD_LAYOUT_V704.skyline.map(p=>({id:'backdrop-'+p.x+'-'+p.z,x:p.x,z:p.z,w:p.w+.3,d:p.d+1}));
+    problems.push(...v704BackdropAudit(backdrops,structures));
+    return{version:704,passed:problems.length===0,problems,roads:roads.length,highways:(WORLD_LAYOUT_V704.highways||[]).length,structures:structures.length,backdrops:backdrops.length,zones:Object.keys(WORLD_LAYOUT_V704.zones).length,paths:WORLD_LAYOUT_V704.paths.length,signs:(WORLD_LAYOUT_V704.signs||[]).length};
   }
   function v704ActualHouseRect(house){
     if(!house)return null;
@@ -419,6 +432,16 @@
     while(queue.length){const index=queue.shift(),node=nodes[index];if(v704RoadAt(node.x,node.z,.85,true))return true;for(const next of [node.peer,...nodes.map((other,otherIndex)=>otherIndex!==index&&Math.hypot(other.x-node.x,other.z-node.z)<=1.15?otherIndex:-1).filter(otherIndex=>otherIndex>=0)])if(!visited.has(next)){visited.add(next);queue.push(next);}}
     return false;
   }
+  function v704BackdropAudit(backdrops,structures){
+    const problems=[],roads=WORLD_LAYOUT_V704.roads.map(r=>v704RoadFootprint(r,true));
+    for(const p of backdrops){
+      for(const r of roads)if(v704RectOverlap(p,r,.65))problems.push({type:'backdrop-on-road',a:p.id,b:r.id});
+      for(const r of WORLD_LAYOUT_V704.highways)if(v704HighwayIntersectsRect(r.id,p,.65))problems.push({type:'backdrop-on-highway',a:p.id,b:r.id});
+      for(const s of structures)if(!['terrain','construction'].includes(s.kind)&&v704RectOverlap(p,s,.65))problems.push({type:'backdrop-on-structure',a:p.id,b:s.id});
+    }
+    for(let i=0;i<backdrops.length;i++)for(let j=i+1;j<backdrops.length;j++)if(v704RectOverlap(backdrops[i],backdrops[j],.65))problems.push({type:'backdrop-overlap',a:backdrops[i].id,b:backdrops[j].id});
+    return problems;
+  }
   function v704RuntimeWorldAudit(){
     const problems=[],roads=WORLD_LAYOUT_V704.roads.map(road=>v704RoadFootprint(road,true)),protectedRects=v704ProtectedRectangles(),houses=(world?.houses||[]).map(v704ActualHouseRect).filter(Boolean),vehicles=world?.vehicles||[],hazards=world?.hazards||[];
     const add=(type,a,b='',detail='')=>problems.push({type,a:String(a||''),b:String(b||''),detail:String(detail||'')});
@@ -431,6 +454,8 @@
     const spawn=worldLayoutPoint('spawn');if(typeof positionBlockedForPlayer==='function'&&positionBlockedForPlayer(spawn.x,spawn.z,.42,{ignoreTraffic:true,allowWater:false}))add('spawn-blocked','spawn');
     const important=['sportsEntrance','footballEntrance','volleyEntrance','footvolleyEntrance','kartEntrance','farmEntrance','castleEntrance','mountainEntrance','constructionEntrance','ottoviasEntry','ottoviasOperationsAccess','ottoviasTollSouth','ottoviasTollField','ottoviasTollBeach'];for(const id of important){const p=worldLayoutPoint(id);if(typeof nearestRoadProjection==='function'){const projection=nearestRoadProjection(p),pathConnected=v704PathConnectedToRoad(p);if((!projection||projection.distance>18||projection.clear===false)&&!pathConnected)add('destination-inaccessible',id,'road-or-path',projection?`distance=${projection.distance.toFixed(1)}`:'no-projection');}}
     const names={};worldGroup?.traverse?.(object=>{const name=String(object.name||'');if(name)names[name]=(names[name]||0)+1;});for(const name of['OTTHI_V702_FARM','OTTHI_V702_MOUNTAIN','OTTHI_V704_SPORTS','OTTHI_V704_KART'])if((names[name]||0)>1)add('duplicate-world-system',name,String(names[name]));
-    const result={version:704,passed:problems.length===0,problems,houses:houses.length,vehicles:vehicles.length,colliders:world?.colliders?.length||0,hazards:hazards.length,interactables:world?.interactables?.length||0,at:Date.now()};world.layoutAuditRuntime=result;if(!result.passed)console.error('[OTTHI V704] auditoria geométrica do mundo real',problems);return result;
+    const backdrops=(world?.landmarks||[]).filter(g=>g.userData?.backdropFootprint).map(g=>({id:g.name,x:g.position.x,z:g.position.z,...g.userData.backdropFootprint}));
+    for(const p of v704BackdropAudit(backdrops,houses))add(p.type,p.a,p.b);
+    const result={version:704,passed:problems.length===0,problems,houses:houses.length,backdrops:backdrops.length,vehicles:vehicles.length,colliders:world?.colliders?.length||0,hazards:hazards.length,interactables:world?.interactables?.length||0,at:Date.now()};world.layoutAuditRuntime=result;if(!result.passed)console.error('[OTTHI V704] auditoria geométrica do mundo real',problems);return result;
   }
   window.OTTHI_WORLD_LAYOUT_V704={layout:WORLD_LAYOUT_V704,point:worldLayoutPoint,zone:worldLayoutRect,structure:worldLayoutStructure,staticAudit:v704StaticWorldAudit,runtimeAudit:v704RuntimeWorldAudit,audit:v704StaticWorldAudit,roadAt:v704RoadAt,highwayAt:v704HighwayAt,highwayById:v704HighwayById,highwaySignPoint:v704HighwaySignPoint,highwaySegments:v704HighwaySegments,reservedAt:v704ReservedAt,buildAllowedAt:v704BuildAllowedAt,constructionSlot:v704NearestConstructionSlot,zonesAt:v704ZoneAt,bounds:v704WorldBounds,clamp:v704ClampWorldPoint};

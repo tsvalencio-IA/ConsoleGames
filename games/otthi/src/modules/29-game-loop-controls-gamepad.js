@@ -168,7 +168,16 @@
   }
   function showWorldLoading(progress,label){
     const value=clamp(Math.round(Number(progress)||0),0,100);
-    openModal('Preparando o mundo',`<div class="parent-gate"><span>🌎</span><h3>${label}</h3><p>Seu progresso já está protegido neste aparelho.</p><div class="mission-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><i style="width:${value}%"></i></div><small>${value}%</small></div>`);
+    const loading=els.modalBody?.querySelector('[data-world-loading]');
+    if(loading&&!els.modal.hidden&&els.modalTitle.textContent==='Preparando o mundo'){
+      loading.querySelector('h3').textContent=label;
+      const bar=loading.querySelector('[role="progressbar"]');
+      bar.setAttribute('aria-valuenow',String(value));
+      bar.firstElementChild.style.width=value+'%';
+      loading.querySelector('small').textContent=value+'%';
+    }else{
+      openModal('Preparando o mundo',`<div class="parent-gate" data-world-loading><span>🌎</span><h3>${escapeHtml(label)}</h3><p>Seu progresso já está protegido neste aparelho.</p><div class="mission-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><i style="width:${value}%"></i></div><small>${value}%</small></div>`);
+    }
     if(els.modalClose)els.modalClose.hidden=true;
   }
   function showWorldLoadFailure(error,resetPosition){
@@ -348,6 +357,6 @@
       if(otGames.active)otGamesLeave({preserveCampaign:true});
       if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
       savePlayerPosition(true);await saveState(true);
-      location.assign(new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
+      location.assign(window.OTTHI_CANONICAL?.consoleUrl || new URL('../../arcade/',OTTHI_GAME_LIVE_BASE).href);
     }catch(error){consoleLeaving=false;toast('Não foi possível guardar a saída. Tente novamente.','warn',2500);}
   }};

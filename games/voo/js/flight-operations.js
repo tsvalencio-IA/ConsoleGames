@@ -135,31 +135,54 @@ function capturePhoto(g){
   window.System?.msg?.('FOTO '+photo.point+'/'+routes.reporter.length+' · '+photo.site+' REGISTRADA'+(o.stage==='return'?' • RETORNE À BASE':''),'#89ffcb');
   return {ok:true,point:photo.point,complete:o.stage==='return',thumbnail:!!thumbnail};
 }
-function cameraPhotoGesture(g,pose,dt){
+function cameraPhotoPose(g,pts){
+ const operation=g?.flightOperation;
+ if(operation?.kind!=='reporter'||g.state!=='PLAYING'||!Array.isArray(pts))return null;
+ const joint=(name,index)=>pts.find(p=>(p?.name??p?.part)===name)??pts[index];
+ const left=joint('left_wrist',9),right=joint('right_wrist',10),leftShoulder=joint('left_shoulder',5),rightShoulder=joint('right_shoulder',6);
+ const joints=[left,right,leftShoulder,rightShoulder];
+ if(!joints.every(p=>p&&Number(p.score??p.confidence??0)>.33&&Number.isFinite(p.x)&&Number.isFinite(p.y)))return null;
+ const video=window.System?.video,width=video?.videoWidth||640,height=video?.videoHeight||480;
+ const normalized=joints.every(p=>p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1);
+ const x=p=>normalized?p.x:p.x/width,y=p=>normalized?p.y:p.y/height;
+ const shoulderWidth=Math.hypot((x(leftShoulder)-x(rightShoulder))*width/height,y(leftShoulder)-y(rightShoulder));
+ const lift=clamp(shoulderWidth*.48,.015,.085);
+ const leftLift=y(leftShoulder)-y(left),rightLift=y(rightShoulder)-y(right);
+ const leftDown=leftLift<=.025,rightDown=rightLift<=.025,resting=leftDown&&rightDown;
+ const neutral=g.pilot?.handNeutral;
+ const reserve=clamp(lift*.12,.008,.012);
+ // During a photo the other wrist stays near its calibrated height. A
+ // paired push or a balanced bank with both wrists moving still steers.
+ const leftStill=!Number.isFinite(neutral?.leftY)||Math.abs(y(left)-neutral.leftY)<=Math.max(.016,lift*.46);
+ const rightStill=!Number.isFinite(neutral?.rightY)||Math.abs(y(right)-neutral.rightY)<=Math.max(.016,lift*.46);
+ const leftRaised=leftLift>lift&&rightDown&&rightStill;
+ const rightRaised=rightLift>lift&&leftDown&&leftStill;
+ const target=routes.reporter[operation.index];
+ const near=target&&Math.hypot(g.ship.x-target.x,g.ship.y-target.y,g.ship.z-target.z)<=780;
+ // Reserve the approaching arm before the shutter's sustained hold starts.
+ // A brief asymmetric lift away from a panorama remains a piloting input.
+ const leftApproach=near&&rightStill&&rightDown&&neutral?.leftY-y(left)>reserve;
+ const rightApproach=near&&leftStill&&leftDown&&neutral?.rightY-y(right)>reserve;
+ return{raised:leftRaised||rightRaised,resting,intent:!!(leftRaised||rightRaised||leftApproach||rightApproach)};
+}
+function cameraPhotoGesture(g,pose,dt,sample){
  const o=g?.flightOperation;
  if(o?.kind!=='reporter'||o.done||o.stage!=='route'||g.state!=='PLAYING')return false;
  const gesture=o.gesture||(o.gesture={armed:true,held:0,released:0});
- const now=performance.now(),step=gesture.lastAt!=null&&now>gesture.lastAt?Math.min(.25,(now-gesture.lastAt)/1000):Math.max(0,dt);
+ const now=performance.now(),gap=gesture.lastAt!=null?(now-gesture.lastAt)/1000:0;
+ const step=gap>.8?0:gap>0?Math.min(.25,gap):Math.max(0,dt);
+ if(gap>.8){gesture.held=0;gesture.released=0;}
  gesture.lastAt=now;
  // Reuse the same pose the flight model already computed; no new video processing.
- const pts=Array.isArray(pose)?(Array.isArray(pose[0]?.keypoints)?pose[0].keypoints:pose):pose?.keypoints;
- if(!Array.isArray(pts)||!pts.length){gesture.held=0;return false;}
- const joint=(key,index)=>pts.find(p=>p&&(p.name===key||p.part===key))||pts[index];
- const lw=joint('left_wrist',9),rw=joint('right_wrist',10),ls=joint('left_shoulder',5),rs=joint('right_shoulder',6);
- const reliable=[lw,rw,ls,rs].every(p=>p&&Number(p.score??p.confidence??0)>.33&&Number.isFinite(p.y));
- if(!reliable){gesture.held=0;return false;}
- const unit=[lw,rw,ls,rs].every(p=>p.y>=0&&p.y<=1);
- const height=unit?1:(window.System?.video?.videoHeight||480);
- // Scale the gesture to apparent shoulder width: it must work at TV/camera distance.
- const shoulderWidth=Math.hypot(Number(ls.x)-Number(rs.x),ls.y-rs.y);
- const lift=Math.max(.015*height,Math.min(.085*height,shoulderWidth*.48));
- // Raising ONE arm above shoulder level leaves the other arm available for balance.
- const leftUp=ls.y-lw.y>lift,rightUp=rs.y-rw.y>lift;
- const leftDown=lw.y>=ls.y-.025*height,rightDown=rw.y>=rs.y-.025*height;
- const raised=(leftUp&&rightDown)||(rightUp&&leftDown);
- if(!raised){
+ if(sample===undefined){
+  const pts=Array.isArray(pose)?(Array.isArray(pose[0]?.keypoints)?pose[0].keypoints:pose):pose?.keypoints;
+  sample=cameraPhotoPose(g,pts);
+ }
+ if(!sample){gesture.held=0;gesture.released=0;return false;}
+ if(!sample.raised){
   gesture.held=0;
-  if(leftDown&&rightDown){gesture.released+=step;if(gesture.released>=.2)gesture.armed=true;}
+  if(sample.resting&&!sample.intent){gesture.released+=step;if(gesture.released>=.2)gesture.armed=true;}
+  else gesture.released=0;
   return false;
  }
  gesture.released=0;
@@ -219,5 +242,5 @@ function drawHud(ctx,w,h,g){
   if(g.flightImpact&&performance.now()-g.flightImpact.at<1500){ctx.fillStyle='rgba(255,86,25,.27)';ctx.fillRect(0,0,w,h);ctx.fillStyle='#ffe6a9';ctx.textAlign='center';ctx.font='bold 19px Arial';ctx.fillText(g.flightImpact.text,w/2,h*.41,w-18);}
  ctx.restore();
 }
-window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,capturePhoto,cameraPhotoGesture,update,drawWorld,drawHud});
+window.FlightOperations=Object.freeze({carrier,routes,start,onStart,carrierGround,segmentBox,detectImpact,capturePhoto,cameraPhotoPose,cameraPhotoGesture,update,drawWorld,drawHud});
 })();

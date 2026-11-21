@@ -20,14 +20,14 @@
         <p class="eyebrow">OT GAMES · ANDROID</p>
         <h1 id="install-title">Seu console,<br>no celular.</h1>
         <p class="lead">O mundo OT e os jogos do console em um aplicativo.</p>
-        <p class="release">Versão <span id="release-version">1.0.0</span><span aria-hidden="true"> · </span>Android 7.0 ou superior</p>
-        <p class="download-status"><strong>Já tem o OTTHI instalado?</strong> Abra o aplicativo existente para receber as atualizações web. Não instale outro APK do mesmo console. Este download é somente para quem ainda não tem o aplicativo ou precisa reinstalar após conferir a assinatura.</p>
-        <a href="../" class="button">Abrir meu console já instalado</a>
-        <a id="download-apk" class="button primary" href="../downloads/thIAguinho-ARCADE.apk" download><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Baixar aplicativo Android</a>
-        <p class="download-status" id="download-status" role="status" aria-live="polite">O download começa quando você toca no botão. Os jogos usam internet.</p>
+        <p class="release" id="apk-release" hidden>Versão <span id="release-version">1.0.0</span><span aria-hidden="true"> · </span>Android 7.0 ou superior</p>
+        <p class="download-status" id="apk-installed-info" hidden><strong>Já tem o OTTHI instalado?</strong> Abra o aplicativo existente para receber as atualizações web. Não instale outro APK do mesmo console. Este download é somente para quem ainda não tem o aplicativo ou precisa reinstalar após conferir a assinatura.</p>
+        <a href="../" class="button">Abrir o console</a>
+        <a id="download-apk" class="button primary" hidden href="../downloads/thIAguinho-ARCADE.apk" download><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Baixar aplicativo Android</a>
+        <p class="download-status" id="download-status" role="status" aria-live="polite">Abra o console no navegador para jogar nesta versão.</p>
         <a class="play-link" href="../">Jogar no navegador <span aria-hidden="true">→</span></a>
       </div>
-      <div class="instructions">
+      <div class="instructions" id="apk-instructions" hidden>
         <h2>Como instalar</h2>
         <ol>
           <li><span class="step" aria-hidden="true">1</span><div><h3>Baixe o aplicativo</h3><p>Toque em “Baixar aplicativo Android” e confirme o download, se o navegador pedir.</p></div></li>

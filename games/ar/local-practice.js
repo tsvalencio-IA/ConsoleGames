@@ -13,7 +13,7 @@
     if(embeddedVenue)parent.postMessage({type,token,...data},venueOrigin);
     else if(pageVenue&&type==='ot-venue-result')window.WorldVenueTrip.result(token,id,data.score,data.won);
   }
-  function returnToWorld(){const url=window.WorldVenueTrip?.returnUrl(token)||new URL('../otthi/',location.href).href;location.replace(url);}
+  function returnToWorld(){const url=window.WorldVenueTrip?.returnUrl(token)||window.OTTHI_CANONICAL?.game('otthi')||new URL('../otthi/',location.href).href;location.replace(url);}
   window.ConsoleMotionRuntime={promise:null,load(){
     if(this.promise)return this.promise;
     this.promise=(async()=>{

@@ -38,17 +38,23 @@ public final class MainActivity extends Activity {
     private PermissionRequest pendingCamera;
     private ValueCallback<Uri[]> pendingFiles;
 
+    private static final Uri CONSOLE_ENTRY = Uri.parse(CONSOLE_URL);
+    private static final String DEPLOYMENT_PREFIX = CONSOLE_ENTRY.getPath().substring(
+            0, CONSOLE_ENTRY.getPath().length() - "/arcade/".length());
+
     static boolean isConsoleOrigin(Uri uri) {
         return uri != null && "https".equals(uri.getScheme())
-                && ("tsvalencio-ia.github.io".equals(uri.getHost())
-                    || ("recovery".equals(BuildConfig.FLAVOR) && "otthi-world-campanha-teste.vercel.app".equals(uri.getHost())))
-                && (uri.getPort() == -1 || uri.getPort() == 443);
+                && CONSOLE_ENTRY.getHost().equalsIgnoreCase(uri.getHost())
+                && uri.getUserInfo() == null && (uri.getPort() == -1 || uri.getPort() == 443);
     }
     static boolean isGameUrl(Uri uri) {
         if(!isConsoleOrigin(uri) || uri.getPath()==null)return false;
-        if("tsvalencio-ia.github.io".equals(uri.getHost()))return uri.getPath().startsWith("/ConsoleGames/");
         String path=uri.getPath();
-        return path.equals("/") || path.startsWith("/arcade/") || path.startsWith("/games/");
+        if (!path.startsWith(DEPLOYMENT_PREFIX + "/")) return false;
+        path = path.substring(DEPLOYMENT_PREFIX.length());
+        return path.equals("/") || path.equals("/console.html") || path.startsWith("/arcade/")
+                || path.startsWith("/games/") || path.startsWith("/escola/")
+                || path.equals("/android/thIAguinho-ARCADE-OT.apk");
     }
     @SuppressLint("SetJavaScriptEnabled")
     @Override public void onCreate(Bundle savedState) {

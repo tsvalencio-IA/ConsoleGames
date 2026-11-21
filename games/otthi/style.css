@@ -2102,6 +2102,11 @@ body.civil-cable-riding #joystick,body.civil-cable-riding #runBtn,body.civil-cab
 
 #civil-cable-waiting{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:86;max-width:90vw;padding:9px 12px;border:1px solid #8bb8ae;border-radius:14px;background:#143b42ed;color:white;font-size:13px;pointer-events:auto}
 
+/* Photos belong to the aircraft layer; leave the lever, pedals and landing clear. */
+#ot-games-hud #civil-mission-task{left:auto;right:calc(18px + env(safe-area-inset-right,0px));top:230px;bottom:auto;transform:none;width:160px;min-height:48px;pointer-events:auto;touch-action:manipulation}
+#ot-games-hud #civil-mission-task:disabled{opacity:.7}
+@media(max-height:480px){#ot-games-hud #civil-mission-task{right:184px;top:142px;width:124px;min-height:44px;font-size:11px}}
+
 /* ===== MODULE: 26-world-mobile-controls.css ===== */
 html,body,.app,.screen{width:var(--otthi-width,100vw)!important;height:var(--otthi-height,100dvh)!important;min-height:0!important}
 /* One reserved row for destinations/menu and two rows for camera actions. */

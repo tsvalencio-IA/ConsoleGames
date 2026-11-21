@@ -92,6 +92,16 @@ RELEASE_FILES += ['../ar/combat-infantry.js', '../ar/vendor/GLTFLoader-r128.js',
 RELEASE_FILES += [path for path in ['../ar/front-controls.js', '../ar/control-modes.js', '../ar/control-modes.css', '../kart/racecraft-evaluation.js'] if path not in RELEASE_FILES]
 RELEASE_FILES += [path for path in ['../ar/js/core.js', '../ar/play-settings.js', '../kart/racecraft-duel.js'] if path not in RELEASE_FILES]
 RELEASE_FILES += [path for path in ['../voo/js/game_flight.js', '../voo/control-modes.js', '../tenis/index.html', '../tenis/js/game_tennis.js', '../tenis/sw.js'] if path not in RELEASE_FILES]
+RELEASE_FILES += [
+    '../../arcade/app.js', '../../arcade/sw.js', '../../arcade/manifest.webmanifest',
+    '../../arcade/canonical-navigation.js', '../../arcade/game-cache.js',
+    '../voo/js/flight-operations.js', '../voo/js/flight-world-return.js', '../voo/local-practice.js',
+    '../ar/local-practice.js',
+    '../boxe/index.html', '../boxe/sw.js', '../boxe/local-practice.js', '../boxe/world-venue-trip.js',
+    '../kart/local-practice.js', '../kart/world-venue-trip.js',
+    '../tenis/local-practice.js', '../tenis/world-venue-trip.js',
+    '../familia/index.html', '../familia/3d/index.html', '../familia/3d/sw.js',
+]
 
 
 def body_after_marker(path: Path, marker: str) -> str:

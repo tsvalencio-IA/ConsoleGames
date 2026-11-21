@@ -56,7 +56,8 @@
   // Keep the original 2D game in this tab. A failed activity request must leave
   // the city and its return button available, rather than a browser error page.
   function venueOpenDocument(s){
-    const url=new URL('../'+s.venue.slug+'/index.html',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);
+    const baseUrl=window.OTTHI_CANONICAL?.game(s.venue.slug) || new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);
+    const url=new URL('index.html',baseUrl);url.searchParams.set('otVenue',s.token);
     let request=null,timer=0,attempt=0,closed=false;
     const main=s.ui.querySelector('main'),status=s.ui.querySelector('[data-venue-loading]');
     const account=document.createElement('button');account.type='button';account.dataset.venueAccount='';account.textContent='CONTA ONLINE';account.disabled=true;s.ui.querySelector('header').insertBefore(account,s.ui.querySelector('[data-venue-close]'));
@@ -97,7 +98,7 @@
     if(worldVenues.session!==s)return;
     const trip=window.WorldVenueTrip?.begin({token:s.token,id:s.id,gameId:s.venue.gameId||(s.id==='pingpong'?'tennis':'box_pro'),label:s.venue.label,name:state.profile.name,playerId:state.profile.playerId||'local',recordKey:venueRecordKey(),returnUrl:location.href});
     if(!trip){s.leaving=false;if(status)status.textContent='Não foi possível guardar o retorno. Volte ao mundo e tente novamente.';return;}
-    s.cleanup?.();const url=new URL('../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
+    s.cleanup?.();const url=new URL(window.OTTHI_CANONICAL?.game(s.venue.slug) || '../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
   function venueOpen(id){
     const v=WORLD_ACTIVITY_VENUES[id];

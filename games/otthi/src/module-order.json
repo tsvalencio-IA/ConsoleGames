@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.30-aviacao-presenca-unificada",
+  "build": "705.28.31-integracao-console",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "93189953f7643f1ac322572ecb19d80990c69fee04729ef866affcda2c795f93"
+      "sha256Body": "2c343d1077153db136ac4f9b8dbbe0c9f57f06664da06acc70c61e3d1b72cd71"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -35,7 +35,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "b65e822c996ab9ca81efeabb973f5082f2c8aa0513b264dc5e2c3eeda3f31fdf"
+      "sha256Body": "2636273f836199c3d7fb2324c2cba3e5b3e59e3b3b0a1229227089384c536864"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -56,7 +56,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "0c01a192aad0dfa67619fcd8dda4d3a7e0d36a379ed2d5009aee3a3111b4e636"
+      "sha256Body": "3978bbb58f98c5345dfa7a4de47afc6c15bfe48fcf4554972dd2b5e8b6548ddc"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -133,7 +133,7 @@
       "startLine": 2993,
       "endLine": 3085,
       "description": "Cogumelos, portais, praça, distrito e decoração urbana",
-      "sha256Body": "320cdc1ea78504d553c6c03a262265ffba1a70cdc57aaedfedc80e00a372598a"
+      "sha256Body": "76694917970b91d349fcd8dcd5419a0d8af79ee6c647e1e79a70912376073d59"
     },
     {
       "file": "src/modules/14a-ottovias-highway-v7054.js",
@@ -266,7 +266,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "0f61efff2eb120355596241c0be035ebe8f47c2f3ee18ba9bceaa7ba60e6be2f"
+      "sha256Body": "b12bb3884de559f93fdd785e221136882559c07149ec4d320ba81ca946cd236f"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -357,7 +357,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "1e9d2a9f95832e2d9a28d49c7c20892a2bf07e36c1ae230072a6e79d4fc8ec86"
+      "sha256Body": "f83e61333f8a44adc20bce44b5142e4d6faa99767c17ac71dce6cdbe7bdc269c"
     },
     {
       "file": "src/modules/41-family-adventure.js",
@@ -392,7 +392,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "1d157d6e026f73ef86d57ae03a21d0a0cf97810380713186f68f918d10e41080"
+      "sha256Body": "6b46e585d91a2e74b90be1114267f404fa12fe820b60835e5833b11df71e4183"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -462,7 +462,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Continuidade viária e ponte da Costa sobre água preservada",
-      "sha256Body": "1c2ef05d37368bc89813cf2918f6d91fe173a19fc6f0679c6d6c84616ef29118"
+      "sha256Body": "c00ac9ecd1b3493d100eb7ad7e313a662a282e6d2239b11d9b57b5a5b0d3fd31"
     },
     {
       "file": "src/modules/51-online-travel-party.js",
@@ -552,7 +552,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Cordilheira, neve, mata e trilha conectadas ao mundo",
-      "sha256Body": "21885b1a41bb6975699a51800dd131f8f70a6fc7e3bd4e9fe5eaee46cebf8055"
+      "sha256Body": "18e1a372ca5f02732e378f145d8259a760035023354358696bbae901551f31c5"
     },
     {
       "file": "src/modules/65-civil-community.js",
@@ -564,7 +564,7 @@
     {
       "file": "src/modules/66-civil-missions.js",
       "description": "Missões individuais e cooperativas do mundo civil",
-      "sha256Body": "f1de46e34f77a967c5855117e1c84e8b04fdf01a094666f0f786f6a96a9e7904",
+      "sha256Body": "028c6c4acdaaee728feade1881a543eb8b75357fe5c5f46ca8154351af30bb5d",
       "startLine": 0,
       "endLine": 0
     },
@@ -818,7 +818,7 @@
     {
       "file": "src/styles/25-civil-community.css",
       "description": "Missões e embarque civil responsivos",
-      "sha256Body": "e21faad28e71677a9f2608b2536f2c7560d5cf53f352aa4d66c515e296451918",
+      "sha256Body": "13b40947fe20913b497c76ab5b0d8896d7ea59ae2775cc97265d5024b40d9c1b",
       "startLine": 0,
       "endLine": 0
     },

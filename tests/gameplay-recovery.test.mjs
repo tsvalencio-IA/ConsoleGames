@@ -52,10 +52,14 @@ test('Vercel packaging gives the installed console a real root URL while preserv
   const original=readFileSync('arcade/manifest.webmanifest','utf8');
   const program="import runpy,json; m=runpy.run_path('tools/package-world-preview.py'); print(json.dumps(m['root_site_manifest'](json.load(open('arcade/manifest.webmanifest')))))";
   const manifest=JSON.parse(execFileSync('python3',['-c',program],{encoding:'utf8'}));
-  assert.equal(manifest.id,'/arcade/');assert.equal(manifest.scope,'/');
-  assert.equal(new URL(manifest.start_url,'https://test.example/arcade/').pathname,'/arcade/');
+  const installedRoot='https://test.example/arcade/manifest.webmanifest';
+  const installedPages='https://tsvalencio-ia.github.io/ConsoleGames/arcade/manifest.webmanifest';
+  assert.equal(manifest.id,undefined,'implicit ID is the processed start URL');
+  assert.equal(new URL(manifest.scope,installedRoot).pathname,'/');
+  assert.equal(new URL(manifest.start_url,installedRoot).pathname,'/arcade/');
+  assert.equal(new URL(JSON.parse(original).start_url,installedPages).pathname,'/ConsoleGames/arcade/');
+  assert.equal(new URL(JSON.parse(original).scope,installedPages).pathname,'/ConsoleGames/');
   assert.equal(readFileSync('arcade/manifest.webmanifest','utf8'),original);
-  assert.equal(JSON.parse(original).id,'/arcade/');
   const consoleHtml=readFileSync('arcade/index.html','utf8');
   const consoleProgram="import runpy; m=runpy.run_path('tools/package-world-preview.py'); print(m['root_site_console'](open('arcade/index.html').read()))";
   const packagedHtml=execFileSync('python3',['-c',consoleProgram],{encoding:'utf8'});

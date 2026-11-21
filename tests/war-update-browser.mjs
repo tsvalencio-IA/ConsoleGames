@@ -1,8 +1,8 @@
 /* An already-installed legacy v34 state -> the current production worker on HTTP/1.
  * Legacy warmup is seeded: its old parallel prefetch can itself deadlock. */
 import{chromium}from'playwright';import assert from'node:assert/strict';import fs from'node:fs';import{createServer}from'node:http';import{resolve,extname}from'node:path';
-const currentWorker=fs.readFileSync('games/ar/sw.js','utf8'),currentVersion=Number(currentWorker.match(/pro-control-v(\d+)/)[1]),currentCache='thia-arcade-ar-pro-control-v'+currentVersion;
-const root=resolve('dist-world'),old=fs.readFileSync('tests/fixtures/service-worker/ar-v34.js','utf8');let update=false;
+const currentWorker=fs.readFileSync('games/ar/sw.js','utf8'),currentVersion=currentWorker.match(/const CACHE=PREFIX\+"([^"]+)"/)[1],currentCache='thia-arcade-ar-'+currentVersion+'@'+encodeURIComponent('/games/ar/');
+const root=resolve(process.env.OT_BROWSER_DIST||'.'),old=fs.readFileSync('tests/fixtures/service-worker/ar-v34.js','utf8');let update=false;
 const a=old.indexOf('self.addEventListener("install",event=>{'),b=old.indexOf("self.addEventListener('message'",a);assert(a>0&&b>a);
 const legacy=old.slice(0,a)+`self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.put('./qa-legacy-shell',new Response('working')))));\n`+old.slice(b);
 const types={'.js':'application/javascript','.mjs':'application/javascript','.html':'text/html','.css':'text/css','.json':'application/json','.png':'image/png','.svg':'image/svg+xml','.ogg':'audio/ogg','.wasm':'application/wasm'};

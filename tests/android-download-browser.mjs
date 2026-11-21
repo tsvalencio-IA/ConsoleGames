@@ -23,6 +23,10 @@ if(!base){
     if(url.pathname==='/arcade/qa-legacy-worker.js'){
       response.writeHead(200,{'Content-Type':'application/javascript'});response.end(legacyWorker);return;
     }
+    if(url.pathname==='/arcade/downloads/release-ot.json'){
+      response.writeHead(200,{'Content-Type':'application/json'});
+      response.end(JSON.stringify({...release,consoleUrl:'http://'+request.headers.host+'/arcade/'}));return;
+    }
     const rewrite=config.rewrites.find(rule=>rule.source===url.pathname);
     let filename=path.resolve(root,'.'+(rewrite?.destination||url.pathname));
     if(!filename.startsWith(root+path.sep)){response.writeHead(403);response.end();return;}
@@ -57,6 +61,13 @@ try{
         await page.reload({waitUntil:'networkidle'});
         assert.match(await page.evaluate(()=>navigator.serviceWorker.controller?.scriptURL||''),spec.legacy?/qa-legacy-worker\.js$/:/\/arcade\/sw\.js$/);
       }
+      if(spec.noJS){
+        assert(await page.locator('#download-apk').isHidden());
+        assert(await page.locator('.play-link').isVisible());
+        results.push({case:spec.name,browserEntry:true,passed:true});
+        continue;
+      }
+      await page.locator('#download-apk').waitFor();
       assert.equal(await page.locator('#release-version').textContent(),release.version);
       assert.equal(new URL(await page.locator('#download-apk').getAttribute('href'),base).pathname,'/android/'+release.file);
       assert((await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=1);
@@ -83,6 +94,14 @@ try{
   await page.goto(origin+'/arcade/',{waitUntil:'domcontentloaded'});
   await page.locator('#android-apk-link').click();await page.waitForURL('**/arcade/instalar/');
   await page.locator('#download-apk').waitFor();await context.close();
+  if(server){
+    const context=await browser.newContext(),page=await context.newPage();
+    await context.route('**/arcade/downloads/release-ot.json',route=>route.fulfill({json:release}));
+    await page.goto(base,{waitUntil:'networkidle'});
+    assert(await page.locator('#download-apk').isHidden(),'the production package must be hidden in a different deployment');
+    assert.equal(new URL(await page.locator('.play-link').getAttribute('href'),base).origin,origin);
+    await context.close();
+  }
   fs.writeFileSync(output+'/result.json',JSON.stringify({passed:true,base,consoleEntry:true,results,limits:['Mobile Chromium emulation; the user phone and its in-app browser were not directly inspected.']},null,2));
   console.log('PASS console installation entry');
 }finally{await browser.close();if(server)await new Promise(resolve=>server.close(resolve));}

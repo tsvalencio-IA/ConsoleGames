@@ -21,3 +21,12 @@ O APK público continua sendo o recovery 1.1.0 (código 2), SHA-256 `8ea2f38c966
 As atualizações dos jogos são conteúdo HTTPS, verificadas pelo manifesto/service worker; não dependem da chave Android. O console confere o worker ao abrir, a cada minuto visível, ao reconectar e ao voltar ao aplicativo, adiando recarga durante edição/autenticação. O mundo mantém sua atualização por release e ponto seguro. O projeto Vercel está conectado ao repositório e usa o build modular/empacotamento persistido, sem tokens no front-end.
 
 A importação de música já funciona no navegador/PWA. No APK, o novo seletor exige instalar a versão Android assinada quando a chave original estiver disponível. Pesquisa e coreografia de vídeos do YouTube não estão implementadas nesta revisão.
+
+
+O código do launcher Android recebe a URL do console no build. Os sabores `production` e `recovery` usam o endereço habitual. Para uma instalação de teste, o sabor `preview` só é habilitado quando `consolePreviewUrl` aponta para o endereço HTTPS da prévia, incluindo `/arcade/`. Ele usa o sufixo de pacote `.preview` para preservar a instalação existente.
+
+```sh
+gradle :app:assemblePreviewDebug -PconsolePreviewUrl=https://endereco-da-previa.vercel.app/arcade/
+```
+
+O WebView mantém as rotas dos jogos no endereço configurado. Os APKs já distribuídos continuam com a URL que receberam no build de origem.

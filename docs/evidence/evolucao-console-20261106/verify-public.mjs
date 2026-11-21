@@ -20,11 +20,19 @@ manifest=json.dumps(module.root_site_manifest(json.loads(Path('arcade/manifest.w
 console=module.root_site_console(Path('arcade/index.html').read_text())
 print(json.dumps({'arcade/manifest.webmanifest':manifest,'arcade/index.html':console}))
 `],{encoding:'utf8'}));
-const expected=new Map(Object.entries(manifest.files).map(([path,hash])=>['games/otthi/'+path,hash]));
+const expected=new Map(Object.entries(manifest.files).map(([path,hash])=>[new URL('games/otthi/'+path,url).pathname.slice(1),hash]));
 const extra=['arcade/index.html','arcade/app.js','arcade/sw.js','arcade/manifest.webmanifest','games/otthi/release-manifest.json','games/otthi/sw.js','games/otthi/VERSION.json',
  'games/ar/js/core.js','games/ar/world-renderer.js','games/voo/world-renderer.js',
  'games/ar/index.html','games/ar/hand-controls.js','games/ar/js/game_ar.js','games/ar/control-modes.js','games/ar/mastery-gamepad.js','games/ar/combat-controls.css','games/ar/sw.js',
  'games/voo/index.html','games/voo/js/game_flight.js','games/voo/sw.js','games/tenis/index.html','games/tenis/js/game_tennis.js','games/tenis/sw.js'];
+extra.push('arcade/canonical-navigation.js','arcade/game-cache.js','games/voo/js/flight-operations.js');
+for(const [dir, files] of Object.entries({
+ 'familia/3d':['index.html','console-world.js','sw.js'],
+ kart:['index.html','js/game_kart.js','local-practice.js','world-venue-trip.js','sw.js'],
+ boxe:['index.html','js/game_box.js','local-practice.js','world-venue-trip.js','sw.js'],
+ tenis:['local-practice.js','world-venue-trip.js'],
+ danca:['index.html','app.js']
+})) for(const file of files)extra.push('games/'+dir+'/'+file);
 for(const path of extra)expected.set(path,sha(rooted[path]===undefined?fs.readFileSync(path):Buffer.from(rooted[path],'utf8')));
 const paths=[...expected],report={origin,build:manifest.build,revision:manifest.revision,expected:paths.length,deploymentPreparation:'tools/package-world-preview.py: root_site_console and root_site_manifest',verified:[],failures:[],limits:['Read-only HTTP content verification. No user login, camera, saved account, live room or database mutation.']};let next=0;
 await Promise.all(Array.from({length:4},async()=>{

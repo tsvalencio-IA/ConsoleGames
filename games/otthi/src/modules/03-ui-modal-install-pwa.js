@@ -224,7 +224,10 @@
       if(typeof otGames!=='undefined'&&otGames.active)otGamesLeave({preserveCampaign:true});
       if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
       if(running)savePlayerPosition(true);await persistBeforeOtthiReload();
-      location.replace(new URL('../atualizar/',OTTHI_GAME_LIVE_BASE).href);return true;
+      const current=new URL(location.href),recovery=new URL('../atualizar/',OTTHI_GAME_LIVE_BASE);
+      recovery.search=current.search;recovery.hash=current.hash;
+      recovery.searchParams.delete('otthi_update');recovery.searchParams.delete('otthi_probe');
+      location.replace(recovery.href);return true;
     }catch(error){otthiUpdateReloading=false;toast('Não foi possível guardar a atualização. Tente novamente.','warn',3000);return false;}
   }
 

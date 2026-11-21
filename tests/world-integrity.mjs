@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import {readFileSync,existsSync} from "node:fs";
 import {createHash} from "node:crypto";
+import {runInNewContext} from "node:vm";
 const root="games/otthi/",manifest=JSON.parse(readFileSync(root+"release-manifest.json","utf8"));
 const build=JSON.parse(readFileSync(root+'VERSION.json','utf8')).build;
 assert.equal(manifest.build,build,'Release build mismatch');
@@ -30,7 +31,13 @@ for(const name of ["studio-world.js","studio-world.css","quest-chapter.js","cons
  const hqSw=readFileSync(world+"sw.js","utf8");
  assert(hqSw.includes("'./"+name+"'"),"HQ PWA lacks "+name);
 }
-assert(/universo-thiaguinho-3d-pwa-v\d+/.test(readFileSync("games/familia/3d/sw.js","utf8")));
+let familyCache;
+runInNewContext(readFileSync("games/familia/3d/sw.js","utf8"),{
+ importScripts(){},
+ installGameCache(config){familyCache=config;}
+});
+assert.equal(familyCache?.prefix,"universo-thiaguinho-3d-pwa-","Família 3D must retain its own cache family");
+assert.match(familyCache.versionedCache,/^universo-thiaguinho-3d-pwa-v\d+/);
 console.log("PWA SHA-256 verified:",verified,"OTThi release assets. HQ 3D local offline resources: 5.");
 
 assert(readFileSync("games/familia/3d/index.html","utf8").includes('src="./gamepad-support.js"'));

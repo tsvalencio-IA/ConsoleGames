@@ -37,7 +37,7 @@
   let auth=null, db=null, deferredInstall=null, firebaseInit=null;
 
   function gameById(id) { return entries.find(game=>game.id===id); }
-  function destination(game){return game.id==="otthi"&&navigator.onLine?BASE+"atualizar/":game.url;}
+  function destination(game){return window.OTTHI_CANONICAL?.launch(game.id) || (game.id==="otthi"&&navigator.onLine?BASE+"atualizar/":game.url);}
   function refreshWorldLinks(){document.querySelectorAll('[data-launch="otthi"]').forEach(link=>link.href=destination(gameById("otthi")));}
   function matches(game) {
     if(state.filter==="favoritos" && !state.favorites.has(game.id)) return false;

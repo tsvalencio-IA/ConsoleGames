@@ -231,7 +231,7 @@ async function testFailedInstallKeepsPreviousRevision() {
   listeners.install({ waitUntil(promise) { installPromise = promise; } });
   await assert.rejects(installPromise);
   assert.ok(fetchCount >= 2);
-  assert.ok(deletedCaches.includes(`otthi-v${ASSET_VERSION}-${revision}`));
+  assert.ok(deletedCaches.includes(`otthi-v${ASSET_VERSION}-${revision}@${encodeURIComponent('/')}`));
   assert.ok(!deletedCaches.includes('otthi-v645-stable'));
 }
 

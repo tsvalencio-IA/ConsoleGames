@@ -19,8 +19,19 @@
   }
 
   const extendedTerrainRoads=v704HighwaySegments().filter(s=>s.a.y!==undefined||s.b.y!==undefined);
+  const terrainRoadRadius=32;
+  const terrainRoadCells=new Map(),emptyTerrainRoadCell=[];
+  for(const {a,b,width,shoulder} of extendedTerrainRoads){
+    const dx=b.x-a.x,dz=b.z-a.z;
+    const seg={a,b,dx,dz,invLengthSquared:1/(dx*dx+dz*dz||1),rise:Number(b.y||0)-Number(a.y||0),height:Number(a.y||0),edge:width/2+shoulder+1.4,loX:Math.min(a.x,b.x)-terrainRoadRadius,hiX:Math.max(a.x,b.x)+terrainRoadRadius,loZ:Math.min(a.z,b.z)-terrainRoadRadius,hiZ:Math.max(a.z,b.z)+terrainRoadRadius};
+    for(let ix=Math.floor(seg.loX/terrainRoadRadius);ix<=Math.floor(seg.hiX/terrainRoadRadius);ix++)for(let iz=Math.floor(seg.loZ/terrainRoadRadius);iz<=Math.floor(seg.hiZ/terrainRoadRadius);iz++){
+      const key=ix+':'+iz;
+      if(!terrainRoadCells.has(key))terrainRoadCells.set(key,[]);
+      terrainRoadCells.get(key).push(seg);
+    }
+  }
   function mountainRangeHeightAt(x,z){let h=0;for(const p of WORLD_LAYOUT_V704.mountainRanges||[]){if(Math.abs(x-p.x)>=p.rx||Math.abs(z-p.z)>=p.rz)continue;const r=Math.hypot((x-p.x)/p.rx,(z-p.z)/p.rz);if(r<1){const shape=Math.pow(Math.max(0,1-r*r),1.6),ridge=(Math.sin(x*.11+z*.045)*.08+Math.cos(z*.13)*.04)*Math.sin(r*Math.PI);h=Math.max(h,p.height*Math.max(0,shape+ridge));}}return h;}
-  function professionalTerrainHeightAt(x,z){
+  function professionalTerrainHeightAt(x,z,roadbedClearance=0){
     if(!Number.isFinite(x)||!Number.isFinite(z))return 0;const bridgeHeight=worldRoadBridgeHeightAt(x,z);if(bridgeHeight!==null)return bridgeHeight;
     // Montanha noroeste: zona própria, longe de ruas, estádio, castelo e construções.
     const mountainPoint=worldLayoutPoint('mountain',{x:-88,z:104}),nx=(x-mountainPoint.x)/24,nz=(z-mountainPoint.z)/20,r=Math.hypot(nx,nz);let mountain=0;
@@ -28,9 +39,27 @@
     // Colinas do deserto, baixas o suficiente para não cobrir prédios ou vias.
     let dune=0;if(x>70&&z>-61&&z<-24){const a=Math.max(0,1-Math.hypot((x-91)/25,(z+42)/20));dune=Math.max(0,Math.sin((x+z)*.12)*.45+.55)*a*2.1;}
     let height=Math.max(0,mountain,dune,mountainRangeHeightAt(x,z));
-    // Raised mountain passes and the terrain share exactly the same height.
-    let nearest=null;for(const seg of extendedTerrainRoads){if(x<Math.min(seg.a.x,seg.b.x)-32||x>Math.max(seg.a.x,seg.b.x)+32||z<Math.min(seg.a.z,seg.b.z)-32||z>Math.max(seg.a.z,seg.b.z)+32)continue;const q=v704DistanceToSegment({x,z},seg.a,seg.b);if(q.distance<32&&(!nearest||q.distance<nearest.distance))nearest={...q,seg};}
-    if(nearest){const edge=nearest.seg.width/2+nearest.seg.shoulder+1.4,t=clamp((nearest.distance-edge)/24,0,1),grade=lerp(Number(nearest.seg.a.y||0),Number(nearest.seg.b.y||0),nearest.t);height=lerp(grade,height,t*t*(3-2*t));}
+    // A hard nearest-segment switch made wheel height jump by over a metre
+    // beside mountain junctions. Adjacent grades now meet continuously. A
+    // centreline's inverse-distance weight still preserves its design grade.
+    let roadWeight=0,roadGrade=0,roadEdgeDistance=Infinity;
+    const cell=terrainRoadCells.get(Math.floor(x/terrainRoadRadius)+':'+Math.floor(z/terrainRoadRadius))||emptyTerrainRoadCell;
+    for(const seg of cell){
+      if(x<seg.loX||x>seg.hiX||z<seg.loZ||z>seg.hiZ)continue;
+      const ax=x-seg.a.x,az=z-seg.a.z,t=clamp((ax*seg.dx+az*seg.dz)*seg.invLengthSquared,0,1);
+      const dx=ax-seg.dx*t,dz=az-seg.dz*t,d2=dx*dx+dz*dz;
+      if(d2>=terrainRoadRadius*terrainRoadRadius)continue;
+      const distance=Math.sqrt(d2),fade=1-distance/terrainRoadRadius,weight=fade*fade*fade*fade/Math.max(1e-8,d2);
+      roadWeight+=weight;roadGrade+=weight*(seg.height+seg.rise*t);
+      roadEdgeDistance=Math.min(roadEdgeDistance,distance-seg.edge);
+    }
+    if(roadWeight){const t=clamp(roadEdgeDistance/24,0,1);height=lerp(roadGrade/roadWeight,height,t*t*(3-2*t));}
+    if(roadbedClearance>0){
+      // Coarse terrain triangles can interpolate into the pavement. A shallow
+      // cut beneath the raised road tapers back to the scenery past its edge.
+      const t=clamp(roadEdgeDistance/3,0,1);
+      height-=Math.min(roadbedClearance,Math.max(0,height-.07))*(1-t*t*(3-2*t));
+    }
     const launch=Math.hypot(x+66,z-89);return launch<6?.5:launch<9?lerp(.5,height,(launch-6)/3):height;
   }
   function v702TextureMaterial(pack,color,options={}){

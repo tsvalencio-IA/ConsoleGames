@@ -1,7 +1,7 @@
 name: Verificar PWA único em 8 jogos
 on:
   push:
-    branches: [release/console-unificado-20261116]
+    branches: [release/console-unificado-20261116, 'fix/integracao-console-*']
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,3 +29,5 @@ jobs:
           sleep 2
       - name: Testar manifesto único e retorno em 8 jogos
         run: node tests/console-canonical-browser.mjs
+      - name: Percorrer catálogo, favoritos e portais em raiz e subpasta
+        run: node tests/console-integrated-navigation-browser.mjs

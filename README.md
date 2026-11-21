@@ -2,21 +2,17 @@
 
 **by thIAguinho Soluções Digitais e Otto MMP Ferri**
 
-Estado atual: [705.28.29 publicada com autorização explícita](docs/evidence/estabilidade-socorro-20261113/README.md), mantendo as limitações técnicas registradas. [Jogo habitual](https://otthi-world-campanha-teste.vercel.app/games/otthi/) e [recibo da publicação](docs/evidence/world-current-release.json). Mãos vazias, tela limpa e Meu caminho permanecem; a [705.28.28](docs/evidence/tela-limpa-20261113/README.md) está preservada para retorno. A publicação não conclui a validação prolongada, o socorro físico restante ou as partidas completas das novas alterações de WAR/Kart.
+A produção observada em 20/11/2026 usa OTThi World 705.28.30. A branch de desenvolvimento `fix/integracao-console-20261120` parte da recuperação `4ce95d1` e integra o roteamento dos oito jogos, as correções do Aero Strike e o trabalho anterior de neve e balão. [Registro e evidências](docs/evidence/integracao-console-20261120/README.md).
 
-A base consolidada é `console-evolution-20261106` em `6258e61`; a continuidade está em `continuation-20261111`, e `main` ainda não reúne essa evolução. O console tem oito entradas, incluindo [Dança](games/danca/). A [evolução integrada anterior](docs/evidence/evolucao-20261112/README.md) e seus limites permanecem documentados.
+**[Jogar no console habitual](https://otthi-world-campanha-teste.vercel.app/arcade/)**
 
-**[INSTALAR / JOGAR NOVO thIAguinho ARCADE](https://tsvalencio-ia.github.io/ConsoleGames/arcade/)**
-
-> O console original continua em `/ConsoleGames/`, mas o **novo Arcade** usa a URL `/ConsoleGames/arcade/`, seu próprio `manifest.webmanifest` com ID `/ConsoleGames/arcade/`, ícones PNG 192/512, service worker e cache próprios. O novo endereço deve ser aberto em uma aba do navegador (fora do aplicativo antigo) para que o navegador possa oferecê-lo como instalação separada. Nenhum jogo, ID de Firebase ou conta original foi alterado para criar essa instalação.
-
-Sete experiências reunidas em um mesmo site e repositório. Cada jogo é **uma pasta local executável**, não apenas um link para outro GitHub Pages. O objetivo é melhorar usabilidade, ritmo, metas e responsividade sem substituir informações reais de jogadores.
+Os oito jogos usam o console da origem e do caminho em que foram abertos. A instalação web tem entrada em `arcade/`. Os endereços de teste e produção usam a própria instalação e os próprios caches.
 
 ## Aplicativo Android
 
-O aplicativo do console reúne as sete entradas em tela cheia, com rotação e câmera opcional. O projeto e as instruções de compilação estão em [android/](android/README.md); a validação instala o aplicativo no Android 35. O [APK de instalação direta](https://tsvalencio-ia.github.io/ConsoleGames/arcade/downloads/thIAguinho-ARCADE.apk) usa Android 7.0 ou superior e internet para carregar os jogos. No Android, baixe e abra o arquivo; se o sistema solicitar, permita a instalação pelo aplicativo usado no download.
+O aplicativo do console abre as oito entradas em tela cheia, com rotação e câmera opcional. O projeto e as instruções de compilação estão em [android/](android/README.md); a validação instala o aplicativo no Android 35. O [instalador do console habitual](https://otthi-world-campanha-teste.vercel.app/arcade/instalar/) oferece o APK para Android 7.0 ou superior. O aplicativo usa internet para carregar os jogos. No Android, baixe e abra o arquivo; se o sistema solicitar, permita a instalação pelo aplicativo usado no download.
 
-## 📁 Sete jogos instalados
+## 📁 Oito jogos no console
 
 | Jogo | Pasta jogável no ConsoleGames | ID original Firebase / motor | Projeto de origem |
 | --- | --- | --- | --- |
@@ -27,6 +23,7 @@ O aplicativo do console reúne as sete entradas em tela cheia, com rotação e c
 | **Ping Pong Wii** | [games/tenis/](./games/tenis/) | `tennis` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 | **WWAR Combatee** | [games/ar/](./games/ar/) | `ar_truck_sim` | [GAME](https://github.com/tsvalencio-IA/GAME) |
 | **Aero Strike WAR** | [games/voo/](./games/voo/) | `usarmy_flight_sim` | [GAME](https://github.com/tsvalencio-IA/GAME) |
+| **Dança** | [games/danca/](./games/danca/) | progresso local | OTThi World |
 
 Os arquivos originais completos foram copiados para o novo repositório **sem alterar os três repositórios de origem**. A lista de hashes (40 caracteres) dos snapshots exatos está em [games/source-commits.json](games/source-commits.json). As cinco pastas GAME possuem motor, assets e Firebase originais, mas carregam somente o módulo do jogo escolhido. **O arquivo vazio `game_run.js` não foi anunciado como oitavo jogo**.
 

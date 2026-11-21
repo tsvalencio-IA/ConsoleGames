@@ -4,7 +4,16 @@
   const key='thia:world-venue:trip:v1',games={pingpong:'tennis',boxing:'box_pro','kart-aurora':'drive','kart-costa':'drive',aviation:'usarmy_flight_sim'},ttl=6*60*60*1000;
   function valid(t){
     if(!t||t.version!==1||games[t.id]!==t.gameId||typeof t.token!=='string'||t.token.length<16||t.token.length>100||!Number.isFinite(t.created)||Date.now()-t.created>ttl||t.created>Date.now()+60000)return false;
-    try{const url=new URL(t.returnUrl);return url.origin===location.origin&&/\/games\/otthi\/(?:index\.html)?$/.test(url.pathname)&&t.recordKey==='thia:otthi:venues:v1:'+t.playerId;}catch{return false;}
+    if(t.recordKey!=='thia:otthi:venues:v1:'+t.playerId)return false;
+    if(window.OTTHI_CANONICAL)return !!window.OTTHI_CANONICAL.worldReturn(t.returnUrl);
+    // Previously installed pages can still read a pending trip from the same mount.
+    try{
+      const url=new URL(t.returnUrl);
+      const prefix=(location.pathname||'').split('/games/')[0];
+      const world=prefix+'/games/otthi/';
+      return url.origin===location.origin&&!url.username&&!url.password
+        &&(url.pathname===world||url.pathname===world+'index.html');
+    }catch{return false;}
   }
   function current(token,gameId){try{const t=JSON.parse(sessionStorage.getItem(key)||'null');return valid(t)&&(!token||t.token===token)&&(!gameId||t.gameId===gameId)?t:null;}catch{return null;}}
   function put(t){try{sessionStorage.setItem(key,JSON.stringify(t));return true;}catch{return false;}}

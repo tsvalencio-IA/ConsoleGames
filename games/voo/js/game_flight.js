@@ -29,6 +29,12 @@
         overheatThreshold: 100
     };
 
+    function flightInputAxis(value) {
+        const deadZone=.045;
+        const strength=Math.max(0,Math.min(1,(Math.abs(value)-deadZone)/(1-deadZone)));
+        return Math.sign(value)*strength;
+    }
+
     function createParticle(x, y, z, c, size, life, type) {
         return {
             x: x, y: y, z: z,
@@ -762,7 +768,7 @@
                 window.FlightOperations?.update(this,dt,flightBefore);
                 // A distant player photographs by holding one arm raised for 0.4 s.
                 // Pose coordinates come from the existing camera detector; no second model is loaded.
-                if(this.state==='PLAYING'&&this.flightOperation?.kind==='reporter'&&window.ArcadeControls?.mode==='camera')window.FlightOperations?.cameraPhotoGesture?.(this,pose,dt);
+                if(this.state==='PLAYING'&&this.flightOperation?.kind==='reporter'&&window.ArcadeControls?.mode==='camera')window.FlightOperations?.cameraPhotoGesture?.(this,pose,dt,this.pilot.photoSample);
 
                 if ((this.mode === 'PVP' || this.mode === 'COOP') && this.net.playersRef && this.net.uid) {
                     if (performance.now() - this.net.lastSend > 100) {
@@ -816,55 +822,61 @@
             if (Array.isArray(pose)) pts = Array.isArray(pose[0]?.keypoints) ? pose[0].keypoints : pose;
             else if (Array.isArray(pose?.keypoints)) pts = pose.keypoints;
 
-            if (window.ArcadeControls?.mode!=='controls' && pts && pts.length > 0) {
-                let rightWrist = null, leftWrist = null;
-                for (let i = 0; i < pts.length; i++) {
-                    let k = pts[i];
-                    if (!k) continue;
-                    if ((k.name === 'right_wrist' || k.part === 'right_wrist' || i === 10) && k.score > 0.3) rightWrist = k;
-                    if ((k.name === 'left_wrist' || k.part === 'left_wrist' || i === 9) && k.score > 0.3) leftWrist = k;
-                }
-                
-                if (rightWrist && leftWrist) {
-                    inputDetected = true;
+            // Arbitrate the pose once, before the aircraft consumes any axes.
+            // The mission uses the same classification after updating its target.
+            const cameraInput=window.ArcadeControls?.mode!=='controls';
+            this.pilot.photoSample=null;
+            if (cameraInput && pts?.length) {
+                const wrist=(name,index)=>{
+                    const point=pts.find(k=>(k?.name??k?.part)===name)??pts[index];
+                    return point&&Number(point.score??point.confidence??0)>.3&&Number.isFinite(point.x)&&Number.isFinite(point.y)?point:null;
+                };
+                const right=wrist('right_wrist',10),left=wrist('left_wrist',9);
+                if (right && left) {
+                    inputDetected=true;
                     const videoW=window.System?.video?.videoWidth||640,videoH=window.System?.video?.videoHeight||480;
-                    // Accept normalized [0,1] poses as well as video pixels
-                    // without changing the already-approved mirror convention.
-                    const unitCoords=[rightWrist,leftWrist].every(k=>Number.isFinite(k.x)&&Number.isFinite(k.y)&&k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
-                    const fx=k=>unitCoords?k.x:k.x/videoW,fy=k=>unitCoords?k.y:k.y/videoH;
-                    let rx = (1 - fx(rightWrist)) * w;
-                    let ry = fy(rightWrist) * h;
-                    let lx = (1 - fx(leftWrist)) * w;
-                    let ly = fy(leftWrist) * h;
-                    
-                    // Anatomical wrist names swap sides in the mirrored view.
-                    // A level pair must always yield zero, never atan2(0,-span)=π.
-                    const rightIsOnRight=rx>lx;
-                    const slope=(rightIsOnRight?ry-ly:ly-ry);
-                    const avgX=(rx+lx)/(2*Math.max(1,w)),avgY=(ry+ly)/(2*Math.max(1,h));
-                    const bank=Math.atan2(slope/Math.max(1,h),Math.max(.001,Math.abs(rx-lx)/Math.max(1,w)));
-                    // Store sensor-space fractions, never screen pixels. Turning a
-                    // phone must not change the calibrated centre or invert pitch.
-                    if(!this.pilot.handNeutral)this.pilot.handNeutral={x:avgX,y:avgY,bank};
-                    const neutral=this.pilot.handNeutral;
+                    const unit=[right,left].every(k=>k.x>=0&&k.x<=1&&k.y>=0&&k.y<=1);
+                    const rx=1-right.x/(unit?1:videoW),ry=right.y/(unit?1:videoH);
+                    const lx=1-left.x/(unit?1:videoW),ly=left.y/(unit?1:videoH);
+                    const x=(rx+lx)/2,y=(ry+ly)/2;
+                    const bank=Math.atan2(rx>lx?ry-ly:ly-ry,Math.max(.001,Math.abs(rx-lx)));
+                    const span=Math.hypot(rx-lx,(ry-ly)*videoH/videoW);
+                    // Keep the existing two-wrist neutral and five-second
+                    // calibration, measured in sensor coordinates at any size.
+                    const neutral=this.pilot.handNeutral??={x,y,bank,span,leftY:ly,rightY:ry};
                     if(this.state==='CALIBRATION'){
-                        neutral.x+=(avgX-neutral.x)*.05;neutral.y+=(avgY-neutral.y)*.05;neutral.bank+=(bank-neutral.bank)*.05;
+                        for(const [key,value] of Object.entries({x,y,bank,span,leftY:ly,rightY:ry})){
+                            neutral[key]+=(value-neutral[key])*.05;
+                        }
                     }
-                    const rollInput=(avgX-neutral.x)/.16+(bank-neutral.bank)*1.2;
-                    trgRoll=Math.max(-1,Math.min(1,rollInput))*(window.ArcadePlaySettings?.get().sensitivity??1);
-                    trgPitch=Math.max(-1,Math.min(1,-(avgY-neutral.y)/.09));
-
-                    let handsDist = Math.hypot(rx - lx, ry - ly);
-                    if (handsDist < w * 0.25 && this.state === 'PLAYING') {
-                        this.pilot.headTilt = true; 
+                    const previous=this.pilot.cameraAction;
+                    const photo=this.pilot.photoSample=window.FlightOperations?.cameraPhotoPose?.(this,pts)??null;
+                    const grip=neutral.span;
+                    const close=Math.min(.25,grip*(previous==='fire'?.9:.8));
+                    const wide=Math.max(.24,grip*(previous==='boost'?1.48:1.6));
+                    let action=null;
+                    if(this.state==='PLAYING'){
+                        if(photo?.intent)action='photo';
+                        else if(span<close)action='fire';
+                        else if(span>wide)action='boost';
+                        else if(span<grip*.88||span>grip*1.28)action='grip-transition';
                     }
-                    if (handsDist > w * 0.5) {
-                        this.ship.afterburner = true; 
-                    } else {
-                        this.ship.afterburner = false;
+                    this.pilot.cameraAction=action;
+                    if(action){
+                        // A shutter, trigger or turbo changes the relevant
+                        // action only. Keep the last accepted stick demand.
+                        const axes=this.pilot.cameraAxes;
+                        trgRoll=axes?.roll??0;
+                        trgPitch=axes?.pitch??0;
+                        if(action==='fire')this.pilot.headTilt=true;
+                        if(action==='boost')this.ship.afterburner=true;
+                    }else{
+                        trgRoll=flightInputAxis((x-neutral.x)/.16+(bank-neutral.bank)*1.2)*(window.ArcadePlaySettings?.get().sensitivity??1);
+                        trgPitch=flightInputAxis(-(y-neutral.y)/.09);
+                        this.pilot.cameraAxes={roll:trgRoll,pitch:trgPitch};
                     }
-                }
-            }
+                } else this.pilot.cameraAction=null;
+            } else this.pilot.cameraAction=null;
 
             if(this.isHelicopter()&&window.ArcadeControls?.mode==='camera'){
                 // In camera play raised hands mean climb, not a nose-down cyclic.
