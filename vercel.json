@@ -620,6 +620,11 @@
       "source": "/games/familia",
       "destination": "/games/familia/3d/",
       "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/escola/",
+      "destination": "/escola/",
+      "permanent": false
     }
   ]
 }
