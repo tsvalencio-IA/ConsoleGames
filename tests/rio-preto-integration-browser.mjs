@@ -11,6 +11,13 @@ fs.mkdirSync(out,{recursive:true});
 const release=JSON.parse(fs.readFileSync('games/otthi/release-manifest.json'));
 const code=fs.readFileSync('games/otthi/app.js','utf8'),end=code.lastIndexOf('})();');
 const hook=`
+ const rioQaGifts={coins:0,food:0},rioQaSociety=updateNpcSociety;
+ updateNpcSociety=function(...args){
+  const {coins}=state.profile,food=Number(state.inventory.food||0);
+  rioQaSociety(...args);
+  rioQaGifts.coins+=state.profile.coins-coins;
+  rioQaGifts.food+=Number(state.inventory.food||0)-food;
+ };
  window.__RIO_QA={
   points:()=>Object.values(RIO_PRETO_LAYOUT.landmarks),
   shop:()=>cityCoast.shops.get('rio-shop-bady-mercado'),
@@ -21,7 +28,7 @@ const hook=`
   preview:()=>({id:rioWardrobePreview?.visual?.id,calls:rioWardrobePreview?.renderer?.info.render.calls||0}),
   installAt:(x,z)=>{OTTHOS_TEST_API.teleport(x,z);for(let n=0;n<32;n++){cityQaMs+=35;updateWorldExpansion();}},
   advanceTask:()=>{for(let i=0;i<700&&characterActivities.session;i++){cityQaMs+=1000/60;stepWorldSimulation(1/60);}},
-  save:()=>saveState(true)
+  gifts:()=>({...rioQaGifts}),save:()=>{saveState(true);return {...rioQaGifts};}
  };
 `;
 const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
@@ -50,7 +57,7 @@ try{
   assert.equal(await page.locator('html').getAttribute('data-otthi-revision'),release.revision);
  };
  await boot();
- const profile=()=>page.evaluate(()=>{const s=OTTHOS_TEST_API.getState();return{profile:s.profile,party:s.familyAdventure.party,tools:s.tools,vehicles:s.vehicles.owned,food:Number(s.inventory.food||0),journey:window.OT_PLAYER_JOURNEY.diagnostics()};});
+ const profile=()=>page.evaluate(()=>{const s=OTTHOS_TEST_API.getState();return{profile:s.profile,party:s.familyAdventure.party,tools:s.tools,vehicles:s.vehicles.owned,food:Number(s.inventory.food||0),gifts:__RIO_QA.gifts(),journey:window.OT_PLAYER_JOURNEY.diagnostics()};});
  report.before=await profile();
  assert.equal(report.before.profile.coins,4300);
  assert.equal(report.before.tools.equipped,'none');
@@ -78,7 +85,7 @@ try{
   assert(report.places.at(-1).survey.city.visible>0,'The district must render near its landmark');
  }
  report.afterTour=await profile();
- assert.equal(report.afterTour.profile.coins,4460);
+ assert.equal(report.afterTour.profile.coins,4460+report.afterTour.gifts.coins);
  assert.equal(report.places.at(-1).mission.status,'completed');
  assert.deepEqual(report.afterTour.party,report.before.party);
  assert.deepEqual(report.afterTour.tools,report.before.tools);
@@ -90,8 +97,10 @@ try{
  await page.locator('[data-city-order="groceries"]').tap();
  await page.evaluate(()=>__RIO_QA.advanceTask());
  report.shop=await page.evaluate(()=>__CITY_QA.transactions());
- assert.deepEqual(report.shop,[{id:shop.id,item:'groceries',ok:true,
-  before:{coins:4460,food:report.afterTour.food},after:{coins:4440,food:report.afterTour.food+5}}]);
+ assert.equal(report.shop.length,1);
+ const [receipt]=report.shop;
+ assert.deepEqual(receipt,{id:shop.id,item:'groceries',ok:true,before:receipt.before,
+  after:{coins:receipt.before.coins-20,food:receipt.before.food+5}});
 
  // Open the original avatar studio, then the new visual wardrobe.
  const openWardrobe=async()=>{
@@ -128,14 +137,14 @@ try{
  }
  await page.screenshot({path:out+'/guarda-roupa.png'});
  await page.locator('#modalClose').tap();
- await page.evaluate(()=>__RIO_QA.save());await boot();
+ report.beforeReloadGifts=await page.evaluate(()=>__RIO_QA.save());await boot();
  for(const setting of report.wardrobes){
   const actual=await page.evaluate(({name,slot})=>OTTHOS_TEST_API.getState().avatar.rioWardrobe[name]?.[slot],setting);
   assert.equal(actual,setting.value);
  }
  report.reloaded=await profile();
- assert.equal(report.reloaded.profile.coins,4440,'One mission credit and one purchase debit must persist');
- assert.equal(report.reloaded.food,report.afterTour.food+5);
+ assert.equal(report.reloaded.profile.coins,4440+report.beforeReloadGifts.coins+report.reloaded.gifts.coins,'One mission credit and one purchase debit must persist, in addition to NPC gifts');
+ assert.equal(report.reloaded.food,7+report.beforeReloadGifts.food+report.reloaded.gifts.food);
  assert.equal(await page.evaluate(()=>OT_CIVIL_MISSIONS.diagnostics().current.status),'completed');
  assert.deepEqual(report.reloaded.party,report.before.party);
  assert.deepEqual(report.reloaded.tools,report.before.tools);
