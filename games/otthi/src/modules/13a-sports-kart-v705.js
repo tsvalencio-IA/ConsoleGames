@@ -18,7 +18,8 @@
   function v705Hud(title,status){if(!els?.raceBadge)return;els.raceBadge.hidden=false;els.raceTitle.textContent=title;els.raceStatus.textContent=status;ensureSportExitButton(true);}
   function v705HudOff(){if(els?.raceBadge){els.raceBadge.hidden=true;els.raceBadge.classList.remove('has-sport-exit');}ensureSportExitButton(false);}
   function leaveCurrentSportV705(){
-    const kartActive=!!SPORTS_V705.kart?.active;
+    const kart=SPORTS_V705.kart;
+    const kartActive=!!kart?.active||!!kart?.spec?.regional&&SPORTS_V705.active===kart;
     if(typeof activeRace!=='undefined'&&activeRace){clearRaceObjects();activeRace=null;state.waypoint=null;updateWaypointMarker?.();if(els?.raceBadge)els.raceBadge.hidden=true;ensureSportExitButton(false);const exit=worldLayoutPoint('sportsEntrance');player.x=exit.x;player.z=exit.z;player.y=v705GroundY(exit.x,exit.z);player.vx=player.vz=player.vy=0;saveState(true);toast('Você saiu da atividade esportiva.','good',1200);return true;}
     if(!SPORTS_V705.football&&!SPORTS_V705.active&&!kartActive)return false;stopSportV704(false);const exit=kartActive?(SPORTS_V705.kart?.entrance||worldLayoutPoint('kartEntrance')):worldLayoutPoint('sportsEntrance');player.x=exit.x;player.z=exit.z;player.y=v705GroundY(exit.x,exit.z);player.vx=player.vz=player.vy=0;if(kartActive&&player.vehicle)player.car.speed=0;saveState(true);toast('Você saiu da partida.','good',1200);return true;
   }
@@ -240,7 +241,7 @@
       }else{addXP(won?65:30);if(won)addCoins(42);}
       v705Hud('🏁 '+k.label,`${elapsed.toFixed(1)}s • ${result} • melhor ${k.best.toFixed(1)}s`);
       toast(k.mode==='time'?result:won?'Você venceu a corrida de kart!':'Corrida concluída.','good',2400);
-      setTimeout(()=>{SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);
+      setTimeout(()=>{if(SPORTS_V705.active!==k||k.active)return;SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);
       return;}}else{k.expected++;if(k.expected>=k.checkpoints.length)k.expected=0;}}
     const track=v705TrackDistance(k,player.x,player.z);if(track.distance>k.width/2+.8){player.car.speed=clamp(player.car.speed,-3,6.5);if(now>k.offTrackWarnAt){k.offTrackWarnAt=now+1500;toast('Fora da pista — volte ao asfalto.','warn',1000);}}for(const boost of k.boosts){if(Math.hypot(player.x-boost.x,player.z-boost.z)<2.2&&now-boost.lastAt>2200){boost.lastAt=now;player.car.kartBoostUntil=now+1000;player.car.speed=Math.max(Number(player.car.speed||0),23.5);beep(980,90,'square');vibrate(25);if(now>k.boostMessageAt){k.boostMessageAt=now+1600;toast('TURBO!','good',700);}}}
     const exactProgress=k.lap+track.t,kRanks=k.ai.map((a,i)=>({name:`CPU ${i+1}`,progress:a.lap+a.t}));if(onlineV2)for(const item of v705KartSharedPlayers())kRanks.push({name:`Jogador ${String(item.uid).slice(-4).toUpperCase()}`,progress:Number(item.lap||0)+Number(item.progress||0)});kRanks.push({name:'Você',progress:exactProgress});kRanks.sort((a,b)=>b.progress-a.progress);const pos=kRanks.findIndex(r=>r.name==='Você')+1,boosting=now<Number(player.car.kartBoostUntil||0);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`Volta ${Math.min(k.spec?.laps||3,k.lap+1)}/${k.spec?.laps||3} • ${k.mode==='time'?((now-k.startAt)/1000).toFixed(1)+'s':pos+'º/'+kRanks.length} • ${boosting?'TURBO • ':''}${Math.round(Math.abs(player.car.speed)*3.6)} km/h`);v705PublishSport({type:'kart',lap:k.lap,checkpoint:k.expected,position:pos,progress:+track.t.toFixed(3)});}

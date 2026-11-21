@@ -148,7 +148,13 @@ try {
       if (batch % 10 === 0) console.log('DRIVE', id, result.lap, result.checkpoint, result.speed.toFixed(1), result.trackDistance.toFixed(2));
       if (!result.active) break;
     }
-    report.races.push({ venue, started, result });
+    let earlyExit=null;
+    if(id==='mirassol'&&!result.active){
+      await tapAutosized('[data-sport-exit]');
+      earlyExit=await page.evaluate(()=>__RIO_RACE_QA.snapshot());
+      assert(Math.hypot(earlyExit.x-venue.navX,earlyExit.z-venue.navZ)<4,'The results exit returns to Mirassol');
+    }
+    report.races.push({ venue, started, result, earlyExit });
     assert.equal(result.active, false, JSON.stringify(result));
     assert.equal(result.lap, laps);
     assert.equal(result.rivals, 0);

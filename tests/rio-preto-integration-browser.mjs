@@ -17,6 +17,7 @@ const hook=`
    layouts:worldGroup.children.filter(o=>o.name.startsWith('RIO_')).map(o=>o.name),
    city:OTTHI_RIO_PRETO.diagnostics(),ground:groundHeightAt(player.x,player.z),position:{x:player.x,z:player.z}}),
   view:yaw=>{cameraYaw=yaw;cameraPitch=.48;cameraZoom=2.2;updateCamera(2);updateVisualLOD();},
+  preview:()=>({id:rioWardrobePreview?.visual?.id,calls:rioWardrobePreview?.renderer?.info.render.calls||0}),
   installAt:(x,z)=>{OTTHOS_TEST_API.teleport(x,z);for(let n=0;n<32;n++){cityQaMs+=35;updateWorldExpansion();}},
   advanceTask:()=>{for(let i=0;i<700&&characterActivities.session;i++){cityQaMs+=1000/60;stepWorldSimulation(1/60);}},
   save:()=>saveState(true)
@@ -97,10 +98,12 @@ try{
   assert(value,'A opção do guarda-roupa precisa existir');
   await select.selectOption(value);
   await page.locator('[data-rio-wardrobe-preview][data-preview-ready="true"]').waitFor();
+  const preview=await page.evaluate(()=>__RIO_QA.preview());
+  assert(preview.calls>5&&preview.id===name,JSON.stringify(preview));
   await page.locator('[data-rio-wardrobe-save]').tap();
   const selected=await page.evaluate(()=>OTTHOS_TEST_API.getState().avatar.rioWardrobe);
   assert.equal(selected[name][slot],value);
-  report.wardrobes.push({name,slot,value});
+  report.wardrobes.push({name,slot,value,preview});
   if(await page.locator('#modalClose').isVisible())await page.locator('#modalClose').tap();
  }
  await openWardrobe();
