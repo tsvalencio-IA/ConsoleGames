@@ -555,6 +555,71 @@
       "source": "/ConsoleGames/escola/:rest+/",
       "destination": "/escola/:rest+/",
       "permanent": false
+    },
+    {
+      "source": "/arcade",
+      "destination": "/arcade/",
+      "permanent": false
+    },
+    {
+      "source": "/arcade/instalar",
+      "destination": "/arcade/instalar/",
+      "permanent": false
+    },
+    {
+      "source": "/escola",
+      "destination": "/escola/",
+      "permanent": false
+    },
+    {
+      "source": "/games/otthi",
+      "destination": "/games/otthi/",
+      "permanent": false
+    },
+    {
+      "source": "/games/atualizar",
+      "destination": "/games/atualizar/",
+      "permanent": false
+    },
+    {
+      "source": "/games/familia/3d",
+      "destination": "/games/familia/3d/",
+      "permanent": false
+    },
+    {
+      "source": "/games/kart",
+      "destination": "/games/kart/",
+      "permanent": false
+    },
+    {
+      "source": "/games/boxe",
+      "destination": "/games/boxe/",
+      "permanent": false
+    },
+    {
+      "source": "/games/tenis",
+      "destination": "/games/tenis/",
+      "permanent": false
+    },
+    {
+      "source": "/games/ar",
+      "destination": "/games/ar/",
+      "permanent": false
+    },
+    {
+      "source": "/games/voo",
+      "destination": "/games/voo/",
+      "permanent": false
+    },
+    {
+      "source": "/games/danca",
+      "destination": "/games/danca/",
+      "permanent": false
+    },
+    {
+      "source": "/games/familia",
+      "destination": "/games/familia/3d/",
+      "permanent": false
     }
   ]
 }
