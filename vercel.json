@@ -540,6 +540,21 @@
       "source": "/ConsoleGames/escola/:rest*",
       "destination": "/escola/:rest*",
       "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/games/:rest+/",
+      "destination": "/games/:rest+/",
+      "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/arcade/:rest+/",
+      "destination": "/arcade/:rest+/",
+      "permanent": false
+    },
+    {
+      "source": "/ConsoleGames/escola/:rest+/",
+      "destination": "/escola/:rest+/",
+      "permanent": false
     }
   ]
 }
