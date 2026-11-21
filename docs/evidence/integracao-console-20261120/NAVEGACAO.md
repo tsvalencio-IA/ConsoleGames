@@ -22,3 +22,7 @@ O roteiro está em `tests/console-integrated-navigation-browser.mjs`. Ele pode u
 O catálogo em subpasta completou as 16 idas e voltas, com oito cartões e oito acessos diretos. Também recarregou o console sem rede. [Resultado Chromium da subpasta](catalogo-subpasta.json)
 
 O ensaio inicial de portais verificou Ping Pong, Dança e Boxe na raiz e na subpasta. O passo seguinte parou porque o roteiro procurou um identificador genérico para a Academia de Aviação. A escolha real da Academia passa pelo modal do hangar. O roteiro agora aciona esse modal e usa a entrada própria de cada kartódromo. [Registro da execução inicial](portais-pingpong-danca-boxe.json)
+
+Após ajustar os identificadores no roteiro, a Academia de Aviação e os autódromos Nova Aurora e Costa Verde completaram as idas e voltas na raiz e em subpasta. As duas sessões emularam toque e terminaram no console do próprio endereço. Cada volta confirmou a revisão `98dd1de73eca5329`, o mesmo perfil e o mesmo progresso. [Resultado da Academia e dos kartódromos](portais-aviacao-kart.json)
+
+Em janela de 1280 × 800 com mouse, Boxe e Academia abriram em quadros do mesmo endereço. Os arquivos executados corresponderam ao build e o retorno manteve o progresso. [Resultado desktop](portais-desktop.json)

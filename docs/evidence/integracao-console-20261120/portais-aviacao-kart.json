@@ -1,0 +1,77 @@
+{
+  "build": "705.28.31-integracao-console",
+  "revision": "98dd1de73eca5329",
+  "browser": "141.0.7390.37",
+  "mode": "trips",
+  "selectedPortals": [
+    "aviation",
+    "kart-aurora",
+    "kart-costa"
+  ],
+  "checks": [
+    {
+      "mount": "http://127.0.0.1:40729/",
+      "desktop": false,
+      "verified": [
+        "portal:aviation",
+        "portal:kart-aurora",
+        "portal:kart-costa",
+        "return:console"
+      ],
+      "visits": [
+        "http://127.0.0.1:40729/console.html",
+        "http://127.0.0.1:40729/arcade/",
+        "http://127.0.0.1:40729/games/atualizar/",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329&otthi_probe=1795251216257",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/games/voo/?otVenue=8fb9db15-cbf2-4286-91de-5fd92a6ffb9f&venuePage=1",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=8fb9db15-cbf2-4286-91de-5fd92a6ffb9f",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/games/kart/?otVenue=37e25101-d5f5-48fe-9d7c-f77abc77c7b4&venuePage=1",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=37e25101-d5f5-48fe-9d7c-f77abc77c7b4",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/games/kart/?otVenue=92aecf3a-5f11-4ae0-a1a9-5b81af6295b1&venuePage=1",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=92aecf3a-5f11-4ae0-a1a9-5b81af6295b1",
+        "http://127.0.0.1:40729/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/arcade/"
+      ],
+      "passed": true
+    },
+    {
+      "mount": "http://127.0.0.1:40729/preview-build/",
+      "desktop": false,
+      "verified": [
+        "portal:aviation",
+        "portal:kart-aurora",
+        "portal:kart-costa",
+        "return:console"
+      ],
+      "visits": [
+        "http://127.0.0.1:40729/preview-build/console.html",
+        "http://127.0.0.1:40729/preview-build/arcade/",
+        "http://127.0.0.1:40729/preview-build/games/atualizar/",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otthi_probe=1795251343701",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/preview-build/games/voo/?otVenue=b26cc532-a192-423d-8ca8-e4399322d8bb&venuePage=1",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=b26cc532-a192-423d-8ca8-e4399322d8bb",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/preview-build/games/kart/?otVenue=5c1d2819-25aa-48d1-8840-b96738b02410&venuePage=1",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=5c1d2819-25aa-48d1-8840-b96738b02410",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/preview-build/games/kart/?otVenue=567199ef-65e0-458a-9a8a-c645be13f352&venuePage=1",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otVenueReturn=567199ef-65e0-458a-9a8a-c645be13f352",
+        "http://127.0.0.1:40729/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:40729/preview-build/arcade/"
+      ],
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Chromium uses a portrait touch viewport or a desktop viewport with a mouse. No physical phone, APK or camera inference is exercised.",
+    "External network is blocked for the disposable contexts. The local account and saves are test profiles.",
+    "Portal travel uses the normal AÇÃO menu after placing the test avatar by the venue. Route checks do not certify complete matches or performance.",
+    "A single native source asset per game is byte-checked in this browser suite. The full manifest needs its own integrity audit."
+  ],
+  "passed": true,
+  "checkedAt": "2026-11-21T08:57:04.186Z"
+}

@@ -2,23 +2,27 @@
   "branch": "fix/integracao-console-20261120",
   "baseline": "4ce95d1f72712cc506577a272778f0b9ee0e8eee",
   "gameSourceCommit": "bc097848cb3b1f616352f8502b9714516084f888",
-  "previewCommit": "3105ec543593e8e558a082411c59356264dd3444",
-  "previewDeployment": "dpl_8XTDiTfCQneM8mgSDTYiteTxC31V",
+  "previewCommit": "307f9a00727909eb6a016edd248417bd8404c9e8",
+  "previewDeployment": "dpl_CVzfnp8iLHb1ushtKBGCLGyHYtUW",
   "target": "preview",
   "build": "705.28.31-integracao-console",
   "revision": "98dd1de73eca5329",
   "links": {
-    "console": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/",
-    "world": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/atualizar/",
-    "flight": "https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/voo/"
+    "console": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/arcade/",
+    "world": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/atualizar/",
+    "flight": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/voo/"
   },
   "checks": {
     "releaseManifest": 175,
     "httpHashesVerified": 180,
-    "httpAliases": 8,
+    "httpAliases": 26,
     "unitTestsPassed": 579,
     "unitTestsFailed": 0,
-    "unitDurationMs": 146688.89
+    "unitDurationMs": 146688.89,
+    "bookmarkBrowserChecks": 5,
+    "eightGameCatalog": true,
+    "sixWorldPortals": true,
+    "worldReloadPreservesProgress": true
   },
   "production": {
     "build": "705.28.30-aviacao-presenca-unificada",
@@ -29,5 +33,5 @@
     "Camera poses, lighting proxy and capture are controlled in Chromium; physical sensor/device tests pending.",
     "No production publish or live Firebase writes."
   ],
-  "checkedAt": "2026-11-21T08:48:20.939Z"
+  "checkedAt": "2026-11-21T08:57:42.267Z"
 }

@@ -14,9 +14,9 @@ Os ensaios das duas missões usaram posições de aproximação preparadas e con
 
 A produção fica na versão registrada no início deste trabalho. O resultado desta branch é destinado à prévia.
 
-A prévia 705.28.31 está disponível. [Console](https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/arcade/) · [Mundo Aberto](https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/atualizar/) · [Aero Strike WAR](https://otthi-world-campanha-teste-eou0v4wsg-thiaguinho-s-projects.vercel.app/games/voo/).
+A prévia 705.28.31 está disponível. [Console](https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/arcade/) · [Mundo Aberto](https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/atualizar/) · [Aero Strike WAR](https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/voo/).
 
-A suíte local aprovou 579 testes. A auditoria HTTPS conferiu 180 arquivos, e oito rotas públicas responderam no endereço esperado, incluindo favoritos antigos com barra final e parâmetros. O manifesto do Mundo Aberto contém 175 recursos. [Registro da prévia](preview.json) · [Testes automatizados](unit.log) · [Hashes](preview-https.json) · [Rotas antigas](preview-aliases.json)
+A suíte local aprovou 579 testes. A auditoria HTTPS conferiu 180 arquivos, e 26 rotas públicas responderam no endereço esperado, incluindo favoritos antigos com barra final e parâmetros. O manifesto do Mundo Aberto contém 175 recursos. [Registro da prévia](preview.json) · [Testes automatizados](unit.log) · [Hashes](preview-https.json) · [Rotas antigas e favoritos sem barra](preview-aliases-final.json)
 
 O Chromium verificou cache antigo do console, a migração do Mundo Aberto com recarga offline, a atualização do WAR após o fim da partida e os identificadores de instalação em duas pastas da mesma origem. O instalador oferece o APK somente no endereço esperado pelo binário. O ensaio de download confirmou os bytes do pacote em retrato, paisagem e computador. [Console](arcade-worker-migration.json) · [Mundo](world-worker-migration.json) · [WAR](war-worker-migration.json) · [Isolamento](cache-mount-isolation.json) · [Instalador](android-browser.json)
 
@@ -26,3 +26,10 @@ Na prévia hospedada, os oito cartões e os oito acessos diretos abriram o arqui
 A auditoria de links legados hospedados cobriu 12 endereços, preservando a consulta e a origem. O instalador hospedado ofereceu a entrada web da própria prévia. [Links](preview-aliases-full.json) · [Instalador hospedado](preview-installer.json)
 
 A automação Android chegou a compilar e instalar os APKs no emulador API 35. A verificação de abertura antiga esperava sete cartões e foi ajustada para os oito atuais. Os ensaios Chromium de entrada solo, troca de conta e retorno passaram nas cinco campanhas após corrigir a espera pelo fim do carregamento. O teste de navegação antigo também passou após corrigir a leitura da URL do Playwright. A nova execução de instrumentação Android e os ensaios completos de toque do WAR e câmera do Kart ficam identificados pelos resultados do CI da branch. [Primeira homologação integrada](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/44886425310) · [Download Android em CI](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/44886515311) · [Entrada solo](solo-entry.json)
+
+
+O percurso Console → Mundo Aberto → atividade → Mundo Aberto → Console foi verificado a partir dos seis portais. A validação cobriu raiz e subpasta, com verificação de perfil, moedas, experiência, veículos, família e ferramentas após o retorno. Também foram conferidos os quadros de Boxe e Academia no desktop. [Matriz de navegação](NAVEGACAO.md)
+
+O teste completo do catálogo hospedado rodou antes dos últimos ajustes de redirecionamento. Os 180 arquivos conferidos da prévia final mantêm os mesmos hashes. Na prévia final, 26 URLs com e sem barra e cinco entradas abertas como favoritos no Chromium foram verificadas diretamente. [Favoritos no navegador](preview-bookmarks-browser.json)
+
+[Execução Android após corrigir a contagem dos jogos](https://github.com/tsvalencio-IA/ConsoleGames/actions/runs/44887096115).

@@ -1,0 +1,140 @@
+{
+  "origin": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app",
+  "checks": [
+    {
+      "from": "/arcade?qa=bookmark",
+      "to": "/arcade/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/arcade/?qa=legacy",
+      "to": "/arcade/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/arcade/instalar?qa=bookmark",
+      "to": "/arcade/instalar/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/arcade/instalar/?qa=legacy",
+      "to": "/arcade/instalar/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/escola?qa=bookmark",
+      "to": "/escola/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/escola/?qa=legacy",
+      "to": "/escola/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/atualizar?qa=bookmark",
+      "to": "/games/atualizar/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/atualizar/?qa=legacy",
+      "to": "/games/atualizar/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/otthi?qa=bookmark",
+      "to": "/games/otthi/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/otthi/?qa=legacy",
+      "to": "/games/otthi/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/familia/3d?qa=bookmark",
+      "to": "/games/familia/3d/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/familia/3d/?qa=legacy",
+      "to": "/games/familia/3d/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/kart?qa=bookmark",
+      "to": "/games/kart/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/kart/?qa=legacy",
+      "to": "/games/kart/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/boxe?qa=bookmark",
+      "to": "/games/boxe/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/boxe/?qa=legacy",
+      "to": "/games/boxe/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/tenis?qa=bookmark",
+      "to": "/games/tenis/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/tenis/?qa=legacy",
+      "to": "/games/tenis/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/ar?qa=bookmark",
+      "to": "/games/ar/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/ar/?qa=legacy",
+      "to": "/games/ar/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/voo?qa=bookmark",
+      "to": "/games/voo/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/voo/?qa=legacy",
+      "to": "/games/voo/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/danca?qa=bookmark",
+      "to": "/games/danca/?qa=bookmark",
+      "status": 200
+    },
+    {
+      "from": "/ConsoleGames/games/danca/?qa=legacy",
+      "to": "/games/danca/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/games/familia?qa=legacy",
+      "to": "/games/familia/3d/?qa=legacy",
+      "status": 200
+    },
+    {
+      "from": "/console.html?qa=legacy",
+      "to": "/arcade/?qa=legacy",
+      "status": 200
+    }
+  ],
+  "checkedAt": "2026-11-21T08:57:37.620Z",
+  "production": {
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2"
+  }
+}

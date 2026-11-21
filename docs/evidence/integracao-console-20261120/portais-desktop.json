@@ -1,0 +1,40 @@
+{
+  "build": "705.28.31-integracao-console",
+  "revision": "98dd1de73eca5329",
+  "browser": "141.0.7390.37",
+  "mode": "embedded",
+  "selectedPortals": [
+    "boxing",
+    "aviation"
+  ],
+  "checks": [
+    {
+      "mount": "http://127.0.0.1:45917/preview-build/",
+      "desktop": true,
+      "verified": [
+        "portal:boxing",
+        "portal:aviation",
+        "return:console"
+      ],
+      "visits": [
+        "http://127.0.0.1:45917/preview-build/console.html",
+        "http://127.0.0.1:45917/preview-build/arcade/",
+        "http://127.0.0.1:45917/preview-build/games/atualizar/",
+        "http://127.0.0.1:45917/preview-build/games/otthi/?otthi_update=98dd1de73eca5329&otthi_probe=1795251247119",
+        "http://127.0.0.1:45917/preview-build/games/otthi/?otthi_update=98dd1de73eca5329",
+        "http://127.0.0.1:45917/preview-build/games/boxe/?otVenue=f6523cb3-514d-48da-aa6c-3d9d105c574c",
+        "http://127.0.0.1:45917/preview-build/games/voo/?otVenue=af209150-0add-45d0-b1e5-6edb255cc25d",
+        "http://127.0.0.1:45917/preview-build/arcade/"
+      ],
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Chromium uses a portrait touch viewport or a desktop viewport with a mouse. No physical phone, APK or camera inference is exercised.",
+    "External network is blocked for the disposable contexts. The local account and saves are test profiles.",
+    "Portal travel uses the normal AÇÃO menu after placing the test avatar by the venue. Route checks do not certify complete matches or performance.",
+    "A single native source asset per game is byte-checked in this browser suite. The full manifest needs its own integrity audit."
+  ],
+  "passed": true,
+  "checkedAt": "2026-11-21T08:55:18.497Z"
+}

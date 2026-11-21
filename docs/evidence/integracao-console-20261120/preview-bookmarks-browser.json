@@ -1,0 +1,31 @@
+{
+  "origin": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app",
+  "browser": "141.0.7390.37",
+  "checks": [
+    {
+      "input": "/arcade",
+      "url": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/arcade/?bookmark=1"
+    },
+    {
+      "input": "/games/voo",
+      "url": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/voo/?bookmark=1"
+    },
+    {
+      "input": "/games/otthi",
+      "url": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/otthi/?bookmark=1"
+    },
+    {
+      "input": "/games/familia/3d",
+      "url": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/familia/3d/?bookmark=1"
+    },
+    {
+      "input": "/games/danca",
+      "url": "https://otthi-world-campanha-teste-8akrnlb50-thiaguinho-s-projects.vercel.app/games/danca/?bookmark=1"
+    }
+  ],
+  "passed": true,
+  "checkedAt": "2026-11-21T08:57:44.115Z",
+  "limits": [
+    "Entry and asset bootstrap only. External accounts/services blocked."
+  ]
+}
