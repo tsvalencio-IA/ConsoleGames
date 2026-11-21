@@ -1,9 +1,9 @@
 import{test}from'node:test';import assert from'node:assert/strict';import{readFileSync}from'node:fs';import vm from'node:vm';
 const sandbox={};vm.createContext(sandbox);vm.runInContext(readFileSync('games/otthi/assets/js/world/civil-mission-core.js','utf8'),sandbox);const{CivilMissionBook,definitions,difficulties,quota,mergeProgress}=sandbox.OTCivilMissionCore;
 function act(book,id,uid,subject,at){const phase=book.data.records[id].phase;assert(book.begin(id,uid,phase,subject,at));assert.equal(book.finish(id,uid,phase,subject,at+10),false);assert(book.finish(id,uid,phase,subject,at+difficulties[book.data.records[id].difficulty].holdMs));}
-test('civil world: seven civilian stories complete in solo and co-op at every difficulty, with each player doing their work',()=>{
+test('civil world: civilian stories complete in their supported modes at every difficulty, with each player doing their work',()=>{
  for(const[type,def]of Object.entries(definitions))for(const difficulty of Object.keys(difficulties))for(const mode of['solo','coop']){
-  const book=new CivilMissionBook(),id='run-'+type+'-'+difficulty+'-'+mode;assert(book.create(id,type,'player-a',mode,difficulty,0));const members=mode==='coop'?['player-a','player-b']:['player-a'];
+  const book=new CivilMissionBook(),id='run-'+type+'-'+difficulty+'-'+mode;if(def.soloOnly&&mode==='coop'){assert.equal(book.create(id,type,'player-a',mode,difficulty,0),null);continue;}assert(book.create(id,type,'player-a',mode,difficulty,0));const members=mode==='coop'?['player-a','player-b']:['player-a'];
   if(mode==='coop'){assert.equal(book.start(id,'player-a'),false);assert(book.join(id,'player-b'));assert.equal(book.join(id,'player-c'),false);for(const uid of members)book.ready(id,uid,true);assert(book.start(id,'player-a'));}
   let at=10000;for(let phase=0;phase<def.steps.length;phase++){
    const step=def.steps[phase],count=quota(step,difficulty);for(const[index,uid]of members.entries()){

@@ -77,6 +77,7 @@
   document.addEventListener('pointerdown',()=>{modalGestureStartedOutside=els.modal.hidden;},true);
   els.modal.addEventListener('click',event=>{if(modalGestureStartedOutside&&event.detail!==0){modalGestureStartedOutside=false;event.preventDefault();event.stopImmediatePropagation();}},true);
   function openModal(title, html, onReady) {
+    if(typeof disposeRioWardrobePreview==='function')disposeRioWardrobePreview();
     els.modal.classList.remove('atlas-modal');
     state.ui.quickOpen = false;
     if (els.quickBar) els.quickBar.hidden = true;
@@ -94,6 +95,7 @@
     requestAnimationFrame(()=>{els.modalBody.scrollTop=0;scheduleStableResize(0,true);});
   }
   function closeModal() {
+    if(typeof disposeRioWardrobePreview==='function')disposeRioWardrobePreview();
     clearExtensionPreview();
     if (typeof fishingSession !== 'undefined' && fishingSession) cancelFishingSession();
     else if (typeof fishingVisual !== 'undefined' && fishingVisual?.active) stopFishingVisual();

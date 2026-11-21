@@ -1,7 +1,7 @@
 name: Homologacao integrada dos oito jogos
 on:
   push:
-    branches: [fix/console-recuperacao-20261117, fix/integracao-console-20261120]
+    branches: [fix/console-recuperacao-20261117, fix/integracao-console-20261120, feat/rio-preto-7052831]
   pull_request:
     branches: [continuation-20261111]
   workflow_dispatch:
@@ -64,6 +64,10 @@ jobs:
         run: node tests/flight-reporter-gesture-browser.mjs
       - name: Fotografar durante voo de balão e conferir recarga
         run: node tests/balloon-photo-browser.mjs
+      - name: Completar o roteiro de Rio Preto e salvar as roupas da família
+        run: node tests/rio-preto-integration-browser.mjs
+      - name: Completar as corridas de Mirassol e Cedral e recarregar os resultados
+        run: node tests/rio-regional-races-browser.mjs
       - name: Conferir isolamento dos caches entre instalações
         run: node tests/console-cache-isolation-browser.mjs
       - name: Guardar screenshots

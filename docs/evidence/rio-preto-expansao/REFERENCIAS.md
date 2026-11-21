@@ -1,0 +1,27 @@
+# Pesquisa de ambientação da expansão regional
+
+Referências públicas consultadas em 21 de novembro de 2026. A expansão compõe a geografia do OTThi World com traços reconhecíveis da região. Os corredores são estilizados, as posições no jogo seguem a malha existente e os dois circuitos têm traçados fictícios próprios. As fotografias servem de referência para formas, materiais e proporções.
+
+## São José do Rio Preto
+
+### Avenida Bady Bassitt
+
+A vista aérea e os mapas do estudo da UNESP mostram um corredor largo e retilíneo, ladeado por quadras que alternam comércio, casas baixas de telha cerâmica e edifícios residenciais mais altos. O estudo registra concessionárias, oficinas e autopeças ao longo da avenida e a canalização do córrego Borá sob a via. A composição no jogo pode alternar fachadas envidraçadas e recuos de lojas de veículos, oficinas mais estreitas, casas muradas nas transversais e torres espaçadas no fundo. [Estudo da UNESP, capítulo 3 e figuras 5 e 10](https://repositorio.unesp.br/server/api/core/bitstreams/24ba9f78-cb22-47ce-b149-89acfa6d534a/content) · [Vista aérea georreferenciada](https://commons.wikimedia.org/wiki/File:Vista_da_Av._Bady_Bassitt,_São_José_do_Rio_Preto_-_panoramio.jpg) · [Outro ponto de vista da avenida](https://commons.wikimedia.org/wiki/File:São_José_do_Rio_Preto_-_Av._Bady_Bassitt_-_panoramio.jpg)
+
+### Avenida Alberto Andaló
+
+A Andaló forma um segundo corredor central, distinto da Bady Bassitt, com serviços, clínicas, comércio e o Paço Municipal. O registro visual mostra pistas divididas, palmeiras e canteiro. O petit-pavé é documentado no canteiro histórico e a substituição por grama aparece no registro local. O córrego Canela é canalizado sob esse trecho. No jogo, canteiros baixos, calçadas com mosaico em pontos cívicos, praça arborizada, comércio de menor frente e um edifício cívico dão identidade ao corredor. [Estudo da UNESP, capítulo 3](https://repositorio.unesp.br/server/api/core/bitstreams/24ba9f78-cb22-47ce-b149-89acfa6d534a/content) · [Esquina da Rua Mirassol](https://commons.wikimedia.org/wiki/File:Avenida_Alberto_Andaló,_Esquina_Rua_Mirassol_-_São_José_do_Rio_Preto-SP._-_panoramio.jpg) · [Paço Municipal](https://commons.wikimedia.org/wiki/File:Paço_Municipal,_Avenida_Alberto_Andaló_Nº_3030_-_São_José_do_Rio_Preto-SP._-_panoramio.jpg) · [Registro do canteiro no Diário da Região](https://www.diariodaregiao.com.br/cidades/riopreto/do-petit-pave-para-a-grama-1.192032)
+
+### Avenida Murchid Homsi
+
+O corredor acompanha trechos do córrego Aterradinho. Proposituras da Câmara documentam manutenção do leito e indicam circulação junto à rotatória na região da Quinta das Paineiras. O material histórico municipal da Swift registra galpões de tijolo, vãos repetidos, frontões simples e arborização, referências para um galpão cultural original na expansão. Para a Murchid, margens verdes, pequenas travessias sobre o canal, mudanças de direção e volumes industriais baixos formam uma paisagem própria. A licitação municipal de drenagem faz referência a um parque linear proposto. [Proposituras da Câmara, IR 1808/2025 e IR 1590/2024](https://www.riopreto.sp.leg.br/Consulta/vereadores/Proposituras/23569?documento=135) · [Arquivo municipal da Swift, fotografias 3 e 4](https://riopreto.siscam.com.br/arquivo?Id=256962) · [Registro da licitação de drenagem e parque linear](https://saneamentoambiental.com.br/licitacoes/infraestrutura-urbana-com-drenagem-e-parque-linear--46588950000180-1-000691-2026)
+
+A combinação de comércio de avenida, serviços cívicos e bairros residenciais laterais permite variar profundidade dos lotes, muros baixos e altos, portões, garagens, jardins, telhados, acabamentos e densidade. Os pontos específicos que o responsável pelo produto vai enviar serão avaliados sobre a malha da expansão. [Mapa de referência regional](https://www.openstreetmap.org/#map=15/-20.818/-49.377)
+
+## Mirassol
+
+A CBN Grandes Lagos registrou em 19 de outubro de 2026 o WB Kart Racing, na Estrada Municipal José Arroyo Martins, como pista de 600 m de extensão por 7 m de largura, com curvas anguladas. Esse registro dá referência regional de escala e ritmo. A antiga estação ferroviária e a Praça Manoel Antônio, documentadas pela Prefeitura, dão referência de telhados baixos, coberturas de sombra e espaços verdes. O circuito do OTThi World é fictício, com identidade, traçado, boxes e paddock do jogo. [Reportagem da CBN Grandes Lagos](https://cbngrandeslagos.com.br/noticias/regiao-de-rio-preto-ganha-kartodromo) · [Estação e Praça Manoel Antônio](https://www.mirassol.sp.gov.br/portal/noticias/0/3/5739/prefeitura-revitaliza-predio-da-estacao-ferroviaria-e-praca-manoel-antonio) · [Pontos turísticos da Prefeitura](https://www.mirassol.sp.gov.br/portal/servicos/1004/pontos-turisticos)
+
+## Cedral
+
+A Lei Municipal nº 2.267, de 10 de dezembro de 2013, protege a antiga estação ferroviária e a casa do Museu Felício Botino. As imagens da estação mostram telhado cerâmico de duas águas, aberturas verticais ritmadas e alpendre, referências para a arquitetura do paddock e das áreas de público. A pesquisa pública consultada deixou sem confirmação a existência de um autódromo que corresponda à proposta. O circuito de Cedral é fictício, com traçado e atividades próprios, inspirado na paisagem e na arquitetura local. [Lei Municipal nº 2.267](https://cedral.siscam.com.br/arquivo?Id=12990) · [Registro fotográfico histórico de Cedral](https://estacoesferroviarias.com.br/c/cedral.htm)

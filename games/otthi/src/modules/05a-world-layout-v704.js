@@ -26,6 +26,14 @@
     for(const x of cX)path('coast-col-'+(-x),'Bairro Jardim da Costa',[[x,160],[x,195],[x,221]],7);
     return{highways,nodes,edges};
   })();
+  // Both additions register roads before any renderer, GPS or traffic index
+  // takes a snapshot of the world authority.
+  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
+  const rioProtectedRects=[
+    ...(rioPretoRoads?.protectedRects||[]),
+    ...(typeof RIO_REGIONAL_RESERVATIONS==='undefined'?[]:RIO_REGIONAL_RESERVATIONS)
+  ];
   const WORLD_LAYOUT_V704=Object.freeze({
     version:704,
     bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
@@ -52,7 +60,8 @@
     }),
     circuits:Object.freeze({
       aurora:{id:'aurora',label:'Autódromo Nova Aurora',x:300,z:-270,scale:2.4,w:114,d:100,navX:300,navZ:-212,shape:0},
-      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1}
+      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1},
+      ...(typeof RIO_REGIONAL_CIRCUITS==='undefined'?{}:RIO_REGIONAL_CIRCUITS)
     }),
     activityVenues:Object.freeze({
       boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-56,w:14,d:12,navX:46,navZ:-48,face:1,slug:'boxe'},
@@ -86,6 +95,8 @@
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
       ...CIVIL_WORLD_LINKS.highways,
+      ...(rioPretoRoads?.highways||[]),
+      ...(rioRegionalRoads?.highways||[]),
       {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
       {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
       {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
@@ -129,6 +140,8 @@
     ]),
     nodes:Object.freeze({
       ...CIVIL_WORLD_LINKS.nodes,
+      ...(rioPretoRoads?.nodes||{}),
+      ...(rioRegionalRoads?.nodes||{}),
       "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
@@ -170,6 +183,8 @@
     }),
     edges:Object.freeze([
       ...CIVIL_WORLD_LINKS.edges,
+      ...(rioPretoRoads?.edges||[]),
+      ...(rioRegionalRoads?.edges||[]),
       ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
@@ -391,7 +406,7 @@
   }
   function v704ZoneAt(x,z,margin=0){return Object.values(WORLD_LAYOUT_V704.zones).filter(zone=>v704PointInRect({x,z},zone,margin)).map(zone=>zone.id);}
   function v704ConstructionAt(x,z,margin=0){return v704PointInRect({x,z},WORLD_LAYOUT_V704.zones.construction,-Math.abs(margin));}
-  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id))];}
+  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id)),...rioProtectedRects];}
   function v704ReservedAt(x,z,margin=0){if(v704RoadAt(x,z,margin,true))return true;return v704ProtectedRectangles().some(rect=>v704PointInRect({x,z},rect,Number(rect.margin||0)+margin));}
   function v704BuildAllowedAt(x,z,w=1.5,d=1.5){const zone=WORLD_LAYOUT_V704.zones.construction,rect={x,z,w,d};if(x-w/2<zone.x-zone.w/2||x+w/2>zone.x+zone.w/2||z-d/2<zone.z-zone.d/2||z+d/2>zone.z+zone.d/2)return false;if(WORLD_LAYOUT_V704.roads.some(road=>v704RectOverlap(rect,v704RoadFootprint(road,true),.25)))return false;return !(WORLD_LAYOUT_V704.highways||[]).some(highway=>v704HighwayIntersectsRect(highway.id,rect,.25));}
   function v704NearestConstructionSlot(index=0){const zone=WORLD_LAYOUT_V704.zones.construction,columns=6,spacingX=5,spacingZ=5,row=Math.floor(index/columns),column=index%columns;return{x:zone.x-zone.w/2+3+column*spacingX,z:zone.z-zone.d/2+3+row*spacingZ};}

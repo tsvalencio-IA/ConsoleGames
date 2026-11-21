@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.31-integracao-console';
+  const OTTHI_GAME_WEB_BUILD = '705.28.32-rio-preto-regiao';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -156,7 +156,9 @@
       secondaryColor:safeAvatarColor(source.secondaryColor,defaults.secondaryColor),
       outfit,
       accessory,
-      uniform
+      uniform,
+      ...(typeof normalizeRioWardrobe==='function'&&Object.hasOwn(source,'rioWardrobe')
+        ? {rioWardrobe:normalizeRioWardrobe(source.rioWardrobe)} : {})
     };
   }
   function updateAvatarV2LegacyChoice(avatar,type,id){
@@ -372,6 +374,530 @@
     source:OTTHI_VISUAL_ASSETS.models.athosLobby.source,
     gameplayEnabled:false
   });
+
+  // ===== MODULE: 81-rio-wardrobe.js =====
+  const RIO_WARDROBE_CHARACTERS = Object.freeze(['thiago', 'thamis']);
+  const RIO_WARDROBE_CATALOG = Object.freeze({
+    top: [
+      ['original', 'Roupa original'],
+      ['linen', 'Camiseta de linho', '#ebded0'],
+      ['denim', 'Jaqueta jeans', '#385575'],
+      ['sport', 'Camiseta esportiva', '#237e61'],
+      ['festival', 'Vestido de festa e leggings', '#ae4c78'],
+      ['rain', 'Jaqueta corta-vento', '#da954a']
+    ],
+    legs: [
+      ['original', 'Roupa original'],
+      ['jeans', 'Calça jeans', '#36577b'],
+      ['chino', 'Calça de sarja', '#a28662'],
+      ['bermuda', 'Bermuda', '#54695c'],
+      ['track', 'Calça esportiva', '#5b3468']
+    ],
+    shoes: [
+      ['original', 'Calçado original'],
+      ['runner', 'Tênis de corrida', '#45a7a3'],
+      ['leather', 'Sapato de couro', '#634432'],
+      ['boot', 'Bota de passeio', '#725543']
+    ],
+    hat: [
+      ['original', 'Sem chapéu novo'],
+      ['cap', 'Boné bordado', '#3c526d'],
+      ['panama', 'Chapéu de palha', '#dab87e'],
+      ['beanie', 'Gorro de tricô', '#496b61']
+    ],
+    glasses: [
+      ['original', 'Óculos originais'],
+      ['copper', 'Armação cobre', '#b87955'],
+      ['sun', 'Óculos de sol', '#304255']
+    ],
+    jewel: [
+      ['original', 'Acessórios originais'],
+      ['necklace', 'Colar pingente', '#d8ae61'],
+      ['earrings', 'Brincos pequenos', '#d8ae61']
+    ],
+    wrist: [
+      ['original', 'Acessório original'],
+      ['watch', 'Relógio de aço', '#8f9fa9'],
+      ['bracelet', 'Pulseira trançada', '#b96a55']
+    ],
+    bag: [
+      ['original', 'Sem mochila'],
+      ['city', 'Mochila de lona', '#355a59'],
+      ['hike', 'Mochila de trilha', '#9b6846']
+    ]
+  });
+
+  const RIO_WARDROBE_LABELS = Object.freeze({
+    top: 'Roupas', legs: 'Calças e bermudas', shoes: 'Calçados', hat: 'Bonés e chapéus',
+    glasses: 'Óculos', jewel: 'Colares e brincos', wrist: 'Relógios e pulseiras', bag: 'Mochilas'
+  });
+  const RIO_WARDROBE_PRESETS = Object.freeze({
+    original: {label:'Visual original', outfit:{}},
+    passeio: {label:'Passeio no bairro', outfit:{top:'linen',legs:'chino',shoes:'leather',hat:'panama',glasses:'copper',jewel:'necklace',wrist:'bracelet'}},
+    esportivo: {label:'Dia de corrida', outfit:{top:'sport',legs:'track',shoes:'runner',hat:'cap',glasses:'sun',wrist:'watch',bag:'city'}},
+    chuva: {label:'Chuva na cidade', outfit:{top:'rain',legs:'jeans',shoes:'boot',hat:'beanie',wrist:'bracelet',bag:'hike'}},
+    festa: {label:'Fim de tarde', outfit:{top:'festival',legs:'track',shoes:'leather',glasses:'copper',jewel:'earrings',wrist:'watch'}}
+  });
+
+  function normalizeRioWardrobeOutfit(value) {
+    return Object.fromEntries(Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices])=>{
+      const id = value?.[slot];
+      return [slot,choices.some(choice=>choice[0]===id) ? id : 'original'];
+    }));
+  }
+  function normalizeRioWardrobe(value) {
+    return Object.fromEntries(RIO_WARDROBE_CHARACTERS.map(id=>[id,normalizeRioWardrobeOutfit(value?.[id])]));
+  }
+  function rioWardrobeToken(value) {
+    const outfit=normalizeRioWardrobeOutfit(value);
+    const slots=Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices])=>choices.findIndex(choice=>choice[0]===outfit[slot]));
+    return slots.some(Boolean) ? 'rio1-'+slots.join('') : '';
+  }
+  function rioWardrobeFromToken(value) {
+    const match=/^rio1-([0-9]{8})$/.exec(typeof value==='string'?value:'');
+    if(!match)return normalizeRioWardrobeOutfit();
+    return normalizeRioWardrobeOutfit(Object.fromEntries(Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices],i)=>[slot,choices[Number(match[1][i])]?.[0]])));
+  }
+  function rioWardrobeTint(slot,id) {
+    return RIO_WARDROBE_CATALOG[slot].find(choice=>choice[0]===id)?.[2];
+  }
+
+  // Only players with matching cloth selections share a recolored skin. Bone
+  // indices, weights, vertices and approved facial details stay untouched.
+  const rioWardrobeSkinCache=new WeakMap();
+  function acquireRioWardrobeSkin(base,bones,id,outfit){
+    const slots=['top','legs','shoes','glasses'];
+    if(slots.every(slot=>outfit[slot]==='original'))return null;
+    const key=slots.map(slot=>outfit[slot]).join('/');
+    let variants=rioWardrobeSkinCache.get(base);
+    if(!variants){variants=new Map();rioWardrobeSkinCache.set(base,variants);}
+    const existing=variants.get(key);
+    if(existing){existing.refs++;return existing;}
+
+    const geometry=new THREE.BufferGeometry();
+    const cloneView=attribute=>new THREE.BufferAttribute(attribute.array,attribute.itemSize,attribute.normalized);
+    for(const [name,attribute] of Object.entries(base.attributes))geometry.setAttribute(name,cloneView(attribute));
+    geometry.setIndex(cloneView(base.index));
+    geometry.boundingBox=base.boundingBox;
+    geometry.boundingSphere=base.boundingSphere;
+
+    const colors=base.attributes.color.clone();
+    const {position,skinIndex}=base.attributes;
+    const linear=color=>new THREE.Color(color).convertSRGBToLinear();
+    const neck=linear(id==='thiago'?'#d99a72':'#e5a17b');
+    const frame=linear('#17191e'),joggers=linear('#42253f');
+    const tags=bones.map(bone=>bone.name.split(':')[1]);
+    const tints=Object.fromEntries(slots.map(slot=>[slot,rioWardrobeTint(slot,outfit[slot])?linear(rioWardrobeTint(slot,outfit[slot])):null]));
+    const matches=(i,c)=>Math.abs(colors.getX(i)-c.r)<.001&&Math.abs(colors.getY(i)-c.g)<.001&&Math.abs(colors.getZ(i)-c.b)<.001;
+    for(let i=0;i<colors.count;i++){
+      const tag=tags[skinIndex.getX(i)],y=position.getY(i);
+      let tint=null,keepDetail=true;
+      if(tints.top&&(tag===id&&y>1.22&&y<2.13||/^shoulder[+-]?\d/.test(tag))&&!matches(i,neck))tint=tints.top;
+      if(tints.legs&&/^(hips|hip[+-]?\d|knee[+-]?\d)$/.test(tag)){
+        tint=tints.legs;
+        if(outfit.legs==='bermuda'&&y<.78){tint=neck;keepDetail=false;}
+      }
+      else if(outfit.top==='festival'&&outfit.legs==='original'&&/^(hips|hip[+-]?\d|knee[+-]?\d)$/.test(tag))tint=joggers;
+      if(tints.shoes&&/^ankle[+-]?\d/.test(tag)&&y>.255&&colors.getX(i)<.73)tint=tints.shoes;
+      if(tints.glasses&&tag==='head'&&matches(i,frame)){tint=tints.glasses;keepDetail=false;}
+      if(!tint)continue;
+      const luminosity=(colors.getX(i)+colors.getY(i)+colors.getZ(i))/3;
+      const shade=keepDetail?Math.max(.68,Math.min(1.18,.79+luminosity*.46)):1;
+      colors.setXYZ(i,tint.r*shade,tint.g*shade,tint.b*shade);
+    }
+    geometry.setAttribute('color',colors);
+    const variant={geometry,refs:1,variants,key};
+    variants.set(key,variant);
+    return variant;
+  }
+  function releaseRioWardrobeSkin(variant){
+    if(variant&&--variant.refs===0){
+      variant.variants.delete(variant.key);
+      variant.geometry.dispose();
+    }
+  }
+
+  const rioWardrobePrimitives=new Map();
+  const rioWardrobeMaterials=new Map();
+  function rioWardrobePrimitive(kind){
+    if(rioWardrobePrimitives.has(kind))return rioWardrobePrimitives.get(kind);
+    const geometry=kind==='box'?new THREE.BoxGeometry(1,1,1):
+      kind==='disc'?new THREE.CylinderGeometry(.5,.5,1,16):
+      kind==='flare'?new THREE.CylinderGeometry(.37,.5,1,16):
+      kind==='ring'?new THREE.TorusGeometry(.5,.07,7,18):
+      new THREE.SphereGeometry(.5,14,10);
+    rioWardrobePrimitives.set(kind,geometry);
+    return geometry;
+  }
+  function rioWardrobeMaterial(color,finish='cloth'){
+    const key=finish+':'+color;
+    if(!rioWardrobeMaterials.has(key)){
+      const material=new THREE.MeshStandardMaterial({
+        color:new THREE.Color(color).convertSRGBToLinear(),
+        roughness:finish==='metal'?.34:.72,metalness:finish==='metal'?.39:0,
+        transparent:finish==='lens',opacity:finish==='lens'?.75:1,
+        depthWrite:finish!=='lens'
+      });
+      rioWardrobeMaterials.set(key,material);
+    }
+    return rioWardrobeMaterials.get(key);
+  }
+  function rioWardrobePiece(parent,kind,color,size,at,finish){
+    const mesh=new THREE.Mesh(rioWardrobePrimitive(kind),rioWardrobeMaterial(color,finish));
+    mesh.scale.set(...size);mesh.position.set(...at);parent.add(mesh);
+    return mesh;
+  }
+
+  const rioWardrobeGroupVisuals=new WeakMap();
+  function clearRioWardrobeVisual(visual){
+    const previous=visual?.rioWardrobe;
+    if(!previous)return;
+    previous.parts.forEach(part=>part.parent?.remove(part));
+    if(previous.variant){visual.mesh.geometry=previous.base;releaseRioWardrobeSkin(previous.variant);}
+    visual.rioWardrobe=null;
+    rioWardrobeGroupVisuals.delete(visual.group);
+  }
+  function releaseRioWardrobeGroup(group){clearRioWardrobeVisual(rioWardrobeGroupVisuals.get(group));}
+  function applyRioWardrobeVisual(visual,value){
+    if(!visual||!RIO_WARDROBE_CHARACTERS.includes(visual.id))return;
+    const outfit=normalizeRioWardrobeOutfit(value);
+    const token=rioWardrobeToken(outfit);
+    if((visual.rioWardrobe?.token||'')===token)return;
+    clearRioWardrobeVisual(visual);
+    if(!token)return;
+
+    const base=visual.mesh.geometry;
+    const variant=acquireRioWardrobeSkin(base,visual.bones,visual.id,outfit);
+    if(variant)visual.mesh.geometry=variant.geometry;
+    const state={token,outfit,base,variant,parts:[],sit:false,skirt:null,bag:null};
+    visual.rioWardrobe=state;
+    rioWardrobeGroupVisuals.set(visual.group,visual);
+    const add=(slot,boneKey)=>{
+      const bone=visual.byName[boneKey];
+      if(!bone)return null;
+      const part=new THREE.Group();
+      part.name='OTTHI_RIO_WARDROBE_'+slot.toUpperCase();
+      part.userData.rioWardrobePart=true;
+      bone.add(part);state.parts.push(part);
+      return part;
+    };
+    const tint=slot=>rioWardrobeTint(slot,outfit[slot]);
+    const piece=rioWardrobePiece;
+    const rootKey=visual.id;
+    const top=tint('top');
+    if(top){
+      const torso=add('top',rootKey);
+      if(outfit.top==='denim'||outfit.top==='rain'){
+        // The sleeves pivot at the existing elbows and leave the tool hand clear.
+        for(const side of [-1,1]){
+          const sleeve=add('sleeve','elbow'+side);
+          piece(sleeve,'flare',top,[.23,.30,.23],[0,-.12,0]).rotation.z=Math.PI;
+          piece(sleeve,'disc',top,[.175,.035,.17],[0,-.277,0]);
+          piece(torso,'box',outfit.top==='denim'?'#254665':'#9f632f',[.13,.11,.018],[side*.183,1.67,.232]);
+        }
+        piece(torso,'box','#baa180',[.018,.48,.019],[0,1.66,.24]);
+        piece(torso,'box','#f4dfb8',[.04,.04,.016],[.026,1.883,.25]);
+        if(outfit.top==='rain')piece(torso,'sphere','#cc823a',[.48,.27,.25],[0,1.95,-.18]);
+      }else if(outfit.top==='sport'){
+        for(const side of [-1,1]){
+          piece(torso,'box','#e5ecce',[.075,.39,.012],[side*.20,1.66,.206]).rotation.z=side*.11;
+        }
+        piece(torso,'box','#e4eee9',[.14,.065,.018],[-.15,1.84,.23]);
+      }else if(outfit.top==='linen'){
+        piece(torso,'box','#c5b2a0',[.13,.105,.015],[-.16,1.775,.227]);
+        piece(torso,'box','#ead8c0',[.46,.024,.026],[0,1.31,.19]);
+      }else if(outfit.top==='festival'){
+        state.skirt=add('skirt',rootKey);
+        state.skirt.position.set(0,1.14,0);
+        piece(state.skirt,'flare',top,[.84,.33,.57],[0,0,0]);
+        piece(state.skirt,'disc','#c4819e',[.68,.048,.43],[0,.151,0]);
+        for(const side of [-1,1])piece(state.skirt,'box','#ca7e9f',[.014,.202,.021],[side*.20,-.028,.254]);
+      }
+    }
+    if(outfit.legs==='track')for(const side of [-1,1]){
+      const stripe=add('track-stripe','hip'+side);
+      piece(stripe,'box','#e0d7ee',[.022,.38,.036],[side*.159,-.252,.04]).rotation.z=-side*.075;
+    }
+    if(outfit.shoes==='boot')for(const side of [-1,1]){
+      const boot=add('boot','ankle'+side);
+      piece(boot,'disc',tint('shoes'),[.232,.25,.248],[0,.221,-.04]);
+      piece(boot,'disc','#9e7a5b',[.242,.028,.255],[0,.338,-.04]);
+    }
+    const hat=tint('hat');
+    if(hat){
+      const head=add('hat','head');
+      if(outfit.hat==='cap'){
+        piece(head,'sphere',hat,[.81,.28,.72],[0,.444,-.012]);
+        piece(head,'sphere',hat,[.58,.06,.34],[0,.393,.38]);
+        piece(head,'box','#ead9b3',[.102,.043,.018],[0,.49,.335]);
+      }else if(outfit.hat==='panama'){
+        piece(head,'disc','#b89c74',[1.00,.045,.94],[0,.442,0]);
+        piece(head,'flare',hat,[.75,.208,.66],[0,.519,-.016]);
+        piece(head,'disc','#564537',[.734,.048,.65],[0,.468,-.016]);
+      }else{
+        piece(head,'sphere',hat,[.84,.28,.753],[0,.456,-.018]);
+        piece(head,'disc','#3f5750',[.83,.08,.738],[0,.397,-.011]);
+        piece(head,'sphere',hat,[.119,.124,.118],[0,.593,-.019]);
+      }
+    }
+    if(outfit.glasses==='sun'){
+      const glasses=add('glasses','head');
+      for(const side of [-1,1]){
+        piece(glasses,'sphere','#203744',[.242,.181,.035],[side*.176,.065,.414],'lens');
+        piece(glasses,'box','#b79267',[.061,.025,.024],[side*.305,.113,.426],'metal');
+      }
+    }
+    const jewel=tint('jewel');
+    if(outfit.jewel==='earrings'){
+      const ears=add('earrings','head');
+      for(const side of [-1,1])piece(ears,'ring',jewel,[.075,.105,.048],[side*.424,-.127,.039],'metal');
+    }else if(outfit.jewel==='necklace'){
+      const neck=add('necklace',rootKey);
+      const chain=piece(neck,'ring',jewel,[.356,.29,.10],[0,1.92,.188],'metal');
+      chain.rotation.x=-.36;
+      piece(neck,'sphere','#7db7ae',[.075,.091,.029],[0,1.771,.241],'metal');
+    }
+    if(outfit.wrist==='watch'){
+      const watch=add('watch','elbow-1');
+      piece(watch,'disc',tint('wrist'),[.169,.069,.174],[0,-.283,.006],'metal');
+      piece(watch,'box','#253845',[.087,.047,.039],[0,-.283,.101],'metal');
+      piece(watch,'box','#98c5c4',[.013,.021,.005],[0,-.279,.124]);
+    }else if(outfit.wrist==='bracelet'){
+      const bracelet=add('bracelet','elbow1');
+      piece(bracelet,'disc',tint('wrist'),[.155,.039,.16],[0,-.302,0]);
+      piece(bracelet,'sphere','#efcf99',[.055,.052,.035],[0,-.30,.083]);
+    }
+    if(tint('bag')){
+      const bag=state.bag=add('bag',rootKey);
+      const hiking=outfit.bag==='hike';
+      piece(bag,'sphere',tint('bag'),[.56,hiking?.59:.5,hiking?.32:.28],[0,1.66,-.286]);
+      piece(bag,'sphere',hiking?'#5c4a3a':'#28484a',[.41,.23,.2],[0,1.53,-.43]);
+      piece(bag,'box','#cabb95',[.245,.017,.017],[0,1.586,-.531],'metal');
+      for(const side of [-1,1]){
+        piece(bag,'box',tint('bag'),[.064,.56,.032],[side*.197,1.68,.208]).rotation.z=side*.10;
+        piece(bag,'box','#627479',[.075,.055,.023],[side*.204,1.691,.234],'metal');
+      }
+      if(hiking)piece(bag,'disc','#80795b',[.12,.40,.145],[.293,1.642,-.31]);
+    }
+  }
+
+  function rioWardrobeSeatFit(visual,sitting){
+    const extras=visual?.rioWardrobe;
+    const isSitting=!!sitting;
+    if(!extras||extras.sit===isSitting)return;
+    extras.sit=isSitting;
+    if(extras.bag)extras.bag.visible=!isSitting; // rests off the back while in a seat
+    if(extras.skirt){
+      extras.skirt.scale.y=isSitting?.61:1;
+      extras.skirt.position.y=isSitting?1.21:1.14;
+      extras.skirt.rotation.x=isSitting?-.27:0;
+    }
+  }
+
+  let rioWardrobePreview=null;
+  function disposeRioWardrobePreview(){
+    const preview=rioWardrobePreview;
+    if(!preview)return;
+    rioWardrobePreview=null;
+    if(preview.visual)releaseFamilyAvatarVisual(preview.visual.group);
+    preview.renderer?.dispose();
+    preview.renderer?.forceContextLoss();
+  }
+  function drawRioWardrobePreview(canvas,character,outfit,angle){
+    if(rioWardrobePreview?.canvas!==canvas){
+      disposeRioWardrobePreview();
+      try{
+        const previewRenderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power'});
+        previewRenderer.outputEncoding=THREE.sRGBEncoding;
+        previewRenderer.setSize(280,312,false);
+        const stage=new THREE.Scene();
+        stage.background=new THREE.Color(0x233e49);
+        stage.add(new THREE.HemisphereLight(0xf5ede5,0x7c8794,2.0));
+        const key=new THREE.DirectionalLight(0xffebd4,2.25);
+        key.position.set(-3,4,4);
+        stage.add(key);
+        const camera=new THREE.PerspectiveCamera(32,280/312,.1,30);
+        camera.position.set(0,1.34,4.12);
+        camera.lookAt(0,1.03,0);
+        rioWardrobePreview={canvas,renderer:previewRenderer,stage,camera,visual:null};
+      }catch{
+        rioWardrobePreview={canvas,unavailable:true};
+        canvas.dataset.previewReady='false';
+        return false;
+      }
+    }
+    const preview=rioWardrobePreview;
+    if(preview.unavailable)return false;
+    if(preview.visual?.id!==character){
+      if(preview.visual)releaseFamilyAvatarVisual(preview.visual.group);
+      preview.visual=familyCloneAvatar(character,preview.stage);
+      // The turntable starts from the resting pose even when the world
+      // actor used for cloning is currently walking or sitting.
+      preview.visual?.bones.forEach(bone=>bone.rotation.set(0,0,0,'YXZ'));
+    }
+    if(!preview.visual)return false;
+    applyRioWardrobeVisual(preview.visual,outfit);
+    preview.visual.group.rotation.y=angle;
+    preview.renderer.render(preview.stage,preview.camera);
+    canvas.dataset.previewReady='true';
+    return true;
+  }
+  function rioWardrobeVisualSnapshot(){
+    const visual=typeof playerModel==='undefined'?null:playerModel?.userData?.familyAvatar;
+    return {
+      id:visual?.id||null,
+      outfit:visual?.rioWardrobe?.outfit||null,
+      seated:visual?.rioWardrobe?.sit||false,
+      attachments:visual?.rioWardrobe?.parts.map(p=>({name:p.name,bone:p.parent?.name,visible:p.visible}))||[]
+    };
+  }
+  function openRioWardrobe(character){
+    if(!familyWorld.ready){toast('Entre no Mundo Aberto para usar o guarda-roupa.','info',2300);return;}
+    let selected=RIO_WARDROBE_CHARACTERS.includes(character)?character:familyCharacterId(state.avatar.bodyStyle)||'thiago';
+    const draft=normalizeRioWardrobe(state.avatar.rioWardrobe);
+    let angle=.12;
+    openModal('Guarda-roupa de Thiago e Thamis',`
+      <section class="rio-wardrobe" aria-label="Roupas e acessórios da família">
+        <div class="rio-wardrobe-characters" aria-label="Personagem">
+          <button class="btn" type="button" data-rio-wardrobe-character="thiago">Thiago</button>
+          <button class="btn" type="button" data-rio-wardrobe-character="thamis">Thamis</button>
+        </div>
+        <div class="rio-wardrobe-columns">
+          <section class="rio-wardrobe-preview">
+            <canvas data-rio-wardrobe-preview width="280" height="312" aria-label="Prévia 3D das roupas"></canvas>
+            <p data-rio-wardrobe-unavailable hidden>Prévia 3D indisponível neste navegador.</p>
+            <div class="rio-wardrobe-rotate">
+              <button type="button" class="btn" data-rio-wardrobe-turn="-1" aria-label="Girar para a esquerda">↶ Girar</button>
+              <button type="button" class="btn" data-rio-wardrobe-turn="1" aria-label="Girar para a direita">Girar ↷</button>
+            </div>
+          </section>
+          <div class="rio-wardrobe-fields">
+            <label>Combinações<select data-rio-wardrobe-preset>
+              <option value="">Personalizar</option>${Object.entries(RIO_WARDROBE_PRESETS).map(([key,preset])=>`<option value="${key}">${preset.label}</option>`).join('')}
+            </select></label>
+            <div class="rio-wardrobe-slots">${Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices])=>`
+              <label>${RIO_WARDROBE_LABELS[slot]}<select data-rio-wardrobe-slot="${slot}">${choices.map(([id,label])=>`<option value="${id}">${label}</option>`).join('')}</select></label>
+            `).join('')}</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" data-rio-wardrobe-back>Voltar ao personagem</button>
+          <button type="button" class="btn primary" data-rio-wardrobe-save>Salvar roupas</button>
+        </div>
+      </section>`,root=>{
+        const canvas=root.querySelector('[data-rio-wardrobe-preview]');
+        const slots=[...root.querySelectorAll('[data-rio-wardrobe-slot]')];
+        const buttons=[...root.querySelectorAll('[data-rio-wardrobe-character]')];
+        const preset=root.querySelector('[data-rio-wardrobe-preset]');
+        function refresh(){
+          for(const button of buttons){
+            const active=button.dataset.rioWardrobeCharacter===selected;
+            button.setAttribute('aria-pressed',String(active));
+            button.classList.toggle('primary',active);
+          }
+          for(const input of slots)input.value=draft[selected][input.dataset.rioWardrobeSlot];
+          preset.value=Object.entries(RIO_WARDROBE_PRESETS).find(([,p])=>rioWardrobeToken(p.outfit)===rioWardrobeToken(draft[selected]))?.[0]||'';
+          const ready=drawRioWardrobePreview(canvas,selected,draft[selected],angle);
+          root.querySelector('[data-rio-wardrobe-unavailable]').hidden=ready;
+          canvas.hidden=!ready;
+        }
+        for(const button of buttons)button.onclick=()=>{selected=button.dataset.rioWardrobeCharacter;refresh();};
+        for(const input of slots)input.onchange=()=>{draft[selected][input.dataset.rioWardrobeSlot]=input.value;refresh();};
+        preset.onchange=()=>{if(preset.value){draft[selected]=normalizeRioWardrobeOutfit(RIO_WARDROBE_PRESETS[preset.value].outfit);refresh();}};
+        for(const button of root.querySelectorAll('[data-rio-wardrobe-turn]'))button.onclick=()=>{angle+=Number(button.dataset.rioWardrobeTurn)*Math.PI/4;refresh();};
+        root.querySelector('[data-rio-wardrobe-back]').onclick=openAvatarStudio;
+        root.querySelector('[data-rio-wardrobe-save]').onclick=()=>{
+          state.avatar=normalizeAvatarV2({...state.avatar,rioWardrobe:draft});
+          applyAvatarCustomization();
+          saveState(true);
+          if(running)updateMultiplayer(0,true);
+          closeModal();
+          toast('Roupas salvas no seu perfil.','good',2100);
+        };
+        refresh();
+      });
+  }
+
+  window.OTTHI_RIO_WARDROBE=Object.freeze({
+    open:openRioWardrobe,
+    diagnostics:()=>({saved:normalizeRioWardrobe(state.avatar.rioWardrobe),visual:rioWardrobeVisualSnapshot(),preview:!!rioWardrobePreview?.visual})
+  });
+
+  // Add profiles to the existing modular toy characters separately. Family
+  // customizations above always reuse their specific original human rigs.
+  const RIO_AVATAR_COMPLEXION=Object.freeze({
+    'rio-tone-claro':0xeec5a5,'rio-tone-oliva':0xc99467,'rio-tone-cobre':0xa86945,
+    'rio-tone-moreno':0x8b5441,'rio-tone-escuro':0x5f3c31
+  });
+  function rioAvatarComplexion(id){
+    return Object.hasOwn(RIO_AVATAR_COMPLEXION,id)?RIO_AVATAR_COMPLEXION[id]:undefined;
+  }
+  function addRioToyWardrobe(avatar,theme,parts,colors){
+    if(theme==='mario-world'||theme==='luigi-world')return;
+    const {head,body,arms,legs}=parts;
+    const {primary,secondary,hair}=colors;
+    const faceDepth=theme==='lego'?.41:theme==='minecraft'?.53:.61;
+    const softened=theme==='lego'?.83:1;
+    if(avatar.face==='rio-face-sardas'){
+      const freckle=worldAvatarMaterial(0xad633f,{roughness:.75});
+      for(const side of [-1,1])for(let i=0;i<3;i++){
+        toySkinSphere(head,.027,freckle,side*(.23+i*.043),-.075+((i+1)%2)*.024,faceDepth-i*.024,1,.72,.48);
+      }
+    }else if(avatar.face==='rio-face-riso'){
+      const smile=worldAvatarMaterial(0x96534b,{roughness:.72});
+      const upper=worldAvatarMaterial(0xffebe2,{roughness:.76});
+      toySkinSphere(head,.127,smile,0,-.161,faceDepth,.98*softened,.48,.17);
+      toySkinSphere(head,.098,upper,0,-.142,faceDepth+.016,.98*softened,.24,.15);
+    }
+    const baseY=theme==='lego'?.42:.48;
+    const depth=theme==='minecraft'?1.02:theme==='lego'?.86:1.14;
+    if(avatar.hair==='rio-hair-bob'){
+      toySkinSphere(head,.565,hair,0,baseY-.21,-.13,depth,.69,.87);
+      for(const side of [-1,1])toySkinSphere(head,.265,hair,side*depth*.33,baseY-.58,-.19,.78,1.38,.92);
+    }else if(avatar.hair==='rio-hair-puffs'){
+      toySkinSphere(head,.51,hair,0,baseY-.064,-.12,depth,.52,.96);
+      for(const side of [-1,1]){
+        toySkinSphere(head,.228,hair,side*depth*.36,baseY+.15,-.15,1,1.1,.96);
+        toySkinSphere(head,.129,primary,side*depth*.30,baseY+.005,-.15,.85,.48,1);
+      }
+    }else if(avatar.hair==='rio-hair-coils'){
+      for(const side of [-1,0,1])for(let i=0;i<4;i++){
+        toySkinSphere(head,.151,hair,side*depth*.27,baseY+Math.cos(i*.84)*.09-(side===0?0:.03),.29-i*.172,.91,.77,1.1);
+      }
+    }else if(avatar.hair==='rio-hair-ondas'){
+      toySkinSphere(head,.49,hair,-.045,baseY+.012,-.13,depth,.56,.91);
+      for(let i=0;i<4;i++){
+        const lock=toySkinSphere(head,.19,hair,-.26+i*.137,baseY-.05+i*.035,faceDepth*.63,1.2,.72,1.05);
+        lock.rotation.z=-.33;
+      }
+    }
+
+    if(avatar.torso==='rio-torso-junior'){
+      const panel=worldAvatarMaterial(0xf6d985,{roughness:.71});
+      toySkinBox(body,.64,.50,.04,secondary,0,.02,.406);
+      toySkinBox(body,.57,.082,.05,panel,0,.12,.439).rotation.z=-.16;
+      for(const arm of arms)toySkinSphere(arm,.17,primary,0,-.11,0,1.2,1.1,1.19);
+    }else if(avatar.torso==='rio-torso-rain'){
+      const trim=worldAvatarMaterial(0xcbb48e,{roughness:.70});
+      toySkinBox(body,.85,.94,.17,secondary,0,-.01,.34);
+      toySkinBox(body,.028,.83,.03,trim,0,.01,.443);
+      toySkinSphere(body,.44,primary,0,.45,-.245,1,.48,.54);
+      for(const arm of arms)toySkinBox(arm,.35,.54,.35,secondary,0,-.32,0);
+    }
+    for(const leg of legs){
+      const soleY=theme==='minecraft'?-.94:theme==='playmobil'?-.81:-.9;
+      if(avatar.shoes==='rio-shoes-runner'){
+        const sole=worldAvatarMaterial(0xf4e8ce,{roughness:.62});
+        toySkinBox(leg,.407,.061,.565,sole,0,soleY-.04,.116);
+        toySkinSphere(leg,.245,secondary,0,soleY+.041,.18,.87,.40,1.22);
+        for(let i=0;i<3;i++)toySkinBox(leg,.159,.021,.024,sole,0,soleY+.141,.055+i*.064);
+      }else if(avatar.shoes==='rio-shoes-boot'){
+        const seam=worldAvatarMaterial(0xa16743,{roughness:.66});
+        toySkinBox(leg,.405,.26,.467,secondary,0,soleY+.078,.078);
+        toySkinBox(leg,.401,.043,.466,seam,0,soleY+.212,.077);
+      }
+    }
+  }
 
   // ===== MODULE: 01-build-persistence.js =====
   function stableBuildId(item={},index=0){
@@ -868,6 +1394,7 @@
   document.addEventListener('pointerdown',()=>{modalGestureStartedOutside=els.modal.hidden;},true);
   els.modal.addEventListener('click',event=>{if(modalGestureStartedOutside&&event.detail!==0){modalGestureStartedOutside=false;event.preventDefault();event.stopImmediatePropagation();}},true);
   function openModal(title, html, onReady) {
+    if(typeof disposeRioWardrobePreview==='function')disposeRioWardrobePreview();
     els.modal.classList.remove('atlas-modal');
     state.ui.quickOpen = false;
     if (els.quickBar) els.quickBar.hidden = true;
@@ -885,6 +1412,7 @@
     requestAnimationFrame(()=>{els.modalBody.scrollTop=0;scheduleStableResize(0,true);});
   }
   function closeModal() {
+    if(typeof disposeRioWardrobePreview==='function')disposeRioWardrobePreview();
     clearExtensionPreview();
     if (typeof fishingSession !== 'undefined' && fishingSession) cancelFishingSession();
     else if (typeof fishingVisual !== 'undefined' && fishingVisual?.active) stopFishingVisual();
@@ -1680,6 +2208,330 @@
 
   let activeMission = null;
 
+  // ===== MODULE: 78-rio-preto-layout.js =====
+  const RIO_PRETO_LAYOUT = (() => {
+    const highways = [], nodes = {}, edges = [];
+    const pointIds = new Map([
+      ['-200,-400', 'EXT_outer-link_5'],
+      ['360,-400', 'EXT_outer-link_4']
+    ]);
+    function addRoad(id, name, points, width, detail = {}) {
+      const ids = points.map(([x, z], i) => {
+        const key = x + ',' + z;
+        if (!pointIds.has(key)) {
+          const nodeId = 'RIO_' + id + '_' + i;
+          pointIds.set(key, nodeId);
+          nodes[nodeId] = Object.freeze({x, z});
+        }
+        return pointIds.get(key);
+      });
+      for (let i = 1; i < ids.length; i++) edges.push(Object.freeze([ids[i - 1], ids[i]]));
+      highways.push(Object.freeze({
+        id: 'rio-preto-' + id, name, width, shoulder: .65, closed: false,
+        regional: true, points: Object.freeze(points.map(([x, z]) => Object.freeze({x, z}))),
+        ...detail
+      }));
+    }
+    addRoad('oeste', 'Acesso Oeste de Rio Preto', [[-200,-400],[-200,-464],[-200,-511]], 10);
+    addRoad('bady', 'Avenida Bady Bassitt', [[-200,-464],[-137,-464],[-76,-464],[-15,-464],[46,-464],[100,-464]], 18,
+      {district:'bady', boulevard:true});
+    addRoad('bora', 'Alameda do Borá', [[-200,-511],[-137,-511],[-76,-511],[-15,-511],[46,-511],[100,-511]], 8,
+      {district:'bady'});
+    for (const x of [-137,-76,-15,46]) {
+      addRoad('quadra-' + x, 'Rua de bairro · Borá', [[x,-464],[x,-511]], 7, {district:'bady'});
+    }
+    addRoad('andalo', 'Avenida Alberto Andaló', [[100,-464],[100,-511],[100,-560],[100,-612],[100,-648]], 18,
+      {district:'andalo', boulevard:true});
+    addRoad('canela', 'Rua do Canela', [[100,-612],[27,-612]], 9, {district:'andalo'});
+    addRoad('murchid', 'Avenida Murchid Homsi', [[100,-560],[172,-560],[235,-552],[295,-540],[360,-532],[438,-532]], 16,
+      {district:'murchid', boulevard:true});
+    addRoad('leste', 'Acesso Leste de Rio Preto', [[360,-400],[360,-479],[360,-532]], 10);
+    addRoad('jardim', 'Alameda do Aterradinho', [[172,-479],[229,-479],[288,-479],[360,-479]], 8,
+      {district:'murchid'});
+    addRoad('atelie', 'Rua dos Ateliês', [[172,-479],[172,-560]], 8, {district:'murchid'});
+
+    // The visual identity of each sector has its own height, setbacks and palette.
+    // Yaw is the direction from the building toward its pedestrian street frontage.
+    const facing = {s:0,n:Math.PI,e:Math.PI/2,w:-Math.PI/2};
+    const lots = [];
+    function lot(id, district, style, x, z, w, d, front, variant, title = '', kind = '') {
+      lots.push(Object.freeze({id,district,style,x,z,w,d,yaw:facing[front],variant,title,kind}));
+    }
+    lot('bady-galeria','bady','dealership',-173,-435,24,16,'n',0,'Galeria do Borá');
+    lot('bady-oficinas','bady','workfront',-103,-435,24,14,'n',1,'Ofícios do Borá');
+    lot('bady-padaria','bady','arcade',-70,-435,24,15,'n',2,'Padaria da Avenida','cafe');
+    lot('bady-autopecas','bady','workfront',-37,-436,25,17,'n',3,'Autopeças do Borá');
+    lot('bady-loja','bady','arcade',-2,-435,22,16,'n',4,'Galeria Vitrine');
+    lot('bady-mercado','bady','arcade',28,-435,24,15,'n',5,'Mercado do Borá','market');
+    lot('bady-lofts','bady','mixed',62,-435,23,17,'n',6,'Edifício das Palmeiras');
+    lot('bady-prelio','bady','house-court',-170,-483,18,16,'s',7);
+    lot('bady-vila','bady','house-hip',-107,-484,19,16,'s',2);
+    lot('bady-atelier','bady','workfront',-45,-484,25,16,'s',7,'Ateliê da Esquina');
+    lot('bady-jardim','bady','house-modern',15,-484,22,16,'s',4);
+    lot('bady-sol','bady','house-veranda',71,-485,20,16,'s',8);
+    const homePatterns = ['house-hip','house-modern','house-veranda','house-court','house-modern','house-veranda','house-hip','house-court','house-veranda'];
+    [-178,-149,-120,-91,-62,-33,-4,25,54].forEach((x, i) => {
+      lot('bora-casa-' + (i + 1),'bady',homePatterns[i],x,-535-(i%3)*1.4,14+(i%4)*1.8,15+(i%3)*1.2,'s',i+12);
+    });
+    lot('andalo-torre-norte','andalo','tower',132,-469,24,18,'w',1,'Torre Horizonte');
+    lot('andalo-centro-servicos','andalo','civic',132,-503,27,19,'w',2,'Centro de Serviços');
+    lot('andalo-galeria','andalo','mixed',70,-570,23,18,'e',4,'Galeria Canela');
+    lot('andalo-cafe','andalo','civic',132,-589,26,18,'w',5,'Café do Canela','cafe');
+    lot('andalo-torre-sul','andalo','tower',128,-625,19,18,'w',8,'Torre das Acácias');
+    lot('andalo-hotel','andalo','tower',67,-634,24,19,'e',6,'Edifício do Viajante');
+    lot('andalo-apartamentos','andalo','mixed',49,-588,16,16,'s',3,'Residencial Ipê');
+    lot('murchid-loja-1','murchid','workfront',204,-525,24,15,'n',2,'Oficina do Vale');
+    lot('murchid-cafe','murchid','cafe-pavilion',242,-520,17,15,'n',7,'Café do Aterradinho','cafe');
+    lot('murchid-servicos','murchid','workfront',284,-514,27,16,'n',5,'Pátio da Linha');
+    lot('murchid-conveniencia','murchid','arcade',326,-509,22,15,'n',1,'Mercadinho do Vale','market');
+    lot('murchid-armazem','murchid','workfront',393,-507,24,16,'n',0,'Armazém Leste');
+    lot('murchid-viveiro','murchid','cafe-pavilion',428,-506,18,15,'n',5,'Jardins do Vale');
+    [191,217,244,271,299,326].forEach((x,i) => {
+      lot('aterradinho-casa-' + (i + 1),'murchid',homePatterns[(i+3)%homePatterns.length],x,-456-(i%2)*1.5,14+(i%3),15,'n',i+24);
+    });
+    // This table can receive the user's chosen places without moving the road network.
+    const landmarks = Object.freeze([
+      Object.freeze({id:'rio-bady-praca',district:'bady',name:'Praça do Borá',label:'Praça do Borá · Bady Bassitt',icon:'🏙️',x:-137,z:-442,navX:-137,navZ:-464,centerX:-137,centerZ:-435,w:27,d:22,
+        note:'Avenida inspirada no eixo comercial erguido sobre o córrego Borá. A praça do jogo liga vitrines, oficinas e ruas de bairro.'}),
+      Object.freeze({id:'rio-andalo-praca',district:'andalo',name:'Praça do Canela',label:'Praça do Canela · Alberto Andaló',icon:'🏛️',x:113,z:-536,navX:100,navZ:-536,centerX:130,centerZ:-536,w:31,d:29,
+        note:'Trecho de serviços inspirado no eixo do córrego Canela, com edifícios mais altos, calçadas amplas e canteiros.'}),
+      Object.freeze({id:'rio-murchid-parque',district:'murchid',name:'Jardim do Aterradinho',label:'Jardim do Aterradinho · Murchid Homsi',icon:'🌿',x:283,z:-566,navX:283,navZ:-542.4,centerX:283,centerZ:-588,w:86,d:46,
+        note:'Passeio fictício inspirado na paisagem do vale do Aterradinho, com arborização, passarelas e áreas para caminhar.'})
+    ]);
+    const locations = landmarks.map(p => Object.freeze({
+      ...p, group:'São José do Rio Preto', description:p.note, missionTarget:true,
+      actions:['Marcar no GPS','Visitar a pé e usar AÇÃO']
+    }));
+    const protectedRects = [
+      ...lots.map(l => ({id:'rio-lot-' + l.id,x:l.x,z:l.z,
+        w:Math.abs(Math.sin(l.yaw))>.5?l.d:l.w,d:Math.abs(Math.sin(l.yaw))>.5?l.w:l.d,margin:.5})),
+      ...landmarks.map(p => ({id:p.id,x:p.centerX,z:p.centerZ,w:p.w,d:p.d,margin:.5}))
+    ];
+    const trafficLoops = [
+      [[-200,-464],[100,-464],[100,-511],[-200,-511]],
+      [[172,-479],[360,-479],[360,-532],[295,-540],[235,-552],[172,-560]]
+    ].map(loop => Object.freeze(loop.map(([x,z])=>Object.freeze({x,z}))));
+    return Object.freeze({
+      highways:Object.freeze(highways),nodes:Object.freeze(nodes),edges:Object.freeze(edges),
+      lots:Object.freeze(lots),landmarks, locations:Object.freeze(locations),
+      protectedRects:Object.freeze(protectedRects.map(rect=>Object.freeze(rect))),trafficLoops:Object.freeze(trafficLoops)
+    });
+  })();
+
+  // ===== MODULE: 80-rio-regional-circuits.js =====
+  const RIO_REGIONAL_CIRCUITS=Object.freeze({
+    mirassol:{
+      id:'mirassol',regional:true,label:'Autódromo de Mirassol',x:-590,z:-520,w:152,d:136,
+      navX:-590,navZ:-443,width:10.4,laps:3,mode:'solo',checkpoints:20,
+      description:'Circuito fictício inspirado na região de Mirassol. Reta dos Boxes, chicane da Grota e três voltas contra três rivais.',
+      points:[[0,30],[30,30],[51,27],[58,16],[56,0],[43,-7],[25,-2],[14,-8],[10,-22],[-13,-35],[-43,-32],[-57,-21],[-59,4],[-49,22],[-32,30]],
+      boosts:[.14,.49,.86],parkSlots:[[-19,62],[-12,62],[12,62],[19,62]],
+      accent:0xddb43c,curb:0x1d864d,grass:0x527844
+    },
+    cedral:{
+      id:'cedral',regional:true,label:'Parque de Velocidade de Cedral',x:650,z:-540,w:156,d:134,
+      navX:650,navZ:-459,width:11.2,laps:2,mode:'time',checkpoints:19,
+      description:'Circuito fictício de campo inspirado em Cedral. Reta da Estação, curvas abertas e duas voltas para baixar seu tempo.',
+      points:[[44,-10],[44,17],[39,34],[24,44],[5,40],[-10,33],[-29,36],[-45,25],[-54,6],[-56,-15],[-42,-32],[-15,-40],[11,-41],[33,-36],[44,-25]],
+      boosts:[.41,.69],parkSlots:[[-20,60],[-13,60],[13,60],[20,60]],
+      accent:0xb4543c,curb:0xb14c37,grass:0x73804e
+    }
+  });
+
+  const RIO_REGIONAL_ROADS=(()=>{
+    const nodes={},edges=[],highways=[];
+    function connect(id,label,anchor,coordinates){
+      const points=coordinates.map(([x,z])=>({x,z,y:0}));
+      let previous=anchor;
+      points.slice(1).forEach((point,index)=>{
+        const name='RIO_AUTODROMO_'+id.toUpperCase()+'_'+(index+1);
+        nodes[name]={x:point.x,z:point.z};
+        edges.push([previous,name]);
+        previous=name;
+      });
+      highways.push({id:'rio-autodromo-'+id,name:label,regional:true,width:8.5,shoulder:1.3,closed:false,points});
+    }
+    connect('mirassol','Estrada do Autódromo de Mirassol','EXT_outer-link_6',[
+      [-480,-320],[-500,-366],[-543,-404],[-590,-432],[-590,-443]
+    ]);
+    connect('cedral','Estrada do Parque de Velocidade de Cedral','EXT_outer-link_3',[
+      [680,-400],[675,-429],[650,-450],[650,-459]
+    ]);
+    return{nodes,edges,highways};
+  })();
+
+  // A protected paddock does not become a residential/traffic placement lot.
+  // Approach roads terminate outside these land envelopes.
+  const RIO_REGIONAL_RESERVATIONS=Object.values(RIO_REGIONAL_CIRCUITS).map(({id,x,z,w,d})=>({
+    id:'circuit-'+id,kind:'kart',x,z,w,d,margin:.35
+  }));
+
+  function rioRegionalCurve(spec){
+    const points=spec.points.map(([x,z])=>new THREE.Vector3(spec.x+x,.16,spec.z+z));
+    return new THREE.CatmullRomCurve3(points,true,'centripetal',.42);
+  }
+
+  // Keep only one set of paint/material batches per venue. Each group can be
+  // turned off at a distance without rebuilding structures or parking karts.
+  function decorateRioRegionalCircuit(spec,root){
+    const batches=new Map(),{x:cx,z:cz}=spec;
+    const concrete=0xc6b89d,steel=0x333d42,glass=0x74a5a7,white=0xf2ecd9,brick=0xae6a4d,terra=0xaa4b35;
+    function piece(color,x,y,z,w,h,d,ry=0){
+      if(!batches.has(color))batches.set(color,[]);
+      batches.get(color).push({x:cx+x,y,z:cz+z,w,h,d,ry});
+    }
+    function solid(color,x,z,w,d,h){
+      piece(color,x,h/2,z,w,h,d);
+      world.colliders.push({x:cx+x,z:cz+z,w,d,height:h,regionalCircuit:spec.id});
+    }
+    function sign(text,x,y,z,w,color=steel){
+      const background='#'+color.toString(16).padStart(6,'0');
+      return citySign(root,text,cx+x,y,cz+z,w,1,background,Math.max(.52,w*.12));
+    }
+    const gateZ=spec.navZ-cz-1;
+    piece(steel,-6,2.12,gateZ,.52,4.24,.63);piece(steel,6,2.12,gateZ,.52,4.24,.63);
+    piece(spec.accent,0,4.15,gateZ,12.6,.82,.6);
+    sign(spec.id==='mirassol'?'AUTÓDROMO DE MIRASSOL':'PARQUE DE VELOCIDADE • CEDRAL',0,4.16,gateZ+.34,12.2);
+    sign('CIRCUITO FICTÍCIO · OTTHI WORLD',0,3.42,gateZ+.2,8.4);
+    // Link the physical end of the access road to the apron, not the racing line.
+    const pavement=0x565858;piece(pavement,0,.08,(gateZ+56)/2,8.5,.12,gateZ-56+4);
+    piece(white,0,.148,(gateZ+60)/2,.12,.014,gateZ-60);
+    piece(pavement,0,.08,59,52,.12,9);
+
+    if(spec.id==='mirassol'){
+      // Small independent boxes, glazed timing loft and a west-facing terrace.
+      piece(pavement,-4,.09,46,87,.14,9);
+      for(let i=0;i<6;i++){
+        const x=-42+i*14;solid(concrete,x,54,12,5,3.28);
+        piece(steel,x,1.38,56.55,10.9,2.76,.13);
+        for(let row=1;row<7;row++)piece(0x5d6262,x,row*.38,56.63,10.62,.045,.045);
+        piece(spec.accent,x,3.08,56.59,11.5,.4,.2);
+        piece(steel,x,3.46,53.1,12.65,.3,7.4);
+        sign('BOX '+String(i+1).padStart(2,'0'),x,3.09,56.72,2.45);
+        for(const side of[-1,1])piece(white,x+side*5.65,.17,47,.12,.014,7.3);
+      }
+      solid(steel,34,54,17,9,5.4);
+      piece(glass,34,4.26,58.56,15,1.9,.19);
+      for(const x of[29,34,39])piece(steel,x,4.26,58.69,.17,2.1,.13);
+      piece(spec.accent,34,5.46,54,18,.32,10);
+      sign('TORRE DE CRONOMETRAGEM',34,2.02,58.66,12.6);
+      for(let row=0;row<5;row++){
+        const x=67+row*1.16,h=.48+row*.46;
+        piece(steel,x,h/2,-1,1.22,h,28.1);
+        for(let i=0;i<14;i++)piece((i+row)%4?spec.accent:spec.curb,x,h+.15,-14+i*2,.71,.26,1.68);
+      }
+      piece(steel,70,4.75,-1,9.3,.26,30);
+      for(const z of[-15,-1,13])for(const x of[66,74])piece(steel,x,2.32,z,.28,4.64,.28);
+      world.colliders.push({x:cx+69.3,z:cz-1,w:6.2,d:28,height:2.7,regionalCircuit:spec.id});
+      // Service canopies in the paddock leave a travel aisle through the center.
+      for(const side of[-1,1]){
+        const x=side*30;piece(spec.curb,x,3.04,66,10,.23,5.65);
+        for(const cardinal of[-1,1])for(const end of[-1,1])piece(steel,x+cardinal*4.35,1.46,66+end*2.2,.23,2.92,.23);
+      }
+      sign('PADDOCK • VISTORIA',29,3.05,69.1,8,0x1c6948);
+    }else{
+      // Rail-station inspired brick pavilions and terracotta sawtooth roofs.
+      piece(pavement,54,.09,-6,8,.14,54);
+      for(let i=0;i<4;i++){
+        const z=-25+i*13;
+        solid(brick,64,z,8.4,11,3.75);
+        piece(steel,59.75,1.5,z,.12,2.75,9.1);
+        piece(white,59.67,3.38,z,.13,.42,10.3);
+        const roof=new THREE.Mesh(new THREE.CylinderGeometry(6.65,6.65,11.9,3),renderMat(terra,{roughness:.94}));
+        roof.rotation.set(Math.PI/2,0,Math.PI/2);
+        roof.position.set(cx+64,3.58,cz+z);
+        roof.scale.set(.76,1,.41);
+        root.add(roof);
+        for(const f of[-1,1])piece(glass,68.24,2.4,z+f*2.7,.16,1,2.05);
+        const number=citySign(root,'BOX '+String(i+1).padStart(2,'0'),cx+59.6,3.38,cz+z,3.25);
+        number.rotation.y=-Math.PI/2;
+      }
+      solid(concrete,-30,50,17,3.5,3.3);
+      piece(terra,-30,3.44,50,18.3,.34,4.6);
+      for(let row=0;row<4;row++){
+        const z=48-row*1.12,h=.43+row*.42;
+        piece(brick,-31,h/2+.02,z,22,h,1.15);
+        for(let i=0;i<11;i++)piece(row%2?white:spec.accent,-41+i*2,h+.17,z,1.58,.24,.66);
+      }
+      piece(white,-31,4.75,47,23,.21,6);
+      for(const x of[-42,-31,-20])for(const z of[44.6,49.3])piece(steel,x,2.3,z,.26,4.6,.26);
+      world.colliders.push({x:cx-31,z:cz+46.2,w:22,d:4.7,height:1.95,regionalCircuit:spec.id});
+      sign('ARQUIBANCADA DA ESTAÇÃO',-31,4.7,50.18,13,brick);
+      for(let i=0;i<7;i++)piece(0xe4d9bb,-52+i*3.4,.28,62,1.6,.46,1.6);
+      sign('PADDOCK • ESTAÇÃO',-24,2.48,65,8,brick);
+    }
+    // Marshal landmarks at the far end of each course, outside the racing lane.
+    const boothX=spec.id==='mirassol'?-13:24,boothZ=spec.id==='mirassol'?-54:-57;
+    solid(white,boothX,boothZ,3.4,3.6,2.85);
+    piece(glass,boothX,1.85,boothZ+1.84,2.5,1,.14);
+    piece(spec.accent,boothX,3.02,boothZ,4.1,.33,4.2);
+    for(const [x,z]of[[-65,28],[73,34],[-67,-48],[55,-53]]){
+      piece(steel,x,3.15,z,.16,6.3,.16);
+      piece(steel,x,6.25,z,.82,.29,.42);
+      piece(white,x,6.17,z,.72,.19,.27);
+    }
+    for(const [color,items]of batches)v705BatchBoxes(items,renderMat(color,{roughness:color===glass?.32:.82}),root,'RIO_PISTA_ACABAMENTO_'+color.toString(16));
+  }
+
+  function rioRegionalRecords(){
+    return state.races?.regionalCircuits||{};
+  }
+  function rioRegionalRaceResult(k,elapsed,won){
+    const records=rioRegionalRecords(),prior=records[k.id]||{};
+    const time=Math.max(.001,Number(elapsed)||0),lap=Math.max(.001,Number(k.best)||time);
+    const priorTime=Number(prior.bestTime)||0,priorLap=Number(prior.bestLap)||0;
+    const record={runs:(Number(prior.runs)||0)+1,wins:(Number(prior.wins)||0)+Number(k.mode==='solo'&&won),
+      bestTime:priorTime>0?Math.min(priorTime,time):time,bestLap:priorLap>0?Math.min(priorLap,lap):lap};
+    (state.races||(state.races={})).regionalCircuits={...records,[k.id]:record};
+    if(k.mode==='time')addXP(25);
+    else{addXP(won?65:30);if(won)addCoins(42);}
+    saveState(true);
+    return{record,newRecord:!priorTime||time<priorTime};
+  }
+  function openRioRegionalRace(k){
+    const record=rioRegionalRecords()[k.id];
+    const results=record?.runs?('Melhor total: '+Number(record.bestTime).toFixed(1)+' s · Melhor volta: '+Number(record.bestLap).toFixed(1)+' s'):'Primeira prova neste circuito.';
+    const event=k.spec.mode==='time'?'Cronômetro · 2 voltas':'Corrida regional · 3 voltas';
+    openModal('🏁 '+k.label,[
+      '<p>'+k.spec.description+'</p><p><b>'+event+'</b> · '+Math.round(k.curve.getLength())+' m por volta</p>',
+      '<p>'+results+'</p>',
+      k.spec.mode==='solo'?'<label class="field"><span>Nível dos rivais</span><select id="regionalKartDifficulty"><option value="easy">Treino</option><option value="normal" selected>Normal</option><option value="hard">Avançado</option></select></label>':'',
+      '<label class="field"><span>Direção assistida</span><select id="regionalKartAssist"><option value="off">Desligada</option><option value="light">Leve</option><option value="normal" selected>Normal</option><option value="strong">Forte</option></select></label>',
+      '<div class="modal-actions"><button class="btn primary" id="regionalKartStart">'+(k.spec.mode==='time'?'Iniciar prova de tempo':'Largar com os rivais')+'</button><button class="btn" id="regionalKartLeave">Continuar no paddock</button></div>'
+    ].join(''),container=>{
+      container.querySelector('#regionalKartStart').onclick=()=>{
+        if(SPORTS_V705.active||SPORTS_V705.kart!==k)return;
+        const assist=container.querySelector('#regionalKartAssist').value;
+        const difficulty=container.querySelector('#regionalKartDifficulty')?.value||'normal';
+        k.regionalOptions={assist,difficulty};
+        closeModal();
+        startKartRaceV704(k.spec.mode);
+      };
+      container.querySelector('#regionalKartLeave').onclick=closeModal;
+    });
+  }
+
+  function updateRioRegionalCircuits(){
+    if(!running||!worldGroup)return;
+    const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
+    for(const spec of Object.values(RIO_REGIONAL_CIRCUITS)){
+      const distance=Math.hypot(focus.x-spec.x,focus.z-spec.z);
+      let circuit=SPORTS_V705.circuits.find(k=>k.id===spec.id);
+      if(!circuit&&distance<=245)circuit=createKartCircuitV704(spec);
+      if(circuit)circuit.root.visible=distance<=305;
+    }
+  }
+
+  window.OTTHI_RIO_CIRCUITS=Object.freeze({diagnostics:()=>({
+    records:{...rioRegionalRecords()},
+    circuits:Object.values(RIO_REGIONAL_CIRCUITS).map(spec=>{
+      const circuit=SPORTS_V705.circuits.find(k=>k.id===spec.id);
+      return{id:spec.id,label:spec.label,x:spec.x,z:spec.z,navX:spec.navX,navZ:spec.navZ,
+        kind:spec.mode,laps:spec.laps,width:spec.width,loaded:!!circuit,visible:!!circuit?.root.visible,
+        length:circuit?Math.round(circuit.curve.getLength()):0,active:!!circuit?.active,checkpoints:circuit?.checkpoints.length||0};
+    })
+  })});
+
   // ===== MODULE: 05a-world-layout-v704.js =====
   // Civilian neighbourhoods and cross-region routes share the same road graph.
   const CIVIL_WORLD_LINKS=(()=>{
@@ -1703,6 +2555,14 @@
     for(const x of cX)path('coast-col-'+(-x),'Bairro Jardim da Costa',[[x,160],[x,195],[x,221]],7);
     return{highways,nodes,edges};
   })();
+  // Both additions register roads before any renderer, GPS or traffic index
+  // takes a snapshot of the world authority.
+  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
+  const rioProtectedRects=[
+    ...(rioPretoRoads?.protectedRects||[]),
+    ...(typeof RIO_REGIONAL_RESERVATIONS==='undefined'?[]:RIO_REGIONAL_RESERVATIONS)
+  ];
   const WORLD_LAYOUT_V704=Object.freeze({
     version:704,
     bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
@@ -1729,7 +2589,8 @@
     }),
     circuits:Object.freeze({
       aurora:{id:'aurora',label:'Autódromo Nova Aurora',x:300,z:-270,scale:2.4,w:114,d:100,navX:300,navZ:-212,shape:0},
-      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1}
+      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1},
+      ...(typeof RIO_REGIONAL_CIRCUITS==='undefined'?{}:RIO_REGIONAL_CIRCUITS)
     }),
     activityVenues:Object.freeze({
       boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-56,w:14,d:12,navX:46,navZ:-48,face:1,slug:'boxe'},
@@ -1763,6 +2624,8 @@
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
       ...CIVIL_WORLD_LINKS.highways,
+      ...(rioPretoRoads?.highways||[]),
+      ...(rioRegionalRoads?.highways||[]),
       {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
       {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
       {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
@@ -1806,6 +2669,8 @@
     ]),
     nodes:Object.freeze({
       ...CIVIL_WORLD_LINKS.nodes,
+      ...(rioPretoRoads?.nodes||{}),
+      ...(rioRegionalRoads?.nodes||{}),
       "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
@@ -1847,6 +2712,8 @@
     }),
     edges:Object.freeze([
       ...CIVIL_WORLD_LINKS.edges,
+      ...(rioPretoRoads?.edges||[]),
+      ...(rioRegionalRoads?.edges||[]),
       ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
@@ -2068,7 +2935,7 @@
   }
   function v704ZoneAt(x,z,margin=0){return Object.values(WORLD_LAYOUT_V704.zones).filter(zone=>v704PointInRect({x,z},zone,margin)).map(zone=>zone.id);}
   function v704ConstructionAt(x,z,margin=0){return v704PointInRect({x,z},WORLD_LAYOUT_V704.zones.construction,-Math.abs(margin));}
-  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id))];}
+  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id)),...rioProtectedRects];}
   function v704ReservedAt(x,z,margin=0){if(v704RoadAt(x,z,margin,true))return true;return v704ProtectedRectangles().some(rect=>v704PointInRect({x,z},rect,Number(rect.margin||0)+margin));}
   function v704BuildAllowedAt(x,z,w=1.5,d=1.5){const zone=WORLD_LAYOUT_V704.zones.construction,rect={x,z,w,d};if(x-w/2<zone.x-zone.w/2||x+w/2>zone.x+zone.w/2||z-d/2<zone.z-zone.d/2||z+d/2>zone.z+zone.d/2)return false;if(WORLD_LAYOUT_V704.roads.some(road=>v704RectOverlap(rect,v704RoadFootprint(road,true),.25)))return false;return !(WORLD_LAYOUT_V704.highways||[]).some(highway=>v704HighwayIntersectsRect(highway.id,rect,.25));}
   function v704NearestConstructionSlot(index=0){const zone=WORLD_LAYOUT_V704.zones.construction,columns=6,spacingX=5,spacingZ=5,row=Math.floor(index/columns),column=index%columns;return{x:zone.x-zone.w/2+3+column*spacingX,z:zone.z-zone.d/2+3+row*spacingZ};}
@@ -4336,6 +5203,7 @@
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
     if(Math.hypot(player.x-k.entrance.x,player.z-k.entrance.z)>10){setWaypoint('circuit-'+k.id);toast('Siga até a entrada do autódromo para correr.','info',2500);return;}
+    if(k.spec?.regional)return openRioRegionalRace(k);
     closeModal();venueOpen('kart-'+k.id);
   }
 
@@ -4387,17 +5255,120 @@
   function v705KartVehicle(id,x,z,color,heading=0){const group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=heading;group.userData.vehicleId=id;worldGroup.add(group);const chassis=renderMat(0x171f2b,{roughness:.52,metalness:.2}),body=renderMat(color,{roughness:.34,metalness:.18}),wheel=renderMat(0x0e1117,{roughness:.75});box(1.68,.18,2.28,chassis,0,.22,0,group);box(1.32,.3,.96,body,0,.4,.38,group);box(.78,.42,.7,0x27364a,0,.61,-.28,group);box(1.78,.16,.28,body,0,.29,1.15,group);box(1.72,.12,.22,body,0,.34,-1.1,group);box(.08,.52,.08,0xdce5eb,-.46,.62,.22,group);box(.08,.52,.08,0xdce5eb,.46,.62,.22,group);const steering=cylinder(.19,.06,0x202833,0,.88,.18,group,12);steering.rotation.x=Math.PI/2;for(const [wx,wz]of[[-.86,-.72],[.86,-.72],[-.86,.72],[.86,.72]]){const wh=cylinder(.32,.28,wheel,wx,.24,wz,group,14);wh.rotation.z=Math.PI/2;}const vehicle={id,x,z,heading,group,label:'Kart OTTHI',kind:'kart',serviceType:'kart',appearance:{primary:color,secondary:0xffffff,chassis:0x171f2b},occupied:false,radius:1.25};world.vehicles.push(vehicle);world.kartsV704=world.kartsV704||[];world.kartsV704.push(vehicle);registerInteractable({id:`vehicle-${id}`,type:'vehicle',icon:'🏎️',label:'Entrar no kart',radius:2.3,priority:170,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!vehicle.occupied&&group.visible,action:()=>enterVehicle(vehicle)});return vehicle;}
   function v705CurvePoint(curve,t){const p=curve.getPointAt((t%1+1)%1);return{x:p.x,z:p.z};}
   function v705CurveHeading(curve,t){const q=curve.getTangentAt((t%1+1)%1);return Math.atan2(q.x,q.z);}
-  function v705TrackDistance(k,x,z){let best=Infinity,bestT=0;for(let i=0;i<180;i++){const t=i/180,p=v705CurvePoint(k.curve,t),d=Math.hypot(x-p.x,z-p.z);if(d<best){best=d;bestT=t;}}return{distance:best,t:bestT};}
+  function v705TrackDistance(k,x,z){
+    let best=Infinity,bestT=0;
+    if(k.samples){
+      for(let i=0;i<k.samples.length;i++){
+        const a=k.samples[i],b=k.samples[(i+1)%k.samples.length];
+        const dx=b.x-a.x,dz=b.z-a.z,u=clamp(((x-a.x)*dx+(z-a.z)*dz)/(dx*dx+dz*dz||1),0,1);
+        const distance=(x-a.x-dx*u)**2+(z-a.z-dz*u)**2;
+        if(distance<best){best=distance;bestT=((i+u)/k.samples.length)%1;}
+      }
+      return{distance:Math.sqrt(best),t:bestT};
+    }
+    for(let i=0;i<180;i++){
+      const t=i/180,p=v705CurvePoint(k.curve,t),d=Math.hypot(x-p.x,z-p.z);
+      if(d<best){best=d;bestT=t;}
+    }
+    return{distance:best,t:bestT};
+  }
   function v705KartCurvature(k,t){const a=k.curve.getTangentAt((t-.018+1)%1),b=k.curve.getTangentAt((t+.018)%1),dot=clamp(a.x*b.x+a.z*b.z,-1,1);return Math.acos(dot)/Math.PI;}
-  function v705CreateBoostPad(k,t){const p=k.curve.getPointAt(t),tan=k.curve.getTangentAt(t),mesh=new THREE.Mesh(new THREE.BoxGeometry(2.2,.035,3.8),renderMat(0x27e6ff,{emissive:0x0fbad1,emissiveIntensity:.85,roughness:.35}));mesh.position.set(p.x,.225,p.z);mesh.rotation.y=Math.atan2(tan.x,tan.z);mesh.userData.kartBoost=true;worldGroup.add(mesh);return{t,x:p.x,z:p.z,mesh,lastAt:0};}
-  function createKartCircuitV704(spec=WORLD_LAYOUT_V704.circuits.aurora){const existing=SPORTS_V705.circuits.find(c=>c.id===spec.id);if(existing)return existing;const c=spec,cx=c.x,cz=c.z,scale=Number(spec.scale||1),local=spec.shape?[[17,-7],[10,-15],[0,-15],[-16,-10],[-18,2],[-10,14],[4,14],[15,8],[18,0],[10,-5]]:[[17,-7],[12,-13.8],[4,-15.4],[-4,-12.8],[-11,-14.6],[-18,-10],[-18,-3],[-12,2],[-17,8],[-10,13.7],[-2,13.8],[3,10],[7,14.5],[14,11.8],[18,5],[13,0],[18,-3],[12,-6]],points=local.map(([x,z])=>new THREE.Vector3(cx+(spec.shape?-x:x)*scale,.16,cz+z*scale)),curve=new THREE.CatmullRomCurve3(points,true,'centripetal',.42),trackMat=renderMat(0x30343b,{roughness:.9}),curbA=renderMat(0xffffff,{roughness:.75}),curbB=renderMat(0xe34b45,{roughness:.75}),kartBarrier=renderMat(0xe6e8ec,{roughness:.72}),root=new THREE.Group();root.name='OTTHI_V705_KART';worldGroup.add(root);premiumBox(spec.w,.08,spec.d,0x477a3c,cx,.04,cz,root);const segs=240,width=9.0,roadItems=[],curbEven=[],curbOdd=[],barriers=[];for(let i=0;i<segs;i++){const t=i/segs,t2=(i+1)/segs,p=curve.getPointAt(t),q=curve.getPointAt(t2),tan=curve.getTangentAt((t+t2)/2),len=p.distanceTo(q),mx=(p.x+q.x)/2,mz=(p.z+q.z)/2,ry=Math.atan2(tan.x,tan.z),nx=-tan.z,nz=tan.x;roadItems.push({x:mx,y:.15,z:mz,w:width,h:.1,d:len+.18,ry});for(const side of[-1,1]){const item={x:mx+nx*side*(width/2+.05),y:.21,z:mz+nz*side*(width/2+.05),w:.32,h:.14,d:len+.12,ry};(i%2?curbOdd:curbEven).push(item);if(i%4===0)barriers.push({x:mx+nx*side*(width/2+.68),y:.3,z:mz+nz*side*(width/2+.68),w:.18,h:.48,d:len+.08,ry});}}v705BatchBoxes(roadItems,trackMat,root,'OTTHI_KART_ASPHALT');v705BatchBoxes(curbEven,curbB,root,'OTTHI_KART_CURB_RED');v705BatchBoxes(curbOdd,curbA,root,'OTTHI_KART_CURB_WHITE');v705BatchBoxes(barriers,kartBarrier,root,'OTTHI_KART_BARRIERS');
-    const start=v705CurvePoint(curve,0),heading=v705CurveHeading(curve,0),tan=curve.getTangentAt(0),nx=-tan.z,nz=tan.x;for(let row=-2;row<=2;row++)premiumBox(8.7,.08,.24,row%2?0xffffff:0x171717,start.x+tan.x*row*.85,.23,start.z+tan.z*row*.85,worldGroup);const pitT=.06,pit=v705CurvePoint(curve,pitT),pitTan=curve.getTangentAt(pitT),pitNx=-pitTan.z,pitNz=pitTan.x,pitX=pit.x+pitNx*8.5,pitZ=pit.z+pitNz*8.5;premiumBox(13,.1,4.0,0x59616b,pitX,.12,pitZ,worldGroup);for(let i=-2;i<=2;i++)premiumBox(2.2,1.7,2.7,i%2?0x36536b:0x2d465e,pitX+pitTan.x*i*2.4,.85,pitZ+pitTan.z*i*2.4,worldGroup);createSignpost(pitX,pitZ,'BOXES',heading+Math.PI/2);
-    const checkpoints=Array.from({length:14},(_,i)=>{const t=i/14,p=v705CurvePoint(curve,t);return{x:p.x,z:p.z,t};}),boosts=[.18,.52,.80].map(t=>v705CreateBoostPad({curve},t)),grid=[];for(let i=0;i<4;i++){const back=1.6+i*3.4,side=(i%2?1:-1)*.95;grid.push({x:start.x-tan.x*back+nx*side,z:start.z-tan.z*back+nz*side,heading});}const colors=[0xe5484d,0x2787d8,0xf1c943,0x31a76a],karts=grid.map((g,i)=>v705KartVehicle(`kart-${spec.id}-${['red','blue','yellow','green'][i]}`,cx+(i-1.5)*3.1,cz+spec.d/2-5,colors[i],Math.PI)),k={id:spec.id,label:spec.label,entrance:{x:spec.navX,z:spec.navZ},width,scale,cx,cz,curve,checkpoints,boosts,grid,karts,active:false,countdown:0,lap:0,expected:1,startAt:0,lapStartAt:0,best:0,ai:[],root,offTrackWarnAt:0,ranking:[],boostMessageAt:0};SPORTS_V705.circuits.push(k);if(!SPORTS_V705.kart)SPORTS_V705.kart=k;world.kartV704=SPORTS_V705.kart;const entrance=k.entrance;registerInteractable({id:'kart-race-'+spec.id,type:'kart',icon:'🏁',label:spec.label+' — corrida',x:entrance.x,z:entrance.z,radius:4.0,priority:190,action:()=>{SPORTS_V705.kart=k;world.kartV704=k;openKartRaceV705();}});createSignpost(entrance.x,entrance.z+1.2,'🏁 '+spec.label.toUpperCase(),Math.PI);return k;}
-  function startKartRaceV704(mode='solo'){if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}const k=SPORTS_V705.kart;if(!k||k.active)return;let kart=currentVehicleRef?.();if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0,g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;k.difficulty=SPORTS_V705.difficulty||'normal';k.assist=SPORTS_V705.assist;document.body.classList.add('world-race-active');configureSportControlsV705('kart');k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;for(const a of k.ai)worldGroup.remove(a.group);k.ai=[];for(let i=0;i<3;i++){const gr=new THREE.Group(),gg=k.grid[i+1];gr.position.set(gg.x,0,gg.z);worldGroup.add(gr);box(1.48,.2,2.02,[0x7d58c9,0xf28a22,0x138d83][i],0,.3,0,gr);box(.68,.32,.62,0x26384e,0,.56,-.25,gr);const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));helmet.position.set(0,.93,-.28);gr.add(helmet);for(const [x,z]of[[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){const w=cylinder(.28,.23,0x111827,x,.25,z,gr,12);w.rotation.z=Math.PI/2;}if(typeof worldRacerAttach==='function')worldRacerAttach(gr,[0x7d58c9,0xf28a22,0x138d83][i],'racer');k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/k.curve.getLength(),baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/k.curve.getLength(),lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});}SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');toast('3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);}
-  function updateKartRaceV704(dt){const k=SPORTS_V705.kart;if(!k?.active)return;const onlineV2=k.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'),guestV2=onlineV2&&typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('kart');if(guestV2)v705ApplySportReplica('kart',dt);k.countdown-=dt;if(k.countdown>0){player.car.speed=0;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),String(Math.ceil(k.countdown)));if(onlineV2&&!guestV2)v705PublishSport({type:'kart'});return;}const now=performance.now();if(!guestV2)for(const ai of k.ai){if(ai.finished)continue;const curvePenalty=clamp(v705KartCurvature(k,ai.t)*2.6,0,.42),nearPlayer=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z)<3.2?1.035:1;ai.t+=ai.baseSpeed*ai.skill*(1-curvePenalty)*nearPlayer*dt;if(ai.t>=1){ai.t-=1;ai.lap++;if(ai.lap>=3)ai.finished=true;}const p=k.curve.getPointAt(ai.t),tan=k.curve.getTangentAt(ai.t),nx=-tan.z,nz=tan.x;ai.group.position.set(p.x+nx*ai.lane,0,p.z+nz*ai.lane);ai.group.rotation.y=Math.atan2(tan.x,tan.z);const contact=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z);if(contact<1.55){const dx=player.x-ai.group.position.x,dz=player.z-ai.group.position.z,n=Math.max(.01,Math.hypot(dx,dz));player.x=ai.group.position.x+dx/n*1.62;player.z=ai.group.position.z+dz/n*1.62;player.car.speed*=.72;ai.t=(ai.t+.0025)%1;if(now>Number(k.lastContactAt||0)){k.lastContactAt=now+650;vibrate(28);beep(145,55,'square');}}}
-    const cp=k.checkpoints[k.expected],d=cp?Math.hypot(player.x-cp.x,player.z-cp.z):Infinity;if(d<5.4){if(k.expected===0){k.lap++;const lapTime=(now-k.lapStartAt)/1000;k.lapStartAt=now;if(k.lap>1||lapTime>3)k.best=!k.best?lapTime:Math.min(k.best,lapTime);k.expected=1;toast(`Volta ${k.lap}/3 • ${lapTime.toFixed(1)}s`,'good',1100);if(k.lap>=3){k.active=false;const elapsed=(now-k.startAt)/1000,playerProgress=k.lap,aiBest=Math.max(...k.ai.map(a=>a.lap+(a.t||0))),won=playerProgress>=aiBest;addXP(won?65:30);if(won)addCoins(42);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`${elapsed.toFixed(1)}s • ${won?'1º lugar':'Chegada'} • melhor ${k.best.toFixed(1)}s`);toast(won?'Você venceu a corrida de kart!':'Corrida concluída.','good',2400);setTimeout(()=>{SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);return;}}else{k.expected++;if(k.expected>=k.checkpoints.length)k.expected=0;}}
+  function v705CreateBoostPad(k,t,parent=worldGroup){
+    const p=k.curve.getPointAt(t),tan=k.curve.getTangentAt(t);
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(2.2,.035,3.8),renderMat(0x27e6ff,{emissive:0x0fbad1,emissiveIntensity:.85,roughness:.35}));
+    mesh.position.set(p.x,.225,p.z);mesh.rotation.y=Math.atan2(tan.x,tan.z);mesh.userData.kartBoost=true;
+    parent.add(mesh);
+    return{t,x:p.x,z:p.z,mesh,lastAt:0};
+  }
+  function createKartCircuitV704(spec=WORLD_LAYOUT_V704.circuits.aurora){
+    const existing=SPORTS_V705.circuits.find(c=>c.id===spec.id);
+    if(existing)return existing;
+    const {x:cx,z:cz}=spec,scale=Number(spec.scale||1),regional=!!spec.regional;
+    const local=spec.shape?[[17,-7],[10,-15],[0,-15],[-16,-10],[-18,2],[-10,14],[4,14],[15,8],[18,0],[10,-5]]:
+      [[17,-7],[12,-13.8],[4,-15.4],[-4,-12.8],[-11,-14.6],[-18,-10],[-18,-3],[-12,2],[-17,8],[-10,13.7],[-2,13.8],[3,10],[7,14.5],[14,11.8],[18,5],[13,0],[18,-3],[12,-6]];
+    const curve=regional?rioRegionalCurve(spec):new THREE.CatmullRomCurve3(local.map(([x,z])=>new THREE.Vector3(cx+(spec.shape?-x:x)*scale,.16,cz+z*scale)),true,'centripetal',.42);
+    const trackMat=renderMat(0x30343b,{roughness:.9}),curbA=renderMat(0xffffff,{roughness:.75});
+    const curbB=renderMat(spec.curb??0xe34b45,{roughness:.75}),kartBarrier=renderMat(0xe6e8ec,{roughness:.72});
+    const root=new THREE.Group();root.name=regional?'OTTHI_RIO_AUTODROMO_'+spec.id.toUpperCase():'OTTHI_V705_KART';
+    worldGroup.add(root);
+    if(regional)v705BatchBoxes([{x:cx,y:.04,z:cz,w:spec.w,h:.08,d:spec.d}],renderMat(spec.grass,{roughness:.95}),root,'RIO_PISTA_TERRENO');
+    else premiumBox(spec.w,.08,spec.d,0x477a3c,cx,.04,cz,root);
+    const segs=240,width=spec.width||9,roadItems=[],curbEven=[],curbOdd=[],barriers=[],samples=regional?[]:null;
+    for(let i=0;i<segs;i++){
+      const t=i/segs,t2=(i+1)/segs,p=curve.getPointAt(t),q=curve.getPointAt(t2);
+      const tan=curve.getTangentAt((t+t2)/2),len=p.distanceTo(q),mx=(p.x+q.x)/2,mz=(p.z+q.z)/2;
+      const ry=Math.atan2(tan.x,tan.z),nx=-tan.z,nz=tan.x;
+      roadItems.push({x:mx,y:.15,z:mz,w:width,h:.1,d:len+.18,ry});
+      if(samples)samples.push({x:p.x,z:p.z});
+      for(const side of[-1,1]){
+        const item={x:mx+nx*side*(width/2+.05),y:.21,z:mz+nz*side*(width/2+.05),w:.32,h:.14,d:len+.12,ry};
+        (i%2?curbOdd:curbEven).push(item);
+        if(i%4===0)barriers.push({x:mx+nx*side*(width/2+.68),y:.3,z:mz+nz*side*(width/2+.68),w:.18,h:.48,d:len+.08,ry});
+      }
+    }
+    v705BatchBoxes(roadItems,trackMat,root,'OTTHI_KART_ASPHALT');
+    v705BatchBoxes(curbEven,curbB,root,'OTTHI_KART_CURB_RED');
+    v705BatchBoxes(curbOdd,curbA,root,'OTTHI_KART_CURB_WHITE');
+    v705BatchBoxes(barriers,kartBarrier,root,'OTTHI_KART_BARRIERS');
+    const start=v705CurvePoint(curve,0),heading=v705CurveHeading(curve,0),tan=curve.getTangentAt(0),nx=-tan.z,nz=tan.x;
+    for(let row=-2;row<=2;row++)premiumBox(width-.3,.08,.24,row%2?0xffffff:0x171717,start.x+tan.x*row*.85,.23,start.z+tan.z*row*.85,regional?root:worldGroup);
+    if(regional)decorateRioRegionalCircuit(spec,root);
+    else{
+      const pitT=.06,pit=v705CurvePoint(curve,pitT),pitTan=curve.getTangentAt(pitT);
+      const pitX=pit.x-pitTan.z*8.5,pitZ=pit.z+pitTan.x*8.5;
+      premiumBox(13,.1,4.0,0x59616b,pitX,.12,pitZ,worldGroup);
+      for(let i=-2;i<=2;i++)premiumBox(2.2,1.7,2.7,i%2?0x36536b:0x2d465e,pitX+pitTan.x*i*2.4,.85,pitZ+pitTan.z*i*2.4,worldGroup);
+      createSignpost(pitX,pitZ,'BOXES',heading+Math.PI/2);
+    }
+    const checkpointCount=spec.checkpoints||14;
+    const checkpoints=Array.from({length:checkpointCount},(_,i)=>{
+      const t=i/checkpointCount,p=v705CurvePoint(curve,t);
+      return{x:p.x,z:p.z,t};
+    });
+    const boosts=(spec.boosts||[.18,.52,.80]).map(t=>v705CreateBoostPad({curve},t,regional?root:worldGroup)),grid=[];
+    for(let i=0;i<4;i++){
+      const back=1.6+i*3.4,side=(i%2?1:-1)*.95;
+      if(regional){
+        const t=1-back/curve.getLength(),p=v705CurvePoint(curve,t),h=v705CurveHeading(curve,t);
+        grid.push({x:p.x-Math.cos(h)*side,z:p.z+Math.sin(h)*side,heading:h});
+      }else grid.push({x:start.x-tan.x*back+nx*side,z:start.z-tan.z*back+nz*side,heading});
+    }
+    const colors=[0xe5484d,0x2787d8,0xf1c943,0x31a76a];
+    const karts=grid.map((g,i)=>{
+      const [ox,oz]=spec.parkSlots?.[i]||[(i-1.5)*3.1,spec.d/2-5];
+      return v705KartVehicle(`kart-${spec.id}-${['red','blue','yellow','green'][i]}`,cx+ox,cz+oz,colors[i],Math.PI);
+    });
+    const k={id:spec.id,label:spec.label,entrance:{x:spec.navX,z:spec.navZ},width,scale,cx,cz,curve,checkpoints,boosts,grid,karts,active:false,countdown:0,lap:0,expected:1,startAt:0,lapStartAt:0,best:0,ai:[],root,offTrackWarnAt:0,ranking:[],boostMessageAt:0};
+    if(regional){k.spec=spec;k.samples=samples;k.type='kart';}
+    SPORTS_V705.circuits.push(k);
+    if(!SPORTS_V705.kart)SPORTS_V705.kart=k;
+    world.kartV704=SPORTS_V705.kart;
+    const entrance=k.entrance;
+    registerInteractable({id:'kart-race-'+spec.id,type:'kart',icon:'🏁',label:spec.label+' — corrida',x:entrance.x,z:entrance.z,radius:4.0,priority:190,action:()=>{
+      if(regional&&SPORTS_V705.active)return;
+      SPORTS_V705.kart=k;world.kartV704=k;openKartRaceV705();
+    }});
+    if(!regional)createSignpost(entrance.x,entrance.z+1.2,'🏁 '+spec.label.toUpperCase(),Math.PI);
+    return k;
+  }
+  function startKartRaceV704(mode='solo'){if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}const k=SPORTS_V705.kart;if(!k||k.active)return;let kart=currentVehicleRef?.();if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0,g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;k.difficulty=k.regionalOptions?.difficulty||SPORTS_V705.difficulty||'normal';k.assist=k.regionalOptions?.assist||SPORTS_V705.assist;document.body.classList.add('world-race-active');configureSportControlsV705('kart');k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;for(const a of k.ai)worldGroup.remove(a.group);k.ai=[];for(let i=0;i<(mode==='time'?0:3);i++){const gr=new THREE.Group(),gg=k.grid[i+1];gr.position.set(gg.x,0,gg.z);worldGroup.add(gr);box(1.48,.2,2.02,[0x7d58c9,0xf28a22,0x138d83][i],0,.3,0,gr);box(.68,.32,.62,0x26384e,0,.56,-.25,gr);const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));helmet.position.set(0,.93,-.28);gr.add(helmet);for(const [x,z]of[[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){const w=cylinder(.28,.23,0x111827,x,.25,z,gr,12);w.rotation.z=Math.PI/2;}if(typeof worldRacerAttach==='function')worldRacerAttach(gr,[0x7d58c9,0xf28a22,0x138d83][i],'racer');k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/k.curve.getLength(),baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/k.curve.getLength(),lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});}SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');toast(k.spec?.mode==='time'?'2 voltas no cronômetro. Faça todos os setores e cruze a chegada.':'3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);}
+  function updateKartRaceV704(dt){const k=SPORTS_V705.kart;if(!k?.active)return;const onlineV2=k.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'),guestV2=onlineV2&&typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('kart');if(guestV2)v705ApplySportReplica('kart',dt);const counting=k.countdown>0;k.countdown-=dt;if(k.countdown>0){player.car.speed=0;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),String(Math.ceil(k.countdown)));if(onlineV2&&!guestV2)v705PublishSport({type:'kart'});return;}const now=performance.now();if(k.spec?.regional&&counting)k.startAt=k.lapStartAt=now;if(!guestV2)for(const ai of k.ai){if(ai.finished)continue;const curvePenalty=clamp(v705KartCurvature(k,ai.t)*2.6,0,.42),nearPlayer=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z)<3.2?1.035:1;ai.t+=ai.baseSpeed*ai.skill*(1-curvePenalty)*nearPlayer*dt;if(ai.t>=1){ai.t-=1;ai.lap++;if(ai.lap>=(k.spec?.laps||3))ai.finished=true;}const p=k.curve.getPointAt(ai.t),tan=k.curve.getTangentAt(ai.t),nx=-tan.z,nz=tan.x;ai.group.position.set(p.x+nx*ai.lane,0,p.z+nz*ai.lane);ai.group.rotation.y=Math.atan2(tan.x,tan.z);const contact=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z);if(contact<1.55){const dx=player.x-ai.group.position.x,dz=player.z-ai.group.position.z,n=Math.max(.01,Math.hypot(dx,dz));player.x=ai.group.position.x+dx/n*1.62;player.z=ai.group.position.z+dz/n*1.62;player.car.speed*=.72;ai.t=(ai.t+.0025)%1;if(now>Number(k.lastContactAt||0)){k.lastContactAt=now+650;vibrate(28);beep(145,55,'square');}}}
+    const cp=k.checkpoints[k.expected],d=cp?Math.hypot(player.x-cp.x,player.z-cp.z):Infinity;if(d<5.4){if(k.expected===0){k.lap++;const lapTime=(now-k.lapStartAt)/1000;k.lapStartAt=now;if(k.lap>1||lapTime>3)k.best=!k.best?lapTime:Math.min(k.best,lapTime);k.expected=1;toast(`Volta ${k.lap}/${k.spec?.laps||3} • ${lapTime.toFixed(1)}s`,'good',1100);if(k.lap>=(k.spec?.laps||3)){
+      k.active=false;
+      const elapsed=(now-k.startAt)/1000,aiBest=Math.max(...k.ai.map(a=>a.lap+(a.t||0))),won=k.lap>=aiBest;
+      let result=won?'1º lugar':'Chegada';
+      if(k.spec?.regional){
+        const saved=rioRegionalRaceResult(k,elapsed,won);
+        if(k.mode==='time')result=saved.newRecord?'Novo recorde':'Tempo registrado';
+        for(const rival of k.ai)worldGroup.remove(rival.group);
+        k.ai=[];
+      }else{addXP(won?65:30);if(won)addCoins(42);}
+      v705Hud('🏁 '+k.label,`${elapsed.toFixed(1)}s • ${result} • melhor ${k.best.toFixed(1)}s`);
+      toast(k.mode==='time'?result:won?'Você venceu a corrida de kart!':'Corrida concluída.','good',2400);
+      setTimeout(()=>{SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);
+      return;}}else{k.expected++;if(k.expected>=k.checkpoints.length)k.expected=0;}}
     const track=v705TrackDistance(k,player.x,player.z);if(track.distance>k.width/2+.8){player.car.speed=clamp(player.car.speed,-3,6.5);if(now>k.offTrackWarnAt){k.offTrackWarnAt=now+1500;toast('Fora da pista — volte ao asfalto.','warn',1000);}}for(const boost of k.boosts){if(Math.hypot(player.x-boost.x,player.z-boost.z)<2.2&&now-boost.lastAt>2200){boost.lastAt=now;player.car.kartBoostUntil=now+1000;player.car.speed=Math.max(Number(player.car.speed||0),23.5);beep(980,90,'square');vibrate(25);if(now>k.boostMessageAt){k.boostMessageAt=now+1600;toast('TURBO!','good',700);}}}
-    const exactProgress=k.lap+track.t,kRanks=k.ai.map((a,i)=>({name:`CPU ${i+1}`,progress:a.lap+a.t}));if(onlineV2)for(const item of v705KartSharedPlayers())kRanks.push({name:`Jogador ${String(item.uid).slice(-4).toUpperCase()}`,progress:Number(item.lap||0)+Number(item.progress||0)});kRanks.push({name:'Você',progress:exactProgress});kRanks.sort((a,b)=>b.progress-a.progress);const pos=kRanks.findIndex(r=>r.name==='Você')+1,boosting=now<Number(player.car.kartBoostUntil||0);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`Volta ${Math.min(3,k.lap+1)}/3 • ${pos}º/${kRanks.length} • ${boosting?'TURBO • ':''}${Math.round(Math.abs(player.car.speed)*3.6)} km/h`);v705PublishSport({type:'kart',lap:k.lap,checkpoint:k.expected,position:pos,progress:+track.t.toFixed(3)});}
+    const exactProgress=k.lap+track.t,kRanks=k.ai.map((a,i)=>({name:`CPU ${i+1}`,progress:a.lap+a.t}));if(onlineV2)for(const item of v705KartSharedPlayers())kRanks.push({name:`Jogador ${String(item.uid).slice(-4).toUpperCase()}`,progress:Number(item.lap||0)+Number(item.progress||0)});kRanks.push({name:'Você',progress:exactProgress});kRanks.sort((a,b)=>b.progress-a.progress);const pos=kRanks.findIndex(r=>r.name==='Você')+1,boosting=now<Number(player.car.kartBoostUntil||0);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`Volta ${Math.min(k.spec?.laps||3,k.lap+1)}/${k.spec?.laps||3} • ${k.mode==='time'?((now-k.startAt)/1000).toFixed(1)+'s':pos+'º/'+kRanks.length} • ${boosting?'TURBO • ':''}${Math.round(Math.abs(player.car.speed)*3.6)} km/h`);v705PublishSport({type:'kart',lap:k.lap,checkpoint:k.expected,position:pos,progress:+track.t.toFixed(3)});}
   function handleActiveSportActionV704(){if(SPORTS_V705.football){footballKickV704();return true;}const a=SPORTS_V705.active;if(a?.type==='volley'){if(!courtHitV704())toast('Entre na sombra da bola para sacar, receber ou atacar.','warn',750);return true;}if(a?.type==='footvolley'){v705CourtTouch('touch');return true;}if(a?.type==='kart')return leaveCurrentSportV705();return false;}
   function handleActiveSportSpecialV704(){if(SPORTS_V705.football){v705FootballPass();return true;}const a=SPORTS_V705.active;if(a&&['volley','footvolley'].includes(a.type)){if(!v705CourtSet())toast('Entre na sombra da bola para levantar.','warn',750);return true;}return false;}
   function handleActiveSportRunControlV705(active){const type=activeSportControlTypeV705();if(!type||type==='kart')return false;if(type==='football'){input.touchSprint=!!active;syncSportControlsV705();return true;}if(!active)return true;if(type==='volley')v705CourtTouch('block');else if(type==='footvolley')v705CourtTouch('header');syncSportControlsV705();return true;}
@@ -7971,10 +8942,20 @@
   function sanitizeMultiplayerAvatar(value={}){
     const source=value&&typeof value==='object'?value:{},fallback=typeof normalizeAvatarV2==='function'?normalizeAvatarV2({}):{};
     const clean={v:3};
-    for(const field of MULTIPLAYER_AVATAR_FIELDS){const raw=source[field]??fallback[field];if(field.endsWith('Color')||field==='skinTone')clean[field]=safeAvatarColor(raw,fallback[field]||'#f0b37e');else clean[field]=String(raw??'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,28);}
+    for(const field of MULTIPLAYER_AVATAR_FIELDS){const raw=source[field]??fallback[field];if(field==='skinTone'&&typeof rioAvatarComplexion==='function'&&rioAvatarComplexion(raw)!==undefined)clean[field]=raw;else if(field.endsWith('Color')||field==='skinTone')clean[field]=safeAvatarColor(raw,fallback[field]||'#f0b37e');else clean[field]=String(raw??'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,28);}
     return clean;
   }
-  function multiplayerAvatarDescriptor(){const source={...(state.avatar||{})};if(typeof effectiveAvatarUniform==='function')source.uniform=effectiveAvatarUniform()||'none';return sanitizeMultiplayerAvatar(source);}
+  function multiplayerAvatarDescriptor(){
+    const source={...(state.avatar||{})};
+    if(typeof effectiveAvatarUniform==='function')source.uniform=effectiveAvatarUniform()||'none';
+    const family=typeof familyCharacterId==='function'?familyCharacterId(source.bodyStyle):'';
+    if(family&&source.rioWardrobe&&typeof rioWardrobeToken==='function'){
+      // An optional variant travels in the existing sanitized clothing slot.
+      // Older clients already use the same original family rig.
+      source.torso=rioWardrobeToken(source.rioWardrobe[family])||source.torso;
+    }
+    return sanitizeMultiplayerAvatar(source);
+  }
   function multiplayerAvatarSignature(value={}){const a=sanitizeMultiplayerAvatar(value);return MULTIPLAYER_AVATAR_FIELDS.map(key=>a[key]||'').join('|');}
   function avatarHex(value,fallback=0x5ad8ff){const clean=String(value||'').trim();if(/^#[0-9a-f]{6}$/i.test(clean))return parseInt(clean.slice(1),16);const n=Number(value);return Number.isFinite(n)?Math.max(0,Math.min(0xffffff,n)):fallback;}
   function avatarIdIncludes(value,...tokens){const id=String(value||'').toLowerCase();return tokens.some(token=>id.includes(String(token).toLowerCase()));}
@@ -7995,17 +8976,20 @@
     if(applyFamilyRemoteAvatar(ghost,avatar))return avatar;
     const allowed=new Set(['lego','minecraft','playmobil','mario-world','luigi-world']),style=String(avatar.bodyStyle||'').toLowerCase(),legacyTheme=style==='toy'?'lego':style==='hero'?'mario-world':style==='adventure'?'playmobil':style,theme=allowed.has(legacyTheme)?legacyTheme:'lego',isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world';
     const bodyLayer=remoteAvatarLayer(root,'THEME_TORSO'),headLayer=remoteAvatarLayer(root,'THEME_HEAD'),leftArm=remoteAvatarLayer(root,'THEME_ARM_LEFT'),rightArm=remoteAvatarLayer(root,'THEME_ARM_RIGHT'),leftLeg=remoteAvatarLayer(root,'THEME_LEG_LEFT'),rightLeg=remoteAvatarLayer(root,'THEME_LEG_RIGHT'),backLayer=remoteAvatarLayer(bodyLayer,'THEME_BACK');bodyLayer.position.set(0,1.55,0);headLayer.position.set(0,2.72,0);leftArm.position.set(-.72,2.0,0);rightArm.position.set(.72,2.0,0);leftLeg.position.set(-.28,.92,0);rightLeg.position.set(.28,.92,0);
-    const primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatar.pattern==='world-star'?0xffd84d:avatar.pattern==='world-pixels'?0x5ad7ff:avatar.pattern==='world-stripe'?0xffffff:avatar.secondaryColor,{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075,{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
+    const primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatar.pattern==='world-star'?0xffd84d:avatar.pattern==='world-pixels'?0x5ad7ff:avatar.pattern==='world-stripe'?0xffffff:avatar.secondaryColor,{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial((typeof rioAvatarComplexion==='function'&&!isMario?rioAvatarComplexion(avatar.skinTone):undefined)??(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075),{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
     if(theme==='lego'){
-      toySkinCylinder(headLayer,.43,.74,skin,0,0,0,28);toySkinCylinder(headLayer,.14,.09,skin,0,.42,0,24);toySkinBox(bodyLayer,1.10,1.02,.74,primary,0,0,0);toySkinBox(bodyLayer,.88,.18,.76,secondary,0,-.52,0);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.14,.66,primary,0,-.35,0,16);const hand=toySkinCylinder(arm,.16,.14,skin,0,-.78,.02,20);hand.rotation.z=Math.PI/2;}for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.34,.82,.38,secondary,0,-.4,0);toySkinBox(leg,.4,.17,.52,brown,0,-.92,.09);}if(avatar.hair!=='hair-none')for(const[x,z]of[[-.22,-.15],[0,-.18],[.22,-.15],[-.12,.12],[.12,.12]])toySkinCylinder(headLayer,.08,.07,hairMat,x,.44,z,14);
+      toySkinCylinder(headLayer,.43,.74,skin,0,0,0,28);toySkinCylinder(headLayer,.14,.09,skin,0,.42,0,24);toySkinBox(bodyLayer,1.10,1.02,.74,primary,0,0,0);toySkinBox(bodyLayer,.88,.18,.76,secondary,0,-.52,0);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.14,.66,primary,0,-.35,0,16);const hand=toySkinCylinder(arm,.16,.14,skin,0,-.78,.02,20);hand.rotation.z=Math.PI/2;}for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.34,.82,.38,secondary,0,-.4,0);toySkinBox(leg,.4,.17,.52,brown,0,-.92,.09);}if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-'))for(const[x,z]of[[-.22,-.15],[0,-.18],[.22,-.15],[-.12,.12],[.12,.12]])toySkinCylinder(headLayer,.08,.07,hairMat,x,.44,z,14);
     }else if(theme==='minecraft'){
-      toySkinBox(headLayer,1.02,1.02,1.02,skin,0,0,0);toySkinBox(bodyLayer,1.08,1.04,.78,primary,0,0,0);for(const arm of[leftArm,rightArm])toySkinBox(arm,.34,.9,.34,primary,0,-.44,0);for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.38,.9,.4,secondary,0,-.43,0);toySkinBox(leg,.4,.18,.5,brown,0,-.98,.08);}if(avatar.hair!=='hair-none'){toySkinBox(headLayer,1.05,.2,1.05,hairMat,0,.56,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,-.45,.34,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,.45,.34,0);}
+      toySkinBox(headLayer,1.02,1.02,1.02,skin,0,0,0);toySkinBox(bodyLayer,1.08,1.04,.78,primary,0,0,0);for(const arm of[leftArm,rightArm])toySkinBox(arm,.34,.9,.34,primary,0,-.44,0);for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.38,.9,.4,secondary,0,-.43,0);toySkinBox(leg,.4,.18,.5,brown,0,-.98,.08);}if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-')){toySkinBox(headLayer,1.05,.2,1.05,hairMat,0,.56,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,-.45,.34,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,.45,.34,0);}
     }else if(theme==='playmobil'){
-      toySkinSphere(headLayer,.58,skin,0,0,0,1,1.08,.98);toySkinCylinder(bodyLayer,.48,1.02,primary,0,0,0,24);toySkinCylinder(bodyLayer,.36,.18,secondary,0,-.55,0,22);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.13,.68,primary,0,-.34,0,18);toySkinSphere(arm,.16,skin,0,-.76,.02,1,.86,1);}for(const leg of[leftLeg,rightLeg]){toySkinCylinder(leg,.15,.76,secondary,0,-.37,0,18);toySkinBox(leg,.36,.17,.5,brown,0,-.82,.09);}if(avatar.hair!=='hair-none'){toySkinSphere(headLayer,.62,hairMat,0,.22,-.03,1.02,.58,1.02);if(avatar.hair==='hair-curls-01')for(const[x,y,z]of[[-.38,.25,-.1],[-.18,.43,-.12],[.18,.43,-.12],[.38,.25,-.1]])toySkinSphere(headLayer,.18,hairMat,x,y,z);}
+      toySkinSphere(headLayer,.58,skin,0,0,0,1,1.08,.98);toySkinCylinder(bodyLayer,.48,1.02,primary,0,0,0,24);toySkinCylinder(bodyLayer,.36,.18,secondary,0,-.55,0,22);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.13,.68,primary,0,-.34,0,18);toySkinSphere(arm,.16,skin,0,-.76,.02,1,.86,1);}for(const leg of[leftLeg,rightLeg]){toySkinCylinder(leg,.15,.76,secondary,0,-.37,0,18);toySkinBox(leg,.36,.17,.5,brown,0,-.82,.09);}if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-')){toySkinSphere(headLayer,.62,hairMat,0,.22,-.03,1.02,.58,1.02);if(avatar.hair==='hair-curls-01')for(const[x,y,z]of[[-.38,.25,-.1],[-.18,.43,-.12],[.18,.43,-.12],[.38,.25,-.1]])toySkinSphere(headLayer,.18,hairMat,x,y,z);}
     }else if(isMario){
       toySkinSphere(headLayer,.59,skin,0,0,0,1.02,1.04,.98);toySkinCylinder(bodyLayer,.47,.98,marioShirt,0,0,0,22);toySkinBox(bodyLayer,.78,.68,.62,marioOveralls,0,-.12,.02);toySkinBox(bodyLayer,.16,.78,.08,marioOveralls,-.25,.08,.36);toySkinBox(bodyLayer,.16,.78,.08,marioOveralls,.25,.08,.36);toySkinSphere(bodyLayer,.055,worldAvatarMaterial(0xffd84d,{roughness:.35}),-.25,.12,.42);toySkinSphere(bodyLayer,.055,worldAvatarMaterial(0xffd84d,{roughness:.35}),.25,.12,.42);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.13,.66,marioShirt,0,-.32,0,18);toySkinSphere(arm,.18,white,0,-.75,.02,1.08,.92,1.04);}for(const leg of[leftLeg,rightLeg]){toySkinCylinder(leg,.15,.72,marioOveralls,0,-.34,0,18);toySkinBox(leg,.42,.2,.58,brown,0,-.79,.13);}const cap=remoteAvatarLayer(headLayer,isLuigi?'LUIGI_CAP':'MARIO_CAP');toySkinSphere(cap,.69,marioShirt,0,.45,0,1.17,.34,1.17);toySkinBox(cap,.78,.1,.36,marioShirt,0,.38,.45);const emblem=remoteAvatarLayer(headLayer,isLuigi?'LUIGI_EMBLEM':'MARIO_EMBLEM'),badge=new THREE.Mesh(new THREE.CircleGeometry(.13,18),white);badge.position.set(0,.49,.54);emblem.add(badge);const letter=new THREE.Mesh(new THREE.PlaneGeometry(.13,.13),new THREE.MeshStandardMaterial({map:signTexture(isLuigi?'L':'M','#ffffff',isLuigi?'#2e9d4d':'#d83b35'),transparent:true,side:THREE.DoubleSide,roughness:.5}));letter.position.set(0,.49,.547);emblem.add(letter);
     }
     toySkinApplyFace(headLayer,theme,skin,eye,mouth);if(avatar.pattern==='world-stripe'){toySkinBox(bodyLayer,1.0,.14,.08,accent,0,.24,.42);toySkinBox(bodyLayer,1.0,.14,.08,accent,0,-.04,.42);}else if(avatar.pattern==='world-pixels')for(const[x,y]of[[-.28,.24],[0,.04],[.28,.24],[-.28,-.18],[.28,-.18]])toySkinBox(bodyLayer,.14,.14,.08,accent,x,y,.43);else if(avatar.pattern==='world-star'){const star=new THREE.Mesh(new THREE.CircleGeometry(.22,5),accent);star.position.set(0,.12,.48);bodyLayer.add(star);}remoteAvatarLegacyOptions(avatar,theme,bodyLayer,headLayer,backLayer,primary,secondary,accent);
+    if(typeof addRioToyWardrobe==='function')addRioToyWardrobe(avatar,theme,
+      {head:headLayer,body:bodyLayer,arms:[leftArm,rightArm],legs:[leftLeg,rightLeg]},
+      {primary,secondary,hair:hairMat,skin});
     root.userData.remoteAvatar=avatar;root.userData.toyTheme=theme;ghost.userData.limbs={leftArm,rightArm,leftLeg,rightLeg};ghost.userData.avatarSignature=multiplayerAvatarSignature(avatar);return avatar;
   }
   function applyRemoteAvatarIfChanged(ghost,avatar={}){const signature=multiplayerAvatarSignature(avatar);if(ghost.userData.avatarSignature===signature)return false;buildRemoteAvatarVisual(ghost,avatar);return true;}
@@ -8834,11 +9818,12 @@
   // ===== MODULE: 34-avatar-studio-professional-v3.js =====
   const OTTHI_WORLD_AVATAR_CATALOG=Object.freeze({
     bodyStyle:Object.freeze([['lego','LEGO','🧱'],['family-thiago','Thiago','👨🏻'],['family-thamis','Thamis','👩🏻'],['minecraft','Minecraft / Manycraft','🟩'],['playmobil','Playmobil','🧍'],['mario-world','Mario World — Mario','🧢'],['luigi-world','Mario World — Luigi','🟢']]),
-    face:Object.freeze([['face-happy-01','Feliz','🙂'],['face-brave-01','Corajoso','😎'],['face-curious-01','Curioso','🤔'],['face-focus-01','Concentrado','🎯']]),
-    hair:Object.freeze([['hair-none','Sem cabelo','◯'],['hair-short-01','Curto','✂'],['hair-spikes-01','Espetado','⚡'],['hair-curls-01','Cacheado','〰']]),
-    torso:Object.freeze([['world-jacket-01','Jaqueta World','🧥'],['world-hoodie-01','Moletom','👕'],['world-explorer-01','Explorador','🧭'],['world-hero-01','Herói OTTHI','⚡'],['world-shadow-guardian','Guardião Noturno','🌙'],['world-web-runner','Corredor de Fios','🕸️'],['world-mushroom-adventurer','Macacão de aventura','🧢'],['world-toy-rescuer','Resgatista Brinquedo','🧸']]),
+    skinTone:Object.freeze([['tone-03','Tom do modelo','◯'],['rio-tone-claro','Claro','◯'],['rio-tone-oliva','Oliva','◯'],['rio-tone-cobre','Cobre','◯'],['rio-tone-moreno','Moreno','◯'],['rio-tone-escuro','Escuro','◯']]),
+    face:Object.freeze([['face-happy-01','Feliz','🙂'],['face-brave-01','Corajoso','😎'],['face-curious-01','Curioso','🤔'],['face-focus-01','Concentrado','🎯'],['rio-face-sardas','Sardas','🙂'],['rio-face-riso','Risada','😁']]),
+    hair:Object.freeze([['hair-none','Sem cabelo','◯'],['hair-short-01','Curto','✂'],['hair-spikes-01','Espetado','⚡'],['hair-curls-01','Cacheado','〰'],['rio-hair-bob','Chanel','✂'],['rio-hair-puffs','Coques','◉'],['rio-hair-coils','Cachos curtos','〰'],['rio-hair-ondas','Ondulado','≈']]),
+    torso:Object.freeze([['world-jacket-01','Jaqueta World','🧥'],['world-hoodie-01','Moletom','👕'],['world-explorer-01','Explorador','🧭'],['world-hero-01','Herói OTTHI','⚡'],['world-shadow-guardian','Guardião Noturno','🌙'],['world-web-runner','Corredor de Fios','🕸️'],['world-mushroom-adventurer','Macacão de aventura','🧢'],['world-toy-rescuer','Resgatista Brinquedo','🧸'],['rio-torso-junior','Camiseta juvenil','👕'],['rio-torso-rain','Capa de chuva','🧥']]),
     legs:Object.freeze([['world-pants-01','Calça urbana','👖'],['world-shorts-01','Bermuda','🩳'],['world-armor-01','Proteção de aventura','🛡']]),
-    shoes:Object.freeze([['world-sneakers-01','Tênis','👟'],['world-boots-01','Botas','🥾'],['world-energy-01','Tênis de energia','✨']]),
+    shoes:Object.freeze([['world-sneakers-01','Tênis','👟'],['world-boots-01','Botas','🥾'],['world-energy-01','Tênis de energia','✨'],['rio-shoes-runner','Tênis de corrida','👟'],['rio-shoes-boot','Bota de passeio','🥾']]),
     back:Object.freeze([['none','Sem item','—'],['world-backpack-01','Mochila modular','🎒'],['world-cape-01','Capa OTTHI','🦸'],['world-jetpack-01','Propulsor de brinquedo','🚀']]),
     pattern:Object.freeze([['none','Sem estampa','□'],['world-stripe','Faixas','≡'],['world-pixels','Pixels','▦'],['world-star','Estrela OTTHI','★']])
   });
@@ -8899,16 +9884,16 @@
     if(familyId&&applyFamilyPlayerAvatar(familyId)){otthiWorldRuntime.avatarReady=true;return true;}
     clearFamilyPlayerAvatar();playerModel.userData.parts.body.parent.visible=true;
     const parts=playerModel.userData.parts,avatar=state.avatar;avatar.bodyStyle=worldAvatarSafeChoice('bodyStyle',avatar.bodyStyle);avatar.face=worldAvatarSafeChoice('face',avatar.face);avatar.hair=worldAvatarSafeChoice('hair',avatar.hair);avatar.torso=worldAvatarSafeChoice('torso',avatar.torso);avatar.legs=worldAvatarSafeChoice('legs',avatar.legs);avatar.shoes=worldAvatarSafeChoice('shoes',avatar.shoes);avatar.back=worldAvatarSafeChoice('back',avatar.back);avatar.pattern=worldAvatarSafeChoice('pattern',avatar.pattern);
-    const theme=avatar.bodyStyle,isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world',primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatarPatternColor(),{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075,{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
+    const theme=avatar.bodyStyle,isMario=theme==='mario-world'||theme==='luigi-world',isLuigi=theme==='luigi-world',primary=worldAvatarMaterial(avatar.primaryColor,{roughness:.45}),secondary=worldAvatarMaterial(avatar.secondaryColor,{roughness:.56}),accent=worldAvatarMaterial(avatarPatternColor(),{roughness:.38}),hairMat=worldAvatarMaterial(avatar.hairColor,{roughness:.72}),skin=worldAvatarMaterial((typeof rioAvatarComplexion==='function'&&!isMario?rioAvatarComplexion(avatar.skinTone):undefined)??(theme==='lego'?0xf3d44e:theme==='playmobil'?0xffd777:0xd9a075),{roughness:.7}),eye=worldAvatarMaterial(0x1b2027,{roughness:.45}),mouth=worldAvatarMaterial(0xa24d5a,{roughness:.5}),white=worldAvatarMaterial(0xf8f8f4,{roughness:.45}),brown=worldAvatarMaterial(0x5b341e,{roughness:.7}),marioShirt=worldAvatarMaterial(isLuigi?0x2e9d4d:0xd83b35,{roughness:.5}),marioOveralls=worldAvatarMaterial(0x245db2,{roughness:.56});
     const headLayer=worldAvatarLayer(parts.head,'THEME_HEAD'),bodyLayer=worldAvatarLayer(parts.body,'THEME_TORSO'),leftArm=worldAvatarLayer(parts.leftArm,'THEME_ARM_LEFT'),rightArm=worldAvatarLayer(parts.rightArm,'THEME_ARM_RIGHT'),leftLeg=worldAvatarLayer(parts.leftLeg,'THEME_LEG_LEFT'),rightLeg=worldAvatarLayer(parts.rightLeg,'THEME_LEG_RIGHT'),backLayer=worldAvatarLayer(parts.body,'THEME_BACK');
     if(theme==='lego'){
       toySkinCylinder(headLayer,.43,.74,skin,0,0,0,28);toySkinCylinder(headLayer,.14,.09,skin,0,.42,0,24);toySkinBox(bodyLayer,1.10,1.02,.74,primary,0,0,0);toySkinBox(bodyLayer,.88,.18,.76,secondary,0,-.52,0);
       for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.14,.66,primary,0,-.35,0,16);const hand=toySkinCylinder(arm,.16,.14,skin,0,-.78,.02,20);hand.rotation.z=Math.PI/2;}for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.34,.82,.38,secondary,0,-.4,0);toySkinBox(leg,.4,.17,.52,brown,0,-.92,.09);}
-      if(avatar.hair!=='hair-none')for(const[x,z]of[[-.22,-.15],[0,-.18],[.22,-.15],[-.12,.12],[.12,.12]])toySkinCylinder(headLayer,.08,.07,hairMat,x,.44,z,14);
+      if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-'))for(const[x,z]of[[-.22,-.15],[0,-.18],[.22,-.15],[-.12,.12],[.12,.12]])toySkinCylinder(headLayer,.08,.07,hairMat,x,.44,z,14);
     }else if(theme==='minecraft'){
-      toySkinBox(headLayer,1.02,1.02,1.02,skin,0,0,0);toySkinBox(bodyLayer,1.08,1.04,.78,primary,0,0,0);for(const arm of[leftArm,rightArm])toySkinBox(arm,.34,.9,.34,primary,0,-.44,0);for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.38,.9,.4,secondary,0,-.43,0);toySkinBox(leg,.4,.18,.5,brown,0,-.98,.08);}if(avatar.hair!=='hair-none'){toySkinBox(headLayer,1.05,.2,1.05,hairMat,0,.56,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,-.45,.34,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,.45,.34,0);}
+      toySkinBox(headLayer,1.02,1.02,1.02,skin,0,0,0);toySkinBox(bodyLayer,1.08,1.04,.78,primary,0,0,0);for(const arm of[leftArm,rightArm])toySkinBox(arm,.34,.9,.34,primary,0,-.44,0);for(const leg of[leftLeg,rightLeg]){toySkinBox(leg,.38,.9,.4,secondary,0,-.43,0);toySkinBox(leg,.4,.18,.5,brown,0,-.98,.08);}if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-')){toySkinBox(headLayer,1.05,.2,1.05,hairMat,0,.56,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,-.45,.34,0);toySkinBox(headLayer,.18,.42,1.05,hairMat,.45,.34,0);}
     }else if(theme==='playmobil'){
-      toySkinSphere(headLayer,.58,skin,0,0,0,1,1.08,.98);toySkinCylinder(bodyLayer,.48,1.02,primary,0,0,0,24);toySkinCylinder(bodyLayer,.36,.18,secondary,0,-.55,0,22);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.13,.68,primary,0,-.34,0,18);toySkinSphere(arm,.16,skin,0,-.76,.02,1,.86,1);}for(const leg of[leftLeg,rightLeg]){toySkinCylinder(leg,.15,.76,secondary,0,-.37,0,18);toySkinBox(leg,.36,.17,.5,brown,0,-.82,.09);}if(avatar.hair!=='hair-none'){toySkinSphere(headLayer,.62,hairMat,0,.22,-.03,1.02,.58,1.02);if(avatar.hair==='hair-curls-01')for(const[x,y,z]of[[-.38,.25,-.1],[-.18,.43,-.12],[.18,.43,-.12],[.38,.25,-.1]])toySkinSphere(headLayer,.18,hairMat,x,y,z);}
+      toySkinSphere(headLayer,.58,skin,0,0,0,1,1.08,.98);toySkinCylinder(bodyLayer,.48,1.02,primary,0,0,0,24);toySkinCylinder(bodyLayer,.36,.18,secondary,0,-.55,0,22);for(const arm of[leftArm,rightArm]){toySkinCylinder(arm,.13,.68,primary,0,-.34,0,18);toySkinSphere(arm,.16,skin,0,-.76,.02,1,.86,1);}for(const leg of[leftLeg,rightLeg]){toySkinCylinder(leg,.15,.76,secondary,0,-.37,0,18);toySkinBox(leg,.36,.17,.5,brown,0,-.82,.09);}if(avatar.hair!=='hair-none'&&!avatar.hair.startsWith('rio-hair-')){toySkinSphere(headLayer,.62,hairMat,0,.22,-.03,1.02,.58,1.02);if(avatar.hair==='hair-curls-01')for(const[x,y,z]of[[-.38,.25,-.1],[-.18,.43,-.12],[.18,.43,-.12],[.38,.25,-.1]])toySkinSphere(headLayer,.18,hairMat,x,y,z);}
     }else if(isMario){
       // Mario/Luigi reconhecíveis: camisa e boné fixos da variante + jardineira azul.
       toySkinSphere(headLayer,.59,skin,0,0,0,1.02,1.04,.98);toySkinCylinder(bodyLayer,.47,.98,marioShirt,0,0,0,22);toySkinBox(bodyLayer,.78,.68,.62,marioOveralls,0,-.12,.02);
@@ -8920,6 +9905,9 @@
     }
     toySkinApplyFace(headLayer,theme,skin,eye,mouth);
     if(avatar.pattern==='world-stripe'){toySkinBox(bodyLayer,1.0,.14,.08,accent,0,.24,.42);toySkinBox(bodyLayer,1.0,.14,.08,accent,0,-.04,.42);}else if(avatar.pattern==='world-pixels')for(const[x,y]of[[-.28,.24],[0,.04],[.28,.24],[-.28,-.18],[.28,-.18]])toySkinBox(bodyLayer,.14,.14,.08,accent,x,y,.43);else if(avatar.pattern==='world-star'){const star=new THREE.Mesh(new THREE.CircleGeometry(.22,5),accent);star.position.set(0,.12,.48);bodyLayer.add(star);}
+    if(typeof addRioToyWardrobe==='function')addRioToyWardrobe(avatar,theme,
+      {head:headLayer,body:bodyLayer,arms:[leftArm,rightArm],legs:[leftLeg,rightLeg]},
+      {primary,secondary,hair:hairMat,skin});
     toySkinApplyLegacyOptions(theme,bodyLayer,headLayer,backLayer,primary,secondary,accent,hairMat);playerModel.userData.toyTheme=theme;otthiWorldRuntime.avatarReady=true;return true;
   }
   function worldAvatarOptions(field,title){
@@ -8930,11 +9918,12 @@
   const legacyOpenAvatarStudio=openAvatarStudio;
   openAvatarStudio=function openAvatarStudioWorld(){
     ensureOtthiWorldState();
-    openModal(`Personagem — ${playerDisplayName()}`,`<div class="avatar-summary world-avatar-summary"><div class="avatar-face"><i></i><i></i></div><div><b>Escolha seu personagem</b><span>Jogue como Thiago, Thamis ou personalize os outros estilos. Suas escolhas ficam salvas no seu perfil.</span></div></div>${worldAvatarOptions('bodyStyle','Quem você quer controlar?')}<p data-family-avatar-note ${familyCharacterId(state.avatar.bodyStyle)?'':'hidden'}>Thiago e Thamis mantêm o visual original da Família. Seus outros estilos, roupas e acessórios continuam guardados.</p><div data-world-avatar-custom ${familyCharacterId(state.avatar.bodyStyle)?'hidden':''}>${worldAvatarOptions('face','Expressão')}${worldAvatarOptions('hair','Cabelo')}${worldAvatarOptions('torso','Parte superior')}${worldAvatarOptions('legs','Parte inferior')}${worldAvatarOptions('shoes','Calçados')}${worldAvatarOptions('back','Costas')}${worldAvatarOptions('pattern','Estampa')}<section class="avatar-section"><h3>Cores</h3><div class="world-color-grid"><label>Cor principal<input type="color" data-world-avatar-color="primaryColor" value="${state.avatar.primaryColor}"></label><label>Cor secundária<input type="color" data-world-avatar-color="secondaryColor" value="${state.avatar.secondaryColor}"></label><label>Cabelo<input type="color" data-world-avatar-color="hairColor" value="${state.avatar.hairColor}"></label></div></section>${avatarChoiceGroup('uniform','Uniforme')}${avatarChoiceGroup('hat','Chapéu')}${avatarChoiceGroup('accessory','Acessório')}</div><div class="modal-actions"><button class="btn primary" data-world-avatar-save>Salvar personagem</button></div>`,root=>{
+    openModal(`Personagem — ${playerDisplayName()}`,`<div class="avatar-summary world-avatar-summary"><div class="avatar-face"><i></i><i></i></div><div><b>Escolha seu personagem</b><span>Jogue como Thiago, Thamis ou personalize os outros estilos. Suas escolhas ficam salvas no seu perfil.</span></div></div>${worldAvatarOptions('bodyStyle','Quem você quer controlar?')}<p data-family-avatar-note ${familyCharacterId(state.avatar.bodyStyle)?'':'hidden'}>Thiago e Thamis usam os modelos originais. Abra o guarda-roupa para escolher peças e acessórios para cada um.</p><div data-world-avatar-custom ${familyCharacterId(state.avatar.bodyStyle)?'hidden':''}>${worldAvatarOptions('skinTone','Tom de pele')}${worldAvatarOptions('face','Expressão')}${worldAvatarOptions('hair','Cabelo')}${worldAvatarOptions('torso','Parte superior')}${worldAvatarOptions('legs','Parte inferior')}${worldAvatarOptions('shoes','Calçados')}${worldAvatarOptions('back','Costas')}${worldAvatarOptions('pattern','Estampa')}<section class="avatar-section"><h3>Cores</h3><div class="world-color-grid"><label>Cor principal<input type="color" data-world-avatar-color="primaryColor" value="${state.avatar.primaryColor}"></label><label>Cor secundária<input type="color" data-world-avatar-color="secondaryColor" value="${state.avatar.secondaryColor}"></label><label>Cabelo<input type="color" data-world-avatar-color="hairColor" value="${state.avatar.hairColor}"></label></div></section>${avatarChoiceGroup('uniform','Uniforme')}${avatarChoiceGroup('hat','Chapéu')}${avatarChoiceGroup('accessory','Acessório')}</div><div class="modal-actions">${typeof openRioWardrobe==='function'?'<button type="button" class="btn" data-rio-wardrobe-open>👕 Guarda-roupa da família</button>':''}<button class="btn primary" data-world-avatar-save>Salvar personagem</button></div>`,root=>{
       $$('[data-world-avatar-field]',root).forEach(button=>button.onclick=()=>{const field=button.dataset.worldAvatarField,value=button.dataset.worldAvatarValue;state.avatar={...state.avatar,[field]:worldAvatarSafeChoice(field,value),renderMode:'otthi-world-v3'};$$(`[data-world-avatar-field="${field}"]`,root).forEach(item=>{item.classList.toggle('selected',item===button);item.setAttribute('aria-pressed',String(item===button));});root.querySelector('[data-world-avatar-custom]').hidden=!!familyCharacterId(state.avatar.bodyStyle);root.querySelector('[data-family-avatar-note]').hidden=!familyCharacterId(state.avatar.bodyStyle);applyAvatarCustomization();});
       $$('[data-world-avatar-color]',root).forEach(input=>input.oninput=()=>{state.avatar={...state.avatar,[input.dataset.worldAvatarColor]:safeAvatarColor(input.value,state.avatar[input.dataset.worldAvatarColor])};applyAvatarCustomization();});
       $$('[data-avatar-type]',root).forEach(button=>button.onclick=()=>{state.avatar=updateAvatarV2LegacyChoice(state.avatar,button.dataset.avatarType,button.dataset.avatarId);$$(`[data-avatar-type="${button.dataset.avatarType}"]`,root).forEach(item=>item.classList.toggle('selected',item===button));applyAvatarCustomization();});
       $('[data-world-avatar-save]',root).onclick=()=>{state.avatar=normalizeAvatarV2({...state.avatar,renderMode:'otthi-world-v3'});setFlag('customizedAvatar');setFlag('otthiWorldAvatarV3');saveState(true);closeModal();toast('Personagem salvo no seu perfil.','good',2000);};
+      $('[data-rio-wardrobe-open]',root)?.addEventListener('click',()=>openRioWardrobe());
       $('[data-world-avatar-legacy]',root)?.addEventListener('click',legacyOpenAvatarStudio);
     });
   };
@@ -9923,7 +10912,11 @@ function build(T,key,H){
     group.position.y=.006-mesh.geometry.boundingBox.min.y*source.scale-baseY;
     parent.add(group);return{id,group,mesh,bones,byName,source};
   }
-  function releaseFamilyAvatarVisual(group){group?.parent?.remove(group);group?.traverse(o=>{if(o.isSkinnedMesh)o.skeleton?.dispose?.();});}
+  function releaseFamilyAvatarVisual(group){
+    if(typeof releaseRioWardrobeGroup==='function')releaseRioWardrobeGroup(group);
+    group?.parent?.remove(group);
+    group?.traverse(o=>{if(o.isSkinnedMesh)o.skeleton?.dispose?.();});
+  }
   function clearFamilyPlayerAvatar(){
     const visual=playerModel?.userData?.familyAvatar;if(!visual)return;
     if(toolVisual&&visual.group.getObjectById(toolVisual.id)){playerModel.userData.parts.rightArm.add(toolVisual);toolVisual.position.set(0,-1.12,.14);}
@@ -9934,11 +10927,13 @@ function build(T,key,H){
     let visual=playerModel.userData.familyAvatar;
     if(visual?.id!==id){clearFamilyPlayerAvatar();visual=familyCloneAvatar(id,playerModel,Number(playerModel.userData.baseY||0));playerModel.userData.familyAvatar=visual;}
     playerModel.userData.parts.body.parent.visible=false;if(avatarLayer)avatarLayer.visible=false;
+    if(typeof applyRioWardrobeVisual==='function')applyRioWardrobeVisual(visual,state.avatar?.rioWardrobe?.[id]);
     playerModel.userData.toyTheme='family-'+id;return!!visual;
   }
   function applyFamilyRemoteAvatar(ghost,avatar){
     const id=familyCharacterId(avatar.bodyStyle),root=ghost.userData.avatar;if(!id)return false;
     const visual=familyCloneAvatar(id,root);if(!visual)return false;
+    if(typeof applyRioWardrobeVisual==='function')applyRioWardrobeVisual(visual,rioWardrobeFromToken(avatar.torso));
     ghost.userData.familyAvatar=visual;ghost.userData.limbs=Object.fromEntries(['leftArm','rightArm','leftLeg','rightLeg'].map(key=>[key,new THREE.Group()]));
     root.userData.remoteAvatar=avatar;root.userData.toyTheme='family-'+id;ghost.userData.avatarSignature=multiplayerAvatarSignature(avatar);return true;
   }
@@ -9950,6 +10945,7 @@ function build(T,key,H){
       if(parts?.[part]&&visual.byName[bone])visual.byName[bone].rotation.copy(parts[part].rotation);
     }
     if(sitting)for(const sign of[-1,1]){visual.byName['hip'+sign].rotation.x=-1.25;visual.byName['knee'+sign].rotation.x=1.25;visual.byName['ankle'+sign].rotation.x=0;}
+    if(typeof rioWardrobeSeatFit==='function')rioWardrobeSeatFit(visual,sitting);
   }
   function familyAttachTool(visual,tool){
     const hand=visual.byName.hand1;if(tool&&hand&&tool.parent!==hand){hand.add(tool);tool.position.set(0,-.13,.07);}
@@ -10138,6 +11134,13 @@ function build(T,key,H){
       $('[data-family-gps]',root).onclick=()=>familyRoute('family-home');
       bindFamilyPartyEditor(root);$('[data-family-toy]',root).onchange=e=>{p.toy=e.target.value;familyWorld.toy=p.toy;saveState(true);};
       const portrait=document.createElement('button');portrait.className='choice';portrait.dataset.familyPortrait='';portrait.textContent='📷 Ver os quatro personagens';portrait.onclick=()=>{if(!familyNear()){familyRoute('family-home');return;}familyWorld.portraitUntil=Infinity;closeModal();toast('Thiago, Thamis, Luna e Liz. Caminhe ou arraste a câmera para voltar.','good',4500);};root.querySelector('.choice-grid').prepend(portrait);
+      if(typeof openRioWardrobe==='function'){
+        const wardrobe=document.createElement('button');
+        wardrobe.className='choice';wardrobe.type='button';wardrobe.dataset.rioWardrobeOpen='';
+        wardrobe.textContent='👕 Guarda-roupa da família';
+        wardrobe.onclick=()=>openRioWardrobe();
+        root.querySelector('.choice-grid').prepend(wardrobe);
+      }
       $('[data-family-walk]',root).onclick=()=>{if(player.vehicle){toast('Saia do veículo para iniciar o passeio.','warn',1500);return;}if(familyCommand('walk')){familyRoute('family-park');closeModal();toast('Vamos juntos ao parque. Caminhe e espere a família.','good',2500);}};
       $$('[data-family-throw]',root).forEach(button=>button.onclick=()=>{if(familyCommand('throw',{dog:button.dataset.familyThrow,toy:p.toy})){closeModal();toast('Brinquedo lançado. Espere a devolução!','good',1600);}});
       $$('[data-family-task]',root).forEach(button=>button.onclick=()=>familyTask(button.dataset.familyTask));
@@ -11081,7 +12084,7 @@ function build(T,key,H){
       icon:'✈️',slug:'voo',gameId:'usarmy_flight_sim',
       x:WORLD_CAMPAIGN_SITES.airbase.x-25,z:WORLD_CAMPAIGN_SITES.airbase.z-12.5,
       navX:WORLD_CAMPAIGN_SITES.airbase.x-25,navZ:WORLD_CAMPAIGN_SITES.airbase.z-7.2}),
-    ...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
+    ...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).filter(c=>!c.regional).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
   function venueMapLocations(){return Object.values(WORLD_ACTIVITY_VENUES).map(v=>({id:'venue-'+v.id,name:v.label,icon:v.icon,group:'Esportes e dança',x:v.x,z:v.z,navX:v.navX,navZ:v.navZ,missionTarget:true,description:v.activity+' dentro do bairro. Vá até a entrada para jogar e depois continuar o passeio.',actions:['Marque a rota no GPS','Caminhe até a entrada','Use a ação Entrar']}));}
   function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>Os autódromos abrem o mesmo Kart Legends do console. O estádio e as quadras continuam no mapa.</p>';}
   function venueBindDirectory(root){root.querySelectorAll('[data-venue-route]').forEach(b=>b.onclick=()=>setWaypoint('venue-'+b.dataset.venueRoute));}
@@ -11221,7 +12224,7 @@ function build(T,key,H){
 
   // ===== MODULE: 46-world-cities-and-racers.js =====
   const worldExpansion={ready:false,groups:[],assets:{},loading:false,cars:[],roads:[],lastLod:0};
-  function expansionMapLocations(){return [...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({id:'city-'+c.id,name:c.label,icon:'🏙️',group:'Cidades',x:c.x,z:c.z,navX:c.x,navZ:c.z,description:'Cidade ligada à vila pelas estradas OTTOVIAS. Ruas, moradores e veículos utilizáveis.'})),...Object.values(WORLD_LAYOUT_V704.circuits).map(c=>({id:'circuit-'+c.id,name:c.label,icon:'🏁',group:'Autódromos',x:c.x,z:c.z,navX:c.navX,navZ:c.navZ,missionTarget:true,description:'Corrida de kart em três voltas. Escolha dificuldade e direção assistida na entrada.'}))];}
+  function expansionMapLocations(){return [...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({id:'city-'+c.id,name:c.label,icon:'🏙️',group:'Cidades',x:c.x,z:c.z,navX:c.x,navZ:c.z,description:'Cidade ligada à vila pelas estradas OTTOVIAS. Ruas, moradores e veículos utilizáveis.'})),...Object.values(WORLD_LAYOUT_V704.circuits).map(c=>({id:'circuit-'+c.id,name:c.label,icon:'🏁',group:'Autódromos',x:c.x,z:c.z,navX:c.navX,navZ:c.navZ,missionTarget:true,description:c.description||'Corrida de kart em três voltas. Escolha dificuldade e direção assistida na entrada.'}))];}
   function worldRacerAttach(group,color=0xe5484d,type='racer'){
     const template=worldExpansion.assets[type];if(!template||!group)return false;
     const model=template.clone(true);model.name='OT_GLB_'+type.toUpperCase();
@@ -12138,11 +13141,44 @@ function precompile(T,renderer,scene,camera){
  function worldRoadRoutes(){return[...WORLD_LAYOUT_V704.roads.map(r=>({id:r.id,kind:r.kind||'street',width:Math.min(r.w,r.d),shoulder:0,closed:false,points:r.w>=r.d?[{x:r.x-r.w/2,z:r.z},{x:r.x+r.w/2,z:r.z}]:[{x:r.x,z:r.z-r.d/2},{x:r.x,z:r.z+r.d/2}]})),...WORLD_LAYOUT_V704.highways.filter(h=>!h.usesExistingRoad).map(h=>({...h,kind:'highway'}))];}
  function roadNormal(a,b){const dx=b.x-a.x,dz=b.z-a.z,n=Math.hypot(dx,dz)||1;return{x:-dz/n,z:dx/n};}
  function roadJoinedPoint(route,index,offset){const p=route.points,n=roadNormal(p[index],p[(index+1)%p.length]);if(!route.closed&&index===0)return{x:p[0].x+n.x*offset,z:p[0].z+n.z*offset};if(!route.closed&&index===p.length-1){const q=roadNormal(p[index-1],p[index]);return{x:p[index].x+q.x*offset,z:p[index].z+q.z*offset};}const prev=roadNormal(p[(index-1+p.length)%p.length],p[index]),len=Math.hypot(n.x+prev.x,n.z+prev.z)||1,m={x:(n.x+prev.x)/len,z:(n.z+prev.z)/len},dot=m.x*n.x+m.z*n.z,scale=offset*clamp(1/Math.max(.1,dot),1,1.8);return{x:p[index].x+m.x*scale,z:p[index].z+m.z*scale};}
- function roadJunctionAt(x,z,route,index,margin=1.1){const a=route.points[index],b=route.points[(index+1)%route.points.length],dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz)||1;for(const other of(worldRoadContinuity.routes||worldRoadRoutes())){if(other.id===route.id)continue;for(let i=0;i<other.points.length-(other.closed?0:1);i++){const c=other.points[i],d=other.points[(i+1)%other.points.length],ox=d.x-c.x,oz=d.z-c.z,ol=Math.hypot(ox,oz)||1;if(Math.abs((dx*ox+dz*oz)/(len*ol))>.985)continue;const q=projectPointToSegment({x,z},c,d);if(Math.hypot(x-q.x,z-q.z)<other.width/2+margin)return true;}}return false;}
+ const roadJunctionCellSize=32,roadJunctionMargin=1.1;
+ function indexWorldRoadJunctions(routes){
+  const grid=new Map(),cell=value=>Math.floor(value/roadJunctionCellSize);
+  for(const route of routes){
+   for(let i=0;i<route.points.length-(route.closed?0:1);i++){
+    const a=route.points[i],b=route.points[(i+1)%route.points.length];
+    const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz)||1;
+    const radius=route.width/2+roadJunctionMargin;
+    const segment={id:route.id,a,b,dx:dx/length,dz:dz/length,radius};
+    for(let x=cell(Math.min(a.x,b.x)-radius);x<=cell(Math.max(a.x,b.x)+radius);x++){
+     for(let z=cell(Math.min(a.z,b.z)-radius);z<=cell(Math.max(a.z,b.z)+radius);z++){
+      const key=x+':'+z;
+      if(!grid.has(key))grid.set(key,[]);
+      grid.get(key).push(segment);
+     }
+    }
+   }
+  }
+  return grid;
+ }
+ function roadJunctionAt(x,z,route,index){
+  const a=route.points[index],b=route.points[(index+1)%route.points.length];
+  const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz)||1;
+  const key=Math.floor(x/roadJunctionCellSize)+':'+Math.floor(z/roadJunctionCellSize);
+  const local=worldRoadContinuity.junctions.get(key);
+  if(!local)return false;
+  for(const candidate of local){
+   if(candidate.id===route.id||Math.abs((dx*candidate.dx+dz*candidate.dz)/length)>.985)continue;
+   const q=projectPointToSegment({x,z},candidate.a,candidate.b);
+   if(Math.hypot(x-q.x,z-q.z)<candidate.radius)return true;
+  }
+  return false;
+ }
  function createWorldRoadContinuity(){
   if(worldRoadContinuity.ready||!worldExpansion.ready)return;
   const root=new THREE.Group();root.name='OTTHI_CONTINUOUS_ROAD_SURFACE';worldGroup.add(root);
   const routes=worldRoadRoutes();worldRoadContinuity.routes=routes;
+  worldRoadContinuity.junctions=indexWorldRoadJunctions(routes);
   const layers=()=>({asphalt:[],shoulder:[],white:[],yellow:[]});
   const base={parts:layers(),uv:layers()},regions=new Map();
   let regional=false;
@@ -12208,7 +13244,7 @@ function precompile(T,renderer,scene,camera){
   };
   for(const r of routes){
    const graded=gradedRoutes.has(r);
-   regional=graded;
+   regional=graded||r.regional===true;
    for(let i=0;i<r.points.length-(r.closed?0:1);i++){
     if(r.shoulder)ribbon(r,i,0,r.width+r.shoulder*2,'shoulder',.064);
     ribbon(r,i,0,r.width+.10,'asphalt',.105);
@@ -12216,7 +13252,7 @@ function precompile(T,renderer,scene,camera){
     const mark=(offset,width,kind,dash=false)=>{
      let start=null;const n=Math.max(1,Math.ceil(length/.8));
      for(let k=0;k<=n;k++){
-      const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i,1.1)&&(!dash||(t*length)%6.5<3.5);
+      const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i)&&(!dash||(t*length)%6.5<3.5);
       if(valid&&start===null)start=t;
       if(!valid&&start!==null){ribbon(r,i,offset,width,kind,graded?.132:.114,start,t);start=null;}
      }
@@ -13254,7 +14290,7 @@ function precompile(T,renderer,scene,camera){
  function civilTarget(id,label,x,z,options={}){
   const p={id,label,name:label,x,z,y:groundHeightAt(x,z),radius:3.4,...options};civilCommunity.targets.set(id,p);
   const currentTask=()=>{const c=civilCurrent();return c?.r.status==='active'&&c.book.progress(c.r.id,c.uid)?.step?.targets.includes(id);};
-  registerInteractable({id:'civil-target-'+id,type:'civil',icon:p.icon||'🤝',label,x,z,radius:p.radius,priority:260,available:()=>!civilCommunity.ride&&!currentHouse&&!player.vehicle&&!player.boating&&(!otGames.active||p.vehicle==='balloon')&&(!p.shopId||currentTask()),action:()=>civilTaskAt(id)});return p;
+  registerInteractable({id:'civil-target-'+id,type:'civil',icon:p.icon||'🤝',label,x,z,radius:p.radius,priority:260,available:()=>!civilCommunity.ride&&!currentHouse&&!player.vehicle&&!player.boating&&(!otGames.active||p.vehicle==='balloon')&&(!(p.shopId||p.activeOnly)||currentTask()),action:()=>civilTaskAt(id)});return p;
  }
  function civilRegionRoot(name,x,z,range=220){const root=new THREE.Group();root.name=name;worldGroup.add(root);civilCommunity.roots.push({root,x,z,range});return root;}
  function civilBench(root,x,z,angle=0){const g=new THREE.Group();g.position.set(x,groundHeightAt(x,z),z);g.rotation.y=angle;root.add(g);const wood=campaignMaterial(0x9b7e58),steel=campaignMaterial(0x46616b,.35);campaignBox(g,wood,0,.52,0,2.0,.12,.65);campaignBox(g,wood,0,.88,-.30,2.0,.65,.10);for(const sx of[-.75,.75])campaignBox(g,steel,sx,.26,0,.10,.52,.52);return g;}
@@ -13508,7 +14544,7 @@ function precompile(T,renderer,scene,camera){
  function openCivilMissions(tab='solo'){
   if(!ensureCivilMissions()){toast('O mundo está preparando os locais das missões. Aguarde um instante.','info');return;}
   tab=tab==='coop'?'coop':'solo';const definitions=OTCivilMissionCore.definitions,current=civilCurrent(),lobbies=Object.values(civilMissions.shared.data.records).filter(r=>r.mode==='coop'&&r.status==='lobby'&&Object.keys(r.members).length<2&&!r.members[civilNetUid()]);
-  openModal('Aventuras do nosso mundo',`<div class="civil-mission-tabs"><button class="btn ${tab==='solo'?'primary':''}" data-civil-tab="solo">INDIVIDUAIS</button><button class="btn ${tab==='coop'?'primary':''}" data-civil-tab="coop">COOPERATIVAS</button></div><p>${tab==='solo'?'Jogue no seu ritmo. Cada etapa acontece no mundo.':'Dupla online: os dois jogadores executam seus objetivos. Uma desconexão pausa a equipe.'}</p><label class="field"><span>Dificuldade</span><select data-civil-difficulty>${Object.entries(OTCivilMissionCore.difficulties).map(([id,d])=>`<option value="${id}" ${state.civilWorld.difficulty===id?'selected':''}>${d.label}</option>`).join('')}</select></label>${current&&['active','lobby'].includes(current.r.status)?'<button class="btn primary" data-civil-current>CONTINUAR MISSÃO ATUAL</button>':''}${tab==='coop'?`<section><h3>Duplas aguardando</h3>${lobbies.map(r=>`<button class="choice" data-civil-join="${r.id}"><b>${definitions[r.type].icon} ${definitions[r.type].title}</b><span>1/2 jogadores · entrar na equipe</span></button>`).join('')||'<p>Nenhuma dupla aguardando nesta sala. Crie uma abaixo.</p>'}</section>`:''}<div class="choice-grid civil-mission-cards">${Object.entries(definitions).map(([id,d])=>`<button class="choice" data-civil-create="${id}" data-civil-mode="${tab}"><b>${d.icon} ${d.title}</b><span>${d.region} · ${d.steps.length} etapas</span><small>${d.description}</small><em>${tab==='coop'?'CRIAR DUPLA ONLINE':'JOGAR INDIVIDUAL'}</em></button>`).join('')}</div>`,root=>{
+  openModal('Aventuras do nosso mundo',`<div class="civil-mission-tabs"><button class="btn ${tab==='solo'?'primary':''}" data-civil-tab="solo">INDIVIDUAIS</button><button class="btn ${tab==='coop'?'primary':''}" data-civil-tab="coop">COOPERATIVAS</button></div><p>${tab==='solo'?'Jogue no seu ritmo. Cada etapa acontece no mundo.':'Dupla online: os dois jogadores executam seus objetivos. Uma desconexão pausa a equipe.'}</p><label class="field"><span>Dificuldade</span><select data-civil-difficulty>${Object.entries(OTCivilMissionCore.difficulties).map(([id,d])=>`<option value="${id}" ${state.civilWorld.difficulty===id?'selected':''}>${d.label}</option>`).join('')}</select></label>${current&&['active','lobby'].includes(current.r.status)?'<button class="btn primary" data-civil-current>CONTINUAR MISSÃO ATUAL</button>':''}${tab==='coop'?`<section><h3>Duplas aguardando</h3>${lobbies.map(r=>`<button class="choice" data-civil-join="${r.id}"><b>${definitions[r.type].icon} ${definitions[r.type].title}</b><span>1/2 jogadores · entrar na equipe</span></button>`).join('')||'<p>Nenhuma dupla aguardando nesta sala. Crie uma abaixo.</p>'}</section>`:''}<div class="choice-grid civil-mission-cards">${Object.entries(definitions).filter(([,d])=>tab==='solo'||!d.soloOnly).map(([id,d])=>`<button class="choice" data-civil-create="${id}" data-civil-mode="${tab}"><b>${d.icon} ${d.title}</b><span>${d.region} · ${d.steps.length} etapas</span><small>${d.description}</small><em>${tab==='coop'?'CRIAR DUPLA ONLINE':'JOGAR INDIVIDUAL'}</em></button>`).join('')}</div>`,root=>{
    root.querySelectorAll('[data-civil-tab]').forEach(b=>b.onclick=()=>openCivilMissions(b.dataset.civilTab));root.querySelector('[data-civil-difficulty]').onchange=e=>{state.civilWorld.difficulty=e.target.value;civilPersist();};root.querySelectorAll('[data-civil-create]').forEach(b=>b.onclick=()=>civilCreateMission(b.dataset.civilCreate,b.dataset.civilMode));root.querySelector('[data-civil-current]')?.addEventListener('click',openCivilMissionDetails);root.querySelectorAll('[data-civil-join]').forEach(b=>b.onclick=async()=>{if(await civilCommand('join',{id:b.dataset.civilJoin})){state.civilWorld.activeId=b.dataset.civilJoin;state.civilWorld.mode='coop';state.civilWorld.routeEnabled=true;civilPersist();openCivilMissionDetails();}});
   });
  }
@@ -13525,7 +14561,7 @@ function precompile(T,renderer,scene,camera){
   if(!ensureCivilMissions())return;const c=civilCurrent(),target=civilSubject(subject,c?.uid);if(!c||c.r.status!=='active'){openCivilMissions();return;}const p=c.book.progress(c.r.id,c.uid);if(!p.step?.targets.includes(subject)){toast('Este lugar faz parte de outra etapa. Abra a missão para ver o objetivo atual.','info',2600);return;}if(!civilValidateTask(c.book,c.r.id,c.uid,c.r.phase,subject)){toast(p.step.vehicle?'Aproxime-se do ponto voando de balão, acima das árvores.':'Aproxime-se a pé do objetivo e aguarde sua dupla, se estiver online.','warn',3200);return;}if(civilMissions.starting||civilMissions.task||characterActivities.session)return;
   const data={id:c.r.id,phase:c.r.phase,subject};let accepted=false;civilMissions.starting=true;try{accepted=await civilCommand('begin',data);}finally{civilMissions.starting=false;}if(!accepted){toast('Este objetivo já foi usado ou aguarda outra etapa da equipe.','info');return;}const active=civilCurrent();if(!active||active.r.id!==data.id||active.r.phase!==data.phase||!civilValidateTask(active.book,data.id,active.uid,data.phase,subject)){civilCommand('cancel-task',data).catch(()=>{});return;}closeModal();const duration=OTCivilMissionCore.difficulties[c.r.difficulty].holdMs+180;
   if(otGames.active){civilMissions.task={...data,air:true,started:airNow(),duration};return;}
-  const kind=subject.startsWith('fire-training')?'civil-hose':subject.startsWith('crossing-cone')?'civil-cone':subject==='crossing-neighbor'?'civil-escort':subject.startsWith('beach-litter')?'civil-pickup':'civil-deliver',point=kind==='civil-escort'?{x:309,z:46}:{x:player.x,z:player.z},pose={x:point.x,y:groundHeightAt(point.x,point.z),z:point.z,yaw:Math.atan2(target.x-player.x,target.z-player.z)};
+  const kind=c.r.type==='rio-avenidas'?'rio-landmark':subject.startsWith('fire-training')?'civil-hose':subject.startsWith('crossing-cone')?'civil-cone':subject==='crossing-neighbor'?'civil-escort':subject.startsWith('beach-litter')?'civil-pickup':'civil-deliver',point=kind==='civil-escort'?{x:309,z:46}:{x:player.x,z:player.z},pose={x:point.x,y:groundHeightAt(point.x,point.z),z:point.z,yaw:Math.atan2(target.x-player.x,target.z-player.z)};
   const started=beginCharacterActivity(kind,{target:point,pose,commit:()=>{civilCommand('finish',data).then(ok=>{if(!ok)toast('A etapa não foi confirmada. O progresso anterior continua salvo.','warn');});civilMissions.task=null;return true;}});
   if(started){characterActivities.session.duration=Math.max(duration/1000,kind==='civil-escort'?1.8:0);civilMissions.task={...data,air:false,started:airNow(),duration};}else civilCommand('cancel-task',data);
  }
@@ -14477,5 +15513,524 @@ function precompile(T,renderer,scene,camera){
  const explorationContextBefore=updateContext;
  updateContext=function(...args){const result=explorationContextBefore(...args);syncExplorationHud();return result;};
  window.OT_EXPLORATION_HUD={setMode:setExplorationHudMode,diagnostics:()=>({mode:state.settings.worldHud==='full'?'full':'clean',walking:document.body.classList.contains('world-hud-walking'),menuOpen:!!state.ui.quickOpen,skillsOpen:!!state.ui.skillsOpen,emptyHands:state.tools?.equipped==='none'})};
+
+  // ===== MODULE: 79-rio-preto-districts.js =====
+  const rioPreto = {tiles:null, material:null, traffic:false, actors:0, shops:0, visits:0, visible:0, nextTileAt:0};
+  const rioTileSize = 72;
+  const rioDistrictStyles = {
+    bady: {accent:0xad6744, facade:[0xe9dbba,0xbc7555,0xe5cba2,0xbc9e72,0x9aaf95], paving:0xc5b3a0, greenery:0x63875a},
+    andalo: {accent:0x507f92, facade:[0xddd7c6,0xb6c9cb,0xe8e2d1,0x97b1bf,0xcbd3c9], paving:0xbbc3bd, greenery:0x548874},
+    murchid: {accent:0x476b55, facade:[0xd9c9a5,0xc0a07a,0xda9467,0xb4c1a3,0xe1d8bd], paving:0xb9b69f, greenery:0x6c965f}
+  };
+  const rioWindow = 0x406777;
+  const rioTrim = 0xefe5ce;
+  const rioSteel = 0x394b4e;
+
+  function rioRoof(hip) {
+    const edge = hip ? .32 : .5;
+    const points = [[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5],
+      [0,.5,-edge],[0,.5,edge]];
+    const triangles = [0,4,1,0,3,5,0,5,4,1,4,5,1,5,2,3,2,5];
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(triangles.flatMap(i=>points[i]),3));
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  // A batch uses a single mesh per shape, with an exact aggregate bounding sphere.
+  // Building primitives are temporary matrices, never individual scene objects.
+  function rioCreateBatch(root) {
+    const byShape = new Map();
+    const transform = new THREE.Object3D();
+    const color = new THREE.Color();
+    function part(shape,x,y,z,w,h,d,tint,yaw=0) {
+      if (!byShape.has(shape)) byShape.set(shape,[]);
+      transform.position.set(x,y,z);
+      transform.rotation.y = yaw;
+      transform.scale.set(w,h,d);
+      transform.updateMatrix();
+      byShape.get(shape).push({matrix:transform.matrix.clone(),tint});
+    }
+    function commit() {
+      rioPreto.material ??= new THREE.MeshStandardMaterial({color:0xffffff,roughness:.86,metalness:.04,side:THREE.DoubleSide});
+      const shapes = {
+        box:()=>new THREE.BoxGeometry(1,1,1), post:()=>new THREE.CylinderGeometry(.5,.5,1,7),
+        canopy:()=>new THREE.IcosahedronGeometry(.5,1), roof:()=>rioRoof(false), hip:()=>rioRoof(true)
+      };
+      let primitives=0;
+      for (const [shape,items] of byShape) {
+        const geometry=shapes[shape]();
+        geometry.computeBoundingBox();
+        const unit=geometry.boundingBox.clone(), bounds=new THREE.Box3(), instanceBox=new THREE.Box3();
+        const mesh=new THREE.InstancedMesh(geometry,rioPreto.material,items.length);
+        for (const [index,item] of items.entries()) {
+          mesh.setMatrixAt(index,item.matrix);
+          mesh.setColorAt(index,color.setHex(item.tint).convertSRGBToLinear());
+          bounds.union(instanceBox.copy(unit).applyMatrix4(item.matrix));
+        }
+        geometry.boundingSphere=bounds.getBoundingSphere(new THREE.Sphere());
+        mesh.name='RIO_PRETO_'+shape.toUpperCase();
+        mesh.userData.otthiBoundedInstances=true;
+        mesh.frustumCulled=true;
+        mesh.instanceMatrix.needsUpdate=true;
+        if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;
+        mesh.receiveShadow=true;
+        root.add(mesh);
+        primitives+=items.length;
+      }
+      return primitives;
+    }
+    return {part,commit};
+  }
+
+  function rioLocal(batch,site) {
+    const {x,z}=site, yaw=site.yaw||0, sin=Math.sin(yaw), cos=Math.cos(yaw), ground=groundHeightAt(x,z);
+    function point(dx,dz) {return {x:x+cos*dx+sin*dz,z:z-sin*dx+cos*dz};}
+    function part(shape,dx,y,dz,w,h,d,color,angle=0) {
+      const p=point(dx,dz);batch.part(shape,p.x,ground+y,p.z,w,h,d,color,yaw+angle);
+    }
+    const box=(...args)=>part('box',...args);
+    function collider(dx,dz,w,d,height,id=site.id) {
+      const p=point(dx,dz), rotated=Math.abs(sin)>.5;
+      registerCollider(p.x,p.z,rotated?d:w,rotated?w:d,{height,rioPreto:id});
+    }
+    function tree(dx,dz,height,tint=0x508258,flowers=0) {
+      part('post',dx,height*.30,dz,height*.075,height*.62,height*.075,0x7d684e);
+      part('canopy',dx,height*.79,dz,height*.73,height*.60,height*.68,tint);
+      part('canopy',dx-height*.19,height*.92,dz+height*.10,height*.50,height*.49,height*.52,flowers||tint);
+    }
+    function bench(dx,dz) {
+      box(dx,.47,dz,2.2,.13,.56,0x9c7352);
+      box(dx,.78,dz-.25,2.2,.35,.13,0xa6805d);
+      for(const side of [-1,1])box(dx+side*.79,.24,dz,.12,.48,.40,rioSteel);
+    }
+    function lamp(dx,dz) {
+      part('post',dx,2.85,dz,.12,5.7,.12,rioSteel);
+      box(dx,5.67,dz+.28,.14,.14,.65,rioSteel);
+      box(dx,5.58,dz+.56,.34,.12,.34,0xffe5af);
+    }
+    function sign(text, dx,y,dz,w,h=.70,background='#214657') {
+      const p=point(dx,dz);
+      const mesh=citySign(batch.root,text,p.x,ground+y,p.z,w,1,background,h);
+      mesh.rotation.y=yaw;
+    }
+    return {part,box,point,collider,tree,bench,lamp,sign};
+  }
+
+  function rioWindowModule(draw,x,y,z,w,h,trim=rioTrim) {
+    const {box}=draw;
+    box(x,y,z,w+.16,h+.15,.085,trim);
+    box(x,y,z+.048,w,h,.055,rioWindow);
+    box(x-w*.19,y,z+.081,.047,h,.025,trim);
+    box(x,y+h*.20,z+.082,w,.044,.025,trim);
+    box(x,y-h*.53,z+.14,w+.24,.09,.30,trim);
+  }
+  function rioBalcony(draw,x,y,z,w,accent) {
+    const {box}=draw;
+    box(x,y,z+.60,w,.19,1.42,rioTrim);
+    box(x,y+.64,z+1.25,w,.105,.085,accent);
+    for (let u=-w/2+.18;u<w/2;u+=.32)box(x+u,y+.36,z+1.25,.047,.64,.052,rioSteel);
+  }
+
+  function rioDrawHouse(batch,lot,colors) {
+    const draw=rioLocal(batch,lot), {box,part,tree,collider}=draw;
+    const {w,d,style,variant}=lot, trim=variant%2?0xf3e2ca:0xeee9d5;
+    const wall=colors.facade[variant%colors.facade.length], accent=colors.accent;
+    const shellW=w*.73, shellD=d*.60, bodyHeight=style==='house-court'?5.8:3.35, front=shellD/2-1.15;
+    const garX=w*.30, doorX=-w*.25;
+    const roofColor=[0xa05238,0xb7694b,0x935b48,0x60574d][variant%4];
+    box(0,.07,0,w,.12,d,0xa0a383);
+    box(garX,.145,d*.315,w*.30,.15,d*.40,0xbfc2b6);
+    box(doorX,.16,d*.36,1.2,.15,d*.30,0xddd4b9);
+    box(0,bodyHeight/2+.10,-1.15,shellW,bodyHeight,shellD,wall);
+    collider(0,-1.15,shellW,shellD,bodyHeight);
+    box(0,.28,front+.08,shellW,.38,.16,0xbcb29e);
+    box(doorX,1.22,front+.08,1.18,2.16,.17,trim);
+    box(doorX,1.18,front+.18,1.0,2.04,.12,style==='house-modern'?rioSteel:0x895f48);
+    box(doorX+.34,1.12,front+.28,.07,.09,.055,0xbfa66d);
+    box(0,1.43,front+.14,2.35,1.2,.14,trim);
+    rioWindowModule(draw,0,1.44,front+.24,2.19,1.04,trim);
+    box(garX-.39,1.19,front+.14,w*.26,2.28,.13,rioSteel);
+    for (let k=0;k<7;k++)box(garX-.39,.22+k*.30,front+.23,w*.25,.073,.075,0x677775);
+    if (style==='house-modern') {
+      box(0,3.56,-.82,shellW+.16,.54,shellD+.58,trim);
+      box(-shellW*.34,3.52,front+.7,w*.31,.22,1.5,0x3e4d4b);
+      box(-shellW*.47,1.93,front+1.22,.15,3.28,.15,accent);
+      for(let i=0;i<7;i++)box(-w*.16+i*.12,2.62,front+.24,.077,1.20,.08,0x977658);
+    } else if (style==='house-court') {
+      part('roof',0,bodyHeight+.56,-1.16,shellW+.67,1.34,shellD+.65,roofColor);
+      rioWindowModule(draw,-w*.19,4.39,front+.07,1.6,1.24,trim);
+      rioWindowModule(draw,w*.19,4.39,front+.07,1.9,1.12,trim);
+      rioBalcony(draw,w*.12,3.57,front,.38*w,accent);
+      box(0,3.60,front-.10,shellW+.32,.20,.42,accent);
+    } else {
+      part(style==='house-hip'?'hip':'roof',0,3.96,-1.12,shellW+.80,1.30,shellD+.75,roofColor);
+      box(0,3.40,front,shellW+.73,.18,.35,trim);
+      for(let i=0;i<4;i++)box(-1.35+i*.82,3.43,front+.23,.58,.13,.22,roofColor);
+      if(style==='house-veranda'){
+        box(-w*.12,3.01,front+1.26,w*.62,.17,2.48,roofColor);
+        for(const a of [-1,1])box(-w*.12+a*w*.26,1.52,front+2.21,.17,2.89,.19,trim);
+        box(-w*.09,.24,front+1.24,w*.63,.24,2.44,0xc5a48b);
+      }
+    }
+    // Open pedestrian gate at the front, with driveway visually distinct.
+    const fenceZ=d*.482;
+    const sideW=w*.31;
+    const fenceColor = [wall,0x9f8d75,0xd4bca0,0xb9b5a4][variant%4];
+    const gateStyle = variant%3;
+    for(const side of [-1,1]){
+      const x=side*w*.34;
+      box(x,gateStyle===1?.32:.51,fenceZ,sideW,gateStyle===1?.58:.96,.18,fenceColor);
+      box(x,1.02,fenceZ,sideW+.20,.11,.30,gateStyle===1?rioSteel:trim);
+      if(gateStyle===1)for(let u=-sideW/2+.23;u<sideW/2;u+=.40)box(x+u,.79,fenceZ,.055,.38,.055,rioSteel);
+      if(gateStyle===2)for(let i=0;i<3;i++)box(x,.32+i*.21,fenceZ+.101,sideW-.22,.039,.055,trim);
+      collider(x,fenceZ,sideW,.18,1.08);
+      box(side*w*.49,.63,-.30,.20,1.16,d*.92,fenceColor);
+      collider(side*w*.49,-.30,.20,d*.92,1.16);
+    }
+    // Leave a visible pedestrian opening next to the slatted vehicular gate.
+    const gateWidth=w*.20, gateCenter=w*.076;
+    box(gateCenter,.89,fenceZ+.024,gateWidth,.082,.103,rioSteel);
+    box(gateCenter,.35,fenceZ+.024,gateWidth,.078,.103,rioSteel);
+    for(let k=0;k<6;k++)box(gateCenter+(k-2.5)*gateWidth/6,.61,fenceZ+.029,.062,.52,.068,rioSteel);
+    collider(gateCenter,fenceZ,gateWidth,.14,.94);
+    box(-w*.34,.28,d*.36,w*.21,.32,d*.15,0x768956);
+    tree(-w*.37,d*.17,2.46+(variant%3)*.46,colors.greenery,variant%4===1?0xc0985a:0);
+    if(variant%3===0){box(w*.33,.34,-d*.31,w*.18,.55,d*.16,0x8b765a);tree(w*.32,-d*.29,2,colors.greenery);}
+  }
+
+  function rioDrawCommerce(batch,lot,colors) {
+    const draw=rioLocal(batch,lot), {box,sign,tree,collider}=draw;
+    const {w,d,style,variant}=lot, front=d*.29, accent=colors.accent;
+    const wall=colors.facade[variant%colors.facade.length], green=colors.greenery;
+    const high=style==='tower'?17+(variant%4)*4.4:style==='mixed'?9.4:style==='civic'?6.9:4.1;
+    const frontage=w*.84, depth=d*.65;
+    box(0,.09,0,w,.16,d+.2,colors.paving);
+    box(0,high/2+.1,-.36,frontage,high,depth,wall);
+    collider(0,-.36,frontage,depth,high);
+    const z=front+.20;
+    const baseColor=style==='workfront'||style==='dealership'?accent:rioTrim;
+    box(0,.36,z,frontage+.05,.55,.16,baseColor);
+    const divisions=style==='workfront'?3:4;
+    const bay=frontage/divisions;
+    for(let i=0;i<divisions;i++) {
+      const x=(i+.5-divisions/2)*bay;
+      if(style==='workfront'){
+        box(x,1.68,z+.04,bay-.53,2.58,.16,0x627474);
+        for(let h=.63;h<2.85;h+=.30)box(x,h,z+.145,bay-.7,.044,.06,0x84918b);
+      }else{
+        rioWindowModule(draw,x,1.83,z+.02,bay-.42,2.53,baseColor);
+        if(i===2)box(x,.99,z+.16,.09,1.1,.12,0xc4d4cb);
+      }
+    }
+    box(0,3.26,z+.65,frontage+.60,.18,1.72,baseColor);
+    if (style==='arcade'||style==='cafe-pavilion') {
+      for(const s of [-1,1])box(s*(frontage*.44),1.6,z+.95,.22,3.11,.27,baseColor);
+      for(let i=0;i<9;i++)box((i-4)*frontage/9,3.34,z+.70,frontage/9,.17,1.77,i%2?accent:rioTrim);
+    }
+    if (style==='dealership') {
+      box(0,4.21,z+.14,frontage+.9,.79,.43,0x3e6d88);
+      for(let i=-2;i<=2;i++){
+        const x=i*(w*.166);
+        box(x,.183,d*.422,.06,.025,2.5,0xe5ddd1);
+      }
+    }else if(style==='workfront'){
+      box(0,4.21,z+.09,frontage+.65,.8,.31,baseColor);
+      box(0,4.65,-.43,frontage+.48,.22,depth+.39,wall);
+      for(let i=-2;i<=2;i++)box(i*frontage/6,4.76,-1,.25,.13,depth*.72,0x839698);
+    }
+    if (high>6) {
+      const floors=Math.floor((high-3)/2.62);
+      for(let level=0;level<floors;level++){
+        const y=4.52+level*2.60;
+        box(0,y-1.02,z-.09,frontage+.18,.14,.26,baseColor);
+        for(let i=0;i<divisions;i++){
+          const x=(i+.5-divisions/2)*bay;
+          rioWindowModule(draw,x,y,z-.01,bay*.70,1.58,baseColor);
+          if(style==='mixed'&&i%2===0)rioBalcony(draw,x,y-.91,z,bay*.85,accent);
+        }
+        for(const side of [-1,1])for(const offset of [-depth*.28,depth*.11]){
+          box(side*(frontage/2+.02),y,offset,.11,1.37,depth*.243,baseColor);
+          box(side*(frontage/2+.086),y,offset,.028,1.22,depth*.211,rioWindow);
+        }
+      }
+      box(0,high+.21,-.35,frontage+.31,.39,depth+.44,baseColor);
+      box(-frontage*.29,high+.86,-1.12,frontage*.26,1.38,depth*.30,wall);
+      if(style==='civic')for(let i=-3;i<=3;i++)box(i*frontage/8,high*.57,z+.48,.145,high*.71,.41,accent);
+    }
+    tree(-w*.43,d*.39,3.6,green,variant%3===0?0xd49b5c:0);
+    if(lot.title)sign(lot.title.toUpperCase(),0,3.81,z+.28,Math.min(w*.78,17),.67,style==='workfront'?'#604938':'#254b54');
+    if (lot.kind==='cafe') {
+      for(const off of [-w*.26,w*.30]){
+        draw.part('post',off,.43,d*.415,.10,.71,.10,rioSteel);
+        box(off,.81,d*.415,1.31,.12,.92,0xa78261);
+        for(const s of [-1,1])box(off+s*.82,.51,d*.414,.45,.12,.50,0xaa926f);
+      }
+    }
+  }
+
+  function rioDrawPlaza(batch,p) {
+    const site={id:p.id,x:p.centerX,z:p.centerZ};
+    const draw=rioLocal(batch,site), {box,part,tree,bench,lamp,sign}=draw;
+    const colors=rioDistrictStyles[p.district];
+    box(0,.09,0,p.w,.16,p.d,colors.paving);
+    const halfW=p.w/2,halfD=p.d/2;
+    for(const s of [-1,1]){
+      box(s*(halfW-2.3),.17,0,3.32,.24,p.d-1.8,colors.greenery);
+      for(const t of [-1,1])tree(s*(halfW-2.2),t*(halfD-2.4),4.8,colors.greenery,s===t?0xd1a85e:0);
+      bench(s*(halfW-5),-halfD*.46);
+      lamp(s*(halfW-4),halfD*.5);
+    }
+    if(p.district==='murchid'){
+      // A planted drainage garden is a fictional park feature. Low planting
+      // and a shallow dry rill are scenery; the walking crossing stays flat.
+      for(const side of [-1,1]){
+        box(side*(halfW*.52),.19,1,halfW-.9,.18,4.4,0x7c9f7b);
+        box(side*(halfW*.52),.25,1,halfW-1.3,.11,1.82,0x527f7b);
+        for(let k=1;k<=5;k++)tree(side*k*7,-halfD*.72,3.6+k%3,0x688c61,k%3===1?0xd1a85e:0);
+      }
+      box(0,.32,1,4.6,.32,6.7,0xc1aa86);
+      for(const s of [-1,1]){
+        box(s*2.32,.78,1,.095,.10,6.64,rioSteel);
+        for(let n=-2;n<=2;n++)box(s*2.32,.54,1+n*1.3,.10,.54,.10,rioSteel);
+      }
+      for(const i of [-2,-1,1,2])bench(i*11,halfD*.54);
+    }else {
+      // Shaded civic pavilion, with the clear diagonal pedestrian passage kept open.
+      const aw=p.w*.43,ad=6.4, roofColor=p.district==='andalo'?0x4d7880:0x99744f;
+      for(const x of [-aw/2,aw/2])for(const z of [-ad/2,ad/2])box(x,1.52,z,.21,2.90,.21,roofColor);
+      box(0,3.002,0,aw+.37,.19,ad+.37,roofColor);
+      for(let i=-3;i<=3;i++)box(i*aw/7,3.11,0,.12,.18,ad+.59,rioTrim);
+      for(const s of [-1,1])bench(s*aw*.28,.92);
+      part('post',0,.31,-halfD*.78,.57,.49,.57,colors.accent);
+      box(0,1.11,-halfD*.78,.36,1.39,.36,rioTrim);
+    }
+    const marker=rioLocal(batch,{id:p.id,x:p.x,z:p.z,yaw:p.district==='andalo'?Math.PI/2:0});
+    const road=RIO_PRETO_LAYOUT.highways.find(item=>item.district===p.district&&item.boulevard);
+    for(const s of[-1,1])marker.box(s*1.42,1.06,-1.07,.12,2.11,.12,rioSteel);
+    marker.sign(p.name.toUpperCase(),0,1.77,-1.04,4.8,.57,'#20444d');
+    marker.sign(road.name.toUpperCase(),0,2.27,-1.04,5.18,.41,'#315c50');
+    const dx=p.x-p.centerX,dz=p.z-p.centerZ;
+    if (p.district==='andalo')box(-17,.10,0,9,.12,4.1,colors.paving);
+    else if (p.district==='bady')box(dx,.12,-p.d/2-4.8,3.4,.13,10.1,colors.paving);
+    else box(dx,.12,dz+4.5,4.3,.13,15.2,colors.paving);
+  }
+
+  function rioDrawStreet(batch,spec) {
+    const {x,z,yaw,length,width,district,boulevard,decorated,crossing}=spec;
+    const draw=rioLocal(batch,{x,z,yaw});
+    const {box,part,lamp,tree}=draw;
+    const colors=rioDistrictStyles[district]||rioDistrictStyles.bady;
+    for(const side of [-1,1]){
+      const edge=side*(width/2+.52);
+      box(edge+side*1.34,.115,0,2.62,.16,length,colors.paving);
+      box(edge,.129,0,.18,.18,length,0xc6c2ac);
+      if(!decorated)continue;
+      lamp(edge+side*2.49,-length*.18);
+      if(boulevard)tree(edge+side*2.58,length*.21,4.65,colors.greenery,side>0?0xc5a265:0);
+    }
+    if(boulevard&&length>6){
+      const fill=Math.max(2,length-4);
+      box(0,.125,0,1.03,.055,fill,colors.greenery);
+      for(const s of [-1,1])box(s*.57,.130,0,.12,.063,fill,0xd0c4a7);
+      if(decorated)for(let n=-1;n<=1;n++)part('canopy',0,.201,n*fill/4,.66,.23,1.4,0x7d9a59);
+    }
+    if(crossing)for(const s of [-1,1]){
+      for(let dx=1.17;dx<width/2-.65;dx+=.93)box(s*dx,.115,-length*.50+1.18,.43,.012,1.95,0xece6d4);
+    }
+  }
+
+  function rioTiles() {
+    const tiles=new Map();
+    function add(x,z,draw) {
+      const tx=Math.floor(x/rioTileSize),tz=Math.floor(z/rioTileSize),key=tx+':'+tz;
+      if(!tiles.has(key))tiles.set(key,{x:(tx+.5)*rioTileSize,z:(tz+.5)*rioTileSize,draw:[],root:null,primitives:0});
+      tiles.get(key).draw.push(draw);
+    }
+    for(const lot of RIO_PRETO_LAYOUT.lots)add(lot.x,lot.z,batch=>{
+      const colors=rioDistrictStyles[lot.district];
+      if(lot.style.startsWith('house-'))rioDrawHouse(batch,lot,colors);
+      else rioDrawCommerce(batch,lot,colors);
+    });
+    for(const mark of RIO_PRETO_LAYOUT.landmarks)add(mark.centerX,mark.centerZ,batch=>rioDrawPlaza(batch,mark));
+    for(const road of RIO_PRETO_LAYOUT.highways){
+      for(let i=1;i<road.points.length;i++){
+        const a=road.points[i-1],b=road.points[i];
+        const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz),yaw=Math.atan2(dx,dz);
+        const trim=Math.min(road.boulevard?9:6,length*.33),sections=Math.max(1,Math.ceil((length-2*trim)/30));
+        const size=(length-2*trim)/sections;
+        for(let j=0;j<sections;j++){
+          const frac=(trim+(j+.5)*size)/length,x=a.x+dx*frac,z=a.z+dz*frac;
+          const spec={x,z,yaw,length:size,width:road.width,district:road.district,boulevard:road.boulevard,
+            decorated:road.boulevard||j===0,crossing:road.boulevard&&j===0};
+          add(x,z,batch=>rioDrawStreet(batch,spec));
+        }
+      }
+    }
+    return tiles;
+  }
+
+  function rioRegisterDestinations() {
+    for(const mark of RIO_PRETO_LAYOUT.landmarks){
+      registerInteractable({
+        id:mark.id,type:'viewpoint',icon:mark.icon,label:'Visitar · '+mark.name,x:mark.x,z:mark.z,radius:3.8,priority:175,
+        available:()=>!player.vehicle&&!otGames.active&&!currentHouse,
+        action:()=>{
+          rioPreto.visits++;
+          if(typeof onRioPretoLandmarkVisit==='function')onRioPretoLandmarkVisit(mark.id);
+          openModal(mark.label,'<p>'+escapeHtml(mark.note)+'</p><p>Área do jogo inspirada em São José do Rio Preto.</p><button class="btn primary" data-rio-close>Voltar ao passeio</button>',
+            root=>{ root.querySelector('[data-rio-close]').onclick=closeModal; });
+          return true;
+        }
+      });
+    }
+    for(const lot of RIO_PRETO_LAYOUT.lots.filter(l=>l.kind)){
+      const extent=lot.d/2+.4,ns=Math.cos(lot.yaw),ew=Math.sin(lot.yaw),id='rio-shop-'+lot.id;
+      const front={x:lot.x+ew*extent,z:lot.z+ns*extent};
+      cityCoast.shops.set(id,{
+        id,label:lot.title,kind:lot.kind,x:front.x,z:front.z,navX:front.x,navZ:front.z,face:ns<-.5?-1:1,
+        description:lot.kind==='market'?'Água e alimentos para levar no passeio.':'Café da manhã e pães para levar.'
+      });
+      registerInteractable({
+        id,type:'shop',icon:lot.kind==='market'?'🛒':'☕',label:'Comprar · '+lot.title,
+        x:front.x,z:front.z,radius:3.1,priority:225,
+        available:()=>!player.vehicle&&!otGames.active&&!currentHouse,action:()=>openCityShop(id)
+      });
+      rioPreto.shops++;
+    }
+  }
+
+  function rioNativeTraffic(focus) {
+    if(!OTTOVIAS_RUNTIME.initialized||rioPreto.actors>=4||!ottoviasLaneRoute)return;
+    const actor=rioPreto.actors;
+    const index=Math.floor(actor/2),loop=RIO_PRETO_LAYOUT.trafficLoops[index];
+    if(Math.hypot(focus.x-loop[1].x,focus.z-loop[1].z)>330)return;
+    const lane=ottoviasLaneRoute(loop,2.1,actor%2===1);
+    if(lane.length<4)return;
+    const t=createOttoviasTrafficVehicle('rio-preto-local-'+actor,lane,1+(actor%2)*(lane.length>>1),
+      [0xb94b4d,0x5a8490,0xd7b576,0x8c9c79][actor],5.9+actor*.45,'car');
+    t.rioPretoDistrict=index;
+    rioPreto.actors++;
+    world.trafficSnapshot=null;
+    world.trafficSnapshotAt=-Infinity;
+  }
+
+  function rioCreateCommunityActors() {
+    if(rioPreto.traffic)return;
+    rioPreto.traffic=true;
+    const walkers=[
+      ['Lia','rio-bady-praca',-4,1,0xae624b],
+      ['Miguel','rio-andalo-praca',3,4,0x47728c],
+      ['Marta','rio-murchid-parque',-5,10,0x758746],
+      ['Raul','rio-murchid-parque',6,7,0xab8a50]
+    ];
+    for(const [name,id,dx,dz,color] of walkers){
+      const mark=RIO_PRETO_LAYOUT.landmarks.find(item=>item.id===id),x=mark.centerX+dx,z=mark.centerZ+dz;
+      const route=[{x,z},{x:x+3.3,z},{x:x+3.3,z:z+2.5},{x,z:z+2.5}];
+      cityCommercialNPC('rio-resident-'+name.toLowerCase(),name,x,z,color,route);
+    }
+  }
+
+  function updateRioPretoDistricts() {
+    if(!worldGroup||!worldExpansion.ready)return;
+    if(!rioPreto.tiles){
+      rioPreto.tiles=rioTiles();
+      rioRegisterDestinations();
+    }
+    const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
+    const nearRegion=focus.x>-414&&focus.x<678&&focus.z<-200&&focus.z>-875;
+    let closest=null,closestDistance=Infinity, visible=0;
+    // Scenery streams on approach. Store a bounded set of simple tile meshes
+    // to avoid reconstructing whole neighborhoods every time the player turns.
+    const ranges=typeof performanceDistanceRanges==='function'?performanceDistanceRanges():{critical:95};
+    const renderRange=Math.max(126,ranges.critical+49);
+    for(const tile of rioPreto.tiles.values()){
+      const d=nearRegion?Math.hypot(tile.x-focus.x,tile.z-focus.z):Infinity;
+      if(tile.root){tile.root.visible=d<renderRange+42;if(tile.root.visible)visible++;continue;}
+      if(d<renderRange+64&&d<closestDistance){closestDistance=d;closest=tile;}
+    }
+    if(closest&&performance.now()>=rioPreto.nextTileAt){
+      const root=new THREE.Group();
+      root.name='RIO_PRETO_BLOCK_'+closest.x+'_'+closest.z;
+      const batch=rioCreateBatch(root);
+      batch.root=root;
+      for(const draw of closest.draw)draw(batch);
+      closest.primitives=batch.commit();
+      closest.root=root;
+      root.visible=closestDistance<renderRange+42;
+      if(root.visible)visible++;
+      worldGroup.add(root);
+      world.navCache?.clear?.();
+      rioPreto.nextTileAt=performance.now()+34;
+    }
+    rioPreto.visible=visible;
+    if(nearRegion&&focus.z<-406&&focus.x>-219&&focus.x<465){
+      rioCreateCommunityActors();
+      rioNativeTraffic(focus);
+    }
+  }
+
+  const rioPreviousExpansion=updateWorldExpansion;
+  updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
+  const rioPreviousLocations=expansionMapLocations;
+  expansionMapLocations=function(){return[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations];};
+  window.OTTHI_RIO_PRETO=Object.freeze({
+    locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
+    diagnostics:()=>{
+      const tiles=[...rioPreto.tiles?.values()||[]],built=tiles.filter(t=>t.root);
+      return {
+        roads:RIO_PRETO_LAYOUT.highways.length,houses:RIO_PRETO_LAYOUT.lots.filter(l=>l.style.startsWith('house-')).length,
+        buildings:RIO_PRETO_LAYOUT.lots.length,shops:rioPreto.shops,localTraffic:rioPreto.actors,visits:rioPreto.visits,
+        tiles:tiles.length,built:built.length,visible:rioPreto.visible,sceneryInstances:built.reduce((sum,t)=>sum+t.primitives,0)
+      };
+    }
+  });
+
+  // ===== MODULE: 82-rio-preto-expansion.js =====
+  let rioTourRegistered=false;
+  function registerRioTour(){
+    if(rioTourRegistered||!civilCommunity.ready)return;
+    const lands=Object.values(RIO_PRETO_LAYOUT.landmarks);
+    const sequence=OTCivilMissionCore.definitions['rio-avenidas'].steps;
+    for(const step of sequence){
+      const id=step.targets[0],point=lands.find(landmark=>landmark.id===id);
+      if(!point)throw Error('Ponto do roteiro ausente: '+id);
+      civilTarget(id,point.name,point.x,point.z,{icon:'🧭',radius:3.8,activeOnly:true});
+    }
+    CHARACTER_ACTIVITIES['rio-landmark']=['Registrando a visita',2.7];
+    rioTourRegistered=true;
+  }
+  const rioExpansionUpdate=updateWorldExpansion;
+  updateWorldExpansion=function(){
+    rioExpansionUpdate();
+    if(!worldExpansion.ready)return;
+    registerRioTour();
+    updateRioRegionalCircuits();
+  };
+  const rioPreviousDirectory=worldExploreDirectoryHtml;
+  worldExploreDirectoryHtml=function(...args){
+    const places=Object.values(RIO_PRETO_LAYOUT.landmarks);
+    const tracks=Object.values(RIO_REGIONAL_CIRCUITS);
+    const cards=[...places.map(p=>({id:p.id,title:p.name,tag:'MARCAR NO GPS'})),
+      ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'CIRCUITO DO JOGO'}))];
+    return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">Rio Preto e região</h3>'+
+      '<p>Explore as três avenidas ou dirija até Mirassol e Cedral. Os traçados são do jogo.</p>'+
+      '<div class="choice-grid">'+cards.map(card=>'<button class="choice" data-rio-route="'+escapeHtml(card.id)+'"><b>'+
+        escapeHtml(card.title)+'</b><span>'+escapeHtml(card.tag)+'</span></button>').join('')+
+      '<button class="choice" data-rio-tour><b>🧭 Roteiro das três avenidas</b><span>Registre os pontos a pé</span></button>'+
+      '</div></section>'+rioPreviousDirectory(...args);
+  };
+  const rioPreviousBind=worldExploreBindDirectory;
+  worldExploreBindDirectory=function(root,...args){
+    rioPreviousBind(root,...args);
+    for(const button of root.querySelectorAll('[data-rio-route]')){
+      button.onclick=()=>{closeModal();setWaypoint(button.dataset.rioRoute);};
+    }
+    root.querySelector('[data-rio-tour]')?.addEventListener('click',()=>{
+      const mission=civilCurrent();
+      if(mission&&['active','lobby'].includes(mission.r.status)){openCivilMissionDetails();return;}
+      civilCreateMission('rio-avenidas','solo');
+    });
+  };
 
 })();

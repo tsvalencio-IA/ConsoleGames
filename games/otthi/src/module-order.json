@@ -1,20 +1,25 @@
 {
   "version": 705,
-  "build": "705.28.31-integracao-console",
+  "build": "705.28.32-rio-preto-regiao",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "2c343d1077153db136ac4f9b8dbbe0c9f57f06664da06acc70c61e3d1b72cd71"
+      "sha256Body": "1319e9693e6b1a238d06cb2f1cbbd8f4d6d459eb0f3feaa8d8cbb5861d25a09c"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
       "startLine": 51,
       "endLine": 367,
       "description": "Registro central de assets, LOD gerenciado, orçamento visual e esquema de avatar V2",
-      "sha256Body": "9f5fa5af79b49cc734e6cead4eabda02a9cc76cab0ec388962ccae98ec4b24c0"
+      "sha256Body": "83fca53158aa762aab69d402a3889e16bd01bea43c66ac63cdbf039521940f36"
+    },
+    {
+      "file": "src/modules/81-rio-wardrobe.js",
+      "description": "Guarda-roupa intercambiável e prévia dos personagens",
+      "sha256Body": "2056bf8fbdb36f0a4f0616cce06d8bc5ba0ed6a9de010894ff551d31281791c5"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -35,7 +40,7 @@
       "startLine": 758,
       "endLine": 1041,
       "description": "Economia, flags, telas, modais, feedback, instalação e PWA",
-      "sha256Body": "2636273f836199c3d7fb2324c2cba3e5b3e59e3b3b0a1229227089384c536864"
+      "sha256Body": "56bc69bef7c9f6b4572eaea5e31642e77898bc9c2d6acb987ff4d355c3db9de9"
     },
     {
       "file": "src/modules/04-education-daily-quiz.js",
@@ -52,11 +57,21 @@
       "sha256Body": "bdee4b8f0a7bfbc015cbae344bb20def61842b1d2bcd3058ccfcc7c4e8b88bba"
     },
     {
+      "file": "src/modules/78-rio-preto-layout.js",
+      "description": "Ruas, lotes e pontos configuráveis de Rio Preto",
+      "sha256Body": "a3fee609bf40e57a33c133ee77f52429813d24819c3d52afe0c431f6540a6965"
+    },
+    {
+      "file": "src/modules/80-rio-regional-circuits.js",
+      "description": "Traçados, instalações e atividades regionais de Mirassol e Cedral",
+      "sha256Body": "a698423a7bbaefdc4a3ffceece733fa2c33fdde29bb5ed2ecd34872b71a614d8"
+    },
+    {
       "file": "src/modules/05a-world-layout-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "3978bbb58f98c5345dfa7a4de47afc6c15bfe48fcf4554972dd2b5e8b6548ddc"
+      "sha256Body": "de746165579cae05090867b49087d26078b373dfb09fa79dc97feb4add57b8fa"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -126,7 +141,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "777fef77af56927b6a63414cf8617c4c1ec58a9c267c22bbc434ad9553343f18"
+      "sha256Body": "8867c7388033d3a6678bcf699bb838c2032bdb11faa79beaf299dbb4df0e819d"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -252,7 +267,7 @@
       "startLine": 4930,
       "endLine": 5122,
       "description": "Desafios online, social, chat, presença, fantasmas e sincronização",
-      "sha256Body": "e48165b6ef540e29e6002b98c338cf2293f16d3db9153a3fbc3f71059317a5d9"
+      "sha256Body": "13833ec58e20712826d484660a1199260110a166d9d4ff7dbaf183ed8822ed6b"
     },
     {
       "file": "src/modules/28a-shared-world-multiplayer.js",
@@ -294,7 +309,7 @@
       "startLine": 5803,
       "endLine": 5897,
       "description": "Avatar modular V3 sobre o rig procedural preservado",
-      "sha256Body": "378cb21c33f2bfee6751baaf8d716fa93faf72bb2f466534ddcee90024100bb6"
+      "sha256Body": "0fc173787f6a1b032c39e549481e739d1f4e201825823cbec9cc32269ad43982"
     },
     {
       "file": "src/modules/35-world-render-pbr-environment.js",
@@ -364,7 +379,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "9ed9a3c44d7308b541b931e6b30e474475f9ffa8888841d4e8ea2d929484119a"
+      "sha256Body": "23ca9a7d9e8a11676c35b3767d1ae061a113dbbd812386df53543edfdd05b7c9"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -392,14 +407,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "6b46e585d91a2e74b90be1114267f404fa12fe820b60835e5833b11df71e4183"
+      "sha256Body": "87cbac009e5f3ad0ea372556cf8ced184fe675685b6afbcc1d8bcb183d242c82"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Cidades, autódromos e veículos GLB no mundo unificado",
-      "sha256Body": "e3e4086c7ce23733338ab1eb1022462dd30720f173f41d3864d4376eede6edf0"
+      "sha256Body": "a80c5a54a0fe243efad369b567c38b3726aa320c45d28a11d7152ae1d2aefb91"
     },
     {
       "file": "assets/js/vehicles/brazilian-details.js",
@@ -462,7 +477,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Continuidade viária e ponte da Costa sobre água preservada",
-      "sha256Body": "c00ac9ecd1b3493d100eb7ad7e313a662a282e6d2239b11d9b57b5a5b0d3fd31"
+      "sha256Body": "8c7e21be48399c8fa7f6d1eab8d0d40f42c40eb403efdc6054534abb8f7c9405"
     },
     {
       "file": "src/modules/51-online-travel-party.js",
@@ -557,14 +572,14 @@
     {
       "file": "src/modules/65-civil-community.js",
       "description": "Vizinhanças, praia, neve, balões e teleférico civil",
-      "sha256Body": "2228f2603c4cbc1eb32f630e27251b0a1ec429f1e360dabb0447459926f9dacf",
+      "sha256Body": "55fd20f440f8a122fefb12d5dd73062af2b690072d3c939ddd12b4c282fb3fb9",
       "startLine": 0,
       "endLine": 0
     },
     {
       "file": "src/modules/66-civil-missions.js",
       "description": "Missões individuais e cooperativas do mundo civil",
-      "sha256Body": "028c6c4acdaaee728feade1881a543eb8b75357fe5c5f46ca8154351af30bb5d",
+      "sha256Body": "02a30e74d855c1efa1fe14baacc1d708205f50c434b4adf5e16ab07af7707fde",
       "startLine": 0,
       "endLine": 0
     },
@@ -630,6 +645,16 @@
       "file": "src/modules/77-exploration-hud.js",
       "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
       "sha256Body": "3d07daeaf21378861fbdc5458f6c2a1b722bc323851e123388c24255eb7b23c0"
+    },
+    {
+      "file": "src/modules/79-rio-preto-districts.js",
+      "description": "Bairros e pontos urbanos em setores com recursos compartilhados",
+      "sha256Body": "3a61678c1d3df35a93b0a6ba90feaac3601eddf3a66e82dd82470c184b9f5baf"
+    },
+    {
+      "file": "src/modules/82-rio-preto-expansion.js",
+      "description": "Diretório, roteiro e integração de atividades de Rio Preto",
+      "sha256Body": "9482b04a7163775304ff5b2781f6b9282533c7a3210ca3777a79a641660bcc70"
     }
   ],
   "styles": [
@@ -841,6 +866,11 @@
       "file": "src/styles/29-exploration-hud.css",
       "description": "Menu de exploração e HUD compacto sem remoção de funções",
       "sha256Body": "fc49ade5979924379959dc58b1b61ff245bfd2e4d14f15ee838d46bb2072c902"
+    },
+    {
+      "file": "src/styles/30-rio-wardrobe.css",
+      "description": "Guarda-roupa visual responsivo",
+      "sha256Body": "f52a0d9e34182f5ba346d063279a207348fdb48c44731a97cf76fb445718e4c1"
     }
   ]
 }

@@ -41,7 +41,14 @@
    description:'Prepare o passeio, visite os pontos panorâmicos num balão e pouse para encerrar.',
    steps:[{id:'brief',title:'Receber orientação no festival',action:'Preparar passeio',targets:['balloon-festival'],quota:1},
     {id:'views',title:'Visitar os pontos panorâmicos voando de balão',action:'Registrar paisagem',targets:['balloon-view-0','balloon-view-1','balloon-view-2'],quota:{easy:1,normal:2,hard:3},vehicle:'balloon'},
-    {id:'land',title:'Pousar e voltar à equipe do festival',action:'Concluir passeio',targets:['balloon-festival'],quota:1,onFoot:true}]}
+    {id:'land',title:'Pousar e voltar à equipe do festival',action:'Concluir passeio',targets:['balloon-festival'],quota:1,onFoot:true}]},
+  'rio-avenidas':{title:'Três avenidas de Rio Preto',icon:'🧭',region:'Rio Preto',reward:160,soloOnly:true,
+   description:'Percorra as avenidas inspiradas na cidade e registre os três pontos do roteiro a pé.',
+   steps:[
+    {id:'bady',title:'Visite a praça da Bady Bassitt',action:'Registrar visita',targets:['rio-bady-praca'],quota:1,onFoot:true},
+    {id:'andalo',title:'Visite a praça da Alberto Andaló',action:'Registrar visita',targets:['rio-andalo-praca'],quota:1,onFoot:true},
+    {id:'murchid',title:'Visite o parque da Murchid Homsi',action:'Concluir roteiro',targets:['rio-murchid-parque'],quota:1,onFoot:true}
+   ]}
  };
  const difficulties={easy:{label:'Passeio',holdMs:900},normal:{label:'Aventura',holdMs:1700},hard:{label:'Desafio',holdMs:2600}};
  const safeId=s=>typeof s==='string'&&/^[a-zA-Z0-9_-]{1,160}$/.test(s);
@@ -50,7 +57,8 @@
  class CivilMissionBook{
   constructor(saved={}){this.data={v:1,revision:0,records:{},...copy(saved||{})};this.data.records=this.data.records&&typeof this.data.records==='object'?this.data.records:{};}
   create(id,type,uid,mode='solo',difficulty='normal',now=Date.now()){
-   if(!safeId(id)||!safeId(uid)||!definitions[type]||!difficulties[difficulty]||!['solo','coop'].includes(mode)||this.data.records[id])return null;
+   if(!safeId(id)||!safeId(uid)||!Object.hasOwn(definitions,type)||!Object.hasOwn(difficulties,difficulty)||!['solo','coop'].includes(mode)||this.data.records[id])return null;
+   if(mode==='coop'&&definitions[type].soloOnly)return null;
    const r={id,type,mode,difficulty,host:uid,status:mode==='solo'?'active':'lobby',phase:0,members:{[uid]:{ready:mode==='solo',joinedAt:now}},counts:{},tokens:{},pending:{},rides:{},createdAt:now,updatedAt:now,completedAt:0};this.data.records[id]=r;this.data.revision++;return r;
   }
   join(id,uid,now=Date.now()){const r=this.data.records[id];if(!r||r.mode!=='coop'||r.status!=='lobby'||!safeId(uid)||Object.keys(r.members).length>=2&&!r.members[uid])return false;r.members[uid]||={ready:false,joinedAt:now};r.updatedAt=now;this.data.revision++;return true;}

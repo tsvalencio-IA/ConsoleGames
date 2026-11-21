@@ -104,7 +104,11 @@
     group.position.y=.006-mesh.geometry.boundingBox.min.y*source.scale-baseY;
     parent.add(group);return{id,group,mesh,bones,byName,source};
   }
-  function releaseFamilyAvatarVisual(group){group?.parent?.remove(group);group?.traverse(o=>{if(o.isSkinnedMesh)o.skeleton?.dispose?.();});}
+  function releaseFamilyAvatarVisual(group){
+    if(typeof releaseRioWardrobeGroup==='function')releaseRioWardrobeGroup(group);
+    group?.parent?.remove(group);
+    group?.traverse(o=>{if(o.isSkinnedMesh)o.skeleton?.dispose?.();});
+  }
   function clearFamilyPlayerAvatar(){
     const visual=playerModel?.userData?.familyAvatar;if(!visual)return;
     if(toolVisual&&visual.group.getObjectById(toolVisual.id)){playerModel.userData.parts.rightArm.add(toolVisual);toolVisual.position.set(0,-1.12,.14);}
@@ -115,11 +119,13 @@
     let visual=playerModel.userData.familyAvatar;
     if(visual?.id!==id){clearFamilyPlayerAvatar();visual=familyCloneAvatar(id,playerModel,Number(playerModel.userData.baseY||0));playerModel.userData.familyAvatar=visual;}
     playerModel.userData.parts.body.parent.visible=false;if(avatarLayer)avatarLayer.visible=false;
+    if(typeof applyRioWardrobeVisual==='function')applyRioWardrobeVisual(visual,state.avatar?.rioWardrobe?.[id]);
     playerModel.userData.toyTheme='family-'+id;return!!visual;
   }
   function applyFamilyRemoteAvatar(ghost,avatar){
     const id=familyCharacterId(avatar.bodyStyle),root=ghost.userData.avatar;if(!id)return false;
     const visual=familyCloneAvatar(id,root);if(!visual)return false;
+    if(typeof applyRioWardrobeVisual==='function')applyRioWardrobeVisual(visual,rioWardrobeFromToken(avatar.torso));
     ghost.userData.familyAvatar=visual;ghost.userData.limbs=Object.fromEntries(['leftArm','rightArm','leftLeg','rightLeg'].map(key=>[key,new THREE.Group()]));
     root.userData.remoteAvatar=avatar;root.userData.toyTheme='family-'+id;ghost.userData.avatarSignature=multiplayerAvatarSignature(avatar);return true;
   }
@@ -131,6 +137,7 @@
       if(parts?.[part]&&visual.byName[bone])visual.byName[bone].rotation.copy(parts[part].rotation);
     }
     if(sitting)for(const sign of[-1,1]){visual.byName['hip'+sign].rotation.x=-1.25;visual.byName['knee'+sign].rotation.x=1.25;visual.byName['ankle'+sign].rotation.x=0;}
+    if(typeof rioWardrobeSeatFit==='function')rioWardrobeSeatFit(visual,sitting);
   }
   function familyAttachTool(visual,tool){
     const hand=visual.byName.hand1;if(tool&&hand&&tool.parent!==hand){hand.add(tool);tool.position.set(0,-.13,.07);}
@@ -319,6 +326,13 @@
       $('[data-family-gps]',root).onclick=()=>familyRoute('family-home');
       bindFamilyPartyEditor(root);$('[data-family-toy]',root).onchange=e=>{p.toy=e.target.value;familyWorld.toy=p.toy;saveState(true);};
       const portrait=document.createElement('button');portrait.className='choice';portrait.dataset.familyPortrait='';portrait.textContent='📷 Ver os quatro personagens';portrait.onclick=()=>{if(!familyNear()){familyRoute('family-home');return;}familyWorld.portraitUntil=Infinity;closeModal();toast('Thiago, Thamis, Luna e Liz. Caminhe ou arraste a câmera para voltar.','good',4500);};root.querySelector('.choice-grid').prepend(portrait);
+      if(typeof openRioWardrobe==='function'){
+        const wardrobe=document.createElement('button');
+        wardrobe.className='choice';wardrobe.type='button';wardrobe.dataset.rioWardrobeOpen='';
+        wardrobe.textContent='👕 Guarda-roupa da família';
+        wardrobe.onclick=()=>openRioWardrobe();
+        root.querySelector('.choice-grid').prepend(wardrobe);
+      }
       $('[data-family-walk]',root).onclick=()=>{if(player.vehicle){toast('Saia do veículo para iniciar o passeio.','warn',1500);return;}if(familyCommand('walk')){familyRoute('family-park');closeModal();toast('Vamos juntos ao parque. Caminhe e espere a família.','good',2500);}};
       $$('[data-family-throw]',root).forEach(button=>button.onclick=()=>{if(familyCommand('throw',{dog:button.dataset.familyThrow,toy:p.toy})){closeModal();toast('Brinquedo lançado. Espere a devolução!','good',1600);}});
       $$('[data-family-task]',root).forEach(button=>button.onclick=()=>familyTask(button.dataset.familyTask));

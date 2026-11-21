@@ -1,7 +1,7 @@
 /** Expanded cities share native roads, traffic, physics, vehicles, saves and map. */
 // @otthi-module-body
   const worldExpansion={ready:false,groups:[],assets:{},loading:false,cars:[],roads:[],lastLod:0};
-  function expansionMapLocations(){return [...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({id:'city-'+c.id,name:c.label,icon:'🏙️',group:'Cidades',x:c.x,z:c.z,navX:c.x,navZ:c.z,description:'Cidade ligada à vila pelas estradas OTTOVIAS. Ruas, moradores e veículos utilizáveis.'})),...Object.values(WORLD_LAYOUT_V704.circuits).map(c=>({id:'circuit-'+c.id,name:c.label,icon:'🏁',group:'Autódromos',x:c.x,z:c.z,navX:c.navX,navZ:c.navZ,missionTarget:true,description:'Corrida de kart em três voltas. Escolha dificuldade e direção assistida na entrada.'}))];}
+  function expansionMapLocations(){return [...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({id:'city-'+c.id,name:c.label,icon:'🏙️',group:'Cidades',x:c.x,z:c.z,navX:c.x,navZ:c.z,description:'Cidade ligada à vila pelas estradas OTTOVIAS. Ruas, moradores e veículos utilizáveis.'})),...Object.values(WORLD_LAYOUT_V704.circuits).map(c=>({id:'circuit-'+c.id,name:c.label,icon:'🏁',group:'Autódromos',x:c.x,z:c.z,navX:c.navX,navZ:c.navZ,missionTarget:true,description:c.description||'Corrida de kart em três voltas. Escolha dificuldade e direção assistida na entrada.'}))];}
   function worldRacerAttach(group,color=0xe5484d,type='racer'){
     const template=worldExpansion.assets[type];if(!template||!group)return false;
     const model=template.clone(true);model.name='OT_GLB_'+type.toUpperCase();

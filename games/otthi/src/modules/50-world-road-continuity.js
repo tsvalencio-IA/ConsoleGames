@@ -4,11 +4,44 @@
  function worldRoadRoutes(){return[...WORLD_LAYOUT_V704.roads.map(r=>({id:r.id,kind:r.kind||'street',width:Math.min(r.w,r.d),shoulder:0,closed:false,points:r.w>=r.d?[{x:r.x-r.w/2,z:r.z},{x:r.x+r.w/2,z:r.z}]:[{x:r.x,z:r.z-r.d/2},{x:r.x,z:r.z+r.d/2}]})),...WORLD_LAYOUT_V704.highways.filter(h=>!h.usesExistingRoad).map(h=>({...h,kind:'highway'}))];}
  function roadNormal(a,b){const dx=b.x-a.x,dz=b.z-a.z,n=Math.hypot(dx,dz)||1;return{x:-dz/n,z:dx/n};}
  function roadJoinedPoint(route,index,offset){const p=route.points,n=roadNormal(p[index],p[(index+1)%p.length]);if(!route.closed&&index===0)return{x:p[0].x+n.x*offset,z:p[0].z+n.z*offset};if(!route.closed&&index===p.length-1){const q=roadNormal(p[index-1],p[index]);return{x:p[index].x+q.x*offset,z:p[index].z+q.z*offset};}const prev=roadNormal(p[(index-1+p.length)%p.length],p[index]),len=Math.hypot(n.x+prev.x,n.z+prev.z)||1,m={x:(n.x+prev.x)/len,z:(n.z+prev.z)/len},dot=m.x*n.x+m.z*n.z,scale=offset*clamp(1/Math.max(.1,dot),1,1.8);return{x:p[index].x+m.x*scale,z:p[index].z+m.z*scale};}
- function roadJunctionAt(x,z,route,index,margin=1.1){const a=route.points[index],b=route.points[(index+1)%route.points.length],dx=b.x-a.x,dz=b.z-a.z,len=Math.hypot(dx,dz)||1;for(const other of(worldRoadContinuity.routes||worldRoadRoutes())){if(other.id===route.id)continue;for(let i=0;i<other.points.length-(other.closed?0:1);i++){const c=other.points[i],d=other.points[(i+1)%other.points.length],ox=d.x-c.x,oz=d.z-c.z,ol=Math.hypot(ox,oz)||1;if(Math.abs((dx*ox+dz*oz)/(len*ol))>.985)continue;const q=projectPointToSegment({x,z},c,d);if(Math.hypot(x-q.x,z-q.z)<other.width/2+margin)return true;}}return false;}
+ const roadJunctionCellSize=32,roadJunctionMargin=1.1;
+ function indexWorldRoadJunctions(routes){
+  const grid=new Map(),cell=value=>Math.floor(value/roadJunctionCellSize);
+  for(const route of routes){
+   for(let i=0;i<route.points.length-(route.closed?0:1);i++){
+    const a=route.points[i],b=route.points[(i+1)%route.points.length];
+    const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz)||1;
+    const radius=route.width/2+roadJunctionMargin;
+    const segment={id:route.id,a,b,dx:dx/length,dz:dz/length,radius};
+    for(let x=cell(Math.min(a.x,b.x)-radius);x<=cell(Math.max(a.x,b.x)+radius);x++){
+     for(let z=cell(Math.min(a.z,b.z)-radius);z<=cell(Math.max(a.z,b.z)+radius);z++){
+      const key=x+':'+z;
+      if(!grid.has(key))grid.set(key,[]);
+      grid.get(key).push(segment);
+     }
+    }
+   }
+  }
+  return grid;
+ }
+ function roadJunctionAt(x,z,route,index){
+  const a=route.points[index],b=route.points[(index+1)%route.points.length];
+  const dx=b.x-a.x,dz=b.z-a.z,length=Math.hypot(dx,dz)||1;
+  const key=Math.floor(x/roadJunctionCellSize)+':'+Math.floor(z/roadJunctionCellSize);
+  const local=worldRoadContinuity.junctions.get(key);
+  if(!local)return false;
+  for(const candidate of local){
+   if(candidate.id===route.id||Math.abs((dx*candidate.dx+dz*candidate.dz)/length)>.985)continue;
+   const q=projectPointToSegment({x,z},candidate.a,candidate.b);
+   if(Math.hypot(x-q.x,z-q.z)<candidate.radius)return true;
+  }
+  return false;
+ }
  function createWorldRoadContinuity(){
   if(worldRoadContinuity.ready||!worldExpansion.ready)return;
   const root=new THREE.Group();root.name='OTTHI_CONTINUOUS_ROAD_SURFACE';worldGroup.add(root);
   const routes=worldRoadRoutes();worldRoadContinuity.routes=routes;
+  worldRoadContinuity.junctions=indexWorldRoadJunctions(routes);
   const layers=()=>({asphalt:[],shoulder:[],white:[],yellow:[]});
   const base={parts:layers(),uv:layers()},regions=new Map();
   let regional=false;
@@ -74,7 +107,7 @@
   };
   for(const r of routes){
    const graded=gradedRoutes.has(r);
-   regional=graded;
+   regional=graded||r.regional===true;
    for(let i=0;i<r.points.length-(r.closed?0:1);i++){
     if(r.shoulder)ribbon(r,i,0,r.width+r.shoulder*2,'shoulder',.064);
     ribbon(r,i,0,r.width+.10,'asphalt',.105);
@@ -82,7 +115,7 @@
     const mark=(offset,width,kind,dash=false)=>{
      let start=null;const n=Math.max(1,Math.ceil(length/.8));
      for(let k=0;k<=n;k++){
-      const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i,1.1)&&(!dash||(t*length)%6.5<3.5);
+      const t=k/n,x=lerp(a.x,b.x,t),z=lerp(a.z,b.z,t),valid=k<n&&!roadJunctionAt(x,z,r,i)&&(!dash||(t*length)%6.5<3.5);
       if(valid&&start===null)start=t;
       if(!valid&&start!==null){ribbon(r,i,offset,width,kind,graded?.132:.114,start,t);start=null;}
      }

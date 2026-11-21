@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.31-integracao-console',
+    build: '705.28.32-rio-preto-regiao',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

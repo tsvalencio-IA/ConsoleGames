@@ -1,0 +1,65 @@
+/* @otthi-style-body */
+/* Wardrobe stays inside the native modal's scroll area. */
+.rio-wardrobe { min-width:0; color:#e6f4ef; }
+.rio-wardrobe-characters,.rio-wardrobe-rotate {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-block:0 10px;
+}
+.rio-wardrobe-characters>button,.rio-wardrobe-rotate>button { flex:1 1 90px; min-height:44px; }
+.rio-wardrobe-columns {
+  display:grid;
+  grid-template-columns:minmax(0, .85fr) minmax(0, 1.2fr);
+  align-items:start;
+  gap:12px;
+}
+.rio-wardrobe-preview { min-width:0; }
+.rio-wardrobe-preview canvas {
+  display:block;
+  width:min(100%,280px);
+  height:auto;
+  max-height:310px;
+  margin:0 auto 8px;
+  object-fit:contain;
+  border:1px solid #466776;
+  border-radius:14px;
+  background:#233e49;
+}
+.rio-wardrobe-preview canvas[hidden] { display:none; }
+.rio-wardrobe-fields,.rio-wardrobe-slots {
+  min-width:0;
+  display:grid;
+  gap:8px;
+}
+.rio-wardrobe-slots { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.rio-wardrobe label {
+  min-width:0;
+  display:grid;
+  gap:4px;
+  color:#d9ebe6;
+  font-weight:600;
+  font-size:14px;
+  overflow-wrap:anywhere;
+}
+.rio-wardrobe select {
+  width:100%;
+  min-width:0;
+  min-height:44px;
+  padding:7px;
+  font:inherit;
+  color:#f3f7ee;
+  background:#203943;
+  border:1px solid #6b8b91;
+  border-radius:10px;
+}
+.rio-wardrobe :is(select,button):focus-visible { outline:2px solid #ffe094; outline-offset:2px; }
+.rio-wardrobe .modal-actions { flex-wrap:wrap; }
+.rio-wardrobe .modal-actions>.btn { flex:1 1 134px; min-width:0; min-height:44px; max-width:100%; }
+@media(max-width:490px) {
+  .rio-wardrobe-columns { grid-template-columns:minmax(0,1fr); }
+  .rio-wardrobe-preview canvas { width:min(100%,205px); }
+}
+@media(max-width:360px) {
+  .rio-wardrobe-slots { grid-template-columns:minmax(0,1fr); }
+}

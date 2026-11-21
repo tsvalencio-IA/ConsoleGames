@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.31-integracao-console",
+  "build": "705.28.32-rio-preto-regiao",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.32: avenidas e bairros inspirados em Rio Preto, dois circuitos regionais do jogo, roteiro urbano e guarda-roupa dos personagens.",
     "R28.31: liga os oito jogos à mesma cópia do console, corrige a pista e o cenário da neve e restaura a foto durante o voo de balão.",
     "R28.30: Academia de Aviação conectada ao hangar existente, novas missões e operações de voo, correção de presença multiplayer no celular e atualização do console PWA sem alterar IDs, progresso ou controles aprovados.",
     "R28.29: preparação da câmera e recursos antes da partida, recuperação limitada do relógio da simulação e dos motoristas, rotas físicas do socorro com contingência separada e correções de controle/disputa no WAR/Kart.",
@@ -303,7 +304,7 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70664,
+  "assetVersion": 70665,
   "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",

@@ -114,7 +114,9 @@
       secondaryColor:safeAvatarColor(source.secondaryColor,defaults.secondaryColor),
       outfit,
       accessory,
-      uniform
+      uniform,
+      ...(typeof normalizeRioWardrobe==='function'&&Object.hasOwn(source,'rioWardrobe')
+        ? {rioWardrobe:normalizeRioWardrobe(source.rioWardrobe)} : {})
     };
   }
   function updateAvatarV2LegacyChoice(avatar,type,id){
