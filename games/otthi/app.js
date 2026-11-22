@@ -5,7 +5,10 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.36-rio-preto-mapa-proprio';
+  function regionalRouteVisible(){
+    return new URLSearchParams(window.location.search).get('map')==='roteiro-regional';
+  }
+  const OTTHI_GAME_WEB_BUILD = '705.28.37-mapas-separados';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2662,11 +2665,12 @@
     for(const x of cX)path('coast-col-'+(-x),'Bairro Jardim da Costa',[[x,160],[x,195],[x,221]],7);
     return{highways,nodes,edges};
   })();
-  // Both additions register roads before any renderer, GPS or traffic index
-  // takes a snapshot of the world authority.
-  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  // The saved regional itinerary has its own entrance. The ordinary Vila OT
+  // graph does not include its scenery corridors or Rio Preto storefront lots.
+  const legacyRegionalLayout=typeof regionalRouteVisible!=='function'||regionalRouteVisible();
+  const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
-  const rioV51Roads=typeof RIO_V51==='undefined'?null:RIO_V51;
+  const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
   const rioProtectedRects=[
     ...(rioV51Roads?.protectedRects||[]),
     ...(rioPretoRoads?.protectedRects||[]),
@@ -5367,7 +5371,7 @@
       if(sign.userData.score===score)return;
       sign.userData.score=score;
       const ctx=canvas.getContext('2d');ctx.fillStyle='#31212a';ctx.fillRect(0,0,512,192);
-      ctx.textAlign='center';ctx.fillStyle='#f8e0c7';ctx.font='bold 32px sans-serif';ctx.fillText('TEIXEIRÃO',256,48);
+      ctx.textAlign='center';ctx.fillStyle='#f8e0c7';ctx.font='bold 32px sans-serif';ctx.fillText(sports.title.toLocaleUpperCase('pt-BR'),256,48);
       ctx.fillStyle='#ffdb87';ctx.font='bold 84px sans-serif';ctx.fillText(score,256,143);board.needsUpdate=true;
     };
     sports.updateScoreboard(0,0);
@@ -5383,15 +5387,16 @@
     const hub=site?{x:cx,z:cz-22}:worldLayoutPoint('sportsEntrance',{x:cx,z:cz-22});
     const football=site?{x:cx+8,z:cz-19}:v705FootballEntrance(sports);
     sports.exit=hub;
+    sports.title=site||(typeof legacyRegionalLayout==='undefined'||legacyRegionalLayout)?'Teixeirão':'Campo da Vila OT';
     if(site)sports.localOnly=true;
     buildTeixeiraoV705(sports,football);
     createSignpost(hub.x,hub.z+.6,'🏟️ ESPORTES',Math.PI);
     createSignpost(football.x,football.z+.8,'⚽ FUTEBOL — JOGAR',Math.PI);
     if(!site)for(const path of WORLD_LAYOUT_V704.paths.filter(item=>/^(complexo-esportivo|entrada-futebol|quadras-leste|quadra-)/.test(item.id)))v705AccessPath(path);
-    registerInteractable({id:'sports-hub-v7051',type:'sport',icon:'🏟️',label:'Central de Esportes — escolher jogo',x:hub.x,z:hub.z,radius:5.2,priority:180,action:site?openFootballV705:v705SportsHubV7051});if(!site)registerInteractable({id:'athletics-gym',type:'race',icon:'🏃',label:'Atletismo — corridas e voltas',x:cx-8,z:cz-19,radius:4.5,priority:184,action:()=>openRaceCenter()});registerInteractable({id:'football-v705',type:'sport',icon:'⚽',label:'Teixeirão — jogar futebol',x:football.x,z:football.z,radius:5.2,priority:190,action:()=>openFootballV705()});registerInteractable({id:'football-field-v7051',type:'sport',icon:'⚽',label:'Futebol — iniciar partida',x:cx,z:cz-sports.fieldD/2-1.2,radius:4.6,priority:188,action:()=>openFootballV705()});if(!site){createCourtV705('volley',worldLayoutPoint('volley'),false);createCourtV705('footvolley',worldLayoutPoint('footvolley'),true);}SPORTS_V705.initialized=true;return sports;
+    registerInteractable({id:'sports-hub-v7051',type:'sport',icon:'🏟️',label:'Central de Esportes — escolher jogo',x:hub.x,z:hub.z,radius:5.2,priority:180,action:site?openFootballV705:v705SportsHubV7051});if(!site)registerInteractable({id:'athletics-gym',type:'race',icon:'🏃',label:'Atletismo — corridas e voltas',x:cx-8,z:cz-19,radius:4.5,priority:184,action:()=>openRaceCenter()});registerInteractable({id:'football-v705',type:'sport',icon:'⚽',label:sports.title+' — jogar futebol',x:football.x,z:football.z,radius:5.2,priority:190,action:()=>openFootballV705()});registerInteractable({id:'football-field-v7051',type:'sport',icon:'⚽',label:'Futebol — iniciar partida',x:cx,z:cz-sports.fieldD/2-1.2,radius:4.6,priority:188,action:()=>openFootballV705()});if(!site){createCourtV705('volley',worldLayoutPoint('volley'),false);createCourtV705('footvolley',worldLayoutPoint('footvolley'),true);}SPORTS_V705.initialized=true;return sports;
   }
   function createCourtV705(type,center,foot=false){const cx=center.x,cz=center.z,w=foot?10:12,d=18,base=foot?0xd9b576:0x4597ce;premiumBox(w,.1,d,base,cx,.08,cz,worldGroup);v705FieldLine(w,.1,cx,cz-d/2);v705FieldLine(w,.1,cx,cz+d/2);v705FieldLine(.1,d,cx-w/2,cz);v705FieldLine(.1,d,cx+w/2,cz);v705FieldLine(w,.07,cx,cz);const netH=foot?2.0:2.25;for(let y=.35;y<netH;y+=.26)premiumBox(w,.022,.022,0xf4f7fb,cx,y,cz,worldGroup);premiumBox(.14,netH+.3,.14,0xe7ecf2,cx-w/2,.5+netH/2,cz,worldGroup);premiumBox(.14,netH+.3,.14,0xe7ecf2,cx+w/2,.5+netH/2,cz,worldGroup);const label=foot?'Futevôlei':'Vôlei',entry=worldLayoutPoint(foot?'footvolleyEntrance':'volleyEntrance',{x:cx,z:cz-d/2-1}),c={id:`${type}-v705`,type,label,cx,cz,w,d,netH,foot,ball:null,shadow:null,team:[],opponents:[],score:[0,0],serving:0,state:'idle',touches:[0,0],lastSide:-1,timer:0,vx:0,vy:0,vz:0,pointLock:0,lastHintAt:0};SPORTS_V705.courts.set(type,c);createSignpost(entry.x,entry.z+.5,`${foot?'🏖️':'🏐'} ${label.toUpperCase()} — JOGAR`,Math.PI);registerInteractable({id:`${type}-v705`,type:'sport',icon:foot?'🏖️':'🏐',label:`${label} — jogar partida`,x:entry.x,z:entry.z,radius:4.8,priority:185,action:()=>openCourtV705(type)});}
-  function openFootballV705(){openModal('⚽ Teixeirão — Futebol 4 × 4',`<p><b>Partida 4 × 4.</b> Você joga com dois companheiros e goleiro contra três adversários e goleiro.</p><p><b>Joystick</b> conduz o jogador. Durante a partida os quatro botões nativos viram <b>CORRER</b>, <b>TOCAR</b>, <b>CHUTAR</b> e <b>CARRINHO</b>. Cada comando executa a ação no personagem e na bola.</p><div class="button-grid"><button id="footballSoloV705" class="primary">⚽ Jogar contra o computador</button>${world.sportsV704?.localOnly?'':'<button id="footballOnlineV705">🌐 Entrar na partida compartilhada</button>'}</div>`);setTimeout(()=>{const a=document.getElementById('footballSoloV705'),b=document.getElementById('footballOnlineV705');if(a)a.onclick=()=>startFootballV704('solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport('football'):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startFootballV704('online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
+  function openFootballV705(){openModal('⚽ '+(world.sportsV704?.title||'Futebol')+' — 4 × 4',`<p><b>Partida 4 × 4.</b> Você joga com dois companheiros e goleiro contra três adversários e goleiro.</p><p><b>Joystick</b> conduz o jogador. Durante a partida os quatro botões nativos viram <b>CORRER</b>, <b>TOCAR</b>, <b>CHUTAR</b> e <b>CARRINHO</b>. Cada comando executa a ação no personagem e na bola.</p><div class="button-grid"><button id="footballSoloV705" class="primary">⚽ Jogar contra o computador</button>${world.sportsV704?.localOnly?'':'<button id="footballOnlineV705">🌐 Entrar na partida compartilhada</button>'}</div>`);setTimeout(()=>{const a=document.getElementById('footballSoloV705'),b=document.getElementById('footballOnlineV705');if(a)a.onclick=()=>startFootballV704('solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport('football'):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startFootballV704('online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
   function openCourtV705(type){const c=SPORTS_V705.courts.get(type);if(!c)return;openModal(`${c.foot?'🏖️':'🏐'} ${c.label}`,`<p><b>${c.label} 2 × 2.</b> No online todos enxergam a mesma bola, placar e CPUs.</p><div class="button-grid"><button id="courtSoloV705" class="primary">🎮 Jogar solo</button><button id="courtOnlineV705">🌐 Entrar na partida compartilhada</button></div>`);setTimeout(()=>{const a=document.getElementById('courtSoloV705'),b=document.getElementById('courtOnlineV705');if(a)a.onclick=()=>startCourtV704(type,'solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport(type):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startCourtV704(type,'online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
@@ -9652,7 +9657,11 @@
       if(typeof rioSceneMode==='function')rioSceneMode(requestedMap);
       if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();if(!separateRio)await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(97,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
-    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;if(separateRio)rioResumeActivity();if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
+    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;
+    if(separateRio)rioResumeActivity();
+    else if(!legacyRegionalLayout){const url=new URL(location.href);url.searchParams.delete('entrada');url.searchParams.set('map','ot');history.replaceState(history.state,'',url);}
+    state.settings.lastWorldMap=requestedMap;updateOtthiMapContinue();saveState();
+    if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
     clock.start();if(!separateRio)evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(separateRio)toast('São José do Rio Preto · abra Mapa para escolher um local','good',3200);
     else toast('Bem-vindo à Vila OT!','good',2200);
@@ -9694,7 +9703,7 @@
     }
   }
   els.playBtn.onclick=()=>enterCurrentOtthiWorld();
-  els.continueBtn.onclick=()=>enterCurrentOtthiWorld();
+  els.continueBtn.onclick=()=>enterCurrentOtthiWorld(state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot');
   if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){
@@ -14016,8 +14025,8 @@ function precompile(T,renderer,scene,camera){
   if(!end)return null;const path=[target];while(end){path.unshift(point(end.i,end.j));end=end.parent;}path.shift();const result=[];let from=start;for(let i=0;i<path.length;){let far=i;while(far+1<path.length&&line(from,path[far+1]))far++;result.push(path[far]);from=path[far];i=far+1;}return result;
  }
  function characterActivityUI(){let ui=document.getElementById('characterActivity');if(ui)return ui;ui=document.createElement('div');ui.id='characterActivity';ui.hidden=true;ui.setAttribute('role','status');ui.innerHTML='<b></b><progress max="1" value="0"></progress><button type="button">PARAR</button>';ui.querySelector('button').onclick=stopCharacterActivity;document.getElementById('game').append(ui);return ui;}
- function beginCharacterActivity(kind,{house=null,target,pose=null,commit=null,shop=null}={}){
-  if(!CHARACTER_ACTIVITIES[kind]||!running||paused||player.vehicle||player.boating||otGames.active||player.transit.mode)return false;stopCharacterActivity();clearHomeSeat();const path=characterActivityPath(target,house);if(!path){toast('A passagem até esse objeto está bloqueada. Aproxime-se por outro lado.','warn',2600);return false;}clearMovementInputs();characterActivities.session={kind,house,target,pose,commit,shop,path,index:0,phase:'walk',elapsed:0,walkTime:0,performed:false,duration:CHARACTER_ACTIVITIES[kind][1]};const ui=characterActivityUI();ui.hidden=false;return true;
+ function beginCharacterActivity(kind,{house=null,target,pose=null,commit=null,shop=null,walkSpeed=1.9,onArrival=null}={}){
+  if(!CHARACTER_ACTIVITIES[kind]||!running||paused||player.vehicle||player.boating||otGames.active||player.transit.mode)return false;stopCharacterActivity();clearHomeSeat();const path=characterActivityPath(target,house);if(!path){toast('A passagem até esse objeto está bloqueada. Aproxime-se por outro lado.','warn',2600);return false;}clearMovementInputs();characterActivities.session={kind,house,target,pose,commit,shop,path,index:0,phase:'walk',elapsed:0,walkTime:0,walkSpeed,onArrival,performed:false,duration:CHARACTER_ACTIVITIES[kind][1]};const ui=characterActivityUI();ui.hidden=false;return true;
  }
  function beginHouseActivity(kind,house){
   const data=neighborhoodHome.houses.get(house.id),objectType=kind==='eat'?'table':kind==='cook'?'stove':kind==='tv'?'sofa':kind;let p=data?.points[objectType];if(kind==='eat')p=[.75,1.55];const old=world.interactables.find(i=>i.houseId===house.id&&i.activity===objectType),target=p?{x:house.x+p[0],z:house.z+p[1]}:old?{x:old.x,z:old.z}:null;if(!target)return false;
@@ -14033,12 +14042,12 @@ function precompile(T,renderer,scene,camera){
  };
  function updateCharacterActivityMotion(dt){
   const s=characterActivities.session;if(!s)return false;if(s.house&&currentHouse!==s.house||player.vehicle||player.boating||otGames.active||!player.grounded){stopCharacterActivity();return false;}player.vx=player.vz=0;
-  if(s.phase==='walk'){s.walkTime+=dt;const p=s.path[s.index],dx=p.x-player.x,dz=p.z-player.z,d=Math.hypot(dx,dz);if(d<.11){if(++s.index>=s.path.length){s.phase='perform';s.elapsed=0;player.facing=s.pose?.yaw??player.facing;}}else{const speed=Math.min(1.9,d/Math.max(.001,dt));player.vx=dx/d*speed;player.vz=dz/d*speed;player.facing=Math.atan2(dx,dz);}if(s.walkTime>22){stopCharacterActivity();toast('Passagem ocupada. Ação interrompida.','warn');}return true;}
+  if(s.phase==='walk'){s.walkTime+=dt;const p=s.path[s.index],dx=p.x-player.x,dz=p.z-player.z,d=Math.hypot(dx,dz);if(d<.11){if(++s.index>=s.path.length){if(s.onArrival){stopCharacterActivity();s.onArrival();return true;}s.phase='perform';s.elapsed=0;player.facing=s.pose?.yaw??player.facing;}}else{const speed=Math.min(s.walkSpeed,d/Math.max(.001,dt));player.vx=dx/d*speed;player.vz=dz/d*speed;player.facing=Math.atan2(dx,dz);}if(s.walkTime>22){stopCharacterActivity();toast('Passagem ocupada. Ação interrompida.','warn');}return true;}
   s.elapsed+=dt;if(s.elapsed>=s.duration){if(!s.performed){s.performed=true;if(s.commit?.()!==false){characterActivities.completed++;characterActivities.lastAction=s.kind;toast('Ação concluída.','good',1400);}}stopCharacterActivity();}return true;
  }
  function activityAvatar(){const descriptor=multiplayerAvatarDescriptor(),signature=multiplayerAvatarSignature(descriptor);let v=characterActivities.visual;if(v?.signature===signature)return v;if(v){disposeGhostAvatar(v.host.userData.avatar);otGamesDisposeGroup(v.props);v.host.parent?.remove(v.host);}const host=new THREE.Group(),body=new THREE.Group(),props=new THREE.Group();host.name='OT_CHARACTER_ACTIVITY';host.userData.avatar=body;host.add(body);worldGroup.add(host);buildRemoteAvatarVisual(host,descriptor);host.add(props);const scale=clamp(1.65/neighborhoodAvatarHeight(body),.3,1.3);body.scale.setScalar(scale);return characterActivities.visual={host,body,props,scale,signature};}
  function updateCharacterActivityVisual(){
-  const s=characterActivities.session;if(!s)return;const ui=characterActivityUI();ui.hidden=false;ui.querySelector('b').textContent=s.phase==='walk'?'Indo até '+(s.shop?'o pedido':'o objeto'):CHARACTER_ACTIVITIES[s.kind][0];ui.querySelector('progress').value=s.phase==='walk'?0:clamp(s.elapsed/s.duration,0,1);if(s.phase!=='perform')return;
+  const s=characterActivities.session;if(!s)return;const ui=characterActivityUI();ui.hidden=false;ui.querySelector('b').textContent=s.phase==='walk'&&!s.onArrival?'Indo até '+(s.shop?'o pedido':'o objeto'):CHARACTER_ACTIVITIES[s.kind][0];ui.querySelector('progress').value=s.phase==='walk'?0:clamp(s.elapsed/s.duration,0,1);if(s.phase!=='perform')return;
   const v=activityAvatar(),pose=s.pose||{x:player.x,y:player.y,z:player.z,yaw:player.facing},family=v.host.userData.familyAvatar,limbs=v.host.userData.limbs||{},time=s.elapsed,eat=['eat','meal'].includes(s.kind),drink=['drink','sink'].includes(s.kind),cook=s.kind==='cook',wash=s.kind==='shower';v.host.visible=true;v.host.position.set(pose.x,pose.y,pose.z);v.host.rotation.set(0,pose.yaw||0,0);v.body.position.set(0,pose.sitting?-riderHipHeight(v.body,v.host)*v.scale:0,0);v.body.rotation.set(0,0,pose.lying?Math.PI/2:0);if(family)familyAnimateAvatar(family,limbs,{sitting:!!pose.sitting,time:animTime});
   if(!family)for(const name of['leftLeg','rightLeg'])if(limbs[name])limbs[name].rotation.x=pose.sitting?-Math.PI/2:0;
   const right=family?.byName.shoulder1||limbs.rightArm,left=family?.byName['shoulder-1']||limbs.leftArm,elbow=family?.byName.elbow1;if(right)right.rotation.x=drink?-1.65-.18*Math.sin(time*3):eat?-1.25-.48*Math.sin(time*3.2):cook?-1.04-.18*Math.sin(time*4.5):wash?-1.8+.7*Math.sin(time*3):s.kind==='bag'?-.9:0;if(elbow)elbow.rotation.x=drink?-1:eat?-.8:cook?-.65:0;if(left)left.rotation.x=cook?-1.10:wash?-1.8-.7*Math.sin(time*3):eat?-.72:0;
@@ -14800,7 +14809,7 @@ function precompile(T,renderer,scene,camera){
  function openCivilMissions(tab='solo'){
   if(!ensureCivilMissions()){toast('O mundo está preparando os locais das missões. Aguarde um instante.','info');return;}
   tab=tab==='coop'?'coop':'solo';const definitions=OTCivilMissionCore.definitions,current=civilCurrent(),lobbies=Object.values(civilMissions.shared.data.records).filter(r=>r.mode==='coop'&&r.status==='lobby'&&Object.keys(r.members).length<2&&!r.members[civilNetUid()]);
-  openModal('Aventuras do nosso mundo',`<div class="civil-mission-tabs"><button class="btn ${tab==='solo'?'primary':''}" data-civil-tab="solo">INDIVIDUAIS</button><button class="btn ${tab==='coop'?'primary':''}" data-civil-tab="coop">COOPERATIVAS</button></div><p>${tab==='solo'?'Jogue no seu ritmo. Cada etapa acontece no mundo.':'Dupla online: os dois jogadores executam seus objetivos. Uma desconexão pausa a equipe.'}</p><label class="field"><span>Dificuldade</span><select data-civil-difficulty>${Object.entries(OTCivilMissionCore.difficulties).map(([id,d])=>`<option value="${id}" ${state.civilWorld.difficulty===id?'selected':''}>${d.label}</option>`).join('')}</select></label>${current&&['active','lobby'].includes(current.r.status)?'<button class="btn primary" data-civil-current>CONTINUAR MISSÃO ATUAL</button>':''}${tab==='coop'?`<section><h3>Duplas aguardando</h3>${lobbies.map(r=>`<button class="choice" data-civil-join="${r.id}"><b>${definitions[r.type].icon} ${definitions[r.type].title}</b><span>1/2 jogadores · entrar na equipe</span></button>`).join('')||'<p>Nenhuma dupla aguardando nesta sala. Crie uma abaixo.</p>'}</section>`:''}<div class="choice-grid civil-mission-cards">${Object.entries(definitions).filter(([,d])=>tab==='solo'||!d.soloOnly).map(([id,d])=>`<button class="choice" data-civil-create="${id}" data-civil-mode="${tab}"><b>${d.icon} ${d.title}</b><span>${d.region} · ${d.steps.length} etapas</span><small>${d.description}</small><em>${tab==='coop'?'CRIAR DUPLA ONLINE':'JOGAR INDIVIDUAL'}</em></button>`).join('')}</div>`,root=>{
+  openModal('Aventuras do nosso mundo',`<div class="civil-mission-tabs"><button class="btn ${tab==='solo'?'primary':''}" data-civil-tab="solo">INDIVIDUAIS</button><button class="btn ${tab==='coop'?'primary':''}" data-civil-tab="coop">COOPERATIVAS</button></div><p>${tab==='solo'?'Jogue no seu ritmo. Cada etapa acontece no mundo.':'Dupla online: os dois jogadores executam seus objetivos. Uma desconexão pausa a equipe.'}</p><label class="field"><span>Dificuldade</span><select data-civil-difficulty>${Object.entries(OTCivilMissionCore.difficulties).map(([id,d])=>`<option value="${id}" ${state.civilWorld.difficulty===id?'selected':''}>${d.label}</option>`).join('')}</select></label>${current&&['active','lobby'].includes(current.r.status)?'<button class="btn primary" data-civil-current>CONTINUAR MISSÃO ATUAL</button>':''}${tab==='coop'?`<section><h3>Duplas aguardando</h3>${lobbies.map(r=>`<button class="choice" data-civil-join="${r.id}"><b>${definitions[r.type].icon} ${definitions[r.type].title}</b><span>1/2 jogadores · entrar na equipe</span></button>`).join('')||'<p>Nenhuma dupla aguardando nesta sala. Crie uma abaixo.</p>'}</section>`:''}<div class="choice-grid civil-mission-cards">${Object.entries(definitions).filter(([id,d])=>(tab==='solo'||!d.soloOnly)&&(id!=='rio-avenidas'||legacyRegionalLayout)).map(([id,d])=>`<button class="choice" data-civil-create="${id}" data-civil-mode="${tab}"><b>${d.icon} ${d.title}</b><span>${d.region} · ${d.steps.length} etapas</span><small>${d.description}</small><em>${tab==='coop'?'CRIAR DUPLA ONLINE':'JOGAR INDIVIDUAL'}</em></button>`).join('')}</div>`,root=>{
    root.querySelectorAll('[data-civil-tab]').forEach(b=>b.onclick=()=>openCivilMissions(b.dataset.civilTab));root.querySelector('[data-civil-difficulty]').onchange=e=>{state.civilWorld.difficulty=e.target.value;civilPersist();};root.querySelectorAll('[data-civil-create]').forEach(b=>b.onclick=()=>civilCreateMission(b.dataset.civilCreate,b.dataset.civilMode));root.querySelector('[data-civil-current]')?.addEventListener('click',openCivilMissionDetails);root.querySelectorAll('[data-civil-join]').forEach(b=>b.onclick=async()=>{if(await civilCommand('join',{id:b.dataset.civilJoin})){state.civilWorld.activeId=b.dataset.civilJoin;state.civilWorld.mode='coop';state.civilWorld.routeEnabled=true;civilPersist();openCivilMissionDetails();}});
   });
  }
@@ -15732,6 +15741,9 @@ function precompile(T,renderer,scene,camera){
   if(explorationHud.ready)return;const bar=els.quickBar;if(!bar)return;
   const header=document.createElement('div');header.className='exploration-menu-header';header.innerHTML='<b>Menu do mundo</b><button type="button" id="worldMenuClose" aria-label="Fechar menu">✕<span>Fechar</span></button>';header.querySelector('button').onclick=closeExplorationPanels;bar.prepend(header);
   const empty=document.createElement('button');empty.id='emptyHandsBtn';empty.type='button';empty.innerHTML='👐<span>Mãos vazias</span>';empty.onclick=()=>{equipTool('none');closeExplorationPanels();updateContext(true);};bar.insertBefore(empty,els.toolsBtn);
+  const switchMap=document.createElement('button');
+  switchMap.id='worldMapSwitch';switchMap.type='button';switchMap.textContent='Jogar em Rio Preto';
+  switchMap.onclick=()=>selectOtthiMap('rio-preto');bar.append(switchMap);
   const layout=document.createElement('button');layout.id='worldHudModeBtn';layout.type='button';layout.onclick=()=>setExplorationHudMode(state.settings.worldHud==='full'?'clean':'full');bar.append(layout);
   const backdrop=document.createElement('button');backdrop.type='button';backdrop.id='worldMenuBackdrop';backdrop.tabIndex=-1;backdrop.setAttribute('aria-label','Fechar menu e voltar ao mundo');backdrop.onclick=closeExplorationPanels;els.game.append(backdrop);
   const closeSkills=document.createElement('button');closeSkills.id='worldSkillsClose';closeSkills.className='skill-btn';closeSkills.type='button';closeSkills.innerHTML='<b>✕</b><span>Fechar</span>';closeSkills.onclick=closeExplorationPanels;els.secondaryActions.prepend(closeSkills);
@@ -16188,7 +16200,7 @@ function precompile(T,renderer,scene,camera){
   }
 
   function updateRioPretoDistricts() {
-    if(!worldGroup||!worldExpansion.ready)return;
+    if(!legacyRegionalLayout||!worldGroup||!worldExpansion.ready)return;
     if(!rioPreto.tiles){
       rioPreto.tiles=rioTiles();
       rioRegisterDestinations();
@@ -16229,7 +16241,7 @@ function precompile(T,renderer,scene,camera){
   const rioPreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
   const rioPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations];};
+  expansionMapLocations=function(){return legacyRegionalLayout?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations]:rioPreviousLocations();};
   window.OTTHI_RIO_PRETO=Object.freeze({
     locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
     diagnostics:()=>{
@@ -16260,7 +16272,7 @@ function precompile(T,renderer,scene,camera){
   updateWorldExpansion=function(){
     rioExpansionUpdate();
     if(!worldExpansion.ready)return;
-    registerRioTour();
+    if(legacyRegionalLayout)registerRioTour();
     updateRioRegionalCircuits();
   };
   const rioTracksPreviousLocations=expansionMapLocations;
@@ -16272,15 +16284,15 @@ function precompile(T,renderer,scene,camera){
   };
   const rioPreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
-    const places=Object.values(RIO_PRETO_LAYOUT.landmarks);
+    const places=legacyRegionalLayout?Object.values(RIO_PRETO_LAYOUT.landmarks):[];
     const tracks=Object.values(RIO_REGIONAL_CIRCUITS);
     const cards=[...places.map(p=>({id:p.id,title:p.name,tag:'MARCAR NO GPS'})),
       ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'KART LEGENDS'}))];
-    return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">Rio Preto e região</h3>'+
-      '<p>Explore as três avenidas ou dirija até Mirassol e Cedral. Os traçados são do jogo.</p>'+
+    const title=legacyRegionalLayout?'Roteiro regional':'Kart Legends';
+    return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">'+title+'</h3>'+
       '<div class="choice-grid">'+cards.map(card=>'<button class="choice" data-rio-route="'+escapeHtml(card.id)+'"><b>'+
         escapeHtml(card.title)+'</b><span>'+escapeHtml(card.tag)+'</span></button>').join('')+
-      '<button class="choice" data-rio-tour><b>🧭 Roteiro das três avenidas</b><span>Registre os pontos a pé</span></button>'+
+      (legacyRegionalLayout?'<button class="choice" data-rio-tour><b>🧭 Roteiro das três avenidas</b><span>Registre os pontos a pé</span></button>':'')+
       '</div></section>'+rioPreviousDirectory(...args);
   };
   const rioPreviousBind=worldExploreBindDirectory;
@@ -16496,7 +16508,7 @@ function precompile(T,renderer,scene,camera){
     }
   }
   function updateRioV51World(){
-    if(!running||!worldGroup||!worldExpansion.ready)return;
+    if(!legacyRegionalLayout||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
@@ -16612,9 +16624,10 @@ function precompile(T,renderer,scene,camera){
   const rioV51PreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioV51PreviousExpansion();updateRioV51World();};
   const rioV51PreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return [...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)];};
+  expansionMapLocations=function(){return legacyRegionalLayout?[...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)]:rioV51PreviousLocations();};
   const rioV51PreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
+    if(!legacyRegionalLayout)return rioV51PreviousDirectory(...args);
     const groups=Object.values(RIO_V51.sectors).map(sector=>
       '<details><summary>'+escapeHtml(sector.label)+' · '+sector.places.length+'</summary><div class="choice-grid">'+
       sector.places.map(p=>'<button class="choice" data-rio-v51-route="'+p.id+'"><b>'+escapeHtml(p.name)+'</b><span>'+
@@ -16959,6 +16972,7 @@ function precompile(T,renderer,scene,camera){
   const rioCityPreviousUpdate=updateWorldExpansion;
   updateWorldExpansion=function(){
     rioCityPreviousUpdate();
+    if(!legacyRegionalLayout)return;
     updateRioCityActivities();
     updateRioCityLife();
   };
@@ -17572,6 +17586,13 @@ function precompile(T,renderer,scene,camera){
     const room=rioSiteLayout(site,root);
     if(rioPlaceStyles[site.kind]){
       rioBuildShell(site,room);
+      const [x,z]=site.entry,inside=room.point(0,site.d*.30);
+      const id=site.id+'-entrance';
+      registerInteractable({id,type:'activity',icon:'🚪',label:'Entrar · '+site.name,x,z,radius:3.2,priority:238,
+        available:()=>root.visible&&!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
+          !room.forSite(player.x,player.z,-.45),
+        action:()=>beginCharacterActivity('rio-entry',{target:inside,walkSpeed:2.8,onArrival:()=>updateContext(true)})});
+      room.actions.push(id);
       if(site.kind==='market'||site.kind==='bakery'||site.kind==='mall')rioBuildMarket(site,room);
       else if(site.kind==='dining')rioBuildDining(site,room);
       else if(site.kind==='church')rioBuildChurch(site,room);
@@ -17821,6 +17842,8 @@ function precompile(T,renderer,scene,camera){
     water.commit(worldGroup);
     world.ottoviasTraffic=OTTOVIAS_RUNTIME.traffic;
     CHARACTER_ACTIVITIES['rio-rest']=['Descansando no banco',3.3];
+    CHARACTER_ACTIVITIES['rio-entry']=['Entrando pela porta',0];
+    CHARACTER_ACTIVITIES['rio-boarding']=['Caminhando até a embarcação',0];
     rioStreamMap(rioMapStartPoint(),true);
     createWaypointMarker();
     rioBuildFleetParking();
@@ -18263,16 +18286,20 @@ function precompile(T,renderer,scene,camera){
     if(rioMap.active){
       rioMap.legacyWaypoint=state.waypoint;
       state.waypoint=rioMapSave().waypoint||null;
-    }else delete document.body.dataset.otthiMap;
+    }else document.body.dataset.otthiMap=legacyRegionalLayout?'roteiro-regional':'ot';
   }
   function rioResumeActivity(){
     const url=new URL(location.href);
-    if(!url.searchParams.has('entrada'))return rioRestoreBoatRide();
-    // A named entrance applies on arrival. Subsequent reloads use the saved position.
-    rioMapSave().aboard=null;
+    const namedEntrance=url.searchParams.has('entrada');
+    const restored=namedEntrance?false:rioRestoreBoatRide();
+    if(namedEntrance)rioMapSave().aboard=null;
     url.searchParams.delete('entrada');
+    url.searchParams.set('map','rio-preto');
     history.replaceState(history.state,'',url);
-    return false;
+    return restored;
+  }
+  function updateOtthiMapContinue(){
+    setControlText(els.continueBtn,state.settings.lastWorldMap==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
   }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
@@ -18343,6 +18370,7 @@ function precompile(T,renderer,scene,camera){
       '<button class="choice" data-rio-panel-map><b>Mapa e locais</b><span>Escolher o destino e traçar a rota</span></button>'+
       '<button class="choice" data-rio-panel-fleet><b>Minha garagem</b><span>Traçar rota para retirar seus veículos</span></button>'+
       '<button class="choice" data-rio-panel-clothes><b>Meu personagem</b><span>Roupas e acessórios</span></button>'+
+      (equippedTool().id==='none'?'':'<button class="choice" data-rio-panel-hands><b>Mãos vazias</b><span>Guardar a ferramenta atual</span></button>')+
       '<button class="choice" data-rio-panel-settings><b>Configurações</b><span>Áudio, câmera e desempenho</span></button>'+
       '<button class="choice" data-rio-panel-safe><b>Último ponto seguro</b><span>Desprender o personagem</span></button>'+
       '<button class="choice" data-rio-panel-lobby><b>Menu inicial</b><span>Salvar a visita</span></button>'+
@@ -18352,6 +18380,7 @@ function precompile(T,renderer,scene,camera){
         root.querySelector('[data-rio-panel-fleet]').onclick=()=>rioAtFleetCounter()?openRioFleetCounter():
           rioSetWaypoint({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',...rioMap.garage.counter});
         root.querySelector('[data-rio-panel-clothes]').onclick=()=>{closeModal();openAvatarStudio();};
+        root.querySelector('[data-rio-panel-hands]')?.addEventListener('click',()=>{equipTool('none');closeModal();updateContext(true);});
         root.querySelector('[data-rio-panel-settings]').onclick=()=>{closeModal();openSettings(true);};
         root.querySelector('[data-rio-panel-safe]').onclick=()=>{closeModal();recoverPlayerToLastSafe('retorno manual',true);};
         root.querySelector('[data-rio-panel-lobby]').onclick=()=>{closeModal();stopGame();};
@@ -18387,6 +18416,10 @@ function precompile(T,renderer,scene,camera){
       course:rioMap.course?.id||null
     })
   });
+  updateOtthiMapContinue();
+  if(new URLSearchParams(location.search).get('map')==='ot'){
+    els.playBtn.classList.add('primary');els.rioPretoPlayBtn?.classList.remove('primary');
+  }
   let rioSelectedNext='';
   try{rioSelectedNext=sessionStorage.getItem(OTTHI_NEXT_MAP);sessionStorage.removeItem(OTTHI_NEXT_MAP);}catch{}
   if(['rio-preto','ot'].includes(rioSelectedNext))setTimeout(()=>enterCurrentOtthiWorld(rioSelectedNext),0);
@@ -18435,7 +18468,7 @@ function precompile(T,renderer,scene,camera){
   function rioCanBoard(boat){
     if(player.vehicle||player.boating||player.swimming||player.transit.mode||otGames.active)return false;
     const p=boat.group.position;
-    return distance2D(player,boat.rioBerth.step)<1.12&&rioDockSurface(player.x,player.z)>.25&&
+    return distance2D(player,boat.rioBerth.step)<1.48&&rioDockSurface(player.x,player.z)>.25&&
       rioCanMoor(boat,p.x,p.z,boat.heading);
   }
   function rioRecordBoatPose(){
@@ -18521,8 +18554,24 @@ function precompile(T,renderer,scene,camera){
     rioSetBoatPose(boat,moor);worldGroup.add(boat.group);world.boats.set(boat.id,boat);
     const icon=boat.kind==='board'?'🏄':boat.kind==='ship'?'🛳️':'🛶';
     registerInteractable({id:'rio-board-'+boat.id,type:'boat',icon,label:boat.kind==='board'?'Subir na prancha':'Embarcar · '+boat.label,
-      ...step,radius:1.08,priority:250,available:()=>rioCanBoard(boat),action:()=>enterBoat(boat)});
+      ...step,radius:1.48,priority:250,available:()=>rioCanBoard(boat),action:()=>enterBoat(boat)});
     return boat;
+  }
+  function openRioDock(){
+    const dock=rioMap.waterfront;
+    if(!dock||player.vehicle||player.boating||player.swimming||distance2D(player,dock.entry)>3.6)return false;
+    const craft=[...world.boats.values()];
+    openModal('Cais da Represa','<p>Escolha a embarcação. Seu personagem caminha pelo cais até a vaga.</p><div class="choice-grid">'+
+      craft.map(boat=>'<button class="choice" data-rio-dock-boat="'+boat.id+'"><b>'+escapeHtml(boat.label)+'</b></button>').join('')+
+      '</div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-dock-boat]'))button.onclick=()=>{
+          const boat=world.boats.get(button.dataset.rioDockBoat);
+          if(!boat||distance2D(player,dock.entry)>3.6||
+            !rioCanMoor(boat,boat.group.position.x,boat.group.position.z,boat.heading))return;
+          closeModal();beginCharacterActivity('rio-boarding',{target:boat.rioBerth.step,walkSpeed:4.1,onArrival:()=>enterBoat(boat)});
+        };
+      });
+    return true;
   }
   function rioBuildWaterfront(){
     const d=RIO_REPRESA_DOCK,center=rioDockPoint(0,(d.start+d.end)/2),entry=rioDockPoint(0,d.start-1.4);
@@ -18568,6 +18617,8 @@ function precompile(T,renderer,scene,camera){
       driver:{x:.40,y:.49,z:.66},group:createSeaCraftModel(speedboat)},1,16));
     craft.push(rioMakeBerth({id:'rio-navio-passeio',label:'Navio de passeio',kind:'ship',
       halfWidth:1.57,halfLength:4.42,maxSpeed:9.8,acceleration:5.6,reverseSpeed:2.3,driver:{y:1.16,z:.94},group:rioMakeTourShip()},1,26));
+    registerInteractable({id:'rio-represa-cais',type:'activity',icon:'⚓',label:'Escolher embarcação no cais',...entry,
+      radius:3.4,priority:255,available:()=>!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session,action:openRioDock});
     rioMap.waterfront.paddle=rioMakePaddle();
     rioMap.waterfront.paddle.visible=false;playerGroup.add(rioMap.waterfront.paddle);
     rioCreateWaterfrontLife();

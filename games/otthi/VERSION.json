@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.36-rio-preto-mapa-proprio",
+  "build": "705.28.37-mapas-separados",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.37: Vila OT e Rio Preto com entradas próprias, acesso pela porta e embarque pelo cais.",
     "R28.36: malha cartográfica de Rio Preto em mapa independente, Mercadão acessível, Canecão com mesa e cadeira e posto com abastecimento físico, frota da garagem e NPCs com carros do catálogo, natação e quatro embarcações na Represa.",
     "R28.35: centro inspirado em Rio Preto, atividades nos pontos, moradores, corredores, fauna e trânsito local. O campo existente vira o Teixeirão com arquibancadas vermelhas e placar da partida.",
     "R28.34: acesso direto à Represa e ao Complexo Swift pelo botão Jogar em Rio Preto no menu inicial.",
@@ -308,8 +309,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70669,
-  "revisionLabel": "São José do Rio Preto em mapa próprio",
+  "assetVersion": 70670,
+  "revisionLabel": "Vila OT e Rio Preto com acessos separados",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

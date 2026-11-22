@@ -128,6 +128,7 @@
   const rioCityPreviousUpdate=updateWorldExpansion;
   updateWorldExpansion=function(){
     rioCityPreviousUpdate();
+    if(!legacyRegionalLayout)return;
     updateRioCityActivities();
     updateRioCityLife();
   };

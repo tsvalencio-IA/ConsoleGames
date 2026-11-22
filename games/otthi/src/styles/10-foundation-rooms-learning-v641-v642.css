@@ -80,3 +80,7 @@ body[data-otthi-map="rio-preto"] .boat-activity-panel{
 }
 body[data-otthi-map="rio-preto"] .boat-activity-panel button{min-height:44px}
 body[data-otthi-map="rio-preto"] .boat-activity-panel button[hidden]{display:none!important}
+
+body[data-otthi-map="rio-preto"] :is(#actionBtn,#vehicleActionBtn).pulse{
+  animation:none!important
+}

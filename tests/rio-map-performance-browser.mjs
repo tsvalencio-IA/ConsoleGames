@@ -73,7 +73,7 @@ try{
     const boot=Date.now();
     await page.goto(server.origin+'/games/otthi/',{waitUntil:'domcontentloaded'});
     console.log('BOOT',label);
-    await page.locator('#rioPretoPlayBtn').tap();
+    await page.locator('#rioPretoPlayBtn').press('Enter');
     try{
       await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running&&document.getElementById('modal').hidden||
         !!document.querySelector('[data-retry-world]'),null,{timeout:Number(process.env.OT_RIO_PERF_BOOT_TIMEOUT||180000)});

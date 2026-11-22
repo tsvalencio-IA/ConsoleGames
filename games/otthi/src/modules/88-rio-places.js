@@ -390,6 +390,13 @@
     const room=rioSiteLayout(site,root);
     if(rioPlaceStyles[site.kind]){
       rioBuildShell(site,room);
+      const [x,z]=site.entry,inside=room.point(0,site.d*.30);
+      const id=site.id+'-entrance';
+      registerInteractable({id,type:'activity',icon:'🚪',label:'Entrar · '+site.name,x,z,radius:3.2,priority:238,
+        available:()=>root.visible&&!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
+          !room.forSite(player.x,player.z,-.45),
+        action:()=>beginCharacterActivity('rio-entry',{target:inside,walkSpeed:2.8,onArrival:()=>updateContext(true)})});
+      room.actions.push(id);
       if(site.kind==='market'||site.kind==='bakery'||site.kind==='mall')rioBuildMarket(site,room);
       else if(site.kind==='dining')rioBuildDining(site,room);
       else if(site.kind==='church')rioBuildChurch(site,room);

@@ -17,7 +17,7 @@
   updateWorldExpansion=function(){
     rioExpansionUpdate();
     if(!worldExpansion.ready)return;
-    registerRioTour();
+    if(legacyRegionalLayout)registerRioTour();
     updateRioRegionalCircuits();
   };
   const rioTracksPreviousLocations=expansionMapLocations;
@@ -29,15 +29,15 @@
   };
   const rioPreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
-    const places=Object.values(RIO_PRETO_LAYOUT.landmarks);
+    const places=legacyRegionalLayout?Object.values(RIO_PRETO_LAYOUT.landmarks):[];
     const tracks=Object.values(RIO_REGIONAL_CIRCUITS);
     const cards=[...places.map(p=>({id:p.id,title:p.name,tag:'MARCAR NO GPS'})),
       ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'KART LEGENDS'}))];
-    return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">Rio Preto e região</h3>'+
-      '<p>Explore as três avenidas ou dirija até Mirassol e Cedral. Os traçados são do jogo.</p>'+
+    const title=legacyRegionalLayout?'Roteiro regional':'Kart Legends';
+    return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">'+title+'</h3>'+
       '<div class="choice-grid">'+cards.map(card=>'<button class="choice" data-rio-route="'+escapeHtml(card.id)+'"><b>'+
         escapeHtml(card.title)+'</b><span>'+escapeHtml(card.tag)+'</span></button>').join('')+
-      '<button class="choice" data-rio-tour><b>🧭 Roteiro das três avenidas</b><span>Registre os pontos a pé</span></button>'+
+      (legacyRegionalLayout?'<button class="choice" data-rio-tour><b>🧭 Roteiro das três avenidas</b><span>Registre os pontos a pé</span></button>':'')+
       '</div></section>'+rioPreviousDirectory(...args);
   };
   const rioPreviousBind=worldExploreBindDirectory;

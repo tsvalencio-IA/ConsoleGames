@@ -31,7 +31,7 @@
     }
   }
   els.playBtn.onclick=()=>enterCurrentOtthiWorld();
-  els.continueBtn.onclick=()=>enterCurrentOtthiWorld();
+  els.continueBtn.onclick=()=>enterCurrentOtthiWorld(state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot');
   if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){

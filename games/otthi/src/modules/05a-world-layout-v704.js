@@ -26,11 +26,12 @@
     for(const x of cX)path('coast-col-'+(-x),'Bairro Jardim da Costa',[[x,160],[x,195],[x,221]],7);
     return{highways,nodes,edges};
   })();
-  // Both additions register roads before any renderer, GPS or traffic index
-  // takes a snapshot of the world authority.
-  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  // The saved regional itinerary has its own entrance. The ordinary Vila OT
+  // graph does not include its scenery corridors or Rio Preto storefront lots.
+  const legacyRegionalLayout=typeof regionalRouteVisible!=='function'||regionalRouteVisible();
+  const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
-  const rioV51Roads=typeof RIO_V51==='undefined'?null:RIO_V51;
+  const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
   const rioProtectedRects=[
     ...(rioV51Roads?.protectedRects||[]),
     ...(rioPretoRoads?.protectedRects||[]),

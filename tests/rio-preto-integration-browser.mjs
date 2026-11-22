@@ -51,7 +51,7 @@ try{
  page=await c.newPage();page.setDefaultTimeout(45000);page.on('pageerror',err=>report.errors.push(err.stack));
  await installCityInspection(page,{appSource:code.slice(0,end)+hook+code.slice(end),capDuringBoot:true});
  const boot=async()=>{
-  await page.goto(server.origin+'/games/otthi/');
+  await page.goto(server.origin+'/games/otthi/?map=roteiro-regional');
   await page.locator('#playBtn').tap();
   await page.waitForFunction(()=>window.__RIO_QA&&window.OT_CIVIL_MISSIONS?.diagnostics().ready&&window.__CITY_QA?.cap()&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:150000});
   assert.equal(await page.locator('html').getAttribute('data-otthi-revision'),release.revision);

@@ -8,16 +8,20 @@
     if(rioMap.active){
       rioMap.legacyWaypoint=state.waypoint;
       state.waypoint=rioMapSave().waypoint||null;
-    }else delete document.body.dataset.otthiMap;
+    }else document.body.dataset.otthiMap=legacyRegionalLayout?'roteiro-regional':'ot';
   }
   function rioResumeActivity(){
     const url=new URL(location.href);
-    if(!url.searchParams.has('entrada'))return rioRestoreBoatRide();
-    // A named entrance applies on arrival. Subsequent reloads use the saved position.
-    rioMapSave().aboard=null;
+    const namedEntrance=url.searchParams.has('entrada');
+    const restored=namedEntrance?false:rioRestoreBoatRide();
+    if(namedEntrance)rioMapSave().aboard=null;
     url.searchParams.delete('entrada');
+    url.searchParams.set('map','rio-preto');
     history.replaceState(history.state,'',url);
-    return false;
+    return restored;
+  }
+  function updateOtthiMapContinue(){
+    setControlText(els.continueBtn,state.settings.lastWorldMap==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
   }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
@@ -88,6 +92,7 @@
       '<button class="choice" data-rio-panel-map><b>Mapa e locais</b><span>Escolher o destino e traçar a rota</span></button>'+
       '<button class="choice" data-rio-panel-fleet><b>Minha garagem</b><span>Traçar rota para retirar seus veículos</span></button>'+
       '<button class="choice" data-rio-panel-clothes><b>Meu personagem</b><span>Roupas e acessórios</span></button>'+
+      (equippedTool().id==='none'?'':'<button class="choice" data-rio-panel-hands><b>Mãos vazias</b><span>Guardar a ferramenta atual</span></button>')+
       '<button class="choice" data-rio-panel-settings><b>Configurações</b><span>Áudio, câmera e desempenho</span></button>'+
       '<button class="choice" data-rio-panel-safe><b>Último ponto seguro</b><span>Desprender o personagem</span></button>'+
       '<button class="choice" data-rio-panel-lobby><b>Menu inicial</b><span>Salvar a visita</span></button>'+
@@ -97,6 +102,7 @@
         root.querySelector('[data-rio-panel-fleet]').onclick=()=>rioAtFleetCounter()?openRioFleetCounter():
           rioSetWaypoint({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',...rioMap.garage.counter});
         root.querySelector('[data-rio-panel-clothes]').onclick=()=>{closeModal();openAvatarStudio();};
+        root.querySelector('[data-rio-panel-hands]')?.addEventListener('click',()=>{equipTool('none');closeModal();updateContext(true);});
         root.querySelector('[data-rio-panel-settings]').onclick=()=>{closeModal();openSettings(true);};
         root.querySelector('[data-rio-panel-safe]').onclick=()=>{closeModal();recoverPlayerToLastSafe('retorno manual',true);};
         root.querySelector('[data-rio-panel-lobby]').onclick=()=>{closeModal();stopGame();};
@@ -132,6 +138,10 @@
       course:rioMap.course?.id||null
     })
   });
+  updateOtthiMapContinue();
+  if(new URLSearchParams(location.search).get('map')==='ot'){
+    els.playBtn.classList.add('primary');els.rioPretoPlayBtn?.classList.remove('primary');
+  }
   let rioSelectedNext='';
   try{rioSelectedNext=sessionStorage.getItem(OTTHI_NEXT_MAP);sessionStorage.removeItem(OTTHI_NEXT_MAP);}catch{}
   if(['rio-preto','ot'].includes(rioSelectedNext))setTimeout(()=>enterCurrentOtthiWorld(rioSelectedNext),0);

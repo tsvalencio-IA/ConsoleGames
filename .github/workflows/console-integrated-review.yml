@@ -70,6 +70,8 @@ jobs:
         run: node tests/rio-v51-world-browser.mjs
       - name: Validar o mapa de Rio Preto, interiores, abastecimento e retorno à Vila OT
         run: node tests/rio-physical-map-browser.mjs
+      - name: Usar o cais e a porta do Canecao com os controles de toque
+        run: node tests/rio-map-input-browser.mjs
       - name: Completar as corridas de Mirassol e Cedral no Kart Legends e recarregar os resultados
         run: node tests/rio-regional-races-browser.mjs
       - name: Conferir isolamento dos caches entre instalações

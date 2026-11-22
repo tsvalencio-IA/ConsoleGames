@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.36-rio-preto-mapa-proprio",
+  "build": "705.28.37-mapas-separados",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "abd2552db3bd028797521b28554bb3518b65f5596fd8958fb531336cf9db62ef"
+      "sha256Body": "6492d4f25ce6c26186518b4aa79c7a8c3eb85e6c86f9b9fe89a734ae58770905"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -75,7 +75,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "e10fd0379590246bc18b549f829bd6cb4778fd46cc19e173f0c39ce7ca8581a5"
+      "sha256Body": "875f823c6db698efc6084bd5675aacb31b1814541e52c4a03d5fdfc1958096fb"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -145,7 +145,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "c0d36012b71c8acc271aa369bd099ef8421449bcf645d33f5596d8a95aa3da66"
+      "sha256Body": "608e94e0bb1bad5bd1055b00ba43fdb519e1d27eb2a72126bac2ac8b37a11030"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -285,14 +285,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "0b736b90a10e3d99e6e3fc124196282d5eff130d34adadb33c0a0dec099ec27d"
+      "sha256Body": "c981ceaba3466afaae7146c436da67a8aa5324517f07d56a6ba9e8a80cde45f2"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "2ee496ada4771d0439861bf39f22fda067d3dbb5598c8512e932c039e4c91a35"
+      "sha256Body": "b288fb9cfb9b4bd8a4ed9905e7fac49089fd44b574eb55b8fcb5ee6f4d5a9871"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -536,7 +536,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Ações visíveis e interrompíveis dos personagens",
-      "sha256Body": "4a1b76647a7dd3fc287e59266a0a6f806b0278edabe95260935dda225c2c9b8b"
+      "sha256Body": "1afaaa0e8b725865d5a95cf176132d6cdd1c894ab45870de41ed4e5b5aa6e3fe"
     },
     {
       "file": "src/modules/59-world-residents.js",
@@ -583,7 +583,7 @@
     {
       "file": "src/modules/66-civil-missions.js",
       "description": "Missões individuais e cooperativas do mundo civil",
-      "sha256Body": "02a30e74d855c1efa1fe14baacc1d708205f50c434b4adf5e16ab07af7707fde",
+      "sha256Body": "eb61097091fadd530ae56a777262a5a27cd1772fb757a26e6a6584aa4b632276",
       "startLine": 0,
       "endLine": 0
     },
@@ -648,21 +648,21 @@
     {
       "file": "src/modules/77-exploration-hud.js",
       "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
-      "sha256Body": "3d07daeaf21378861fbdc5458f6c2a1b722bc323851e123388c24255eb7b23c0"
+      "sha256Body": "a2ac14c6ef318784a7a495bb4585fbd3e063b1714e37f4c275f2c6d45b74efbd"
     },
     {
       "file": "src/modules/79-rio-preto-districts.js",
       "description": "Bairros e pontos urbanos em setores com recursos compartilhados",
-      "sha256Body": "9ac2242fe52447a6e9185ccf0950c01403b0f37b0260b3bd841d6c3e5e1af53a"
+      "sha256Body": "b47376ca51aec7b3d4e568dc5235acaeecc8867cdffc25e1bf205f6ff37e863e"
     },
     {
       "file": "src/modules/82-rio-preto-expansion.js",
       "description": "Diretório, roteiro e integração de atividades de Rio Preto",
-      "sha256Body": "433767a07107f7db7f6fe3eb970a5eb261f8540aad296abd99abd01651c9441c"
+      "sha256Body": "19750b6479126f9bd73386268c22f638d1796ffccfd9bd5bd5323e0c2c9f482b"
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "76279c8e366740e4866ad3d426fa9f50e9faa1dd98014fbd702f05bceb72fbef"
+      "sha256Body": "549995ee3a0175fbbe4e764bd7001ca7128f95e94a5dbfc36204f0be27a14e4f"
     },
     {
       "file": "src/modules/85-rio-city-activities.js",
@@ -670,7 +670,7 @@
     },
     {
       "file": "src/modules/86-rio-city-life.js",
-      "sha256Body": "2ea991a1fd5453d7fe080215df1ac3a5e94765e2fb5b7569afbcdea7c1de1d5d"
+      "sha256Body": "d9b6bce5b9d0c2c1e85d76c0a6c1546eeae019bbad57748b916683033f3f9a48"
     },
     {
       "file": "src/modules/87-rio-geography.js",
@@ -678,11 +678,11 @@
     },
     {
       "file": "src/modules/88-rio-places.js",
-      "sha256Body": "2435b702de90cbec315383e42bd689379c641aab83869a4d06445636df15bdf4"
+      "sha256Body": "ae3f8507c62b1ab68e3cd92cafcf87365786dad25706cd6fce2d5c6e8e921bf1"
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "9400a66b9093573fecde8cf0d077d5947b77888315229023f82ac37c03995497"
+      "sha256Body": "cb815ff46b55b3229b1a59eacff282916ee7bcdc2833f406286e3847352ac785"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
@@ -690,11 +690,11 @@
     },
     {
       "file": "src/modules/91-rio-map-entry-and-ui.js",
-      "sha256Body": "f8a5185cd79c74dc61d81094642e797006a13b77be63e9f9ad8382d1051e9621"
+      "sha256Body": "cacdfea294ead5f813f4646d896e3c0cbf46c7a7e64c16727caf1b99530c3ccc"
     },
     {
       "file": "src/modules/92-rio-waterfront.js",
-      "sha256Body": "6fa230297b0157e4422cc088f4a093909c09cd24ee78429d635f0ccb5abf9626"
+      "sha256Body": "1b29cdb890478bcc96085e0f98c54334407a55ea387cbfcc5f2fadb5e6f8fd5f"
     }
   ],
   "styles": [
@@ -773,7 +773,7 @@
       "startLine": 1017,
       "endLine": 1056,
       "description": "Fundação final, bairros, educação e desempenho",
-      "sha256Body": "1779a301aee473b816d92473fbd1d1a15ff0bb4b5c61a44df96a0cf49abcd07a"
+      "sha256Body": "756e3e534546cbb2c22895456c850aa7b7342cfe7c89b32d0c1cd3c3f17accc2"
     },
     {
       "file": "src/styles/11-mobility-traffic-fishing-v643.css",

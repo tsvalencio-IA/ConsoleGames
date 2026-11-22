@@ -417,7 +417,7 @@
   }
 
   function updateRioPretoDistricts() {
-    if(!worldGroup||!worldExpansion.ready)return;
+    if(!legacyRegionalLayout||!worldGroup||!worldExpansion.ready)return;
     if(!rioPreto.tiles){
       rioPreto.tiles=rioTiles();
       rioRegisterDestinations();
@@ -458,7 +458,7 @@
   const rioPreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
   const rioPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations];};
+  expansionMapLocations=function(){return legacyRegionalLayout?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations]:rioPreviousLocations();};
   window.OTTHI_RIO_PRETO=Object.freeze({
     locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
     diagnostics:()=>{

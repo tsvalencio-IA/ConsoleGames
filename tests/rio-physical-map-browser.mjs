@@ -278,7 +278,10 @@ try{
   await page.screenshot({path:out+'/mercadao-interno.png'});
 
   await page.evaluate(()=>__RIO_PHYSICAL_QA.setup('canecao_represa','outside'));
-  assert.equal(await page.evaluate(()=>OTTHOS_TEST_API.getContext()?.id?.includes('canecao')),undefined);
+  assert.equal(await page.evaluate(()=>OTTHOS_TEST_API.getContext()?.id),'regional-canecao_represa-entrance');
+  await page.locator('#actionBtn').tap();
+  await page.evaluate(()=>__RIO_PHYSICAL_QA.advance(190));
+  assert.equal(await page.evaluate(()=>OT_CHARACTER_ACTIVITIES.diagnostics().session),null);
   report.diningCounter=await approach('canecao_represa','counter',false);
   await page.locator('#actionBtn').tap({force:true});
   await page.locator('[data-rio-food="juice"]').tap();
@@ -452,7 +455,8 @@ try{
   await page.waitForURL('**/games/otthi/?map=ot');
   await page.waitForFunction(()=>window.__CITY_QA?.cap()&&OTTHOS_TEST_API.getGame().running&&!OTTHI_RIO_MAP.diagnostics().active&&document.getElementById('modal').hidden,null,{timeout:170000});
   report.original=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());
-  assert(report.original.legacyGarage&&!report.original.hud);
+  assert(report.original.legacyGarage&&report.original.hud==='ot');
+  assert(!report.original.models.some(name=>name.startsWith('RIO_V51_')||name.startsWith('RIO_PRETO_BLOCK_')));
   assert.equal(report.original.coins,report.refuel.coins);
   assert.equal(report.original.food,report.market.food);
   assert.deepEqual(report.original.owned,report.start.owned);

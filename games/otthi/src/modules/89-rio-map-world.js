@@ -238,6 +238,8 @@
     water.commit(worldGroup);
     world.ottoviasTraffic=OTTOVIAS_RUNTIME.traffic;
     CHARACTER_ACTIVITIES['rio-rest']=['Descansando no banco',3.3];
+    CHARACTER_ACTIVITIES['rio-entry']=['Entrando pela porta',0];
+    CHARACTER_ACTIVITIES['rio-boarding']=['Caminhando até a embarcação',0];
     rioStreamMap(rioMapStartPoint(),true);
     createWaypointMarker();
     rioBuildFleetParking();

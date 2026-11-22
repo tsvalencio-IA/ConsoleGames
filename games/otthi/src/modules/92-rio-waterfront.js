@@ -43,7 +43,7 @@
   function rioCanBoard(boat){
     if(player.vehicle||player.boating||player.swimming||player.transit.mode||otGames.active)return false;
     const p=boat.group.position;
-    return distance2D(player,boat.rioBerth.step)<1.12&&rioDockSurface(player.x,player.z)>.25&&
+    return distance2D(player,boat.rioBerth.step)<1.48&&rioDockSurface(player.x,player.z)>.25&&
       rioCanMoor(boat,p.x,p.z,boat.heading);
   }
   function rioRecordBoatPose(){
@@ -129,8 +129,24 @@
     rioSetBoatPose(boat,moor);worldGroup.add(boat.group);world.boats.set(boat.id,boat);
     const icon=boat.kind==='board'?'🏄':boat.kind==='ship'?'🛳️':'🛶';
     registerInteractable({id:'rio-board-'+boat.id,type:'boat',icon,label:boat.kind==='board'?'Subir na prancha':'Embarcar · '+boat.label,
-      ...step,radius:1.08,priority:250,available:()=>rioCanBoard(boat),action:()=>enterBoat(boat)});
+      ...step,radius:1.48,priority:250,available:()=>rioCanBoard(boat),action:()=>enterBoat(boat)});
     return boat;
+  }
+  function openRioDock(){
+    const dock=rioMap.waterfront;
+    if(!dock||player.vehicle||player.boating||player.swimming||distance2D(player,dock.entry)>3.6)return false;
+    const craft=[...world.boats.values()];
+    openModal('Cais da Represa','<p>Escolha a embarcação. Seu personagem caminha pelo cais até a vaga.</p><div class="choice-grid">'+
+      craft.map(boat=>'<button class="choice" data-rio-dock-boat="'+boat.id+'"><b>'+escapeHtml(boat.label)+'</b></button>').join('')+
+      '</div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-dock-boat]'))button.onclick=()=>{
+          const boat=world.boats.get(button.dataset.rioDockBoat);
+          if(!boat||distance2D(player,dock.entry)>3.6||
+            !rioCanMoor(boat,boat.group.position.x,boat.group.position.z,boat.heading))return;
+          closeModal();beginCharacterActivity('rio-boarding',{target:boat.rioBerth.step,walkSpeed:4.1,onArrival:()=>enterBoat(boat)});
+        };
+      });
+    return true;
   }
   function rioBuildWaterfront(){
     const d=RIO_REPRESA_DOCK,center=rioDockPoint(0,(d.start+d.end)/2),entry=rioDockPoint(0,d.start-1.4);
@@ -176,6 +192,8 @@
       driver:{x:.40,y:.49,z:.66},group:createSeaCraftModel(speedboat)},1,16));
     craft.push(rioMakeBerth({id:'rio-navio-passeio',label:'Navio de passeio',kind:'ship',
       halfWidth:1.57,halfLength:4.42,maxSpeed:9.8,acceleration:5.6,reverseSpeed:2.3,driver:{y:1.16,z:.94},group:rioMakeTourShip()},1,26));
+    registerInteractable({id:'rio-represa-cais',type:'activity',icon:'⚓',label:'Escolher embarcação no cais',...entry,
+      radius:3.4,priority:255,available:()=>!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session,action:openRioDock});
     rioMap.waterfront.paddle=rioMakePaddle();
     rioMap.waterfront.paddle.visible=false;playerGroup.add(rioMap.waterfront.paddle);
     rioCreateWaterfrontLife();

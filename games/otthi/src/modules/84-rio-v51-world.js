@@ -199,7 +199,7 @@
     }
   }
   function updateRioV51World(){
-    if(!running||!worldGroup||!worldExpansion.ready)return;
+    if(!legacyRegionalLayout||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
@@ -315,9 +315,10 @@
   const rioV51PreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioV51PreviousExpansion();updateRioV51World();};
   const rioV51PreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return [...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)];};
+  expansionMapLocations=function(){return legacyRegionalLayout?[...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)]:rioV51PreviousLocations();};
   const rioV51PreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
+    if(!legacyRegionalLayout)return rioV51PreviousDirectory(...args);
     const groups=Object.values(RIO_V51.sectors).map(sector=>
       '<details><summary>'+escapeHtml(sector.label)+' · '+sector.places.length+'</summary><div class="choice-grid">'+
       sector.places.map(p=>'<button class="choice" data-rio-v51-route="'+p.id+'"><b>'+escapeHtml(p.name)+'</b><span>'+
