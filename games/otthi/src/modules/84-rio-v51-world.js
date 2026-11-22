@@ -10,7 +10,7 @@
 
   function rioV51Building(batch,p,draw){
     const {box,collider,part}=draw,{w,h,d,shape}=p;
-    const [wall,accent]=rioV51Palette[shape],front=d/2-.6;
+    const [wall,accent]=rioV51Palette[shape],front=d/2-.37;
     if(shape==='gate'){
       for(const side of [-1,1]){
         box(side*w*.36,1.7,0,w*.25,3.4,d-1,wall);
@@ -42,10 +42,17 @@
     box(0,1.65,front+.08,3.2,3.3,.16,0x34616f);
     box(0,3.45,front+.80,Math.min(8,w*.52),.28,1.85,accent);
     if(shape==='church'){
+      for(const side of [-1,1]){
+        box(side*w*.36,shellH*.68,-d*.30,w*.17,shellH*1.35,d*.21,wall);
+        part('hip',side*w*.36,shellH*1.42,-d*.30,w*.20,2,d*.23,accent);
+      }
+      part('post',0,shellH*.66,front+.17,1.9,.19,1.9,0xded1b9,0,Math.PI/2);
       box(0,h*.74,-d*.32,w*.24,h*.52,d*.17,wall);
       box(0,h+.42,-d*.32,.22,1.8,.22,0xd5aa63);
       box(0,h+.61,-d*.32,1.3,.22,.22,0xd5aa63);
     }else if(shape==='swift'){
+      for(const x of [-.43,-.24,.24,.43])box(x*w,shellH*.46,front+.17,.43,shellH*.92,.26,accent);
+      box(0,shellH*.86,front+.18,w*.89,.31,.26,accent);
       part('post',-w*.36,h*.58,-d*.32,1.15,h*1.16,1.15,wall);
     }else if(shape==='tower'||shape==='terminal'){
       box(-w*.32,shellH+.6,-d*.17,w*.22,1.2,d*.22,accent);
@@ -119,6 +126,7 @@
     if(rioV51Palette[p.shape])rioV51Building(batch,p,draw);
     else rioV51Outdoors(p,draw);
     draw.box(0,.08,p.d/2+1.65,Math.min(p.w,7.3),.13,3.45,0xd4c8ab);
+    if(typeof decorateRioCitySite==='function')decorateRioCitySite(p,draw);
     const tall=!!rioV51Palette[p.shape]&&p.shape!=='gate',signY=tall?Math.min(p.h*.44,4.55):p.shape==='gate'?3.82:1.45;
     draw.sign(p.name,0,signY,p.d/2+.04+(p.shape==='gate'?.9:0),Math.min(p.w-.8,16),.86, p.fictional?'#775e39':'#284d54');
   }
@@ -153,16 +161,21 @@
   }
 
   function rioV51Location(p){
+    if(p.nativeVenue==='football')return{id:p.id,name:p.name,icon:'⚽',group:RIO_V51.sectors[p.sector].label,
+      x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
+      description:'Estádio jogável inspirado no Benedito Teixeira, com partidas de futebol 4 × 4 e pista de atletismo.'};
     return{id:p.id,name:p.name,icon:p.fictional?'🌄':'📍',group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
       description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
   }
   function rioV51Visit(p){
+    if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return openShop();
     if(p.shop)return openCityShop(p.id);
     if(p.key==='prefeitura_andalo')return openCivilMissions();
     if(p.key==='aeroporto_sjrp')return openFlightAcademy();
+    if(typeof openRioCitySite==='function'&&openRioCitySite(p))return true;
     const label=p.fictional?'Área fictícia do OTTHI World.':'Fachada estilizada em posição adaptada dentro do jogo.';
     openModal(p.name,'<p>'+label+'</p>'+(p.fictional?'':'<p>Endereço de referência: '+escapeHtml(p.address)+'</p>')+
       '<button class="btn primary" data-rio-visit-close>Voltar ao passeio</button>',root=>{
@@ -173,6 +186,7 @@
   function rioV51Register(){
     rioV51World.registered=true;
     for(const p of RIO_V51.places){
+      if(p.nativeVenue)continue;
       if(['market','fastfood','cafe'].includes(p.shop))cityCoast.shops.set(p.id,{
         id:p.id,label:p.name,kind:p.shop,x:p.x,z:p.visitZ,navX:p.visitX,navZ:p.visitZ,
         face:p.face,description:'Itens do comércio do OTTHI World.'
@@ -204,7 +218,11 @@
     if(existing)return existing;
     const root=new THREE.Group();root.name='RIO_V51_'+sector.id;root.visible=false;
     const batch=rioCreateBatch(root);batch.root=root;
-    for(const p of sector.places)rioV51DrawPlace(batch,p);
+    for(const p of sector.places){
+      if(p.nativeVenue)continue;
+      rioV51DrawPlace(batch,p);
+      if(typeof addRioCityLights==='function')addRioCityLights(p,root);
+    }
     if(sector.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
     batch.commit();
     worldGroup.add(root);rioV51World.roots.set(sector.id,root);

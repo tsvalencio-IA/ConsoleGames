@@ -1047,6 +1047,11 @@ body.ui-portrait .mini-nav,body.otthi-portrait .mini-nav{top:calc(64px + var(--s
 @media(orientation:landscape) and (max-height:520px){
   .lobby{display:block!important;padding:5px!important}.brand-card{margin:0 auto 6px!important;min-height:54px!important;padding:6px 10px!important}.brand-card h1{font-size:18px!important}.brand-card p:not(.eyebrow){display:none!important}.lobby .lobby-layout{width:calc(100% - 8px)!important;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr)!important;gap:8px!important}.hero-panel{grid-template-columns:minmax(180px,.8fr) minmax(180px,1fr)!important;padding:8px!important}.viewer-shell{min-height:180px!important}.menu-panel{padding:8px!important}.menu-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.menu-tile{min-height:54px!important;padding:5px!important}.menu-tile small{display:none!important}.lobby footer{padding:4px!important;font-size:9px!important}
   .modal-card{width:min(820px,92vw)!important;max-width:92vw!important;max-height:88dvh!important}
+  .lobby .hero-copy{justify-content:flex-start;padding:12px}
+  .lobby .hero-copy h2{font-size:clamp(20px,3.3vw,27px);margin-block:6px}
+  .lobby .hero-copy p{margin:3px 0}
+  .lobby .hero-actions{gap:6px;margin-top:8px}
+  .lobby .hero-actions .btn.xl{min-height:44px;padding-block:6px}
 }
 
 /* Novas trilhas educacionais e bairros. */

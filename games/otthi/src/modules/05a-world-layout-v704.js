@@ -229,7 +229,7 @@
       urban:{id:'urban',name:'Centro urbano',x:0,z:0,w:118,d:104},
       residential:{id:'residential',name:'Bairros residenciais',x:-2,z:27,w:92,d:38},
       services:{id:'services',name:'Escolas e serviços',x:78,z:-18,w:70,d:106},
-      stadium:{id:'stadium',name:'Estádio e atletismo',x:42,z:88,w:62,d:44},
+      stadium:{id:'stadium',name:'Teixeirão e pista de atletismo',x:42,z:88,w:62,d:44},
       courts:{id:'courts',name:'Quadras de vôlei e futevôlei',x:91,z:95,w:34,d:24},
       kart:{id:'kart',name:'Autódromo Nova Aurora',x:300,z:-270,w:114,d:100},
       circuitCosta:{id:'circuitCosta',name:'Autódromo Costa Verde',x:-300,z:-210,w:108,d:96},

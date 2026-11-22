@@ -352,7 +352,7 @@
     clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(arrivedInRio)toast('Rio Preto · Represa e Complexo Swift','good',3200);
     else if(visitRio)toast('A entrada da Represa está ocupada. Você abriu na posição salva.','info',3800);
-    else toast('Bem-vindo à Vila do Sol!','good',2200);
+    else toast('Bem-vindo a São José do Rio Preto!','good',2200);
   }
 
   let consoleLeaving=false;

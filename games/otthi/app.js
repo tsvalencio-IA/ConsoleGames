@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.34-entrada-rio-preto';
+  const OTTHI_GAME_WEB_BUILD = '705.28.35-rio-preto-cidade-viva';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -2517,6 +2517,10 @@
   })});
 
   // ===== MODULE: 83-rio-v51-layout.js =====
+  const RIO_TEIXEIRAO_SITE={
+    id:'regional-estadio_teixeirao',name:'Teixeirão — Estádio do América',
+    pitch:{x:42,z:88},entrance:{x:50,z:69},road:{x:34,z:58},w:62,d:43
+  };
   const RIO_V51_PLACES = [
     ["complexo_swift", "Complexo Swift & Teatro Paulo Moura", "represa_lagos_damha", 475, -533, -1, 22, 18, 14, "swift", false, "Av. Duque de Caxias, 3900 - Jd. dos Seixas, SJRP", "https://www.riopreto.sp.gov.br/"],
     ["dona_capi", "Escultura Dona Capi (Capivara)", "represa_lagos_damha", 476, -595, 1, 8, 6, 8, "capi", false, "Parque da Represa Municipal - Vila Ercília, SJRP", "https://www.riopreto.sp.gov.br/"],
@@ -2554,7 +2558,7 @@
     ["montanhas_rios_italia", "Mirante & Montanhas Rios di Itália (Fictício)", "expansoes_ficticias", 773, -543, 1, 22, 16, 18, "lookout", true, "Área Criativa Fictícia do OTThi World — sem correspondência real", "https://otthi-world.local/expansao-ficticia"],
     ["praia_cedral", "Praia Recreativa de Cedral (Fictício)", "expansoes_ficticias", 812, -543, 1, 22, 7, 16, "beach", true, "Área Criativa Fictícia do OTThi World — Cedral não tem litoral real", "https://otthi-world.local/expansao-ficticia"],
     ["estadio_anisio_haddad", "Estádio Anísio Haddad (Rio Preto EC)", "rota_estadios", -769, -295, 1, 24, 11, 18, "stadium", false, "Av. Anísio Haddad, 6188 - Jardim Aclimação, SJRP, 15093-000", "https://www.facebook.com/riopretoecoficial/"],
-    ["estadio_teixeirao", "Estádio Benedito Teixeira — Teixeirão (América FC)", "rota_estadios", -729, -295, 1, 25, 12, 19, "stadium", false, "Av. Antônio Tavares Pereira Lima, 904-1074 - Jd. Bela Vista, SJRP, 15061-220", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJK1w-yLZSvJQRBP1zx7nGDhM"],
+    ["estadio_teixeirao", RIO_TEIXEIRAO_SITE.name, "rota_estadios", RIO_TEIXEIRAO_SITE.pitch.x, RIO_TEIXEIRAO_SITE.pitch.z, -1, RIO_TEIXEIRAO_SITE.w, 10, RIO_TEIXEIRAO_SITE.d, "stadium", false, "Av. Dr. Antônio Tavares Pereira Lima, 900 — Jardim Bela Vista, São José do Rio Preto", "https://www.americasp.com/historia"],
     ["estadio_maiao", "Estádio José Maria de Campos Maia — Maião (Mirassol FC)", "rota_estadios", -686, -295, 1, 24, 11.5, 18, "stadium", false, "Av. Lauro Luchese, 2650 - Centro, Mirassol - SP, 15130-000", "http://mirassolfc.com.br/"],
     ["estadio_jorjao", "Estádio Dr. Jorge Ismael de Biasi — Jorjão (Novorizontino)", "rota_estadios", -644, -295, 1, 24, 11, 18, "stadium", false, "R. Francisco Alves do Vale, 197 - Novo Horizonte - SP, 14960-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJuxzFNW-OvpQRWogAC7l4WMo"],
     ["termas_ibira", "Termas de Ibirá (Balneário Águas Termais)", "circuito_turistico", -811, -576, 1, 22, 8, 16, "pool", false, "Termas de Ibirá, Ibirá - SP, 15860-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJxR9AA38lvJQRlYHWY1O8EG0"],
@@ -2562,7 +2566,7 @@
     ["parque_peao_barretos", "Parque do Peão Os Independentes (Barretos)", "circuito_turistico", -726, -583, 1, 28, 15, 20, "arena", false, "Rod. Brg. Faria Lima, Km 428 - Zona Rural, Barretos - SP, 14780-970", "http://www.independentes.com.br/"],
   ];
   const RIO_V51_SECTORS = [
-    ["centro_calcadao_andalo", "Centro & Andaló", "RIO_andalo_4", [-48, -34, -3, 29, 62, 100, 137, 154], -666, [[100, -648], [100, -666]]],
+    ["centro_calcadao_andalo", "Centro de Rio Preto & Andaló", "RIO_andalo_4", [-48, -34, -3, 29, 62, 100, 137, 154], -666, [[100, -648], [100, -666]]],
     ["bady_bassitt", "Av. Bady Bassitt", "RIO_oeste_1", [-302, -286, -248, -226], -481, [[-200, -464], [-226, -481]]],
     ["murchid_homsi", "Av. Murchid Homsi", "RIO_murchid_5", [449, 472, 511, 536], -472, [[438, -532], [448, -506], [449, -472]]],
     ["represa_lagos_damha", "Represa (Lagos 1-3) & Damha", "RIO_murchid_5", [467, 475, 476, 505, 508, 533, 541, 551], -554, [[438, -532], [459, -545], [467, -554]]],
@@ -2574,6 +2578,14 @@
     ["infra_aeroporto_rodovias", "Aeroporto, Recinto & Rodovias", "EXT_outer-link_5", [-413, -380, -344, -307, -268, -239, -220], -427, [[-200, -400], [-212, -414], [-220, -427]]],
     ["expansoes_ficticias", "Montanhas & Praia (Fictício)", "V51_engenheiro_schmitt_794", [752, 773, 812, 832], -516, [[794, -424], [806, -461], [806, -496], [806, -516]]],
   ];
+  // Frontages in the existing city. The fourth pair uses existing GPS nodes.
+  const RIO_CENTRO_FRONTAGES={
+    prefeitura_andalo:[110,-18,1,12,14,11,105,0],
+    mercado_municipal:[50,34,-1,13,6.5,10,68,38],
+    catedral_sao_jose:[-42,34,-1,13,17,11,-55,28],
+    calcadao_centro:[-42,-73,-1,13,5,11,-55,-55],
+    mcdonalds_andalo:[-22,-52,-1,12,5,10,0,-65]
+  };
   const RIO_V51 = (() => {
     const nodes={},highways=[],edges=[],sectors={},pointsByCoordinate=new Map();
     function chain(id,label,vertices,anchor,width,suffix="") {
@@ -2599,14 +2611,24 @@
       if(index<line.length-1)chain(id,label,line.slice(index),at,9,'-leste');
       sectors[id]={id,label,z,x:(xs[0]+xs.at(-1))/2,places:[]};
     }
-    const places=RIO_V51_PLACES.map(([key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop])=>{
-      const roadZ=sectors[sector].z;
+    const waterfront=[[551,-554],[561,-549],[561,-510],[460,-510],[438,-532]];
+    chain('orla-circular','Acesso de retorno · Represa',waterfront,pointsByCoordinate.get('551,-554'),8.5);
+    const trafficLoop=[...waterfront,[459,-545],[467,-554]];
+    sectors.centro_calcadao_andalo.x=12;
+    sectors.centro_calcadao_andalo.z=-10;
+    const places=RIO_V51_PLACES.map(([key,name,sector,originalX,originalZ,originalFace,originalW,originalH,originalD,shape,fictional,address,source,shop])=>{
+      const [x,z,face,w,h,d,navX,navZ]=RIO_CENTRO_FRONTAGES[key]||
+        [originalX,originalZ,originalFace,originalW,originalH,originalD,originalX,sectors[sector].z];
       const point={id:'regional-'+key,key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop,
-        visitX:x,visitZ:z+face*(d/2+2),navX:x,navZ:roadZ};
+        visitX:x,visitZ:z+face*(d/2+2),navX,navZ};
+      if(point.id===RIO_TEIXEIRAO_SITE.id){
+        const {entrance,road}=RIO_TEIXEIRAO_SITE;
+        Object.assign(point,{nativeVenue:'football',visitX:entrance.x,visitZ:entrance.z,navX:road.x,navZ:road.z});
+      }
       sectors[sector].places.push(point);
       return point;
     });
-    const protectedRects=places.map(p=>({id:p.id,kind:'regional-landmark',x:p.x,z:p.z,w:p.w+1,d:p.d+1,margin:.55}));
+    const protectedRects=places.filter(p=>!p.nativeVenue).map(p=>({id:p.id,kind:'regional-landmark',x:p.x,z:p.z,w:p.w+1,d:p.d+1,margin:.55}));
     // Six gates. The pedestrian course curves around the lakes and stays on land.
     const start={x:549,z:-573};
     const route=[start,{x:460,z:-573},{x:460,z:-635},{x:563,z:-635},{x:563,z:-573},start];
@@ -2624,7 +2646,7 @@
     }
     const lakes=[474,503,532].map((x,i)=>({id:'lake-'+(i+1),x,z:-611,w:24,d:27}));
     for(const lake of lakes)protectedRects.push({...lake,kind:'regional-lake'});
-    return {places,sectors,nodes,edges,highways,protectedRects,
+    return {places,sectors,nodes,edges,highways,protectedRects,trafficLoop,
       course:{id:'corrida_rua_represa_damha',name:'Corrida de Rua · Represa e Damha',start,route,gates,lakes}};
   })();
 
@@ -2854,7 +2876,7 @@
       urban:{id:'urban',name:'Centro urbano',x:0,z:0,w:118,d:104},
       residential:{id:'residential',name:'Bairros residenciais',x:-2,z:27,w:92,d:38},
       services:{id:'services',name:'Escolas e serviços',x:78,z:-18,w:70,d:106},
-      stadium:{id:'stadium',name:'Estádio e atletismo',x:42,z:88,w:62,d:44},
+      stadium:{id:'stadium',name:'Teixeirão e pista de atletismo',x:42,z:88,w:62,d:44},
       courts:{id:'courts',name:'Quadras de vôlei e futevôlei',x:91,z:95,w:34,d:24},
       kart:{id:'kart',name:'Autódromo Nova Aurora',x:300,z:-270,w:114,d:100},
       circuitCosta:{id:'circuitCosta',name:'Autódromo Costa Verde',x:-300,z:-210,w:108,d:96},
@@ -3515,7 +3537,7 @@
     { id:'farm', name:'Fazenda Comunitária', icon:'🌾', ...mapPointV704('farm'), group:'Trabalho' },
     ...METRO_STATIONS.map(s=>({id:`metro-${s.id}`,name:s.name,icon:'Ⓜ️',x:s.x,z:s.z,navX:s.navX,navZ:s.navZ,group:'Transporte'})),
     { id:'gym', name:'Complexo Esportivo', icon:'🏟️', ...mapPointV704('sportsEntrance'), group:'Esportes' },
-    { id:'football', name:'Futebol — entrada do campo', icon:'⚽', ...mapPointV704('footballEntrance'), group:'Esportes' },
+    { id:'football', name:'Teixeirão — futebol 4 × 4', icon:'⚽', ...mapPointV704('footballEntrance'), group:'Esportes' },
     { id:'volley', name:'Vôlei — entrada da quadra', icon:'🏐', ...mapPointV704('volleyEntrance'), group:'Esportes' },
     { id:'footvolley', name:'Futevôlei — entrada da quadra', icon:'🏖️', ...mapPointV704('footvolleyEntrance'), group:'Esportes' },
     { id:'kart', name:'Kartódromo OTTHI', icon:'🏁', ...mapPointV704('kartEntrance'), group:'Esportes' },
@@ -5261,7 +5283,7 @@
     return{group:root,body,limbs:{leftArm,rightArm,leftLeg,rightLeg},label,role,homeX:x,homeZ:z,speed:(role==='keeper'?3.25:3.7)*skill,cooldown:0,skill};
   }
   function v705AnimateAthlete(a,dt,targetX,targetZ,speedScale=1){if(!a?.group)return Infinity;const dx=targetX-a.group.position.x,dz=targetZ-a.group.position.z,d=Math.hypot(dx,dz);let moved=0;if(d>.08){const step=Math.min(d,a.speed*speedScale*dt);a.group.position.x+=dx/d*step;a.group.position.z+=dz/d*step;a.group.rotation.y=lerpAngle(a.group.rotation.y,Math.atan2(dx,dz),Math.min(1,dt*7));moved=step;}a.group.position.y=v705GroundY(a.group.position.x,a.group.position.z);const walk=moved>.001?Math.sin(animTime*10)*.65:0;if(a.limbs){a.limbs.leftArm.rotation.x=lerp(a.limbs.leftArm.rotation.x,walk,.22);a.limbs.rightArm.rotation.x=lerp(a.limbs.rightArm.rotation.x,-walk,.22);a.limbs.leftLeg.rotation.x=lerp(a.limbs.leftLeg.rotation.x,-walk*.75,.22);a.limbs.rightLeg.rotation.x=lerp(a.limbs.rightLeg.rotation.x,walk*.75,.22);}return d;}
-  function v705FieldLine(w,d,x,z){return stableBox(w,.025,d,0xffffff,x,.205,z,worldGroup,4);}
+  function v705FieldLine(w,d,x,z,y=.205){return stableBox(w,.025,d,0xffffff,x,y,z,worldGroup,4);}
   function v705AccessPath(path){const dx=Number(path.x2)-Number(path.x1),dz=Number(path.z2)-Number(path.z1),length=Math.hypot(dx,dz),mesh=new THREE.Mesh(new THREE.BoxGeometry(length+.15,.045,Number(path.w||2.2)),renderMat(0xd9d2bb,{roughness:.92}));mesh.position.set((Number(path.x1)+Number(path.x2))/2,.105,(Number(path.z1)+Number(path.z2))/2);mesh.rotation.y=Math.atan2(dx,dz);mesh.receiveShadow=true;mesh.userData.sportsAccess=true;worldGroup.add(mesh);return mesh;}
   function v705Goal(x,z,side){const g=new THREE.Group();g.position.set(x,0,z);worldGroup.add(g);const post=renderMat(0xffffff,{roughness:.65}),net=renderMat(0xe9f4ff,{transparent:true,opacity:.42,roughness:.9});box(.15,2.2,.15,post,0,1.1,-3.25,g);box(.15,2.2,.15,post,0,1.1,3.25,g);box(.15,.15,6.65,post,0,2.18,0,g);for(let zi=-3;zi<=3;zi+=.5)box(1.75,.025,.025,net,side*-.88,1.08,zi,g);for(let yi=.25;yi<2.15;yi+=.32)box(1.75,.025,.025,net,side*-.88,yi,0,g);return g;}
   function v705SetPrimaryAction(icon,label){const i=$('b',els.actionBtn),t=$('span',els.actionBtn);if(i)i.textContent=icon;if(t)t.textContent=label;if(els.actionBtn)els.actionBtn.setAttribute('aria-label',label);}
@@ -5287,19 +5309,94 @@
   function v705FootballEntrance(sports){const p=worldLayoutPoint('footballEntrance',{x:sports.centerX+8,z:sports.centerZ-19});return{x:Number(p.x),z:Number(p.z)};}
   function v705AthleticsPoint(gym,t,lane=0){const a=-Math.PI/2+((Number(t)||0)%1+1)%1*Math.PI*2,rx=Number(gym?.radiusX||26)+lane,rz=Number(gym?.radiusZ||14)+lane*.53;return{x:Number(gym?.centerX||42)+Math.cos(a)*rx,z:Number(gym?.centerZ||88)+Math.sin(a)*rz,heading:Math.atan2(-Math.sin(a)*rx,Math.cos(a)*rz)};}
   function v705AthleticsProgress(gym,x,z){const rx=Math.max(1,Number(gym?.radiusX||26)),rz=Math.max(1,Number(gym?.radiusZ||14)),a=Math.atan2((z-Number(gym?.centerZ||88))/rz,(x-Number(gym?.centerX||42))/rx),raw=(a+Math.PI/2)/(Math.PI*2);return(raw%1+1)%1;}
+  function buildTeixeiraoV705(sports,entrance){
+    const {centerX:cx,centerZ:cz,root}=sports;
+    const concrete=0xb7ada1,red=0xac3134,steel=0x403e45,copper=0x76292c,white=0xfcf2df;
+    const batches=new Map();
+    const box=(x,y,z,w,h,d,color)=>{
+      if(!batches.has(color))batches.set(color,[]);
+      batches.get(color).push({x:cx+x,y,z:cz+z,w,h,d});
+    };
+    const block=(x,z,w,d,h)=>registerCollider(cx+x,cz+z,w,d,{height:h,sportsStructure:true});
+    // Keep the west camera lane and both original pedestrian entrances open.
+    const stands=[[-16,-1,23],[18,-1,12],[-14,1,23],[14,1,23]];
+    for(const [x,side,w] of stands){
+      for(let row=0;row<5;row++){
+        const depth=17.65+row*.65,height=.48+row*.57;
+        box(x,height/2,side*depth,w,height,.66,concrete);
+        box(x,height+.065,side*depth,w-.18,.13,.58,row%4===3?copper:red);
+      }
+      box(x,1.9,side*21.12,w,3.8,.52,red);
+      box(x,3.87,side*21.12,w,.14,.62,white);
+      block(x,side*19.53,w,3.85,3.9);
+    }
+    for(const side of [-1,1]){
+      for(let row=0;row<4;row++){
+        const x=27.5+row*.75,height=.46+row*.57;
+        box(x,height/2,side*8.65,.76,height,6.9,concrete);
+        box(x,height+.06,side*8.65,.68,.12,6.72,red);
+      }
+      block(28.63,side*8.65,3.05,6.9,2.28);
+      for(const x of [-28.7,28.7]){
+        const z=side*17.35;
+        box(x,4.6,z,.27,9.2,.27,steel);
+        box(x,9.4,z,2.25,.73,.32,steel);
+        for(let i=-2;i<=2;i++)box(x+i*.40,9.4,z-side*.19,.31,.39,.09,white);
+        block(x,z,.31,.31,9.2);
+      }
+    }
+    const gateX=entrance.x-cx,gateZ=entrance.z-cz;
+    for(const side of [-1,1]){
+      box(gateX+side*2.4,1.65,gateZ,.45,3.3,.76,red);
+      block(gateX+side*2.4,gateZ,.45,.76,3.3);
+    }
+    box(gateX,3.42,gateZ,5.28,.58,1.12,red);
+    box(0,2.1,20.55,7.9,3.2,.63,steel);
+    block(0,20.55,7.9,.63,3.7);
+    for(const [color,items] of batches){
+      const mesh=v705BatchBoxes(items,renderMat(color,{roughness:.86}),root,'TEIXEIRAO_STRUCTURE');
+      if(mesh.isInstancedMesh){
+        mesh.geometry.boundingSphere=new THREE.Sphere(new THREE.Vector3(cx,4,cz),38);
+        mesh.frustumCulled=true;
+      }
+    }
+    const gateSign=new THREE.Mesh(new THREE.PlaneGeometry(5.05,.85),new THREE.MeshBasicMaterial({
+      map:signTexture('ESTÁDIO TEIXEIRÃO','#85232b','#fff3e6')
+    }));
+    gateSign.position.set(entrance.x,3.79,entrance.z-.57);gateSign.rotation.y=Math.PI;root.add(gateSign);
+
+    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=192;
+    const board=new THREE.CanvasTexture(canvas);board.minFilter=THREE.LinearFilter;board.generateMipmaps=false;
+    const sign=new THREE.Mesh(new THREE.PlaneGeometry(7.35,2.72),new THREE.MeshBasicMaterial({map:board}));
+    sign.name='TEIXEIRAO_SCOREBOARD';sign.position.set(cx,2.13,cz+20.21);sign.rotation.y=Math.PI;root.add(sign);
+    sports.scoreboard=sign;
+    sports.updateScoreboard=(home,away)=>{
+      const score=home+' × '+away;
+      if(sign.userData.score===score)return;
+      sign.userData.score=score;
+      const ctx=canvas.getContext('2d');ctx.fillStyle='#31212a';ctx.fillRect(0,0,512,192);
+      ctx.textAlign='center';ctx.fillStyle='#f8e0c7';ctx.font='bold 32px sans-serif';ctx.fillText('TEIXEIRÃO',256,48);
+      ctx.fillStyle='#ffdb87';ctx.font='bold 84px sans-serif';ctx.fillText(score,256,143);board.needsUpdate=true;
+    };
+    sports.updateScoreboard(0,0);
+  }
   function createSportsComplexV704(){
     if(SPORTS_V705.initialized)return world.sportsV704;const c=worldLayoutPoint('sports'),cx=c.x,cz=c.z,rx=26,rz=14;
     const sports={x:cx,z:cz,centerX:cx,centerZ:cz,radiusX:rx,radiusZ:rz,startX:cx,finishX:cx,fieldW:42,fieldD:18,trackStartT:0,trackCheckpoints:12,laneWidth:.9};const root=new THREE.Group();root.name='OTTHI_V705_SPORTS';worldGroup.add(root);sports.root=root;world.gym=sports;world.sportsV704=sports;
     const grass=renderMat(0x2f8246,{roughness:.95}),track=renderMat(0xb44a38,{roughness:.88}),white=renderMat(0xf8fafc,{roughness:.8});premiumBox(60,.1,34,0x2b6e3d,cx,.05,cz,worldGroup);
-    const trackSegments=[],trackStripes=[];for(let i=0;i<112;i++){const a=i/112*Math.PI*2,b=(i+1)/112*Math.PI*2,ax=cx+Math.cos(a)*rx,az=cz+Math.sin(a)*rz,bx=cx+Math.cos(b)*rx,bz=cz+Math.sin(b)*rz,len=Math.hypot(bx-ax,bz-az),tanX=bx-ax,tanZ=bz-az,n=Math.max(.001,Math.hypot(tanX,tanZ)),nx=-tanZ/n,nz=tanX/n,mx=(ax+bx)/2,mz=(az+bz)/2,ry=Math.atan2(tanX,tanZ);trackSegments.push({x:mx,y:.155,z:mz,w:len+.14,h:.09,d:7.2,ry,receiveShadow:true});for(const offset of[-2.7,-.9,.9,2.7])trackStripes.push({x:mx+nx*offset,y:.211,z:mz+nz*offset,w:len+.12,h:.016,d:.045,ry});}v705BatchBoxes(trackSegments,track,root,'OTTHI_ATHLETICS_TRACK');v705BatchBoxes(trackStripes,white,root,'OTTHI_ATHLETICS_LANES');
-    premiumBox(sports.fieldW,.08,sports.fieldD,grass,cx,.18,cz,worldGroup);v705FieldLine(sports.fieldW,.11,cx,cz-sports.fieldD/2);v705FieldLine(sports.fieldW,.11,cx,cz+sports.fieldD/2);v705FieldLine(.11,sports.fieldD,cx-sports.fieldW/2,cz);v705FieldLine(.11,sports.fieldD,cx+sports.fieldW/2,cz);v705FieldLine(.1,sports.fieldD,cx,cz);const circle=new THREE.Mesh(new THREE.RingGeometry(2.6,2.72,40),renderMat(0xffffff,{roughness:.8,side:THREE.DoubleSide}));circle.geometry.rotateX(-Math.PI/2);circle.position.set(cx,.23,cz);worldGroup.add(circle);for(const side of[-1,1]){v705FieldLine(6.5,.09,cx+side*(sports.fieldW/2-3.25),cz-5);v705FieldLine(6.5,.09,cx+side*(sports.fieldW/2-3.25),cz+5);v705FieldLine(.09,10,cx+side*(sports.fieldW/2-6.5),cz);v705Goal(cx+side*(sports.fieldW/2+.08),cz,side);}
+    const trackSegments=[],trackStripes=[];for(let i=0;i<112;i++){const a=i/112*Math.PI*2,b=(i+1)/112*Math.PI*2,ax=cx+Math.cos(a)*rx,az=cz+Math.sin(a)*rz,bx=cx+Math.cos(b)*rx,bz=cz+Math.sin(b)*rz,len=Math.hypot(bx-ax,bz-az),tanX=bx-ax,tanZ=bz-az,n=Math.max(.001,Math.hypot(tanX,tanZ)),nx=-tanZ/n,nz=tanX/n,mx=(ax+bx)/2,mz=(az+bz)/2,ry=Math.atan2(-tanZ,tanX);trackSegments.push({x:mx,y:.155,z:mz,w:len+.14,h:.09,d:7.2,ry,receiveShadow:true});for(const offset of[-2.7,-.9,.9,2.7])trackStripes.push({x:mx+nx*offset,y:.211,z:mz+nz*offset,w:len+.12,h:.016,d:.045,ry});}v705BatchBoxes(trackSegments,track,root,'OTTHI_ATHLETICS_TRACK');v705BatchBoxes(trackStripes,white,root,'OTTHI_ATHLETICS_LANES');
+    const fieldLine=(w,d,x,z)=>v705FieldLine(w,d,x,z,.235);
+    premiumBox(sports.fieldW,.08,sports.fieldD,grass,cx,.18,cz,worldGroup);fieldLine(sports.fieldW,.11,cx,cz-sports.fieldD/2);fieldLine(sports.fieldW,.11,cx,cz+sports.fieldD/2);fieldLine(.11,sports.fieldD,cx-sports.fieldW/2,cz);fieldLine(.11,sports.fieldD,cx+sports.fieldW/2,cz);fieldLine(.1,sports.fieldD,cx,cz);const circle=new THREE.Mesh(new THREE.RingGeometry(2.6,2.72,40),renderMat(0xffffff,{roughness:.8,side:THREE.DoubleSide}));circle.geometry.rotateX(-Math.PI/2);circle.position.set(cx,.23,cz);worldGroup.add(circle);for(const side of[-1,1]){fieldLine(6.5,.09,cx+side*(sports.fieldW/2-3.25),cz-5);fieldLine(6.5,.09,cx+side*(sports.fieldW/2-3.25),cz+5);fieldLine(.09,10,cx+side*(sports.fieldW/2-6.5),cz);v705Goal(cx+side*(sports.fieldW/2+.08),cz,side);}
     const start=v705AthleticsPoint(sports,0,0);for(let lane=-3;lane<=3;lane++){const p=v705AthleticsPoint(sports,0,lane*.45);premiumBox(.08,.035,7.1,0xffffff,p.x,.225,p.z,worldGroup);}
-    for(const side of[-1,1])for(let row=0;row<4;row++)premiumBox(35-row*1.25,.38,1.05,row%2?0x547998:0x6a8aa6,cx,.35+row*.4,cz+side*(17.3+row*.62),worldGroup);for(const p of[[cx-29,cz-16.8],[cx+29,cz-16.8],[cx-29,cz+16.8],[cx+29,cz+16.8]])createLamp(p[0],p[1]);const scoreBase=premiumBox(9,3.1,.8,0x17324d,cx,2,cz+20.2,worldGroup);scoreBase.userData.sportsStructure=true;const sign=new THREE.Mesh(new THREE.PlaneGeometry(7.8,1.45),new THREE.MeshStandardMaterial({map:signTexture('OTTHI ARENA  0 × 0','#102d4a','#ffffff'),roughness:.55,side:THREE.DoubleSide}));sign.position.set(cx,2.45,cz+19.75);sign.rotation.y=Math.PI;worldGroup.add(sign);sports.scoreboard=sign;
-    const hub=worldLayoutPoint('sportsEntrance',{x:cx,z:cz-22}),football=v705FootballEntrance(sports);createSignpost(hub.x,hub.z+.6,'🏟️ ESPORTES',Math.PI);createSignpost(football.x,football.z+.8,'⚽ FUTEBOL — JOGAR',Math.PI);for(const path of WORLD_LAYOUT_V704.paths.filter(item=>/^(complexo-esportivo|entrada-futebol|quadras-leste|quadra-)/.test(item.id)))v705AccessPath(path);
-    registerInteractable({id:'sports-hub-v7051',type:'sport',icon:'🏟️',label:'Central de Esportes — escolher jogo',x:hub.x,z:hub.z,radius:5.2,priority:180,action:v705SportsHubV7051});registerInteractable({id:'athletics-gym',type:'race',icon:'🏃',label:'Atletismo — corridas e voltas',x:cx-8,z:cz-19,radius:4.5,priority:184,action:()=>openRaceCenter()});registerInteractable({id:'football-v705',type:'sport',icon:'⚽',label:'Futebol — jogar partida',x:football.x,z:football.z,radius:5.2,priority:190,action:()=>openFootballV705()});registerInteractable({id:'football-field-v7051',type:'sport',icon:'⚽',label:'Futebol — iniciar partida',x:cx,z:cz-sports.fieldD/2-1.2,radius:4.6,priority:188,action:()=>openFootballV705()});createCourtV705('volley',worldLayoutPoint('volley'),false);createCourtV705('footvolley',worldLayoutPoint('footvolley'),true);SPORTS_V705.initialized=true;return sports;
+    const hub=worldLayoutPoint('sportsEntrance',{x:cx,z:cz-22}),football=v705FootballEntrance(sports);
+    buildTeixeiraoV705(sports,football);
+    createSignpost(hub.x,hub.z+.6,'🏟️ ESPORTES',Math.PI);
+    createSignpost(football.x,football.z+.8,'⚽ FUTEBOL — JOGAR',Math.PI);
+    for(const path of WORLD_LAYOUT_V704.paths.filter(item=>/^(complexo-esportivo|entrada-futebol|quadras-leste|quadra-)/.test(item.id)))v705AccessPath(path);
+    registerInteractable({id:'sports-hub-v7051',type:'sport',icon:'🏟️',label:'Central de Esportes — escolher jogo',x:hub.x,z:hub.z,radius:5.2,priority:180,action:v705SportsHubV7051});registerInteractable({id:'athletics-gym',type:'race',icon:'🏃',label:'Atletismo — corridas e voltas',x:cx-8,z:cz-19,radius:4.5,priority:184,action:()=>openRaceCenter()});registerInteractable({id:'football-v705',type:'sport',icon:'⚽',label:'Teixeirão — jogar futebol',x:football.x,z:football.z,radius:5.2,priority:190,action:()=>openFootballV705()});registerInteractable({id:'football-field-v7051',type:'sport',icon:'⚽',label:'Futebol — iniciar partida',x:cx,z:cz-sports.fieldD/2-1.2,radius:4.6,priority:188,action:()=>openFootballV705()});createCourtV705('volley',worldLayoutPoint('volley'),false);createCourtV705('footvolley',worldLayoutPoint('footvolley'),true);SPORTS_V705.initialized=true;return sports;
   }
   function createCourtV705(type,center,foot=false){const cx=center.x,cz=center.z,w=foot?10:12,d=18,base=foot?0xd9b576:0x4597ce;premiumBox(w,.1,d,base,cx,.08,cz,worldGroup);v705FieldLine(w,.1,cx,cz-d/2);v705FieldLine(w,.1,cx,cz+d/2);v705FieldLine(.1,d,cx-w/2,cz);v705FieldLine(.1,d,cx+w/2,cz);v705FieldLine(w,.07,cx,cz);const netH=foot?2.0:2.25;for(let y=.35;y<netH;y+=.26)premiumBox(w,.022,.022,0xf4f7fb,cx,y,cz,worldGroup);premiumBox(.14,netH+.3,.14,0xe7ecf2,cx-w/2,.5+netH/2,cz,worldGroup);premiumBox(.14,netH+.3,.14,0xe7ecf2,cx+w/2,.5+netH/2,cz,worldGroup);const label=foot?'Futevôlei':'Vôlei',entry=worldLayoutPoint(foot?'footvolleyEntrance':'volleyEntrance',{x:cx,z:cz-d/2-1}),c={id:`${type}-v705`,type,label,cx,cz,w,d,netH,foot,ball:null,shadow:null,team:[],opponents:[],score:[0,0],serving:0,state:'idle',touches:[0,0],lastSide:-1,timer:0,vx:0,vy:0,vz:0,pointLock:0,lastHintAt:0};SPORTS_V705.courts.set(type,c);createSignpost(entry.x,entry.z+.5,`${foot?'🏖️':'🏐'} ${label.toUpperCase()} — JOGAR`,Math.PI);registerInteractable({id:`${type}-v705`,type:'sport',icon:foot?'🏖️':'🏐',label:`${label} — jogar partida`,x:entry.x,z:entry.z,radius:4.8,priority:185,action:()=>openCourtV705(type)});}
-  function openFootballV705(){openModal('⚽ Futebol OTTHI',`<p><b>Partida 4 × 4.</b> Você joga com dois companheiros e goleiro contra três adversários e goleiro.</p><p><b>Joystick</b> conduz o jogador. Durante a partida os quatro botões nativos viram <b>CORRER</b>, <b>TOCAR</b>, <b>CHUTAR</b> e <b>CARRINHO</b>. Cada comando executa a ação no personagem e na bola.</p><div class="button-grid"><button id="footballSoloV705" class="primary">⚽ Jogar contra o computador</button><button id="footballOnlineV705">🌐 Entrar na partida compartilhada</button></div>`);setTimeout(()=>{const a=document.getElementById('footballSoloV705'),b=document.getElementById('footballOnlineV705');if(a)a.onclick=()=>startFootballV704('solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport('football'):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startFootballV704('online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
+  function openFootballV705(){openModal('⚽ Teixeirão — Futebol 4 × 4',`<p><b>Partida 4 × 4.</b> Você joga com dois companheiros e goleiro contra três adversários e goleiro.</p><p><b>Joystick</b> conduz o jogador. Durante a partida os quatro botões nativos viram <b>CORRER</b>, <b>TOCAR</b>, <b>CHUTAR</b> e <b>CARRINHO</b>. Cada comando executa a ação no personagem e na bola.</p><div class="button-grid"><button id="footballSoloV705" class="primary">⚽ Jogar contra o computador</button><button id="footballOnlineV705">🌐 Entrar na partida compartilhada</button></div>`);setTimeout(()=>{const a=document.getElementById('footballSoloV705'),b=document.getElementById('footballOnlineV705');if(a)a.onclick=()=>startFootballV704('solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport('football'):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startFootballV704('online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
   function openCourtV705(type){const c=SPORTS_V705.courts.get(type);if(!c)return;openModal(`${c.foot?'🏖️':'🏐'} ${c.label}`,`<p><b>${c.label} 2 × 2.</b> No online todos enxergam a mesma bola, placar e CPUs.</p><div class="button-grid"><button id="courtSoloV705" class="primary">🎮 Jogar solo</button><button id="courtOnlineV705">🌐 Entrar na partida compartilhada</button></div>`);setTimeout(()=>{const a=document.getElementById('courtSoloV705'),b=document.getElementById('courtOnlineV705');if(a)a.onclick=()=>startCourtV704(type,'solo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Conectando...';const joined=typeof multiplayerV2PrepareSport==='function'?await multiplayerV2PrepareSport(type):{ok:false,error:'Multiplayer V2 indisponível'};if(joined?.ok)startCourtV704(type,'online');else{b.disabled=false;b.textContent='🌐 Entrar na partida compartilhada';toast(joined?.error||'Não foi possível entrar na partida online.','warn',2600);}};},0);}
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
@@ -5327,20 +5424,20 @@
     k.assistProgress=best.t;return best;
   }
   function v705FootballReset(dir=0){const f=SPORTS_V705.football;if(!f)return;f.ball.position.set(f.cx,.52,f.cz);f.vx=dir*1.7;f.vz=0;f.cooldown=.8;f.possession=-1;for(const a of f.home.concat(f.away))a.group.position.set(a.homeX,0,a.homeZ);}
-  function startFootballV704(mode='solo'){if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('football'))){toast('Entre na sessão online antes de iniciar o futebol.','warn',2200);return;}closeModal();stopSportV704(false);const s=world.sportsV704,cx=s.centerX,cz=s.centerZ,ball=v705Ball(0xffffff,.46);ball.position.set(cx,.52,cz);const home=[v705Athlete(0x2f7ed6,cx-7,cz-4,'Ala azul','field',1.02),v705Athlete(0x2f7ed6,cx-3,cz+4,'Meia azul','field',.98),v705Athlete(0x2f7ed6,cx-s.fieldW/2+1.7,cz,'Goleiro azul','keeper',1)],away=[v705Athlete(0xe5484d,cx+5,cz-5,'Marcador vermelho','field',1.02),v705Athlete(0xe5484d,cx+7,cz+4,'Ala vermelho','field',.98),v705Athlete(0xcf3340,cx+11,cz,'Atacante vermelho','field',1.05),v705Athlete(0xf0a22e,cx+s.fieldW/2-1.7,cz,'Goleiro vermelho','keeper',1)];SPORTS_V705.football={type:'football',mode,cx,cz,w:s.fieldW,d:s.fieldD,ball,home,away,score:[0,0],time:150,vx:0,vz:0,cooldown:1,finished:false,possession:-1,countdown:3.2,lastOutAt:0,lastTackleAt:0};SPORTS_V705.active=SPORTS_V705.football;const onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('football'):0;player.x=cx-9+Math.min(2,onlineIndex)*2.2;player.z=cz+1.5+(onlineIndex%2?2.4:0);player.y=v705GroundY(player.x,player.z);player.vx=player.vz=0;v705SetPrimaryAction('⚽','Chutar');v705SetSpecial('↗️','Passe');configureSportControlsV705('football');v705Hud('⚽ Futebol OTTHI','3');toast('Valendo em 3 segundos. Conduza, passe e procure espaço para chutar.','good',3000);}
+  function startFootballV704(mode='solo'){if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('football'))){toast('Entre na sessão online antes de iniciar o futebol.','warn',2200);return;}closeModal();stopSportV704(false);v705UpdateScoreboard(0,0);const s=world.sportsV704,cx=s.centerX,cz=s.centerZ,ball=v705Ball(0xffffff,.46);ball.position.set(cx,.52,cz);const home=[v705Athlete(0x2f7ed6,cx-7,cz-4,'Ala azul','field',1.02),v705Athlete(0x2f7ed6,cx-3,cz+4,'Meia azul','field',.98),v705Athlete(0x2f7ed6,cx-s.fieldW/2+1.7,cz,'Goleiro azul','keeper',1)],away=[v705Athlete(0xe5484d,cx+5,cz-5,'Marcador vermelho','field',1.02),v705Athlete(0xe5484d,cx+7,cz+4,'Ala vermelho','field',.98),v705Athlete(0xcf3340,cx+11,cz,'Atacante vermelho','field',1.05),v705Athlete(0xf0a22e,cx+s.fieldW/2-1.7,cz,'Goleiro vermelho','keeper',1)];SPORTS_V705.football={type:'football',mode,cx,cz,w:s.fieldW,d:s.fieldD,ball,home,away,score:[0,0],time:150,vx:0,vz:0,cooldown:1,finished:false,possession:-1,countdown:3.2,lastOutAt:0,lastTackleAt:0};SPORTS_V705.active=SPORTS_V705.football;const onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('football'):0;player.x=cx-9+Math.min(2,onlineIndex)*2.2;player.z=cz+1.5+(onlineIndex%2?2.4:0);player.y=v705GroundY(player.x,player.z);player.vx=player.vz=0;v705SetPrimaryAction('⚽','Chutar');v705SetSpecial('↗️','Passe');configureSportControlsV705('football');v705Hud('⚽ Teixeirão','3');toast('Valendo em 3 segundos. Conduza, passe e procure espaço para chutar.','good',3000);}
   function v705FootballKick(power=10.2,target=null){const f=SPORTS_V705.football;if(!f||f.finished||f.countdown>0)return false;const d=Math.hypot(f.ball.position.x-player.x,f.ball.position.z-player.z);if(d>2.85)return false;let fx=Math.sin(player.facing),fz=Math.cos(player.facing);if(target){const dx=target.group.position.x-f.ball.position.x,dz=target.group.position.z-f.ball.position.z,n=Math.max(.001,Math.hypot(dx,dz));fx=dx/n;fz=dz/n;}else{const gx=f.cx+f.w/2+1,gz=f.cz,dx=gx-f.ball.position.x,dz=gz-f.ball.position.z,n=Math.max(.001,Math.hypot(dx,dz));fx=fx*.68+dx/n*.32;fz=fz*.68+dz/n*.32;const m=Math.max(.001,Math.hypot(fx,fz));fx/=m;fz/=m;}f.vx=fx*power+(player.vx||0)*.2;f.vz=fz*power+(player.vz||0)*.2;f.cooldown=.25;f.possession=-1;return true;}
   function footballKickV704(){const f=SPORTS_V705.football;if(!f)return false;if(f.mode==='online'&&v705GuestSportAction('football','kick')){v705PlayerSportAnimation('kick',420);vibrate(14);return true;}const ball=f.ball.position,d=Math.hypot(ball.x-player.x,ball.z-player.z);if(d>2.85){const enemy=f.away.filter(a=>a.role==='field').sort((a,b)=>Math.hypot(player.x-a.group.position.x,player.z-a.group.position.z)-Math.hypot(player.x-b.group.position.x,player.z-b.group.position.z))[0];if(enemy&&Math.hypot(player.x-enemy.group.position.x,player.z-enemy.group.position.z)<1.65&&Math.hypot(ball.x-enemy.group.position.x,ball.z-enemy.group.position.z)<1.9){const dx=ball.x-player.x,dz=ball.z-player.z,n=Math.max(.001,Math.hypot(dx,dz));f.vx=dx/n*5.8;f.vz=dz/n*5.8;f.cooldown=.35;v705PlayerSportAnimation('kick',380);toast('Desarme com chute!','good',650);return true;}toast('Chegue mais perto da bola para chutar.','warn',700);return false;}const ok=v705FootballKick(11.4);if(ok){v705PlayerSportAnimation('kick',420);toast('Chute!','good',600);vibrate(14);}return ok;}
   function v705FootballPass(){const f=SPORTS_V705.football;if(!f)return false;if(f.mode==='online'&&v705GuestSportAction('football','pass')){v705PlayerSportAnimation('pass',360);vibrate(10);return true;}const candidates=f.home.filter(a=>a.role==='field'),mate=candidates.sort((a,b)=>{const av=(a.group.position.x-f.ball.position.x)*1.5-Math.abs(a.group.position.z-f.ball.position.z),bv=(b.group.position.x-f.ball.position.x)*1.5-Math.abs(b.group.position.z-f.ball.position.z);return bv-av;})[0];const ok=v705FootballKick(7.8,mate);if(ok){v705PlayerSportAnimation('pass',360);toast(`Passe para ${mate.label}!`,'good',650);vibrate(10);}else toast('Aproxime-se da bola para tocar.','warn',700);return ok;}
   function v705CpuKick(f,a,towardRight,power=8.2,target=null){if(a.cooldown>0)return;let goalX=f.cx+(towardRight?f.w/2:-f.w/2),goalZ=f.cz+clamp((Math.random()-.5)*4.8,-2.8,2.8);if(target){goalX=target.group.position.x;goalZ=target.group.position.z;}const dx=goalX-f.ball.position.x,dz=goalZ-f.ball.position.z,n=Math.max(.001,Math.hypot(dx,dz));f.vx=dx/n*power;f.vz=dz/n*power;a.cooldown=.58;f.cooldown=.18;}
   function v705Keeper(f,k,x,dt){const ball=f.ball.position,tz=clamp(ball.z,f.cz-3,f.cz+3);v705AnimateAthlete(k,dt,x,tz,1.08);if(Math.hypot(ball.x-k.group.position.x,ball.z-k.group.position.z)<1.05){f.vx=(x<f.cx?1:-1)*8.0;f.vz=clamp((f.cz-ball.z)*.65,-2.8,2.8);k.cooldown=.7;f.cooldown=.22;}}
-  function updateFootballV704(dt){const f=SPORTS_V705.football;if(!f||f.finished)return;if(f.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('football')){if(typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('football')){v705ApplySportReplica('football',dt);return;}v705ConsumeRemoteSportInputs('football');}if(f.countdown>0){f.countdown=Math.max(0,f.countdown-dt);f.ball.position.set(f.cx,.52,f.cz);f.vx=f.vz=0;v705Hud('⚽ Futebol OTTHI',f.countdown>0?String(Math.ceil(f.countdown)):'VALENDO!');if(f.countdown===0)toast('Valendo!','good',800);if(f.mode==='online')v705PublishSport({type:'football'});return;}f.time=Math.max(0,f.time-dt);f.cooldown=Math.max(0,f.cooldown-dt);for(const a of f.home.concat(f.away))a.cooldown=Math.max(0,a.cooldown-dt);const ball=f.ball.position;ball.x+=f.vx*dt;ball.z+=f.vz*dt;const fr=Math.pow(.15,dt);f.vx*=fr;f.vz*=fr;f.ball.rotation.z-=f.vx*dt;f.ball.rotation.x+=f.vz*dt;const pd=Math.hypot(ball.x-player.x,ball.z-player.z),playerSpeed=Math.hypot(player.vx||0,player.vz||0);
+  function updateFootballV704(dt){const f=SPORTS_V705.football;if(!f||f.finished)return;if(f.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('football')){if(typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('football')){v705ApplySportReplica('football',dt);return;}v705ConsumeRemoteSportInputs('football');}if(f.countdown>0){f.countdown=Math.max(0,f.countdown-dt);f.ball.position.set(f.cx,.52,f.cz);f.vx=f.vz=0;v705Hud('⚽ Teixeirão',f.countdown>0?String(Math.ceil(f.countdown)):'VALENDO!');if(f.countdown===0)toast('Valendo!','good',800);if(f.mode==='online')v705PublishSport({type:'football'});return;}f.time=Math.max(0,f.time-dt);f.cooldown=Math.max(0,f.cooldown-dt);for(const a of f.home.concat(f.away))a.cooldown=Math.max(0,a.cooldown-dt);const ball=f.ball.position;ball.x+=f.vx*dt;ball.z+=f.vz*dt;const fr=Math.pow(.15,dt);f.vx*=fr;f.vz*=fr;f.ball.rotation.z-=f.vx*dt;f.ball.rotation.x+=f.vz*dt;const pd=Math.hypot(ball.x-player.x,ball.z-player.z),playerSpeed=Math.hypot(player.vx||0,player.vz||0);
     if(pd<1.28&&Math.hypot(f.vx,f.vz)<4.4&&f.cooldown<=0){const tx=player.x+Math.sin(player.facing)*.9,tz=player.z+Math.cos(player.facing)*.9;ball.x=lerp(ball.x,tx,Math.min(1,dt*11));ball.z=lerp(ball.z,tz,Math.min(1,dt*11));f.vx=(player.vx||0)*.7;f.vz=(player.vz||0)*.7;f.possession=0;}else f.possession=-1;if(f.mode==='online'&&typeof multiplayerV2SportIsHost==='function'&&multiplayerV2SportIsHost('football'))v705RemoteFootballCarry(f,dt);
     const homeField=f.home.filter(a=>a.role==='field'),awayField=f.away.filter(a=>a.role==='field');let homeChaser=homeField[0],homeBest=Infinity;for(const a of homeField){const d=Math.hypot(ball.x-a.group.position.x,ball.z-a.group.position.z);if(d<homeBest){homeBest=d;homeChaser=a;}}for(const a of homeField){const chase=a===homeChaser&&pd>2.2,tx=chase?ball.x:clamp(ball.x-4+(a===homeField[0]?2:-2),f.cx-f.w/2+4,f.cx+7),tz=chase?ball.z:(a===homeField[0]?f.cz-4:f.cz+4);v705AnimateAthlete(a,dt,tx,tz,chase?1.02:.86);if(chase&&Math.hypot(ball.x-a.group.position.x,ball.z-a.group.position.z)<1.05){const forward=a.group.position.x>f.cx+3;v705CpuKick(f,a,true,forward?9.1:7.2,forward?null:homeField.find(x=>x!==a));}}
     let awayChaser=awayField[0],awayBest=Infinity;for(const a of awayField){const d=Math.hypot(ball.x-a.group.position.x,ball.z-a.group.position.z);if(d<awayBest){awayBest=d;awayChaser=a;}}for(const a of awayField){const chase=a===awayChaser,idx=awayField.indexOf(a),tx=chase?ball.x:clamp(ball.x+5+idx*1.2,f.cx-1,f.cx+f.w/2-4),tz=chase?ball.z:f.cz+(idx-1)*4;v705AnimateAthlete(a,dt,tx,tz,chase?1.07:.84);if(chase&&awayBest<1.02){const shoot=ball.x<f.cx-2;v705CpuKick(f,a,false,shoot?9.2:7.1,shoot?null:awayField[(idx+1)%awayField.length]);}}
     v705Keeper(f,f.home.find(a=>a.role==='keeper'),f.cx-f.w/2+1.5,dt);v705Keeper(f,f.away.find(a=>a.role==='keeper'),f.cx+f.w/2-1.5,dt);
     const halfW=f.w/2,halfD=f.d/2,goal=Math.abs(ball.z-f.cz)<3.35;if(ball.x>f.cx+halfW){if(goal){f.score[0]++;toast('GOL DO SEU TIME!','good',1700);v705FootballReset(-1);}else{ball.x=f.cx+halfW-.55;ball.z=clamp(ball.z,f.cz-halfD+1,f.cz+halfD-1);f.vx=-2;f.vz=0;f.cooldown=.55;}}else if(ball.x<f.cx-halfW){if(goal){f.score[1]++;toast('Gol do adversário.','warn',1500);v705FootballReset(1);}else{ball.x=f.cx-halfW+.55;ball.z=clamp(ball.z,f.cz-halfD+1,f.cz+halfD-1);f.vx=2;f.vz=0;f.cooldown=.55;}}if(ball.z>f.cz+halfD||ball.z<f.cz-halfD){const side=ball.z>f.cz?1:-1;ball.z=f.cz+side*(halfD-.55);ball.x=clamp(ball.x,f.cx-halfW+2,f.cx+halfW-2);f.vx=0;f.vz=-side*1.3;f.cooldown=.55;if(performance.now()-f.lastOutAt>900){f.lastOutAt=performance.now();toast('Lateral — bola em jogo.','warn',650);}}
-    player.x=clamp(player.x,f.cx-halfW-1.1,f.cx+halfW+1.1);player.z=clamp(player.z,f.cz-halfD-1.1,f.cz+halfD+1.1);const nearBall=pd<2.3?' • AÇÃO: CHUTAR':'';v705Hud('⚽ Futebol OTTHI',`${Math.ceil(f.time)}s • ${f.score[0]} × ${f.score[1]}${nearBall}`);v705UpdateScoreboard(f.score[0],f.score[1]);v705PublishSport({type:'football',mode:f.mode,score:f.score,time:Math.ceil(f.time),ball:[+ball.x.toFixed(2),+ball.z.toFixed(2)]});if(f.time<=0||f.score[0]>=5||f.score[1]>=5){f.finished=true;const won=f.score[0]>f.score[1];addXP(won?60:26);if(won)addCoins(35);toast(won?'Vitória no futebol!':f.score[0]===f.score[1]?'Empate!':'Fim de jogo.','good',2200);setTimeout(()=>stopSportV704(false),1800);}}
-  function v705UpdateScoreboard(a,b){const sign=world.sportsV704?.scoreboard;if(!sign)return;const old=sign.material;sign.material=new THREE.MeshStandardMaterial({map:signTexture(`OTTHI ARENA  ${a} × ${b}`,'#102d4a','#ffffff'),roughness:.55,side:THREE.DoubleSide});old?.map?.dispose?.();old?.dispose?.();}
+    player.x=clamp(player.x,f.cx-halfW-1.1,f.cx+halfW+1.1);player.z=clamp(player.z,f.cz-halfD-1.1,f.cz+halfD+1.1);const nearBall=pd<2.3?' • AÇÃO: CHUTAR':'';v705Hud('⚽ Teixeirão',`${Math.ceil(f.time)}s • ${f.score[0]} × ${f.score[1]}${nearBall}`);v705UpdateScoreboard(f.score[0],f.score[1]);v705PublishSport({type:'football',mode:f.mode,score:f.score,time:Math.ceil(f.time),ball:[+ball.x.toFixed(2),+ball.z.toFixed(2)]});if(f.time<=0||f.score[0]>=5||f.score[1]>=5){f.finished=true;const won=f.score[0]>f.score[1];addXP(won?60:26);if(won)addCoins(35);toast(won?'Vitória no futebol!':f.score[0]===f.score[1]?'Empate!':'Fim de jogo.','good',2200);setTimeout(()=>stopSportV704(false),1800);}}
+  function v705UpdateScoreboard(a,b){world.sportsV704?.updateScoreboard?.(a,b);}
   function startCourtV704(type,mode='solo'){if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline(type))){toast('Entre na sessão online antes de iniciar.','warn',2200);return;}stopSportV704(false);closeModal();const c=SPORTS_V705.courts.get(type);if(!c)return;c.ball=c.ball||v705Ball(c.foot?0xffd24b:0xffffff,.39);if(!c.shadow){c.shadow=new THREE.Mesh(new THREE.CircleGeometry(.5,18),renderMat(0x111827,{transparent:true,opacity:.25,roughness:1,side:THREE.DoubleSide}));c.shadow.geometry.rotateX(-Math.PI/2);worldGroup.add(c.shadow);}if(!c.team.length)c.team=[v705Athlete(0x2f7ed6,c.cx-2,c.cz-4.5,`${c.label} parceiro`,'field',1.02)];if(!c.opponents.length)c.opponents=[v705Athlete(0x8b5cf6,c.cx-2,c.cz+4.5,`${c.label} CPU 1`,'field',1.0),v705Athlete(0xd66083,c.cx+2,c.cz+6,`${c.label} CPU 2`,'field',.97)];c.mode=mode;c.score=[0,0];c.touches=[0,0];c.lastSide=-1;c.serving=0;c.state='serve';c.timer=180;c.vx=c.vy=c.vz=0;c.pointLock=0;c.ball.position.set(c.cx,.75,c.cz-6);const onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex(type):0;player.x=c.cx+clamp(2-onlineIndex*2,-3,3);player.z=c.cz-6;player.y=v705GroundY(player.x,player.z);player.vx=player.vz=0;SPORTS_V705.active=c;v705SetPrimaryAction(c.foot?'🦶':'🏐',c.foot?'Dominar/Atacar':'Sacar/Atacar');v705SetSpecial('⬆️','Levantar');configureSportControlsV705(c.type);v705Hud(`${c.foot?'🏖️':'🏐'} ${c.label}`,'AÇÃO para sacar');toast(`${c.label}: mova-se até a sombra da bola. AÇÃO recebe/ataca e PODER levanta.`, 'good',3200);}
   function v705CourtSend(c,powerY,powerZ,targetX=0){c.vx=clamp((targetX-c.ball.position.x)*.72,-4.2,4.2);c.vz=powerZ;c.vy=powerY;c.state='rally';}
   function v705CourtContactWindow(c){const d=Math.hypot(c.ball.position.x-player.x,c.ball.position.z-player.z),maxY=c.foot?2.75:3.8;return d<2.55&&c.ball.position.y<maxY&&c.ball.position.z<c.cz+.7;}
@@ -5381,7 +5478,7 @@
   }
   function v705ApplyActorReplica(actor,row,dt){if(!actor?.group||!Array.isArray(row))return;const k=Math.min(1,dt*13);actor.group.position.x=lerp(actor.group.position.x,Number(row[0]||0),k);actor.group.position.y=lerp(actor.group.position.y,Number(row[1]||0),k);actor.group.position.z=lerp(actor.group.position.z,Number(row[2]||0),k);actor.group.rotation.y=lerpAngle(actor.group.rotation.y,Number(row[3]||0),k);}
   function v705ApplySportReplica(type,dt){const state=typeof multiplayerV2SportState==='function'?multiplayerV2SportState(type):null;if(!state||state.type!==type)return false;const age=clamp((Date.now()-Number(state.at||Date.now()))/1000,0,.14),k=Math.min(1,dt*15);
-    if(type==='football'){const f=SPORTS_V705.football;if(!f)return false;f.countdown=Number(state.countdown??f.countdown);f.time=Number(state.time??f.time);f.score=[Number(state.score?.[0]||0),Number(state.score?.[1]||0)];f.finished=!!state.finished;const b=state.ball;if(Array.isArray(b)){f.ball.position.x=lerp(f.ball.position.x,Number(b[0]||0)+Number(b[3]||0)*age,k);f.ball.position.y=lerp(f.ball.position.y,Number(b[1]||.52),k);f.ball.position.z=lerp(f.ball.position.z,Number(b[2]||0)+Number(b[5]||0)*age,k);f.vx=Number(b[3]||0);f.vz=Number(b[5]||0);}for(let i=0;i<f.home.length;i++)v705ApplyActorReplica(f.home[i],state.home?.[i],dt);for(let i=0;i<f.away.length;i++)v705ApplyActorReplica(f.away[i],state.away?.[i],dt);v705UpdateScoreboard(f.score[0],f.score[1]);v705Hud('⚽ Futebol OTTHI',f.countdown>0?String(Math.ceil(f.countdown)):`${Math.ceil(f.time)}s • ${f.score[0]} × ${f.score[1]} • ONLINE`);return true;}
+    if(type==='football'){const f=SPORTS_V705.football;if(!f)return false;f.countdown=Number(state.countdown??f.countdown);f.time=Number(state.time??f.time);f.score=[Number(state.score?.[0]||0),Number(state.score?.[1]||0)];f.finished=!!state.finished;const b=state.ball;if(Array.isArray(b)){f.ball.position.x=lerp(f.ball.position.x,Number(b[0]||0)+Number(b[3]||0)*age,k);f.ball.position.y=lerp(f.ball.position.y,Number(b[1]||.52),k);f.ball.position.z=lerp(f.ball.position.z,Number(b[2]||0)+Number(b[5]||0)*age,k);f.vx=Number(b[3]||0);f.vz=Number(b[5]||0);}for(let i=0;i<f.home.length;i++)v705ApplyActorReplica(f.home[i],state.home?.[i],dt);for(let i=0;i<f.away.length;i++)v705ApplyActorReplica(f.away[i],state.away?.[i],dt);v705UpdateScoreboard(f.score[0],f.score[1]);v705Hud('⚽ Teixeirão',f.countdown>0?String(Math.ceil(f.countdown)):`${Math.ceil(f.time)}s • ${f.score[0]} × ${f.score[1]} • ONLINE`);return true;}
     if(type==='volley'||type==='footvolley'){const c=SPORTS_V705.courts.get(type);if(!c?.ball)return false;c.timer=Number(state.timer??c.timer);c.state=String(state.state||c.state);c.serving=Number(state.serving??c.serving);c.score=[Number(state.score?.[0]||0),Number(state.score?.[1]||0)];c.touches=[Number(state.touches?.[0]||0),Number(state.touches?.[1]||0)];c.lastSide=Number(state.lastSide??c.lastSide);const b=state.ball;if(Array.isArray(b)){c.ball.position.x=lerp(c.ball.position.x,Number(b[0]||0)+Number(b[3]||0)*age,k);c.ball.position.y=lerp(c.ball.position.y,Number(b[1]||0)+Number(b[4]||0)*age,k);c.ball.position.z=lerp(c.ball.position.z,Number(b[2]||0)+Number(b[5]||0)*age,k);c.vx=Number(b[3]||0);c.vy=Number(b[4]||0);c.vz=Number(b[5]||0);}for(let i=0;i<c.team.length;i++)v705ApplyActorReplica(c.team[i],state.team?.[i],dt);for(let i=0;i<c.opponents.length;i++)v705ApplyActorReplica(c.opponents[i],state.opponents?.[i],dt);if(c.shadow){c.shadow.visible=true;c.shadow.position.set(c.ball.position.x,.24,c.ball.position.z);}v705Hud(`${c.foot?'🏖️':'🏐'} ${c.label}`,`${c.score[0]} × ${c.score[1]} • ONLINE`);return true;}
     if(type==='kart'){const krt=SPORTS_V705.kart;if(!krt?.active)return false;krt.countdown=Number(state.countdown??krt.countdown);for(let i=0;i<krt.ai.length;i++){const src=state.ai?.[i];if(!src)continue;v705ApplyActorReplica(krt.ai[i],src.pose,dt);krt.ai[i].t=Number(src.t??krt.ai[i].t);krt.ai[i].lap=Number(src.lap??krt.ai[i].lap);krt.ai[i].finished=!!src.finished;}return true;}return false;
   }
@@ -9450,7 +9547,7 @@
     clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(arrivedInRio)toast('Rio Preto · Represa e Complexo Swift','good',3200);
     else if(visitRio)toast('A entrada da Represa está ocupada. Você abriu na posição salva.','info',3800);
-    else toast('Bem-vindo à Vila do Sol!','good',2200);
+    else toast('Bem-vindo a São José do Rio Preto!','good',2200);
   }
 
   let consoleLeaving=false;
@@ -13835,15 +13932,15 @@ function precompile(T,renderer,scene,camera){
   for(const[i,x,z]of[[0,11,179],[1,27,176],[2,10,-154],[3,37,-154]])addResident('travel-resident-'+i,['Luís','Fernanda','Joana','Henrique'][i],[{x,z,action:'look',duration:9},{x:x+4,z,action:'walk'},{x:x+4,z:z+2,action:'talk',duration:9}],[0x567b99,0xa5685b,0x6d927a,0xa58d51][i]);worldResidents.ready=true;
  }
  function poseResident(npc,action,time,seat){
-  const l=npc.limbs,w=Math.sin(time*7.5+npc.phase),walk=action==='walk',swim=action==='swim',sitting=seat!==undefined;npc.lifeAction=action;npc.group.rotation.x=swim?-1.22:0;npc.group.position.y=swim?-.06:sitting?Number(seat)-.82*npc.group.scale.y:groundHeightAt(npc.group.position.x,npc.group.position.z);
+  const l=npc.limbs,w=Math.sin(time*(action==='run'?12:7.5)+npc.phase),walk=action==='walk'||action==='run',swim=action==='swim',sitting=seat!==undefined;npc.lifeAction=action;npc.group.rotation.x=swim?-1.22:0;npc.group.position.y=swim?-.06:sitting?Number(seat)-.82*npc.group.scale.y:groundHeightAt(npc.group.position.x,npc.group.position.z);
   if(l){l.leftLeg.rotation.x=swim?w*.35:sitting?-1.25:walk?-w*.4:0;l.rightLeg.rotation.x=swim?-w*.35:sitting?-1.25:walk?w*.4:0;l.leftArm.rotation.x=swim?-1.5+w*.7:walk?w*.5:action==='stretch'?-2.1+Math.sin(time*2)*.25:action==='eat'?-.45:0;l.rightArm.rotation.x=swim?-1.5-w*.7:walk?-w*.5:action==='eat'?-1.2-Math.sin(time*3)*.35:action==='talk'?-.7-Math.sin(time*4)*.22:action==='serve'?-1:action==='stretch'?-2.1-Math.sin(time*2)*.25:0;}
   if(npc.body)npc.body.position.y=1.28+(walk?Math.abs(w)*.023:Math.sin(time*2)*.006);
   if(!npc.mealProp&&action==='eat'){npc.mealProp=new THREE.Mesh(new THREE.SphereGeometry(.11,8,6),renderMat(0xd3a268));npc.mealProp.scale.y=.50;npc.mealProp.position.set(0,-.66,.07);l.rightArm.add(npc.mealProp);}if(npc.mealProp)npc.mealProp.visible=action==='eat';
  }
  function updateWorldResidents(){
   ensureWorldResidents();if(!worldResidents.ready||paused)return;const now=performance.now(),dt=Math.min(.10,Math.max(0,(now-(worldResidents.lastAt||now))/1000)),time=now/1000,focus=otGamesFocus(),authority=typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority();worldResidents.lastAt=now;worldResidents.ticks++;
-  for(const n of worldResidents.actors){if(n.following||n.passengerMode||n.pendingRide||n.coopRaceMode)continue;const distant=Math.hypot(focus.x-n.group.position.x,focus.z-n.group.position.z)>125;let actorDt=dt;if(distant){if(now<Number(n.nextBackgroundLifeAt||0))continue;actorDt=Math.min(1,Math.max(0,(now-Number(n.lastLifeAt||now))/1000));n.nextBackgroundLifeAt=now+1000;}n.lastLifeAt=now;const r=n.routine;if(!r){poseResident(n,now<(n.servingUntil||0)?'serve':'work',time);continue;}const p=r.stops[r.index],dx=p.x-n.group.position.x,dz=p.z-n.group.position.z,d=Math.hypot(dx,dz);let action=p.action||'look',seat;
-   if(d>.22){action=p.action==='swim'?'swim':'walk';if(authority&&actorDt){if(action==='swim'){const step=Math.min(d,actorDt*.75);n.group.position.x+=dx/d*step;n.group.position.z+=dz/d*step;n.group.rotation.y=Math.atan2(dx,dz);}else if(Math.hypot(player.x-n.group.position.x,player.z-n.group.position.z)>1.1)v705NpcWalk(n,actorDt,p,1.15);}r.remaining=0;}else{seat=p.seat;if(p.yaw!==undefined)n.group.rotation.y=p.yaw;if(!r.remaining)r.remaining=Number(p.duration)||.15;r.remaining-=actorDt;if(r.remaining<=0){r.index=(r.index+1)%r.stops.length;r.remaining=0;}}if(distant){n.lifeAction=action;n.group.position.y=groundHeightAt(n.group.position.x,n.group.position.z);}else poseResident(n,action,time,seat);
+  for(const n of worldResidents.actors){if(n.following||n.passengerMode||n.pendingRide||n.coopRaceMode)continue;const distant=Math.hypot(focus.x-n.group.position.x,focus.z-n.group.position.z)>125;if(distant&&n.rioCityLocal)continue;let actorDt=dt;if(distant){if(now<Number(n.nextBackgroundLifeAt||0))continue;actorDt=Math.min(1,Math.max(0,(now-Number(n.lastLifeAt||now))/1000));n.nextBackgroundLifeAt=now+1000;}n.lastLifeAt=now;const r=n.routine;if(!r){poseResident(n,now<(n.servingUntil||0)?'serve':'work',time);continue;}const p=r.stops[r.index],dx=p.x-n.group.position.x,dz=p.z-n.group.position.z,d=Math.hypot(dx,dz);let action=p.action||'look',seat;
+   if(d>.22){action=p.action==='swim'?'swim':p.action==='run'?'run':'walk';if((authority||n.rioCityLocal)&&actorDt){if(action==='swim'){const step=Math.min(d,actorDt*.75);n.group.position.x+=dx/d*step;n.group.position.z+=dz/d*step;n.group.rotation.y=Math.atan2(dx,dz);}else if(Math.hypot(player.x-n.group.position.x,player.z-n.group.position.z)>1.1)v705NpcWalk(n,actorDt,p,action==='run'?3.05:1.15);}r.remaining=0;}else{seat=p.seat;if(p.yaw!==undefined)n.group.rotation.y=p.yaw;if(!r.remaining)r.remaining=Number(p.duration)||.15;r.remaining-=actorDt;if(r.remaining<=0){r.index=(r.index+1)%r.stops.length;r.remaining=0;}}if(distant){n.lifeAction=action;n.group.position.y=groundHeightAt(n.group.position.x,n.group.position.z);}else poseResident(n,action,time,seat);
   }
  }
  const residentsPreviousExpansion=updateWorldExpansion;updateWorldExpansion=function(){residentsPreviousExpansion();updateWorldResidents();};
@@ -16067,7 +16164,7 @@ function precompile(T,renderer,scene,camera){
 
   function rioV51Building(batch,p,draw){
     const {box,collider,part}=draw,{w,h,d,shape}=p;
-    const [wall,accent]=rioV51Palette[shape],front=d/2-.6;
+    const [wall,accent]=rioV51Palette[shape],front=d/2-.37;
     if(shape==='gate'){
       for(const side of [-1,1]){
         box(side*w*.36,1.7,0,w*.25,3.4,d-1,wall);
@@ -16099,10 +16196,17 @@ function precompile(T,renderer,scene,camera){
     box(0,1.65,front+.08,3.2,3.3,.16,0x34616f);
     box(0,3.45,front+.80,Math.min(8,w*.52),.28,1.85,accent);
     if(shape==='church'){
+      for(const side of [-1,1]){
+        box(side*w*.36,shellH*.68,-d*.30,w*.17,shellH*1.35,d*.21,wall);
+        part('hip',side*w*.36,shellH*1.42,-d*.30,w*.20,2,d*.23,accent);
+      }
+      part('post',0,shellH*.66,front+.17,1.9,.19,1.9,0xded1b9,0,Math.PI/2);
       box(0,h*.74,-d*.32,w*.24,h*.52,d*.17,wall);
       box(0,h+.42,-d*.32,.22,1.8,.22,0xd5aa63);
       box(0,h+.61,-d*.32,1.3,.22,.22,0xd5aa63);
     }else if(shape==='swift'){
+      for(const x of [-.43,-.24,.24,.43])box(x*w,shellH*.46,front+.17,.43,shellH*.92,.26,accent);
+      box(0,shellH*.86,front+.18,w*.89,.31,.26,accent);
       part('post',-w*.36,h*.58,-d*.32,1.15,h*1.16,1.15,wall);
     }else if(shape==='tower'||shape==='terminal'){
       box(-w*.32,shellH+.6,-d*.17,w*.22,1.2,d*.22,accent);
@@ -16176,6 +16280,7 @@ function precompile(T,renderer,scene,camera){
     if(rioV51Palette[p.shape])rioV51Building(batch,p,draw);
     else rioV51Outdoors(p,draw);
     draw.box(0,.08,p.d/2+1.65,Math.min(p.w,7.3),.13,3.45,0xd4c8ab);
+    if(typeof decorateRioCitySite==='function')decorateRioCitySite(p,draw);
     const tall=!!rioV51Palette[p.shape]&&p.shape!=='gate',signY=tall?Math.min(p.h*.44,4.55):p.shape==='gate'?3.82:1.45;
     draw.sign(p.name,0,signY,p.d/2+.04+(p.shape==='gate'?.9:0),Math.min(p.w-.8,16),.86, p.fictional?'#775e39':'#284d54');
   }
@@ -16210,16 +16315,21 @@ function precompile(T,renderer,scene,camera){
   }
 
   function rioV51Location(p){
+    if(p.nativeVenue==='football')return{id:p.id,name:p.name,icon:'⚽',group:RIO_V51.sectors[p.sector].label,
+      x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
+      description:'Estádio jogável inspirado no Benedito Teixeira, com partidas de futebol 4 × 4 e pista de atletismo.'};
     return{id:p.id,name:p.name,icon:p.fictional?'🌄':'📍',group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
       description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
   }
   function rioV51Visit(p){
+    if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return openShop();
     if(p.shop)return openCityShop(p.id);
     if(p.key==='prefeitura_andalo')return openCivilMissions();
     if(p.key==='aeroporto_sjrp')return openFlightAcademy();
+    if(typeof openRioCitySite==='function'&&openRioCitySite(p))return true;
     const label=p.fictional?'Área fictícia do OTTHI World.':'Fachada estilizada em posição adaptada dentro do jogo.';
     openModal(p.name,'<p>'+label+'</p>'+(p.fictional?'':'<p>Endereço de referência: '+escapeHtml(p.address)+'</p>')+
       '<button class="btn primary" data-rio-visit-close>Voltar ao passeio</button>',root=>{
@@ -16230,6 +16340,7 @@ function precompile(T,renderer,scene,camera){
   function rioV51Register(){
     rioV51World.registered=true;
     for(const p of RIO_V51.places){
+      if(p.nativeVenue)continue;
       if(['market','fastfood','cafe'].includes(p.shop))cityCoast.shops.set(p.id,{
         id:p.id,label:p.name,kind:p.shop,x:p.x,z:p.visitZ,navX:p.visitX,navZ:p.visitZ,
         face:p.face,description:'Itens do comércio do OTTHI World.'
@@ -16261,7 +16372,11 @@ function precompile(T,renderer,scene,camera){
     if(existing)return existing;
     const root=new THREE.Group();root.name='RIO_V51_'+sector.id;root.visible=false;
     const batch=rioCreateBatch(root);batch.root=root;
-    for(const p of sector.places)rioV51DrawPlace(batch,p);
+    for(const p of sector.places){
+      if(p.nativeVenue)continue;
+      rioV51DrawPlace(batch,p);
+      if(typeof addRioCityLights==='function')addRioCityLights(p,root);
+    }
     if(sector.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
     batch.commit();
     worldGroup.add(root);rioV51World.roots.set(sector.id,root);
@@ -16375,5 +16490,338 @@ function precompile(T,renderer,scene,camera){
       course:{record:rioStreetRecord(),active:activeRace?.type==='rio-street'?{...activeRace}:null}}),
     locations:()=>RIO_V51.places.map(rioV51Location)
   });
+
+  // ===== MODULE: 85-rio-city-activities.js =====
+  const RIO_CITY_ACTIVITIES={
+    complexo_swift:['theater','Preparar a sessão no Teatro Paulo Moura','Separar os programas na bilheteria','Ligar a luz do palco'],
+    dona_capi:['nature','Observar a fauna da Represa','Consultar a placa das capivaras','Observar a margem em silêncio'],
+    ponte_julio_zacarin:['walk','Vistoriar a travessia da Ponte Júlio Zacarin','Conferir o acesso dos pedestres','Checar a sinalização na outra ponta'],
+    posto_brasilia:['service','Organizar a parada no Posto Brasília','Conferir a área de parada','Separar o material de limpeza dos vidros'],
+    riopreto_shopping:['mall','Retirar uma encomenda no Riopreto Shopping','Confirmar a retirada no balcão','Receber o pacote no setor de entregas'],
+    shopping_iguatemi:['theater','Sessão de cinema no Iguatemi','Retirar o bilhete na bilheteria','Conferir o painel de salas'],
+    plaza_avenida:['mall','Ajudar na praça de alimentação','Separar as bandejas limpas','Levar as bandejas ao balcão'],
+    obelisco_espanha:['heritage','Percorrer a Plaza de España','Observar a base do obelisco','Ler o painel da praça'],
+    centro_eventos:['theater','Preparar a entrada de um evento','Organizar o balcão de credenciamento','Conferir o painel de recepção'],
+    catedral_sao_jose:['heritage','Circuito da Catedral São José','Observar as torres da Catedral','Ler o painel da Praça Dom José Marcondes'],
+    calcadao_centro:['mall','Organizar a banca do Calçadão','Abrir a banca de rua','Separar os pedidos no balcão'],
+    austa_hospital:['service','Organizar a recepção do hospital','Conferir a entrada de atendimento','Preparar a mesa da recepção'],
+    shopping_cidade_norte:['mall','Preparar a abertura do Cidade Norte','Conferir o balcão de informações','Arrumar a entrada da praça de alimentação'],
+    corredor_mirassolandia:['walk','Conferir a travessia da Mirassolândia','Verificar a placa de travessia','Revisar a calçada do outro lado do acesso'],
+    cachoeira_troca_oleo:['service','Organizar a baia de serviço','Preparar a bancada da revisão','Separar os recipientes de reciclagem'],
+    upa_norte:['service','Preparar a recepção da UPA Norte','Organizar as fichas de atendimento','Conferir a entrada da ambulância'],
+    cemiterio_sao_joao_batista:['heritage','Conservar a entrada do São João Batista','Consultar o painel histórico','Organizar os vasos do jardim'],
+    recinto_exposicoes:['theater','Preparar uma feira no Recinto','Organizar a banca de exposições','Abrir o ponto de credenciamento'],
+    posto_prf_br153:['service','Orientação na parada da BR-153','Conferir o painel da rodovia','Preparar o ponto de orientação'],
+    base_pmrv_sp310:['service','Orientação na parada da SP-310','Conferir a placa da Washington Luís','Organizar os cones da área de apoio'],
+    estacao_schmitt:['heritage','Memória ferroviária de Engenheiro Schmitt','Consultar o painel da estação','Conferir o relógio da plataforma'],
+    montanhas_rios_italia:['nature','Trilha do mirante','Conferir o início da trilha','Observar o mirante'],
+    praia_cedral:['nature','Cuidar da praia fictícia de Cedral','Conferir o acesso pela areia','Organizar a estação de coleta'],
+    estadio_anisio_haddad:['sport','Aquecimento no Anísio Haddad','Posicionar a bola no ponto de treino','Chutar ao gol'],
+    estadio_maiao:['sport','Aquecimento no Maião','Posicionar a bola no ponto de treino','Chutar ao gol'],
+    estadio_jorjao:['sport','Aquecimento no Jorjão','Posicionar a bola no ponto de treino','Chutar ao gol'],
+    termas_ibira:['nature','Circuito do Balneário de Ibirá','Conferir a entrada do balneário','Observar o jardim das termas'],
+    thermas_laranjais:['nature','Preparar a área de descanso das Thermas','Verificar o acesso à área de lazer','Organizar os bancos e a sinalização'],
+    parque_peao_barretos:['theater','Preparar o acesso à arena de Barretos','Conferir a entrada das arquibancadas','Preparar a iluminação da recepção']
+  };
+  const rioActivityRuntime={stations:new Map(),lights:new Map(),lampGeometry:null,cue:null,ball:null,shot:null};
+  const rioActivityColors={theater:0xba805e,heritage:0xb6a88e,nature:0x587a5b,
+    walk:0x528b88,service:0x647e8c,mall:0xaa7251,sport:0x42755b};
+  function decorateRioCitySite(p,draw){
+    const kind=RIO_CITY_ACTIVITIES[p.key]?.[0];
+    if(!kind&&p.shape!=='market')return;
+    const front=p.d/2+.93,accent=rioActivityColors[kind]||0x7c3835;
+    for(const side of [-1,1]){
+      const x=side*Math.min(p.w*.34,5.5);
+      if(kind==='nature'||kind==='heritage'||kind==='walk'){
+        draw.box(x,.28,front,.87,.56,.79,0xb5a38c);
+        draw.part('canopy',x,.75,front,1.06,.69,.92,0x688551);
+      }else{
+        draw.box(x,1.26,front,.2,2.52,.21,0x5a6267);
+        draw.box(x,2.61,front,2.28,.18,1.59,accent);
+        draw.box(x,.62,front,1.92,1.24,.41,0xc0aa8b);
+      }
+    }
+    if(p.key==='calcadao_centro'){
+      for(let row=0;row<4;row++)for(let col=-5;col<=5;col++){
+        const stripe=((col+row+6)%5===0||(col+row+5)%5===0);
+        draw.box(col*.87,.119,front+.22+row*.54,.85,.055,.52,stripe?0x667474:0xe8dcca);
+      }
+    }
+    if(kind==='sport'){
+      const side=Math.min(5.4,Math.max(p.w*.27,3.1))*p.face;
+      for(const x of [-1.12,1.12])draw.box(side+x,.6,p.d/2+7,.085,1.2,.085,0xe7eee7);
+      draw.box(side,1.2,p.d/2+7,2.3,.085,.085,0xe7eee7);
+    }
+    if(p.shape==='market'){
+      for(const side of [-1,1])for(let i=0;i<4;i++){
+        const x=side*(1.8+i*.43);
+        draw.box(x,2.72,front,.45,.14,1.22,i%2?0xffead7:0xaf6749);
+        draw.part('canopy',x,1.29,front,.36,.29,.32,i%2?0xd3a040:0x6c9250);
+      }
+    }
+  }
+  function addRioCityLights(p,root){
+    if(RIO_CITY_ACTIVITIES[p.key]?.[0]!=='theater')return;
+    rioActivityRuntime.lampGeometry??=new THREE.SphereGeometry(.22,8,6);
+    const lights=new THREE.Group();
+    lights.name='RIO_CITY_SHOW_'+p.key;
+    const ground=groundHeightAt(p.x,p.z);
+    for(const side of [-1,1]){
+      const bulb=new THREE.Mesh(rioActivityRuntime.lampGeometry,renderMat(0xffd09b,{emissive:0xff9e54,emissiveIntensity:1.3}));
+      bulb.position.set(p.x+side*Math.min(p.w*.34,5.5),ground+2.43,p.z+p.face*(p.d/2+1.24));lights.add(bulb);
+    }
+    lights.visible=false;root.add(lights);
+    rioActivityRuntime.lights.set(p.key,lights);
+  }
+  function rioActivityProfile(){return state.cityServices;}
+  function rioCurrentActivity(){
+    const active=rioActivityProfile().rioCityActivity;
+    return active&&Object.hasOwn(RIO_CITY_ACTIVITIES,active.key)&&[0,1].includes(active.step)?active:null;
+  }
+  function registerRioCityActivities(){
+    if(rioActivityRuntime.stations.size)return;
+    CHARACTER_ACTIVITIES['rio-city-work']=['Executando atividade',.85];
+    for(const p of RIO_V51.places){
+      const spec=RIO_CITY_ACTIVITIES[p.key];
+      if(!spec)continue;
+      const separation=Math.min(5.4,Math.max(p.w*.27,3.1));
+      const points=[-1,1].map(side=>({x:p.visitX+side*separation,z:p.visitZ}));
+      rioActivityRuntime.stations.set(p.key,points);
+      for(const [index,point] of points.entries()){
+        registerInteractable({id:'rio-work-'+p.key+'-'+index,type:'activity',icon:'●',label:spec[index+2],
+          ...point,radius:2,priority:265,
+          available:()=>{const a=rioCurrentActivity();return a?.key===p.key&&a.step===index&&!player.vehicle&&!player.boating&&!currentHouse&&!otGames.active&&!activeRace;},
+          action:()=>runRioCityStation(p,index)});
+      }
+    }
+  }
+  function openRioCitySite(p){
+    const spec=RIO_CITY_ACTIVITIES[p.key];
+    if(!spec)return false;
+    const active=rioCurrentActivity(),current=active?.key===p.key,done=rioActivityProfile().rioCityCompleted?.[p.key];
+    const intro=p.fictional?'Área fictícia do jogo.':'Atividade do jogo inspirada neste local.';
+    const button=active&&!current?'<button class="btn" data-rio-work-stop>Encerrar atividade atual</button>':
+      '<button class="btn primary" data-rio-work-start>'+(current?'Retomar na rua':done?'Repetir atividade':'Começar atividade')+'</button>';
+    openModal(p.name,'<h3>'+escapeHtml(spec[1])+'</h3><p>'+intro+'</p><ol><li>'+escapeHtml(spec[2])+
+      '</li><li>'+escapeHtml(spec[3])+'</li></ol>'+
+      (current?'<p>Próxima ação: '+escapeHtml(spec[active.step+2])+'</p>':'')+
+      (active&&!current?'<p>Você já começou uma atividade em outro local.</p>':'')+
+      '<div class="modal-actions">'+button+'<button class="btn" data-rio-work-close>Voltar</button></div>',root=>{
+        root.querySelector('[data-rio-work-close]').onclick=closeModal;
+        const start=root.querySelector('[data-rio-work-start]');
+        if(start)start.onclick=()=>{
+          const current=rioCurrentActivity();
+          if(current&&current.key!==p.key)return;
+          if(!current){rioActivityProfile().rioCityActivity={key:p.key,step:0};saveState(true);}
+          closeModal();toast('Siga o marcador: '+spec[rioCurrentActivity().step+2]+'.','info',2800);
+        };
+        const stop=root.querySelector('[data-rio-work-stop]');
+        if(stop)stop.onclick=()=>{
+          rioActivityProfile().rioCityActivity=null;saveState(true);openRioCitySite(p);
+        };
+      });
+    return true;
+  }
+  function runRioCityStation(p,index){
+    const current=rioCurrentActivity(),point=rioActivityRuntime.stations.get(p.key)?.[index];
+    if(current?.key!==p.key||current.step!==index||!point||Math.hypot(player.x-point.x,player.z-point.z)>2.25)return false;
+    const spec=RIO_CITY_ACTIVITIES[p.key];
+    if(p.key==='dona_capi'&&index===1&&!rioLife.animals.get('capivara-represa')?.root.visible){
+      toast('Aguarde a capivara aparecer na margem.','info',1900);
+      return false;
+    }
+    const commit=()=>{
+      const active=rioCurrentActivity();
+      if(!active||active.key!==p.key||active.step!==index)return false;
+      if(index===0){
+        rioActivityProfile().rioCityActivity={key:p.key,step:1};
+        toast(spec[3],'good',2700);
+      }else{
+        if(spec[0]==='sport')rioActivityRuntime.shot={x:point.x,z:point.z,face:p.face,at:performance.now()};
+        const completed=rioActivityProfile().rioCityCompleted||={};
+        if(!completed[p.key]){completed[p.key]=true;addXP(18);}
+        if(spec[0]==='theater')beep(698,112,'triangle');
+        rioActivityProfile().rioCityActivity=null;
+        toast(spec[1]+' · concluído','good',3000);
+      }
+      saveState(true);
+      return true;
+    };
+    if(spec[0]==='sport'&&index===1){beep(420,70,'triangle');return commit();}
+    return beginCharacterActivity('rio-city-work',{target:{x:player.x,z:player.z},
+      pose:{x:player.x,y:groundHeightAt(player.x,player.z),z:player.z,yaw:player.facing},commit});
+  }
+  function updateRioCityActivities(){
+    if(!worldGroup||!running)return;
+    registerRioCityActivities();
+    for(const [key,lights] of rioActivityRuntime.lights)lights.visible=rioActivityProfile().rioCityCompleted?.[key]===true;
+    const active=rioCurrentActivity(),point=active&&rioActivityRuntime.stations.get(active.key)?.[active.step];
+    const nearby=point&&Math.hypot(player.x-point.x,player.z-point.z)<95;
+    if(nearby&&!rioActivityRuntime.cue){
+      const cue=new THREE.Mesh(new THREE.RingGeometry(.85,1.05,28),
+        new THREE.MeshBasicMaterial({color:0xffda69,side:THREE.DoubleSide}));
+      cue.name='RIO_CITY_ACTIVITY';cue.rotation.x=-Math.PI/2;worldGroup.add(cue);
+      rioActivityRuntime.cue=cue;
+    }
+    if(rioActivityRuntime.cue){
+      rioActivityRuntime.cue.visible=!!nearby;
+      if(nearby)rioActivityRuntime.cue.position.set(point.x,groundHeightAt(point.x,point.z)+.16,point.z);
+    }
+    const shot=rioActivityRuntime.shot;
+    const kickAt=nearby&&active.step===1&&RIO_CITY_ACTIVITIES[active.key][0]==='sport'?point:null;
+    if((shot||kickAt)&&!rioActivityRuntime.ball){
+      rioActivityRuntime.ball=new THREE.Mesh(new THREE.SphereGeometry(.27,12,9),renderMat(0xf8efde));
+      worldGroup.add(rioActivityRuntime.ball);
+    }
+    if(rioActivityRuntime.ball){
+      rioActivityRuntime.ball.visible=!!(shot||kickAt);
+      if(kickAt)rioActivityRuntime.ball.position.set(kickAt.x,groundHeightAt(kickAt.x,kickAt.z)+.28,kickAt.z);
+      if(shot){
+        const t=Math.min(1,(performance.now()-shot.at)/850),z=shot.z+shot.face*t*5;
+        rioActivityRuntime.ball.position.set(shot.x,groundHeightAt(shot.x,z)+.27+Math.sin(Math.PI*t)*.55,z);
+        rioActivityRuntime.ball.rotation.x+=.10;
+        if(t>=1)rioActivityRuntime.shot=null;
+      }
+    }
+  }
+
+  // ===== MODULE: 86-rio-city-life.js =====
+  const rioLife={people:new Map(),animals:new Map(),traffic:new Map(),lastAnimalAt:0,nextPeopleAt:0,animalGeo:null};
+  const rioPeople=[
+    ['catedral-guia','Clara',0xb16e68,'talk',[[-43,24],[-36,25],[-36,22.5],[-44,22.5]]],
+    ['mercadao-feira','Sebastião',0x607867,'talk',[[49,27],[55,27],[56,25.6],[48,25.6]]],
+    ['mercadao-cliente','Lívia',0xc99b5b,'walk',[[58,29],[58,26],[54,25],[54,27]]],
+    ['calcadao-ambulante','Neide',0xaa6a58,'talk',[[-44,-81],[-38,-81],[-37,-85],[-44,-85]]],
+    ['paco-agente','Davi',0x4e7396,'talk',[[111,-10],[116,-10],[116,-7],[111,-7]]],
+    ['orla-central-1','Renata',0x3c8377,'run',[[-113,37],[-79,37],[-79,40],[-113,40]]],
+    ['orla-central-2','Mateus',0xa75050,'run',[[-80,40],[-113,40],[-113,37],[-80,37]]],
+    ['swift-tecnica','Ana',0x734667,'talk',[[472,-542],[479,-542],[479,-545],[471,-545]]],
+    ['canecao-cliente','Carlos',0xb97655,'walk',[[500,-546],[510,-546],[510,-548],[500,-548]]],
+    ['represa-corredora','Camila',0x276b99,'run',[[467,-573],[546,-573],[563,-573],[563,-635],[460,-635],[460,-573]]],
+    ['represa-corredor','Rafael',0xac5d43,'run',[[542,-574],[481,-574],[461,-574],[461,-634],[562,-634],[562,-574]]],
+    ['zona-norte-1','Júlia',0x698153,'talk',[[389,-342],[396,-341],[396,-339],[389,-339]]],
+    ['zona-norte-2','Milton',0x6d799b,'walk',[[430,-320],[437,-320],[437,-323],[430,-323]]],
+    ['murchid-1','Erica',0xa36586,'walk',[[506,-458],[515,-458],[515,-461],[506,-461]]],
+    ['murchid-2','Ivan',0x5d817b,'talk',[[467,-460],[478,-460],[478,-463],[467,-463]]],
+    ['bady-1','Olívia',0xb28655,'walk',[[-252,-496],[-243,-496],[-243,-493],[-252,-493]]]
+  ];
+  const rioFauna=[
+    ['capivara-orla','Capivara','capy',1,[[-111,41],[-91,41],[-92,40],[-111,40]]],
+    ['capivara-filhote','Filhote de capivara','capy',.63,[[-105,41],[-95,41],[-95,40],[-105,40]]],
+    ['pato-orla','Pato','duck',.84,[[-103,53],[-89,55],[-85,57],[-98,56]]],
+    ['pato-orla-2','Pato','duck',.76,[[-99,56],[-89,53],[-87,55],[-97,58]]],
+    ['cachorro-catedral','Cachorro','dog',.75,[[-43,25],[-38,25],[-36,23],[-44,23]]],
+    ['pombo-mercadao','Pombo','bird',.57,[[55,27],[58,28],[58,26],[54,26]]],
+    ['capivara-represa','Capivara','capy',.93,[[478,-585],[488,-585],[488,-582],[478,-582]]],
+    ['pato-represa','Pato','duck',.80,[[465,-607],[480,-608],[483,-616],[468,-617]]],
+    ['pato-represa-2','Pato','duck',.72,[[494,-606],[510,-606],[513,-614],[500,-618]]]
+  ];
+  function rioLifeSpawnPerson(spec){
+    const [id,name,color,activity,path]=spec;
+    const stops=path.map(([x,z],index)=>({x,z,action:activity==='talk'&&index>0?'walk':activity,duration:activity==='talk'&&index===0?4:0}));
+    const person=addResident('rio-city-'+id,name,stops,color);
+    person.rioCityLocal=true;
+    rioLife.people.set(id,person);
+  }
+  function rioLifeSpawnAnimal(spec){
+    const [id,label,kind,scale,path]=spec;
+    const root=new THREE.Group();root.name='RIO_FAUNA_'+id;root.scale.setScalar(scale);
+    rioLife.animalGeo??=new THREE.SphereGeometry(1,10,8);
+    const legs=[],brown=kind==='capy'?0x88613c:0x976e49,fur=kind==='duck'?0xf5eee2:kind==='bird'?0x718793:brown;
+    const add=(color,x,y,z,w,h,d)=>{
+      const mesh=new THREE.Mesh(rioLife.animalGeo,renderMat(color,{roughness:.88}));
+      mesh.position.set(x,y,z);mesh.scale.set(w,h,d);root.add(mesh);return mesh;
+    };
+    const waterfowl=kind==='duck',small=kind==='bird'||waterfowl;
+    if(small){
+      add(fur,0,.24,-.13,.30,.26,.51);
+      add(kind==='bird'?0x5c7892:0x437365,0,.44,.26,.21,.22,.21);
+      add(0xd69a47,0,.39,.47,.137,.051,.17);
+      for(const side of [-1,1])add(0x182b32,side*.18,.49,.32,.036,.039,.041);
+    }else{
+      add(fur,0,.65,-.19,.49,.42,.73);
+      add(fur,0,.80,.46,.37,.36,.38);
+      add(kind==='dog'?0x403840:0x684a34,0,.66,.73,.30,.22,.28);
+      for(const side of [-1,1]){
+        add(0x272028,side*.28,.91,.65,.057,.065,.046);
+        add(brown,side*.27,1.08,.44,.119,kind==='dog'?.24:.13,.13);
+        for(const z of [-.54,.29])legs.push(add(brown,side*.31,.28,z,.126,.28,.145));
+      }
+      if(kind==='dog')add(fur,0,.87,-.91,.10,.31,.24).rotation.x=-.75;
+    }
+    const [x,z]=path[0];root.position.set(x,groundHeightAt(x,z),z);worldGroup.add(root);
+    const animal={id,label,root,legs,path,index:1,waterfowl,speed:waterfowl?.74:kind==='bird'?.55:1.17};
+    rioLife.animals.set(id,animal);
+    registerInteractable({id:'rio-fauna-'+id,type:'viewpoint',label:'Observar · '+label,icon:'🐾',priority:150,radius:2.8,
+      getPos:()=>root.position,available:()=>root.visible&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse,
+      action:()=>{toast(label+' · observe sem assustar o animal.','info',2100);return true;}});
+  }
+  const rioTrafficPlans=[
+    {id:'centro',focus:[30,-20],count:4,points:[[0,-65],[65,-65],[65,0],[0,0]]},
+    {id:'bady',focus:[-86,-481],count:2,points:[[-137,-464],[-76,-464],[-76,-511],[-137,-511]]},
+    {id:'represa',focus:[510,-550],count:4,points:RIO_V51.trafficLoop}
+  ];
+  function rioLifeTraffic(focus){
+    if(!OTTOVIAS_RUNTIME.initialized)return;
+    for(const plan of rioTrafficPlans){
+      if(rioLife.traffic.has(plan.id)||Math.hypot(focus.x-plan.focus[0],focus.z-plan.focus[1])>138)continue;
+      const route=plan.points.map(([x,z])=>({x,z}));
+      const lanes=[route,[...route].reverse()].map(line=>offsetBrazilianTrafficPath(line,2.22,{
+        closed:true,valid:(x,z)=>v704RoadAt(x,z,.1,false),factors:[1,.72,.4,0]}));
+      if(lanes.some(lane=>lane.length<4))continue;
+      const actors=[];
+      for(let i=0;i<plan.count;i++){
+        const lane=lanes[i%2],slot=Math.floor(lane.length/2)*(i>=2?1:0)+(i%2);
+        const v=createOttoviasTrafficVehicle('rio-city-'+plan.id+'-'+i,lane,slot,[0x427f93,0xb97258,0xccb270,0x536e76][i],5.8+i*.47);
+        actors.push(v);
+      }
+      rioLife.traffic.set(plan.id,actors);
+      world.trafficSnapshot=null;world.trafficSnapshotAt=-Infinity;
+      return;
+    }
+  }
+  function updateRioCityLife(){
+    if(!worldGroup||!running||!worldExpansion.ready||!worldResidents.ready||paused)return;
+    const focus=otGamesFocus(),now=performance.now();
+    if(now>=rioLife.nextPeopleAt){
+      for(const spec of rioPeople){
+        const [x,z]=spec[4][0];
+        if(!rioLife.people.has(spec[0])&&Math.hypot(x-focus.x,z-focus.z)<115){rioLifeSpawnPerson(spec);break;}
+      }
+      for(const spec of rioFauna){
+        const [x,z]=spec[4][0];
+        if(!rioLife.animals.has(spec[0])&&Math.hypot(x-focus.x,z-focus.z)<100){rioLifeSpawnAnimal(spec);break;}
+      }
+      rioLifeTraffic(focus);
+      rioLife.nextPeopleAt=now+170;
+    }
+    if(now-rioLife.lastAnimalAt<85)return;
+    const dt=Math.min(.12,(now-(rioLife.lastAnimalAt||now))/1000);
+    rioLife.lastAnimalAt=now;
+    for(const animal of rioLife.animals.values()){
+      const {root}=animal;
+      root.visible=Math.hypot(root.position.x-focus.x,root.position.z-focus.z)<79;
+      if(!root.visible)continue;
+      const [tx,tz]=animal.path[animal.index],dx=tx-root.position.x,dz=tz-root.position.z,d=Math.hypot(dx,dz);
+      if(d<.12){animal.index=(animal.index+1)%animal.path.length;continue;}
+      const step=Math.min(d,dt*animal.speed);
+      root.position.x+=dx/d*step;root.position.z+=dz/d*step;
+      root.rotation.y=lerpAngle(root.rotation.y,Math.atan2(dx,dz),Math.min(1,dt*5));
+      root.position.y=animal.waterfowl?(root.position.z<-500?.13:.026):groundHeightAt(root.position.x,root.position.z);
+      for(const [i,leg] of animal.legs.entries())leg.rotation.x=Math.sin(now*.006+i*Math.PI)*.29;
+    }
+  }
+  const rioCityPreviousUpdate=updateWorldExpansion;
+  updateWorldExpansion=function(){
+    rioCityPreviousUpdate();
+    updateRioCityActivities();
+    updateRioCityLife();
+  };
+  window.OTTHI_RIO_CITY=Object.freeze({diagnostics:()=>({
+    activities:Object.keys(RIO_CITY_ACTIVITIES).length,active:rioCurrentActivity(),
+    people:[...rioLife.people].map(([id,p])=>({id,x:p.group.position.x,z:p.group.position.z,action:p.lifeAction})),
+    animals:[...rioLife.animals].map(([id,p])=>({id,x:p.root.position.x,z:p.root.position.z,visible:p.root.visible})),
+    traffic:[...rioLife.traffic.values()].flat().map(v=>({id:v.id,x:v.group.position.x,z:v.group.position.z,speed:v.currentSpeed}))
+  })});
 
 })();

@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.34-entrada-rio-preto",
+  "build": "705.28.35-rio-preto-cidade-viva",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3eff9e244a22ad54b50ae6fadf4a30ee7a161b28e78f69511f758c5e8482a25b"
+      "sha256Body": "b3f2c671598c2e000f0b46daeed373bfa9219f00abf9341083dc78a9b69c0ff3"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -68,14 +68,14 @@
     },
     {
       "file": "src/modules/83-rio-v51-layout.js",
-      "sha256Body": "4dce551de0d8ff1a57a4f30c04ab4af0648cafaaa667cd07eae953d566c936fc"
+      "sha256Body": "1bf2ffc7c1665d9a64c39bf3ea976b40c0ce72090d91bc26eec38c6d2817fadc"
     },
     {
       "file": "src/modules/05a-world-layout-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "eb2efa945b48f4122f787a3d34441c226153495f1f4bb5fd2a9402cf8a5200d9"
+      "sha256Body": "dcd7031ec57be370a4f5ab66469db62aa7f6ba5afaa666e6fbfa5dc6d79b8a44"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -89,7 +89,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "b89c1364a18474ea881d4f9967c8beb85042cc3499f05f6c35136f3e03571d5d"
+      "sha256Body": "efe33caa3455cb0f23654a70bfea67f1243fc37bc03ee60e342bcd7e5b42d41a"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -145,7 +145,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "6db30bb7743f5e4bf3abeb0ca47a3980555f11492a73d1473f686f0d7e829911"
+      "sha256Body": "523883fb9fa3682eb20adb5eb73e9b585d5183376e7a7ddfb23cce088f5a74a4"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -285,7 +285,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "8ed56c4eea92a7596be9fe66ad945b9976127de2550e314ae033a1eea561e2c1"
+      "sha256Body": "af39a002ef4d514466b7b51f094aa2941b525ed9cc3abad92350e941e7d4d930"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -543,7 +543,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Rotinas físicas de moradores e restaurantes",
-      "sha256Body": "359999766b57ecef1135f464b9c29b6a991d28580f0a6e3e9e48334c453e9c1f"
+      "sha256Body": "ccb4e175de7df907059f1f019dbfcb86d69fb389703ca2e463b2acc76e011823"
     },
     {
       "file": "src/modules/60-airport-mountain-balloon.js",
@@ -662,7 +662,15 @@
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "d4f97102f5f6c307a6d5ccbc131d485a6d63c8795978ba56c747074ae43e8add"
+      "sha256Body": "f1d77c2783de5ad8170bbadf332cfd5263ff70edf03b02225202a80d60f82df5"
+    },
+    {
+      "file": "src/modules/85-rio-city-activities.js",
+      "sha256Body": "b424e1ac947edbbefa0cc39260dc2596e8d86235ef970f9f0833bd3c888ea00e"
+    },
+    {
+      "file": "src/modules/86-rio-city-life.js",
+      "sha256Body": "2ea991a1fd5453d7fe080215df1ac3a5e94765e2fb5b7569afbcdea7c1de1d5d"
     }
   ],
   "styles": [
@@ -741,7 +749,7 @@
       "startLine": 1017,
       "endLine": 1056,
       "description": "Fundação final, bairros, educação e desempenho",
-      "sha256Body": "f71f620f0e2e25835cc7f196627e8f2bdc35680fe16356e32dde598b6484f0f7"
+      "sha256Body": "567afa5d730c37779aae70af7fbde99f4fb5ef0a08ce9cc1701ca2cf3dbaf420"
     },
     {
       "file": "src/styles/11-mobility-traffic-fishing-v643.css",

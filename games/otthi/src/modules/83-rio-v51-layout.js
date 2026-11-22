@@ -1,5 +1,9 @@
 /** Dados do laboratório 5.1 adaptados ao terreno e à malha nativa do OTTHI. */
 // @otthi-module-body
+  const RIO_TEIXEIRAO_SITE={
+    id:'regional-estadio_teixeirao',name:'Teixeirão — Estádio do América',
+    pitch:{x:42,z:88},entrance:{x:50,z:69},road:{x:34,z:58},w:62,d:43
+  };
   const RIO_V51_PLACES = [
     ["complexo_swift", "Complexo Swift & Teatro Paulo Moura", "represa_lagos_damha", 475, -533, -1, 22, 18, 14, "swift", false, "Av. Duque de Caxias, 3900 - Jd. dos Seixas, SJRP", "https://www.riopreto.sp.gov.br/"],
     ["dona_capi", "Escultura Dona Capi (Capivara)", "represa_lagos_damha", 476, -595, 1, 8, 6, 8, "capi", false, "Parque da Represa Municipal - Vila Ercília, SJRP", "https://www.riopreto.sp.gov.br/"],
@@ -37,7 +41,7 @@
     ["montanhas_rios_italia", "Mirante & Montanhas Rios di Itália (Fictício)", "expansoes_ficticias", 773, -543, 1, 22, 16, 18, "lookout", true, "Área Criativa Fictícia do OTThi World — sem correspondência real", "https://otthi-world.local/expansao-ficticia"],
     ["praia_cedral", "Praia Recreativa de Cedral (Fictício)", "expansoes_ficticias", 812, -543, 1, 22, 7, 16, "beach", true, "Área Criativa Fictícia do OTThi World — Cedral não tem litoral real", "https://otthi-world.local/expansao-ficticia"],
     ["estadio_anisio_haddad", "Estádio Anísio Haddad (Rio Preto EC)", "rota_estadios", -769, -295, 1, 24, 11, 18, "stadium", false, "Av. Anísio Haddad, 6188 - Jardim Aclimação, SJRP, 15093-000", "https://www.facebook.com/riopretoecoficial/"],
-    ["estadio_teixeirao", "Estádio Benedito Teixeira — Teixeirão (América FC)", "rota_estadios", -729, -295, 1, 25, 12, 19, "stadium", false, "Av. Antônio Tavares Pereira Lima, 904-1074 - Jd. Bela Vista, SJRP, 15061-220", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJK1w-yLZSvJQRBP1zx7nGDhM"],
+    ["estadio_teixeirao", RIO_TEIXEIRAO_SITE.name, "rota_estadios", RIO_TEIXEIRAO_SITE.pitch.x, RIO_TEIXEIRAO_SITE.pitch.z, -1, RIO_TEIXEIRAO_SITE.w, 10, RIO_TEIXEIRAO_SITE.d, "stadium", false, "Av. Dr. Antônio Tavares Pereira Lima, 900 — Jardim Bela Vista, São José do Rio Preto", "https://www.americasp.com/historia"],
     ["estadio_maiao", "Estádio José Maria de Campos Maia — Maião (Mirassol FC)", "rota_estadios", -686, -295, 1, 24, 11.5, 18, "stadium", false, "Av. Lauro Luchese, 2650 - Centro, Mirassol - SP, 15130-000", "http://mirassolfc.com.br/"],
     ["estadio_jorjao", "Estádio Dr. Jorge Ismael de Biasi — Jorjão (Novorizontino)", "rota_estadios", -644, -295, 1, 24, 11, 18, "stadium", false, "R. Francisco Alves do Vale, 197 - Novo Horizonte - SP, 14960-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJuxzFNW-OvpQRWogAC7l4WMo"],
     ["termas_ibira", "Termas de Ibirá (Balneário Águas Termais)", "circuito_turistico", -811, -576, 1, 22, 8, 16, "pool", false, "Termas de Ibirá, Ibirá - SP, 15860-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJxR9AA38lvJQRlYHWY1O8EG0"],
@@ -45,7 +49,7 @@
     ["parque_peao_barretos", "Parque do Peão Os Independentes (Barretos)", "circuito_turistico", -726, -583, 1, 28, 15, 20, "arena", false, "Rod. Brg. Faria Lima, Km 428 - Zona Rural, Barretos - SP, 14780-970", "http://www.independentes.com.br/"],
   ];
   const RIO_V51_SECTORS = [
-    ["centro_calcadao_andalo", "Centro & Andaló", "RIO_andalo_4", [-48, -34, -3, 29, 62, 100, 137, 154], -666, [[100, -648], [100, -666]]],
+    ["centro_calcadao_andalo", "Centro de Rio Preto & Andaló", "RIO_andalo_4", [-48, -34, -3, 29, 62, 100, 137, 154], -666, [[100, -648], [100, -666]]],
     ["bady_bassitt", "Av. Bady Bassitt", "RIO_oeste_1", [-302, -286, -248, -226], -481, [[-200, -464], [-226, -481]]],
     ["murchid_homsi", "Av. Murchid Homsi", "RIO_murchid_5", [449, 472, 511, 536], -472, [[438, -532], [448, -506], [449, -472]]],
     ["represa_lagos_damha", "Represa (Lagos 1-3) & Damha", "RIO_murchid_5", [467, 475, 476, 505, 508, 533, 541, 551], -554, [[438, -532], [459, -545], [467, -554]]],
@@ -57,6 +61,14 @@
     ["infra_aeroporto_rodovias", "Aeroporto, Recinto & Rodovias", "EXT_outer-link_5", [-413, -380, -344, -307, -268, -239, -220], -427, [[-200, -400], [-212, -414], [-220, -427]]],
     ["expansoes_ficticias", "Montanhas & Praia (Fictício)", "V51_engenheiro_schmitt_794", [752, 773, 812, 832], -516, [[794, -424], [806, -461], [806, -496], [806, -516]]],
   ];
+  // Frontages in the existing city. The fourth pair uses existing GPS nodes.
+  const RIO_CENTRO_FRONTAGES={
+    prefeitura_andalo:[110,-18,1,12,14,11,105,0],
+    mercado_municipal:[50,34,-1,13,6.5,10,68,38],
+    catedral_sao_jose:[-42,34,-1,13,17,11,-55,28],
+    calcadao_centro:[-42,-73,-1,13,5,11,-55,-55],
+    mcdonalds_andalo:[-22,-52,-1,12,5,10,0,-65]
+  };
   const RIO_V51 = (() => {
     const nodes={},highways=[],edges=[],sectors={},pointsByCoordinate=new Map();
     function chain(id,label,vertices,anchor,width,suffix="") {
@@ -82,14 +94,24 @@
       if(index<line.length-1)chain(id,label,line.slice(index),at,9,'-leste');
       sectors[id]={id,label,z,x:(xs[0]+xs.at(-1))/2,places:[]};
     }
-    const places=RIO_V51_PLACES.map(([key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop])=>{
-      const roadZ=sectors[sector].z;
+    const waterfront=[[551,-554],[561,-549],[561,-510],[460,-510],[438,-532]];
+    chain('orla-circular','Acesso de retorno · Represa',waterfront,pointsByCoordinate.get('551,-554'),8.5);
+    const trafficLoop=[...waterfront,[459,-545],[467,-554]];
+    sectors.centro_calcadao_andalo.x=12;
+    sectors.centro_calcadao_andalo.z=-10;
+    const places=RIO_V51_PLACES.map(([key,name,sector,originalX,originalZ,originalFace,originalW,originalH,originalD,shape,fictional,address,source,shop])=>{
+      const [x,z,face,w,h,d,navX,navZ]=RIO_CENTRO_FRONTAGES[key]||
+        [originalX,originalZ,originalFace,originalW,originalH,originalD,originalX,sectors[sector].z];
       const point={id:'regional-'+key,key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop,
-        visitX:x,visitZ:z+face*(d/2+2),navX:x,navZ:roadZ};
+        visitX:x,visitZ:z+face*(d/2+2),navX,navZ};
+      if(point.id===RIO_TEIXEIRAO_SITE.id){
+        const {entrance,road}=RIO_TEIXEIRAO_SITE;
+        Object.assign(point,{nativeVenue:'football',visitX:entrance.x,visitZ:entrance.z,navX:road.x,navZ:road.z});
+      }
       sectors[sector].places.push(point);
       return point;
     });
-    const protectedRects=places.map(p=>({id:p.id,kind:'regional-landmark',x:p.x,z:p.z,w:p.w+1,d:p.d+1,margin:.55}));
+    const protectedRects=places.filter(p=>!p.nativeVenue).map(p=>({id:p.id,kind:'regional-landmark',x:p.x,z:p.z,w:p.w+1,d:p.d+1,margin:.55}));
     // Six gates. The pedestrian course curves around the lakes and stays on land.
     const start={x:549,z:-573};
     const route=[start,{x:460,z:-573},{x:460,z:-635},{x:563,z:-635},{x:563,z:-573},start];
@@ -107,6 +129,6 @@
     }
     const lakes=[474,503,532].map((x,i)=>({id:'lake-'+(i+1),x,z:-611,w:24,d:27}));
     for(const lake of lakes)protectedRects.push({...lake,kind:'regional-lake'});
-    return {places,sectors,nodes,edges,highways,protectedRects,
+    return {places,sectors,nodes,edges,highways,protectedRects,trafficLoop,
       course:{id:'corrida_rua_represa_damha',name:'Corrida de Rua · Represa e Damha',start,route,gates,lakes}};
   })();

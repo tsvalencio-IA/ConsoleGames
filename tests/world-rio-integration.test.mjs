@@ -96,6 +96,7 @@ test('the laboratory catalog routes all 42 places without blocking a road or the
   const collisions=[],outOfBounds=[],overlap=[];
   const previous=v704ProtectedRectangles().filter(p=>!p.id?.startsWith('regional-')&&!p.id?.startsWith('represa-footpath-')&&!p.id?.startsWith('lake-'));
   for(const p of RIO_V51.places){
+   if(p.nativeVenue)continue;
    const box={x:p.x,z:p.z,w:p.w,d:p.d};
    if(Math.min(p.x-p.w/2-bounds.minX,bounds.maxX-p.x-p.w/2,p.z-p.d/2-bounds.minZ,bounds.maxZ-p.z-p.d/2)<0)outOfBounds.push(p.id);
    for(const road of highways)if(v704HighwayIntersectsRect(road.id,box,0))collisions.push([p.id,road.id]);
@@ -120,4 +121,28 @@ test('the laboratory catalog routes all 42 places without blocking a road or the
  assert.equal(result.fictional,2);
  assert.equal(result.gates,6);
  for(const key of ['collisions','overlap','outOfBounds','unjoined','runHits','brokenEdges'])assert.equal(result[key].length,0,key);
+});
+
+test('each Rio stop has a playable activity or a native system, including the sole Teixeirão field',()=>{
+ const c=makeWorld();
+ vm.runInContext(moduleSource('85-rio-city-activities'),c);
+ const result=vm.runInContext(`(()=>{
+  const venue=RIO_V51.places.find(p=>p.nativeVenue==='football');
+  const {points}=WORLD_LAYOUT_V704;
+  return {
+   venue,
+   pitch:points.sports,entrance:points.footballEntrance,
+   catalog:RIO_V51.places.filter(p=>p.id===venue.id).length,
+   duplicateReserve:v704ProtectedRectangles().some(p=>p.id===venue.id),
+   unhandled:RIO_V51.places.filter(p=>!p.shop&&!p.nativeVenue&&!RIO_CITY_ACTIVITIES[p.key]&&
+    !['prefeitura_andalo','aeroporto_sjrp','portaria_damha'].includes(p.key)).map(p=>p.key)
+  };
+ })()`,c);
+ assert.equal(result.catalog,1);
+ assert.equal(result.duplicateReserve,false);
+ assert.equal(result.venue.x,result.pitch.x);
+ assert.equal(result.venue.z,result.pitch.z);
+ assert.equal(result.venue.visitX,result.entrance.x);
+ assert.equal(result.venue.visitZ,result.entrance.z);
+ assert.equal(result.unhandled.length,0,JSON.stringify(result.unhandled));
 });

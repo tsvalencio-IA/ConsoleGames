@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.34-entrada-rio-preto',
+    build: '705.28.35-rio-preto-cidade-viva',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

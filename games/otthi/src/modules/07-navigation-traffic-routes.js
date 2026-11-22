@@ -263,7 +263,7 @@
     { id:'farm', name:'Fazenda Comunitária', icon:'🌾', ...mapPointV704('farm'), group:'Trabalho' },
     ...METRO_STATIONS.map(s=>({id:`metro-${s.id}`,name:s.name,icon:'Ⓜ️',x:s.x,z:s.z,navX:s.navX,navZ:s.navZ,group:'Transporte'})),
     { id:'gym', name:'Complexo Esportivo', icon:'🏟️', ...mapPointV704('sportsEntrance'), group:'Esportes' },
-    { id:'football', name:'Futebol — entrada do campo', icon:'⚽', ...mapPointV704('footballEntrance'), group:'Esportes' },
+    { id:'football', name:'Teixeirão — futebol 4 × 4', icon:'⚽', ...mapPointV704('footballEntrance'), group:'Esportes' },
     { id:'volley', name:'Vôlei — entrada da quadra', icon:'🏐', ...mapPointV704('volleyEntrance'), group:'Esportes' },
     { id:'footvolley', name:'Futevôlei — entrada da quadra', icon:'🏖️', ...mapPointV704('footvolleyEntrance'), group:'Esportes' },
     { id:'kart', name:'Kartódromo OTTHI', icon:'🏁', ...mapPointV704('kartEntrance'), group:'Esportes' },
