@@ -1,0 +1,454 @@
+{
+  "build": "705.28.33-integracao-regional-v51",
+  "revision": "1e6889e1f4e2d6fe",
+  "browser": "141.0.7390.37",
+  "points": [
+    {
+      "id": "regional-complexo_swift",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-dona_capi",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-ponte_julio_zacarin",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-canecao_represa",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-posto_brasilia",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-portaria_damha",
+      "sector": "represa_lagos_damha",
+      "loaded": 3
+    },
+    {
+      "id": "regional-riopreto_shopping",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 4
+    },
+    {
+      "id": "regional-shopping_iguatemi",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 5
+    },
+    {
+      "id": "regional-plaza_avenida",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 5
+    },
+    {
+      "id": "regional-obelisco_espanha",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 5
+    },
+    {
+      "id": "regional-centro_eventos",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 5
+    },
+    {
+      "id": "regional-prefeitura_andalo",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-mercado_municipal",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-catedral_sao_jose",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-calcadao_centro",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-mcdonalds_andalo",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-casa_nicoletti",
+      "sector": "bady_bassitt",
+      "loaded": 8
+    },
+    {
+      "id": "regional-zappas_bady",
+      "sector": "bady_bassitt",
+      "loaded": 8
+    },
+    {
+      "id": "regional-austa_hospital",
+      "sector": "murchid_homsi",
+      "loaded": 8
+    },
+    {
+      "id": "regional-supermercado_economico",
+      "sector": "murchid_homsi",
+      "loaded": 8
+    },
+    {
+      "id": "regional-shopping_cidade_norte",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-corredor_mirassolandia",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-cachoeira_troca_oleo",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-upa_norte",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-planalto_materiais",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-atacadao_falavina",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-aeroporto_sjrp",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-cemiterio_sao_joao_batista",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-recinto_exposicoes",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-posto_prf_br153",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-base_pmrv_sp310",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-estacao_schmitt",
+      "sector": "engenheiro_schmitt",
+      "loaded": 9
+    },
+    {
+      "id": "regional-doces_noemia",
+      "sector": "engenheiro_schmitt",
+      "loaded": 9
+    },
+    {
+      "id": "regional-montanhas_rios_italia",
+      "sector": "expansoes_ficticias",
+      "loaded": 9
+    },
+    {
+      "id": "regional-praia_cedral",
+      "sector": "expansoes_ficticias",
+      "loaded": 9
+    },
+    {
+      "id": "regional-estadio_anisio_haddad",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_teixeirao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_maiao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_jorjao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-termas_ibira",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    },
+    {
+      "id": "regional-thermas_laranjais",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    },
+    {
+      "id": "regional-parque_peao_barretos",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Control batches walk with native input and collisions at fixed 60 Hz. The fixture places the initial approaches.",
+    "Software Chromium, disposable local saves. Frame rate and physical Android were not measured."
+  ],
+  "gps": {
+    "waypoint": {
+      "id": "regional-complexo_swift",
+      "name": "Complexo Swift & Teatro Paulo Moura",
+      "x": 475,
+      "z": -542,
+      "navX": 475,
+      "navZ": -554,
+      "arrived": false
+    },
+    "route": [
+      {
+        "x": -18,
+        "z": 39
+      },
+      {
+        "x": 0,
+        "z": 39
+      },
+      {
+        "x": 0,
+        "z": 18
+      },
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 0,
+        "z": -18
+      },
+      {
+        "x": 0,
+        "z": -65
+      },
+      {
+        "x": 0,
+        "z": -105
+      },
+      {
+        "x": 0,
+        "z": -108
+      },
+      {
+        "x": 20,
+        "z": -128
+      },
+      {
+        "x": 55,
+        "z": -145
+      },
+      {
+        "x": 95,
+        "z": -148
+      },
+      {
+        "x": 132,
+        "z": -130
+      },
+      {
+        "x": 171,
+        "z": -150
+      },
+      {
+        "x": 171,
+        "z": -193
+      },
+      {
+        "x": 171,
+        "z": -216
+      },
+      {
+        "x": 200,
+        "z": -260
+      },
+      {
+        "x": 200,
+        "z": -400
+      },
+      {
+        "x": 360,
+        "z": -400
+      },
+      {
+        "x": 360,
+        "z": -479
+      },
+      {
+        "x": 360,
+        "z": -532
+      },
+      {
+        "x": 438,
+        "z": -532
+      },
+      {
+        "x": 459,
+        "z": -545
+      },
+      {
+        "x": 467,
+        "z": -554
+      },
+      {
+        "x": 475,
+        "z": -554
+      }
+    ],
+    "progress": {
+      "distance": 0,
+      "index": 0,
+      "t": 0,
+      "point": {
+        "x": -18,
+        "z": 39,
+        "t": 0
+      },
+      "along": 0,
+      "total": 1030.7190827831876,
+      "remaining": 1030.7190827831876,
+      "next": {
+        "x": 0,
+        "z": 39
+      },
+      "after": {
+        "x": 0,
+        "z": 18
+      },
+      "heading": 1.5707963267948966,
+      "delta": 1.5707963267948966,
+      "instruction": "18 m até a curva"
+    }
+  },
+  "warmMeshes": 75,
+  "run": {
+    "run": null,
+    "x": 551.3147518719489,
+    "z": -572.8687914898696,
+    "waypoint": 5,
+    "distance": 327.53377475826,
+    "passed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "record": {
+      "runs": 1,
+      "best": 28.81666666666631,
+      "last": 28.81666666666631
+    },
+    "onFoot": true
+  },
+  "reloaded": {
+    "stats": {
+      "places": 42,
+      "sectors": 11,
+      "loaded": [
+        "represa_lagos_damha",
+        "murchid_homsi"
+      ],
+      "visible": 2,
+      "course": {
+        "record": {
+          "runs": 1,
+          "best": 28.81666666666631,
+          "last": 28.81666666666631
+        },
+        "active": null
+      }
+    },
+    "profile": {
+      "playerId": "rio-v51-qa",
+      "name": "Rio Preto QA",
+      "nameConfirmed": true,
+      "level": 1,
+      "xp": 240,
+      "coins": 1200,
+      "reputation": 0
+    },
+    "races": {
+      "wins": 4,
+      "losses": 0,
+      "coinWins": 0,
+      "houseWins": 0,
+      "bestTime": 0,
+      "regionalCircuits": {
+        "mirassol": {
+          "bestTime": 92,
+          "runs": 1
+        }
+      },
+      "streetRuns": {
+        "corrida_rua_represa_damha": {
+          "runs": 1,
+          "best": 28.81666666666631,
+          "last": 28.81666666666631
+        }
+      }
+    },
+    "wardrobe": {
+      "thiago": {
+        "top": "hoodie",
+        "legs": "original",
+        "shoes": "original",
+        "hat": "headphones",
+        "glasses": "original",
+        "jewel": "original",
+        "wrist": "original",
+        "bag": "original"
+      },
+      "thamis": {
+        "top": "original",
+        "legs": "original",
+        "shoes": "original",
+        "hat": "original",
+        "glasses": "original",
+        "jewel": "original",
+        "wrist": "original",
+        "bag": "original"
+      }
+    },
+    "position": {
+      "x": 551.31,
+      "y": 0,
+      "z": -572.87,
+      "yaw": 0
+    }
+  },
+  "passed": true
+}

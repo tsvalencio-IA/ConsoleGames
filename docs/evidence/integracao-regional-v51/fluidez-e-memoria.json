@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "browser": "141.0.7390.37",
+  "requestedSeconds": 45,
+  "spawn": {
+    "x": 549,
+    "z": -573
+  },
+  "limits": [
+    "Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases."
+  ],
+  "environment": {
+    "os": "Linux",
+    "webgl": "ANGLE/SwiftShader",
+    "cpuQuotaCores": 2,
+    "memoryLimitGiB": 8,
+    "viewport": [
+      393,
+      852
+    ],
+    "quality": "low",
+    "sound": false,
+    "externalDatabase": false
+  },
+  "cases": [
+    {
+      "label": "before",
+      "frame": {
+        "samples": 277,
+        "mean": 161.14368231046947,
+        "p50": 147.60000000009313,
+        "p95": 413.19999999995343,
+        "max": 566.3000000000466,
+        "over100": 191,
+        "over250": 47
+      },
+      "work": {
+        "samples": 278,
+        "mean": 57.84964028776543,
+        "p50": 58.300000000046566,
+        "p95": 107.4000000001397,
+        "max": 210.89999999990687,
+        "over100": 21,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 159,
+        "mean": 82.19496855345912,
+        "p50": 78,
+        "p95": 117,
+        "max": 211,
+        "over100": 22,
+        "over250": 0
+      },
+      "renderMs": {
+        "samples": 267,
+        "mean": 13.468913857677729,
+        "p50": 8.699999999953434,
+        "p95": 43.199999999953434,
+        "max": 89.80000000004657,
+        "over100": 0,
+        "over250": 0
+      },
+      "matrixMs": {
+        "samples": 267,
+        "mean": 6.3550561797806875,
+        "p50": 3.5,
+        "p95": 31,
+        "max": 81.5999999998603,
+        "over100": 0,
+        "over250": 0
+      },
+      "drawingBuffer": {
+        "width": 243,
+        "height": 528,
+        "dpr": 0.62
+      },
+      "memory": {
+        "before": {
+          "heap": {
+            "usedSize": 93011884,
+            "totalSize": 148844544,
+            "embedderHeapUsedSize": 49725824,
+            "backingStorageSize": 434540380
+          },
+          "webgl": {
+            "calls": 40,
+            "triangles": 253115,
+            "geometries": 997,
+            "textures": 196,
+            "npcs": 138
+          }
+        },
+        "after": {
+          "heap": {
+            "usedSize": 108840848,
+            "totalSize": 156614656,
+            "embedderHeapUsedSize": 55639776,
+            "backingStorageSize": 434802164
+          },
+          "webgl": {
+            "calls": 48,
+            "triangles": 253787,
+            "geometries": 1013,
+            "textures": 199,
+            "npcs": 138
+          }
+        }
+      },
+      "npcs": 138,
+      "trafficModels": 44,
+      "errors": [],
+      "source": "11c13ffda71f6a0d0732a7e27f82ecdc3b9095e1"
+    },
+    {
+      "label": "after",
+      "frame": {
+        "samples": 287,
+        "mean": 156.2303135888497,
+        "p50": 144.5,
+        "p95": 409.19999999995343,
+        "max": 572.4000000001397,
+        "over100": 178,
+        "over250": 51
+      },
+      "work": {
+        "samples": 288,
+        "mean": 51.556597222219956,
+        "p50": 44.39999999990687,
+        "p95": 105.89999999990687,
+        "max": 227.69999999995343,
+        "over100": 18,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 140,
+        "mean": 82.29285714285714,
+        "p50": 80,
+        "p95": 125,
+        "max": 231,
+        "over100": 18,
+        "over250": 0
+      },
+      "renderMs": {
+        "samples": 266,
+        "mean": 13.791353383463898,
+        "p50": 8.5,
+        "p95": 43.5,
+        "max": 64.20000000018626,
+        "over100": 0,
+        "over250": 0
+      },
+      "matrixMs": {
+        "samples": 266,
+        "mean": 7.119172932337654,
+        "p50": 3.800000000046566,
+        "p95": 37.800000000046566,
+        "max": 42.39999999990687,
+        "over100": 0,
+        "over250": 0
+      },
+      "drawingBuffer": {
+        "width": 243,
+        "height": 528,
+        "dpr": 0.62
+      },
+      "memory": {
+        "before": {
+          "heap": {
+            "usedSize": 106036552,
+            "totalSize": 147275776,
+            "embedderHeapUsedSize": 49125176,
+            "backingStorageSize": 434542863
+          },
+          "webgl": {
+            "calls": 51,
+            "triangles": 246352,
+            "geometries": 1027,
+            "textures": 200,
+            "npcs": 138
+          }
+        },
+        "after": {
+          "heap": {
+            "usedSize": 121224404,
+            "totalSize": 161263616,
+            "embedderHeapUsedSize": 55412744,
+            "backingStorageSize": 434794096
+          },
+          "webgl": {
+            "calls": 48,
+            "triangles": 247480,
+            "geometries": 1039,
+            "textures": 204,
+            "npcs": 138
+          }
+        }
+      },
+      "npcs": 138,
+      "trafficModels": 44,
+      "errors": [],
+      "source": "f43b39eb2df46c075d73c4d0ebc997865be00b97"
+    }
+  ]
+}

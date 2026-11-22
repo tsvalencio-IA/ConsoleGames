@@ -4,7 +4,9 @@ import {chromium} from 'playwright';import fs from 'node:fs';import {execFileSyn
 import {installWorldRtdbFixture} from './helpers/world-rtdb-browser-fixture.mjs';import {multiplayerServer} from './helpers/multiplayer-browser-fixture.mjs';import {installCityInspection} from './helpers/world-city-inspection.mjs';
 const out=process.env.OT_LIVE_OUT||'test-results/world-live-performance';fs.mkdirSync(out,{recursive:true});
 const server=await multiplayerServer(),browser=await chromium.launch({executablePath:process.env.OT_BROWSER_BINARY||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const report={browser:browser.version(),cases:[],limits:['Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases.']};
+const spawn=process.env.OT_LIVE_SPAWN?.split(',').map(Number);
+assert(!spawn||(spawn.length===2&&spawn.every(Number.isFinite)),'OT_LIVE_SPAWN requires x,z');
+const report={browser:browser.version(),requestedSeconds:Number(process.env.OT_LIVE_SECONDS||20),spawn:spawn?{x:spawn[0],z:spawn[1]}:null,cases:[],limits:['Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases.']};
 try{
  for(const [label,revision]of [['before',process.env.OT_LIVE_BASELINE||'6a0d480526fc1d6c26ee352a5115a9952d4b4461'],['after',null]].filter(([label])=>!process.env.OT_LIVE_CASE||process.env.OT_LIVE_CASE===label)){
   const source=revision?execFileSync('git',['show',revision+':games/otthi/app.js'],{encoding:'utf8',maxBuffer:4e6}):fs.readFileSync('games/otthi/app.js','utf8'),end=source.lastIndexOf('})();'),hook=`
@@ -19,14 +21,16 @@ ${process.env.OT_LIVE_SHADERS?`const shaderReset=__LIVE_QA.reset,shaderRead=__LI
   if(process.env.OT_LIVE_ONLINE)await installWorldRtdbFixture(context);await context.addInitScript(quality=>localStorage.setItem('otthos_life_world_roleplay_v700',JSON.stringify({version:705,lastSaved:Date.now(),profile:{name:'Thiago QA',nameConfirmed:true,playerId:'live-profile-local'},avatar:{bodyStyle:'family-thiago'},flags:{accountPromptedV635:true},settings:{quality,sound:false},multiplayer:{enabled:true,room:'bairro-central'},guardian:{sessionLimitMinutes:0},familyAdventure:{party:{controller:'thiago',members:['thiago','thamis','luna','liz']}}})),process.env.OT_LIVE_QUALITY||'balanced');
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.stack));await installCityInspection(page,{revision,appSource:source.slice(0,end)+hook+source.slice(end),capDuringBoot:false});await page.goto(server.origin+'/games/otthi/');await page.locator('#playBtn').click();
   await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running&&!OTTHOS_TEST_API.getGame().paused&&document.getElementById('modal').hidden,null,{timeout:120000});if(process.env.OT_LIVE_ONLINE){await page.evaluate(()=>OTTHOS_MULTIPLAYER.connect());await page.waitForFunction(()=>OTTHOS_RTDB.status().connected,null,{timeout:45000});}console.log('PLAY',label);
-  await page.waitForFunction(()=>window.OTTHI_WORLD_TRAFFIC?.diagnostics().created===44,null,{timeout:180000});await page.waitForTimeout(1500);
+  await page.waitForFunction(()=>window.OTTHI_WORLD_TRAFFIC?.diagnostics().created===44,null,{timeout:180000});
+  if(spawn)await page.evaluate(([x,z])=>OTTHOS_TEST_API.teleport(x,z),spawn);
+  await page.waitForTimeout(1500);
   const cdp=await context.newCDPSession(page);
   const snapshotMemory=async()=>({heap:await cdp.send('Runtime.getHeapUsage'),webgl:await page.evaluate(()=>__CITY_QA.metrics())});
   const memoryBefore=await snapshotMemory();
   if(process.env.OT_LIVE_PROFILE){await cdp.send('Profiler.enable');await cdp.send('Profiler.start');}
   await page.evaluate(()=>__LIVE_QA.reset());
   await page.evaluate(()=>OTTHOS_TEST_API.joystickVector(.18,-.75));
-  await page.waitForTimeout(Number(process.env.OT_LIVE_SECONDS||20)*1000);
+  await page.waitForTimeout(report.requestedSeconds*1000);
   await page.evaluate(()=>OTTHOS_TEST_API.joystickVector(0,0));
   const result=await page.evaluate(()=>__LIVE_QA.read());if(process.env.OT_LIVE_PROFILE){const profile=(await cdp.send('Profiler.stop')).profile;fs.writeFileSync(out+'/'+label+'.cpuprofile',JSON.stringify(profile));const nodes=new Map(profile.nodes.map(n=>[n.id,n])),times=new Map();profile.samples.forEach((id,i)=>times.set(id,(times.get(id)||0)+(profile.timeDeltas?.[i]||0)));result.hotspots=[...times].sort((a,b)=>b[1]-a[1]).slice(0,40).map(([id,us])=>({us,...nodes.get(id).callFrame}));}if(process.env.OT_LIVE_ONLINE){assert.equal(result.network.connected,true);assert(result.network.count>=1,'fixture must expose a real local online presence');}result.memory={before:memoryBefore,after:await snapshotMemory()};result.drawRoots=await page.evaluate(()=>__CITY_QA.drawProfile());result.label=label;result.errors=errors;fs.writeFileSync(out+'/'+label+'.json',JSON.stringify(result,null,2));console.log('SAMPLES',label,JSON.stringify({frame:result.frame,work:result.work,longTasks:result.longTasks}));assert.deepEqual(errors,[]);assert(result.frame.samples>1&&result.work.samples>1,'native frames must keep running');assert.equal(result.family.party.members.length,4);report.cases.push(result);console.log('RESULT',label,JSON.stringify({frame:result.frame,work:result.work,longTasks:result.longTasks,catalog:result.catalog,npcs:result.npcs,trafficModels:result.trafficModels,drawingBuffer:result.drawingBuffer,governor:result.governor,render:result.render,network:result.network,layoutMetrics:result.layoutMetrics,memory:result.memory}));await page.screenshot({path:out+'/'+label+'.png'});await context.close();
  }

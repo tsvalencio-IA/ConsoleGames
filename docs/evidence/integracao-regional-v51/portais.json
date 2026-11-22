@@ -1,0 +1,44 @@
+{
+  "build": "705.28.33-integracao-regional-v51",
+  "revision": "1e6889e1f4e2d6fe",
+  "browser": "141.0.7390.37",
+  "mode": "trips",
+  "selectedPortals": [
+    "kart-mirassol",
+    "kart-cedral"
+  ],
+  "checks": [
+    {
+      "mount": "http://127.0.0.1:34585/",
+      "desktop": false,
+      "verified": [
+        "portal:kart-mirassol",
+        "portal:kart-cedral",
+        "return:console"
+      ],
+      "visits": [
+        "http://127.0.0.1:34585/console.html",
+        "http://127.0.0.1:34585/arcade/",
+        "http://127.0.0.1:34585/games/atualizar/",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe&otthi_probe=1795316343292",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe",
+        "http://127.0.0.1:34585/games/kart/?otVenue=353b6349-04f8-44da-bdc6-f2b79123310e&venuePage=1",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe&otVenueReturn=353b6349-04f8-44da-bdc6-f2b79123310e",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe",
+        "http://127.0.0.1:34585/games/kart/?otVenue=37f96b80-9c34-4c78-a344-e2643a19c54c&venuePage=1",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe&otVenueReturn=37f96b80-9c34-4c78-a344-e2643a19c54c",
+        "http://127.0.0.1:34585/games/otthi/?otthi_update=1e6889e1f4e2d6fe",
+        "http://127.0.0.1:34585/arcade/"
+      ],
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Chromium uses a portrait touch viewport or a desktop viewport with a mouse. No physical phone, APK or camera inference is exercised.",
+    "External network is blocked for the disposable contexts. The local account and saves are test profiles.",
+    "Portal travel uses the normal AÇÃO menu after placing the test avatar by the venue. Route checks do not certify complete matches or performance.",
+    "A single native source asset per game is byte-checked in this browser suite. The full manifest needs its own integrity audit."
+  ],
+  "passed": true,
+  "checkedAt": "2026-11-22T03:01:15.810Z"
+}

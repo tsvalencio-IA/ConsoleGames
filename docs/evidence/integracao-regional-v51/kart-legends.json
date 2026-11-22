@@ -1,0 +1,208 @@
+{
+  "build": "705.28.33-integracao-regional-v51",
+  "revision": "1e6889e1f4e2d6fe",
+  "browser": "141.0.7390.37",
+  "races": [
+    {
+      "name": "mirassol",
+      "before": {
+        "coins": 0,
+        "garage": [
+          {
+            "modelId": 0
+          }
+        ],
+        "sectors": [
+          {
+            "name": "RETA DOS BOXES",
+            "start": 0
+          },
+          {
+            "name": "CURVA DO IPÊ",
+            "start": 36000
+          },
+          {
+            "name": "CURVA DA GROTA",
+            "start": 72000
+          },
+          {
+            "name": "RETA DA CHEGADA",
+            "start": 108000
+          }
+        ],
+        "rivals": 4
+      },
+      "finish": {
+        "status": "FINISHED",
+        "phase": "regional-mirassol",
+        "laps": [
+          15.283333333333672,
+          19.099999999998992,
+          15.41666666666579
+        ],
+        "elapsed": 49.799999999998455,
+        "ticks": 2988,
+        "sectors": [
+          "1:0",
+          "1:1",
+          "1:2",
+          "1:3",
+          "2:0",
+          "2:1",
+          "2:2",
+          "2:3",
+          "3:0",
+          "3:1",
+          "3:2",
+          "3:3"
+        ],
+        "finished": true,
+        "rank": 5,
+        "maxOffset": 0.24692488037083407,
+        "track": 3
+      },
+      "result": {
+        "coins": 0,
+        "xp": 1160,
+        "save": {
+          "garage": [
+            {
+              "modelId": 0
+            }
+          ],
+          "activeKartIdx": 0,
+          "upgrades": {
+            "engine": 1,
+            "tires": 1,
+            "suspension": 1
+          },
+          "regionalRecords": {
+            "mirassol": {
+              "runs": 1,
+              "bestTime": 49.799999999998455,
+              "bestRank": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cedral",
+      "before": {
+        "coins": 0,
+        "garage": [
+          {
+            "modelId": 0
+          }
+        ],
+        "sectors": [
+          {
+            "name": "RETA DA ESTAÇÃO",
+            "start": 0
+          },
+          {
+            "name": "ENTRADA DA CHICANE",
+            "start": 36000
+          },
+          {
+            "name": "CURVAS DO CAMPO",
+            "start": 72000
+          },
+          {
+            "name": "RETA DA CHEGADA",
+            "start": 108000
+          }
+        ],
+        "rivals": 4
+      },
+      "finish": {
+        "status": "FINISHED",
+        "phase": "regional-cedral",
+        "laps": [
+          15.483333333333682,
+          18.033333333332365,
+          15.41666666666579
+        ],
+        "elapsed": 48.93333333333184,
+        "ticks": 2936,
+        "sectors": [
+          "1:0",
+          "1:1",
+          "1:2",
+          "1:3",
+          "2:0",
+          "2:1",
+          "2:2",
+          "2:3",
+          "3:0",
+          "3:1",
+          "3:2",
+          "3:3"
+        ],
+        "finished": true,
+        "rank": 5,
+        "maxOffset": 0.2511082431591312,
+        "track": 4
+      },
+      "result": {
+        "coins": 0,
+        "xp": 1320,
+        "save": {
+          "garage": [
+            {
+              "modelId": 0
+            }
+          ],
+          "activeKartIdx": 0,
+          "upgrades": {
+            "engine": 1,
+            "tires": 1,
+            "suspension": 1
+          },
+          "regionalRecords": {
+            "mirassol": {
+              "runs": 1,
+              "bestTime": 49.799999999998455,
+              "bestRank": 5
+            },
+            "cedral": {
+              "runs": 1,
+              "bestTime": 48.93333333333184,
+              "bestRank": 5
+            }
+          }
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Local Chromium, native Kart controls and game physics at fixed time steps. Rendering is paused during races. No physical Android or live account."
+  ],
+  "reloaded": {
+    "garage": [
+      {
+        "modelId": 0
+      }
+    ],
+    "activeKartIdx": 0,
+    "upgrades": {
+      "engine": 1,
+      "tires": 1,
+      "suspension": 1
+    },
+    "regionalRecords": {
+      "mirassol": {
+        "runs": 1,
+        "bestTime": 49.799999999998455,
+        "bestRank": 5
+      },
+      "cedral": {
+        "runs": 1,
+        "bestTime": 48.93333333333184,
+        "bestRank": 5
+      }
+    }
+  },
+  "passed": true
+}

@@ -1,0 +1,20 @@
+{
+  "branch": "feat/integracao-regional-v51",
+  "source": "f43b39eb2df46c075d73c4d0ebc997865be00b97",
+  "reference": "8ad962587ace9111d410bfc16129a700b2524a6d",
+  "parent": "11c13ffda71f6a0d0732a7e27f82ecdc3b9095e1",
+  "build": "705.28.33-integracao-regional-v51",
+  "revision": "1e6889e1f4e2d6fe",
+  "preview": {
+    "id": "dpl_FiDD5znK93WY8BHc5U3Wpkr3A187",
+    "stage": "READY",
+    "target": null,
+    "origin": "https://otthi-world-campanha-teste-nqbzxfb3g-thiaguinho-s-projects.vercel.app",
+    "branchOrigin": "https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app"
+  },
+  "production": {
+    "origin": "https://otthi-world-campanha-teste.vercel.app",
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2"
+  }
+}
