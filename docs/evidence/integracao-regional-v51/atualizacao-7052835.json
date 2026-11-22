@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "build": "705.28.35-rio-preto-cidade-viva",
+  "revision": "c99308df40f88a4a",
+  "results": [
+    {
+      "scenario": "stale-config",
+      "automaticRecovery": true,
+      "preserved": true
+    },
+    {
+      "scenario": "real-worker-upgrade",
+      "waitedForPageReady": true,
+      "preserved": true
+    },
+    {
+      "scenario": "offline-after-upgrade",
+      "coherent": true,
+      "preserved": true
+    }
+  ],
+  "errors": []
+}

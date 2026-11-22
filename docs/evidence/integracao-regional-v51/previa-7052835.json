@@ -1,0 +1,19 @@
+{
+  "build": "705.28.35-rio-preto-cidade-viva",
+  "revision": "c99308df40f88a4a",
+  "commit": "8e54835d86b9763f59c89aa477c5bf5c0d4791fb",
+  "preview": "https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app",
+  "deployment": {
+    "id": "dpl_BGNnszqjYkYqq6zTcV74jsgGoKaf",
+    "state": "READY",
+    "target": null
+  },
+  "https": {
+    "matched": 182,
+    "expected": 182
+  },
+  "production": {
+    "build": "705.28.30-aviacao-presenca-unificada",
+    "revision": "72c84d2063641ce2"
+  }
+}

@@ -1,0 +1,850 @@
+{
+  "build": "705.28.35-rio-preto-cidade-viva",
+  "revision": "c99308df40f88a4a",
+  "browser": "141.0.7390.37",
+  "points": [
+    {
+      "id": "regional-complexo_swift",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-dona_capi",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-ponte_julio_zacarin",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-canecao_represa",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-posto_brasilia",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-portaria_damha",
+      "sector": "represa_lagos_damha",
+      "loaded": 4
+    },
+    {
+      "id": "regional-riopreto_shopping",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 5
+    },
+    {
+      "id": "regional-shopping_iguatemi",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 6
+    },
+    {
+      "id": "regional-plaza_avenida",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 6
+    },
+    {
+      "id": "regional-obelisco_espanha",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 6
+    },
+    {
+      "id": "regional-centro_eventos",
+      "sector": "eixo_sul_shoppings",
+      "loaded": 6
+    },
+    {
+      "id": "regional-prefeitura_andalo",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-mercado_municipal",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-catedral_sao_jose",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-calcadao_centro",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-mcdonalds_andalo",
+      "sector": "centro_calcadao_andalo",
+      "loaded": 6
+    },
+    {
+      "id": "regional-casa_nicoletti",
+      "sector": "bady_bassitt",
+      "loaded": 8
+    },
+    {
+      "id": "regional-zappas_bady",
+      "sector": "bady_bassitt",
+      "loaded": 8
+    },
+    {
+      "id": "regional-austa_hospital",
+      "sector": "murchid_homsi",
+      "loaded": 8
+    },
+    {
+      "id": "regional-supermercado_economico",
+      "sector": "murchid_homsi",
+      "loaded": 8
+    },
+    {
+      "id": "regional-shopping_cidade_norte",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-corredor_mirassolandia",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-cachoeira_troca_oleo",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-upa_norte",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-planalto_materiais",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-atacadao_falavina",
+      "sector": "zona_norte",
+      "loaded": 8
+    },
+    {
+      "id": "regional-aeroporto_sjrp",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-cemiterio_sao_joao_batista",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-recinto_exposicoes",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-posto_prf_br153",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-base_pmrv_sp310",
+      "sector": "infra_aeroporto_rodovias",
+      "loaded": 8
+    },
+    {
+      "id": "regional-estacao_schmitt",
+      "sector": "engenheiro_schmitt",
+      "loaded": 9
+    },
+    {
+      "id": "regional-doces_noemia",
+      "sector": "engenheiro_schmitt",
+      "loaded": 9
+    },
+    {
+      "id": "regional-montanhas_rios_italia",
+      "sector": "expansoes_ficticias",
+      "loaded": 9
+    },
+    {
+      "id": "regional-praia_cedral",
+      "sector": "expansoes_ficticias",
+      "loaded": 9
+    },
+    {
+      "id": "regional-estadio_anisio_haddad",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_teixeirao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_maiao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-estadio_jorjao",
+      "sector": "rota_estadios",
+      "loaded": 10
+    },
+    {
+      "id": "regional-termas_ibira",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    },
+    {
+      "id": "regional-thermas_laranjais",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    },
+    {
+      "id": "regional-parque_peao_barretos",
+      "sector": "circuito_turistico",
+      "loaded": 11
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Control batches walk with native input and collisions at fixed 60 Hz. The fixture places the initial approaches.",
+    "Software Chromium, disposable local saves. Frame rate and physical Android were not measured."
+  ],
+  "entryLayouts": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "touchable": true,
+      "overflow": 0,
+      "rect": [
+        31,
+        304,
+        258,
+        44
+      ],
+      "hit": "rioPretoPlayBtn"
+    },
+    {
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "touchable": true,
+      "overflow": 0,
+      "rect": [
+        31,
+        292,
+        331,
+        44
+      ],
+      "hit": "rioPretoPlayBtn"
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "touchable": true,
+      "overflow": 0,
+      "rect": [
+        233,
+        286,
+        230,
+        44
+      ],
+      "hit": "rioPretoPlayBtn"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "touchable": true,
+      "overflow": 0,
+      "rect": [
+        320,
+        432,
+        417,
+        50
+      ],
+      "hit": "rioPretoPlayBtn"
+    }
+  ],
+  "gps": {
+    "waypoint": {
+      "id": "regional-complexo_swift",
+      "name": "Complexo Swift & Teatro Paulo Moura",
+      "x": 475,
+      "z": -542,
+      "navX": 475,
+      "navZ": -554,
+      "arrived": false
+    },
+    "route": [
+      {
+        "x": 0,
+        "z": 8
+      },
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 0,
+        "z": -18
+      },
+      {
+        "x": 0,
+        "z": -65
+      },
+      {
+        "x": 0,
+        "z": -105
+      },
+      {
+        "x": 0,
+        "z": -108
+      },
+      {
+        "x": 20,
+        "z": -128
+      },
+      {
+        "x": 55,
+        "z": -145
+      },
+      {
+        "x": 95,
+        "z": -148
+      },
+      {
+        "x": 132,
+        "z": -130
+      },
+      {
+        "x": 171,
+        "z": -150
+      },
+      {
+        "x": 171,
+        "z": -193
+      },
+      {
+        "x": 171,
+        "z": -216
+      },
+      {
+        "x": 200,
+        "z": -260
+      },
+      {
+        "x": 200,
+        "z": -400
+      },
+      {
+        "x": 360,
+        "z": -400
+      },
+      {
+        "x": 360,
+        "z": -479
+      },
+      {
+        "x": 360,
+        "z": -532
+      },
+      {
+        "x": 438,
+        "z": -532
+      },
+      {
+        "x": 459,
+        "z": -545
+      },
+      {
+        "x": 467,
+        "z": -554
+      },
+      {
+        "x": 475,
+        "z": -554
+      }
+    ],
+    "progress": {
+      "distance": 0,
+      "index": 0,
+      "t": 0,
+      "point": {
+        "x": 0,
+        "z": 8,
+        "t": 0
+      },
+      "along": 0,
+      "total": 981.7190827831876,
+      "remaining": 981.7190827831876,
+      "next": {
+        "x": 0,
+        "z": 0
+      },
+      "after": {
+        "x": 0,
+        "z": -18
+      },
+      "heading": 3.141592653589793,
+      "delta": 0,
+      "instruction": "siga em frente"
+    }
+  },
+  "warmMeshes": 83,
+  "swift": {
+    "active": null,
+    "completed": {
+      "complexo_swift": true
+    },
+    "swiftLights": true
+  },
+  "cityLife": {
+    "activities": 29,
+    "active": null,
+    "people": [
+      {
+        "id": "catedral-guia",
+        "x": -42.056776994315875,
+        "z": 22.535407650360526,
+        "action": "walk"
+      },
+      {
+        "id": "mercadao-feira",
+        "x": 49,
+        "z": 27,
+        "action": "walk"
+      },
+      {
+        "id": "mercadao-cliente",
+        "x": 56.6011395245926,
+        "z": 25.74812697592789,
+        "action": "walk"
+      },
+      {
+        "id": "calcadao-ambulante",
+        "x": -37.59414775447142,
+        "z": -83.02133009614387,
+        "action": "walk"
+      },
+      {
+        "id": "paco-agente",
+        "x": 111.52112708420891,
+        "z": -7.016161461677529,
+        "action": "walk"
+      },
+      {
+        "id": "orla-central-2",
+        "x": -111.9230768941132,
+        "z": 40,
+        "action": "run"
+      },
+      {
+        "id": "swift-tecnica",
+        "x": 478.89832356553455,
+        "z": -543.3513710435017,
+        "action": "walk"
+      },
+      {
+        "id": "canecao-cliente",
+        "x": 509.89800512071076,
+        "z": -547.070111881735,
+        "action": "walk"
+      },
+      {
+        "id": "represa-corredora",
+        "x": 559.8704390102763,
+        "z": -572.9999813942609,
+        "action": "run"
+      },
+      {
+        "id": "represa-corredor",
+        "x": 461.0633662055564,
+        "z": -580.4504943491322,
+        "action": "run"
+      },
+      {
+        "id": "murchid-1",
+        "x": 513.6333827816177,
+        "z": -460.85503742524014,
+        "action": "walk"
+      },
+      {
+        "id": "murchid-2",
+        "x": 467.006391129359,
+        "z": -460.1698461274253,
+        "action": "talk"
+      },
+      {
+        "id": "zona-norte-2",
+        "x": 430.0135854329047,
+        "z": -320.2146059118163,
+        "action": "walk"
+      },
+      {
+        "id": "orla-central-1",
+        "x": -85.48995399215228,
+        "z": 37,
+        "action": "run"
+      },
+      {
+        "id": "bady-1",
+        "x": -243.1977649945091,
+        "z": -496,
+        "action": "walk"
+      },
+      {
+        "id": "zona-norte-1",
+        "x": 392.5232658332122,
+        "z": -339.10511628188806,
+        "action": "walk"
+      }
+    ],
+    "animals": [
+      {
+        "id": "cachorro-catedral",
+        "x": -40.654820221487434,
+        "z": 23.012060283612282,
+        "visible": false
+      },
+      {
+        "id": "pombo-mercadao",
+        "x": 55.08393597930636,
+        "z": 26.020789248819877,
+        "visible": false
+      },
+      {
+        "id": "capivara-represa",
+        "x": 487.9477063523907,
+        "z": -584.3994724942912,
+        "visible": true
+      },
+      {
+        "id": "pato-represa",
+        "x": 482.4142736632891,
+        "z": -614.489512241204,
+        "visible": true
+      },
+      {
+        "id": "pato-represa-2",
+        "x": 512.4597630075552,
+        "z": -612.5822811915258,
+        "visible": true
+      },
+      {
+        "id": "capivara-orla",
+        "x": -109.96384799999826,
+        "z": 41,
+        "visible": false
+      },
+      {
+        "id": "capivara-filhote",
+        "x": -104.23388399999914,
+        "z": 41,
+        "visible": false
+      },
+      {
+        "id": "pato-orla",
+        "x": -102.66792936194676,
+        "z": 53.04743866257903,
+        "visible": false
+      },
+      {
+        "id": "pato-orla-2",
+        "x": -98.75922354407156,
+        "z": 55.927767063221474,
+        "visible": false
+      }
+    ],
+    "traffic": [
+      {
+        "id": "rio-city-centro-0",
+        "x": 8.980082005700128,
+        "z": -63.43022294576586,
+        "speed": 5.799999999999999
+      },
+      {
+        "id": "rio-city-centro-1",
+        "x": 60.516758462298334,
+        "z": -66.46932739843861,
+        "speed": 6.269999999999999
+      },
+      {
+        "id": "rio-city-centro-2",
+        "x": 5.0415234634077,
+        "z": -63.31602895798651,
+        "speed": 0
+      },
+      {
+        "id": "rio-city-centro-3",
+        "x": 59.60087488911512,
+        "z": 1.616914058120946,
+        "speed": 1.2430112608977652e-31
+      },
+      {
+        "id": "rio-city-represa-0",
+        "x": 508.0952996887617,
+        "z": -512.1506070733703,
+        "speed": 5.799999999999999
+      },
+      {
+        "id": "rio-city-represa-1",
+        "x": 502.1376030625251,
+        "z": -507.9258245306907,
+        "speed": 6.269999999999999
+      },
+      {
+        "id": "rio-city-represa-2",
+        "x": 558.9647274824215,
+        "z": -544.4767998493815,
+        "speed": 6.739999999999999
+      },
+      {
+        "id": "rio-city-represa-3",
+        "x": 447.72329374541863,
+        "z": -540.0690753676782,
+        "speed": 7.209999999999999
+      },
+      {
+        "id": "rio-city-bady-0",
+        "x": -124.43497369459634,
+        "z": -462.3298070065367,
+        "speed": 5.799999999999999
+      },
+      {
+        "id": "rio-city-bady-1",
+        "x": -92.40289854136726,
+        "z": -465.846875158933,
+        "speed": 6.269999999999999
+      }
+    ],
+    "routes": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "football": {
+    "pitch": [
+      42,
+      88,
+      42,
+      18
+    ],
+    "scoreboard": "0 × 0",
+    "entranceClear": true,
+    "stands": [
+      [
+        "TEIXEIRAO_STRUCTURE",
+        5
+      ],
+      [
+        "TEIXEIRAO_SCOREBOARD",
+        1
+      ]
+    ],
+    "solo": "solo",
+    "teams": [
+      4,
+      4
+    ],
+    "score": [
+      0,
+      0
+    ],
+    "finished": false,
+    "time": 149.86666666666656,
+    "boardTexture": "26F6C701-7117-403C-B2EC-F304BFF994D8"
+  },
+  "footballGoal": {
+    "pitch": [
+      42,
+      88,
+      42,
+      18
+    ],
+    "scoreboard": "1 × 0",
+    "entranceClear": true,
+    "stands": [
+      [
+        "TEIXEIRAO_STRUCTURE",
+        5
+      ],
+      [
+        "TEIXEIRAO_SCOREBOARD",
+        1
+      ]
+    ],
+    "solo": "solo",
+    "teams": [
+      4,
+      4
+    ],
+    "score": [
+      1,
+      0
+    ],
+    "finished": false,
+    "time": 148.6421666666664,
+    "boardTexture": "26F6C701-7117-403C-B2EC-F304BFF994D8"
+  },
+  "footballEnd": {
+    "pitch": [
+      42,
+      88,
+      42,
+      18
+    ],
+    "scoreboard": "1 × 0",
+    "entranceClear": true,
+    "stands": [
+      [
+        "TEIXEIRAO_STRUCTURE",
+        5
+      ],
+      [
+        "TEIXEIRAO_SCOREBOARD",
+        1
+      ]
+    ],
+    "solo": "solo",
+    "teams": [
+      4,
+      4
+    ],
+    "score": [
+      1,
+      0
+    ],
+    "finished": true,
+    "time": 0,
+    "boardTexture": "26F6C701-7117-403C-B2EC-F304BFF994D8"
+  },
+  "run": {
+    "run": null,
+    "x": 551.3147518719489,
+    "z": -572.8687914898696,
+    "waypoint": 5,
+    "distance": 327.53377475826,
+    "passed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "record": {
+      "runs": 1,
+      "best": 28.81666666666631,
+      "last": 28.81666666666631
+    },
+    "onFoot": true
+  },
+  "directArrival": {
+    "x": 470,
+    "z": -566,
+    "secured": true,
+    "inView": true,
+    "feetClear": true
+  },
+  "reloaded": {
+    "stats": {
+      "places": 42,
+      "sectors": 11,
+      "loaded": [
+        "represa_lagos_damha",
+        "murchid_homsi"
+      ],
+      "visible": 2,
+      "course": {
+        "record": {
+          "runs": 1,
+          "best": 28.81666666666631,
+          "last": 28.81666666666631
+        },
+        "active": null
+      }
+    },
+    "profile": {
+      "playerId": "rio-v51-qa",
+      "name": "Rio Preto QA",
+      "nameConfirmed": true,
+      "level": 1,
+      "xp": 318,
+      "coins": 1251,
+      "reputation": 0
+    },
+    "races": {
+      "wins": 4,
+      "losses": 0,
+      "coinWins": 0,
+      "houseWins": 0,
+      "bestTime": 0,
+      "regionalCircuits": {
+        "mirassol": {
+          "bestTime": 92,
+          "runs": 1
+        }
+      },
+      "streetRuns": {
+        "corrida_rua_represa_damha": {
+          "runs": 1,
+          "best": 28.81666666666631,
+          "last": 28.81666666666631
+        }
+      }
+    },
+    "wardrobe": {
+      "thiago": {
+        "top": "hoodie",
+        "legs": "original",
+        "shoes": "original",
+        "hat": "headphones",
+        "glasses": "original",
+        "jewel": "original",
+        "wrist": "original",
+        "bag": "original"
+      },
+      "thamis": {
+        "top": "original",
+        "legs": "original",
+        "shoes": "original",
+        "hat": "original",
+        "glasses": "original",
+        "jewel": "original",
+        "wrist": "original",
+        "bag": "original"
+      }
+    },
+    "position": {
+      "x": 470,
+      "y": 0,
+      "z": -566,
+      "yaw": 2.991
+    }
+  },
+  "passed": true
+}

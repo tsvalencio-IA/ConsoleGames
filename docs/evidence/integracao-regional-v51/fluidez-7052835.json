@@ -1,0 +1,152 @@
+{
+  "browser": "141.0.7390.37",
+  "system": "Linux x86_64, SwiftShader, 2 CPUs de cota",
+  "profile": "393 × 852, qualidade baixa, som desativado",
+  "requestedSeconds": 30,
+  "spawn": {
+    "x": 0,
+    "z": 8
+  },
+  "baseline": "fcbab2b",
+  "candidate": "8e54835",
+  "cases": [
+    {
+      "label": "before",
+      "frames": {
+        "samples": 115,
+        "mean": 258.4869565217391,
+        "p50": 267.1000000014901,
+        "p95": 597.8999999985099,
+        "max": 695,
+        "over100": 85,
+        "over250": 60
+      },
+      "work": {
+        "samples": 116,
+        "mean": 63.27241379327687,
+        "p50": 69,
+        "p95": 112.69999999925494,
+        "max": 155,
+        "over100": 13,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 75,
+        "mean": 82.85333333333334,
+        "p50": 79,
+        "p95": 115,
+        "max": 172,
+        "over100": 13,
+        "over250": 0
+      },
+      "npcs": 138,
+      "render": {
+        "calls": 1071,
+        "triangles": 1040664
+      },
+      "memory": {
+        "before": {
+          "heap": {
+            "usedSize": 93511612,
+            "totalSize": 105783296,
+            "embedderHeapUsedSize": 51170552,
+            "backingStorageSize": 434725290
+          },
+          "webgl": {
+            "calls": 292,
+            "triangles": 275488,
+            "geometries": 1280,
+            "textures": 219,
+            "npcs": 138
+          }
+        },
+        "after": {
+          "heap": {
+            "usedSize": 95459984,
+            "totalSize": 115355648,
+            "embedderHeapUsedSize": 53281808,
+            "backingStorageSize": 434664205
+          },
+          "webgl": {
+            "calls": 1071,
+            "triangles": 1040664,
+            "geometries": 1530,
+            "textures": 272,
+            "npcs": 138
+          }
+        }
+      }
+    },
+    {
+      "label": "after",
+      "frames": {
+        "samples": 98,
+        "mean": 303.88775510204084,
+        "p50": 295.20000000298023,
+        "p95": 745.2000000029802,
+        "max": 931.5999999977648,
+        "over100": 78,
+        "over250": 57
+      },
+      "work": {
+        "samples": 99,
+        "mean": 76.19595959575639,
+        "p50": 82.69999999925494,
+        "p95": 126.10000000149012,
+        "max": 178.30000000074506,
+        "over100": 27,
+        "over250": 0
+      },
+      "longTasks": {
+        "samples": 76,
+        "mean": 92.0657894736842,
+        "p50": 93,
+        "p95": 129,
+        "max": 179,
+        "over100": 27,
+        "over250": 0
+      },
+      "npcs": 145,
+      "render": {
+        "calls": 793,
+        "triangles": 867163
+      },
+      "memory": {
+        "before": {
+          "heap": {
+            "usedSize": 89571872,
+            "totalSize": 104472576,
+            "embedderHeapUsedSize": 50844464,
+            "backingStorageSize": 436100300
+          },
+          "webgl": {
+            "calls": 394,
+            "triangles": 493278,
+            "geometries": 1267,
+            "textures": 219,
+            "npcs": 144
+          }
+        },
+        "after": {
+          "heap": {
+            "usedSize": 97118652,
+            "totalSize": 127414272,
+            "embedderHeapUsedSize": 55044896,
+            "backingStorageSize": 435178654
+          },
+          "webgl": {
+            "calls": 793,
+            "triangles": 867163,
+            "geometries": 1474,
+            "textures": 255,
+            "npcs": 145
+          }
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Chromium software WebGL. Relative CPU/frame and long-task comparison, not physical Android performance. Sound disabled in both cases.",
+    "Uma janela por versão com o mesmo ponto inicial e comando. O trânsito mantém seu comportamento normal durante a medição."
+  ]
+}

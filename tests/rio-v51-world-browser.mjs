@@ -188,6 +188,7 @@ try{
  const stadium=places.find(p=>p.nativeVenue==='football');
  await page.evaluate(({visitX,visitZ})=>__RIO_V51_QA.at(visitX,visitZ),stadium);
  await page.setViewportSize({width:852,height:480});
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.evaluate(()=>__RIO_V51_QA.showTeixeirao());
  await page.screenshot({path:out+'/teixeirao.png'});
  await page.setViewportSize({width:393,height:852});

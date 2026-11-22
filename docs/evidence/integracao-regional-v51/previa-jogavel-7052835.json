@@ -1,0 +1,155 @@
+{
+  "origin": "https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app",
+  "release": "705.28.35-rio-preto-cidade-viva",
+  "revision": "c99308df40f88a4a",
+  "errors": [],
+  "entered": {
+    "x": 470,
+    "z": -566
+  },
+  "route": {
+    "waypoint": {
+      "id": "regional-estadio_teixeirao",
+      "name": "Teixeirão — Estádio do América",
+      "x": 50,
+      "z": 69,
+      "navX": 34,
+      "navZ": 58,
+      "arrived": false
+    },
+    "route": [
+      {
+        "x": 470,
+        "z": -566
+      },
+      {
+        "x": 470,
+        "z": -554
+      },
+      {
+        "x": 467,
+        "z": -554
+      },
+      {
+        "x": 459,
+        "z": -545
+      },
+      {
+        "x": 438,
+        "z": -532
+      },
+      {
+        "x": 360,
+        "z": -532
+      },
+      {
+        "x": 360,
+        "z": -479
+      },
+      {
+        "x": 360,
+        "z": -400
+      },
+      {
+        "x": 200,
+        "z": -400
+      },
+      {
+        "x": 200,
+        "z": -260
+      },
+      {
+        "x": 171,
+        "z": -216
+      },
+      {
+        "x": 171,
+        "z": -193
+      },
+      {
+        "x": 171,
+        "z": -150
+      },
+      {
+        "x": 132,
+        "z": -130
+      },
+      {
+        "x": 95,
+        "z": -148
+      },
+      {
+        "x": 55,
+        "z": -145
+      },
+      {
+        "x": 20,
+        "z": -128
+      },
+      {
+        "x": 0,
+        "z": -108
+      },
+      {
+        "x": 0,
+        "z": -105
+      },
+      {
+        "x": 0,
+        "z": -65
+      },
+      {
+        "x": 0,
+        "z": -18
+      },
+      {
+        "x": 0,
+        "z": 0
+      },
+      {
+        "x": 0,
+        "z": 18
+      },
+      {
+        "x": 0,
+        "z": 58
+      },
+      {
+        "x": 34,
+        "z": 58
+      }
+    ],
+    "progress": {
+      "distance": 0,
+      "index": 0,
+      "t": 0,
+      "point": {
+        "x": 470,
+        "z": -566,
+        "t": 0
+      },
+      "along": 0,
+      "total": 1072.7190827831878,
+      "remaining": 1072.7190827831878,
+      "next": {
+        "x": 470,
+        "z": -554
+      },
+      "after": {
+        "x": 467,
+        "z": -554
+      },
+      "heading": 0,
+      "delta": -1.5707963267948966,
+      "instruction": "12 m até a curva"
+    }
+  },
+  "entrance": {
+    "id": "football-v705",
+    "label": "Teixeirão — jogar futebol",
+    "type": "sport",
+    "activity": null
+  },
+  "sport": "football",
+  "passed": true
+}

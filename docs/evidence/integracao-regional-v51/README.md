@@ -1,5 +1,20 @@
 # Integração regional OTTHI World 5.1
 
+## Rio Preto viva e Teixeirão na 705.28.35
+
+A prévia `705.28.35-rio-preto-cidade-viva` está na revisão `c99308df40f88a4a`, commit `8e54835`. O build foi verificado em 182 arquivos hospedados. [Abrir o Mundo Aberto](https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app/games/otthi/) · [Registro da prévia](previa-7052835.json)
+
+- O campo já jogável da cidade recebeu o Teixeirão. A representação estilizada usa arquibancadas de concreto em vermelho, quatro torres e placar ligado à partida. O portal do futebol, a pista de atletismo e as coordenadas do campo conservaram os contratos existentes. O destino aparece em **Menu → Mundo/GPS → Rio Preto e região → Rota dos Estádios Regionais**. [América Futebol Clube](https://www.americasp.com/historia) · [Vistoria da Federação Paulista de Futebol](https://conteudo.fpf.org.br/laudosestadios/Laudo%20Engenharia-%20S%C3%A3o%20Jos%C3%A9%20Rio%20Preto-%20Est.%20Benedito%20Teixeira-%2020-01-24.pdf)
+- Catedral São José, Mercadão, Calçadão, Paço e o restaurante da Andaló ocupam ruas da cidade existente. O cadastro preserva os 42 pontos e inclui 29 novas atividades de local, além dos acessos nativos para compras, futebol, corrida e serviços. A ambientação adapta os endereços e as fachadas ao mapa. Os trabalhos encenados nas entradas, como preparar a sessão do Swift, usam comandos a pé.
+- O navegador confirmou 16 moradores, com quatro corredores, nove animais e dez carros adicionais nas rotas. Nos retornos do teste, o jogo reutilizou os 83 objetos agrupados dos setores e manteve as contagens dos novos atores. A atividade do Swift acendeu as luzes, concedeu XP uma vez e persistiu após recarregar. [Resultado do navegador](cidade-viva-7052835.json)
+- A partida automatizada começou pelo botão Ação na entrada do Teixeirão. O cenário de chute foi preparado perto da área para exercitar o comando nativo, o gol, o placar físico e o encerramento dos 150 segundos simulados. A corrida a pé preservou os seis checkpoints e o recorde. O navegador também conferiu o acesso da Represa em quatro tamanhos de janela. [Resultado do navegador](cidade-viva-7052835.json)
+- Na prévia hospedada, o botão Jogar em Rio Preto abriu na Represa. O GPS traçou 25 pontos de rota até o Teixeirão, e o modo solo abriu na entrada do estádio. A migração da 705.28.34 preservou moedas, XP e o grupo da família, incluindo a reabertura offline em Chromium. [Captura do estádio](teixeirao-7052835.jpg) · [Teste hospedado](previa-jogavel-7052835.json) · [Atualização](atualizacao-7052835.json)
+- Os 591 testes Node passaram. A prévia abriu os oito jogos pelos cartões e pelos links diretos, voltou ao mesmo console e preservou o favorito cadastrado. [Navegação e console offline](console-7052835.json)
+
+O exercício de futebol e as tarefas da cidade foram conferidos em Chromium com perfis descartáveis. Android físico e futebol online via Firebase entre dois aparelhos continuam pendentes.
+
+O comparativo de 30 s partiu do mesmo ponto e aplicou o mesmo comando nas duas versões, em Chromium com SwiftShader no Linux e viewport de 393 × 852. A mediana passou de 267 para 295 ms entre quadros e o p95 de 598 para 745 ms. O heap JS no fim passou de 91,0 para 92,6 MiB. O teste mede uma janela por versão sob renderização por software. O resultado pede validação prolongada e em Android físico. [Medição antes e depois](fluidez-7052835.json)
+
 ## Acesso direto a partir da 705.28.34
 
 O botão **Jogar em Rio Preto** aparece na tela inicial da prévia e abre na Represa, de frente para o Complexo Swift. **Jogar** e **Continuar** abrem na posição salva. O catálogo dos 42 pontos continua em **Menu → Mundo/GPS → Rio Preto e região**.
