@@ -2,7 +2,7 @@
     Nunca apaga caches de outro jogo/PWA; nunca intercepta Firebase externo. */
 "use strict";
 const PREFIX="thia-arcade-kart-";
-const CACHE=PREFIX+"pro-control-v37-pilot-restored1-integracao20261120";
+const CACHE=PREFIX+"pro-control-v38-integracao-regional-v51";
 const FILES=[
 "./audio/engine-fiat-idle.ogg",
 "./audio/engine-fiat-load.ogg",
@@ -30,14 +30,15 @@ const FILES=[
 // Exact references from this game entry, including its shared console routes.
   '../../arcade/manifest.webmanifest',
   './account-access.js?v=20261024-head1',
-  './js/core.js?v=20261117-pilot-restored1',
+  './js/core.js?v=20261122-regional1',
   './js/admin.js',
   './racecraft-evaluation.js?v=20261113-duelo2',
   './racecraft-duel.js?v=20261113-duelo1',
-  './js/game_kart.js?v=20261113-duelo37',
+  './js/regional-tracks.js?v=20261122-regional1',
+  './js/game_kart.js?v=20261122-regional1',
   './js/game_run.js',
   './control-modes.js?v=20261024-head1',
-  './world-venue-trip.js?v=20261120-route1',
+  './world-venue-trip.js?v=20261122-regional1',
   '../../arcade/canonical-navigation.js?v=20261120'
 ];
 importScripts('../../arcade/game-cache.js?v=20261120');

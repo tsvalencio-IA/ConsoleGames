@@ -98,7 +98,7 @@ RELEASE_FILES += [
     '../voo/js/flight-operations.js', '../voo/js/flight-world-return.js', '../voo/local-practice.js',
     '../ar/local-practice.js',
     '../boxe/index.html', '../boxe/sw.js', '../boxe/local-practice.js', '../boxe/world-venue-trip.js',
-    '../kart/local-practice.js', '../kart/world-venue-trip.js',
+    '../kart/local-practice.js', '../kart/world-venue-trip.js', '../kart/js/core.js', '../kart/js/regional-tracks.js',
     '../tenis/local-practice.js', '../tenis/world-venue-trip.js',
     '../familia/index.html', '../familia/3d/index.html', '../familia/3d/sw.js',
 ]

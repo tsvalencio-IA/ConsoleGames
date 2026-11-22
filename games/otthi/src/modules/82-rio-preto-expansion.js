@@ -20,12 +20,19 @@
     registerRioTour();
     updateRioRegionalCircuits();
   };
+  const rioTracksPreviousLocations=expansionMapLocations;
+  expansionMapLocations=function(){
+    return [...rioTracksPreviousLocations(),...Object.values(RIO_REGIONAL_CIRCUITS).map(site=>({
+      id:'circuit-'+site.id,name:site.label,icon:'🏁',group:'Autódromos',
+      x:site.navX,z:site.navZ,navX:site.navX,navZ:site.navZ,description:site.description
+    }))];
+  };
   const rioPreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
     const places=Object.values(RIO_PRETO_LAYOUT.landmarks);
     const tracks=Object.values(RIO_REGIONAL_CIRCUITS);
     const cards=[...places.map(p=>({id:p.id,title:p.name,tag:'MARCAR NO GPS'})),
-      ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'CIRCUITO DO JOGO'}))];
+      ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'KART LEGENDS'}))];
     return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">Rio Preto e região</h3>'+
       '<p>Explore as três avenidas ou dirija até Mirassol e Cedral. Os traçados são do jogo.</p>'+
       '<div class="choice-grid">'+cards.map(card=>'<button class="choice" data-rio-route="'+escapeHtml(card.id)+'"><b>'+

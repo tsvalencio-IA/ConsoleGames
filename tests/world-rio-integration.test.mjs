@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const moduleSource=name=>fs.readFileSync('games/otthi/src/modules/'+name+'.js','utf8');
 function makeWorld(){
  const context=vm.createContext({window:{},console,updateWorldExpansion(){}});
- for(const name of ['78-rio-preto-layout','80-rio-regional-circuits','05a-world-layout-v704','50-world-road-continuity']){
+ for(const name of ['78-rio-preto-layout','80-rio-regional-circuits','83-rio-v51-layout','05a-world-layout-v704','50-world-road-continuity']){
   vm.runInContext(moduleSource(name),context,{filename:name});
  }
  vm.runInContext('const projectPointToSegment=v704DistanceToSegment;',context);
@@ -81,4 +81,43 @@ test('indexed junction markings match a full search including at cell boundaries
  assert.equal(result.matches,result.samples);
  assert(result.samples>2000);
  assert(result.indexedCandidates<result.oldChecks/4);
+});
+
+test('the laboratory catalog routes all 42 places without blocking a road or the street run',t=>{
+ const c=makeWorld();
+ const result=vm.runInContext(`(()=>{
+  const {nodes,edges,highways,bounds}=WORLD_LAYOUT_V704;
+  const visited=new Set(['C']),queue=['C'],unjoined=[];
+  for(const n of queue)for(const [a,b] of edges){
+   const peer=a===n?b:b===n?a:null;
+   if(peer&&!visited.has(peer)){visited.add(peer);queue.push(peer);}
+  }
+  for(const p of RIO_V51.places)if(!Object.entries(nodes).some(([id,at])=>visited.has(id)&&at.x===p.navX&&at.z===p.navZ))unjoined.push(p.id);
+  const collisions=[],outOfBounds=[],overlap=[];
+  const previous=v704ProtectedRectangles().filter(p=>!p.id?.startsWith('regional-')&&!p.id?.startsWith('represa-footpath-')&&!p.id?.startsWith('lake-'));
+  for(const p of RIO_V51.places){
+   const box={x:p.x,z:p.z,w:p.w,d:p.d};
+   if(Math.min(p.x-p.w/2-bounds.minX,bounds.maxX-p.x-p.w/2,p.z-p.d/2-bounds.minZ,bounds.maxZ-p.z-p.d/2)<0)outOfBounds.push(p.id);
+   for(const road of highways)if(v704HighwayIntersectsRect(road.id,box,0))collisions.push([p.id,road.id]);
+   for(const old of previous)if(v704RectOverlap(box,old,0))overlap.push([p.id,old.id]);
+  }
+  const {route,lakes,gates}=RIO_V51.course,occupied=[...RIO_V51.places,...lakes];
+  const runHits=[];
+  for(const [i,b] of route.slice(1).entries()){
+   const a=route[i],steps=Math.ceil(Math.hypot(b.x-a.x,b.z-a.z));
+   for(let j=0;j<=steps;j++){
+    const p={x:a.x+(b.x-a.x)*j/steps,z:a.z+(b.z-a.z)*j/steps};
+    const hit=occupied.find(box=>v704PointInRect(p,box,1.65));
+    if(hit&&!runHits.includes(hit.id))runHits.push(hit.id);
+   }
+  }
+  return{places:RIO_V51.places.length,sectors:Object.keys(RIO_V51.sectors).length,fictional:RIO_V51.places.filter(p=>p.fictional).length,
+   collisions,overlap,outOfBounds,unjoined,runHits,gates:gates.length,brokenEdges:edges.filter(([a,b])=>!nodes[a]||!nodes[b])};
+ })()`,c);
+ t.diagnostic(JSON.stringify(result));
+ assert.equal(result.places,42);
+ assert.equal(result.sectors,11);
+ assert.equal(result.fictional,2);
+ assert.equal(result.gates,6);
+ for(const key of ['collisions','overlap','outOfBounds','unjoined','runHits','brokenEdges'])assert.equal(result[key].length,0,key);
 });

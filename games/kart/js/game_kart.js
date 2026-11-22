@@ -40,10 +40,12 @@
         { id: 6, name: 'AVIÃO JATO', type: 'plane', price: 8000, speedBonus: 0.40, turnBonus: 0.05, weightBonus: -0.2, color: '#ffffff', desc: 'Praticamente voa sobre a pista!' }
     ];
 
+    const ORIGINAL_TRACK_COUNT=3;
     const TRACKS = [
         { id: 0, name: 'CIRCUITO SOLAR', theme: 'grass', sky: 0, curveMult: 1.0 },
         { id: 1, name: 'DUNAS DO VENTO', theme: 'sand', sky: 1, curveMult: 0.8 },
-        { id: 2, name: 'MONTANHA GELADA', theme: 'snow', sky: 2, curveMult: 1.3 }
+        { id: 2, name: 'MONTANHA GELADA', theme: 'snow', sky: 2, curveMult: 1.3 },
+        ...(window.KartRegionalTracks?.tracks||[])
     ];
 
     const CONF = {
@@ -67,9 +69,10 @@
 
     function getSegment(index) { if (!segments || segments.length === 0) return DUMMY_SEG; const len = segments.length; const i = ((Math.floor(index) % len) + len) % len; return segments[i] || DUMMY_SEG; }
 
-    function buildMiniMap(segments) {
+    function buildMiniMap(segments,authoredPath) {
         minimapPath = []; let x = 0, z = 0, angle = 0;
         segments.forEach(seg => { angle -= seg.curve * 0.04; x += Math.sin(angle) * 8; z -= Math.cos(angle) * 8; minimapPath.push({ x, z }); });
+        if(authoredPath)minimapPath=authoredPath;
         let minX=Infinity, maxX=-Infinity, minZ=Infinity, maxZ=-Infinity;
         minimapPath.forEach(p => { if(p.x < minX) minX = p.x; if(p.x > maxX) maxX = p.x; if(p.z < minZ) minZ = p.z; if(p.z > maxZ) maxZ = p.z; });
         minimapBounds = { minX, maxX, minZ, maxZ, w: maxX-minX || 1, h: maxZ-minZ || 1 };
@@ -249,7 +252,7 @@
                     this.podiumAcceptedMatch=this.lastStartedMatch;
                     }
                     let nextTrackId = this.selectedTrack + 1;
-                    if (nextTrackId < TRACKS.length) {
+                    if (nextTrackId < ORIGINAL_TRACK_COUNT) {
                         // Próxima Corrida
                         if (this.isOnline) {
                             if (this.isHost) {
@@ -291,7 +294,8 @@
                 // ------------------------------------
 
                 if (this.state === 'MODE_SELECT') { 
-                    this.selectMode(yPct<.55?'OFFLINE':'ONLINE');
+                    if(this.currentFase.regional){if(yPct>=.44&&yPct<=.65)this.selectMode('OFFLINE');}
+                    else this.selectMode(yPct<.55?'OFFLINE':'ONLINE');
                     window.Sfx.click(); 
                 } 
                 else if (this.state === 'LOBBY'||this.state==='WAITING') {
@@ -315,7 +319,7 @@
                                 } else if (clicked.action === 'change_track') {
                                     if (this.currentFase.id === 'arcade') {
                                         if(!this.isOnline || this.isHost) { 
-                                            this.selectedTrack = (this.selectedTrack + 1) % TRACKS.length; window.Sfx.hover(); if(this.isOnline && this.isHost) this.roomRef.update({ trackId: this.selectedTrack }); 
+                                            this.selectedTrack = (this.selectedTrack + 1) % ORIGINAL_TRACK_COUNT; window.Sfx.hover(); if(this.isOnline && this.isHost) this.roomRef.update({ trackId: this.selectedTrack });
                                         }
                                     } else { window.Sfx.error(); this.pushMsg("PISTA FIXA NA MISSÃO!", "#f00", 25); }
                                 } else if (clicked.action === 'toggle_kart') {
@@ -406,10 +410,21 @@
                         if(random() < 0.4) { obsList.push({ id: 'bx2_'+globalIdx, type: 'item_box', x: (random() - 0.5) * 1.4, collected: false }); }
                     }
                     
-                    segments.push({ sector:this.trackSectors?.length||1,curve:curve*mult, color: Math.floor(segments.length / CONF.RUMBLE_LENGTH) % 2 ? 'dark' : 'light', theme: trk.theme, obs: obsList });
+                    segments.push({ sector:this.trackSectors?.length||1,curve:curve*(mult||1), color: Math.floor(segments.length / CONF.RUMBLE_LENGTH) % 2 ? 'dark' : 'light', theme: trk.theme, obs: obsList });
                 }
             };
             this.trackSectors=[{name:'LARGADA',start:0}];
+            if(trk.key){
+                const route=window.KartRegionalTracks.build(trk);
+                this.trackSectors=[];
+                for(const [i,curve] of route.curves.entries()){
+                    if(i%(route.curves.length/trk.sectors.length)===0)this.trackSectors.push({name:trk.sectors[this.trackSectors.length],start:i*CONF.SEGMENT_LENGTH});
+                    addRoad(1,curve);
+                }
+                trackLength=segments.length*CONF.SEGMENT_LENGTH;this.trackMeters=trackLength;
+                buildMiniMap(segments,route.map);return;
+            }
+
             if (trackId === 0) { addRoad(50, 0); addRoad(40, 2); addRoad(40, 0); addRoad(60, -3); addRoad(40, 0); addRoad(60, 4); addRoad(50, -2); addRoad(80, 0); } 
             else if (trackId === 1) { addRoad(80, 0); addRoad(60, -1); addRoad(40, -4); addRoad(100, 0); addRoad(60, 2); addRoad(40, 0); addRoad(30, 5); addRoad(100, 0); } 
             else { addRoad(40, 0); addRoad(30, 3); addRoad(30, -3); addRoad(30, 3); addRoad(20, -5); addRoad(100, 0); addRoad(50, 2); addRoad(50, 0); }
@@ -423,12 +438,13 @@
         },
 
         selectMode(mode) {
+            if(mode==='ONLINE'&&this.currentFase.regional){window.System.msg('Pista regional disponível no modo solo.');return;}
             if(mode==='ONLINE'&&!window.DB){window.System.msg('ENTRE NA CONTA PARA JOGAR ONLINE');return;}
             this.resetPhysics();this.isOnline=mode==='ONLINE';this.state='LOBBY';
             this.selectedTrack=Number(this.currentFase.trackId)||0;
             if(this.isOnline)this.connectMultiplayer();else this.rivals=[];
         },
-        cupTracks(first=this.selectedTrack){return TRACKS.map((_,i)=>i).filter(i=>i>=first);},
+        cupTracks(first=this.selectedTrack){return Array.from({length:ORIGINAL_TRACK_COUNT},(_,i)=>i).filter(i=>i>=first);},
         onlineStorageKey(kind){return 'thia:kart:cup-v2:'+kind+':'+window.System?.playerId+':'+this.currentFase.id;},
         readOnlineStorage(kind,fallback){try{return JSON.parse(sessionStorage.getItem(this.onlineStorageKey(kind))||'null')??fallback;}catch{return fallback;}},
         writeOnlineStorage(kind,value){try{sessionStorage.setItem(this.onlineStorageKey(kind),JSON.stringify(value));}catch{}},
@@ -625,7 +641,7 @@
             watch('host',snap=>{this.roomHostId=snap.val()||'';this.hostKnown=true;this.reconcileOnlineRoster();});
             watch('players',snap=>{this.remotePlayersData=snap.val()||{};this.rosterKnown=true;this.reconcileOnlineRoster();});
             watch('cup',snap=>this.applyOnlineCup(snap.val()));
-            watch('trackId',snap=>{const track=snap.val();if(this.currentFase.id==='arcade'&&Number.isInteger(track)&&track>=0&&track<TRACKS.length){this.previewTrack=track;if(!this.onlineCup||this.onlineCup.state==='LOBBY'||this.onlineCup.state==='CUP_END')this.selectedTrack=track;}});
+            watch('trackId',snap=>{const track=snap.val();if(this.currentFase.id==='arcade'&&Number.isInteger(track)&&track>=0&&track<ORIGINAL_TRACK_COUNT){this.previewTrack=track;if(!this.onlineCup||this.onlineCup.state==='LOBBY'||this.onlineCup.state==='CUP_END')this.selectedTrack=track;}});
             watch('shared/hazards',snap=>{this.pendingHazards=snap.val()||{};this.applyOnlineHazards();});
             watch('shared/shells',snap=>{this.pendingShells=snap.val()||{};this.applyOnlineShells();});
             watch('shared/impacts',snap=>{this.pendingImpacts=snap.val()||{};this.applyOnlineImpacts();});
@@ -747,6 +763,15 @@
                 const token=this.raceToken;this.finishTimer=setTimeout(() => {
                     if(this.raceToken!==token||this.status!=='FINISHED'||this.state!=='SPECTATE_WAIT')return;
                     this.finishTimer=null;this.state = 'GAMEOVER'; KartAudio.stop();
+                    const track=TRACKS[this.selectedTrack],save=window.Profile?.kartSave,time=this.raceElapsed;
+                    if(track?.key&&save&&Number.isFinite(time)&&time>0){
+                        const records=save.regionalRecords||{},prior=records[track.key]||{};
+                        save.regionalRecords={...records,[track.key]:{
+                            runs:(Number(prior.runs)||0)+1,bestTime:Math.min(Number(prior.bestTime)||Infinity,time),
+                            bestRank:Math.min(Number(prior.bestRank)||Infinity,this.finalRank)
+                        }};
+                        window.Profile.save?.();
+                    }
                     if(window.System.gameOver) { window.System.gameOver(this.score, isWin, this.matchCoins); } 
                     else { window.System.home(); }
                 }, 3000); 
@@ -1257,6 +1282,8 @@
             ctx.lineTo(w, horizon); ctx.fill();
 
             const themes = { 'grass': ['#55aa44', '#448833'], 'sand':  ['#f1c40f', '#e67e22'], 'snow':  ['#ffffff', '#dfe6e9'] };
+            themes.mirassol=['#65824a','#496c3c'];
+            themes.cedral=['#8b8e4f','#6c7746'];
             const theme = themes[TRACKS[d.selectedTrack].theme] || themes['grass']; 
             ctx.fillStyle = isOffRoad ? '#336622' : theme[1]; ctx.fillRect(0, horizon, w, h-horizon);
 
@@ -1713,8 +1740,8 @@
                 ctx.font = `bold ${fBtn}px Arial`;
                 
                 let nextTrackId = this.selectedTrack + 1;
-                let btnText = nextTrackId < TRACKS.length ? "PRÓXIMA CORRIDA" : "VER PÓDIO DA COPA";this.offlineActionHitbox={x:cx-btnW/2,y:cy+h*.15,w:btnW,h:btnH};
-                if (this.isOnline && !this.isHost && nextTrackId < TRACKS.length) btnText = "AGUARDANDO HOST...";
+                let btnText = nextTrackId < ORIGINAL_TRACK_COUNT ? "PRÓXIMA CORRIDA" : "VER PÓDIO DA COPA";this.offlineActionHitbox={x:cx-btnW/2,y:cy+h*.15,w:btnW,h:btnH};
+                if (this.isOnline && !this.isHost && nextTrackId < ORIGINAL_TRACK_COUNT) btnText = "AGUARDANDO HOST...";
 
                 ctx.fillText(btnText, cx, cy + h*0.15 + btnH/2 + fBtn*0.35);
                 ctx.textAlign = "left";
@@ -1954,8 +1981,8 @@
 
         renderModeSelect: function(ctx, w, h) {
             ctx.fillStyle = "#2c3e50"; ctx.fillRect(0, 0, w, h); ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold 40px 'Russo One'"; ctx.fillText("KART LEGENDS", w/2, h * 0.27,w-24);ctx.font='bold 17px Arial';ctx.fillStyle='#d5e9e5';ctx.fillText(this.currentFase.name||'MODO LIVRE',w/2,h*.35,w-24);
-            ctx.fillStyle = "#e67e22"; ctx.fillRect(w/2 - 160, h * 0.45, 320, 65); ctx.fillStyle = "#27ae60"; ctx.fillRect(w/2 - 160, h * 0.6, 320, 65);
-            ctx.fillStyle = "white"; ctx.font = "bold 20px 'Russo One'"; ctx.fillText("JOGAR SOLO", w/2, h * 0.45 + 40); ctx.fillText("JOGAR ONLINE", w/2, h * 0.6 + 40);
+            ctx.fillStyle = "#e67e22"; ctx.fillRect(w/2 - 160, h * 0.45, 320, 65); if(!this.currentFase.regional){ctx.fillStyle = "#27ae60"; ctx.fillRect(w/2 - 160, h * 0.6, 320, 65);}
+            ctx.fillStyle = "white"; ctx.font = "bold 20px 'Russo One'"; ctx.fillText("JOGAR SOLO", w/2, h * 0.45 + 40); if(!this.currentFase.regional)ctx.fillText("JOGAR ONLINE", w/2, h * 0.6 + 40);
         },
 
         renderLobby: function(ctx, w, h) {
@@ -2027,7 +2054,9 @@
                 { id: 'f1', name: 'COPA COGUMELO', desc: 'Chegue no Pódio (Top 3).', mode: 'RACE', targetRank: 3, trackId: 0, diff: 'EASY', reqLvl: 1 },
                 { id: 'f2', name: 'CAÇA ÀS MOEDAS', desc: 'Colete 20 moedas na areia.', mode: 'COIN_HUNT', targetCoins: 20, trackId: 1, diff: 'EASY', reqLvl: 2 },
                 { id: 'f3', name: 'GRANDE PRÊMIO', desc: 'Vença a IA Implacável em 1º.', mode: 'RACE', targetRank: 1, trackId: 2, diff: 'HARD', reqLvl: 3 },
-                { id: 'arcade', name: 'MODO LIVRE', desc: 'Jogue online ou offline sem regras.', mode: 'RACE', targetRank: 1, trackId: 0, diff: 'MEDIUM', reqLvl: 1 }
+                { id: 'arcade', name: 'MODO LIVRE', desc: 'Jogue online ou offline sem regras.', mode: 'RACE', targetRank: 1, trackId: 0, diff: 'MEDIUM', reqLvl: 1 },
+                { id:'regional-mirassol', name:'AUTÓDROMO DE MIRASSOL', desc:'Pista fictícia regional · corrida solo', mode:'RACE', targetRank:3, trackId:3, diff:'MEDIUM', reqLvl:1, regional:true },
+                { id:'regional-cedral', name:'CIRCUITO TÉCNICO DE CEDRAL', desc:'Pista fictícia regional · corrida solo', mode:'RACE', targetRank:3, trackId:4, diff:'MEDIUM', reqLvl:1, regional:true }
             ]
         });
     }

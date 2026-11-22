@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.32-rio-preto-regiao",
+  "build": "705.28.33-integracao-regional-v51",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.33: 42 pontos em 11 setores, corrida de rua na Represa, pistas Mirassol e Cedral no Kart Legends e novos acessórios da família.",
     "R28.32: avenidas e bairros inspirados em Rio Preto, dois circuitos regionais do jogo, roteiro urbano e guarda-roupa dos personagens.",
     "R28.31: liga os oito jogos à mesma cópia do console, corrige a pista e o cenário da neve e restaura a foto durante o voo de balão.",
     "R28.30: Academia de Aviação conectada ao hangar existente, novas missões e operações de voo, correção de presença multiplayer no celular e atualização do console PWA sem alterar IDs, progresso ou controles aprovados.",
@@ -304,8 +305,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70665,
-  "revisionLabel": "Mundo civil, vizinhanças, teleférico e dois elevadores",
+  "assetVersion": 70666,
+  "revisionLabel": "Integração regional 5.1 de Rio Preto e Kart Legends",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

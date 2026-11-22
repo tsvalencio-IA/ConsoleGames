@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.32-rio-preto-regiao';
+  const OTTHI_GAME_WEB_BUILD = '705.28.33-integracao-regional-v51';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -384,7 +384,8 @@
       ['denim', 'Jaqueta jeans', '#385575'],
       ['sport', 'Camiseta esportiva', '#237e61'],
       ['festival', 'Vestido de festa e leggings', '#ae4c78'],
-      ['rain', 'Jaqueta corta-vento', '#da954a']
+      ['rain', 'Jaqueta corta-vento', '#da954a'],
+      ['hoodie', 'Moletom com capuz', '#66739c']
     ],
     legs: [
       ['original', 'Roupa original'],
@@ -403,7 +404,8 @@
       ['original', 'Sem chapéu novo'],
       ['cap', 'Boné bordado', '#3c526d'],
       ['panama', 'Chapéu de palha', '#dab87e'],
-      ['beanie', 'Gorro de tricô', '#496b61']
+      ['beanie', 'Gorro de tricô', '#496b61'],
+      ['headphones', 'Fones de ouvido', '#4b5970']
     ],
     glasses: [
       ['original', 'Óculos originais'],
@@ -436,6 +438,7 @@
     passeio: {label:'Passeio no bairro', outfit:{top:'linen',legs:'chino',shoes:'leather',hat:'panama',glasses:'copper',jewel:'necklace',wrist:'bracelet'}},
     esportivo: {label:'Dia de corrida', outfit:{top:'sport',legs:'track',shoes:'runner',hat:'cap',glasses:'sun',wrist:'watch',bag:'city'}},
     chuva: {label:'Chuva na cidade', outfit:{top:'rain',legs:'jeans',shoes:'boot',hat:'beanie',wrist:'bracelet',bag:'hike'}},
+    rua: {label:'Passeio na Represa',outfit:{top:'hoodie',legs:'jeans',shoes:'runner',hat:'headphones',bag:'city'}},
     festa: {label:'Fim de tarde', outfit:{top:'festival',legs:'track',shoes:'leather',glasses:'copper',jewel:'earrings',wrist:'watch'}}
   });
 
@@ -587,17 +590,21 @@
     const top=tint('top');
     if(top){
       const torso=add('top',rootKey);
-      if(outfit.top==='denim'||outfit.top==='rain'){
+      if(['denim','rain','hoodie'].includes(outfit.top)){
         // The sleeves pivot at the existing elbows and leave the tool hand clear.
         for(const side of [-1,1]){
           const sleeve=add('sleeve','elbow'+side);
           piece(sleeve,'flare',top,[.23,.30,.23],[0,-.12,0]).rotation.z=Math.PI;
           piece(sleeve,'disc',top,[.175,.035,.17],[0,-.277,0]);
-          piece(torso,'box',outfit.top==='denim'?'#254665':'#9f632f',[.13,.11,.018],[side*.183,1.67,.232]);
+          piece(torso,'box',outfit.top==='denim'?'#254665':outfit.top==='hoodie'?'#495676':'#9f632f',[.13,.11,.018],[side*.183,1.67,.232]);
         }
         piece(torso,'box','#baa180',[.018,.48,.019],[0,1.66,.24]);
         piece(torso,'box','#f4dfb8',[.04,.04,.016],[.026,1.883,.25]);
         if(outfit.top==='rain')piece(torso,'sphere','#cc823a',[.48,.27,.25],[0,1.95,-.18]);
+        if(outfit.top==='hoodie'){
+          piece(torso,'sphere',top,[.49,.31,.27],[0,1.95,-.18]);
+          piece(torso,'box','#bac1d1',[.24,.10,.025],[0,1.46,.23]);
+        }
       }else if(outfit.top==='sport'){
         for(const side of [-1,1]){
           piece(torso,'box','#e5ecce',[.075,.39,.012],[side*.20,1.66,.206]).rotation.z=side*.11;
@@ -634,6 +641,12 @@
         piece(head,'disc','#b89c74',[1.00,.045,.94],[0,.442,0]);
         piece(head,'flare',hat,[.75,.208,.66],[0,.519,-.016]);
         piece(head,'disc','#564537',[.734,.048,.65],[0,.468,-.016]);
+      }else if(outfit.hat==='headphones'){
+        piece(head,'ring',hat,[.93,.94,.21],[0,.14,-.018]);
+        for(const side of [-1,1]){
+          piece(head,'sphere','#273346',[.19,.29,.26],[side*.454,.087,-.018]);
+          piece(head,'sphere',hat,[.109,.24,.21],[side*.51,.087,-.018]);
+        }
       }else{
         piece(head,'sphere',hat,[.84,.28,.753],[0,.456,-.018]);
         piece(head,'disc','#3f5750',[.83,.08,.738],[0,.397,-.011]);
@@ -2321,19 +2334,15 @@
   // ===== MODULE: 80-rio-regional-circuits.js =====
   const RIO_REGIONAL_CIRCUITS=Object.freeze({
     mirassol:{
-      id:'mirassol',regional:true,label:'Autódromo de Mirassol',x:-590,z:-520,w:152,d:136,
-      navX:-590,navZ:-443,width:10.4,laps:3,mode:'solo',checkpoints:20,
-      description:'Circuito fictício inspirado na região de Mirassol. Reta dos Boxes, chicane da Grota e três voltas contra três rivais.',
-      points:[[0,30],[30,30],[51,27],[58,16],[56,0],[43,-7],[25,-2],[14,-8],[10,-22],[-13,-35],[-43,-32],[-57,-21],[-59,4],[-49,22],[-32,30]],
-      boosts:[.14,.49,.86],parkSlots:[[-19,62],[-12,62],[12,62],[19,62]],
+      id:'mirassol',label:'Autódromo de Mirassol',x:-590,z:-520,w:152,d:136,
+      navX:-590,navZ:-443,
+      description:'Paddock de Mirassol. A pista fictícia abre no Kart Legends.',
       accent:0xddb43c,curb:0x1d864d,grass:0x527844
     },
     cedral:{
-      id:'cedral',regional:true,label:'Parque de Velocidade de Cedral',x:650,z:-540,w:156,d:134,
-      navX:650,navZ:-459,width:11.2,laps:2,mode:'time',checkpoints:19,
-      description:'Circuito fictício de campo inspirado em Cedral. Reta da Estação, curvas abertas e duas voltas para baixar seu tempo.',
-      points:[[44,-10],[44,17],[39,34],[24,44],[5,40],[-10,33],[-29,36],[-45,25],[-54,6],[-56,-15],[-42,-32],[-15,-40],[11,-41],[33,-36],[44,-25]],
-      boosts:[.41,.69],parkSlots:[[-20,60],[-13,60],[13,60],[20,60]],
+      id:'cedral',label:'Parque de Velocidade de Cedral',x:650,z:-540,w:156,d:134,
+      navX:650,navZ:-459,
+      description:'Paddock de Cedral. A pista fictícia abre no Kart Legends.',
       accent:0xb4543c,curb:0xb14c37,grass:0x73804e
     }
   });
@@ -2366,11 +2375,6 @@
     id:'circuit-'+id,kind:'kart',x,z,w,d,margin:.35
   }));
 
-  function rioRegionalCurve(spec){
-    const points=spec.points.map(([x,z])=>new THREE.Vector3(spec.x+x,.16,spec.z+z));
-    return new THREE.CatmullRomCurve3(points,true,'centripetal',.42);
-  }
-
   // Keep only one set of paint/material batches per venue. Each group can be
   // turned off at a distance without rebuilding structures or parking karts.
   function decorateRioRegionalCircuit(spec,root){
@@ -2392,7 +2396,7 @@
     piece(steel,-6,2.12,gateZ,.52,4.24,.63);piece(steel,6,2.12,gateZ,.52,4.24,.63);
     piece(spec.accent,0,4.15,gateZ,12.6,.82,.6);
     sign(spec.id==='mirassol'?'AUTÓDROMO DE MIRASSOL':'PARQUE DE VELOCIDADE • CEDRAL',0,4.16,gateZ+.34,12.2);
-    sign('CIRCUITO FICTÍCIO · OTTHI WORLD',0,3.42,gateZ+.2,8.4);
+    sign('PISTA FICTÍCIA · KART LEGENDS',0,3.42,gateZ+.2,8.4);
     // Link the physical end of the access road to the apron, not the racing line.
     const pavement=0x565858;piece(pavement,0,.08,(gateZ+56)/2,8.5,.12,gateZ-56+4);
     piece(white,0,.148,(gateZ+60)/2,.12,.014,gateZ-60);
@@ -2473,64 +2477,156 @@
     for(const [color,items]of batches)v705BatchBoxes(items,renderMat(color,{roughness:color===glass?.32:.82}),root,'RIO_PISTA_ACABAMENTO_'+color.toString(16));
   }
 
-  function rioRegionalRecords(){
-    return state.races?.regionalCircuits||{};
-  }
-  function rioRegionalRaceResult(k,elapsed,won){
-    const records=rioRegionalRecords(),prior=records[k.id]||{};
-    const time=Math.max(.001,Number(elapsed)||0),lap=Math.max(.001,Number(k.best)||time);
-    const priorTime=Number(prior.bestTime)||0,priorLap=Number(prior.bestLap)||0;
-    const record={runs:(Number(prior.runs)||0)+1,wins:(Number(prior.wins)||0)+Number(k.mode==='solo'&&won),
-      bestTime:priorTime>0?Math.min(priorTime,time):time,bestLap:priorLap>0?Math.min(priorLap,lap):lap};
-    (state.races||(state.races={})).regionalCircuits={...records,[k.id]:record};
-    if(k.mode==='time')addXP(25);
-    else{addXP(won?65:30);if(won)addCoins(42);}
-    saveState(true);
-    return{record,newRecord:!priorTime||time<priorTime};
-  }
-  function openRioRegionalRace(k){
-    const record=rioRegionalRecords()[k.id];
-    const results=record?.runs?('Melhor total: '+Number(record.bestTime).toFixed(1)+' s · Melhor volta: '+Number(record.bestLap).toFixed(1)+' s'):'Primeira prova neste circuito.';
-    const event=k.spec.mode==='time'?'Cronômetro · 2 voltas':'Corrida regional · 3 voltas';
-    openModal('🏁 '+k.label,[
-      '<p>'+k.spec.description+'</p><p><b>'+event+'</b> · '+Math.round(k.curve.getLength())+' m por volta</p>',
-      '<p>'+results+'</p>',
-      k.spec.mode==='solo'?'<label class="field"><span>Nível dos rivais</span><select id="regionalKartDifficulty"><option value="easy">Treino</option><option value="normal" selected>Normal</option><option value="hard">Avançado</option></select></label>':'',
-      '<label class="field"><span>Direção assistida</span><select id="regionalKartAssist"><option value="off">Desligada</option><option value="light">Leve</option><option value="normal" selected>Normal</option><option value="strong">Forte</option></select></label>',
-      '<div class="modal-actions"><button class="btn primary" id="regionalKartStart">'+(k.spec.mode==='time'?'Iniciar prova de tempo':'Largar com os rivais')+'</button><button class="btn" id="regionalKartLeave">Continuar no paddock</button></div>'
-    ].join(''),container=>{
-      container.querySelector('#regionalKartStart').onclick=()=>{
-        if(SPORTS_V705.active||SPORTS_V705.kart!==k)return;
-        const assist=container.querySelector('#regionalKartAssist').value;
-        const difficulty=container.querySelector('#regionalKartDifficulty')?.value||'normal';
-        k.regionalOptions={assist,difficulty};
-        closeModal();
-        startKartRaceV704(k.spec.mode);
-      };
-      container.querySelector('#regionalKartLeave').onclick=closeModal;
-    });
-  }
-
+  const rioKartVenueRoots=new Map();
   function updateRioRegionalCircuits(){
     if(!running||!worldGroup)return;
-    const focus=typeof otGamesFocus==='function'?otGamesFocus():player;
-    for(const spec of Object.values(RIO_REGIONAL_CIRCUITS)){
-      const distance=Math.hypot(focus.x-spec.x,focus.z-spec.z);
-      let circuit=SPORTS_V705.circuits.find(k=>k.id===spec.id);
-      if(!circuit&&distance<=245)circuit=createKartCircuitV704(spec);
-      if(circuit)circuit.root.visible=distance<=305;
+    const focus=otGamesFocus();
+    for(const site of Object.values(RIO_REGIONAL_CIRCUITS)){
+      const distance=Math.hypot(focus.x-site.x,focus.z-site.z);
+      let root=rioKartVenueRoots.get(site.id);
+      if(!root&&distance<245){
+        root=new THREE.Group();
+        root.name='OTTHI_RIO_PADDOCK_'+site.id.toUpperCase();
+        decorateRioRegionalCircuit(site,root);
+        worldGroup.add(root);rioKartVenueRoots.set(site.id,root);
+        registerInteractable({id:'kart-race-'+site.id,type:'activity-venue',icon:'🏁',
+          label:'Kart Legends · '+site.label,x:site.navX,z:site.navZ,radius:4.5,priority:205,
+          available:()=>!otGames.active&&!worldVenues.session&&!player.vehicle,
+          action:()=>openRioKartVenue(site)});
+      }
+      if(root)root.visible=distance<305;
     }
   }
-
+  function openRioKartVenue(site){
+    const archived=state.races?.regionalCircuits?.[site.id];
+    openModal(site.label,'<p>O circuito fictício abre a pista regional no Kart Legends.</p>'+
+      (archived?.bestTime?'<p>Seu tempo anterior no Mundo Aberto: '+Number(archived.bestTime).toFixed(1)+' s.</p>':'')+
+      '<button class="btn primary" data-rio-kart-enter>Entrar no Kart Legends</button>',root=>{
+        root.querySelector('[data-rio-kart-enter]').onclick=()=>{
+          closeModal();venueOpen('kart-'+site.id);
+        };
+      });
+    return true;
+  }
   window.OTTHI_RIO_CIRCUITS=Object.freeze({diagnostics:()=>({
-    records:{...rioRegionalRecords()},
-    circuits:Object.values(RIO_REGIONAL_CIRCUITS).map(spec=>{
-      const circuit=SPORTS_V705.circuits.find(k=>k.id===spec.id);
-      return{id:spec.id,label:spec.label,x:spec.x,z:spec.z,navX:spec.navX,navZ:spec.navZ,
-        kind:spec.mode,laps:spec.laps,width:spec.width,loaded:!!circuit,visible:!!circuit?.root.visible,
-        length:circuit?Math.round(circuit.curve.getLength()):0,active:!!circuit?.active,checkpoints:circuit?.checkpoints.length||0};
-    })
+    records:{...state.races?.regionalCircuits},
+    circuits:Object.values(RIO_REGIONAL_CIRCUITS).map(site=>({
+      id:site.id,label:site.label,x:site.x,z:site.z,navX:site.navX,navZ:site.navZ,
+      kind:'kart-legends',loaded:rioKartVenueRoots.has(site.id),visible:!!rioKartVenueRoots.get(site.id)?.visible
+    }))
   })});
+
+  // ===== MODULE: 83-rio-v51-layout.js =====
+  const RIO_V51_PLACES = [
+    ["complexo_swift", "Complexo Swift & Teatro Paulo Moura", "represa_lagos_damha", 475, -533, -1, 22, 18, 14, "swift", false, "Av. Duque de Caxias, 3900 - Jd. dos Seixas, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["dona_capi", "Escultura Dona Capi (Capivara)", "represa_lagos_damha", 476, -595, 1, 8, 6, 8, "capi", false, "Parque da Represa Municipal - Vila Ercília, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["ponte_julio_zacarin", "Ponte Estaiada Júlio Zacarin", "represa_lagos_damha", 508, -603, 1, 18, 16, 10, "bridge", false, "Jardim Yolanda, São José do Rio Preto - SP", "https://www.riopreto.sp.gov.br/"],
+    ["canecao_represa", "Canecão Represa", "represa_lagos_damha", 505, -537, -1, 16, 6, 12, "commerce", false, "Av. Lino José de Seixas, 1287 - Vila Goyos, SJRP", "https://waymenu.com.br/menu/canecaorepresa/", "fastfood"],
+    ["posto_brasilia", "Posto Chiesa Brasília", "represa_lagos_damha", 533, -537, -1, 16, 6, 12, "service", false, "Av. Dr. Fernando Costa, 1549 - Jd. Primavera, SJRP", "https://postochiesabrasilia.divulgaempresasmarketing.com.br/"],
+    ["portaria_damha", "Condomínios Damha & Av. Nadima Damha", "represa_lagos_damha", 541, -588, 1, 18, 7, 10, "gate", false, "Av. Nadima Damha - São José do Rio Preto - SP", "https://www.riopreto.sp.gov.br/"],
+    ["riopreto_shopping", "Riopreto Shopping Center", "eixo_sul_shoppings", 506, -342, -1, 26, 10.5, 18, "mall", false, "Av. Brigadeiro Faria Lima, 6363 - Jd. Morumbi, SJRP", "https://www.riopretoshopping.com.br/"],
+    ["shopping_iguatemi", "Shopping Iguatemi São José do Rio Preto", "eixo_sul_shoppings", 555, -380, 1, 26, 11, 17, "mall", false, "Av. Pres. Juscelino K. de Oliveira, 5000 - Iguatemi, SJRP, 15093-340", "https://iguatemi.com.br/saojosedoriopreto/"],
+    ["plaza_avenida", "Plaza Avenida Shopping", "eixo_sul_shoppings", 551, -342, -1, 24, 11, 16, "mall", false, "Av. José Munia, 4775 - Jardim Redentor, SJRP", "http://www.plazaavenida.com.br/"],
+    ["obelisco_espanha", "Obelisco da Plaza de España", "eixo_sul_shoppings", 596, -342, -1, 9, 16, 9, "obelisk", false, "Av. José Munia - Jardim Redentor, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["centro_eventos", "Centro Regional de Eventos", "eixo_sul_shoppings", 630, -380, 1, 22, 9.5, 16, "hall", false, "Av. José Munia, 5650 - Nova Redentora, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["prefeitura_andalo", "Prefeitura Municipal (Paço)", "centro_calcadao_andalo", -34, -686, 1, 18, 21, 14, "tower", false, "Av. Dr. Alberto Andaló, 3030 - Centro, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["mercado_municipal", "Mercado Municipal (\"Mercadão\")", "centro_calcadao_andalo", -3, -686, 1, 20, 9.5, 16, "market", false, "Rua Antônio de Godoy, 3048 - Centro, SJRP", "https://www.riopreto.sp.gov.br/", "market"],
+    ["catedral_sao_jose", "Catedral Metropolitana São José", "centro_calcadao_andalo", 29, -686, 1, 19, 22, 22, "church", false, "Rua Siqueira Campos, 3033 - Centro, SJRP", "https://catedralriopreto.com.br/"],
+    ["calcadao_centro", "Calçadão do Centro & Galerias", "centro_calcadao_andalo", 62, -686, 1, 22, 7, 14, "commerce", false, "Praça Dom José Marcondes e entorno do Calçadão, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["mcdonalds_andalo", "McDonald's — Av. Alberto Andaló", "centro_calcadao_andalo", 137, -686, 1, 15, 6.5, 12, "commerce", false, "Av. Dr. Alberto Andaló, 4155 - Vila Redentora, SJRP", "https://www.mcdonalds.com.br/", "fastfood"],
+    ["casa_nicoletti", "Casa Nicoletti — Ferragens", "bady_bassitt", -286, -505, 1, 16, 7, 12, "commerce", false, "Av. Bady Bassitt, 3050 - Boa Vista, SJRP", "https://casanicoletti.com.br/contato/", "tools"],
+    ["zappas_bady", "Zappa's Pães e Tentações — Bady", "bady_bassitt", -248, -504, 1, 18, 6.5, 13, "commerce", false, "Av. Bady Bassitt, 3920 - Vila Imperial, SJRP", "https://www.zappas.com.br/nossas-lojas-e-horarios", "cafe"],
+    ["austa_hospital", "Austa Hospital", "murchid_homsi", 472, -449, -1, 22, 15, 14, "hospital", false, "Av. Murchid Homsi, 1385 - Pq. Res. Mançor Daud, SJRP", "https://austahospital.com.br/unidades/austa-hospital/"],
+    ["supermercado_economico", "Supermercado Econômico", "murchid_homsi", 511, -449, -1, 19, 6.5, 13, "commerce", false, "Av. Murchid Homsi, 1215 - Parque Celeste, SJRP", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJS9tG0qyyvZQRc5LXhBePF00", "market"],
+    ["shopping_cidade_norte", "Shopping Cidade Norte", "zona_norte", 376, -310, -1, 24, 9.5, 16, "mall", false, "Av. Alfredo Antônio de Oliveira, 2077 - Jd. Planalto, SJRP", "http://www.shoppingcidadenorte.com.br/"],
+    ["corredor_mirassolandia", "Corredor Comercial Av. Mirassolândia", "zona_norte", 462, -312, -1, 20, 7.5, 12, "plaza", false, "Av. Mirassolândia - Eldorado / Costa do Sol, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["cachoeira_troca_oleo", "Cachoeira Super Troca de Óleo", "zona_norte", 389, -351, 1, 17, 6.5, 12, "service", false, "Av. Antoninho Marmo, 3950 - Solo Sagrado, SJRP, 15044-050", "http://cachoeirasupertorcadeoleo.com.br/"],
+    ["upa_norte", "UPA Norte (Pronto Atendimento 24h)", "zona_norte", 420, -350, 1, 19, 6.5, 13, "hospital", false, "R. Manoel Moreno, 130 - Jardim Antunes, SJRP, 15047-050", "https://saude.riopreto.sp.gov.br/transparencia/modules/mastop_publish/?tac=USDSII_UPA_Regi_Nort"],
+    ["planalto_materiais", "Planalto Materiais para Construção", "zona_norte", 432, -311, -1, 20, 7.5, 13, "commerce", false, "Av. Antônio Antunes Júnior, 6101 - Conj. Hab. Duas Vendas, SJRP, 15046-670", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ7aJcYt2svZQRXRzjgKgl_us", "materials"],
+    ["atacadao_falavina", "Atacadão — SJRP Falavina", "zona_norte", 457, -351, 1, 24, 8.5, 15, "market", false, "Av. Alfredo Antônio de Oliveira, 3355 - Res. Caetano, SJRP, 15046-840", "https://www.atacadao.com.br/", "market"],
+    ["aeroporto_sjrp", "Aeroporto Prof. Eribelto Manoel Reino", "infra_aeroporto_rodovias", -380, -447, 1, 24, 12, 15, "terminal", false, "Av. dos Estudantes, 3505 - Vila Aeroporto, SJRP", "https://aeroportospaulistas.com.br/sao-jose-do-rio-preto/"],
+    ["cemiterio_sao_joao_batista", "Cemitério São João Batista", "infra_aeroporto_rodovias", -344, -447, 1, 18, 7, 12, "plaza", false, "Av. dos Estudantes, s/n - Jd. Novo Aeroporto, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["recinto_exposicoes", "Recinto de Exposições Alberto Bertelli Lucatto", "infra_aeroporto_rodovias", -307, -449, 1, 22, 9, 14, "hall", false, "R. Daniel Antônio de Freitas, 115 - Distrito Industrial, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["posto_prf_br153", "Base Rodoviária BR-153 Km 69,7 (Ref. PRF)", "infra_aeroporto_rodovias", -268, -451, 1, 14, 6, 10, "service", false, "BR-153, Km 69,7 Sul - Jd. Vivendas, SJRP", "http://www.gov.br/prf/pt-br"],
+    ["base_pmrv_sp310", "Base Rodoviária SP-310 Km 443 (Ref. PMRv)", "infra_aeroporto_rodovias", -239, -450, 1, 14, 6, 10, "service", false, "Rod. Washington Luís, Km 443 - SJRP", "http://www4.policiamilitar.sp.gov.br/unidades/cprv/"],
+    ["estacao_schmitt", "Estação Ferroviária de Eng. Schmitt", "engenheiro_schmitt", 735, -448, 1, 20, 7.5, 12, "station", false, "R. Dr. Coutinho Cavalcanti, 34 - Eng. Schmitt, SJRP", "https://www.riopreto.sp.gov.br/"],
+    ["doces_noemia", "Noêmia Doces Caseiros", "engenheiro_schmitt", 773, -450, 1, 16, 6.2, 11, "commerce", false, "R. Treze de Maio, 385 - Eng. Schmitt, SJRP, 15104-002", "http://www.docesnoemia.com.br/", "cafe"],
+    ["montanhas_rios_italia", "Mirante & Montanhas Rios di Itália (Fictício)", "expansoes_ficticias", 773, -543, 1, 22, 16, 18, "lookout", true, "Área Criativa Fictícia do OTThi World — sem correspondência real", "https://otthi-world.local/expansao-ficticia"],
+    ["praia_cedral", "Praia Recreativa de Cedral (Fictício)", "expansoes_ficticias", 812, -543, 1, 22, 7, 16, "beach", true, "Área Criativa Fictícia do OTThi World — Cedral não tem litoral real", "https://otthi-world.local/expansao-ficticia"],
+    ["estadio_anisio_haddad", "Estádio Anísio Haddad (Rio Preto EC)", "rota_estadios", -769, -295, 1, 24, 11, 18, "stadium", false, "Av. Anísio Haddad, 6188 - Jardim Aclimação, SJRP, 15093-000", "https://www.facebook.com/riopretoecoficial/"],
+    ["estadio_teixeirao", "Estádio Benedito Teixeira — Teixeirão (América FC)", "rota_estadios", -729, -295, 1, 25, 12, 19, "stadium", false, "Av. Antônio Tavares Pereira Lima, 904-1074 - Jd. Bela Vista, SJRP, 15061-220", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJK1w-yLZSvJQRBP1zx7nGDhM"],
+    ["estadio_maiao", "Estádio José Maria de Campos Maia — Maião (Mirassol FC)", "rota_estadios", -686, -295, 1, 24, 11.5, 18, "stadium", false, "Av. Lauro Luchese, 2650 - Centro, Mirassol - SP, 15130-000", "http://mirassolfc.com.br/"],
+    ["estadio_jorjao", "Estádio Dr. Jorge Ismael de Biasi — Jorjão (Novorizontino)", "rota_estadios", -644, -295, 1, 24, 11, 18, "stadium", false, "R. Francisco Alves do Vale, 197 - Novo Horizonte - SP, 14960-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJuxzFNW-OvpQRWogAC7l4WMo"],
+    ["termas_ibira", "Termas de Ibirá (Balneário Águas Termais)", "circuito_turistico", -811, -576, 1, 22, 8, 16, "pool", false, "Termas de Ibirá, Ibirá - SP, 15860-000", "https://www.google.com/maps/place//data=!4m2!3m1!19sChIJxR9AA38lvJQRlYHWY1O8EG0"],
+    ["thermas_laranjais", "Thermas dos Laranjais (Olímpia)", "circuito_turistico", -771, -576, 1, 26, 14, 18, "pool", false, "Av. do Folclore, 1543 - Jd. Santa Efigênia, Olímpia - SP, 15405-014", "http://www.termas.com.br/"],
+    ["parque_peao_barretos", "Parque do Peão Os Independentes (Barretos)", "circuito_turistico", -726, -583, 1, 28, 15, 20, "arena", false, "Rod. Brg. Faria Lima, Km 428 - Zona Rural, Barretos - SP, 14780-970", "http://www.independentes.com.br/"],
+  ];
+  const RIO_V51_SECTORS = [
+    ["centro_calcadao_andalo", "Centro & Andaló", "RIO_andalo_4", [-48, -34, -3, 29, 62, 100, 137, 154], -666, [[100, -648], [100, -666]]],
+    ["bady_bassitt", "Av. Bady Bassitt", "RIO_oeste_1", [-302, -286, -248, -226], -481, [[-200, -464], [-226, -481]]],
+    ["murchid_homsi", "Av. Murchid Homsi", "RIO_murchid_5", [449, 472, 511, 536], -472, [[438, -532], [448, -506], [449, -472]]],
+    ["represa_lagos_damha", "Represa (Lagos 1-3) & Damha", "RIO_murchid_5", [467, 475, 476, 505, 508, 533, 541, 551], -554, [[438, -532], [459, -545], [467, -554]]],
+    ["engenheiro_schmitt", "Eng. Schmitt (+ Noêmia)", "EXT_outer-link_3", [715, 735, 773, 794], -424, [[680, -400], [712, -414], [715, -424]]],
+    ["zona_norte", "Zona Norte Completa", "EXT_outer-link_4", [360, 376, 389, 420, 432, 457, 462, 480], -332, [[360, -400], [360, -332]]],
+    ["circuito_turistico", "Ibirá, Olímpia & Barretos", "RIO_AUTODROMO_MIRASSOL_3", [-830, -811, -771, -726, -700], -552, [[-590, -432], [-646, -433], [-694, -450], [-700, -504], [-700, -552]]],
+    ["eixo_sul_shoppings", "Eixo Sul & Shoppings", "EXT_outer-link_3", [491, 506, 551, 555, 596, 630, 647], -360, [[680, -400], [669, -373], [647, -360]]],
+    ["rota_estadios", "Rota dos Estádios Regionais", "EXT_FOREST_OUT", [-795, -769, -729, -686, -644, -624], -272, [[-610, -220], [-623, -245], [-624, -272]]],
+    ["infra_aeroporto_rodovias", "Aeroporto, Recinto & Rodovias", "EXT_outer-link_5", [-413, -380, -344, -307, -268, -239, -220], -427, [[-200, -400], [-212, -414], [-220, -427]]],
+    ["expansoes_ficticias", "Montanhas & Praia (Fictício)", "V51_engenheiro_schmitt_794", [752, 773, 812, 832], -516, [[794, -424], [806, -461], [806, -496], [806, -516]]],
+  ];
+  const RIO_V51 = (() => {
+    const nodes={},highways=[],edges=[],sectors={},pointsByCoordinate=new Map();
+    function chain(id,label,vertices,anchor,width,suffix="") {
+      let previous=anchor;
+      pointsByCoordinate.set(vertices[0].join(','),anchor);
+      for(const [i,[x,z]] of vertices.entries()){
+        if(i===0)continue;
+        const key=x+','+z;
+        const name='V51_'+id+'_'+x;
+        const node=pointsByCoordinate.get(key)||(nodes[name]?name+'_'+z:name);
+        if(!pointsByCoordinate.has(key)){nodes[node]={x,z};pointsByCoordinate.set(key,node);}
+        if(node!==previous)edges.push([previous,node]);
+        previous=node;
+      }
+      highways.push({id:'rio-v51-'+id+suffix,name:label,regional:true,width,shoulder:.8,closed:false,points:vertices.map(([x,z])=>({x,z}))});
+    }
+    for(const [id,label,anchor,positions,z,approach] of RIO_V51_SECTORS){
+      const join=approach.at(-1),xs=[...new Set([...positions,join[0]])].sort((a,b)=>a-b);
+      chain(id+'-access','Acesso · '+label,approach,anchor,8);
+      const at=pointsByCoordinate.get(join.join(','));
+      const line=xs.map(x=>[x,z]),index=xs.indexOf(join[0]);
+      if(index>0)chain(id,label,line.slice(0,index+1).reverse(),at,9,'-oeste');
+      if(index<line.length-1)chain(id,label,line.slice(index),at,9,'-leste');
+      sectors[id]={id,label,z,x:(xs[0]+xs.at(-1))/2,places:[]};
+    }
+    const places=RIO_V51_PLACES.map(([key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop])=>{
+      const roadZ=sectors[sector].z;
+      const point={id:'regional-'+key,key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop,
+        visitX:x,visitZ:z+face*(d/2+2),navX:x,navZ:roadZ};
+      sectors[sector].places.push(point);
+      return point;
+    });
+    const protectedRects=places.map(p=>({id:p.id,kind:'regional-landmark',x:p.x,z:p.z,w:p.w+1,d:p.d+1,margin:.55}));
+    // Six gates. The pedestrian course curves around the lakes and stays on land.
+    const start={x:549,z:-573};
+    const route=[start,{x:460,z:-573},{x:460,z:-635},{x:563,z:-635},{x:563,z:-573},start];
+    const gates=[
+      {x:526,z:-573,label:'Avenida Nadima Damha'},
+      {x:505,z:-573,label:'Posto Brasília'},
+      {x:483,z:-573,label:'Orla do Canecão'},
+      {x:460,z:-610,label:'Retorno Swift'},
+      {x:511,z:-635,label:'Via do parque'},
+      {...start,label:'Chegada · Damha'}
+    ];
+    for(let i=1;i<route.length;i++){
+      const a=route[i-1],b=route[i];
+      protectedRects.push({id:'represa-footpath-'+i,kind:'regional-footpath',x:(a.x+b.x)/2,z:(a.z+b.z)/2,w:Math.abs(a.x-b.x)+4,d:Math.abs(a.z-b.z)+4});
+    }
+    const lakes=[474,503,532].map((x,i)=>({id:'lake-'+(i+1),x,z:-611,w:24,d:27}));
+    for(const lake of lakes)protectedRects.push({...lake,kind:'regional-lake'});
+    return {places,sectors,nodes,edges,highways,protectedRects,
+      course:{id:'corrida_rua_represa_damha',name:'Corrida de Rua · Represa e Damha',start,route,gates,lakes}};
+  })();
 
   // ===== MODULE: 05a-world-layout-v704.js =====
   // Civilian neighbourhoods and cross-region routes share the same road graph.
@@ -2559,7 +2655,9 @@
   // takes a snapshot of the world authority.
   const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
+  const rioV51Roads=typeof RIO_V51==='undefined'?null:RIO_V51;
   const rioProtectedRects=[
+    ...(rioV51Roads?.protectedRects||[]),
     ...(rioPretoRoads?.protectedRects||[]),
     ...(typeof RIO_REGIONAL_RESERVATIONS==='undefined'?[]:RIO_REGIONAL_RESERVATIONS)
   ];
@@ -2589,8 +2687,7 @@
     }),
     circuits:Object.freeze({
       aurora:{id:'aurora',label:'Autódromo Nova Aurora',x:300,z:-270,scale:2.4,w:114,d:100,navX:300,navZ:-212,shape:0},
-      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1},
-      ...(typeof RIO_REGIONAL_CIRCUITS==='undefined'?{}:RIO_REGIONAL_CIRCUITS)
+      costa:{id:'costa',label:'Autódromo Costa Verde',x:-300,z:-210,scale:2.2,w:108,d:96,navX:-300,navZ:-156,shape:1}
     }),
     activityVenues:Object.freeze({
       boxing:{id:'boxing',label:'Academia de Luta',activity:'Boxe',icon:'🥊',x:46,z:-56,w:14,d:12,navX:46,navZ:-48,face:1,slug:'boxe'},
@@ -2626,6 +2723,7 @@
       ...CIVIL_WORLD_LINKS.highways,
       ...(rioPretoRoads?.highways||[]),
       ...(rioRegionalRoads?.highways||[]),
+      ...(rioV51Roads?.highways||[]),
       {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
       {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
       {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
@@ -2671,6 +2769,7 @@
       ...CIVIL_WORLD_LINKS.nodes,
       ...(rioPretoRoads?.nodes||{}),
       ...(rioRegionalRoads?.nodes||{}),
+      ...(rioV51Roads?.nodes||{}),
       "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
@@ -2714,6 +2813,7 @@
       ...CIVIL_WORLD_LINKS.edges,
       ...(rioPretoRoads?.edges||[]),
       ...(rioRegionalRoads?.edges||[]),
+      ...(rioV51Roads?.edges||[]),
       ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
@@ -5143,8 +5243,8 @@
   function v705Hud(title,status){if(!els?.raceBadge)return;els.raceBadge.hidden=false;els.raceTitle.textContent=title;els.raceStatus.textContent=status;ensureSportExitButton(true);}
   function v705HudOff(){if(els?.raceBadge){els.raceBadge.hidden=true;els.raceBadge.classList.remove('has-sport-exit');}ensureSportExitButton(false);}
   function leaveCurrentSportV705(){
-    const kart=SPORTS_V705.kart;
-    const kartActive=!!kart?.active||!!kart?.spec?.regional&&SPORTS_V705.active===kart;
+    if(typeof activeRace!=='undefined'&&activeRace?.type==='rio-street')return finishRioStreetRun(false);
+    const kartActive=!!SPORTS_V705.kart?.active;
     if(typeof activeRace!=='undefined'&&activeRace){clearRaceObjects();activeRace=null;state.waypoint=null;updateWaypointMarker?.();if(els?.raceBadge)els.raceBadge.hidden=true;ensureSportExitButton(false);const exit=worldLayoutPoint('sportsEntrance');player.x=exit.x;player.z=exit.z;player.y=v705GroundY(exit.x,exit.z);player.vx=player.vz=player.vy=0;saveState(true);toast('Você saiu da atividade esportiva.','good',1200);return true;}
     if(!SPORTS_V705.football&&!SPORTS_V705.active&&!kartActive)return false;stopSportV704(false);const exit=kartActive?(SPORTS_V705.kart?.entrance||worldLayoutPoint('kartEntrance')):worldLayoutPoint('sportsEntrance');player.x=exit.x;player.z=exit.z;player.y=v705GroundY(exit.x,exit.z);player.vx=player.vz=player.vy=0;if(kartActive&&player.vehicle)player.car.speed=0;saveState(true);toast('Você saiu da partida.','good',1200);return true;
   }
@@ -5204,7 +5304,6 @@
   function openKartRaceV705(){
     const k=SPORTS_V705.kart;if(!k||SPORTS_V705.active||otGames.active)return;
     if(Math.hypot(player.x-k.entrance.x,player.z-k.entrance.z)>10){setWaypoint('circuit-'+k.id);toast('Siga até a entrada do autódromo para correr.','info',2500);return;}
-    if(k.spec?.regional)return openRioRegionalRace(k);
     closeModal();venueOpen('kart-'+k.id);
   }
 
@@ -5256,161 +5355,17 @@
   function v705KartVehicle(id,x,z,color,heading=0){const group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=heading;group.userData.vehicleId=id;worldGroup.add(group);const chassis=renderMat(0x171f2b,{roughness:.52,metalness:.2}),body=renderMat(color,{roughness:.34,metalness:.18}),wheel=renderMat(0x0e1117,{roughness:.75});box(1.68,.18,2.28,chassis,0,.22,0,group);box(1.32,.3,.96,body,0,.4,.38,group);box(.78,.42,.7,0x27364a,0,.61,-.28,group);box(1.78,.16,.28,body,0,.29,1.15,group);box(1.72,.12,.22,body,0,.34,-1.1,group);box(.08,.52,.08,0xdce5eb,-.46,.62,.22,group);box(.08,.52,.08,0xdce5eb,.46,.62,.22,group);const steering=cylinder(.19,.06,0x202833,0,.88,.18,group,12);steering.rotation.x=Math.PI/2;for(const [wx,wz]of[[-.86,-.72],[.86,-.72],[-.86,.72],[.86,.72]]){const wh=cylinder(.32,.28,wheel,wx,.24,wz,group,14);wh.rotation.z=Math.PI/2;}const vehicle={id,x,z,heading,group,label:'Kart OTTHI',kind:'kart',serviceType:'kart',appearance:{primary:color,secondary:0xffffff,chassis:0x171f2b},occupied:false,radius:1.25};world.vehicles.push(vehicle);world.kartsV704=world.kartsV704||[];world.kartsV704.push(vehicle);registerInteractable({id:`vehicle-${id}`,type:'vehicle',icon:'🏎️',label:'Entrar no kart',radius:2.3,priority:170,getPos:()=>({x:group.position.x,z:group.position.z}),available:()=>!vehicle.occupied&&group.visible,action:()=>enterVehicle(vehicle)});return vehicle;}
   function v705CurvePoint(curve,t){const p=curve.getPointAt((t%1+1)%1);return{x:p.x,z:p.z};}
   function v705CurveHeading(curve,t){const q=curve.getTangentAt((t%1+1)%1);return Math.atan2(q.x,q.z);}
-  function v705TrackDistance(k,x,z){
-    let best=Infinity,bestT=0;
-    if(k.samples){
-      for(let i=0;i<k.samples.length;i++){
-        const a=k.samples[i],b=k.samples[(i+1)%k.samples.length];
-        const dx=b.x-a.x,dz=b.z-a.z,u=clamp(((x-a.x)*dx+(z-a.z)*dz)/(dx*dx+dz*dz||1),0,1);
-        const distance=(x-a.x-dx*u)**2+(z-a.z-dz*u)**2;
-        if(distance<best){best=distance;bestT=((i+u)/k.samples.length)%1;}
-      }
-      return{distance:Math.sqrt(best),t:bestT};
-    }
-    for(let i=0;i<180;i++){
-      const t=i/180,p=v705CurvePoint(k.curve,t),d=Math.hypot(x-p.x,z-p.z);
-      if(d<best){best=d;bestT=t;}
-    }
-    return{distance:best,t:bestT};
-  }
+  function v705TrackDistance(k,x,z){let best=Infinity,bestT=0;for(let i=0;i<180;i++){const t=i/180,p=v705CurvePoint(k.curve,t),d=Math.hypot(x-p.x,z-p.z);if(d<best){best=d;bestT=t;}}return{distance:best,t:bestT};}
   function v705KartCurvature(k,t){const a=k.curve.getTangentAt((t-.018+1)%1),b=k.curve.getTangentAt((t+.018)%1),dot=clamp(a.x*b.x+a.z*b.z,-1,1);return Math.acos(dot)/Math.PI;}
-  function v705CreateBoostPad(k,t,parent=worldGroup){
-    const p=k.curve.getPointAt(t),tan=k.curve.getTangentAt(t);
-    const mesh=new THREE.Mesh(new THREE.BoxGeometry(2.2,.035,3.8),renderMat(0x27e6ff,{emissive:0x0fbad1,emissiveIntensity:.85,roughness:.35}));
-    mesh.position.set(p.x,.225,p.z);mesh.rotation.y=Math.atan2(tan.x,tan.z);mesh.userData.kartBoost=true;
-    parent.add(mesh);
-    return{t,x:p.x,z:p.z,mesh,lastAt:0};
-  }
-  function createKartCircuitV704(spec=WORLD_LAYOUT_V704.circuits.aurora){
-    const existing=SPORTS_V705.circuits.find(c=>c.id===spec.id);
-    if(existing)return existing;
-    const {x:cx,z:cz}=spec,scale=Number(spec.scale||1),regional=!!spec.regional;
-    const local=spec.shape?[[17,-7],[10,-15],[0,-15],[-16,-10],[-18,2],[-10,14],[4,14],[15,8],[18,0],[10,-5]]:
-      [[17,-7],[12,-13.8],[4,-15.4],[-4,-12.8],[-11,-14.6],[-18,-10],[-18,-3],[-12,2],[-17,8],[-10,13.7],[-2,13.8],[3,10],[7,14.5],[14,11.8],[18,5],[13,0],[18,-3],[12,-6]];
-    const curve=regional?rioRegionalCurve(spec):new THREE.CatmullRomCurve3(local.map(([x,z])=>new THREE.Vector3(cx+(spec.shape?-x:x)*scale,.16,cz+z*scale)),true,'centripetal',.42);
-    const trackMat=renderMat(0x30343b,{roughness:.9}),curbA=renderMat(0xffffff,{roughness:.75});
-    const curbB=renderMat(spec.curb??0xe34b45,{roughness:.75}),kartBarrier=renderMat(0xe6e8ec,{roughness:.72});
-    const root=new THREE.Group();root.name=regional?'OTTHI_RIO_AUTODROMO_'+spec.id.toUpperCase():'OTTHI_V705_KART';
-    worldGroup.add(root);
-    if(regional)v705BatchBoxes([{x:cx,y:.04,z:cz,w:spec.w,h:.08,d:spec.d}],renderMat(spec.grass,{roughness:.95}),root,'RIO_PISTA_TERRENO');
-    else premiumBox(spec.w,.08,spec.d,0x477a3c,cx,.04,cz,root);
-    const segs=240,width=spec.width||9,roadItems=[],curbEven=[],curbOdd=[],barriers=[],samples=regional?[]:null;
-    for(let i=0;i<segs;i++){
-      const t=i/segs,t2=(i+1)/segs,p=curve.getPointAt(t),q=curve.getPointAt(t2);
-      const tan=curve.getTangentAt((t+t2)/2),len=p.distanceTo(q),mx=(p.x+q.x)/2,mz=(p.z+q.z)/2;
-      const ry=Math.atan2(tan.x,tan.z),nx=-tan.z,nz=tan.x;
-      roadItems.push({x:mx,y:.15,z:mz,w:width,h:.1,d:len+.18,ry});
-      if(samples)samples.push({x:p.x,z:p.z});
-      for(const side of[-1,1]){
-        const item={x:mx+nx*side*(width/2+.05),y:.21,z:mz+nz*side*(width/2+.05),w:.32,h:.14,d:len+.12,ry};
-        (i%2?curbOdd:curbEven).push(item);
-        if(i%4===0)barriers.push({x:mx+nx*side*(width/2+.68),y:.3,z:mz+nz*side*(width/2+.68),w:.18,h:.48,d:len+.08,ry});
-      }
-    }
-    v705BatchBoxes(roadItems,trackMat,root,'OTTHI_KART_ASPHALT');
-    v705BatchBoxes(curbEven,curbB,root,'OTTHI_KART_CURB_RED');
-    v705BatchBoxes(curbOdd,curbA,root,'OTTHI_KART_CURB_WHITE');
-    v705BatchBoxes(barriers,kartBarrier,root,'OTTHI_KART_BARRIERS');
-    const start=v705CurvePoint(curve,0),heading=v705CurveHeading(curve,0),tan=curve.getTangentAt(0),nx=-tan.z,nz=tan.x;
-    for(let row=-2;row<=2;row++)premiumBox(width-.3,.08,.24,row%2?0xffffff:0x171717,start.x+tan.x*row*.85,.23,start.z+tan.z*row*.85,regional?root:worldGroup);
-    if(regional)decorateRioRegionalCircuit(spec,root);
-    else{
-      const pitT=.06,pit=v705CurvePoint(curve,pitT),pitTan=curve.getTangentAt(pitT);
-      const pitX=pit.x-pitTan.z*8.5,pitZ=pit.z+pitTan.x*8.5;
-      premiumBox(13,.1,4.0,0x59616b,pitX,.12,pitZ,worldGroup);
-      for(let i=-2;i<=2;i++)premiumBox(2.2,1.7,2.7,i%2?0x36536b:0x2d465e,pitX+pitTan.x*i*2.4,.85,pitZ+pitTan.z*i*2.4,worldGroup);
-      createSignpost(pitX,pitZ,'BOXES',heading+Math.PI/2);
-    }
-    const checkpointCount=spec.checkpoints||14;
-    const checkpoints=Array.from({length:checkpointCount},(_,i)=>{
-      const t=i/checkpointCount,p=v705CurvePoint(curve,t);
-      return{x:p.x,z:p.z,t};
-    });
-    const boosts=(spec.boosts||[.18,.52,.80]).map(t=>v705CreateBoostPad({curve},t,regional?root:worldGroup)),grid=[];
-    for(let i=0;i<4;i++){
-      const back=1.6+i*3.4,side=(i%2?1:-1)*.95;
-      if(regional){
-        const t=1-back/curve.getLength(),p=v705CurvePoint(curve,t),h=v705CurveHeading(curve,t);
-        grid.push({x:p.x-Math.cos(h)*side,z:p.z+Math.sin(h)*side,heading:h});
-      }else grid.push({x:start.x-tan.x*back+nx*side,z:start.z-tan.z*back+nz*side,heading});
-    }
-    const colors=[0xe5484d,0x2787d8,0xf1c943,0x31a76a];
-    const karts=grid.map((g,i)=>{
-      const [ox,oz]=spec.parkSlots?.[i]||[(i-1.5)*3.1,spec.d/2-5];
-      return v705KartVehicle(`kart-${spec.id}-${['red','blue','yellow','green'][i]}`,cx+ox,cz+oz,colors[i],Math.PI);
-    });
-    const k={id:spec.id,label:spec.label,entrance:{x:spec.navX,z:spec.navZ},width,scale,cx,cz,curve,checkpoints,boosts,grid,karts,active:false,countdown:0,lap:0,expected:1,startAt:0,lapStartAt:0,best:0,ai:[],root,offTrackWarnAt:0,ranking:[],boostMessageAt:0};
-    if(regional){k.spec=spec;k.samples=samples;k.type='kart';}
-    SPORTS_V705.circuits.push(k);
-    if(!SPORTS_V705.kart)SPORTS_V705.kart=k;
-    world.kartV704=SPORTS_V705.kart;
-    const entrance=k.entrance;
-    registerInteractable({id:'kart-race-'+spec.id,type:'kart',icon:'🏁',label:spec.label+' — corrida',x:entrance.x,z:entrance.z,radius:4.0,priority:190,action:()=>{
-      if(regional&&SPORTS_V705.active)return;
-      SPORTS_V705.kart=k;world.kartV704=k;openKartRaceV705();
-    }});
-    if(!regional)createSignpost(entrance.x,entrance.z+1.2,'🏁 '+spec.label.toUpperCase(),Math.PI);
-    return k;
-  }
-  function startKartRaceV704(mode='solo'){
-    if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}
-    if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}
-    const k=SPORTS_V705.kart;
-    if(!k||k.active)return;
-    let kart=currentVehicleRef?.();
-    if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}
-    if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}
-    const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0;
-    const g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];
-    v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;
-    player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;
-    k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;
-    k.difficulty=k.regionalOptions?.difficulty||SPORTS_V705.difficulty||'normal';
-    k.assist=k.regionalOptions?.assist||SPORTS_V705.assist;
-    document.body.classList.add('world-race-active');configureSportControlsV705('kart');
-    k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;
-    for(const a of k.ai)worldGroup.remove(a.group);
-    k.ai=[];
-    const rivals=k.spec?.regional?(k.rivalModels??=[]):null;
-    for(let i=0;i<(mode==='time'?0:3);i++){
-      const gg=k.grid[i+1],paint=[0x7d58c9,0xf28a22,0x138d83][i];
-      let gr=rivals?.[i];
-      if(!gr){
-        gr=new THREE.Group();
-        box(1.48,.2,2.02,paint,0,.3,0,gr);
-        box(.68,.32,.62,0x26384e,0,.56,-.25,gr);
-        const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));
-        helmet.position.set(0,.93,-.28);gr.add(helmet);
-        for(const [x,z] of [[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){
-          const wheel=cylinder(.28,.23,0x111827,x,.25,z,gr,12);wheel.rotation.z=Math.PI/2;
-        }
-        if(rivals)rivals[i]=gr;
-      }
-      if(!gr.userData.racerAsset&&typeof worldRacerAttach==='function')worldRacerAttach(gr,paint,'racer');
-      gr.position.set(gg.x,0,gg.z);gr.rotation.y=0;worldGroup.add(gr);
-      const length=k.curve.getLength();
-      k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/length,baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/length,lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});
-    }
-    SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');
-    toast(k.spec?.mode==='time'?'2 voltas no cronômetro. Faça todos os setores e cruze a chegada.':'3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);
-  }
-  function updateKartRaceV704(dt){const k=SPORTS_V705.kart;if(!k?.active)return;const onlineV2=k.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'),guestV2=onlineV2&&typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('kart');if(guestV2)v705ApplySportReplica('kart',dt);const counting=k.countdown>0;k.countdown-=dt;if(k.countdown>0){player.car.speed=0;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),String(Math.ceil(k.countdown)));if(onlineV2&&!guestV2)v705PublishSport({type:'kart'});return;}const now=performance.now();if(k.spec?.regional&&counting)k.startAt=k.lapStartAt=now;if(!guestV2)for(const ai of k.ai){if(ai.finished)continue;const curvePenalty=clamp(v705KartCurvature(k,ai.t)*2.6,0,.42),nearPlayer=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z)<3.2?1.035:1;ai.t+=ai.baseSpeed*ai.skill*(1-curvePenalty)*nearPlayer*dt;if(ai.t>=1){ai.t-=1;ai.lap++;if(ai.lap>=(k.spec?.laps||3))ai.finished=true;}const p=k.curve.getPointAt(ai.t),tan=k.curve.getTangentAt(ai.t),nx=-tan.z,nz=tan.x;ai.group.position.set(p.x+nx*ai.lane,0,p.z+nz*ai.lane);ai.group.rotation.y=Math.atan2(tan.x,tan.z);const contact=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z);if(contact<1.55){const dx=player.x-ai.group.position.x,dz=player.z-ai.group.position.z,n=Math.max(.01,Math.hypot(dx,dz));player.x=ai.group.position.x+dx/n*1.62;player.z=ai.group.position.z+dz/n*1.62;player.car.speed*=.72;ai.t=(ai.t+.0025)%1;if(now>Number(k.lastContactAt||0)){k.lastContactAt=now+650;vibrate(28);beep(145,55,'square');}}}
-    const cp=k.checkpoints[k.expected],d=cp?Math.hypot(player.x-cp.x,player.z-cp.z):Infinity;if(d<5.4){if(k.expected===0){k.lap++;const lapTime=(now-k.lapStartAt)/1000;k.lapStartAt=now;if(k.lap>1||lapTime>3)k.best=!k.best?lapTime:Math.min(k.best,lapTime);k.expected=1;toast(`Volta ${k.lap}/${k.spec?.laps||3} • ${lapTime.toFixed(1)}s`,'good',1100);if(k.lap>=(k.spec?.laps||3)){
-      k.active=false;
-      const elapsed=(now-k.startAt)/1000,aiBest=Math.max(...k.ai.map(a=>a.lap+(a.t||0))),won=k.lap>=aiBest;
-      let result=won?'1º lugar':'Chegada';
-      if(k.spec?.regional){
-        const saved=rioRegionalRaceResult(k,elapsed,won);
-        if(k.mode==='time')result=saved.newRecord?'Novo recorde':'Tempo registrado';
-        for(const rival of k.ai)worldGroup.remove(rival.group);
-        k.ai=[];
-      }else{addXP(won?65:30);if(won)addCoins(42);}
-      v705Hud('🏁 '+k.label,`${elapsed.toFixed(1)}s • ${result} • melhor ${k.best.toFixed(1)}s`);
-      toast(k.mode==='time'?result:won?'Você venceu a corrida de kart!':'Corrida concluída.','good',2400);
-      setTimeout(()=>{if(SPORTS_V705.active!==k||k.active)return;SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);
-      return;}}else{k.expected++;if(k.expected>=k.checkpoints.length)k.expected=0;}}
+  function v705CreateBoostPad(k,t){const p=k.curve.getPointAt(t),tan=k.curve.getTangentAt(t),mesh=new THREE.Mesh(new THREE.BoxGeometry(2.2,.035,3.8),renderMat(0x27e6ff,{emissive:0x0fbad1,emissiveIntensity:.85,roughness:.35}));mesh.position.set(p.x,.225,p.z);mesh.rotation.y=Math.atan2(tan.x,tan.z);mesh.userData.kartBoost=true;worldGroup.add(mesh);return{t,x:p.x,z:p.z,mesh,lastAt:0};}
+  function createKartCircuitV704(spec=WORLD_LAYOUT_V704.circuits.aurora){const existing=SPORTS_V705.circuits.find(c=>c.id===spec.id);if(existing)return existing;const c=spec,cx=c.x,cz=c.z,scale=Number(spec.scale||1),local=spec.shape?[[17,-7],[10,-15],[0,-15],[-16,-10],[-18,2],[-10,14],[4,14],[15,8],[18,0],[10,-5]]:[[17,-7],[12,-13.8],[4,-15.4],[-4,-12.8],[-11,-14.6],[-18,-10],[-18,-3],[-12,2],[-17,8],[-10,13.7],[-2,13.8],[3,10],[7,14.5],[14,11.8],[18,5],[13,0],[18,-3],[12,-6]],points=local.map(([x,z])=>new THREE.Vector3(cx+(spec.shape?-x:x)*scale,.16,cz+z*scale)),curve=new THREE.CatmullRomCurve3(points,true,'centripetal',.42),trackMat=renderMat(0x30343b,{roughness:.9}),curbA=renderMat(0xffffff,{roughness:.75}),curbB=renderMat(0xe34b45,{roughness:.75}),kartBarrier=renderMat(0xe6e8ec,{roughness:.72}),root=new THREE.Group();root.name='OTTHI_V705_KART';worldGroup.add(root);premiumBox(spec.w,.08,spec.d,0x477a3c,cx,.04,cz,root);const segs=240,width=9.0,roadItems=[],curbEven=[],curbOdd=[],barriers=[];for(let i=0;i<segs;i++){const t=i/segs,t2=(i+1)/segs,p=curve.getPointAt(t),q=curve.getPointAt(t2),tan=curve.getTangentAt((t+t2)/2),len=p.distanceTo(q),mx=(p.x+q.x)/2,mz=(p.z+q.z)/2,ry=Math.atan2(tan.x,tan.z),nx=-tan.z,nz=tan.x;roadItems.push({x:mx,y:.15,z:mz,w:width,h:.1,d:len+.18,ry});for(const side of[-1,1]){const item={x:mx+nx*side*(width/2+.05),y:.21,z:mz+nz*side*(width/2+.05),w:.32,h:.14,d:len+.12,ry};(i%2?curbOdd:curbEven).push(item);if(i%4===0)barriers.push({x:mx+nx*side*(width/2+.68),y:.3,z:mz+nz*side*(width/2+.68),w:.18,h:.48,d:len+.08,ry});}}v705BatchBoxes(roadItems,trackMat,root,'OTTHI_KART_ASPHALT');v705BatchBoxes(curbEven,curbB,root,'OTTHI_KART_CURB_RED');v705BatchBoxes(curbOdd,curbA,root,'OTTHI_KART_CURB_WHITE');v705BatchBoxes(barriers,kartBarrier,root,'OTTHI_KART_BARRIERS');
+    const start=v705CurvePoint(curve,0),heading=v705CurveHeading(curve,0),tan=curve.getTangentAt(0),nx=-tan.z,nz=tan.x;for(let row=-2;row<=2;row++)premiumBox(8.7,.08,.24,row%2?0xffffff:0x171717,start.x+tan.x*row*.85,.23,start.z+tan.z*row*.85,worldGroup);const pitT=.06,pit=v705CurvePoint(curve,pitT),pitTan=curve.getTangentAt(pitT),pitNx=-pitTan.z,pitNz=pitTan.x,pitX=pit.x+pitNx*8.5,pitZ=pit.z+pitNz*8.5;premiumBox(13,.1,4.0,0x59616b,pitX,.12,pitZ,worldGroup);for(let i=-2;i<=2;i++)premiumBox(2.2,1.7,2.7,i%2?0x36536b:0x2d465e,pitX+pitTan.x*i*2.4,.85,pitZ+pitTan.z*i*2.4,worldGroup);createSignpost(pitX,pitZ,'BOXES',heading+Math.PI/2);
+    const checkpoints=Array.from({length:14},(_,i)=>{const t=i/14,p=v705CurvePoint(curve,t);return{x:p.x,z:p.z,t};}),boosts=[.18,.52,.80].map(t=>v705CreateBoostPad({curve},t)),grid=[];for(let i=0;i<4;i++){const back=1.6+i*3.4,side=(i%2?1:-1)*.95;grid.push({x:start.x-tan.x*back+nx*side,z:start.z-tan.z*back+nz*side,heading});}const colors=[0xe5484d,0x2787d8,0xf1c943,0x31a76a],karts=grid.map((g,i)=>v705KartVehicle(`kart-${spec.id}-${['red','blue','yellow','green'][i]}`,cx+(i-1.5)*3.1,cz+spec.d/2-5,colors[i],Math.PI)),k={id:spec.id,label:spec.label,entrance:{x:spec.navX,z:spec.navZ},width,scale,cx,cz,curve,checkpoints,boosts,grid,karts,active:false,countdown:0,lap:0,expected:1,startAt:0,lapStartAt:0,best:0,ai:[],root,offTrackWarnAt:0,ranking:[],boostMessageAt:0};SPORTS_V705.circuits.push(k);if(!SPORTS_V705.kart)SPORTS_V705.kart=k;world.kartV704=SPORTS_V705.kart;const entrance=k.entrance;registerInteractable({id:'kart-race-'+spec.id,type:'kart',icon:'🏁',label:spec.label+' — corrida',x:entrance.x,z:entrance.z,radius:4.0,priority:190,action:()=>{SPORTS_V705.kart=k;world.kartV704=k;openKartRaceV705();}});createSignpost(entrance.x,entrance.z+1.2,'🏁 '+spec.label.toUpperCase(),Math.PI);return k;}
+  function startKartRaceV704(mode='solo'){if(mode==='online'&&SPORTS_V705.kart?.id!=='aurora'){toast('As corridas online se encontram no Autódromo Nova Aurora.','info',2500);return;}if(mode==='online'&&!(typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'))){toast('Entre na sessão online antes de iniciar a corrida.','warn',2200);return;}const k=SPORTS_V705.kart;if(!k||k.active)return;let kart=currentVehicleRef?.();if(!kart||kart.kind!=='kart'){kart=k.karts.find(v=>!v.occupied)||k.karts[0];enterVehicle(kart);}if(!player.vehicle||currentVehicleRef?.()?.kind!=='kart'){toast('Entre em um kart para correr.','warn');return;}const v=currentVehicleRef(),onlineIndex=mode==='online'&&typeof multiplayerV2SportParticipantIndex==='function'?multiplayerV2SportParticipantIndex('kart'):0,g=k.grid[Math.min(k.grid.length-1,onlineIndex)]||k.grid[0];v.group.position.set(g.x,0,g.z);v.group.rotation.y=g.heading;player.x=g.x;player.z=g.z;player.car.heading=g.heading;player.car.speed=0;k.assistProgress=1-1.6/k.curve.getLength();k.active=true;k.mode=mode;k.difficulty=SPORTS_V705.difficulty||'normal';k.assist=SPORTS_V705.assist;document.body.classList.add('world-race-active');configureSportControlsV705('kart');k.countdown=3.4;k.lap=0;k.expected=1;k.startAt=performance.now();k.lapStartAt=k.startAt;k.best=0;for(const a of k.ai)worldGroup.remove(a.group);k.ai=[];for(let i=0;i<3;i++){const gr=new THREE.Group(),gg=k.grid[i+1];gr.position.set(gg.x,0,gg.z);worldGroup.add(gr);box(1.48,.2,2.02,[0x7d58c9,0xf28a22,0x138d83][i],0,.3,0,gr);box(.68,.32,.62,0x26384e,0,.56,-.25,gr);const helmet=new THREE.Mesh(new THREE.SphereGeometry(.24,10,8),renderMat([0xf5d04b,0x5bc2ef,0xf5f6f7][i],{roughness:.5}));helmet.position.set(0,.93,-.28);gr.add(helmet);for(const [x,z]of[[-.76,-.65],[.76,-.65],[-.76,.65],[.76,.65]]){const w=cylinder(.28,.23,0x111827,x,.25,z,gr,12);w.rotation.z=Math.PI/2;}if(typeof worldRacerAttach==='function')worldRacerAttach(gr,[0x7d58c9,0xf28a22,0x138d83][i],'racer');k.ai.push({group:gr,t:1-(1.6+(i+1)*3.4)/k.curve.getLength(),baseSpeed:({easy:10,normal:13.5,hard:17}[k.difficulty]+i*.8)/k.curve.getLength(),lap:-1,finished:false,lane:(i-1)*.38,skill:.92+i*.035});}SPORTS_V705.active=k;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),'3');toast('3 voltas. Hairpins, chicanes e faixas azuis de turbo: acelere e escolha a linha certa.','good',3200);}
+  function updateKartRaceV704(dt){const k=SPORTS_V705.kart;if(!k?.active)return;const onlineV2=k.mode==='online'&&typeof multiplayerV2SportOnline==='function'&&multiplayerV2SportOnline('kart'),guestV2=onlineV2&&typeof multiplayerV2SportIsHost==='function'&&!multiplayerV2SportIsHost('kart');if(guestV2)v705ApplySportReplica('kart',dt);k.countdown-=dt;if(k.countdown>0){player.car.speed=0;v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),String(Math.ceil(k.countdown)));if(onlineV2&&!guestV2)v705PublishSport({type:'kart'});return;}const now=performance.now();if(!guestV2)for(const ai of k.ai){if(ai.finished)continue;const curvePenalty=clamp(v705KartCurvature(k,ai.t)*2.6,0,.42),nearPlayer=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z)<3.2?1.035:1;ai.t+=ai.baseSpeed*ai.skill*(1-curvePenalty)*nearPlayer*dt;if(ai.t>=1){ai.t-=1;ai.lap++;if(ai.lap>=3)ai.finished=true;}const p=k.curve.getPointAt(ai.t),tan=k.curve.getTangentAt(ai.t),nx=-tan.z,nz=tan.x;ai.group.position.set(p.x+nx*ai.lane,0,p.z+nz*ai.lane);ai.group.rotation.y=Math.atan2(tan.x,tan.z);const contact=Math.hypot(player.x-ai.group.position.x,player.z-ai.group.position.z);if(contact<1.55){const dx=player.x-ai.group.position.x,dz=player.z-ai.group.position.z,n=Math.max(.01,Math.hypot(dx,dz));player.x=ai.group.position.x+dx/n*1.62;player.z=ai.group.position.z+dz/n*1.62;player.car.speed*=.72;ai.t=(ai.t+.0025)%1;if(now>Number(k.lastContactAt||0)){k.lastContactAt=now+650;vibrate(28);beep(145,55,'square');}}}
+    const cp=k.checkpoints[k.expected],d=cp?Math.hypot(player.x-cp.x,player.z-cp.z):Infinity;if(d<5.4){if(k.expected===0){k.lap++;const lapTime=(now-k.lapStartAt)/1000;k.lapStartAt=now;if(k.lap>1||lapTime>3)k.best=!k.best?lapTime:Math.min(k.best,lapTime);k.expected=1;toast(`Volta ${k.lap}/3 • ${lapTime.toFixed(1)}s`,'good',1100);if(k.lap>=3){k.active=false;const elapsed=(now-k.startAt)/1000,playerProgress=k.lap,aiBest=Math.max(...k.ai.map(a=>a.lap+(a.t||0))),won=playerProgress>=aiBest;addXP(won?65:30);if(won)addCoins(42);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`${elapsed.toFixed(1)}s • ${won?'1º lugar':'Chegada'} • melhor ${k.best.toFixed(1)}s`);toast(won?'Você venceu a corrida de kart!':'Corrida concluída.','good',2400);setTimeout(()=>{SPORTS_V705.active=null;document.body.classList.remove('world-race-active');clearSportControlsV705();v705HudOff();v705RestoreSpecial();},1700);return;}}else{k.expected++;if(k.expected>=k.checkpoints.length)k.expected=0;}}
     const track=v705TrackDistance(k,player.x,player.z);if(track.distance>k.width/2+.8){player.car.speed=clamp(player.car.speed,-3,6.5);if(now>k.offTrackWarnAt){k.offTrackWarnAt=now+1500;toast('Fora da pista — volte ao asfalto.','warn',1000);}}for(const boost of k.boosts){if(Math.hypot(player.x-boost.x,player.z-boost.z)<2.2&&now-boost.lastAt>2200){boost.lastAt=now;player.car.kartBoostUntil=now+1000;player.car.speed=Math.max(Number(player.car.speed||0),23.5);beep(980,90,'square');vibrate(25);if(now>k.boostMessageAt){k.boostMessageAt=now+1600;toast('TURBO!','good',700);}}}
-    const exactProgress=k.lap+track.t,kRanks=k.ai.map((a,i)=>({name:`CPU ${i+1}`,progress:a.lap+a.t}));if(onlineV2)for(const item of v705KartSharedPlayers())kRanks.push({name:`Jogador ${String(item.uid).slice(-4).toUpperCase()}`,progress:Number(item.lap||0)+Number(item.progress||0)});kRanks.push({name:'Você',progress:exactProgress});kRanks.sort((a,b)=>b.progress-a.progress);const pos=kRanks.findIndex(r=>r.name==='Você')+1,boosting=now<Number(player.car.kartBoostUntil||0);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`Volta ${Math.min(k.spec?.laps||3,k.lap+1)}/${k.spec?.laps||3} • ${k.mode==='time'?((now-k.startAt)/1000).toFixed(1)+'s':pos+'º/'+kRanks.length} • ${boosting?'TURBO • ':''}${Math.round(Math.abs(player.car.speed)*3.6)} km/h`);v705PublishSport({type:'kart',lap:k.lap,checkpoint:k.expected,position:pos,progress:+track.t.toFixed(3)});}
+    const exactProgress=k.lap+track.t,kRanks=k.ai.map((a,i)=>({name:`CPU ${i+1}`,progress:a.lap+a.t}));if(onlineV2)for(const item of v705KartSharedPlayers())kRanks.push({name:`Jogador ${String(item.uid).slice(-4).toUpperCase()}`,progress:Number(item.lap||0)+Number(item.progress||0)});kRanks.push({name:'Você',progress:exactProgress});kRanks.sort((a,b)=>b.progress-a.progress);const pos=kRanks.findIndex(r=>r.name==='Você')+1,boosting=now<Number(player.car.kartBoostUntil||0);v705Hud('🏁 '+(SPORTS_V705.kart?.label||'Autódromo'),`Volta ${Math.min(3,k.lap+1)}/3 • ${pos}º/${kRanks.length} • ${boosting?'TURBO • ':''}${Math.round(Math.abs(player.car.speed)*3.6)} km/h`);v705PublishSport({type:'kart',lap:k.lap,checkpoint:k.expected,position:pos,progress:+track.t.toFixed(3)});}
   function handleActiveSportActionV704(){if(SPORTS_V705.football){footballKickV704();return true;}const a=SPORTS_V705.active;if(a?.type==='volley'){if(!courtHitV704())toast('Entre na sombra da bola para sacar, receber ou atacar.','warn',750);return true;}if(a?.type==='footvolley'){v705CourtTouch('touch');return true;}if(a?.type==='kart')return leaveCurrentSportV705();return false;}
   function handleActiveSportSpecialV704(){if(SPORTS_V705.football){v705FootballPass();return true;}const a=SPORTS_V705.active;if(a&&['volley','footvolley'].includes(a.type)){if(!v705CourtSet())toast('Entre na sombra da bola para levantar.','warn',750);return true;}return false;}
   function handleActiveSportRunControlV705(active){const type=activeSportControlTypeV705();if(!type||type==='kart')return false;if(type==='football'){input.touchSprint=!!active;syncSportControlsV705();return true;}if(!active)return true;if(type==='volley')v705CourtTouch('block');else if(type==='footvolley')v705CourtTouch('header');syncSportControlsV705();return true;}
@@ -7355,7 +7310,9 @@
   }
   function updateRaceOpponentVisual(race,dt){const p=athleticsRacePoint(world.gym,race.opponentT,1.0),athlete=race.opponent?.userData?.raceAthlete;if(athlete&&typeof v705AnimateAthlete==='function'){athlete.group.position.x=p.x;athlete.group.position.z=p.z;athlete.group.position.y=v705GroundY? v705GroundY(p.x,p.z):0;athlete.group.rotation.y=p.heading;const swing=Math.sin(animTime*11)*.62;athlete.limbs.leftArm.rotation.x=lerp(athlete.limbs.leftArm.rotation.x,swing,.25);athlete.limbs.rightArm.rotation.x=lerp(athlete.limbs.rightArm.rotation.x,-swing,.25);athlete.limbs.leftLeg.rotation.x=lerp(athlete.limbs.leftLeg.rotation.x,-swing*.8,.25);athlete.limbs.rightLeg.rotation.x=lerp(athlete.limbs.rightLeg.rotation.x,swing*.8,.25);}else{race.opponent.position.set(p.x,0,p.z);race.opponent.rotation.y=p.heading;}}
   function updateRace(dt){
-    if(!activeRace)return;const race=activeRace,gym=world.gym,now=performance.now();
+    if(!activeRace)return;
+    if(activeRace.type==='rio-street')return updateRioStreetRun(dt);
+    const race=activeRace,gym=world.gym,now=performance.now();
     if(now<race.startAt){els.raceStatus.textContent=`${Math.max(1,Math.ceil((race.startAt-now)/1000))}...`;return;}
     if(!race.started){race.started=true;race.startedAt=now;els.raceStatus.textContent='VALENDO!';beep(880,100);}
     const elapsed=(now-race.startedAt)/1000;race.timeLeft=Math.max(0,race.timeLimit-elapsed);
@@ -8370,7 +8327,8 @@
     else if(Math.abs(keyboardX)+Math.abs(keyboardZ)>0){sourceX=keyboardX;sourceZ=keyboardZ;}
     else if(input.joyId!==null||Math.abs(input.joyX)+Math.abs(input.joyZ)>.02){sourceX=input.joyX;sourceZ=input.joyZ;}
     else if(input.gamepadActive){sourceX=input.gamepadX;sourceZ=input.gamepadZ;}
-    const worldMode=derivePlayerMode(),controlMode=!els.modal.hidden&&!fishingSession?PLAYER_MODES.DISABLED_DURING_MODAL:worldMode;
+    const worldMode=derivePlayerMode(),streetCountdown=activeRace?.type==='rio-street'&&activeRace.countdown>0;
+    const controlMode=streetCountdown||!els.modal.hidden&&!fishingSession?PLAYER_MODES.DISABLED_DURING_MODAL:worldMode;
     const intent=normalizeControlIntent(sourceX,sourceZ,controlMode);
     input.targetX=intent.x;input.targetZ=intent.z;input.intent=intent;
     return {x:input.targetX,z:input.targetZ,mode:intent.mode,disabled:intent.disabled};
@@ -8390,7 +8348,7 @@
   function canGroundJump(){return !player.vehicle&&!player.boating&&!player.transit.mode&&(player.swimming||player.grounded||performance.now()-player.lastGrounded<125);}
   function canAirJump(){return !player.vehicle&&!player.boating&&!player.transit.mode&&!player.swimming&&!player.grounded&&player.airJumpAvailable!==false&&performance.now()-player.lastGrounded>=90;}
   function canJump(){return canGroundJump()||canAirJump();}
-  function requestJump(){if(typeof handleActiveSportJumpControlV705==='function'&&handleActiveSportJumpControlV705(true))return;if(!els.modal.hidden||paused||player.vehicle||player.boating||player.transit.mode)return;player.jumpBuffer=performance.now()+170;if(canGroundJump())doJump(false);else if(canAirJump())doJump(true);}
+  function requestJump(){if(activeRace?.type==='rio-street'&&activeRace.countdown>0)return;if(typeof handleActiveSportJumpControlV705==='function'&&handleActiveSportJumpControlV705(true))return;if(!els.modal.hidden||paused||player.vehicle||player.boating||player.transit.mode)return;player.jumpBuffer=performance.now()+170;if(canGroundJump())doJump(false);else if(canAirJump())doJump(true);}
   function doJump(aerial=false){if(aerial?!canAirJump():!canGroundJump())return;state.stats.jumps++;trackDaily('jump',1);player.lastJumpWasAir=!!aerial;if(aerial){player.airJumpAvailable=false;player.vy=Math.max(1.4,player.vy*.18)+8.7;beep(720,65,'sine');vibrate([12,18,12]);}else{player.vy=player.swimming?3.1:10.2;beep(player.swimming?420:540);vibrate(18);}player.grounded=false;player.jumpBuffer=0;}
   function updatePlayer(dt){
     // Entrada é atualizada em todos os estados. O veículo tem prioridade absoluta:
@@ -12126,7 +12084,7 @@ function build(T,key,H){
       icon:'✈️',slug:'voo',gameId:'usarmy_flight_sim',
       x:WORLD_CAMPAIGN_SITES.airbase.x-25,z:WORLD_CAMPAIGN_SITES.airbase.z-12.5,
       navX:WORLD_CAMPAIGN_SITES.airbase.x-25,navZ:WORLD_CAMPAIGN_SITES.airbase.z-7.2}),
-    ...Object.fromEntries(Object.values(WORLD_LAYOUT_V704.circuits).filter(c=>!c.regional).map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
+    ...Object.fromEntries([...Object.values(WORLD_LAYOUT_V704.circuits),...Object.values(typeof RIO_REGIONAL_CIRCUITS==='undefined'?{}:RIO_REGIONAL_CIRCUITS)].map(c=>['kart-'+c.id,{...c,id:'kart-'+c.id,activity:'Kart Legends',icon:'🏁',slug:'kart',gameId:'drive'}]))});
   function venueMapLocations(){return Object.values(WORLD_ACTIVITY_VENUES).map(v=>({id:'venue-'+v.id,name:v.label,icon:v.icon,group:'Esportes e dança',x:v.x,z:v.z,navX:v.navX,navZ:v.navZ,missionTarget:true,description:v.activity+' dentro do bairro. Vá até a entrada para jogar e depois continuar o passeio.',actions:['Marque a rota no GPS','Caminhe até a entrada','Use a ação Entrar']}));}
   function venueDirectoryHtml(){return '<h3>Academias e ginásios</h3>'+Object.values(WORLD_ACTIVITY_VENUES).map(v=>'<section class="venue-directory"><b>'+v.icon+' '+v.label+'</b><p>'+Math.round(Math.hypot(player.x-v.navX,player.z-v.navZ))+' m · '+v.activity+'</p><button class="btn" data-venue-route="'+v.id+'">ROTA NO GPS</button></section>').join('')+'<p>Os autódromos abrem o mesmo Kart Legends do console. O estádio e as quadras continuam no mapa.</p>';}
   function venueBindDirectory(root){root.querySelectorAll('[data-venue-route]').forEach(b=>b.onclick=()=>setWaypoint('venue-'+b.dataset.venueRoute));}
@@ -15585,10 +15543,10 @@ function precompile(T,renderer,scene,camera){
     const byShape = new Map();
     const transform = new THREE.Object3D();
     const color = new THREE.Color();
-    function part(shape,x,y,z,w,h,d,tint,yaw=0) {
+    function part(shape,x,y,z,w,h,d,tint,yaw=0,roll=0) {
       if (!byShape.has(shape)) byShape.set(shape,[]);
       transform.position.set(x,y,z);
-      transform.rotation.y = yaw;
+      transform.rotation.set(0,yaw,roll,'YXZ');
       transform.scale.set(w,h,d);
       transform.updateMatrix();
       byShape.get(shape).push({matrix:transform.matrix.clone(),tint});
@@ -15628,8 +15586,8 @@ function precompile(T,renderer,scene,camera){
   function rioLocal(batch,site) {
     const {x,z}=site, yaw=site.yaw||0, sin=Math.sin(yaw), cos=Math.cos(yaw), ground=groundHeightAt(x,z);
     function point(dx,dz) {return {x:x+cos*dx+sin*dz,z:z-sin*dx+cos*dz};}
-    function part(shape,dx,y,dz,w,h,d,color,angle=0) {
-      const p=point(dx,dz);batch.part(shape,p.x,ground+y,p.z,w,h,d,color,yaw+angle);
+    function part(shape,dx,y,dz,w,h,d,color,angle=0,roll=0) {
+      const p=point(dx,dz);batch.part(shape,p.x,ground+y,p.z,w,h,d,color,yaw+angle,roll);
     }
     const box=(...args)=>part('box',...args);
     function collider(dx,dz,w,d,height,id=site.id) {
@@ -16049,12 +16007,19 @@ function precompile(T,renderer,scene,camera){
     registerRioTour();
     updateRioRegionalCircuits();
   };
+  const rioTracksPreviousLocations=expansionMapLocations;
+  expansionMapLocations=function(){
+    return [...rioTracksPreviousLocations(),...Object.values(RIO_REGIONAL_CIRCUITS).map(site=>({
+      id:'circuit-'+site.id,name:site.label,icon:'🏁',group:'Autódromos',
+      x:site.navX,z:site.navZ,navX:site.navX,navZ:site.navZ,description:site.description
+    }))];
+  };
   const rioPreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
     const places=Object.values(RIO_PRETO_LAYOUT.landmarks);
     const tracks=Object.values(RIO_REGIONAL_CIRCUITS);
     const cards=[...places.map(p=>({id:p.id,title:p.name,tag:'MARCAR NO GPS'})),
-      ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'CIRCUITO DO JOGO'}))];
+      ...tracks.map(c=>({id:'circuit-'+c.id,title:c.label,tag:'KART LEGENDS'}))];
     return '<section aria-labelledby="rio-directory"><h3 id="rio-directory">Rio Preto e região</h3>'+
       '<p>Explore as três avenidas ou dirija até Mirassol e Cedral. Os traçados são do jogo.</p>'+
       '<div class="choice-grid">'+cards.map(card=>'<button class="choice" data-rio-route="'+escapeHtml(card.id)+'"><b>'+
@@ -16074,5 +16039,302 @@ function precompile(T,renderer,scene,camera){
       civilCreateMission('rio-avenidas','solo');
     });
   };
+
+  // ===== MODULE: 84-rio-v51-world.js =====
+  const rioV51World={roots:new Map(),registered:false,markers:[],nextSectorAt:0};
+  const rioV51Palette={
+    swift:[0xa35541,0xe7b897],station:[0xad533a,0xe6cc9f],tower:[0xd7cdad,0x7c9da3],
+    church:[0xe5cfac,0x98735b],mall:[0xc9cbbe,0x3c7e88],market:[0xc7a67e,0x446b58],
+    commerce:[0xd1b797,0xb46545],hospital:[0xd5e1db,0x597d9d],hall:[0xaebec1,0x574b66],
+    terminal:[0x98aab5,0x33566b],service:[0xd7d0a4,0x3b657a],gate:[0xb9ad9a,0x648265]
+  };
+
+  function rioV51Building(batch,p,draw){
+    const {box,collider,part}=draw,{w,h,d,shape}=p;
+    const [wall,accent]=rioV51Palette[shape],front=d/2-.6;
+    if(shape==='gate'){
+      for(const side of [-1,1]){
+        box(side*w*.36,1.7,0,w*.25,3.4,d-1,wall);
+        collider(side*w*.36,0,w*.25,d-1,3.4);
+      }
+      box(0,3.82,front, w,.5,2.6,accent);
+      box(0,3.53,front+.96,w*.51,.44,.14,accent);
+      return;
+    }
+    const pitched=['swift','station','church','market'].includes(shape);
+    const shellH=h*(pitched?.68:.86),sideW=w*.92;
+    box(0,shellH/2,0,sideW,shellH,d-1,wall);
+    collider(0,0,sideW,d-1,shellH);
+    if(pitched){
+      part(shape==='station'?'roof':'hip',0,shellH+(h-shellH)*.48,0,w,h-shellH,d,accent);
+    }else{
+      box(0,shellH+.24,0,w,.47,d,accent);
+      box(0,shellH+.69,front,w,.48,.35,wall);
+    }
+    const floors=Math.max(1,Math.min(5,Math.floor(shellH/3.4)));
+    const columns=Math.max(3,Math.min(8,Math.floor(w/2.9)));
+    for(let level=0;level<floors;level++){
+      for(let i=0;i<columns;i++){
+        const x=(i-(columns-1)/2)*(w-.9)/columns;
+        if(!level&&Math.abs(x)<1.72)continue;
+        rioWindowModule(draw,x,2.2+level*(shellH-1.1)/floors,front,Math.min(1.45,w/columns*.65),1.45,wall);
+      }
+    }
+    box(0,1.65,front+.08,3.2,3.3,.16,0x34616f);
+    box(0,3.45,front+.80,Math.min(8,w*.52),.28,1.85,accent);
+    if(shape==='church'){
+      box(0,h*.74,-d*.32,w*.24,h*.52,d*.17,wall);
+      box(0,h+.42,-d*.32,.22,1.8,.22,0xd5aa63);
+      box(0,h+.61,-d*.32,1.3,.22,.22,0xd5aa63);
+    }else if(shape==='swift'){
+      part('post',-w*.36,h*.58,-d*.32,1.15,h*1.16,1.15,wall);
+    }else if(shape==='tower'||shape==='terminal'){
+      box(-w*.32,shellH+.6,-d*.17,w*.22,1.2,d*.22,accent);
+    }
+    if(shape==='hospital'){
+      box(0,shellH-.9,front+.18,1.9,.38,.095,0xb1474d);
+      box(0,shellH-.9,front+.2,.38,1.9,.095,0xb1474d);
+    }
+    if(shape==='mall'||shape==='hall'){
+      for(const side of [-1,1])box(side*w*.30,2.6,front+.15,w*.27,3.8,.17,0x5f8f95);
+    }
+  }
+
+  function rioV51Outdoors(p,draw){
+    const {box,collider,tree,part,bench}=draw,{w,d,h,shape}=p;
+    const cream=0xe5d1ac,stone=0xb7b6ac,steel=0x535e63;
+    if(shape==='stadium'||shape==='arena'){
+      box(0,.25,0,w*.67,.4,d*.70,shape==='stadium'?0x519353:cream);
+      if(shape==='stadium')box(0,.464,0,.12,.035,d*.65,0xf7efd9);
+      for(const side of [-1,1]){
+        for(let row=0;row<3;row++)box(0,.48+row*.36,side*(d*.30+row*.55),w*.88,.85+row*.7,1.04,row===2?0x6d8387:cream);
+        collider(0,side*d*.35,w*.88,2.05,1.95);
+        const x=side*w*.37;
+        part('post',x,4, -d*.37,.24,8,.24,steel);
+        box(x,7.85,-d*.37,1.25,.54,.47,0xf0e0a0);
+      }
+      return;
+    }
+    if(shape==='bridge'){
+      box(0,.50,0,w,.52,2.6,cream);
+      const mast=w*.17;
+      box(mast,4.5,0,.48,9,.48,stone);
+      for(const offset of [-8,-6,-4,4,6,8]){
+        const x=offset/18*w,dx=mast-x,dy=7.2;
+        box(x+dx/2,4.3,0,.09,Math.hypot(dx,dy),.09,cream,0,-Math.atan2(dx,dy));
+      }
+      return;
+    }
+    if(shape==='capi'){
+      box(0,.3,0,5,.6,4,stone);
+      part('canopy',0,1.54,0,3,1.65,1.8,0x91623c);
+      part('canopy',1.35,1.94,0,1.44,1.2,1.36,0xa37148);
+      part('canopy',1.91,1.72,0,.88,.63,1.02,0x865532);
+      for(const x of [-1,.75])for(const z of [-.43,.43])box(x,.89,z,.35,.59,.34,0x926644);
+      collider(0,0,5,4,2.3);return;
+    }
+    if(shape==='obelisk'){
+      box(0,.39,0,4.3,.78,4.3,stone);
+      part('hip',0,4.1,0,2.8,7.1,2.8,0xd4c9af);collider(0,0,4,4,7.6);return;
+    }
+    box(0,.07,0,w,.12,d,shape==='beach'?0xcdb582:cream);
+    if(shape==='pool'||shape==='beach'){
+      box(0,.14,-d*.16,w*.72,.025,d*.54,0x4f96b5);
+      for(const side of [-1,1]){
+        tree(side*w*.35,d*.28,3.4,0x628959);
+        bench(side*w*.25,d*.36);
+      }
+    }else if(shape==='lookout'){
+      for(const [x,z,scale] of [[-5,-3,8],[0,-4,10],[6,-2,6]])part('canopy',x,scale*.36,z,scale,scale*.72,scale*.75,0x697b56);
+      collider(0,-3,w*.75,8,h*.6);
+    }else{
+      tree(-w*.38,-d*.30,4.2,0x6a9553,0xe2ba53);
+      tree(w*.38,-d*.30,4.5,0x619157,0xd5ab59);
+      bench(0,d*.29);
+      box(0,.22,-d*.18,w*.39,.38,d*.40,stone);
+    }
+  }
+
+  function rioV51DrawPlace(batch,p){
+    const draw=rioLocal(batch,{...p,yaw:p.face===1?0:Math.PI});
+    if(rioV51Palette[p.shape])rioV51Building(batch,p,draw);
+    else rioV51Outdoors(p,draw);
+    draw.box(0,.08,p.d/2+1.65,Math.min(p.w,7.3),.13,3.45,0xd4c8ab);
+    const tall=!!rioV51Palette[p.shape]&&p.shape!=='gate',signY=tall?Math.min(p.h*.44,4.55):p.shape==='gate'?3.82:1.45;
+    draw.sign(p.name,0,signY,p.d/2+.04+(p.shape==='gate'?.9:0),Math.min(p.w-.8,16),.86, p.fictional?'#775e39':'#284d54');
+  }
+
+  function rioV51DrawCourse(batch,root){
+    const course=RIO_V51.course;
+    for(let i=1;i<course.route.length;i++){
+      const a=course.route[i-1],b=course.route[i],x=(a.x+b.x)/2,z=(a.z+b.z)/2;
+      const height=groundHeightAt(x,z)+.066;
+      const len=Math.hypot(a.x-b.x,a.z-b.z);
+      batch.part('box',x,height,z,4.4,.13,len+4,0xcba897,Math.atan2(b.x-a.x,b.z-a.z));
+    }
+    for(const p of course.lakes){
+      const y=groundHeightAt(p.x,p.z);
+      batch.part('box',p.x,y+.08,p.z,p.w,.15,p.d,0x5195b1);
+      for(const side of [-1,1]){
+        batch.part('box',p.x+side*p.w/2,y+.32,p.z,.24,.64,p.d,0x859b9b);
+        batch.part('box',p.x,y+.32,p.z+side*p.d/2,p.w,.64,.24,0x859b9b);
+      }
+      registerCollider(p.x,p.z,p.w,p.d,{height:.8,rioV51Lake:p.id});
+    }
+    const {x,z}=course.start,y=groundHeightAt(x,z);
+    for(const side of [-1,1])batch.part('box',x,y+1.58,z+side*2.85,.35,3.16,.36,0x346b58);
+    batch.part('box',x,y+3.35,z,.41,.47,6.1,0x346b58);
+    const markerGeo=new THREE.RingGeometry(1.45,2.12,28);
+    for(const [i,p] of course.gates.entries()){
+      const marker=new THREE.Mesh(markerGeo,new THREE.MeshBasicMaterial({color:i===5?0x4cd2a5:0xffd66b,side:THREE.DoubleSide}));
+      marker.rotation.x=-Math.PI/2;marker.position.set(p.x,groundHeightAt(p.x,p.z)+.145,p.z);
+      marker.visible=false;root.add(marker);
+      rioV51World.markers.push(marker);
+    }
+  }
+
+  function rioV51Location(p){
+    return{id:p.id,name:p.name,icon:p.fictional?'🌄':'📍',group:RIO_V51.sectors[p.sector].label,
+      x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
+      description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
+  }
+  function rioV51Visit(p){
+    if(p.key==='portaria_damha')return openRioStreetRun();
+    if(p.shop==='tools'||p.shop==='materials')return openShop();
+    if(p.shop)return openCityShop(p.id);
+    if(p.key==='prefeitura_andalo')return openCivilMissions();
+    if(p.key==='aeroporto_sjrp')return openFlightAcademy();
+    const label=p.fictional?'Área fictícia do OTTHI World.':'Fachada estilizada em posição adaptada dentro do jogo.';
+    openModal(p.name,'<p>'+label+'</p>'+(p.fictional?'':'<p>Endereço de referência: '+escapeHtml(p.address)+'</p>')+
+      '<button class="btn primary" data-rio-visit-close>Voltar ao passeio</button>',root=>{
+        root.querySelector('[data-rio-visit-close]').onclick=closeModal;
+      });
+    return true;
+  }
+  function rioV51Register(){
+    rioV51World.registered=true;
+    for(const p of RIO_V51.places){
+      if(['market','fastfood','cafe'].includes(p.shop))cityCoast.shops.set(p.id,{
+        id:p.id,label:p.name,kind:p.shop,x:p.x,z:p.visitZ,navX:p.visitX,navZ:p.visitZ,
+        face:p.face,description:'Itens do comércio do OTTHI World.'
+      });
+      const run=p.key==='portaria_damha';
+      registerInteractable({id:p.id,type:run?'race':p.shop?'shop':'viewpoint',icon:run?'🏃':'📍',
+        label:run?'Corrida de Rua · Represa e Damha':p.name,x:p.visitX,z:p.visitZ,radius:run?4:3.5,priority:run?250:215,
+        available:()=>!activeRace&&!SPORTS_V705.active&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse,
+        action:()=>rioV51Visit(p)});
+    }
+  }
+  function updateRioV51World(){
+    if(!running||!worldGroup||!worldExpansion.ready)return;
+    if(!rioV51World.registered)rioV51Register();
+    const focus=otGamesFocus();
+    let next=null,distance=Infinity;
+    for(const sector of Object.values(RIO_V51.sectors)){
+      const d=Math.hypot(focus.x-sector.x,focus.z-sector.z);
+      const root=rioV51World.roots.get(sector.id);
+      if(root){root.visible=d<195;continue;}
+      if(d<210&&d<distance){next=sector;distance=d;}
+    }
+    if(!next||performance.now()<rioV51World.nextSectorAt)return;
+    const root=new THREE.Group();root.name='RIO_V51_'+next.id;
+    const batch=rioCreateBatch(root);batch.root=root;
+    for(const p of next.places)rioV51DrawPlace(batch,p);
+    if(next.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
+    batch.commit();
+    worldGroup.add(root);rioV51World.roots.set(next.id,root);
+    root.visible=distance<195;
+    world.navCache?.clear?.();
+    rioV51World.nextSectorAt=performance.now()+55;
+  }
+
+  function rioStreetRecord(){return state.races?.streetRuns?.[RIO_V51.course.id];}
+  function openRioStreetRun(){
+    const {name}=RIO_V51.course,record=rioStreetRecord();
+    openModal(name,'<p>Passe pelos seis pontos na ordem. Siga a calçada em volta dos lagos e termine no pórtico da Damha.</p>'+
+      (record?'<p>Melhor tempo: '+Number(record.best).toFixed(2)+' s</p>':'')+
+      '<button class="btn primary" data-rio-run-start>Largar a pé</button>',root=>{
+        root.querySelector('[data-rio-run-start]').onclick=()=>{
+          if(activeRace||SPORTS_V705.active||player.vehicle||player.boating||currentHouse||otGames.active)return;
+          closeModal();startRioStreetRun();
+        };
+      });
+  }
+  function startRioStreetRun(){
+    if(activeRace||!rioV51World.roots.has('represa_lagos_damha')||player.vehicle||player.boating||otGames.active)return false;
+    const course=RIO_V51.course,{x,z}=course.start;
+    activeRace={type:'rio-street',courseId:course.id,nextGate:0,elapsed:0,countdown:3,outside:0};
+    clearMovementInputs();
+    player.x=x;player.z=z;player.y=groundHeightAt(x,z);player.vx=player.vz=player.vy=0;
+    player.facing=-Math.PI/2;cameraYaw=Math.PI/2;
+    v705Hud('🏃 Represa e Damha','3 s');
+    return true;
+  }
+  function finishRioStreetRun(completed){
+    const race=activeRace;
+    if(race?.type!=='rio-street')return false;
+    activeRace=null;
+    for(const marker of rioV51World.markers)marker.visible=false;
+    v705HudOff();
+    if(completed){
+      const previous=rioStreetRecord()||{},best=Math.min(race.elapsed,Number(previous.best)||Infinity);
+      (state.races.streetRuns||={})[race.courseId]={runs:(previous.runs||0)+1,best,last:race.elapsed};
+      state.stats.races++;trackDaily('race',1);saveState(true);
+      toast('Corrida concluída · '+race.elapsed.toFixed(2)+' s','good',2800);
+    }else toast('Corrida encerrada. Volte ao pórtico para tentar novamente.','info',2400);
+    return true;
+  }
+  function updateRioStreetRun(dt){
+    const race=activeRace,course=RIO_V51.course;
+    if(player.vehicle||player.boating||currentHouse||otGames.active)return finishRioStreetRun(false);
+    if(race.countdown>0){
+      race.countdown=Math.max(0,race.countdown-dt);
+      els.raceStatus.textContent=String(Math.max(1,Math.ceil(race.countdown)));
+      return;
+    }
+    const onRoute=course.route.slice(1).some((end,i)=>{
+      const at=projectPointToSegment(player,course.route[i],end);
+      return Math.hypot(player.x-at.x,player.z-at.z)<4.5;
+    });
+    race.outside=onRoute?0:race.outside+dt;
+    race.elapsed+=dt;
+    if(race.outside>2.5||race.elapsed>=360)return finishRioStreetRun(false);
+    const target=course.gates[race.nextGate];
+    if(Math.hypot(player.x-target.x,player.z-target.z)<2.45&&player.y-groundHeightAt(player.x,player.z)<2.3){
+      race.nextGate++;
+      if(race.nextGate===course.gates.length)return finishRioStreetRun(true);
+      beep(970,45);
+    }
+    for(const [i,marker] of rioV51World.markers.entries())marker.visible=i===race.nextGate;
+    const next=course.gates[race.nextGate];
+    els.raceStatus.textContent=(race.nextGate+1)+'/6 · '+next.label+' · '+race.elapsed.toFixed(1)+' s';
+  }
+
+  const rioV51PreviousExpansion=updateWorldExpansion;
+  updateWorldExpansion=function(){rioV51PreviousExpansion();updateRioV51World();};
+  const rioV51PreviousLocations=expansionMapLocations;
+  expansionMapLocations=function(){return [...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)];};
+  const rioV51PreviousDirectory=worldExploreDirectoryHtml;
+  worldExploreDirectoryHtml=function(...args){
+    const groups=Object.values(RIO_V51.sectors).map(sector=>
+      '<details><summary>'+escapeHtml(sector.label)+' · '+sector.places.length+'</summary><div class="choice-grid">'+
+      sector.places.map(p=>'<button class="choice" data-rio-v51-route="'+p.id+'"><b>'+escapeHtml(p.name)+'</b><span>'+
+        (p.fictional?'Local fictício':'Fachada estilizada')+'</span></button>').join('')+'</div></details>').join('');
+    return '<details data-rio-v51-directory><summary>Rio Preto e região · '+RIO_V51.places.length+' locais</summary>'+
+      groups+'</details>'+rioV51PreviousDirectory(...args);
+  };
+  const rioV51PreviousBind=worldExploreBindDirectory;
+  worldExploreBindDirectory=function(root,...args){
+    rioV51PreviousBind(root,...args);
+    for(const button of root.querySelectorAll('[data-rio-v51-route]'))button.onclick=()=>{
+      closeModal();setWaypoint(button.dataset.rioV51Route);
+    };
+  };
+  window.OTTHI_RIO_V51=Object.freeze({
+    diagnostics:()=>({places:RIO_V51.places.length,sectors:Object.keys(RIO_V51.sectors).length,
+      loaded:[...rioV51World.roots.keys()],visible:[...rioV51World.roots.values()].filter(root=>root.visible).length,
+      course:{record:rioStreetRecord(),active:activeRace?.type==='rio-street'?{...activeRace}:null}}),
+    locations:()=>RIO_V51.places.map(rioV51Location)
+  });
 
 })();

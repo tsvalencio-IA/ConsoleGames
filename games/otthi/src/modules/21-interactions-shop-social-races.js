@@ -496,7 +496,9 @@
   }
   function updateRaceOpponentVisual(race,dt){const p=athleticsRacePoint(world.gym,race.opponentT,1.0),athlete=race.opponent?.userData?.raceAthlete;if(athlete&&typeof v705AnimateAthlete==='function'){athlete.group.position.x=p.x;athlete.group.position.z=p.z;athlete.group.position.y=v705GroundY? v705GroundY(p.x,p.z):0;athlete.group.rotation.y=p.heading;const swing=Math.sin(animTime*11)*.62;athlete.limbs.leftArm.rotation.x=lerp(athlete.limbs.leftArm.rotation.x,swing,.25);athlete.limbs.rightArm.rotation.x=lerp(athlete.limbs.rightArm.rotation.x,-swing,.25);athlete.limbs.leftLeg.rotation.x=lerp(athlete.limbs.leftLeg.rotation.x,-swing*.8,.25);athlete.limbs.rightLeg.rotation.x=lerp(athlete.limbs.rightLeg.rotation.x,swing*.8,.25);}else{race.opponent.position.set(p.x,0,p.z);race.opponent.rotation.y=p.heading;}}
   function updateRace(dt){
-    if(!activeRace)return;const race=activeRace,gym=world.gym,now=performance.now();
+    if(!activeRace)return;
+    if(activeRace.type==='rio-street')return updateRioStreetRun(dt);
+    const race=activeRace,gym=world.gym,now=performance.now();
     if(now<race.startAt){els.raceStatus.textContent=`${Math.max(1,Math.ceil((race.startAt-now)/1000))}...`;return;}
     if(!race.started){race.started=true;race.startedAt=now;els.raceStatus.textContent='VALENDO!';beep(880,100);}
     const elapsed=(now-race.startedAt)/1000;race.timeLeft=Math.max(0,race.timeLimit-elapsed);

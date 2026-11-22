@@ -81,7 +81,7 @@ test('approved vertices, face and bones survive clothing; ankle, elbow and head 
     const source=familyWorld.actors[id].mesh.geometry,sourceColors=source.attributes.color;
     applyRioWardrobeVisual(local,{});
     const exactDefault=local.mesh.geometry===source&&!local.rioWardrobe;
-    const selected={top:id==='thiago'?'denim':'festival',legs:'jeans',shoes:'boot',hat:'cap',wrist:'watch',bag:'city'};
+    const selected={top:id==='thiago'?'hoodie':'festival',legs:'jeans',shoes:'boot',hat:'headphones',wrist:'watch',bag:'city'};
     applyRioWardrobeVisual(local,selected);applyRioWardrobeVisual(other,selected);
     const variant=local.mesh.geometry;
     const sharedOutfit=variant===other.mesh.geometry;

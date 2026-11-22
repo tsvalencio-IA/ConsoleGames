@@ -1,208 +1,92 @@
+/* Kart Legends' real phase cards and controls, with explicit physics ticks. */
+import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { chromium } from 'playwright';
-import { multiplayerServer } from './helpers/multiplayer-browser-fixture.mjs';
-import { installCityInspection } from './helpers/world-city-inspection.mjs';
+import {multiplayerServer} from './helpers/multiplayer-browser-fixture.mjs';
 
-const output = process.env.OT_RIO_RACES_OUT || 'test-results/rio-regional-races';
-fs.mkdirSync(output, { recursive: true });
-const source = fs.readFileSync('games/otthi/app.js', 'utf8');
-assert(source.includes('function openRioRegionalRace'), 'Compile the current World modules first.');
-const end = source.lastIndexOf('})();');
-const hook = `
- let rioRaceQaMap=null,rioRaceQaRAFStopped=false;
- window.__RIO_RACE_QA={
-  snapshot:()=>{
-   const k=SPORTS_V705.kart,track=v705TrackDistance(k,player.x,player.z);
-   return {id:k.id,mode:k.mode,active:k.active,lap:k.lap,checkpoint:k.expected,checkpoints:k.checkpoints.length,
-     length:k.curve.getLength(),countdown:k.countdown,rivals:k.ai.length,x:player.x,z:player.z,heading:player.car.heading,
-     speed:player.car.speed,t:track.t,trackDistance:track.distance,vehicle:player.vehicle,car:player.car.id,
-     result:document.querySelector('#raceStatus')?.textContent,record:state.races.regionalCircuits?.[k.id]};
-  },
-  profile:()=>({xp:state.profile.xp,coins:state.profile.coins,races:structuredClone(state.races),owned:structuredClone(state.vehicles.owned)}),
-  advance:(frames)=>{
-   if(!rioRaceQaRAFStopped){cancelAnimationFrame(raf);rioRaceQaRAFStopped=true;}
-   const dt=1/60,k=SPORTS_V705.kart;
-   if(rioRaceQaMap?.id!==k.id)rioRaceQaMap={id:k.id,distance:0,offTrackMax:0,checkpoints:[],turboFrames:0,frames:0};
-   for(let i=0;i<frames&&k.active;i++){
-    cityQaMs+=1000/60;
-    const {x,z}=player,track=v705TrackDistance(k,x,z),length=k.curve.getLength(),speed=player.car.speed;
-    const look=k.curve.getPointAt((track.t+(3.5+Math.abs(speed)*.19)/length)%1);
-    const desired=Math.atan2(look.x-x,look.z-z),error=Math.atan2(Math.sin(desired-player.car.heading),Math.cos(desired-player.car.heading));
-    const curvature=Math.max(v705KartCurvature(k,track.t),v705KartCurvature(k,(track.t+Math.abs(speed)*.55/length)%1));
-    const safeSpeed=Math.max(7.5,21-curvature*42-Math.abs(error)*2);
-    input.virtualActive=true;
-    input.virtualX=k.countdown>0?0:clamp(-error*1.1,-.75,.75);
-    input.virtualZ=k.countdown>0?0:clamp((safeSpeed-speed)*.32,0,1);
-    const before=k.expected;
-    beginWorldQueryFrame();
-    try{updatePlayer(dt);updateWorldSportsV704(dt);}finally{endWorldQueryFrame();}
-    if(k.expected!==before)rioRaceQaMap.checkpoints.push({lap:k.lap,checkpoint:before});
-    rioRaceQaMap.distance+=Math.hypot(player.x-x,player.z-z);
-    rioRaceQaMap.offTrackMax=Math.max(rioRaceQaMap.offTrackMax,track.distance);
-    if(performance.now()<Number(player.car.kartBoostUntil||0))rioRaceQaMap.turboFrames++;
-    rioRaceQaMap.frames++;
-   }
-   return {...window.__RIO_RACE_QA.snapshot(),telemetry:rioRaceQaMap};
-  },
-  resume:()=>{input.virtualActive=false;input.virtualX=input.virtualZ=0;if(rioRaceQaRAFStopped){rioRaceQaRAFStopped=false;clock.getDelta();raf=requestAnimationFrame(gameLoop);}},
-  save:()=>saveState(true),
+const out=process.env.OT_RIO_RACES_OUT||'test-results/rio-kart-legends';
+fs.mkdirSync(out,{recursive:true});
+const release=JSON.parse(fs.readFileSync('games/otthi/release-manifest.json'));
+const server=await multiplayerServer(),browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+const report={build:release.build,revision:release.revision,browser:browser.version(),races:[],errors:[],
+ limits:['Local Chromium, native Kart controls and game physics at fixed time steps. Rendering is paused during races. No physical Android or live account.']};
+try{
+ const c=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+ await c.route(/^https?:\/\//,r=>new URL(r.request().url()).origin===server.origin?r.continue():r.abort());
+ await c.addInitScript(()=>{Math.random=()=>.5;});
+ const page=await c.newPage();page.on('pageerror',e=>report.errors.push(e.stack));
+ const boot=async()=>{
+  await page.goto(server.origin+'/games/kart/');
+  await page.locator('[data-solo-start]').click();
+  assert.equal(await page.locator('#phase-grid .mission-card').count(),6);
  };
- `;
-const report = {
-  passed: false,
-  races: [],
-  layouts: [],
-  errors: [],
-  environment: { browser: 'Chromium headless', renderer: 'ANGLE SwiftShader', viewport: { width: 1280, height: 720 }, quality: 'low' },
-  limits: [
-    'Disposable local profile. External accounts and Firebase requests are blocked.',
-    'Native compiled UI starts each event. Travel to the gates is seeded, then a deterministic analog driver uses the native input, vehicle and race update functions through every sector.',
-    'Simulation advances at 60 Hz without normal rendering. This does not measure native FPS, full-world load, live multiplayer or a physical device.',
-  ],
-};
-const server = await multiplayerServer();
-const browser = await chromium.launch({
-  headless: true,
-  args: ['--no-sandbox', '--disable-dev-shm-usage', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
-});
-let page;
-
-try {
-  const context = await browser.newContext({ viewport: report.environment.viewport, serviceWorkers: 'block' });
-  await context.route(/^https?:\/\//, route => new URL(route.request().url()).origin === server.origin ? route.continue() : route.abort());
-  await context.addInitScript(() => {
-    const key = 'otthos_life_world_roleplay_v700';
-    if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify({
-      version: 705,
-      profile: { name: 'Circuitos QA', nameConfirmed: true, playerId: 'rio-race-local', coins: 5000, xp: 400 },
-      flags: { accountPromptedV635: true },
-      settings: { quality: 'low', sound: false, worldHud: 'clean' },
-      races: { wins: 5, coinWins: 2 },
-      vehicles: { owned: ['br-fusca'] },
-      guardian: { sessionLimitMinutes: 0 },
-      familyAdventure: { party: { controller: 'thiago', members: ['thiago'] } },
-    }));
+ for(const [name,label] of [['mirassol','AUTÓDROMO DE MIRASSOL'],['cedral','CIRCUITO TÉCNICO DE CEDRAL']]){
+  await boot();
+  await page.locator('#phase-grid .mission-card').filter({hasText:label}).click();
+  await page.locator('[data-mode="controls"]').click();
+  await page.waitForFunction(()=>System.activeGame?.logic.state==='MODE_SELECT');
+  const canvas=page.locator('#game-canvas');
+  const tap=async pct=>{const r=await canvas.boundingBox();await page.touchscreen.tap(r.x+r.width*.5,r.y+r.height*pct);};
+  await tap(.49);
+  await page.waitForFunction(()=>System.activeGame?.logic.state==='LOBBY');
+  await page.evaluate(()=>{
+   const g=System.activeGame.logic,orig=g.startRace;
+   g.startRace=function(...args){
+    const result=orig.apply(this,args);
+    cancelAnimationFrame(System.loopId);System.loopId=null;System.loopEpoch++;
+    return result;
+   };
+   window.__KART_REGIONAL_QA={ticks:0,held:{},sectors:new Set(),maxOffset:0};
   });
-  page = await context.newPage();
-  page.setDefaultTimeout(45000);
-  page.on('pageerror', error => report.errors.push(error.stack));
-  await installCityInspection(page, { appSource: source.slice(0, end) + hook + source.slice(end), capDuringBoot: true });
-
-  const boot = async () => {
-    await page.goto(server.origin + '/games/otthi/');
-    await page.locator('#playBtn').click();
-    await page.waitForFunction(() => window.__CITY_QA?.cap() && window.OTTHI_RIO_CIRCUITS &&
-      !OTTHOS_TEST_API.getGame().paused && document.getElementById('modal').hidden, null, { timeout: 120000 });
-  };
-  const tapAutosized = async selector => {
-    const el = page.locator(selector);
-    await el.waitFor({ state: 'visible' });
-    const rect = await el.boundingBox();
-    assert(rect);
-    await page.mouse.click(rect.x + rect.width / 2, rect.y + rect.height / 2);
-  };
-
-  await boot();
-  report.build = await page.evaluate(() => OTTHI_GAME_BUILD);
-  report.revision = await page.evaluate(() => OTTHI_RELEASE_REVISION);
-  report.before = await page.evaluate(() => __RIO_RACE_QA.profile());
-  console.log('BOOT', report.build, report.revision);
-  for (const [id, mode, rivals, laps] of [['mirassol', 'solo', 3, 3], ['cedral', 'time', 0, 2]]) {
-    const venue = await page.evaluate(id => OTTHI_RIO_CIRCUITS.diagnostics().circuits.find(circuit => circuit.id === id), id);
-    assert(venue);
-    await page.evaluate(venue => OTTHOS_TEST_API.teleport(venue.navX, venue.navZ), venue);
-    await page.waitForFunction(id => OTTHOS_TEST_API.getContext()?.id === 'kart-race-' + id, id);
-    await tapAutosized('#actionBtn');
-    for (const [width, height] of [[393, 852], [852, 393]]) {
-      await page.setViewportSize({ width, height });
-      const start = page.locator('#regionalKartStart');
-      await start.scrollIntoViewIfNeeded();
-      const layout = await page.evaluate(() => {
-        const button = document.getElementById('regionalKartStart'), panel = document.getElementById('modalBody');
-        const { x, y, width, height } = button.getBoundingClientRect();
-        const front = document.elementFromPoint(x + width / 2, y + height / 2);
-        return { width: innerWidth, height: innerHeight, button: { x, y, width, height },
-          horizontalOverflow: Math.max(panel.scrollWidth - panel.clientWidth, document.documentElement.scrollWidth - innerWidth),
-          hittable: button === front || button.contains(front) };
-      });
-      assert(layout.horizontalOverflow <= 1, JSON.stringify(layout));
-      assert(layout.hittable, JSON.stringify(layout));
-      report.layouts.push({ id, ...layout });
+  await tap(.92);
+  await page.waitForFunction(()=>System.activeGame?.logic.state==='RACE');
+  const before=await page.evaluate(()=>({coins:Profile.coins,garage:structuredClone(Profile.kartSave.garage),
+   sectors:System.activeGame.logic.trackSectors,rivals:System.activeGame.logic.localBots.length}));
+  assert.equal(before.sectors.length,4);assert.equal(before.rivals,4);
+  await page.locator('.kart-input [data-control="go"]').dispatchEvent('pointerdown',{pointerId:71});
+  let finish;
+  for(let batch=0;batch<140;batch++){
+   finish=await page.evaluate(()=>{
+    const g=System.activeGame.logic,q=__KART_REGIONAL_QA;
+    function set(name,on){
+     if(q.held[name]===on)return;q.held[name]=on;
+     document.querySelector('.kart-input [data-control="'+name+'"]').dispatchEvent(new PointerEvent(on?'pointerdown':'pointerup',{pointerId:name==='left'?72:73,bubbles:true}));
     }
-    await page.setViewportSize(report.environment.viewport);
-    await page.locator('#regionalKartAssist').selectOption('strong');
-    if (rivals) await page.locator('#regionalKartDifficulty').selectOption('easy');
-    await page.locator('#regionalKartStart').click();
-    const started = await page.evaluate(() => __RIO_RACE_QA.snapshot());
-    assert.equal(started.id, id);
-    assert.equal(started.mode, mode);
-    assert.equal(started.rivals, rivals);
-    assert.equal(started.vehicle, true);
-    assert.equal(started.active, true);
-    console.log('START', id, started.length, started.checkpoints);
-    let result;
-    for (let batch = 0; batch < 80; batch++) {
-      result = await page.evaluate(() => __RIO_RACE_QA.advance(150));
-      report.last = result;
-      if (batch % 10 === 0) console.log('DRIVE', id, result.lap, result.checkpoint, result.speed.toFixed(1), result.trackDistance.toFixed(2));
-      if (!result.active) break;
+    for(let i=0;i<150&&g.status==='RACING';i++){
+     // Use the public buttons to hold a line near the middle of the asphalt.
+     const target=.19*Math.sin(q.ticks/150);
+     set('left',g.playerX>target+.035);set('right',g.playerX<target-.035);
+     g.updatePhysics(System.canvas.width,System.canvas.height,null);
+     q.sectors.add(g.lap+':'+g.trackSectors.findLastIndex(s=>s.start<=g.pos));q.ticks++;
+     q.maxOffset=Math.max(q.maxOffset,Math.abs(g.playerX));
     }
-    let earlyExit=null;
-    if(id==='mirassol'&&!result.active){
-      await tapAutosized('[data-sport-exit]');
-      earlyExit=await page.evaluate(()=>__RIO_RACE_QA.snapshot());
-      assert(Math.hypot(earlyExit.x-venue.navX,earlyExit.z-venue.navZ)<4,'The results exit returns to Mirassol');
-    }
-    report.races.push({ venue, started, result, earlyExit });
-    assert.equal(result.active, false, JSON.stringify(result));
-    assert.equal(result.lap, laps);
-    assert.equal(result.rivals, 0);
-    assert.equal(result.telemetry.checkpoints.length, started.checkpoints * laps);
-    assert(result.telemetry.distance / (started.length * laps) > .87);
-    assert(result.telemetry.offTrackMax < 9, JSON.stringify(result));
-    assert(result.telemetry.turboFrames > 0, JSON.stringify(result));
-    assert.equal(result.record.runs, 1);
-    assert(result.record.bestTime > result.record.bestLap);
-    assert.match(result.result, mode === 'time' ? /Novo recorde/ : /1º lugar|Chegada/);
-    const expectedSectors = Array.from({ length: laps }, (_, lap) => [
-      ...Array.from({ length: started.checkpoints - 1 }, (_, index) => ({ lap, checkpoint: index + 1 })),
-      { lap: lap + 1, checkpoint: 0 },
-    ]).flat();
-    assert.deepEqual(result.telemetry.checkpoints, expectedSectors);
-    await page.evaluate(({ x, z }) => __CITY_QA.render(x, z, 154, 70), venue);
-    await page.screenshot({ path: output + '/' + id + '.png', timeout: 60000 });
-    await page.evaluate(() => __RIO_RACE_QA.resume());
-    await page.waitForFunction(() => !document.body.classList.contains('world-race-active'));
-    await tapAutosized('#actionBtn');
-    assert.equal((await page.evaluate(() => __RIO_RACE_QA.snapshot())).vehicle, false);
-    console.log('FINISH', id, result.record, result.telemetry.distance.toFixed(0));
+    g.checkRaceStatus();
+    return {status:g.status,phase:g.currentFase.id,laps:g.lapTimes,elapsed:g.raceElapsed,
+     ticks:q.ticks,sectors:[...q.sectors],finished:g.player.finished,rank:g.finalRank,
+     maxOffset:q.maxOffset,track:g.selectedTrack};
+   });
+   if(finish.status==='FINISHED')break;
   }
-  report.after = await page.evaluate(() => __RIO_RACE_QA.profile());
-  const wins = report.after.races.regionalCircuits.mirassol.wins;
-  assert.equal(report.after.coins, report.before.coins + 42 * wins);
-  assert.equal(report.after.xp, report.before.xp + (wins ? 65 : 30) + 25);
-  assert.equal(report.after.races.wins, report.before.races.wins);
-  assert.equal(report.after.races.coinWins, report.before.races.coinWins);
-  assert.deepEqual(report.after.owned, report.before.owned);
-  await page.evaluate(() => __RIO_RACE_QA.save());
-  await boot();
-  report.reloaded = await page.evaluate(() => __RIO_RACE_QA.profile());
-  assert.deepEqual(report.reloaded, report.after);
-  assert.deepEqual(report.errors, []);
-  report.passed = true;
-  console.log('PASS both full events, checkpoint order, single rewards and saved records');
-} catch (error) {
-  report.failure = error.stack;
-  report.context = await page?.evaluate(() => ({
-    name: document.getElementById('modalTitle')?.textContent,
-    modalHidden: document.getElementById('modal')?.hidden,
-    area: window.OTTHOS_TEST_API?.getContext(),
-    regional: window.OTTHI_RIO_CIRCUITS?.diagnostics(),
-  })).catch(() => null);
-  throw error;
-} finally {
-  fs.writeFileSync(output + '/result.json', JSON.stringify(report, null, 2));
-  await browser.close();
-  await server.close();
-}
+  assert.equal(finish.phase,'regional-'+name);
+  assert(finish.finished,JSON.stringify(finish));
+  assert.equal(finish.laps.length,3);
+  assert(finish.ticks>1400&&finish.sectors.length>=12);
+  await page.waitForFunction(()=>!document.getElementById('screen-over').classList.contains('hidden'));
+  const result=await page.evaluate(()=>({coins:Profile.coins,xp:Profile.xp,save:structuredClone(Profile.kartSave)}));
+  assert.equal(result.save.regionalRecords[name].runs,1);
+  assert.deepEqual(result.save.garage,before.garage);
+  for(const viewport of [{width:390,height:844},{width:844,height:390},{width:1280,height:760}]){
+   await page.setViewportSize(viewport);
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  }
+  await page.screenshot({path:out+'/'+name+'.png'});
+  report.races.push({name,before,finish,result});
+ }
+ await boot();
+ report.reloaded=await page.evaluate(()=>structuredClone(Profile.kartSave));
+ assert.equal(report.reloaded.regionalRecords.mirassol.runs,1);
+ assert.equal(report.reloaded.regionalRecords.cedral.runs,1);
+ assert.deepEqual(report.errors,[]);
+ report.passed=true;console.log('PASS native Kart Legends, six full laps across two tracks, four rivals each, records after reload');
+}catch(error){report.failure=error.stack;throw error;}
+finally{fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));await browser.close();await server.close();}

@@ -28,10 +28,10 @@
     const byShape = new Map();
     const transform = new THREE.Object3D();
     const color = new THREE.Color();
-    function part(shape,x,y,z,w,h,d,tint,yaw=0) {
+    function part(shape,x,y,z,w,h,d,tint,yaw=0,roll=0) {
       if (!byShape.has(shape)) byShape.set(shape,[]);
       transform.position.set(x,y,z);
-      transform.rotation.y = yaw;
+      transform.rotation.set(0,yaw,roll,'YXZ');
       transform.scale.set(w,h,d);
       transform.updateMatrix();
       byShape.get(shape).push({matrix:transform.matrix.clone(),tint});
@@ -71,8 +71,8 @@
   function rioLocal(batch,site) {
     const {x,z}=site, yaw=site.yaw||0, sin=Math.sin(yaw), cos=Math.cos(yaw), ground=groundHeightAt(x,z);
     function point(dx,dz) {return {x:x+cos*dx+sin*dz,z:z-sin*dx+cos*dz};}
-    function part(shape,dx,y,dz,w,h,d,color,angle=0) {
-      const p=point(dx,dz);batch.part(shape,p.x,ground+y,p.z,w,h,d,color,yaw+angle);
+    function part(shape,dx,y,dz,w,h,d,color,angle=0,roll=0) {
+      const p=point(dx,dz);batch.part(shape,p.x,ground+y,p.z,w,h,d,color,yaw+angle,roll);
     }
     const box=(...args)=>part('box',...args);
     function collider(dx,dz,w,d,height,id=site.id) {

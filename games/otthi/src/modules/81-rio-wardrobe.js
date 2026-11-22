@@ -8,7 +8,8 @@
       ['denim', 'Jaqueta jeans', '#385575'],
       ['sport', 'Camiseta esportiva', '#237e61'],
       ['festival', 'Vestido de festa e leggings', '#ae4c78'],
-      ['rain', 'Jaqueta corta-vento', '#da954a']
+      ['rain', 'Jaqueta corta-vento', '#da954a'],
+      ['hoodie', 'Moletom com capuz', '#66739c']
     ],
     legs: [
       ['original', 'Roupa original'],
@@ -27,7 +28,8 @@
       ['original', 'Sem chapéu novo'],
       ['cap', 'Boné bordado', '#3c526d'],
       ['panama', 'Chapéu de palha', '#dab87e'],
-      ['beanie', 'Gorro de tricô', '#496b61']
+      ['beanie', 'Gorro de tricô', '#496b61'],
+      ['headphones', 'Fones de ouvido', '#4b5970']
     ],
     glasses: [
       ['original', 'Óculos originais'],
@@ -60,6 +62,7 @@
     passeio: {label:'Passeio no bairro', outfit:{top:'linen',legs:'chino',shoes:'leather',hat:'panama',glasses:'copper',jewel:'necklace',wrist:'bracelet'}},
     esportivo: {label:'Dia de corrida', outfit:{top:'sport',legs:'track',shoes:'runner',hat:'cap',glasses:'sun',wrist:'watch',bag:'city'}},
     chuva: {label:'Chuva na cidade', outfit:{top:'rain',legs:'jeans',shoes:'boot',hat:'beanie',wrist:'bracelet',bag:'hike'}},
+    rua: {label:'Passeio na Represa',outfit:{top:'hoodie',legs:'jeans',shoes:'runner',hat:'headphones',bag:'city'}},
     festa: {label:'Fim de tarde', outfit:{top:'festival',legs:'track',shoes:'leather',glasses:'copper',jewel:'earrings',wrist:'watch'}}
   });
 
@@ -211,17 +214,21 @@
     const top=tint('top');
     if(top){
       const torso=add('top',rootKey);
-      if(outfit.top==='denim'||outfit.top==='rain'){
+      if(['denim','rain','hoodie'].includes(outfit.top)){
         // The sleeves pivot at the existing elbows and leave the tool hand clear.
         for(const side of [-1,1]){
           const sleeve=add('sleeve','elbow'+side);
           piece(sleeve,'flare',top,[.23,.30,.23],[0,-.12,0]).rotation.z=Math.PI;
           piece(sleeve,'disc',top,[.175,.035,.17],[0,-.277,0]);
-          piece(torso,'box',outfit.top==='denim'?'#254665':'#9f632f',[.13,.11,.018],[side*.183,1.67,.232]);
+          piece(torso,'box',outfit.top==='denim'?'#254665':outfit.top==='hoodie'?'#495676':'#9f632f',[.13,.11,.018],[side*.183,1.67,.232]);
         }
         piece(torso,'box','#baa180',[.018,.48,.019],[0,1.66,.24]);
         piece(torso,'box','#f4dfb8',[.04,.04,.016],[.026,1.883,.25]);
         if(outfit.top==='rain')piece(torso,'sphere','#cc823a',[.48,.27,.25],[0,1.95,-.18]);
+        if(outfit.top==='hoodie'){
+          piece(torso,'sphere',top,[.49,.31,.27],[0,1.95,-.18]);
+          piece(torso,'box','#bac1d1',[.24,.10,.025],[0,1.46,.23]);
+        }
       }else if(outfit.top==='sport'){
         for(const side of [-1,1]){
           piece(torso,'box','#e5ecce',[.075,.39,.012],[side*.20,1.66,.206]).rotation.z=side*.11;
@@ -258,6 +265,12 @@
         piece(head,'disc','#b89c74',[1.00,.045,.94],[0,.442,0]);
         piece(head,'flare',hat,[.75,.208,.66],[0,.519,-.016]);
         piece(head,'disc','#564537',[.734,.048,.65],[0,.468,-.016]);
+      }else if(outfit.hat==='headphones'){
+        piece(head,'ring',hat,[.93,.94,.21],[0,.14,-.018]);
+        for(const side of [-1,1]){
+          piece(head,'sphere','#273346',[.19,.29,.26],[side*.454,.087,-.018]);
+          piece(head,'sphere',hat,[.109,.24,.21],[side*.51,.087,-.018]);
+        }
       }else{
         piece(head,'sphere',hat,[.84,.28,.753],[0,.456,-.018]);
         piece(head,'disc','#3f5750',[.83,.08,.738],[0,.397,-.011]);

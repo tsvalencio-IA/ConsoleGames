@@ -297,7 +297,11 @@ window.System = {
         const grid = document.getElementById('phase-grid'); grid.innerHTML = '';
         const phases = game.opts.phases || [ { id: 'arcade', name: 'MODO ARCADE', desc: 'Jogue livremente offline ou online', reqLvl: 1 } ];
 
-        phases.forEach(fase => {
+        const token=new URLSearchParams(location.search).get('otVenue');
+        const trip=token?window.WorldVenueTrip?.current(token,game.id):null;
+        const regionalPhase=({'kart-mirassol':'regional-mirassol','kart-cedral':'regional-cedral'})[trip?.id];
+        const choices=regionalPhase?phases.filter(phase=>phase.id===regionalPhase):phases;
+        choices.forEach(fase => {
             const isUnlocked = window.Profile.level >= fase.reqLvl;
             const card = document.createElement('div');
             card.className = `mission-card ${isUnlocked ? '' : 'locked'}`;

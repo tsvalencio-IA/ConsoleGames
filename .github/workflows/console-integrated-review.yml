@@ -1,7 +1,7 @@
 name: Homologacao integrada dos oito jogos
 on:
   push:
-    branches: [fix/console-recuperacao-20261117, fix/integracao-console-20261120, feat/rio-preto-7052831]
+    branches: [fix/console-recuperacao-20261117, fix/integracao-console-20261120, feat/rio-preto-7052831, feat/integracao-regional-v51]
   pull_request:
     branches: [continuation-20261111]
   workflow_dispatch:
@@ -66,7 +66,9 @@ jobs:
         run: node tests/balloon-photo-browser.mjs
       - name: Completar o roteiro de Rio Preto e salvar as roupas da família
         run: node tests/rio-preto-integration-browser.mjs
-      - name: Completar as corridas de Mirassol e Cedral e recarregar os resultados
+      - name: Explorar os 42 pontos e completar a corrida a pé da Represa
+        run: node tests/rio-v51-world-browser.mjs
+      - name: Completar as corridas de Mirassol e Cedral no Kart Legends e recarregar os resultados
         run: node tests/rio-regional-races-browser.mjs
       - name: Conferir isolamento dos caches entre instalações
         run: node tests/console-cache-isolation-browser.mjs

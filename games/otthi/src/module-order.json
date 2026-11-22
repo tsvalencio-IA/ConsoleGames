@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.32-rio-preto-regiao",
+  "build": "705.28.33-integracao-regional-v51",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "1319e9693e6b1a238d06cb2f1cbbd8f4d6d459eb0f3feaa8d8cbb5861d25a09c"
+      "sha256Body": "781a12f1a573881499b8204cdce1867e9bf4d3147969c2bbde36aa8ed18717c4"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -19,7 +19,7 @@
     {
       "file": "src/modules/81-rio-wardrobe.js",
       "description": "Guarda-roupa intercambiável e prévia dos personagens",
-      "sha256Body": "2056bf8fbdb36f0a4f0616cce06d8bc5ba0ed6a9de010894ff551d31281791c5"
+      "sha256Body": "62e2a4afeae04456eb476c534bc6d0c9f19ada0f9677e60a460213a3b00df5bd"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -64,14 +64,18 @@
     {
       "file": "src/modules/80-rio-regional-circuits.js",
       "description": "Traçados, instalações e atividades regionais de Mirassol e Cedral",
-      "sha256Body": "a698423a7bbaefdc4a3ffceece733fa2c33fdde29bb5ed2ecd34872b71a614d8"
+      "sha256Body": "bc90ece7bec316fd4322abce743c9247eb374bbb18d7f73585be39919ff40199"
+    },
+    {
+      "file": "src/modules/83-rio-v51-layout.js",
+      "sha256Body": "4dce551de0d8ff1a57a4f30c04ab4af0648cafaaa667cd07eae953d566c936fc"
     },
     {
       "file": "src/modules/05a-world-layout-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "de746165579cae05090867b49087d26078b373dfb09fa79dc97feb4add57b8fa"
+      "sha256Body": "eb2efa945b48f4122f787a3d34441c226153495f1f4bb5fd2a9402cf8a5200d9"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -141,7 +145,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "cc9b0340bd489924a66871e396be75d2ef9ffa15a2f2d1baf624c48369ac6d95"
+      "sha256Body": "6db30bb7743f5e4bf3abeb0ca47a3980555f11492a73d1473f686f0d7e829911"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
@@ -204,7 +208,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "3b298185c3f62cffc79c6756328a0a4220e7cbd0e7ac6c810d6c161bd606ca68"
+      "sha256Body": "271aa1c341bebd4c0cc930265e6c379184e976653d029b31dd7c51c0151027c2"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -246,7 +250,7 @@
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "469fbaef5bdb613e72f1c704fcc58efd45fc52ba0cf452536b65520fd90eb319"
+      "sha256Body": "e8f133fbb05aaa269ef1867f594f24aa42c367690479c6bf543d86f2ce39d014"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
@@ -407,7 +411,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "87cbac009e5f3ad0ea372556cf8ced184fe675685b6afbcc1d8bcb183d242c82"
+      "sha256Body": "0057a6a05f4c1be9f2446d69bf96e68c524518bbd8b01d9f3893f709c1fc49be"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -649,12 +653,16 @@
     {
       "file": "src/modules/79-rio-preto-districts.js",
       "description": "Bairros e pontos urbanos em setores com recursos compartilhados",
-      "sha256Body": "3a61678c1d3df35a93b0a6ba90feaac3601eddf3a66e82dd82470c184b9f5baf"
+      "sha256Body": "9ac2242fe52447a6e9185ccf0950c01403b0f37b0260b3bd841d6c3e5e1af53a"
     },
     {
       "file": "src/modules/82-rio-preto-expansion.js",
       "description": "Diretório, roteiro e integração de atividades de Rio Preto",
-      "sha256Body": "9482b04a7163775304ff5b2781f6b9282533c7a3210ca3777a79a641660bcc70"
+      "sha256Body": "433767a07107f7db7f6fe3eb970a5eb261f8540aad296abd99abd01651c9441c"
+    },
+    {
+      "file": "src/modules/84-rio-v51-world.js",
+      "sha256Body": "74d5169a0fce28ffd05be1565556e95ad8e29cff5fa71781657600ecfc9a0ae3"
     }
   ],
   "styles": [

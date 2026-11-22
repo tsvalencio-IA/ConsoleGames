@@ -15,7 +15,7 @@ const supplied = process.env.OT_ROUTE_BASE;
 const mode = process.env.OT_ROUTE_CASE || 'all';
 assert(['all', 'catalog', 'trips', 'embedded', 'pause'].includes(mode), 'Unknown route validation mode');
 const selectedPortals = process.env.OT_ROUTE_PORTALS?.split(',');
-const portalIds = ['pingpong', 'dance', 'boxing', 'aviation', 'kart-aurora', 'kart-costa'];
+const portalIds = ['pingpong', 'dance', 'boxing', 'aviation', 'kart-aurora', 'kart-costa', 'kart-mirassol', 'kart-cedral'];
 assert(!selectedPortals || selectedPortals.every(id => portalIds.includes(id)), 'Unknown World portal');
 const wantsPortal = id => !selectedPortals || selectedPortals.includes(id);
 const world = JSON.parse(fs.readFileSync('games/otthi/release-manifest.json'));
@@ -245,6 +245,7 @@ async function runMount(mount) {
         // animating for the actual pointer/touch path to accept a tap.
         await activate('#actionBtn:visible', { force: true });
         if (id === 'aviation') await activate('[data-flight-academy="sim"]');
+        if (id === 'kart-mirassol' || id === 'kart-cedral') await activate('[data-rio-kart-enter]');
       };
       if (wantsPortal('pingpong')) {
         await portal('pingpong');
@@ -269,7 +270,7 @@ async function runMount(mount) {
         assert.deepEqual(await worldSave(), before);
         record('portal:dance');
       }
-      const portalCases = { boxing: ['boxe', '[data-venue-return]'], aviation: ['voo', '.flight-return-world'], 'kart-aurora': ['kart', '[data-venue-return]'], 'kart-costa': ['kart', '[data-venue-return]'] };
+      const portalCases = { boxing: ['boxe', '[data-venue-return]'], aviation: ['voo', '.flight-return-world'], 'kart-aurora': ['kart', '[data-venue-return]'], 'kart-costa': ['kart', '[data-venue-return]'], 'kart-mirassol': ['kart', '[data-venue-return]'], 'kart-cedral': ['kart', '[data-venue-return]'] };
       for (const [id, [slug, button]] of Object.entries(portalCases)) {
         if (!wantsPortal(id) || (mode === 'embedded' && slug === 'kart')) continue;
         await portal(id);
@@ -290,6 +291,12 @@ async function runMount(mount) {
           await ready(slug);
           await byteCheck(slug);
           assert.equal(new URL(page.url()).searchParams.get('venuePage'), '1');
+          if (id === 'kart-mirassol' || id === 'kart-cedral') {
+            const title=id==='kart-mirassol'?'AUTÓDROMO DE MIRASSOL':'CIRCUITO TÉCNICO DE CEDRAL';
+            await page.locator('#phase-grid .mission-card').filter({hasText:title}).waitFor();
+            assert.equal(await page.locator('#phase-grid .mission-card').count(),1);
+            assert.equal(await page.evaluate(()=>WorldVenueTrip.current()?.id),id);
+          }
           await activate(button);
           await worldReady();
         }

@@ -16,11 +16,11 @@ test('workshop parking is protected and the boxing academy has its own reachable
   assert.equal(l.nodes.VB_GATE.x,gym.navX);assert.equal(l.nodes.VB_GATE.z,gym.navZ);
 });
 
-test('both autodromes use a validated trip into the original Kart and apply its real result once',()=>{
+test('all four autodrome portals use a validated trip into the original Kart and apply its real result once',()=>{
   const session=new Map(),local=new Map(),storage=m=>({getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)}),window={};
   vm.runInNewContext(readFileSync('enhancements/world-venue-trip.js','utf8'),{window,sessionStorage:storage(session),localStorage:storage(local),location:{origin:'https://test.example'},Date,JSON,URL});
   const api=window.WorldVenueTrip;
-  for(const id of ['kart-aurora','kart-costa']){
+  for(const id of ['kart-aurora','kart-costa','kart-mirassol','kart-cedral']){
     const token=id+'-1234567890123456';
     assert(api.begin({id,gameId:'drive',token,playerId:'thiago',recordKey:'thia:otthi:venues:v1:thiago',returnUrl:'https://test.example/games/otthi/'}));
     assert.equal(api.current(token,'tennis'),null);assert(api.result(token,'drive',1300,true));assert(api.applyResult(token));assert(api.applyResult(token));
