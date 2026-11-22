@@ -285,7 +285,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "711a67cfa8bab19fc24c36d79d2fd7f2ceda6d8d0b891e7205c80105bac6958e"
+      "sha256Body": "0b736b90a10e3d99e6e3fc124196282d5eff130d34adadb33c0a0dec099ec27d"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -682,7 +682,7 @@
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "e67d7ccf5afa5b0e4d3149e9f8c7c3b2f9423fdbf08d263fa3144b631b966de4"
+      "sha256Body": "9400a66b9093573fecde8cf0d077d5947b77888315229023f82ac37c03995497"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
@@ -690,7 +690,7 @@
     },
     {
       "file": "src/modules/91-rio-map-entry-and-ui.js",
-      "sha256Body": "b7a283f6db15d999487ca4dd879729b71721a63dddca3b3eadd7ca3fdb80a53a"
+      "sha256Body": "f8a5185cd79c74dc61d81094642e797006a13b77be63e9f9ad8382d1051e9621"
     },
     {
       "file": "src/modules/92-rio-waterfront.js",

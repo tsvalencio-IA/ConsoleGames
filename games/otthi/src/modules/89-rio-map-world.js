@@ -259,6 +259,7 @@
     }
     if(player.boating&&world.boat?.kind==='board')stopEngineSound();
     else updateVehicleFX(dt);
+    if(fxParticles.length)updateFX(dt);
     if(fishingVisual?.active)updateFishingVisual(dt);
     perf.cameraAcc=Number(perf.cameraAcc||0)+dt;
     if(activeRace)updateRace(dt);

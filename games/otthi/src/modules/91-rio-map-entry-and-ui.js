@@ -10,6 +10,15 @@
       state.waypoint=rioMapSave().waypoint||null;
     }else delete document.body.dataset.otthiMap;
   }
+  function rioResumeActivity(){
+    const url=new URL(location.href);
+    if(!url.searchParams.has('entrada'))return rioRestoreBoatRide();
+    // A named entrance applies on arrival. Subsequent reloads use the saved position.
+    rioMapSave().aboard=null;
+    url.searchParams.delete('entrada');
+    history.replaceState(history.state,'',url);
+    return false;
+  }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
     if(mode==='rio-preto')url.searchParams.set('map','rio-preto');

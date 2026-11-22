@@ -21,14 +21,14 @@ const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disab
 const report={browser:browser.version(),environment:{os:os.platform(),cpu:os.cpus()[0].model,logicalCpus:os.availableParallelism(),
   graphics:'ANGLE SwiftShader software WebGL',viewport,dpr:1,quality:'low'},periods,periodMs,cases:[],
   limits:['Both versions enter Rio Preto near the Complexo Swift. Scene geometry and the simulated systems differ between versions.',
-    'Real browser render and simulation clocks use a scripted drag and touch sequence. Firebase and physical devices are outside this measurement.']};
+    'Startup paints are suppressed in both cases. Sampling uses the actual renderer and browser clock with a scripted drag and touch sequence. Firebase and physical devices are outside this measurement.']};
 const stats=values=>{
   const sorted=[...values].sort((a,b)=>a-b);
   return {samples:sorted.length,p50:sorted[Math.floor(sorted.length*.50)]||0,p95:sorted[Math.floor(sorted.length*.95)]||0,
     max:sorted.at(-1)||0,over100:sorted.filter(x=>x>100).length,over250:sorted.filter(x=>x>250).length};
 };
 try{
-  for(const [label,revision] of [['before',process.env.OT_RIO_PERF_BASE||'38aa21c'],['after',null]]){
+  for(const [label,revision] of [['before',process.env.OT_RIO_PERF_BASE||'38aa21c'],['after',null]].filter(([label])=>!process.env.OT_RIO_PERF_CASE||process.env.OT_RIO_PERF_CASE===label)){
     const source=revision?execFileSync('git',['show',revision+':games/otthi/app.js'],{encoding:'utf8',maxBuffer:8e6}):
       fs.readFileSync('games/otthi/app.js','utf8');
     const pos=source.lastIndexOf('})();'), hook=`
@@ -50,6 +50,7 @@ try{
       try{new PerformanceObserver(list=>{for(const e of list.getEntries())if(rioPerf.started&&e.startTime>=rioPerf.started)
         rioPerf.tasks.push(e.duration);}).observe({type:'longtask'});}catch{}
       window.__RIO_PERF={
+        resumeRenderer:()=>{const render=cityQaBootRenders.get(renderer);if(render)renderer.render=render;},
         start:()=>{rioPerf.started=performance.now();rioPerf.last=0;rioPerf.renders=0;
           rioPerf.frames.length=0;rioPerf.work.length=0;rioPerf.tasks.length=0;},
         observeTouch:()=>{rioPerf.snap={x:player.x,z:player.z,at:performance.now()};rioPerf.response=null;},
@@ -67,18 +68,31 @@ try{
       guardian:{sessionLimitMinutes:0}})));
     const page=await context.newPage(),errors=[],finger=await touchSession(context,page);
     page.on('pageerror',error=>errors.push(error.message));
-    await installCityInspection(page,{revision,appSource:source.slice(0,pos)+hook+source.slice(pos),capDuringBoot:false});
+    page.on('console',message=>{if(message.text().startsWith('[OTTHI START]'))console.error(message.text());});
+    await installCityInspection(page,{revision,appSource:source.slice(0,pos)+hook+source.slice(pos),capDuringBoot:true});
     const boot=Date.now();
     await page.goto(server.origin+'/games/otthi/',{waitUntil:'domcontentloaded'});
+    console.log('BOOT',label);
     await page.locator('#rioPretoPlayBtn').tap();
-    await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running&&document.getElementById('modal').hidden,null,{timeout:180000});
+    try{
+      await page.waitForFunction(()=>window.OTTHOS_TEST_API?.getGame().running&&document.getElementById('modal').hidden||
+        !!document.querySelector('[data-retry-world]'),null,{timeout:Number(process.env.OT_RIO_PERF_BOOT_TIMEOUT||180000)});
+      assert.equal(await page.locator('[data-retry-world]').count(),0);
+    }catch(error){
+      console.error(await page.evaluate(()=>({body:document.querySelector('#modalBody')?.textContent?.slice(0,400),
+        screen:document.body.className,build:window.OTTHI_GAME_BUILD,coherent:window.OTTHI_RELEASE_COHERENT,
+        mode:window.OTTHOS_TEST_API?.getGame()?.running})).catch(()=>null),errors);
+      await page.screenshot({path:out+'/boot-'+label+'.png',timeout:12000}).catch(()=>{});
+      throw error;
+    }
+    await page.evaluate(()=>__RIO_PERF.resumeRenderer());
     const readyMs=Date.now()-boot,cdp=await context.newCDPSession(page);
     await page.waitForTimeout(5000);
     const snapshot=async()=>{
       await cdp.send('HeapProfiler.collectGarbage');
       return {heap:await cdp.send('Runtime.getHeapUsage'),webgl:await page.evaluate(()=>__CITY_QA.metrics())};
     };
-    const result={label,revision:await page.locator('html').getAttribute('data-otthi-revision'),readyMs,errors,before:await snapshot(),periods:[]};
+    const result={label,revision:await page.locator('html').getAttribute('data-otthi-revision'),instrumentedReadyMs:readyMs,errors,before:await snapshot(),periods:[]};
     console.log('PLAY',label,readyMs);
     const canvas=page.locator('#stage canvas').first(),joy=page.locator('#joystick');
     for(let round=0;round<periods;round++){

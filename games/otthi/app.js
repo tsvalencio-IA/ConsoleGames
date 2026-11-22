@@ -9652,7 +9652,7 @@
       if(typeof rioSceneMode==='function')rioSceneMode(requestedMap);
       if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();if(!separateRio)await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(97,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
-    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;if(separateRio)rioRestoreBoatRide();if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
+    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;if(separateRio)rioResumeActivity();if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
     clock.start();if(!separateRio)evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(separateRio)toast('São José do Rio Preto · abra Mapa para escolher um local','good',3200);
     else toast('Bem-vindo à Vila OT!','good',2200);
@@ -17842,6 +17842,7 @@ function precompile(T,renderer,scene,camera){
     }
     if(player.boating&&world.boat?.kind==='board')stopEngineSound();
     else updateVehicleFX(dt);
+    if(fxParticles.length)updateFX(dt);
     if(fishingVisual?.active)updateFishingVisual(dt);
     perf.cameraAcc=Number(perf.cameraAcc||0)+dt;
     if(activeRace)updateRace(dt);
@@ -18263,6 +18264,15 @@ function precompile(T,renderer,scene,camera){
       rioMap.legacyWaypoint=state.waypoint;
       state.waypoint=rioMapSave().waypoint||null;
     }else delete document.body.dataset.otthiMap;
+  }
+  function rioResumeActivity(){
+    const url=new URL(location.href);
+    if(!url.searchParams.has('entrada'))return rioRestoreBoatRide();
+    // A named entrance applies on arrival. Subsequent reloads use the saved position.
+    rioMapSave().aboard=null;
+    url.searchParams.delete('entrada');
+    history.replaceState(history.state,'',url);
+    return false;
   }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);

@@ -421,7 +421,8 @@ try{
     await page.screenshot({path:out+'/represa-'+craft.kind+'.png'});
     if(craft.kind==='ship'){
       const savedBefore=await page.evaluate(async()=>{await __RIO_PHYSICAL_QA.save();return __RIO_PHYSICAL_QA.waterfront();});
-      await page.goto(server.origin+'/games/otthi/?map=rio-preto');
+      assert(!new URL(page.url()).searchParams.has('entrada'));
+      await page.reload({waitUntil:'domcontentloaded'});
       await page.locator('#rioPretoPlayBtn').tap();
       await page.waitForFunction(()=>window.__CITY_QA?.cap()&&OTTHOS_TEST_API.getGame().running&&OTTHI_RIO_MAP.diagnostics().active,null,{timeout:60000});
       const restored=await page.evaluate(()=>__RIO_PHYSICAL_QA.waterfront());
