@@ -1,5 +1,13 @@
 # Integração regional OTTHI World 5.1
 
+## Acesso direto a partir da 705.28.34
+
+O botão **Jogar em Rio Preto** aparece na tela inicial da prévia e abre na Represa, de frente para o Complexo Swift. **Jogar** e **Continuar** abrem na posição salva. O catálogo dos 42 pontos continua em **Menu → Mundo/GPS → Rio Preto e região**.
+
+A revisão `13e1ff4b60de2ba5`, commit `48d42b5`, foi conferida no endereço hospedado em Chromium. O botão abriu o cenário 3D com moedas e XP preservados e foi acionável em quatro tamanhos de tela emulados. A atualização da 705.28.33 abriu offline após migrar o service worker. Os 182 recursos da prévia passaram na auditoria HTTPS. A produção permaneceu na 705.28.30. [Prévia atualizada](https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app/games/otthi/) · [Captura do Complexo Swift](chegada-swift.png) · [Chegada hospedada](chegada-hospedada.json) · [Teste de navegação local](entrada-direta.json) · [Atualização](atualizacao-7052834.json)
+
+## Base da integração 5.1
+
 A versão de referência é a 705.28.31 de `fix/integracao-console-20261120`, commit `8ad9625`. A branch de trabalho partiu da 705.28.32, commit `11c13ff`, descendente da referência, para aproveitar os bairros, o guarda-roupa e o progresso da expansão anterior. O build integrado é `705.28.33-integracao-regional-v51`, revisão `1e6889e1f4e2d6fe`, commit `f43b39e`. A produção foi conferida na 705.28.30, revisão `72c84d2063641ce2`. [Código alterado](https://github.com/tsvalencio-IA/ConsoleGames/compare/11c13ffda71f6a0d0732a7e27f82ecdc3b9095e1...f43b39eb2df46c075d73c4d0ebc997865be00b97) · [Mundo Aberto de teste](https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app/games/otthi/) · [Console de teste](https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app/arcade/)
 
 ## O que entrou no jogo

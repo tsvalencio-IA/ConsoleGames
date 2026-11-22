@@ -1,0 +1,23 @@
+{
+  "origin": "https://otthi-world-campanha-teste-git-fea-522713-thiaguinho-s-projects.vercel.app",
+  "chromium": "141.0.7390.37",
+  "errors": [],
+  "arrival": {
+    "x": 470,
+    "z": -566,
+    "coins": 1800,
+    "xp": 140,
+    "diagnostics": {
+      "places": 42,
+      "sectors": 11,
+      "loaded": [
+        "represa_lagos_damha"
+      ],
+      "visible": 1,
+      "course": {
+        "active": null
+      }
+    }
+  },
+  "passed": true
+}
