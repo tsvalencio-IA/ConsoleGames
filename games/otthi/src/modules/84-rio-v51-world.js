@@ -196,15 +196,38 @@
       if(d<210&&d<distance){next=sector;distance=d;}
     }
     if(!next||performance.now()<rioV51World.nextSectorAt)return;
-    const root=new THREE.Group();root.name='RIO_V51_'+next.id;
-    const batch=rioCreateBatch(root);batch.root=root;
-    for(const p of next.places)rioV51DrawPlace(batch,p);
-    if(next.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
-    batch.commit();
-    worldGroup.add(root);rioV51World.roots.set(next.id,root);
-    root.visible=distance<195;
-    world.navCache?.clear?.();
+    mountRioV51Sector(next).visible=distance<195;
     rioV51World.nextSectorAt=performance.now()+55;
+  }
+  function mountRioV51Sector(sector){
+    const existing=rioV51World.roots.get(sector.id);
+    if(existing)return existing;
+    const root=new THREE.Group();root.name='RIO_V51_'+sector.id;root.visible=false;
+    const batch=rioCreateBatch(root);batch.root=root;
+    for(const p of sector.places)rioV51DrawPlace(batch,p);
+    if(sector.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
+    batch.commit();
+    worldGroup.add(root);rioV51World.roots.set(sector.id,root);
+    world.navCache?.clear?.();
+    return root;
+  }
+  function arriveAtRioV51(){
+    const swift=RIO_V51.places.find(p=>p.key==='complexo_swift');
+    const root=mountRioV51Sector(RIO_V51.sectors[swift.sector]);
+    if(!rioV51World.registered)rioV51Register();
+    const approach={x:swift.visitX-5,z:swift.visitZ+swift.face*24};
+    const safe=safePointNear(approach.x,approach.z,{allowWater:false,distances:[0,.8,1.6,2.4]});
+    if(Math.hypot(safe.x-approach.x,safe.z-approach.z)>3)return false;
+    root.visible=true;
+    player.x=safe.x;player.z=safe.z;player.y=safe.y;
+    player.vx=player.vy=player.vz=0;player.grounded=true;
+    cameraMode='openworld';cameraYaw=Math.atan2(swift.x-player.x,player.z-swift.z);cameraPitch=.30;cameraZoom=4;
+    player.facing=Math.PI-cameraYaw;
+    playerGroup.position.set(player.x,player.y,player.z);playerGroup.rotation.y=player.facing;
+    rememberSafePlayerPosition(true);
+    updateCamera(2);
+    savePlayerPosition(true);
+    return true;
   }
 
   function rioStreetRecord(){return state.races?.streetRuns?.[RIO_V51.course.id];}

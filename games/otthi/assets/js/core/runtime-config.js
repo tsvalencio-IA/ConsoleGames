@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.33-integracao-regional-v51',
+    build: '705.28.34-entrada-rio-preto',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

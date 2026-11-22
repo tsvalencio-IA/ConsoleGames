@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.33-integracao-regional-v51",
+  "build": "705.28.34-entrada-rio-preto",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "781a12f1a573881499b8204cdce1867e9bf4d3147969c2bbde36aa8ed18717c4"
+      "sha256Body": "3eff9e244a22ad54b50ae6fadf4a30ee7a161b28e78f69511f758c5e8482a25b"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -26,7 +26,7 @@
       "startLine": 369,
       "endLine": 488,
       "description": "Normalização, merge, tombstones e persistência das construções",
-      "sha256Body": "04a5208169f0cf621dc992a454678636d40bd2893b769db33862f4b949736d61"
+      "sha256Body": "ea6d88e26320f4b85fb4067ef63e6bcd83b5c37019df4ebaa1f232bb259e47fe"
     },
     {
       "file": "src/modules/02-state-save-cloud-account.js",
@@ -285,14 +285,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "b12bb3884de559f93fdd785e221136882559c07149ec4d320ba81ca946cd236f"
+      "sha256Body": "8ed56c4eea92a7596be9fe66ad945b9976127de2550e314ae033a1eea561e2c1"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "f68223d1bd0c495911ac34e63518ff518a8077a70ab9406e6e2c23deb6a499fd"
+      "sha256Body": "dc81c715560db5fe5d4748c39ec1fc26b3c134207bf66c81fe0b219ff90f03f4"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -662,7 +662,7 @@
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "74d5169a0fce28ffd05be1565556e95ad8e29cff5fa71781657600ecfc9a0ae3"
+      "sha256Body": "d4f97102f5f6c307a6d5ccbc131d485a6d63c8795978ba56c747074ae43e8add"
     }
   ],
   "styles": [
@@ -671,7 +671,7 @@
       "startLine": 2,
       "endLine": 77,
       "description": "Fundação, lobby, jogo e modais",
-      "sha256Body": "ff7d8c3bf3169c75f4299c794fa9e874665a16a220ee1c4e6dbba19ee41759b8"
+      "sha256Body": "60d1a22dc038bd3656954b7dee70b515f0b63a6ac0ee9388073d5465faeba73e"
     },
     {
       "file": "src/styles/01-legacy-v607-v613.css",

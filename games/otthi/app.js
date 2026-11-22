@@ -5,7 +5,7 @@
   const OT_CHILD_WORLD=true;
 
   const OTTHI_GAME_LIVE_BASE = new URL('./', window.location.href).href;
-  const OTTHI_GAME_WEB_BUILD = '705.28.33-integracao-regional-v51';
+  const OTTHI_GAME_WEB_BUILD = '705.28.34-entrada-rio-preto';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -963,7 +963,7 @@
 
   const els = {
     lobby: $('#lobby'), game: $('#game'), stage: $('#stage'), screenTint: $('#screenTint'),
-    playBtn: $('#playBtn'), continueBtn: $('#continueBtn'), installBtn: $('#installBtn'), installHint: $('#installHint'),
+    playBtn: $('#playBtn'), continueBtn: $('#continueBtn'), rioPretoPlayBtn: $('#rioPretoPlayBtn'), installBtn: $('#installBtn'), installHint: $('#installHint'),
     arBtn: $('#arBtn'), quizBtn: $('#quizBtn'), collectionBtn: $('#collectionBtn'), avatarBtn: $('#avatarBtn'), accountBtn: $('#accountBtn'), moldsBtn: $('#moldsBtn'), howBtn: $('#howBtn'), settingsBtn: $('#settingsBtn'),
     lobbyLevel: $('#lobbyLevel'), lobbyCoins: $('#lobbyCoins'), lobbyRep: $('#lobbyRep'), lobbyMedals: $('#lobbyMedals'), lobbyPlayerName: $('#lobbyPlayerName'), profileNameBtn: $('#profileNameBtn'), accountStatusLabel: $('#accountStatusLabel'),
     hudLevel: $('#hudLevel'), xpFill: $('#xpFill'), xpText: $('#xpText'), hudCoins: $('#hudCoins'), hudPlayerName: $('#hudPlayerName'),
@@ -9432,19 +9432,25 @@
     if(!free){try{orientation?.unlock?.();}catch{}}
     perf.orientationMode=free?'any':'system';window.OTTHI_VIEWPORT?.measure?.();document.body.classList.remove('otthi-landscape-requested');scheduleStableResize?.(40,true);return free;
   }
-  async function startGame(resetPosition=false){
+  async function startGame(resetPosition=false,destination=null){
     await dbReady;
     if(await ensureCurrentOtthiBeforePlay())return;
     if(!window.OTTHI_RELEASE_COHERENT){openModal('Atualização incompleta','<p>Os arquivos do jogo pertencem a versões diferentes. Termine o envio da V700 e atualize a página; seu progresso está preservado.</p>');return;}
     state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{})};const sessionLimitSeconds=Math.max(0,Number(state.guardian?.sessionLimitMinutes||0))*60;
     if(sessionLimitSeconds>0&&(Number(state.usage.sessionLockedAt||0)>0||Number(state.usage.sessionSeconds||0)>=sessionLimitSeconds)){state.usage.sessionLockedAt=Number(state.usage.sessionLockedAt||Date.now());saveState(true);openModal('Tempo de jogo concluído','<div class="parent-gate"><span>⏰</span><h3>Nova sessão exige um responsável</h3><p>O limite continua bloqueado mesmo ao voltar ao menu. Um responsável pode liberar outra sessão usando a senha da conta.</p><button class="btn primary xl" data-session-parent>Área dos responsáveis</button><button class="btn" data-session-back>Ficar no menu</button></div>',root=>{$('[data-session-parent]',root).onclick=()=>openParentGate(false);$('[data-session-back]',root).onclick=closeModal;});return;}
-    if((!hasValidPlayerName()||!accountLinked())&&!(accountPromptWasHandled())){openAccountCenter(true,()=>{state.flags.accountPromptedV635=true;saveState(true);startGame(resetPosition);});return;}
-    if(!hasValidPlayerName()){openPlayerNameModal(true,()=>startGame(resetPosition));return;}
+    if((!hasValidPlayerName()||!accountLinked())&&!(accountPromptWasHandled())){openAccountCenter(true,()=>{state.flags.accountPromptedV635=true;saveState(true);startGame(resetPosition,destination);});return;}
+    if(!hasValidPlayerName()){openPlayerNameModal(true,()=>startGame(resetPosition,destination));return;}
     await saveState(true);showWorldLoading(12,'Protegendo o progresso...');await nextPaint();showScreen('game');showWorldLoading(28,'Organizando o bairro...');await nextPaint();
     state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;syncMobilePanels();els.game.classList.remove('needs-expanded');els.missionCard.classList.remove('expanded');
     try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,'Construindo ruas, casas e transportes...');await nextPaint();if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(97,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
-    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}toast('Bem-vindo à Vila do Sol!','good',2200);
+    if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
+    const visitRio=destination==='rio-preto';
+    const arrivedInRio=visitRio&&arriveAtRioV51();
+    clock.start();evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
+    if(arrivedInRio)toast('Rio Preto · Represa e Complexo Swift','good',3200);
+    else if(visitRio)toast('A entrada da Represa está ocupada. Você abriu na posição salva.','info',3800);
+    else toast('Bem-vindo à Vila do Sol!','good',2200);
   }
 
   let consoleLeaving=false;
@@ -9467,13 +9473,23 @@
     if(world.policeAlert)removeRoadsidePoliceOfficer?.(world.policeAlert);world.policeAlert=null;updateSafetyPanel('');if(player.boating){player.x=-24.7;player.z=52;exitBoat(true);}if(player.vehicle)exitVehicle(true);if(player.transit.mode==='bus'){const bus=world.buses.find(b=>b.id===player.transit.busId);if(bus)exitBusAtStop(bus,{stopId:bus.lastStopId,stopName:bus.lastStopName});}if(player.transit.mode==='metro'){player.transit.mode='';if(metroOverlay)metroOverlay.hidden=true;if(playerModel)playerModel.visible=true;if(avatarLayer)avatarLayer.visible=true;if(contactShadow)contactShadow.visible=true;}running=false;paused=false;pauseMenuOpen=false;cancelAnimationFrame(raf);stopEngineSound();savePlayerPosition(true);showScreen('lobby');updateLobbyStats();
   }
   let otthiEnteringWorld=false;
-  async function enterCurrentOtthiWorld(){
+  async function enterCurrentOtthiWorld(destination=null){
     if(otthiEnteringWorld)return;otthiEnteringWorld=true;
-    const caption=els.playBtn.textContent;els.playBtn.disabled=els.continueBtn.disabled=true;els.playBtn.textContent='CONFERINDO VERSÃO…';
-    try{await requestPreferredGameOrientation();await startGame(false);}
-    finally{otthiEnteringWorld=false;els.playBtn.disabled=els.continueBtn.disabled=false;els.playBtn.textContent=caption;}
+    const buttons=[els.playBtn,els.continueBtn,els.rioPretoPlayBtn].filter(Boolean);
+    const trigger=destination==='rio-preto'&&els.rioPretoPlayBtn?els.rioPretoPlayBtn:els.playBtn;
+    const caption=trigger.textContent;
+    for(const button of buttons)button.disabled=true;
+    trigger.textContent='CONFERINDO VERSÃO…';
+    try{await requestPreferredGameOrientation();await startGame(false,destination);}
+    finally{
+      otthiEnteringWorld=false;
+      for(const button of buttons)button.disabled=false;
+      trigger.textContent=caption;
+    }
   }
-  els.playBtn.onclick=enterCurrentOtthiWorld;els.continueBtn.onclick=enterCurrentOtthiWorld;
+  els.playBtn.onclick=()=>enterCurrentOtthiWorld();
+  els.continueBtn.onclick=()=>enterCurrentOtthiWorld();
+  if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){
     if(!running||pauseMenuOpen)return;
@@ -16237,15 +16253,38 @@ function precompile(T,renderer,scene,camera){
       if(d<210&&d<distance){next=sector;distance=d;}
     }
     if(!next||performance.now()<rioV51World.nextSectorAt)return;
-    const root=new THREE.Group();root.name='RIO_V51_'+next.id;
-    const batch=rioCreateBatch(root);batch.root=root;
-    for(const p of next.places)rioV51DrawPlace(batch,p);
-    if(next.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
-    batch.commit();
-    worldGroup.add(root);rioV51World.roots.set(next.id,root);
-    root.visible=distance<195;
-    world.navCache?.clear?.();
+    mountRioV51Sector(next).visible=distance<195;
     rioV51World.nextSectorAt=performance.now()+55;
+  }
+  function mountRioV51Sector(sector){
+    const existing=rioV51World.roots.get(sector.id);
+    if(existing)return existing;
+    const root=new THREE.Group();root.name='RIO_V51_'+sector.id;root.visible=false;
+    const batch=rioCreateBatch(root);batch.root=root;
+    for(const p of sector.places)rioV51DrawPlace(batch,p);
+    if(sector.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
+    batch.commit();
+    worldGroup.add(root);rioV51World.roots.set(sector.id,root);
+    world.navCache?.clear?.();
+    return root;
+  }
+  function arriveAtRioV51(){
+    const swift=RIO_V51.places.find(p=>p.key==='complexo_swift');
+    const root=mountRioV51Sector(RIO_V51.sectors[swift.sector]);
+    if(!rioV51World.registered)rioV51Register();
+    const approach={x:swift.visitX-5,z:swift.visitZ+swift.face*24};
+    const safe=safePointNear(approach.x,approach.z,{allowWater:false,distances:[0,.8,1.6,2.4]});
+    if(Math.hypot(safe.x-approach.x,safe.z-approach.z)>3)return false;
+    root.visible=true;
+    player.x=safe.x;player.z=safe.z;player.y=safe.y;
+    player.vx=player.vy=player.vz=0;player.grounded=true;
+    cameraMode='openworld';cameraYaw=Math.atan2(swift.x-player.x,player.z-swift.z);cameraPitch=.30;cameraZoom=4;
+    player.facing=Math.PI-cameraYaw;
+    playerGroup.position.set(player.x,player.y,player.z);playerGroup.rotation.y=player.facing;
+    rememberSafePlayerPosition(true);
+    updateCamera(2);
+    savePlayerPosition(true);
+    return true;
   }
 
   function rioStreetRecord(){return state.races?.streetRuns?.[RIO_V51.course.id];}

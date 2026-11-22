@@ -35,6 +35,15 @@ const hook=`
    },
    snapshot:()=>({stats:OTTHI_RIO_V51.diagnostics(),profile:state.profile,races:state.races,
      wardrobe:state.avatar.rioWardrobe,position:state.position}),
+   arrival:()=>{
+     const swift=RIO_V51.places.find(p=>p.key==='complexo_swift');
+     const root=rioV51World.roots.get(swift.sector);
+     camera.updateMatrixWorld(true);
+     const sight=new THREE.Vector3(swift.x,groundHeightAt(swift.x,swift.z)+4,swift.z-swift.d/2).project(camera);
+     return {x:player.x,z:player.z,secured:!!root?.visible,
+       inView:Math.abs(sight.x)<1&&Math.abs(sight.y)<1&&Math.abs(sight.z)<1,
+       feetClear:!positionBlockedForPlayer(player.x,player.z,.45,{ignoreTraffic:true,allowWater:false})};
+   },
    save:()=>saveState(true)
  };
 `;
@@ -48,19 +57,35 @@ try{
  await context.addInitScript(()=>{
    const key='otthos_life_world_roleplay_v700';if(localStorage.getItem(key))return;
    localStorage.setItem(key,JSON.stringify({version:705,profile:{playerId:'rio-v51-qa',name:'Rio Preto QA',nameConfirmed:true,coins:1200,xp:240},
+    position:{x:0,y:0,z:8,yaw:0},
     settings:{quality:'low',sound:false,worldHud:'clean'},flags:{accountPromptedV635:true},guardian:{sessionLimitMinutes:0},
     races:{wins:4,regionalCircuits:{mirassol:{bestTime:92,runs:1}}},
     avatar:{bodyStyle:'family-thiago',rioWardrobe:{thiago:{top:'hoodie',hat:'headphones'}}}}));
  });
  const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.stack));
  await installCityInspection(page,{appSource:source.slice(0,end)+hook+source.slice(end),capDuringBoot:true});
- const boot=async()=>{
+ const boot=async(button='#playBtn')=>{
    await page.goto(server.origin+'/games/otthi/');
-   await page.locator('#playBtn').tap();
+   report.entryLayouts||=[];
+   if(button==='#rioPretoPlayBtn'){
+     for(const viewport of [{width:320,height:568},{width:393,height:852},{width:852,height:393},{width:1280,height:800}]){
+       await page.setViewportSize(viewport);
+       const layout=await page.locator(button).evaluate(el=>{
+         const r=el.getBoundingClientRect(),at=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+         return {touchable:el===at||el.contains(at),overflow:document.documentElement.scrollWidth-innerWidth};
+       });
+       assert(layout.touchable&&layout.overflow<=1,JSON.stringify({viewport,layout}));
+       report.entryLayouts.push({viewport,...layout});
+     }
+     await page.setViewportSize({width:393,height:852});
+   }
+   await page.locator(button).tap();
    await page.waitForFunction(()=>window.__CITY_QA?.cap()&&OTTHI_RIO_V51.diagnostics().places===42&&OTTHI_VENUES.diagnostics().ready&&document.getElementById('modal').hidden,null,{timeout:170000});
    assert.equal(await page.locator('html').getAttribute('data-otthi-revision'),release.revision);
  };
  await boot();
+ const standard=await page.evaluate(()=>OTTHOS_TEST_API.getGame().player);
+ assert(Math.hypot(standard.x,standard.z-8)<3,'The ordinary entry keeps the saved position');
  const places=await page.evaluate(()=>__RIO_V51_QA.places());
  assert.equal(places.length,42);
  await page.locator('#quickToggleBtn').tap();await page.locator('#worldCampaignBtn').tap();
@@ -96,12 +121,17 @@ try{
  assert.equal(report.run.record.runs,1);
  await page.evaluate(()=>{__CITY_QA.view();__CITY_QA.renderNative();});
  await page.screenshot({path:out+'/represa.png'});
- await page.evaluate(()=>__RIO_V51_QA.save());await boot();
+ await page.evaluate(()=>__RIO_V51_QA.save());await boot('#rioPretoPlayBtn');
+ report.directArrival=await page.evaluate(()=>__RIO_V51_QA.arrival());
+ assert(Math.hypot(report.directArrival.x-470,report.directArrival.z+566)<3,JSON.stringify(report.directArrival));
+ assert(report.directArrival.secured&&report.directArrival.inView&&report.directArrival.feetClear,JSON.stringify(report.directArrival));
+ await page.evaluate(()=>__CITY_QA.renderNative());
+ await page.screenshot({path:out+'/chegada-swift.png'});
  report.reloaded=await page.evaluate(()=>__RIO_V51_QA.snapshot());
  assert.deepEqual(report.reloaded.stats.course.record,report.run.record);
  assert.equal(report.reloaded.races.wins,4);assert.equal(report.reloaded.races.regionalCircuits.mirassol.bestTime,92);
  assert.equal(report.reloaded.wardrobe.thiago.hat,'headphones');assert.equal(report.reloaded.wardrobe.thiago.top,'hoodie');
  assert.deepEqual(report.errors,[]);
- report.passed=true;console.log('PASS 42 native places, 11 streamed sectors, actual movement through six street checkpoints and saved record');
+ report.passed=true;console.log('PASS direct Rio entry, 42 regional places, six street checkpoints and saved progress');
 }catch(error){report.failure=error.stack;throw error;}
 finally{fs.writeFileSync(out+'/result.json',JSON.stringify(report,null,2));await browser.close();await server.close();}

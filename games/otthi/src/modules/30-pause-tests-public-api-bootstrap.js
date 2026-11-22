@@ -15,13 +15,23 @@
     if(world.policeAlert)removeRoadsidePoliceOfficer?.(world.policeAlert);world.policeAlert=null;updateSafetyPanel('');if(player.boating){player.x=-24.7;player.z=52;exitBoat(true);}if(player.vehicle)exitVehicle(true);if(player.transit.mode==='bus'){const bus=world.buses.find(b=>b.id===player.transit.busId);if(bus)exitBusAtStop(bus,{stopId:bus.lastStopId,stopName:bus.lastStopName});}if(player.transit.mode==='metro'){player.transit.mode='';if(metroOverlay)metroOverlay.hidden=true;if(playerModel)playerModel.visible=true;if(avatarLayer)avatarLayer.visible=true;if(contactShadow)contactShadow.visible=true;}running=false;paused=false;pauseMenuOpen=false;cancelAnimationFrame(raf);stopEngineSound();savePlayerPosition(true);showScreen('lobby');updateLobbyStats();
   }
   let otthiEnteringWorld=false;
-  async function enterCurrentOtthiWorld(){
+  async function enterCurrentOtthiWorld(destination=null){
     if(otthiEnteringWorld)return;otthiEnteringWorld=true;
-    const caption=els.playBtn.textContent;els.playBtn.disabled=els.continueBtn.disabled=true;els.playBtn.textContent='CONFERINDO VERSÃO…';
-    try{await requestPreferredGameOrientation();await startGame(false);}
-    finally{otthiEnteringWorld=false;els.playBtn.disabled=els.continueBtn.disabled=false;els.playBtn.textContent=caption;}
+    const buttons=[els.playBtn,els.continueBtn,els.rioPretoPlayBtn].filter(Boolean);
+    const trigger=destination==='rio-preto'&&els.rioPretoPlayBtn?els.rioPretoPlayBtn:els.playBtn;
+    const caption=trigger.textContent;
+    for(const button of buttons)button.disabled=true;
+    trigger.textContent='CONFERINDO VERSÃO…';
+    try{await requestPreferredGameOrientation();await startGame(false,destination);}
+    finally{
+      otthiEnteringWorld=false;
+      for(const button of buttons)button.disabled=false;
+      trigger.textContent=caption;
+    }
   }
-  els.playBtn.onclick=enterCurrentOtthiWorld;els.continueBtn.onclick=enterCurrentOtthiWorld;
+  els.playBtn.onclick=()=>enterCurrentOtthiWorld();
+  els.continueBtn.onclick=()=>enterCurrentOtthiWorld();
+  if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){
     if(!running||pauseMenuOpen)return;
