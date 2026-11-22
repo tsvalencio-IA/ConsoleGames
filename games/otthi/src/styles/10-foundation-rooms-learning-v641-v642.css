@@ -74,4 +74,9 @@ body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleActionBtn{animatio
 body[data-otthi-map="rio-preto"].mode-mobility-driver #miniNav{right:calc(64px + var(--safe-right,0px))!important;max-width:min(45vw,240px)!important}
 body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleBadge{bottom:calc(2 * var(--action) + 62px + var(--safe-bottom,0px))!important}
 
+body[data-otthi-map="rio-preto"] .boat-activity-panel{
+  top:calc(72px + var(--safe-top,0px));left:calc(8px + var(--safe-left,0px));
+  bottom:auto;right:auto;padding:3px;border-radius:12px
+}
+body[data-otthi-map="rio-preto"] .boat-activity-panel button{min-height:44px}
 body[data-otthi-map="rio-preto"] .boat-activity-panel button[hidden]{display:none!important}

@@ -397,6 +397,22 @@ try{
     await page.locator('#actionBtn').tap({force:true});
     const boarded=await page.evaluate(()=>__RIO_PHYSICAL_QA.waterfront());
     assert.equal(boarded.current?.id,craft.id);
+    if(craft.kind==='launch'){
+      report.boatLayouts=[];
+      for(const viewport of [{width:393,height:852},{width:852,height:393},{width:1280,height:800}]){
+        await page.setViewportSize(viewport);
+        const usable=()=>['jumpBtn','runBtn','actionBtn'].every(id=>{
+          const node=document.getElementById(id),r=node.getBoundingClientRect();
+          const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+          return node===hit||node.contains(hit);
+        });
+        await page.waitForFunction(usable,null,{timeout:8000});
+        const unobstructed=await page.evaluate(usable);
+        assert(unobstructed);
+        report.boatLayouts.push({viewport,unobstructed});
+      }
+      await page.setViewportSize({width:393,height:852});
+    }
     const outward=await page.evaluate(()=>__RIO_PHYSICAL_QA.boatLeg(true));
     assert(outward.legal&&outward.distance>12&&!outward.canExit&&outward.paddle===(craft.kind==='board'),JSON.stringify({craft,outward}));
     await page.locator('#actionBtn').tap({force:true});

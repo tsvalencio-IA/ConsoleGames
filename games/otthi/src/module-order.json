@@ -682,7 +682,7 @@
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "c1632f79a4549ed388c5e6f7e97c46a9a72bb3bd8ffb35bcfc70e683071e4d76"
+      "sha256Body": "e67d7ccf5afa5b0e4d3149e9f8c7c3b2f9423fdbf08d263fa3144b631b966de4"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
@@ -773,7 +773,7 @@
       "startLine": 1017,
       "endLine": 1056,
       "description": "Fundação final, bairros, educação e desempenho",
-      "sha256Body": "0317b14f5251517f0acde221142fc1b4cf5f3bd5ad0308327a75c9a08b1dd976"
+      "sha256Body": "1779a301aee473b816d92473fbd1d1a15ff0bb4b5c61a44df96a0cf49abcd07a"
     },
     {
       "file": "src/styles/11-mobility-traffic-fishing-v643.css",

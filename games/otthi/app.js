@@ -17650,6 +17650,8 @@ function precompile(T,renderer,scene,camera){
     return saveState(true);
   }
   function rioTerrainMaterials(){
+    const waterMap=textures.water.clone();
+    waterMap.repeat.set(1,1);waterMap.needsUpdate=true;
     return {
       building:new THREE.MeshStandardMaterial({color:0xffffff,vertexColors:true,roughness:.94,side:THREE.DoubleSide}),
       street:new THREE.MeshStandardMaterial({color:0x5a5d5c,roughness:.98,side:THREE.DoubleSide}),
@@ -17658,7 +17660,9 @@ function precompile(T,renderer,scene,camera){
       lane:new THREE.MeshBasicMaterial({color:0xcba96e,side:THREE.DoubleSide}),
       park:new THREE.MeshStandardMaterial({color:0x759361,roughness:1,side:THREE.DoubleSide}),
       field:new THREE.MeshStandardMaterial({color:0x598750,roughness:1,side:THREE.DoubleSide}),
-      water:new THREE.MeshStandardMaterial({color:0x4f8d8c,roughness:.6,metalness:.1,side:THREE.DoubleSide})
+      water:new THREE.MeshBasicMaterial({
+        color:new THREE.Color(0x7ab2ac).convertSRGBToLinear(),map:waterMap,toneMapped:false,side:THREE.DoubleSide
+      })
     };
   }
   function rioSurfaceBatch(){
@@ -17689,6 +17693,13 @@ function precompile(T,renderer,scene,camera){
         const geometry=new THREE.BufferGeometry();
         geometry.setAttribute('position',new THREE.Float32BufferAttribute(layer.position,3));
         if(layer.color.length)geometry.setAttribute('color',new THREE.Float32BufferAttribute(layer.color,3));
+        if(type==='water'){
+          const uv=new Float32Array(layer.position.length*2/3);
+          for(let i=0,k=0;i<layer.position.length;i+=3){
+            uv[k++]=layer.position[i]/19;uv[k++]=layer.position[i+2]/19;
+          }
+          geometry.setAttribute('uv',new THREE.BufferAttribute(uv,2));
+        }
         geometry.computeVertexNormals();geometry.computeBoundingSphere();
         const mesh=new THREE.Mesh(geometry,rioMap.materials[type]);mesh.name='RIO_SURFACE_'+type;
         mesh.castShadow=false;mesh.receiveShadow=false;mesh.userData.rioOwnGeometry=true;root.add(mesh);
@@ -17852,6 +17863,9 @@ function precompile(T,renderer,scene,camera){
     }
     updateRioMapActors(dt);
     updateRioWaterfront(dt);
+    const waterMap=rioMap.materials.water.map;
+    waterMap.offset.x=(waterMap.offset.x+dt*.013)%1;
+    waterMap.offset.y=(waterMap.offset.y+dt*.007)%1;
     perf.uiAcc+=dt;
     if(perf.uiAcc>.13){
       const step=perf.uiAcc;perf.uiAcc=0;updateNeeds(step);updateNavigation(step);updateHUD();
