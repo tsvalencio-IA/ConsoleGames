@@ -1,0 +1,28 @@
+{
+  "build": "705.28.37-mapas-separados",
+  "revision": "3a992170a85d476a",
+  "origin": "https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app",
+  "browser": "141.0.7390.37",
+  "errors": [],
+  "dock": {
+    "position": {
+      "x": 1679.4712215204518,
+      "z": -459.7271414578478
+    },
+    "aboard": {
+      "x": 1679.2289335051296,
+      "z": -446.4286867913224
+    },
+    "paddled": 4.87591666667013
+  },
+  "door": {
+    "initial": {
+      "x": 1673.8447051652788,
+      "z": -508.57131296527336
+    },
+    "localX": -0.000004050380501441353,
+    "localZ": 4.565406701722834
+  },
+  "console": "https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app/arcade/",
+  "passed": true
+}

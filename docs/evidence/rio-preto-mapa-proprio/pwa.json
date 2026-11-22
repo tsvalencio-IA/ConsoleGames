@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "build": "705.28.37-mapas-separados",
+  "revision": "3a992170a85d476a",
+  "results": [
+    {
+      "scenario": "stale-config",
+      "automaticRecovery": true,
+      "preserved": true
+    },
+    {
+      "scenario": "real-worker-upgrade",
+      "waitedForPageReady": true,
+      "preserved": true
+    },
+    {
+      "scenario": "offline-after-upgrade",
+      "coherent": true,
+      "preserved": true
+    }
+  ],
+  "errors": []
+}

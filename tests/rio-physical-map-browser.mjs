@@ -21,7 +21,9 @@ const hook=`
     models:[...worldGroup.children].map(o=>o.name),
     camera:{x:camera.position.x,y:camera.position.y,z:camera.position.z},
     hud:document.body.dataset.otthiMap||null,
-    legacyGarage:!!world.houses.find(h=>h.id==='home')
+    legacyGarage:!!world.houses.find(h=>h.id==='home'),
+    legacyRegional:{roads:WORLD_LAYOUT_V704.highways.filter(road=>RIO_V51.highways.some(archived=>archived.id===road.id)).length,
+      actions:world.interactables.filter(a=>RIO_V51.places.some(site=>site.id===a.id)).length}
   });
   const roomFor=key=>rioMap.sites.get(rioSiteByKey(key)?.id);
   window.__RIO_PHYSICAL_QA={
@@ -457,12 +459,21 @@ try{
   report.original=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());
   assert(report.original.legacyGarage&&report.original.hud==='ot');
   assert(!report.original.models.some(name=>name.startsWith('RIO_V51_')||name.startsWith('RIO_PRETO_BLOCK_')));
+  assert.deepEqual(report.original.legacyRegional,{roads:0,actions:0});
   assert.equal(report.original.coins,report.refuel.coins);
   assert.equal(report.original.food,report.market.food);
   assert.deepEqual(report.original.owned,report.start.owned);
   assert.deepEqual(report.original.garage,report.start.garage);
   assert.equal(report.original.activeJob,'delivery');
   assert(report.original.rio.visits['regional-canecao_represa']);
+  await page.locator('#quickToggleBtn').tap();
+  await page.locator('#worldMapSwitch').tap();
+  await page.waitForURL('**/games/otthi/?map=rio-preto');
+  await page.waitForFunction(()=>window.__CITY_QA?.cap()&&OTTHOS_TEST_API.getGame().running&&OTTHI_RIO_MAP.diagnostics().active&&document.getElementById('modal').hidden,null,{timeout:60000});
+  report.returnToRio=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());
+  assert(report.returnToRio.map&&report.returnToRio.hud==='rio-preto'&&!report.returnToRio.legacyGarage);
+  assert.equal(report.returnToRio.coins,report.refuel.coins);
+  assert.deepEqual(report.returnToRio.owned,report.start.owned);
   assert.deepEqual(report.errors,[]);
   report.passed=true;console.log('PASS real Rio map, physical room and furniture, native shopping, pump, distinct saves and OT return');
 }catch(error){

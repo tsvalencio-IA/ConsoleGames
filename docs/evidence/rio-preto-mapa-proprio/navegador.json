@@ -1,0 +1,562 @@
+{
+  "build": "705.28.37-mapas-separados",
+  "revision": "3a992170a85d476a",
+  "browser": "141.0.7390.37",
+  "limits": [
+    "Chromium software rendering. Native player movement uses fixed 60 Hz steps in specified walking and driving portions.",
+    "The fixture places the initial approach at each distant place. OpenUI, transaction actions, movement, seat animation and collisions run against the compiled game."
+  ],
+  "passed": true,
+  "errors": [],
+  "entryLayouts": [
+    {
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "hit": true,
+      "overflow": 0,
+      "at": "rioPretoPlayBtn",
+      "rect": [
+        31,
+        257.15625,
+        298,
+        44
+      ]
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "hit": true,
+      "overflow": 0,
+      "at": "rioPretoPlayBtn",
+      "rect": [
+        233.078125,
+        236.15625,
+        229.859375,
+        44
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "hit": true,
+      "overflow": 0,
+      "at": "rioPretoPlayBtn",
+      "rect": [
+        319.640625,
+        374.5625,
+        417.15625,
+        50
+      ]
+    }
+  ],
+  "boatLayouts": [
+    {
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "unobstructed": true
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393
+      },
+      "unobstructed": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "unobstructed": true
+    }
+  ],
+  "places": {
+    "issues": [],
+    "details": [
+      {
+        "key": "mercado_municipal",
+        "enterable": true,
+        "room": true,
+        "actions": 2
+      },
+      {
+        "key": "catedral_sao_jose",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "prefeitura_andalo",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "calcadao_centro",
+        "enterable": true,
+        "room": true,
+        "actions": 1
+      },
+      {
+        "key": "mcdonalds_andalo",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "complexo_swift",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "dona_capi",
+        "enterable": true,
+        "room": true,
+        "actions": 1
+      },
+      {
+        "key": "canecao_represa",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "posto_brasilia",
+        "enterable": true,
+        "room": true,
+        "actions": 1
+      },
+      {
+        "key": "estadio_teixeirao",
+        "enterable": true,
+        "room": false,
+        "actions": 1
+      },
+      {
+        "key": "estadio_anisio_haddad",
+        "enterable": true,
+        "room": true,
+        "actions": 1
+      },
+      {
+        "key": "riopreto_shopping",
+        "enterable": true,
+        "room": true,
+        "actions": 2
+      },
+      {
+        "key": "plaza_avenida",
+        "enterable": true,
+        "room": true,
+        "actions": 2
+      },
+      {
+        "key": "centro_eventos",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "austa_hospital",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "cemiterio_sao_joao_batista",
+        "enterable": true,
+        "room": true,
+        "actions": 2
+      },
+      {
+        "key": "parque-da-represa",
+        "enterable": true,
+        "room": true,
+        "actions": 1
+      },
+      {
+        "key": "panificacao-zappas-centro",
+        "enterable": true,
+        "room": true,
+        "actions": 2
+      },
+      {
+        "key": "terminal-urbano",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      },
+      {
+        "key": "upa-jaguare",
+        "enterable": true,
+        "room": true,
+        "actions": 3
+      }
+    ]
+  },
+  "stream": [
+    [
+      "mercado_municipal",
+      9,
+      21,
+      22
+    ],
+    [
+      "canecao_represa",
+      9,
+      17,
+      14
+    ],
+    [
+      "posto_brasilia",
+      12,
+      18,
+      20
+    ],
+    [
+      "mercado_municipal",
+      9,
+      21,
+      22
+    ],
+    [
+      "canecao_represa",
+      9,
+      17,
+      14
+    ]
+  ],
+  "roadways": 6660,
+  "buildings": 2460,
+  "lakes": 3,
+  "nativeTraffic": [
+    {
+      "id": "rio-viario-0-0",
+      "model": "gol",
+      "asset": "BR_GOL",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -144.07794538474488,
+      "z": 294.606626568745,
+      "road": true
+    },
+    {
+      "id": "rio-viario-0-1",
+      "model": "uno",
+      "asset": "BR_UNO",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -195.63694553623284,
+      "z": 206.4618185596979,
+      "road": true
+    },
+    {
+      "id": "rio-viario-0-2",
+      "model": "palio",
+      "asset": "BR_PALIO",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -101.16478019974944,
+      "z": 221.80801120000706,
+      "road": true
+    },
+    {
+      "id": "rio-viario-2-0",
+      "model": "palio",
+      "asset": "BR_PALIO",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -76.10526980332133,
+      "z": 388.7781790855167,
+      "road": true
+    },
+    {
+      "id": "rio-viario-2-1",
+      "model": "golf7",
+      "asset": "BR_GOLF7",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -2.1939900071387632,
+      "z": 352.29601883959197,
+      "road": true
+    },
+    {
+      "id": "rio-viario-2-2",
+      "model": "fusca",
+      "asset": "BR_FUSCA",
+      "driver": "BRAZIL_NPC_DRIVER",
+      "x": -37.49110839496653,
+      "z": 186.9794085282357,
+      "road": true
+    }
+  ],
+  "nativeFleet": {
+    "context": "rio-fleet-counter",
+    "vehicles": [
+      {
+        "id": "garage-orange",
+        "model": "gol",
+        "visible": true
+      }
+    ]
+  },
+  "pump": {
+    "distance": 0.6723879847590823,
+    "movement": 14.092387984759066,
+    "spent": 0.028184775969512188,
+    "id": "garage-orange",
+    "model": "gol",
+    "speed": 0.16638842802089826,
+    "fuel": 14.971815224030488,
+    "impacts": 0,
+    "vehicle": true,
+    "context": "regional-posto_brasilia-pump"
+  },
+  "balanceBefore": 63970,
+  "balanceAfter": 63950,
+  "waterLife": [
+    {
+      "id": "rio-swimmer-0",
+      "x": 1713.6070607112215,
+      "z": -432.74103564870876,
+      "action": "swim"
+    },
+    {
+      "id": "rio-swimmer-1",
+      "x": 1719.3987299903886,
+      "z": -431.1736917296053,
+      "action": "swim"
+    },
+    {
+      "id": "sea-coral",
+      "x": 1617.7732476999818,
+      "z": -410.7581636800853,
+      "action": "drive"
+    },
+    {
+      "id": "rio-paddle-npc",
+      "x": 1700.947300517306,
+      "z": -408.3121424329972,
+      "action": "paddle"
+    }
+  ],
+  "waterTrips": [
+    {
+      "id": "rio-prancha",
+      "kind": "board",
+      "outward": {
+        "steps": 319,
+        "legal": true,
+        "distance": 16.404390018281177,
+        "speed": 0.44798325884545653,
+        "canExit": false,
+        "y": 0.2,
+        "paddle": true
+      },
+      "back": {
+        "steps": 684,
+        "legal": true,
+        "distance": 0.2253359116701154,
+        "speed": -0.5576681488787195,
+        "canExit": true,
+        "y": 0.2,
+        "paddle": true
+      },
+      "landing": {
+        "x": 1676.9412241398586,
+        "z": -447.0477876393682
+      }
+    },
+    {
+      "id": "lake-boat",
+      "kind": "lake",
+      "outward": {
+        "steps": 235,
+        "legal": true,
+        "distance": 18.62954445050185,
+        "speed": 0.45220610019305524,
+        "canExit": false,
+        "y": 1.03,
+        "paddle": false
+      },
+      "back": {
+        "steps": 366,
+        "legal": true,
+        "distance": 0.26961719108311005,
+        "speed": 0.2529746136601971,
+        "canExit": true,
+        "y": 1.03,
+        "paddle": false
+      },
+      "landing": {
+        "x": 1675.2616400489,
+        "z": -447.50231737590826
+      }
+    },
+    {
+      "id": "sea-familia",
+      "kind": "launch",
+      "outward": {
+        "steps": 227,
+        "legal": true,
+        "distance": 20.639236583533776,
+        "speed": 0.44941212074211784,
+        "canExit": false,
+        "y": 0.49,
+        "paddle": false
+      },
+      "back": {
+        "steps": 398,
+        "legal": true,
+        "distance": 0.28814937623671066,
+        "speed": 0.26207398988461106,
+        "canExit": true,
+        "y": 0.49,
+        "paddle": false
+      },
+      "landing": {
+        "x": 1674.5902082612035,
+        "z": -438.36028372061736
+      }
+    },
+    {
+      "id": "rio-navio-passeio",
+      "kind": "ship",
+      "outward": {
+        "steps": 263,
+        "legal": true,
+        "distance": 19.08193901247675,
+        "speed": 0.4458314423687049,
+        "canExit": false,
+        "y": 1.16,
+        "paddle": false
+      },
+      "back": {
+        "steps": 546,
+        "legal": true,
+        "distance": 0.1605864593667852,
+        "speed": -0.5595625835927532,
+        "canExit": true,
+        "y": 1.16,
+        "paddle": false
+      },
+      "landing": {
+        "x": 1671.9779683960312,
+        "z": -428.70750158867196
+      }
+    }
+  ],
+  "reloadBoat": {
+    "saved": {
+      "id": "rio-navio-passeio",
+      "kind": "ship",
+      "x": 1695.5816924288647,
+      "z": -422.3198520963002,
+      "y": 1.16,
+      "heading": 1.3065063267948966,
+      "speed": 0.02832085195746793,
+      "legal": true,
+      "canExit": false,
+      "paddle": false
+    },
+    "restored": {
+      "id": "rio-navio-passeio",
+      "kind": "ship",
+      "x": 1695.58,
+      "z": -422.32,
+      "y": 1.16,
+      "heading": 1.3065,
+      "speed": 0,
+      "legal": true,
+      "canExit": false,
+      "paddle": false
+    }
+  },
+  "footRace": {
+    "trajectory": {
+      "success": true,
+      "x": 1917.4432531049754,
+      "z": -123.01744359359124
+    },
+    "checkpoints": 6,
+    "record": {
+      "runs": 1,
+      "best": 52.333333333331645,
+      "last": 52.333333333331645
+    },
+    "running": null,
+    "swimming": false
+  },
+  "court": {
+    "position": [
+      1997.69,
+      -1524.13
+    ],
+    "site": [
+      1997.69,
+      -1524.13
+    ],
+    "context": "sports-hub-v7051"
+  },
+  "legacy": {
+    "map": "ot",
+    "position": {
+      "x": -18,
+      "y": 0,
+      "z": 39,
+      "yaw": 0
+    },
+    "garage": {
+      "slots": {
+        "1": "garage-orange",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "",
+        "H1": "",
+        "H2": "",
+        "H3": ""
+      },
+      "stored": {
+        "garage-orange": false
+      },
+      "purchasedAt": {
+        "garage-orange": 0
+      },
+      "layoutVersion": 2,
+      "displaySlots": {
+        "4": "unit-home-green-2-existing"
+      }
+    },
+    "owned": [
+      "garage-orange",
+      "unit-home-green-2-existing"
+    ],
+    "boat": {
+      "x": -70,
+      "z": 54,
+      "heading": 0
+    },
+    "activeJob": "delivery",
+    "regionalVisualRoots": [],
+    "archivedRoutes": {
+      "roads": 0,
+      "actions": 0
+    }
+  },
+  "roundTrip": {
+    "from": "rio-preto",
+    "via": "ot",
+    "to": "rio-preto",
+    "returnedCoins": 63950,
+    "owned": [
+      "garage-orange",
+      "unit-home-green-2-existing"
+    ]
+  }
+}
