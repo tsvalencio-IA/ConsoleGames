@@ -22,6 +22,20 @@ O Chromium 141.0.7390.37 com Three.js r128, WebGL por software e perfil local de
 - Testou os quatro veículos aquáticos com aproximação a pé, saída de 16 a 21 m da vaga, recusa de desembarque em água aberta, volta e desembarque. Recarregou a página com o navio na água e retomou a mesma posição com diferença inferior a 1 cm. O barco registrado na Vila OT manteve a posição original.
 - Inspecionou as entradas e os trajetos até as ações dos 20 pontos. Voltou aos mesmos setores pelo carregamento de mapa e reencontrou as mesmas contagens de setores, interações e colisores. Verificou a área de toque dos botões de navegação a 393 × 852, 852 × 393 e 1.280 × 800.
 
+## Medição de câmera e movimento
+
+Chromium 141 em Linux, AMD EPYC 9V74 com dois CPUs disponíveis, ANGLE SwiftShader, janela de 393 × 852, qualidade baixa e buffer 243 × 528 nas duas versões. Cada caso executou três janelas de 20 segundos de movimento e rotação de câmera perto da entrada do Complexo Swift. O ensaio suprimiu os desenhos da preparação inicial e usou o renderizador real e o relógio do navegador durante a medição. Cada versão usa sua própria cena do Swift. [Medições por janela](desempenho.json)
+
+| Medição | Prévia 705.28.35 | Prévia 705.28.37 |
+| --- | ---: | ---: |
+| Quadros desenhados por segundo, média | 4,13 | 10,83 |
+| Intervalo p95 entre iterações, por janela | 484–569 ms | 149–196 ms |
+| Intervalos acima de 250 ms | 94 de 256 | 5 de 950 |
+| Memória JS retida após coleta, início → fim | 73,9 → 77,6 MB | 25,3 → 26,4 MB |
+| Toque até 3 cm de deslocamento, quando detectado | 121–538 ms | 101–588 ms |
+
+O terceiro toque da 705.28.37 ficou sem deslocamento mensurável naquela posição. O percurso separado na prévia comprovou o joystick e o botão Remar com deslocamento visível. A amostra de 60 segundos cobre a comparação de renderização nesse ambiente. Estabilidade de sessão prolongada e resposta térmica no Android físico seguem pendentes.
+
 ## Fontes e limites
 
 Ruas, contornos e lagos vêm de nove recortes OpenStreetMap. `games/otthi/tools/import-rio-preto-map.py` gera o mapa entregue a partir deles. O mapa exibe a atribuição OpenStreetMap e a origem aparece no JSON. Há lotes reconhecíveis e endereços confirmados, com fachadas, mobiliário e interiores adaptados ao jogo. Edifícios fora dos 20 locais funcionais compõem o cenário. As instalações recreativas do cais e as embarcações são do jogo. [Licença ODbL e atribuição](https://www.openstreetmap.org/copyright) · [Pista da Represa](https://www.openstreetmap.org/way/281827416) · [Mercadão](https://www.riopreto.sp.leg.br/noticias/projeto-pede-abertura-do-mercado-municipal-no-aniversario-de-rio-preto) · [Canecão](https://ranklevel.com.br/empresa/sao-jose-do-rio-preto/canecao-represa/) · [Postos Chiesa](https://postoschiesa.com.br/Unidades/index.html)
