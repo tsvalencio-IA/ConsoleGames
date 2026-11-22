@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.35-rio-preto-cidade-viva",
+  "build": "705.28.36-rio-preto-mapa-proprio",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -42,6 +42,7 @@
     }
   },
   "changes": [
+    "R28.36: malha cartográfica de Rio Preto em mapa independente, Mercadão acessível, Canecão com mesa e cadeira e posto com abastecimento físico, frota da garagem e NPCs com carros do catálogo, natação e quatro embarcações na Represa.",
     "R28.35: centro inspirado em Rio Preto, atividades nos pontos, moradores, corredores, fauna e trânsito local. O campo existente vira o Teixeirão com arquibancadas vermelhas e placar da partida.",
     "R28.34: acesso direto à Represa e ao Complexo Swift pelo botão Jogar em Rio Preto no menu inicial.",
     "R28.33: 42 pontos em 11 setores, corrida de rua na Represa, pistas Mirassol e Cedral no Kart Legends e novos acessórios da família.",
@@ -307,8 +308,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70668,
-  "revisionLabel": "Rio Preto viva e Teixeirão jogável",
+  "assetVersion": 70669,
+  "revisionLabel": "São José do Rio Preto em mapa próprio",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

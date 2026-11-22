@@ -2,7 +2,12 @@
 // @otthi-module-body
  const worldResidents={ready:false,lastAt:0,actors:[],ticks:0};
  function cityOrderPerformance(shop,item){
-  const kind=item.hunger?(/juice|breakfast/.test(item.id)?'drink':'meal'):'bag',coast=shop.id.startsWith('shop-coast-'),face=shop.face||1,target=kind==='bag'?{x:player.x,z:player.z}:coast?{x:shop.x-5.35,z:495.5}:{x:shop.x-4.05,z:shop.z+face*3.9},pose={...target,y:kind==='bag'?player.y:.53,yaw:kind==='bag'?player.facing:-Math.PI/2,sitting:kind!=='bag'},commit=()=>{if(item.hunger){setFlag('ateMeal');state.stats.restaurantMeals=(state.stats.restaurantMeals||0)+1;saveState(true);evaluateMissions();}return true;};
+  const seat=shop.seat||null;
+  const kind=item.hunger&&seat?(/juice|breakfast/.test(item.id)?'drink':'meal'):'bag';
+  const target=seat&&kind!=='bag'?seat.approach:{x:player.x,z:player.z};
+  const pose=seat&&kind!=='bag'?{...seat.chair,y:seat.y,yaw:seat.yaw,sitting:true}:
+    {...target,y:player.y,yaw:player.facing};
+  const commit=()=>{if(item.hunger&&seat){setFlag('ateMeal');state.stats.restaurantMeals=(state.stats.restaurantMeals||0)+1;saveState(true);evaluateMissions();}return true;};
   const seller=cityCoast.citizens.find(n=>n.commerceShop===shop.id);if(seller)seller.servingUntil=performance.now()+2800;
   if(!beginCharacterActivity(kind,{target,pose,shop,commit}))beginCharacterActivity(kind,{target:{x:player.x,z:player.z},pose:{x:player.x,y:player.y,z:player.z,yaw:player.facing},shop,commit});
  }

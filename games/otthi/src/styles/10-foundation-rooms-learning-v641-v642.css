@@ -49,3 +49,29 @@ body.ui-portrait .mini-nav,body.otthi-portrait .mini-nav{top:calc(64px + var(--s
 .learning-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.learning-summary>div{padding:10px;border-radius:14px;background:rgba(255,255,255,.08);text-align:center}.learning-summary small,.room-current small{display:block;color:#8ee8ff;font-size:9px;font-weight:900}.learning-summary b{display:block;font-size:22px}.learning-subjects,.room-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.learning-subjects button,.room-grid button{min-width:0;padding:12px;border-radius:15px;background:#173b5a;border:1px solid rgba(255,255,255,.14);text-align:left}.learning-subjects button>span,.room-grid button>span{font-size:25px}.learning-subjects button b,.learning-subjects button small,.room-grid button b,.room-grid button small{display:block}.learning-subjects button small,.room-grid button small{color:#c8d9e8;font-size:10px;margin-top:3px}.learning-subjects button i{display:block;height:8px;margin-top:8px;border-radius:99px;background:#082033;overflow:hidden}.learning-subjects button em{display:block;height:100%;background:#63e978}.room-grid button.selected{outline:2px solid #66e7ff;background:#245c7d}.room-current{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:rgba(255,255,255,.08)}.room-current>span{font-size:36px}.room-current b{display:block;font-size:18px}.room-current p{margin:3px 0 0;color:#c9d8e6}.house-directory{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.house-directory>div{padding:10px;border-radius:14px;background:rgba(255,255,255,.07)}.house-directory span,.house-directory b,.house-directory small{display:block}.house-directory span{font-size:24px}.house-directory small{color:#bdd0df}.adaptive-question{text-align:center}.adaptive-question h3{font-size:clamp(28px,8vw,54px);margin:22px 0}.adaptive-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.adaptive-options button{min-height:56px;border-radius:15px;background:#214d70;font-size:22px;font-weight:900}.adaptive-options button.correct{background:#238a36}.adaptive-options button.wrong{background:#9f2734}.learning-result{text-align:center}.learning-result>div{font-size:58px}.learning-result h3{font-size:42px;margin:4px}
 #otthiPerformanceBadge{position:fixed;z-index:9998;left:8px;top:50%;transform:translateY(-50%);padding:6px 9px;border-radius:10px;background:rgba(6,20,34,.88);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:900}#otthiPerformanceBadge[data-level="bad"]{border-color:#ff6470}#otthiPerformanceBadge[data-level="warn"]{border-color:#ffc857}#otthiPerformanceBadge[data-level="good"]{border-color:#57d36b}
 @media(max-width:420px){.learning-summary{grid-template-columns:1fr 1fr}.learning-summary>div:last-child{grid-column:1/-1}.learning-subjects,.room-grid,.house-directory{grid-template-columns:1fr}.adaptive-options{grid-template-columns:1fr 1fr}}
+
+body[data-otthi-map="rio-preto"] :is(#missionCard,#miniMapWrap,#worldHeroBtn,#skillToggleBtn,#needsToggleBtn,#michelleNewsCard,#multiplayerBadge){display:none!important}
+.rio-map-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+.rio-map-panel figure{margin:0;position:sticky;top:0;min-width:0}
+.rio-map-panel figcaption{margin-top:4px;font-size:11px}
+.rio-map-panel figcaption a{color:#b8ded6}
+.rio-real-map{display:block;max-height:52dvh;width:100%;border:1px solid #6f8e8b;background:#243d36;border-radius:12px}
+.rio-mapped-roads,.rio-active-route{fill:none;stroke:#adb7ad;stroke-width:16;stroke-linejoin:round;stroke-linecap:round}
+.rio-active-route{stroke:#4ce0f0;stroke-width:28}
+.rio-water-shape{fill:#5793ae;fill-rule:evenodd}
+.rio-map-point{fill:#f1d4a1;stroke:#233231;stroke-width:17}
+.rio-map-player{fill:#5be8e7;stroke:#132e3b;stroke-width:24}
+.rio-map-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.rio-real-places{grid-template-columns:1fr!important;gap:6px}
+.rio-real-places .choice small{font-size:11px;color:#b6d1d4}
+@media(max-width:580px) and (orientation:portrait){
+  .rio-map-panel{grid-template-columns:minmax(0,1fr)}
+  .rio-map-panel figure{position:static}
+  .rio-real-map{height:190px}
+}
+body[data-otthi-map="rio-preto"].mode-mobility-driver :is(#contextPrompt,#cameraControls,#specialBtn){display:none!important}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleActionBtn{animation:none}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #miniNav{right:calc(64px + var(--safe-right,0px))!important;max-width:min(45vw,240px)!important}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleBadge{bottom:calc(2 * var(--action) + 62px + var(--safe-bottom,0px))!important}
+
+body[data-otthi-map="rio-preto"] .boat-activity-panel button[hidden]{display:none!important}

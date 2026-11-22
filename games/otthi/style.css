@@ -1060,6 +1060,32 @@ body.ui-portrait .mini-nav,body.otthi-portrait .mini-nav{top:calc(64px + var(--s
 #otthiPerformanceBadge{position:fixed;z-index:9998;left:8px;top:50%;transform:translateY(-50%);padding:6px 9px;border-radius:10px;background:rgba(6,20,34,.88);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:900}#otthiPerformanceBadge[data-level="bad"]{border-color:#ff6470}#otthiPerformanceBadge[data-level="warn"]{border-color:#ffc857}#otthiPerformanceBadge[data-level="good"]{border-color:#57d36b}
 @media(max-width:420px){.learning-summary{grid-template-columns:1fr 1fr}.learning-summary>div:last-child{grid-column:1/-1}.learning-subjects,.room-grid,.house-directory{grid-template-columns:1fr}.adaptive-options{grid-template-columns:1fr 1fr}}
 
+body[data-otthi-map="rio-preto"] :is(#missionCard,#miniMapWrap,#worldHeroBtn,#skillToggleBtn,#needsToggleBtn,#michelleNewsCard,#multiplayerBadge){display:none!important}
+.rio-map-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+.rio-map-panel figure{margin:0;position:sticky;top:0;min-width:0}
+.rio-map-panel figcaption{margin-top:4px;font-size:11px}
+.rio-map-panel figcaption a{color:#b8ded6}
+.rio-real-map{display:block;max-height:52dvh;width:100%;border:1px solid #6f8e8b;background:#243d36;border-radius:12px}
+.rio-mapped-roads,.rio-active-route{fill:none;stroke:#adb7ad;stroke-width:16;stroke-linejoin:round;stroke-linecap:round}
+.rio-active-route{stroke:#4ce0f0;stroke-width:28}
+.rio-water-shape{fill:#5793ae;fill-rule:evenodd}
+.rio-map-point{fill:#f1d4a1;stroke:#233231;stroke-width:17}
+.rio-map-player{fill:#5be8e7;stroke:#132e3b;stroke-width:24}
+.rio-map-actions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.rio-real-places{grid-template-columns:1fr!important;gap:6px}
+.rio-real-places .choice small{font-size:11px;color:#b6d1d4}
+@media(max-width:580px) and (orientation:portrait){
+  .rio-map-panel{grid-template-columns:minmax(0,1fr)}
+  .rio-map-panel figure{position:static}
+  .rio-real-map{height:190px}
+}
+body[data-otthi-map="rio-preto"].mode-mobility-driver :is(#contextPrompt,#cameraControls,#specialBtn){display:none!important}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleActionBtn{animation:none}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #miniNav{right:calc(64px + var(--safe-right,0px))!important;max-width:min(45vw,240px)!important}
+body[data-otthi-map="rio-preto"].mode-mobility-driver #vehicleBadge{bottom:calc(2 * var(--action) + 62px + var(--safe-bottom,0px))!important}
+
+body[data-otthi-map="rio-preto"] .boat-activity-panel button[hidden]{display:none!important}
+
 /* ===== MODULE: 11-mobility-traffic-fishing-v643.css ===== */
 body.mode-mobility-driver #runBtn,body.mode-mobility-driver #jumpBtn{opacity:1!important;visibility:visible!important;pointer-events:auto!important;filter:none!important}
 body.mode-mobility-driver #runBtn{background:linear-gradient(180deg,rgba(38,196,99,.98),rgba(12,112,60,.98))!important;border-color:rgba(185,255,210,.96)!important}

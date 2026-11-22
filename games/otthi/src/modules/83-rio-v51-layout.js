@@ -61,14 +61,6 @@
     ["infra_aeroporto_rodovias", "Aeroporto, Recinto & Rodovias", "EXT_outer-link_5", [-413, -380, -344, -307, -268, -239, -220], -427, [[-200, -400], [-212, -414], [-220, -427]]],
     ["expansoes_ficticias", "Montanhas & Praia (Fictício)", "V51_engenheiro_schmitt_794", [752, 773, 812, 832], -516, [[794, -424], [806, -461], [806, -496], [806, -516]]],
   ];
-  // Frontages in the existing city. The fourth pair uses existing GPS nodes.
-  const RIO_CENTRO_FRONTAGES={
-    prefeitura_andalo:[110,-18,1,12,14,11,105,0],
-    mercado_municipal:[50,34,-1,13,6.5,10,68,38],
-    catedral_sao_jose:[-42,34,-1,13,17,11,-55,28],
-    calcadao_centro:[-42,-73,-1,13,5,11,-55,-55],
-    mcdonalds_andalo:[-22,-52,-1,12,5,10,0,-65]
-  };
   const RIO_V51 = (() => {
     const nodes={},highways=[],edges=[],sectors={},pointsByCoordinate=new Map();
     function chain(id,label,vertices,anchor,width,suffix="") {
@@ -97,11 +89,8 @@
     const waterfront=[[551,-554],[561,-549],[561,-510],[460,-510],[438,-532]];
     chain('orla-circular','Acesso de retorno · Represa',waterfront,pointsByCoordinate.get('551,-554'),8.5);
     const trafficLoop=[...waterfront,[459,-545],[467,-554]];
-    sectors.centro_calcadao_andalo.x=12;
-    sectors.centro_calcadao_andalo.z=-10;
     const places=RIO_V51_PLACES.map(([key,name,sector,originalX,originalZ,originalFace,originalW,originalH,originalD,shape,fictional,address,source,shop])=>{
-      const [x,z,face,w,h,d,navX,navZ]=RIO_CENTRO_FRONTAGES[key]||
-        [originalX,originalZ,originalFace,originalW,originalH,originalD,originalX,sectors[sector].z];
+      const [x,z,face,w,h,d,navX,navZ]=[originalX,originalZ,originalFace,originalW,originalH,originalD,originalX,sectors[sector].z];
       const point={id:'regional-'+key,key,name,sector,x,z,face,w,h,d,shape,fictional,address,source,shop,
         visitX:x,visitZ:z+face*(d/2+2),navX,navZ};
       if(point.id===RIO_TEIXEIRAO_SITE.id){

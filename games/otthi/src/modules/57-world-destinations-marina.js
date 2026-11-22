@@ -7,16 +7,19 @@
     {id:'sea-familia',label:'Lancha Família · passeio',x:-227,z:542,heading:-Math.PI/2,color:0x348c7c,maxSpeed:17},
     {id:'sea-coral',label:'Lancha Coral · esportiva',x:-213,z:535,heading:Math.PI/2,color:0xbf6549,maxSpeed:20}
   ]);
+  function seaCraftHullGeometry(stations,openCockpit=true){
+    const positions=[],indices=[];
+    for(const[z,w,keel,top]of stations)for(const[x,y]of[[0,keel],[-w*.79,keel+.19],[-w,top],[w,top],[w*.79,keel+.19]])positions.push(x,y,z);
+    for(let i=0;i<stations.length-1;i++)for(let j=0;j<5;j++){if(openCockpit&&j===2&&i<3)continue;const a=i*5+j,b=i*5+(j+1)%5,c=(i+1)*5+j,d=(i+1)*5+(j+1)%5;indices.push(a,d,b,a,c,d);}
+    for(const e of[0,stations.length-1])for(let j=1;j<4;j++){if(e===0)indices.push(e*5,e*5+j,e*5+j+1);else indices.push(e*5,e*5+j+1,e*5+j);}
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();return geo;
+  }
   function createSeaCraftModel(spec){
     const root=new THREE.Group();root.name='SPEEDBOAT_'+spec.id;
     const white=campaignMaterial(0xe4e6dc,.22),accent=campaignMaterial(spec.color,.32),dark=campaignMaterial(0x203b49,.22),seat=campaignMaterial(0xd7cfb8,.02),metal=campaignMaterial(0xa8bdc0,.7);
     // Continuous V hull, pointed bow and raised gunwales. +Z is forward.
     const stations=[[-2.5,.74,.12,.48],[-2.1,1.08,-.02,.54],[-.9,1.12,-.18,.57],[.6,1.02,-.18,.62],[1.65,.65,-.02,.75],[2.4,.04,.32,.85]];
-    const positions=[],indices=[];
-    for(const[z,w,keel,top]of stations)for(const[x,y]of[[0,keel],[-w*.79,keel+.19],[-w,top],[w,top],[w*.79,keel+.19]])positions.push(x,y,z);
-    for(let i=0;i<stations.length-1;i++)for(let j=0;j<5;j++){if(j===2&&i<3)continue;const a=i*5+j,b=i*5+(j+1)%5,c=(i+1)*5+j,d=(i+1)*5+(j+1)%5;indices.push(a,d,b,a,c,d);}
-    for(const e of[0,stations.length-1])for(let j=1;j<4;j++){if(e===0)indices.push(e*5,e*5+j,e*5+j+1);else indices.push(e*5,e*5+j+1,e*5+j);}
-    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();const hull=new THREE.Mesh(geo,white);hull.castShadow=true;root.add(hull);
+    const hull=new THREE.Mesh(seaCraftHullGeometry(stations),white);hull.castShadow=true;root.add(hull);
     const rimPoints=side=>stations.map(([z,w,k,y])=>new THREE.Vector3(side*w,y+.025,z));
     for(const side of[-1,1]){root.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rimPoints(side)),32,.052,7,false),accent));const stripe=stations.map(([z,w,k,y])=>new THREE.Vector3(side*(w+.008),y-.18,z));root.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(stripe),32,.038,6,false),accent));}
     campaignBox(root,dark,0,.16,-.15,1.76,.12,3.5);
@@ -64,7 +67,7 @@
     group.position.y=spec?-.08:-.68;group.userData.craftKey=key;
   }
   const marinaGroundHeight=groundHeightAt;
-  groundHeightAt=function(x,z){if(x>=MARINA_DOCK.minX&&x<=MARINA_DOCK.maxX&&z>=499&&z<=549)return .48;return marinaGroundHeight(x,z);};
+  groundHeightAt=function(x,z){if(!inRioMap()&&x>=MARINA_DOCK.minX&&x<=MARINA_DOCK.maxX&&z>=499&&z<=549)return .48;return marinaGroundHeight(x,z);};
   const originalFamilyBoatSeat=familyBoatSeatOffset;
   familyBoatSeatOffset=function(i=-1){return world.boat?.seaGoing?world.boat.group.userData.seats[Math.max(0,Math.min(3,i+1))]:originalFamilyBoatSeat(i);};
   function createSnowDestination(){

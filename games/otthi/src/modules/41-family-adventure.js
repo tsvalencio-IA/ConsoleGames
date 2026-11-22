@@ -18,7 +18,7 @@
     const m={I:()=>new THREE.Matrix4().elements.slice(),mul:(a,b)=>new THREE.Matrix4().fromArray(a).multiply(new THREE.Matrix4().fromArray(b)).elements.slice(),t:(x,y,z)=>new THREE.Matrix4().makeTranslation(x,y,z).elements.slice(),s:(x,y,z)=>new THREE.Matrix4().makeScale(x,y,z).elements.slice(),rx:a=>new THREE.Matrix4().makeRotationX(a).elements.slice(),ry:a=>new THREE.Matrix4().makeRotationY(a).elements.slice(),rz:a=>new THREE.Matrix4().makeRotationZ(a).elements.slice(),transform:(a,p)=>new THREE.Vector3(...p).applyMatrix4(new THREE.Matrix4().fromArray(a)).toArray()};
     m.tr=(x,y,z,sx=1,sy=1,sz=1,yaw=0)=>m.mul(m.mul(m.t(x,y,z),m.ry(yaw)),m.s(sx,sy,sz));return m;
   }
-  function familyCreateActor(id,x,z){
+  function familyCreateActor(id,x,z,placeInWorld=true){
     const rig=familyWorld.studio.rigs[id],group=new THREE.Group(),bones=[],joints=[],buffers=[];
     function branch(joint,parent){
       const bone=new THREE.Bone();bone.name=id+':'+joint.name;bone.position.fromArray(joint.pos);bone.rotation.order='YXZ';parent.add(bone);const index=bones.length;bones.push(bone);joints.push(joint);
@@ -38,8 +38,8 @@
     }
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(indices,4));geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(weights,4));geometry.setIndex(triangles);geometry.computeBoundingSphere();
     const mesh=new THREE.SkinnedMesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,skinning:true,side:THREE.DoubleSide,roughness:.83,metalness:.015}));group.add(mesh);mesh.bind(new THREE.Skeleton(bones));mesh.frustumCulled=false;
-    const scale=(id==='thiago'||id==='thamis') ? .64*(rig.scale||1) : .7;group.scale.setScalar(scale);worldGroup.add(group);
-    const shadow=new THREE.Mesh(new THREE.CircleGeometry(id==='luna'||id==='liz'?.42:.40,20),new THREE.MeshBasicMaterial({color:0x10232a,transparent:true,opacity:.19,depthWrite:false}));shadow.rotation.x=-Math.PI/2;worldGroup.add(shadow);
+    const scale=(id==='thiago'||id==='thamis') ? .64*(rig.scale||1) : .7;group.scale.setScalar(scale);if(placeInWorld)worldGroup.add(group);
+    const shadow=new THREE.Mesh(new THREE.CircleGeometry(id==='luna'||id==='liz'?.42:.40,20),new THREE.MeshBasicMaterial({color:0x10232a,transparent:true,opacity:.19,depthWrite:false}));shadow.rotation.x=-Math.PI/2;if(placeInWorld)worldGroup.add(shadow);
     return {id,x,z,heading:0,moving:0,group,mesh,shadow,bones,joints,scale,path:[],routeAt:0,vertices:triangles.length,uniqueVertices:pos.length/3};
   }
   function familyHomeLocation(){
@@ -53,10 +53,18 @@
     // If no building lot is free, keep the existing playground fully intact.
     const park=worldLayoutPoint('playground',{x:-28,z:-40});return{x:park.x+7,z:park.z+7,meetingOnly:true};
   }
+  function initFamilyAvatarStudio(){
+    familyWorld.studio??=window.createMascotStudio({createBuffer:data=>({data:new Float32Array(data),count:data.length/9}),drawColored:()=>{},contactShadow:()=>{}},familyMatrices());
+  }
+  function initFamilyAvatarTemplates(){
+    if(typeof window.createMascotStudio!=='function')return;
+    initFamilyAvatarStudio();
+    for(const id of ['thiago','thamis'])familyWorld.actors[id]??=familyCreateActor(id,0,0,false);
+  }
   function initFamilyAdventure(){
     if(familyWorld.ready||!worldGroup||typeof window.createMascotStudio!=='function')return;
     const location=familyHomeLocation();familyWorld.location=location;
-    familyWorld.studio=window.createMascotStudio({createBuffer:data=>({data:new Float32Array(data),count:data.length/9}),drawColored:()=>{},contactShadow:()=>{}},familyMatrices());
+    initFamilyAvatarStudio();
     if(!location.meetingOnly)createHouse({id:'thia-family-home',name:'Casa da Família',x:location.x,z:location.z,color:0xebe3c7,roofColor:0xb76642,publicBuilding:true});
     for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]])familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
@@ -147,9 +155,10 @@
     if(visual){
       if(avatarLayer)avatarLayer.visible=false;
       const active=performance.now()<player.emoteUntil;
-      familyAnimateAvatar(visual,playerModel.userData.parts,{speed:player.vehicle||player.boating||player.swimming?0:Math.hypot(player.vx,player.vz),run:!!input.isSprinting,jump:!player.grounded,emote:active?player.emoteType:'',special:active||player.swimming||!!fishingVisual?.active,sitting:performance.now()<player.sitUntil,time:animTime});
+      familyAnimateAvatar(visual,playerModel.userData.parts,{speed:player.vehicle||player.boating||player.swimming?0:Math.hypot(player.vx,player.vz),run:!!input.isSprinting,jump:!player.grounded,emote:active?player.emoteType:'',special:active||player.swimming||!!fishingVisual?.active,sitting:performance.now()<player.sitUntil||player.boating&&world.boat?.rioBerth&&world.boat.kind!=='board',time:animTime});
       familyAttachTool(visual,toolVisual);
     }
+    if(typeof inRioMap==='function'&&inRioMap()&&playerModel)rioBoatRiderPose(visual);
     for(const ghost of world.ghosts.values()){
       const v=ghost.userData.familyAvatar;if(!v)continue;const target=ghost.userData.target||{},pose=ghost.userData.v2Pose||{},emote=performance.now()<Number(ghost.userData.emoteUntil||0)?ghost.userData.emoteType:String(target.actionMode||'');
       const moving=Math.hypot(Number(pose.vx||0),Number(pose.vz||0))>.2||Math.hypot(ghost.position.x-Number(v.lastX??ghost.position.x),ghost.position.z-Number(v.lastZ??ghost.position.z))>.001;

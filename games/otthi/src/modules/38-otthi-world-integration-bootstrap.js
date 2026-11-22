@@ -9,6 +9,10 @@
   const legacyWorldInitThree=initThree;
   initThree=function initThreeOtthiWorld(){
     const ok=legacyWorldInitThree();if(!ok)return false;
+    if(typeof inRioMap==='function'&&inRioMap()){
+      ensureOtthiWorldState();initFamilyAvatarTemplates();applyWorldAvatarV3();applyOtthiWorldRuntimeSettings();
+      otthiWorldRuntime.initialized=true;return true;
+    }
     try{ensureOtthiWorldState();createOtthiWorldProfessionalLayer();applyWorldAvatarV3();createWorldModularGarageInteractable();createWorldHeroAdventure();ensureWorldHeroHud();applyOtthiWorldRuntimeSettings();initFamilyAdventure();otthiWorldRuntime.initialized=true;document.dispatchEvent(new CustomEvent('otthi-world:ready',{detail:otthiWorldDiagnostics()}));}
     catch(error){otthiWorldRuntime.errors.push(String(error?.stack||error));console.error('[OTTHI WORLD] Camada profissional em fallback:',error);toast('A base do jogo foi preservada; um detalhe profissional iniciou em fallback.','warn',3000);}
     return true;

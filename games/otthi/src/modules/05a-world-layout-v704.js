@@ -366,7 +366,7 @@
   function v704RectOverlap(a,b,margin=0){return Math.abs(Number(a.x)-Number(b.x))<(Number(a.w)+Number(b.w))/2+margin&&Math.abs(Number(a.z)-Number(b.z))<(Number(a.d)+Number(b.d))/2+margin;}
   function v704PointInRect(point,rect,margin=0){return Math.abs(Number(point.x)-Number(rect.x))<=Number(rect.w)/2+margin&&Math.abs(Number(point.z)-Number(rect.z))<=Number(rect.d)/2+margin;}
   function v704RoadFootprint(road,includeSidewalk=true){const side=includeSidewalk?2.7:0;return{...road,w:Number(road.w)+(Number(road.w)>=Number(road.d)?0:side),d:Number(road.d)+(Number(road.w)>=Number(road.d)?side:0)};}
-  function v704WorldBounds(){return WORLD_LAYOUT_V704.bounds;}
+  function v704WorldBounds(){return typeof inRioMap==='function'&&inRioMap()?rioMap.data.bounds:WORLD_LAYOUT_V704.bounds;}
   function v704WorldSize(){const b=v704WorldBounds();return{w:b.maxX-b.minX,d:b.maxZ-b.minZ};}
   function v704ClampWorldPoint(x,z,margin=1){const b=v704WorldBounds();return{x:Math.max(b.minX+margin,Math.min(b.maxX-margin,Number(x)||0)),z:Math.max(b.minZ+margin,Math.min(b.maxZ-margin,Number(z)||0))};}
   function worldRoadBridgeHeightAt(x,z){for(const b of WORLD_LAYOUT_V704.roadBridges||[]){const d=Math.abs(x-b.x);if(d<=b.length/2&&Math.abs(z-b.z)<=b.width/2)return b.deckHeight*Math.min(1,(b.length/2-d)/((b.length-b.deckLength)/2));}return null;}
@@ -393,6 +393,7 @@
     if(Math.max(seg.a.x,seg.b.x)+width<rect.x-rect.w/2||Math.min(seg.a.x,seg.b.x)-width>rect.x+rect.w/2||Math.max(seg.a.z,seg.b.z)+width<rect.z-rect.d/2||Math.min(seg.a.z,seg.b.z)-width>rect.z+rect.d/2)continue;
     const len=Math.hypot(seg.b.x-seg.a.x,seg.b.z-seg.a.z),steps=Math.max(2,Math.ceil(len/1.25));for(let i=0;i<=steps;i++){const t=i/steps,p={x:seg.a.x+(seg.b.x-seg.a.x)*t,z:seg.a.z+(seg.b.z-seg.a.z)*t};if(v704PointInRect(p,rect,width))return true;}}return false;}
   function v704RoadAt(x,z,margin=0,includeSidewalk=false){
+    if(typeof inRioMap==='function'&&inRioMap())return rioRoadAt(x,z,margin+(includeSidewalk?.7:0),s=>!s.pedestrian||includeSidewalk);
     const px=Number(x),pz=Number(z),side=includeSidewalk?2.7:0;
     // Same inclusive footprints, without allocating a point and spreading an
     // entire road object for every candidate at every traffic physics step.

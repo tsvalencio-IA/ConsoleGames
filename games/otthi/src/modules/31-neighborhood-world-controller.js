@@ -23,11 +23,12 @@
   function canChangeRoom(){return{ok:true};}
   function focusCurrentRoom(){const room=roomWorldInfo();state.waypoint={id:`room-${room.id}`,name:`Entrada — ${room.name}`,x:room.entry.x,z:room.entry.z,navX:room.entry.x,navZ:room.entry.z,arrived:false};world.routePath=buildRoutePoints(player,state.waypoint);updateNavigation(0,true);toast(`${room.icon} Você já está no ${room.name}.`,'good',1800);}
   function applyRoomWorld(roomId,options={}){
+    if(typeof inRioMap==='function'&&inRioMap())return false;
     const room=roomWorldInfo(roomId);if(!room)return false;const changed=appliedRoomId!==room.id,shouldTeleport=options.teleport!==false&&(changed||options.forceTeleport===true);
     if(shouldTeleport){const entry=safePointNear(room.entry.x,room.entry.z,{ignoreTraffic:true,allowWater:false,radius:.4,distances:[0,.7,1.2,1.8]});player.x=entry.x;player.y=entry.y||0;player.z=entry.z;player.facing=Number(room.entry.yaw||0);cameraYaw=player.facing;playerGroup?.position?.set(player.x,player.y,player.z);playerGroup&&(playerGroup.rotation.y=player.facing);state.position={x:player.x,y:player.y,z:player.z,yaw:cameraYaw};state.waypoint=null;world.routePath=[];}
     state.multiplayer.room=room.id;appliedRoomId=room.id;rememberSafePlayerPosition(true);updateNavigation(0,true);updateContext(true);updateHUD();saveState(true);window.dispatchEvent(new CustomEvent('otthi:room-world-ready',{detail:{room:room.id,name:room.name,entry:{x:player.x,z:player.z},changed}}));if(options.toast!==false)toast(`${room.icon} Você entrou no ${room.name}.`,'good',2600);return true;
   }
-  window.addEventListener('otthi:room-changing',()=>{clearRemoteRoomEntities();resetMobilityForRoomChange();});
+  window.addEventListener('otthi:room-changing',()=>{if(typeof inRioMap==='function'&&inRioMap())return;clearRemoteRoomEntities();resetMobilityForRoomChange();});
   window.addEventListener('otthi:room-changed',event=>{if(event.detail?.connected===false)return;const actualChange=!!event.detail?.previousRoom&&event.detail.previousRoom!==event.detail?.room;applyRoomWorld(event.detail?.room,{toast:actualChange,teleport:actualChange});});
   window.addEventListener('otthos:mp-status',event=>{const room=event.detail?.room;if(event.detail?.connected&&room&&!appliedRoomId&&running)applyRoomWorld(room,{toast:false,teleport:state.multiplayer.room!==room});});
   window.addEventListener('otthos:houses',()=>{if(!els.modal.hidden&&els.modal.classList.contains('map-modal'))refreshOpenMapAfterResize();updateNavigation(0,true);});

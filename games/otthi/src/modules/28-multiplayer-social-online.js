@@ -134,6 +134,7 @@
   function nearestRemotePlayer(){let found=null,best=Infinity;for(const [uid,g] of world.ghosts){const d=Math.hypot(player.x-g.position.x,player.z-g.position.z);if(d<2.7&&d<best){best=d;found={uid,ghost:g};}}return found;}
   function openMultiplayerConfig(){openSocialHub();}
   function applyCloudWorldObjects(){
+    if(typeof inRioMap==='function'&&inRioMap())return;
     if(!worldGroup)return;const me=window.OTTHOS_RTDB?.uid||'';
     const fireItems=[];for(const[ownerUid,items]of Object.entries(pendingCloudCampfires||{}))if(ownerUid!==me)for(const item of Object.values(items||{}))if(item&&Number(item.expiresAt||0)>Date.now())fireItems.push({...item,ownerUid});
     const fireKeys=new Set(fireItems.map(x=>x.id));for(const c of [...world.campfires])if(c.data.remote&&!fireKeys.has(c.data.id)){c.interactable.disabled=true;worldGroup.remove(c.group);world.campfires=world.campfires.filter(x=>x!==c);}fireItems.forEach(item=>spawnCampfire(item,true));
@@ -141,6 +142,7 @@
     const extensionKeys=new Set(extensionItems.map(x=>x.id));for(const e of [...world.houseExtensions])if(e.data.remote&&!extensionKeys.has(e.data.id)){worldGroup.remove(e.group);world.houseExtensions=world.houseExtensions.filter(x=>x!==e);const it=world.interactables.find(x=>x.id===`extension-${e.data.id}`);if(it)it.disabled=true;}extensionItems.forEach(item=>spawnHouseExtension(item,true));
   }
   function remotePlayerEvent(data){
+    if(typeof inRioMap==='function'&&inRioMap())return;
     if(!guardianMultiplayerAllowed()||!data||data.uid===window.OTTHOS_RTDB?.uid||window.OTTHOS_RTDB?.isPlayerBlocked?.(data.uid))return;
     const safeAvatar=sanitizeMultiplayerAvatar(data.avatar||{}),safeData={...data,connectionUnstable:false,avatar:safeAvatar,name:remotePlayerName(data.name,data.uid)};
     remotePresence.set(data.uid,safeData);let ghost=world.ghosts.get(data.uid);
@@ -176,7 +178,7 @@
     refreshOpenSocialHub();
   });
   window.addEventListener('otthos:mp-leave',e=>{const id=e.detail?.uid;remotePresence.delete(id);if(player.boat.passengerUid===id)player.boat.passengerUid='';removeHostedVehiclePassenger(id);removeRemoteGhost(id);multiplayerState.count=Math.max(1,remotePresence.size+1);updateMultiplayerBadge();refreshOpenSocialHub();});
-  window.addEventListener('otthos:cloud-profile',e=>{const merged=mergeCloudProgress(e.detail?.progress);if(merged&&worldGroup)setTimeout(()=>{if(typeof restorePersistedVehicleTransforms==='function')restorePersistedVehicleTransforms();if(typeof ensurePlayerGarageState==='function')ensurePlayerGarageState();if(typeof syncOwnedGarageDisplayFleet==='function')syncOwnedGarageDisplayFleet();if(typeof workshopReorganizeLegacyYardVehicles==='function')workshopReorganizeLegacyYardVehicles();},0);});
+  window.addEventListener('otthos:cloud-profile',e=>{const merged=mergeCloudProgress(e.detail?.progress);if(merged&&worldGroup)setTimeout(()=>{if(typeof inRioMap==='function'&&inRioMap()){rioRestoreOwnedFleet();return;}if(typeof restorePersistedVehicleTransforms==='function')restorePersistedVehicleTransforms();if(typeof ensurePlayerGarageState==='function')ensurePlayerGarageState();if(typeof syncOwnedGarageDisplayFleet==='function')syncOwnedGarageDisplayFleet();if(typeof workshopReorganizeLegacyYardVehicles==='function')workshopReorganizeLegacyYardVehicles();},0);});
   window.addEventListener('otthos:campfires-cloud',e=>{pendingCloudCampfires=e.detail||{};applyCloudWorldObjects();});
   window.addEventListener('otthos:extensions-cloud',e=>{pendingCloudExtensions=e.detail||{};applyCloudWorldObjects();});
   window.addEventListener('otthos:houses',e=>{cloudHouses.clear();for(const [id,data] of Object.entries(e.detail||{}))cloudHouses.set(id,data);reconcileCloudHouses();});
