@@ -315,6 +315,70 @@
         root.querySelector('[data-rio-decor-back]').onclick=openDecorCatalog;
       });
     };
+
+    // Real use for construction purchases: one delivered paint can renovates the
+    // wall finish; one box of flooring renovates the interior floor.
+    // Upgrades are per-property, have no extra draw calls until purchased,
+    // and are preserved in the same save as ownership and furniture.
+    const renovationColors=Object.freeze({
+      walls:[0xe9ddc9,0xb9d0ce,0xd9c8b4,0xd8d0df],
+      floor:[0xc7a884,0xa0a7a5,0x8f795d,0xd7cfba]
+    });
+    const renovateMeshes={};
+    const renovationFinish=(kind)=>{
+      const owner=rioPropertyTitle(site.propertyId);
+      const finish=owner?.renovation?.[kind];
+      if(!Number.isInteger(finish))return;
+      const palette=renovationColors[kind];
+      const value=palette[((finish%palette.length)+palette.length)%palette.length];
+      if(!renovateMeshes[kind]){
+        const group=new THREE.Group(),makePanel=(xx,yy,zz,ww,hh,dd)=>{
+          const mesh=new THREE.Mesh(new THREE.BoxGeometry(ww,hh,dd),
+            new THREE.MeshStandardMaterial({color:value,roughness:.83,metalness:0}));
+          mesh.position.set(xx,yy,zz);group.add(mesh);
+        };
+        if(kind==='floor')makePanel(0,.091,0,w-.69,.024,d-.68);
+        else{
+          makePanel(0,1.45,-d/2+.36,w-.82,2.76,.045);
+          for(const x of[-w/2+.35,w/2-.35])makePanel(x,1.45,0,.045,2.76,d-.82);
+        }
+        group.position.set(site.x,0,site.z);group.rotation.y=yaw;
+        group.name='CASA_REFORMA_'+site.key+'_'+kind;
+        room.root.add(group);renovateMeshes[kind]=group;
+      }
+      for(const mesh of renovateMeshes[kind].children)mesh.material.color.setHex(value);
+    };
+    renovationFinish('walls');renovationFinish('floor');
+    const openRenovation=()=>{
+      const owner=rioPropertyTitle(site.propertyId);
+      if(!owner?.owned){toast('Só o proprietário pode reformar esta casa.','warn',2200);return;}
+      const inventory=rioConstructionSave().constructionInventory;
+      openModal('Reformar imóvel · '+site.name,
+        '<p>Os materiais precisam ser comprados nas lojas de Rio Preto e recebidos neste endereço.</p>'+
+        '<p>Estoque: <b>'+Number(inventory.paint||0)+' lata(s) de tinta</b> · <b>'+
+        Number(inventory.tile||0)+' caixa(s) de piso</b></p>'+
+        '<div class="choice-grid">'+
+        renovationColors.walls.map((color,index)=>'<button class="choice" data-rio-home-wall="'+index+'"><b>Cor das paredes '+(index+1)+'</b><span>1 tinta</span></button>').join('')+
+        renovationColors.floor.map((color,index)=>'<button class="choice" data-rio-home-floor="'+index+'"><b>Piso '+(index+1)+'</b><span>1 caixa de piso</span></button>').join('')+
+        '</div>',root=>{
+          const apply=(kind,index)=>{
+            const current=rioPropertyTitle(site.propertyId),saved=rioConstructionSave().constructionInventory;
+            const item=kind==='walls'?'paint':'tile';
+            if(!current?.owned||!(saved[item]>0)){toast('Receba primeiro o material de construção.','warn',2400);return;}
+            saved[item]--;
+            (current.renovation??={})[kind]=index;
+            renovationFinish(kind);saveState(true);
+            toast('Reforma aplicada e salva nesta propriedade.','good',2000);
+            openRenovation();
+          };
+          for(const button of root.querySelectorAll('[data-rio-home-wall]'))button.onclick=()=>{
+            apply('walls',Number(button.dataset.rioHomeWall));};
+          for(const button of root.querySelectorAll('[data-rio-home-floor]'))button.onclick=()=>{
+            apply('floor',Number(button.dataset.rioHomeFloor));};
+        });
+    };
+    room.manageRenovation=openRenovation;
+    room.action('renovate','Reformar paredes e piso com materiais entregues',w*.04,d*.22,openRenovation,{inside:true,icon:'🧱'});
     room.manageFurniture=openDecorCatalog;
     room.action('decor','Comprar, posicionar e decorar a casa',0,.8,openDecorCatalog,{inside:true,icon:'🪑'});
 
