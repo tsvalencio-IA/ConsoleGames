@@ -19851,15 +19851,47 @@ function precompile(T,renderer,scene,camera){
 
   function rioResidenceDoor(site,room,target){
     const point={x:site.entry[0],z:site.entry[1]},available=()=>room.root.visible&&rioPlayerAt(point,3.3);
-    return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,decorate:()=>room.manageFurniture?.(),enter:()=>{
+    const enterUnit=()=>{
       room.gate.disabled=true;room.door.visible=false;
+      room.refreshDecor?.();
       if(!rioEnterPlace(target,()=>{if(site.propertyId==='home')setFlag('enteredHome');})){
         room.gate.disabled=false;room.door.visible=true;
       }
-    }});
+    };
+    if(site.style!=='rios-ditalia'){
+      room.selectedUnitId=site.propertyId;
+      return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,
+        decorate:()=>room.manageFurniture?.(),enter:enterUnit});
+    }
+    // Unit 101 reuses the original property ID to preserve ownership saves.
+    const unitId=number=>number==='101'?site.propertyId:site.propertyId+'-unit-'+number;
+    const units=[];
+    for(let floor=1;floor<=3;floor++)for(let door=1;door<=2;door++){
+      const number=String(floor)+'0'+String(door);
+      units.push({number,id:unitId(number),floor});
+    }
+    openModal('Apartamentos · '+site.name,
+      '<p>Escolha a unidade para visitar, comprar ou decorar. Cada apartamento tem seus próprios móveis e progresso.</p>'+
+      '<div class="choice-grid">'+units.map(u=>{
+        const owned=rioPropertyTitle(u.id)?.owned;
+        return '<button class="choice" data-rio-apartment="'+u.number+'"><b>Apartamento '+u.number+
+          '</b><span>'+ (owned?'Sua propriedade':Math.round(site.price*(.80+u.floor*.10))+' moedas')+
+          ' · '+u.floor+'º andar</span></button>';
+      }).join('')+'</div>',root=>{
+      for(const button of root.querySelectorAll('[data-rio-apartment]'))button.onclick=()=>{
+        const unit=units.find(u=>u.number===button.dataset.rioApartment);
+        if(!unit||!available())return;
+        room.selectedUnitId=unit.id;room.refreshDecor?.();
+        rioPropertyDoor({id:unit.id,name:site.name+' · Apartamento '+unit.number,
+          price:Math.round(site.price*(.80+unit.floor*.10)),available,
+          decorate:()=>room.manageFurniture?.(),enter:enterUnit});
+      };
+    });
+    return true;
   }
 
   function rioBuildResidence(site,room){
+    const rioResidencePropertyId=()=>room.selectedUnitId||site.propertyId;
     const {w,d,yaw}=site,condominium=site.style==='rios-ditalia',modern=site.style==='damha'||condominium,back=-d/2+1.04,front=d/2-.12;
     room.collider(0,front,Math.min(3.1,w*.4)-.13,.18,2.5);
     room.gate=room.colliders.at(-1);
@@ -19967,7 +19999,7 @@ function precompile(T,renderer,scene,camera){
 
 
     // OT Home Life: ownership, owned item library, positions, rotation and storage
-    // are part of the existing rioMapSave().properties[site.propertyId] record.
+    // are part of the existing unit or residence property record.
     // Keep the original six IDs and saved furniture arrays compatible.
     const furnishings=[
       {id:'tapete',name:'Tapete decorativo',price:35,type:'rug',color:0x73928c,x:-w*.06,z:-.68,w:1.56,d:1.24},
@@ -20059,7 +20091,7 @@ function precompile(T,renderer,scene,camera){
       };
     };
     const updateDecor=()=>{
-      const owner=rioPropertyTitle(site.propertyId);
+      const owner=rioPropertyTitle(rioResidencePropertyId());
       const owned=new Set(owner?.furniture||[]);
       for(const item of furnishings){
         const existing=decorMeshes.get(item.id);
@@ -20070,8 +20102,9 @@ function precompile(T,renderer,scene,camera){
       }
     };
     updateDecor();
+    room.refreshDecor=updateDecor;
     const openDecorCatalog=()=>{
-      const owner=rioPropertyTitle(site.propertyId);
+      const owner=rioPropertyTitle(rioResidencePropertyId());
       if(!owner?.owned){toast('Primeiro compre esta residência.','info',2300);return;}
       const owned=new Set(owner.furniture||[]);
       openModal('Minha casa · móveis e decoração',
@@ -20082,7 +20115,7 @@ function precompile(T,renderer,scene,camera){
         for(const button of root.querySelectorAll('[data-rio-decor-item]'))button.onclick=()=>{
           const item=byId.get(button.dataset.rioDecorItem);
           if(!item)return;
-          const current=rioPropertyTitle(site.propertyId);
+          const current=rioPropertyTitle(rioResidencePropertyId());
           if(!current?.owned)return;
           if(!(current.furniture||[]).includes(item.id)){
             if(Number(state.profile.coins)<item.price){toast('Moedas insuficientes.','warn',1800);return;}
@@ -20094,11 +20127,11 @@ function precompile(T,renderer,scene,camera){
       });
     };
     const openDecorEditor=item=>{
-      const owner=rioPropertyTitle(site.propertyId);
+      const owner=rioPropertyTitle(rioResidencePropertyId());
       if(!owner?.owned||!(owner.furniture||[]).includes(item.id))return;
       const pos=layoutFor(item,owner);
       const edit=(direction)=>{
-        const current=rioPropertyTitle(site.propertyId);
+        const current=rioPropertyTitle(rioResidencePropertyId());
         if(!current?.owned||!(current.furniture||[]).includes(item.id))return;
         const p=layoutFor(item,current);
         if(direction==='left')p.x-=.55;
@@ -20133,7 +20166,7 @@ function precompile(T,renderer,scene,camera){
     });
     const renovateMeshes={};
     const renovationFinish=(kind)=>{
-      const owner=rioPropertyTitle(site.propertyId);
+      const owner=rioPropertyTitle(rioResidencePropertyId());
       const finish=owner?.renovation?.[kind];
       if(!Number.isInteger(finish))return;
       const palette=renovationColors[kind];
@@ -20157,7 +20190,7 @@ function precompile(T,renderer,scene,camera){
     };
     renovationFinish('walls');renovationFinish('floor');
     const openRenovation=()=>{
-      const owner=rioPropertyTitle(site.propertyId);
+      const owner=rioPropertyTitle(rioResidencePropertyId());
       if(!owner?.owned){toast('Só o proprietário pode reformar esta casa.','warn',2200);return;}
       const inventory=rioConstructionSave().constructionInventory;
       openModal('Reformar imóvel · '+site.name,
@@ -20169,7 +20202,7 @@ function precompile(T,renderer,scene,camera){
         renovationColors.floor.map((color,index)=>'<button class="choice" data-rio-home-floor="'+index+'"><b>Piso '+(index+1)+'</b><span>1 caixa de piso</span></button>').join('')+
         '</div>',root=>{
           const apply=(kind,index)=>{
-            const current=rioPropertyTitle(site.propertyId),saved=rioConstructionSave().constructionInventory;
+            const current=rioPropertyTitle(rioResidencePropertyId()),saved=rioConstructionSave().constructionInventory;
             const item=kind==='walls'?'paint':'tile';
             if(!current?.owned||!(saved[item]>0)){toast('Receba primeiro o material de construção.','warn',2400);return;}
             saved[item]--;
@@ -20197,7 +20230,7 @@ function precompile(T,renderer,scene,camera){
     for(const item of furnishings){
       const activity=furnitureAction[item.type];
       if(!activity)continue;
-      const currentPlacement=()=>layoutFor(item,rioPropertyTitle(site.propertyId));
+      const currentPlacement=()=>layoutFor(item,rioPropertyTitle(rioResidencePropertyId()));
       const position=()=>{const p=currentPlacement();return room.point(p.x,p.z);};
       registerInteractable({
         id:site.id+'-furniture-use-'+item.id,type:'activity',
@@ -20207,7 +20240,7 @@ function precompile(T,renderer,scene,camera){
         available:()=>room.root.visible&&!player.vehicle&&!player.boating&&
           !player.swimming&&!characterActivities.session&&
           room.forSite(player.x,player.z,-.38)&&
-          !!rioPropertyTitle(site.propertyId)?.furniture?.includes(item.id)&&
+          !!rioPropertyTitle(rioResidencePropertyId())?.furniture?.includes(item.id)&&
           !currentPlacement().stored,
         action:()=>{
           if((activity==='cook'||activity==='eat')&&Number(state.inventory.food||0)<1){
@@ -20236,7 +20269,7 @@ function precompile(T,renderer,scene,camera){
       });
     }
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
-      const title=rioPropertyTitle(site.propertyId);
+      const title=rioPropertyTitle(rioResidencePropertyId());
       toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
     },{inside:true,icon:'🔑'});
   }
