@@ -432,7 +432,7 @@
         !player.swimming&&!characterActivities.session,
       action:()=>rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,
         available:()=>root.visible&&!record.inside&&rioPlayerAt(entrance,3.6),
-        decorate:()=>room.manageFurniture?.(),
+        decorate:()=>{if(enter())room.manageFurniture?.();},
         enter})
     });
     rioPreto.homes.set(lot.id,record);
