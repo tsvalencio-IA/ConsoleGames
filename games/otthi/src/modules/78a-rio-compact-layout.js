@@ -5,14 +5,14 @@
       {id:'rio-compact-godoy',name:'Rua Antônio de Godoy',width:10,shoulder:1,closed:false,
         points:[{x:-105,z:0},{x:-140,z:0},{x:-170,z:0}]},
       {id:'rio-compact-murchid',name:'Avenida Murchid Homsi',width:12,shoulder:1.2,closed:false,
-        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117}]}
+        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117},{x:205,z:235}]}
     ],
     nodes:{
       RIO_GODOY:{x:-140,z:0},RIO_GODOY_W:{x:-170,z:0},
-      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117}
+      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117},RIO_MURCHID_CONDOMINIOS:{x:205,z:235}
     },
     edges:[['HW','RIO_GODOY'],['RIO_GODOY','RIO_GODOY_W'],['RIO_GODOY_W','OV18'],['RIO_GODOY_W','OV19'],
-      ['RIO_MURCHID_S','A_LINK'],['A_LINK','RIO_MURCHID_M'],['RIO_MURCHID_M','RIO_MURCHID_N']],
+      ['RIO_MURCHID_S','A_LINK'],['A_LINK','RIO_MURCHID_M'],['RIO_MURCHID_M','RIO_MURCHID_N'],['RIO_MURCHID_N','RIO_MURCHID_CONDOMINIOS']],
     avenueNames:{
       'avenida-central-ew':'Avenida Bady Bassitt',
       'avenida-central-ns':'Avenida Alberto Andaló',
@@ -46,7 +46,14 @@
       ['casa-cotegipe',225,51,11,9,'w','Avenida Murchid Homsi'],
       ['casa-vila-ercilia',185,4.5,11,10,'e','Avenida Murchid Homsi'],
       ['casa-damha',225,107,15,11,'w','Avenida Murchid Homsi'],
-      ['casa-damha-varanda',185,107,15,12,'e','Avenida Murchid Homsi']
+      ['casa-damha-varanda',185,107,15,12,'e','Avenida Murchid Homsi'],
+      // The six condominium lots extend the existing street grid; no existing lot is replaced.
+      ['rios_candelaro',185,147,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fiora',225,147,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_salso',185,181,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fortore',225,181,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_liri',185,215,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_tanaro',225,215,22,20,'w','Rios D’Italia · Av. Murchid Homsi']
     ],
     sections:[[-65,40],[-116.8,40],[-118.7,43],[-118.7,76.5],[-115.7,78.2],[-90.4,78.2],
       [-89.1,74.5],[-89.1,68.7],[-63,68.7],[-61.4,65],[-61.4,42],[-63,40],[-65,40]]
@@ -86,5 +93,11 @@
     ["casa-cotegipe","regional-casa-cotegipe","Casa de varanda · Barão de Cotegipe","residence","popular",380],
     ["casa-vila-ercilia","regional-casa-vila-ercilia","Casa térrea · Vila Ercília","residence","popular",450],
     ["casa-damha","regional-casa-damha","Casa contemporânea · Damha","residence","damha",1250],
-    ["casa-damha-varanda","regional-casa-damha-varanda","Casa com varanda · Damha","residence","damha",1490]
+    ["casa-damha-varanda","regional-casa-damha-varanda","Casa com varanda · Damha","residence","damha",1490],
+    ["rios_candelaro","regional-rios-italia-candelaro","Rios D’Italia · Rio Candelaro","residence","rios-ditalia",1280],
+    ["rios_fiora","regional-rios-italia-fiora","Rios D’Italia · Rio Fiora","residence","rios-ditalia",1340],
+    ["rios_salso","regional-rios-italia-salso","Rios D’Italia · Rio Salso","residence","rios-ditalia",1300],
+    ["rios_fortore","regional-rios-italia-fortore","Rios D’Italia · Rio Fortore","residence","rios-ditalia",1360],
+    ["rios_liri","regional-rios-italia-liri","Rios D’Italia · Rio Liri","residence","rios-ditalia",1380],
+    ["rios_tanaro","regional-rios-italia-tanaro","Rios D’Italia · Rio Tanaro","residence","rios-ditalia",1420]
   ];
