@@ -19,7 +19,8 @@ test('residential pool belongs to exterior shared leisure instead of the furnish
  assert.match(pool,/outdoor\.box\(px/);
  assert.doesNotMatch(pool,/room\.box\(px/);
  assert.match(pool,/label:condominium\?'Usar piscina da área comum do condomínio'/);
- assert.match(pool,/!rioMap\.indoors/);
+ assert.match(pool,/room\.isOutdoorLeisurePoint/);
+ assert.match(pool,/room\.isOutdoorLeisurePoint\(player\.x,player\.z\)/);
  assert.match(pool,/beginCharacterActivity\('rio-pool'/);
 });
 
