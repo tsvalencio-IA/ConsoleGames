@@ -17335,7 +17335,10 @@ function precompile(T,renderer,scene,camera){
   window.OTTHI_RIO_V51=Object.freeze({
     diagnostics:()=>({places:RIO_V51.places.length,sectors:Object.keys(RIO_V51.sectors).length,
       loaded:[...rioV51World.roots.keys()],visible:[...rioV51World.roots.values()].filter(root=>root.visible).length,
-      course:{record:rioStreetRecord(),active:activeRace?.type==='rio-street'?{...activeRace}:null}}),
+      course:{record:rioStreetRecord(),active:activeRace?.type==='rio-street'?{...activeRace}:null},
+      malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,
+        sectorVisible:!!rioV51World.roots.get(RIO_V51.places.find(p=>p.id===m.site.id)?.sector)?.visible,
+        entry:m.site.entry,position:{x:player.x,z:player.z}}))}),
     locations:()=>RIO_V51.places.map(rioV51Location)
   });
 
