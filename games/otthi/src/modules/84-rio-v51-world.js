@@ -333,6 +333,8 @@
         if(busy||!running||player.vehicle||player.boating||otGames.active)return;
         if(Number(state.profile.coins)<experience.ticket){toast('Moedas insuficientes para esta atividade.','warn',1900);return;}
         busy=true;
+        const finish=()=>{
+        if(Number(state.profile.coins)<experience.ticket)return false;
         addCoins(-experience.ticket);
         const record=save.regionExperience.visits[p.id]||{count:0,spent:0};
         record.count++;record.spent+=experience.ticket;record.lastVisit=Date.now();
@@ -344,6 +346,21 @@
         }
         saveState(true);updateHUD();closeModal();
         toast(experience.label+' concluído. Visita registrada em '+p.name+'.','good',2800);
+        return true;
+        };
+        // Thermal-water activities require the player's avatar to walk into
+        // the physical pool and complete the animation before spending coins.
+        if(p.shape==='pool'&&typeof beginCharacterActivity==='function'&&
+          typeof CHARACTER_ACTIVITIES!=='undefined'&&CHARACTER_ACTIVITIES['rio-pool']){
+          const target={x:p.x,z:p.z+p.face*p.d*.19};
+          const pose={x:p.x,z:p.z-p.face*p.d*.16,y:.32,
+            yaw:p.face===1?0:Math.PI,lying:true};
+          const started=beginCharacterActivity('rio-pool',{target,pose,walkSpeed:1.9,
+            commit:finish});
+          if(started){closeModal();return;}
+          busy=false;return;
+        }
+        finish();
       };
     });
     return true;
