@@ -566,7 +566,7 @@
   const rioPreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
   const rioPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return legacyRegionalLayout||rioCompactWorld()?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations,...(rioCompactWorld()?RIO_PRETO_LAYOUT.lots.filter(lot=>lot.style.startsWith('house-')).map(lot=>{const site=rioHistoricHomeSite(lot);return {id:site.id,name:site.name,group:'Casas e imóveis · Rio Preto',icon:'🏠',x:site.entry[0],z:site.entry[1],navX:site.entry[0],navZ:site.entry[1],description:'Casa com entrada, compra, móveis e atividades domésticas'};}):[])]:rioPreviousLocations();};
+  expansionMapLocations=function(){const compact=typeof rioCompactWorld==='function'&&rioCompactWorld();return legacyRegionalLayout||compact?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations,...(compact?RIO_PRETO_LAYOUT.lots.filter(lot=>lot.style.startsWith('house-')).map(lot=>{const site=rioHistoricHomeSite(lot);return {id:site.id,name:site.name,group:'Casas e imóveis · Rio Preto',icon:'🏠',x:site.entry[0],z:site.entry[1],navX:site.entry[0],navZ:site.entry[1],description:'Casa com entrada, compra, móveis e atividades domésticas'};}):[])]:rioPreviousLocations();};
   window.OTTHI_RIO_PRETO=Object.freeze({
     locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
     diagnostics:()=>{
