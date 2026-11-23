@@ -405,8 +405,21 @@
 
   function rioV51Visit(p){
     if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
-    const indoorMall=rioV51IndoorMalls.get(p.id);
-    if(indoorMall)return indoorMall.enter();
+    if(p.shape==='mall'&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
+      // An action can be invoked before distance-streaming finishes this sector.
+      // Mount its existing native store interior on demand instead of opening
+      // the old facade-only modal while the player stands at the entrance.
+      let indoorMall=rioV51IndoorMalls.get(p.id);
+      if(!indoorMall){
+        const sector=RIO_V51.sectors[p.sector];
+        const root=rioV51World.roots.get(p.sector)||mountRioV51Sector(sector);
+        root.visible=true;
+        indoorMall=rioV51IndoorMalls.get(p.id);
+      }
+      if(indoorMall)return indoorMall.enter();
+      toast('O interior do shopping não pôde ser carregado.','warn',2300);
+      return false;
+    }
     if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return rioOpenRegionalConstructionStore(p);
