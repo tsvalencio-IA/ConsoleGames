@@ -22,6 +22,11 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install chromium
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build matching source and hashes before launching browser
+        run: python3 games/otthi/tools/build_project.py
       - name: Run actual Rio Preto smartphone browser acceptance
         run: node tests/rio-compact-world-browser.mjs
       - name: Save screenshots and reports
