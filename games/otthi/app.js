@@ -390,14 +390,19 @@
       ['rain', 'Jaqueta corta-vento', '#da954a'],
       ['hoodie', 'Moletom com capuz', '#66739c'],
       ['rio-polo', 'Polo vinho da cidade', '#862e4a'],
-      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2']
+      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2'],
+      ['rio-social', 'Camisa social azul', '#446a8a']
     ],
     legs: [
       ['original', 'Roupa original'],
       ['jeans', 'Calça jeans', '#36577b'],
       ['chino', 'Calça de sarja', '#a28662'],
       ['bermuda', 'Bermuda', '#54695c'],
-      ['track', 'Calça esportiva', '#5b3468']
+      ['track', 'Calça esportiva', '#5b3468'],
+      ['rio-alfaiataria', 'Calça de alfaiataria', '#383b43'],
+      ['rio-cargo', 'Calça cargo', '#6c7351'],
+      ['rio-jeans-preto', 'Jeans preto', '#252a35'],
+      ['rio-bermuda-jeans', 'Bermuda jeans', '#456786']
     ],
     shoes: [
       ['original', 'Calçado original'],
@@ -405,34 +410,47 @@
       ['leather', 'Sapato de couro', '#634432'],
       ['boot', 'Bota de passeio', '#725543'],
       ['rio-tenis', 'Tênis branco da orla', '#e6dfd5'],
-      ['rio-sapato', 'Sapato azul-marinho', '#263a58']
+      ['rio-sapato', 'Sapato azul-marinho', '#263a58'],
+      ['rio-sneaker', 'Tênis urbano', '#b6a088'],
+      ['rio-bota', 'Bota preta', '#282b35'],
+      ['rio-salto', 'Sapato de festa', '#b66d76']
     ],
     hat: [
       ['original', 'Sem chapéu novo'],
       ['cap', 'Boné bordado', '#3c526d'],
       ['panama', 'Chapéu de palha', '#dab87e'],
       ['beanie', 'Gorro de tricô', '#496b61'],
-      ['headphones', 'Fones de ouvido', '#4b5970']
+      ['headphones', 'Fones de ouvido', '#4b5970'],
+      ['rio-bone-azul', 'Boné azul', '#375c96'],
+      ['rio-panama-claro', 'Chapéu verão', '#e6cda3']
     ],
     glasses: [
       ['original', 'Óculos originais'],
       ['copper', 'Armação cobre', '#b87955'],
-      ['sun', 'Óculos de sol', '#304255']
+      ['sun', 'Óculos de sol', '#304255'],
+      ['rio-armacao', 'Óculos pretos', '#25292e'],
+      ['rio-sol', 'Óculos escuros', '#1a2435']
     ],
     jewel: [
       ['original', 'Acessórios originais'],
       ['necklace', 'Colar pingente', '#d8ae61'],
-      ['earrings', 'Brincos pequenos', '#d8ae61']
+      ['earrings', 'Brincos pequenos', '#d8ae61'],
+      ['rio-brinco-prata', 'Brincos de prata', '#b7c8d2'],
+      ['rio-colar-prata', 'Colar de prata', '#b9cad2']
     ],
     wrist: [
       ['original', 'Acessório original'],
       ['watch', 'Relógio de aço', '#8f9fa9'],
-      ['bracelet', 'Pulseira trançada', '#b96a55']
+      ['bracelet', 'Pulseira trançada', '#b96a55'],
+      ['rio-smartwatch', 'Relógio digital', '#343c45'],
+      ['rio-pulseira-prata', 'Pulseira de prata', '#b9c9d3']
     ],
     bag: [
       ['original', 'Sem mochila'],
       ['city', 'Mochila de lona', '#355a59'],
-      ['hike', 'Mochila de trilha', '#9b6846']
+      ['hike', 'Mochila de trilha', '#9b6846'],
+      ['rio-mochila-escola', 'Mochila escolar', '#6e579c'],
+      ['rio-bolsa-cidade', 'Bolsa casual', '#926e55']
     ]
   });
 
@@ -440,7 +458,11 @@
     top: 'Roupas', legs: 'Calças e bermudas', shoes: 'Calçados', hat: 'Bonés e chapéus',
     glasses: 'Óculos', jewel: 'Colares e brincos', wrist: 'Relógios e pulseiras', bag: 'Mochilas'
   });
-  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68});
+  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68,
+    'rio-social':96,'rio-alfaiataria':88,'rio-cargo':70,'rio-jeans-preto':78,'rio-bermuda-jeans':52,
+    'rio-sneaker':72,'rio-bota':98,'rio-salto':94,'rio-bone-azul':39,'rio-panama-claro':55,
+    'rio-armacao':65,'rio-sol':69,'rio-brinco-prata':48,'rio-colar-prata':60,
+    'rio-smartwatch':110,'rio-pulseira-prata':50,'rio-mochila-escola':72,'rio-bolsa-cidade':86});
   function rioWardrobeHasItem(id){return !RIO_WARDROBE_STORE[id]||!!state.cityServices?.rioMap?.wardrobePurchases?.[id];}
   const RIO_WARDROBE_PRESETS = Object.freeze({
     original: {label:'Visual original', outfit:{}},
@@ -599,7 +621,7 @@
     const top=tint('top');
     if(top){
       const torso=add('top',rootKey);
-      if(['denim','rain','hoodie'].includes(outfit.top)){
+      if(['denim','rain','hoodie','rio-social'].includes(outfit.top)){
         // The sleeves pivot at the existing elbows and leave the tool hand clear.
         for(const side of [-1,1]){
           const sleeve=add('sleeve','elbow'+side);
@@ -642,11 +664,11 @@
     const hat=tint('hat');
     if(hat){
       const head=add('hat','head');
-      if(outfit.hat==='cap'){
+      if(['cap','rio-bone-azul'].includes(outfit.hat)){
         piece(head,'sphere',hat,[.81,.28,.72],[0,.444,-.012]);
         piece(head,'sphere',hat,[.58,.06,.34],[0,.393,.38]);
         piece(head,'box','#ead9b3',[.102,.043,.018],[0,.49,.335]);
-      }else if(outfit.hat==='panama'){
+      }else if(['panama','rio-panama-claro'].includes(outfit.hat)){
         piece(head,'disc','#b89c74',[1.00,.045,.94],[0,.442,0]);
         piece(head,'flare',hat,[.75,.208,.66],[0,.519,-.016]);
         piece(head,'disc','#564537',[.734,.048,.65],[0,.468,-.016]);
@@ -662,7 +684,7 @@
         piece(head,'sphere',hat,[.119,.124,.118],[0,.593,-.019]);
       }
     }
-    if(outfit.glasses==='sun'){
+    if(['sun','rio-sol'].includes(outfit.glasses)){
       const glasses=add('glasses','head');
       for(const side of [-1,1]){
         piece(glasses,'sphere','#203744',[.242,.181,.035],[side*.176,.065,.414],'lens');
@@ -670,7 +692,7 @@
       }
     }
     const jewel=tint('jewel');
-    if(outfit.jewel==='earrings'){
+    if(['earrings','rio-brinco-prata'].includes(outfit.jewel)){
       const ears=add('earrings','head');
       for(const side of [-1,1])piece(ears,'ring',jewel,[.075,.105,.048],[side*.424,-.127,.039],'metal');
     }else if(outfit.jewel==='necklace'){
@@ -679,7 +701,7 @@
       chain.rotation.x=-.36;
       piece(neck,'sphere','#7db7ae',[.075,.091,.029],[0,1.771,.241],'metal');
     }
-    if(outfit.wrist==='watch'){
+    if(['watch','rio-smartwatch'].includes(outfit.wrist)){
       const watch=add('watch','elbow-1');
       piece(watch,'disc',tint('wrist'),[.169,.069,.174],[0,-.283,.006],'metal');
       piece(watch,'box','#253845',[.087,.047,.039],[0,-.283,.101],'metal');
@@ -2655,14 +2677,16 @@
       {id:'rio-compact-godoy',name:'Rua Antônio de Godoy',width:10,shoulder:1,closed:false,
         points:[{x:-105,z:0},{x:-140,z:0},{x:-170,z:0}]},
       {id:'rio-compact-murchid',name:'Avenida Murchid Homsi',width:12,shoulder:1.2,closed:false,
-        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117}]}
+        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117}]},
+      {id:'rio-condominios-link',name:'Acesso Rios D’Italia',width:9,shoulder:1,closed:false,
+        points:[{x:205,z:117},{x:205,z:128},{x:300,z:128},{x:300,z:230}]}
     ],
     nodes:{
       RIO_GODOY:{x:-140,z:0},RIO_GODOY_W:{x:-170,z:0},
-      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117}
+      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117},RIO_MURCHID_CONDOMINIOS:{x:300,z:230}
     },
     edges:[['HW','RIO_GODOY'],['RIO_GODOY','RIO_GODOY_W'],['RIO_GODOY_W','OV18'],['RIO_GODOY_W','OV19'],
-      ['RIO_MURCHID_S','A_LINK'],['A_LINK','RIO_MURCHID_M'],['RIO_MURCHID_M','RIO_MURCHID_N']],
+      ['RIO_MURCHID_S','A_LINK'],['A_LINK','RIO_MURCHID_M'],['RIO_MURCHID_M','RIO_MURCHID_N'],['RIO_MURCHID_N','RIO_MURCHID_CONDOMINIOS']],
     avenueNames:{
       'avenida-central-ew':'Avenida Bady Bassitt',
       'avenida-central-ns':'Avenida Alberto Andaló',
@@ -2696,7 +2720,14 @@
       ['casa-cotegipe',225,51,11,9,'w','Avenida Murchid Homsi'],
       ['casa-vila-ercilia',185,4.5,11,10,'e','Avenida Murchid Homsi'],
       ['casa-damha',225,107,15,11,'w','Avenida Murchid Homsi'],
-      ['casa-damha-varanda',185,107,15,12,'e','Avenida Murchid Homsi']
+      ['casa-damha-varanda',185,107,15,12,'e','Avenida Murchid Homsi'],
+      // The six condominium lots extend the existing street grid; no existing lot is replaced.
+      ['rios_candelaro',280,147,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fiora',320,147,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_salso',280,181,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fortore',320,181,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_liri',280,204,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_tanaro',320,215,22,20,'w','Rios D’Italia · Av. Murchid Homsi']
     ],
     sections:[[-65,40],[-116.8,40],[-118.7,43],[-118.7,76.5],[-115.7,78.2],[-90.4,78.2],
       [-89.1,74.5],[-89.1,68.7],[-63,68.7],[-61.4,65],[-61.4,42],[-63,40],[-65,40]]
@@ -2736,7 +2767,13 @@
     ["casa-cotegipe","regional-casa-cotegipe","Casa de varanda · Barão de Cotegipe","residence","popular",380],
     ["casa-vila-ercilia","regional-casa-vila-ercilia","Casa térrea · Vila Ercília","residence","popular",450],
     ["casa-damha","regional-casa-damha","Casa contemporânea · Damha","residence","damha",1250],
-    ["casa-damha-varanda","regional-casa-damha-varanda","Casa com varanda · Damha","residence","damha",1490]
+    ["casa-damha-varanda","regional-casa-damha-varanda","Casa com varanda · Damha","residence","damha",1490],
+    ["rios_candelaro","regional-rios-italia-candelaro","Rios D’Italia · Rio Candelaro","residence","rios-ditalia",1280],
+    ["rios_fiora","regional-rios-italia-fiora","Rios D’Italia · Rio Fiora","residence","rios-ditalia",1340],
+    ["rios_salso","regional-rios-italia-salso","Rios D’Italia · Rio Salso","residence","rios-ditalia",1300],
+    ["rios_fortore","regional-rios-italia-fortore","Rios D’Italia · Rio Fortore","residence","rios-ditalia",1360],
+    ["rios_liri","regional-rios-italia-liri","Rios D’Italia · Rio Liri","residence","rios-ditalia",1380],
+    ["rios_tanaro","regional-rios-italia-tanaro","Rios D’Italia · Rio Tanaro","residence","rios-ditalia",1420]
   ];
 
   // ===== MODULE: 05a-world-layout-v704.js =====
@@ -19282,7 +19319,7 @@ function precompile(T,renderer,scene,camera){
   }
 
   function rioBuildResidence(site,room){
-    const {w,d,yaw}=site,modern=site.style==='damha',back=-d/2+1.04,front=d/2-.12;
+    const {w,d,yaw}=site,condominium=site.style==='rios-ditalia',modern=site.style==='damha'||condominium,back=-d/2+1.04,front=d/2-.12;
     room.collider(0,front,Math.min(3.1,w*.4)-.13,.18,2.5);
     room.gate=room.colliders.at(-1);
     const doorPoint=room.point(0,front);
@@ -19305,6 +19342,37 @@ function precompile(T,renderer,scene,camera){
       room.box(x,.23,d/2+.65,.91,.45,.72,0x99674d);
       room.part('canopy',x,.61,d/2+.65,.63,.58,.58,0x617e50);
     }
+
+    if(condominium){
+      // Apartment towers share the existing batched building renderer.
+      // Only the furnished ground-floor unit is physically navigable at this stage.
+      const colors=[0xd6cabe,0xcdc6b9,0xd8d6cb,0xc4d0cc,0xcac6bd,0xd8cfc5];
+      const order=['rios_candelaro','rios_fiora','rios_salso','rios_fortore','rios_liri','rios_tanaro'];
+      const tint=colors[Math.max(0,order.indexOf(site.key))];
+      room.box(0,10.5,-d*.1,w*.70,14.5,d*.64,tint);
+      for(let floor=0;floor<5;floor++){
+        const y=5.15+floor*2.65;
+        room.box(0,y-.95,d*.224,w*.72,.18,1.1,0xa8aba9);
+        for(const dx of[-w*.24,-w*.08,w*.08,w*.24]){
+          room.box(dx,y,d*.224+.055,w*.105,1.1,.09,0x52727a);
+          room.box(dx,y-.64,d*.224+.09,w*.114,.12,.18,0x526467);
+        }
+        for(const side of[-1,1])room.box(side*w*.354,y,-d*.15,.08,1.12,d*.27,0x66878a);
+      }
+      room.box(0,17.92,-d*.1,w*.75,.25,d*.71,0x66767c);
+      room.box(0,3.35,d*.34,w*.41,.19,2.3,0x6f8284);
+      const point=room.point(0,d*.18);
+      const porteiro=createNPC('porteiro-'+site.key,'Porteiro',point.x,point.z,0x456779,0);
+      porteiro.stationary=true;porteiro.cityLifeManaged=true;room.root.add(porteiro.group);
+      world.interactables=world.interactables.filter(action=>action.id!=='npc-'+porteiro.id);
+      room.npcs=[porteiro];
+      room.action('portaria','Conversar com o porteiro',0,d*.18,()=>{
+        openModal('Portaria · '+site.name,
+          '<p>Você pode conhecer o apartamento mobiliado, comprar sua unidade com moedas do jogo e usar o guarda-roupa.</p>'+
+          '<div class="modal-actions"><button class="btn primary" data-portaria-wardrobe>Trocar roupas</button></div>',
+          root=>{root.querySelector('[data-portaria-wardrobe]').onclick=openRioWardrobe;});
+      },{inside:true,icon:'🏢',radius:2.1});
+    }
     room.action('rest','Descansar na sala',sx,back+.65,()=>rioSitOnBench(site,room,sx,back-.15),{inside:true,icon:'🛋️'});
     const bedApproach=room.point(bx,back+1.78),bed=room.point(bx,back+.24);
     room.action('bed','Dormir na cama',bx,back+1.78,()=>beginCharacterActivity('bed',{
@@ -19313,6 +19381,66 @@ function precompile(T,renderer,scene,camera){
       }
     }),{inside:true,icon:'🛏️'});
     room.action('wardrobe','Usar o guarda-roupa',-w*.37+.92,.8,openRioWardrobe,{inside:true,icon:'👕'});
+
+    // Native inventory/needs/save; each action works on the existing profile.
+    room.box(-w*.32,.59,.25,1.46,.12,.74,0xbaa38b);
+    room.box(-w*.32,.94,.25,.60,.58,.45,0xe0dfd7);
+    room.action('kitchen','Cozinhar no apartamento',-w*.19,.85,()=>{
+      if(Number(state.inventory.food||0)<1){toast('Compre alimentos no Mercadão para cozinhar.','info',2300);return;}
+      state.inventory.food--;state.needs.hunger=clamp(Number(state.needs.hunger||0)+30,0,100);
+      rioCountVisit(site);saveState(true);toast('Refeição preparada. Fome recuperada.','good',2000);
+    },{inside:true,icon:'🍳'});
+    room.box(w*.39,.7,1.85,.73,1.4,1.14,0xb7cfcc);
+    room.action('bathroom','Tomar banho',w*.20,1.85,()=>{
+      state.needs.hygiene=clamp(Number(state.needs.hygiene||0)+42,0,100);
+      rioCountVisit(site);saveState(true);toast('Banho concluído. Higiene recuperada.','good',2000);
+    },{inside:true,icon:'🚿'});
+    room.action('tv','Assistir televisão',sx,back+.75,()=>{
+      state.needs.fun=clamp(Number(state.needs.fun||0)+18,0,100);
+      rioCountVisit(site);saveState(true);toast('Você descansou assistindo à TV.','good',2000);
+    },{inside:true,icon:'📺'});
+
+    // Optional purchasable furnishings; only owned pieces allocate geometry.
+    // The inventory is stored on the existing property record and survives reloads.
+    const furnishings=[
+      {id:'tapete',name:'Tapete decorativo',price:35,x:-w*.06,y:.20,z:-.68,w:1.56,h:.035,d:1.24,color:0x73928c},
+      {id:'luminaria',name:'Luminária de piso',price:65,x:w*.36,y:1.14,z:-d*.27,w:.15,h:2.12,d:.15,color:0xd9bb8e},
+      {id:'quadro',name:'Quadro moderno',price:48,x:w*.25,y:1.98,z:-d*.38,w:1.45,h:.90,d:.08,color:0xb17c64},
+      {id:'aparador',name:'Aparador de madeira',price:75,x:-w*.35,y:.56,z:-d*.1,w:1.18,h:1.12,d:.40,color:0x865b45},
+      {id:'estante',name:'Estante de livros',price:110,x:-w*.43,y:1.23,z:-d*.26,w:.52,h:2.45,d:1.35,color:0xbda27c},
+      {id:'planta',name:'Vaso decorativo',price:25,x:w*.37,y:.80,z:-d*.36,w:.44,h:1.60,d:.44,color:0x658c5f}
+    ];
+    const decorMeshes=new Map();
+    const updateDecor=()=>{
+      const owned=rioPropertyTitle(site.propertyId)?.furniture||[];
+      for(const item of furnishings){
+        if(!owned.includes(item.id))continue;
+        if(decorMeshes.has(item.id))continue;
+        const mesh=new THREE.Mesh(new THREE.BoxGeometry(item.w,item.h,item.d),renderMat(item.color,{roughness:.83}));
+        const point=room.point(item.x,item.z);
+        mesh.position.set(point.x,item.y,point.z);mesh.rotation.y=yaw;
+        room.root.add(mesh);decorMeshes.set(item.id,mesh);
+      }
+    };
+    updateDecor();
+    room.action('decor','Comprar e decorar com móveis',0,.8,()=>{
+      const owner=rioPropertyTitle(site.propertyId);
+      if(!owner?.owned){toast('Primeiro compre esta residência para decorá-la.','info',2400);return;}
+      updateDecor();
+      openModal('Móveis · '+site.name,
+        '<p>Compras únicas, vinculadas à propriedade e preservadas no salvamento.</p><div class="choice-grid">'+
+        furnishings.map(item=>'<button class="choice" data-rio-furniture="'+item.id+'" '+((owner.furniture||[]).includes(item.id)?'disabled':'')+'><b>'+item.name+'</b><span>'+((owner.furniture||[]).includes(item.id)?'Adquirido':item.price+' moedas')+'</span></button>').join('')+'</div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-furniture]'))button.onclick=()=>{
+          const item=furnishings.find(record=>record.id===button.dataset.rioFurniture);
+          const current=rioPropertyTitle(site.propertyId);
+          if(!item||!current?.owned||button.disabled||(current.furniture||[]).includes(item.id))return;
+          if(Number(state.profile.coins)<item.price){toast('Moedas insuficientes.','warn',1700);return;}
+          button.disabled=true;(current.furniture??=[]).push(item.id);
+          addCoins(-item.price);updateDecor();saveState(true);closeModal();
+          toast(item.name+' instalado na residência.','good',2100);
+        };
+      });
+    },{inside:true,icon:'🪑'});
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
       const title=rioPropertyTitle(site.propertyId);
       toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
@@ -19355,9 +19483,9 @@ function precompile(T,renderer,scene,camera){
 
   function rioWardrobeShop(site,room,counter,slot){
     if(!rioPlayerAt(counter))return false;
-    const choices=Object.entries(RIO_WARDROBE_CATALOG).filter(([kind])=>slot===kind).flatMap(([,items])=>items).filter(([id])=>RIO_WARDROBE_STORE[id]);
-    openModal(slot==='shoes'?'Loja de calçados':'Loja de roupas','<div class="choice-grid">'+choices.map(([id,label])=>
-      '<button class="choice" data-rio-clothing-buy="'+id+'" '+(rioWardrobeHasItem(id)?'disabled':'')+'><b>'+label+'</b><span>'+
+    const choices=Object.entries(RIO_WARDROBE_CATALOG).filter(([kind])=>slot==='top'?kind!=='shoes':kind==='shoes').flatMap(([kind,items])=>items.map(item=>[...item,kind])).filter(([id])=>RIO_WARDROBE_STORE[id]);
+    openModal(slot==='shoes'?'Loja de calçados':'Loja de roupas','<div class="choice-grid">'+choices.map(([id,label,color,category])=>
+      '<button class="choice" data-rio-clothing-buy="'+id+'" '+(rioWardrobeHasItem(id)?'disabled':'')+'><b>'+RIO_WARDROBE_LABELS[category]+' · '+label+'</b><span>'+
       (rioWardrobeHasItem(id)?'No guarda-roupa':RIO_WARDROBE_STORE[id]+' moedas')+'</span></button>').join('')+
       '</div><div class="modal-actions"><button class="btn" data-rio-clothing-try>Provar em Thiago ou Thamis</button><button class="btn" data-rio-custom-avatar>Criar meu personagem</button></div>',root=>{
         for(const button of root.querySelectorAll('[data-rio-clothing-buy]'))button.onclick=()=>{
@@ -19923,6 +20051,8 @@ function precompile(T,renderer,scene,camera){
     const yaw=rioCompactYaw[facing],out={x:Math.sin(yaw),z:Math.cos(yaw)},threshold=d/2+1.35;
     const roadDistance=key==='posto_brasilia'?205-x:threshold+5;
     return {key,id,name,kind,style,price,street,x,z,w,d,yaw,
+      // Never change legacy residential save keys; each new condominium gets its own property key.
+      propertyId:key.startsWith('rios_')?id:undefined,
       entry:[x+out.x*threshold,z+out.z*threshold],
       road:[x+out.x*roadDistance,z+out.z*roadDistance]};
   }
@@ -19983,7 +20113,9 @@ function precompile(T,renderer,scene,camera){
       [-96,11,'AV. BADY BASSITT',0],[-145,7.1,'RUA ANTÔNIO DE GODOY',0],
       [11,-11,'AV. ALBERTO ANDALÓ',-Math.PI/2],[213,6,'AV. MURCHID HOMSI',-Math.PI/2],
       [-65,42,'PARQUE DA REPRESA',0],[152,-17,'BR-153 · TRANSBRASILIANA',Math.PI/2],
-      [90,-154,'SP-310 · WASHINGTON LUÍS',0]
+      [90,-154,'SP-310 · WASHINGTON LUÍS',0],
+      [300,128,'RIOS D’ITALIA · CONDOMÍNIOS',0],
+      [300,197,'RIO CANDELARO · FIORA · SALSO · FORTORE · LIRI · TANARO',0]
     ])createSignpost(x,z,text,yaw);
     createCastleChallengeTokens();
   }
@@ -20035,7 +20167,7 @@ function precompile(T,renderer,scene,camera){
     const icon={market:'🛒',church:'⛪',civic:'🏛️',trail:'🌳',dining:'🍽️',bakery:'🥐',mall:'🛍️',
       'oil-shop':'🔧',fuel:'⛽',residence:'🏠',airport:'✈️',theater:'🎭',stadium:'⚽',practice:'⚽'};
     return {id:site.id,name:site.name,icon:icon[site.kind]||'📍',group:'Rio Preto',x,z,navX:x,navZ:z,
-      description:[site.street,rioSiteLabels[site.kind]].filter(Boolean).join(' · ')};
+      description:[site.street,site.style==='rios-ditalia'?'Condomínio Rios D’Italia · apartamento mobiliado':rioSiteLabels[site.kind]].filter(Boolean).join(' · ')};
   }
 
   const beforeCompactRioLocations=expansionMapLocations;
@@ -20046,6 +20178,13 @@ function precompile(T,renderer,scene,camera){
     const streets=compactRioStreets.map(([id,name,x,z])=>({id:'rio-via-'+id,name,x,z,icon:'🛣️',group:'Ruas e rodovias'}));
     const dock=rioMap.waterfront?.entry,course=rioMap.course;
     if(dock)places.push({id:'rio-represa-cais',name:'Cais da Represa',group:'Rio Preto',icon:'⚓',...dock});
+    // All four native boats are moored at this same Represa, not the Guarujá beach.
+    // GPS entry locations are derived from their actual native berths.
+    for(const boat of rioMap.waterfront?.craft||[]){
+      const boarding=boat.rioBerth?.step;
+      if(!boarding)continue;
+      places.push({id:'gps-'+boat.id,name:'Represa · '+boat.label,icon:boat.kind==='board'?'🏄':'🛶',group:'Represa de Rio Preto',x:boarding.x,z:boarding.z,navX:boarding.x,navZ:boarding.z,description:'Embarque no cais da Represa'});
+    }
     if(course)places.push({id:'rio-orla-largada',name:'Corrida a pé na Represa',group:'Rio Preto',icon:'🏃',...course.start});
     const hall=places.find(place=>place.id==='regional-prefeitura_andalo');
     if(hall)places.push({...hall,id:'castle'});

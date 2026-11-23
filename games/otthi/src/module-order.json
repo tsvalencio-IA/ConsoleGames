@@ -19,7 +19,7 @@
     {
       "file": "src/modules/81-rio-wardrobe.js",
       "description": "Guarda-roupa intercambiável e prévia dos personagens",
-      "sha256Body": "6b8576b035e0fe643bd381f3fb15c99993db699a1e246ad37abfae819884e7ff"
+      "sha256Body": "f9f59ec130f8a2454c732492bfdb1807692ecc22fc6aa11296b35562f97c1f76"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -73,7 +73,7 @@
     {
       "file": "src/modules/78a-rio-compact-layout.js",
       "description": "Lotes, ruas e referências de Rio Preto no terreno original",
-      "sha256Body": "467438693d3c0a8daad322059518d9cf8e7096319bbf96853a5c231a9e995efe"
+      "sha256Body": "cd4131bcecbc95468430212432a491dd4bf89bea136f2c2ee23e03334172734f"
     },
     {
       "file": "src/modules/05a-world-layout-v704.js",
@@ -714,7 +714,7 @@
     {
       "file": "src/modules/95-rio-open-buildings.js",
       "description": "Playable residences, shops, bakery and oil service",
-      "sha256Body": "b06a5a96bc5352eb3b969d51fa2d464104a9330be6c3df8111e68515a06ca729"
+      "sha256Body": "8ccb51a535a5386f919f994ef82cd6f774b4eec1e9d38b1401c36bd78a1ece2c"
     },
     {
       "file": "src/modules/96-rio-airport.js",
@@ -734,7 +734,7 @@
     {
       "file": "src/modules/99-rio-compact-world.js",
       "description": "Infraestrutura original e atividades jogáveis da Rio Preto compacta",
-      "sha256Body": "d6787ce585ba179b4d32b5f3238916e8789987114792cc3a44c993182a168a72"
+      "sha256Body": "b726822d9c9e1fde9b841415583a98aad91812fb70525ed76d79c862916e1f48"
     },
     {
       "file": "src/modules/100-rio-weather.js",
