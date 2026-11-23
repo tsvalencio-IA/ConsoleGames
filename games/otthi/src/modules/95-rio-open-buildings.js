@@ -59,7 +59,8 @@
     // Unit 101 reuses the original property ID to preserve ownership saves.
     const unitId=number=>number==='101'?site.propertyId:site.propertyId+'-unit-'+number;
     const units=[];
-    for(let floor=1;floor<=3;floor++)for(let door=1;door<=2;door++){
+    // The exterior already renders five levels with four window bays each.
+    for(let floor=1;floor<=5;floor++)for(let door=1;door<=4;door++){
       const number=String(floor)+'0'+String(door);
       units.push({number,id:unitId(number),floor});
     }
