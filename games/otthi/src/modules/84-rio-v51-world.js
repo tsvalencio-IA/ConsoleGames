@@ -298,7 +298,17 @@
     const compact=typeof compactRio!=='undefined'?(compactRio.sites||[]):[];
     const historic=typeof rioCompactWorld==='function'&&rioCompactWorld()&&typeof RIO_PRETO_LAYOUT!=='undefined'&&typeof rioHistoricHomeSite==='function'
       ?RIO_PRETO_LAYOUT.lots.filter(lot=>lot.style.startsWith('house-')).map(rioHistoricHomeSite):[];
-    return [...compact,...historic].filter(site=>site.kind==='residence'&&site.propertyId&&rioPropertyTitle(site.propertyId)?.owned);
+    const available=[];
+    for(const site of [...compact,...historic]){
+      if(site.kind!=='residence'||!site.propertyId)continue;
+      if(site.style==='rios-ditalia'){
+        for(const num of ['101','102','201','202','301','302']){
+          const id=num==='101'?site.propertyId:site.propertyId+'-unit-'+num;
+          if(rioPropertyTitle(id)?.owned)available.push({...site,propertyId:id,name:site.name+' · Apartamento '+num});
+        }
+      }else if(rioPropertyTitle(site.propertyId)?.owned)available.push(site);
+    }
+    return available;
   }
   function rioDeliveryAddress(site){return {x:site.entry[0],z:site.entry[1]};}
   function rioRegisterHomeDelivery(site){
