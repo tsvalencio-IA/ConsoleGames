@@ -194,7 +194,7 @@
           service?.status==='completed'?'Último serviço concluído':'Nenhuma solicitação aberta';
         openModal('Portaria · '+site.name,
           '<p>Atendimento do condomínio · apartamento '+(id.includes('-unit-')?id.split('-unit-').at(-1):'101')+'.</p>'+
-          '<p><b>'+status+'</b>. '+(owned?.owned?'Seu imóvel está cadastrado.':'Para solicitar serviços, adquira a unidade primeiro.')+'</p>'+
+          '<p><b>'+status+'</b>. '+(owned?.owned?'Seu imóvel está cadastrado. Limpeza: '+Math.round(Number(owned.cleanliness??85))+'%.':'Para solicitar serviços, adquira a unidade primeiro.')+'</p>'+
           '<div class="choice-grid">'+
           '<button class="choice" data-concierge-wardrobe><b>Guarda-roupa</b><span>Trocar roupas</span></button>'+
           '<button class="choice" data-concierge-deliveries><b>Encomendas</b><span>Consultar e retirar materiais recebidos</span></button>'+
@@ -247,6 +247,10 @@
     room.action('kitchen','Cozinhar no apartamento',-w*.19,.85,()=>{
       if(Number(state.inventory.food||0)<1){toast('Compre alimentos no Mercadão para cozinhar.','info',2300);return;}
       state.inventory.food--;state.needs.hunger=clamp(Number(state.needs.hunger||0)+30,0,100);
+      if(condominium){
+        const home=rioPropertyTitle(rioResidencePropertyId());
+        if(home?.owned)home.cleanliness=clamp(Number(home.cleanliness??85)-7,0,100);
+      }
       rioCountVisit(site);saveState(true);toast('Refeição preparada. Fome recuperada.','good',2000);
     },{inside:true,icon:'🍳'});
     room.box(w*.39,.7,1.85,.73,1.4,1.14,0xb7cfcc);
