@@ -12,13 +12,14 @@
     return properties[id]||null;
   }
 
-  function rioPropertyDoor({id,name,price,available,enter}){
+  function rioPropertyDoor({id,name,price,available,enter,decorate}){
     if(!available())return false;
     const property=rioPropertyTitle(id);
     const purchase=property?.owned?'':'<button class="btn good" data-rio-property-buy>Comprar por '+price+' moedas</button>';
     const lock=property?.owned?'<button class="btn" data-rio-property-lock>'+(property.locked?'Destrancar':'Trancar')+'</button>':'';
+    const decoration=property?.owned&&decorate?'<button class="btn" data-rio-property-decor>Decorar minha casa</button>':'';
     openModal(name,'<p>'+(property?.owned?'Sua residência em Rio Preto.':'Visite a casa ou compre com moedas do jogo.')+
-      '</p><div class="modal-actions"><button class="btn primary" data-rio-property-enter>'+(property?.owned?'Entrar':'Visitar')+'</button>'+purchase+lock+'</div>',root=>{
+      '</p><div class="modal-actions"><button class="btn primary" data-rio-property-enter>'+(property?.owned?'Entrar e morar':'Visitar')+'</button>'+purchase+lock+decoration+'</div>',root=>{
       root.querySelector('[data-rio-property-enter]').onclick=()=>{if(available()){closeModal();enter();}};
       root.querySelector('[data-rio-property-buy]')?.addEventListener('click',event=>{
         if(event.currentTarget.disabled||!available()||rioPropertyTitle(id)?.owned)return;
@@ -26,7 +27,11 @@
         event.currentTarget.disabled=true;
         rioMapSave().properties[id]={owned:true,locked:false,paid:price,at:Date.now()};
         addCoins(-price);setFlag('boughtHouse');awardMedal('Nova Propriedade');saveState(true);
-        rioPropertyDoor({id,name,price,available,enter});
+        rioPropertyDoor({id,name,price,available,enter,decorate});
+      });
+      root.querySelector('[data-rio-property-decor]')?.addEventListener('click',()=>{
+        if(!available()||!rioPropertyTitle(id)?.owned||typeof decorate!=='function')return;
+        closeModal();decorate();
       });
       root.querySelector('[data-rio-property-lock]')?.addEventListener('click',()=>{
         const title=rioPropertyTitle(id);if(!title?.owned||!available())return;
@@ -39,7 +44,7 @@
 
   function rioResidenceDoor(site,room,target){
     const point={x:site.entry[0],z:site.entry[1]},available=()=>room.root.visible&&rioPlayerAt(point,3.3);
-    return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,enter:()=>{
+    return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,decorate:()=>room.manageFurniture?.(),enter:()=>{
       room.gate.disabled=true;room.door.visible=false;
       if(!rioEnterPlace(target,()=>{if(site.propertyId==='home')setFlag('enteredHome');})){
         room.gate.disabled=false;room.door.visible=true;
@@ -310,6 +315,7 @@
         root.querySelector('[data-rio-decor-back]').onclick=openDecorCatalog;
       });
     };
+    room.manageFurniture=openDecorCatalog;
     room.action('decor','Comprar, posicionar e decorar a casa',0,.8,openDecorCatalog,{inside:true,icon:'🪑'});
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
       const title=rioPropertyTitle(site.propertyId);
