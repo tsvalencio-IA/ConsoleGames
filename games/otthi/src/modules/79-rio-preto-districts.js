@@ -1,6 +1,7 @@
 /** Progressive urban scenery using the same terrain, GPS and commerce as the other districts. */
 // @otthi-module-body
-  const rioPreto = {tiles:null, material:null, traffic:false, actors:0, shops:0, visits:0, visible:0, nextTileAt:0};
+  const rioPreto = {tiles:null, material:null, traffic:false, actors:0, shops:0, visits:0, visible:0, nextTileAt:0,
+    homes:new Map(),nextHomeAt:0,insideHome:null};
   const rioTileSize = 72;
   const rioDistrictStyles = {
     bady: {accent:0xad6744, facade:[0xe9dbba,0xbc7555,0xe5cba2,0xbc9e72,0x9aaf95], paving:0xc5b3a0, greenery:0x63875a},
@@ -332,11 +333,16 @@
       if(!tiles.has(key))tiles.set(key,{x:(tx+.5)*rioTileSize,z:(tz+.5)*rioTileSize,draw:[],root:null,primitives:0});
       tiles.get(key).draw.push(draw);
     }
-    for(const lot of RIO_PRETO_LAYOUT.lots)add(lot.x,lot.z,batch=>{
+    for(const lot of RIO_PRETO_LAYOUT.lots){
+      // Keep the exact historic façade, but render legacy houses separately
+      // in compact Rio so their roofs can be hidden without hiding the street.
+      if(rioCompactWorld()&&lot.style.startsWith('house-'))continue;
+      add(lot.x,lot.z,batch=>{
       const colors=rioDistrictStyles[lot.district];
       if(lot.style.startsWith('house-'))rioDrawHouse(batch,lot,colors);
       else rioDrawCommerce(batch,lot,colors);
-    });
+      });
+    }
     for(const mark of RIO_PRETO_LAYOUT.landmarks)add(mark.centerX,mark.centerZ,batch=>rioDrawPlaza(batch,mark));
     for(const road of RIO_PRETO_LAYOUT.highways){
       for(let i=1;i<road.points.length;i++){
@@ -353,6 +359,85 @@
       }
     }
     return tiles;
+  }
+
+
+  // Property adapter for existing houses. The approved exterior mesh is drawn
+  // with its original renderer, while the native Sims-style interior is kept
+  // in a separate group. This avoids duplicate facades and preserves IDs.
+  function rioHistoricHomeSite(lot){
+    const forward={x:Math.sin(lot.yaw),z:Math.cos(lot.yaw)};
+    const id='regional-home-'+lot.id;
+    const district={bady:'Boa Vista / Bady Bassitt',andalo:'Alberto Andaló',
+      murchid:'Murchid Homsi / Aterradinho'}[lot.district]||'São José do Rio Preto';
+    const door={x:lot.x+forward.x*(lot.d*.49+1.35),
+      z:lot.z+forward.z*(lot.d*.49+1.35)};
+    return {key:lot.id,id,propertyId:id,kind:'residence',style:lot.style==='house-modern'?'damha':'classic',
+      name:lot.title||'Casa · '+district+' · '+lot.id.replaceAll('-',' '),
+      street:district,price:920+(lot.variant%10)*80,
+      x:lot.x,z:lot.z,w:lot.w,d:lot.d,yaw:lot.yaw,
+      entry:[door.x,door.z],road:[door.x+forward.x*2.1,door.z+forward.z*2.1]};
+  }
+  function rioMakeHistoricHome(lot){
+    const site=rioHistoricHomeSite(lot);
+    const root=new THREE.Group();root.name='RIO_HISTORIC_FACADE_'+lot.id;worldGroup.add(root);
+    const batch=rioCreateBatch(root),before=world.colliders.length;
+    rioDrawHouse(batch,lot,rioDistrictStyles[lot.district]);
+    batch.commit();
+    const outsideColliders=world.colliders.slice(before);
+    const room=rioMountPlace(site,worldGroup);
+    room.legacyResidence=true;
+    room.root.visible=false;
+    room.colliders.forEach(c=>c.disabled=true);
+    const record={site,lot,root,room,outsideColliders,inside:false};
+    room.legacyRecord=record;
+    const entrance={x:site.entry[0],z:site.entry[1]};
+    function enter(){
+      // Single active historic interior; restore other facades if necessary.
+      if(rioPreto.insideHome&&rioPreto.insideHome!==record)return false;
+      record.inside=true;rioPreto.insideHome=record;
+      root.visible=false;room.root.visible=true;
+      for(const c of outsideColliders)c.disabled=true;
+      for(const c of room.colliders)c.disabled=false;
+      if(room.gate)room.gate.disabled=true;
+      if(room.door)room.door.visible=false;
+      const p=room.point(0,site.d*.22);
+      player.x=p.x;player.z=p.z;player.y=groundHeightAt(p.x,p.z);
+      player.vx=player.vy=player.vz=0;player.grounded=true;
+      player.facing=site.yaw;playerGroup.position.set(player.x,player.y,player.z);
+      cameraMode='interior';cameraYaw=site.yaw;cameraPitch=.20;cameraZoom=2.6;
+      rioMapSave().activeHistoricHome=site.id;
+      rememberSafePlayerPosition(true);saveState(true);
+      return true;
+    }
+    function leave(){
+      record.inside=false;if(rioPreto.insideHome===record)rioPreto.insideHome=null;
+      room.root.visible=false;root.visible=true;
+      for(const c of room.colliders)c.disabled=true;
+      for(const c of outsideColliders)c.disabled=false;
+      if(room.door)room.door.visible=true;
+      const p={x:entrance.x+Math.sin(site.yaw)*1.1,
+        z:entrance.z+Math.cos(site.yaw)*1.1};
+      player.x=p.x;player.z=p.z;player.y=groundHeightAt(p.x,p.z);
+      player.vx=player.vy=player.vz=0;player.grounded=true;
+      cameraMode='openworld';playerGroup.position.set(player.x,player.y,player.z);
+      delete rioMapSave().activeHistoricHome;rememberSafePlayerPosition(true);
+      saveState(true);return true;
+    }
+    room.action('historic-exit','Sair da residência',0,site.d*.27,leave,{inside:true,icon:'🚪',radius:2.6});
+    registerInteractable({
+      id:site.id+'-historic-front-door',type:'door',icon:'🏠',
+      label:'Visitar ou comprar · '+site.name,...entrance,radius:3.2,priority:258,
+      available:()=>root.visible&&!record.inside&&!player.vehicle&&!player.boating&&
+        !player.swimming&&!characterActivities.session,
+      action:()=>rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,
+        available:()=>root.visible&&!record.inside&&rioPlayerAt(entrance,3.6),
+        decorate:()=>room.manageFurniture?.(),
+        enter})
+    });
+    rioPreto.homes.set(lot.id,record);
+    if(rioMapSave().activeHistoricHome===site.id)enter();
+    return record;
   }
 
   function rioRegisterDestinations() {
@@ -448,6 +533,29 @@
       world.navCache?.clear?.();
       rioPreto.nextTileAt=performance.now()+34;
     }
+    if(rioCompactWorld()){
+      // House streaming uses the same one-object-per-frame budget as city tiles.
+      const time=performance.now();
+      let closestHouse=null,nearDistance=Infinity;
+      for(const lot of RIO_PRETO_LAYOUT.lots){
+        if(!lot.style.startsWith('house-'))continue;
+        const distance=nearRegion?Math.hypot(lot.x-focus.x,lot.z-focus.z):Infinity;
+        const house=rioPreto.homes.get(lot.id);
+        if(house){
+          house.root.visible=distance<renderRange+35&&!house.inside;
+          for(const collider of house.outsideColliders)collider.disabled=house.inside;
+          for(const collider of house.room.colliders)collider.disabled=!house.inside;
+          continue;
+        }
+        if(distance<renderRange+20&&distance<nearDistance){
+          closestHouse=lot;nearDistance=distance;
+        }
+      }
+      if(closestHouse&&time>=rioPreto.nextHomeAt){
+        rioMakeHistoricHome(closestHouse);
+        rioPreto.nextHomeAt=time+145;
+      }
+    }
     rioPreto.visible=visible;
     if(nearRegion&&focus.z<-406&&focus.x>-219&&focus.x<465){
       rioCreateCommunityActors();
@@ -458,7 +566,7 @@
   const rioPreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
   const rioPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return legacyRegionalLayout||rioCompactWorld()?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations]:rioPreviousLocations();};
+  expansionMapLocations=function(){return legacyRegionalLayout||rioCompactWorld()?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations,...(rioCompactWorld()?RIO_PRETO_LAYOUT.lots.filter(lot=>lot.style.startsWith('house-')).map(lot=>{const site=rioHistoricHomeSite(lot);return {id:site.id,name:site.name,group:'Casas e imóveis · Rio Preto',icon:'🏠',x:site.entry[0],z:site.entry[1],navX:site.entry[0],navZ:site.entry[1],description:'Casa com entrada, compra, móveis e atividades domésticas'};}):[])]:rioPreviousLocations();};
   window.OTTHI_RIO_PRETO=Object.freeze({
     locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
     diagnostics:()=>{
@@ -466,7 +574,7 @@
       return {
         roads:RIO_PRETO_LAYOUT.highways.length,houses:RIO_PRETO_LAYOUT.lots.filter(l=>l.style.startsWith('house-')).length,
         buildings:RIO_PRETO_LAYOUT.lots.length,shops:rioPreto.shops,localTraffic:rioPreto.actors,visits:rioPreto.visits,
-        tiles:tiles.length,built:built.length,visible:rioPreto.visible,sceneryInstances:built.reduce((sum,t)=>sum+t.primitives,0)
+        tiles:tiles.length,built:built.length,visible:rioPreto.visible,homesMounted:rioPreto.homes.size,homeInteriors:[...rioPreto.homes.values()].filter(home=>home.inside).length,sceneryInstances:built.reduce((sum,t)=>sum+t.primitives,0)
       };
     }
   });
