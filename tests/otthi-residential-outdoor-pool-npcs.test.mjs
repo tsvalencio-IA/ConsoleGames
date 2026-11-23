@@ -25,7 +25,9 @@ test('residential pool belongs to exterior shared leisure instead of the furnish
 });
 
 test('modern Rio Preto NPCs keep human proportions while classic toy-themed NPC identities remain intact',()=>{
- assert.match(npc,/const rioModernNpc=\/\^\(porteiro-\|rio-\|regional-\)\//);
+ assert.match(npc,/const rioModernNpc=!otToyHeroes\.has\(id\)/);
+ assert.match(npc,/porteiro-\|rio-\|regional-/);
+ assert.match(npc,/otToyHeroes=new Set/);
  assert.match(npc,/npc\.visualStyle='rio-human'/);
  assert.match(npc,/else if\(id!=='michelle-ottovias'&&!OT_CHILD_WORLD\)applyNpcToyTheme/);
  assert.match(npc,/createNPC\(id,name,x,z,color,pathRadius=3\)/);
