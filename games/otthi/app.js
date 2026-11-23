@@ -17087,6 +17087,8 @@ function precompile(T,renderer,scene,camera){
 
   function rioV51Visit(p){
     if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
+    const indoorMall=rioV51IndoorMalls.get(p.id);
+    if(indoorMall)return indoorMall.enter();
     if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return rioOpenRegionalConstructionStore(p);
@@ -17114,7 +17116,7 @@ function precompile(T,renderer,scene,camera){
       const run=p.key==='portaria_damha';
       registerInteractable({id:p.id,type:run?'race':p.shop?'shop':'viewpoint',icon:run?'🏃':'📍',
         label:run?'Corrida de Rua · Represa e Damha':p.name,x:p.visitX,z:p.visitZ,radius:run?4:3.5,priority:run?250:215,
-        available:()=>!activeRace&&!SPORTS_V705.active&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse,
+        available:()=>!activeRace&&!SPORTS_V705.active&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse&&!(p.shape==='mall'&&rioV51IndoorMalls.get(p.id)?.inside),
         action:()=>rioV51Visit(p)});
     }
   }
@@ -17138,6 +17140,62 @@ function precompile(T,renderer,scene,camera){
     mountRioV51Sector(next).visible=distance<195;
     rioV51World.nextSectorAt=performance.now()+55;
   }
+
+  const rioV51IndoorMalls=new Map();
+  function rioV51MountPlayableMall(p,sectorRoot){
+    const outside=new THREE.Group();outside.name='RIO_MALL_FACADE_'+p.key;
+    const batch=rioCreateBatch(outside),before=world.colliders.length;
+    rioV51DrawPlace(batch,p);batch.commit();sectorRoot.add(outside);
+    const outsideColliders=world.colliders.slice(before);
+    const site={
+      id:p.id,key:p.key,name:p.name,kind:'mall',style:'urban',
+      x:p.x,z:p.z,w:p.w,d:p.d,yaw:p.face===1?0:Math.PI,
+      entry:[p.visitX,p.visitZ],street:p.address
+    };
+    // Native OT stores, not a static mall modal. Shelves, clothing, shoes and
+    // food are built only when the player approaches this district.
+    const room=rioMountPlace(site,sectorRoot);
+    if(!room)return null;
+    const record={site,room,outside,outsideColliders,inside:false};
+    room.legacyResidence=true;room.legacyRecord=record;
+    room.root.visible=false;
+    for(const collider of room.colliders)collider.disabled=true;
+    const doorway={x:p.visitX,z:p.visitZ};
+    function enter(){
+      if(record.inside||player.vehicle||player.boating||currentHouse)return false;
+      record.inside=true;outside.visible=false;room.root.visible=true;
+      for(const collider of outsideColliders)collider.disabled=true;
+      for(const collider of room.colliders)collider.disabled=false;
+      if(room.gate)room.gate.disabled=true;
+      const point=room.point(0,site.d*.25);
+      player.x=point.x;player.z=point.z;player.y=groundHeightAt(point.x,point.z);
+      player.vx=player.vy=player.vz=0;player.grounded=true;
+      player.facing=site.yaw;playerGroup.position.set(player.x,player.y,player.z);
+      cameraMode='interior';cameraYaw=site.yaw;cameraPitch=.24;cameraZoom=2.8;
+      rioMapSave().activeRegionalMall=site.id;
+      rememberSafePlayerPosition(true);saveState(true);updateContext(true);
+      return true;
+    }
+    function leave(){
+      if(!record.inside)return false;
+      record.inside=false;room.root.visible=false;outside.visible=true;
+      for(const collider of room.colliders)collider.disabled=true;
+      for(const collider of outsideColliders)collider.disabled=false;
+      const point={x:doorway.x+Math.sin(site.yaw)*1.1,z:doorway.z+Math.cos(site.yaw)*1.1};
+      player.x=point.x;player.z=point.z;player.y=groundHeightAt(point.x,point.z);
+      player.vx=player.vy=player.vz=0;player.grounded=true;
+      cameraMode='openworld';playerGroup.position.set(player.x,player.y,player.z);
+      delete rioMapSave().activeRegionalMall;
+      rememberSafePlayerPosition(true);saveState(true);updateContext(true);
+      return true;
+    }
+    room.action('exit-regional-mall','Sair do shopping',0,site.d*.31,leave,{inside:true,icon:'🚪',radius:2.9});
+    record.enter=enter;record.leave=leave;
+    rioV51IndoorMalls.set(site.id,record);
+    if(rioMapSave().activeRegionalMall===site.id)enter();
+    return record;
+  }
+
   function mountRioV51Sector(sector){
     const existing=rioV51World.roots.get(sector.id);
     if(existing)return existing;
@@ -17145,7 +17203,9 @@ function precompile(T,renderer,scene,camera){
     const batch=rioCreateBatch(root);batch.root=root;
     for(const p of sector.places){
       if(p.nativeVenue)continue;
-      rioV51DrawPlace(batch,p);
+      if(p.shape==='mall'&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
+        rioV51MountPlayableMall(p,root);
+      }else rioV51DrawPlace(batch,p);
       if(typeof addRioCityLights==='function')addRioCityLights(p,root);
     }
     if(sector.id==='represa_lagos_damha')rioV51DrawCourse(batch,root);
