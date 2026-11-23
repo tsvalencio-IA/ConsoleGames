@@ -112,26 +112,52 @@
 
 
     if(modern){
-      // Private leisure area on the original property lot; no global water or
-      // house identity is replaced, and it allocates no animated reflection pass.
-      const px=w*.30,pz=d*.38,pw=Math.min(4.6,w*.30),pd=Math.min(3.3,d*.24);
-      room.box(px,.065,pz,pw+.38,.13,pd+.38,0xe8ddcc);
-      room.box(px,.075,pz,pw,.04,pd,0x3993b6);
-      room.box(px,.12,pz-pd*.48,pw,.045,.10,0xa3dde3);
+      // Outdoor leisure: independent from the apartment's furnished interior.
+      // The original pool erroneously lived in room.root and appeared beside
+      // the indoor bed. A condominium has one common pool for its residents,
+      // while a private house retains its own exterior pool.
+      const exterior=new THREE.Group();
+      exterior.name='RIO_OUTDOOR_POOL_'+site.key;
+      (room.root.parent||worldGroup).add(exterior);
+      const batch=rioCreateBatch(exterior);
+      batch.root=exterior;
+      const outdoor=rioLocal(batch,site);
+      const px=w*.245,pz=d*.405;
+      const pw=Math.min(3.8,w*.23),pd=Math.min(2.8,d*.19);
+      outdoor.box(px,.065,pz,pw+.40,.13,pd+.40,0xe1d9ca);
+      outdoor.box(px,.075,pz,pw,.04,pd,0x2787b3);
+      outdoor.box(px,.13,pz-pd*.47,pw,.045,.11,0xa8dee1);
       for(const side of[-1,1]){
-        room.box(px+side*(pw/2+.14),.36,pz-pd*.34,.07,.72,.07,0xc5cacc);
+        outdoor.box(px+side*(pw/2+.16),.33,pz-pd*.30,.07,.63,.07,0xc6cbc8);
       }
-      const approach=room.point(px-pw*.44,pz-pd*.55),water=room.point(px,pz);
-      room.action('swimming-pool','Entrar na piscina da residência',px-pw*.44,pz-pd*.55,()=>{
-        return beginCharacterActivity('rio-pool',{
+      // Shared amenities: trees, pool furniture and boundary fence remain
+      // outside the apartments and require no expensive reflections.
+      if(condominium){
+        for(const side of[-1,1]){
+          outdoor.box(px+side*(pw/2+.68),.07,pz,.56,.12,1.38,0xe4d0a9);
+          outdoor.box(px+side*(pw/2+.68),.37,pz-pd*.28,.56,.52,.28,0xf1e2bc);
+        }
+        outdoor.box(px,.48,pz+pd/2+.32,pw+.95,.12,.10,0xe2d9c9);
+      }
+      batch.commit();
+      room.poolExterior=exterior;
+      const approach=outdoor.point(px-pw*.45,pz-pd*.46);
+      const water=outdoor.point(px,pz);
+      registerInteractable({
+        id:site.id+'-outdoor-pool',type:'activity',icon:'🏊',
+        label:condominium?'Usar piscina da área comum do condomínio':'Nadar na piscina da casa',
+        x:approach.x,z:approach.z,radius:2.7,priority:252,
+        available:()=>exterior.visible&&!rioMap.indoors&&!player.vehicle&&!player.boating&&
+          !player.swimming&&!characterActivities.session,
+        action:()=>beginCharacterActivity('rio-pool',{
           target:approach,pose:{...water,y:.37,yaw:site.yaw,lying:true},walkSpeed:1.8,
           commit:()=>{
             state.needs.fun=clamp(Number(state.needs.fun||0)+27,0,100);
             state.needs.hygiene=clamp(Number(state.needs.hygiene||0)+6,0,100);
             rioCountVisit(site);saveState(true);updateHUD();return true;
           }
-        });
-      },{inside:true,icon:'🏊',radius:2.2});
+        })
+      });
     }
 
     if(condominium){
