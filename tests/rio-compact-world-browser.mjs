@@ -156,13 +156,44 @@ try{
   assert(saved.vehicles.owned.includes('garage-orange')&&saved.vehicles.owned.includes('home-green'));
   assert.equal(saved.cityServices.rioMap.properties['regional-casa-damha'].owned,true);
   assert.equal(saved.cityServices.rioMap.previousMapPose.position.x,2093);
+
+  // Own a new home, pay for an item, rearrange it and verify persistence.
+  // Existing Damha ownership and the legacy house snapshot must survive.
+  await resumeAt('casa-cotegipe');
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-casa-cotegipe-entrance');
+  await page.locator('#actionBtn').tap();
+  await page.locator('[data-rio-property-buy]').waitFor();
+  await page.locator('[data-rio-property-buy]').tap();
+  await page.locator('[data-rio-property-decor]').waitFor();
+  await page.locator('[data-rio-property-decor]').tap();
+  await page.locator('[data-rio-decor-item="sofa-modular"]').tap();
+  await page.locator('[data-rio-decor-edit="right"]').tap();
+  await page.locator('[data-rio-decor-edit="rotate"]').tap();
+  let interior=await state();
+  const record=interior.cityServices.rioMap.properties['regional-casa-cotegipe'];
+  assert(record?.owned&&record.paid===380);
+  assert(record.furniture.includes('sofa-modular'));
+  assert.equal(record.decorLayout['sofa-modular'].rotation,1);
+  assert.equal(interior.profile.coins,4312-380-180);
+  assert.equal(interior.cityServices.rioMap.properties['regional-casa-damha']?.owned,true);
+  report.housing={bought:true,decorated:true,coins:interior.profile.coins,placement:record.decorLayout['sofa-modular']};
+  await shot('casa-com-sofa-editavel');
+  await boot('?entrada=casa-cotegipe');
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-casa-cotegipe-entrance');
+  await page.locator('#actionBtn').tap();
+  await page.locator('[data-rio-property-decor]').waitFor();
+  assert.equal(await page.locator('[data-rio-property-buy]').count(),0);
+  const reloaded=(await state()).cityServices.rioMap.properties['regional-casa-cotegipe'];
+  assert.deepEqual(reloaded.furniture,record.furniture);
+  assert.deepEqual(reloaded.decorLayout['sofa-modular'],record.decorLayout['sofa-modular']);
+  await close();
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(50,330));
   await page.waitForFunction(()=>document.body.dataset.rioClima==='snow');
   assert((await look()).player.y>15);
   await shot('neve-na-serra');
   assert.deepEqual(report.errors,[]);
   report.passed=true;
-  console.log('PASS same compact Rio world, textured roads, phone, home, saved weather, dock and Canecão doorway');
+  console.log('PASS Rio Preto: map, owner purchase, persistent furniture placement, Guarujá waterfront, Canecão and snow');
 }catch(error){
   report.failure=error.stack;
   if(page)await page.screenshot({path:out+'/failure.png',timeout:15000}).catch(()=>{});
