@@ -80,7 +80,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "76b882e55b92db0b324f368f1b0d18ae8c70336e2dd9a795b28747ea74d32cc1"
+      "sha256Body": "aa887a5dff3d04f6c1f9877843db025610f61b2f615c5ff577571aacfa85f6a5"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",

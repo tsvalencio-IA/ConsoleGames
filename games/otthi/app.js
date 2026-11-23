@@ -2808,7 +2808,7 @@
   const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
   // Restore the four regional sectors that existed before the compact Rio
   // migration without reactivating the duplicate historical downtown.
-  const RIO_RECOVERED_SECTORS=Object.freeze(['bady_bassitt','zona_norte','engenheiro_schmitt','circuito_turistico']);
+  const RIO_RECOVERED_SECTORS=Object.freeze(['bady_bassitt','zona_norte','engenheiro_schmitt','circuito_turistico','eixo_sul_shoppings']);
   const recoveredRioRoads=legacyRegionalLayout||typeof RIO_V51==='undefined'?null:(()=>{
     const highways=RIO_V51.highways.filter(road=>RIO_RECOVERED_SECTORS.some(sector=>
       road.id.startsWith('rio-v51-'+sector+'-')||road.id==='rio-v51-'+sector));
