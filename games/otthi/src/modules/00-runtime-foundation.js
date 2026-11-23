@@ -15,7 +15,7 @@
   function regionalRouteVisible(){
     return new URLSearchParams(window.location.search).get('map')==='roteiro-regional';
   }
-  const OTTHI_GAME_WEB_BUILD = '705.28.38-rio-preto-vivo';
+  const OTTHI_GAME_WEB_BUILD = '705.28.39-mapa-de-ruas';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';

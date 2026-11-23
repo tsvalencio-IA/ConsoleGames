@@ -89,7 +89,7 @@ try{
   assert.equal(sent.phone.orders[0].map,'rio-preto');
   assert.equal(before.coins-sent.coins,sent.phone.orders[0].price);
   await phone();await touch('[data-phone-track]');
-  assert.equal(await page.locator('.rio-real-map circle[style*="ffbd45"]').count(),1);
+  assert.equal(await page.locator('.rio-real-map [data-rio-delivery]').count(),1);
   await touch('#modalClose');
   for(let i=0;i<48;i++){
     await advance(120);if((await snapshot()).phone.tracking?.ready)break;

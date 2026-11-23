@@ -260,6 +260,7 @@ try{
 
   await page.locator('#miniNav').tap();
   assert(await page.locator('[data-rio-destination]').count()>=35);
+  await page.locator('[data-rio-directory] > summary').tap();
   await page.locator('[data-rio-destination="regional-canecao_represa"]').tap();
   report.navigation=await page.evaluate(()=>OTTHOS_TEST_API.navigation());
   assert.equal(report.navigation.waypoint.id,'regional-canecao_represa');
@@ -354,6 +355,13 @@ try{
   report.refuel=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());
   assert.equal(report.refuel.coins,report.dining.receipt.coins-20);
   assert(Math.abs(report.refuel.rio.roadVehicles['garage-orange'].fuel-(report.fuelTravel.fuel+10))<.01);
+  await page.locator('#miniNav').tap();
+  await page.locator('[data-rio-reference]').getByRole('button',{name:/Washington Luís/}).tap();
+  await page.locator('[data-rio-go]').tap();
+  const highway=await page.evaluate(()=>OTTHOS_TEST_API.navigation());
+  assert.equal(highway.waypoint?.name,'Rodovia Washington Luís');
+  assert(highway.route.length>2);
+  report.highway={waypoint:highway.waypoint,points:highway.route.length};
   await page.locator('#actionBtn').tap({force:true});
   await page.evaluate(()=>__RIO_PHYSICAL_QA.save());
   let saved=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());

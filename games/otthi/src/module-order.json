@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.38-rio-preto-vivo",
+  "build": "705.28.39-mapa-de-ruas",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "3718e1f69fd48a85589e66ca94331e33e029a7a2f1d9003b513fb8b8f6fece07"
+      "sha256Body": "0654f73476354f1e0fb5a7eabaff9270d3316adb9cb8560b960031b5e6e89ce4"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -285,7 +285,7 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "0958b636c9de10c4349c2fb2b5ba99921bb8666712f1131ec4885b45d0840c6d"
+      "sha256Body": "511ffc22dcf00bb8d213ff827519cb4d8fa0e9ea198ed240c2a1b4491d435f0d"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
@@ -690,7 +690,7 @@
     },
     {
       "file": "src/modules/91-rio-map-entry-and-ui.js",
-      "sha256Body": "e5c9d3d38bf472c3fd3d9cd660ae4528e13ed2d09c04bf46487b32027ac59fef"
+      "sha256Body": "cc42fbb2d41b43e49640926c45d8ae8c2fdc6e10e77f838087ae9cb0c1bce5d7"
     },
     {
       "file": "src/modules/92-rio-waterfront.js",
@@ -720,6 +720,11 @@
       "file": "src/modules/97-rio-map-entrances.js",
       "description": "Streamed doors and on-demand interiors",
       "sha256Body": "464818832bf50639240f470493c80f4098afdb065970b1b79300c962b027e3d6"
+    },
+    {
+      "file": "src/modules/98-rio-street-map.js",
+      "description": "Searchable Rio street map and route selection",
+      "sha256Body": "2885ee757eeb2cc508c8b4bb4400daf15212409945ce74ee107ec5f82380807a"
     }
   ],
   "styles": [
@@ -798,7 +803,7 @@
       "startLine": 1017,
       "endLine": 1056,
       "description": "Fundação final, bairros, educação e desempenho",
-      "sha256Body": "756e3e534546cbb2c22895456c850aa7b7342cfe7c89b32d0c1cd3c3f17accc2"
+      "sha256Body": "990374e0dffbc065af3a0fe7fcc193fb6065822ef1250298a8ff518a8c831e49"
     },
     {
       "file": "src/styles/11-mobility-traffic-fishing-v643.css",
@@ -936,6 +941,11 @@
       "file": "src/styles/30-rio-wardrobe.css",
       "description": "Guarda-roupa visual responsivo",
       "sha256Body": "f52a0d9e34182f5ba346d063279a207348fdb48c44731a97cf76fb445718e4c1"
+    },
+    {
+      "file": "src/styles/31-rio-street-map.css",
+      "description": "Mapa de ruas responsivo de Rio Preto",
+      "sha256Body": "e700642abc3520108707d4ca6f1957ffef884d5a45d36ad4c70891ac8be1b3e5"
     }
   ]
 }

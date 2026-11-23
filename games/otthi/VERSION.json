@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.38-rio-preto-vivo",
+  "build": "705.28.39-mapa-de-ruas",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -309,8 +309,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70671,
-  "revisionLabel": "Vila OT e Rio Preto com acessos separados",
+  "assetVersion": 70672,
+  "revisionLabel": "Mapa de ruas e rodovias de Rio Preto",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

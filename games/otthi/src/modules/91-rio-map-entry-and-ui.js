@@ -28,23 +28,24 @@
     if(selected==='rio-preto'||selected==='ot')return selected;
     return state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot';
   }
-  function rioWorldDestination(mode){
+  function rioWorldDestination(mode,waypoint){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
     if(mode==='rio-preto')url.searchParams.set('map','rio-preto');
     if(mode==='ot')url.searchParams.set('map','ot');
+    if(mode==='ot'&&waypoint==='ottovias-entry')url.searchParams.set('destino','ottovias');
     return url;
   }
-  async function selectOtthiMap(mode){
+  async function selectOtthiMap(mode,waypoint){
     if(!worldInitializationReady||!rioSceneType||rioSceneType===mode)return false;
     if(running)stopGame();
     await saveState(true);
     try{sessionStorage.setItem(OTTHI_NEXT_MAP,mode);}catch{}
-    location.assign(rioWorldDestination(mode).href);
+    location.assign(rioWorldDestination(mode,waypoint).href);
     return true;
   }
-  function rioSetWaypoint(destination){
+  function rioSetWaypoint(destination,plannedRoute){
     const goal={x:destination.x,z:destination.z};
-    const route=rioGeoRoute(player,goal,!player.vehicle,{connect:true});
+    const route=plannedRoute??rioGeoRoute(player,goal,!player.vehicle,{connect:true});
     if(!route.length){
       toast('A rota até esse ponto não está conectada. Confira o mapa e tente a pé.','warn',2600);return false;
     }
@@ -56,23 +57,6 @@
     return true;
   }
   function rioMapLocation(site){return {id:site.id,name:site.name,x:site.entry[0],z:site.entry[1],site};}
-  function rioMapSvg(){
-    const data=rioMap.data,b=data.bounds,nums=point=>point.map(v=>Math.round(v)).join(' ');
-    const polyline=path=>path.map((point,i)=>(i?'L':'M')+nums(point)).join(' ');
-    const classNames=new Set(['primary','secondary','trunk','motorway','tertiary']);
-    rioMap.svgPath??=data.roads.filter(r=>classNames.has(r[1])).map(r=>polyline(r[7].map(i=>data.nodes[i]))).join(' ');
-    const bodies=data.water.map(([,rings])=>'<path class="rio-water-shape" d="'+rings.map(ring=>polyline(ring)+'Z').join(' ')+'"/>').join('');
-    const active=world.routePath.length&&state.waypoint?'<path class="rio-active-route" d="'+polyline(world.routePath.map(p=>[p.x,p.z]))+'"/>':'';
-    const delivery=phoneDeliveryTracking();
-    const tracking=delivery?'<path class="rio-active-route" style="stroke:#ffbd45" d="'+polyline(delivery.route.map(p=>[p.x,p.z]))+'"/>'+
-      '<circle class="rio-map-point" style="fill:#ffbd45" cx="'+delivery.x+'" cy="'+delivery.z+'" r="66"><title>'+escapeHtml(phoneTrackingText(delivery))+'</title></circle>':'';
-    return '<svg class="rio-real-map" viewBox="'+b.minX+' '+b.minZ+' '+(b.maxX-b.minX)+' '+(b.maxZ-b.minZ)+
-      '" aria-label="Malha viária mapeada de São José do Rio Preto" role="img">'+bodies+
-      '<path class="rio-mapped-roads" d="'+rioMap.svgPath+'"/>'+active+tracking+
-      rioFunctionalSites().map(p=>'<circle class="rio-map-point" cx="'+p.x+'" cy="'+p.z+'" r="52"><title>'+escapeHtml(p.name)+'</title></circle>').join('')+
-      '<circle class="rio-map-player" cx="'+player.x+'" cy="'+player.z+'" r="78"/>'+
-      '</svg>';
-  }
   function rioMapLocations(){
     const locations=[...rioFunctionalSites().map(rioMapLocation),...rioCommunityLocations()];
     if(rioMap.course)locations.push({id:'rio-orla-largada',name:'Largada da corrida na Represa',...rioMap.course.start});
@@ -87,20 +71,13 @@
     const place=rioMapLocations().find(location=>location.id===(aliases[id]||id));
     return place?rioSetWaypoint(place):false;
   }
-  function openRioMapPanel(){
-    const locations=rioMapLocations();
-    locations.sort((a,b)=>distance2D(player,a)-distance2D(player,b));
-    const markup=locations.map(place=>'<button class="choice" data-rio-destination="'+place.id+
-      '"><b>'+escapeHtml(place.name)+'</b><span>'+escapeHtml(place.category||rioSiteLabels[place.site?.kind]||'300 m na pista da orla')+
-      '</span><small>'+Math.round(distance2D(player,place))+' m em linha reta</small></button>').join('');
-    openModal('Mapa de São José do Rio Preto','<div class="rio-map-panel"><figure>'+rioMapSvg()+
-      '<figcaption><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a></figcaption>'+
-      '</figure><div><div class="rio-map-actions">'+(state.waypoint?'<button class="btn" data-rio-clear>Cancelar rota</button>':'')+
-      '<button class="btn" data-rio-menu>Menu do mapa</button></div><div class="choice-grid rio-real-places">'+markup+'</div></div></div>',root=>{
-        for(const button of root.querySelectorAll('[data-rio-destination]'))button.onclick=()=>rioSetWaypoint(locations.find(p=>p.id===button.dataset.rioDestination));
-        root.querySelector('[data-rio-clear]')?.addEventListener('click',()=>{rioMapSave().waypoint=null;clearWaypoint();});
-        root.querySelector('[data-rio-menu]').onclick=()=>{closeModal();openRioMapMenu();};
-      });
+  function resumeVilaRoadDestination(){
+    const url=new URL(location.href);
+    if(url.searchParams.get('destino')!=='ottovias')return false;
+    url.searchParams.delete('destino');
+    history.replaceState(history.state,'',url);
+    setWaypoint('ottovias-entry');
+    return true;
   }
   function openRioMapMenu(){
     if(!running)return;

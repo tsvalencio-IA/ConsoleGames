@@ -1,0 +1,167 @@
+/* @otthi-style-body */
+#modal:has(.rio-map-panel) .modal-card{
+  width:min(920px,100%)!important;
+  max-width:min(920px,100%)!important;
+}
+.rio-map-panel{
+  --rio-map-bg:#18312c;
+  --rio-map-avenue:#f2dfb2;
+  --rio-map-highway:#ffba63;
+  --rio-map-gps:#66f2e6;
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+  align-items:start;
+  gap:16px;
+}
+.rio-map-panel [hidden]{display:none!important}
+.rio-map-figure{margin:0;min-width:0;position:sticky;top:0}
+.rio-map-canvas{
+  display:grid;
+  place-items:center;
+  background:var(--rio-map-bg);
+  border:1px solid #5b7f70;
+  border-radius:14px;
+  overflow:hidden;
+}
+.rio-map-panel .rio-real-map{
+  display:block;
+  width:100%;
+  height:min(65dvh,545px);
+  color:#f1f8ec;
+  font-family:system-ui,sans-serif;
+}
+.rio-water-shape{fill:#25738e;fill-rule:evenodd}
+.rio-map-line{
+  fill:none;
+  stroke-width:1;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.rio-map-line-context{stroke:#708a79;stroke-width:.85}
+.rio-map-line-avenue{stroke:var(--rio-map-avenue);stroke-width:1.5}
+.rio-map-line-highway{stroke:var(--rio-map-highway);stroke-width:2.2}
+.rio-map-line-selection{stroke:#fff7d6;stroke-width:3}
+.rio-map-line-route{stroke:var(--rio-map-gps);stroke-width:3.1}
+.rio-map-line-delivery{stroke:#ffdc82;stroke-width:2.5;stroke-dasharray:4 4}
+.rio-map-player,.rio-map-destination,.rio-map-delivery,.rio-atlas-label circle{
+  stroke:#15302d;
+  stroke-width:1.5;
+  vector-effect:non-scaling-stroke;
+}
+.rio-map-player{fill:var(--rio-map-gps);stroke:#061f22;stroke-width:2}
+.rio-map-destination{fill:#fff7d6}
+.rio-map-delivery{fill:#ffdc82}
+.rio-atlas-label{color:#e3efe3;cursor:pointer}
+.rio-atlas-label-street{color:var(--rio-map-avenue)}
+.rio-atlas-label-highway{color:var(--rio-map-highway)}
+.rio-atlas-label circle{fill:currentColor}
+.rio-atlas-label path,.rio-map-scale path{
+  fill:none;
+  stroke:currentColor;
+  opacity:.65;
+  stroke-width:1;
+  vector-effect:non-scaling-stroke;
+}
+.rio-atlas-label text,.rio-map-north text,.rio-map-scale text{
+  fill:currentColor;
+  font-weight:720;
+  paint-order:stroke;
+  stroke:var(--rio-map-bg);
+  stroke-width:3.5;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.rio-atlas-label:hover,.rio-atlas-label:focus-visible{color:#fff;background:#091e20}
+.rio-map-north path{fill:currentColor}
+.rio-map-north text{font-size:160px}
+.rio-map-toolbar,.rio-map-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.rio-map-toolbar{justify-content:space-between;margin-top:8px}
+.rio-map-legend{font-size:12px;color:#d7e8df}
+.rio-map-legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.rio-map-legend i,.rio-map-choice i{width:10px;height:10px;border-radius:50%;background:#9bd1ac;flex:none}
+.rio-map-panel i.is-highway{background:var(--rio-map-highway);border-radius:3px}
+.rio-map-panel i.is-street{background:var(--rio-map-avenue);border-radius:3px}
+.rio-map-panel i.is-you{background:var(--rio-map-gps)}
+.rio-map-panel i.is-link{background:#a1bfff;box-shadow:0 0 0 2px #263c58}
+.rio-map-figure figcaption{margin-top:4px;font-size:11px;line-height:1.4}
+.rio-map-figure figcaption a{color:#b9d4c8}
+.rio-map-side{display:grid;gap:10px;min-width:0}
+.rio-map-search{display:grid;gap:6px;font-size:13px;font-weight:750;color:#f0f8f5}
+.rio-map-panel input[type="search"]{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:44px;
+  padding:9px 11px;
+  border:1px solid #617f86;
+  border-radius:9px;
+  background:#071c2c;
+  color:#f1fbfb;
+  font-size:16px;
+}
+.rio-map-panel input::placeholder{color:#adc4cb}
+.rio-map-side h3{margin:0 0 5px;color:#e3f0ed;font-size:14px;line-height:1.3}
+.rio-map-choices{display:grid;gap:5px}
+.rio-map-side .rio-map-choice{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:9px;
+  width:100%;
+  min-width:0;
+  min-height:44px;
+  padding:7px 10px;
+  background:#143147;
+  color:#f4f9f4;
+  border:1px solid #3a606f;
+  border-radius:9px;
+  font-family:inherit;
+  font-size:14px!important;
+  text-align:left;
+  overflow-wrap:anywhere;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.rio-map-side .rio-map-choice:hover,.rio-map-side .rio-map-choice[aria-pressed="true"]{border-color:#92d8ce;background:#1e4652}
+.rio-map-side .rio-map-choice small{margin:0;color:#d0e4e5;font-size:12px!important;white-space:nowrap}
+.rio-map-side .rio-map-choice:has(.is-highway) small{color:var(--rio-map-highway);font-weight:750}
+.rio-map-near{font-size:12px;line-height:1.35;color:#c8e0db}
+.rio-map-selected{
+  display:grid;
+  gap:6px;
+  padding:10px;
+  border:1px solid #59978c;
+  border-radius:9px;
+  background:#0c2937;
+  color:#dcf1e8;
+}
+.rio-map-selected b{font-size:15px}
+.rio-map-selected span{font-size:13px}
+.rio-map-directory{border-top:1px solid #3a606f}
+.rio-map-directory summary{padding:12px 4px;color:#d9eaf0;font-size:14px;cursor:pointer}
+.rio-map-panel :is(.rio-map-view,[data-rio-go],[data-rio-clear]){
+  min-height:44px!important;
+  padding:7px 11px!important;
+  font-size:13px!important;
+}
+.rio-map-panel [data-rio-go]:disabled{opacity:.65;cursor:default}
+.rio-map-panel :is(button,input,summary,a):focus-visible,.rio-atlas-label:focus-visible{outline:2px solid #9bf7ec;outline-offset:2px}
+@media(max-width:640px) and (orientation:portrait){
+  .rio-map-panel{grid-template-columns:minmax(0,1fr);gap:10px}
+  .rio-map-figure{position:static}
+  .rio-map-panel .rio-real-map{height:min(45dvh,calc((100vw - 38px) * 1.18))}
+  .rio-map-side [data-rio-reference] .rio-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rio-map-side [data-rio-reference] .rio-map-choice{
+    grid-template-columns:auto minmax(0,1fr);
+    gap:2px 7px;
+    font-size:13px!important;
+  }
+  .rio-map-side [data-rio-reference] .rio-map-choice small{grid-column:2}
+}
+@media(max-height:510px) and (orientation:landscape){
+  .rio-map-panel{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+  .rio-map-panel .rio-real-map{height:57dvh}
+  .rio-map-side [data-rio-reference] .rio-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rio-real-map[data-rio-view="city"] .rio-atlas-label text{font-size:275px}
+}

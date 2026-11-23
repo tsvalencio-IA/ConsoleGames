@@ -361,7 +361,7 @@
     if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
     clock.start();if(!separateRio)evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(separateRio)toast('São José do Rio Preto · abra Mapa para escolher um local','good',3200);
-    else toast('Bem-vindo à Vila OT!','good',2200);
+    else if(!resumeVilaRoadDestination())toast('Bem-vindo à Vila OT!','good',2200);
   }
 
   let consoleLeaving=false;

@@ -70,6 +70,8 @@ jobs:
         run: node tests/rio-v51-world-browser.mjs
       - name: Validar o mapa de Rio Preto, interiores, abastecimento e retorno à Vila OT
         run: node tests/rio-physical-map-browser.mjs
+      - name: Conferir vias, GPS e acesso à Ottovias pelo mapa de Rio Preto
+        run: node tests/rio-street-map-browser.mjs
       - name: Usar o cais e a porta do Canecao com os controles de toque
         run: node tests/rio-map-input-browser.mjs
       - name: Verificar casas, lojas, padaria, Catedral e embarque no aeroporto de Rio Preto
