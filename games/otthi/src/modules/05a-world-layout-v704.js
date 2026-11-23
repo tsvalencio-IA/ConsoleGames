@@ -56,7 +56,7 @@
     version:704,
     bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
     mountainRanges:Object.freeze([{"id":"snow-west","x":-118,"z":300,"rx":64,"rz":66,"height":62,"snow":true},{"id":"snow-central","x":-53,"z":371,"rx":66,"rz":75,"height":93,"snow":true},{"id":"snow-east","x":84,"z":376,"rx":63,"rz":73,"height":108,"snow":true},{"id":"snow-ridge","x":147,"z":305,"rx":66,"rz":76,"height":76,"snow":true},{"id":"serra-one","x":287,"z":325,"rx":77,"rz":86,"height":70,"snow":false},{"id":"serra-two","x":369,"z":394,"rx":86,"rz":77,"height":112,"snow":true},{"id":"serra-three","x":491,"z":359,"rx":78,"rz":80,"height":98,"snow":true},{"id":"serra-four","x":581,"z":452,"rx":83,"rz":53,"height":90,"snow":true},{"id":"serra-five","x":692,"z":438,"rx":92,"rz":62,"height":124,"snow":true},{"id":"forest-hill","x":-630,"z":232,"rx":108,"rz":115,"height":55,"snow":false},{"id":"forest-peak","x":-746,"z":325,"rx":76,"rz":107,"height":85,"snow":false}]),
-    coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
+    coast:Object.freeze({id:'costa-beach',label:'Praia do Guarujá',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
       hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
       airbase:{id:'airbase',label:'Aeroporto de Rio Preto',x:27,z:-169,radius:36,navX:27,navZ:-159},
