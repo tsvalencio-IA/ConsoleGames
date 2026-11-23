@@ -164,9 +164,9 @@
     if(p.nativeVenue==='football')return{id:p.id,name:p.name,icon:'⚽',group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
       description:'Estádio jogável inspirado no Benedito Teixeira, com partidas de futebol 4 × 4 e pista de atletismo.'};
-    return{id:p.id,name:p.name,icon:p.fictional?'🌄':'📍',group:RIO_V51.sectors[p.sector].label,
+    return{id:p.id,name:p.name,icon:RIO_REGIONAL_ACTIVITIES[p.key]?.icon||(p.fictional?'🌄':'📍'),group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
-      description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
+      description:RIO_REGIONAL_ACTIVITIES[p.key]?'Comprar ingresso e participar de atividades; o histórico é preservado no seu progresso.':p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
   }
 
   // Persistent delivery ledger for the regional construction and hardware stores.
@@ -307,7 +307,50 @@
     return true;
   }
 
+
+  // Existing regional attractions become paid, persistent player activities.
+  // No replacement of the landmark, original world economy or legacy saves.
+  const RIO_REGIONAL_ACTIVITIES=Object.freeze({
+    termas_ibira:{label:'Banho nas águas termais',ticket:55,needs:{fun:18,hygiene:22,energy:12},icon:'♨️'},
+    thermas_laranjais:{label:'Dia no parque aquático',ticket:95,needs:{fun:35,hygiene:12,energy:-7},icon:'🏊'},
+    parque_peao_barretos:{label:'Participar do festival de Barretos',ticket:80,needs:{fun:28,energy:-10,hunger:-10},icon:'🎡'}
+  });
+  function rioRegionalExperience(p){
+    const experience=RIO_REGIONAL_ACTIVITIES[p.key];
+    if(!experience)return false;
+    const save=rioMapSave();
+    save.regionExperience??={visits:{},paidTotal:0};
+    const visits=save.regionExperience.visits[p.id]||{count:0,spent:0};
+    openModal(p.name,
+      '<p>'+experience.label+' · atividade jogável e registrada no seu histórico de viagens.</p>'+
+      '<p>Ingresso: <b>'+experience.ticket+' moedas</b> · Seu saldo: <b>'+state.profile.coins+' moedas</b></p>'+
+      '<p>Visitas anteriores: '+visits.count+'.</p>'+
+      '<div class="modal-actions"><button class="btn primary" data-regional-join>Comprar ingresso e participar</button>'+
+      '<button class="btn" data-regional-cancel>Voltar</button></div>',root=>{
+      let busy=false;
+      root.querySelector('[data-regional-cancel]').onclick=closeModal;
+      root.querySelector('[data-regional-join]').onclick=()=>{
+        if(busy||!running||player.vehicle||player.boating||otGames.active)return;
+        if(Number(state.profile.coins)<experience.ticket){toast('Moedas insuficientes para esta atividade.','warn',1900);return;}
+        busy=true;
+        addCoins(-experience.ticket);
+        const record=save.regionExperience.visits[p.id]||{count:0,spent:0};
+        record.count++;record.spent+=experience.ticket;record.lastVisit=Date.now();
+        save.regionExperience.visits[p.id]=record;
+        save.regionExperience.paidTotal+=experience.ticket;
+        for(const [need,delta] of Object.entries(experience.needs)){
+          if(!(need in state.needs))continue;
+          state.needs[need]=clamp(Number(state.needs[need]||0)+delta,0,100);
+        }
+        saveState(true);updateHUD();closeModal();
+        toast(experience.label+' concluído. Visita registrada em '+p.name+'.','good',2800);
+      };
+    });
+    return true;
+  }
+
   function rioV51Visit(p){
+    if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
     if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return rioOpenRegionalConstructionStore(p);
