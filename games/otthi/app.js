@@ -20122,7 +20122,7 @@ function precompile(T,renderer,scene,camera){
     const roadDistance=key==='posto_brasilia'?205-x:threshold+5;
     return {key,id,name,kind,style,price,street,x,z,w,d,yaw,
       // Never change legacy residential save keys; each new condominium gets its own property key.
-      propertyId:key.startsWith('rios_')?id:undefined,
+      propertyId:kind==='residence'?id:undefined,
       entry:[x+out.x*threshold,z+out.z*threshold],
       road:[x+out.x*roadDistance,z+out.z*roadDistance]};
   }

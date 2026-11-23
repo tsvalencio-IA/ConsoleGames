@@ -734,7 +734,7 @@
     {
       "file": "src/modules/99-rio-compact-world.js",
       "description": "Infraestrutura original e atividades jogáveis da Rio Preto compacta",
-      "sha256Body": "e5b6763f4f1a86ea96544f5330c7532e190f93140ec40227cbfcbda823413779"
+      "sha256Body": "8557c5e5b68fef3aaea4f72827d04f63100f52bd9fd88fcebfa3b89fd983ea91"
     },
     {
       "file": "src/modules/100-rio-weather.js",
