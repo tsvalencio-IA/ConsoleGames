@@ -7,7 +7,7 @@
       {id:'rio-compact-murchid',name:'Avenida Murchid Homsi',width:12,shoulder:1.2,closed:false,
         points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117}]},
       {id:'rio-condominios-link',name:'Acesso Rios D’Italia',width:9,shoulder:1,closed:false,
-        points:[{x:205,z:118},{x:300,z:118},{x:300,z:230}]}
+        points:[{x:205,z:117},{x:205,z:128},{x:300,z:128},{x:300,z:230}]}
     ],
     nodes:{
       RIO_GODOY:{x:-140,z:0},RIO_GODOY_W:{x:-170,z:0},
@@ -54,7 +54,7 @@
       ['rios_fiora',320,147,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
       ['rios_salso',280,181,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
       ['rios_fortore',320,181,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_liri',280,215,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_liri',280,204,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
       ['rios_tanaro',320,215,22,20,'w','Rios D’Italia · Av. Murchid Homsi']
     ],
     sections:[[-65,40],[-116.8,40],[-118.7,43],[-118.7,76.5],[-115.7,78.2],[-90.4,78.2],
