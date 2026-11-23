@@ -16885,8 +16885,10 @@ function precompile(T,renderer,scene,camera){
     return save;
   }
   function rioDeliveryHomes(){
-    const sites=typeof compactRio!=='undefined'?(compactRio.sites||[]):[];
-    return sites.filter(site=>site.kind==='residence'&&site.propertyId&&rioPropertyTitle(site.propertyId)?.owned);
+    const compact=typeof compactRio!=='undefined'?(compactRio.sites||[]):[];
+    const historic=typeof rioCompactWorld==='function'&&rioCompactWorld()&&typeof RIO_PRETO_LAYOUT!=='undefined'&&typeof rioHistoricHomeSite==='function'
+      ?RIO_PRETO_LAYOUT.lots.filter(lot=>lot.style.startsWith('house-')).map(rioHistoricHomeSite):[];
+    return [...compact,...historic].filter(site=>site.kind==='residence'&&site.propertyId&&rioPropertyTitle(site.propertyId)?.owned);
   }
   function rioDeliveryAddress(site){return {x:site.entry[0],z:site.entry[1]};}
   function rioRegisterHomeDelivery(site){
