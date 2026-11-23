@@ -157,6 +157,7 @@
         continue;
       }
       room.root.visible=distance2D(focus,site)<(qualityTier()==='low'?142:195);
+      if(room.poolExterior)room.poolExterior.visible=room.root.visible;
       if(!room.root.visible)continue;
       if(room.roof){
         const inside=!currentHouse&&!player.vehicle&&room.forSite(player.x,player.z,-.22);
