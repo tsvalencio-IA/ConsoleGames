@@ -17155,7 +17155,7 @@ function precompile(T,renderer,scene,camera){
 
   function rioV51Visit(p){
     if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
-    if(p.shape==='mall'&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
+    if(rioV51InteriorKind(p)&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
       // An action can be invoked before distance-streaming finishes this sector.
       // Mount its existing native store interior on demand instead of opening
       // the old facade-only modal while the player stands at the entrance.
@@ -17167,7 +17167,7 @@ function precompile(T,renderer,scene,camera){
         indoorMall=rioV51IndoorMalls.get(p.id);
       }
       if(indoorMall)return indoorMall.enter();
-      toast('O interior do shopping não pôde ser carregado.','warn',2300);
+      toast('O interior deste estabelecimento não pôde ser carregado.','warn',2300);
       return false;
     }
     if(p.nativeVenue==='football')return openFootballV705();
@@ -17197,7 +17197,7 @@ function precompile(T,renderer,scene,camera){
       const run=p.key==='portaria_damha';
       registerInteractable({id:p.id,type:run?'race':p.shop?'shop':'viewpoint',icon:run?'🏃':'📍',
         label:run?'Corrida de Rua · Represa e Damha':p.name,x:p.visitX,z:p.visitZ,radius:run?4:3.5,priority:run?250:215,
-        available:()=>!activeRace&&!SPORTS_V705.active&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse&&!(p.shape==='mall'&&rioV51IndoorMalls.get(p.id)?.inside),
+        available:()=>!activeRace&&!SPORTS_V705.active&&!player.vehicle&&!player.boating&&!otGames.active&&!currentHouse&&!(rioV51InteriorKind(p)&&rioV51IndoorMalls.get(p.id)?.inside),
         action:()=>rioV51Visit(p)});
     }
   }
@@ -17222,6 +17222,17 @@ function precompile(T,renderer,scene,camera){
     rioV51World.nextSectorAt=performance.now()+55;
   }
 
+  const RIO_V51_INTERIOR_TYPES=Object.freeze({
+    mall:'mall',hospital:'reception',station:'station',hall:'exhibition',
+    terminal:'airport',tower:'civic',market:'market',church:'church',
+    swift:'theater',service:'reception',commerce:'bakery'
+  });
+  const rioV51InteriorKind=p=>{
+    if(p.shop==='market')return 'market';
+    if(p.shop==='fastfood')return 'dining';
+    if(p.shop==='cafe')return 'bakery';
+    return RIO_V51_INTERIOR_TYPES[p.shape]||null;
+  };
   const rioV51IndoorMalls=new Map();
   function rioV51MountPlayableMall(p,sectorRoot){
     const outside=new THREE.Group();outside.name='RIO_MALL_FACADE_'+p.key;
@@ -17229,7 +17240,7 @@ function precompile(T,renderer,scene,camera){
     rioV51DrawPlace(batch,p);batch.commit();sectorRoot.add(outside);
     const outsideColliders=world.colliders.slice(before);
     const site={
-      id:p.id,key:p.key,name:p.name,kind:'mall',style:'urban',
+      id:p.id,key:p.key,name:p.name,kind:rioV51InteriorKind(p),style:'urban',
       x:p.x,z:p.z,w:p.w,d:p.d,yaw:p.face===1?0:Math.PI,
       entry:[p.visitX,p.visitZ],street:p.address
     };
@@ -17270,7 +17281,11 @@ function precompile(T,renderer,scene,camera){
       rememberSafePlayerPosition(true);saveState(true);updateContext(true);
       return true;
     }
-    room.action('exit-regional-mall','Sair do shopping',0,site.d*.31,leave,{inside:true,icon:'🚪',radius:2.9});
+    if(p.shop==='materials'||p.shop==='tools'){
+      room.action('construction-counter','Comprar e solicitar entrega de materiais',0,-site.d*.16,
+        ()=>rioOpenRegionalConstructionStore(p),{inside:true,icon:'🧱',radius:2.8});
+    }
+    room.action('exit-regional-mall','Sair do estabelecimento',0,site.d*.31,leave,{inside:true,icon:'🚪',radius:2.9});
     record.enter=enter;record.leave=leave;
     rioV51IndoorMalls.set(site.id,record);
     if(rioMapSave().activeRegionalMall===site.id)enter();
@@ -17284,7 +17299,7 @@ function precompile(T,renderer,scene,camera){
     const batch=rioCreateBatch(root);batch.root=root;
     for(const p of sector.places){
       if(p.nativeVenue)continue;
-      if(p.shape==='mall'&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
+      if(rioV51InteriorKind(p)&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
         rioV51MountPlayableMall(p,root);
       }else rioV51DrawPlace(batch,p);
       if(typeof addRioCityLights==='function')addRioCityLights(p,root);
