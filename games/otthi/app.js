@@ -2829,7 +2829,7 @@
     version:704,
     bounds:Object.freeze({minX:-850,maxX:850,minZ:-700,maxZ:1100}),
     mountainRanges:Object.freeze([{"id":"snow-west","x":-118,"z":300,"rx":64,"rz":66,"height":62,"snow":true},{"id":"snow-central","x":-53,"z":371,"rx":66,"rz":75,"height":93,"snow":true},{"id":"snow-east","x":84,"z":376,"rx":63,"rz":73,"height":108,"snow":true},{"id":"snow-ridge","x":147,"z":305,"rx":66,"rz":76,"height":76,"snow":true},{"id":"serra-one","x":287,"z":325,"rx":77,"rz":86,"height":70,"snow":false},{"id":"serra-two","x":369,"z":394,"rx":86,"rz":77,"height":112,"snow":true},{"id":"serra-three","x":491,"z":359,"rx":78,"rz":80,"height":98,"snow":true},{"id":"serra-four","x":581,"z":452,"rx":83,"rz":53,"height":90,"snow":true},{"id":"serra-five","x":692,"z":438,"rx":92,"rz":62,"height":124,"snow":true},{"id":"forest-hill","x":-630,"z":232,"rx":108,"rz":115,"height":55,"snow":false},{"id":"forest-peak","x":-746,"z":325,"rx":76,"rz":107,"height":85,"snow":false}]),
-    coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
+    coast:Object.freeze({id:'costa-beach',label:'Praia do Guarujá',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
       hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
       airbase:{id:'airbase',label:'Aeroporto de Rio Preto',x:27,z:-169,radius:36,navX:27,navZ:-159},
@@ -14102,7 +14102,7 @@ function precompile(T,renderer,scene,camera){
   for(let i=0;i<4;i++){const route=[{x:-406,z:483.6},{x:-218,z:483.6},{x:-218,z:486},{x:-406,z:486}];cityCommercialNPC('coast-walker-'+i,['Ana','Leo','Nina','Bruno'][i],route[i].x,route[i].z,[0xc28d55,0x6192b1,0xa875a2,0x469882][i],route);}
   cityCoast.roots.push({root,x:-310,z:497,range:280});
   const geo=new THREE.PlaneGeometry(2000,1400,128,112);geo.rotateX(-Math.PI/2);geo.translate(0,.18,1210);const water=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.30,metalness:.08,side:THREE.DoubleSide});water.onBeforeCompile=shader=>{shader.uniforms.uCoastTime={value:0};shader.vertexShader='uniform float uCoastTime; varying vec3 vCoastPosition;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`float dx=.045*.055*cos(position.x*.055+position.z*.12+uCoastTime*1.35);float dz=.045*.12*cos(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*.29*cos(position.z*.29+uCoastTime*2.0)+.025*.43*cos(position.z*.43-position.x*.028+uCoastTime*2.4);vec3 objectNormal=normalize(vec3(-dx,1.0,-dz));`).replace('#include <begin_vertex>',`vec3 transformed=vec3(position);transformed.y+=.045*sin(position.x*.055+position.z*.12+uCoastTime*1.35)+.055*sin(position.z*.29+uCoastTime*2.0)+.025*sin(position.z*.43-position.x*.028+uCoastTime*2.4);vCoastPosition=transformed;`);shader.fragmentShader='uniform float uCoastTime; varying vec3 vCoastPosition;\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
- float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;};const ocean=new THREE.Mesh(geo,water);ocean.name='COSTA_VERDE_OCEAN';ocean.frustumCulled=false;ocean.userData.criticalSurface=true;worldGroup.add(ocean);cityCoast.sea=ocean;world.hazards.push({id:'ocean-costa-verde',type:'water',ocean:true,x:0,z:705,w:920,d:390});registerInteractable({id:'coast-view',type:'viewpoint',icon:'🏖️',label:'Praia da Costa Verde',x:c.navX,z:c.navZ,radius:3,priority:120,action:()=>toast('Bem-vindo à praia. A orla tem quiosques e acesso ao mar.','good',2800)});world.navCache?.clear?.();
+ float shore=513.0+sin(vCoastPosition.x*.017)*1.4;float depth=vCoastPosition.z-shore;if(depth < -1.1)discard;float foam=pow(max(0.0,sin(depth*.34-uCoastTime*1.7+sin(vCoastPosition.x*.02)*.3)),14.0)*exp(-max(0.0,depth)*.026);vec3 sea=mix(vec3(.18,.67,.66),vec3(.035,.24,.39),smoothstep(4.0,130.0,depth));sea=mix(sea,vec3(.88,.96,.91),foam*.72+exp(-abs(depth)*2.1)*.65);diffuseColor.rgb*=sea;`);cityCoast.seaShader=shader;};const ocean=new THREE.Mesh(geo,water);ocean.name='COSTA_VERDE_OCEAN';ocean.frustumCulled=false;ocean.userData.criticalSurface=true;worldGroup.add(ocean);cityCoast.sea=ocean;world.hazards.push({id:'ocean-costa-verde',type:'water',ocean:true,x:0,z:705,w:920,d:390});registerInteractable({id:'coast-view',type:'viewpoint',icon:'🏖️',label:'Guarujá · praia',x:c.navX,z:c.navZ,radius:3,priority:120,action:()=>toast('Você chegou à praia do Guarujá, com quiosques e marina de lanchas.','good',2800)});world.navCache?.clear?.();
  }
  function updateCityCoastLife(){if(!cityCoast.ready){if(!running||!worldExpansion.ready)return;createCityTrafficSignals();Object.values(WORLD_LAYOUT_V704.cities).forEach(createCityShops);createCoast();cityCoast.ready=true;}const now=performance.now(),clock=Number(window.OTTHOS_RTDB?.serverNowMs?.()||Date.now())/1000,focus=otGamesFocus();if(cityCoast.seaShader)cityCoast.seaShader.uniforms.uCoastTime.value=clock%10000;if(now-cityCoast.signalAt>150){cityCoast.signalAt=now;const colors={red:0xf35e51,amber:0xf6c55a,green:0x65d6a1};for(const[i,head]of cityCoast.signals.entries()){const phase=citySignalPhase(head.signal)[head.axis];for(const[k,name]of['red','amber','green'].entries())cityCoast.lights.setColorAt(i*3+k,new THREE.Color(name===phase?colors[name]:0x15232a));}cityCoast.lights.instanceColor.needsUpdate=true;}for(const r of cityCoast.roots)r.root.visible=Math.hypot(focus.x-r.x,focus.z-r.z)<r.range;
   const authority=typeof sharedWorldIsAuthority!=='function'||sharedWorldIsAuthority();for(const npc of cityCoast.citizens){if(npc.cityLifeManaged||!npc.commerceRoute||npc.following||npc.passengerMode||npc.pendingRide||npc.coopRaceMode)continue;const route=npc.commerceRoute,cycle=routeLength([...route,route[0]])/1.05+4,seed=Array.from(npc.id).reduce((s,c)=>s+c.charCodeAt(0),0),t=(clock+seed%37)%cycle;if(authority){const p=trafficRoutePoint(route,Math.min(1,t/(cycle-4)));if(Math.hypot(player.x-npc.group.position.x,player.z-npc.group.position.z)>1.8){npc.group.position.set(p.x,groundHeightAt(p.x,p.z),p.z);npc.group.rotation.y=p.heading;}}const walk=t<cycle-4?Math.sin(clock*8.7)*.45:0;for(const[name,a]of[['leftArm',walk],['rightArm',-walk],['leftLeg',-walk*.8],['rightLeg',walk*.8]])if(npc.limbs[name])npc.limbs[name].rotation.x=a;}
@@ -14151,7 +14151,7 @@ function precompile(T,renderer,scene,camera){
     for(let z=501;z<=548;z+=.7)campaignBox(root,steel,-220,.49,z,8,.012,.025);
     for(const x of[-223.5,-216.5])for(const z of[502,515,529,545])campaignCylinder(root,steel,x,.1,z,.15,1.4);
     for(const x of[-223.8,-216.2])for(const z of[501,511,548]){campaignCylinder(root,white,x,1.05,z,.055,1.1);const lamp=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xf5e6b1}));lamp.position.set(x,1.62,z);root.add(lamp);}
-    citySign(root,'MARINA · LANCHAS',-220,3,501,8,-1,'#1c525d',.75);
+    citySign(root,'GUARUJÁ · MARINA',-220,3,501,8,-1,'#1c525d',.75);
     mergeTrafficStatic(root);
     for(const spec of SEA_CRAFT){
       const group=createSeaCraftModel(spec),saved=state.boats.parked?.[spec.id],bounds=v704WorldBounds();
@@ -14185,7 +14185,7 @@ function precompile(T,renderer,scene,camera){
     const root=new THREE.Group();root.name='SNOW_VISITOR_AREA';worldGroup.add(root);
     const wood=campaignMaterial(0x876749),snow=campaignMaterial(0xecf3f0),stone=campaignMaterial(0x778c8f),glass=campaignMaterial(0x547d90,.3);
     for(const[x,z]of[[-52,184],[46,184],[85,181]]){campaignBox(root,wood,x,1.55,z,7,3.1,5);world.colliders.push({x,z,w:7,d:5,height:3.8,snowCabin:true});const roof=new THREE.Mesh(new THREE.ConeGeometry(5,2.3,4),snow);roof.rotation.y=Math.PI/4;roof.position.set(x,4.15,z);root.add(roof);for(const side of[-1,1])campaignBox(root,glass,x+side*2,1.75,z-2.53,1.3,.95,.07);campaignBox(root,stone,x+1.6,4.1,z+1,.6,2.1,.6);}
-    citySign(root,'NEVE · MIRANTE',20,3,183,8,-1,'#315968',.8);
+    citySign(root,'CAMPOS DO JORDÃO · NEVE',20,3,183,8,-1,'#315968',.8);
     const snowman=new THREE.Group();snowman.position.set(16,.06,181);root.add(snowman);for(const[y,r]of[[.55,.55],[1.28,.40],[1.85,.29]]){const ball=new THREE.Mesh(new THREE.SphereGeometry(r,14,10),snow);ball.position.y=y;snowman.add(ball);}campaignBox(snowman,wood,0,2.14,0,.45,.15,.43);
     mergeTrafficStatic(root);worldDestinations.snowRoot=root;
     const positions=new Float32Array(180*3);for(let i=0;i<180;i++){positions[i*3]=(Math.sin(i*93.17)*.5+.5)*36-18;positions[i*3+1]=(i*.173%1)*14;positions[i*3+2]=(Math.cos(i*67.21)*.5+.5)*36-18;}
@@ -14195,8 +14195,8 @@ function precompile(T,renderer,scene,camera){
     registerInteractable({id:'snow-lookout',type:'viewpoint',icon:'❄️',label:'Mirante da Neve',x:20,z:180,radius:3,priority:120,action:()=>toast('Trecho de neve da OTTOVIAS. A pista continua liberada para viajar.','good',2600)});
   }
   function worldExploreLocations(){return[
-    {id:'marina-costa',name:'Marina · embarque nas lanchas',label:'Marina · embarque nas lanchas',icon:'🚤',group:'Praias e navegação',x:-220,z:502,navX:-220,navZ:502,description:'Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.',actions:['Seguir até a marina','Embarcar pelo botão AÇÃO','Pilotar, retornar e estacionar']},
-    {id:'snow-lookout',name:'Neve · mirante e chalés',label:'Neve · mirante e chalés',icon:'❄️',group:'Natureza',x:20,z:180,navX:20,navZ:180,description:'Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.',actions:['Seguir o GPS pela Ligação Norte','Chegar ao mirante']},
+    {id:'marina-costa',name:'Guarujá · marina e lanchas',label:'Guarujá · marina e lanchas',icon:'🚤',group:'Guarujá · praia e barcos',x:-220,z:502,navX:-220,navZ:502,description:'Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.',actions:['Seguir até a marina','Embarcar pelo botão AÇÃO','Pilotar, retornar e estacionar']},
+    {id:'snow-lookout',name:'Campos do Jordão · mirante e chalés',label:'Campos do Jordão · mirante e chalés',icon:'❄️',group:'Natureza',x:20,z:180,navX:20,navZ:180,description:'Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.',actions:['Seguir o GPS pela Ligação Norte','Chegar ao mirante']},
     ...Array.from(world.boats?.values()||[]).filter(b=>b.seaGoing).map(b=>({id:'marina-'+b.id,name:b.label,label:b.label,icon:'🚤',group:'Embarcações',x:b.group.position.x,z:b.group.position.z,navX:-220,navZ:clamp(b.group.position.z,513,548),description:'Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.',actions:['Caminhar pelo píer','Toque em AÇÃO ao lado da lancha']}))
   ];}
   function worldExploreDirectoryHtml(){
@@ -14205,9 +14205,9 @@ function precompile(T,renderer,scene,camera){
       ['mountain-balloon','🎈','Balão nas montanhas','Embarque na cesta, suba, explore a serra e pouse para sair.'],
       ['campaign-plane','✈️','Avião · embarcar e pilotar','Base Aérea. Aproxime-se da aeronave e toque em AÇÃO.'],
       ['campaign-helicopter','🚁','Helicóptero · embarcar e pilotar','Pouse, pare e use SAIR DA AERONAVE. Ela fica estacionada.'],
-      ['marina-costa','🚤','Lanchas · Marina da Costa Verde','Três lanchas no píer da praia. Pilotagem livre no mar.'],
-      ['coast-view','🏖️','Praia da Costa Verde','Orla, ondas, quiosques e acesso à marina.'],
-      ['snow-lookout','❄️','Neve · mirante e chalés','Siga a OTTOVIAS pela Ligação Norte.']
+      ['marina-costa','🚤','Guarujá · marina e lanchas','Três lanchas no píer da praia. Pilotagem livre no mar.'],
+      ['coast-view','🏖️','Guarujá · praia','Orla, ondas, quiosques e acesso à marina.'],
+      ['snow-lookout','❄️','Campos do Jordão · neve e chalés','Siga a OTTOVIAS pela Ligação Norte.']
     ];
     return '<h3>Explore o mundo</h3><div class="choice-grid world-explore-directory">'+destinations.map(([id,icon,title,description])=>'<button class="choice" data-explore-nav="'+id+'"><b>'+icon+' '+title+'</b><span>'+description+'</span><small>TRAÇAR ROTA NO GPS</small></button>').join('')+'<button class="choice" data-explore-civil><b>🤝 Missões do nosso mundo</b><span>Praias, vizinhança, neve, polícia, bombeiros e passeios.</span><small>INDIVIDUAL OU COOPERATIVO</small></button></div>';
   }
@@ -16846,9 +16846,9 @@ function precompile(T,renderer,scene,camera){
     if(p.nativeVenue==='football')return{id:p.id,name:p.name,icon:'⚽',group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
       description:'Estádio jogável inspirado no Benedito Teixeira, com partidas de futebol 4 × 4 e pista de atletismo.'};
-    return{id:p.id,name:p.name,icon:p.fictional?'🌄':'📍',group:RIO_V51.sectors[p.sector].label,
+    return{id:p.id,name:p.name,icon:RIO_REGIONAL_ACTIVITIES[p.key]?.icon||(p.fictional?'🌄':'📍'),group:RIO_V51.sectors[p.sector].label,
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
-      description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
+      description:RIO_REGIONAL_ACTIVITIES[p.key]?'Comprar ingresso e participar de atividades; o histórico é preservado no seu progresso.':p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
   }
 
   // Persistent delivery ledger for the regional construction and hardware stores.
@@ -16989,7 +16989,50 @@ function precompile(T,renderer,scene,camera){
     return true;
   }
 
+
+  // Existing regional attractions become paid, persistent player activities.
+  // No replacement of the landmark, original world economy or legacy saves.
+  const RIO_REGIONAL_ACTIVITIES=Object.freeze({
+    termas_ibira:{label:'Banho nas águas termais',ticket:55,needs:{fun:18,hygiene:22,energy:12},icon:'♨️'},
+    thermas_laranjais:{label:'Dia no parque aquático',ticket:95,needs:{fun:35,hygiene:12,energy:-7},icon:'🏊'},
+    parque_peao_barretos:{label:'Participar do festival de Barretos',ticket:80,needs:{fun:28,energy:-10,hunger:-10},icon:'🎡'}
+  });
+  function rioRegionalExperience(p){
+    const experience=RIO_REGIONAL_ACTIVITIES[p.key];
+    if(!experience)return false;
+    const save=rioMapSave();
+    save.regionExperience??={visits:{},paidTotal:0};
+    const visits=save.regionExperience.visits[p.id]||{count:0,spent:0};
+    openModal(p.name,
+      '<p>'+experience.label+' · atividade jogável e registrada no seu histórico de viagens.</p>'+
+      '<p>Ingresso: <b>'+experience.ticket+' moedas</b> · Seu saldo: <b>'+state.profile.coins+' moedas</b></p>'+
+      '<p>Visitas anteriores: '+visits.count+'.</p>'+
+      '<div class="modal-actions"><button class="btn primary" data-regional-join>Comprar ingresso e participar</button>'+
+      '<button class="btn" data-regional-cancel>Voltar</button></div>',root=>{
+      let busy=false;
+      root.querySelector('[data-regional-cancel]').onclick=closeModal;
+      root.querySelector('[data-regional-join]').onclick=()=>{
+        if(busy||!running||player.vehicle||player.boating||otGames.active)return;
+        if(Number(state.profile.coins)<experience.ticket){toast('Moedas insuficientes para esta atividade.','warn',1900);return;}
+        busy=true;
+        addCoins(-experience.ticket);
+        const record=save.regionExperience.visits[p.id]||{count:0,spent:0};
+        record.count++;record.spent+=experience.ticket;record.lastVisit=Date.now();
+        save.regionExperience.visits[p.id]=record;
+        save.regionExperience.paidTotal+=experience.ticket;
+        for(const [need,delta] of Object.entries(experience.needs)){
+          if(!(need in state.needs))continue;
+          state.needs[need]=clamp(Number(state.needs[need]||0)+delta,0,100);
+        }
+        saveState(true);updateHUD();closeModal();
+        toast(experience.label+' concluído. Visita registrada em '+p.name+'.','good',2800);
+      };
+    });
+    return true;
+  }
+
   function rioV51Visit(p){
+    if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
     if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
     if(p.shop==='tools'||p.shop==='materials')return rioOpenRegionalConstructionStore(p);

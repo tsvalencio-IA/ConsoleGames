@@ -80,7 +80,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "05eb9173bd904868a40a6142be10fd815d3b588adb3b8b24e2e0520428ce080b"
+      "sha256Body": "76b882e55b92db0b324f368f1b0d18ae8c70336e2dd9a795b28747ea74d32cc1"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -525,7 +525,7 @@
     {
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
-      "sha256Body": "e4be052ee1fb67a3be44fbda69f621c95da1fc81eda1c4ee1d4d10e1bb6d453b",
+      "sha256Body": "91de96ab0fd127036fa17ef860b6b7c3ff70e14c70d5cb233c7fcb42bcb8535a",
       "startLine": 0,
       "endLine": 0
     },
@@ -534,7 +534,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Destinos acessíveis, marina com lanchas pilotáveis e neve visível",
-      "sha256Body": "d9f97acb02795983ce718e5181b77df2212d14bd6e1da22565382fde7ce76027"
+      "sha256Body": "ec1d77bd4d049b935b4629fb1ab87697258e54928a54bca1f2bf54bae36250a2"
     },
     {
       "file": "src/modules/58-character-activities.js",
@@ -667,7 +667,7 @@
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "b2b787bcfd5555e91c57e6e9c6b65f65fddab454b12db2d832dab44ceb349152"
+      "sha256Body": "57bb57f1abca2769e54c96fc7e9a15dbaa200101b3ae10970c9067755462aa4f"
     },
     {
       "file": "src/modules/85-rio-city-activities.js",
