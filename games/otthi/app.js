@@ -16761,6 +16761,22 @@ function precompile(T,renderer,scene,camera){
         part('post',x,4, -d*.37,.24,8,.24,steel);
         box(x,7.85,-d*.37,1.25,.54,.47,0xf0e0a0);
       }
+      if(p.key==='parque_peao_barretos'){
+        // Lightweight arena details share existing batched meshes, not a
+        // second stadium scene or expensive individual shadow casters.
+        box(0,.32,0,w*.50,.16,d*.46,0x996b47);
+        for(let i=0;i<12;i++){
+          const a=i*Math.PI/6,x=Math.cos(a)*w*.30,z=Math.sin(a)*d*.27;
+          part('post',x,1.05,z,.13,2.10,.13,0xc5a36e);
+        }
+        for(const side of[-1,1]){
+          box(side*w*.31,1.16,0,.12,1.72,d*.62,0xe8d7a7);
+          box(0,1.16,side*d*.28,w*.62,1.72,.12,0xe8d7a7);
+          box(0,4.95,side*d*.40,w*.77,.46,.70,0x9f633f);
+        }
+        box(0,2.50,-d*.36,6.1,4.5,.23,0x8a593a);
+        box(0,4.35,-d*.35,7.3,.55,.45,0xd1a35a);
+      }
       return;
     }
     if(shape==='bridge'){
@@ -16791,6 +16807,27 @@ function precompile(T,renderer,scene,camera){
       for(const side of [-1,1]){
         tree(side*w*.35,d*.28,3.4,0x628959);
         bench(side*w*.25,d*.36);
+      }
+      if(p.key==='thermas_laranjais'){
+        // Two distinct pools, raised slides and shaded viewing terraces.
+        for(const side of[-1,1]){
+          box(side*w*.24,.16,-d*.22,w*.23,.04,d*.36,0x48b6cc);
+          box(side*w*.24,1.28,-d*.20,w*.09,2.35,.24,0xf2a54d);
+          box(side*w*.20,2.45,-d*.21,w*.21,.20,1.15,0xf6b86b);
+          box(side*w*.13,1.70,-d*.34,w*.19,.20,.29,0xea7b5e);
+          for(let n=0;n<3;n++){
+            box(side*w*.29,1.05+n*.50,-d*.45+n*.32,.62,.11,.55,0xede1bb);
+          }
+        }
+        for(const x of[-w*.32,0,w*.32])box(x,2.55,d*.33,2.6,.28,2.1,0xdba76f);
+      }else if(p.key==='termas_ibira'){
+        // Thermal-water pavilion and bathing terraces.
+        for(const x of[-w*.22,w*.22]){
+          box(x,.20,-d*.18,w*.25,.06,d*.34,0x6cb3c0);
+          for(const z of[-d*.36,d*.04])part('post',x,1.60,z,.18,3.2,.18,0xc9b7a2);
+          box(x,3.28,-d*.16,w*.30,.35,d*.42,0xb2a394);
+        }
+        box(0,.18,d*.16,w*.61,.12,d*.15,0xd7c4ad);
       }
     }else if(shape==='lookout'){
       for(const [x,z,scale] of [[-5,-3,8],[0,-4,10],[6,-2,6]])part('canopy',x,scale*.36,z,scale,scale*.72,scale*.75,0x697b56);
