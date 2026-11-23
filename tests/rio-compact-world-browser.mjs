@@ -268,6 +268,13 @@ try{
       modal:document.getElementById('modal')?.textContent,errors:window.__OTTHI_ERRORS||[]}));
     throw new Error('Shopping real-world entry failed: '+JSON.stringify(detail)+'; '+error.message);
   }
+  const actualStaff=await page.evaluate(()=>{
+    const mall=OTTHI_RIO_V51.diagnostics().malls.find(m=>m.id==='regional-shopping_cidade_norte');
+    return mall?.staff||[];
+  });
+  assert.equal(actualStaff.length,2,'two real 3D store attendants must be present inside the mall');
+  assert(actualStaff.every(n=>n.id.startsWith('rio-mall-staff-')&&n.visible));
+  report.shoppingStaff=actualStaff;
   await shot('shopping-cidade-norte-interior');
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(383,-313));
   await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte-store-top',null,{timeout:9000});
