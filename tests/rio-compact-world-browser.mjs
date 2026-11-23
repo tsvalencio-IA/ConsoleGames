@@ -72,6 +72,34 @@ try{
   report.world=world;
   await shot('av-bady-bassitt');
 
+  // Diagnose the "everything turned blue" rendering report from real pixels
+  // rather than guessing at materials: measure the central 3D viewport only.
+  const image=await page.screenshot({timeout:60000});
+  const visual=await page.evaluate(async encoded=>{
+    const bitmap=await createImageBitmap(await(await fetch('data:image/png;base64,'+encoded)).blob());
+    const sample=document.createElement('canvas');
+    sample.width=bitmap.width;sample.height=bitmap.height;
+    const g=sample.getContext('2d',{willReadFrequently:true});g.drawImage(bitmap,0,0);
+    const x0=Math.floor(bitmap.width*.19),x1=Math.floor(bitmap.width*.82),
+      y0=Math.floor(bitmap.height*.31),y1=Math.floor(bitmap.height*.67);
+    const {data}=g.getImageData(0,0,sample.width,sample.height);
+    let count=0,blue=0,opaque=0,veryDark=0;
+    const quantized=new Set();
+    for(let y=y0;y<y1;y+=4)for(let x=x0;x<x1;x+=4){
+      const k=(y*bitmap.width+x)*4,r=data[k],gr=data[k+1],b=data[k+2],a=data[k+3];
+      count++;if(a>=240)opaque++;if(r+gr+b<55)veryDark++;
+      if(b>r*1.4&&b>gr*1.17&&b>68)blue++;
+      quantized.add((r>>5)+'-'+(gr>>5)+'-'+(b>>5));
+    }
+    bitmap.close();
+    return {samples:count,blueFraction:blue/count,opaqueFraction:opaque/count,
+      darkFraction:veryDark/count,paletteCells:quantized.size};
+  },image.toString('base64'));
+  report.visual=visual;
+  assert(visual.paletteCells>5,'3D view became a uniform colour: '+JSON.stringify(visual));
+  assert(visual.blueFraction<.91,'3D scene rendered as almost entirely blue: '+JSON.stringify(visual));
+
+
   await menu();
   await shot('menu-retrato');
   for(const id of ['worldPhoneBtn','worldHomeBtn','worldLobbyBtn']){
