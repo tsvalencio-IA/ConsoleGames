@@ -757,6 +757,17 @@
     const x=site.w*.28,z=site.d*.15,w=Math.min(5.5,site.w*.24);
     for(const [index,title,slot] of [[-1,'MODA', 'top'],[1,'CALÇADOS','shoes']]){
       const counter=rioCounter(room,index*x,z,w,index<0?0x76516a:0x4d677f);
+      // The store is staffed by a real in-world NPC, not an illustration or
+      // a shopping-only modal. Preserve the same native store economy.
+      const clerkPoint=room.point(index*x,z-.54);
+      const clerk=createNPC('rio-mall-staff-'+site.key+'-'+slot,
+        slot==='top'?'Atendente de moda':'Atendente de calçados',
+        clerkPoint.x,clerkPoint.z,slot==='top'?0x90648c:0x486f80,0);
+      clerk.stationary=true;clerk.cityLifeManaged=true;
+      clerk.group.rotation.y=site.yaw;
+      room.root.add(clerk.group);
+      room.npcs??=[];room.npcs.push(clerk);
+      world.interactables=world.interactables.filter(action=>action.id!=='npc-'+clerk.id);
       room.sign(title,index*x,2.52,z-.38,w,.45,index<0?'#69445d':'#395569');
       for(let n=-1;n<=1;n++){
         room.object(index*x+n*1.49,.68,z-2.3,1.27,1.35,.66,0xb2a496);
