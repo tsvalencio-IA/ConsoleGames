@@ -1,0 +1,38 @@
+name: Validar pacote GitHub Pages de testes
+
+on:
+  push:
+    branches: [preview/otthi-rio-preto-github-pages-20261123]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate publisher Python syntax
+        run: python3 -m py_compile tools/build-github-pages-preview.py
+      - name: Compile World without modifying or publishing production
+        run: python3 games/otthi/tools/build_project.py
+      - name: Basic static and economic regression checks
+        run: |
+          node --check games/otthi/app.js
+          node --test tests/rio-compact-layout.test.mjs tests/rio-wardrobe.test.mjs tests/otthi-simulator-commerce.test.mjs
+          git diff --check
+      - name: Confirm release routes and Pages publisher restriction
+        run: |
+          test -f games/danca/index.html
+          test -f games/otthi/index.html
+          test -f arcade/index.html
+          grep -q "ConsoleGames-Preview" tools/build-github-pages-preview.py
+          echo "Validated source; no Pages deployment executed."
