@@ -5,11 +5,13 @@
       {id:'rio-compact-godoy',name:'Rua Antônio de Godoy',width:10,shoulder:1,closed:false,
         points:[{x:-105,z:0},{x:-140,z:0},{x:-170,z:0}]},
       {id:'rio-compact-murchid',name:'Avenida Murchid Homsi',width:12,shoulder:1.2,closed:false,
-        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117},{x:205,z:235}]}
+        points:[{x:205,z:-104},{x:205,z:-10},{x:205,z:56},{x:205,z:117}]},
+      {id:'rio-condominios-link',name:'Acesso Rios D’Italia',width:9,shoulder:1,closed:false,
+        points:[{x:205,z:118},{x:300,z:118},{x:300,z:230}]}
     ],
     nodes:{
       RIO_GODOY:{x:-140,z:0},RIO_GODOY_W:{x:-170,z:0},
-      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117},RIO_MURCHID_CONDOMINIOS:{x:205,z:235}
+      RIO_MURCHID_S:{x:205,z:-104},RIO_MURCHID_M:{x:205,z:56},RIO_MURCHID_N:{x:205,z:117},RIO_MURCHID_CONDOMINIOS:{x:300,z:230}
     },
     edges:[['HW','RIO_GODOY'],['RIO_GODOY','RIO_GODOY_W'],['RIO_GODOY_W','OV18'],['RIO_GODOY_W','OV19'],
       ['RIO_MURCHID_S','A_LINK'],['A_LINK','RIO_MURCHID_M'],['RIO_MURCHID_M','RIO_MURCHID_N'],['RIO_MURCHID_N','RIO_MURCHID_CONDOMINIOS']],
@@ -48,12 +50,12 @@
       ['casa-damha',225,107,15,11,'w','Avenida Murchid Homsi'],
       ['casa-damha-varanda',185,107,15,12,'e','Avenida Murchid Homsi'],
       // The six condominium lots extend the existing street grid; no existing lot is replaced.
-      ['rios_candelaro',185,147,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_fiora',225,147,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_salso',185,181,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_fortore',225,181,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_liri',185,215,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
-      ['rios_tanaro',225,215,22,20,'w','Rios D’Italia · Av. Murchid Homsi']
+      ['rios_candelaro',280,147,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fiora',320,147,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_salso',280,181,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_fortore',320,181,22,20,'w','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_liri',280,215,22,20,'e','Rios D’Italia · Av. Murchid Homsi'],
+      ['rios_tanaro',320,215,22,20,'w','Rios D’Italia · Av. Murchid Homsi']
     ],
     sections:[[-65,40],[-116.8,40],[-118.7,43],[-118.7,76.5],[-115.7,78.2],[-90.4,78.2],
       [-89.1,74.5],[-89.1,68.7],[-63,68.7],[-61.4,65],[-61.4,42],[-63,40],[-65,40]]
