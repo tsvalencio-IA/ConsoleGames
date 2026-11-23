@@ -108,7 +108,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "095a56cb1bea26711830b7e9a89a9cff4eeac8288451ddffbca3cdf459696b88"
+      "sha256Body": "ba9cd148194f84bee7c6e0f854aa498df90ce4ae24984dc7bfcd36df75c87e16"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
