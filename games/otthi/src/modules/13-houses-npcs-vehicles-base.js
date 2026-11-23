@@ -270,7 +270,11 @@
     if(hash%5===0){const cap=new THREE.Mesh(new THREE.SphereGeometry(.42,12,8,0,Math.PI*2,0,Math.PI*.48),renderMat(0x2f7ed6,{roughness:.62}));cap.position.set(0,2.28,0);cap.scale.y=.55;group.add(cap);box(.28,.04,.3,0x2f7ed6,0,2.27,.39,group);}
     const npc={id,name,x,z,baseX:x,baseZ:z,color,group,pathRadius,phase:Math.random()*6.28,friendship:state.friendship[id]||0,body,head,limbs:{leftArm,rightArm,leftLeg,rightLeg},brain:{state:'idle',target:null,nextThink:0,fearUntil:0,lastVehicle:'',lastVehicleAt:0,lastPlayerAt:0,wanderUntil:0,memory:[]}};
     const badge=new THREE.Sprite(new THREE.SpriteMaterial({map:iconTexture(name.charAt(0),'#ffffff','#15314b'),transparent:true,depthWrite:false}));badge.position.set(0,2.85,0);badge.scale.set(.5,.5,.5);badge.visible=false;group.add(badge);npc.badge=badge;
-    const rioModernNpc=/^(porteiro-|rio-|regional-)/.test(String(id));
+    // Keep named original OT toy heroes exactly as approved. Ordinary city
+    // pedestrians and shop staff in Rio Preto use the new human visual style.
+    const otToyHeroes=new Set(['nino','luna','teo','bia','maya','clara','rafa','davi','leo','michelle-ottovias']);
+    const rioModernNpc=/^(porteiro-|rio-|regional-)/.test(String(id))||
+      (typeof rioCompactWorld==='function'&&rioCompactWorld()&&!otToyHeroes.has(id));
     if(rioModernNpc){
       // Rio Preto service staff should be human-looking, not a randomly assigned
       // Lego/Mario/Minecraft character. Keep the old toy renderers untouched for
