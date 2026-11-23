@@ -63,7 +63,8 @@ test('Rio Preto lots preserve all saved identities and keep doors, streets and t
   })()`,ctx);
   assert.equal(info.lots,31);
   for(const key of ['candelaro','fiora','salso','fortore','liri','tanaro'])assert(info.ids.includes('regional-rios-italia-'+key),'missing Rios D’Italia condominium '+key);
-  assert.deepEqual([...info.ids],catalog.sites.map(site=>site.id));
+  assert.deepEqual([...info.ids.slice(0,catalog.sites.length)],catalog.sites.map(site=>site.id));
+  assert.equal(info.ids.length,catalog.sites.length+6,'original catalog must survive with six additive residences');
   assert(info.length*2>300);
   assert.equal(info.problems.length,0,JSON.stringify(info.problems.slice(0,12)));
 });
