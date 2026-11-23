@@ -94,7 +94,7 @@
   ];
   window.OTTHI_BUS_ROUTES_V704=BUS_ROUTES;
   const ADVENTURE_DEFS={
-    castle:{icon:'👑',name:'Coroas do Castelo',description:'Encontre 6 coroas reais em 75 segundos.',target:6,reward:180,xp:130},
+    castle:{icon:'👑',name:'Desafio do Paço Municipal',description:'Encontre 6 marcações no entorno da Prefeitura em 75 segundos.',target:6,reward:180,xp:130},
     metro:{icon:'Ⓜ️',name:'Explorador do Metrô',description:'Visite 3 destinos diferentes pela rede.',target:3,reward:150,xp:105},
     bus:{icon:'🚌',name:'Volta pela Cidade',description:'Desembarque em 3 paradas diferentes.',target:3,reward:145,xp:100},
     skills:{icon:'✨',name:'Combo de Skills',description:'Use as 5 skills avançadas diferentes.',target:5,reward:175,xp:125},

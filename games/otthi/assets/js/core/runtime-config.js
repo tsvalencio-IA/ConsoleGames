@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.39-mapa-de-ruas',
+    build: '705.28.40-rio-preto-compacto',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

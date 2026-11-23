@@ -113,7 +113,7 @@
     if(command.brake){car.speed=approachNumber(car.speed,0,(18+Math.abs(car.speed)*1.25)*dt);}
     else{const accelFactor=car.speed>=0?Math.max(.22,1-car.speed/maxSpeed):1;const crossing=(car.speed>0.2&&throttle<0)||(car.speed<-.2&&throttle>0);const throttleAccel=throttle>=0?throttle*(turbo?23:17.8)*accelFactor:throttle*10.8*(crossing?2.9:1);car.speed+=throttleAccel*dt;}
     if(!throttle&&!command.brake)car.speed*=Math.pow(.05,dt);if(Math.abs(car.speed)<.025&&!throttle)car.speed=0;car.speed=clamp(car.speed,maxReverse,maxSpeed);
-    if(typeof inRioMap==='function'&&inRioMap()&&rioFuelCapacity(currentVehicleRef())&&rioFuelLevel()<=0)car.speed=clamp(car.speed,-1.4,2.2);
+    if((typeof inRioMap==='function'&&inRioMap()||typeof rioCompactWorld==='function'&&rioCompactWorld())&&rioFuelCapacity(currentVehicleRef())&&rioFuelLevel()<=0)car.speed=clamp(car.speed,-1.4,2.2);
     const speedRatio=clamp(Math.abs(car.speed)/7,0,1),highSpeedDamp=1/(1+Math.abs(car.speed)/20);car.steerVisual=lerp(car.steerVisual,steer,Math.min(1,dt*9));
     const steeringAuthority=Math.max(clamp(Math.abs(car.speed)/1.5,0,1),Math.abs(throttle)>.1?.2:0);const lowSpeedAssist=.72+speedRatio*.48,turnRate=3.05*lowSpeedAssist*highSpeedDamp*(car.speed<-.08?-1:1);car.heading+=car.steerVisual*turnRate*steeringAuthority*dt;
     if(typeof v705KartAssist==='function')v705KartAssist(dt,ix);

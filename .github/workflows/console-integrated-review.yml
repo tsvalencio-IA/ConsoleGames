@@ -64,20 +64,10 @@ jobs:
         run: node tests/flight-reporter-gesture-browser.mjs
       - name: Fotografar durante voo de balão e conferir recarga
         run: node tests/balloon-photo-browser.mjs
-      - name: Completar o roteiro de Rio Preto e salvar as roupas da família
-        run: node tests/rio-preto-integration-browser.mjs
-      - name: Explorar os 42 pontos e completar a corrida a pé da Represa
-        run: node tests/rio-v51-world-browser.mjs
-      - name: Validar o mapa de Rio Preto, interiores, abastecimento e retorno à Vila OT
-        run: node tests/rio-physical-map-browser.mjs
-      - name: Conferir vias, GPS e acesso à Ottovias pelo mapa de Rio Preto
-        run: node tests/rio-street-map-browser.mjs
-      - name: Usar o cais e a porta do Canecao com os controles de toque
-        run: node tests/rio-map-input-browser.mjs
-      - name: Verificar casas, lojas, padaria, Catedral e embarque no aeroporto de Rio Preto
-        run: node tests/rio-walkable-buildings-browser.mjs
-      - name: Concluir entrega, reboque e socorro físico em Rio Preto
-        run: node tests/rio-city-services-browser.mjs
+      - name: Validar Rio Preto no mundo original, GPS, celular, chuva, casa e Represa
+        run: node tests/rio-compact-world-browser.mjs
+      - name: Comprar e receber encomenda pelo celular no mundo aberto
+        run: node tests/world-phone-orders-browser.mjs
       - name: Completar as corridas de Mirassol e Cedral no Kart Legends e recarregar os resultados
         run: node tests/rio-regional-races-browser.mjs
       - name: Conferir isolamento dos caches entre instalações

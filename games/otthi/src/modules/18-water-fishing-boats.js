@@ -159,12 +159,13 @@
     if(separate?!rioCanBoard(selected):Math.hypot(player.x-p.x,player.z-p.z)>(selected.boardRadius||3.6)){
       toast('Chegue à plataforma de embarque pelo cais.','warn');return false;
     }
-    if(!separate){
+    if(!separate||rioMap.compact){
       const lock=await window.OTTHOS_RTDB?.claimBoat?.(selected.id);
       if(lock&&lock.ok===false){toast(lock.error||'A embarcação já está sendo usada por outro jogador.','warn',2800);return false;}
     }
     applyBoatDriver(selected);
     if(separate){
+      if(rioMap.compact){state.boats.activeBoatId=selected.id;state.boats.passengerOf='';}
       rioRecordBoatPose();
       toast(selected.kind==='board'?'Use o manche para remar. Volte à mesma vaga para sair.':
         'Use o manche para navegar. Volte à sua vaga e freie para desembarcar.','good',3000);
@@ -186,13 +187,18 @@
   }
   function exitBoat(silent=false){
     if(!player.boating)return false;
-    const rioCraft=world.boat?.rioBerth?world.boat:null;
+    const rioCraft=world.boat?.rioBerth&&!player.boat.passengerOf?world.boat:null;
     if(!silent&&!validBoatExit()){
       toast(rioCraft?'Alinhe na vaga de embarque e freie para desembarcar.':'Encoste a lateral do barco no píer para sair com segurança.','warn',2500);
       return false;
     }
     if(rioCraft){
       const safe=safeBoatExitPoint();
+      if(rioMap.compact){
+        if(player.boat.passengerUid)window.OTTHOS_RTDB?.sendInteraction?.(player.boat.passengerUid,{type:'boatEnded'});
+        window.OTTHOS_RTDB?.releaseBoat?.(rioCraft.id);
+        releaseNpcPassenger('boat');state.boats.activeBoatId='';state.boats.passengerOf='';player.boat.passengerUid='';
+      }
       rioFinishMooring(rioCraft);clearMovementInputs();stopEngineSound();
       player.boating=false;player.boat.speed=0;player.boat.steerVisual=0;
       player.x=safe.x;player.z=safe.z;player.y=groundHeightAt(safe.x,safe.z);
@@ -216,7 +222,7 @@
     if(!throttle&&!command.brake)boat.speed*=Math.pow(.12,dt);if(Math.abs(boat.speed)<.02&&!throttle)boat.speed=0;boat.speed=clamp(boat.speed,-(world.boat?.reverseSpeed||3.4),world.boat?.maxSpeed||8.8);boat.steerVisual=lerp(boat.steerVisual||0,steer,Math.min(1,dt*6.5));const authority=Math.max(clamp(Math.abs(boat.speed)/2.8,0,1),Math.abs(throttle)>.1?.12:0);const turnRate=1.5/(1+Math.abs(boat.speed)*.075);boat.heading+=boat.steerVisual*turnRate*authority*dt*(boat.speed<-.08?-1:1);player.vx=Math.sin(boat.heading)*boat.speed;player.vz=Math.cos(boat.heading)*boat.speed;player.facing=boat.heading;updateMobilityControlLabels();
   }
   function constrainBoat(prevX,prevZ,previousHeading=player.boat.heading){
-    if(!player.boating)return;
+    if(!player.boating||player.boat.passengerOf)return;
     if(world.boat?.rioBerth){
       if(!rioMarineCanNavigate(world.boat,player.x,player.z,player.boat.heading)){
         player.x=prevX;player.z=prevZ;player.boat.heading=previousHeading;player.facing=previousHeading;

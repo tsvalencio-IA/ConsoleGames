@@ -28,7 +28,6 @@ RELEASE_FILES = [
     'app.js',
     'family-mascots.js',
     'assets/ot-games-airframes.json',
-    'assets/world/rio-preto-map.json',
     'assets/vendor/GLTFLoader-r128.js',
     'assets/vendor/DRACOLoader-r128.js',
     'assets/vendor/draco/draco_wasm_wrapper.js',

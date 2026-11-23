@@ -166,10 +166,12 @@
     }
   }
 
-  function rioPrepareWaterfrontRun(){
-    const way=rioMap.data.roads.find(road=>road[0]===281827416);
-    if(!way)return;
-    const nodes=way[7].map(index=>rioMap.data.nodes[index]);
+  function rioPrepareWaterfrontRun(nodes=null,id='represa_rio_preto_osm_300m'){
+    if(!nodes){
+      const way=rioMap.data.roads.find(road=>road[0]===281827416);
+      if(!way)return;
+      nodes=way[7].map(index=>rioMap.data.nodes[index]);
+    }
     const route=[{x:nodes[0][0],z:nodes[0][1]}];
     let length=0;
     const gates=[];
@@ -189,19 +191,19 @@
     const geo=new THREE.RingGeometry(1.22,1.75,22),mat=new THREE.MeshBasicMaterial({color:0xffd850,side:THREE.DoubleSide});
     rioMap.courseMarkers=gates.map(p=>{
       const ring=new THREE.Mesh(geo,mat);
-      ring.rotation.x=-Math.PI/2;ring.position.set(p.x,.12+rioTerrainY(p.x,p.z),p.z);ring.visible=false;group.add(ring);return ring;
+      ring.rotation.x=-Math.PI/2;ring.position.set(p.x,.12+(rioMap.compact?groundHeightAt(p.x,p.z):rioTerrainY(p.x,p.z)),p.z);ring.visible=false;group.add(ring);return ring;
     });
     const start=route[0];
     createSignpost(start.x+.3,start.z+.7,'CORRIDA A PÉ • REPRESA',0);
     registerInteractable({id:'rio-orla-largada',type:'race',icon:'🏃',label:'Largar na pista da Represa',x:start.x,z:start.z,radius:2.7,priority:279,
       available:()=>!player.vehicle&&!player.boating&&!activeRace&&!SPORTS_V705.active,action:openRioGeoRun});
-    rioMap.course={id:'represa_rio_preto_osm_300m',name:'Corrida a pé · Represa',start,route,gates};
+    rioMap.course={id,name:'Corrida a pé · Represa',start,route,gates};
   }
   function openRioGeoRun(){
     const course=rioMap.course;
     if(!course)return false;
     if(Math.hypot(player.x-course.start.x,player.z-course.start.z)>3.2){
-      rioSetWaypoint({id:'rio-orla-largada',name:'Largada da Represa',...course.start});
+      setWaypoint('rio-orla-largada');
       toast('Siga até a largada junto à pista da orla.','info',2200);
       return true;
     }

@@ -29,7 +29,7 @@
   for(const x of[81,99])wall(x,-178,7,.28,3.9,glass);box(steel,90,4.72,-185,26,.35,15);box(accent,90,4.05,-177.7,25,.8,.3);
   box(concrete,90,.12,-184,25,.18,14);box(steel,90,3.35,-175.7,10,.18,4);
   for(const x of[86,94])wall(x,-174,.15,.15,3.3,steel);
-  campaignSign(root,'AEROPORTO OT','TERMINAL · EMBARQUE · HELIPONTOS',6.1).position.set(90,6.1,-177.45);
+  campaignSign(root,'AEROPORTO DE RIO PRETO','SBSR · PROF. ERIBELTO MANOEL REINO',6.1).position.set(90,6.1,-177.45);
   box(steel,90,1.05,-189.8,10,.9,.8);for(const x of[83,87,93,97]){box(accent,x,.6,-183,2,.18,.75);box(accent,x,.92,-183.35,2,.6,.12);}
   citySign(root,'EMBARQUE',90,2.4,-188.9,6,1,'#285b68',.65);
   for(const [id,x]of[['heli-tour',75],['heli-ottovias',96],['heli-rescue',117]]){
@@ -45,7 +45,7 @@
  }
  function airportWalkway(root,x1,z1,x2,z2,width,material){const length=Math.hypot(x2-x1,z2-z1),m=campaignBox(root,material,(x1+x2)/2,.17,(z1+z2)/2,width,.12,length);m.rotation.y=Math.atan2(x2-x1,z2-z1);}
  function openAirportDepartures(){
-  const fleet=Object.values(WORLD_CAMPAIGN_AIRCRAFT).filter(p=>p.mode!=='balloon');openModal('Aeroporto OT · embarque',`<p>Escolha uma aeronave para localizar o embarque. Caminhe até ela e toque em AÇÃO. A família selecionada embarca junto; amigos online usam os lugares livres.</p><div class="choice-grid">${fleet.map(p=>`<button class="choice" data-airport-craft="${p.id}"><b>${p.mode==='plane'?'✈️':'🚁'} ${escapeHtml(p.label)}</b><span>${p.model==='cargo'?'Avião de carga':p.mode==='plane'?'Avião de passeio / voo livre':'Helicóptero · manche e coletivo'}</span><small>LOCALIZAR EMBARQUE</small></button>`).join('')}</div>`,root=>root.querySelectorAll('[data-airport-craft]').forEach(b=>b.onclick=()=>setWaypoint('campaign-'+b.dataset.airportCraft)));
+  const fleet=Object.values(WORLD_CAMPAIGN_AIRCRAFT).filter(p=>p.mode!=='balloon');openModal('Aeroporto de Rio Preto · embarque',`<p>Escolha uma aeronave para localizar o embarque. Caminhe até ela e toque em AÇÃO. A família selecionada embarca junto; amigos online usam os lugares livres.</p><div class="choice-grid">${fleet.map(p=>`<button class="choice" data-airport-craft="${p.id}"><b>${p.mode==='plane'?'✈️':'🚁'} ${escapeHtml(p.label)}</b><span>${p.model==='cargo'?'Avião de carga':p.mode==='plane'?'Avião de passeio / voo livre':'Helicóptero · manche e coletivo'}</span><small>LOCALIZAR EMBARQUE</small></button>`).join('')}</div>`,root=>root.querySelectorAll('[data-airport-craft]').forEach(b=>b.onclick=()=>setWaypoint('campaign-'+b.dataset.airportCraft)));
  }
  function createBalloonLaunch(){
   const root=new THREE.Group();root.name='MOUNTAIN_BALLOON_LAUNCH';worldGroup.add(root);worldAirport.balloonSite=root;const stone=campaignMaterial(0xc0bca7),wood=campaignMaterial(0x8a6547);
@@ -55,7 +55,7 @@
   registerInteractable({id:'mountain-balloon-info',type:'airport',icon:'🎈',label:'Passeio de balão nas montanhas',x:-60,z:87,radius:2.5,priority:130,action:()=>{setWaypoint('mountain-balloon');toast('Aproxime-se da cesta. Use AÇÃO para embarcar; aquecer sobe, reduzir desce. Pouse e pare para sair.','info',5000);}});
  }
  function airportMapLocations(){return[
-  {id:'airport-terminal',name:'Aeroporto OT · terminal de embarque',label:'Aeroporto OT',x:90,z:-175,navX:90,navZ:-175,icon:'✈️',group:'Aeroporto',description:'Terminal com aviões e vários helicópteros. Chegue pelo acesso da Base Aérea, escolha o embarque e caminhe até a aeronave.',actions:['Abrir painel do terminal','Localizar aeronave','Embarcar pelo botão AÇÃO']},
+  {id:'airport-terminal',name:'Aeroporto de Rio Preto · terminal de embarque',label:'Aeroporto de Rio Preto',x:90,z:-175,navX:90,navZ:-175,icon:'✈️',group:'Aeroporto',description:'Terminal com aviões e vários helicópteros. Chegue pelo acesso da Base Aérea, escolha o embarque e caminhe até a aeronave.',actions:['Abrir painel do terminal','Localizar aeronave','Embarcar pelo botão AÇÃO']},
   {id:'mountain-balloon',name:'Balão · montanhas e trilhas',label:'Balão nas montanhas',x:campaignAircraftPose('balloon').x,z:campaignAircraftPose('balloon').z,navX:campaignAircraftPose('balloon').x+4,navZ:campaignAircraftPose('balloon').z,icon:'🎈',group:'Natureza',description:'Balão pilotável com cesta para a família. Controle o aquecimento para subir ou descer e use o manche para deslocamento suave. Pouse em terreno livre para desembarcar.',actions:['Seguir até o ponto de embarque','Ação junto à cesta','Subir, explorar, pousar e sair']},
   ...Object.values(WORLD_CAMPAIGN_AIRCRAFT).filter(p=>!['plane','helicopter','balloon'].includes(p.id)).map(p=>{const pose=campaignAircraftPose(p.id);return{id:'campaign-'+p.id,name:p.label,label:p.label,x:pose.x,z:pose.z,navX:pose.x,navZ:pose.z+4,icon:p.mode==='plane'?'✈️':'🚁',group:'Aeronaves',description:'Aeronave utilizável. Aproxime-se, embarque com AÇÃO e pouse para sair. Cada aeronave conserva sua própria posição ao estacionar.',actions:['Localizar embarque','Pilotar e pousar','Sair e embarcar novamente']};})
  ];}

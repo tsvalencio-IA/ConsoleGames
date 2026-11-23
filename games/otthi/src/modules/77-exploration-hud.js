@@ -16,9 +16,17 @@
   if(explorationHud.ready)return;const bar=els.quickBar;if(!bar)return;
   const header=document.createElement('div');header.className='exploration-menu-header';header.innerHTML='<b>Menu do mundo</b><button type="button" id="worldMenuClose" aria-label="Fechar menu">✕<span>Fechar</span></button>';header.querySelector('button').onclick=closeExplorationPanels;bar.prepend(header);
   const empty=document.createElement('button');empty.id='emptyHandsBtn';empty.type='button';empty.innerHTML='👐<span>Mãos vazias</span>';empty.onclick=()=>{equipTool('none');closeExplorationPanels();updateContext(true);};bar.insertBefore(empty,els.toolsBtn);
-  const switchMap=document.createElement('button');
-  switchMap.id='worldMapSwitch';switchMap.type='button';switchMap.textContent='Jogar em Rio Preto';
-  switchMap.onclick=()=>selectOtthiMap('rio-preto');bar.append(switchMap);
+  const shortcut=(id,icon,label,action)=>{
+   const button=document.createElement('button');button.id=id;button.type='button';
+   button.innerHTML=icon+'<span>'+label+'</span>';
+   button.onclick=()=>{closeExplorationPanels();action();};
+   return button;
+  };
+  bar.insertBefore(shortcut('worldHomeBtn','🏠','Minha casa',returnHome),els.avatarGameBtn);
+  const phone=bar.querySelector('#worldPhoneBtn');if(phone)bar.insertBefore(phone,els.avatarGameBtn);
+  bar.append(shortcut('worldJourneyBtn','🧭','Meu caminho',()=>openObjectivesPanel()));
+  bar.append(shortcut('worldClimateBtn','🌦️','Clima',()=>openRioClimate()));
+  bar.append(shortcut('worldLobbyBtn','↩️','Menu inicial',stopGame));
   const layout=document.createElement('button');layout.id='worldHudModeBtn';layout.type='button';layout.onclick=()=>setExplorationHudMode(state.settings.worldHud==='full'?'clean':'full');bar.append(layout);
   const backdrop=document.createElement('button');backdrop.type='button';backdrop.id='worldMenuBackdrop';backdrop.tabIndex=-1;backdrop.setAttribute('aria-label','Fechar menu e voltar ao mundo');backdrop.onclick=closeExplorationPanels;els.game.append(backdrop);
   const closeSkills=document.createElement('button');closeSkills.id='worldSkillsClose';closeSkills.className='skill-btn';closeSkills.type='button';closeSkills.innerHTML='<b>✕</b><span>Fechar</span>';closeSkills.onclick=closeExplorationPanels;els.secondaryActions.prepend(closeSkills);

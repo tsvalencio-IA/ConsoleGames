@@ -1,6 +1,6 @@
 {
   "version": 705,
-  "build": "705.28.39-mapa-de-ruas",
+  "build": "705.28.40-rio-preto-compacto",
   "name": "OTTHI World",
   "sourceArchitecture": "modular-source-with-generated-runtime-bundle",
   "runtimeBundle": "app.js",
@@ -309,8 +309,8 @@
     "Firebase, regras, contas e multiplayer permanecem preservados."
   ],
   "hotfix": "705.7",
-  "assetVersion": 70672,
-  "revisionLabel": "Mapa de ruas e rodovias de Rio Preto",
+  "assetVersion": 70673,
+  "revisionLabel": "Rio Preto no mundo original, com Represa e clima",
   "consolidationBase": {
     "repository": "tsvalencio-IA/OTTHI-World",
     "branch": "main",

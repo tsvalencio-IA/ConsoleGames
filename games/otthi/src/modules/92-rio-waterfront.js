@@ -1,17 +1,20 @@
 /** A playable dock, with native craft, on the mapped reservoir shoreline. */
 // @otthi-module-body
   const RIO_REPRESA_DOCK=Object.freeze({x:1677.93,z:-454.032,yaw:-.26429,width:2.5,start:-3.5,end:29,deck:.38});
+  const RIO_COMPACT_DOCK=Object.freeze({...RIO_REPRESA_DOCK,x:-62.8,z:54,yaw:-Math.PI/2});
+  function rioDockLayout(){return rioMap.compact?RIO_COMPACT_DOCK:RIO_REPRESA_DOCK;}
+  function rioDockWater(x,z){return rioMap.compact?waterAt(x,z)?.reservoir:rioWaterAt(x,z);}
   function rioDockPoint(x,z){
-    const d=RIO_REPRESA_DOCK,s=Math.sin(d.yaw),c=Math.cos(d.yaw);
+    const d=rioDockLayout(),s=Math.sin(d.yaw),c=Math.cos(d.yaw);
     return {x:d.x+c*x+s*z,z:d.z-s*x+c*z};
   }
   function rioDockLocal(x,z){
-    const d=RIO_REPRESA_DOCK,s=Math.sin(d.yaw),c=Math.cos(d.yaw),dx=x-d.x,dz=z-d.z;
+    const d=rioDockLayout(),s=Math.sin(d.yaw),c=Math.cos(d.yaw),dx=x-d.x,dz=z-d.z;
     return {x:c*dx-s*dz,z:s*dx+c*dz};
   }
   function rioDockSurface(x,z){
     if(!rioMap.waterfront)return 0;
-    const d=RIO_REPRESA_DOCK,p=rioDockLocal(x,z);
+    const d=rioDockLayout(),p=rioDockLocal(x,z);
     if(Math.abs(p.x)>d.width/2||p.z<d.start||p.z>d.end)return 0;
     return d.deck*clamp((p.z-d.start)/2.5,0,1);
   }
@@ -20,11 +23,11 @@
   }
   function rioMarineCanNavigate(boat,x,z,heading){
     const w=rioMap.waterfront;
-    if(!w||!rioWaterAt(x,z))return false;
+    if(!w||!rioDockWater(x,z))return false;
     const body=rioBoatBody(boat,x,z,heading);
     for(const a of [-1,0,1])for(const b of [-1,1]){
       const wx=x+body.c*a*body.w+body.s*b*body.l,wz=z-body.s*a*body.w+body.c*b*body.l;
-      if(!rioWaterAt(wx,wz))return false;
+      if(!rioDockWater(wx,wz))return false;
     }
     if(trafficBodiesOverlap(body,w.obstacle,.09)||trafficBodiesOverlap(body,w.swimZone,.20))return false;
     for(const other of w.craft){
@@ -48,7 +51,7 @@
   }
   function rioRecordBoatPose(){
     const boat=world.boat;
-    if(!player.boating||!boat?.rioBerth)return;
+    if(!player.boating||player.boat.passengerOf||!boat?.rioBerth)return;
     rioMapSave().aboard={id:boat.id,x:+player.x.toFixed(2),z:+player.z.toFixed(2),heading:+player.boat.heading.toFixed(4)};
   }
   function rioSetBoatPose(boat,{x,z,heading}){
@@ -60,16 +63,21 @@
     rioMapSave().aboard=null;
   }
   function rioRestoreBoatRide(){
-    const saved=rioMapSave().aboard,boat=world.boats?.get(saved?.id);
+    const saved=rioMapSave().aboard;
+    const id=rioMap.compact&&saved?.id==='sea-familia'?'rio-lancha-familia':saved?.id;
+    const boat=world.boats?.get(id);
     if(!boat?.rioBerth||new URLSearchParams(location.search).has('entrada'))return false;
-    if(![saved.x,saved.z,saved.heading].every(Number.isFinite)||!rioMarineCanNavigate(boat,saved.x,saved.z,saved.heading)){
+    const valid=[saved.x,saved.z,saved.heading].every(Number.isFinite)&&rioMarineCanNavigate(boat,saved.x,saved.z,saved.heading);
+    if(!valid&&!rioMap.compact){
       rioMapSave().aboard=null;
       return false;
     }
-    rioSetBoatPose(boat,saved);
-    rioStreamMap(saved,true);
+    const pose=valid?saved:boat.rioBerth.moor;
+    rioSetBoatPose(boat,pose);
+    if(!rioMap.compact)rioStreamMap(pose,true);
     applyBoatDriver(boat);
-    cameraYaw=Math.PI-saved.heading;
+    rioRecordBoatPose();
+    cameraYaw=Math.PI-pose.heading;
     return true;
   }
 
@@ -123,7 +131,7 @@
   }
 
   function rioMakeBerth(spec,side,length){
-    const d=RIO_REPRESA_DOCK,width=d.width/2,step=rioDockPoint(side*(width-.38),length);
+    const d=rioDockLayout(),width=d.width/2,step=rioDockPoint(side*(width-.38),length);
     const moor={...rioDockPoint(side*(width+spec.halfLength+.38),length),heading:d.yaw+side*Math.PI/2};
     const boat={...spec,rioBerth:{step,moor}};
     rioSetBoatPose(boat,moor);worldGroup.add(boat.group);world.boats.set(boat.id,boat);
@@ -135,7 +143,7 @@
   function openRioDock(){
     const dock=rioMap.waterfront;
     if(!dock||player.vehicle||player.boating||player.swimming||distance2D(player,dock.entry)>3.6)return false;
-    const craft=[...world.boats.values()];
+    const craft=dock.craft.filter(boat=>boat.rioBerth);
     openModal('Cais da Represa','<p>Escolha a embarcação. Seu personagem caminha pelo cais até a vaga.</p><div class="choice-grid">'+
       craft.map(boat=>'<button class="choice" data-rio-dock-boat="'+boat.id+'"><b>'+escapeHtml(boat.label)+'</b></button>').join('')+
       '</div>',root=>{
@@ -149,8 +157,8 @@
     return true;
   }
   function rioBuildWaterfront(){
-    const d=RIO_REPRESA_DOCK,center=rioDockPoint(0,(d.start+d.end)/2),entry=rioDockPoint(0,d.start-1.4);
-    const swimming=rioDockPoint(43,13),s=Math.sin(d.yaw),c=Math.cos(d.yaw);
+    const d=rioDockLayout(),compact=rioMap.compact,center=rioDockPoint(0,(d.start+d.end)/2),entry=rioDockPoint(0,d.start-1.4);
+    const swimming=compact?rioDockPoint(6,43):rioDockPoint(43,13),s=Math.sin(d.yaw),c=Math.cos(d.yaw);
     const dock={...center,w:d.width/2,l:(d.end-d.start)/2,s,c};
     const group=new THREE.Group();group.name='RIO_REPRESA_CAIS';worldGroup.add(group);
     const batch=rioCreateBatch(group),wood=0xa08562,steel=0x436263;
@@ -158,7 +166,7 @@
       const p=rioDockPoint(x,z);batch.part('box',p.x,y,p.z,w,h,l,col,d.yaw);
     };
     const access=rioDockPoint(0,d.start-9);
-    const path=nearestRioRoad(access,true)?.point;
+    const path=compact?null:nearestRioRoad(access,true)?.point;
     if(path&&Math.hypot(path.x-access.x,path.z-access.z)<18){
       const span=distance2D(path,entry),yaw=Math.atan2(entry.x-path.x,entry.z-path.z);
       if(span>1)batch.part('box',(path.x+entry.x)/2,.034,(path.z+entry.z)/2,2.1,.053,span+1,0xc2b8a0,yaw);
@@ -172,26 +180,27 @@
       part(side*1.17,.84,z,.25,.055,.23,0xc6c8b6);
     }
     for(const z of [7,16,26])for(const side of [-1,1])part(side,.44,z,.24,.12,.15,steel);
-    for(const x of [33,38,43,48,53])for(const z of [7,20]){
+    for(const x of (compact?[3,6,9]:[33,38,43,48,53]))for(const z of (compact?[37,49]:[7,20])){
       const p=rioDockPoint(x,z);batch.part('canopy',p.x,.13,p.z,.32,.31,.32,0xefc849);
     }
     batch.commit();
     const sign=rioDockPoint(-1.55,d.start-.6);
     citySign(group,'CAIS DA REPRESA',sign.x,1.7,sign.z,2.25,1,'#195460',.46);
-    const swimSign=rioDockPoint(43,-4.9);
+    const swimSign=rioDockPoint(compact?6:43,-4.9);
     citySign(group,'NATAÇÃO',swimSign.x,1.46,swimSign.z,1.6,1,'#195460',.39);
-    rioMap.waterfront={entry,group,obstacle:dock,swimZone:{...swimming,w:11,l:8,s,c},craft:[],swimmers:[],patrol:[],acc:0};
-    world.boats=new Map();
+    rioMap.waterfront={entry,group,obstacle:dock,swimZone:{...swimming,w:compact?3.4:11,l:compact?5.6:8,s,c},craft:[],swimmers:[],patrol:[],acc:0};
+    world.boats??=new Map();
     const speedboat=SEA_CRAFT.find(spec=>spec.id==='sea-familia');
     const craft=rioMap.waterfront.craft;
     craft.push(rioMakeBerth({id:'rio-prancha',label:'Prancha de stand-up paddle',kind:'board',
       halfWidth:.53,halfLength:1.61,maxSpeed:4.3,acceleration:4.1,reverseSpeed:1.5,driver:{y:.20},group:rioMakeBoard(0x35b4ad)},1,7));
     craft.push(rioMakeBerth({id:'lake-boat',label:'Barco de pesca',kind:'lake',
       halfWidth:1.41,halfLength:2.27,maxSpeed:8.8,driver:{x:-.31,y:1.03,z:.72},group:createLakeBoatHull()},-1,7));
-    craft.push(rioMakeBerth({...speedboat,kind:'launch',halfWidth:1.18,halfLength:2.74,acceleration:10,
+    craft.push(rioMakeBerth({...speedboat,id:compact?'rio-lancha-familia':speedboat.id,kind:'launch',halfWidth:1.18,halfLength:2.74,acceleration:10,
       driver:{x:.40,y:.49,z:.66},group:createSeaCraftModel(speedboat)},1,16));
     craft.push(rioMakeBerth({id:'rio-navio-passeio',label:'Navio de passeio',kind:'ship',
       halfWidth:1.57,halfLength:4.42,maxSpeed:9.8,acceleration:5.6,reverseSpeed:2.3,driver:{y:1.16,z:.94},group:rioMakeTourShip()},1,26));
+    if(compact)world.boat=world.boats.get('lake-boat');
     registerInteractable({id:'rio-represa-cais',type:'activity',icon:'⚓',label:'Escolher embarcação no cais',...entry,
       radius:3.4,priority:255,available:()=>!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session,action:openRioDock});
     rioMap.waterfront.paddle=rioMakePaddle();
@@ -201,8 +210,9 @@
 
   function rioCreateWaterfrontLife(){
     const water=rioMap.waterfront;
-    for(const [i,x] of [40,46].entries()){
-      const a=rioDockPoint(x,9),b=rioDockPoint(x,16.5);
+    const compact=rioMap.compact;
+    for(const [i,x] of (compact?[4.6,7.1]:[40,46]).entries()){
+      const a=rioDockPoint(x,compact?39:9),b=rioDockPoint(x,compact?47:16.5);
       const npc=createNPC('rio-swimmer-'+i,i?'Júlia':'Vinícius',a.x,a.z,i?0xd4854b:0x5d8b91,0);
       npc.cityLifeManaged=true;
       water.swimmers.push({npc,route:[a,b],index:1});
@@ -210,9 +220,9 @@
     const coral=SEA_CRAFT.find(spec=>spec.id==='sea-coral');
     const craft=[
       {...coral,npcName:'Sérgio',kind:'launch',halfWidth:1.18,halfLength:2.74,speed:4.1,
-        driver:{x:.40,y:.49,z:.66},group:createSeaCraftModel(coral),loop:[[-25,35],[-25,74],[-46,74],[-46,35]]},
+        driver:{x:.40,y:.49,z:.66},group:createSeaCraftModel(coral),loop:compact?[[-5,34],[-5,45],[-2,45],[-2,34]]:[[-25,35],[-25,74],[-46,74],[-46,35]]},
       {id:'rio-paddle-npc',npcName:'Cíntia',kind:'board',halfWidth:.53,halfLength:1.61,speed:1.12,
-        driver:{y:.19},group:rioMakeBoard(0xe2bd52),loop:[[20,31],[33,29],[35,41],[21,44]]}
+        driver:{y:.19},group:rioMakeBoard(0xe2bd52),loop:compact?[[-8,23],[-6.5,28],[-7,33],[-8.8,25]]:[[20,31],[33,29],[35,41],[21,44]]}
     ];
     for(const boat of craft){
       boat.route=boat.loop.map(p=>rioDockPoint(...p));boat.index=1;

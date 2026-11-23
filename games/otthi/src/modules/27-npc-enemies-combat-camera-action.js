@@ -147,7 +147,9 @@
       desiredPos=new THREE.Vector3(player.x-Math.sin(cameraYaw)*dist,player.y+height,player.z+Math.cos(cameraYaw)*dist);look=new THREE.Vector3(player.x+Math.sin(cameraYaw)*forwardLook,player.y+visualHeight+lerp(.9,-.25,normalized),player.z-Math.cos(cameraYaw)*forwardLook);
       camera.fov=(portrait?55:58)+speedKick*(player.vehicle?7:player.boating?4:2)+lerp(4,-2,normalized);
     }
-    if(typeof inRioMap==='function'&&inRioMap())rioAdjustCamera(desiredPos,look);
+    const compactCamera=typeof rioCompactWorld==='function'&&rioCompactWorld()&&!currentHouse&&!workshopView?.active&&
+      !player.transit.mode&&!fishingVisual?.active&&!familyFrame;
+    if(typeof inRioMap==='function'&&inRioMap()||compactCamera)rioAdjustCamera(desiredPos,look);
     const t=1-Math.exp(-dt*7.5);camera.position.lerp(desiredPos,t);camera.lookAt(look);camera.updateProjectionMatrix();
   }
 

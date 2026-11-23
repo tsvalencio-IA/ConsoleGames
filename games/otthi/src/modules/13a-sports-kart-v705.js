@@ -144,7 +144,7 @@
     const hub=site?{x:cx,z:cz-22}:worldLayoutPoint('sportsEntrance',{x:cx,z:cz-22});
     const football=site?{x:cx+8,z:cz-19}:v705FootballEntrance(sports);
     sports.exit=hub;
-    sports.title=site||(typeof legacyRegionalLayout==='undefined'||legacyRegionalLayout)?'Teixeirão':'Campo da Vila OT';
+    sports.title='Teixeirão · América-SP';
     if(site)sports.localOnly=true;
     buildTeixeiraoV705(sports,football);
     createSignpost(hub.x,hub.z+.6,'🏟️ ESPORTES',Math.PI);

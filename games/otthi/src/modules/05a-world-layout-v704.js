@@ -29,6 +29,7 @@
   // The saved regional itinerary has its own entrance. The ordinary Vila OT
   // graph does not include its scenery corridors or Rio Preto storefront lots.
   const legacyRegionalLayout=typeof regionalRouteVisible!=='function'||regionalRouteVisible();
+  const compactRioLayout=!legacyRegionalLayout&&typeof RIO_COMPACT_LAYOUT!=='undefined'?RIO_COMPACT_LAYOUT:null;
   const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
   const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
@@ -44,7 +45,7 @@
     coast:Object.freeze({id:'costa-beach',label:'Praia da Costa Verde',x:-310,z:493,navX:-300,navZ:484,shoreZ:513,minX:-425,maxX:-210,oceanMinZ:510,oceanMaxZ:900}),
     campaignSites:Object.freeze({
       hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
-      airbase:{id:'airbase',label:'Aeroporto OT',x:27,z:-169,radius:36,navX:27,navZ:-159},
+      airbase:{id:'airbase',label:'Aeroporto de Rio Preto',x:27,z:-169,radius:36,navX:27,navZ:-159},
       north:{id:'north',label:'Centro de Visitantes',x:85,z:115,radius:30,navX:85,navZ:109}
     }),
     campaignAircraft:Object.freeze({
@@ -97,6 +98,7 @@
     roadBridges:Object.freeze([{id:'costa-water-crossing',x:-187,z:25,length:30,deckLength:12,width:12.4,deckHeight:.65},{id:'collection-water-crossing',x:-187,z:-55,length:30,deckLength:12,width:9,deckHeight:.65}]),
     highways:Object.freeze([
       ...CIVIL_WORLD_LINKS.highways,
+      ...(compactRioLayout?.highways||[]),
       ...(rioPretoRoads?.highways||[]),
       ...(rioRegionalRoads?.highways||[]),
       ...(rioV51Roads?.highways||[]),
@@ -143,6 +145,7 @@
     ]),
     nodes:Object.freeze({
       ...CIVIL_WORLD_LINKS.nodes,
+      ...(compactRioLayout?.nodes||{}),
       ...(rioPretoRoads?.nodes||{}),
       ...(rioRegionalRoads?.nodes||{}),
       ...(rioV51Roads?.nodes||{}),
@@ -187,6 +190,7 @@
     }),
     edges:Object.freeze([
       ...CIVIL_WORLD_LINKS.edges,
+      ...(compactRioLayout?.edges||[]),
       ...(rioPretoRoads?.edges||[]),
       ...(rioRegionalRoads?.edges||[]),
       ...(rioV51Roads?.edges||[]),
@@ -412,7 +416,8 @@
   }
   function v704ZoneAt(x,z,margin=0){return Object.values(WORLD_LAYOUT_V704.zones).filter(zone=>v704PointInRect({x,z},zone,margin)).map(zone=>zone.id);}
   function v704ConstructionAt(x,z,margin=0){return v704PointInRect({x,z},WORLD_LAYOUT_V704.zones.construction,-Math.abs(margin));}
-  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id)),...rioProtectedRects];}
+  const compactRioReservations=compactRioLayout?.lots.map(rioCompactLotRect)||[];
+  function v704ProtectedRectangles(){return [{id:'civil-airport',x:91,z:-188,w:132,d:68,margin:.3},{id:'balloon-launch',x:-66,z:89,w:12,d:12,margin:.3},...WORLD_LAYOUT_V704.structures.filter(item=>item.kind!=='sport-inner'&&item.kind!=='construction').map(item=>worldLayoutStructure(item.id)),...rioProtectedRects,...compactRioReservations];}
   function v704ReservedAt(x,z,margin=0){if(v704RoadAt(x,z,margin,true))return true;return v704ProtectedRectangles().some(rect=>v704PointInRect({x,z},rect,Number(rect.margin||0)+margin));}
   function v704BuildAllowedAt(x,z,w=1.5,d=1.5){const zone=WORLD_LAYOUT_V704.zones.construction,rect={x,z,w,d};if(x-w/2<zone.x-zone.w/2||x+w/2>zone.x+zone.w/2||z-d/2<zone.z-zone.d/2||z+d/2>zone.z+zone.d/2)return false;if(WORLD_LAYOUT_V704.roads.some(road=>v704RectOverlap(rect,v704RoadFootprint(road,true),.25)))return false;return !(WORLD_LAYOUT_V704.highways||[]).some(highway=>v704HighwayIntersectsRect(highway.id,rect,.25));}
   function v704NearestConstructionSlot(index=0){const zone=WORLD_LAYOUT_V704.zones.construction,columns=6,spacingX=5,spacingZ=5,row=Math.floor(index/columns),column=index%columns;return{x:zone.x-zone.w/2+3+column*spacingX,z:zone.z-zone.d/2+3+row*spacingZ};}

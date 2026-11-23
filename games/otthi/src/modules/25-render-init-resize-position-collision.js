@@ -76,11 +76,12 @@
   }
   function returnHome(){
     if(inRioMap())return recoverPlayerToLastSafe('retorno manual',true);
-    if(player.boating){player.x=-24.7;player.z=52;exitBoat(true);}
+    if(typeof rioCompactWorld==='function'&&rioCompactWorld()&&characterActivities.session)stopCharacterActivity();
+    if(player.boating){if(!world.boat?.rioBerth){player.x=-24.7;player.z=52;}exitBoat(true);}
     if(player.vehicle)exitVehicle(true);
     if(player.transit.mode==='bus'){const bus=world.buses.find(b=>b.id===player.transit.busId);if(bus&&busAtStop(bus))exitBusAtStop(bus,{stopId:bus.lastStopId,stopName:bus.lastStopName});else{player.transit.mode='';player.transit.busId='';}}
     if(player.transit.mode==='metro'){player.transit.mode='';player.transit.metroUntil=0;if(metroOverlay){metroOverlay.hidden=true;metroOverlay.classList.remove('travelling','arriving');}if(playerModel)playerModel.visible=true;if(avatarLayer)avatarLayer.visible=true;if(contactShadow)contactShadow.visible=true;}
-    if(currentHouse)exitHouse();const home=worldLayoutPoint('spawn',{x:-18,z:39}),safe=safePointNear(home.x,home.z,{ignoreTraffic:true,allowWater:false});player.x=safe.x;player.z=safe.z;player.y=safe.y;player.vx=player.vz=player.vy=0;player.grounded=true;cameraYaw=Math.PI;rememberSafePlayerPosition(true);auditPlayerMode('return-home');toast('Você voltou para sua casa.','good');savePlayerPosition(true);
+    if(currentHouse)exitHouse();const home=worldLayoutPoint('spawn',{x:-18,z:39}),safe=safePointNear(home.x,home.z,{ignoreTraffic:true,allowWater:false});player.x=safe.x;player.z=safe.z;player.y=safe.y;player.vx=player.vz=player.vy=0;player.grounded=true;cameraYaw=0;player.facing=Math.PI;rememberSafePlayerPosition(true);auditPlayerMode('return-home');updateCamera(2);toast('Você voltou para sua casa.','good');savePlayerPosition(true);
   }
   function savePlayerPosition(immediate=false){
     if(typeof inRioMap==='function'&&inRioMap())return rioSavePlayerPosition();
@@ -98,7 +99,7 @@
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){if(running)savePlayerPosition(true);else commitState();}});
 
   function groundHeightAt(x,z){
-    let top=typeof inRioMap==='function'&&inRioMap()?rioTerrainY(x,z):typeof professionalTerrainHeightAt==='function'?professionalTerrainHeightAt(x,z):0;for(const p of world.platforms){if(p.bridgePart!==undefined&&!state.flags.bridgeFixed&&p.bridgePart%2===1)continue;if(Math.abs(x-p.x)<=p.w/2+.35&&Math.abs(z-p.z)<=p.d/2+.35&&p.top>top&&player.y>=p.top-.75)top=p.top;}return top;
+    let top=typeof inRioMap==='function'&&inRioMap()?rioTerrainY(x,z):typeof professionalTerrainHeightAt==='function'?professionalTerrainHeightAt(x,z):0;if(typeof rioCompactWorld==='function'&&rioCompactWorld())top=Math.max(top,rioDockSurface(x,z));for(const p of world.platforms){if(p.bridgePart!==undefined&&!state.flags.bridgeFixed&&p.bridgePart%2===1)continue;if(Math.abs(x-p.x)<=p.w/2+.35&&Math.abs(z-p.z)<=p.d/2+.35&&p.top>top&&player.y>=p.top-.75)top=p.top;}return top;
   }
   function positionBlockedForPlayer(x,z,radius=.48,options={}){
     if(!Number.isFinite(x)||!Number.isFinite(z))return true;const bounds=v704WorldBounds();if(x<bounds.minX||x>bounds.maxX||z<bounds.minZ||z>bounds.maxZ)return true;

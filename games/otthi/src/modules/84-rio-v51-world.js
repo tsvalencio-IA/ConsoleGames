@@ -248,9 +248,10 @@
     return true;
   }
 
-  function rioStreetRecord(){const course=typeof inRioMap==='function'&&inRioMap()?rioMap.course:RIO_V51.course;return state.races?.streetRuns?.[course?.id];}
+  function rioUsesMappedCourse(){return typeof inRioMap==='function'&&inRioMap()||typeof rioCompactWorld==='function'&&rioCompactWorld();}
+  function rioStreetRecord(){const course=rioUsesMappedCourse()?rioMap.course:RIO_V51.course;return state.races?.streetRuns?.[course?.id];}
   function openRioStreetRun(){
-    const separateRio=typeof inRioMap==='function'&&inRioMap();const {name}=separateRio?rioMap.course:RIO_V51.course,record=rioStreetRecord();
+    const separateRio=rioUsesMappedCourse();const {name}=separateRio?rioMap.course:RIO_V51.course,record=rioStreetRecord();
     openModal(name,(separateRio?'<p>Percorra 300 metros na pista de caminhada da Represa e passe pelos seis pontos.</p>':'<p>Passe pelos seis pontos na ordem. Siga a calçada em volta dos lagos e termine no pórtico da Damha.</p>')+
       (record?'<p>Melhor tempo: '+Number(record.best).toFixed(2)+' s</p>':'')+
       '<button class="btn primary" data-rio-run-start>Largar a pé</button>',root=>{
@@ -261,7 +262,7 @@
       });
   }
   function startRioStreetRun(){
-    const separateRio=typeof inRioMap==='function'&&inRioMap();
+    const separateRio=rioUsesMappedCourse();
     const course=separateRio?rioMap.course:RIO_V51.course;
     if(activeRace||(!separateRio&&!rioV51World.roots.has('represa_lagos_damha'))||!course||player.vehicle||player.boating||otGames.active)return false;
     const {x,z}=course.start;
@@ -276,7 +277,7 @@
     const race=activeRace;
     if(race?.type!=='rio-street')return false;
     activeRace=null;
-    for(const marker of (typeof inRioMap==='function'&&inRioMap()?rioMap.courseMarkers:rioV51World.markers))marker.visible=false;
+    for(const marker of (rioUsesMappedCourse()?rioMap.courseMarkers:rioV51World.markers))marker.visible=false;
     v705HudOff();
     if(completed){
       const previous=rioStreetRecord()||{},best=Math.min(race.elapsed,Number(previous.best)||Infinity);
@@ -287,7 +288,7 @@
     return true;
   }
   function updateRioStreetRun(dt){
-    const race=activeRace,separateRio=typeof inRioMap==='function'&&inRioMap(),course=separateRio?rioMap.course:RIO_V51.course;
+    const race=activeRace,separateRio=rioUsesMappedCourse(),course=separateRio?rioMap.course:RIO_V51.course;
     if(player.vehicle||player.boating||currentHouse||otGames.active)return finishRioStreetRun(false);
     if(race.countdown>0){
       race.countdown=Math.max(0,race.countdown-dt);

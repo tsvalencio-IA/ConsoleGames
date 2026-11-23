@@ -220,7 +220,11 @@
     if(!paused){
       const tier=qualityTier();pollGamepad();
       // Movimento e câmera permanecem em todo quadro; sistemas pesados usam orçamento próprio.
-      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();perf.expansionAcc=Number(perf.expansionAcc||0)+dt;if(perf.expansionAcc>=1/30){const accumulated=perf.expansionAcc;perf.expansionAcc%=1/30;perf.expansionStep=accumulated-perf.expansionAcc;try{if(typeof updateWorldExpansion==='function')updateWorldExpansion();}finally{perf.expansionStep=0;}}if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
+      const compact=typeof rioCompactWorld==='function'&&rioCompactWorld();
+      const before=compact&&player.vehicle?{x:player.x,z:player.z}:player;
+      if(typeof otGames!=='undefined'&&otGames.active)updateOtGames(dt);else updatePlayer(dt);
+      if(compact)updateCompactRio(dt,before);
+      if(typeof updateMultiplayerNetworkV2==='function')updateMultiplayerNetworkV2(dt);if(typeof updateMultiplayerRenderV2==='function')updateMultiplayerRenderV2(dt);perf.cameraAcc=Number(perf.cameraAcc||0)+dt;if(typeof updateOtthiWorldEnvironment==='function')updateOtthiWorldEnvironment(dt);if(typeof updateWorldCampaign==='function')updateWorldCampaign(dt);if(typeof updateWorldVenues==='function')updateWorldVenues();perf.expansionAcc=Number(perf.expansionAcc||0)+dt;if(perf.expansionAcc>=1/30){const accumulated=perf.expansionAcc;perf.expansionAcc%=1/30;perf.expansionStep=accumulated-perf.expansionAcc;try{if(typeof updateWorldExpansion==='function')updateWorldExpansion();}finally{perf.expansionStep=0;}}if(typeof updateTrafficVehicleTaking==='function')updateTrafficVehicleTaking();if(typeof updateWorldHeroAdventure==='function')updateWorldHeroAdventure(dt);
       if(typeof updateFamilyCarry==='function')updateFamilyCarry();
       if(buildMode)updateBuildPreview();
       if(fishingSession||fishingVisual?.active)updateFishingVisual(dt);
@@ -283,7 +287,7 @@
   }
 
   function setupControls(){
-    if(typeof inRioMap==='function'&&inRioMap())rioBindBuildingPointer();
+    if(inRioMap()||rioCompactWorld())rioBindBuildingPointer();
     const resetJoy=()=>{input.joyId=null;input.joyX=0;input.joyZ=0;els.joystickKnob.style.transform='translate(-50%,-50%)';};
     els.joystick.addEventListener('pointerdown',e=>{e.preventDefault();if(input.joyId!==null&&input.joyId!==undefined)return;input.joyId=e.pointerId;safePointerCapture(els.joystick,e.pointerId);updateJoy(e);});
     els.joystick.addEventListener('pointermove',e=>{if(e.pointerId===input.joyId)updateJoy(e);});
@@ -344,24 +348,25 @@
     if(sessionLimitSeconds>0&&(Number(state.usage.sessionLockedAt||0)>0||Number(state.usage.sessionSeconds||0)>=sessionLimitSeconds)){state.usage.sessionLockedAt=Number(state.usage.sessionLockedAt||Date.now());saveState(true);openModal('Tempo de jogo concluído','<div class="parent-gate"><span>⏰</span><h3>Nova sessão exige um responsável</h3><p>O limite continua bloqueado mesmo ao voltar ao menu. Um responsável pode liberar outra sessão usando a senha da conta.</p><button class="btn primary xl" data-session-parent>Área dos responsáveis</button><button class="btn" data-session-back>Ficar no menu</button></div>',root=>{$('[data-session-parent]',root).onclick=()=>openParentGate(false);$('[data-session-back]',root).onclick=closeModal;});return;}
     if((!hasValidPlayerName()||!accountLinked())&&!(accountPromptWasHandled())){openAccountCenter(true,()=>{state.flags.accountPromptedV635=true;saveState(true);startGame(resetPosition,destination);});return;}
     if(!hasValidPlayerName()){openPlayerNameModal(true,()=>startGame(resetPosition,destination));return;}
-    const separateRio=destination==='rio-preto'&&typeof loadRioMap==='function';
-    const requestedMap=separateRio?'rio-preto':'ot';
+    const separateRio=destination==='rio-cartografia';
+    const requestedMap=separateRio?'rio-preto':'rio-preto-compacto';
     if(typeof selectOtthiMap==='function'&&await selectOtthiMap(requestedMap))return;
     await saveState(true);showWorldLoading(12,'Protegendo o progresso...');await nextPaint();showScreen('game');showWorldLoading(28,'Organizando o bairro...');await nextPaint();
     state.ui.quickOpen=false;state.ui.skillsOpen=false;state.ui.needsOpen=false;state.ui.missionOpen=false;syncMobilePanels();els.game.classList.remove('needs-expanded');els.missionCard.classList.remove('expanded');
     try{if(!worldInitializationReady){if(scene||renderer)throw new Error('A inicialização 3D anterior ficou incompleta. Recarregue com segurança para tentar novamente.');showWorldLoading(42,separateRio?'Carregando a malha de Rio Preto...':'Construindo ruas, casas e transportes...');await nextPaint();
       if(separateRio)await loadRioMap();
       if(typeof rioSceneMode==='function')rioSceneMode(requestedMap);
+      if(rioCompactWorld())migrateCompactRioProgress();
       if(!initThree())throw new Error('O navegador não conseguiu iniciar o ambiente 3D.');setupControls();if(!separateRio)await prepareVehicleTemplates();worldInitializationReady=true;showWorldLoading(97,'Ativando controles e personagens...');await nextPaint();}else{applyAvatarCustomization();showWorldLoading(88,'Restaurando seu personagem...');await nextPaint();}}catch(error){worldInitializationReady=false;showWorldLoadFailure(error,resetPosition);return;}
     if(els.toolsBtn){els.toolsBtn.firstChild.textContent=equippedTool().icon;$('span',els.toolsBtn).textContent=equippedTool().name;}
     if(resetPosition){player.x=0;player.z=8;player.y=0;}else restorePosition();player.scaleMode=state.abilities?.scaleMode||'normal';player.crouched=!!state.abilities?.crouched;updateAbilityUI();state.usage={totalSeconds:0,sessionSeconds:0,sessionStartedAt:0,lastPlayedAt:0,sessionLockedAt:0,...(state.usage||{}),sessionStartedAt:Number(state.usage?.sessionStartedAt||Date.now()),lastPlayedAt:Date.now()};sessionLimitHandled=false;usageLastTickAt=Date.now();running=true;paused=false;
     if(separateRio)rioResumeActivity();
-    else if(!legacyRegionalLayout){const url=new URL(location.href);url.searchParams.delete('entrada');url.searchParams.set('map','ot');history.replaceState(history.state,'',url);}
-    state.settings.lastWorldMap=requestedMap;updateOtthiMapContinue();saveState();
+    else compactRioArrive();
+    state.settings.lastWorldMap='rio-preto';updateOtthiMapContinue();saveState();
     if(!separateRio)window.OTTHI_ROOM_WORLD?.apply?.(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central',{toast:false,teleport:state.multiplayer.room!==(window.OTTHOS_RTDB?.getRoom?.()||window.OTTHI_CONFIG?.defaultRoom||'bairro-central')});
     clock.start();if(!separateRio)evaluateMissions();updateHUD();updateContext(true);updateNavigation(0,true);resize(true);if(els.modalClose)els.modalClose.hidden=false;closeModal();cancelAnimationFrame(raf);gameLoop();if(new URLSearchParams(location.search).has('ot-games')&&!otGames.linkShown){otGames.linkShown=true;setTimeout(otGamesChoose,500);}
     if(separateRio)toast('São José do Rio Preto · abra Mapa para escolher um local','good',3200);
-    else if(!resumeVilaRoadDestination())toast('Bem-vindo à Vila OT!','good',2200);
+    else toast('Bem-vindo a São José do Rio Preto!','good',2200);
   }
 
   let consoleLeaving=false;

@@ -5,10 +5,11 @@
   function rioSceneMode(mode){
     rioSceneType=mode;
     rioMap.active=mode==='rio-preto';
+    rioMap.compact=mode==='rio-preto-compacto';
     if(rioMap.active){
       rioMap.legacyWaypoint=state.waypoint;
       state.waypoint=rioMapSave().waypoint||null;
-    }else document.body.dataset.otthiMap=legacyRegionalLayout?'roteiro-regional':'ot';
+    }else document.body.dataset.otthiMap=rioMap.compact?'rio-preto-compacto':mode;
   }
   function rioResumeActivity(){
     const url=new URL(location.href);
@@ -21,12 +22,10 @@
     return restored;
   }
   function updateOtthiMapContinue(){
-    setControlText(els.continueBtn,otthiContinueMap()==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
+    setControlText(els.playBtn,state.settings.lastWorldMap?'▶ CONTINUAR EM RIO PRETO':'▶ JOGAR EM RIO PRETO');
   }
   function otthiContinueMap(){
-    const selected=new URLSearchParams(location.search).get('map');
-    if(selected==='rio-preto'||selected==='ot')return selected;
-    return state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot';
+    return 'rio-preto-compacto';
   }
   function rioWorldDestination(mode,waypoint){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
@@ -67,7 +66,7 @@
     return locations;
   }
   function rioFindWaypoint(id){
-    const aliases={shop:'regional-mercado_municipal','family-park':'regional-parque_da_represa','my-garage':'rio-fleet-counter'};
+    const aliases={shop:'regional-mercado_municipal','family-park':'regional-parque_da_represa','my-garage':'rio-fleet-counter','castle':'regional-prefeitura_andalo'};
     const place=rioMapLocations().find(location=>location.id===(aliases[id]||id));
     return place?rioSetWaypoint(place):false;
   }
@@ -131,8 +130,9 @@
   };
   window.OTTHI_RIO_MAP=Object.freeze({
     diagnostics:()=>({
-      active:inRioMap(),places:rioFunctionalSites().length,
-      bounds:rioMap.data?.bounds,source:rioMap.data?.reference,
+      active:inRioMap()||rioMap.compact,compact:!!rioMap.compact,places:rioFunctionalSites().length,
+      entrances:rioMap.compact?rioFunctionalSites().map(({key,id,x,z,w,entry})=>({key,id,x,z,w,entry})):[],
+      bounds:rioMap.compact?WORLD_LAYOUT_V704.bounds:rioMap.data?.bounds,source:rioMap.data?.reference,
       roads:rioMap.data?.roads.length,buildings:rioMap.data?.buildings.length,water:rioMap.data?.water.length,
       chunks:rioMap.tiles.size,loadedPlaces:[...rioMap.sites.keys()],
       actors:{residents:[...rioCityActors.folks.values()].flat().length,traffic:[...rioCityActors.traffic.values()].flat().length,animals:0},
@@ -143,9 +143,6 @@
     })
   });
   updateOtthiMapContinue();
-  if(new URLSearchParams(location.search).get('map')==='ot'){
-    els.playBtn.classList.add('primary');els.rioPretoPlayBtn?.classList.remove('primary');
-  }
   let rioSelectedNext='';
   try{rioSelectedNext=sessionStorage.getItem(OTTHI_NEXT_MAP);sessionStorage.removeItem(OTTHI_NEXT_MAP);}catch{}
-  if(['rio-preto','ot'].includes(rioSelectedNext))setTimeout(()=>enterCurrentOtthiWorld(rioSelectedNext),0);
+  if(['rio-preto','ot','rio-preto-compacto'].includes(rioSelectedNext))setTimeout(()=>enterCurrentOtthiWorld(),0);

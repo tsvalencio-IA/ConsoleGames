@@ -343,7 +343,8 @@
   function rioBuildFuel(site,room){
     const {w,d}=site,{box,object,sign}=room;
     box(0,.024,0,w,.048,d,0x727777);
-    const road=rioRoadAt(site.road[0],site.road[1],0,r=>!r.pedestrian);
+    const road=rioMap.compact?compactRioLayout.highways.find(road=>road.id==='rio-compact-murchid'):
+      rioRoadAt(site.road[0],site.road[1],0,r=>!r.pedestrian);
     const driveway=Math.min(23,Math.hypot(site.x-site.road[0],site.z-site.road[1])-d/2-(road?.width||6)/2);
     const lane=5.15;
     if(driveway>0)box(lane,.026,d/2+driveway/2,3.5,.049,driveway,0x777d79);

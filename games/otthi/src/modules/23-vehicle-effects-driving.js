@@ -52,7 +52,11 @@
   function stopEngineSound(){engineAudio?.voice.dispose();engineAudio=null;}
   function updateEngineSound(speed,kind,model){if(!state.settings.sound){stopEngineSound();return;}if(engineAudio&&engineAudio.signature!==model+'|'+kind)stopEngineSound();if(!engineAudio)startEngineSound();engineAudio?.voice.update(speed,input.mobilityAccelerate?1:input.mobilityBrake?0:Math.abs(Number(input.z||0)),performance.now()<Number(player.car.turboUntil||0),!paused);}
   function updateVehicleFX(dt){
-    if(player.boating&&!player.boat.passengerOf){updateEngineSound(player.boat.speed,'boat','boat');return;}
+    if(player.boating&&!player.boat.passengerOf){
+      if(world.boat?.kind==='board')stopEngineSound();
+      else updateEngineSound(player.boat.speed,'boat','boat');
+      return;
+    }
     if(!player.vehicle){if(engineAudio)stopEngineSound();return;}
     if(player.car.passengerOf){if(engineAudio)stopEngineSound();setVehicleBadgeText(`${serviceVehicleIcon(player.car.kind)} Passageiro — AÇÃO para sair`);return;}
     const car=player.car,wheels=vehicleVisual.userData.wheels,fronts=vehicleVisual.userData.frontWheels;
@@ -83,12 +87,14 @@
     if(typeof inRioMap==='function'&&inRioMap()&&player.vehicle&&rioFuelCapacity(currentVehicleRef())){
       text=Math.round(Math.abs(player.car.speed)*3.6)+' km/h · '+rioFuelLevel().toFixed(1)+' L';
     }
+    if(typeof rioCompactWorld==='function'&&rioCompactWorld()&&player.vehicle&&!player.car.passengerOf&&rioFuelCapacity(currentVehicleRef()))
+      text+=' · '+rioFuelLevel().toFixed(1)+' L';
     setControlText(badge,text);setControlAttribute(badge,'title',family?.title||'');
   }
   function updateMobilityControlLabels(){
     if(typeof syncSportControlsV705==='function'&&syncSportControlsV705())return;
     const mobility=mobilityDriverActive(),isBoat=player.boating&&!player.boat.passengerOf,speed=isBoat?Number(player.boat.speed||0):Number(player.car.speed||0);
-    const paddling=isBoat&&typeof inRioMap==='function'&&inRioMap()&&world.boat?.kind==='board';
+    const paddling=isBoat&&world.boat?.kind==='board';
     const runIcon=$('b',els.runBtn),runLabel=$('span',els.runBtn),jumpIcon=$('b',els.jumpBtn),jumpLabel=$('span',els.jumpBtn),actionIcon=$('b',els.actionBtn),actionLabel=$('span',els.actionBtn);
     if(mobility){setControlText(runIcon,'▲');setControlText(runLabel,paddling?'Remar':'Acelerar');setControlText(jumpIcon,speed>.04?'■':'▼');setControlText(jumpLabel,speed>.04?'Freio':'Ré');setControlText(actionIcon,isBoat?'🛶':'🚗');setControlText(actionLabel,'Sair');}
     else{setControlText(runIcon,'🏃');setControlText(runLabel,'Correr');setControlText(jumpIcon,'⬆');setControlText(jumpLabel,'Pular');}

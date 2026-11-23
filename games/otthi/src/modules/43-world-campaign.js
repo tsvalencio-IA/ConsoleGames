@@ -5,7 +5,7 @@
 // @otthi-module-body
   const WORLD_CAMPAIGN_SITES=Object.freeze(typeof WORLD_LAYOUT_V704!=='undefined'?WORLD_LAYOUT_V704.campaignSites:{
     hq:{id:'hq',label:'Centro de Resgate',x:-120,z:-54,radius:22,navX:-120,navZ:-38},
-    airbase:{id:'airbase',label:'Aeroporto OT',x:27,z:-169,radius:36,navX:27,navZ:-159},
+    airbase:{id:'airbase',label:'Aeroporto de Rio Preto',x:27,z:-169,radius:36,navX:27,navZ:-159},
     north:{id:'north',label:'Centro de Visitantes',x:85,z:115,radius:30,navX:85,navZ:109}
   });
   const worldCampaign={initialized:false,landmarks:[],mission:null,route:null,routeUi:null,time:0,recordKey:''};

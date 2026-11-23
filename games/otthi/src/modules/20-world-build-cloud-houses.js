@@ -111,7 +111,9 @@
 
     // Circuito de plataformas deslocado para uma área própria, sem ocupar o kartódromo.
     const circuit=P('platformCircuit'),coords=[[-16,0,15],[-10,1.2,10],[-4,2.3,5],[2,3.5,0],[8,4.6,-5],[14,5.8,-10]].map(([dx,y,dz])=>[circuit.x+dx,y,circuit.z+dz]);coords.forEach(([x,y,z],i)=>{createPlatform(x,y+.5,z,3.2,3.2,i%2?0x7a4ed0:0x3e9fd8);createCrystal(x,y+1.7,z,i===coords.length-1);});world.secretChest=createChest('secret',circuit.x+16,circuit.z-13,true);
-    const castle=P('castle');createRoyalCastle(castle.x,castle.z);
+    const castle=P('castle');
+    if(typeof rioCompactWorld==='function'&&rioCompactWorld())buildCompactRio();
+    else createRoyalCastle(castle.x,castle.z);
     createEnemy('slime',48,-25);createEnemy('slime',58,-32);createEnemy('bat',72,-43);createEnemy('golem',82,48);createEnemy('slime',108,58);
     for(const p of [[12,1,-2],[-14,1,-8],[36,1,-15],[-45,1,18],[-63,1,-35],[78,1,15],[95,1,-20]])createCrystal(...p);
     registerInteractable({id:'bridge-repair',type:'repair',icon:'🛠',label:'Consertar/inspecionar ponte',x:-12,z:47,radius:3.2,action:repairBridge});createChest('village',8,-5,false);createChest('forest',-82,-50,false);

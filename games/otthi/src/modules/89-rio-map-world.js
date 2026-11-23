@@ -1,7 +1,7 @@
 /** São José do Rio Preto scene assembled from cartographic tiles using the existing World renderer. */
 // @otthi-module-body
   const rioMapEntranceKey='complexo_swift';
-  const rioFunctionalSites=()=>rioMap.data?.sites||[];
+  const rioFunctionalSites=()=>rioMap.compact?compactRio.sites:rioMap.data?.sites||[];
   function rioSiteByKey(key){return rioFunctionalSites().find(site=>site.key===key);}
   function rioMapStartPoint(desired=new URLSearchParams(location.search).get('entrada')){
     if(desired==='represa-cais')return {...rioDockPoint(0,RIO_REPRESA_DOCK.start-2.4),yaw:Math.PI-RIO_REPRESA_DOCK.yaw};
@@ -336,8 +336,11 @@
   }
 
   function rioCameraObstacle(x,y,z){
-    for(const b of rioMap.geo.buildings.query(x,z,.29))if(b!==rioMap.activeBuilding?.building&&y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
-    return rioBoxCellCandidates(x,z,.31).some(c=>c.height>1.5&&y<c.height+.19&&rioBoxContains(c,x,z,.24));
+    for(const b of rioMap.geo?.buildings.query(x,z,.29)||[])if(b!==rioMap.activeBuilding?.building&&y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
+    return rioBoxCellCandidates(x,z,.31).some(c=>{
+      const height=c.height??(c.houseId?4.25:0);
+      return !c.disabled&&height>1.5&&y<height+.19&&rioBoxContains(c,x,z,.24);
+    });
   }
   function rioAdjustCamera(desired,look){
     if(SPORTS_V705.active)return;

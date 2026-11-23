@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.39-mapa-de-ruas",
+  "build": "705.28.40-rio-preto-compacto",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "0654f73476354f1e0fb5a7eabaff9270d3316adb9cb8560b960031b5e6e89ce4"
+      "sha256Body": "36b4bd6c4eeee0bc0315520e8591c2d5a5b914895393dea1626a4f66a2590a56"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -71,11 +71,16 @@
       "sha256Body": "9a29b7fd9df7ef2b517d8ee0a1474112145afac72373f3bde25bf9fb2ae69b16"
     },
     {
+      "file": "src/modules/78a-rio-compact-layout.js",
+      "description": "Lotes, ruas e referências de Rio Preto no terreno original",
+      "sha256Body": "467438693d3c0a8daad322059518d9cf8e7096319bbf96853a5c231a9e995efe"
+    },
+    {
       "file": "src/modules/05a-world-layout-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "7bc26013827778f730f394fe43f43a070a4410a2b6c018357beedd50b144ac64"
+      "sha256Body": "d97b8cfde4946e5ffff77b918b7cb62f5a53d79f122f907b3491e8b3f16305e9"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -89,7 +94,7 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "d205a817ea6741029e3c83524ef5ed78e5a9d5b7c25dfbf5a0f3d424fe2a62e2"
+      "sha256Body": "add4ae4df47f678146f9adc1474ddc8c3e735d9d703fc42b477428fa672fc067"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
@@ -103,7 +108,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "18be50bb208d8814f883ecaea1d0ce30083b1c87bd70b3eca2f5078f2a6d54f3"
+      "sha256Body": "07ad6bfd4307baf3924a8bfb3a106e1cc4c80007dbaca9020cdd5c47a0782bdf"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -145,14 +150,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Esportes jogáveis 3v3/2v2 e kartódromo de circuito técnico V705",
-      "sha256Body": "608e94e0bb1bad5bd1055b00ba43fdb519e1d27eb2a72126bac2ac8b37a11030"
+      "sha256Body": "16a7ab45f4eaf529b158506795155e6bafa978b83f76359159d7d50cc7ced11e"
     },
     {
       "file": "src/modules/14-world-district-decoration.js",
       "startLine": 2993,
       "endLine": 3085,
       "description": "Cogumelos, portais, praça, distrito e decoração urbana",
-      "sha256Body": "76694917970b91d349fcd8dcd5419a0d8af79ee6c647e1e79a70912376073d59"
+      "sha256Body": "9051c0169ffadf64df3dbb35cd917dd1822d3590b8a23ba4d4457ea145497630"
     },
     {
       "file": "src/modules/14a-ottovias-highway-v7054.js",
@@ -180,28 +185,28 @@
       "startLine": 3497,
       "endLine": 3557,
       "description": "Castelo, aventuras, desafios e praça educacional",
-      "sha256Body": "920acbc3a50f2f33f4f4a4ec145f3a8e787697061c0893bbb96d746a9e7a19c7"
+      "sha256Body": "70320942805a63a1e6c4704739b5488b5ef5dc6c9b0811e891e02d2f87a2e58e"
     },
     {
       "file": "src/modules/18-water-fishing-boats.js",
       "startLine": 3559,
       "endLine": 3717,
       "description": "Água, câmera e animação da pesca, barco e física náutica",
-      "sha256Body": "6dee29f5082142b75f08a6084b7b65d8e124b96b6b7bbba54e50eca10d589dcc"
+      "sha256Body": "2bc6dd7639413a1ae3310800d486c4ec924dcad97ecbf01a123e5a0c6eb9f9bc"
     },
     {
       "file": "src/modules/19-campfire-hunting-house-extensions.js",
       "startLine": 3719,
       "endLine": 3803,
       "description": "Fogueira, caça, animais e ampliações de casas",
-      "sha256Body": "acbf93200ed2398bec7e7825652b1bc670420943b40d30ebe659cd74914743ec"
+      "sha256Body": "1b24e92d0bd21506a0483f5b297b8ff0b9999f14d6435d083800ddd7c09fb3f9"
     },
     {
       "file": "src/modules/20-world-build-cloud-houses.js",
       "startLine": 3805,
       "endLine": 3948,
       "description": "Construção do mundo, recursos, baús, casas em nuvem e interiores",
-      "sha256Body": "223f63f4d1159fbe902c46be0b44d4d1fa8d43bd03535c09a9f2dcb0dc1d2f01"
+      "sha256Body": "50366c9d5b687e23f9cbaef8c8041382e90870a977b0079fc4468b622bbdb261"
     },
     {
       "file": "src/modules/21-interactions-shop-social-races.js",
@@ -222,7 +227,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "43d94ddbc01bfdea2b313f2f993fd6543fd6c86461f1a2fc204ce71b16f86ce1"
+      "sha256Body": "1caeb0f7ad43021d45a9d2ae69f7466cacff3d8ba4218e5c4ad8de219997ea41"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -243,21 +248,21 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "7e6fd24c9d761bb3d8ee09b8d0e88b274777d5c06e4212b31309ddaf586fe610"
+      "sha256Body": "77b893f0f7a0eebf2fad4b047cca7a36b30400b46659dc065ea0d75706d18776"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
       "startLine": 4637,
       "endLine": 4765,
       "description": "Entrada, corrida, pulo, física do jogador/veículo e animação",
-      "sha256Body": "e6762dc0c76b6bb55328d9a072a7ef974038c4ba2d06a4648a0588053dd4b8f8"
+      "sha256Body": "d8b670da23b5046590d661a0c45cce35d219f12daf225f3489f58ba16f02372b"
     },
     {
       "file": "src/modules/27-npc-enemies-combat-camera-action.js",
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "a456a7baec0b84a3272306fcc73177e9559c5fe332334e30a743fee2c7b21c2e"
+      "sha256Body": "ddf1d25a595819bb318ce10f7216776a2b0d5924f3a542f8956b1b96fb20f77a"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
@@ -285,14 +290,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "511ffc22dcf00bb8d213ff827519cb4d8fa0e9ea198ed240c2a1b4491d435f0d"
+      "sha256Body": "80b48aa898314ef47742abd042d4ace1ea97bc90a623b70f4d995f93f08fd473"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "0ce5e109b302bdcb8f5902677c372aec9da47c88cf8bad56a745e6c76ae62e4e"
+      "sha256Body": "c68389ebbd489d061e950ea4b085f294f7789e4e0edeab3c3fca0db59be097f9"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -397,7 +402,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Mundo unificado: bases reais, operações no norte e retorno físico",
-      "sha256Body": "1bd86a8711367662ff2da7999f37313fe54d736f1d56db328dfbac9654c868da"
+      "sha256Body": "9c4ce58253977884451c93f8bb5cc3cfbf6255ed6f0b1b73c9006fff232b3893"
     },
     {
       "file": "src/modules/44-world-rhythm.js",
@@ -506,7 +511,7 @@
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "72540e523da7eae2d51963db66b57a6b423624ca1fcc49c6afef38a66b6b8bbe",
+      "sha256Body": "220b6343e3c594588c0e983d85dced79d7de75a9c94a13b1f393bc429208768f",
       "startLine": 0,
       "endLine": 0
     },
@@ -520,7 +525,7 @@
     {
       "file": "src/modules/56-city-coast-life.js",
       "description": "Comércio ativo, semáforos e praia ligada à Costa Verde",
-      "sha256Body": "63ba941a40c1c4ce29d49e7714026219205d8041b200a8a0b9cf66e64c6fc847",
+      "sha256Body": "e4be052ee1fb67a3be44fbda69f621c95da1fc81eda1c4ee1d4d10e1bb6d453b",
       "startLine": 0,
       "endLine": 0
     },
@@ -550,7 +555,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Aeroporto civil, várias aeronaves pilotáveis e balão nas montanhas",
-      "sha256Body": "febb5493500894cec5252e7cd0df18276f0d4c4cfedfad126b31f6385faac8a8"
+      "sha256Body": "34709642827c8df32188e36efdd399ef813248c8b34768abca5a92512e8a147e"
     },
     {
       "file": "src/modules/61-world-air-operations.js",
@@ -638,7 +643,7 @@
     {
       "file": "src/modules/75-phone-orders.js",
       "description": "Compras pelo celular, recibos persistentes e entrega física de encomendas",
-      "sha256Body": "0f1d728fc012581243b938e97f6ed9dee4b82a015f8e933cddee251367a54102"
+      "sha256Body": "bb2ff254e5b540b68a5ce024fc87dd441c6742ad961ff18e15f47c8bbcb0f266"
     },
     {
       "file": "src/modules/76-player-journey.js",
@@ -648,7 +653,7 @@
     {
       "file": "src/modules/77-exploration-hud.js",
       "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
-      "sha256Body": "a2ac14c6ef318784a7a495bb4585fbd3e063b1714e37f4c275f2c6d45b74efbd"
+      "sha256Body": "88b94601ccb235bf1faeae77f8dcab644f6b09f2e0c1584bebcf842554cf9f4c"
     },
     {
       "file": "src/modules/79-rio-preto-districts.js",
@@ -662,7 +667,7 @@
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "549995ee3a0175fbbe4e764bd7001ca7128f95e94a5dbfc36204f0be27a14e4f"
+      "sha256Body": "1dc72a31575ffe24569f60464254a4d5e7b006cd977c5013545c9b95f75c16b8"
     },
     {
       "file": "src/modules/85-rio-city-activities.js",
@@ -678,23 +683,23 @@
     },
     {
       "file": "src/modules/88-rio-places.js",
-      "sha256Body": "e67da086a330efbc0725bad2a7ea8bd7d9580f32130eff98970bf850a3a040c9"
+      "sha256Body": "c34551aed67c5f625fcacfd423bffb7470943e871d0af2c6a53afabf820df477"
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "ba71633b335ef7e483c8de4eb5ce7e6e563512e8ab028fd6499dc657897feeb3"
+      "sha256Body": "c4d5075a0c334ed0ff9dfc2b32ceabb67717e7e28128c51d31366f4da19bf664"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
-      "sha256Body": "c14f6eedc4e628d51d34333e0b967157303d0e5b2b0f02ffeaac2f36f6506f68"
+      "sha256Body": "b7a346b02f7f543cfaedd86f2bea4ea78d09031cc42edd816173480166ab6104"
     },
     {
       "file": "src/modules/91-rio-map-entry-and-ui.js",
-      "sha256Body": "cc42fbb2d41b43e49640926c45d8ae8c2fdc6e10e77f838087ae9cb0c1bce5d7"
+      "sha256Body": "aa457356153d2013e3962d0e4a48b8b4041e9a00388a1e58527ddc5f84a6a800"
     },
     {
       "file": "src/modules/92-rio-waterfront.js",
-      "sha256Body": "1b29cdb890478bcc96085e0f98c54334407a55ea387cbfcc5f2fadb5e6f8fd5f"
+      "sha256Body": "0abeb663ea696724210601247677ac3f5ae0b8924cb141b438ee9602373ca6df"
     },
     {
       "file": "src/modules/93-rio-city-services.js",
@@ -725,6 +730,16 @@
       "file": "src/modules/98-rio-street-map.js",
       "description": "Searchable Rio street map and route selection",
       "sha256Body": "2885ee757eeb2cc508c8b4bb4400daf15212409945ce74ee107ec5f82380807a"
+    },
+    {
+      "file": "src/modules/99-rio-compact-world.js",
+      "description": "Infraestrutura original e atividades jogáveis da Rio Preto compacta",
+      "sha256Body": "d6787ce585ba179b4d32b5f3238916e8789987114792cc3a44c993182a168a72"
+    },
+    {
+      "file": "src/modules/100-rio-weather.js",
+      "description": "Chuva, neve e ajustes climáticos de Rio Preto",
+      "sha256Body": "47bc4bb1552d7f5a81ede7d5be564ba67397bc9c3ad50ae0157e757a08dc338c"
     }
   ],
   "styles": [
@@ -935,7 +950,7 @@
     {
       "file": "src/styles/29-exploration-hud.css",
       "description": "Menu de exploração e HUD compacto sem remoção de funções",
-      "sha256Body": "fc49ade5979924379959dc58b1b61ff245bfd2e4d14f15ee838d46bb2072c902"
+      "sha256Body": "a29b76fccc8b5809040344035376b5ead81b6095e76e48e538d5d2c56159208b"
     },
     {
       "file": "src/styles/30-rio-wardrobe.css",

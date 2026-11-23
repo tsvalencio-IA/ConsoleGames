@@ -2249,6 +2249,7 @@ body.world-hud-walking.otthi-v705-world #miniNav.active b{white-space:nowrap!imp
 body.world-hud-walking.otthi-v705-world #miniNav.active small{max-height:42px!important;overflow:hidden!important}
 body.world-hud-walking.otthi-v705-world.world-hud-action-idle #actionBtn{display:none!important}
 @media (orientation:landscape){body.world-hud-clean.otthi-v705-world #quickToggleBtn,body.world-hud-walking.otthi-v705-world :is(#miniNav,#missionCard){top:calc(48px + var(--safe-top,0px))!important}body.world-hud-walking.otthi-v705-world #missionCard{width:min(35vw,340px)!important}body.world-hud-clean.otthi-v705-world #quickBar:not([hidden]){top:calc(8px + var(--safe-top,0px))!important;max-height:calc(var(--otthi-height,100dvh) - 16px - var(--safe-top,0px) - var(--safe-bottom,0px))!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+body[data-otthi-map="rio-preto-compacto"] #actionBtn.pulse{animation:none}
 
 /* ===== MODULE: 30-rio-wardrobe.css ===== */
 /* Wardrobe stays inside the native modal's scroll area. */

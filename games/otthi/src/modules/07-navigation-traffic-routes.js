@@ -227,7 +227,7 @@
     ctx.restore();ctx.fillStyle='rgba(5,20,35,.82)';ctx.fillRect(7,7,25,23);ctx.fillStyle='#fff';ctx.font=`900 ${Math.max(12,Math.round(h*.1))}px system-ui`;ctx.fillText('N',13,24);if(room){ctx.fillStyle='rgba(5,20,35,.78)';ctx.font=`800 ${Math.max(9,Math.round(h*.065))}px system-ui`;const label=`${room.icon||''} ${room.shortName||room.name||''}`;const width=Math.min(w-14,ctx.measureText(label).width+14);ctx.fillRect(7,h-25,width,18);ctx.fillStyle='#fff';ctx.fillText(label,13,h-12);}
     ctx.save();ctx.translate(w/2,h*.64);ctx.rotate(Math.PI-(focus.facing||0));ctx.fillStyle='#1979ed';ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-11);ctx.lineTo(8,8);ctx.lineTo(-8,8);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
   }
-  function updateNavigation(dt=0,force=false){const focus=navigationFocus();updateNavigation.acc=(updateNavigation.acc||0)+dt;if(!force&&updateNavigation.acc<.14)return;updateNavigation.acc=0;updateRouteGuide(force);drawMiniMap();if(!els.miniNav)return;if(state.waypoint){const info=routeProgressInfo(world.routePath,focus),dx=info.next.x-focus.x,dz=info.next.z-focus.z,arrival=Math.hypot((state.waypoint.navX??state.waypoint.x)-focus.x,(state.waypoint.navZ??state.waypoint.z)-focus.z);els.miniNavName.textContent=`Rota: ${state.waypoint.name}`;els.miniNavDistance.textContent=arrival<4?'Você chegou!':`${Math.round(info.remaining)} m • ${info.instruction}`;els.miniNavArrow.style.transform=`rotate(${typeof otGames!=='undefined'&&otGames.active?Math.atan2(dx,dz)-otGames.body.yaw:focus.facing-Math.atan2(dx,dz)}rad)`;els.miniNav.classList.add('active');if(arrival<4&&!state.waypoint.arrived){state.waypoint.arrived=true;toast(`Você chegou: ${state.waypoint.name}`,'good',1800);beep(850,90);saveState();}}else{els.miniNavName.textContent='GPS da Vila';els.miniNavDistance.textContent='Toque para escolher o destino';els.miniNavArrow.style.transform='rotate(0deg)';els.miniNav.classList.remove('active');}}
+  function updateNavigation(dt=0,force=false){const focus=navigationFocus();updateNavigation.acc=(updateNavigation.acc||0)+dt;if(!force&&updateNavigation.acc<.14)return;updateNavigation.acc=0;updateRouteGuide(force);drawMiniMap();if(!els.miniNav)return;if(state.waypoint){const info=routeProgressInfo(world.routePath,focus),dx=info.next.x-focus.x,dz=info.next.z-focus.z,arrival=Math.hypot((state.waypoint.navX??state.waypoint.x)-focus.x,(state.waypoint.navZ??state.waypoint.z)-focus.z);els.miniNavName.textContent=`Rota: ${state.waypoint.name}`;els.miniNavDistance.textContent=arrival<4?'Você chegou!':`${Math.round(info.remaining)} m • ${info.instruction}`;els.miniNavArrow.style.transform=`rotate(${typeof otGames!=='undefined'&&otGames.active?Math.atan2(dx,dz)-otGames.body.yaw:focus.facing-Math.atan2(dx,dz)}rad)`;els.miniNav.classList.add('active');if(arrival<4&&!state.waypoint.arrived){state.waypoint.arrived=true;toast(`Você chegou: ${state.waypoint.name}`,'good',1800);beep(850,90);saveState();}}else{els.miniNavName.textContent='Mapa de Rio Preto';els.miniNavDistance.textContent='Toque para escolher o destino';els.miniNavArrow.style.transform='rotate(0deg)';els.miniNav.classList.remove('active');}}
   function routeSvgMarkup(points){const mapped=points.map(p=>worldToMap(p.x,p.z));return `<svg class="map-route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="${mapped.map(p=>`${p.left},${p.top}`).join(' ')}"/></svg>`;}
   function worldHighwaysSvgMarkup(){return worldRoadsSvgMarkup()+ (WORLD_LAYOUT_V704.highways||[]).map(highway=>{const mapped=(highway.points||[]).map(p=>worldToMap(p.x,p.z));if(highway.closed&&mapped.length)mapped.push(mapped[0]);return `<svg class="map-highway" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1"><polyline points="${mapped.map(p=>`${p.left},${p.top}`).join(' ')}" fill="none" stroke="#202a31" stroke-width="${(100*Number(highway.width||10)/v704WorldSize().w).toFixed(3)}" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${mapped.map(p=>`${p.left},${p.top}`).join(' ')}" fill="none" stroke="#f2cf36" stroke-width=".35" stroke-dasharray="2 1.5"/></svg>`;}).join('');}
 
@@ -244,14 +244,14 @@
     { id:'academia', name:'Estação Academia', x:-4, z:-40, navX:0, navZ:-40, line:'Linha Solar' },
     { id:'floresta', name:'Estação Floresta', x:-55, z:-34, navX:-55, navZ:-34, line:'Linha Verde' },
     { id:'lago', name:'Estação Represa', x:METRO_LAKE_POINT.x, z:METRO_LAKE_POINT.z, navX:METRO_LAKE_POINT.x, navZ:METRO_LAKE_POINT.z, line:'Linha Verde' },
-    { id:'castelo', name:'Estação Castelo', x:100, z:38, navX:100, navZ:38, line:'Linha Real' },
+    { id:'castelo', name:'Estação Paço Municipal', x:100, z:38, navX:100, navZ:38, line:'Linha Real' },
     { id:'esportes', name:'Estação Complexo Esportivo', x:34, z:58, navX:34, navZ:58, line:'Linha Esportiva' },
     { id:'kart', name:'Estação Kartódromo', x:94, z:-65, navX:94, navZ:-65, line:'Linha Esportiva' }
   ];
   const mapPointV704=(id,navOffsetZ=0)=>{const p=worldLayoutPoint(id);return{x:p.x,z:p.z,navX:p.x,navZ:p.z+navOffsetZ};};
   const MAP_LOCATIONS = [
     { id:'home', name:`Casa de ${playerDisplayName()}`, icon:'🏠', ...mapPointV704('home',5.3), group:'Casa' },
-    { id:'village', name:'Praça da Vila', icon:'🏘', x:0, z:0, group:'Vila' },
+    { id:'village', name:'Centro de Rio Preto', icon:'🏘', x:0, z:0, group:'Centro' },
     { id:'blue', name:'Casa Azul', icon:'🏡', ...mapPointV704('blue',5.3), group:'Casas' },
     { id:'pink', name:'Casa Rosa', icon:'🏡', ...mapPointV704('pink',5.3), group:'Casas' },
     { id:'shop', name:'Mercadinho', icon:'🛒', ...mapPointV704('shop',5.3), group:'Serviços' },
@@ -264,7 +264,7 @@
     { id:'well', name:'Poço da Vila', icon:'🪣', ...mapPointV704('well'), group:'Recursos' },
     { id:'mine', name:'Mina Dourada', icon:'⛏️', ...mapPointV704('mine',6), group:'Recursos' },
     { id:'forest', name:'Floresta', icon:'🌲', ...mapPointV704('cabin',6), group:'Exploração' },
-    { id:'lake', name:'Represa OTTHI', icon:'🌊', x:-88, z:54, navX:-61, navZ:54, group:'Água e Natureza' },
+    { id:'lake', name:'Parque da Represa Municipal', icon:'🌊', x:-88, z:54, navX:-61, navZ:54, group:'Água e Natureza' },
     { id:'pier', name:'Píer do Lago', icon:'🛶', ...mapPointV704('pier'), group:'Água e Natureza' },
     { id:'fishing', name:'Área de Pesca', icon:'🎣', x:-72, z:42, navX:-64, navZ:42, group:'Água e Natureza' },
     { id:'camp', name:'Acampamento', icon:'🔥', ...mapPointV704('camp'), group:'Floresta e Campo' },
@@ -289,7 +289,7 @@
     { id:'ottovias-field', name:'OTTOVIAS — trecho Campo', icon:'🌾', ...mapPointV704('ottoviasField'), group:'OTTOVIAS' },
     { id:'ottovias-snow', name:'OTTOVIAS — trecho Neve', icon:'❄️', ...mapPointV704('ottoviasSnow'), group:'OTTOVIAS' },
     { id:'ottovias-beach', name:'OTTOVIAS — trecho Praia', icon:'🏖️', ...mapPointV704('ottoviasBeach'), group:'OTTOVIAS' },
-    { id:'castle', name:'Castelo', icon:'🏰', ...mapPointV704('castleEntrance'), group:'Aventura' },
+    { id:'castle', name:'Prefeitura', icon:'🏛️', ...mapPointV704('castleEntrance'), group:'Aventura' },
     { id:'mountain', name:'Montanha OTTHI', icon:'⛰️', ...mapPointV704('mountain'), group:'Aventura' },
     { id:'mini', name:'Passagem Mini', icon:'◱', ...mapPointV704('miniTunnel'), group:'Habilidades' },
     { id:'crouch', name:'Túnel Baixo', icon:'▼', ...mapPointV704('crouchTunnel'), group:'Habilidades' },
@@ -312,7 +312,7 @@
     mine:['Mina infantil para extrair pedra e minério de ouro.',['Minerar','Explorar']],
     forest:['Área de árvores, madeira, pistas e aventuras sem violência.',['Cortar madeira','Explorar']],
     lake:['Represa com píer, barco e pesca.',['Pescar','Passear de barco']],
-    castle:['Castelo real com desafios, coroas e áreas secretas.',['Explorar','Desafios']],
+    castle:['Paço Municipal e desafios da cidade.',['Explorar','Desafios']],
     gym:['Complexo esportivo com atletismo, futebol, vôlei e futevôlei em áreas separadas.',['Competir','Treinar']],
     football:['Entrada sinalizada do campo. Ao chegar, use AÇÃO no painel ⚽ FUTEBOL para escolher a partida.',['Jogar futebol','Seguir placa ⚽']],
     volley:['Entrada sinalizada da quadra de vôlei, com partida 2 × 2, saque, rally e pontuação.',['Jogar vôlei']],

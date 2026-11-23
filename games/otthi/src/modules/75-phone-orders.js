@@ -8,7 +8,7 @@
   const road=groundServiceRoadProjection(origin);if(!road)return null;const {a,b}=road,d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz);
   for(const along of[0,6,-6,12,-12,20,-20,30,-30])for(const side of[1.35,-1.35,0]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(v704RoadAt(p.x,p.z,.1,false)&&phoneVehiclePoseClear(vehicle,p.x,p.z,yaw,true))return p;}return null;
  }
- function phoneOrderOnMap(order){return inRioMap()?order.map==='rio-preto':!order.map;}
+ function phoneOrderOnMap(order){return inRioMap()?order.map==='rio-preto':!order.map||typeof rioCompactWorld==='function'&&rioCompactWorld()&&order.map==='rio-preto';}
  function phoneNewOrder(kind,label,price){return{id:'order-'+crypto.randomUUID(),kind,label,price,status:'queued',at:Date.now(),owner:sharedWorldOwnId(),...(inRioMap()?{map:'rio-preto'}:{})};}
  function phoneCourierVehicle(){
   const pose=inRioMap()?RIO_GARAGE_BAY:null;

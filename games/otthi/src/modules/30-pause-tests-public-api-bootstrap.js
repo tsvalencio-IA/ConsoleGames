@@ -9,7 +9,7 @@
  */
 // @otthi-module-body
   function stopGame(){
-    if(typeof inRioMap==='function'&&inRioMap())stopCharacterActivity();
+    if(typeof inRioMap==='function'&&inRioMap()||typeof rioCompactWorld==='function'&&rioCompactWorld())stopCharacterActivity();
     if(typeof worldVenues!=='undefined'&&worldVenues.session)venueClose();
     if(typeof otGames!=='undefined'&&otGames.active)otGamesLeave({preserveCampaign:true});
     if(buildMode)endBuildMode('cancelled',true);
@@ -20,18 +20,17 @@
     if(otthiEnteringWorld)return;otthiEnteringWorld=true;
     const buttons=[els.playBtn,els.continueBtn,els.rioPretoPlayBtn].filter(Boolean);
     const trigger=destination==='rio-preto'&&els.rioPretoPlayBtn?els.rioPretoPlayBtn:els.playBtn;
-    const caption=trigger.textContent;
     for(const button of buttons)button.disabled=true;
     trigger.textContent='CONFERINDO VERSÃO…';
     try{await requestPreferredGameOrientation();await startGame(false,destination);}
     finally{
       otthiEnteringWorld=false;
       for(const button of buttons)button.disabled=false;
-      trigger.textContent=caption;
+      updateOtthiMapContinue();
     }
   }
   els.playBtn.onclick=()=>enterCurrentOtthiWorld();
-  els.continueBtn.onclick=()=>enterCurrentOtthiWorld(otthiContinueMap());
+  if(els.continueBtn)els.continueBtn.onclick=()=>enterCurrentOtthiWorld(otthiContinueMap());
   if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){
