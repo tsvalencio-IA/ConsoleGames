@@ -127,3 +127,22 @@ test('regional tourism refuses unaffordable visits without spending money or cha
   assert.equal(model.state.needs.fun,35);
   assert.equal(model.save.regionExperience.visits['regional-thermas_laranjais'],undefined);
 });
+
+
+test('a thermal-pool visit moves the avatar before charging and records only a completed swim',()=>{
+  const {ctx,model}=setup();
+  let scheduled=null;
+  ctx.CHARACTER_ACTIVITIES={'rio-pool':['Nadando na piscina',4]};
+  ctx.beginCharacterActivity=(name,opts)=>{assert.equal(name,'rio-pool');scheduled=opts;return true;};
+  vm.runInContext('rioRegionalExperience('+JSON.stringify({
+    key:'termas_ibira',id:'regional-termas_ibira',name:'Termas de Ibirá',
+    shape:'pool',x:31,z:24,d:16,face:1
+  })+')',ctx);
+  model.single['[data-regional-join]'].onclick();
+  assert(scheduled&&scheduled.pose.lying,'physical pool visit was not scheduled');
+  assert.equal(model.state.profile.coins,500,'must not charge until swimming completes');
+  assert.equal(model.save.regionExperience.visits['regional-termas_ibira'],undefined);
+  assert.equal(scheduled.commit(),true);
+  assert.equal(model.state.profile.coins,445);
+  assert.equal(model.save.regionExperience.visits['regional-termas_ibira'].count,1);
+});
