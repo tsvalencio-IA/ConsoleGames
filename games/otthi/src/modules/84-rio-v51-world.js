@@ -186,6 +186,7 @@
   function rioV51Register(){
     rioV51World.registered=true;
     for(const p of RIO_V51.places){
+      if(!legacyRegionalLayout&&!RIO_RECOVERED_SECTORS.includes(p.sector))continue;
       if(p.nativeVenue)continue;
       if(['market','fastfood','cafe'].includes(p.shop))cityCoast.shops.set(p.id,{
         id:p.id,label:p.name,kind:p.shop,x:p.x,z:p.visitZ,navX:p.visitX,navZ:p.visitZ,
@@ -199,11 +200,12 @@
     }
   }
   function updateRioV51World(){
-    if(!legacyRegionalLayout||!running||!worldGroup||!worldExpansion.ready)return;
+    if((!legacyRegionalLayout&&!rioCompactWorld())||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
     for(const sector of Object.values(RIO_V51.sectors)){
+      if(!legacyRegionalLayout&&!RIO_RECOVERED_SECTORS.includes(sector.id))continue;
       const d=Math.hypot(focus.x-sector.x,focus.z-sector.z);
       const root=rioV51World.roots.get(sector.id);
       if(root){root.visible=d<195;continue;}
@@ -316,11 +318,11 @@
   const rioV51PreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioV51PreviousExpansion();updateRioV51World();};
   const rioV51PreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return legacyRegionalLayout?[...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)]:rioV51PreviousLocations();};
+  expansionMapLocations=function(){return [...rioV51PreviousLocations(),...RIO_V51.places.filter(p=>legacyRegionalLayout||rioCompactWorld()&&RIO_RECOVERED_SECTORS.includes(p.sector)).map(rioV51Location)];};
   const rioV51PreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
-    if(!legacyRegionalLayout)return rioV51PreviousDirectory(...args);
-    const groups=Object.values(RIO_V51.sectors).map(sector=>
+    if(!legacyRegionalLayout&&!rioCompactWorld())return rioV51PreviousDirectory(...args);
+    const groups=Object.values(RIO_V51.sectors).filter(sector=>legacyRegionalLayout||RIO_RECOVERED_SECTORS.includes(sector.id)).map(sector=>
       '<details><summary>'+escapeHtml(sector.label)+' · '+sector.places.length+'</summary><div class="choice-grid">'+
       sector.places.map(p=>'<button class="choice" data-rio-v51-route="'+p.id+'"><b>'+escapeHtml(p.name)+'</b><span>'+
         (p.fictional?'Local fictício':'Fachada estilizada')+'</span></button>').join('')+'</div></details>').join('');
