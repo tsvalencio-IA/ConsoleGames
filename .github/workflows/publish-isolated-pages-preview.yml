@@ -1,0 +1,63 @@
+name: GitHub Pages - OTThi isolated preview
+
+# This workflow is intentionally inactive on ConsoleGames.  It can publish
+# only after the tested branch is copied to main of a SEPARATE preview repo.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: otthi-pages-preview
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    if: github.repository == 'tsvalencio-IA/ConsoleGames-Preview'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout preview repository
+        uses: actions/checkout@v4
+
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the authentic OTThi runtime
+        run: python3 games/otthi/tools/build_project.py
+
+      - name: Validate generated game
+        run: |
+          node --check games/otthi/app.js
+          node --test tests/rio-compact-layout.test.mjs tests/rio-wardrobe.test.mjs tests/world-integrity.test.mjs tests/otthi-simulator-commerce.test.mjs
+          git diff --check
+
+      - name: Prepare isolated GitHub Pages paths
+        run: python3 tools/build-github-pages-preview.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _pages_preview
+
+      - name: Publish preview only
+        id: deployment
+        uses: actions/deploy-pages@v4
