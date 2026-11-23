@@ -208,11 +208,12 @@
   }
   function rioDeliveryAddress(site){return {x:site.entry[0],z:site.entry[1]};}
   function rioRegisterHomeDelivery(site){
-    if(rioRegisteredDeliveries.has(site.propertyId))return;
+    const actionId='rio-construction-receive-'+site.propertyId;
+    if(rioRegisteredDeliveries.has(site.propertyId)&&world.interactables.some(item=>item.id===actionId))return;
     rioRegisteredDeliveries.add(site.propertyId);
     const pos=rioDeliveryAddress(site);
     registerInteractable({
-      id:'rio-construction-receive-'+site.propertyId,
+      id:actionId,
       type:'delivery',icon:'📦',label:'Receber materiais de construção',...pos,radius:3.5,priority:262,
       available:()=>running&&!paused&&!player.vehicle&&!player.boating&&
         rioPropertyTitle(site.propertyId)?.owned&&
