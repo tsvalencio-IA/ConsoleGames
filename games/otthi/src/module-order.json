@@ -262,7 +262,7 @@
       "startLine": 4767,
       "endLine": 4928,
       "description": "Sociedade NPC, inimigos, combate, câmera, contexto, ação e necessidades",
-      "sha256Body": "ddf1d25a595819bb318ce10f7216776a2b0d5924f3a542f8956b1b96fb20f77a"
+      "sha256Body": "8630a13857ab80549e6050ba4b06f52eade64b70c3fa89ac268e3f27efb94e76"
     },
     {
       "file": "src/modules/28b-multiplayer-core-v2.js",
