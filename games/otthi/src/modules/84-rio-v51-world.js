@@ -579,7 +579,7 @@
     // food are built only when the player approaches this district.
     const room=rioMountPlace(site,sectorRoot);
     if(!room)return null;
-    const record={site,room,outside,outsideColliders,inside:false};
+    const record={site,room,outside,outsideColliders,inside:false,venueId:p.id};
     room.legacyResidence=true;room.legacyRecord=record;
     room.root.visible=false;
     for(const collider of room.colliders)collider.disabled=true;
@@ -618,7 +618,7 @@
     }
     room.action('exit-regional-mall','Sair do estabelecimento',0,site.d*.31,leave,{inside:true,icon:'🚪',radius:2.9});
     record.enter=enter;record.leave=leave;
-    rioV51IndoorMalls.set(site.id,record);
+    rioV51IndoorMalls.set(p.id,record);
     if(rioMapSave().activeRegionalMall===site.id)enter();
     return record;
   }
@@ -758,7 +758,7 @@
           previous:lastActionSource,current:currentContext?.id,available:!!target&&isInteractionAvailable(target),
           targetExists:!!target,near:!!target&&Math.hypot(player.x-target.x,player.z-target.z)};
       })(),
-      malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,
+      malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.venueId,roomId:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,
         sectorVisible:!!rioV51World.roots.get(RIO_V51.places.find(p=>p.id===m.site.id)?.sector)?.visible,
         entry:m.site.entry,exit:(()=>{const item=world.interactables.find(i=>i.id===m.site.id+'-exit-regional-mall');return item?{x:item.x,z:item.z}:null;})(),
         position:{x:player.x,z:player.z}}))}),
