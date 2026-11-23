@@ -44,7 +44,9 @@ try{
     await page.screenshot({path:out+'/'+id+'.png'});
     // Clear the active room without manipulating code or disabling collisions.
     const exit=id+'-exit-regional-mall';
-    await page.evaluate(([x,z])=>OTTHOS_TEST_API.teleport(x,z),[x,z-4]);
+    const exitPos=await page.evaluate(id=>OTTHI_RIO_V51.diagnostics().malls.find(m=>m.id===id)?.exit,id);
+    assert(exitPos,'real interior must have an exit door');
+    await page.evaluate(p=>OTTHOS_TEST_API.teleport(p.x,p.z),exitPos);
     await page.waitForFunction(id=>OTTHOS_TEST_API.getContext()?.id===id,exit,{timeout:9000});
     await page.locator('#actionBtn').click();
     await page.waitForFunction(id=>!OTTHI_RIO_V51.diagnostics().malls.find(m=>m.id===id)?.inside,id,{timeout:9000});
