@@ -143,11 +143,14 @@
       room.poolExterior=exterior;
       const approach=outdoor.point(px-pw*.45,pz-pd*.46);
       const water=outdoor.point(px,pz);
+      // A pool shares the address of its house, but not the interior.
+      // The former indoor-flag check made the exterior pool impossible to use.
+      room.isOutdoorLeisurePoint=(x,z)=>Math.hypot(x-water.x,z-water.z)<Math.max(pw,pd)*.62+1.55;
       registerInteractable({
         id:site.id+'-outdoor-pool',type:'activity',icon:'🏊',
         label:condominium?'Usar piscina da área comum do condomínio':'Nadar na piscina da casa',
         x:approach.x,z:approach.z,radius:2.7,priority:252,
-        available:()=>exterior.visible&&!rioMap.indoors&&!player.vehicle&&!player.boating&&
+        available:()=>exterior.visible&&room.isOutdoorLeisurePoint(player.x,player.z)&&!player.vehicle&&!player.boating&&
           !player.swimming&&!characterActivities.session,
         action:()=>beginCharacterActivity('rio-pool',{
           target:approach,pose:{...water,y:.37,yaw:site.yaw,lying:true},walkSpeed:1.8,
