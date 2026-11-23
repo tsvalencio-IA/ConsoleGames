@@ -44,17 +44,17 @@
 
   function rioResidenceDoor(site,room,target){
     const point={x:site.entry[0],z:site.entry[1]},available=()=>room.root.visible&&rioPlayerAt(point,3.3);
-    const enterUnit=()=>{
+    const enterUnit=(onArrival)=>{
       room.gate.disabled=true;room.door.visible=false;
       room.refreshDecor?.();
-      if(!rioEnterPlace(target,()=>{if(site.propertyId==='home')setFlag('enteredHome');})){
+      if(!rioEnterPlace(target,()=>{if(site.propertyId==='home')setFlag('enteredHome');onArrival?.();})){
         room.gate.disabled=false;room.door.visible=true;
       }
     };
     if(site.style!=='rios-ditalia'){
       room.selectedUnitId=site.propertyId;
       return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,
-        decorate:()=>room.manageFurniture?.(),enter:enterUnit});
+        decorate:()=>enterUnit(()=>room.manageFurniture?.()),enter:enterUnit});
     }
     // Unit 101 reuses the original property ID to preserve ownership saves.
     const unitId=number=>number==='101'?site.propertyId:site.propertyId+'-unit-'+number;
@@ -78,7 +78,7 @@
         room.selectedUnitId=unit.id;room.refreshDecor?.();
         rioPropertyDoor({id:unit.id,name:site.name+' · Apartamento '+unit.number,
           price:Math.round(site.price*(.80+unit.floor*.10)),available,
-          decorate:()=>room.manageFurniture?.(),enter:enterUnit});
+          decorate:()=>enterUnit(()=>room.manageFurniture?.()),enter:enterUnit});
       };
     });
     return true;
