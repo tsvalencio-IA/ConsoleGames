@@ -354,6 +354,15 @@
       const height=clamp((portrait?6.7:5.8)+cameraPitch*2.7+cameraZoom*.25,4.65,9.75);
       desired.set(focusX-Math.sin(cameraYaw)*distance,player.y+height,focusZ+Math.cos(cameraYaw)*distance);
       look.set(focusX,player.y+.74,focusZ);camera.fov=portrait?56:53;
+      if(room?.site.kind==='residence'){
+        // Keep the camera physically inside the furnished unit. The old camera
+        // sat outside the wall/roof and global clipping hid the furniture too.
+        const {site}=room,dx=desired.x-site.x,dz=desired.z-site.z,ss=Math.sin(site.yaw),cc=Math.cos(site.yaw);
+        const lx=clamp(cc*dx-ss*dz,-site.w/2+.85,site.w/2-.85);
+        const lz=clamp(ss*dx+cc*dz,-site.d/2+.85,site.d/2-.85);
+        desired.set(site.x+cc*lx+ss*lz,player.y+clamp(2.6+cameraPitch*.45,2.15,2.95),site.z-ss*lx+cc*lz);
+        camera.fov=portrait?64:61;
+      }
       return;
     }
     const fuelSite=player.vehicle&&rioSiteByKey('posto_brasilia');
@@ -385,6 +394,9 @@
   function rioInteriorRender(){
     const room=rioMap.indoorRoom;
     if(!room||otGames.active||player.vehicle)return null;
+    // Residence cutaway uses an indoor camera, not renderer-wide clipping:
+    // global planes were also cutting beds, counters and other owned furniture.
+    if(room.site.kind==='residence')return null;
     const {x,z,yaw,w,d}=room.site,s=Math.sin(yaw),c=Math.cos(yaw),p=camera.position;
     const lx=(p.x-x)*c-(p.z-z)*s,lz=(p.x-x)*s+(p.z-z)*c;
     const alongX=Math.abs(lx/w)>Math.abs(lz/d),side=Math.sign(alongX?lx:lz)||1,key=(alongX?'x':'z')+side;
