@@ -96,8 +96,10 @@
         box(x+edge*(w/2-.35),5.62,side*22.60,.17,3.35,.20,steel);
       }
       const crowd=[0xf6e7dd,0x882d37,0x3e5467,0xd7be91,0xebe7e1];
-      for(let row=0;row<7;row++)for(let seat=0;seat<Math.floor(w/1.6);seat++){
-        const px=x-w*.5+.92+seat*1.6;
+      const economyCrowd=typeof qualityTier==='function'&&qualityTier()==='low';
+      const seatStep=economyCrowd?2.65:1.6,rows=economyCrowd?3:7;
+      for(let row=0;row<rows;row++)for(let seat=0;seat<Math.floor(w/seatStep);seat++){
+        const px=x-w*.5+.92+seat*seatStep;
         const pz=side*(17.8+row*.67);
         const py=.78+row*.55;
         const color=crowd[(row*7+seat*3+Math.abs(Math.round(x)))%crowd.length];
