@@ -273,8 +273,8 @@
     // Keep named original OT toy heroes exactly as approved. Ordinary city
     // pedestrians and shop staff in Rio Preto use the new human visual style.
     const otToyHeroes=new Set(['nino','luna','teo','bia','maya','clara','rafa','davi','leo','michelle-ottovias']);
-    const rioModernNpc=/^(porteiro-|rio-|regional-)/.test(String(id))||
-      (typeof rioCompactWorld==='function'&&rioCompactWorld()&&!otToyHeroes.has(id));
+    const rioModernNpc=!otToyHeroes.has(id)&&
+      /^(porteiro-|rio-|regional-|citizen-|civilian-|pedestrian-|commuter-|resident-|worker-|staff-|shop-|market-|visitor-)/.test(String(id));
     if(rioModernNpc){
       // Rio Preto service staff should be human-looking, not a randomly assigned
       // Lego/Mario/Minecraft character. Keep the old toy renderers untouched for
