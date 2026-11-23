@@ -48,7 +48,7 @@
   }
 
   function rioBuildResidence(site,room){
-    const {w,d,yaw}=site,modern=site.style==='damha',back=-d/2+1.04,front=d/2-.12;
+    const {w,d,yaw}=site,condominium=site.style==='rios-ditalia',modern=site.style==='damha'||condominium,back=-d/2+1.04,front=d/2-.12;
     room.collider(0,front,Math.min(3.1,w*.4)-.13,.18,2.5);
     room.gate=room.colliders.at(-1);
     const doorPoint=room.point(0,front);
@@ -71,6 +71,37 @@
       room.box(x,.23,d/2+.65,.91,.45,.72,0x99674d);
       room.part('canopy',x,.61,d/2+.65,.63,.58,.58,0x617e50);
     }
+
+    if(condominium){
+      // Apartment towers share the existing batched building renderer.
+      // Only the furnished ground-floor unit is physically navigable at this stage.
+      const colors=[0xd6cabe,0xcdc6b9,0xd8d6cb,0xc4d0cc,0xcac6bd,0xd8cfc5];
+      const order=['rios_candelaro','rios_fiora','rios_salso','rios_fortore','rios_liri','rios_tanaro'];
+      const tint=colors[Math.max(0,order.indexOf(site.key))];
+      room.box(0,10.5,-d*.1,w*.70,14.5,d*.64,tint);
+      for(let floor=0;floor<5;floor++){
+        const y=5.15+floor*2.65;
+        room.box(0,y-.95,d*.224,w*.72,.18,1.1,0xa8aba9);
+        for(const dx of[-w*.24,-w*.08,w*.08,w*.24]){
+          room.box(dx,y,d*.224+.055,w*.105,1.1,.09,0x52727a);
+          room.box(dx,y-.64,d*.224+.09,w*.114,.12,.18,0x526467);
+        }
+        for(const side of[-1,1])room.box(side*w*.354,y,-d*.15,.08,1.12,d*.27,0x66878a);
+      }
+      room.box(0,17.92,-d*.1,w*.75,.25,d*.71,0x66767c);
+      room.box(0,3.35,d*.34,w*.41,.19,2.3,0x6f8284);
+      const point=room.point(0,d*.18);
+      const porteiro=createNPC('porteiro-'+site.key,'Porteiro',point.x,point.z,0x456779,0);
+      porteiro.stationary=true;porteiro.cityLifeManaged=true;room.root.add(porteiro.group);
+      world.interactables=world.interactables.filter(action=>action.id!=='npc-'+porteiro.id);
+      room.npcs=[porteiro];
+      room.action('portaria','Conversar com o porteiro',0,d*.18,()=>{
+        openModal('Portaria · '+site.name,
+          '<p>Você pode conhecer o apartamento mobiliado, comprar sua unidade com moedas do jogo e usar o guarda-roupa.</p>'+
+          '<div class="modal-actions"><button class="btn primary" data-portaria-wardrobe>Trocar roupas</button></div>',
+          root=>{root.querySelector('[data-portaria-wardrobe]').onclick=openRioWardrobe;});
+      },{inside:true,icon:'🏢',radius:2.1});
+    }
     room.action('rest','Descansar na sala',sx,back+.65,()=>rioSitOnBench(site,room,sx,back-.15),{inside:true,icon:'🛋️'});
     const bedApproach=room.point(bx,back+1.78),bed=room.point(bx,back+.24);
     room.action('bed','Dormir na cama',bx,back+1.78,()=>beginCharacterActivity('bed',{
@@ -79,6 +110,24 @@
       }
     }),{inside:true,icon:'🛏️'});
     room.action('wardrobe','Usar o guarda-roupa',-w*.37+.92,.8,openRioWardrobe,{inside:true,icon:'👕'});
+
+    // Native inventory/needs/save; each action works on the existing profile.
+    room.box(-w*.32,.59,.25,1.46,.12,.74,0xbaa38b);
+    room.box(-w*.32,.94,.25,.60,.58,.45,0xe0dfd7);
+    room.action('kitchen','Cozinhar no apartamento',-w*.19,.85,()=>{
+      if(Number(state.inventory.food||0)<1){toast('Compre alimentos no Mercadão para cozinhar.','info',2300);return;}
+      state.inventory.food--;state.needs.hunger=clamp(Number(state.needs.hunger||0)+30,0,100);
+      rioCountVisit(site);saveState(true);toast('Refeição preparada. Fome recuperada.','good',2000);
+    },{inside:true,icon:'🍳'});
+    room.box(w*.39,.7,1.85,.73,1.4,1.14,0xb7cfcc);
+    room.action('bathroom','Tomar banho',w*.20,1.85,()=>{
+      state.needs.hygiene=clamp(Number(state.needs.hygiene||0)+42,0,100);
+      rioCountVisit(site);saveState(true);toast('Banho concluído. Higiene recuperada.','good',2000);
+    },{inside:true,icon:'🚿'});
+    room.action('tv','Assistir televisão',sx,back+.75,()=>{
+      state.needs.fun=clamp(Number(state.needs.fun||0)+18,0,100);
+      rioCountVisit(site);saveState(true);toast('Você descansou assistindo à TV.','good',2000);
+    },{inside:true,icon:'📺'});
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
       const title=rioPropertyTitle(site.propertyId);
       toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
