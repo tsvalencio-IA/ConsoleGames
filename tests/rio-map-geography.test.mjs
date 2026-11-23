@@ -48,6 +48,16 @@ test('public venue entrances stand on dry, open ground and building footprints d
   assert.deepEqual(collisions,[]);
 });
 
+test('mapped entrances reach their own dry footprint with clearance from neighbouring buildings',()=>{
+  const invalid=evaluate(`data.buildings.flatMap(([id,height,kind,rings,entry])=>{
+    const door=rioMapDoorLayout(entry);if(!door)return [];
+    const {outside,inside}=door;
+    return rioFootprintBlock(outside.x,outside.z,.34)||rioWaterAt(outside.x,outside.z)||
+      !rioWithinFootprint(inside.x,inside.z,rings,-.39)?[id]:[];
+  })`);
+  assert.deepEqual(invalid,[]);
+});
+
 test('the São José do Rio Preto graph connects the centre and reservoir with actual streets',()=>{
   const count=evaluate(`(()=>{
     const loc=key=>data.sites.find(p=>p.key===key);

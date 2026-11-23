@@ -1,0 +1,277 @@
+{
+  "build": "705.28.38-rio-preto-vivo",
+  "revision": "2acd628e8945175e",
+  "browser": "141.0.7390.37",
+  "errors": [],
+  "limits": [
+    "Chromium com WebGL por software e viewport Android 393 × 852.",
+    "Posições de largada controladas e relógio de simulação acelerado. As ações e os serviços usam os controladores do jogo."
+  ],
+  "parcelStart": {
+    "origin": {
+      "x": -123.21307366095401,
+      "z": 272.8244020281666,
+      "yaw": -0.7831912704285307
+    },
+    "p": {
+      "x": -161.21307366095402,
+      "z": 264.8244020281666
+    },
+    "dest": {
+      "x": -187.39238434764982,
+      "z": 279.2173674234472,
+      "yaw": -2.3678243618397024
+    }
+  },
+  "parcelSent": {
+    "id": "phone-parcel-courier",
+    "kind": "parcel",
+    "x": -123.21307366095401,
+    "z": 272.8244020281666,
+    "yaw": -0.7831912704285307,
+    "target": {
+      "x": -187.39238434764982,
+      "z": 279.2173674234472,
+      "yaw": -2.3678243618397024
+    },
+    "route": [
+      {
+        "x": -123.21307366095401,
+        "z": 272.8244020281666
+      },
+      {
+        "x": -156.1285761299581,
+        "z": 306.37228868380475
+      },
+      {
+        "x": -184.69590351992434,
+        "z": 276.4715109388422
+      },
+      {
+        "x": -187.39238434764982,
+        "z": 279.2173674234472
+      }
+    ],
+    "distance": 92.20125666186489,
+    "waiting": false,
+    "ready": false,
+    "reroutes": 0,
+    "label": "Sua encomenda"
+  },
+  "parcelParked": {
+    "tracking": {
+      "id": "phone-parcel-courier",
+      "kind": "parcel",
+      "x": -187.39238434764982,
+      "z": 279.2173674234472,
+      "yaw": -0.7763259028223003,
+      "target": {
+        "x": -187.39238434764982,
+        "z": 279.2173674234472,
+        "yaw": -2.3678243618397024
+      },
+      "route": [
+        {
+          "x": -187.39238434764982,
+          "z": 279.2173674234472
+        }
+      ],
+      "distance": 0,
+      "waiting": false,
+      "ready": true,
+      "reroutes": 0,
+      "label": "Sua encomenda"
+    },
+    "metres": 92.20125666186519,
+    "maxJump": 0.23333333333335615
+  },
+  "purchase": {
+    "price": 15,
+    "foodAdded": 2,
+    "repeatedPickup": false
+  },
+  "tow": {
+    "ownerCar": {
+      "id": "garage-orange",
+      "model": "gol",
+      "x": 965.6,
+      "z": 110.7,
+      "yard": "pending"
+    },
+    "bays": [
+      {
+        "id": 0,
+        "x": 950.75,
+        "z": 109.95,
+        "height": 0,
+        "raised": false,
+        "busy": false,
+        "vehicleId": "",
+        "controlX": 952.67,
+        "controlZ": 110.10000000000001,
+        "mechanic": "mecanico-oficina",
+        "action": false
+      },
+      {
+        "id": 1,
+        "x": 956,
+        "z": 109.95,
+        "height": 0,
+        "raised": false,
+        "busy": false,
+        "vehicleId": "",
+        "controlX": 957.92,
+        "controlZ": 110.10000000000001,
+        "mechanic": "workshop-mechanic-bay-2",
+        "action": false
+      }
+    ]
+  },
+  "reload": {
+    "food": 4,
+    "coins": 5965,
+    "workshop": {
+      "id": "garage-orange",
+      "model": "gol",
+      "x": 965.6,
+      "z": 110.7,
+      "yard": "pending"
+    }
+  },
+  "drillPoint": {
+    "x": 954.9457022218728,
+    "z": 145.44733472563544
+  },
+  "rescue": {
+    "active": null,
+    "history": [
+      {
+        "id": "incident-1",
+        "x": 954.9457022218728,
+        "z": 145.44733472563544,
+        "startedAt": 11339.03333333352,
+        "resolvedAt": 26277.999999999796,
+        "simulationMs": 15766.666666666712,
+        "mode": "physical",
+        "physicalArrivals": {
+          "firefighter": {
+            "vehicleId": "rio-bombeiros",
+            "at": 19670.700000000168,
+            "simulationMs": 9266.666666666664,
+            "distance": 2.0608205676286784,
+            "x": 931.0027835484663,
+            "z": 146.7291377477093,
+            "source": "autonomous",
+            "afterContingency": false
+          },
+          "paramedic": {
+            "vehicleId": "rio-resgate",
+            "at": 22230.200000000077,
+            "simulationMs": 11766.666666666682,
+            "distance": 1.577851467179625,
+            "x": 939.7643916693578,
+            "z": 148.47932669074146,
+            "source": "autonomous",
+            "afterContingency": false
+          },
+          "police": {
+            "vehicleId": "rio-policia",
+            "at": 24340.63333333296,
+            "simulationMs": 13850.000000000031,
+            "distance": 1.5507025479018128,
+            "x": 947.3933737646295,
+            "z": 144.92227351730278,
+            "source": "autonomous",
+            "afterContingency": false
+          }
+        },
+        "contingencyEvents": [],
+        "dispatches": {
+          "police": [
+            {
+              "vehicleId": "rio-policia",
+              "at": 11348.23333333324,
+              "distance": 60.49673487546957,
+              "from": {
+                "x": 1006.0228009166198,
+                "z": 140.2386495939535
+              },
+              "target": {
+                "x": 945.8519635969587,
+                "z": 145.0917818860356,
+                "yaw": -1.460985116976539
+              }
+            }
+          ],
+          "paramedic": [
+            {
+              "vehicleId": "rio-resgate",
+              "at": 11348.633333333148,
+              "distance": 54.47751392296226,
+              "from": {
+                "x": 992.0076783471103,
+                "z": 141.58008942610925
+              },
+              "target": {
+                "x": 938.1960439087588,
+                "z": 148.65224445820664,
+                "yaw": -1.460985116976539
+              }
+            }
+          ],
+          "firefighter": [
+            {
+              "vehicleId": "rio-bombeiros",
+              "at": 11348.833333333334,
+              "distance": 49.209862828694355,
+              "from": {
+                "x": 977.9926884931964,
+                "z": 142.92373692209034
+              },
+              "target": {
+                "x": 928.9543579067097,
+                "z": 146.95482293143994,
+                "yaw": -1.460985116976539
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "physicalCompleted": 1,
+    "contingencyCompleted": 0
+  },
+  "lastResponders": [
+    {
+      "id": "rio-policia",
+      "home": {
+        "x": 1006.0228009166198,
+        "z": 140.2386495939535,
+        "heading": -1.4755440493761305
+      },
+      "x": 941.6329684874732,
+      "z": 146.81088854778272
+    },
+    {
+      "id": "rio-bombeiros",
+      "home": {
+        "x": 977.9926884931964,
+        "z": 142.92373692209034,
+        "heading": -1.4752162824889627
+      },
+      "x": 921.1809604329354,
+      "z": 149.16171499642425
+    },
+    {
+      "id": "rio-resgate",
+      "home": {
+        "x": 992.0076783471103,
+        "z": 141.58008942610925,
+        "heading": -1.4752162824889627
+      },
+      "x": 932.5563345526685,
+      "z": 147.9158685352773
+    }
+  ],
+  "passed": true
+}

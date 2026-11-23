@@ -19,7 +19,7 @@
     {
       "file": "src/modules/81-rio-wardrobe.js",
       "description": "Guarda-roupa intercambiável e prévia dos personagens",
-      "sha256Body": "24671049f55694786042db4fea6d7c19c3eab3b09362e30ceeffcd85906c1a19"
+      "sha256Body": "6b8576b035e0fe643bd381f3fb15c99993db699a1e246ad37abfae819884e7ff"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -362,7 +362,7 @@
       "startLine": 6124,
       "endLine": 6152,
       "description": "Integração, fallbacks e bootstrap das cinco etapas",
-      "sha256Body": "e0e895124f4c13353d192b09f9c45009d8a5d00497f2cccb2ef2f69cb865805c"
+      "sha256Body": "cc5cb92be94897e0542a7217b968eafedd311aea1dc8a9bfc0b6b342ac058d88"
     },
     {
       "file": "src/modules/39-gm-admin-panel.js",
@@ -383,7 +383,7 @@
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "961dec743d6b55c457a28d61f41bb39a71f69cb85457f547544e92f1be12ea62"
+      "sha256Body": "f229a09ae0366d56b919858627eb4ab6e48bb2768b4a20a35b4200eb6b8abe8e"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -704,7 +704,7 @@
     {
       "file": "src/modules/94-rio-community.js",
       "description": "Native family and community activities on the geographic Rio Preto map",
-      "sha256Body": "4b89b19f0ecaf3340609d34c46266c617308e5acc120ddb04ca18cf08d938013"
+      "sha256Body": "3684376842ce1b92cb0499096b420e31057fa5c52032cb9beadd0f645d62d8f9"
     },
     {
       "file": "src/modules/95-rio-open-buildings.js",

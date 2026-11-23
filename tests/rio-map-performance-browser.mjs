@@ -69,6 +69,10 @@ try{
     const page=await context.newPage(),errors=[],finger=await touchSession(context,page);
     page.on('pageerror',error=>errors.push(error.message));
     page.on('console',message=>{if(message.text().startsWith('[OTTHI START]'))console.error(message.text());});
+    if(revision){
+      const map=execFileSync('git',['show',revision+':games/otthi/assets/world/rio-preto-map.json'],{encoding:'utf8',maxBuffer:8e6});
+      await page.route('**/assets/world/rio-preto-map.json*',route=>route.fulfill({contentType:'application/json',body:map}));
+    }
     await installCityInspection(page,{revision,appSource:source.slice(0,pos)+hook+source.slice(pos),capDuringBoot:true});
     const boot=Date.now();
     await page.goto(server.origin+'/games/otthi/',{waitUntil:'domcontentloaded'});

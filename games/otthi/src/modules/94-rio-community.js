@@ -4,6 +4,7 @@
   const RIO_FARM={x:2084.3,z:-67.3};
   const RIO_CLASSROOM={x:-197.6,z:288.2};
   const rioVenues=new Map();
+  function rioFamilyVisualRange(){return qualityTier()==='low'?32:qualityTier()==='high'?62:46;}
 
   function rioBuildCommunity(){
     const school=createHouse({id:'rio-classroom',name:'Escola da comunidade',...RIO_CLASSROOM,
@@ -49,6 +50,7 @@
   function rioUpdateCommunity(dt){
     rioMap.communityAcc=(rioMap.communityAcc||0)+dt;
     if(rioMap.communityAcc<1/18)return;
+    if(!familyWorld.ready&&Math.hypot(player.x-RIO_FAMILY_HOME.x,player.z-RIO_FAMILY_HOME.z-6)<rioFamilyVisualRange())initFamilyAdventure();
     updateFamilyAdventure(rioMap.communityAcc);
     rioMap.communityAcc=0;
     if(performance.now()>=Number(rioMap.nextFarmUpdate||0)){

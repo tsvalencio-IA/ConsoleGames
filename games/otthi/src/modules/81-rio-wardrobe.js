@@ -395,7 +395,8 @@
     };
   }
   function openRioWardrobe(character){
-    if(!familyWorld.ready){toast('Entre no Mundo Aberto para usar o guarda-roupa.','info',2300);return;}
+    if(inRioMap()&&running&&!familyWorld.studio)initFamilyAvatarTemplates();
+    if(!(familyWorld.ready||inRioMap()&&running&&familyWorld.studio)){toast('Entre no Mundo Aberto para usar o guarda-roupa.','info',2300);return;}
     let selected=RIO_WARDROBE_CHARACTERS.includes(character)?character:familyCharacterId(state.avatar.bodyStyle)||'thiago';
     const draft=normalizeRioWardrobe(state.avatar.rioWardrobe);
     let angle=.12;

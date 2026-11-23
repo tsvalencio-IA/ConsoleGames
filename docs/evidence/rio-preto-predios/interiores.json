@@ -1,0 +1,136 @@
+{
+  "build": "705.28.38-rio-preto-vivo",
+  "revision": "2acd628e8945175e",
+  "browser": "141.0.7390.37",
+  "errors": [],
+  "limits": [
+    "Chromium local com viewport e toque simulados.",
+    "Posições iniciais próximas das entradas para testar os prédios ao longo da cidade."
+  ],
+  "dwelling": {
+    "price": 1250,
+    "owner": {
+      "owned": true,
+      "locked": false,
+      "paid": 1250,
+      "at": 1795437325519
+    }
+  },
+  "church": true,
+  "bakery": {
+    "startingService": {
+      "visible": true,
+      "tray": true,
+      "served": false,
+      "position": [
+        -149.9850352405433,
+        0,
+        338.7104919614783
+      ]
+    },
+    "served": {
+      "visible": true,
+      "tray": false,
+      "served": true,
+      "position": [
+        -150.0367473252656,
+        0,
+        338.6641523379368
+      ]
+    },
+    "sitting": {
+      "x": -155.46800007715163,
+      "z": 336.8168879795125,
+      "y": 0.51,
+      "yaw": 2.4100136732051287,
+      "sitting": true
+    }
+  },
+  "shopping": {
+    "owned": {
+      "rio-polo": true,
+      "rio-tenis": true
+    },
+    "thamis": {
+      "top": "rio-polo",
+      "legs": "original",
+      "shoes": "rio-tenis",
+      "hat": "original",
+      "glasses": "original",
+      "jewel": "original",
+      "wrist": "original",
+      "bag": "original"
+    }
+  },
+  "mappedBuilding": {
+    "door": {
+      "edge": 1,
+      "fraction": 0.25,
+      "yaw": -0.77669,
+      "x": -170.84,
+      "z": 424.99,
+      "id": "1249738588--1637-4230",
+      "outside": {
+        "x": -171.69512538544996,
+        "z": 425.8601497429518
+      },
+      "inside": {
+        "x": -170.06898530820087,
+        "z": 424.20543875635497
+      }
+    },
+    "kind": "yes"
+  },
+  "oilShop": {
+    "coins": 3612,
+    "engine": 93,
+    "car": "garage-orange"
+  },
+  "airport": {
+    "runwayMetres": 1566.1067168704956,
+    "boarded": {
+      "active": true,
+      "mode": "plane",
+      "onGround": true,
+      "body": {
+        "x": -2467.9178536971585,
+        "y": 0.92,
+        "z": 242.85606366140394,
+        "yaw": 5.3879486406576005,
+        "pitch": 0,
+        "roll": 0,
+        "vx": 0,
+        "vy": 0,
+        "vz": 0,
+        "hp": 100
+      }
+    },
+    "flying": {
+      "active": true,
+      "mode": "plane",
+      "onGround": false,
+      "body": {
+        "x": -2587.2226761961806,
+        "y": 94.39905131380699,
+        "z": 338.4602169847197,
+        "yaw": 5.3879486406576005,
+        "pitch": 0.75,
+        "roll": 0,
+        "vx": -22.839144114077477,
+        "vy": 27.265550400933364,
+        "vz": 18.302001460784627,
+        "hp": 100
+      }
+    }
+  },
+  "family": {
+    "ready": true,
+    "rigs": [
+      "liz",
+      "luna",
+      "thamis",
+      "thiago"
+    ]
+  },
+  "passed": true
+}

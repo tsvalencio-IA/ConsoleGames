@@ -54,6 +54,7 @@ const hook=`
    return {context:currentContext?.id};
   },
   oilResult:()=>({coins:state.profile.coins,engine:workshopComponentRecord(vehicleById('garage-orange')).parts.engine,car:player.car.id}),
+  family:()=>({ready:familyWorld.ready,rigs:Object.values(familyWorld.actors).filter(a=>a.group.parent===worldGroup).map(a=>a.id)}),
   plane:()=>{
    const p=campaignAircraftPose('plane');rioStreamMap(p,true);OTTHOS_TEST_API.teleport(p.x+4,p.z);updateContext(true);
    return {p,context:currentContext?.id,length:routeLength(rioMap.data.airport.runway.map(([x,z])=>({x,z})))};
@@ -99,6 +100,7 @@ try{
   }
   const picture=async name=>{await evalQA('render');await page.screenshot({path:out+'/'+name+'.png'});};
   await start();
+  assert.equal((await evalQA('family')).ready,false);
   const initial=await evalQA('counters');
   const preview=await evalQA('prepare','casa-damha');
   await tap('#actionBtn');await tap('[data-rio-property-buy]');
@@ -173,6 +175,9 @@ try{
   report.airport={runwayMetres:plane.length,boarded,flying};
   await page.setViewportSize({width:844,height:390});await picture('aeroporto-pista');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await tap('[data-ot="peace"]');await tap('#quickToggleBtn');await tap('[data-rio-panel-life]');await tap('[data-rio-activity="family"]');
+  assert.equal(await page.locator('[data-family-gps]').count(),1);
+  report.family=await evalQA('family');assert.deepEqual(report.family.rigs.sort(),['liz','luna','thamis','thiago']);
   assert.deepEqual(report.errors,[]);report.passed=true;
   console.log('PASS authentic door routes, owned house, church, served pastry, wardrobe purchases, mapped room and SBSR flight');
 }catch(error){report.failure=error.stack;throw error;}

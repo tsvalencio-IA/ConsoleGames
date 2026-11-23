@@ -10,7 +10,7 @@
   initThree=function initThreeOtthiWorld(){
     const ok=legacyWorldInitThree();if(!ok)return false;
     if(typeof inRioMap==='function'&&inRioMap()){
-      ensureOtthiWorldState();initFamilyAdventure();applyWorldAvatarV3();applyOtthiWorldRuntimeSettings();
+      ensureOtthiWorldState();initFamilyAvatarTemplates();applyWorldAvatarV3();applyOtthiWorldRuntimeSettings();
       otthiWorldRuntime.initialized=true;return true;
     }
     try{ensureOtthiWorldState();createOtthiWorldProfessionalLayer();applyWorldAvatarV3();createWorldModularGarageInteractable();createWorldHeroAdventure();ensureWorldHeroHud();applyOtthiWorldRuntimeSettings();initFamilyAdventure();otthiWorldRuntime.initialized=true;document.dispatchEvent(new CustomEvent('otthi-world:ready',{detail:otthiWorldDiagnostics()}));}

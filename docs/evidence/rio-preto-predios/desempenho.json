@@ -1,0 +1,283 @@
+{
+  "browser": "141.0.7390.37",
+  "environment": {
+    "os": "linux",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "logicalCpus": 2,
+    "graphics": "ANGLE SwiftShader software WebGL",
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "dpr": 1,
+    "quality": "low"
+  },
+  "periods": 2,
+  "periodMs": 15000,
+  "cases": [
+    {
+      "label": "before",
+      "revision": "3a992170a85d476a",
+      "instrumentedReadyMs": 4333,
+      "errors": [],
+      "before": {
+        "heap": {
+          "usedSize": 25287916,
+          "totalSize": 26419200,
+          "embedderHeapUsedSize": 2892736,
+          "backingStorageSize": 66349524
+        },
+        "webgl": {
+          "calls": 28,
+          "triangles": 60039,
+          "geometries": 74,
+          "textures": 11,
+          "npcs": 8
+        }
+      },
+      "periods": [
+        {
+          "ms": 15000,
+          "renders": 169,
+          "touchMovementMs": 755.7000000001863,
+          "draw": {
+            "calls": 19,
+            "triangles": 59479,
+            "geometries": 74,
+            "textures": 11,
+            "npcs": 8
+          },
+          "position": {
+            "x": 979.0020664100456,
+            "z": -19.12240490178272
+          },
+          "renderSize": {
+            "w": 243,
+            "h": 528
+          },
+          "quality": "low",
+          "frames": {
+            "samples": 191,
+            "p50": 81.70000000018626,
+            "p95": 179.20000000018626,
+            "max": 221.40000000037253,
+            "over100": 56,
+            "over250": 0
+          },
+          "frameWork": {
+            "samples": 192,
+            "p50": 1.8000000002793968,
+            "p95": 7.5,
+            "max": 12.599999999627471,
+            "over100": 0,
+            "over250": 0
+          },
+          "longTasks": {
+            "samples": 0,
+            "p50": 0,
+            "p95": 0,
+            "max": 0,
+            "over100": 0,
+            "over250": 0
+          },
+          "fps": 11.266666666666667
+        },
+        {
+          "ms": 15002.19999999972,
+          "renders": 143,
+          "touchMovementMs": 34.09999999962747,
+          "draw": {
+            "calls": 17,
+            "triangles": 59253,
+            "geometries": 74,
+            "textures": 11,
+            "npcs": 8
+          },
+          "position": {
+            "x": 970.9461357035892,
+            "z": -21.68174215730591
+          },
+          "renderSize": {
+            "w": 243,
+            "h": 528
+          },
+          "quality": "low",
+          "frames": {
+            "samples": 165,
+            "p50": 96,
+            "p95": 187,
+            "max": 276.90000000037253,
+            "over100": 76,
+            "over250": 2
+          },
+          "frameWork": {
+            "samples": 166,
+            "p50": 1.6000000000931323,
+            "p95": 6.5,
+            "max": 42.799999999813735,
+            "over100": 0,
+            "over250": 0
+          },
+          "longTasks": {
+            "samples": 0,
+            "p50": 0,
+            "p95": 0,
+            "max": 0,
+            "over100": 0,
+            "over250": 0
+          },
+          "fps": 9.531935316153808
+        }
+      ],
+      "after": {
+        "heap": {
+          "usedSize": 26069312,
+          "totalSize": 27992064,
+          "embedderHeapUsedSize": 3285048,
+          "backingStorageSize": 66345575
+        },
+        "webgl": {
+          "calls": 17,
+          "triangles": 59253,
+          "geometries": 74,
+          "textures": 11,
+          "npcs": 8
+        }
+      }
+    },
+    {
+      "label": "after",
+      "revision": "2acd628e8945175e",
+      "instrumentedReadyMs": 3741,
+      "errors": [],
+      "before": {
+        "heap": {
+          "usedSize": 31986932,
+          "totalSize": 32972800,
+          "embedderHeapUsedSize": 6986560,
+          "backingStorageSize": 79616662
+        },
+        "webgl": {
+          "calls": 31,
+          "triangles": 60235,
+          "geometries": 99,
+          "textures": 17,
+          "npcs": 11
+        }
+      },
+      "periods": [
+        {
+          "ms": 15002.200000000186,
+          "renders": 158,
+          "touchMovementMs": 362.29999999981374,
+          "draw": {
+            "calls": 36,
+            "triangles": 61141,
+            "geometries": 117,
+            "textures": 20,
+            "npcs": 11
+          },
+          "position": {
+            "x": 979.0499620522213,
+            "z": -17.82938535198763
+          },
+          "renderSize": {
+            "w": 243,
+            "h": 528
+          },
+          "quality": "low",
+          "frames": {
+            "samples": 184,
+            "p50": 83.29999999981374,
+            "p95": 189,
+            "max": 285.29999999981374,
+            "over100": 59,
+            "over250": 1
+          },
+          "frameWork": {
+            "samples": 185,
+            "p50": 3.3000000002793968,
+            "p95": 9.899999999906868,
+            "max": 42.6999999997206,
+            "over100": 0,
+            "over250": 0
+          },
+          "longTasks": {
+            "samples": 0,
+            "p50": 0,
+            "p95": 0,
+            "max": 0,
+            "over100": 0,
+            "over250": 0
+          },
+          "fps": 10.53178867099479
+        },
+        {
+          "ms": 15004.200000000186,
+          "renders": 139,
+          "touchMovementMs": 193.09999999962747,
+          "draw": {
+            "calls": 19,
+            "triangles": 59421,
+            "geometries": 138,
+            "textures": 21,
+            "npcs": 11
+          },
+          "position": {
+            "x": 973.0809338261457,
+            "z": -20.08735867727489
+          },
+          "renderSize": {
+            "w": 243,
+            "h": 528
+          },
+          "quality": "low",
+          "frames": {
+            "samples": 162,
+            "p50": 95.79999999981374,
+            "p95": 196.70000000018626,
+            "max": 245,
+            "over100": 74,
+            "over250": 0
+          },
+          "frameWork": {
+            "samples": 163,
+            "p50": 2.599999999627471,
+            "p95": 7.399999999906868,
+            "max": 221.70000000018626,
+            "over100": 1,
+            "over250": 0
+          },
+          "longTasks": {
+            "samples": 1,
+            "p50": 222,
+            "p95": 222,
+            "max": 222,
+            "over100": 1,
+            "over250": 0
+          },
+          "fps": 9.264072726303187
+        }
+      ],
+      "after": {
+        "heap": {
+          "usedSize": 32401124,
+          "totalSize": 33234944,
+          "embedderHeapUsedSize": 6717488,
+          "backingStorageSize": 79613513
+        },
+        "webgl": {
+          "calls": 19,
+          "triangles": 59421,
+          "geometries": 138,
+          "textures": 21,
+          "npcs": 11
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Both versions enter Rio Preto near the Complexo Swift. Scene geometry and the simulated systems differ between versions.",
+    "Startup paints are suppressed in both cases. Sampling uses the actual renderer and browser clock with a scripted drag and touch sequence. Firebase and physical devices are outside this measurement."
+  ]
+}

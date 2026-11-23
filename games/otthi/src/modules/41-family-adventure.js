@@ -67,7 +67,14 @@
     const location=familyHomeLocation();familyWorld.location=location;
     initFamilyAvatarStudio();
     if(!location.meetingOnly)createHouse({id:'thia-family-home',name:'Casa da Família',x:location.x,z:location.z,color:0xebe3c7,roofColor:0xb76642,publicBuilding:true});
-    for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]])familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
+    for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]]){
+      const actor=familyWorld.actors[id];
+      if(actor&&!actor.group.parent){
+        actor.x=location.x+dx;actor.z=location.z+dz;
+        actor.group.position.set(actor.x,groundHeightAt(actor.x,actor.z),actor.z);
+        worldGroup.add(actor.group,actor.shadow);
+      }else familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
+    }
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
     familyWorld.toyMesh=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),new THREE.MeshStandardMaterial({color:0xf7ba47,roughness:.45}));familyWorld.toyMesh.visible=false;worldGroup.add(familyWorld.toyMesh);
     familyWorld.ready=true;familyWorld.restoreParty=!(typeof inRioMap==='function'&&inRioMap())&&!!familyProgress().party;familyCreateEntry();
@@ -290,7 +297,8 @@
     updateFamilyCarry();updateFamilyRemoteAircraft(dt);
     const progress=familyProgress(),park=worldLayoutPoint('playground',{x:-28,z:-40});
     if(familyWorld.walkOwner===sharedWorldOwnId()&&Math.hypot(player.x-park.x,player.z-park.z)<12&&familyWorld.walkMembers.every(id=>Math.hypot(familyWorld.actors[id].x-park.x,familyWorld.actors[id].z-park.z)<14)&&!progress.flags.park){progress.flags.park=true;saveState();toast('Passeio em família concluído no parque!','good',2300);}
-    const visible=Object.values(familyWorld.actors).some(a=>Math.hypot(player.x-a.x,player.z-a.z)<90);
+    const radius=typeof inRioMap==='function'&&inRioMap()?rioFamilyVisualRange():90;
+    const visible=Object.values(familyWorld.actors).some(a=>Math.hypot(player.x-a.x,player.z-a.z)<radius);
     for(const a of Object.values(familyWorld.actors)){
       const controlled=familyWorld.walkOwner&&a.id===familyWorld.walkController&&performance.now()>Number(familyWorld.portraitUntil||0);
       a.group.visible=(visible||!!a.ridePose)&&(!controlled||!!a.ridePose);a.shadow.visible=visible&&!controlled&&!a.ridePose;if(a.label){a.label.visible=visible&&!controlled&&!a.ridePose&&Math.hypot(player.x-a.x,player.z-a.z)<23;a.label.position.set(a.x,groundHeightAt(a.x,a.z)+(a.id==='thiago'||a.id==='thamis'?2.4:.98),a.z);}if(!visible&&!a.ridePose)continue;
@@ -331,6 +339,7 @@
     refresh();
   }
   function openFamilyAdventure(){
+    if(typeof inRioMap==='function'&&inRioMap()&&!familyWorld.ready)initFamilyAdventure();
     const p=familyProgress(),name=familyWorld.location?.meetingOnly?'Encontro da Família':'Casa da Família';
     openModal('🐾 '+name,familyPartyEditor()+'<label class="field"><span>Brinquedo para buscar</span><select data-family-toy>'+[['ball','⚽ Bolinha'],['disk','🥏 Disco'],['bone','🦴 Ossinho']].map(([id,label])=>'<option value="'+id+'" '+(p.toy===id?'selected':'')+'>'+label+'</option>').join('')+'</select></label><p>Thiago de óculos e polo azul, Thamis de óculos e cabelo cacheado preso, Luna de coleira rosa e Liz de laços vermelhos. Quem ficar fora do grupo espera no jardim da Casa da Família.</p><p>Escolha Encontrar a família para seguir o GPS. Perto deles, feche esta janela para vê-los de frente.</p><div class="family-chapters"><p>'+(p.flags.park?'✓':'○')+' Passear até o parque</p><p>'+(p.deliveries.luna>=2&&p.deliveries.liz>=2?'✓':'○')+' Brincar com as duas: Luna '+p.deliveries.luna+'/2 · Liz '+p.deliveries.liz+'/2</p><p>'+(p.flags.workshop?'✓':'○')+' Diagnóstico na oficina</p><p>'+(p.flags.technology?'✓':'○')+' Desafio de tecnologia</p></div><div class="choice-grid"><button class="choice" data-family-gps>📍 Encontrar a família</button><button class="choice" data-family-walk>🚶 Passeio até o parque</button><button class="choice" data-family-throw="luna">🤍 Lançar para Luna</button><button class="choice" data-family-throw="liz">🖤 Lançar para Liz</button><button class="choice" data-family-task="workshop">🔧 Oficina</button><button class="choice" data-family-task="technology">💻 Tecnologia</button><button class="choice" data-family-stop>🏡 Encerrar passeio</button><a class="choice" href="../familia/3d/">Abrir aventuras originais da Família</a></div>',root=>{
       $('[data-family-gps]',root).onclick=()=>familyRoute('family-home');
