@@ -338,6 +338,7 @@
   function updateRioV51World(){
     if((!legacyRegionalLayout&&!rioCompactWorld())||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
+    for(const home of rioDeliveryHomes())rioRegisterHomeDelivery(home);
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
     for(const sector of Object.values(RIO_V51.sectors)){
