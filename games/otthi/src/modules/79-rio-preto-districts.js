@@ -336,7 +336,7 @@
     for(const lot of RIO_PRETO_LAYOUT.lots){
       // Keep the exact historic façade, but render legacy houses separately
       // in compact Rio so their roofs can be hidden without hiding the street.
-      if(rioCompactWorld()&&lot.style.startsWith('house-'))continue;
+      if(typeof rioCompactWorld==='function'&&rioCompactWorld()&&lot.style.startsWith('house-'))continue;
       add(lot.x,lot.z,batch=>{
       const colors=rioDistrictStyles[lot.district];
       if(lot.style.startsWith('house-'))rioDrawHouse(batch,lot,colors);
