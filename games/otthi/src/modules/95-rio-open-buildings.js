@@ -128,6 +128,48 @@
       state.needs.fun=clamp(Number(state.needs.fun||0)+18,0,100);
       rioCountVisit(site);saveState(true);toast('Você descansou assistindo à TV.','good',2000);
     },{inside:true,icon:'📺'});
+
+    // Optional purchasable furnishings; only owned pieces allocate geometry.
+    // The inventory is stored on the existing property record and survives reloads.
+    const furnishings=[
+      {id:'tapete',name:'Tapete decorativo',price:35,x:-w*.06,y:.20,z:-.68,w:1.56,h:.035,d:1.24,color:0x73928c},
+      {id:'luminaria',name:'Luminária de piso',price:65,x:w*.36,y:1.14,z:-d*.27,w:.15,h:2.12,d:.15,color:0xd9bb8e},
+      {id:'quadro',name:'Quadro moderno',price:48,x:w*.25,y:1.98,z:-d*.38,w:1.45,h:.90,d:.08,color:0xb17c64},
+      {id:'aparador',name:'Aparador de madeira',price:75,x:-w*.35,y:.56,z:-d*.1,w:1.18,h:1.12,d:.40,color:0x865b45},
+      {id:'estante',name:'Estante de livros',price:110,x:-w*.43,y:1.23,z:-d*.26,w:.52,h:2.45,d:1.35,color:0xbda27c},
+      {id:'planta',name:'Vaso decorativo',price:25,x:w*.37,y:.80,z:-d*.36,w:.44,h:1.60,d:.44,color:0x658c5f}
+    ];
+    const decorMeshes=new Map();
+    const updateDecor=()=>{
+      const owned=rioPropertyTitle(site.propertyId)?.furniture||[];
+      for(const item of furnishings){
+        if(!owned.includes(item.id))continue;
+        if(decorMeshes.has(item.id))continue;
+        const mesh=new THREE.Mesh(new THREE.BoxGeometry(item.w,item.h,item.d),renderMat(item.color,{roughness:.83}));
+        const point=room.point(item.x,item.z);
+        mesh.position.set(point.x,item.y,point.z);mesh.rotation.y=yaw;
+        room.root.add(mesh);decorMeshes.set(item.id,mesh);
+      }
+    };
+    updateDecor();
+    room.action('decor','Comprar e decorar com móveis',0,.8,()=>{
+      const owner=rioPropertyTitle(site.propertyId);
+      if(!owner?.owned){toast('Primeiro compre esta residência para decorá-la.','info',2400);return;}
+      updateDecor();
+      openModal('Móveis · '+site.name,
+        '<p>Compras únicas, vinculadas à propriedade e preservadas no salvamento.</p><div class="choice-grid">'+
+        furnishings.map(item=>'<button class="choice" data-rio-furniture="'+item.id+'" '+((owner.furniture||[]).includes(item.id)?'disabled':'')+'><b>'+item.name+'</b><span>'+((owner.furniture||[]).includes(item.id)?'Adquirido':item.price+' moedas')+'</span></button>').join('')+'</div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-furniture]'))button.onclick=()=>{
+          const item=furnishings.find(record=>record.id===button.dataset.rioFurniture);
+          const current=rioPropertyTitle(site.propertyId);
+          if(!item||!current?.owned||button.disabled||(current.furniture||[]).includes(item.id))return;
+          if(Number(state.profile.coins)<item.price){toast('Moedas insuficientes.','warn',1700);return;}
+          button.disabled=true;(current.furniture??=[]).push(item.id);
+          addCoins(-item.price);updateDecor();saveState(true);closeModal();
+          toast(item.name+' instalado na residência.','good',2100);
+        };
+      });
+    },{inside:true,icon:'🪑'});
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
       const title=rioPropertyTitle(site.propertyId);
       toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
