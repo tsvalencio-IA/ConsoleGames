@@ -192,10 +192,18 @@ try{
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(376,-320));
   await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte',null,{timeout:35000});
   await page.locator('#actionBtn').tap();
-  await page.waitForFunction(()=>{
-    const p=OTTHOS_TEST_API.getGame().player;
-    return Math.abs(p.x-376)<3&&p.z>-319&&p.z< -307;
-  },null,{timeout:12000});
+  try{
+    await page.waitForFunction(()=>{
+      const p=OTTHOS_TEST_API.getGame().player;
+      const mall=OTTHI_RIO_V51.diagnostics().malls.find(m=>m.id==='regional-shopping_cidade_norte');
+      return mall?.inside&&mall.visible&&Math.abs(p.x-376)<3&&p.z>-319&&p.z< -307;
+    },null,{timeout:12000});
+  }catch(error){
+    const detail=await page.evaluate(()=>({malls:OTTHI_RIO_V51.diagnostics().malls,
+      player:OTTHOS_TEST_API.getGame().player,context:OTTHOS_TEST_API.getContext(),
+      modal:document.getElementById('modal')?.textContent,errors:window.__OTTHI_ERRORS||[]}));
+    throw new Error('Shopping real-world entry failed: '+JSON.stringify(detail)+'; '+error.message);
+  }
   await shot('shopping-cidade-norte-interior');
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(383,-313));
   await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte-store-top',null,{timeout:9000});
