@@ -186,12 +186,51 @@
       porteiro.stationary=true;porteiro.cityLifeManaged=true;room.root.add(porteiro.group);
       world.interactables=world.interactables.filter(action=>action.id!=='npc-'+porteiro.id);
       room.npcs=[porteiro];
-      room.action('portaria','Conversar com o porteiro',0,d*.18,()=>{
+      const openCondoConcierge=()=>{
+        const id=rioResidencePropertyId(),owned=rioPropertyTitle(id);
+        const service=owned?.condoService;
+        const ready=service?.status==='scheduled'&&Date.now()>=service.readyAt;
+        const status=service?.status==='scheduled'?(ready?'Serviço pronto para receber':'Equipe em deslocamento'):
+          service?.status==='completed'?'Último serviço concluído':'Nenhuma solicitação aberta';
         openModal('Portaria · '+site.name,
-          '<p>Você pode conhecer o apartamento mobiliado, comprar sua unidade com moedas do jogo e usar o guarda-roupa.</p>'+
-          '<div class="modal-actions"><button class="btn primary" data-portaria-wardrobe>Trocar roupas</button></div>',
-          root=>{root.querySelector('[data-portaria-wardrobe]').onclick=openRioWardrobe;});
-      },{inside:true,icon:'🏢',radius:2.1});
+          '<p>Atendimento do condomínio · apartamento '+(id.includes('-unit-')?id.split('-unit-').at(-1):'101')+'.</p>'+
+          '<p><b>'+status+'</b>. '+(owned?.owned?'Seu imóvel está cadastrado.':'Para solicitar serviços, adquira a unidade primeiro.')+'</p>'+
+          '<div class="choice-grid">'+
+          '<button class="choice" data-concierge-wardrobe><b>Guarda-roupa</b><span>Trocar roupas</span></button>'+
+          '<button class="choice" data-concierge-deliveries><b>Encomendas</b><span>Consultar e retirar materiais recebidos</span></button>'+
+          (owned?.owned?'<button class="choice" data-concierge-maintenance>'+
+            '<b>'+(ready?'Receber serviço':service?.status==='scheduled'?'Serviço agendado':'Solicitar limpeza')+'</b>'+
+            '<span>'+(service?.status==='scheduled'?'Pedido registrado':'45 moedas · equipe do condomínio')+'</span></button>':'')+
+          '</div>',root=>{
+            root.querySelector('[data-concierge-wardrobe]').onclick=openRioWardrobe;
+            root.querySelector('[data-concierge-deliveries]').onclick=()=>rioConstructionDeliveryReport();
+            const button=root.querySelector('[data-concierge-maintenance]');
+            if(button)button.onclick=()=>{
+              const current=rioPropertyTitle(id),pending=current?.condoService;
+              if(!current?.owned){toast('Só o proprietário pode solicitar serviços.','warn',1900);return;}
+              if(pending?.status==='scheduled'){
+                if(Date.now()<pending.readyAt){
+                  toast('O atendimento está em deslocamento para seu apartamento.','info',2200);
+                  return;
+                }
+                current.cleanliness=100;
+                pending.status='completed';pending.completedAt=Date.now();
+                saveState(true);toast('Limpeza concluída! Seu apartamento foi atendido.','good',2400);
+                openCondoConcierge();return;
+              }
+              if(Number(state.profile.coins)<45){toast('Saldo insuficiente para solicitar limpeza.','warn',1900);return;}
+              button.disabled=true;addCoins(-45);
+              const serial=Number(current.condoService?.serial||0)+1;
+              current.condoService={serial,type:'cleaning',cost:45,status:'scheduled',
+                requestedAt:Date.now(),readyAt:Date.now()+45000};
+              saveState(true);
+              toast('Limpeza agendada no seu apartamento. Atendimento registrado na portaria.','good',2500);
+              openCondoConcierge();
+            };
+          });
+      };
+      room.action('portaria','Conversar com o porteiro',0,d*.18,openCondoConcierge,
+        {inside:true,icon:'🏢',radius:2.1});
     }
     room.action('rest','Descansar na sala',sx,back+.65,()=>rioSitOnBench(site,room,sx,back-.15),{inside:true,icon:'🛋️'});
     const bedApproach=room.point(bx,back+1.78),bed=room.point(bx,back+.24);
