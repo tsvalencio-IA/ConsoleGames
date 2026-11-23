@@ -40,7 +40,7 @@
     for(let z=501;z<=548;z+=.7)campaignBox(root,steel,-220,.49,z,8,.012,.025);
     for(const x of[-223.5,-216.5])for(const z of[502,515,529,545])campaignCylinder(root,steel,x,.1,z,.15,1.4);
     for(const x of[-223.8,-216.2])for(const z of[501,511,548]){campaignCylinder(root,white,x,1.05,z,.055,1.1);const lamp=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xf5e6b1}));lamp.position.set(x,1.62,z);root.add(lamp);}
-    citySign(root,'MARINA · LANCHAS',-220,3,501,8,-1,'#1c525d',.75);
+    citySign(root,'GUARUJÁ · MARINA',-220,3,501,8,-1,'#1c525d',.75);
     mergeTrafficStatic(root);
     for(const spec of SEA_CRAFT){
       const group=createSeaCraftModel(spec),saved=state.boats.parked?.[spec.id],bounds=v704WorldBounds();
@@ -74,7 +74,7 @@
     const root=new THREE.Group();root.name='SNOW_VISITOR_AREA';worldGroup.add(root);
     const wood=campaignMaterial(0x876749),snow=campaignMaterial(0xecf3f0),stone=campaignMaterial(0x778c8f),glass=campaignMaterial(0x547d90,.3);
     for(const[x,z]of[[-52,184],[46,184],[85,181]]){campaignBox(root,wood,x,1.55,z,7,3.1,5);world.colliders.push({x,z,w:7,d:5,height:3.8,snowCabin:true});const roof=new THREE.Mesh(new THREE.ConeGeometry(5,2.3,4),snow);roof.rotation.y=Math.PI/4;roof.position.set(x,4.15,z);root.add(roof);for(const side of[-1,1])campaignBox(root,glass,x+side*2,1.75,z-2.53,1.3,.95,.07);campaignBox(root,stone,x+1.6,4.1,z+1,.6,2.1,.6);}
-    citySign(root,'NEVE · MIRANTE',20,3,183,8,-1,'#315968',.8);
+    citySign(root,'CAMPOS DO JORDÃO · NEVE',20,3,183,8,-1,'#315968',.8);
     const snowman=new THREE.Group();snowman.position.set(16,.06,181);root.add(snowman);for(const[y,r]of[[.55,.55],[1.28,.40],[1.85,.29]]){const ball=new THREE.Mesh(new THREE.SphereGeometry(r,14,10),snow);ball.position.y=y;snowman.add(ball);}campaignBox(snowman,wood,0,2.14,0,.45,.15,.43);
     mergeTrafficStatic(root);worldDestinations.snowRoot=root;
     const positions=new Float32Array(180*3);for(let i=0;i<180;i++){positions[i*3]=(Math.sin(i*93.17)*.5+.5)*36-18;positions[i*3+1]=(i*.173%1)*14;positions[i*3+2]=(Math.cos(i*67.21)*.5+.5)*36-18;}
@@ -84,8 +84,8 @@
     registerInteractable({id:'snow-lookout',type:'viewpoint',icon:'❄️',label:'Mirante da Neve',x:20,z:180,radius:3,priority:120,action:()=>toast('Trecho de neve da OTTOVIAS. A pista continua liberada para viajar.','good',2600)});
   }
   function worldExploreLocations(){return[
-    {id:'marina-costa',name:'Marina · embarque nas lanchas',label:'Marina · embarque nas lanchas',icon:'🚤',group:'Praias e navegação',x:-220,z:502,navX:-220,navZ:502,description:'Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.',actions:['Seguir até a marina','Embarcar pelo botão AÇÃO','Pilotar, retornar e estacionar']},
-    {id:'snow-lookout',name:'Neve · mirante e chalés',label:'Neve · mirante e chalés',icon:'❄️',group:'Natureza',x:20,z:180,navX:20,navZ:180,description:'Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.',actions:['Seguir o GPS pela Ligação Norte','Chegar ao mirante']},
+    {id:'marina-costa',name:'Guarujá · marina e lanchas',label:'Guarujá · marina e lanchas',icon:'🚤',group:'Guarujá · praia e barcos',x:-220,z:502,navX:-220,navZ:502,description:'Caminhe pelo píer, aproxime-se de uma lancha e toque em AÇÃO para pilotar. Pare ao lado do píer para desembarcar.',actions:['Seguir até a marina','Embarcar pelo botão AÇÃO','Pilotar, retornar e estacionar']},
+    {id:'snow-lookout',name:'Campos do Jordão · mirante e chalés',label:'Campos do Jordão · mirante e chalés',icon:'❄️',group:'Natureza',x:20,z:180,navX:20,navZ:180,description:'Trecho de neve da OTTOVIAS, com acesso pela Ligação Norte. Neve no solo, pinheiros, chalés e precipitação local.',actions:['Seguir o GPS pela Ligação Norte','Chegar ao mirante']},
     ...Array.from(world.boats?.values()||[]).filter(b=>b.seaGoing).map(b=>({id:'marina-'+b.id,name:b.label,label:b.label,icon:'🚤',group:'Embarcações',x:b.group.position.x,z:b.group.position.z,navX:-220,navZ:clamp(b.group.position.z,513,548),description:'Lancha utilizável. O ponto de embarque fica no píer da marina. A embarcação permanece onde você a estacionar.',actions:['Caminhar pelo píer','Toque em AÇÃO ao lado da lancha']}))
   ];}
   function worldExploreDirectoryHtml(){
@@ -94,9 +94,9 @@
       ['mountain-balloon','🎈','Balão nas montanhas','Embarque na cesta, suba, explore a serra e pouse para sair.'],
       ['campaign-plane','✈️','Avião · embarcar e pilotar','Base Aérea. Aproxime-se da aeronave e toque em AÇÃO.'],
       ['campaign-helicopter','🚁','Helicóptero · embarcar e pilotar','Pouse, pare e use SAIR DA AERONAVE. Ela fica estacionada.'],
-      ['marina-costa','🚤','Lanchas · Marina da Costa Verde','Três lanchas no píer da praia. Pilotagem livre no mar.'],
-      ['coast-view','🏖️','Praia da Costa Verde','Orla, ondas, quiosques e acesso à marina.'],
-      ['snow-lookout','❄️','Neve · mirante e chalés','Siga a OTTOVIAS pela Ligação Norte.']
+      ['marina-costa','🚤','Guarujá · marina e lanchas','Três lanchas no píer da praia. Pilotagem livre no mar.'],
+      ['coast-view','🏖️','Guarujá · praia','Orla, ondas, quiosques e acesso à marina.'],
+      ['snow-lookout','❄️','Campos do Jordão · neve e chalés','Siga a OTTOVIAS pela Ligação Norte.']
     ];
     return '<h3>Explore o mundo</h3><div class="choice-grid world-explore-directory">'+destinations.map(([id,icon,title,description])=>'<button class="choice" data-explore-nav="'+id+'"><b>'+icon+' '+title+'</b><span>'+description+'</span><small>TRAÇAR ROTA NO GPS</small></button>').join('')+'<button class="choice" data-explore-civil><b>🤝 Missões do nosso mundo</b><span>Praias, vizinhança, neve, polícia, bombeiros e passeios.</span><small>INDIVIDUAL OU COOPERATIVO</small></button></div>';
   }
