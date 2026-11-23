@@ -32,6 +32,7 @@ MINIMUM_ROUTES = (
     "games/kart/index.html", "games/boxe/index.html",
     "games/tenis/index.html", "games/ar/index.html",
     "games/voo/index.html", "games/familia/3d/index.html",
+    "games/danca/index.html",
 )
 
 
