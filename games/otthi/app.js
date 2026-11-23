@@ -16843,10 +16843,65 @@ function precompile(T,renderer,scene,camera){
     }
   }
 
+
+  // Landmark-specific, low-draw-call facades. The native interior/entrance
+  // still owns interaction, while the exterior is streamed by district.
+  function rioV51MallFacade(p,draw){
+    if(p.shape!=='mall')return;
+    const {box,part}=draw,front=p.d/2-.33,accent={
+      riopreto_shopping:0x439c9f,shopping_iguatemi:0xaa906e,
+      plaza_avenida:0x8a725c,shopping_cidade_norte:0x337c8b
+    }[p.key]||0x608f91;
+    // Open, slightly elevated forecourt with planters and tactile walkway.
+    box(0,.077,front+2.32,p.w*.88,.14,3.9,0xd9d3c6);
+    for(const side of[-1,1]){
+      const planterX=side*p.w*.34;
+      box(planterX,.27,front+2.0,p.w*.17,.52,1.1,0xc3b7a1);
+      for(let i=0;i<3;i++)part('canopy',planterX+(i-1)*.66,.81,front+2.0,.52,.85,.46,0x567c54);
+    }
+    if(p.key==='riopreto_shopping'){
+      // Official entrance reference: white facade, curved cyan-green
+      // glass frontage and round shade fixtures on slim white supports.
+      box(0,5.12,front+.19,p.w*.84,5.8,.17,0xeae8df);
+      for(let i=-5;i<=5;i++){
+        const t=i/5,x=t*p.w*.25,arch=3.95+2.55*Math.sqrt(Math.max(0,1-t*t));
+        box(x,arch*.53,front+.33,p.w*.048,arch*.73,.13,0x458b90);
+        box(x,arch+.12,front+.34,p.w*.052,.25,.16,0xd4ece5);
+      }
+      for(const side of[-1,1]){
+        const x=side*p.w*.40;
+        part('post',x,2.20,front+2.3,.20,4.4,.20,0xf0f0ec);
+        part('canopy',x,4.4,front+2.3,1.72,.19,1.68,0x516568);
+      }
+    }else if(p.key==='shopping_iguatemi'){
+      box(0,5.4,front+.20,p.w*.85,6.8,.22,0xd9c9b3);
+      box(0,5.65,front+.32,p.w*.60,5.55,.15,0x4c8189);
+      for(const x of[-p.w*.27,-p.w*.13,0,p.w*.13,p.w*.27])
+        box(x,5.65,front+.44,.15,5.65,.20,0xe8e2d3);
+      box(0,8.92,front+.52,p.w*.77,.42,.73,accent);
+    }else if(p.key==='plaza_avenida'){
+      for(let i=0;i<7;i++){
+        const x=(i-3)*p.w*.11;
+        box(x,5.1,front+.23,p.w*.092,5.6,.20,i%2?0xb49b79:0xe3d8c4);
+      }
+      box(0,7.9,front+.47,p.w*.76,.50,.60,accent);
+      box(0,3.14,front+.41,p.w*.52,2.5,.11,0x648a96);
+    }else if(p.key==='shopping_cidade_norte'){
+      box(0,6.2,front+.20,p.w*.82,5.6,.18,0xd3e1dd);
+      for(const side of[-1,1]){
+        box(side*p.w*.28,5.6,front+.38,p.w*.25,4.2,.15,0x4c8596);
+        box(side*p.w*.25,8.2,front+.45,p.w*.37,.38,.26,accent);
+      }
+      box(0,4.15,front+.50,p.w*.34,4.4,.11,0x76a9ae);
+      box(0,8.54,front+.61,p.w*.69,.45,.52,0x466f81);
+    }
+  }
+
   function rioV51DrawPlace(batch,p){
     const draw=rioLocal(batch,{...p,yaw:p.face===1?0:Math.PI});
     if(rioV51Palette[p.shape])rioV51Building(batch,p,draw);
     else rioV51Outdoors(p,draw);
+    rioV51MallFacade(p,draw);
     draw.box(0,.08,p.d/2+1.65,Math.min(p.w,7.3),.13,3.45,0xd4c8ab);
     if(typeof decorateRioCitySite==='function')decorateRioCitySite(p,draw);
     const tall=!!rioV51Palette[p.shape]&&p.shape!=='gate',signY=tall?Math.min(p.h*.44,4.55):p.shape==='gate'?3.82:1.45;
