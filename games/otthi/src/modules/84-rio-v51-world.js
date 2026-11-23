@@ -168,10 +168,145 @@
       x:p.visitX,z:p.visitZ,navX:p.navX,navZ:p.navZ,
       description:p.fictional?'Local fictício criado para o jogo.':'Local de referência com fachada estilizada e posição adaptada ao mapa.'};
   }
+
+  // Persistent delivery ledger for the regional construction and hardware stores.
+  // Orders have a real game address, simulated travel time, receipt and pickup.
+  // Never claim a courier delivered until the player receives the goods.
+  const RIO_CONSTRUCTION_CATALOG=Object.freeze({
+    materials:[
+      {id:'cement',label:'Saco de cimento',price:42,unit:'saco'},
+      {id:'brick',label:'Tijolos para construção',price:35,unit:'lote'},
+      {id:'sand',label:'Areia para obra',price:58,unit:'carga'},
+      {id:'tile',label:'Piso cerâmico',price:86,unit:'caixa'},
+      {id:'paint',label:'Tinta para parede',price:73,unit:'lata'},
+      {id:'roof',label:'Telhas',price:68,unit:'pacote'},
+      {id:'door',label:'Porta de madeira',price:115,unit:'unidade'},
+      {id:'window',label:'Janela de vidro',price:136,unit:'unidade'},
+      {id:'wire',label:'Fiação elétrica',price:54,unit:'rolo'},
+      {id:'pipe',label:'Tubulação hidráulica',price:61,unit:'kit'}
+    ],
+    tools:[
+      {id:'hammer',label:'Martelo',price:45,unit:'unidade'},
+      {id:'drill',label:'Furadeira',price:195,unit:'unidade'},
+      {id:'saw',label:'Serrote',price:78,unit:'unidade'},
+      {id:'tape',label:'Trena',price:26,unit:'unidade'},
+      {id:'ladder',label:'Escada',price:98,unit:'unidade'},
+      {id:'toolbox',label:'Caixa de ferramentas',price:120,unit:'unidade'}
+    ]
+  });
+  const rioRegisteredDeliveries=new Set();
+  function rioConstructionSave(){
+    const save=rioMapSave();
+    save.constructionOrders??=[];
+    save.constructionInventory??={};
+    return save;
+  }
+  function rioDeliveryHomes(){
+    const sites=typeof compactRio!=='undefined'?(compactRio.sites||[]):[];
+    return sites.filter(site=>site.kind==='residence'&&site.propertyId&&rioPropertyTitle(site.propertyId)?.owned);
+  }
+  function rioDeliveryAddress(site){return {x:site.entry[0],z:site.entry[1]};}
+  function rioRegisterHomeDelivery(site){
+    if(rioRegisteredDeliveries.has(site.propertyId))return;
+    rioRegisteredDeliveries.add(site.propertyId);
+    const pos=rioDeliveryAddress(site);
+    registerInteractable({
+      id:'rio-construction-receive-'+site.propertyId,
+      type:'delivery',icon:'📦',label:'Receber materiais de construção',...pos,radius:3.5,priority:262,
+      available:()=>running&&!paused&&!player.vehicle&&!player.boating&&
+        rioPropertyTitle(site.propertyId)?.owned&&
+        rioConstructionSave().constructionOrders.some(o=>o.destinationId===site.propertyId&&
+          o.status==='en-route'&&Date.now()>=o.readyAt),
+      action:()=>{
+        const saved=rioConstructionSave();
+        const pending=saved.constructionOrders.filter(o=>o.destinationId===site.propertyId&&o.status==='en-route'&&Date.now()>=o.readyAt);
+        if(!pending.length){toast('Nenhuma entrega disponível neste endereço.','info',1700);return;}
+        openModal('Entrega recebida · '+site.name,
+          '<p>Confirme o recebimento dos materiais neste endereço.</p><div class="choice-grid">'+
+          pending.map(o=>'<div class="choice"><b>'+escapeHtml(o.label)+'</b><span>'+o.quantity+' '+escapeHtml(o.unit)+' · Pedido #'+o.id+'</span></div>').join('')+
+          '</div><div class="modal-actions"><button class="btn primary" data-rio-construction-receive>Receber itens</button></div>',
+          root=>{root.querySelector('[data-rio-construction-receive]').onclick=()=>{
+            const now=Date.now();
+            for(const order of pending){
+              if(order.status!=='en-route'||now<order.readyAt)continue;
+              saved.constructionInventory[order.productId]=(saved.constructionInventory[order.productId]||0)+order.quantity;
+              order.status='delivered';order.deliveredAt=now;
+            }
+            saveState(true);closeModal();toast('Materiais recebidos e registrados no estoque.','good',2600);
+          };});
+      }
+    });
+  }
+  function rioConstructionDeliveryReport(){
+    const orders=rioConstructionSave().constructionOrders;
+    const homes=rioDeliveryHomes();
+    openModal('Minhas entregas e materiais',
+      '<p>Pedidos vinculados à sua propriedade; os materiais recebidos ficam no estoque para a futura etapa de reformas.</p>'+
+      '<div class="choice-grid">'+orders.slice(-12).reverse().map(o=>{
+        const site=homes.find(h=>h.propertyId===o.destinationId);
+        const ready=o.status==='en-route'&&Date.now()>=o.readyAt;
+        return '<div class="choice"><b>#'+o.id+' · '+escapeHtml(o.label)+'</b><span>'+
+          escapeHtml(site?.name||o.destinationName)+' · '+o.quantity+' '+escapeHtml(o.unit)+' · '+
+          (o.status==='delivered'?'Recebido':ready?'Aguardando recebimento no imóvel':'Em transporte')+'</span></div>';
+      }).join('')+'</div>'+
+      '<p><b>Estoque recebido:</b> '+(Object.entries(rioConstructionSave().constructionInventory)
+        .map(([id,n])=>escapeHtml(id)+': '+n).join(' · ')||'Nenhum item')+'</p>'+
+      '<div class="modal-actions"><button class="btn" data-rio-delivery-close>Fechar</button></div>',
+      root=>{root.querySelector('[data-rio-delivery-close]').onclick=closeModal;});
+  }
+  function rioOpenRegionalConstructionStore(place){
+    const stock=RIO_CONSTRUCTION_CATALOG[place.shop];
+    if(!stock)return false;
+    const homes=rioDeliveryHomes();
+    const report=rioConstructionSave();
+    openModal(place.name,
+      '<p>Produtos desta loja: '+(place.shop==='materials'?'materiais para construção':'ferramentas')+
+      '. Escolha o produto e o endereço de entrega. O frete é simulado dentro do jogo.</p>'+
+      (homes.length?'':'<p>Para receber entregas, primeiro adquira uma casa ou apartamento em Rio Preto.</p>')+
+      '<div class="choice-grid">'+stock.map(item=>
+        '<button class="choice" data-rio-construction-buy="'+item.id+'" '+(!homes.length?'disabled':'')+'><b>'+
+        escapeHtml(item.label)+'</b><span>'+item.price+' moedas · '+item.unit+'</span></button>').join('')+
+      '</div><div class="modal-actions"><button class="btn" data-rio-delivery-orders>Meus pedidos ('+
+      report.constructionOrders.length+')</button></div>',
+      root=>{
+        root.querySelector('[data-rio-delivery-orders]').onclick=rioConstructionDeliveryReport;
+        for(const button of root.querySelectorAll('[data-rio-construction-buy]'))button.onclick=()=>{
+          const item=stock.find(x=>x.id===button.dataset.rioConstructionBuy);
+          if(!item)return;
+          const available=rioDeliveryHomes();
+          openModal('Entrega · '+item.label,
+            '<p>Escolha qual imóvel receberá a compra.</p>'+
+            '<div class="choice-grid">'+available.map(home=>
+              '<button class="choice" data-rio-deliver-house="'+escapeHtml(home.propertyId)+'"><b>'+
+              escapeHtml(home.name)+'</b><span>Entregar '+escapeHtml(item.unit)+' · '+item.price+' moedas</span></button>'
+            ).join('')+'</div>',root=>{
+              for(const choice of root.querySelectorAll('[data-rio-deliver-house]'))choice.onclick=()=>{
+                const home=rioDeliveryHomes().find(x=>x.propertyId===choice.dataset.rioDeliverHouse);
+                if(!home||Number(state.profile.coins)<item.price){
+                  toast('Escolha uma propriedade própria e tenha moedas suficientes.','warn',2300);return;
+                }
+                choice.disabled=true;
+                const save=rioConstructionSave();
+                const nextId=(Math.max(0,...save.constructionOrders.map(x=>Number(x.id)||0))+1);
+                save.constructionOrders.push({
+                  id:nextId,productId:item.id,label:item.label,quantity:1,unit:item.unit,
+                  shopId:place.id,destinationId:home.propertyId,destinationName:home.name,
+                  paid:item.price,status:'en-route',purchasedAt:Date.now(),readyAt:Date.now()+45000
+                });
+                addCoins(-item.price);rioRegisterHomeDelivery(home);saveState(true);
+                toast('Pedido #'+nextId+' confirmado. Entrega simulada no seu imóvel.','good',2800);
+                rioConstructionDeliveryReport();
+              };
+            });
+        };
+      });
+    return true;
+  }
+
   function rioV51Visit(p){
     if(p.nativeVenue==='football')return openFootballV705();
     if(p.key==='portaria_damha')return openRioStreetRun();
-    if(p.shop==='tools'||p.shop==='materials')return openShop();
+    if(p.shop==='tools'||p.shop==='materials')return rioOpenRegionalConstructionStore(p);
     if(p.shop)return openCityShop(p.id);
     if(p.key==='prefeitura_andalo')return openCivilMissions();
     if(p.key==='aeroporto_sjrp')return openFlightAcademy();
@@ -185,6 +320,7 @@
   }
   function rioV51Register(){
     rioV51World.registered=true;
+    for(const home of rioDeliveryHomes())rioRegisterHomeDelivery(home);
     for(const p of RIO_V51.places){
       if(!legacyRegionalLayout&&!RIO_RECOVERED_SECTORS.includes(p.sector))continue;
       if(p.nativeVenue)continue;
