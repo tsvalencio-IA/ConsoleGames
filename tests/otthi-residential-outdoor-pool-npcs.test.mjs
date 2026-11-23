@@ -32,3 +32,22 @@ test('modern Rio Preto NPCs keep human proportions while classic toy-themed NPC 
  assert.match(npc,/else if\(id!=='michelle-ottovias'&&!OT_CHILD_WORLD\)applyNpcToyTheme/);
  assert.match(npc,/createNPC\(id,name,x,z,color,pathRadius=3\)/);
 });
+
+
+test('shopping stores include real visible in-world 3D clerks, not just art references',()=>{
+  assert.match(src,/const clerk=createNPC\('rio-mall-staff-'/);
+  assert.match(src,/clerk\.stationary=true;clerk\.cityLifeManaged=true/);
+  assert.match(src,/room\.root\.add\(clerk\.group\)/);
+  assert.match(src,/room\.npcs\.push\(clerk\)/);
+  assert.match(src,/room\.action\('store-'\+slot/,'native store actions and purchases are preserved');
+});
+
+test('character selection is directly accessible in pause menu and saves existing avatar variants',()=>{
+ const fs=readFileSync('games/otthi/src/modules/30-pause-tests-public-api-bootstrap.js','utf8');
+ const avatar=readFileSync('games/otthi/src/modules/34-avatar-studio-professional-v3.js','utf8');
+ assert.match(fs,/data-avatar-pause/);
+ assert.match(fs,/\$\('\[data-avatar-pause\]',root\)\.onclick=.*openAvatarStudio\(\)/);
+ assert.match(avatar,/worldAvatarOptions\('bodyStyle','Quem você quer controlar\?'\)/);
+ assert.match(avatar,/data-world-avatar-save/);
+ assert.match(avatar,/saveState\(true\)/);
+});
