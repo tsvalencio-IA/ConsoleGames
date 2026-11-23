@@ -191,7 +191,10 @@
     const next=nearestInteractable(),label=next?(typeof next.getLabel==='function'?next.getLabel():next.label):'Atacar',actionLabel=next?(typeof next.getActionLabel==='function'?next.getActionLabel():(next.actionLabel||'Ação')):'Espada',id=`${next?.id||''}:${label}:${actionLabel}`;if(!force&&id===lastContextId)return;lastContextId=id;currentContext=next;els.contextPrompt.hidden=!next;els.actionBtn.classList.toggle('pulse',!!next);els.contextIcon.textContent=next?.icon||'⚔';els.contextLabel.textContent=label;els.contextHint.textContent=next?`Toque em ${String(actionLabel).toUpperCase()}`:'Ataque próximo';const span=$('span',els.actionBtn);const icon=$('b',els.actionBtn);if(span)span.textContent=actionLabel;if(icon)icon.textContent=next?.icon||'⚔';
   }
   function doAction(){
-    if(paused||!els.modal.hidden||performance.now()<actionLockedUntil)return;
+    // Debounce repeated taps on the same target, but don't discard a new
+    // context action when a player immediately reaches another destination.
+    const sameTarget=(currentContext?.id||'melee')===lastActionSource;
+    if(paused||!els.modal.hidden||(performance.now()<actionLockedUntil&&sameTarget))return;
     actionLockedUntil=performance.now()+90;state.stats.actions++;
     if(state.ui.quickOpen){state.ui.quickOpen=false;syncMobilePanels();}
     if(typeof handleActiveSportActionV704==='function'&&handleActiveSportActionV704()){updateContext(true);return;}
