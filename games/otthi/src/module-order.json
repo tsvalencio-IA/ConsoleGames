@@ -682,7 +682,7 @@
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "2a6a858e151fb4bb0f96f503cc0c04e9203a325314151f21abb2895546c2d95b"
+      "sha256Body": "ba71633b335ef7e483c8de4eb5ce7e6e563512e8ab028fd6499dc657897feeb3"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",

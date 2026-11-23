@@ -345,7 +345,8 @@
     const x=pose?.x??player.x,z=pose?.z??player.z,originY=player.y+(player.vehicle?1.55:1.45);
     if(rioMap.indoors&&!player.vehicle&&!player.boating&&!world.workshopInspectionCamera?.active){
       const room=rioMap.indoorRoom,portrait=innerHeight>innerWidth;
-      const cx=room?.site.x??x,cz=room?.site.z??z,focusX=x+clamp((cx-x)*.32,-2.8,2.8),focusZ=z+clamp((cz-z)*.32,-2.8,2.8);
+      const centerWeight=room?.site.kind==='residence'?.54:.32;
+      const cx=room?.site.x??x,cz=room?.site.z??z,focusX=x+clamp((cx-x)*centerWeight,-2.8,2.8),focusZ=z+clamp((cz-z)*centerWeight,-2.8,2.8);
       const distance=clamp((portrait?6.9:5.9)+cameraZoom*.58,4.8,10.2);
       const height=clamp((portrait?6.7:5.8)+cameraPitch*2.7+cameraZoom*.25,4.65,9.75);
       desired.set(focusX-Math.sin(cameraYaw)*distance,player.y+height,focusZ+Math.cos(cameraYaw)*distance);
@@ -387,7 +388,7 @@
     room.cameraPlanes??={};
     if(!room.cameraPlanes[key]){
       const normal=new THREE.Vector3(-(alongX?c:s)*side,0,-(alongX?-s:c)*side);
-      const edge=room.point(alongX?side*(w/2-.45):0,alongX?0:side*(d/2-.45));
+      const edge=room.point(alongX?side*(w/2-.59):0,alongX?0:side*(d/2-.59));
       room.cameraPlanes[key]=[new THREE.Plane().setFromNormalAndCoplanarPoint(normal,new THREE.Vector3(edge.x,0,edge.z))];
     }
     const before=renderer.clippingPlanes;renderer.clippingPlanes=room.cameraPlanes[key];
