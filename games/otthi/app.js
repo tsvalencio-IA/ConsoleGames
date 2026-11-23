@@ -17250,8 +17250,13 @@ function precompile(T,renderer,scene,camera){
     batch.root=outside;
     rioV51DrawPlace(batch,p);batch.commit();sectorRoot.add(outside);
     const outsideColliders=world.colliders.slice(before);
+    // Some districts retain an approved central version of the same named
+    // venue. Give the regional interior a distinct scene/action ID so mounting
+    // it never replaces the original map room in rioMap.sites.
+    const repeated=typeof RIO_COMPACT_SITES!=='undefined'&&RIO_COMPACT_SITES.some(row=>row[1]===p.id);
     const site={
-      id:p.id,key:p.key,name:p.name,kind:rioV51InteriorKind(p),style:'urban',
+      id:repeated?p.id+'-v51':p.id,key:repeated?'v51-'+p.key:p.key,
+      name:p.name,kind:rioV51InteriorKind(p),style:'urban',
       x:p.x,z:p.z,w:p.w,d:p.d,yaw:p.face===1?0:Math.PI,
       entry:[p.visitX,p.visitZ],street:p.address
     };
