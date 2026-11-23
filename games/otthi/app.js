@@ -2803,7 +2803,7 @@
   // graph does not include its scenery corridors or Rio Preto storefront lots.
   const legacyRegionalLayout=typeof regionalRouteVisible!=='function'||regionalRouteVisible();
   const compactRioLayout=!legacyRegionalLayout&&typeof RIO_COMPACT_LAYOUT!=='undefined'?RIO_COMPACT_LAYOUT:null;
-  const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
   const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
   // Restore the four regional sectors that existed before the compact Rio
@@ -16465,7 +16465,7 @@ function precompile(T,renderer,scene,camera){
   }
 
   function updateRioPretoDistricts() {
-    if(!legacyRegionalLayout||!worldGroup||!worldExpansion.ready)return;
+    if((!legacyRegionalLayout&&!rioCompactWorld())||!worldGroup||!worldExpansion.ready)return;
     if(!rioPreto.tiles){
       rioPreto.tiles=rioTiles();
       rioRegisterDestinations();
@@ -16506,7 +16506,7 @@ function precompile(T,renderer,scene,camera){
   const rioPreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioPreviousExpansion();updateRioPretoDistricts();};
   const rioPreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return legacyRegionalLayout?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations]:rioPreviousLocations();};
+  expansionMapLocations=function(){return legacyRegionalLayout||rioCompactWorld()?[...rioPreviousLocations(),...RIO_PRETO_LAYOUT.locations]:rioPreviousLocations();};
   window.OTTHI_RIO_PRETO=Object.freeze({
     locations:()=>RIO_PRETO_LAYOUT.locations.map(p=>({...p})),
     diagnostics:()=>{

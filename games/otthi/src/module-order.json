@@ -80,7 +80,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "057f749a12428e151eaad17caacf6a55e28077236fd92f1f9c2b872ea367ac29"
+      "sha256Body": "05eb9173bd904868a40a6142be10fd815d3b588adb3b8b24e2e0520428ce080b"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -658,7 +658,7 @@
     {
       "file": "src/modules/79-rio-preto-districts.js",
       "description": "Bairros e pontos urbanos em setores com recursos compartilhados",
-      "sha256Body": "b47376ca51aec7b3d4e568dc5235acaeecc8867cdffc25e1bf205f6ff37e863e"
+      "sha256Body": "8009ae732b26e8a7acb99712a637707d8b203463b18aa86bad29df84ddae4172"
     },
     {
       "file": "src/modules/82-rio-preto-expansion.js",
