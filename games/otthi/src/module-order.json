@@ -658,7 +658,7 @@
     {
       "file": "src/modules/79-rio-preto-districts.js",
       "description": "Bairros e pontos urbanos em setores com recursos compartilhados",
-      "sha256Body": "8009ae732b26e8a7acb99712a637707d8b203463b18aa86bad29df84ddae4172"
+      "sha256Body": "64a4cc7527095decc72ecbdd6499007b3c98dce9df218e65111e2dcd4312b972"
     },
     {
       "file": "src/modules/82-rio-preto-expansion.js",
@@ -734,7 +734,7 @@
     {
       "file": "src/modules/99-rio-compact-world.js",
       "description": "Infraestrutura original e atividades jogáveis da Rio Preto compacta",
-      "sha256Body": "8557c5e5b68fef3aaea4f72827d04f63100f52bd9fd88fcebfa3b89fd983ea91"
+      "sha256Body": "043f1ed4f6ca9a1d89a956f2b868ac15e03557ff7c225ff1245c417e44084c99"
     },
     {
       "file": "src/modules/100-rio-weather.js",
