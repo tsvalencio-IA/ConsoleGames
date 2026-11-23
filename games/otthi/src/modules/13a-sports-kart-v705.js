@@ -82,6 +82,28 @@
       box(x,1.9,side*21.12,w,3.8,.52,red);
       box(x,3.87,side*21.12,w,.14,.62,white);
       block(x,side*19.53,w,3.85,3.9);
+      // Upper bowl and real grandstand silhouette, not a flat neighborhood pitch.
+      // Kept inside the original track footprint and rendered in the same
+      // instanced batches, so adjacent roads and gameplay stay untouched.
+      for(let row=5;row<9;row++){
+        const depth=17.65+row*.65,height=.48+row*.57;
+        box(x,height/2,side*depth,w,height,.66,concrete);
+        box(x,height+.065,side*depth,w-.18,.13,.58,row%3===0?white:red);
+      }
+      box(x,7.35,side*22.60,w+1.05,.28,4.6,steel);
+      box(x,7.18,side*20.52,w+.85,.18,.24,white);
+      for(const edge of[-1,1]){
+        box(x+edge*(w/2-.35),5.62,side*22.60,.17,3.35,.20,steel);
+      }
+      const crowd=[0xf6e7dd,0x882d37,0x3e5467,0xd7be91,0xebe7e1];
+      for(let row=0;row<7;row++)for(let seat=0;seat<Math.floor(w/1.6);seat++){
+        const px=x-w*.5+.92+seat*1.6;
+        const pz=side*(17.8+row*.67);
+        const py=.78+row*.55;
+        const color=crowd[(row*7+seat*3+Math.abs(Math.round(x)))%crowd.length];
+        box(px,py+.16,pz,.40,.32,.24,color);
+        box(px,py+.44,pz,.20,.20,.18,0xd7a67c);
+      }
     }
     for(const side of [-1,1]){
       for(let row=0;row<4;row++){
