@@ -30,7 +30,7 @@
   // graph does not include its scenery corridors or Rio Preto storefront lots.
   const legacyRegionalLayout=typeof regionalRouteVisible!=='function'||regionalRouteVisible();
   const compactRioLayout=!legacyRegionalLayout&&typeof RIO_COMPACT_LAYOUT!=='undefined'?RIO_COMPACT_LAYOUT:null;
-  const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
+  const rioPretoRoads=typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
   const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
   // Restore the four regional sectors that existed before the compact Rio
