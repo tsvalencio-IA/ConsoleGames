@@ -11,14 +11,19 @@
       ['rain', 'Jaqueta corta-vento', '#da954a'],
       ['hoodie', 'Moletom com capuz', '#66739c'],
       ['rio-polo', 'Polo vinho da cidade', '#862e4a'],
-      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2']
+      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2'],
+      ['rio-social', 'Camisa social azul', '#446a8a']
     ],
     legs: [
       ['original', 'Roupa original'],
       ['jeans', 'Calça jeans', '#36577b'],
       ['chino', 'Calça de sarja', '#a28662'],
       ['bermuda', 'Bermuda', '#54695c'],
-      ['track', 'Calça esportiva', '#5b3468']
+      ['track', 'Calça esportiva', '#5b3468'],
+      ['rio-alfaiataria', 'Calça de alfaiataria', '#383b43'],
+      ['rio-cargo', 'Calça cargo', '#6c7351'],
+      ['rio-jeans-preto', 'Jeans preto', '#252a35'],
+      ['rio-bermuda-jeans', 'Bermuda jeans', '#456786']
     ],
     shoes: [
       ['original', 'Calçado original'],
@@ -26,34 +31,47 @@
       ['leather', 'Sapato de couro', '#634432'],
       ['boot', 'Bota de passeio', '#725543'],
       ['rio-tenis', 'Tênis branco da orla', '#e6dfd5'],
-      ['rio-sapato', 'Sapato azul-marinho', '#263a58']
+      ['rio-sapato', 'Sapato azul-marinho', '#263a58'],
+      ['rio-sneaker', 'Tênis urbano', '#b6a088'],
+      ['rio-bota', 'Bota preta', '#282b35'],
+      ['rio-salto', 'Sapato de festa', '#b66d76']
     ],
     hat: [
       ['original', 'Sem chapéu novo'],
       ['cap', 'Boné bordado', '#3c526d'],
       ['panama', 'Chapéu de palha', '#dab87e'],
       ['beanie', 'Gorro de tricô', '#496b61'],
-      ['headphones', 'Fones de ouvido', '#4b5970']
+      ['headphones', 'Fones de ouvido', '#4b5970'],
+      ['rio-bone-azul', 'Boné azul', '#375c96'],
+      ['rio-panama-claro', 'Chapéu verão', '#e6cda3']
     ],
     glasses: [
       ['original', 'Óculos originais'],
       ['copper', 'Armação cobre', '#b87955'],
-      ['sun', 'Óculos de sol', '#304255']
+      ['sun', 'Óculos de sol', '#304255'],
+      ['rio-armacao', 'Óculos pretos', '#25292e'],
+      ['rio-sol', 'Óculos escuros', '#1a2435']
     ],
     jewel: [
       ['original', 'Acessórios originais'],
       ['necklace', 'Colar pingente', '#d8ae61'],
-      ['earrings', 'Brincos pequenos', '#d8ae61']
+      ['earrings', 'Brincos pequenos', '#d8ae61'],
+      ['rio-brinco-prata', 'Brincos de prata', '#b7c8d2'],
+      ['rio-colar-prata', 'Colar de prata', '#b9cad2']
     ],
     wrist: [
       ['original', 'Acessório original'],
       ['watch', 'Relógio de aço', '#8f9fa9'],
-      ['bracelet', 'Pulseira trançada', '#b96a55']
+      ['bracelet', 'Pulseira trançada', '#b96a55'],
+      ['rio-smartwatch', 'Relógio digital', '#343c45'],
+      ['rio-pulseira-prata', 'Pulseira de prata', '#b9c9d3']
     ],
     bag: [
       ['original', 'Sem mochila'],
       ['city', 'Mochila de lona', '#355a59'],
-      ['hike', 'Mochila de trilha', '#9b6846']
+      ['hike', 'Mochila de trilha', '#9b6846'],
+      ['rio-mochila-escola', 'Mochila escolar', '#6e579c'],
+      ['rio-bolsa-cidade', 'Bolsa casual', '#926e55']
     ]
   });
 
@@ -61,7 +79,11 @@
     top: 'Roupas', legs: 'Calças e bermudas', shoes: 'Calçados', hat: 'Bonés e chapéus',
     glasses: 'Óculos', jewel: 'Colares e brincos', wrist: 'Relógios e pulseiras', bag: 'Mochilas'
   });
-  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68});
+  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68,
+    'rio-social':96,'rio-alfaiataria':88,'rio-cargo':70,'rio-jeans-preto':78,'rio-bermuda-jeans':52,
+    'rio-sneaker':72,'rio-bota':98,'rio-salto':94,'rio-bone-azul':39,'rio-panama-claro':55,
+    'rio-armacao':65,'rio-sol':69,'rio-brinco-prata':48,'rio-colar-prata':60,
+    'rio-smartwatch':110,'rio-pulseira-prata':50,'rio-mochila-escola':72,'rio-bolsa-cidade':86});
   function rioWardrobeHasItem(id){return !RIO_WARDROBE_STORE[id]||!!state.cityServices?.rioMap?.wardrobePurchases?.[id];}
   const RIO_WARDROBE_PRESETS = Object.freeze({
     original: {label:'Visual original', outfit:{}},
@@ -220,7 +242,7 @@
     const top=tint('top');
     if(top){
       const torso=add('top',rootKey);
-      if(['denim','rain','hoodie'].includes(outfit.top)){
+      if(['denim','rain','hoodie','rio-social'].includes(outfit.top)){
         // The sleeves pivot at the existing elbows and leave the tool hand clear.
         for(const side of [-1,1]){
           const sleeve=add('sleeve','elbow'+side);
@@ -263,11 +285,11 @@
     const hat=tint('hat');
     if(hat){
       const head=add('hat','head');
-      if(outfit.hat==='cap'){
+      if(['cap','rio-bone-azul'].includes(outfit.hat)){
         piece(head,'sphere',hat,[.81,.28,.72],[0,.444,-.012]);
         piece(head,'sphere',hat,[.58,.06,.34],[0,.393,.38]);
         piece(head,'box','#ead9b3',[.102,.043,.018],[0,.49,.335]);
-      }else if(outfit.hat==='panama'){
+      }else if(['panama','rio-panama-claro'].includes(outfit.hat)){
         piece(head,'disc','#b89c74',[1.00,.045,.94],[0,.442,0]);
         piece(head,'flare',hat,[.75,.208,.66],[0,.519,-.016]);
         piece(head,'disc','#564537',[.734,.048,.65],[0,.468,-.016]);
@@ -283,7 +305,7 @@
         piece(head,'sphere',hat,[.119,.124,.118],[0,.593,-.019]);
       }
     }
-    if(outfit.glasses==='sun'){
+    if(['sun','rio-sol'].includes(outfit.glasses)){
       const glasses=add('glasses','head');
       for(const side of [-1,1]){
         piece(glasses,'sphere','#203744',[.242,.181,.035],[side*.176,.065,.414],'lens');
@@ -291,7 +313,7 @@
       }
     }
     const jewel=tint('jewel');
-    if(outfit.jewel==='earrings'){
+    if(['earrings','rio-brinco-prata'].includes(outfit.jewel)){
       const ears=add('earrings','head');
       for(const side of [-1,1])piece(ears,'ring',jewel,[.075,.105,.048],[side*.424,-.127,.039],'metal');
     }else if(outfit.jewel==='necklace'){
@@ -300,7 +322,7 @@
       chain.rotation.x=-.36;
       piece(neck,'sphere','#7db7ae',[.075,.091,.029],[0,1.771,.241],'metal');
     }
-    if(outfit.wrist==='watch'){
+    if(['watch','rio-smartwatch'].includes(outfit.wrist)){
       const watch=add('watch','elbow-1');
       piece(watch,'disc',tint('wrist'),[.169,.069,.174],[0,-.283,.006],'metal');
       piece(watch,'box','#253845',[.087,.047,.039],[0,-.283,.101],'metal');
