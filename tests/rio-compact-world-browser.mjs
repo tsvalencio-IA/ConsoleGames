@@ -175,7 +175,14 @@ try{
   assert(record?.owned&&record.paid===380);
   assert(record.furniture.includes('sofa-modular'));
   assert.equal(record.decorLayout['sofa-modular'].rotation,1);
-  assert.equal(interior.profile.coins,beforeHomePurchaseCoins-380-180);
+  // The world can award passive activity coins while the character shops.
+  // Verify the exact contractual prices via receipts, without assuming time
+  // stands still between the menu snapshots.
+  assert.equal(record.paid,380);
+  assert.equal(record.furniture.filter(id=>id==='sofa-modular').length,1,'no duplicate sofa purchases');
+  const netGainDuringPurchase=interior.profile.coins-(beforeHomePurchaseCoins-380-180);
+  assert(netGainDuringPurchase>=0&&netGainDuringPurchase<=40,
+    'home and sofa spending must be preserved; only small legitimate background earnings are allowed: '+netGainDuringPurchase);
   assert.equal(interior.cityServices.rioMap.properties['regional-casa-damha']?.owned,true);
   report.housing={bought:true,decorated:true,coins:interior.profile.coins,placement:record.decorLayout['sofa-modular']};
   await shot('casa-com-sofa-editavel');
