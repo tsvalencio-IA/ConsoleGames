@@ -299,6 +299,58 @@
       // recognizable adult human proportions.
       const jaw=new THREE.Mesh(new THREE.SphereGeometry(.275,10,8),skinMat);
       jaw.scale.set(.95,.45,.75);jaw.position.set(0,1.79,.075);detailLayer.add(jaw);
+      // Different mobile-friendly hairstyles, service uniforms and facial
+      // expressions. All static details are merged into one geometry below.
+      const eyeLight=renderMat(0xf6f5f0,{roughness:.43});
+      for(const side of[-1,1]){
+        const glint=new THREE.Mesh(new THREE.SphereGeometry(.012,6,5),eyeLight);
+        glint.position.set(side*.152,2.047,.383);detailLayer.add(glint);
+      }
+      const eyebrowAngle=(hash%5-2)*.034;
+      if(hash%3===0){
+        const sideHair=new THREE.Mesh(new THREE.SphereGeometry(.30,11,8),hairMat);
+        sideHair.scale.set(1.13,.32,.82);sideHair.position.set(-.075,2.31,.015);
+        sideHair.rotation.z=eyebrowAngle;detailLayer.add(sideHair);
+      }else if(hash%3===1){
+        for(const side of[-1,1]){
+          const curl=new THREE.Mesh(new THREE.SphereGeometry(.145,8,7),hairMat);
+          curl.scale.set(.80,1.42,.90);curl.position.set(side*.34,2.05,-.04);
+          detailLayer.add(curl);
+        }
+        const bun=new THREE.Mesh(new THREE.SphereGeometry(.18,10,8),hairMat);
+        bun.position.set(0,2.36,-.30);detailLayer.add(bun);
+      }else{
+        for(let n=0;n<5;n++){
+          const curl=new THREE.Mesh(new THREE.SphereGeometry(.12,8,7),hairMat);
+          curl.position.set(-.29+n*.145,2.33+Math.sin(n)*.035,.07);
+          detailLayer.add(curl);
+        }
+      }
+      const beltMat=renderMat(0x2b333b,{roughness:.84}),metalMat=renderMat(0xa7a39c,{metalness:.12,roughness:.67});
+      box(.71,.072,.54,beltMat,0,.89,.015,detailLayer);
+      box(.085,.075,.024,metalMat,0,.89,.294,detailLayer);
+      for(const side of[-1,1]){
+        box(.19,.22,.026,shirtDark,side*.23,1.33,.354,detailLayer);
+        box(.065,.11,.04,metalMat,side*.23,1.39,.375,detailLayer);
+      }
+      if(String(id).startsWith('porteiro-')){
+        box(.30,.11,.035,metalMat,.21,1.60,.42,detailLayer);
+        box(.22,.065,.033,detail,-.19,1.61,.42,detailLayer);
+        const badgePlate=renderMat(0x1f778d,{roughness:.63});
+        box(.09,.11,.055,badgePlate,-.37,1.30,.295,detailLayer);
+      }else if(String(id).includes('bakery')||String(id).includes('server')){
+        const apron=renderMat(0xf5efe0,{roughness:.88});
+        box(.60,.66,.075,apron,0,1.15,.38,detailLayer);
+        box(.13,.57,.045,apron,-.31,1.19,.36,detailLayer);
+        box(.13,.57,.045,apron,.31,1.19,.36,detailLayer);
+      }else if(hash%4===0){
+        const jacket=renderMat(shadeColor(color,-19),{roughness:.86});
+        for(const side of[-1,1])
+          box(.19,.72,.095,jacket,side*.26,1.35,.39,detailLayer);
+      }
+      // A little natural height/shoulder diversity without touching the
+      // existing skeleton, routes, interaction locations or saved character ID.
+      group.scale.setScalar(.965+(hash%6)*.012);
       npc.userData={...(npc.userData||{}),toyThemeRoots:[detailLayer]};
       batchNpcVisuals(npc);
     }else if(id!=='michelle-ottovias'&&!OT_CHILD_WORLD)applyNpcToyTheme(npc,npcToyTheme(id));
