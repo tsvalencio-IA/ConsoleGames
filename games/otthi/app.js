@@ -17431,7 +17431,8 @@ function precompile(T,renderer,scene,camera){
       })(),
       malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,
         sectorVisible:!!rioV51World.roots.get(RIO_V51.places.find(p=>p.id===m.site.id)?.sector)?.visible,
-        entry:m.site.entry,position:{x:player.x,z:player.z}}))}),
+        entry:m.site.entry,exit:(()=>{const item=world.interactables.find(i=>i.id===m.site.id+'-exit-regional-mall');return item?{x:item.x,z:item.z}:null;})(),
+        position:{x:player.x,z:player.z}}))}),
     locations:()=>RIO_V51.places.map(rioV51Location)
   });
 
