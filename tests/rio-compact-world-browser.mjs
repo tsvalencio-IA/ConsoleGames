@@ -281,6 +281,16 @@ try{
   await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte',null,{timeout:10000});
   report.shopping={realInterior:true,clothesShop:true,exit:true};
 
+  // Outdoor water cannot be in the apartment: verify the actual 3D pool
+  // interactable from the exterior leisure court of Rio Candelaro.
+  await page.evaluate(()=>OTTHOS_TEST_API.teleport(286.8,143.3));
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-rios-italia-candelaro-outdoor-pool',
+    null,{timeout:16000});
+  await shot('rio-candelaro-piscina-externa');
+  await page.locator('#actionBtn').tap();
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getLastAction()==='regional-rios-italia-candelaro-outdoor-pool',
+    null,{timeout:9000});
+  report.pool={exterior:true,interactive:true};
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(50,330));
   await page.waitForFunction(()=>document.body.dataset.rioClima==='snow');
   assert((await look()).player.y>15);
