@@ -58,7 +58,8 @@
     Object.assign(CHARACTER_ACTIVITIES,{
       'rio-rest':['Descansando no banco',3.3],
       'rio-entry':['Entrando pela porta',0],
-      'rio-boarding':['Caminhando até a embarcação',0]
+      'rio-boarding':['Caminhando até a embarcação',0],
+      'rio-pool':['Nadando na piscina',4.0]
     });
     const lots=RIO_COMPACT_LAYOUT.lots.map(compactRioSite);
     const alias=(key,point)=>{
@@ -175,7 +176,7 @@
     const streets=compactRioStreets.map(([id,name,x,z])=>({id:'rio-via-'+id,name,x,z,icon:'🛣️',group:'Ruas e rodovias'}));
     const dock=rioMap.waterfront?.entry,course=rioMap.course;
     places.push({id:'rio-ponte-julio-zacarin',name:'Ponte Estaiada Júlio Zacarin · Lago 3',group:'Represa de Rio Preto',icon:'🌉',x:-121,z:65.8,navX:-121,navZ:65.8,description:'Ponte estaiada, orla e passeio do Lago 3'});
-    if(dock)places.push({id:'rio-represa-cais',name:'Cais da Represa',group:'Rio Preto',icon:'⚓',...dock});
+    if(dock)places.push({id:'rio-represa-cais',name:'Mirante da Represa Municipal',group:'Represa de Rio Preto',icon:'🌳',...dock});
     // All four native boats are moored at this same Represa, not the Guarujá beach.
     // GPS entry locations are derived from their actual native berths.
     for(const boat of rioMap.waterfront?.craft||[]){
