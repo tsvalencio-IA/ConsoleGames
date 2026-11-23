@@ -16769,6 +16769,7 @@ function precompile(T,renderer,scene,camera){
     ]
   });
   const rioRegisteredDeliveries=new Set();
+  let nextDeliveryAddressSync=0;
   function rioConstructionSave(){
     const save=rioMapSave();
     save.constructionOrders??=[];
@@ -16912,6 +16913,10 @@ function precompile(T,renderer,scene,camera){
   function updateRioV51World(){
     if((!legacyRegionalLayout&&!rioCompactWorld())||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
+    if(performance.now()>=nextDeliveryAddressSync){
+      nextDeliveryAddressSync=performance.now()+3000;
+      for(const home of rioDeliveryHomes())rioRegisterHomeDelivery(home);
+    }
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
     for(const sector of Object.values(RIO_V51.sectors)){
