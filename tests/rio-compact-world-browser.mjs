@@ -188,6 +188,27 @@ try{
   assert.deepEqual(reloaded.furniture,record.furniture);
   assert.deepEqual(reloaded.decorLayout['sofa-modular'],record.decorLayout['sofa-modular']);
   await close();
+  // Shopping Cidade Norte: enter a real interior, browse clothes, leave again.
+  await page.evaluate(()=>OTTHOS_TEST_API.teleport(376,-320));
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte',null,{timeout:35000});
+  await page.locator('#actionBtn').tap();
+  await page.waitForFunction(()=>{
+    const p=OTTHOS_TEST_API.getGame().player;
+    return Math.abs(p.x-376)<3&&p.z>-319&&p.z< -307;
+  },null,{timeout:12000});
+  await shot('shopping-cidade-norte-interior');
+  await page.evaluate(()=>OTTHOS_TEST_API.teleport(383,-313));
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte-store-top',null,{timeout:9000});
+  await page.locator('#actionBtn').tap();
+  await page.locator('[data-rio-clothing-buy]').first().waitFor({timeout:10000});
+  await shot('shopping-cidade-norte-loja-roupas');
+  await close();
+  await page.evaluate(()=>OTTHOS_TEST_API.teleport(376,-315));
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte-exit-regional-mall',null,{timeout:9000});
+  await page.locator('#actionBtn').tap();
+  await page.waitForFunction(()=>OTTHOS_TEST_API.getContext()?.id==='regional-shopping_cidade_norte',null,{timeout:10000});
+  report.shopping={realInterior:true,clothesShop:true,exit:true};
+
   await page.evaluate(()=>OTTHOS_TEST_API.teleport(50,330));
   await page.waitForFunction(()=>document.body.dataset.rioClima==='snow');
   assert((await look()).player.y>15);
