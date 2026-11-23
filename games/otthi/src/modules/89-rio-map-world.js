@@ -344,6 +344,23 @@
   }
   function rioAdjustCamera(desired,look){
     if(SPORTS_V705.active)return;
+    const preview=window.__OTTHI_DECOR_PREVIEW;
+    if(preview&&!player.vehicle&&!otGames.active&&!world.workshopInspectionCamera?.active){
+      // Live interior preview: camera follows the selected furniture in 3D,
+      // while the small toolbar stays outside the center of the scene.
+      const dx=preview.x-preview.centerX,dz=preview.z-preview.centerZ;
+      const cs=Math.cos(preview.yaw),sn=Math.sin(preview.yaw);
+      const sideX=cs*dx-sn*dz,sideZ=sn*dx+cs*dz;
+      const maxX=Math.max(.4,preview.roomWidth/2-.98);
+      const maxZ=Math.max(.4,preview.roomDepth/2-.98);
+      const cameraX=clamp(sideX+Math.min(3.3,maxX*.7),-maxX,maxX);
+      const cameraZ=clamp(sideZ+Math.min(4,maxZ*.72),-maxZ,maxZ);
+      desired.set(preview.centerX+cs*cameraX+sn*cameraZ,2.7,
+        preview.centerZ-sn*cameraX+cs*cameraZ);
+      look.set(preview.x,.92,preview.z);
+      camera.fov=innerHeight>innerWidth?62:54;
+      return;
+    }
     const pose=characterActivities.session?.phase==='perform'?characterActivities.session.pose:null;
     const x=pose?.x??player.x,z=pose?.z??player.z,originY=player.y+(player.vehicle?1.55:1.45);
     if(rioMap.indoors&&!player.vehicle&&!player.boating&&!world.workshopInspectionCamera?.active){
