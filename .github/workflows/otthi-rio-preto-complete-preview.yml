@@ -28,7 +28,7 @@ jobs:
       - name: Syntax and targeted regression tests
         run: |
           node --check games/otthi/app.js
-          node --test tests/rio-compact-layout.test.mjs tests/rio-wardrobe.test.mjs tests/world-integrity.test.mjs tests/rio-preto-districts.test.mjs tests/rio-map-geography.test.mjs tests/world-multiplayer-presence-resilience.test.mjs
+          node --test tests/rio-compact-layout.test.mjs tests/otthi-simulator-commerce.test.mjs tests/rio-wardrobe.test.mjs tests/world-integrity.test.mjs tests/rio-preto-districts.test.mjs tests/rio-map-geography.test.mjs tests/world-multiplayer-presence-resilience.test.mjs
           node tests/world-integrity.mjs
           git diff --check
       - name: Record generated runtime only after all tests pass
