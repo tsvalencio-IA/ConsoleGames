@@ -533,7 +533,7 @@
       world.navCache?.clear?.();
       rioPreto.nextTileAt=performance.now()+34;
     }
-    if(rioCompactWorld()){
+    if(typeof rioCompactWorld==='function'&&rioCompactWorld()){
       // House streaming uses the same one-object-per-frame budget as city tiles.
       const time=performance.now();
       let closestHouse=null,nearDistance=Infinity;
