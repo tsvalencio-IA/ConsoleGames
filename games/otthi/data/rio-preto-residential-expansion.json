@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "project": "OTThi World — Rio Preto",
+  "baseBuild": "705.28.40-rio-preto-compacto",
+  "status": "reference-data-only-not-rendered",
+  "rules": {
+    "preserveExistingGameplay": true,
+    "preserveSaveIds": true,
+    "doNotModifyProduction": true,
+    "verifyRealWorldGeometryBeforePlacement": true,
+    "loadInteriorsOnDemand": true
+  },
+  "residentialComplexes": [
+    {
+      "id": "rios-ditalia",
+      "name": "Rios D'Italia",
+      "city": "São José do Rio Preto",
+      "state": "SP",
+      "country": "BR",
+      "locationVerified": false,
+      "condominiums": [
+        {
+          "id": "rio-candelaro",
+          "name": "Rio Candelaro",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        },
+        {
+          "id": "rio-fiora",
+          "name": "Rio Fiora",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        },
+        {
+          "id": "rio-salso",
+          "name": "Rio Salso",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        },
+        {
+          "id": "rio-fortore",
+          "name": "Rio Fortore",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        },
+        {
+          "id": "rio-liri",
+          "name": "Rio Liri",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        },
+        {
+          "id": "rio-tanaro",
+          "name": "Rio Tanaro",
+          "geometryVerified": false,
+          "interiorImplementation": "pending"
+        }
+      ]
+    }
+  ],
+  "implementationChecks": [
+    "Audit existing OT mechanics and save compatibility",
+    "Verify real geographic references and collision-free plots",
+    "Integrate sites without replacing current world",
+    "Build using existing project builder",
+    "Test mobile landscape, FPS, camera, controls, save/load and multiplayer",
+    "Review preview before release"
+  ]
+}
