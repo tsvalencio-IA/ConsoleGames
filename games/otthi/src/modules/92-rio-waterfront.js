@@ -185,11 +185,26 @@
     }
     batch.commit();
     const sign=rioDockPoint(-1.55,d.start-.6);
-    citySign(group,'CAIS DA REPRESA',sign.x,1.7,sign.z,2.25,1,'#195460',.46);
+    citySign(group,compact?'PARQUE DA REPRESA':'CAIS DA REPRESA',sign.x,1.7,sign.z,2.25,1,'#195460',.46);
     const swimSign=rioDockPoint(compact?6:43,-4.9);
     citySign(group,'NATAÇÃO',swimSign.x,1.46,swimSign.z,1.6,1,'#195460',.39);
     rioMap.waterfront={entry,group,obstacle:dock,swimZone:{...swimming,w:compact?3.4:11,l:compact?5.6:8,s,c},craft:[],swimmers:[],patrol:[],acc:0};
     world.boats??=new Map();
+    if(compact){
+      // Rio Preto's public lagoons are a walkable park, not the ocean marina.
+      // Keep the Guarujá craft and mechanics intact in their original coast module.
+      const former=world.boats.get('lake-boat');
+      if(former?.group)former.group.parent?.remove(former.group);
+      world.interactables=world.interactables.filter(action=>action.id!=='lake-boat-entry');
+      registerInteractable({id:'rio-represa-mirante',type:'activity',icon:'🌳',
+        label:'Mirante dos lagos · Represa Municipal',...entry,radius:3.4,priority:245,
+        available:()=>!player.vehicle&&!player.boating&&!characterActivities.session,
+        action:()=>openModal('Represa Municipal · São José do Rio Preto',
+          '<p>Passeie pelos lagos e pela Ponte Estaiada Júlio Zacarin. Os passeios de barco permanecem na praia do Guarujá.</p>'+
+          '<div class="modal-actions"><button class="btn primary" data-rio-praia-route>Marcar Guarujá no GPS</button></div>',
+          root=>{root.querySelector('[data-rio-praia-route]').onclick=()=>{closeModal();setWaypoint('coast-view');};})});
+      return;
+    }
     const speedboat=SEA_CRAFT.find(spec=>spec.id==='sea-familia');
     const craft=rioMap.waterfront.craft;
     craft.push(rioMakeBerth({id:'rio-prancha',label:'Prancha de stand-up paddle',kind:'board',
