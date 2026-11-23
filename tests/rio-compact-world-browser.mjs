@@ -119,22 +119,14 @@ try{
   report.returnToMenu=true;
 
   await boot('?entrada=represa-cais');
-  assert.equal((await look()).context?.id,'rio-represa-cais');
+  assert.equal((await look()).context?.id,'rio-represa-mirante');
   await page.locator('#actionBtn').tap();
-  assert.equal(await page.locator('[data-rio-dock-boat]').count(),4);
-  await shot('represa-cais');
-  await page.locator('[data-rio-dock-boat="rio-prancha"]').tap();
-  await page.waitForFunction(()=>OTTHOS_TEST_API.getGame().player.boating,null,{timeout:42000});
-  const board=(await look()).player;
-  assert.equal(await page.locator('#runBtn span').textContent(),'Remar');
-  const paddle=await touch.start(page.locator('#runBtn'));
-  await page.waitForFunction(({x,z})=>Math.hypot(OTTHOS_TEST_API.getGame().player.x-x,OTTHOS_TEST_API.getGame().player.z-z)>3,
-    {x:board.x,z:board.z},{timeout:20000});
-  await touch.end(paddle);
-  const onWater=(await look()).player;
-  assert(onWater.boating);
-  report.represa={boarded:true,metres:Math.hypot(onWater.x-board.x,onWater.z-board.z)};
-  await shot('represa-prancha');
+  assert.equal(await page.locator('[data-rio-dock-boat]').count(),0);
+  assert.equal((await page.evaluate(()=>OTTHI_RIO_MAP.diagnostics())).craft.length,0);
+  await shot('represa-mirante-sem-barcos');
+  await page.locator('[data-rio-praia-route]').tap();
+  assert.equal((await state()).waypoint.id,'coast-view');
+  report.represa={mirante:true,boats:0,guarujaGps:true};
 
   await resumeAt('canecao_represa');
   const start=await look();
