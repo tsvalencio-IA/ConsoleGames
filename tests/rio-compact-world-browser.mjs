@@ -203,6 +203,24 @@ try{
   assert(await page.evaluate(()=>!!window.__OTTHI_DECOR_PREVIEW),'3D item camera target must be active');
   const placementRect=await page.locator('#rio-decor-live').boundingBox();
   assert(placementRect.width<page.viewportSize().width*.53,'editor must use less than half phone viewport');
+  const beforeDrag=await page.evaluate(()=>({...window.__OTTHI_DECOR_PREVIEW}));
+  const canvasRect=await page.evaluate(()=>{
+    const candidates=[...document.querySelectorAll('canvas')]
+      .map(c=>c.getBoundingClientRect()).filter(r=>r.width>250&&r.height>220)
+      .sort((a,b)=>b.width*b.height-a.width*a.height);
+    const r=candidates[0];
+    return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null;
+  });
+  assert(canvasRect,'game WebGL canvas must be visible behind the editor');
+  const x1=canvasRect.x+canvasRect.width*.22,y1=canvasRect.y+canvasRect.height*.46;
+  const x2=canvasRect.x+canvasRect.width*.36,y2=canvasRect.y+canvasRect.height*.57;
+  await page.mouse.move(x1,y1);
+  await page.mouse.down();
+  await page.mouse.move(x2,y2,{steps:6});
+  await page.mouse.up();
+  const afterDrag=await page.evaluate(()=>({...window.__OTTHI_DECOR_PREVIEW}));
+  assert(Math.hypot(afterDrag.x-beforeDrag.x,afterDrag.z-beforeDrag.z)>.08,
+    'dragging on the real 3D floor must move the preview furniture');
   await page.locator('[data-rio-live="right"]').tap();
   await page.locator('[data-rio-live="rotate"]').tap();
   await shot('decoracao-ao-vivo-sem-modal');
