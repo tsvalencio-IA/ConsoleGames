@@ -5,12 +5,13 @@ on:
       - feat/otthi-rio-preto-completo-20261123
       - fix/otthi-rio-preto-recovery-20261123
       - feat/otthi-sims-home-living-20261123
+      - feat/otthi-regions-simulator-20261123
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   validate-and-build:
-    if: github.ref == 'refs/heads/feat/otthi-rio-preto-completo-20261123' || github.ref == 'refs/heads/fix/otthi-rio-preto-recovery-20261123' || github.ref == 'refs/heads/feat/otthi-sims-home-living-20261123'
+    if: github.ref == 'refs/heads/feat/otthi-rio-preto-completo-20261123' || github.ref == 'refs/heads/fix/otthi-rio-preto-recovery-20261123' || github.ref == 'refs/heads/feat/otthi-sims-home-living-20261123' || github.ref == 'refs/heads/feat/otthi-regions-simulator-20261123'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
