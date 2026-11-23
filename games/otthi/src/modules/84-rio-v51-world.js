@@ -759,7 +759,7 @@
           previous:lastActionSource,current:currentContext?.id,available:!!target&&isInteractionAvailable(target),
           targetExists:!!target,near:!!target&&Math.hypot(player.x-target.x,player.z-target.z)};
       })(),
-      malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.venueId,roomId:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,
+      malls:[...rioV51IndoorMalls.values()].map(m=>({id:m.venueId,roomId:m.site.id,inside:m.inside,visible:m.room.root.visible,facade:m.outside.visible,staff:(m.room.npcs||[]).filter(n=>n.id.startsWith('rio-mall-staff-')).map(n=>({id:n.id,name:n.name,visible:n.group.visible!==false})),
         sectorVisible:!!rioV51World.roots.get(RIO_V51.places.find(p=>p.id===m.site.id)?.sector)?.visible,
         entry:m.site.entry,exit:(()=>{const item=world.interactables.find(i=>i.id===m.site.id+'-exit-regional-mall');return item?{x:item.x,z:item.z}:null;})(),
         position:{x:player.x,z:player.z}}))}),
