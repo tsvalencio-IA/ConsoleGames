@@ -280,24 +280,27 @@
       // Lego/Mario/Minecraft character. Keep the old toy renderers untouched for
       // named OT characters, retro worlds and all other existing NPCs.
       npc.visualStyle='rio-human';
+      const detailLayer=new THREE.Group();detailLayer.name='RIO_NPC_FACE_AND_CLOTHES';group.add(detailLayer);
       const detail=renderMat(shadeColor(color,-42),{roughness:.86});
       const collarMat=renderMat(0xe6e0d6,{roughness:.88});
       // Layered clothing details and a slimmer neck reduce the cylinder look,
       // with no animation track or texture allocation on each frame.
-      box(.27,.11,.11,collarMat,0,1.78,.21,group);
-      box(.055,.42,.055,detail,0,1.44,.37,group);
+      box(.27,.11,.11,collarMat,0,1.78,.21,detailLayer);
+      box(.055,.42,.055,detail,0,1.44,.37,detailLayer);
       for(const side of[-1,1]){
         // Eyebrows, cheeks, ear and shoulder seams remain attached to the
         // existing animated group without modifying the skeleton.
-        box(.15,.026,.024,hairMat,side*.14,2.115,.355,group);
+        box(.15,.026,.024,hairMat,side*.14,2.115,.355,detailLayer);
         const ear=new THREE.Mesh(new THREE.SphereGeometry(.084,8,7),skinMat);
-        ear.scale.set(.57,.95,.50);ear.position.set(side*.358,1.996,-.005);group.add(ear);
-        box(.045,.42,.04,shirtDark,side*.39,1.32,.28,group);
+        ear.scale.set(.57,.95,.50);ear.position.set(side*.358,1.996,-.005);detailLayer.add(ear);
+        box(.045,.42,.04,shirtDark,side*.39,1.32,.28,detailLayer);
       }
       // A modest jawline and chin preserve the playful style with more
       // recognizable adult human proportions.
       const jaw=new THREE.Mesh(new THREE.SphereGeometry(.275,10,8),skinMat);
-      jaw.scale.set(.95,.45,.75);jaw.position.set(0,1.79,.075);group.add(jaw);
+      jaw.scale.set(.95,.45,.75);jaw.position.set(0,1.79,.075);detailLayer.add(jaw);
+      npc.userData={...(npc.userData||{}),toyThemeRoots:[detailLayer]};
+      batchNpcVisuals(npc);
     }else if(id!=='michelle-ottovias'&&!OT_CHILD_WORLD)applyNpcToyTheme(npc,npcToyTheme(id));
     world.npcs.push(npc);registerInteractable({id:`npc-${id}`,type:'npc',icon:'💬',label:`Conversar com ${name}`,radius:2.7,priority:160,getPos:()=>({x:npc.group.position.x,z:npc.group.position.z}),action:()=>talkToNPC(npc)});return npc;
   }
