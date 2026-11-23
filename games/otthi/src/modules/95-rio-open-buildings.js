@@ -325,7 +325,7 @@
       }
     };
     updateDecor();
-    room.refreshDecor=updateDecor;
+    room.refreshDecor=()=>{endDecor();updateDecor();};
     const openDecorCatalog=()=>{
       const owner=rioPropertyTitle(rioResidencePropertyId());
       if(!owner?.owned){toast('Primeiro compre esta residência.','info',2300);return;}
@@ -351,8 +351,9 @@
     };
 
     // Real-time furniture preview lives over the scene, never in a full-screen modal.
-    let activeDecor=null,decorOverlay=null,decorSelection=null;
+    let activeDecor=null,decorOverlay=null,decorSelection=null,decorPointerCleanup=null;
     const endDecor=()=>{
+      decorPointerCleanup?.();decorPointerCleanup=null;
       activeDecor=null;
       if(decorOverlay){decorOverlay.remove();decorOverlay=null;}
       if(decorSelection){decorSelection.parent?.remove(decorSelection);decorSelection.geometry.dispose();decorSelection.material.dispose();decorSelection=null;}
@@ -365,7 +366,7 @@
       endDecor();
       if(!els.modal.hidden)closeModal();
       const original=layoutFor(item,owner);
-      activeDecor={item,original,position:{...original}};
+      activeDecor={item,original,position:{...original},propertyId:rioResidencePropertyId()};
       const bound=pos=>{
         const wx=Math.max(.25,w/2-item.w/2-.53),wz=Math.max(.25,d/2-item.d/2-1.10);
         return {x:clamp(pos.x,-wx,wx),z:clamp(pos.z,-wz,wz),rotation:((pos.rotation%4)+4)%4,stored:!!pos.stored};
@@ -375,6 +376,7 @@
       decorSelection.rotation.x=-Math.PI/2;decorSelection.renderOrder=999;room.root.add(decorSelection);
       const refresh=()=>{
         if(!activeDecor)return;
+        if(activeDecor.propertyId!==rioResidencePropertyId()){endDecor();updateDecor();return;}
         activeDecor.position=bound(activeDecor.position);
         const p=activeDecor.position,worldPoint=room.point(p.x,p.z);
         const object=decorMeshes.get(item.id)||addDecorModel(item);
@@ -426,7 +428,8 @@
         if(!type||!activeDecor)return;
         if(type==='save'){
           const current=rioPropertyTitle(rioResidencePropertyId());
-          if(!current?.owned||(current.furniture||[]).indexOf(item.id)<0){endDecor();updateDecor();return;}
+          if(!current?.owned||activeDecor.propertyId!==rioResidencePropertyId()||
+            (current.furniture||[]).indexOf(item.id)<0){endDecor();updateDecor();return;}
           (current.decorLayout??={})[item.id]={...activeDecor.position};
           endDecor();updateDecor();saveState(true);
           toast(item.name+' posicionado e salvo.','good',2100);return;
