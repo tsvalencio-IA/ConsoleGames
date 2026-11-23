@@ -374,6 +374,20 @@
       decorSelection=new THREE.Mesh(new THREE.RingGeometry(.71,1.01,32),
         new THREE.MeshBasicMaterial({color:0xffdc62,side:THREE.DoubleSide,transparent:true,opacity:.94,depthTest:false}));
       decorSelection.rotation.x=-Math.PI/2;decorSelection.renderOrder=999;room.root.add(decorSelection);
+      const overlapsAnotherPurchasedItem=()=>{
+        if(!activeDecor||activeDecor.position.stored)return false;
+        const current=rioPropertyTitle(activeDecor.propertyId);
+        const decorative=new Set(['rug','picture','plant','flowers','lamp']);
+        if(decorative.has(item.type))return false;
+        const a=activeDecor.position,aW=a.rotation%2?item.d:item.w,
+          aD=a.rotation%2?item.w:item.d;
+        return furnishings.some(other=>{
+          if(other.id===item.id||decorative.has(other.type)||!(current?.furniture||[]).includes(other.id))return false;
+          const b=layoutFor(other,current);if(b.stored)return false;
+          const bW=b.rotation%2?other.d:other.w,bD=b.rotation%2?other.w:other.d;
+          return Math.abs(a.x-b.x)<(aW+bW)/2+.12&&Math.abs(a.z-b.z)<(aD+bD)/2+.12;
+        });
+      };
       const refresh=()=>{
         if(!activeDecor)return;
         if(activeDecor.propertyId!==rioResidencePropertyId()){endDecor();updateDecor();return;}
@@ -387,8 +401,10 @@
         window.__OTTHI_DECOR_PREVIEW={siteId:site.id,propertyId:rioResidencePropertyId(),
           x:worldPoint.x,z:worldPoint.z,yaw,centerX:site.x,centerZ:site.z,roomWidth:w,roomDepth:d};
         const status=decorOverlay.querySelector('[data-rio-editor-status]');
+        const occupied=overlapsAnotherPurchasedItem();
+        decorSelection.material.color.setHex(occupied?0xff6767:0xffdc62);
         if(status)status.textContent='Posição '+p.x.toFixed(1)+' / '+p.z.toFixed(1)+
-          ' · '+p.rotation*90+'°'+(p.stored?' · Guardado':'');
+          ' · '+p.rotation*90+'°'+(p.stored?' · Guardado':occupied?' · Espaço ocupado':' · Livre');
       };
       if(!document.getElementById('rio-decor-live-css')){
         const style=document.createElement('style');style.id='rio-decor-live-css';
@@ -427,6 +443,9 @@
         const type=e.target.closest('button')?.dataset.rioLive;
         if(!type||!activeDecor)return;
         if(type==='save'){
+          if(overlapsAnotherPurchasedItem()){
+            toast('Espaço ocupado por outro móvel. Mova até o marcador ficar amarelo.','warn',2600);return;
+          }
           const current=rioPropertyTitle(rioResidencePropertyId());
           if(!current?.owned||activeDecor.propertyId!==rioResidencePropertyId()||
             (current.furniture||[]).indexOf(item.id)<0){endDecor();updateDecor();return;}
