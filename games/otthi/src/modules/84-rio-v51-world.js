@@ -302,7 +302,8 @@
     for(const site of [...compact,...historic]){
       if(site.kind!=='residence'||!site.propertyId)continue;
       if(site.style==='rios-ditalia'){
-        for(const num of ['101','102','201','202','301','302']){
+        for(let floor=1;floor<=5;floor++)for(let door=1;door<=4;door++){
+          const num=String(floor)+'0'+String(door);
           const id=num==='101'?site.propertyId:site.propertyId+'-unit-'+num;
           if(rioPropertyTitle(id)?.owned)available.push({...site,propertyId:id,name:site.name+' · Apartamento '+num});
         }
