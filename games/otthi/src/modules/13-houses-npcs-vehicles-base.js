@@ -270,7 +270,32 @@
     if(hash%5===0){const cap=new THREE.Mesh(new THREE.SphereGeometry(.42,12,8,0,Math.PI*2,0,Math.PI*.48),renderMat(0x2f7ed6,{roughness:.62}));cap.position.set(0,2.28,0);cap.scale.y=.55;group.add(cap);box(.28,.04,.3,0x2f7ed6,0,2.27,.39,group);}
     const npc={id,name,x,z,baseX:x,baseZ:z,color,group,pathRadius,phase:Math.random()*6.28,friendship:state.friendship[id]||0,body,head,limbs:{leftArm,rightArm,leftLeg,rightLeg},brain:{state:'idle',target:null,nextThink:0,fearUntil:0,lastVehicle:'',lastVehicleAt:0,lastPlayerAt:0,wanderUntil:0,memory:[]}};
     const badge=new THREE.Sprite(new THREE.SpriteMaterial({map:iconTexture(name.charAt(0),'#ffffff','#15314b'),transparent:true,depthWrite:false}));badge.position.set(0,2.85,0);badge.scale.set(.5,.5,.5);badge.visible=false;group.add(badge);npc.badge=badge;
-    if(id!=='michelle-ottovias'&&!OT_CHILD_WORLD)applyNpcToyTheme(npc,npcToyTheme(id));world.npcs.push(npc);registerInteractable({id:`npc-${id}`,type:'npc',icon:'💬',label:`Conversar com ${name}`,radius:2.7,priority:160,getPos:()=>({x:npc.group.position.x,z:npc.group.position.z}),action:()=>talkToNPC(npc)});return npc;
+    const rioModernNpc=/^(porteiro-|rio-|regional-)/.test(String(id));
+    if(rioModernNpc){
+      // Rio Preto service staff should be human-looking, not a randomly assigned
+      // Lego/Mario/Minecraft character. Keep the old toy renderers untouched for
+      // named OT characters, retro worlds and all other existing NPCs.
+      npc.visualStyle='rio-human';
+      const detail=renderMat(shadeColor(color,-42),{roughness:.86});
+      const collarMat=renderMat(0xe6e0d6,{roughness:.88});
+      // Layered clothing details and a slimmer neck reduce the cylinder look,
+      // with no animation track or texture allocation on each frame.
+      box(.27,.11,.11,collarMat,0,1.78,.21,group);
+      box(.055,.42,.055,detail,0,1.44,.37,group);
+      for(const side of[-1,1]){
+        // Eyebrows, cheeks, ear and shoulder seams remain attached to the
+        // existing animated group without modifying the skeleton.
+        box(.15,.026,.024,hairMat,side*.14,2.115,.355,group);
+        const ear=new THREE.Mesh(new THREE.SphereGeometry(.084,8,7),skinMat);
+        ear.scale.set(.57,.95,.50);ear.position.set(side*.358,1.996,-.005);group.add(ear);
+        box(.045,.42,.04,shirtDark,side*.39,1.32,.28,group);
+      }
+      // A modest jawline and chin preserve the playful style with more
+      // recognizable adult human proportions.
+      const jaw=new THREE.Mesh(new THREE.SphereGeometry(.275,10,8),skinMat);
+      jaw.scale.set(.95,.45,.75);jaw.position.set(0,1.79,.075);group.add(jaw);
+    }else if(id!=='michelle-ottovias'&&!OT_CHILD_WORLD)applyNpcToyTheme(npc,npcToyTheme(id));
+    world.npcs.push(npc);registerInteractable({id:`npc-${id}`,type:'npc',icon:'💬',label:`Conversar com ${name}`,radius:2.7,priority:160,getPos:()=>({x:npc.group.position.x,z:npc.group.position.z}),action:()=>talkToNPC(npc)});return npc;
   }
 
   function createNpcMobility(npc,type,route,speed){
