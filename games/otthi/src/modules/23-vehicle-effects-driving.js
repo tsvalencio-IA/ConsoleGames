@@ -102,6 +102,7 @@
     setControlAttribute(els.runBtn,'aria-label',mobility?(paddling?'Remar':`Acelerar ${isBoat?'barco':'veículo'}`):'Correr');setControlAttribute(els.jumpBtn,'aria-label',mobility?(speed>.04?'Frear':'Engatar ré'):'Pular');
   }
   function updateVehicleControlsUI(){
+    document.body.classList.toggle('mode-paddle',player.boating&&world.boat?.kind==='board');
     const vehiclePassenger=!!player.car.passengerOf,boatPassenger=!!player.boat.passengerOf,mobility=mobilityDriverActive();document.body.classList.toggle('mode-vehicle',!!player.vehicle);document.body.classList.toggle('mode-passenger',vehiclePassenger||boatPassenger);document.body.classList.toggle('mode-transit',!!player.transit.mode);document.body.classList.toggle('mode-boat',!!player.boating);document.body.classList.toggle('mode-mobility-driver',mobility);document.body.classList.toggle('mode-building',!!buildMode);document.body.classList.toggle('mode-fishing',!!fishingSession);
     els.secondaryActions?.classList.toggle('vehicle-hidden',!!player.vehicle||!!player.boating);
     els.jumpBtn?.classList.toggle('vehicle-disabled',(!!player.vehicle||!!player.boating)&&!mobility);

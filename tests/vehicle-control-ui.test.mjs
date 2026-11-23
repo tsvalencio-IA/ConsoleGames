@@ -8,7 +8,7 @@ function controls(){
  const node=()=>{let text='';const attrs=new Map();return{get textContent(){return text;},set textContent(value){writes.text++;text=value;},getAttribute:n=>attrs.get(n)??null,setAttribute(n,v){writes.attributes++;attrs.set(n,v);},classList:{toggle(){}},parts:{}};};
  const els={runBtn:node(),jumpBtn:node(),actionBtn:node(),vehicleBadge:node()};
  for(const b of [els.runBtn,els.jumpBtn,els.actionBtn])b.parts={b:node(),span:node()};
- const scope={els,player:{vehicle:true,boating:false,car:{speed:0,passengerOf:''},boat:{}},input:{},family:{count:3,title:'Thiago, Luna, Liz'},durability:100,sport:false};
+ const scope={els,world:{boat:null},player:{vehicle:true,boating:false,car:{speed:0,passengerOf:''},boat:{}},input:{},family:{count:3,title:'Thiago, Luna, Liz'},durability:100,sport:false};
  scope.$=(selector,b)=>b?.parts[selector];scope.mobilityDriverActive=()=>scope.player.vehicle&&!scope.player.car.passengerOf||scope.player.boating;scope.sprintRequested=()=>false;scope.familyVehicleBadgeDetails=()=>scope.family;scope.vehicleDurabilityV704=()=>scope.durability;scope.syncSportControlsV705=()=>scope.sport;
  const source=fs.readFileSync('games/otthi/src/modules/23-vehicle-effects-driving.js','utf8');vm.createContext(scope);vm.runInContext(source.slice(source.indexOf('  function setControlText'),source.indexOf('  function updateVehicleControlsUI')),scope);
  return{scope,els,writes,reset(){writes.text=0;writes.attributes=0;}};
@@ -28,5 +28,6 @@ test('vehicle HUD: braking, turbo, health and companion changes update immediate
 test('vehicle HUD: walking, boats and sport controls retain their own labels',()=>{
  const {scope:s,els,writes,reset}=controls();s.player.vehicle=false;s.updateMobilityControlLabels();assert.equal(els.runBtn.parts.span.textContent,'Correr');assert.equal(els.jumpBtn.parts.span.textContent,'Pular');
  s.player.boating=true;s.updateMobilityControlLabels();assert.equal(els.runBtn.parts.span.textContent,'Acelerar');assert.equal(els.actionBtn.parts.b.textContent,'🛶');assert.equal(els.runBtn.getAttribute('aria-label'),'Acelerar barco');
+ s.world.boat={kind:'board'};s.updateMobilityControlLabels();assert.equal(els.runBtn.parts.span.textContent,'Remar');
  s.sport=true;reset();s.updateMobilityControlLabels();assert.deepEqual(writes,{text:0,attributes:0});
 });

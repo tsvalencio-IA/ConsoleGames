@@ -81,7 +81,13 @@
     if(player.vehicle)exitVehicle(true);
     if(player.transit.mode==='bus'){const bus=world.buses.find(b=>b.id===player.transit.busId);if(bus&&busAtStop(bus))exitBusAtStop(bus,{stopId:bus.lastStopId,stopName:bus.lastStopName});else{player.transit.mode='';player.transit.busId='';}}
     if(player.transit.mode==='metro'){player.transit.mode='';player.transit.metroUntil=0;if(metroOverlay){metroOverlay.hidden=true;metroOverlay.classList.remove('travelling','arriving');}if(playerModel)playerModel.visible=true;if(avatarLayer)avatarLayer.visible=true;if(contactShadow)contactShadow.visible=true;}
-    if(currentHouse)exitHouse();const home=worldLayoutPoint('spawn',{x:-18,z:39}),safe=safePointNear(home.x,home.z,{ignoreTraffic:true,allowWater:false});player.x=safe.x;player.z=safe.z;player.y=safe.y;player.vx=player.vz=player.vy=0;player.grounded=true;cameraYaw=0;player.facing=Math.PI;rememberSafePlayerPosition(true);auditPlayerMode('return-home');updateCamera(2);toast('Você voltou para sua casa.','good');savePlayerPosition(true);
+    if(currentHouse)exitHouse();
+    const home=worldLayoutPoint('spawn',{x:-18,z:39}),safe=safePointNear(home.x,home.z,{ignoreTraffic:true,allowWater:false});
+    Object.assign(player,{x:safe.x,z:safe.z,y:safe.y,vx:0,vz:0,vy:0,grounded:true});
+    // A side view keeps the nearby garage out of the shot at the front door.
+    cameraYaw=Math.sign(home.x||1)*1.33;player.facing=Math.PI-cameraYaw;
+    rememberSafePlayerPosition(true);auditPlayerMode('return-home');updateCamera(2);
+    toast('Você voltou para sua casa.','good');savePlayerPosition(true);
   }
   function savePlayerPosition(immediate=false){
     if(typeof inRioMap==='function'&&inRioMap())return rioSavePlayerPosition();

@@ -108,7 +108,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "07ad6bfd4307baf3924a8bfb3a106e1cc4c80007dbaca9020cdd5c47a0782bdf"
+      "sha256Body": "13723e98aa4bfa3f90d8ea5ade4503e04b12fa6cf6c2845302b4f8a061d89b0b"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -227,7 +227,7 @@
       "startLine": 4245,
       "endLine": 4381,
       "description": "Poeira, som, efeitos, controles, direção, passageiros e ponte",
-      "sha256Body": "1caeb0f7ad43021d45a9d2ae69f7466cacff3d8ba4218e5c4ad8de219997ea41"
+      "sha256Body": "8a060dcace2649562aa1479c4dbbef01efbfb479bbb405e128d46d590d884b50"
     },
     {
       "file": "src/modules/24-construction-system.js",
@@ -248,7 +248,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "77b893f0f7a0eebf2fad4b047cca7a36b30400b46659dc065ea0d75706d18776"
+      "sha256Body": "39ec085378b9df78e67acee723090c5b1f67a6e5607bf2c44f15d02a38c68550"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -653,7 +653,7 @@
     {
       "file": "src/modules/77-exploration-hud.js",
       "description": "Recolhe atalhos de exploração mantendo ações contextuais e tela completa opcional",
-      "sha256Body": "88b94601ccb235bf1faeae77f8dcab644f6b09f2e0c1584bebcf842554cf9f4c"
+      "sha256Body": "25c72865d5e241cbb08dc2730cd9287edf2ad32210d803c441809379479ffcab"
     },
     {
       "file": "src/modules/79-rio-preto-districts.js",
@@ -950,7 +950,7 @@
     {
       "file": "src/styles/29-exploration-hud.css",
       "description": "Menu de exploração e HUD compacto sem remoção de funções",
-      "sha256Body": "a29b76fccc8b5809040344035376b5ead81b6095e76e48e538d5d2c56159208b"
+      "sha256Body": "92388a15f88b62251cc60460d1f762226a70a39e8b05892750bfa54549739b4f"
     },
     {
       "file": "src/styles/30-rio-wardrobe.css",

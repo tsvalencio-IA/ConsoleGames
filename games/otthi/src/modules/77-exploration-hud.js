@@ -46,7 +46,7 @@
   explorationHudMove(explorationHud.nodes.worldCampaignBtn,els.quickBar,clean);
   explorationHudMove(els.multiplayerBadge,els.quickBar,clean);
   explorationHudMove(els.skillsToggleBtn,els.quickBar,clean);
-  explorationHudMove(els.cameraResetBtn?.parentElement,els.quickBar,clean&&!activity);
+  explorationHudMove(els.cameraResetBtn?.parentElement,els.quickBar,clean);
   explorationHudMove(els.specialBtn,els.secondaryActions,clean&&!activity);
   explorationHudMove(hero,els.secondaryActions,clean&&!heroChallenge);
   if(hero&&!hero.querySelector('.exploration-hero-caption')){const caption=document.createElement('small');caption.className='exploration-hero-caption';caption.textContent='Herói';hero.append(caption);}
