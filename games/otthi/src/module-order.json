@@ -714,7 +714,7 @@
     {
       "file": "src/modules/95-rio-open-buildings.js",
       "description": "Playable residences, shops, bakery and oil service",
-      "sha256Body": "ab6a84010fe71839ea1ab1ff2e99f913494d470f224f8377abb2ac1d3317b195"
+      "sha256Body": "168a95726fe6ada75ca5d94ab21ecb6c13c470cbc55bc8e2c349fe7fd9bbccec"
     },
     {
       "file": "src/modules/96-rio-airport.js",
