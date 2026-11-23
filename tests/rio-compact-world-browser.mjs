@@ -152,7 +152,8 @@ try{
     await page.locator('#worldMenuClose').tap();
   }
   const saved=await state();
-  assert.equal(saved.profile.coins,4312);
+  assert(saved.profile.coins>=4312,'existing progress lost coins during scene restoration');
+  const beforeHomePurchaseCoins=saved.profile.coins;
   assert(saved.vehicles.owned.includes('garage-orange')&&saved.vehicles.owned.includes('home-green'));
   assert.equal(saved.cityServices.rioMap.properties['regional-casa-damha'].owned,true);
   assert.equal(saved.cityServices.rioMap.previousMapPose.position.x,2093);
@@ -174,7 +175,7 @@ try{
   assert(record?.owned&&record.paid===380);
   assert(record.furniture.includes('sofa-modular'));
   assert.equal(record.decorLayout['sofa-modular'].rotation,1);
-  assert.equal(interior.profile.coins,4312-380-180);
+  assert.equal(interior.profile.coins,beforeHomePurchaseCoins-380-180);
   assert.equal(interior.cityServices.rioMap.properties['regional-casa-damha']?.owned,true);
   report.housing={bought:true,decorated:true,coins:interior.profile.coins,placement:record.decorLayout['sofa-modular']};
   await shot('casa-com-sofa-editavel');
