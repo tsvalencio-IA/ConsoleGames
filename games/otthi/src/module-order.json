@@ -80,7 +80,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "d97b8cfde4946e5ffff77b918b7cb62f5a53d79f122f907b3491e8b3f16305e9"
+      "sha256Body": "057f749a12428e151eaad17caacf6a55e28077236fd92f1f9c2b872ea367ac29"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -108,7 +108,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Atlas geográfico e GPS",
-      "sha256Body": "45b0a01edfc4df83c8937bc530e4257c3f75fe47aea631ac1c8dd4615d089602"
+      "sha256Body": "095a56cb1bea26711830b7e9a89a9cff4eeac8288451ddffbca3cdf459696b88"
     },
     {
       "file": "src/modules/09-responsive-ar-quality-diagnostics.js",
@@ -667,7 +667,7 @@
     },
     {
       "file": "src/modules/84-rio-v51-world.js",
-      "sha256Body": "1dc72a31575ffe24569f60464254a4d5e7b006cd977c5013545c9b95f75c16b8"
+      "sha256Body": "0fb7c468ea22c6acfef5729c2d5526b28b9dd74c66a7cd8cfaf10f08fe0d5f8c"
     },
     {
       "file": "src/modules/85-rio-city-activities.js",
@@ -687,7 +687,7 @@
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "c4d5075a0c334ed0ff9dfc2b32ceabb67717e7e28128c51d31366f4da19bf664"
+      "sha256Body": "be9ab9052734f07d788bf6c6d22d3dc422785439b21b464f75d964035d1ae16c"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
@@ -699,7 +699,7 @@
     },
     {
       "file": "src/modules/92-rio-waterfront.js",
-      "sha256Body": "0abeb663ea696724210601247677ac3f5ae0b8924cb141b438ee9602373ca6df"
+      "sha256Body": "dd3369ced845c19850fe67509bbd8c0cfa84aba4ff6cf704e62ab86a0cf0158f"
     },
     {
       "file": "src/modules/93-rio-city-services.js",
@@ -714,7 +714,7 @@
     {
       "file": "src/modules/95-rio-open-buildings.js",
       "description": "Playable residences, shops, bakery and oil service",
-      "sha256Body": "8ccb51a535a5386f919f994ef82cd6f774b4eec1e9d38b1401c36bd78a1ece2c"
+      "sha256Body": "47b7a3e8175bb47fd562b28d599a03d6637984bca51881ef3323b279331b3a0a"
     },
     {
       "file": "src/modules/96-rio-airport.js",
@@ -734,7 +734,7 @@
     {
       "file": "src/modules/99-rio-compact-world.js",
       "description": "Infraestrutura original e atividades jogáveis da Rio Preto compacta",
-      "sha256Body": "b726822d9c9e1fde9b841415583a98aad91812fb70525ed76d79c862916e1f48"
+      "sha256Body": "e5b6763f4f1a86ea96544f5330c7532e190f93140ec40227cbfcbda823413779"
     },
     {
       "file": "src/modules/100-rio-weather.js",

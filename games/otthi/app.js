@@ -2806,6 +2806,20 @@
   const rioPretoRoads=!legacyRegionalLayout||typeof RIO_PRETO_LAYOUT==='undefined'?null:RIO_PRETO_LAYOUT;
   const rioRegionalRoads=typeof RIO_REGIONAL_ROADS==='undefined'?null:RIO_REGIONAL_ROADS;
   const rioV51Roads=!legacyRegionalLayout||typeof RIO_V51==='undefined'?null:RIO_V51;
+  // Restore the four regional sectors that existed before the compact Rio
+  // migration without reactivating the duplicate historical downtown.
+  const RIO_RECOVERED_SECTORS=Object.freeze(['bady_bassitt','zona_norte','engenheiro_schmitt','circuito_turistico']);
+  const recoveredRioRoads=legacyRegionalLayout||typeof RIO_V51==='undefined'?null:(()=>{
+    const highways=RIO_V51.highways.filter(road=>RIO_RECOVERED_SECTORS.some(sector=>
+      road.id.startsWith('rio-v51-'+sector+'-')||road.id==='rio-v51-'+sector));
+    const coords=new Set(highways.flatMap(road=>road.points.map(p=>p.x+','+p.z)));
+    const nodes=Object.fromEntries(Object.entries(RIO_V51.nodes).filter(([,p])=>coords.has(p.x+','+p.z)));
+    const ids=new Set(Object.keys(nodes));
+    // The 4 source anchors belong to the unmodified OTTOVIAS road graph.
+    for(const id of ['EXT_outer-link_3','EXT_outer-link_4','RIO_AUTODROMO_MIRASSOL_3','RIO_oeste_1'])ids.add(id);
+    const edges=RIO_V51.edges.filter(([a,b])=>ids.has(a)&&ids.has(b));
+    return {highways,nodes,edges};
+  })();
   const rioProtectedRects=[
     ...(rioV51Roads?.protectedRects||[]),
     ...(rioPretoRoads?.protectedRects||[]),
@@ -2875,6 +2889,7 @@
       ...(rioPretoRoads?.highways||[]),
       ...(rioRegionalRoads?.highways||[]),
       ...(rioV51Roads?.highways||[]),
+      ...(recoveredRioRoads?.highways||[]),
       {"id":"ottovias-serra-access","name":"Estrada da Cordilheira","width":10,"shoulder":1.2,"closed":false,"points":[{"x":112,"z":124,"y":0},{"x":210,"z":150,"y":0},{"x":240,"z":220,"y":0},{"x":320,"z":240,"y":0},{"x":460,"z":240,"y":0},{"x":610,"z":270,"y":8},{"x":680,"z":340,"y":24}]},
       {"id":"ottovias-serra-loop","name":"Circuito da Cordilheira","width":10,"shoulder":1.2,"closed":true,"points":[{"x":320,"z":240,"y":0},{"x":380,"z":340,"y":26},{"x":430,"z":410,"y":42},{"x":560,"z":430,"y":40},{"x":680,"z":340,"y":24},{"x":680,"z":190,"y":0},{"x":520,"z":180,"y":0}]},
       {"id":"ottovias-snow-pass","name":"Estrada dos Picos Nevados","width":10,"shoulder":1.2,"closed":false,"points":[{"x":24,"z":166,"y":0},{"x":24,"z":220,"y":0},{"x":0,"z":260,"y":10},{"x":50,"z":330,"y":28},{"x":10,"z":410,"y":36},{"x":-110,"z":410,"y":28},{"x":-180,"z":320,"y":20},{"x":-120,"z":240,"y":6},{"x":24,"z":220,"y":0}]},
@@ -2922,6 +2937,7 @@
       ...(rioPretoRoads?.nodes||{}),
       ...(rioRegionalRoads?.nodes||{}),
       ...(rioV51Roads?.nodes||{}),
+      ...(recoveredRioRoads?.nodes||{}),
       "EXT_serra-access_1":{"x":210,"z":150},"EXT_serra-access_2":{"x":240,"z":220},"EXT_SERRA_GATE":{"x":320,"z":240},"EXT_serra-access_4":{"x":460,"z":240},"EXT_serra-access_5":{"x":610,"z":270},"EXT_SERRA_NE":{"x":680,"z":340},"EXT_serra-loop_1":{"x":380,"z":340},"EXT_serra-loop_2":{"x":430,"z":410},"EXT_serra-loop_3":{"x":560,"z":430},"EXT_serra-loop_5":{"x":680,"z":190},"EXT_serra-loop_6":{"x":520,"z":180},"EXT_SNOW_GATE":{"x":24,"z":220},"EXT_snow-pass_2":{"x":0,"z":260},"EXT_snow-pass_3":{"x":50,"z":330},"EXT_snow-pass_4":{"x":10,"z":410},"EXT_snow-pass_5":{"x":-110,"z":410},"EXT_snow-pass_6":{"x":-180,"z":320},"EXT_snow-pass_7":{"x":-120,"z":240},"EXT_forest-link_1":{"x":-460,"z":60},"EXT_forest-link_2":{"x":-550,"z":100},"EXT_forest-link_3":{"x":-650,"z":40},"EXT_forest-link_4":{"x":-700,"z":-100},"EXT_FOREST_OUT":{"x":-610,"z":-220},"EXT_forest-link_6":{"x":-480,"z":-170},"EXT_outer-link_1":{"x":500,"z":-40},"EXT_outer-link_2":{"x":620,"z":-160},"EXT_outer-link_3":{"x":680,"z":-400},"EXT_outer-link_4":{"x":360,"z":-400},"EXT_outer-link_5":{"x":-200,"z":-400},"EXT_outer-link_6":{"x":-480,"z":-320},"EXT_airport-access_1":{"x":171,"z":-150},"EXT_airport-access_2":{"x":171,"z":-193},"EXT_airport-access_3":{"x":171,"z":-216},
       CS0:{x:0,z:-72},CSE:{x:65,z:-72},COAST_E:{x:-300,z:475},COAST_W:{x:-360,z:475},COAST_E_END:{x:-220,z:475},COAST_W_END:{x:-400,z:475},COAST_GATE:{x:-300,z:484},
       DC_GATE:{x:-234,z:-55},DC_E:{x:-225,z:-55},DC_N:{x:-225,z:-21},DC_SPINE:{x:-308,z:-21},DC_CARS:{x:-308,z:11},DC_BIKES:{x:-308,z:26},DC_BIKE_DOOR:{x:-296,z:26},DC_TRUCKS:{x:-308,z:-54},DC_ROAD:{x:-168,z:-55},
@@ -2967,6 +2983,7 @@
       ...(rioPretoRoads?.edges||[]),
       ...(rioRegionalRoads?.edges||[]),
       ...(rioV51Roads?.edges||[]),
+      ...(recoveredRioRoads?.edges||[]),
       ["OV10","EXT_serra-access_1"],["EXT_serra-access_1","EXT_serra-access_2"],["EXT_serra-access_2","EXT_SERRA_GATE"],["EXT_SERRA_GATE","EXT_serra-access_4"],["EXT_serra-access_4","EXT_serra-access_5"],["EXT_serra-access_5","EXT_SERRA_NE"],["EXT_SERRA_GATE","EXT_serra-loop_1"],["EXT_serra-loop_1","EXT_serra-loop_2"],["EXT_serra-loop_2","EXT_serra-loop_3"],["EXT_serra-loop_3","EXT_SERRA_NE"],["EXT_SERRA_NE","EXT_serra-loop_5"],["EXT_serra-loop_5","EXT_serra-loop_6"],["EXT_serra-loop_6","EXT_SERRA_GATE"],["OV12","EXT_SNOW_GATE"],["EXT_SNOW_GATE","EXT_snow-pass_2"],["EXT_snow-pass_2","EXT_snow-pass_3"],["EXT_snow-pass_3","EXT_snow-pass_4"],["EXT_snow-pass_4","EXT_snow-pass_5"],["EXT_snow-pass_5","EXT_snow-pass_6"],["EXT_snow-pass_6","EXT_snow-pass_7"],["EXT_snow-pass_7","EXT_SNOW_GATE"],["CV_NW","EXT_forest-link_1"],["EXT_forest-link_1","EXT_forest-link_2"],["EXT_forest-link_2","EXT_forest-link_3"],["EXT_forest-link_3","EXT_forest-link_4"],["EXT_forest-link_4","EXT_FOREST_OUT"],["EXT_FOREST_OUT","EXT_forest-link_6"],["EXT_forest-link_6","CV_RB"],["A_E","EXT_outer-link_1"],["EXT_outer-link_1","EXT_outer-link_2"],["EXT_outer-link_2","EXT_outer-link_3"],["EXT_outer-link_3","EXT_outer-link_4"],["EXT_outer-link_4","EXT_outer-link_5"],["EXT_outer-link_5","EXT_outer-link_6"],["EXT_outer-link_6","EXT_FOREST_OUT"],["OV4","EXT_airport-access_1"],["EXT_airport-access_1","EXT_airport-access_2"],["EXT_airport-access_2","EXT_airport-access_3"],
       ['OV19','DC_ROAD'],['OV20','DC_ROAD'],['DC_ROAD','DC_GATE'],['DC_GATE','DC_E'],['DC_E','DC_N'],['DC_N','DC_SPINE'],['DC_SPINE','DC_TRUCKS'],['DC_SPINE','DC_CARS'],['DC_CARS','DC_BIKES'],['DC_BIKES','DC_BIKE_DOOR'],
       ['OV7','A_LINK'],['A_LINK','A_W'],['A_W','A_C'],['A_C','A_E'],['A_W','A_NW'],['A_NW','A_N'],['A_N','A_NE'],['A_NE','A_E'],['A_E','A_SE'],['A_SE','A_S'],['A_S','A_SW'],['A_SW','A_W'],['A_N','A_C'],['A_C','A_S'],['A_N','A_RACE'],
@@ -3957,10 +3974,10 @@
  openMap=function(){
   let focus=navigationFocus();const locations=currentMapLocations(),active=state.waypoint?.id||'',view={x:focus.x,z:focus.z,span:240};let selected=locations.find(l=>l.id===(state.waypoint?.id||''))||locations.find(l=>l.id==='home');
   const regions=[{name:'São José do Rio Preto · Centro',x:-24,z:5,span:255},...Object.values(WORLD_LAYOUT_V704.cities).map(c=>({name:c.label,...c,span:160})),{name:'Guarujá · Praia e marina',x:-310,z:496,span:235},{name:'Campos do Jordão · Montanhas e neve',x:360,z:350,span:920},{name:'Aeroporto',x:91,z:-188,span:240},{name:'Mata Grande',x:-630,z:60,span:650}],groups=[...new Set(locations.map(l=>l.group).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  openModal('Mapa de Rio Preto',`<div class="world-atlas" data-atlas-tab="map"><div class="atlas-route-bar"><span><small>GPS</small><b data-atlas-destination>${escapeHtml(state.waypoint?.name||'Sem destino ativo')}</b></span><button data-atlas-cancel ${state.waypoint?'':'disabled'}>Cancelar rota</button></div><nav class="atlas-tabs" aria-label="Painéis do mapa"><button data-atlas-tab-button="map" aria-pressed="true">MAPA</button><button data-atlas-tab-button="places" aria-pressed="false">DESTINOS</button></nav><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><button data-atlas-delivery>Motorista / encomenda</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><span>Laranja: motorista até você</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Principais destinos</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
+  openModal('Mapa de Rio Preto',`<div class="world-atlas" data-atlas-tab="map"><div class="atlas-route-bar"><span><small>GPS</small><b data-atlas-destination>${escapeHtml(state.waypoint?.name||'Sem destino ativo')}</b></span><button data-atlas-cancel ${state.waypoint?'':'disabled'}>Cancelar rota</button></div><nav class="atlas-tabs" aria-label="Painéis do mapa"><button data-atlas-tab-button="map" aria-pressed="true">MAPA</button><button data-atlas-tab-button="places" aria-pressed="false">DESTINOS</button></nav><div class="atlas-map-panel"><div class="atlas-toolbar"><button data-atlas-player>Você</button><button data-atlas-world>Mundo</button><button data-atlas-delivery>Motorista / encomenda</button><select aria-label="Região do mapa" data-atlas-region><option value="">Ir para uma região</option>${regions.map((r,i)=>`<option value="${i}">${r.name}</option>`).join('')}</select><button data-atlas-minus aria-label="Afastar mapa">−</button><button data-atlas-plus aria-label="Aproximar mapa">+</button></div><svg class="atlas-canvas" role="img" aria-label="Mapa geográfico, ruas e destinos. Arraste para mover." xmlns="http://www.w3.org/2000/svg"></svg><div class="atlas-legend"><span>Azul: sua rota</span><span>Cinza: vias</span><span>Laranja: motorista até você</span><b data-atlas-scale></b></div></div><aside class="atlas-sidebar"><div class="atlas-route-now">${state.waypoint?`<small>SEU DESTINO</small><b>${escapeHtml(state.waypoint.name)}</b><button data-clear-waypoint>Cancelar rota</button>`:'<small>ESCOLHA UM DESTINO</small><b>Selecione o local e trace a rota</b>'}</div><section class="atlas-selection" aria-live="polite"></section><label class="atlas-search"><span>Buscar lugar ou atividade</span><input type="search" data-atlas-search placeholder="Praia, WAR, restaurante…" autocomplete="off"></label><select data-atlas-group aria-label="Tipo de destino"><option value="essential">Lugares de Rio Preto e regiões</option><option value="">Todos os lugares</option>${groups.map(g=>`<option>${escapeHtml(g)}</option>`).join('')}</select><div class="atlas-list" aria-label="Destinos"></div><small class="atlas-help">Norte no topo. Toque em um grupo para aproximar.</small></aside></div>`,root=>{
    els.modal.classList.add('map-modal','atlas-modal');const svg=root.querySelector('svg'),list=root.querySelector('.atlas-list'),detail=root.querySelector('.atlas-selection'),search=root.querySelector('[data-atlas-search]'),category=root.querySelector('[data-atlas-group]');let clusters=new Map(),lastW=240,lastH=240;const shell=root.querySelector('.world-atlas');root.querySelector('[data-atlas-cancel]').onclick=()=>{clearWaypoint();worldCampaign.route=null;openMap();};root.querySelectorAll('[data-atlas-tab-button]').forEach(b=>b.onclick=()=>{shell.dataset.atlasTab=b.dataset.atlasTabButton;root.querySelectorAll('[data-atlas-tab-button]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));requestAnimationFrame(draw);});
-   const code=l=>l?.id==='home'?'CASA':/plane|airbase/.test(l?.id)?'AV':/helicopter/.test(l?.id)?'HE':/marina|boat/.test(l?.id)?'LA':/coast-view/.test(l?.id)?'PR':/snow/.test(l?.id)?'NE':/shop/.test(l?.id)?'LO':/campaign-hq/.test(l?.id)?'QG':/circuit|kart/.test(l?.id)?'KT':/pingpong/.test(l?.id)?'PP':/dance/.test(l?.id)?'DA':/boxing/.test(l?.id)?'BX':/garage|dealer/.test(l?.id)?'GA':'•';
-   const essential=l=>['chapter-next','home','shop','workshop','campaign-hq','campaign-airbase','coast-view','marina-costa','snow-lookout','airport-terminal','mountain-balloon','rio-represa-cais','rio-orla-largada'].includes(l.id)||/^(venue-|circuit-|city-|rio-via-)/.test(l.id)||l.id===(state.waypoint?.id||'');
+   const code=l=>/rios-italia/i.test(l?.id)?'RI':/ponte-julio/i.test(l?.id)?'PT':/bairro-|zona-norte/i.test(l?.id)?'BA':l?.id==='home'?'CASA':/plane|airbase/.test(l?.id)?'AV':/helicopter/.test(l?.id)?'HE':/marina|boat/.test(l?.id)?'LA':/coast-view/.test(l?.id)?'PR':/snow/.test(l?.id)?'NE':/shop/.test(l?.id)?'LO':/campaign-hq/.test(l?.id)?'QG':/circuit|kart/.test(l?.id)?'KT':/pingpong/.test(l?.id)?'PP':/dance/.test(l?.id)?'DA':/boxing/.test(l?.id)?'BX':/garage|dealer/.test(l?.id)?'GA':'•';
+   const essential=l=>['chapter-next','home','shop','workshop','campaign-hq','campaign-airbase','coast-view','marina-costa','snow-lookout','airport-terminal','mountain-balloon','rio-represa-cais','rio-orla-largada'].includes(l.id)||/^(venue-|circuit-|city-|rio-via-|regional-|rio-represa-|rio-orla-|gps-|otthi-)/.test(l.id)||l.id===(state.waypoint?.id||'');
    const norm=t=>String(t||'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();const filtered=()=>{const q=norm(search.value);return locations.filter(l=>(q||!category.value||(category.value==='essential'?essential(l):l.group===category.value))&&(!q||norm(l.name+' '+l.group).includes(q)));};
    const selection=()=>{if(!selected)return;const d=mapLocationDetails(selected);detail.innerHTML=`<small>${escapeHtml(selected.group||'Destino')}</small><h3>${escapeHtml(selected.name)}</h3><p>${escapeHtml(d.description)}</p><footer><span>${mapDistance(selected)} m de você</span><button data-route-selected="${escapeHtml(selected.id)}">TRAÇAR ROTA</button></footer>`;detail.querySelector('button').onclick=()=>setWaypoint(selected.id);};
    const fitDelivery=()=>{const t=phoneDeliveryTracking();if(!t)return;const r=svg.getBoundingClientRect(),aspect=Math.max(.4,r.width/Math.max(100,r.height)),points=[navigationFocus(),...t.route],xs=points.map(p=>p.x),zs=points.map(p=>p.z),minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);Object.assign(view,{x:(minX+maxX)/2,z:(minZ+maxZ)/2,span:clamp(Math.max(75,(maxX-minX+28),(maxZ-minZ+28)*aspect)*1.15,55,2500)});};
@@ -16743,6 +16760,7 @@ function precompile(T,renderer,scene,camera){
   function rioV51Register(){
     rioV51World.registered=true;
     for(const p of RIO_V51.places){
+      if(!legacyRegionalLayout&&!RIO_RECOVERED_SECTORS.includes(p.sector))continue;
       if(p.nativeVenue)continue;
       if(['market','fastfood','cafe'].includes(p.shop))cityCoast.shops.set(p.id,{
         id:p.id,label:p.name,kind:p.shop,x:p.x,z:p.visitZ,navX:p.visitX,navZ:p.visitZ,
@@ -16756,11 +16774,12 @@ function precompile(T,renderer,scene,camera){
     }
   }
   function updateRioV51World(){
-    if(!legacyRegionalLayout||!running||!worldGroup||!worldExpansion.ready)return;
+    if((!legacyRegionalLayout&&!rioCompactWorld())||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
     for(const sector of Object.values(RIO_V51.sectors)){
+      if(!legacyRegionalLayout&&!RIO_RECOVERED_SECTORS.includes(sector.id))continue;
       const d=Math.hypot(focus.x-sector.x,focus.z-sector.z);
       const root=rioV51World.roots.get(sector.id);
       if(root){root.visible=d<195;continue;}
@@ -16873,11 +16892,11 @@ function precompile(T,renderer,scene,camera){
   const rioV51PreviousExpansion=updateWorldExpansion;
   updateWorldExpansion=function(){rioV51PreviousExpansion();updateRioV51World();};
   const rioV51PreviousLocations=expansionMapLocations;
-  expansionMapLocations=function(){return legacyRegionalLayout?[...rioV51PreviousLocations(),...RIO_V51.places.map(rioV51Location)]:rioV51PreviousLocations();};
+  expansionMapLocations=function(){return [...rioV51PreviousLocations(),...RIO_V51.places.filter(p=>legacyRegionalLayout||rioCompactWorld()&&RIO_RECOVERED_SECTORS.includes(p.sector)).map(rioV51Location)];};
   const rioV51PreviousDirectory=worldExploreDirectoryHtml;
   worldExploreDirectoryHtml=function(...args){
-    if(!legacyRegionalLayout)return rioV51PreviousDirectory(...args);
-    const groups=Object.values(RIO_V51.sectors).map(sector=>
+    if(!legacyRegionalLayout&&!rioCompactWorld())return rioV51PreviousDirectory(...args);
+    const groups=Object.values(RIO_V51.sectors).filter(sector=>legacyRegionalLayout||RIO_RECOVERED_SECTORS.includes(sector.id)).map(sector=>
       '<details><summary>'+escapeHtml(sector.label)+' · '+sector.places.length+'</summary><div class="choice-grid">'+
       sector.places.map(p=>'<button class="choice" data-rio-v51-route="'+p.id+'"><b>'+escapeHtml(p.name)+'</b><span>'+
         (p.fictional?'Local fictício':'Fachada estilizada')+'</span></button>').join('')+'</div></details>').join('');
@@ -18250,6 +18269,15 @@ function precompile(T,renderer,scene,camera){
       const height=clamp((portrait?6.7:5.8)+cameraPitch*2.7+cameraZoom*.25,4.65,9.75);
       desired.set(focusX-Math.sin(cameraYaw)*distance,player.y+height,focusZ+Math.cos(cameraYaw)*distance);
       look.set(focusX,player.y+.74,focusZ);camera.fov=portrait?56:53;
+      if(room?.site.kind==='residence'){
+        // Keep the camera physically inside the furnished unit. The old camera
+        // sat outside the wall/roof and global clipping hid the furniture too.
+        const {site}=room,dx=desired.x-site.x,dz=desired.z-site.z,ss=Math.sin(site.yaw),cc=Math.cos(site.yaw);
+        const lx=clamp(cc*dx-ss*dz,-site.w/2+.85,site.w/2-.85);
+        const lz=clamp(ss*dx+cc*dz,-site.d/2+.85,site.d/2-.85);
+        desired.set(site.x+cc*lx+ss*lz,player.y+clamp(2.6+cameraPitch*.45,2.15,2.95),site.z-ss*lx+cc*lz);
+        camera.fov=portrait?64:61;
+      }
       return;
     }
     const fuelSite=player.vehicle&&rioSiteByKey('posto_brasilia');
@@ -18281,6 +18309,9 @@ function precompile(T,renderer,scene,camera){
   function rioInteriorRender(){
     const room=rioMap.indoorRoom;
     if(!room||otGames.active||player.vehicle)return null;
+    // Residence cutaway uses an indoor camera, not renderer-wide clipping:
+    // global planes were also cutting beds, counters and other owned furniture.
+    if(room.site.kind==='residence')return null;
     const {x,z,yaw,w,d}=room.site,s=Math.sin(yaw),c=Math.cos(yaw),p=camera.position;
     const lx=(p.x-x)*c-(p.z-z)*s,lz=(p.x-x)*s+(p.z-z)*c;
     const alongX=Math.abs(lx/w)>Math.abs(lz/d),side=Math.sign(alongX?lx:lz)||1,key=(alongX?'x':'z')+side;
@@ -18957,11 +18988,26 @@ function precompile(T,renderer,scene,camera){
     }
     batch.commit();
     const sign=rioDockPoint(-1.55,d.start-.6);
-    citySign(group,'CAIS DA REPRESA',sign.x,1.7,sign.z,2.25,1,'#195460',.46);
+    citySign(group,compact?'PARQUE DA REPRESA':'CAIS DA REPRESA',sign.x,1.7,sign.z,2.25,1,'#195460',.46);
     const swimSign=rioDockPoint(compact?6:43,-4.9);
     citySign(group,'NATAÇÃO',swimSign.x,1.46,swimSign.z,1.6,1,'#195460',.39);
     rioMap.waterfront={entry,group,obstacle:dock,swimZone:{...swimming,w:compact?3.4:11,l:compact?5.6:8,s,c},craft:[],swimmers:[],patrol:[],acc:0};
     world.boats??=new Map();
+    if(compact){
+      // Rio Preto's public lagoons are a walkable park, not the ocean marina.
+      // Keep the Guarujá craft and mechanics intact in their original coast module.
+      const former=world.boats.get('lake-boat');
+      if(former?.group)former.group.parent?.remove(former.group);
+      world.interactables=world.interactables.filter(action=>action.id!=='lake-boat-entry');
+      registerInteractable({id:'rio-represa-mirante',type:'activity',icon:'🌳',
+        label:'Mirante dos lagos · Represa Municipal',...entry,radius:3.4,priority:245,
+        available:()=>!player.vehicle&&!player.boating&&!characterActivities.session,
+        action:()=>openModal('Represa Municipal · São José do Rio Preto',
+          '<p>Passeie pelos lagos e pela Ponte Estaiada Júlio Zacarin. Os passeios de barco permanecem na praia do Guarujá.</p>'+
+          '<div class="modal-actions"><button class="btn primary" data-rio-praia-route>Marcar Guarujá no GPS</button></div>',
+          root=>{root.querySelector('[data-rio-praia-route]').onclick=()=>{closeModal();setWaypoint('coast-view');};})});
+      return;
+    }
     const speedboat=SEA_CRAFT.find(spec=>spec.id==='sea-familia');
     const craft=rioMap.waterfront.craft;
     craft.push(rioMakeBerth({id:'rio-prancha',label:'Prancha de stand-up paddle',kind:'board',
@@ -19341,6 +19387,30 @@ function precompile(T,renderer,scene,camera){
     }else for(const x of [-w*.38,w*.38]){
       room.box(x,.23,d/2+.65,.91,.45,.72,0x99674d);
       room.part('canopy',x,.61,d/2+.65,.63,.58,.58,0x617e50);
+    }
+
+
+    if(modern){
+      // Private leisure area on the original property lot; no global water or
+      // house identity is replaced, and it allocates no animated reflection pass.
+      const px=w*.30,pz=d*.38,pw=Math.min(4.6,w*.30),pd=Math.min(3.3,d*.24);
+      room.box(px,.065,pz,pw+.38,.13,pd+.38,0xe8ddcc);
+      room.box(px,.075,pz,pw,.04,pd,0x3993b6);
+      room.box(px,.12,pz-pd*.48,pw,.045,.10,0xa3dde3);
+      for(const side of[-1,1]){
+        room.box(px+side*(pw/2+.14),.36,pz-pd*.34,.07,.72,.07,0xc5cacc);
+      }
+      const approach=room.point(px-pw*.44,pz-pd*.55),water=room.point(px,pz);
+      room.action('swimming-pool','Entrar na piscina da residência',px-pw*.44,pz-pd*.55,()=>{
+        return beginCharacterActivity('rio-pool',{
+          target:approach,pose:{...water,y:.37,yaw:site.yaw,lying:true},walkSpeed:1.8,
+          commit:()=>{
+            state.needs.fun=clamp(Number(state.needs.fun||0)+27,0,100);
+            state.needs.hygiene=clamp(Number(state.needs.hygiene||0)+6,0,100);
+            rioCountVisit(site);saveState(true);updateHUD();return true;
+          }
+        });
+      },{inside:true,icon:'🏊',radius:2.2});
     }
 
     if(condominium){
@@ -20093,7 +20163,8 @@ function precompile(T,renderer,scene,camera){
     Object.assign(CHARACTER_ACTIVITIES,{
       'rio-rest':['Descansando no banco',3.3],
       'rio-entry':['Entrando pela porta',0],
-      'rio-boarding':['Caminhando até a embarcação',0]
+      'rio-boarding':['Caminhando até a embarcação',0],
+      'rio-pool':['Nadando na piscina',4.0]
     });
     const lots=RIO_COMPACT_LAYOUT.lots.map(compactRioSite);
     const alias=(key,point)=>{
@@ -20120,8 +20191,40 @@ function precompile(T,renderer,scene,camera){
     createCastleChallengeTokens();
   }
 
+
+  function buildRioPretoJulioZacarinBridge(){
+    if(!rioCompactWorld())return;
+    // Native lightweight bridge over Lago 3, never replaces existing OT bridges.
+    const root=new THREE.Group();root.name='RIO_PRETO_PONTE_JULIO_ZACARIN';worldGroup.add(root);
+    const steel=renderMat(0xd1d7d7,{roughness:.67,metalness:.22}),cable=renderMat(0xb6c1c4,{roughness:.48,metalness:.38});
+    const bx=-104,bz=69,deckY=.65;
+    stableBox(36,.22,4.8,0x788890,bx,deckY,bz,root,2);
+    stableBox(36,.05,3.2,0x58626b,bx,deckY+.14,bz,root,3);
+    registerPlatform(bx,bz,36,4.8,deckY+.15,{rioBridge:'julio-zacarin'});
+    for(const side of[-1,1]){
+      stableBox(36,.58,.12,steel,bx,deckY+.55,bz+side*2.35,root);
+      for(let i=-8;i<=8;i++)stableBox(.085,.56,.10,steel,bx+i*2,deckY+.38,bz+side*2.35,root);
+    }
+    for(const z of[bz-1.45,bz+1.45]){
+      stableBox(.64,13.4,.67,steel,bx,7.25,z,root);
+      for(const dx of[-16,-12,-8,-4,4,8,12,16]){
+        const start=new THREE.Vector3(bx,13.9,z),end=new THREE.Vector3(bx+dx,deckY+.82,z);
+        const vec=end.clone().sub(start),length=vec.length();
+        const line=new THREE.Mesh(new THREE.CylinderGeometry(.032,.032,length,6),cable);
+        line.position.copy(start).add(end).multiplyScalar(.5);
+        line.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),vec.normalize());
+        line.castShadow=false;root.add(line);
+      }
+    }
+    createSignpost(-122,64.6,'PONTE ESTAIADA JÚLIO ZACARIN · LAGO 3',Math.PI/2);
+    registerInteractable({id:'rio-ponte-julio-zacarin',type:'activity',icon:'🌉',
+      label:'Ponte Estaiada Júlio Zacarin · Lago 3',x:-121,z:65.8,radius:4.5,priority:200,
+      action:()=>toast('Ponte Júlio Zacarin · Lago 3 da Represa Municipal de Rio Preto.','info',2600)});
+  }
+
   function buildCompactRioWaterfront(){
     rioBuildWaterfront();
+    buildRioPretoJulioZacarinBridge();
     const shore=RIO_COMPACT_LAYOUT.sections.map(([x,z])=>({x,z}));
     const walk=new THREE.Group();
     walk.name='RIO_PRETO_PASSEIO_DA_REPRESA';
@@ -20177,7 +20280,8 @@ function precompile(T,renderer,scene,camera){
     const places=compactRio.sites.map(compactRioDestination);
     const streets=compactRioStreets.map(([id,name,x,z])=>({id:'rio-via-'+id,name,x,z,icon:'🛣️',group:'Ruas e rodovias'}));
     const dock=rioMap.waterfront?.entry,course=rioMap.course;
-    if(dock)places.push({id:'rio-represa-cais',name:'Cais da Represa',group:'Rio Preto',icon:'⚓',...dock});
+    places.push({id:'rio-ponte-julio-zacarin',name:'Ponte Estaiada Júlio Zacarin · Lago 3',group:'Represa de Rio Preto',icon:'🌉',x:-121,z:65.8,navX:-121,navZ:65.8,description:'Ponte estaiada, orla e passeio do Lago 3'});
+    if(dock)places.push({id:'rio-represa-cais',name:'Mirante da Represa Municipal',group:'Represa de Rio Preto',icon:'🌳',...dock});
     // All four native boats are moored at this same Represa, not the Guarujá beach.
     // GPS entry locations are derived from their actual native berths.
     for(const boat of rioMap.waterfront?.craft||[]){
