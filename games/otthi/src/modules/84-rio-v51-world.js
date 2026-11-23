@@ -195,6 +195,7 @@
     ]
   });
   const rioRegisteredDeliveries=new Set();
+  let nextDeliveryAddressSync=0;
   function rioConstructionSave(){
     const save=rioMapSave();
     save.constructionOrders??=[];
@@ -338,7 +339,10 @@
   function updateRioV51World(){
     if((!legacyRegionalLayout&&!rioCompactWorld())||!running||!worldGroup||!worldExpansion.ready)return;
     if(!rioV51World.registered)rioV51Register();
-    for(const home of rioDeliveryHomes())rioRegisterHomeDelivery(home);
+    if(performance.now()>=nextDeliveryAddressSync){
+      nextDeliveryAddressSync=performance.now()+3000;
+      for(const home of rioDeliveryHomes())rioRegisterHomeDelivery(home);
+    }
     const focus=otGamesFocus();
     let next=null,distance=Infinity;
     for(const sector of Object.values(RIO_V51.sectors)){
