@@ -36,7 +36,7 @@
       root.querySelector('[data-rio-property-lock]')?.addEventListener('click',()=>{
         const title=rioPropertyTitle(id);if(!title?.owned||!available())return;
         title.locked=!title.locked;if(title.locked)setFlag('lockedHouse');saveState(true);
-        rioPropertyDoor({id,name,price,available,enter});
+        rioPropertyDoor({id,name,price,available,enter,decorate});
       });
     });
     return true;
