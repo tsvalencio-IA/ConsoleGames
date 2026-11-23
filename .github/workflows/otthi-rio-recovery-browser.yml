@@ -5,6 +5,7 @@ on:
     paths:
       - 'games/otthi/**'
       - 'tests/rio-compact-world-browser.mjs'
+      - 'tests/rio-regional-interiors-browser.mjs'
       - '.github/workflows/otthi-rio-recovery-browser.yml'
   workflow_dispatch:
 permissions:
@@ -27,6 +28,8 @@ jobs:
           python-version: '3.12'
       - name: Build matching source and hashes before launching browser
         run: python3 games/otthi/tools/build_project.py
+      - name: Validate real regional building entry and exit
+        run: node tests/rio-regional-interiors-browser.mjs
       - name: Run actual Rio Preto smartphone browser acceptance
         run: node tests/rio-compact-world-browser.mjs
       - name: Save screenshots and reports
@@ -34,6 +37,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rio-preto-recovery-real-browser
-          path: test-results/rio-compact-world/
+          path: |
+            test-results/rio-compact-world/
+            test-results/rio-regional-interiors/
           if-no-files-found: ignore
           retention-days: 14
