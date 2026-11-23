@@ -85,8 +85,40 @@
     createCastleChallengeTokens();
   }
 
+
+  function buildRioPretoJulioZacarinBridge(){
+    if(!rioCompactWorld())return;
+    // Native lightweight bridge over Lago 3, never replaces existing OT bridges.
+    const root=new THREE.Group();root.name='RIO_PRETO_PONTE_JULIO_ZACARIN';worldGroup.add(root);
+    const steel=renderMat(0xd1d7d7,{roughness:.67,metalness:.22}),cable=renderMat(0xb6c1c4,{roughness:.48,metalness:.38});
+    const bx=-104,bz=69,deckY=.65;
+    stableBox(36,.22,4.8,0x788890,bx,deckY,bz,root,2);
+    stableBox(36,.05,3.2,0x58626b,bx,deckY+.14,bz,root,3);
+    registerPlatform(bx,bz,36,4.8,deckY+.15,{rioBridge:'julio-zacarin'});
+    for(const side of[-1,1]){
+      stableBox(36,.58,.12,steel,bx,deckY+.55,bz+side*2.35,root);
+      for(let i=-8;i<=8;i++)stableBox(.085,.56,.10,steel,bx+i*2,deckY+.38,bz+side*2.35,root);
+    }
+    for(const z of[bz-1.45,bz+1.45]){
+      stableBox(.64,13.4,.67,steel,bx,7.25,z,root);
+      for(const dx of[-16,-12,-8,-4,4,8,12,16]){
+        const start=new THREE.Vector3(bx,13.9,z),end=new THREE.Vector3(bx+dx,deckY+.82,z);
+        const vec=end.clone().sub(start),length=vec.length();
+        const line=new THREE.Mesh(new THREE.CylinderGeometry(.032,.032,length,6),cable);
+        line.position.copy(start).add(end).multiplyScalar(.5);
+        line.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),vec.normalize());
+        line.castShadow=false;root.add(line);
+      }
+    }
+    createSignpost(-122,64.6,'PONTE ESTAIADA JÚLIO ZACARIN · LAGO 3',Math.PI/2);
+    registerInteractable({id:'rio-ponte-julio-zacarin',type:'activity',icon:'🌉',
+      label:'Ponte Estaiada Júlio Zacarin · Lago 3',x:-121,z:65.8,radius:4.5,priority:200,
+      action:()=>toast('Ponte Júlio Zacarin · Lago 3 da Represa Municipal de Rio Preto.','info',2600)});
+  }
+
   function buildCompactRioWaterfront(){
     rioBuildWaterfront();
+    buildRioPretoJulioZacarinBridge();
     const shore=RIO_COMPACT_LAYOUT.sections.map(([x,z])=>({x,z}));
     const walk=new THREE.Group();
     walk.name='RIO_PRETO_PASSEIO_DA_REPRESA';
@@ -142,6 +174,7 @@
     const places=compactRio.sites.map(compactRioDestination);
     const streets=compactRioStreets.map(([id,name,x,z])=>({id:'rio-via-'+id,name,x,z,icon:'🛣️',group:'Ruas e rodovias'}));
     const dock=rioMap.waterfront?.entry,course=rioMap.course;
+    places.push({id:'rio-ponte-julio-zacarin',name:'Ponte Estaiada Júlio Zacarin · Lago 3',group:'Represa de Rio Preto',icon:'🌉',x:-121,z:65.8,navX:-121,navZ:65.8,description:'Ponte estaiada, orla e passeio do Lago 3'});
     if(dock)places.push({id:'rio-represa-cais',name:'Cais da Represa',group:'Rio Preto',icon:'⚓',...dock});
     // All four native boats are moored at this same Represa, not the Guarujá beach.
     // GPS entry locations are derived from their actual native berths.
