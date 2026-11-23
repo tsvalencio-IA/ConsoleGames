@@ -320,34 +320,100 @@
         };
       });
     };
+
+    // Real-time furniture preview lives over the scene, never in a full-screen modal.
+    let activeDecor=null,decorOverlay=null,decorSelection=null;
+    const endDecor=()=>{
+      activeDecor=null;
+      if(decorOverlay){decorOverlay.remove();decorOverlay=null;}
+      if(decorSelection){decorSelection.parent?.remove(decorSelection);decorSelection.geometry.dispose();decorSelection.material.dispose();decorSelection=null;}
+      delete window.__OTTHI_DECOR_PREVIEW;
+      document.body.classList.remove('rio-decor-active');
+    };
     const openDecorEditor=item=>{
       const owner=rioPropertyTitle(rioResidencePropertyId());
       if(!owner?.owned||!(owner.furniture||[]).includes(item.id))return;
-      const pos=layoutFor(item,owner);
-      const edit=(direction)=>{
-        const current=rioPropertyTitle(rioResidencePropertyId());
-        if(!current?.owned||!(current.furniture||[]).includes(item.id))return;
-        const p=layoutFor(item,current);
-        if(direction==='left')p.x-=.55;
-        if(direction==='right')p.x+=.55;
-        if(direction==='up')p.z-=.55;
-        if(direction==='down')p.z+=.55;
-        if(direction==='rotate')p.rotation=(p.rotation+1)%4;
-        if(direction==='store')p.stored=!p.stored;
-        (current.decorLayout??={})[item.id]=layoutFor(item,{decorLayout:{[item.id]:p}});
-        updateDecor();saveState(true);openDecorEditor(item);
+      endDecor();
+      if(!els.modal.hidden)closeModal();
+      const original=layoutFor(item,owner);
+      activeDecor={item,original,position:{...original}};
+      const bound=pos=>{
+        const wx=Math.max(.25,w/2-item.w/2-.53),wz=Math.max(.25,d/2-item.d/2-1.10);
+        return {x:clamp(pos.x,-wx,wx),z:clamp(pos.z,-wz,wz),rotation:((pos.rotation%4)+4)%4,stored:!!pos.stored};
       };
-      openModal('Decorar · '+item.name,
-        '<p>Mova o móvel dentro do seu imóvel ou gire em passos de 90°. Guardar mantém o item comprado no inventário desta casa.</p>'+
-        '<p><b>Posição</b> '+pos.x.toFixed(1)+' / '+pos.z.toFixed(1)+
-        ' · <b>Rotação</b> '+(pos.rotation*90)+'° · <b>'+ (pos.stored?'Guardado':'Instalado')+'</b></p>'+
-        '<div class="choice-grid">'+
-        [['left','← Esquerda'],['right','Direita →'],['up','↑ Fundo'],['down','Frente ↓'],['rotate','Girar 90°'],['store',pos.stored?'Instalar':'Guardar']].map(([id,label])=>
-          '<button class="choice" data-rio-decor-edit="'+id+'"><b>'+label+'</b></button>').join('')+
-        '</div><div class="modal-actions"><button class="btn primary" data-rio-decor-back>Catálogo de móveis</button></div>',root=>{
-        for(const button of root.querySelectorAll('[data-rio-decor-edit]'))button.onclick=()=>edit(button.dataset.rioDecorEdit);
-        root.querySelector('[data-rio-decor-back]').onclick=openDecorCatalog;
+      decorSelection=new THREE.Mesh(new THREE.RingGeometry(.71,1.01,32),
+        new THREE.MeshBasicMaterial({color:0xffdc62,side:THREE.DoubleSide,transparent:true,opacity:.94,depthTest:false}));
+      decorSelection.rotation.x=-Math.PI/2;decorSelection.renderOrder=999;room.root.add(decorSelection);
+      const refresh=()=>{
+        if(!activeDecor)return;
+        activeDecor.position=bound(activeDecor.position);
+        const p=activeDecor.position,worldPoint=room.point(p.x,p.z);
+        const object=decorMeshes.get(item.id)||addDecorModel(item);
+        object.visible=!p.stored;object.position.set(worldPoint.x,0,worldPoint.z);
+        object.rotation.y=yaw+p.rotation*Math.PI/2;
+        decorSelection.position.set(worldPoint.x,.12,worldPoint.z);
+        decorSelection.visible=!p.stored;
+        window.__OTTHI_DECOR_PREVIEW={siteId:site.id,propertyId:rioResidencePropertyId(),
+          x:worldPoint.x,z:worldPoint.z,yaw,centerX:site.x,centerZ:site.z,roomWidth:w,roomDepth:d};
+        const status=decorOverlay.querySelector('[data-rio-editor-status]');
+        if(status)status.textContent='Posição '+p.x.toFixed(1)+' / '+p.z.toFixed(1)+
+          ' · '+p.rotation*90+'°'+(p.stored?' · Guardado':'');
+      };
+      if(!document.getElementById('rio-decor-live-css')){
+        const style=document.createElement('style');style.id='rio-decor-live-css';
+        style.textContent=[
+          '#rio-decor-live{position:fixed;z-index:1250;top:max(8px,env(safe-area-inset-top,0px));right:max(8px,env(safe-area-inset-right,0px));width:min(267px,39vw);max-height:calc(100dvh - 20px);box-sizing:border-box;overflow:auto;border-radius:13px;border:1px solid #a2c4bd;background:rgba(5,25,32,.88);color:#fff;padding:10px;box-shadow:0 7px 25px rgba(0,0,0,.35);font:600 12px system-ui,sans-serif;touch-action:pan-y;pointer-events:auto}',
+          '#rio-decor-live strong{display:block;overflow-wrap:anywhere;font-size:13px;margin-bottom:4px}',
+          '#rio-decor-live p{font-size:11px;font-weight:400;margin:4px 0;color:#d3e9eb}',
+          '#rio-decor-live .rio-editor-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}',
+          '#rio-decor-live button{font:700 12px system-ui,sans-serif;min-height:38px;padding:4px;border:1px solid #73949c;border-radius:8px;color:#fff;background:#245062;cursor:pointer}',
+          '#rio-decor-live button[data-rio-live=save]{background:#237451}',
+          '#rio-decor-live button[data-rio-live=cancel]{background:#873e40}',
+          '#rio-decor-live [data-rio-editor-status]{color:#c3ebed;font-size:11px;padding:5px 0}',
+          '@media(max-width:650px){#rio-decor-live{width:min(202px,49vw);padding:6px;top:max(4px,env(safe-area-inset-top,0px));right:max(4px,env(safe-area-inset-right,0px))}#rio-decor-live strong{font-size:11px}#rio-decor-live p{display:none}#rio-decor-live button{font-size:11px;min-height:34px;padding:2px}}',
+          '@media(orientation:landscape) and (max-height:480px){#rio-decor-live{width:min(265px,32vw);max-height:calc(100dvh - 8px);top:4px}#rio-decor-live .rio-editor-buttons{grid-template-columns:repeat(4,minmax(0,1fr))}#rio-decor-live button{min-height:31px}}'
+        ].join('');
+        document.head.appendChild(style);
+      }
+      decorOverlay=document.createElement('section');decorOverlay.id='rio-decor-live';
+      decorOverlay.setAttribute('role','region');
+      decorOverlay.setAttribute('aria-label','Decoração em tempo real com a casa visível');
+      const title=document.createElement('strong');title.textContent='Decorar · '+item.name;
+      const help=document.createElement('p');help.textContent='Mova e gire observando o ambiente 3D ao vivo.';
+      const status=document.createElement('div');status.dataset.rioEditorStatus='';status.className='rio-editor-status';
+      const controls=document.createElement('div');controls.className='rio-editor-buttons';
+      for(const [id,label] of [['up','↑'],['rotate','↻ 90°'],['store','Guardar'],
+        ['left','←'],['down','↓'],['right','→'],['save','✓ Salvar'],
+        ['cancel','✕ Cancelar'],['catalog','Móveis']]){
+        const button=document.createElement('button');button.type='button';button.dataset.rioLive=id;
+        button.textContent=label;controls.appendChild(button);
+      }
+      decorOverlay.append(title,help,status,controls);document.body.appendChild(decorOverlay);
+      document.body.classList.add('rio-decor-active');
+      for(const type of ['pointerdown','pointerup','click','touchstart','touchend'])
+        decorOverlay.addEventListener(type,e=>e.stopPropagation());
+      controls.addEventListener('click',e=>{
+        const type=e.target.closest('button')?.dataset.rioLive;
+        if(!type||!activeDecor)return;
+        if(type==='save'){
+          const current=rioPropertyTitle(rioResidencePropertyId());
+          if(!current?.owned||(current.furniture||[]).indexOf(item.id)<0){endDecor();updateDecor();return;}
+          (current.decorLayout??={})[item.id]={...activeDecor.position};
+          endDecor();updateDecor();saveState(true);
+          toast(item.name+' posicionado e salvo.','good',2100);return;
+        }
+        if(type==='cancel'){endDecor();updateDecor();return;}
+        if(type==='catalog'){endDecor();updateDecor();openDecorCatalog();return;}
+        const p=activeDecor.position;
+        if(type==='left')p.x-=.55;
+        if(type==='right')p.x+=.55;
+        if(type==='up')p.z-=.55;
+        if(type==='down')p.z+=.55;
+        if(type==='rotate')p.rotation=(p.rotation+1)%4;
+        if(type==='store')p.stored=!p.stored;
+        refresh();
       });
+      refresh();
     };
 
     // Real use for construction purchases: one delivered paint can renovates the
