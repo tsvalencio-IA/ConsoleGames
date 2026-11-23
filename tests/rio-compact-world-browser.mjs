@@ -206,7 +206,7 @@ try{
       return mall?.inside&&mall.visible&&Math.abs(p.x-376)<3&&p.z>-319&&p.z< -307;
     },null,{timeout:12000});
   }catch(error){
-    const detail=await page.evaluate(()=>({malls:OTTHI_RIO_V51.diagnostics().malls,shoppingAction:OTTHI_RIO_V51.diagnostics().shoppingAction,
+    const detail=await page.evaluate(()=>({malls:OTTHI_RIO_V51.diagnostics().malls,shoppingAction:OTTHI_RIO_V51.diagnostics().shoppingAction,lastVisit:OTTHI_RIO_V51.diagnostics().lastVisit,
       player:OTTHOS_TEST_API.getGame().player,context:OTTHOS_TEST_API.getContext(),
       modal:document.getElementById('modal')?.textContent,errors:window.__OTTHI_ERRORS||[]}));
     throw new Error('Shopping real-world entry failed: '+JSON.stringify(detail)+'; '+error.message);
