@@ -410,7 +410,7 @@
       decorOverlay.setAttribute('role','region');
       decorOverlay.setAttribute('aria-label','Decoração em tempo real com a casa visível');
       const title=document.createElement('strong');title.textContent='Decorar · '+item.name;
-      const help=document.createElement('p');help.textContent='Mova e gire observando o ambiente 3D ao vivo.';
+      const help=document.createElement('p');help.textContent='Arraste o móvel direto no piso ou use as setas. Gire e veja o resultado ao vivo.';
       const status=document.createElement('div');status.dataset.rioEditorStatus='';status.className='rio-editor-status';
       const controls=document.createElement('div');controls.className='rio-editor-buttons';
       for(const [id,label] of [['up','↑'],['rotate','↻ 90°'],['store','Guardar'],
@@ -445,6 +445,77 @@
         if(type==='store')p.stored=!p.stored;
         refresh();
       });
+      // Drag directly on the visible 3D floor. The pointer is captured only
+      // while the editor exists; original walking/camera controls are restored
+      // immediately on save, cancel or switching apartments.
+      const canvas=renderer?.domElement;
+      if(canvas){
+        const ray=new THREE.Raycaster(),floor=new THREE.Plane(new THREE.Vector3(0,1,0),-.10);
+        const impact=new THREE.Vector3();let movingPointer=null;
+        const positionFromPointer=event=>{
+          if(!activeDecor||!room.root.visible)return;
+          const bounds=canvas.getBoundingClientRect();
+          if(!bounds.width||!bounds.height)return;
+          const nx=((event.clientX-bounds.left)/bounds.width)*2-1;
+          const ny=1-((event.clientY-bounds.top)/bounds.height)*2;
+          ray.setFromCamera(new THREE.Vector2(nx,ny),camera);
+          if(!ray.ray.intersectPlane(floor,impact))return;
+          const dx=impact.x-site.x,dz=impact.z-site.z;
+          const cs=Math.cos(yaw),sn=Math.sin(yaw);
+          activeDecor.position.x=cs*dx-sn*dz;
+          activeDecor.position.z=sn*dx+cs*dz;
+          activeDecor.position.stored=false;refresh();
+        };
+        const pointerDown=event=>{
+          if(!activeDecor||event.target!==canvas)return;
+          if(event.pointerType==='mouse'&&event.button!==0)return;
+          movingPointer=event.pointerId;
+          event.preventDefault();event.stopImmediatePropagation();
+          canvas.setPointerCapture?.(event.pointerId);
+          positionFromPointer(event);
+        };
+        const pointerMove=event=>{
+          if(!activeDecor||movingPointer!==event.pointerId)return;
+          event.preventDefault();event.stopImmediatePropagation();
+          positionFromPointer(event);
+        };
+        const pointerUp=event=>{
+          if(movingPointer!==event.pointerId)return;
+          event.preventDefault();event.stopImmediatePropagation();
+          movingPointer=null;
+          if(canvas.hasPointerCapture?.(event.pointerId))canvas.releasePointerCapture(event.pointerId);
+        };
+        const onKey=event=>{
+          if(!activeDecor||event.target?.matches?.('input,textarea,select'))return;
+          const commands={'ArrowLeft':'left','ArrowRight':'right',
+            'ArrowUp':'up','ArrowDown':'down','q':'rotate','Q':'rotate'};
+          if(event.key==='Escape'){
+            event.preventDefault();endDecor();updateDecor();return;
+          }
+          const command=commands[event.key];if(!command)return;
+          event.preventDefault();event.stopImmediatePropagation();
+          const p=activeDecor.position;
+          if(command==='left')p.x-=.40;
+          if(command==='right')p.x+=.40;
+          if(command==='up')p.z-=.40;
+          if(command==='down')p.z+=.40;
+          if(command==='rotate')p.rotation=(p.rotation+1)%4;
+          refresh();
+        };
+        canvas.addEventListener('pointerdown',pointerDown,true);
+        canvas.addEventListener('pointermove',pointerMove,true);
+        canvas.addEventListener('pointerup',pointerUp,true);
+        canvas.addEventListener('pointercancel',pointerUp,true);
+        window.addEventListener('keydown',onKey,true);
+        decorPointerCleanup=()=>{
+          canvas.removeEventListener('pointerdown',pointerDown,true);
+          canvas.removeEventListener('pointermove',pointerMove,true);
+          canvas.removeEventListener('pointerup',pointerUp,true);
+          canvas.removeEventListener('pointercancel',pointerUp,true);
+          window.removeEventListener('keydown',onKey,true);
+          movingPointer=null;
+        };
+      }
       refresh();
     };
 
