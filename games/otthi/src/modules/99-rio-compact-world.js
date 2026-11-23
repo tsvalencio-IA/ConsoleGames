@@ -79,8 +79,8 @@
       [11,-11,'AV. ALBERTO ANDALÓ',-Math.PI/2],[213,6,'AV. MURCHID HOMSI',-Math.PI/2],
       [-65,42,'PARQUE DA REPRESA',0],[152,-17,'BR-153 · TRANSBRASILIANA',Math.PI/2],
       [90,-154,'SP-310 · WASHINGTON LUÍS',0],
-      [205,128,'RIOS D’ITALIA · CONDOMÍNIOS',0],
-      [205,197,'RIO CANDELARO · FIORA · SALSO · FORTORE · LIRI · TANARO',0]
+      [300,128,'RIOS D’ITALIA · CONDOMÍNIOS',0],
+      [300,197,'RIO CANDELARO · FIORA · SALSO · FORTORE · LIRI · TANARO',0]
     ])createSignpost(x,z,text,yaw);
     createCastleChallengeTokens();
   }
@@ -143,6 +143,13 @@
     const streets=compactRioStreets.map(([id,name,x,z])=>({id:'rio-via-'+id,name,x,z,icon:'🛣️',group:'Ruas e rodovias'}));
     const dock=rioMap.waterfront?.entry,course=rioMap.course;
     if(dock)places.push({id:'rio-represa-cais',name:'Cais da Represa',group:'Rio Preto',icon:'⚓',...dock});
+    // All four native boats are moored at this same Represa, not the Guarujá beach.
+    // GPS entry locations are derived from their actual native berths.
+    for(const boat of rioMap.waterfront?.craft||[]){
+      const boarding=boat.rioBerth?.step;
+      if(!boarding)continue;
+      places.push({id:'gps-'+boat.id,name:'Represa · '+boat.label,icon:boat.kind==='board'?'🏄':'🛶',group:'Represa de Rio Preto',x:boarding.x,z:boarding.z,navX:boarding.x,navZ:boarding.z,description:'Embarque no cais da Represa'});
+    }
     if(course)places.push({id:'rio-orla-largada',name:'Corrida a pé na Represa',group:'Rio Preto',icon:'🏃',...course.start});
     const hall=places.find(place=>place.id==='regional-prefeitura_andalo');
     if(hall)places.push({...hall,id:'castle'});
