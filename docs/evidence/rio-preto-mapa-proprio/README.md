@@ -1,5 +1,15 @@
 # São José do Rio Preto no OTThi World
 
+## Mapa de ruas na 705.28.39
+
+A revisão `b5c8b5a9bb218e0f`, commit `f8b9afa`, destaca as avenidas Bady Bassitt, Alberto Andaló e Murchid Homsi e as rodovias Washington Luís (SP-310) e Transbrasiliana (BR-153). O painel mostra referências como Mercadão, Represa, Swift e Teixeirão. **Meu entorno** aproxima as ruas do jogador. A busca consulta a malha existente por nome e número de rodovia, e a navegação usa o GPS do jogo. **Ottovias** abre a Vila OT e marca o acesso à rodovia do jogo. [Prévia de Rio Preto](https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app/games/otthi/?map=rio-preto)
+
+A suíte passou 595 casos. No Chromium 141, a própria prévia abriu o mapa em retrato, paisagem e desktop, traçou a rota à Rua Antônio de Godoy, recuperou a rota após recarga e abriu a Vila OT na mesma origem com o GPS da Ottovias ativo. O perfil de ensaio manteve saldo e veículo. A auditoria HTTP comparou as impressões digitais de HTML, JavaScript, CSS, service worker e mapa cartográfico. As dimensões de celular foram simuladas no navegador. [Relatório da prévia](mapa-de-ruas.json)
+
+O ensaio local traçou uma rota de 136 pontos até a SP-310 a partir do Gol no Posto Chiesa Brasília. A verificação de entregas encontrou o veículo no mapa. O teste de atualização recuperou a versão 705.28.39 após uma tentativa interrompida a partir da 705.28.38, manteve o progresso de ensaio e abriu a versão atual pelo console offline.
+
+## Registro da 705.28.37
+
 A prévia 705.28.37 está na branch `feat/rio-preto-mapa-proprio`, commit `3612bf9`, revisão web `3a992170a85d476a`. Ela parte da versão integrada 705.28.35, commit `38aa21c`. A versão de produção conferida pela leitura do manifesto foi a 705.28.30, revisão `72c84d2063641ce2`. [Prévia com entrada pelo cais](https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app/games/otthi/?entrada=represa-cais) · [Console da mesma prévia](https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app/arcade/) · [Código](https://github.com/tsvalencio-IA/ConsoleGames/tree/feat/rio-preto-mapa-proprio)
 
 ## O que está jogável

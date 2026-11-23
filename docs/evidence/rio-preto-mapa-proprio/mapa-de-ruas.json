@@ -1,0 +1,52 @@
+{
+  "origin": "https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app",
+  "build": "705.28.39-mapa-de-ruas",
+  "revision": "b5c8b5a9bb218e0f",
+  "layouts": [
+    {
+      "name": "retrato",
+      "width": 349,
+      "height": 383.390625,
+      "clipped": 0,
+      "overflow": 0,
+      "visible": true
+    },
+    {
+      "name": "paisagem",
+      "width": 399,
+      "height": 224,
+      "clipped": 0,
+      "overflow": 0,
+      "visible": true
+    },
+    {
+      "name": "desktop",
+      "width": 489.734375,
+      "height": 520,
+      "clipped": 0,
+      "overflow": 0,
+      "visible": true
+    }
+  ],
+  "errors": [],
+  "browser": "141.0.7390.37",
+  "street": {
+    "waypoint": {
+      "id": "rio-via-rua-antonio-de-godoy",
+      "name": "Rua Antônio de Godoy",
+      "x": -120.32273938168667,
+      "z": 279.6300950334267,
+      "navX": -120.32273938168667,
+      "navZ": 279.6300950334267,
+      "arrived": false
+    },
+    "points": 3,
+    "metres": 7.8105205198198195
+  },
+  "ottovias": {
+    "waypoint": "ottovias-entry",
+    "points": 8,
+    "url": "https://otthi-world-campanha-teste-git-fea-3a8a43-thiaguinho-s-projects.vercel.app/games/otthi/?map=ot"
+  },
+  "passed": true
+}
