@@ -17245,6 +17245,9 @@ function precompile(T,renderer,scene,camera){
   function rioV51MountPlayableMall(p,sectorRoot){
     const outside=new THREE.Group();outside.name='RIO_MALL_FACADE_'+p.key;
     const batch=rioCreateBatch(outside),before=world.colliders.length;
+    // rioLocal().sign() draws a live CanvasTexture onto batch.root.
+    // Without this parent, citySign() throws before the first interior exists.
+    batch.root=outside;
     rioV51DrawPlace(batch,p);batch.commit();sectorRoot.add(outside);
     const outsideColliders=world.colliders.slice(before);
     const site={
