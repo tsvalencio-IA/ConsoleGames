@@ -170,9 +170,9 @@
 
   function rioWardrobeShop(site,room,counter,slot){
     if(!rioPlayerAt(counter))return false;
-    const choices=Object.entries(RIO_WARDROBE_CATALOG).filter(([kind])=>slot===kind).flatMap(([,items])=>items).filter(([id])=>RIO_WARDROBE_STORE[id]);
-    openModal(slot==='shoes'?'Loja de calçados':'Loja de roupas','<div class="choice-grid">'+choices.map(([id,label])=>
-      '<button class="choice" data-rio-clothing-buy="'+id+'" '+(rioWardrobeHasItem(id)?'disabled':'')+'><b>'+label+'</b><span>'+
+    const choices=Object.entries(RIO_WARDROBE_CATALOG).filter(([kind])=>slot==='top'?kind!=='shoes':kind==='shoes').flatMap(([kind,items])=>items.map(item=>[...item,kind])).filter(([id])=>RIO_WARDROBE_STORE[id]);
+    openModal(slot==='shoes'?'Loja de calçados':'Loja de roupas','<div class="choice-grid">'+choices.map(([id,label,color,category])=>
+      '<button class="choice" data-rio-clothing-buy="'+id+'" '+(rioWardrobeHasItem(id)?'disabled':'')+'><b>'+RIO_WARDROBE_LABELS[category]+' · '+label+'</b><span>'+
       (rioWardrobeHasItem(id)?'No guarda-roupa':RIO_WARDROBE_STORE[id]+' moedas')+'</span></button>').join('')+
       '</div><div class="modal-actions"><button class="btn" data-rio-clothing-try>Provar em Thiago ou Thamis</button><button class="btn" data-rio-custom-avatar>Criar meu personagem</button></div>',root=>{
         for(const button of root.querySelectorAll('[data-rio-clothing-buy]'))button.onclick=()=>{
