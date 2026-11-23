@@ -72,6 +72,30 @@
       room.part('canopy',x,.61,d/2+.65,.63,.58,.58,0x617e50);
     }
 
+
+    if(modern){
+      // Private leisure area on the original property lot; no global water or
+      // house identity is replaced, and it allocates no animated reflection pass.
+      const px=w*.30,pz=d*.38,pw=Math.min(4.6,w*.30),pd=Math.min(3.3,d*.24);
+      room.box(px,.065,pz,pw+.38,.13,pd+.38,0xe8ddcc);
+      room.box(px,.075,pz,pw,.04,pd,0x3993b6);
+      room.box(px,.12,pz-pd*.48,pw,.045,.10,0xa3dde3);
+      for(const side of[-1,1]){
+        room.box(px+side*(pw/2+.14),.36,pz-pd*.34,.07,.72,.07,0xc5cacc);
+      }
+      const approach=room.point(px-pw*.44,pz-pd*.55),water=room.point(px,pz);
+      room.action('swimming-pool','Entrar na piscina da residência',px-pw*.44,pz-pd*.55,()=>{
+        return beginCharacterActivity('rio-pool',{
+          target:approach,pose:{...water,y:.37,yaw:site.yaw,lying:true},walkSpeed:1.8,
+          commit:()=>{
+            state.needs.fun=clamp(Number(state.needs.fun||0)+27,0,100);
+            state.needs.hygiene=clamp(Number(state.needs.hygiene||0)+6,0,100);
+            rioCountVisit(site);saveState(true);updateHUD();return true;
+          }
+        });
+      },{inside:true,icon:'🏊',radius:2.2});
+    }
+
     if(condominium){
       // Apartment towers share the existing batched building renderer.
       // Only the furnished ground-floor unit is physically navigable at this stage.
