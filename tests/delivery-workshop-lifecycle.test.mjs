@@ -28,6 +28,7 @@ test('a collected NPC that returns for another service blocks the delivery drive
     workshopIsCurrentUserVehicle: v => state.vehicles.owned.includes(v.id),
     trafficLocalClaims: () => claims
   });
+  vm.runInContext(extract(read('21-interactions-shop-social-races.js'), 'workshopMapState'), context);
   vm.runInContext(extract(serviceSource, 'workshopNpcWasCollected'), context);
   vm.runInContext(extract(read('73-world-phone-dispatch.js'), 'phoneVehiclePoseClear'), context);
   assert.equal(context.phoneVehiclePoseClear({id: 'van'}, 0, 0, 0), true,

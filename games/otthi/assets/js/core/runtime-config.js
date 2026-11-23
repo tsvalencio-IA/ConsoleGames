@@ -11,7 +11,7 @@
   })();
   window.OTTHI_CONFIG = {
     version: 705,
-    build: '705.28.37-mapas-separados',
+    build: '705.28.38-rio-preto-vivo',
     repository: repo,
     baseUrl,
     firebaseRoot: 'otthosWorld',

@@ -20,7 +20,12 @@ test('Rio Preto uses dated OpenStreetMap extracts with verified location anchors
   assert.deepEqual(byKey.get('canecao_represa').location,[-20.8063058,-49.3618643]);
   assert.deepEqual(byKey.get('posto_brasilia').location,[-20.8027913,-49.3591136]);
   assert.equal(byKey.get('estadio_teixeirao').osm,'w161299822');
-  for(const site of data.sites)assert.match(site.source,/^https:\/\//);
+  for(const site of data.sites){
+    if(site.plan==='fictional-residence')assert(site.propertyId&&site.kind==='residence');
+    else assert.match(site.source,/^https:\/\//);
+  }
+  assert(data.airport.runway.length>5);
+  assert(data.buildings.filter(building=>building[4]).length>2400);
 });
 
 test('public venue entrances stand on dry, open ground and building footprints do not cover any named action lot',()=>{

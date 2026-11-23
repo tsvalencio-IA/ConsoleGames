@@ -171,7 +171,9 @@
   function graphAdd(adj,a,b,w){if(!adj.has(a))adj.set(a,[]);if(!adj.has(b))adj.set(b,[]);adj.get(a).push({id:b,w});adj.get(b).push({id:a,w});}
   function graphShortest(nodes,adj,startId,endId){const dist=new Map([[startId,0]]),prev=new Map(),open=new Set(nodes.keys());while(open.size){let current=null,best=Infinity;for(const id of open){const d=dist.get(id)??Infinity;if(d<best){best=d;current=id;}}if(current===null||current===endId)break;open.delete(current);for(const e of adj.get(current)||[]){if(!open.has(e.id))continue;const nd=best+e.w;if(nd<(dist.get(e.id)??Infinity)){dist.set(e.id,nd);prev.set(e.id,current);}}}if(!dist.has(endId))return[];const ids=[];let id=endId;while(id){ids.push(id);if(id===startId)break;id=prev.get(id);}return ids.reverse().map(id=>nodes.get(id));}
   function buildRoutePoints(from,to){
-    const target={x:Number(to.navX??to.x),z:Number(to.navZ??to.z)},startProjection=nearestRoadProjection(from),targetProjection=nearestRoadProjection(target);
+    const target={x:Number(to.navX??to.x),z:Number(to.navZ??to.z)};
+    if(typeof inRioMap==='function'&&inRioMap())return rioGeoRoute(from,target,false,{connect:true});
+    const startProjection=nearestRoadProjection(from),targetProjection=nearestRoadProjection(target);
     if(!startProjection||!targetProjection)return compactRoute([from,target]);
     const cacheKey=`${startProjection.aId}:${startProjection.bId}:${Math.round(startProjection.point.x/4)},${Math.round(startProjection.point.z/4)}>${targetProjection.aId}:${targetProjection.bId}:${Math.round(targetProjection.point.x/4)},${Math.round(targetProjection.point.z/4)}`;
     const cached=world.navCache.get(cacheKey);if(cached)return compactRoute([{x:from.x,z:from.z},...cached.slice(1,-1),target]);
@@ -181,6 +183,16 @@
     for(const [id,projection] of [['START',startProjection],['TARGET',targetProjection]]){const a=nodes.get(projection.aId),b=nodes.get(projection.bId),p=nodes.get(id);graphAdd(adj,id,projection.aId,Math.hypot(p.x-a.x,p.z-a.z));graphAdd(adj,id,projection.bId,Math.hypot(p.x-b.x,p.z-b.z));}
     if(startProjection.aId===targetProjection.aId&&startProjection.bId===targetProjection.bId)graphAdd(adj,'START','TARGET',Math.hypot(startProjection.point.x-targetProjection.point.x,startProjection.point.z-targetProjection.point.z));
     const core=graphShortest(nodes,adj,'START','TARGET'),route=compactRoute([{x:from.x,z:from.z},...core,target]);world.navCache.set(cacheKey,route);if(world.navCache.size>60)world.navCache.delete(world.navCache.keys().next().value);return route;
+  }
+  function groundServiceRoadProjection(position){
+    if(typeof inRioMap==='function'&&inRioMap()){
+      const road=nearestRioRoad(position,false);
+      if(!road)return null;
+      const {a,b}=road.segment;
+      return {a:{x:a[0],z:a[1]},b:{x:b[0],z:b[1]},point:road.point,distance:distance2D(position,road.point)};
+    }
+    const road=nearestRoadProjection(position);
+    return road&&{...road,a:NAV_BASE_NODES[road.aId],b:NAV_BASE_NODES[road.bId]};
   }
   function buildTrafficRoute(points,closed=true){
     const anchors=compactRoute((points||[]).map(point=>{

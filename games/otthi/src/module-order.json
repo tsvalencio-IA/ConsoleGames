@@ -1,13 +1,13 @@
 {
   "version": 705,
-  "build": "705.28.37-mapas-separados",
+  "build": "705.28.38-rio-preto-vivo",
   "javascript": [
     {
       "file": "src/modules/00-runtime-foundation.js",
       "startLine": 4,
       "endLine": 49,
       "description": "Runtime, utilitários, versão, storage e chaves de migração",
-      "sha256Body": "6492d4f25ce6c26186518b4aa79c7a8c3eb85e6c86f9b9fe89a734ae58770905"
+      "sha256Body": "3718e1f69fd48a85589e66ca94331e33e029a7a2f1d9003b513fb8b8f6fece07"
     },
     {
       "file": "src/modules/00a-visual-foundation-avatar-v2.js",
@@ -19,7 +19,7 @@
     {
       "file": "src/modules/81-rio-wardrobe.js",
       "description": "Guarda-roupa intercambiável e prévia dos personagens",
-      "sha256Body": "62e2a4afeae04456eb476c534bc6d0c9f19ada0f9677e60a460213a3b00df5bd"
+      "sha256Body": "24671049f55694786042db4fea6d7c19c3eab3b09362e30ceeffcd85906c1a19"
     },
     {
       "file": "src/modules/01-build-persistence.js",
@@ -75,7 +75,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Fonte central de verdade do layout mundial V704",
-      "sha256Body": "875f823c6db698efc6084bd5675aacb31b1814541e52c4a03d5fdfc1958096fb"
+      "sha256Body": "7bc26013827778f730f394fe43f43a070a4410a2b6c018357beedd50b144ac64"
     },
     {
       "file": "src/modules/06-missions-profile-hud-inventory-tools.js",
@@ -89,14 +89,14 @@
       "startLine": 1456,
       "endLine": 1604,
       "description": "Rotas, trânsito, grafo, GPS e minimapa",
-      "sha256Body": "078cf9ef500acc6965d8ac3c3ec20b8b3cebc21965e82e6e9e9c436e7b25951e"
+      "sha256Body": "d205a817ea6741029e3c83524ef5ed78e5a9d5b7c25dfbf5a0f3d424fe2a62e2"
     },
     {
       "file": "src/modules/08-map-parent-settings.js",
       "startLine": 1606,
       "endLine": 1806,
       "description": "Mapa, marcadores, waypoint, reset, ferramentas parentais e configurações",
-      "sha256Body": "13bce1899878c541b5056e9b347b1bcd28c9883326b4130d718bc4828344fc73"
+      "sha256Body": "0d43576b37f7adc63492d440b0c64cc0d89efe71dd638baa44255c194378942d"
     },
     {
       "file": "src/modules/08a-world-atlas.js",
@@ -173,7 +173,7 @@
       "startLine": 3310,
       "endLine": 3495,
       "description": "Bombeiros, incêndios, polícia, ambulância, segurança e incidentes",
-      "sha256Body": "2d5cfeaf5c941f5e920da6684fc21270e066a8d58215b2683dfc5b3b9a90a758"
+      "sha256Body": "6f4e04cacc760837c2fd86ae53ea6f5fc39fb584c01926cacf445a7874605bdf"
     },
     {
       "file": "src/modules/17-adventures-learning-world.js",
@@ -208,7 +208,7 @@
       "startLine": 3950,
       "endLine": 4126,
       "description": "Atividades, mercado, oficina, amizades, NPCs e corridas",
-      "sha256Body": "73d54f33849b61bd7cf6521c85272b5ea7edaf79114e6a050a98399db2955749"
+      "sha256Body": "b5a5b79c41c3f20dbb9f30246ca655035046e75f46e3a4993d2318dc7871c5fe"
     },
     {
       "file": "src/modules/22-careers-jobs-uniforms.js",
@@ -243,7 +243,7 @@
       "startLine": 4495,
       "endLine": 4635,
       "description": "Three.js, qualidade, viewport, resize, posição segura e colisões",
-      "sha256Body": "77dc03a40ef96b661658b452d5b9c5137d18c9c150a7791cc738a0f68d011592"
+      "sha256Body": "7e6fd24c9d761bb3d8ee09b8d0e88b274777d5c06e4212b31309ddaf586fe610"
     },
     {
       "file": "src/modules/26-input-player-physics.js",
@@ -285,14 +285,14 @@
       "startLine": 5124,
       "endLine": 5238,
       "description": "Loop principal, controles, gamepad e início do jogo",
-      "sha256Body": "c981ceaba3466afaae7146c436da67a8aa5324517f07d56a6ba9e8a80cde45f2"
+      "sha256Body": "0958b636c9de10c4349c2fb2b5ba99921bb8666712f1131ec4885b45d0840c6d"
     },
     {
       "file": "src/modules/30-pause-tests-public-api-bootstrap.js",
       "startLine": 5240,
       "endLine": 5422,
       "description": "Pausa, testes de veículo, API pública de auditoria e bootstrap final",
-      "sha256Body": "b288fb9cfb9b4bd8a4ed9905e7fac49089fd44b574eb55b8fcb5ee6f4d5a9871"
+      "sha256Body": "0ce5e109b302bdcb8f5902677c372aec9da47c88cf8bad56a745e6c76ae62e4e"
     },
     {
       "file": "src/modules/31-neighborhood-world-controller.js",
@@ -341,14 +341,14 @@
       "startLine": 5958,
       "endLine": 6056,
       "description": "Construção modular, oficina e veículos montáveis",
-      "sha256Body": "1d1a131e210d5d3f4403448702be6e9385e9f51db5323f641aa13bd824cc5c59"
+      "sha256Body": "e9a53a70b3b82e09486e9348229c09a6285aefe97b75d3e5c6d078fff4ec2378"
     },
     {
       "file": "src/modules/36a-vehicle-damage-repair-v704.js",
       "startLine": 0,
       "endLine": 0,
       "description": "Dano, quebra, reboque e reparo real de veículos V704",
-      "sha256Body": "a1de4995a1c7da7b6f16a23a82258361fc88d5ec8e2f181c0e98c32cb1fc4aa2"
+      "sha256Body": "a7d2261e50df6356869133466a943fd506411cc38496a3b4868fbe60dac6619a"
     },
     {
       "file": "src/modules/37-hero-platform-gameplay.js",
@@ -362,7 +362,7 @@
       "startLine": 6124,
       "endLine": 6152,
       "description": "Integração, fallbacks e bootstrap das cinco etapas",
-      "sha256Body": "cc5cb92be94897e0542a7217b968eafedd311aea1dc8a9bfc0b6b342ac058d88"
+      "sha256Body": "e0e895124f4c13353d192b09f9c45009d8a5d00497f2cccb2ef2f69cb865805c"
     },
     {
       "file": "src/modules/39-gm-admin-panel.js",
@@ -376,14 +376,14 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Evolução integral V702: HUD, câmera, terreno, água, natação, fazenda, escavação e cidadãos temáticos",
-      "sha256Body": "db6c71a95e0c7a3bfe4c795dd08249774faafd01e4f9ad8b8350271e9031330b"
+      "sha256Body": "99868e4885e15181ffe6a3594e8b93c49b0efa36a92994cedaaa5d4f52e54ca2"
     },
     {
       "file": "src/modules/41-family-adventure.js",
       "description": "Família: personagens aprovados, aventuras no mundo e estado compartilhado",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "0a29f7215ad5cc3fa750c1d01085f7ccfc71a41137a1c067610be0230d9ff0a4"
+      "sha256Body": "961dec743d6b55c457a28d61f41bb39a71f69cb85457f547544e92f1be12ea62"
     },
     {
       "file": "src/modules/42-ot-games-modes.js",
@@ -411,7 +411,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Academias físicas, jogos originais e retorno ao bairro",
-      "sha256Body": "0057a6a05f4c1be9f2446d69bf96e68c524518bbd8b01d9f3893f709c1fc49be"
+      "sha256Body": "a12af1a01bb5a77d92629b779aa06d0886f265ffc54e272112214626f58daf35"
     },
     {
       "file": "src/modules/46-world-cities-and-racers.js",
@@ -506,7 +506,7 @@
     {
       "file": "src/modules/54-neighborhood-home-life.js",
       "description": "Casas com circulação livre, ações nativas e avatar sentado",
-      "sha256Body": "a9d8796ceb647ea07e6f9c569b91afb55874a73528b3e765abc7164a8046d739",
+      "sha256Body": "72540e523da7eae2d51963db66b57a6b423624ca1fcc49c6afef38a66b6b8bbe",
       "startLine": 0,
       "endLine": 0
     },
@@ -564,7 +564,7 @@
       "startLine": 0,
       "endLine": 0,
       "description": "Garagem física particular e retirada na concessionária",
-      "sha256Body": "c84af8758e6d47ffb78b0b2ed39900f57d8c6b889140025738df97a43bedbb11"
+      "sha256Body": "b77031994e8b40b02bb294735d0f662c2970001bbf03a7e8741244ac4b52edb7"
     },
     {
       "file": "src/modules/63-cordillera-forest.js",
@@ -592,7 +592,7 @@
       "description": "Dois elevadores independentes e manutenção preservada",
       "startLine": 0,
       "endLine": 0,
-      "sha256Body": "22551ac225ada5d35035e30f2b3e39bbe167db8d9eacdff93906fc8ad7a5d6e7"
+      "sha256Body": "2475c4a531cac15edbc6eb60a12a2dcdee6a180b0516ecc44d2396628e97794d"
     },
     {
       "file": "src/modules/68-civil-actions-transit.js",
@@ -628,17 +628,17 @@
     {
       "file": "src/modules/73-world-phone-dispatch.js",
       "description": "Celular do personagem e entrega física de veículos por NPC",
-      "sha256Body": "c8ebccc5d2da7407c25f6730d3ef79949fbf50c9cbee0028bb42152ff7bab5e8"
+      "sha256Body": "efd474175dd840c4bdec19ca85510e2684e858190220a91b9fc873eba1fb8115"
     },
     {
       "file": "src/modules/74-workshop-npc-service.js",
       "description": "Atendimento automático e retirada dos carros de NPCs",
-      "sha256Body": "b2bbe3976b53f2ea48b55ed9c6269b3e494819d4a7d8c1d3f0d8e18d1c0ad955"
+      "sha256Body": "a666ad8f91c4f5189e700ad61c4ef15fae290dd2611c8336a38e1bcd25ff4f00"
     },
     {
       "file": "src/modules/75-phone-orders.js",
       "description": "Compras pelo celular, recibos persistentes e entrega física de encomendas",
-      "sha256Body": "54691e8e68ca832f8d37e1715b4bceb1ab5e6288c28d0a5f5bca3a2e6b41c8fc"
+      "sha256Body": "0f1d728fc012581243b938e97f6ed9dee4b82a015f8e933cddee251367a54102"
     },
     {
       "file": "src/modules/76-player-journey.js",
@@ -674,27 +674,52 @@
     },
     {
       "file": "src/modules/87-rio-geography.js",
-      "sha256Body": "67f3944af907c44d756110757cc818d9fc41e458a610f15865ddf03bb2f192e2"
+      "sha256Body": "2beedefe4ea8112e4231d4101fc0210b1d6c29e4feb95ad1ed4a0dd6a59f84a6"
     },
     {
       "file": "src/modules/88-rio-places.js",
-      "sha256Body": "ae3f8507c62b1ab68e3cd92cafcf87365786dad25706cd6fce2d5c6e8e921bf1"
+      "sha256Body": "e67da086a330efbc0725bad2a7ea8bd7d9580f32130eff98970bf850a3a040c9"
     },
     {
       "file": "src/modules/89-rio-map-world.js",
-      "sha256Body": "cb815ff46b55b3229b1a59eacff282916ee7bcdc2833f406286e3847352ac785"
+      "sha256Body": "2a6a858e151fb4bb0f96f503cc0c04e9203a325314151f21abb2895546c2d95b"
     },
     {
       "file": "src/modules/90-rio-map-activities.js",
-      "sha256Body": "d77ab5c068b8d7513ead77fb806818156e8cbfc253a8b6742eee64a8021058a9"
+      "sha256Body": "c14f6eedc4e628d51d34333e0b967157303d0e5b2b0f02ffeaac2f36f6506f68"
     },
     {
       "file": "src/modules/91-rio-map-entry-and-ui.js",
-      "sha256Body": "cacdfea294ead5f813f4646d896e3c0cbf46c7a7e64c16727caf1b99530c3ccc"
+      "sha256Body": "e5c9d3d38bf472c3fd3d9cd660ae4528e13ed2d09c04bf46487b32027ac59fef"
     },
     {
       "file": "src/modules/92-rio-waterfront.js",
       "sha256Body": "1b29cdb890478bcc96085e0f98c54334407a55ea387cbfcc5f2fadb5e6f8fd5f"
+    },
+    {
+      "file": "src/modules/93-rio-city-services.js",
+      "description": "Native city services on the mapped Rio Preto scene",
+      "sha256Body": "ac5ae5e729e685e7a64b5be78aac9c0eab6909772fac3458576a007f5e7b0c89"
+    },
+    {
+      "file": "src/modules/94-rio-community.js",
+      "description": "Native family and community activities on the geographic Rio Preto map",
+      "sha256Body": "4b89b19f0ecaf3340609d34c46266c617308e5acc120ddb04ca18cf08d938013"
+    },
+    {
+      "file": "src/modules/95-rio-open-buildings.js",
+      "description": "Playable residences, shops, bakery and oil service",
+      "sha256Body": "b06a5a96bc5352eb3b969d51fa2d464104a9330be6c3df8111e68515a06ca729"
+    },
+    {
+      "file": "src/modules/96-rio-airport.js",
+      "description": "Mapped SBSR airport and original free-flight controls",
+      "sha256Body": "29219c6e004f8f6748aee90f7e1017529c144aa5fe4c9c1ac47b4a955b0fceb5"
+    },
+    {
+      "file": "src/modules/97-rio-map-entrances.js",
+      "description": "Streamed doors and on-demand interiors",
+      "sha256Body": "464818832bf50639240f470493c80f4098afdb065970b1b79300c962b027e3d6"
     }
   ],
   "styles": [

@@ -57,7 +57,11 @@
     const saved=rioMapSave();
     if(player.vehicle)rioRecordVehiclePose(currentVehicleRef(),player.x,player.z,player.car.heading);
     if(player.boating)rioRecordBoatPose();
-    if(!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
+    const residence=[...rioMap.sites.values()].find(room=>room.door&&room.forSite(player.x,player.z,-.06));
+    if(rioMap.activeBuilding||residence){
+      const {x,z}=rioMap.activeBuilding?.outside||{x:residence.site.entry[0],z:residence.site.entry[1]};
+      saved.position={x,z,yaw:cameraYaw};
+    }else if(!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&!currentHouse&&
       !positionBlockedForPlayer(player.x,player.z,.32,{ignoreTraffic:true,allowWater:false})){
       saved.position={x:+player.x.toFixed(2),z:+player.z.toFixed(2),yaw:+cameraYaw.toFixed(4)};
     }else if(!saved.position&&Number.isFinite(player.lastSafeX)&&Number.isFinite(player.lastSafeZ)){
@@ -147,14 +151,23 @@
     if(!road.oneway)for(let d=3;d<length-3;d+=6)strip('lane',0,.10,d/length,Math.min(length-2,d+2.6)/length,y+.005);
   }
   function rioDrawBuilding(surface,batch,building){
-    const {id,height:h,kind,rings}=building;
+    const {id,height:h,kind,rings,door}=building;
     const palate=[0xc7b8a6,0xa9ada3,0xd4c3a8,0xb6a59b,0xb3bfc0,0xbc9d86,0xc8c0b5];
     const color=palate[id%palate.length],house=['house','residential','detached','terrace'].includes(kind);
-    surface.polygon('building',rings,h,house?0x9b6655:0xa49b8b);
     const wallH=h;
     for(const ring of rings)for(let i=0,j=ring.length-1;i<ring.length;j=i++){
       const a=ring[j],b=ring[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);
-      surface.quad('building',[a[0],0,a[1]],[b[0],0,b[1]],[b[0],wallH,b[1]],[a[0],wallH,a[1]],color);
+      const face=(start,end,bottom)=>{
+        const at=(t,y)=>[lerp(a[0],b[0],t),y,lerp(a[1],b[1],t)];
+        surface.quad('building',at(start,bottom),at(end,bottom),at(end,wallH),at(start,wallH),color);
+      };
+      if(door&&ring===rings[0]&&i===door.edge){
+        const low=door.fraction-.76/length,high=door.fraction+.76/length;
+        face(0,low,0);face(high,1,0);face(low,high,2.19);
+        const {yaw}=door,s=Math.sin(yaw),c=Math.cos(yaw);
+        for(const side of [-1,1])batch.part('box',door.x+c*.78*side,1.08,door.z-s*.78*side,.10,2.16,.15,0x455659,yaw);
+        batch.part('box',door.x+s*.07,.036,door.z+c*.07,1.61,.071,.54,0x988b78,yaw);
+      }else face(0,1,0);
       if(ring!==rings[0]||length<3.5||length>55)continue;
       const normalX=(a[1]-b[1])/length,normalZ=(b[0]-a[0])/length;
       const inside=rioInsideRing((a[0]+b[0])/2+normalX*.1,(a[1]+b[1])/2+normalZ*.1,ring),sign=inside?-1:1;
@@ -162,9 +175,23 @@
       const n=Math.floor(length/3.3);
       for(let level=0;level<levels;level++)for(let c=1;c<=n;c++){
         const t=c/(n+1),x=a[0]+(b[0]-a[0])*t+sign*normalX*.055,z=a[1]+(b[1]-a[1])*t+sign*normalZ*.055;
+        if(door&&i===door.edge&&!level&&Math.abs(t-door.fraction)*length<1.5)continue;
         batch.part('box',x,1.68+level*3.05,z,1.10,.91,.07,house?0x65767a:0x536e75,angle);
       }
     }
+  }
+  function rioMakeBuildingRoofs(tile){
+    const roof=new THREE.Group(),surface=rioSurfaceBatch();roof.name='RIO_MAPPED_ROOFS';
+    for(const b of tile.buildings){
+      if(b===rioMap.activeBuilding?.building)continue;
+      surface.polygon('building',b.rings,b.height,RIO_HOUSE_USE.has(b.kind)?0x9b6655:0xa49b8b);
+    }
+    surface.commit(roof);return roof;
+  }
+  function rioRefreshBuildingRoofs(key){
+    const mounted=rioMap.tiles.get(key);if(!mounted)return;
+    mounted.roofs.parent?.remove(mounted.roofs);rioDisposeTileObjects(mounted.roofs);
+    mounted.roofs=rioMakeBuildingRoofs(rioMap.geo.tiles.get(key));mounted.root.add(mounted.roofs);
   }
   function rioMountTile(tile){
     if(rioMap.tiles.has(tile.key))return;
@@ -183,9 +210,10 @@
       const room=rioMountPlace(site,root);
       if(room)rooms.push({site,room});
     }
+    const roofs=rioMakeBuildingRoofs(tile);root.add(roofs);
     surface.commit(root);props.commit();
     worldGroup.add(root);
-    rioMap.tiles.set(tile.key,{root,rooms});
+    rioMap.tiles.set(tile.key,{root,rooms,roofs});
   }
   function rioUnloadTile(key){
     const mounted=rioMap.tiles.get(key);
@@ -195,12 +223,17 @@
       for(const collider of room.colliders)doomed.add(collider);
       for(const id of room.actions)actions.add(id);
       rioMap.sites.delete(site.id);
+      if(room.npcs?.length){const leaving=new Set(room.npcs);world.npcs=world.npcs.filter(npc=>!leaving.has(npc));}
       if(rioMap.order?.site===site.id)rioMap.order=null;
     }
     if(doomed.size)world.colliders=world.colliders.filter(candidate=>!doomed.has(candidate));
     if(actions.size)world.interactables=world.interactables.filter(action=>!actions.has(action.id));
     mounted.root.parent?.remove(mounted.root);
-    mounted.root.traverse(object=>{
+    rioDisposeTileObjects(mounted.root);
+    rioMap.tiles.delete(key);
+  }
+  function rioDisposeTileObjects(root){
+    root.traverse(object=>{
       if(object.isMesh)object.geometry?.dispose();
       // Instanced surfaces use shared materials. Signs and room lamps own their material.
       if(object.material?.isMeshBasicMaterial&&!Object.values(rioMap.materials).includes(object.material)){
@@ -209,7 +242,6 @@
         object.material.map.dispose();object.material.dispose();
       }
     });
-    rioMap.tiles.delete(key);
   }
   function rioStreamMap(position=player,immediate=false){
     const ix=Math.floor(position.x/rioCityTileSize),iz=Math.floor(position.z/rioCityTileSize);
@@ -243,6 +275,11 @@
     rioStreamMap(rioMapStartPoint(),true);
     createWaypointMarker();
     rioBuildFleetParking();
+    rioBuildWorkshop();
+    rioBuildEmergencyServices();
+    rioBuildCommunity();
+    rioBuildAirport();
+    rioBuildAmbientAccess();
     rioBuildWaterfront();
     rioPrepareWaterfrontRun();
   }
@@ -250,6 +287,7 @@
   function rioMapStep(dt){
     if(paused)return;
     pollGamepad();
+    if(otGames.active){rioStepFlight(dt);return;}
     const before={x:player.x,z:player.z};
     updatePlayer(dt);
     if(player.vehicle){
@@ -270,19 +308,23 @@
     if(now>=rioMap.lastStream){
       rioMap.lastStream=now+66;
       rioStreamMap();
-      rioMap.indoors=false;
+      rioMap.indoors=rioUpdateAmbientRoom();rioMap.indoorRoom=null;
       for(const {rooms} of rioMap.tiles.values())for(const {site,room} of rooms){
         if(room.roof){
           room.roof.visible=!room.forSite(player.x,player.z,-.22);
           rioMap.indoors||=!room.roof.visible;
+          if(!room.roof.visible)rioMap.indoorRoom=room;
         }
         if(rioMap.order?.site===site.id&&Math.hypot(player.x-site.x,player.z-site.z)>Math.max(site.w,site.d)+8){
           rioMap.order=null;if(room.servedDish)room.servedDish.visible=false;
         }
       }
     }
+    for(const room of rioMap.sites.values())if(room.server||room.door)rioUpdatePlaceService(room.site,room,dt);
     updateRioMapActors(dt);
     updateRioWaterfront(dt);
+    updateWorldPhone(dt);
+    rioUpdateCommunity(dt);
     const waterMap=rioMap.materials.water.map;
     waterMap.offset.x=(waterMap.offset.x+dt*.013)%1;
     waterMap.offset.y=(waterMap.offset.y+dt*.007)%1;
@@ -294,13 +336,22 @@
   }
 
   function rioCameraObstacle(x,y,z){
-    for(const b of rioMap.geo.buildings.query(x,z,.29))if(y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
+    for(const b of rioMap.geo.buildings.query(x,z,.29))if(b!==rioMap.activeBuilding?.building&&y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
     return rioBoxCellCandidates(x,z,.31).some(c=>c.height>1.5&&y<c.height+.19&&rioBoxContains(c,x,z,.24));
   }
   function rioAdjustCamera(desired,look){
     if(SPORTS_V705.active)return;
     const pose=characterActivities.session?.phase==='perform'?characterActivities.session.pose:null;
     const x=pose?.x??player.x,z=pose?.z??player.z,originY=player.y+(player.vehicle?1.55:1.45);
+    if(rioMap.indoors&&!player.vehicle&&!player.boating&&!world.workshopInspectionCamera?.active){
+      const room=rioMap.indoorRoom,portrait=innerHeight>innerWidth;
+      const cx=room?.site.x??x,cz=room?.site.z??z,focusX=x+clamp((cx-x)*.32,-2.8,2.8),focusZ=z+clamp((cz-z)*.32,-2.8,2.8);
+      const distance=clamp((portrait?6.9:5.9)+cameraZoom*.58,4.8,10.2);
+      const height=clamp((portrait?6.7:5.8)+cameraPitch*2.7+cameraZoom*.25,4.65,9.75);
+      desired.set(focusX-Math.sin(cameraYaw)*distance,player.y+height,focusZ+Math.cos(cameraYaw)*distance);
+      look.set(focusX,player.y+.74,focusZ);camera.fov=portrait?56:53;
+      return;
+    }
     const fuelSite=player.vehicle&&rioSiteByKey('posto_brasilia');
     if(fuelSite&&rioSiteContains(fuelSite,x,z,.8)){
       const distance=clamp(6.6+cameraZoom*.28,5.3,8.4),heading=player.car.heading;
@@ -325,4 +376,20 @@
     desired.set(x+dx*t,Math.max(player.y+3.30,lerp(originY,desired.y,t)),z+dz*t);
     look.set(x,player.y+(pose?.sitting?1.02:1.33),z);
     if(rioCameraObstacle(camera.position.x,camera.position.y,camera.position.z))camera.position.copy(desired);
+  }
+
+  function rioInteriorRender(){
+    const room=rioMap.indoorRoom;
+    if(!room||otGames.active||player.vehicle)return null;
+    const {x,z,yaw,w,d}=room.site,s=Math.sin(yaw),c=Math.cos(yaw),p=camera.position;
+    const lx=(p.x-x)*c-(p.z-z)*s,lz=(p.x-x)*s+(p.z-z)*c;
+    const alongX=Math.abs(lx/w)>Math.abs(lz/d),side=Math.sign(alongX?lx:lz)||1,key=(alongX?'x':'z')+side;
+    room.cameraPlanes??={};
+    if(!room.cameraPlanes[key]){
+      const normal=new THREE.Vector3(-(alongX?c:s)*side,0,-(alongX?-s:c)*side);
+      const edge=room.point(alongX?side*(w/2-.45):0,alongX?0:side*(d/2-.45));
+      room.cameraPlanes[key]=[new THREE.Plane().setFromNormalAndCoplanarPoint(normal,new THREE.Vector3(edge.x,0,edge.z))];
+    }
+    const before=renderer.clippingPlanes;renderer.clippingPlanes=room.cameraPlanes[key];
+    return()=>{renderer.clippingPlanes=before;};
   }

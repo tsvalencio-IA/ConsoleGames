@@ -86,6 +86,7 @@
     const details=mapLocationDetails(loc),mission=loc.missionTarget?' mission-target':'';return`<div class="map-selection detailed${mission}"><div class="map-selection-title"><b>${loc.icon} ${loc.name}</b><span>${loc.group}</span></div><p>${details.description}</p><div class="map-action-chips">${details.actions.map(action=>`<i>${action}</i>`).join('')}</div><footer><span>${mapDistance(loc)} m de distância</span><button class="btn primary compact" data-route-selected="${loc.id}">Ir para este local</button></footer></div>`;
   }
   function setWaypoint(id){
+    if(typeof inRioMap==='function'&&inRioMap())return rioFindWaypoint(id);
     const point=currentMapLocations().find(p=>p.id===id);if(!point)return;
     state.waypoint={id:point.id,name:point.name,x:point.x,z:point.z,navX:point.navX??point.x,navZ:point.navZ??point.z,arrived:false};world.routePath=navigationRoutePoints(navigationFocus(),state.waypoint);
     updateWaypointMarker();updateNavigation(0,true);saveState(true);closeModal();toast(`Destino marcado: ${point.name} • siga as setas azuis`,'good',2600);

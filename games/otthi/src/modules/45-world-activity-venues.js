@@ -101,7 +101,7 @@
     s.cleanup?.();const url=new URL(window.OTTHI_CANONICAL?.game(s.venue.slug) || '../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
   function venueOpen(id){
-    const v=WORLD_ACTIVITY_VENUES[id];
+    const v=inRioMap()?rioVenues.get(id):WORLD_ACTIVITY_VENUES[id];
     if(!v||!running||paused||worldVenues.session||otGames.active||currentHouse||player.vehicle||player.boating||player.transit.mode||activeRace||buildMode||SPORTS_V705.active||window.OTTHI_COOP?.active?.())return false;
     if(Math.hypot(player.x-v.navX,player.z-v.navZ)>4.5){setWaypoint('venue-'+id);toast('Siga o GPS até a entrada de '+v.label+'.','info',3000);return false;}
     closeModal();clearMovementInputs();savePlayerPosition(true);
@@ -139,7 +139,7 @@
     if(!window.WorldVenueTrip.applyResult(trip.token))return;
     if(worldVenues.session)venueClose();
     window.WorldVenueTrip.finish(trip.token);const clean=new URL(location.href);clean.searchParams.delete('otVenueReturn');history.replaceState(null,'',clean.href);
-    if(!running)startGame(false);else{paused=false;clearMovementInputs();updateContext(true);}
+    if(!running)startGame(false,new URL(trip.returnUrl).searchParams.get('map')==='rio-preto'?'rio-preto':null);else{paused=false;clearMovementInputs();updateContext(true);}
   }
   window.addEventListener('pageshow',()=>dbReady.then(venueResumeTrip));
   dbReady.then(venueResumeTrip);

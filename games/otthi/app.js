@@ -8,7 +8,7 @@
   function regionalRouteVisible(){
     return new URLSearchParams(window.location.search).get('map')==='roteiro-regional';
   }
-  const OTTHI_GAME_WEB_BUILD = '705.28.37-mapas-separados';
+  const OTTHI_GAME_WEB_BUILD = '705.28.38-rio-preto-vivo';
   window.OTTHI_GAME_VERSION = 705;
   window.OTTHI_GAME_BUILD = OTTHI_GAME_WEB_BUILD;
   const OTTHI_INDEX_BUILD = document.documentElement?.dataset?.otthiBuild || '';
@@ -388,7 +388,9 @@
       ['sport', 'Camiseta esportiva', '#237e61'],
       ['festival', 'Vestido de festa e leggings', '#ae4c78'],
       ['rain', 'Jaqueta corta-vento', '#da954a'],
-      ['hoodie', 'Moletom com capuz', '#66739c']
+      ['hoodie', 'Moletom com capuz', '#66739c'],
+      ['rio-polo', 'Polo vinho da cidade', '#862e4a'],
+      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2']
     ],
     legs: [
       ['original', 'Roupa original'],
@@ -401,7 +403,9 @@
       ['original', 'Calçado original'],
       ['runner', 'Tênis de corrida', '#45a7a3'],
       ['leather', 'Sapato de couro', '#634432'],
-      ['boot', 'Bota de passeio', '#725543']
+      ['boot', 'Bota de passeio', '#725543'],
+      ['rio-tenis', 'Tênis branco da orla', '#e6dfd5'],
+      ['rio-sapato', 'Sapato azul-marinho', '#263a58']
     ],
     hat: [
       ['original', 'Sem chapéu novo'],
@@ -436,6 +440,8 @@
     top: 'Roupas', legs: 'Calças e bermudas', shoes: 'Calçados', hat: 'Bonés e chapéus',
     glasses: 'Óculos', jewel: 'Colares e brincos', wrist: 'Relógios e pulseiras', bag: 'Mochilas'
   });
+  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68});
+  function rioWardrobeHasItem(id){return !RIO_WARDROBE_STORE[id]||!!state.cityServices?.rioMap?.wardrobePurchases?.[id];}
   const RIO_WARDROBE_PRESETS = Object.freeze({
     original: {label:'Visual original', outfit:{}},
     passeio: {label:'Passeio no bairro', outfit:{top:'linen',legs:'chino',shoes:'leather',hat:'panama',glasses:'copper',jewel:'necklace',wrist:'bracelet'}},
@@ -792,7 +798,7 @@
               <option value="">Personalizar</option>${Object.entries(RIO_WARDROBE_PRESETS).map(([key,preset])=>`<option value="${key}">${preset.label}</option>`).join('')}
             </select></label>
             <div class="rio-wardrobe-slots">${Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices])=>`
-              <label>${RIO_WARDROBE_LABELS[slot]}<select data-rio-wardrobe-slot="${slot}">${choices.map(([id,label])=>`<option value="${id}">${label}</option>`).join('')}</select></label>
+              <label>${RIO_WARDROBE_LABELS[slot]}<select data-rio-wardrobe-slot="${slot}">${choices.map(([id,label])=>`<option value="${id}" ${rioWardrobeHasItem(id)?'':'disabled'}>${label}${rioWardrobeHasItem(id)?'':' · à venda no shopping'}</option>`).join('')}</select></label>
             `).join('')}</div>
           </div>
         </div>
@@ -3000,13 +3006,13 @@
   function otthiHomeLotIndex(){let hash=2166136261;for(const char of otthiHomeIdentity()){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}return(hash>>>0)%OTTHI_PERSONAL_HOME_LOTS.length;}
   function otthiPersonalHomeLot(){const base=OTTHI_PERSONAL_HOME_LOTS[otthiHomeLotIndex()]||OTTHI_PERSONAL_HOME_LOTS[0],north=base.z<38;return{index:otthiHomeLotIndex(),home:{x:base.x,z:base.z},spawn:{x:base.x,z:base.z+5.2},garage:{x:Math.abs(base.x)<20?Math.sign(base.x)*23:Math.abs(base.x)===22?Math.sign(base.x)*25:base.x,z:base.z+(north?13:-13)}};}
   function v704PersonalHomeLotAt(x,z,margin=0){return OTTHI_PERSONAL_HOME_LOTS.some(lot=>Math.abs(Number(x)-lot.x)<=5.2+margin&&Math.abs(Number(z)-lot.z)<=4.3+margin);}
-  function worldLayoutPoint(id,fallback={x:0,z:0}){if(id==='home'||id==='spawn'||id==='homeGarage'){const personal=otthiPersonalHomeLot();return{...(id==='home'?personal.home:id==='spawn'?personal.spawn:personal.garage)};}const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
+  function worldLayoutPoint(id,fallback={x:0,z:0}){if(typeof inRioMap==='function'&&inRioMap()){if(id==='workshop')return {...RIO_WORKSHOP};if(id==='farm')return {...RIO_FARM};if(id==='playground'){const park=rioSiteByKey('parque-da-represa');return {x:park.entry[0],z:park.entry[1]};}if(id==='repairParking')return {x:RIO_WORKSHOP.x+11,z:RIO_WORKSHOP.z+2};}if(id==='home'||id==='spawn'||id==='homeGarage'){const personal=otthiPersonalHomeLot();return{...(id==='home'?personal.home:id==='spawn'?personal.spawn:personal.garage)};}const p=WORLD_LAYOUT_V704.points[id];return p?{x:Number(p.x),z:Number(p.z)}:{x:Number(fallback.x||0),z:Number(fallback.z||0)};}
   function worldLayoutRect(id){const zone=WORLD_LAYOUT_V704.zones[id];return zone?{...zone}:null;}
   function worldLayoutStructure(id){const item=WORLD_LAYOUT_V704.structures.find(entry=>entry.id===id);if(!item)return null;const p=item.point?worldLayoutPoint(item.point):item;return{...item,x:Number(item.x??p.x),z:Number(item.z??p.z)};}
   function v704RectOverlap(a,b,margin=0){return Math.abs(Number(a.x)-Number(b.x))<(Number(a.w)+Number(b.w))/2+margin&&Math.abs(Number(a.z)-Number(b.z))<(Number(a.d)+Number(b.d))/2+margin;}
   function v704PointInRect(point,rect,margin=0){return Math.abs(Number(point.x)-Number(rect.x))<=Number(rect.w)/2+margin&&Math.abs(Number(point.z)-Number(rect.z))<=Number(rect.d)/2+margin;}
   function v704RoadFootprint(road,includeSidewalk=true){const side=includeSidewalk?2.7:0;return{...road,w:Number(road.w)+(Number(road.w)>=Number(road.d)?0:side),d:Number(road.d)+(Number(road.w)>=Number(road.d)?side:0)};}
-  function v704WorldBounds(){return typeof inRioMap==='function'&&inRioMap()?rioMap.data.bounds:WORLD_LAYOUT_V704.bounds;}
+  function v704WorldBounds(){return typeof inRioMap==='function'&&typeof inRioMap==='function'&&inRioMap()?rioMap.data.bounds:WORLD_LAYOUT_V704.bounds;}
   function v704WorldSize(){const b=v704WorldBounds();return{w:b.maxX-b.minX,d:b.maxZ-b.minZ};}
   function v704ClampWorldPoint(x,z,margin=1){const b=v704WorldBounds();return{x:Math.max(b.minX+margin,Math.min(b.maxX-margin,Number(x)||0)),z:Math.max(b.minZ+margin,Math.min(b.maxZ-margin,Number(z)||0))};}
   function worldRoadBridgeHeightAt(x,z){for(const b of WORLD_LAYOUT_V704.roadBridges||[]){const d=Math.abs(x-b.x);if(d<=b.length/2&&Math.abs(z-b.z)<=b.width/2)return b.deckHeight*Math.min(1,(b.length/2-d)/((b.length-b.deckLength)/2));}return null;}
@@ -3439,7 +3445,9 @@
   function graphAdd(adj,a,b,w){if(!adj.has(a))adj.set(a,[]);if(!adj.has(b))adj.set(b,[]);adj.get(a).push({id:b,w});adj.get(b).push({id:a,w});}
   function graphShortest(nodes,adj,startId,endId){const dist=new Map([[startId,0]]),prev=new Map(),open=new Set(nodes.keys());while(open.size){let current=null,best=Infinity;for(const id of open){const d=dist.get(id)??Infinity;if(d<best){best=d;current=id;}}if(current===null||current===endId)break;open.delete(current);for(const e of adj.get(current)||[]){if(!open.has(e.id))continue;const nd=best+e.w;if(nd<(dist.get(e.id)??Infinity)){dist.set(e.id,nd);prev.set(e.id,current);}}}if(!dist.has(endId))return[];const ids=[];let id=endId;while(id){ids.push(id);if(id===startId)break;id=prev.get(id);}return ids.reverse().map(id=>nodes.get(id));}
   function buildRoutePoints(from,to){
-    const target={x:Number(to.navX??to.x),z:Number(to.navZ??to.z)},startProjection=nearestRoadProjection(from),targetProjection=nearestRoadProjection(target);
+    const target={x:Number(to.navX??to.x),z:Number(to.navZ??to.z)};
+    if(typeof inRioMap==='function'&&inRioMap())return rioGeoRoute(from,target,false,{connect:true});
+    const startProjection=nearestRoadProjection(from),targetProjection=nearestRoadProjection(target);
     if(!startProjection||!targetProjection)return compactRoute([from,target]);
     const cacheKey=`${startProjection.aId}:${startProjection.bId}:${Math.round(startProjection.point.x/4)},${Math.round(startProjection.point.z/4)}>${targetProjection.aId}:${targetProjection.bId}:${Math.round(targetProjection.point.x/4)},${Math.round(targetProjection.point.z/4)}`;
     const cached=world.navCache.get(cacheKey);if(cached)return compactRoute([{x:from.x,z:from.z},...cached.slice(1,-1),target]);
@@ -3449,6 +3457,16 @@
     for(const [id,projection] of [['START',startProjection],['TARGET',targetProjection]]){const a=nodes.get(projection.aId),b=nodes.get(projection.bId),p=nodes.get(id);graphAdd(adj,id,projection.aId,Math.hypot(p.x-a.x,p.z-a.z));graphAdd(adj,id,projection.bId,Math.hypot(p.x-b.x,p.z-b.z));}
     if(startProjection.aId===targetProjection.aId&&startProjection.bId===targetProjection.bId)graphAdd(adj,'START','TARGET',Math.hypot(startProjection.point.x-targetProjection.point.x,startProjection.point.z-targetProjection.point.z));
     const core=graphShortest(nodes,adj,'START','TARGET'),route=compactRoute([{x:from.x,z:from.z},...core,target]);world.navCache.set(cacheKey,route);if(world.navCache.size>60)world.navCache.delete(world.navCache.keys().next().value);return route;
+  }
+  function groundServiceRoadProjection(position){
+    if(typeof inRioMap==='function'&&inRioMap()){
+      const road=nearestRioRoad(position,false);
+      if(!road)return null;
+      const {a,b}=road.segment;
+      return {a:{x:a[0],z:a[1]},b:{x:b[0],z:b[1]},point:road.point,distance:distance2D(position,road.point)};
+    }
+    const road=nearestRoadProjection(position);
+    return road&&{...road,a:NAV_BASE_NODES[road.aId],b:NAV_BASE_NODES[road.bId]};
   }
   function buildTrafficRoute(points,closed=true){
     const anchors=compactRoute((points||[]).map(point=>{
@@ -3666,6 +3684,7 @@
     const details=mapLocationDetails(loc),mission=loc.missionTarget?' mission-target':'';return`<div class="map-selection detailed${mission}"><div class="map-selection-title"><b>${loc.icon} ${loc.name}</b><span>${loc.group}</span></div><p>${details.description}</p><div class="map-action-chips">${details.actions.map(action=>`<i>${action}</i>`).join('')}</div><footer><span>${mapDistance(loc)} m de distância</span><button class="btn primary compact" data-route-selected="${loc.id}">Ir para este local</button></footer></div>`;
   }
   function setWaypoint(id){
+    if(typeof inRioMap==='function'&&inRioMap())return rioFindWaypoint(id);
     const point=currentMapLocations().find(p=>p.id===id);if(!point)return;
     state.waypoint={id:point.id,name:point.name,x:point.x,z:point.z,navX:point.navX??point.x,navZ:point.navZ??point.z,arrived:false};world.routePath=navigationRoutePoints(navigationFocus(),state.waypoint);
     updateWaypointMarker();updateNavigation(0,true);saveState(true);closeModal();toast(`Destino marcado: ${point.name} • siga as setas azuis`,'good',2600);
@@ -5989,10 +6008,11 @@
   function serviceKindForJob(jobOrId){const id=typeof jobOrId==='string'?jobOrId:jobOrId?.id;return SERVICE_JOB_KIND[id]||'';}
   function serviceVehiclePools(kind=''){if(kind==='police')return world.policeCars||[];if(kind==='firefighter')return world.fireTrucks||[];if(kind==='paramedic')return world.ambulances||[];return[...(world.policeCars||[]),...(world.fireTrucks||[]),...(world.ambulances||[])];}
   function serviceVehicleById(id=''){return serviceVehiclePools().find(vehicle=>vehicle.id===id)||null;}
-  function currentServiceMissionJob(){return state.career?.activeJob||(typeof activeCoopServiceJob==='function'?activeCoopServiceJob():null);}
+  function currentServiceMissionJob(){if(typeof inRioMap==='function'&&inRioMap())return rioMapSave().career?.activeJob||null;return state.career?.activeJob||(typeof activeCoopServiceJob==='function'?activeCoopServiceJob():null);}
   function serviceVehicleAvailable(vehicle,job=null){if(!vehicle||vehicle.occupied||vehicle.incidentTargetId||vehicle.targetFireId||vehicle.group?.visible===false)return false;const token=job?.instanceId||currentServiceMissionJob()?.instanceId||'';return!vehicle.missionReservedFor||vehicle.missionReservedFor===token;}
   function serviceVehicleAppearance(kind){if(kind==='police')return{chassis:0x26384e,primary:0xf4f7fb,primaryDark:0x183d70,secondary:0x215ea8,glass:0x13253a};if(kind==='firefighter')return{chassis:0x263746,primary:0xc93431,primaryDark:0x982622,secondary:0xf2d84d,glass:0x183448};return{chassis:0x263746,primary:0xf6f8fa,primaryDark:0xd83e42,secondary:0xe34848,glass:0x164055};}
   function safeServiceDepot(kind,index=0){
+    if(typeof inRioMap==='function'&&inRioMap())return rioServiceDepot(kind);
     const list=SERVICE_DEPOTS[kind]||SERVICE_DEPOTS.police,base=list[index%list.length]||list[0],projection=nearestRoadProjection(base),point=projection?.point||base,heading=Number(base.heading||0),roads=(typeof WORLD_MAP_ROADS!=='undefined'?WORLD_MAP_ROADS:[]).filter(r=>Math.abs(point.x-r.x)<=r.w/2&&Math.abs(point.z-r.z)<=r.d/2),road=roads.sort((a,b)=>Math.min(a.w,a.d)-Math.min(b.w,b.d))[0],half=road?Math.min(road.w,road.d)/2:4.5,offset=kind==='police'?1.35:Math.max(3.8,half-.45),fx=Math.sin(heading),fz=Math.cos(heading);
     let fallback={x:point.x-fz*offset,z:point.z+fx*offset,heading};
     for(const side of[1,-1])for(const along of[0,8,-8,16,-16]){const candidate={x:point.x-fz*offset*side+fx*along,z:point.z+fx*offset*side+fz*along,heading:side===1?heading:heading+Math.PI};if(!pointOnRoad(candidate.x,candidate.z,.05))continue;const body=incidentResponderBody({serviceType:kind},candidate.x,candidate.z,candidate.heading);if([[-body.w,-body.l],[body.w,-body.l],[-body.w,body.l],[body.w,body.l]].some(([lx,lz])=>!v704RoadAt(candidate.x+fz*lx+fx*lz,candidate.z-fx*lx+fz*lz,.05,true)))continue;world.trafficSnapshot=null;
@@ -6076,7 +6096,7 @@
     const lightBar=new THREE.Group();lightBar.position.set(0,1.36,-.2);g.add(lightBar);const red=premiumBox(.62,.18,.34,mat(0xe9404a,{emissive:0xb10e22,emissiveIntensity:.9}),-.34,0,0,lightBar),cyan=premiumBox(.62,.18,.34,mat(0x35bfff,{emissive:0x087db4,emissiveIntensity:.9}),.34,0,0,lightBar);
     const sign=new THREE.Mesh(new THREE.PlaneGeometry(.72,.72),new THREE.MeshStandardMaterial({map:iconTexture('★','#ffffff','#215ea8'),transparent:true,side:THREE.DoubleSide}));sign.position.set(1.02,.72,.2);sign.rotation.y=Math.PI/2;g.add(sign);
     const wheels=[];for(const p of [[-.94,.28,-.88],[.94,.28,-.88],[-.94,.28,.88],[.94,.28,.88]]){const wheel=premiumCylinder(.36,.25,0x10151d,p[0],p[1],p[2],g,14);wheel.rotation.z=Math.PI/2;wheels.push(wheel);}
-    g.traverse(o=>{if(o.isMesh)addVoxelOutline(o,0x132238,.22);});const car={id,group:g,route,routeIndex:(routeIndex+1)%route.length,speed:8.1,currentSpeed:0,wheels,red,cyan,roadsideDoorPivot,roadsideDoor,roadsideDoorOpen:0,npcTarget:'',npcChaseUntil:0,incidentTargetId:'',responseRoute:[],responseIndex:0};worldGroup.add(g);world.policeCars.push(car);return registerServiceVehicle(car,'police',world.policeCars.length-1);
+    g.traverse(o=>{if(o.isMesh)addVoxelOutline(o,0x132238,.22);});const car={id,group:g,route,routeIndex:route.length?(routeIndex+1)%route.length:0,speed:8.1,currentSpeed:0,wheels,red,cyan,roadsideDoorPivot,roadsideDoor,roadsideDoorOpen:0,npcTarget:'',npcChaseUntil:0,incidentTargetId:'',responseRoute:[],responseIndex:0};worldGroup.add(g);world.policeCars.push(car);return registerServiceVehicle(car,'police',world.policeCars.length-1);
   }
   function createAmbulance(id='ambulance-1'){
     const g=new THREE.Group(),white=renderMat(0xf6f8fa,{roughness:.4,metalness:.12}),red=renderMat(0xe34848,{roughness:.36,metalness:.2}),glass=materials.cityGlass||renderMat(0x85d9f2,{transparent:true,opacity:.62});
@@ -6188,10 +6208,10 @@
   }
   function incidentResponderPoseClear(vehicle,x,z,yaw,includeTraffic=true){
     const body=incidentResponderBody(vehicle,x,z,yaw),radius=Math.hypot(body.w,body.l),base=groundHeightAt(x,z),depotConnector=vehicle.home&&Math.hypot(x-vehicle.home.x,z-vehicle.home.z)<8;
-    for(const other of world.vehicles||[]){if(other===vehicle||!other.group?.visible||other.garageStored||state.vehicles?.garage?.stored?.[other.id]||(typeof workshopNpcWasCollected==='function'&&workshopNpcWasCollected(other)))continue;if(trafficBodiesOverlap(body,trafficBody(other),.12))return false;}
+    for(const other of world.vehicles||[]){if(other===vehicle||!other.group?.visible||other.garageStored||(typeof inRioMap==='function'&&inRioMap()?vehicleStoredOnMap(other.id):state.vehicles?.garage?.stored?.[other.id])||(typeof workshopNpcWasCollected==='function'&&workshopNpcWasCollected(other)))continue;if(trafficBodiesOverlap(body,trafficBody(other),.12))return false;}
     if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,radius+12))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
     for(const collider of nearbyWorldColliders(x,z,radius+.3)){if(collider.disabled||Number(collider.height||2)<.2)continue;if(trafficBodiesOverlap(body,{x:collider.x,z:collider.z,w:collider.w/2,l:collider.d/2,s:0,c:1},.10))return false;}
-    for(const [lx,lz]of [[-body.w,-body.l],[body.w,-body.l],[-body.w,body.l],[body.w,body.l],[0,0]]){const px=x+body.c*lx+body.s*lz,pz=z-body.s*lx+body.c*lz;if(!(pointOnRoad(px,pz,.05)||depotConnector&&v704RoadAt(px,pz,.05,true))||Math.abs(groundHeightAt(px,pz)-base)>.65)return false;}
+    for(const [lx,lz]of [[-body.w,-body.l],[body.w,-body.l],[-body.w,body.l],[body.w,body.l],[0,0]]){const px=x+body.c*lx+body.s*lz,pz=z-body.s*lx+body.c*lz;if(typeof inRioMap==='function'&&inRioMap()&&(rioFootprintBlock(px,pz,.12)||rioWaterAt(px,pz)))return false;if(!(pointOnRoad(px,pz,.05)||depotConnector&&v704RoadAt(px,pz,.05,true))||Math.abs(groundHeightAt(px,pz)-base)>.65)return false;}
     const nearPerson=p=>{const dx=Number(p.x)-x,dz=Number(p.z)-z,side=Math.max(0,Math.abs(dx*body.c-dz*body.s)-body.w),forward=Math.max(0,Math.abs(dx*body.s+dz*body.c)-body.l);return Math.hypot(side,forward)<.65;};
     if(!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&nearPerson(player))return false;
     for(const p of remotePresence.values())if(!p.vehicle&&!p.boating&&!p.transitMode&&nearPerson(p))return false;
@@ -6206,12 +6226,12 @@
     return true;
   }
   function incidentResponderDeparture(vehicle,from){
-    const road=nearestRoadProjection(from);if(!road||road.distance<1.7)return null;
+    const project=typeof inRioMap==='function'&&inRioMap()?groundServiceRoadProjection:nearestRoadProjection,road=project(from);if(!road||road.distance<1.7)return null;
     const yaw=Number(vehicle.group.rotation.y||0),fx=Math.sin(yaw),fz=Math.cos(yaw);
     // Long vehicles leave a curb longitudinally. A perpendicular connection
     // to the GPS centreline rotates their rear through the road edge.
     for(const length of[2,4,6,8,12,18,24])for(const lane of[0,1.35]){
-      const projected=nearestRoadProjection({x:from.x+fx*length,z:from.z+fz*length});if(!projected)continue;
+      const projected=project({x:from.x+fx*length,z:from.z+fz*length});if(!projected)continue;
       const point={x:projected.point.x-fz*lane,z:projected.point.z+fx*lane};
       const heading=Math.atan2(point.x-from.x,point.z-from.z);
       if(Math.cos(heading-yaw)<.35||!incidentResponderPoseClear(vehicle,from.x,from.z,heading,false))continue;
@@ -6302,21 +6322,21 @@
   }
   function createIncidentVisual(x,z,fire=false){const group=new THREE.Group();group.position.set(x,0,z);worldGroup.add(group);for(const ox of [-1.55,-.52,.52,1.55]){premiumCylinder(.18,.72,0xf47b20,ox,.36,.95,group,8);premiumBox(.52,.1,.52,0xffffff,ox,.16,.95,group);}premiumBox(3.8,.08,.14,0xf5c542,0,.72,.95,group);if(fire){for(const ox of [-.4,.4]){const flame=new THREE.Mesh(new THREE.ConeGeometry(.3,.85,7),renderMat(0xff6a2f,{emissive:0xd83b12,emissiveIntensity:1.3}));flame.position.set(ox,.48,0);group.add(flame);}}const beacon=new THREE.Mesh(new THREE.TorusGeometry(2.35,.07,8,40),renderMat(0xffc928,{emissive:0xc07800,emissiveIntensity:.55,transparent:true,opacity:.8}));beacon.rotation.x=Math.PI/2;beacon.position.y=.08;group.add(beacon);return group;}
   function createTrafficIncidentAt(x,z,severity='minor',actors=[]){
-    if(world.activeIncident||currentHouse)return null;if(actors.length>=2&&trafficIncidentWorkshopProtected(x,z)){clearWorkshopTrafficChoke(actors[0],actors[1]);return null;}const now=performance.now(),fire=severity==='fire',projection=nearestRoadProjection({x,z})?.point||{x,z},group=createIncidentVisual(x,z,fire),incident={id:`incident-${++world.emergencySeq}`,x,z,navX:projection.x,navZ:projection.z,group,fire,startedAt:now,resolved:false,required:{police:true,paramedic:true,firefighter:true},arrived:{police:false,paramedic:false,firefighter:false},tasks:{police:false,paramedic:false,firefighter:false},playerAssigned:{},responders:{},actorStates:[],actors:actors.map(item=>item.ref).filter(Boolean),physicalArrivals:{},contingencyEvents:[],dispatches:{},serviceElapsedMs:0,serviceBudgetMs:30000,readyAt:0,lastDispatchAt:now,backupAt:now+10000,hardClearAt:now+30000};world.activeIncident=incident;world.trafficIncidents.push(incident);if(actors.length>=2)separateIncidentActors(actors[0],actors[1]);for(const actor of actors)lockIncidentActor(actor,incident);if(actors.some(actor=>actor.id==='player-car')){player.car.speed=0;state.stats.accidentsHelped=(state.stats.accidentsHelped||0)+1;}
+    if(world.activeIncident||currentHouse)return null;if(actors.length>=2&&trafficIncidentWorkshopProtected(x,z)){clearWorkshopTrafficChoke(actors[0],actors[1]);return null;}const now=performance.now(),fire=severity==='fire',projection=(typeof inRioMap==='function'&&inRioMap()?groundServiceRoadProjection({x,z}):nearestRoadProjection({x,z}))?.point||{x,z},group=createIncidentVisual(x,z,fire),incident={id:`incident-${++world.emergencySeq}`,x,z,navX:projection.x,navZ:projection.z,group,fire,startedAt:now,resolved:false,required:{police:true,paramedic:true,firefighter:true},arrived:{police:false,paramedic:false,firefighter:false},tasks:{police:false,paramedic:false,firefighter:false},playerAssigned:{},responders:{},actorStates:[],actors:actors.map(item=>item.ref).filter(Boolean),physicalArrivals:{},contingencyEvents:[],dispatches:{},serviceElapsedMs:0,serviceBudgetMs:30000,readyAt:0,lastDispatchAt:now,backupAt:now+10000,hardClearAt:now+30000};world.activeIncident=incident;world.trafficIncidents.push(incident);if(actors.length>=2)separateIncidentActors(actors[0],actors[1]);for(const actor of actors)lockIncidentActor(actor,incident);if(actors.some(actor=>actor.id==='player-car')){player.car.speed=0;state.stats.accidentsHelped=(state.stats.accidentsHelped||0)+1;}
     registerInteractable({id:`assist-${incident.id}`,type:'trafficIncident',icon:fire?'🔥':'🚑',label:fire?'Atender acidente e princípio de incêndio':'Atender acidente com segurança',radius:5.4,priority:252,getPos:()=>({x:incident.x,z:incident.z}),available:()=>world.activeIncident===incident&&!incident.resolved,action:()=>assistTrafficIncident(incident)});
     dispatchIncidentResponders(incident);state.cityServices.emergencyCalls=(state.cityServices.emergencyCalls||0)+1;toast(fire?'🚨 Acidente com princípio de incêndio: polícia, resgate e bombeiros acionados.':'🚨 Acidente: veículos parados; polícia, resgate e bombeiros acionados.','warn',3400);saveState();return incident;
   }
   function createTrafficIncident(a,b,severity='minor'){if(!a||!b)return null;const x=(a.group.position.x+b.group.position.x)/2,z=(a.group.position.z+b.group.position.z)/2;return createTrafficIncidentAt(x,z,severity,[a,b]);}
-  function ensureActiveTrafficIncident(force=false){if(world.activeIncident)return world.activeIncident;if(!force)return null;const site=TRAINING_INCIDENT_SITES[world.emergencySeq%TRAINING_INCIDENT_SITES.length],projection=nearestRoadProjection(site)?.point||site;return createTrafficIncidentAt(projection.x,projection.z,'minor',[]);}
+  function ensureActiveTrafficIncident(force=false){if(world.activeIncident)return world.activeIncident;if(!force)return null;const site=typeof inRioMap==='function'&&inRioMap()?rioTrainingIncidentPoint():TRAINING_INCIDENT_SITES[world.emergencySeq%TRAINING_INCIDENT_SITES.length];if(!site)return null;const projection=groundServiceRoadProjection(site)?.point||site;return createTrafficIncidentAt(projection.x,projection.z,'minor',[]);}
   function incidentResponderPoint(incident,kind,vehicle,reselect=false){
-    incident.staging||={};if(reselect)delete incident.staging[kind];if(incident.staging[kind])return incident.staging[kind];const road=nearestRoadProjection({x:incident.navX,z:incident.navZ}),a=road&&NAV_BASE_NODES[road.aId],b=road&&NAV_BASE_NODES[road.bId];if(!a||!b)return{x:incident.navX,z:incident.navZ};
+    incident.staging||={};if(reselect)delete incident.staging[kind];if(incident.staging[kind])return incident.staging[kind];const road=groundServiceRoadProjection({x:incident.navX,z:incident.navZ}),a=road?.a,b=road?.b;if(!a||!b)return{x:incident.navX,z:incident.navZ};
     const d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz),offset=kind==='police'?9:kind==='paramedic'?17:26;
     for(const along of[offset,-offset,offset+9,-offset-9])for(const side of[2.5,-2.5,1.35,-1.35,3.3,-3.3]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(!pointOnRoad(p.x,p.z,.05))continue;if(!incidentResponderPoseClear(vehicle,p.x,p.z,yaw,true))continue;if(Object.values(incident.staging).some(q=>Math.hypot(q.x-p.x,q.z-p.z)<8))continue;incident.staging[kind]=p;return p;}
     return{x:incident.navX-fx*offset,z:incident.navZ-fz*offset};
   }
   function dispatchIncidentResponder(incident,kind){
-    const job=state.career?.activeJob;if(job&&serviceKindForJob(job)===kind){incident.playerAssigned[kind]=true;job.emergencyIncidentId=incident.id;job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;reserveMissionServiceVehicle(job,{waypoint:true});return null;}
-    const candidates=serviceVehiclePools(kind).filter(v=>serviceVehicleAvailable(v,null)).map(vehicle=>{const target=incidentResponderPoint(incident,kind,vehicle,true),route=incidentResponderRoute(vehicle,target);return{vehicle,target,route,distance:routeLength(route)};}).sort((a,b)=>a.distance-b.distance||String(a.vehicle.id).localeCompare(String(b.vehicle.id)));
+    const job=currentServiceMissionJob();if(job&&serviceKindForJob(job)===kind){incident.playerAssigned[kind]=true;job.emergencyIncidentId=incident.id;job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;reserveMissionServiceVehicle(job,{waypoint:true});return null;}
+    const candidates=serviceVehiclePools(kind).filter(v=>serviceVehicleAvailable(v,null)).map(vehicle=>{const target=incidentResponderPoint(incident,kind,vehicle,true),route=incidentResponderRoute(vehicle,target);return{vehicle,target,route,distance:routeLength(route)};}).filter(({route})=>!(typeof inRioMap==='function'&&inRioMap())||route.length>=2).sort((a,b)=>a.distance-b.distance||String(a.vehicle.id).localeCompare(String(b.vehicle.id)));
     const selected=candidates[0];if(!selected)return null;const {vehicle,target,route,distance}=selected;incident.staging[kind]={...target};vehicle.incidentTargetId=incident.id;setIncidentResponderRoute(vehicle,target,route);incident.responders[kind]=vehicle.id;
     incident.dispatches||={};(incident.dispatches[kind]||=[]).push({vehicleId:vehicle.id,at:performance.now(),distance,from:{x:vehicle.group.position.x,z:vehicle.group.position.z},target:{...target}});
     incident.serviceBudgetMs=Math.max(Number(incident.serviceBudgetMs||30000),Math.min(90000,18000+distance/Math.max(1,vehicle.speed)*2200));incident.hardClearAt=incident.startedAt+incident.serviceBudgetMs;return vehicle;
@@ -6350,14 +6370,17 @@
     incident.physicalArrivals[kind]={vehicleId:String(vehicle?.id||state.career?.activeJob?.serviceVehicleId||''),at:now,simulationMs:Number(incident.serviceElapsedMs||0),distance,x:vehicle?.group?.position?.x??player.x,z:vehicle?.group?.position?.z??player.z,source:vehicle?'autonomous':'player',afterContingency:!!incident.forcedClear||!!incident.contingencyEvents?.some(event=>event.kind===kind)};
   }
   function assistTrafficIncident(incident){
-    if(!incident||incident.resolved||world.activeIncident!==incident){toast('A ocorrência já foi encerrada.','good');return false;}const job=state.career?.activeJob,kind=serviceKindForJob(job);if(!kind||job.emergencyIncidentId!==incident.id){toast('A área está isolada. Aceite uma missão de emergência para ajudar.','warn',2400);return false;}if(!job.serviceVehicleArrived){toast(`Chegue com ${kind==='police'?'a viatura':kind==='firefighter'?'o caminhão dos bombeiros':'a ambulância'} antes de iniciar o atendimento.`,'warn',2500);return false;}if(player.vehicle){toast('Estacione, saia do veículo e use AÇÃO junto à ocorrência.','warn',2200);return false;}if(Math.hypot(player.x-incident.x,player.z-incident.z)>5.5){toast('Aproxime-se da área sinalizada.','warn');return false;}incident.tasks[kind]=true;job.sceneTaskCompleted=true;setMissionState(job,MISSION_STATES.RETURNING,'scene-secured');player.sitUntil=performance.now()+1800;for(let i=0;i<7;i++)setTimeout(()=>spawnDust(incident.x+(Math.random()-.5)*2.5,incident.z+(Math.random()-.5)*2.5,kind==='firefighter'?0x68d8ff:kind==='paramedic'?0xe9f5ff:0xf6d148),i*100);toast(kind==='police'?'Área isolada e trânsito protegido.':kind==='firefighter'?(incident.fire?'Princípio de incêndio controlado.':'Risco de incêndio verificado e área protegida.'):'Primeiros socorros concluídos com segurança.','good',2300);saveState(true);return true;
+    if(!incident||incident.resolved||world.activeIncident!==incident){toast('A ocorrência já foi encerrada.','good');return false;}const job=typeof inRioMap==='function'&&inRioMap()?currentServiceMissionJob():state.career?.activeJob,kind=serviceKindForJob(job);if(!kind||job.emergencyIncidentId!==incident.id){toast('A área está isolada. Aceite uma missão de emergência para ajudar.','warn',2400);return false;}if(!job.serviceVehicleArrived){toast(`Chegue com ${kind==='police'?'a viatura':kind==='firefighter'?'o caminhão dos bombeiros':'a ambulância'} antes de iniciar o atendimento.`,'warn',2500);return false;}if(player.vehicle){toast('Estacione, saia do veículo e use AÇÃO junto à ocorrência.','warn',2200);return false;}if(Math.hypot(player.x-incident.x,player.z-incident.z)>5.5){toast('Aproxime-se da área sinalizada.','warn');return false;}incident.tasks[kind]=true;job.sceneTaskCompleted=true;setMissionState(job,MISSION_STATES.RETURNING,'scene-secured');player.sitUntil=performance.now()+1800;for(let i=0;i<7;i++)setTimeout(()=>spawnDust(incident.x+(Math.random()-.5)*2.5,incident.z+(Math.random()-.5)*2.5,kind==='firefighter'?0x68d8ff:kind==='paramedic'?0xe9f5ff:0xf6d148),i*100);toast(kind==='police'?'Área isolada e trânsito protegido.':kind==='firefighter'?(incident.fire?'Princípio de incêndio controlado.':'Risco de incêndio verificado e área protegida.'):'Primeiros socorros concluídos com segurança.','good',2300);saveState(true);return true;
   }
-  function markPlayerIncidentArrival(incident){const job=state.career?.activeJob,kind=serviceKindForJob(job);if(!job||!kind||job.emergencyIncidentId!==incident.id||!isDrivingServiceVehicle(kind))return false;const distance=Math.hypot(player.x-incident.navX,player.z-incident.navZ);if(distance>5.2)return false;recordPhysicalIncidentArrival(incident,kind,null,distance,performance.now());if(!incident.arrived[kind]){incident.arrived[kind]=true;job.serviceVehicleArrived=true;setMissionState(job,MISSION_STATES.ACTION_REQUIRED,'assist-incident');state.waypoint={id:`assist-${incident.id}`,name:'Área do acidente',x:incident.x,z:incident.z,navX:incident.navX,navZ:incident.navZ,arrived:true};updateWaypointMarker();updateNavigation(0,true);toast('Veículo posicionado. Estacione, saia e use AÇÃO na área sinalizada.','good',3000);saveState(true);}return true;}
+  function markPlayerIncidentArrival(incident){const job=typeof inRioMap==='function'&&inRioMap()?currentServiceMissionJob():state.career?.activeJob,kind=serviceKindForJob(job);if(!job||!kind||job.emergencyIncidentId!==incident.id||!isDrivingServiceVehicle(kind))return false;const distance=Math.hypot(player.x-incident.navX,player.z-incident.navZ);if(distance>5.2)return false;recordPhysicalIncidentArrival(incident,kind,null,distance,performance.now());if(!incident.arrived[kind]){incident.arrived[kind]=true;job.serviceVehicleArrived=true;setMissionState(job,MISSION_STATES.ACTION_REQUIRED,'assist-incident');state.waypoint={id:`assist-${incident.id}`,name:'Área do acidente',x:incident.x,z:incident.z,navX:incident.navX,navZ:incident.navZ,arrived:true};updateWaypointMarker();updateNavigation(0,true);toast('Veículo posicionado. Estacione, saia e use AÇÃO na área sinalizada.','good',3000);saveState(true);}return true;}
   function releaseIncidentActorStates(incident){const now=performance.now();for(const [index,saved]of (incident.actorStates||[]).entries()){const ref=saved.ref;if(!ref)continue;ref.incidentLocked=false;ref.incidentUntil=now+900+index*1400;ref.trafficHoldUntil=now+900+index*1400;ref.trafficRecoveryUntil=now+10000;ref.currentSpeed=Math.max(0,Math.min(Number(saved.currentSpeed||0),1.8));if(saved.state===BUS_STATES.ACCIDENT||ref.state===BUS_STATES.ACCIDENT)setBusState(ref,BUS_STATES.MOVING,'incident-cleared');}const records=(incident.actorStates||[]).map((saved,i)=>({id:`release-${i}`,type:'release',ref:saved.ref,group:saved.ref?.group||null,radius:Number(saved.ref?.radius||1.6),speed:Number(saved.currentSpeed||0)})).filter(x=>x.group);if(records.length>=2){separateIncidentActors(records[0],records[1]);separateIncidentActors(records[0],records[1]);}}
   function resolveTrafficIncident(incident){
     if(!incident||incident.resolved)return;incident.resolved=true;incident.group.visible=false;releaseIncidentActorStates(incident);for(const car of world.policeCars){if(car.incidentTargetId===incident.id){car.incidentTargetId='';car.responseRoute=[];car.responseIndex=0;car.responseJob=null;}}for(const ambulance of world.ambulances){if(ambulance.incidentTargetId===incident.id){ambulance.incidentTargetId='';ambulance.responseRoute=[];ambulance.responseIndex=0;ambulance.responseJob=null;}}for(const truck of world.fireTrucks){if(truck.incidentTargetId===incident.id){truck.incidentTargetId='';truck.responseRoute=[];truck.responseIndex=0;truck.responseJob=null;}}
-    const job=state.career?.activeJob,kind=serviceKindForJob(job);if(job&&job.emergencyIncidentId===incident.id){if(incident.tasks[kind]&&!incident.forcedClear)completeActiveJob();else{job.emergencyIncidentId='';job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;setMissionState(job,MISSION_STATES.ACCEPTED,'incident-cleared-autonomously');}}
-    const required=Object.keys(incident.required||{}).filter(kind=>incident.required[kind]),physical=required.length>0&&required.every(kind=>incident.physicalArrivals?.[kind]),contingency=!!incident.forcedClear||!!incident.contingencyEvents?.length;incident.completionMode=contingency?'contingency':physical?'physical':'unclassified';world.emergencyServiceHistory||=[];world.emergencyServiceHistory.push({id:incident.id,x:incident.x,z:incident.z,startedAt:incident.startedAt,resolvedAt:performance.now(),simulationMs:Number(incident.serviceElapsedMs||0),mode:incident.completionMode,physicalArrivals:{...(incident.physicalArrivals||{})},contingencyEvents:(incident.contingencyEvents||[]).map(event=>({...event})),dispatches:incident.dispatches||{}});if(world.emergencyServiceHistory.length>64)world.emergencyServiceHistory.splice(0,world.emergencyServiceHistory.length-64);if(physical&&!contingency&&!incident.forcedClear)state.cityServices.physicalRescuesCompleted=(state.cityServices.physicalRescuesCompleted||0)+1;if(contingency)state.cityServices.contingencyRescuesCompleted=(state.cityServices.contingencyRescuesCompleted||0)+1;
+    const job=typeof inRioMap==='function'&&inRioMap()?currentServiceMissionJob():state.career?.activeJob,kind=serviceKindForJob(job);if(job&&job.emergencyIncidentId===incident.id){if(incident.tasks[kind]&&!incident.forcedClear)completeActiveJob();else{job.emergencyIncidentId='';job.serviceVehicleArrived=false;job.sceneTaskCompleted=false;setMissionState(job,MISSION_STATES.ACCEPTED,'incident-cleared-autonomously');}}
+    const required=Object.keys(incident.required||{}).filter(kind=>incident.required[kind]),physical=required.length>0&&required.every(kind=>incident.physicalArrivals?.[kind]),contingency=!!incident.forcedClear||!!incident.contingencyEvents?.length;incident.completionMode=contingency?'contingency':physical?'physical':'unclassified';world.emergencyServiceHistory||=[];world.emergencyServiceHistory.push({id:incident.id,x:incident.x,z:incident.z,startedAt:incident.startedAt,resolvedAt:performance.now(),simulationMs:Number(incident.serviceElapsedMs||0),mode:incident.completionMode,physicalArrivals:{...(incident.physicalArrivals||{})},contingencyEvents:(incident.contingencyEvents||[]).map(event=>({...event})),dispatches:incident.dispatches||{}});if(world.emergencyServiceHistory.length>64)world.emergencyServiceHistory.splice(0,world.emergencyServiceHistory.length-64);if(physical&&!contingency&&!incident.forcedClear){
+      state.cityServices.physicalRescuesCompleted=(state.cityServices.physicalRescuesCompleted||0)+1;
+      if(typeof inRioMap==='function'&&inRioMap())rioMapSave().physicalRescues=(rioMapSave().physicalRescues||0)+1;
+    }if(contingency)state.cityServices.contingencyRescuesCompleted=(state.cityServices.contingencyRescuesCompleted||0)+1;
     state.cityServices.accidentsResolved=(state.cityServices.accidentsResolved||0)+1;state.cityServices.rescuesCompleted=(state.cityServices.rescuesCompleted||0)+1;world.activeIncident=null;world.nextTrafficIncidentAt=performance.now()+90000+Math.random()*30000;setTimeout(()=>{worldGroup.remove(incident.group);disposeDetachedVisual(incident.group);const idx=world.trafficIncidents.indexOf(incident);if(idx>=0)world.trafficIncidents.splice(idx,1);const actionIndex=world.interactables.findIndex(action=>action.id===`assist-${incident.id}`);if(actionIndex>=0)world.interactables.splice(actionIndex,1);},1200);toast((incident.forcedClear||contingency)?'Central de operações concluiu o atendimento. A via foi liberada.':'Atendimento concluído. A rua foi liberada com segurança.','good',2800);saveState(true);
   }
   function updateTrafficIncidents(dt){
@@ -7128,7 +7151,8 @@
   });
   const WORKSHOP_PART_WEIGHTS=Object.freeze({engine:.28,brakes:.18,suspension:.18,steering:.12,electrical:.12,cooling:.12});
   function workshopSeed(value=''){let h=2166136261;for(const ch of String(value)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
-  function ensureWorkshopVehicleServiceStore(){state.vehicles=state.vehicles||{};state.vehicles.workshopComponents=state.vehicles.workshopComponents&&typeof state.vehicles.workshopComponents==='object'?state.vehicles.workshopComponents:{};state.vehicles.workshopServiceLog=Array.isArray(state.vehicles.workshopServiceLog)?state.vehicles.workshopServiceLog:[];return state.vehicles.workshopComponents;}
+  function workshopMapState(){return typeof inRioMap==='function'&&inRioMap()?rioMapSave():state.vehicles;}
+  function ensureWorkshopVehicleServiceStore(){state.vehicles=state.vehicles||{};workshopMapState().workshopComponents=workshopMapState().workshopComponents&&typeof workshopMapState().workshopComponents==='object'?workshopMapState().workshopComponents:{};state.vehicles.workshopServiceLog=Array.isArray(state.vehicles.workshopServiceLog)?state.vehicles.workshopServiceLog:[];return workshopMapState().workshopComponents;}
   function workshopLastDamage(vehicle){const id=String(vehicle?.id||''),history=(state.vehicles?.damageHistory||[]).filter(h=>String(h.id)===id);return history[history.length-1]||{};}
   function workshopDamageBias(reason=''){
     const impact=String(reason||'').toLowerCase();
@@ -7160,7 +7184,7 @@
   const WORKSHOP_YARD_COLS=4,WORKSHOP_YARD_ROWS=2,WORKSHOP_YARD_COL_SPACING=6.2,WORKSHOP_YARD_ROW_SPACING=4.8,WORKSHOP_YARD_HEADING=Math.PI/2;
   function workshopIsCurrentUserVehicle(vehicle){const id=String(vehicle?.id||'');return!!id&&Array.isArray(state.vehicles?.owned)&&state.vehicles.owned.includes(id);}
   function workshopVehicleOwnerMeta(vehicle){
-    const id=String(vehicle?.id||''),record=state.vehicles?.workshopComponents?.[id],explicit=String(record?.ownerName||vehicle?.workshopOwnerName||'').trim();
+    const id=String(vehicle?.id||''),record=workshopMapState().workshopComponents?.[id],explicit=String(record?.ownerName||vehicle?.workshopOwnerName||'').trim();
     let type='npc',name=explicit;if(workshopIsCurrentUserVehicle(vehicle)){type='user';name=typeof publicPlayerName==='function'?publicPlayerName():(typeof playerDisplayName==='function'?playerDisplayName():'Jogador');}
     else if(!name&&id==='workshop-red')name='NPC • Oficina';else if(!name)name=`NPC • ${String(vehicle?.label||id||'Veículo')}`;
     if(record){record.ownerType=type;record.ownerName=name;}vehicle.workshopOwnerName=name;vehicle.workshopOwnerType=type;return{type,name};
@@ -7169,7 +7193,7 @@
   function workshopYardStatusMeta(status){return WORKSHOP_YARD_STATUS[status]||WORKSHOP_YARD_STATUS.pending;}
   function workshopYardBase(){const wp=worldLayoutPoint('workshop',{x:22,z:-18});return{x:wp.x+12.6,z:wp.z,workshopX:wp.x,workshopZ:wp.z};}
   function workshopEnsureScrapyardVisual(){
-    if(world.workshopScrapyard?.group)return world.workshopScrapyard;const p={x:55,z:-35},group=new THREE.Group();group.userData.workshopScrapyard=true;worldGroup.add(group);premiumBox(14,.07,10,0x4d4a43,p.x,.04,p.z,group);for(const x of[p.x-6.8,p.x+6.8])for(const z of[p.z-4.7,p.z+4.7])premiumBox(.16,1.5,.16,0x6c747b,x,.75,z,group);for(let x=p.x-5.5;x<=p.x+5.5;x+=2.75)premiumBox(.055,.02,8.5,0xc3a84d,x,.09,p.z,group);premiumBox(4.8,.68,.16,0x20262d,p.x,2.0,p.z-4.65,group);const sign=new THREE.Mesh(new THREE.PlaneGeometry(4.4,.72),new THREE.MeshStandardMaterial({map:signTexture('FERRO-VELHO OTTHI • PEÇAS E SUCATA','#20262d','#f5d24a'),side:THREE.DoubleSide,roughness:.58}));sign.position.set(p.x,2.02,p.z-4.54);group.add(sign);registerInteractable({id:'workshop-scrapyard',type:'workshop',icon:'♻️',label:'Ferro-Velho • vender peças e sucata',x:p.x,z:p.z+3.6,radius:3.5,priority:332,action:()=>openWorkshopScrapyard()});world.workshopScrapyard={...p,group};return world.workshopScrapyard;
+    if(world.workshopScrapyard?.group)return world.workshopScrapyard;const p=typeof inRioMap==='function'&&inRioMap()?RIO_WORKSHOP_SCRAP:{x:55,z:-35},group=new THREE.Group();group.userData.workshopScrapyard=true;worldGroup.add(group);premiumBox(14,.07,10,0x4d4a43,p.x,.04,p.z,group);for(const x of[p.x-6.8,p.x+6.8])for(const z of[p.z-4.7,p.z+4.7])premiumBox(.16,1.5,.16,0x6c747b,x,.75,z,group);for(let x=p.x-5.5;x<=p.x+5.5;x+=2.75)premiumBox(.055,.02,8.5,0xc3a84d,x,.09,p.z,group);premiumBox(4.8,.68,.16,0x20262d,p.x,2.0,p.z-4.65,group);const sign=new THREE.Mesh(new THREE.PlaneGeometry(4.4,.72),new THREE.MeshStandardMaterial({map:signTexture('FERRO-VELHO OTTHI • PEÇAS E SUCATA','#20262d','#f5d24a'),side:THREE.DoubleSide,roughness:.58}));sign.position.set(p.x,2.02,p.z-4.54);group.add(sign);registerInteractable({id:'workshop-scrapyard',type:'workshop',icon:'♻️',label:'Ferro-Velho • vender peças e sucata',x:p.x,z:p.z+3.6,radius:3.5,priority:332,action:()=>openWorkshopScrapyard()});world.workshopScrapyard={...p,group};return world.workshopScrapyard;
   }
   function workshopEnsureYardVisual(){
     if(world.workshopYard?.group){workshopEnsureScrapyardVisual();return world.workshopYard;}const base=workshopYardBase(),group=new THREE.Group();group.userData.workshopYard=true;worldGroup.add(group);
@@ -7180,7 +7204,7 @@
   function workshopYardLabelTexture(owner,status){const meta=workshopYardStatusMeta(status),canvas=document.createElement('canvas');canvas.width=512;canvas.height=150;const ctx=canvas.getContext('2d');ctx.fillStyle='rgba(9,18,27,.94)';ctx.fillRect(8,8,496,134);ctx.strokeStyle=`#${meta.color.toString(16).padStart(6,'0')}`;ctx.lineWidth=8;ctx.strokeRect(8,8,496,134);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffffff';ctx.font='900 34px system-ui,sans-serif';ctx.fillText(meta.label,256,54);ctx.font='800 29px system-ui,sans-serif';ctx.fillText(String(owner||'Veículo').slice(0,28),256,104);const tex=new THREE.CanvasTexture(canvas);tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;tex.generateMipmaps=false;return tex;}
   function workshopClearYardLabel(vehicle){const label=vehicle?.group?.userData?.workshopYardLabel;if(!label)return;if(label.parent)label.parent.remove(label);label.material?.map?.dispose?.();label.material?.dispose?.();delete vehicle.group.userData.workshopYardLabel;}
   function workshopSetYardLabel(vehicle,status,owner){if(!vehicle?.group)return;workshopClearYardLabel(vehicle);const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:workshopYardLabelTexture(owner,status),transparent:true,depthWrite:false,depthTest:false}));sprite.position.set(0,2.75,0);sprite.scale.set(3.35,.98,1);sprite.renderOrder=998;vehicle.group.add(sprite);vehicle.group.userData.workshopYardLabel=sprite;}
-  function workshopClearVehicleYardMeta(vehicle,clearRecord=true){if(!vehicle)return;workshopClearYardLabel(vehicle);vehicle.workshopYardStatus='';vehicle.workshopYardSlot='';vehicle.workshopYardParkedAt=0;if(clearRecord){const record=state.vehicles?.workshopComponents?.[String(vehicle.id||'')];if(record){delete record.yardStatus;delete record.yardSlot;delete record.yardParkedAt;}}}
+  function workshopClearVehicleYardMeta(vehicle,clearRecord=true){if(!vehicle)return;workshopClearYardLabel(vehicle);vehicle.workshopYardStatus='';vehicle.workshopYardSlot='';vehicle.workshopYardParkedAt=0;if(clearRecord){const record=workshopMapState().workshopComponents?.[String(vehicle.id||'')];if(record){delete record.yardStatus;delete record.yardSlot;delete record.yardParkedAt;}}}
   function workshopYardSlotCandidates(status){const yard=workshopEnsureYardVisual(),meta=workshopYardStatusMeta(status),list=[];for(let row=0;row<WORKSHOP_YARD_ROWS;row++)for(let col=0;col<WORKSHOP_YARD_COLS;col++)list.push({id:`${status}-${row}-${col}`,x:yard.base.x+col*WORKSHOP_YARD_COL_SPACING,z:yard.base.z+meta.zOffset+row*WORKSHOP_YARD_ROW_SPACING,heading:WORKSHOP_YARD_HEADING});return list;}
   function workshopYardSlotById(status,id){const key=String(id||''),main=workshopYardSlotCandidates(status).find(slot=>slot.id===key);if(main)return main;const yard=workshopEnsureYardVisual(),meta=workshopYardStatusMeta(status),overflow=key.match(new RegExp(`^${status}-overflow-(\\d+)-(\\d+)$`));if(overflow){const row=Number(overflow[1]),col=Number(overflow[2]);return{id:key,x:yard.base.x+col*WORKSHOP_YARD_COL_SPACING,z:yard.base.z+meta.zOffset+row*WORKSHOP_YARD_ROW_SPACING,heading:WORKSHOP_YARD_HEADING};}const reserve=key.match(new RegExp(`^${status}-reserve-(\\d+)-(n|s)$`));if(reserve){const ring=Number(reserve[1]),side=reserve[2]==='n'?1:-1;return{id:key,x:yard.base.x+ring*2.4,z:yard.base.z+meta.zOffset+side*(WORKSHOP_YARD_ROW_SPACING+ring*.85),heading:WORKSHOP_YARD_HEADING};}return null;}
   function workshopVehicleAtR1673YardPose(vehicle){
@@ -7189,14 +7213,14 @@
   function workshopVehicleFootprint(vehicle,heading=Number(vehicle?.group?.rotation?.y??vehicle?.heading??0)){
     const type=typeof normalizeVehicleBodyType==='function'?normalizeVehicleBodyType(vehicle?.bodyType||vehicle?.kind):String(vehicle?.bodyType||vehicle?.kind||'car'),dims=type==='truck'?{w:1.35,l:2.25}:type==='utility'?{w:1.22,l:1.9}:type==='moto'?{w:.72,l:1.12}:{w:1.16,l:1.68},c=Math.abs(Math.cos(heading)),s=Math.abs(Math.sin(heading));return{x:c*dims.w+s*dims.l,z:s*dims.w+c*dims.l};
   }
-  function workshopPoseHitsCollider(x,z,heading,vehicle,margin=.42){const ext=workshopVehicleFootprint(vehicle,heading);return(world.colliders||[]).some(c=>!c.disabled&&Math.abs(x-Number(c.x))<=ext.x+Number(c.w||0)/2+margin&&Math.abs(z-Number(c.z))<=ext.z+Number(c.d||0)/2+margin);}
+  function workshopPoseHitsCollider(x,z,heading,vehicle,margin=.42){const ext=workshopVehicleFootprint(vehicle,heading);if(typeof inRioMap==='function'&&inRioMap()&&(rioFootprintBlock(x,z,Math.hypot(ext.x,ext.z)+margin)||rioWaterAt(x,z)))return true;return(world.colliders||[]).some(c=>!c.disabled&&Math.abs(x-Number(c.x))<=ext.x+Number(c.w||0)/2+margin&&Math.abs(z-Number(c.z))<=ext.z+Number(c.d||0)/2+margin);}
   function workshopPoseHitsRoad(x,z,heading,vehicle,margin=.42){if(typeof v704RoadAt!=='function')return false;const ext=workshopVehicleFootprint(vehicle,heading),samples=[[0,0],[-ext.x,-ext.z],[-ext.x,ext.z],[ext.x,-ext.z],[ext.x,ext.z],[-ext.x,0],[ext.x,0],[0,-ext.z],[0,ext.z]];return samples.some(([dx,dz])=>v704RoadAt(x+dx,z+dz,margin,true));}
   function workshopVehicleHitsWall(vehicle,margin=.28){if(!vehicle?.group)return false;return workshopPoseHitsCollider(Number(vehicle.group.position.x),Number(vehicle.group.position.z),Number(vehicle.group.rotation.y||vehicle.heading||0),vehicle,margin);}
   function workshopYardSlotFree(slot,vehicle){const mine=workshopVehicleFootprint(vehicle,slot.heading);return!(world.vehicles||[]).some(v=>{if(!v||v===vehicle||v.group?.visible===false)return false;const x=Number(v.group?.position?.x??v.x??999),z=Number(v.group?.position?.z??v.z??999),other=workshopVehicleFootprint(v,Number(v.group?.rotation?.y??v.heading??0));return Math.abs(x-slot.x)<mine.x+other.x+1.35&&Math.abs(z-slot.z)<mine.z+other.z+1.35;});}
   function workshopYardVehiclesOverlap(a,b,margin=1.35){if(!a?.group||!b?.group||a.group.visible===false||b.group.visible===false)return false;const ax=Number(a.group.position.x),az=Number(a.group.position.z),bx=Number(b.group.position.x),bz=Number(b.group.position.z),af=workshopVehicleFootprint(a,Number(a.group.rotation.y??a.heading??0)),bf=workshopVehicleFootprint(b,Number(b.group.rotation.y??b.heading??0));return Math.abs(ax-bx)<af.x+bf.x+margin&&Math.abs(az-bz)<af.z+bf.z+margin;}
-  function workshopYardSlotSafe(slot,vehicle){const yard=workshopEnsureYardVisual(),ext=workshopVehicleFootprint(vehicle,slot.heading),bounds=typeof v704WorldBounds==='function'?v704WorldBounds():{minX:-130,maxX:130,minZ:-130,maxZ:130};if(slot.x-ext.x<bounds.minX+1||slot.x+ext.x>bounds.maxX-1||slot.z-ext.z<bounds.minZ+1||slot.z+ext.z>bounds.maxZ-1)return false;if(typeof isInsideLakeNavigable==='function'&&isInsideLakeNavigable(slot.x,slot.z))return false;if(workshopPoseHitsCollider(slot.x,slot.z,slot.heading,vehicle,.52)||workshopPoseHitsRoad(slot.x,slot.z,slot.heading,vehicle,.48))return false;const dx=Math.abs(slot.x-yard.base.workshopX),dz=Math.abs(slot.z-yard.base.workshopZ);return dx>10.2||dz>8.4;}
+  function workshopYardSlotSafe(slot,vehicle){const yard=workshopEnsureYardVisual(),ext=workshopVehicleFootprint(vehicle,slot.heading),bounds=typeof v704WorldBounds==='function'?v704WorldBounds():{minX:-130,maxX:130,minZ:-130,maxZ:130};if(slot.x-ext.x<bounds.minX+1||slot.x+ext.x>bounds.maxX-1||slot.z-ext.z<bounds.minZ+1||slot.z+ext.z>bounds.maxZ-1)return false;if(typeof isInsideLakeNavigable==='function'&&isInsideLakeNavigable(slot.x,slot.z))return false;if(typeof inRioMap==='function'&&inRioMap()&&(slot.x+ext.x>RIO_WORKSHOP.x+36.5||Math.abs(slot.z-RIO_WORKSHOP.z)+ext.z>19.5))return false;if(workshopPoseHitsCollider(slot.x,slot.z,slot.heading,vehicle,.52)||workshopPoseHitsRoad(slot.x,slot.z,slot.heading,vehicle,.48))return false;const dx=Math.abs(slot.x-yard.base.workshopX),dz=Math.abs(slot.z-yard.base.workshopZ);return dx>10.2||dz>8.4;}
   function workshopFindYardSlot(status,vehicle){
-    if(typeof sharedWorkshopYardPose==='function'){const uid=workshopIsCurrentUserVehicle(vehicle)?(typeof sharedWorldOwnId==='function'?sharedWorldOwnId():String(state.profile?.playerId||'local-player')):'world',shared=sharedWorkshopYardPose(uid,String(vehicle?.id||''),status,String(vehicle?.bodyType||vehicle?.kind||'car'));if(shared&&workshopYardSlotSafe(shared,vehicle)&&workshopYardSlotFree(shared,vehicle))return shared;}
+    if(!(typeof inRioMap==='function'&&inRioMap())&&typeof sharedWorkshopYardPose==='function'){const uid=workshopIsCurrentUserVehicle(vehicle)?(typeof sharedWorldOwnId==='function'?sharedWorldOwnId():String(state.profile?.playerId||'local-player')):'world',shared=sharedWorkshopYardPose(uid,String(vehicle?.id||''),status,String(vehicle?.bodyType||vehicle?.kind||'car'));if(shared&&workshopYardSlotSafe(shared,vehicle)&&workshopYardSlotFree(shared,vehicle))return shared;}
     for(const slot of workshopYardSlotCandidates(status))if(workshopYardSlotSafe(slot,vehicle)&&workshopYardSlotFree(slot,vehicle))return slot;
     const yard=workshopEnsureYardVisual(),meta=workshopYardStatusMeta(status);for(let col=WORKSHOP_YARD_COLS;col<12;col++)for(let row=0;row<WORKSHOP_YARD_ROWS;row++){const slot={id:`${status}-overflow-${row}-${col}`,x:yard.base.x+col*WORKSHOP_YARD_COL_SPACING,z:yard.base.z+meta.zOffset+row*WORKSHOP_YARD_ROW_SPACING,heading:WORKSHOP_YARD_HEADING};if(workshopYardSlotSafe(slot,vehicle)&&workshopYardSlotFree(slot,vehicle))return slot;}
     for(let ring=1;ring<=8;ring++)for(const side of[-1,1]){const slot={id:`${status}-reserve-${ring}-${side>0?'n':'s'}`,x:yard.base.x+ring*2.4,z:yard.base.z+meta.zOffset+side*(WORKSHOP_YARD_ROW_SPACING+ring*.85),heading:WORKSHOP_YARD_HEADING};if(workshopYardSlotSafe(slot,vehicle)&&workshopYardSlotFree(slot,vehicle))return slot;}return null;
@@ -7205,8 +7229,8 @@
   function workshopDetachVehicleTransform(vehicle){const group=vehicle?.group;if(!group)return false;if(group.parent&&group.parent!==worldGroup&&typeof worldGroup?.attach==='function')worldGroup.attach(group);group.matrixAutoUpdate=true;group.userData.workshopIndependent=true;group.userData.workshopSlotOwner=String(vehicle.id||'');return true;}
   function workshopMoveVehicleToYard(vehicle,status=workshopVehicleServiceStatus(vehicle)){if(!vehicle?.group)return false;workshopDetachVehicleTransform(vehicle);const slot=workshopFindYardSlot(status,vehicle);if(!slot){toast('Não existe uma vaga externa segura disponível. Retire outro veículo antes de liberar o box.','warn',3000);return false;}workshopRestoreAssemblyVisuals(vehicle,true);const ground=groundHeightAt(slot.x,slot.z);vehicle.group.visible=true;vehicle.group.position.set(slot.x,ground,slot.z);vehicle.group.rotation.set(0,slot.heading,0);vehicle.x=slot.x;vehicle.z=slot.z;vehicle.heading=slot.heading;vehicle.occupied=false;workshopApplyYardMeta(vehicle,status,slot);persistParkedVehicle(vehicle);return true;}
   function workshopServiceRecordClosed(record={}){const status=String(record?.serviceStatus||''),opened=Math.max(0,Number(record?.serviceOpenedAt||0)),completed=Math.max(0,Number(record?.serviceCompletedAt||0)),released=Math.max(0,Number(record?.operatorReleasedAt||0));return status==='delivered'||released>0&&released>=Math.max(opened,completed);}
-  function workshopVehicleNeedsYardRecovery(vehicle,record=null){record=record||state.vehicles?.workshopComponents?.[String(vehicle?.id||'')]||{};if(workshopServiceRecordClosed(record))return false;const status=String(vehicle?.workshopYardStatus||record?.yardStatus||record?.serviceStatus||'');if(['ready','pending','unrepairable'].includes(status)||record?.unrepairable)return true;return Number(record?.serviceOpenedAt||0)>0;}
-  function workshopVehicleCanResumeLift(vehicle){const record=state.vehicles?.workshopComponents?.[String(vehicle?.id||'')]||{};if(!vehicle?.group||vehicle.workshopYardStatus||record.yardStatus||workshopServiceRecordClosed(record))return false;return Number(record.serviceOpenedAt||0)>0;}
+  function workshopVehicleNeedsYardRecovery(vehicle,record=null){record=record||workshopMapState().workshopComponents?.[String(vehicle?.id||'')]||{};if(workshopServiceRecordClosed(record))return false;const status=String(vehicle?.workshopYardStatus||record?.yardStatus||record?.serviceStatus||'');if(['ready','pending','unrepairable'].includes(status)||record?.unrepairable)return true;return Number(record?.serviceOpenedAt||0)>0;}
+  function workshopVehicleCanResumeLift(vehicle){const record=workshopMapState().workshopComponents?.[String(vehicle?.id||'')]||{};if(!vehicle?.group||vehicle.workshopYardStatus||record.yardStatus||workshopServiceRecordClosed(record))return false;return Number(record.serviceOpenedAt||0)>0;}
   function workshopRecoverInvalidParkedVehicle(vehicle){
     if(!vehicle?.group)return false;workshopDetachVehicleTransform(vehicle);workshopRestoreAssemblyVisuals(vehicle,true);workshopClearVehicleYardMeta(vehicle);let point=null,stored=false;
     if(workshopIsCurrentUserVehicle(vehicle)&&typeof ensurePlayerGarageState==='function'){const garage=ensurePlayerGarageState(),slot=typeof garageVehicleSlot==='function'?garageVehicleSlot(String(vehicle.id),garage):'';if(slot&&typeof playerGarageSlot==='function'){point=playerGarageSlot(slot,String(vehicle.id));garage.stored[String(vehicle.id)]=false;}else{const display=typeof garageDisplaySlot==='function'?garageDisplaySlot(String(vehicle.id),garage):'';if(display&&typeof playerGarageDisplaySlot==='function'){point=playerGarageDisplaySlot(Number(display),String(vehicle.id));garage.stored[String(vehicle.id)]=true;stored=true;}}}
@@ -7214,7 +7238,7 @@
     const heading=Number(point.heading||0);vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.set(0,heading,0);vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=heading;vehicle.occupied=false;if(typeof setGarageVehicleStored==='function'&&workshopIsCurrentUserVehicle(vehicle))setGarageVehicleStored(vehicle,stored);else vehicle.group.visible=!stored;persistParkedVehicle(vehicle);return true;
   }
   function workshopReorganizeLegacyYardVehicles(){
-    const lift=workshopLiftRuntime(),liftVehicle=workshopLiftVehicle(),yard=workshopEnsureYardVisual(),legacy=worldLayoutPoint('repairParking',{x:32,z:-18}),store=state.vehicles?.workshopComponents||{},liftId=String(liftVehicle?.id||lift?.vehicleId||''),vehicles=world.vehicles||[],candidates=vehicles.filter(v=>{if(!v?.group||v.group.visible===false||v.occupied)return false;const id=String(v.id||'');if(liftId&&id===liftId||(world.workshopLifts||[]).some(l=>String(l.vehicleId)===id)||Object.values(state.vehicles?.workshopBayState||{}).some(b=>String(b.vehicleId)===id))return false;const x=Number(v.group.position.x),z=Number(v.group.position.z),record=store[id]||{},serviced=Number(record.serviceOpenedAt||0)>0,tagged=!!v.workshopYardStatus||!!record.yardStatus,nearLift=Math.hypot(x-Number(lift?.x||999),z-Number(lift?.z||999))<2.85,legacyYard=serviced&&!workshopServiceRecordClosed(record)&&workshopVehicleAtR1673YardPose(v),nearLegacy=serviced&&!workshopServiceRecordClosed(record)&&Math.hypot(x-legacy.x,z-legacy.z)<4.8,nearWorkshop=Math.hypot(x-yard.base.workshopX,z-yard.base.workshopZ)<38,insideWall=serviced&&nearWorkshop&&workshopVehicleHitsWall(v),overlap=nearWorkshop&&vehicles.some(other=>other!==v&&other?.group&&other.group.visible!==false&&!other.occupied&&workshopYardVehiclesOverlap(v,other));return tagged||nearLift||legacyYard||nearLegacy||insideWall||overlap;}).sort((a,b)=>Number(store[String(a.id||'')]?.serviceOpenedAt||0)-Number(store[String(b.id||'')]?.serviceOpenedAt||0)||String(a.id).localeCompare(String(b.id)));
+    const lift=workshopLiftRuntime(),liftVehicle=workshopLiftVehicle(),yard=workshopEnsureYardVisual(),legacy=worldLayoutPoint('repairParking',{x:32,z:-18}),store=workshopMapState().workshopComponents||{},liftId=String(liftVehicle?.id||lift?.vehicleId||''),vehicles=world.vehicles||[],candidates=vehicles.filter(v=>{if(!v?.group||v.group.visible===false||v.occupied)return false;const id=String(v.id||'');if(liftId&&id===liftId||(world.workshopLifts||[]).some(l=>String(l.vehicleId)===id)||Object.values(state.vehicles?.workshopBayState||{}).some(b=>String(b.vehicleId)===id))return false;const x=Number(v.group.position.x),z=Number(v.group.position.z),record=store[id]||{},serviced=Number(record.serviceOpenedAt||0)>0,tagged=!!v.workshopYardStatus||!!record.yardStatus,nearLift=Math.hypot(x-Number(lift?.x||999),z-Number(lift?.z||999))<2.85,legacyYard=serviced&&!workshopServiceRecordClosed(record)&&workshopVehicleAtR1673YardPose(v),nearLegacy=serviced&&!workshopServiceRecordClosed(record)&&Math.hypot(x-legacy.x,z-legacy.z)<4.8,nearWorkshop=Math.hypot(x-yard.base.workshopX,z-yard.base.workshopZ)<38,insideWall=serviced&&nearWorkshop&&workshopVehicleHitsWall(v),overlap=nearWorkshop&&vehicles.some(other=>other!==v&&other?.group&&other.group.visible!==false&&!other.occupied&&workshopYardVehiclesOverlap(v,other));return tagged||nearLift||legacyYard||nearLegacy||insideWall||overlap;}).sort((a,b)=>Number(store[String(a.id||'')]?.serviceOpenedAt||0)-Number(store[String(b.id||'')]?.serviceOpenedAt||0)||String(a.id).localeCompare(String(b.id)));
     const entries=candidates.map(vehicle=>{const record=store[String(vehicle.id||'')]||{},toYard=workshopVehicleNeedsYardRecovery(vehicle,record),status=toYard?workshopVehicleServiceStatus(vehicle):'';return{vehicle,record,toYard,status};}),invalid=entries.some((item,index)=>{if(!item.toYard)return true;const v=item.vehicle,slot=workshopYardSlotById(item.status,v.workshopYardSlot||item.record.yardSlot||''),atSlot=slot&&Math.hypot(Number(v.group.position.x)-slot.x,Number(v.group.position.z)-slot.z)<.85,overlap=candidates.slice(index+1).some(other=>workshopYardVehiclesOverlap(v,other));return!slot||!atSlot||!workshopYardSlotSafe(slot,v)||workshopVehicleHitsWall(v)||overlap;});
     if(!invalid){for(const item of entries){const slot=workshopYardSlotById(item.status,item.vehicle.workshopYardSlot||item.record.yardSlot||'');workshopApplyYardMeta(item.vehicle,item.status,slot);}return 0;}
     const queue=entries.map(item=>({...item,x:Number(item.vehicle.group.position.x),y:Number(item.vehicle.group.position.y),z:Number(item.vehicle.group.position.z),heading:Number(item.vehicle.group.rotation.y??item.vehicle.heading??0),visible:item.vehicle.group.visible!==false}));for(const item of queue){workshopClearVehicleYardMeta(item.vehicle);item.vehicle.group.visible=false;}
@@ -7227,8 +7251,8 @@
     vehicle.occupied=false;closeModal();const ok=typeof enterVehicle==='function'?enterVehicle(vehicle):false;if(!ok){toast('Não foi possível entrar no veículo agora. Aproxime-se dele e tente novamente.','warn',2200);return false;}record.operatorReleasedAt=Date.now();record.serviceStatus='delivered';if(onLift){lift.vehicleId='';lift.height=0;lift.raised=false;lift.busy=false;lift.platform.position.y=0;workshopSyncLiftMarkers();}workshopClearVehicleYardMeta(vehicle);state.vehicles.workshopServiceLog.push({id:String(vehicle.id),label:String(vehicle.label||vehicle.id),owner:owner.name,at:Date.now(),result:'delivered'});state.vehicles.workshopServiceLog=state.vehicles.workshopServiceLog.slice(-30);setTimeout(()=>workshopReorganizeLegacyYardVehicles(),0);toast(onLift?'Você retirou o veículo do elevador. Agora saia da oficina dirigindo e estacione onde decidir.':'Veículo retirado do pátio.','good',3200);saveState(true);updateContext(true);return true;
   }
   function workshopStageVehicleFromYard(vehicle){if(!vehicle?.workshopYardStatus)return false;const lift=workshopLiftRuntime(),current=workshopLiftVehicle();if(typeof sharedWorkshopLiftAvailableFor==='function'&&!sharedWorkshopLiftAvailableFor(vehicle)){toast('O elevador está sendo usado por outro jogador. Aguarde o box ficar livre.','warn',2800);return false;}if(lift?.raised||lift?.busy||current&&String(current.id)!==String(vehicle.id)){toast('O elevador está ocupado. Termine o atendimento atual antes de levar outro veículo.','warn',2600);return false;}const ok=workshopStageParkedVehicle(vehicle);if(ok){workshopReorganizeLegacyYardVehicles();toast('Veículo separado dos demais e levado ao elevador.','good',2400);setTimeout(()=>openWorkshopLiftControl(),80);}return ok;}
-  function workshopMoveReadyVehicleToGarage(vehicle){const owner=workshopVehicleOwnerMeta(vehicle),record=workshopComponentRecord(vehicle);if(owner.type!=='user'){toast('Somente veículos do jogador podem ir para a garagem particular.','warn',2200);return false;}if(workshopVehicleServiceStatus(vehicle)!=='ready'){toast('Conclua o reparo e o teste final antes de levar o veículo à garagem.','warn',2400);return false;}if(typeof placeOwnedVehicleInGarage!=='function'){toast('Garagem ainda carregando.','warn',1800);return false;}const ok=placeOwnedVehicleInGarage(String(vehicle.id));if(!ok)return false;record.operatorReleasedAt=Date.now();record.serviceStatus='delivered';workshopClearVehicleYardMeta(vehicle);state.vehicles.workshopServiceLog.push({id:String(vehicle.id),label:String(vehicle.label||vehicle.id),owner:owner.name,at:Date.now(),result:'garage'});state.vehicles.workshopServiceLog=state.vehicles.workshopServiceLog.slice(-30);workshopReorganizeLegacyYardVehicles();saveState(true);updateContext(true);toast('Veículo retirado do pátio e levado para a sua garagem.','good',2400);openWorkshopServiceDesk();return true;}
-  function workshopServiceIsOpen(vehicle){if(!vehicle?.id)return false;const id=String(vehicle.id),record=state.vehicles?.workshopComponents?.[id],liftId=String(workshopLiftRuntime()?.vehicleId||''),yard=!!vehicle.workshopYardStatus||!!record?.yardStatus;if(liftId===id||yard)return true;if(!record||Number(record.serviceOpenedAt||0)<=0)return false;return Number(record.operatorReleasedAt||0)<Number(record.serviceCompletedAt||record.serviceOpenedAt||0)&&record.serviceStatus!=='delivered';}
+  function workshopMoveReadyVehicleToGarage(vehicle){const owner=workshopVehicleOwnerMeta(vehicle),record=workshopComponentRecord(vehicle);if(owner.type!=='user'){toast('Somente veículos do jogador podem ir para a garagem particular.','warn',2200);return false;}if(workshopVehicleServiceStatus(vehicle)!=='ready'){toast('Conclua o reparo e o teste final antes de levar o veículo à garagem.','warn',2400);return false;}if(typeof placeOwnedVehicleInGarage!=='function'){toast('Garagem ainda carregando.','warn',1800);return false;}const separateRio=typeof inRioMap==='function'&&inRioMap();if(separateRio){rioRoadVehicleSave(vehicle.id).stored=true;setGarageVehicleStored(vehicle,true);}const ok=separateRio||placeOwnedVehicleInGarage(String(vehicle.id));if(!ok)return false;record.operatorReleasedAt=Date.now();record.serviceStatus='delivered';workshopClearVehicleYardMeta(vehicle);state.vehicles.workshopServiceLog.push({id:String(vehicle.id),label:String(vehicle.label||vehicle.id),owner:owner.name,at:Date.now(),result:'garage'});state.vehicles.workshopServiceLog=state.vehicles.workshopServiceLog.slice(-30);workshopReorganizeLegacyYardVehicles();saveState(true);updateContext(true);toast('Veículo retirado do pátio e levado para a sua garagem.','good',2400);openWorkshopServiceDesk();return true;}
+  function workshopServiceIsOpen(vehicle){if(!vehicle?.id)return false;const id=String(vehicle.id),record=workshopMapState().workshopComponents?.[id],liftId=String(workshopLiftRuntime()?.vehicleId||''),yard=!!vehicle.workshopYardStatus||!!record?.yardStatus;if(liftId===id||yard)return true;if(!record||Number(record.serviceOpenedAt||0)<=0)return false;return Number(record.operatorReleasedAt||0)<Number(record.serviceCompletedAt||record.serviceOpenedAt||0)&&record.serviceStatus!=='delivered';}
   function workshopActiveServiceList(){return workshopVehicleList().filter(item=>workshopServiceIsOpen(item.vehicle));}
   function workshopServiceHistoryLabel(result){return({approved:'✅ Teste aprovado',delivered:'🚗 Retirado dirigindo',garage:'🏠 Levado à garagem',unrepairable:'⛔ Sem conserto'})[String(result||'')]||'📋 Atendimento';}
   function openWorkshopServiceHistory(){const log=Array.isArray(state.vehicles?.workshopServiceLog)?state.vehicles.workshopServiceLog.slice().sort((a,b)=>Number(b.at||0)-Number(a.at||0)):[],rows=log.slice(0,30).map(item=>`<div class="choice"><b>${workshopServiceHistoryLabel(item.result)} • ${escapeHtml(item.label||item.id)}</b><span>${escapeHtml(item.owner||'Cliente')}</span><small>${new Date(Number(item.at||Date.now())).toLocaleString('pt-BR')}</small></div>`).join('');openModal('Histórico de Ordens de Serviço',`<div class="dialogue-box"><b>Atendimentos anteriores</b><p>Esta consulta fica separada das ordens que estão abertas agora.</p></div><div class="choice-grid">${rows||'<div class="choice"><b>Nenhum atendimento concluído</b><span>As ordens encerradas aparecerão aqui.</span></div>'}</div><div class="modal-actions"><button class="btn primary" data-history-back>Voltar às OS abertas</button></div>`,root=>$('[data-history-back]',root).onclick=openWorkshopServiceDesk);}
@@ -7236,7 +7260,7 @@
   function workshopScrapQuote(vehicle){const d=typeof vehicleDurabilityV704==='function'?vehicleDurabilityV704(vehicle):0,entry=typeof playerVehicleCatalogEntry==='function'?playerVehicleCatalogEntry(String(vehicle?.id||'')):null,base=Number(entry?.price||260);return Math.max(35,Math.round(base*(.10+clamp(d,0,100)*.0012)));}
   function workshopScrapPartPrice(id){return({engine:52,brakes:22,suspension:28,steering:24,electrical:30,cooling:20})[id]||18;}
   function workshopRemoveVehicleFromWorld(vehicle){if(!vehicle)return false;const id=String(vehicle.id||''),owned=workshopIsCurrentUserVehicle(vehicle);if(player.vehicle&&String(player.car?.id||'')===id){toast('Saia do veículo antes de enviá-lo ao ferro-velho.','warn',2200);return false;}if(owned){const list=state.vehicles.owned||[];if(list.length<=1){toast('Seu último veículo não pode ser vendido como sucata. Repare-o ou adquira outro primeiro.','warn',3000);return false;}state.vehicles.owned=list.filter(x=>String(x)!==id);const garage=state.vehicles.garage||{};for(const key of Object.keys(garage.slots||{}))if(String(garage.slots[key]||'')===id)garage.slots[key]='';if(garage.stored)delete garage.stored[id];if(garage.inGarage)delete garage.inGarage[id];if(String(state.vehicles.primaryId||'')===id)state.vehicles.primaryId=String(state.vehicles.owned[0]||'');if(String(state.vehicles.lastUsedId||'')===id)state.vehicles.lastUsedId=String(state.vehicles.primaryId||'');}
-    workshopClearVehicleYardMeta(vehicle);if(vehicle.group?.parent)vehicle.group.parent.remove(vehicle.group);const idx=(world.vehicles||[]).indexOf(vehicle);if(idx>=0)world.vehicles.splice(idx,1);delete state.vehicles?.workshopComponents?.[id];delete state.vehicles?.partDurability?.[id];delete state.vehicles?.broken?.[id];return true;}
+    workshopClearVehicleYardMeta(vehicle);if(vehicle.group?.parent)vehicle.group.parent.remove(vehicle.group);const idx=(world.vehicles||[]).indexOf(vehicle);if(idx>=0)world.vehicles.splice(idx,1);delete workshopMapState().workshopComponents?.[id];delete state.vehicles?.partDurability?.[id];delete state.vehicles?.broken?.[id];return true;}
   async function workshopSellVehicleForScrap(vehicle){if(!vehicle||workshopVehicleServiceStatus(vehicle)!=='unrepairable'){toast('Somente veículos classificados como SEM CONSERTO podem ser vendidos como sucata.','warn',2500);return false;}const quote=workshopScrapQuote(vehicle),owner=workshopVehicleOwnerMeta(vehicle),ok=await confirmModal('Vender para o ferro-velho',`${vehicle.label||vehicle.id} • ${owner.name}\nValor da sucata: ${quote} moedas. O veículo será removido definitivamente do pátio.`,'Vender sucata','Cancelar');if(!ok)return false;if(!workshopRemoveVehicleFromWorld(vehicle))return false;const scrap=workshopScrapyardState();scrap.soldVehicles++;scrap.revenue+=quote;addCoins(quote);saveState(true);updateHUD();toast(`Sucata vendida por ${quote} moedas. A vaga foi liberada.`,'good',2600);openWorkshopScrapyard();return true;}
   async function workshopDismantleVehicleForParts(vehicle){if(!vehicle||workshopVehicleServiceStatus(vehicle)!=='unrepairable'){toast('Somente veículos SEM CONSERTO podem ser desmontados no ferro-velho.','warn',2400);return false;}const report=workshopPartReport(vehicle),recoverable=report.filter(p=>p.condition>=18),owner=workshopVehicleOwnerMeta(vehicle),ok=await confirmModal('Desmontar para peças',`${vehicle.label||vehicle.id} • ${owner.name}\nAs peças aproveitáveis irão para o estoque do ferro-velho e poderão ser vendidas separadamente.`,'Desmontar','Cancelar');if(!ok)return false;if(!workshopRemoveVehicleFromWorld(vehicle))return false;const scrap=workshopScrapyardState();for(const part of recoverable){const qty=part.condition>=82?2:1;scrap.parts[part.id]=(scrap.parts[part.id]||0)+qty;}scrap.dismantledVehicles++;saveState(true);toast(`${recoverable.length} sistema(s) geraram peças reaproveitáveis.`,'good',2600);openWorkshopScrapyard();return true;}
   function workshopSellScrapPart(partId,all=false){const scrap=workshopScrapyardState(),qty=Math.max(0,Number(scrap.parts[partId]||0));if(!qty){toast('Não há peças desse tipo no estoque.','warn',1600);return false;}const amount=all?qty:1,price=workshopScrapPartPrice(partId)*amount;scrap.parts[partId]=qty-amount;scrap.revenue+=price;addCoins(price);saveState(true);updateHUD();toast(`${amount} peça(s) vendida(s) por ${price} moedas.`,'good',1900);return true;}
@@ -7316,7 +7340,7 @@
   }
   function workshopStopInspectionCamera(reopen=false){const view=world.workshopInspectionCamera;if(!view?.active)return false;const previous=view.previous||{};world.workshopInspectionCamera=null;cameraMode=currentHouse?'interior':(previous.mode&&previous.mode!=='workshop-inspection'?previous.mode:'openworld');cameraYaw=Number.isFinite(Number(previous.yaw))?Number(previous.yaw):player.facing;cameraPitch=clamp(Number(previous.pitch??.28),-.55,1.35);cameraZoom=Number(previous.zoom||0);state.settings.cameraPitch=+cameraPitch.toFixed(3);state.settings.cameraZoom=+cameraZoom.toFixed(2);updateContext(true);if(reopen&&workshopLiftRuntime()?.raised)setTimeout(()=>openWorkshopLiftInspection(),80);return true;}
   function workshopVehiclesOnLiftZone(){const lift=workshopLiftRuntime();if(!lift)return[];return(world.vehicles||[]).filter(v=>v?.id&&v?.group&&v.group.visible!==false&&Math.hypot(Number(v.group.position.x)-lift.x,Number(v.group.position.z)-lift.z)<2.65).sort((a,b)=>Math.hypot(Number(a.group.position.x)-lift.x,Number(a.group.position.z)-lift.z)-Math.hypot(Number(b.group.position.x)-lift.x,Number(b.group.position.z)-lift.z));}
-  function workshopLiftVehicle(){const lift=workshopLiftRuntime();if(!lift)return null;if(!lift.vehicleId){const found=workshopVehiclesOnLiftZone().filter(workshopVehicleCanResumeLift).sort((a,b)=>Number(state.vehicles?.workshopComponents?.[String(b.id)]?.serviceOpenedAt||0)-Number(state.vehicles?.workshopComponents?.[String(a.id)]?.serviceOpenedAt||0))[0];if(found){lift.vehicleId=String(found.id);lift.raised=false;lift.busy=false;lift.height=0;}}if(!lift.vehicleId)return null;const vehicle=typeof vehicleById==='function'?vehicleById(lift.vehicleId):(world.vehicles||[]).find(v=>String(v.id)===String(lift.vehicleId));if(!vehicle){lift.vehicleId='';lift.raised=false;lift.busy=false;lift.height=0;}return vehicle||null;}
+  function workshopLiftVehicle(){const lift=workshopLiftRuntime();if(!lift)return null;if(!lift.vehicleId){const found=workshopVehiclesOnLiftZone().filter(workshopVehicleCanResumeLift).sort((a,b)=>Number(workshopMapState().workshopComponents?.[String(b.id)]?.serviceOpenedAt||0)-Number(workshopMapState().workshopComponents?.[String(a.id)]?.serviceOpenedAt||0))[0];if(found){lift.vehicleId=String(found.id);lift.raised=false;lift.busy=false;lift.height=0;}}if(!lift.vehicleId)return null;const vehicle=typeof vehicleById==='function'?vehicleById(lift.vehicleId):(world.vehicles||[]).find(v=>String(v.id)===String(lift.vehicleId));if(!vehicle){lift.vehicleId='';lift.raised=false;lift.busy=false;lift.height=0;}return vehicle||null;}
   function workshopLiftDriveActionLabel(){const lift=workshopLiftRuntime();if(!lift)return'Alinhar';if(lift.busy)return'Aguarde';if(lift.raised)return'Ocupado';return workshopLiftVehicle()?'Box ocupado':'Alinhar';}
   function workshopLiftContextLabel(){const lift=workshopLiftRuntime(),vehicle=workshopLiftVehicle();if(!lift)return'Painel do elevador';if(lift.busy)return'Elevador em movimento';if(!vehicle)return'Painel do elevador • box livre';return lift.raised?`Elevador erguido • ${vehicle.label||vehicle.id}`:`Veículo no box • ${vehicle.label||vehicle.id}`;}
   function workshopLiftActionLabel(){const lift=workshopLiftRuntime();if(!lift||lift.busy)return'Aguarde';return workshopLiftVehicle()?'Controle':'Box livre';}
@@ -7368,7 +7392,7 @@
   function openTioThiagoHub(){
     const tio=world.npcs?.find(n=>n.id==='tio-thiago'),rep=Number(state.profile?.reputation||0),races=Number(state.stats?.races||0),repairs=Number(state.stats?.repairs||0),studio=ensureDigitalStudioState(),active=studio.projects.filter(p=>p.status!=='delivered').length;
     openModal('Tio Thiago • SOS Valêncio',`<div class="dialogue-box"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div><b>Gerente da oficina • manutenção e cuidado com os veículos</b><p style="margin:.35rem 0 0">Diagnosticar, decidir, executar e testar. Aqui as ações alteram de verdade o estado do jogo.</p></div></div></div><div class="choice-grid"><button class="choice" data-tio="lift"><b>⬆️ Elevadores · box 1 e box 2</b><span>Entrar dirigindo, alinhar, erguer, inspecionar peças e reparar</span></button><button class="choice" data-tio="service"><b>📋 Ordens de Serviço abertas</b><span>Mostrar somente veículos em atendimento</span></button><button class="choice" data-tio="yard"><b>🅿️ Pátio da oficina</b><span>Veículos separados por vaga e situação</span></button><button class="choice" data-tio="scrapyard"><b>♻️ Ferro-Velho OTTHI</b><span>Vender sucata, desmontar veículos sem conserto e comercializar peças</span></button><button class="choice" data-tio="workshop"><b>🔧 Bancada da Oficina</b><span>Ferramentas, reparos, fundição e garagem já existentes</span></button><button class="choice" data-tio="race"><b>🏃 Corrida de rua</b><span>Desafiar o Tio Thiago na pista de atletismo</span></button><button class="choice" data-tio="garage"><b>🚗 Minha Garagem</b><span>Guardar, retirar, comprar e personalizar veículos</span></button></div><small>Oficina: ${repairs} reparo(s) • corridas: ${races} • reputação: ${rep}</small>`,root=>{
-      root.onclick=e=>{const btn=e.target.closest('[data-tio]');if(!btn)return;const action=btn.dataset.tio;if(action==='lift'){const lift=workshopLiftRuntime();if(lift?.raised)openWorkshopLiftInspection();else{closeModal();toast(lift?.vehicleId?'Veículo alinhado. Vá até o painel físico e use ERGUER.':'Entre com o carro pelo vão aberto e use ALINHAR no box do elevador.','good',3000);}return;}if(action==='service'){openWorkshopServiceDesk();return;}if(action==='yard'){openWorkshopYard();return;}if(action==='scrapyard'){openWorkshopScrapyard();return;}if(action==='workshop'){openWorkshop();return;}if(action==='garage'){typeof openPlayerGarage==='function'?openPlayerGarage():toast('Garagem ainda carregando.','warn');return;}if(action==='race'){closeModal();startRace('sprint',tio||world.npcs[0]);return;}if(action==='digital'){openThiaguinhoStudio();return;}};
+      root.onclick=e=>{const btn=e.target.closest('[data-tio]');if(!btn)return;const action=btn.dataset.tio;if(action==='lift'){const lift=workshopLiftRuntime();if(lift?.raised)openWorkshopLiftInspection();else{closeModal();toast(lift?.vehicleId?'Veículo alinhado. Vá até o painel físico e use ERGUER.':'Entre com o carro pelo vão aberto e use ALINHAR no box do elevador.','good',3000);}return;}if(action==='service'){openWorkshopServiceDesk();return;}if(action==='yard'){openWorkshopYard();return;}if(action==='scrapyard'){openWorkshopScrapyard();return;}if(action==='workshop'){openWorkshop();return;}if(action==='garage'){typeof openPlayerGarage==='function'?openPlayerGarage():toast('Garagem ainda carregando.','warn');return;}if(action==='race'){closeModal();if(typeof inRioMap==='function'&&inRioMap())openRioGeoRun();else startRace('sprint',tio||world.npcs[0]);return;}if(action==='digital'){openThiaguinhoStudio();return;}};
     });
   }
   function openWorkshop(){
@@ -8421,7 +8445,7 @@
     if(!Number.isFinite(x)||!Number.isFinite(z))return true;const bounds=v704WorldBounds();if(x<bounds.minX||x>bounds.maxX||z<bounds.minZ||z>bounds.maxZ)return true;
     if(!options.allowWater&&waterAt(x,z)&&groundHeightAt(x,z)<=.24)return true;
     const separateRio=typeof inRioMap==='function'&&inRioMap();
-    if(separateRio&&rioFootprintBlock(x,z,radius))return true;
+    if(separateRio&&rioFootprintBlock(x,z,radius,!player.vehicle&&!options.ignoreActor))return true;
     for(const c of nearbyWorldColliders(x,z,radius)){
       if(c.disabled)continue;if(options.ignoreHouseId&&c.houseId===options.ignoreHouseId)continue;
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;
@@ -9587,6 +9611,7 @@
   }
 
   function setupControls(){
+    if(typeof inRioMap==='function'&&inRioMap())rioBindBuildingPointer();
     const resetJoy=()=>{input.joyId=null;input.joyX=0;input.joyZ=0;els.joystickKnob.style.transform='translate(-50%,-50%)';};
     els.joystick.addEventListener('pointerdown',e=>{e.preventDefault();if(input.joyId!==null&&input.joyId!==undefined)return;input.joyId=e.pointerId;safePointerCapture(els.joystick,e.pointerId);updateJoy(e);});
     els.joystick.addEventListener('pointermove',e=>{if(e.pointerId===input.joyId)updateJoy(e);});
@@ -9703,7 +9728,7 @@
     }
   }
   els.playBtn.onclick=()=>enterCurrentOtthiWorld();
-  els.continueBtn.onclick=()=>enterCurrentOtthiWorld(state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot');
+  els.continueBtn.onclick=()=>enterCurrentOtthiWorld(otthiContinueMap());
   if(els.rioPretoPlayBtn)els.rioPretoPlayBtn.onclick=()=>enterCurrentOtthiWorld('rio-preto');
 
   function openPauseMenu(){
@@ -10550,6 +10575,7 @@ function build(T,key,H){
     vehicle.group.position.set(point.x,groundHeightAt(point.x,point.z),point.z);vehicle.group.rotation.y=point.heading;vehicle.x=point.x;vehicle.z=point.z;vehicle.heading=point.heading;setGarageVehicleStored(vehicle,false);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;persistParkedVehicle(vehicle);saveState(true);return enterVehicle(vehicle);
   }
   function openPlayerGarage(){
+    if(inRioMap())return rioAtFleetCounter()?openRioFleetCounter():openWorldPhone();
     syncOwnedGarageDisplayFleet();const garage=ensurePlayerGarageState(),owned=OTTHI_PLAYER_VEHICLE_CATALOG.filter(item=>state.vehicles.owned.includes(item.id));
     const cards=owned.map(item=>{const slot=garageVehicleSlot(item.id,garage),stored=!!garage.stored[item.id],primary=state.vehicles.primaryId===item.id,vehicle=vehicleById(item.id),where=vehicle?.workshopYardStatus?'Em atendimento na oficina':stored?'Guardado no Centro da Coleção':slot?(slot.startsWith('H')?'Pátio de pesados · '+slot:'Casa · vaga '+slot):'Estacionado no mundo';
       return `<article class="choice garage-owned-card" data-owned-search="${escapeHtml(item.label.toLocaleLowerCase('pt-BR'))}" data-owned-kind="${neighborhoodVehicleCategory(item)}"><b>${item.icon} ${escapeHtml(item.label)} ${primary?'⭐':''}</b><span>${where} · integridade ${Math.round(state.vehicles.partDurability[item.id]??100)}%</span><small>${escapeHtml(item.description)}</small><div class="modal-actions"><button class="btn primary compact" data-garage-place="${item.id}">${stored?'Retirar':'Trazer para garagem'}</button>${stored?'':`<button class="btn compact" data-garage-store="${item.id}">Guardar</button>`}<button class="btn compact" data-garage-primary="${item.id}" ${primary?'disabled':''}>Principal</button><button class="btn compact" data-garage-customize="${item.id}">Personalizar</button></div></article>`;}).join('');
@@ -10625,12 +10651,9 @@ function build(T,key,H){
   }
   function workshopTowSafePoseV1678(){const parking=worldLayoutPoint('repairParking',{x:32,z:-18});return{x:parking.x+1.4,z:parking.z,heading:Math.PI/2};}
   function towVehicleToWorkshopV704(vehicle=nearestRepairableVehicleV704()){
-    if(typeof inRioMap==='function'&&inRioMap()){
-      toast('A oficina com reboque fica na Vila OT. Abra Menu e escolha Vila OT.','info',3300);return false;
-    }
     if(!vehicle){toast('Nenhum veículo encontrado para rebocar.','warn');return false;}const cost=20;if(state.profile.coins<cost){toast(`O reboque custa ${cost} moedas.`,'warn');return false;}if(player.vehicle&&currentVehicleRef?.()===vehicle)exitVehicle(true);if(typeof workshopMoveVehicleToYard!=='function'||!workshopMoveVehicleToYard(vehicle,'pending')){toast('O pátio da oficina está sem vaga segura para receber o reboque.','warn',2800);return false;}const record=typeof workshopComponentRecord==='function'?workshopComponentRecord(vehicle):null;if(record){record.serviceOpenedAt=Date.now();record.serviceCompletedAt=0;record.serviceStatus='pending';record.unrepairable=false;delete record.operatorReleasedAt;const owner=typeof workshopVehicleOwnerMeta==='function'?workshopVehicleOwnerMeta(vehicle):null;if(owner){record.ownerName=owner.name;record.ownerType=owner.type;}}addCoins(-cost);saveState(true);toast('Veículo rebocado para uma vaga individual do pátio da oficina.','good',2600);return true;
   }
-  function openBrokenVehicleOptionsV704(vehicle){const d=vehicleDurabilityV704(vehicle);openModal('Veículo quebrado',`<p><b>${escapeHtml(vehicle?.label||'Veículo')}</b> está com ${d}% de integridade e não pode continuar.</p><div class="modal-actions">${typeof inRioMap==='function'&&inRioMap()?'<button class="btn" data-v704-go-workshop>Ir para a Vila OT</button>':'<button class="btn primary" data-v704-tow>🚚 Rebocar para oficina • 20 moedas</button>'}<button class="btn good" data-v704-repair>🛠 Reparar agora</button></div>`,root=>{$('[data-v704-go-workshop]',root)?.addEventListener('click',()=>selectOtthiMap('ot'));$('[data-v704-tow]',root)?.addEventListener('click',()=>{if(towVehicleToWorkshopV704(vehicle))closeModal();});$('[data-v704-repair]',root).onclick=()=>{if(repairVehicleV704(vehicle)){closeModal();}};});}
+  function openBrokenVehicleOptionsV704(vehicle){const d=vehicleDurabilityV704(vehicle);openModal('Veículo quebrado',`<p><b>${escapeHtml(vehicle?.label||'Veículo')}</b> está com ${d}% de integridade e não pode continuar.</p><div class="modal-actions"><button class="btn primary" data-v704-tow>🚚 Rebocar para oficina • 20 moedas</button><button class="btn good" data-v704-repair>🛠 Reparar agora</button></div>`,root=>{$('[data-v704-tow]',root)?.addEventListener('click',()=>{if(towVehicleToWorkshopV704(vehicle))closeModal();});$('[data-v704-repair]',root).onclick=()=>{if(repairVehicleV704(vehicle)){closeModal();}};});}
   const legacyEnterVehicleV704=enterVehicle;
   enterVehicle=function enterVehicleDamageV704(vehicle=world.vehicle){if(vehicleBrokenV704(vehicle)){openBrokenVehicleOptionsV704(vehicle);return false;}const ok=legacyEnterVehicleV704(vehicle);if(ok)player.car.broken=false;return ok;};
   const legacyRegisterVehicleImpactV704=registerVehicleImpact;
@@ -10735,7 +10758,7 @@ function build(T,key,H){
   initThree=function initThreeOtthiWorld(){
     const ok=legacyWorldInitThree();if(!ok)return false;
     if(typeof inRioMap==='function'&&inRioMap()){
-      ensureOtthiWorldState();initFamilyAvatarTemplates();applyWorldAvatarV3();applyOtthiWorldRuntimeSettings();
+      ensureOtthiWorldState();initFamilyAdventure();applyWorldAvatarV3();applyOtthiWorldRuntimeSettings();
       otthiWorldRuntime.initialized=true;return true;
     }
     try{ensureOtthiWorldState();createOtthiWorldProfessionalLayer();applyWorldAvatarV3();createWorldModularGarageInteractable();createWorldHeroAdventure();ensureWorldHeroHud();applyOtthiWorldRuntimeSettings();initFamilyAdventure();otthiWorldRuntime.initialized=true;document.dispatchEvent(new CustomEvent('otthi-world:ready',{detail:otthiWorldDiagnostics()}));}
@@ -11016,12 +11039,12 @@ function build(T,key,H){
   function createFarmingSystem(){
     if(world.worldEvolution?.farming)return false;const group=new THREE.Group();group.name='OTTHI_V702_FARM';worldGroup.add(group);const empty=v702TextureMaterial('farmland',0x79502e,{repeat:[2,2],roughness:.96,normalScale:.52}),wet=v702TextureMaterial('mud',0x543522,{repeat:[2,2],roughness:.88,normalScale:.48});
     const farmPoint=worldLayoutPoint('farm',{x:98,z:25}),positions=[];for(let x=farmPoint.x-8;x<=farmPoint.x+8;x+=4)for(let z=farmPoint.z-6;z<=farmPoint.z+6;z+=4)positions.push([x,z]);
-    positions.forEach(([x,z],index)=>{const id=`farm-${index}`,soil=new THREE.Mesh(new THREE.BoxGeometry(3.25,.12,3.25),empty);soil.position.set(x,.13,z);soil.receiveShadow=true;group.add(soil);const crop=new THREE.Group();crop.position.set(x,.2,z);group.add(crop);for(const dx of[-.72,-.24,.24,.72])for(const dz of[-.72,0,.72]){premiumBox(.07,.72,.07,0x4b9f3e,dx,.36,dz,crop);premiumBox(.25,.19,.25,(index+Math.round(dx*10))%2?0xf0c84c:0x6fc44e,dx,.76,dz,crop);}const interactable={id:`farm-plot-${id}`,type:'farm',icon:'🌱',label:'Preparar e plantar',x,z,radius:2.25,priority:178,action:null};const plot={id,x,z,soil,crop,interactable,soilMaterials:{empty,wet}};interactable.action=()=>useFarmPlot(plot);registerInteractable(interactable);WORLD_V702.farmPlots.set(id,plot);updateFarmPlotVisual(plot);});
-    createSignpost(farmPoint.x,farmPoint.z-10,'Fazenda Comunitária',Math.PI);world.worldEvolution.farming=group;return true;
+    positions.forEach(([x,z],index)=>{const id=(inRioMap()?'rio-farm-':'farm-')+index,soil=new THREE.Mesh(new THREE.BoxGeometry(3.25,.12,3.25),empty);soil.position.set(x,.13,z);soil.receiveShadow=true;group.add(soil);const crop=new THREE.Group();crop.position.set(x,.2,z);group.add(crop);for(const dx of[-.72,-.24,.24,.72])for(const dz of[-.72,0,.72]){premiumBox(.07,.72,.07,0x4b9f3e,dx,.36,dz,crop);premiumBox(.25,.19,.25,(index+Math.round(dx*10))%2?0xf0c84c:0x6fc44e,dx,.76,dz,crop);}const interactable={id:`farm-plot-${id}`,type:'farm',icon:'🌱',label:'Preparar e plantar',x,z,radius:2.25,priority:178,action:null};const plot={id,x,z,soil,crop,interactable,soilMaterials:{empty,wet}};interactable.action=()=>useFarmPlot(plot);registerInteractable(interactable);WORLD_V702.farmPlots.set(id,plot);updateFarmPlotVisual(plot);});
+    createSignpost(farmPoint.x,farmPoint.z-10,inRioMap()?'Horta comunitária':'Fazenda Comunitária',Math.PI);world.worldEvolution.farming=group;return true;
   }
   function useDigSite(site){ensureWorldEvolutionState();if(!['hoe','shovel','pickaxe'].includes(state.tools.equipped)){toast('Equipe Enxada, Pá ou Picareta para cavar.','warn',1900);return;}const previous=Number(state.farming.digSites[site.id]||0),remaining=V702_DIG_COOLDOWN-(Date.now()-previous);if(remaining>0){toast(`A terra precisa descansar por ${Math.ceil(remaining/1000)} s.`,'warn',1300);return;}state.farming.digSites[site.id]=Date.now();playToolAnimation();const bait=1+Math.floor(Math.random()*3),seeds=Math.random()<.46?1:0,clay=site.biome==='shore'||site.biome==='farm'?(Math.random()<.55?1:0):0;state.inventory.bait=(state.inventory.bait||0)+bait;state.inventory.seeds=(state.inventory.seeds||0)+seeds;state.inventory.clay=(state.inventory.clay||0)+clay;state.tools.harvested.bait=(state.tools.harvested.bait||0)+bait;state.tools.harvested.clay=(state.tools.harvested.clay||0)+clay;state.stats.dugBait=(state.stats.dugBait||0)+bait;addXP(7+bait*2);saveState(true);updateHUD();toast(`Escavação: +${bait} isca${bait>1?'s':''}${seeds?`, +${seeds} semente`:''}${clay?', +1 argila':''}.`,'good',2200);}
   function createDigSites(){
-    if(world.worldEvolution?.digSites)return false;const farm=worldLayoutPoint('farm'),sites=[[-47,-45,'forest'],[-62,-34,'forest'],[farm.x-7,farm.z-5,'farm'],[farm.x+7,farm.z+5,'farm'],[-65,42,'shore'],[-91,76,'shore'],[81,-36,'desert'],[104,-48,'desert']];
+    if(world.worldEvolution?.digSites)return false;const farm=worldLayoutPoint('farm'),sites=inRioMap()?[[farm.x-11,farm.z-9,'farm'],[farm.x+11,farm.z+9,'farm']]:[[-47,-45,'forest'],[-62,-34,'forest'],[farm.x-7,farm.z-5,'farm'],[farm.x+7,farm.z+5,'farm'],[-65,42,'shore'],[-91,76,'shore'],[81,-36,'desert'],[104,-48,'desert']];
     for(const [x,z,biome]of sites){const id=`dig-${biome}-${x}-${z}`,mat=v702TextureMaterial(biome==='desert'?'sand':biome==='shore'?'shore':'dirt',biome==='desert'?0xdcb266:0x795333,{repeat:[2,2],roughness:.95});const patch=new THREE.Mesh(new THREE.CylinderGeometry(1.35,1.55,.08,16),mat);patch.position.set(x,groundHeightAt(x,z)+.05,z);worldGroup.add(patch);const site={id,x,z,biome,mesh:patch};WORLD_V702.digSites.set(id,site);registerInteractable({id,type:'dig',icon:'🪱',label:'Cavar por iscas e recursos',x,z,radius:2.35,priority:165,action:()=>useDigSite(site)});}
     world.worldEvolution.digSites=true;return true;
   }
@@ -11099,6 +11122,7 @@ function build(T,key,H){
     return {id,x,z,heading:0,moving:0,group,mesh,shadow,bones,joints,scale,path:[],routeAt:0,vertices:triangles.length,uniqueVertices:pos.length/3};
   }
   function familyHomeLocation(){
+    if(typeof inRioMap==='function'&&inRioMap())return RIO_FAMILY_HOME;
     // A new free lot is selected without moving a road, house or existing activity.
     for(const x of [-38,-40,-34,-44,-32])for(const z of [-24,-28,-32,-16]){
       if(waterAt(x,z)||v704RoadAt(x,z,1,false))continue;
@@ -11125,10 +11149,10 @@ function build(T,key,H){
     for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]])familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
     familyWorld.toyMesh=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),new THREE.MeshStandardMaterial({color:0xf7ba47,roughness:.45}));familyWorld.toyMesh.visible=false;worldGroup.add(familyWorld.toyMesh);
-    familyWorld.ready=true;familyWorld.restoreParty=!!familyProgress().party;familyCreateEntry();
+    familyWorld.ready=true;familyWorld.restoreParty=!(typeof inRioMap==='function'&&inRioMap())&&!!familyProgress().party;familyCreateEntry();
     if(familyCharacterId(state.avatar?.bodyStyle)&&typeof applyAvatarCustomization==='function')applyAvatarCustomization();
     for(const ghost of world.ghosts?.values?.()||[])if(familyCharacterId(ghost.userData.target?.avatar?.bodyStyle)){ghost.userData.avatarSignature='';applyRemoteAvatarIfChanged(ghost,ghost.userData.target.avatar);}
-    if(new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
+    if(!(typeof inRioMap==='function'&&inRioMap())&&new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
   }
   function familyCreateEntry(){
     if(typeof document.getElementById!=='function'||document.getElementById('family-world-entry'))return;
@@ -11298,7 +11322,7 @@ function build(T,key,H){
       clear=actor.lineProbe.clear;
     }
     if(!clear&&distance>1.4){
-      if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
+      if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=typeof inRioMap==='function'&&inRioMap()?rioGeoRoute(actor,target,true,{connect:true}):buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
       while(actor.path.length&&Math.hypot(actor.path[0].x-actor.x,actor.path[0].z-actor.z)<1.1)actor.path.shift();
       if(actor.path.length)dest=actor.path[0];
     }else actor.path=[];
@@ -12436,7 +12460,7 @@ function build(T,key,H){
     s.cleanup?.();const url=new URL(window.OTTHI_CANONICAL?.game(s.venue.slug) || '../'+s.venue.slug+'/',OTTHI_GAME_LIVE_BASE);url.searchParams.set('otVenue',s.token);url.searchParams.set('venuePage','1');location.assign(url.href);
   }
   function venueOpen(id){
-    const v=WORLD_ACTIVITY_VENUES[id];
+    const v=inRioMap()?rioVenues.get(id):WORLD_ACTIVITY_VENUES[id];
     if(!v||!running||paused||worldVenues.session||otGames.active||currentHouse||player.vehicle||player.boating||player.transit.mode||activeRace||buildMode||SPORTS_V705.active||window.OTTHI_COOP?.active?.())return false;
     if(Math.hypot(player.x-v.navX,player.z-v.navZ)>4.5){setWaypoint('venue-'+id);toast('Siga o GPS até a entrada de '+v.label+'.','info',3000);return false;}
     closeModal();clearMovementInputs();savePlayerPosition(true);
@@ -12474,7 +12498,7 @@ function build(T,key,H){
     if(!window.WorldVenueTrip.applyResult(trip.token))return;
     if(worldVenues.session)venueClose();
     window.WorldVenueTrip.finish(trip.token);const clean=new URL(location.href);clean.searchParams.delete('otVenueReturn');history.replaceState(null,'',clean.href);
-    if(!running)startGame(false);else{paused=false;clearMovementInputs();updateContext(true);}
+    if(!running)startGame(false,new URL(trip.returnUrl).searchParams.get('map')==='rio-preto'?'rio-preto':null);else{paused=false;clearMovementInputs();updateContext(true);}
   }
   window.addEventListener('pageshow',()=>dbReady.then(venueResumeTrip));
   dbReady.then(venueResumeTrip);
@@ -13751,6 +13775,7 @@ function precompile(T,renderer,scene,camera){
   }
   const homeOriginalLOD=updateVisualLOD;updateVisualLOD=function(...args){homeOriginalLOD(...args);updateHouseInteriorVisibility();};
   function prepareHomeRender(){
+    if(typeof inRioMap==='function'&&inRioMap()&&!currentHouse)return rioInteriorRender();
     updateHouseInteriorVisibility();const h=currentHouse;if(!h||cameraMode!=='interior'||!h.renderObjects)return null;const keep=new Set(h.renderObjects),hidden=[];
     if(characterActivities.visual?.host)keep.add(characterActivities.visual.host);if(neighborhoodHome.seat?.host)keep.add(neighborhoodHome.seat.host);keep.add(playerGroup);if(contactShadow)keep.add(contactShadow);
     for(const a of Object.values(familyWorld.actors||{}))if(Math.abs(a.x-h.x)<h.w/2&&Math.abs(a.z-h.z)<h.d/2){keep.add(a.group);if(a.shadow)keep.add(a.shadow);if(a.label)keep.add(a.label);}
@@ -14412,12 +14437,22 @@ function precompile(T,renderer,scene,camera){
   for(const p of remotePresence.values())if(p.vehicle&&String(p.vehicleId||p.vehicleAppearance?.id||'')===id)return 'Em uso por outro jogador';
   return '';
  }
- function garageStoreHere(id){const g=ensurePlayerGarageState(),v=vehicleById(id);if(garageStorageBlock(id,true))return false;if(player.vehicle&&player.car.id===id)exitVehicle(true);for(const key of Object.keys(g.slots))if(g.slots[key]===id)g.slots[key]='';g.stored[id]=true;setGarageVehicleStored(v,true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;saveState(true);return true;}
+ function garageStoreHere(id){
+  const g=ensurePlayerGarageState(),v=vehicleById(id);if(garageStorageBlock(id,true))return false;
+  if(player.vehicle&&player.car.id===id)exitVehicle(true);
+  if(typeof inRioMap==='function'&&inRioMap()){
+   rioRoadVehicleSave(id).stored=true;
+   if(v)rioRemoveRoadVehicle(v);
+  }else{
+   for(const key of Object.keys(g.slots))if(g.slots[key]===id)g.slots[key]='';g.stored[id]=true;setGarageVehicleStored(v,true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;
+  }
+  saveState(true);return true;
+ }
  storeOwnedVehicle=function(id,silent=false){const reason=garageStorageBlock(id);if(reason){if(!silent)toast(reason+'.','info',2600);return false;}const ok=garageStoreHere(id);if(ok&&!silent)toast((playerVehicleCatalogEntry(id)?.label||'Veículo')+' guardado na sua garagem.','good',2000);return ok;};
  function garageStoreAll(){
   const result={stored:[],already:[],blocked:[]},g=ensurePlayerGarageState();
-  for(const id of [...new Set(state.vehicles.owned)]){const reason=garageStorageBlock(id);if(reason){result.blocked.push({id,reason});continue;}if(g.stored[id]){setGarageVehicleStored(vehicleById(id),true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;result.already.push(id);continue;}if(storeOwnedVehicle(id,true))result.stored.push(id);}
-  syncOwnedGarageDisplayFleet();saveState(true);toast(`${result.stored.length} veículo(s) guardado(s).${result.blocked.length?' '+result.blocked.length+' em uso ou atendimento; veja a lista na garagem.':''}`,'good',3400);return result;
+  for(const id of [...new Set(state.vehicles.owned)]){const reason=garageStorageBlock(id);if(reason){result.blocked.push({id,reason});continue;}if((typeof inRioMap==='function'&&inRioMap())?vehicleStoredOnMap(id):g.stored[id]){setGarageVehicleStored(vehicleById(id),true);const clone=world.playerGarageDisplayFleet?.get(id);if(clone)clone.visible=false;result.already.push(id);continue;}if(storeOwnedVehicle(id,true))result.stored.push(id);}
+  if(!(typeof inRioMap==='function'&&inRioMap()))syncOwnedGarageDisplayFleet();saveState(true);toast(`${result.stored.length} veículo(s) guardado(s).${result.blocked.length?' '+result.blocked.length+' em uso ou atendimento; veja a lista na garagem.':''}`,'good',3400);return result;
  }
  function openGarageVehicleManager(){
   ensurePlayerGarageState();const entries=garageOwnedEntries();openModal('Minha garagem',`<p>${entries.length} unidades próprias. Os veículos guardados ficam disponíveis nos pisos da garagem e no celular.</p><div class="modal-actions"><button class="btn primary" data-private-garage-gps>IR À GARAGEM DA CASA</button><button class="btn" data-garage-store-all>GUARDAR TODOS OS DISPONÍVEIS</button></div><div class="choice-grid">${entries.map(e=>{const stored=!!state.vehicles.garage.stored[e.id],reason=garageStorageBlock(e.id);return `<article class="choice"><b>${escapeHtml(e.label)} · #${e.unit}</b><span>${escapeHtml(reason||(stored?'Guardado na garagem':'Estacionado no mundo'))}</span><button class="btn" data-garage-store="${escapeHtml(e.id)}" ${stored||reason?'disabled':''}>${stored?'GUARDADO':'GUARDAR'}</button></article>`;}).join('')}</div>`,root=>{root.querySelector('[data-private-garage-gps]').onclick=()=>setWaypoint('my-garage');root.querySelector('[data-garage-store-all]').onclick=()=>{garageStoreAll();openGarageVehicleManager();};root.querySelectorAll('[data-garage-store]').forEach(b=>b.onclick=()=>{storeOwnedVehicle(b.dataset.garageStore);openGarageVehicleManager();});});
@@ -14492,7 +14527,7 @@ function precompile(T,renderer,scene,camera){
  const garageOldVehicleEnter=enterVehicle;enterVehicle=function(v=world.vehicle){const ok=garageOldVehicleEnter(v);if(ok)player.car.ignition=true;return ok;};
  const garageOldVehicleContext=updateVehicleContextButton;updateVehicleContextButton=function(){const target=garageOldVehicleContext();if(els.vehicleActionBtn){els.vehicleActionBtn.dataset.privateGaragePark=String(target?.id==='private-garage-park');if(target?.id==='private-garage-park')els.vehicleActionBtn.classList.remove('pulse');}return target;};
  const garageOldOnlineFleet=multiplayerGarageFleetSnapshot;multiplayerGarageFleetSnapshot=function(...args){return garageOldOnlineFleet(...args).filter(e=>e.status!=='garage');};
- const garageOldOpen=openPlayerGarage;openPlayerGarage=function(){const p=worldLayoutPoint('homeGarage'),home=worldLayoutPoint('home');if(currentHouse&&Math.hypot(currentHouse.x-home.x,currentHouse.z-home.z)<1){closeModal();exitHouse();player.x=p.x+8;player.z=p.z;player.y=groundHeightAt(player.x,player.z);player.vx=player.vy=player.vz=0;rememberSafePlayerPosition(true);return openPersonalGarageRoom();}if(Math.hypot(player.x-p.x,player.z-p.z)<14&&!currentHouse)return openPersonalGarageRoom();return openGarageVehicleManager();};
+ const garageOldOpen=openPlayerGarage;openPlayerGarage=function(){if(typeof inRioMap==='function'&&inRioMap())return garageOldOpen();const p=worldLayoutPoint('homeGarage'),home=worldLayoutPoint('home');if(currentHouse&&Math.hypot(currentHouse.x-home.x,currentHouse.z-home.z)<1){closeModal();exitHouse();player.x=p.x+8;player.z=p.z;player.y=groundHeightAt(player.x,player.z);player.vx=player.vy=player.vz=0;rememberSafePlayerPosition(true);return openPersonalGarageRoom();}if(Math.hypot(player.x-p.x,player.z-p.z)<14&&!currentHouse)return openPersonalGarageRoom();return openGarageVehicleManager();};
  const garageOldExpansion=updateWorldExpansion;updateWorldExpansion=function(){garageOldExpansion();garageSyncIgnition();if(!world.playerGarage)return;
   if(!world.playerGarage.privateParkingAction){const p=worldLayoutPoint('homeGarage');registerInteractable({id:'private-garage-park',type:'garage',vehicleOnly:true,icon:'🏠',label:'Estacionar na minha garagem',actionLabel:'Garagem',x:p.x+9,z:p.z,radius:5.5,priority:800,available:()=>player.vehicle&&!player.car.passengerOf&&state.vehicles.owned.includes(player.car.id),action:()=>openPersonalGarageRoom()});world.playerGarage.privateParkingAction=true;}
   for(const i of world.interactables)if(i.id==='player-home-garage'||i.id==='player-home-garage-west'){i.label='Entrar na minha garagem';i.action=()=>openPersonalGarageRoom();}const sign=world.playerGarage.group?.children.find(o=>o.geometry?.type==='PlaneGeometry'&&o.position.y>2);if(sign&&!sign.userData.privateGarage){sign.material.map?.dispose();sign.material.map=signTexture('MINHA GARAGEM · ENTRADA','#173b59','#ffffff');sign.material.needsUpdate=true;sign.userData.privateGarage=true;}};
@@ -14889,7 +14924,7 @@ function precompile(T,renderer,scene,camera){
  function ensureWorkshopBays(){
   if(!world.workshopLifts?.length)return false;if(!workshopBays.ready){const [first,second]=world.workshopLifts,original=workshopMechanicNpc();first.mechanic=original;const house=world.houses.find(h=>h.id===first.houseId);if(!house||!world.npcs.length)return false;
    const npc=createNPC('workshop-mechanic-bay-2','Mecânico do box 2',second.x,house.z-4.0,0x4a7a8b,0);npc.workshopMechanic=true;npc.stationary=true;second.mechanic=npc;const tool=new THREE.Group();tool.name='workshop-mechanic-wrench';const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.36,8),renderMat(0xaeb9bd,{metalness:.6,roughness:.3}));shaft.rotation.z=.8;tool.add(shaft);tool.position.set(.58,.95,.18);tool.visible=false;npc.group.add(tool);workshopBays.ready=true;}
-  if(!workshopBays.restored&&world.vehicles.length){const savedBays=JSON.parse(JSON.stringify(state.vehicles.workshopBayState||{}));for(const lift of world.workshopLifts){const saved=savedBays[lift.id],vehicle=saved?.vehicleId&&vehicleById(saved.vehicleId);if(!vehicle||player.vehicle&&String(player.car.id)===String(vehicle.id))continue;workshopClearVehicleYardMeta(vehicle);lift.vehicleId=vehicle.id;lift.raised=!!saved.raised;lift.height=lift.raised?lift.maxHeight:0;lift.disassembly=saved.disassembly||{vehicleId:vehicle.id,wheels:{},parts:{}};lift.platform.position.y=lift.height;vehicle.group.position.set(lift.x,groundHeightAt(lift.x,lift.z)+lift.height,lift.z);vehicle.group.rotation.y=lift.heading;vehicle.x=lift.x;vehicle.z=lift.z;vehicle.occupied=lift.raised;workshopForBay(lift,workshopSyncLiftMarkers);}workshopBays.restored=true;}
+  if(!workshopBays.restored&&world.vehicles.length){const savedBays=JSON.parse(JSON.stringify(workshopMapState().workshopBayState||{}));for(const lift of world.workshopLifts){const saved=savedBays[lift.id],vehicle=saved?.vehicleId&&vehicleById(saved.vehicleId);if(!vehicle||player.vehicle&&String(player.car.id)===String(vehicle.id))continue;workshopClearVehicleYardMeta(vehicle);lift.vehicleId=vehicle.id;lift.raised=!!saved.raised;lift.height=lift.raised?lift.maxHeight:0;lift.disassembly=saved.disassembly||{vehicleId:vehicle.id,wheels:{},parts:{}};lift.platform.position.y=lift.height;vehicle.group.position.set(lift.x,groundHeightAt(lift.x,lift.z)+lift.height,lift.z);vehicle.group.rotation.y=lift.heading;vehicle.x=lift.x;vehicle.z=lift.z;vehicle.occupied=lift.raised;workshopForBay(lift,workshopSyncLiftMarkers);}workshopBays.restored=true;}
   return true;
  }
  const workshopMechanicsBefore=updateWorkshopMechanicActions;updateWorkshopMechanicActions=function(dt){if(!ensureWorkshopBays())return workshopMechanicsBefore(dt);for(const lift of world.workshopLifts)workshopForBay(lift,()=>workshopMechanicsBefore(dt));};
@@ -14900,7 +14935,7 @@ function precompile(T,renderer,scene,camera){
  const workshopRemotePoseBefore=sharedWorkshopRemoteParkedPose;sharedWorkshopRemoteParkedPose=function(uid,p){const bay=Number(p?.parkedVehicleBayId??(Array.isArray(p?.workshopBays)?p.workshopBays.find(b=>b.vehicleId===p.parkedVehicleId)?.id:0)??0);return world.workshopLifts?.[bay]?workshopForBay(world.workshopLifts[bay],()=>workshopRemotePoseBefore(uid,p)):workshopRemotePoseBefore(uid,p);};
  const workshopConflictBefore=sharedWorkshopResolveLiftConflict;sharedWorkshopResolveLiftConflict=function(){if(!world.workshopLifts)return workshopConflictBefore();for(const lift of world.workshopLifts)workshopForBay(lift,workshopConflictBefore);};
  const workshopRackBefore=workshopDetachedRack;workshopDetachedRack=function(){const rack=workshopRackBefore(),lift=workshopLiftRuntime(),house=world.houses.find(h=>h.id===lift?.houseId);if(rack&&house)rack.position.set(lift.x,groundHeightAt(lift.x,house.z-4.9)+.18,house.z-4.9);return rack;};
- const workshopSaveBefore=saveState;saveState=function(...args){if(workshopBays.restored&&world?.workshopLifts&&state.vehicles)state.vehicles.workshopBayState=Object.fromEntries(world.workshopLifts.map(l=>[l.id,{vehicleId:l.vehicleId,height:l.busy?(l.raised?l.maxHeight:0):l.height,raised:l.raised,disassembly:l.disassembly||null}]));return workshopSaveBefore(...args);};
+ const workshopSaveBefore=saveState;saveState=function(...args){if(workshopBays.restored&&world?.workshopLifts&&state.vehicles)workshopMapState().workshopBayState=Object.fromEntries(world.workshopLifts.map(l=>[l.id,{vehicleId:l.vehicleId,height:l.busy?(l.raised?l.maxHeight:0):l.height,raised:l.raised,disassembly:l.disassembly||null}]));return workshopSaveBefore(...args);};
  window.OT_WORKSHOP_BAYS={diagnostics:()=>({ready:workshopBays.ready,selected:workshopBays.selected,bays:(world?.workshopLifts||[]).map(l=>({id:l.id,x:l.x,z:l.z,height:l.height,raised:l.raised,busy:l.busy,vehicleId:l.vehicleId,controlX:l.controlX,controlZ:l.controlZ,mechanic:l.mechanic?.id,action:!!l.mechanicAction?.active}))})};
 
  // Publish both cars through the existing garage-fleet renderer, preserving
@@ -15205,6 +15240,8 @@ function precompile(T,renderer,scene,camera){
 
   // ===== MODULE: 73-world-phone-dispatch.js =====
  const worldPhone={job:null,lastTick:0,pending:false,loadedOwner:'',driver:null,walkAway:null,returning:[],uiAt:0};
+ function phoneMapRecord(){return inRioMap()?rioMapSave():state.vehicles;}
+ function vehicleStoredOnMap(id){return inRioMap()?!!state.cityServices.rioMap?.roadVehicles?.[id]?.stored:!!state.vehicles.garage?.stored?.[id];}
 
  class PhoneDriveRoute {
   constructor(points,heading=0){
@@ -15288,7 +15325,7 @@ function precompile(T,renderer,scene,camera){
  function phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic=true){
   const base=groundHeightAt(x,z);
   const body=trafficBody(vehicle,yaw,{x,z});
-  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||state.vehicles?.garage?.stored?.[v.id]||workshopNpcWasCollected(v))continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
+  for(const v of world.vehicles||[]){if(v===vehicle||!v.group||v.garageStored||(typeof inRioMap==='function'&&inRioMap()?vehicleStoredOnMap(v.id):state.vehicles?.garage?.stored?.[v.id])||workshopNpcWasCollected(v))continue;if(trafficBodiesOverlap(body,trafficBody(v),.12))return false;}
   if(includeTraffic)for(const actor of nearbyTrafficActors(x,z,20))if(actor.ref!==vehicle&&trafficBodiesOverlap(body,trafficBody(actor),.22))return false;
   for(const[dx,dz,radius]of phoneVehicleProbes(vehicle,yaw)){
    const px=x+dx,pz=z+dz;
@@ -15299,11 +15336,11 @@ function precompile(T,renderer,scene,camera){
   return true;
  }
  function phoneGroundDestination(vehicle,includeTraffic=false,avoid=null){
-  const projection=nearestRoadProjection(player);if(!projection||projection.distance>90)return null;
-  const a=NAV_BASE_NODES[projection.aId],b=NAV_BASE_NODES[projection.bId],length=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/length,fz=(b.z-a.z)/length,yaw=Math.atan2(fx,fz);
+  const projection=groundServiceRoadProjection(player);if(!projection||projection.distance>90)return null;
+  const {a,b}=projection,length=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/length,fz=(b.z-a.z)/length,yaw=Math.atan2(fx,fz);
   for(const along of[8,-8,14,-14,22,-22,32,-32])for(const side of[2.5,-2.5,0]){
    const x=projection.point.x+fx*along+fz*side,z=projection.point.z+fz*along-fx*side;
-   if(Math.hypot(player.x-x,player.z-z)<5||avoid&&Math.hypot(avoid.x-x,avoid.z-z)<5||!v704RoadAt(x,z,1.5,true))continue;
+   if(Math.hypot(player.x-x,player.z-z)<5||avoid&&Math.hypot(avoid.x-x,avoid.z-z)<5||!v704RoadAt(x,z,inRioMap()?.05:1.5,!inRioMap()))continue;
    if(phoneVehiclePoseClear(vehicle,x,z,yaw,includeTraffic))return{x,z,yaw};
   }
   return null;
@@ -15326,34 +15363,46 @@ function precompile(T,renderer,scene,camera){
  function phoneDispatchAllowed(){return running&&!paused&&!player.vehicle&&!player.boating&&!player.transit.mode&&!currentHouse&&!otGames.active&&!worldVenues.session;}
  async function phoneDispatchGround(id,options={}){
   if(worldPhone.pending||worldPhone.job||worldPhone.purchasePending&&!options.orderId||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
-  const caller=sharedWorldOwnId();worldPhone.pending=true;
+  const caller=sharedWorldOwnId();worldPhone.pending=true;let created=null;
   try{
    const entry=playerVehicleCatalogEntry(id);if(!entry||!await requestBrazilModel(entry.model))return false;
    // Loading a model may outlive a menu or an account switch.
    if(caller!==sharedWorldOwnId()||!phoneDispatchAllowed()||!state.vehicles.owned.includes(id))return false;
-   const vehicle=vehicleById(id)||ensureCatalogVehicle(id);
-   if(!vehicle||vehicle.occupied||vehicle.phoneDelivery||vehicle.workshopYardStatus||vehicleBrokenV704(vehicle)){toast('Este veículo está ocupado, em atendimento ou precisa de reparo.','info',3000);return false;}
+   const record=phoneMapRecord(),fromRio=inRioMap()?rioFleetSavedPose(id):null;
+   const existing=vehicleById(id),vehicle=existing||ensureCatalogVehicle(id,1,fromRio);
+   if(inRioMap()&&!existing)created=vehicle;
+   if(!vehicle||garageStorageBlock(id)||vehicleBrokenV704(vehicle)){toast('Este veículo está ocupado, em atendimento ou precisa de reparo.','info',3000);return false;}
    const target=phoneGroundDestination(vehicle);if(!target){toast('Não há uma vaga segura próxima. Aproxime-se de uma rua livre e chame novamente.','info',3400);return false;}
-   const garage=ensurePlayerGarageState(),stored=!!garage.stored[id]||!!vehicle.garageStored;
+   const garage=ensurePlayerGarageState(),stored=vehicleStoredOnMap(id)||!!vehicle.garageStored;
    let from={x:vehicle.group.position.x,z:vehicle.group.position.z,yaw:vehicle.group.rotation.y};
    if(options.from)from={...options.from};
+   else if(inRioMap()&&(stored||created&&fromRio===RIO_GARAGE_BAY)){from=phonePickupPoint(vehicle,RIO_GARAGE_BAY);if(!from){toast('Libere a saída da garagem para o motorista.','info',2800);return false;}}
    else if(stored){const gate=worldLayoutPoint('homeGarage'),exit=garageDriveOutPoint(vehicle,gate);if(!exit){toast('A saída da garagem está ocupada. Libere a passagem para o motorista.','info',3000);return false;}from={...exit,yaw:exit.heading};}
    const route=phoneGroundRoute(vehicle,from,target);if(route.length<2||!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,false)){toast('A saída do veículo está bloqueada. Libere a passagem para o motorista.','info',3000);return false;}
    if(options.payment>0&&state.profile.coins<options.payment)return false;
-   for(const key of Object.keys(garage.slots))if(garage.slots[key]===id)garage.slots[key]='';
-   garage.stored[id]=false;setGarageVehicleStored(vehicle,false);world.playerGarageDisplayFleet?.get(id)&&(world.playerGarageDisplayFleet.get(id).visible=false);
+   if(inRioMap())rioRoadVehicleSave(id).stored=false;
+   else{
+    for(const key of Object.keys(garage.slots))if(garage.slots[key]===id)garage.slots[key]='';
+    garage.stored[id]=false;world.playerGarageDisplayFleet?.get(id)&&(world.playerGarageDisplayFleet.get(id).visible=false);
+   }
+   setGarageVehicleStored(vehicle,false);
    vehicle.occupied=true;vehicle.phoneDelivery=true;vehicle.group.visible=true;vehicle.group.position.set(from.x,groundHeightAt(from.x,from.z),from.z);vehicle.group.rotation.y=from.yaw;
    const driver=phoneMakeDriver();phoneDriverInVehicle(driver,vehicle);
    worldPhone.job={id,vehicle,driver,target,route:new PhoneDriveRoute(route,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false,caller:{x:player.x,z:player.z},orderId:options.orderId||''};
    if(options.payment>0)addCoins(-options.payment);
-   state.vehicles.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target,orderId:options.orderId||''};persistParkedVehicle(vehicle);saveState(true);closeModal();
+   Object.assign(vehicle,{x:from.x,z:from.z,heading:from.yaw});
+   record.phoneDelivery={id,type:'ground',status:'en-route',at:Date.now(),target,orderId:options.orderId||''};persistParkedVehicle(vehicle);saveState(true);closeModal();
    toast('Motorista a caminho com '+entry.label+'. A entrega será na vaga marcada.','good',3200);phoneWaypoint(target,'Entrega do meu veículo');return true;
-  }finally{worldPhone.pending=false;}
+  }finally{
+   if(created&&worldPhone.job?.vehicle!==created)rioRemoveRoadVehicle(created);
+   worldPhone.pending=false;
+  }
  }
- function phoneWaypoint(point,label){state.waypoint={id:'phone-delivery',name:label,x:point.x,z:point.z,navX:point.x,navZ:point.z,arrived:false};world.routePath=buildRoutePoints(player,state.waypoint);updateWaypointMarker();}
+ function phoneWaypoint(point,label){state.waypoint={id:'phone-delivery',name:label,x:point.x,z:point.z,navX:point.x,navZ:point.z,arrived:false};world.routePath=navigationRoutePoints(player,state.waypoint);updateWaypointMarker();}
  function phoneFinishGround(cancelled=false){
   const job=worldPhone.job;if(!job)return;if(job.kind==='parcel'){if(cancelled)phoneCancelParcel(job);else phoneParcelArrived(job);return;}if(worldPhone.walkAway){phoneRemoveDriver(worldPhone.walkAway.driver);worldPhone.walkAway=null;}const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.x=v.group.position.x;v.z=v.group.position.z;v.heading=v.group.rotation.y;v.manualIgnition=true;
-  persistParkedVehicle(v);state.vehicles.phoneDelivery={id:job.id,type:'ground',status:cancelled?'cancelled':'delivered',at:Date.now(),target:job.target};saveState(true);
+  if(inRioMap())rioMapSave().roadVehicleId=v.id;
+  persistParkedVehicle(v);phoneMapRecord().phoneDelivery={id:job.id,type:'ground',status:cancelled?'cancelled':'delivered',at:Date.now(),target:job.target};saveState(true);
   const exit=safePointNear(v.x,v.z,{heading:v.heading,ignoreActor:v,radius:.32,distances:[2.5,3.5,5],ignoreTraffic:false});
   if(exit){worldGroup.add(job.driver.group);job.driver.group.position.set(exit.x,exit.y,exit.z);job.driver.group.scale.setScalar(.65);job.driver.group.rotation.y=v.heading+Math.PI/2;job.driver.leftLeg.rotation.x=job.driver.rightLeg.rotation.x=0;worldPhone.walkAway={driver:job.driver,at:performance.now(),yaw:v.heading+Math.PI/2};}
   else phoneRemoveDriver(job.driver);
@@ -15442,22 +15491,22 @@ function precompile(T,renderer,scene,camera){
   }finally{worldPhone.pending=false;}
  }
  function openWorldPhone(){
-  if(!running)return;const owned=garageOwnedEntries(),air=airEnsure()?Object.keys(state.vehicles.aircraft||{}).filter(id=>airOperations.fleet.spec(id)):[],record=state.vehicles.phoneDelivery;
+  if(!running)return;const owned=garageOwnedEntries(),air=!inRioMap()&&airEnsure()?Object.keys(state.vehicles.aircraft||{}).filter(id=>airOperations.fleet.spec(id)):[],record=phoneMapRecord().phoneDelivery;
   const groundBusy=!!worldPhone.job,airBusy=Object.values(airOperations.fleet?.data.craft||{}).some(c=>c.status==='delivery'&&c.delivery?.uid===sharedWorldOwnId()),busy=worldPhone.pending||groundBusy||airBusy,allowed=phoneDispatchAllowed();
-  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Chame um motorista, acompanhe o trajeto e receba suas compras no mundo. Aviões são entregues no aeroporto.</p><div class="world-phone-actions"><button class="btn primary" data-phone-shop>COMPRAR E RECEBER</button><button class="btn" data-phone-store-all>GUARDAR TODOS OS VEÍCULOS DISPONÍVEIS</button><button class="btn" data-phone-track ${phoneDeliveryTracking()?'':'disabled'}>VER MOTORISTA E ROTA NO MAPA</button></div><p class="world-phone-status" data-phone-status role="status">${record?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.'}</p>${worldPhone.job?.kind==='parcel'?'<button class="btn good" data-phone-parcel-receive>RECEBER ENCOMENDA</button>':''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<div class="world-phone-vehicle"><button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button><button class="btn" data-phone-store="${escapeHtml(e.id)}" ${state.vehicles.garage.stored[e.id]||garageStorageBlock(e.id)?'disabled':''}>${state.vehicles.garage.stored[e.id]?'GUARDADO':'GUARDAR'}</button></div>`).join('')}</div><h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
+  openModal('📱 Celular do personagem',`<section class="world-phone"><p class="world-phone-intro">Chame um motorista, acompanhe o trajeto e receba suas compras no mundo.${inRioMap()?'':' Aviões são entregues no aeroporto.'}</p><div class="world-phone-actions"><button class="btn primary" data-phone-shop>COMPRAR E RECEBER</button><button class="btn" data-phone-store-all>GUARDAR TODOS OS VEÍCULOS DISPONÍVEIS</button><button class="btn" data-phone-track ${phoneDeliveryTracking()?'':'disabled'}>VER MOTORISTA E ROTA NO MAPA</button></div><p class="world-phone-status" data-phone-status role="status">${record?.status==='delivered'?'Última entrega concluída':'Escolha um veículo ou faça uma compra.'}</p>${worldPhone.job?.kind==='parcel'?'<button class="btn good" data-phone-parcel-receive>RECEBER ENCOMENDA</button>':''}${!allowed?'<p>Desembarque e fique em uma área externa para solicitar uma entrega.</p>':''}<h3>Meus veículos</h3><div class="world-phone-list">${owned.map(e=>`<div class="world-phone-vehicle"><button class="btn" type="button" data-phone-ground="${escapeHtml(e.id)}" ${busy||!allowed?'disabled':''}><span>${escapeHtml(e.icon||'🚗')} ${escapeHtml(e.label)}</span><small>Unidade ${e.unit} · chamar motorista</small></button><button class="btn" data-phone-store="${escapeHtml(e.id)}" ${vehicleStoredOnMap(e.id)||garageStorageBlock(e.id)?'disabled':''}>${vehicleStoredOnMap(e.id)?'GUARDADO':'GUARDAR'}</button></div>`).join('')}</div>${inRioMap()?'':`<h3>Aeronaves utilizadas</h3><p>As aeronaves que você já pilotou aparecem aqui quando estão disponíveis.</p><div class="world-phone-list">${air.map(id=>`<button class="btn" type="button" data-phone-air="${escapeHtml(id)}" ${busy||!allowed||!airAvailable(id)?'disabled':''}><span>${escapeHtml(airOperations.fleet.spec(id).label)}</span><small>${airAvailable(id)?'Chamar equipe':'Em uso ou em transporte'}</small></button>`).join('')||'<p>Nenhuma aeronave registrada neste perfil.</p>'}</div>`}${groundBusy?'<button class="btn" type="button" data-phone-cancel>Interromper entrega terrestre</button>':''}</section>`,root=>{
    root.querySelectorAll('[data-phone-ground]').forEach(b=>b.onclick=()=>phoneDispatchGround(b.dataset.phoneGround));root.querySelectorAll('[data-phone-air]').forEach(b=>b.onclick=()=>phoneDispatchAir(b.dataset.phoneAir));root.querySelector('[data-phone-cancel]')?.addEventListener('click',()=>{phoneFinishGround(true);openWorldPhone();});
-   root.querySelector('[data-phone-track]').onclick=()=>{worldPhone.focusMap=true;openMap();};root.querySelector('[data-phone-shop]').onclick=()=>openPhoneShop();
+   root.querySelector('[data-phone-track]').onclick=()=>{if(inRioMap())openRioMapPanel();else{worldPhone.focusMap=true;openMap();}};root.querySelector('[data-phone-shop]').onclick=()=>openPhoneShop();
    root.querySelector('[data-phone-store-all]').onclick=()=>{garageStoreAll();openWorldPhone();};root.querySelectorAll('[data-phone-store]').forEach(b=>b.onclick=()=>{if(storeOwnedVehicle(b.dataset.phoneStore))openWorldPhone();});root.querySelector('[data-phone-parcel-receive]')?.addEventListener('click',()=>{phoneReceiveParcel();openWorldPhone();});phoneUpdateTrackingUI();
   });
  }
  function phoneDeliveryTracking(){
   const job=worldPhone.job;if(job){const route=compactRoute([{x:job.route.x,z:job.route.z},...job.route.points.slice(job.route.index)]);return{id:job.id,kind:job.kind||'ground',x:job.route.x,z:job.route.z,yaw:job.route.yaw,target:{...job.target},route,distance:routeLength(route),waiting:!!job.waiting,ready:!!job.ready,reroutes:job.reroutes||0,label:job.kind==='parcel'?'Sua encomenda':'Seu motorista'};}
-  const record=state.vehicles.phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
+  const record=phoneMapRecord().phoneDelivery;if(record?.type==='air'&&record.status==='en-route'){const c=airOperations.fleet?.data.craft[record.id];if(c?.delivery){const from={x:c.x,z:c.z};return{id:c.id,kind:'air',...from,yaw:c.yaw,target:record.target,route:[from,record.target],distance:Math.hypot(from.x-record.target.x,from.z-record.target.z),label:'Seu piloto'};}}
   return null;
  }
  function phoneTrackingText(t=phoneDeliveryTracking()){
   if(t)return t.ready?'Encomenda chegou — aproxime-se para receber':`${t.label} · ${Math.round(t.distance)} m até a entrega${t.waiting?' · aguardando passagem / recalculando rota':''}`;
-  const status=state.vehicles.phoneDelivery?.status;
+  const status=phoneMapRecord().phoneDelivery?.status;
   if(status==='delivered')return'Última entrega concluída';
   if(status==='interrupted')return'Entrega interrompida ao recarregar. Seu veículo foi preservado; chame o motorista novamente.';
   if(status==='cancelled')return'Entrega interrompida. Seu veículo ficou estacionado na última posição segura.';
@@ -15489,8 +15538,8 @@ function precompile(T,renderer,scene,camera){
  function updateWorldPhone(simulationStep=Number(typeof perf!=='undefined'?perf.expansionStep||0:0)){
   const now=performance.now(),dt=Math.min(.1,Math.max(0,simulationStep>0?simulationStep:(now-(worldPhone.lastTick||now))/1000));worldPhone.lastTick=now;
   if(!running||paused||document.hidden)return;
-  const airRecord=state.vehicles.phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
-  const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&state.vehicles.phoneDelivery?.type==='ground'&&state.vehicles.phoneDelivery.status==='en-route'){state.vehicles.phoneDelivery.status='interrupted';const order=phoneOrders().find(o=>o.id===state.vehicles.phoneDelivery.orderId);if(order?.kind==='vehicle')order.status='parked';saveState(true);}}
+  const airRecord=(typeof inRioMap==='function'&&inRioMap()?rioMapSave():state.vehicles).phoneDelivery;if(airRecord?.type==='air'&&airRecord.status==='en-route'){const craft=airOperations.fleet?.data.craft[airRecord.id];if(craft?.status==='parked'&&Math.hypot(craft.x-airRecord.target.x,craft.z-airRecord.target.z)<3){airRecord.status='delivered';state.vehicles.aircraft||={};state.vehicles.aircraft[craft.id]={x:craft.x,z:craft.z,yaw:craft.yaw,hp:craft.hp,parkedAt:Date.now()};saveState(true);}}
+  const owner=sharedWorldOwnId();if(worldPhone.loadedOwner!==owner){worldPhone.loadedOwner=owner;if(!worldPhone.job&&airRecord?.type==='ground'&&airRecord.status==='en-route'){airRecord.status='interrupted';const order=phoneOrders().find(o=>o.id===airRecord.orderId);if(order?.kind==='vehicle')order.status='parked';saveState(true);}}
   updatePhoneOrders(dt);
   const job=worldPhone.job;if(job){
    if(job.owner!==owner){if(job.kind==='parcel')phoneReleaseCourier(job);else{job.vehicle.occupied=false;job.vehicle.phoneDelivery=false;phoneRemoveDriver(job.driver);}worldPhone.job=null;return;}
@@ -15507,7 +15556,7 @@ function precompile(T,renderer,scene,camera){
  const phonePreviousExpansion=updateWorldExpansion;updateWorldExpansion=function(){phonePreviousExpansion();updateWorldPhone();};
  document.getElementById('worldPhoneBtn')?.addEventListener('click',openWorldPhone);
  const phonePreviousMiniMap=drawMiniMap;drawMiniMap=function(){phonePreviousMiniMap();phoneDrawMiniTracking();};
- window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,tracking:phoneDeliveryTracking(),orders:phoneOrders().map(o=>({...o})),last:state.vehicles.phoneDelivery||null})};
+ window.OT_WORLD_PHONE={open:openWorldPhone,diagnostics:()=>({pending:worldPhone.pending,job:worldPhone.job?{id:worldPhone.job.id,target:worldPhone.job.target,x:worldPhone.job.route.x,z:worldPhone.job.route.z,waiting:worldPhone.job.waiting,driverVisible:worldPhone.job.driver.group.visible}:null,tracking:phoneDeliveryTracking(),orders:phoneOrders().map(o=>({...o})),last:phoneMapRecord().phoneDelivery||null})};
 
   // ===== MODULE: 74-workshop-npc-service.js =====
  const workshopNpcService={lastAt:0,reorganizeAt:0,graceMs:120000,repairMs:30000,collectionMs:8000};
@@ -15542,15 +15591,15 @@ function precompile(T,renderer,scene,camera){
   workshopClearVehicleYardMeta(vehicle);vehicle.occupied=false;vehicle.group.visible=false;record.serviceStatus='delivered';record.operatorReleasedAt=now;record.npcCollectedAt=now;record.npcAutoPhase='delivered';
   const actor=(world.ottoviasTraffic||[]).find(a=>String(a.id)===String(vehicle.trafficActorId||''));
   if(actor){delete trafficLocalClaims()[actor.id];actor.taken=!!trafficClaimOwner(actor.id);actor.group.visible=!actor.taken;world.trafficSnapshot=null;}
-  delete state.vehicles.parked?.[String(vehicle.id)];
+  if(!(typeof inRioMap==='function'&&inRioMap()))delete state.vehicles.parked?.[String(vehicle.id)];
   workshopNpcLog(vehicle,record.unrepairable?'npc-collected-towed':'npc-collected',now);
  }
  function updateWorkshopNpcService(){
   const now=Date.now();if(!workshopBays.restored||now-workshopNpcService.lastAt<1000)return;workshopNpcService.lastAt=now;
-  let changed=false,active=(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&state.vehicles?.workshopComponents?.[v.id]?.npcAutoPhase==='repairing').length;
+  let changed=false,active=(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&workshopMapState().workshopComponents?.[v.id]?.npcAutoPhase==='repairing').length;
   for(const vehicle of world.vehicles||[]){
    if(!vehicle?.group||workshopIsCurrentUserVehicle(vehicle))continue;
-   const record=state.vehicles?.workshopComponents?.[String(vehicle.id)];if(!record)continue;
+   const record=workshopMapState().workshopComponents?.[String(vehicle.id)];if(!record)continue;
    const lift=(world.workshopLifts||[]).find(l=>String(l.vehicleId)===String(vehicle.id));
    const claim=vehicle.trafficActorId&&trafficClaimOwner(vehicle.trafficActorId);
    if(claim&&claim!==sharedWorldOwnId())continue;
@@ -15576,37 +15625,49 @@ function precompile(T,renderer,scene,camera){
  workshopStartMechanicAction=function(vehicle,options={}){const result=workshopNpcActionBefore(vehicle,options);if(result&&vehicle&&!options.remote&&!workshopIsCurrentUserVehicle(vehicle)){const record=workshopComponentRecord(vehicle);record.npcAutoDueAt=Date.now()+workshopNpcService.graceMs;record.npcAutoPhase='waiting';saveState(true);}return result;};
  const workshopNpcHistoryBefore=workshopServiceHistoryLabel;
  workshopServiceHistoryLabel=function(result){return({'npc-repaired':'🔧 Reparado pela equipe','npc-collected':'🚗 Devolvido ao NPC','npc-collected-towed':'🚚 Retirado pelo NPC com reboque'})[result]||workshopNpcHistoryBefore(result);};
- function workshopNpcWasCollected(vehicle){const record=state.vehicles?.workshopComponents?.[vehicle.id];return!!record&&!workshopIsCurrentUserVehicle(vehicle)&&record.serviceStatus==='delivered'&&Number(record.npcCollectedAt||0)>=Number(record.serviceOpenedAt||1)&&!(vehicle.trafficActorId&&trafficLocalClaims()[vehicle.trafficActorId])&&!(player.vehicle&&String(player.car?.id)===String(vehicle.id));}
+ function workshopNpcWasCollected(vehicle){const record=workshopMapState().workshopComponents?.[vehicle.id];return!!record&&!workshopIsCurrentUserVehicle(vehicle)&&record.serviceStatus==='delivered'&&Number(record.npcCollectedAt||0)>=Number(record.serviceOpenedAt||1)&&!(vehicle.trafficActorId&&trafficLocalClaims()[vehicle.trafficActorId])&&!(player.vehicle&&String(player.car?.id)===String(vehicle.id));}
  const workshopNpcVisibilityBefore=updateParkedVehicleVisibility;
  updateParkedVehicleVisibility=function(...args){workshopNpcVisibilityBefore(...args);for(const v of world.vehicles||[]){v.npcServiceCollected=workshopNpcWasCollected(v);if(v.npcServiceCollected)v.group.visible=false;}};
- window.OT_WORKSHOP_NPC_SERVICE={diagnostics:()=>({graceMs:workshopNpcService.graceMs,repairMs:workshopNpcService.repairMs,collectionMs:workshopNpcService.collectionMs,vehicles:(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&state.vehicles?.workshopComponents?.[v.id]?.npcAutoPhase).map(v=>{const r=state.vehicles.workshopComponents[v.id];return{id:v.id,phase:r.npcAutoPhase,visible:v.group.visible,durability:vehicleDurabilityV704(v),collectedAt:r.npcCollectedAt||0};})})};
+ window.OT_WORKSHOP_NPC_SERVICE={diagnostics:()=>({graceMs:workshopNpcService.graceMs,repairMs:workshopNpcService.repairMs,collectionMs:workshopNpcService.collectionMs,vehicles:(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&workshopMapState().workshopComponents?.[v.id]?.npcAutoPhase).map(v=>{const r=workshopMapState().workshopComponents[v.id];return{id:v.id,phase:r.npcAutoPhase,visible:v.group.visible,durability:vehicleDurabilityV704(v),collectedAt:r.npcCollectedAt||0};})})};
 
   // ===== MODULE: 75-phone-orders.js =====
  function phoneOrders(){const v=state.vehicles;if(!Array.isArray(v.phoneOrders))v.phoneOrders=[];return v.phoneOrders;}
  function phoneOrderItem(order){return worldShopItems().find(i=>(i.tool||i.key)===order.itemKey)||null;}
  function phoneItemUnavailable(item){return !!(item.tool&&state.tools.owned.includes(item.tool)||item.unique&&(state.inventory[item.key]||0)>0||phoneOrders().some(o=>o.kind==='parcel'&&o.itemKey===(item.tool||item.key)&&['queued','en-route','ready'].includes(o.status)&&(item.tool||item.unique)));}
  function phonePickupPoint(vehicle,origin){
-  const road=nearestRoadProjection(origin);if(!road)return null;const a=NAV_BASE_NODES[road.aId],b=NAV_BASE_NODES[road.bId],d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz);
+  const road=groundServiceRoadProjection(origin);if(!road)return null;const {a,b}=road,d=Math.hypot(b.x-a.x,b.z-a.z)||1,fx=(b.x-a.x)/d,fz=(b.z-a.z)/d,yaw=Math.atan2(fx,fz);
   for(const along of[0,6,-6,12,-12,20,-20,30,-30])for(const side of[1.35,-1.35,0]){const p={x:road.point.x+fx*along-fz*side,z:road.point.z+fz*along+fx*side,yaw};if(v704RoadAt(p.x,p.z,.1,false)&&phoneVehiclePoseClear(vehicle,p.x,p.z,yaw,true))return p;}return null;
  }
- function phoneNewOrder(kind,label,price){return{id:'order-'+crypto.randomUUID(),kind,label,price,status:'queued',at:Date.now(),owner:sharedWorldOwnId()};}
+ function phoneOrderOnMap(order){return inRioMap()?order.map==='rio-preto':!order.map;}
+ function phoneNewOrder(kind,label,price){return{id:'order-'+crypto.randomUUID(),kind,label,price,status:'queued',at:Date.now(),owner:sharedWorldOwnId(),...(inRioMap()?{map:'rio-preto'}:{})};}
  function phoneCourierVehicle(){
-  const v=vehicleById('phone-parcel-courier')||createToyCar(-30,-20,{id:'phone-parcel-courier',label:'Entrega do Mercadinho',brazilModel:'kombi',bodyType:'utility',primary:0xe3b344,secondary:0x28596a});v.phoneCourier=true;return v;
+  const pose=inRioMap()?RIO_GARAGE_BAY:null;
+  const v=vehicleById('phone-parcel-courier')||createToyCar(pose?.x??-30,pose?.z??-20,{id:'phone-parcel-courier',label:inRioMap()?'Entrega do comércio local':'Entrega do Mercadinho',brazilModel:'kombi',bodyType:'utility',primary:0xe3b344,secondary:0x28596a,parkedPose:pose,garageStored:true});v.phoneCourier=true;return v;
  }
  function phoneReleaseCourier(job){
-  phoneRemoveDriver(job.driver);const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.garageStored=true;v.group.visible=false;v.currentSpeed=0;delete state.vehicles.parked[v.id];world.trafficSnapshot=null;
+  phoneRemoveDriver(job.driver);const v=job.vehicle;v.occupied=false;v.phoneDelivery=false;v.garageStored=true;v.group.visible=false;v.currentSpeed=0;if(!inRioMap())delete state.vehicles.parked[v.id];world.trafficSnapshot=null;
  }
- function phoneStartParcel(order){
-  if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed()||order.owner!==sharedWorldOwnId())return false;
+ function phoneStartParcel(order,payment=0){
+  if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed()||!phoneOrderOnMap(order)||order.owner!==sharedWorldOwnId())return false;
   const vehicle=phoneCourierVehicle();vehicle.garageStored=true;vehicle.group.visible=false;
   const shop=MAP_LOCATIONS.find(l=>l.id==='shop')||{x:-30,z:-20},origin={x:Number(shop.navX??shop.x),z:Number(shop.navZ??shop.z)};
   let from=order.pose&&[order.pose.x,order.pose.z,order.pose.yaw].every(Number.isFinite)?{...order.pose}:null;
   if(from&&!phoneVehiclePoseClear(vehicle,from.x,from.z,from.yaw,true))return false;
-  from||=phonePickupPoint(vehicle,origin);const target=order.status==='ready'&&order.target?order.target:phoneGroundDestination(vehicle);if(!from||!target)return false;
-  const points=order.status==='ready'?[from,{...from}]:phoneGroundRoute(vehicle,from,target);if(points.length<2)return false;
+  const target=order.status==='ready'&&order.target?order.target:phoneGroundDestination(vehicle);if(!target)return false;
+  const sources=inRioMap()?rioFunctionalSites().filter(s=>s.kind==='market'||s.kind==='mall').sort((a,b)=>distance2D(a,target)-distance2D(b,target)):[origin];
+  let points=[];
+  for(const source of from?[from]:sources){
+   const start=from||phonePickupPoint(vehicle,source);if(!start)continue;
+   const route=order.status==='ready'?[start,{...start}]:phoneGroundRoute(vehicle,start,target);
+   if(route.length>=2){from=start;points=route;break;}
+  }
+  if(!points.length)return false;
   const driver=phoneMakeDriver();vehicle.occupied=true;vehicle.phoneDelivery=true;vehicle.garageStored=false;vehicle.group.position.set(from.x,groundHeightAt(from.x,from.z),from.z);vehicle.group.rotation.y=from.yaw;vehicle.group.visible=true;phoneDriverInVehicle(driver,vehicle);
   const job={id:vehicle.id,kind:'parcel',orderId:order.id,vehicle,driver,target,origin:order.origin||from,route:new PhoneDriveRoute(points,from.yaw),owner:sharedWorldOwnId(),saveAt:0,waiting:false,caller:{x:player.x,z:player.z}};
-  worldPhone.job=job;order.origin=job.origin;order.target=target;if(order.status!=='ready')order.status='en-route';phoneSaveParcelPose(job);saveState(true);world.trafficSnapshot=null;
+  worldPhone.job=job;order.origin=job.origin;order.target=target;if(order.status!=='ready')order.status='en-route';phoneSaveParcelPose(job);
+  if(payment>0)addCoins(-payment);
+  if(inRioMap())phoneWaypoint(target,'Receber encomenda');
+  saveState(true);world.trafficSnapshot=null;
   if(order.status==='ready')phoneParcelArrived(job);return true;
  }
  function phoneSaveParcelPose(job){const order=phoneOrders().find(o=>o.id===job.orderId);if(order){order.pose={x:job.vehicle.group.position.x,z:job.vehicle.group.position.z,yaw:job.vehicle.group.rotation.y};order.target={...job.target};}}
@@ -15633,28 +15694,35 @@ function precompile(T,renderer,scene,camera){
   const item=worldShopItems().find(i=>(i.tool||i.key)===key);if(!item||worldPhone.pending||worldPhone.purchasePending||worldPhone.job||!phoneDispatchAllowed()||phoneItemUnavailable(item)||state.profile.coins<item.price)return false;
   const owner=sharedWorldOwnId();worldPhone.purchasePending=true;
   try{
-   if(!await confirmModal('Comprar com entrega',`${item.icon} ${item.name} · ${item.price} moedas. O entregador vem do Mercadinho; você recebe a encomenda no mundo.`,'COMPRAR','VOLTAR'))return false;
+   if(!await confirmModal('Comprar com entrega',`${item.icon} ${item.name} · ${item.price} moedas. ${inRioMap()?'O comércio local envia a sua encomenda.':'O entregador vem do Mercadinho; você recebe a encomenda no mundo.'}`,'COMPRAR','VOLTAR'))return false;
    if(owner!==sharedWorldOwnId()||worldPhone.job||!phoneDispatchAllowed()||phoneItemUnavailable(item)||state.profile.coins<item.price)return false;
-   const order=phoneNewOrder('parcel',item.name,item.price);order.itemKey=key;phoneOrders().push(order);addCoins(-item.price);saveState(true);phoneStartParcel(order);closeModal();toast('Compra confirmada. Acompanhe a encomenda no celular e no mapa.','good',3300);return order.id;
+   const order=phoneNewOrder('parcel',item.name,item.price);order.itemKey=key;const orders=phoneOrders();orders.push(order);
+   if(inRioMap()){
+    if(!phoneStartParcel(order,item.price)){
+     orders.pop();toast('Não há saída ou vaga segura para a entrega. A compra não foi cobrada.','warn',3200);return false;
+    }
+   }else{addCoins(-item.price);saveState(true);phoneStartParcel(order);}
+   closeModal();toast('Compra confirmada. Acompanhe a encomenda no celular e no mapa.','good',3300);return order.id;
   }finally{worldPhone.purchasePending=false;}
  }
  async function phoneBuyVehicle(catalogId){
   const base=garageOldCatalogEntry(catalogId);if(!base||worldPhone.purchasePending||worldPhone.pending||worldPhone.job||!phoneDispatchAllowed())return false;const owner=sharedWorldOwnId();worldPhone.purchasePending=true;
   try{
    const units=garageOwnedEntries().filter(e=>e.catalogId===catalogId);if(units.length>=10||state.profile.coins<base.price)return false;
-   if(!await confirmModal('Comprar veículo com entrega',`${base.label} · ${base.price} moedas. O motorista traz esta nova unidade da concessionária até uma vaga perto de você.`,'COMPRAR','VOLTAR'))return false;
+   if(!await confirmModal('Comprar veículo com entrega',`${base.label} · ${base.price} moedas. O motorista traz esta nova unidade ${inRioMap()?'do ponto de retirada':'da concessionária'} até uma vaga perto de você.`,'COMPRAR','VOLTAR'))return false;
    if(!await requestBrazilModel(base.model||brazilModelKey(base.id,base.category)))return false;
    if(owner!==sharedWorldOwnId()||worldPhone.job||!phoneDispatchAllowed()||state.profile.coins<base.price||garageOwnedEntries().filter(e=>e.catalogId===catalogId).length>=10)return false;
    const unit=garageUnitId(catalogId),id=garageNewInstanceId(catalogId,unit.unit),g=ensurePlayerGarageState(),order=phoneNewOrder('vehicle',base.label,base.price);order.vehicleId=id;order.status='en-route';
    state.vehicles.instances||={};state.vehicles.instances[id]={catalogId,unit:unit.unit,purchasedAt:Date.now()};state.vehicles.owned.push(id);g.stored[id]=true;g.purchasedAt[id]=Date.now();
-   const vehicle=ensureCatalogVehicle(id),dealer=OTTHI_DEALERS.find(d=>d.category===neighborhoodVehicleCategory(base)),from=vehicle&&dealer&&phonePickupPoint(vehicle,{x:dealer.entryX,z:dealer.entryZ});
+   const vehicle=ensureCatalogVehicle(id,1,inRioMap()?RIO_GARAGE_BAY:null),dealer=OTTHI_DEALERS.find(d=>d.category===neighborhoodVehicleCategory(base));
+   const origin=inRioMap()?RIO_GARAGE_BAY:dealer&&{x:dealer.entryX,z:dealer.entryZ},from=vehicle&&origin&&phonePickupPoint(vehicle,origin);
    phoneOrders().push(order);const ok=from&&await phoneDispatchGround(id,{from,payment:base.price,orderId:order.id});
-   if(!ok){state.vehicles.owned=state.vehicles.owned.filter(v=>v!==id);delete state.vehicles.instances[id];delete g.stored[id];delete g.purchasedAt[id];state.vehicles.phoneOrders=phoneOrders().filter(o=>o.id!==order.id);if(vehicle){vehicle.garageStored=true;vehicle.group.visible=false;}saveState(true);toast('Não há saída ou vaga segura para esta entrega. A compra não foi cobrada.','info',3300);return false;}
+   if(!ok){state.vehicles.owned=state.vehicles.owned.filter(v=>v!==id);delete state.vehicles.instances[id];delete g.stored[id];delete g.purchasedAt[id];state.vehicles.phoneOrders=phoneOrders().filter(o=>o.id!==order.id);if(vehicle){if(inRioMap())rioRemoveRoadVehicle(vehicle);else setGarageVehicleStored(vehicle,true);}saveState(true);toast('Não há saída ou vaga segura para esta entrega. A compra não foi cobrada.','info',3300);return false;}
    addXP(30);saveState(true);return id;
   }finally{worldPhone.purchasePending=false;}
  }
  function openPhoneShop(tab='items'){
-  const busy=!!worldPhone.job||worldPhone.pending||worldPhone.purchasePending,allowed=phoneDispatchAllowed(),orders=phoneOrders(),pending=orders.filter(o=>['queued','en-route','ready'].includes(o.status));
+  const busy=!!worldPhone.job||worldPhone.pending||worldPhone.purchasePending,allowed=phoneDispatchAllowed(),orders=phoneOrders(),pending=orders.filter(o=>phoneOrderOnMap(o)&&['queued','en-route','ready'].includes(o.status));
   const items=worldShopItems();openModal('📱 Compras com entrega',`<section class="world-phone"><p>Saldo: <b>${state.profile.coins} moedas</b>. Suas compras chegam com um entregador. Receba a encomenda para colocar os itens no inventário.</p><nav class="world-phone-actions"><button class="btn" data-phone-shop-tab="items">MERCADINHO</button><button class="btn" data-phone-shop-tab="vehicles">VEÍCULOS</button><button class="btn" data-phone-back>VOLTAR AO CELULAR</button></nav>${pending.map(o=>`<p class="world-phone-status">${escapeHtml(o.label)} · ${o.status==='ready'?'Chegou — receber no mundo':o.status==='queued'?'Aguardando entregador':'Em entrega'}</p>`).join('')}${busy?'<p>Aguarde a entrega atual antes de fazer outra compra.</p>':''}${!allowed?'<p>Desembarque e fique ao ar livre para solicitar uma entrega.</p>':''}<div class="world-phone-list">${tab==='vehicles'?OTTHI_PLAYER_VEHICLE_CATALOG.map(e=>`<button class="btn" data-phone-buy-vehicle="${escapeHtml(e.id)}" ${busy||!allowed||state.profile.coins<e.price||garageOwnedEntries().filter(u=>u.catalogId===e.id).length>=10?'disabled':''}><span>${e.icon} ${escapeHtml(e.label)}</span><small>${e.price} moedas · comprar nova unidade e receber</small></button>`).join(''):items.map(item=>`<button class="btn" data-phone-buy-item="${escapeHtml(item.tool||item.key)}" ${busy||!allowed||state.profile.coins<item.price||phoneItemUnavailable(item)?'disabled':''}><span>${item.icon} ${item.name}</span><small>${phoneItemUnavailable(item)?'Já possui / já encomendado':`${item.price} moedas · ${item.tool?'ferramenta':item.amount+' unidades'}`}</small></button>`).join('')}</div></section>`,root=>{
    root.querySelector('[data-phone-back]').onclick=openWorldPhone;root.querySelectorAll('[data-phone-shop-tab]').forEach(b=>b.onclick=()=>openPhoneShop(b.dataset.phoneShopTab));root.querySelectorAll('[data-phone-buy-item]').forEach(b=>b.onclick=()=>phoneBuyParcel(b.dataset.phoneBuyItem));root.querySelectorAll('[data-phone-buy-vehicle]').forEach(b=>b.onclick=()=>phoneBuyVehicle(b.dataset.phoneBuyVehicle));
   });
@@ -15662,7 +15730,7 @@ function precompile(T,renderer,scene,camera){
  function updatePhoneOrders(dt){
   for(const job of [...worldPhone.returning]){if(job.owner!==sharedWorldOwnId()){phoneReleaseCourier(job);worldPhone.returning=worldPhone.returning.filter(j=>j!==job);continue;}phoneAdvanceJob(job,dt);if(job.route.arrived){phoneReleaseCourier(job);worldPhone.returning=worldPhone.returning.filter(j=>j!==job);}}
   if(worldPhone.job||worldPhone.pending||worldPhone.returning.length||!phoneDispatchAllowed())return;
-  const order=phoneOrders().find(o=>o.kind==='parcel'&&['queued','en-route','ready'].includes(o.status)&&o.owner===sharedWorldOwnId());if(order){const now=performance.now();if(now-Number(worldPhone.restoreAt||0)<3000)return;worldPhone.restoreAt=now;phoneStartParcel(order);}
+  const order=phoneOrders().find(o=>phoneOrderOnMap(o)&&o.kind==='parcel'&&['queued','en-route','ready'].includes(o.status)&&o.owner===sharedWorldOwnId());if(order){const now=performance.now();if(now-Number(worldPhone.restoreAt||0)<3000)return;worldPhone.restoreAt=now;phoneStartParcel(order);}
  }
 
   // ===== MODULE: 76-player-journey.js =====
@@ -16984,11 +17052,12 @@ function precompile(T,renderer,scene,camera){
   })});
 
   // ===== MODULE: 87-rio-geography.js =====
-  const rioMap={
+  // Legacy layout points are initialized earlier in the compiled script.
+  var rioMap={
     active:false,data:null,geo:null,tiles:new Map(),sites:new Map(),lastStream:0,
     order:null,legacyWaypoint:null,vehicle:null
   };
-  function inRioMap(){return rioMap.active;}
+  function inRioMap(){return !!rioMap?.active;}
   function rioMapSave(){
     const saved=state.cityServices.rioMap??={version:2,position:null,visits:{},waypoint:null};
     if(saved.version===1){delete saved.vehicle;saved.version=2;}
@@ -17049,19 +17118,26 @@ function precompile(T,renderer,scene,camera){
     return inside;
   }
   function rioWithinFootprint(x,z,rings,radius=0){
-    if(rioInsideRing(x,z,rings[0])&&!rings.slice(1).some(hole=>rioInsideRing(x,z,hole)))return true;
-    if(radius<=0)return false;
+    const inside=rioInsideRing(x,z,rings[0])&&!rings.slice(1).some(hole=>rioInsideRing(x,z,hole));
+    if(radius>=0&&inside)return true;
+    if(!radius||radius<0&&!inside)return false;
     for(const ring of rings)for(let i=0,j=ring.length-1;i<ring.length;j=i++){
       const closest=rioSegmentProjection(x,z,ring[j],ring[i]);
-      if((x-closest.x)**2+(z-closest.z)**2<radius*radius)return true;
+      if((x-closest.x)**2+(z-closest.z)**2<radius*radius)return radius>0;
     }
-    return false;
+    return inside;
   }
 
   const rioPedestrianClasses=new Set(['footway','path','pedestrian','cycleway','steps']);
   const rioCityTileSize=160;
+  function rioMapDoorLayout(data){
+    if(!data)return null;
+    const [edge,fraction,yaw,x,z,id]=data,s=Math.sin(yaw),c=Math.cos(yaw);
+    return {edge,fraction,yaw,x,z,id,outside:{x:x+s*1.22,z:z+c*1.22},inside:{x:x-s*1.10,z:z-c*1.10}};
+  }
+
   function indexRioGeography(data){
-    const roads=rioSpatialGrid(50),buildings=rioSpatialGrid(32),water=rioSpatialGrid(95),tiles=new Map();
+    const roads=rioSpatialGrid(50),buildings=rioSpatialGrid(32),doors=rioSpatialGrid(12),water=rioSpatialGrid(95),tiles=new Map();
     const points=data.nodes,adjacency=points.map(()=>[]);
     const at=(x,z)=>{
       const ix=Math.floor(x/rioCityTileSize),iz=Math.floor(z/rioCityTileSize),key=ix+':'+iz;
@@ -17086,16 +17162,18 @@ function precompile(T,renderer,scene,camera){
         }
       }
     }
-    for(const [id,height,kind,rings] of data.buildings){
-      const bounds=rioCoordinateBounds(rings[0]),building={id,height,kind,rings};
-      tileAtBounds(bounds).buildings.push(building);
+    for(const [id,height,kind,rings,entry] of data.buildings){
+      const bounds=rioCoordinateBounds(rings[0]),tile=tileAtBounds(bounds),door=rioMapDoorLayout(entry);
+      const building={id,height,kind,rings,door,tileKey:tile.key};
+      tile.buildings.push(building);
       buildings.insert(building,bounds);
+      if(door)doors.insert(building,[door.outside.x-.25,door.outside.z-.25,door.outside.x+.25,door.outside.z+.25]);
     }
     for(const [id,rings] of data.water)water.insert({id,rings},rioCoordinateBounds(rings[0]));
     for(const [id,kind,rings] of data.parks)tileAtBounds(rioCoordinateBounds(rings[0])).parks.push({id,kind,rings});
     for(const point of data.trees)at(...point).trees.push(point);
     for(const site of data.sites)at(site.x,site.z).sites.push(site);
-    return {roads,buildings,water,tiles,adjacency};
+    return {roads,buildings,doors,water,tiles,adjacency};
   }
   function rioRoadAt(x,z,margin=0,predicate=()=>true){
     for(const segment of rioMap.geo.roads.query(x,z,Math.max(0,margin))){
@@ -17116,8 +17194,12 @@ function precompile(T,renderer,scene,camera){
   function rioTerrainY(x,z){
     return Math.max(rioDockSurface(x,z),rioRoadAt(x,z,.12,road=>road.bridge)?.bridge ? .27 : 0);
   }
-  function rioFootprintBlock(x,z,radius){
-    for(const building of rioMap.geo.buildings.query(x,z,radius))if(rioWithinFootprint(x,z,building.rings,radius))return true;
+  function rioFootprintBlock(x,z,radius,interior=false){
+    for(const building of rioMap.geo.buildings.query(x,z,radius)){
+      if(interior&&rioMap.activeBuilding?.building===building){
+        if(rioAmbientWallHit(building,x,z,radius))return true;
+      }else if(rioWithinFootprint(x,z,building.rings,radius))return true;
+    }
     return false;
   }
   function nearestRioRoad(pos,walking=false){
@@ -17207,6 +17289,8 @@ function precompile(T,renderer,scene,camera){
     mall:{wall:0xd1c2a6,trim:0x498084,roof:0x777b73,floor:0xbebbae,height:5.4},
     reception:{wall:0xd4d9d2,trim:0x668887,roof:0x7e9190,floor:0xc5cec5,height:4.1},
     station:{wall:0xb0babe,trim:0x435c69,roof:0x627985,floor:0xafb8ba,height:5},
+    airport:{wall:0xd1d8dd,trim:0x365e76,roof:0x6e8088,floor:0xa7adb3,height:5.7,sign:'AEROPORTO PROF. ERIBELTO MANOEL REINO'},
+    residence:{wall:0xddc5a5,trim:0x6e6054,roof:0x995540,floor:0xc6ad8e,height:3.2},
   };
   const rioDiningStock=[
     {id:'meal',name:'Prato da casa',price:24,hunger:42},
@@ -17215,14 +17299,15 @@ function precompile(T,renderer,scene,camera){
   ];
   const rioSiteLabels={
     market:'Percorrer as bancas e comprar alimentos',dining:'Pedir no balcão e consumir à mesa',
-    bakery:'Comprar pães no balcão',church:'Entrar na nave, ver o vitral e sentar',
+    bakery:'Comprar pães ou consumir à mesa com atendimento',church:'Visitar a nave, as obras e os altares',
     civic:'Solicitar e retirar um protocolo do jogo',theater:'Retirar ingresso e acender o palco na cabine',
-    exhibition:'Retirar ingresso e visitar a exposição',mall:'Comprar no balcão do jogo',
+    exhibition:'Retirar ingresso e visitar a exposição',mall:'Percorrer as lojas de roupas e calçados',
     reception:'Retirar uma senha e usar a recepção',station:'Consultar o painel e alcançar a plataforma',
     fuel:'Entrar no pátio e abastecer o carro na bomba',stadium:'Jogar futebol 4 × 4',
     practice:'Entrar no gramado e treinar chutes',square:'Descansar em um banco da praça',
     garden:'Percorrer o caminho e cuidar dos vasos',trail:'Largar para os seis checkpoints da Represa',
-    statue:'Aproximar-se da escultura e observar a orla'
+    statue:'Aproximar-se da escultura e observar a orla',airport:'Terminal, pátio, pista 07/25 e aviação',
+    residence:'Visitar, comprar e usar os cômodos', 'oil-shop':'Entrar com o carro para revisar o motor'
   };
   const rioPaint={
     window:0x426979,glass:0x7dafa9,metal:0x3f5055,white:0xf1e6cf,wood:0x8b5840,
@@ -17254,7 +17339,7 @@ function precompile(T,renderer,scene,camera){
     function bench(x,z){
       draw.bench(x,z);collider(x,z,2.2,.58,1.03);
     }
-    return {...draw,bench,batch,root,colliders,actions,lights,object,action,collider,forSite};
+    return {...draw,site,bench,batch,root,colliders,actions,lights,object,action,collider,forSite};
   }
 
   function rioSiteContains(site,x,z,pad=0){
@@ -17271,7 +17356,8 @@ function precompile(T,renderer,scene,camera){
   }
 
   function rioBuildShell(site,room){
-    const p=rioPlaceStyles[site.kind],{w,d}=site,{box,object,sign}=room;
+    const base=rioPlaceStyles[site.kind],p=site.style==='damha'?{...base,wall:0xe3e2d9,trim:0x586364,roof:0x4c585a}:base;
+    const {w,d}=site,{box,object,sign}=room;
     const h=p.height,edge=.27,entry=site.kind==='market'?4.8:Math.min(3.1,w*.4);
     const front=d/2-edge,length=(w-entry)/2,center=(w+entry)/4;
     box(0,.028,0,w,.055,d,p.floor);
@@ -17296,7 +17382,7 @@ function precompile(T,renderer,scene,camera){
 
     const roof=new THREE.Group();roof.name='RIO_ROOF_'+site.key;room.root.add(roof);
     const cap=rioCreateBatch(roof),top=rioLocal(cap,site);
-    if(['market','church','theater','dining','bakery'].includes(site.kind)){
+    if(['market','church','theater','dining','bakery'].includes(site.kind)||site.kind==='residence'&&site.style!=='damha'){
       top.box(0,h+.06,0,w+.12,.17,d+.12,p.trim);
       top.part('hip',0,h+.66,0,w+.25,1.24,d+.20,p.roof);
     }else top.box(0,h+.16,0,w+.15,.34,d+.15,p.roof);
@@ -17357,7 +17443,8 @@ function precompile(T,renderer,scene,camera){
   }
   function rioOpenDining(site,room,counter){
     if(!rioPlayerAt(counter))return;
-    const stock=site.key==='canecao_represa'?rioDiningStock:
+    const stock=site.kind==='bakery'?[{id:'bread-coffee',name:'Pão na chapa e café',price:12,hunger:22},
+      {id:'juice',name:'Suco de laranja',price:10,hunger:10},{id:'bread-pack',name:'Pães para levar',price:16,food:3}]:site.key==='canecao_represa'?rioDiningStock:
       [{id:'burger',name:'Hambúrguer',price:14,hunger:38},{id:'juice',name:'Bebida sem álcool',price:10,hunger:10},{id:'parcel',name:'Lanche para levar',price:18,food:2}];
     const order=rioMap.order;
     if(order?.site===site.id){
@@ -17379,8 +17466,13 @@ function precompile(T,renderer,scene,camera){
         }else{
           const seat=room.seats[0];
           rioMap.order={site:site.id,item,seat};
-          room.servedDish.visible=true;
-          toast('Pedido pronto na mesa 1. Use Ação junto à cadeira.','good',2900);
+          if(room.server){
+            room.server.index=0;room.server.serving=true;room.server.tray.visible=true;
+            toast('A garçonete vai levar seu pedido à mesa 1.','good',2600);
+          }else{
+            room.servedDish.visible=true;
+            toast('Pedido pronto na mesa 1. Use Ação junto à cadeira.','good',2900);
+          }
         }
       };
     });
@@ -17411,10 +17503,11 @@ function precompile(T,renderer,scene,camera){
     const counterZ=-d/2+1.85;
     const counter=rioCounter(room,0,counterZ,Math.min(4.6,w*.53));
     room.sign('PEDIDOS',0,2.31,counterZ-.37,Math.min(3.4,w*.6),.32);
+    if(site.kind==='bakery')rioBuildBakeryService(site,room,counterZ,x,z);
     room.action('counter','Fazer pedido no balcão',0,counterZ+1.02,()=>rioOpenDining(site,room,counter),{inside:true,icon:'🍽️'});
     const p=marked.approach,dx=p.x-site.x,dz=p.z-site.z,c=Math.cos(site.yaw),s=Math.sin(site.yaw);
     room.action('table','Mesa 1 · sentar e consumir',c*dx-s*dz,s*dx+c*dz,
-      ()=>rioEatAtTable(site,room,marked),{inside:true,icon:'🍽️',available:()=>rioMap.order?.site===site.id});
+      ()=>rioEatAtTable(site,room,marked),{inside:true,icon:'🍽️',available:()=>rioMap.order?.site===site.id&&room.servedDish.visible});
     room.sign('1',-x,1.05,z+.04,.18,.21,'#6b3f31');
   }
 
@@ -17510,6 +17603,19 @@ function precompile(T,renderer,scene,camera){
       [0x5b8d9d,0xc59d62,0x926d89,0x799693][j]);
     room.action('pew','Sentar no banco da Catedral',lateral,pewZ+.81,()=>rioSitOnBench(site,room,lateral,pewZ),{inside:true});
     room.action('nave','Observar a nave e os vitrais',0,altarZ+1.47,()=>{rioCountVisit(site);toast('Visita à Catedral registrada.','good',2100);},{inside:true});
+    for(const side of [-1,1]){
+      const x=side*Math.min(w*.28,7.5),artZ=altarZ-.48;
+      room.box(x,2.13,artZ,1.17,1.56,.11,0x8c6046);
+      room.box(x,2.13,artZ+.065,.99,1.36,.04,side===1?0xa69759:0x568895);
+      room.box(x,2.31,artZ+.10,.48,.51,.036,0xe5c5a5);
+      room.object(x,.49,altarZ+.25,1.28,.98,.61,0x9e836b);
+      const kneelerZ=altarZ+1.33;
+      room.object(x,.19,kneelerZ,1.17,.38,.45,0xa95c54);
+      room.action('altar-'+side,'Rezar no altar lateral',x,kneelerZ+.75,()=>{
+        const approach=room.point(x,kneelerZ+.75),kneeler=room.point(x,kneelerZ);
+        beginCharacterActivity('rio-rest',{target:approach,pose:{...kneeler,y:.40,yaw:site.yaw+Math.PI,sitting:true},commit:()=>{rioCountVisit(site);return true;}});
+      },{inside:true,icon:'🕯️'});
+    }
   }
 
   function rioBuildFuel(site,room){
@@ -17591,13 +17697,17 @@ function precompile(T,renderer,scene,camera){
       registerInteractable({id,type:'activity',icon:'🚪',label:'Entrar · '+site.name,x,z,radius:3.2,priority:238,
         available:()=>root.visible&&!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
           !room.forSite(player.x,player.z,-.45),
-        action:()=>beginCharacterActivity('rio-entry',{target:inside,walkSpeed:2.8,onArrival:()=>updateContext(true)})});
+        action:()=>site.kind==='residence'?rioResidenceDoor(site,room,inside):rioEnterPlace(inside)});
       room.actions.push(id);
-      if(site.kind==='market'||site.kind==='bakery'||site.kind==='mall')rioBuildMarket(site,room);
-      else if(site.kind==='dining')rioBuildDining(site,room);
+      if(site.kind==='market')rioBuildMarket(site,room);
+      else if(site.kind==='mall')rioBuildShopping(site,room);
+      else if(site.kind==='dining'||site.kind==='bakery')rioBuildDining(site,room);
       else if(site.kind==='church')rioBuildChurch(site,room);
+      else if(site.kind==='residence')rioBuildResidence(site,room);
+      else if(site.kind==='airport')rioBuildAirportTerminal(site,room);
       else rioDeskModel(site,room);
     }else if(site.kind==='fuel')rioBuildFuel(site,room);
+    else if(site.kind==='oil-shop')rioBuildOilShop(site,room);
     else rioBuildOpenSite(site,room);
     room.batch.commit();rioMap.sites.set(site.id,room);
     return room;
@@ -17661,7 +17771,11 @@ function precompile(T,renderer,scene,camera){
     const saved=rioMapSave();
     if(player.vehicle)rioRecordVehiclePose(currentVehicleRef(),player.x,player.z,player.car.heading);
     if(player.boating)rioRecordBoatPose();
-    if(!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
+    const residence=[...rioMap.sites.values()].find(room=>room.door&&room.forSite(player.x,player.z,-.06));
+    if(rioMap.activeBuilding||residence){
+      const {x,z}=rioMap.activeBuilding?.outside||{x:residence.site.entry[0],z:residence.site.entry[1]};
+      saved.position={x,z,yaw:cameraYaw};
+    }else if(!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&!currentHouse&&
       !positionBlockedForPlayer(player.x,player.z,.32,{ignoreTraffic:true,allowWater:false})){
       saved.position={x:+player.x.toFixed(2),z:+player.z.toFixed(2),yaw:+cameraYaw.toFixed(4)};
     }else if(!saved.position&&Number.isFinite(player.lastSafeX)&&Number.isFinite(player.lastSafeZ)){
@@ -17751,14 +17865,23 @@ function precompile(T,renderer,scene,camera){
     if(!road.oneway)for(let d=3;d<length-3;d+=6)strip('lane',0,.10,d/length,Math.min(length-2,d+2.6)/length,y+.005);
   }
   function rioDrawBuilding(surface,batch,building){
-    const {id,height:h,kind,rings}=building;
+    const {id,height:h,kind,rings,door}=building;
     const palate=[0xc7b8a6,0xa9ada3,0xd4c3a8,0xb6a59b,0xb3bfc0,0xbc9d86,0xc8c0b5];
     const color=palate[id%palate.length],house=['house','residential','detached','terrace'].includes(kind);
-    surface.polygon('building',rings,h,house?0x9b6655:0xa49b8b);
     const wallH=h;
     for(const ring of rings)for(let i=0,j=ring.length-1;i<ring.length;j=i++){
       const a=ring[j],b=ring[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);
-      surface.quad('building',[a[0],0,a[1]],[b[0],0,b[1]],[b[0],wallH,b[1]],[a[0],wallH,a[1]],color);
+      const face=(start,end,bottom)=>{
+        const at=(t,y)=>[lerp(a[0],b[0],t),y,lerp(a[1],b[1],t)];
+        surface.quad('building',at(start,bottom),at(end,bottom),at(end,wallH),at(start,wallH),color);
+      };
+      if(door&&ring===rings[0]&&i===door.edge){
+        const low=door.fraction-.76/length,high=door.fraction+.76/length;
+        face(0,low,0);face(high,1,0);face(low,high,2.19);
+        const {yaw}=door,s=Math.sin(yaw),c=Math.cos(yaw);
+        for(const side of [-1,1])batch.part('box',door.x+c*.78*side,1.08,door.z-s*.78*side,.10,2.16,.15,0x455659,yaw);
+        batch.part('box',door.x+s*.07,.036,door.z+c*.07,1.61,.071,.54,0x988b78,yaw);
+      }else face(0,1,0);
       if(ring!==rings[0]||length<3.5||length>55)continue;
       const normalX=(a[1]-b[1])/length,normalZ=(b[0]-a[0])/length;
       const inside=rioInsideRing((a[0]+b[0])/2+normalX*.1,(a[1]+b[1])/2+normalZ*.1,ring),sign=inside?-1:1;
@@ -17766,9 +17889,23 @@ function precompile(T,renderer,scene,camera){
       const n=Math.floor(length/3.3);
       for(let level=0;level<levels;level++)for(let c=1;c<=n;c++){
         const t=c/(n+1),x=a[0]+(b[0]-a[0])*t+sign*normalX*.055,z=a[1]+(b[1]-a[1])*t+sign*normalZ*.055;
+        if(door&&i===door.edge&&!level&&Math.abs(t-door.fraction)*length<1.5)continue;
         batch.part('box',x,1.68+level*3.05,z,1.10,.91,.07,house?0x65767a:0x536e75,angle);
       }
     }
+  }
+  function rioMakeBuildingRoofs(tile){
+    const roof=new THREE.Group(),surface=rioSurfaceBatch();roof.name='RIO_MAPPED_ROOFS';
+    for(const b of tile.buildings){
+      if(b===rioMap.activeBuilding?.building)continue;
+      surface.polygon('building',b.rings,b.height,RIO_HOUSE_USE.has(b.kind)?0x9b6655:0xa49b8b);
+    }
+    surface.commit(roof);return roof;
+  }
+  function rioRefreshBuildingRoofs(key){
+    const mounted=rioMap.tiles.get(key);if(!mounted)return;
+    mounted.roofs.parent?.remove(mounted.roofs);rioDisposeTileObjects(mounted.roofs);
+    mounted.roofs=rioMakeBuildingRoofs(rioMap.geo.tiles.get(key));mounted.root.add(mounted.roofs);
   }
   function rioMountTile(tile){
     if(rioMap.tiles.has(tile.key))return;
@@ -17787,9 +17924,10 @@ function precompile(T,renderer,scene,camera){
       const room=rioMountPlace(site,root);
       if(room)rooms.push({site,room});
     }
+    const roofs=rioMakeBuildingRoofs(tile);root.add(roofs);
     surface.commit(root);props.commit();
     worldGroup.add(root);
-    rioMap.tiles.set(tile.key,{root,rooms});
+    rioMap.tiles.set(tile.key,{root,rooms,roofs});
   }
   function rioUnloadTile(key){
     const mounted=rioMap.tiles.get(key);
@@ -17799,12 +17937,17 @@ function precompile(T,renderer,scene,camera){
       for(const collider of room.colliders)doomed.add(collider);
       for(const id of room.actions)actions.add(id);
       rioMap.sites.delete(site.id);
+      if(room.npcs?.length){const leaving=new Set(room.npcs);world.npcs=world.npcs.filter(npc=>!leaving.has(npc));}
       if(rioMap.order?.site===site.id)rioMap.order=null;
     }
     if(doomed.size)world.colliders=world.colliders.filter(candidate=>!doomed.has(candidate));
     if(actions.size)world.interactables=world.interactables.filter(action=>!actions.has(action.id));
     mounted.root.parent?.remove(mounted.root);
-    mounted.root.traverse(object=>{
+    rioDisposeTileObjects(mounted.root);
+    rioMap.tiles.delete(key);
+  }
+  function rioDisposeTileObjects(root){
+    root.traverse(object=>{
       if(object.isMesh)object.geometry?.dispose();
       // Instanced surfaces use shared materials. Signs and room lamps own their material.
       if(object.material?.isMeshBasicMaterial&&!Object.values(rioMap.materials).includes(object.material)){
@@ -17813,7 +17956,6 @@ function precompile(T,renderer,scene,camera){
         object.material.map.dispose();object.material.dispose();
       }
     });
-    rioMap.tiles.delete(key);
   }
   function rioStreamMap(position=player,immediate=false){
     const ix=Math.floor(position.x/rioCityTileSize),iz=Math.floor(position.z/rioCityTileSize);
@@ -17847,6 +17989,11 @@ function precompile(T,renderer,scene,camera){
     rioStreamMap(rioMapStartPoint(),true);
     createWaypointMarker();
     rioBuildFleetParking();
+    rioBuildWorkshop();
+    rioBuildEmergencyServices();
+    rioBuildCommunity();
+    rioBuildAirport();
+    rioBuildAmbientAccess();
     rioBuildWaterfront();
     rioPrepareWaterfrontRun();
   }
@@ -17854,6 +18001,7 @@ function precompile(T,renderer,scene,camera){
   function rioMapStep(dt){
     if(paused)return;
     pollGamepad();
+    if(otGames.active){rioStepFlight(dt);return;}
     const before={x:player.x,z:player.z};
     updatePlayer(dt);
     if(player.vehicle){
@@ -17874,19 +18022,23 @@ function precompile(T,renderer,scene,camera){
     if(now>=rioMap.lastStream){
       rioMap.lastStream=now+66;
       rioStreamMap();
-      rioMap.indoors=false;
+      rioMap.indoors=rioUpdateAmbientRoom();rioMap.indoorRoom=null;
       for(const {rooms} of rioMap.tiles.values())for(const {site,room} of rooms){
         if(room.roof){
           room.roof.visible=!room.forSite(player.x,player.z,-.22);
           rioMap.indoors||=!room.roof.visible;
+          if(!room.roof.visible)rioMap.indoorRoom=room;
         }
         if(rioMap.order?.site===site.id&&Math.hypot(player.x-site.x,player.z-site.z)>Math.max(site.w,site.d)+8){
           rioMap.order=null;if(room.servedDish)room.servedDish.visible=false;
         }
       }
     }
+    for(const room of rioMap.sites.values())if(room.server||room.door)rioUpdatePlaceService(room.site,room,dt);
     updateRioMapActors(dt);
     updateRioWaterfront(dt);
+    updateWorldPhone(dt);
+    rioUpdateCommunity(dt);
     const waterMap=rioMap.materials.water.map;
     waterMap.offset.x=(waterMap.offset.x+dt*.013)%1;
     waterMap.offset.y=(waterMap.offset.y+dt*.007)%1;
@@ -17898,13 +18050,22 @@ function precompile(T,renderer,scene,camera){
   }
 
   function rioCameraObstacle(x,y,z){
-    for(const b of rioMap.geo.buildings.query(x,z,.29))if(y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
+    for(const b of rioMap.geo.buildings.query(x,z,.29))if(b!==rioMap.activeBuilding?.building&&y<=b.height+.15&&rioWithinFootprint(x,z,b.rings,.24))return true;
     return rioBoxCellCandidates(x,z,.31).some(c=>c.height>1.5&&y<c.height+.19&&rioBoxContains(c,x,z,.24));
   }
   function rioAdjustCamera(desired,look){
     if(SPORTS_V705.active)return;
     const pose=characterActivities.session?.phase==='perform'?characterActivities.session.pose:null;
     const x=pose?.x??player.x,z=pose?.z??player.z,originY=player.y+(player.vehicle?1.55:1.45);
+    if(rioMap.indoors&&!player.vehicle&&!player.boating&&!world.workshopInspectionCamera?.active){
+      const room=rioMap.indoorRoom,portrait=innerHeight>innerWidth;
+      const cx=room?.site.x??x,cz=room?.site.z??z,focusX=x+clamp((cx-x)*.32,-2.8,2.8),focusZ=z+clamp((cz-z)*.32,-2.8,2.8);
+      const distance=clamp((portrait?6.9:5.9)+cameraZoom*.58,4.8,10.2);
+      const height=clamp((portrait?6.7:5.8)+cameraPitch*2.7+cameraZoom*.25,4.65,9.75);
+      desired.set(focusX-Math.sin(cameraYaw)*distance,player.y+height,focusZ+Math.cos(cameraYaw)*distance);
+      look.set(focusX,player.y+.74,focusZ);camera.fov=portrait?56:53;
+      return;
+    }
     const fuelSite=player.vehicle&&rioSiteByKey('posto_brasilia');
     if(fuelSite&&rioSiteContains(fuelSite,x,z,.8)){
       const distance=clamp(6.6+cameraZoom*.28,5.3,8.4),heading=player.car.heading;
@@ -17929,6 +18090,22 @@ function precompile(T,renderer,scene,camera){
     desired.set(x+dx*t,Math.max(player.y+3.30,lerp(originY,desired.y,t)),z+dz*t);
     look.set(x,player.y+(pose?.sitting?1.02:1.33),z);
     if(rioCameraObstacle(camera.position.x,camera.position.y,camera.position.z))camera.position.copy(desired);
+  }
+
+  function rioInteriorRender(){
+    const room=rioMap.indoorRoom;
+    if(!room||otGames.active||player.vehicle)return null;
+    const {x,z,yaw,w,d}=room.site,s=Math.sin(yaw),c=Math.cos(yaw),p=camera.position;
+    const lx=(p.x-x)*c-(p.z-z)*s,lz=(p.x-x)*s+(p.z-z)*c;
+    const alongX=Math.abs(lx/w)>Math.abs(lz/d),side=Math.sign(alongX?lx:lz)||1,key=(alongX?'x':'z')+side;
+    room.cameraPlanes??={};
+    if(!room.cameraPlanes[key]){
+      const normal=new THREE.Vector3(-(alongX?c:s)*side,0,-(alongX?-s:c)*side);
+      const edge=room.point(alongX?side*(w/2-.45):0,alongX?0:side*(d/2-.45));
+      room.cameraPlanes[key]=[new THREE.Plane().setFromNormalAndCoplanarPoint(normal,new THREE.Vector3(edge.x,0,edge.z))];
+    }
+    const before=renderer.clippingPlanes;renderer.clippingPlanes=room.cameraPlanes[key];
+    return()=>{renderer.clippingPlanes=before;};
   }
 
   // ===== MODULE: 90-rio-map-activities.js =====
@@ -17984,16 +18161,25 @@ function precompile(T,renderer,scene,camera){
   function rioAtFleetCounter(){
     return !player.vehicle&&!player.boating&&!player.swimming&&rioMap.garage&&distance2D(player,rioMap.garage.counter)<2.65;
   }
+  function rioFleetSavedPose(id){
+    const record=rioMapSave().roadVehicles[id];
+    const valid=record&&!record.stored&&[record.x,record.z,record.heading].every(Number.isFinite)&&
+      !positionBlockedForPlayer(record.x,record.z,1.25,{ignoreTraffic:true,ignoreParkedVehicles:true});
+    return valid?record:RIO_GARAGE_BAY;
+  }
+  function rioRemoveRoadVehicle(vehicle){
+    clearThemedVehicleGeometry(vehicle.group);vehicle.group.parent?.remove(vehicle.group);
+    world.vehicles=world.vehicles.filter(car=>car!==vehicle);
+    world.interactables=world.interactables.filter(action=>action.id!=='vehicle-'+vehicle.id);
+    if(world.vehicle===vehicle)world.vehicle=null;
+    if(rioMap.vehicle===vehicle)rioMap.vehicle=null;
+    world.trafficSnapshot=null;
+  }
   function rioSyncFleetPresent(vehicle,pose){
-    if(rioMap.vehicle&&rioMap.vehicle!==vehicle){
-      const prior=rioMap.vehicle;
-      clearThemedVehicleGeometry(prior.group);prior.group.parent?.remove(prior.group);
-      world.vehicles=world.vehicles.filter(car=>car!==prior);
-      world.interactables=world.interactables.filter(action=>action.id!=='vehicle-'+prior.id);
-    }
     world.vehicle=vehicle;
     rioMap.vehicle=vehicle;
     rioMapSave().roadVehicleId=vehicle.id;
+    rioRoadVehicleSave(vehicle.id).stored=false;
     setGarageVehicleStored(vehicle,false);
     vehicle.group.position.set(pose.x,rioTerrainY(pose.x,pose.z),pose.z);
     vehicle.group.rotation.y=pose.heading;
@@ -18002,13 +18188,11 @@ function precompile(T,renderer,scene,camera){
   }
   function rioRestoreOwnedFleet(){
     if(!rioMap.garage||player.vehicle||rioOwnedRoadVehicle(rioMap.vehicle))return;
-    if(rioMap.vehicle)setGarageVehicleStored(rioMap.vehicle,true);
+    if(rioMap.vehicle)rioRemoveRoadVehicle(rioMap.vehicle);
     const entries=garageOwnedEntries(),saved=rioMapSave();
     const entry=entries.find(e=>e.id===saved.roadVehicleId)||entries.find(e=>e.id===state.vehicles.primaryId)||entries[0];
-    if(!entry)return;
-    const record=saved.roadVehicles[entry.id],valid=record&&[record.x,record.z,record.heading].every(Number.isFinite)&&
-      !positionBlockedForPlayer(record.x,record.z,1.4,{ignoreTraffic:true,ignoreParkedVehicles:true,allowWater:false});
-    const pose=valid?record:RIO_GARAGE_BAY;
+    if(!entry||saved.roadVehicles[entry.id]?.stored)return;
+    const pose=rioFleetSavedPose(entry.id);
     const car=ensureCatalogVehicle(entry.id,1,pose);
     if(car)rioSyncFleetPresent(car,pose);
     // The pickup counter remains available if an imported car still needs to download.
@@ -18024,10 +18208,13 @@ function precompile(T,renderer,scene,camera){
       for(const button of choices)button.onclick=async()=>{
         if(!rioAtFleetCounter()||button.disabled)return;
         const entry=entries.find(e=>e.id===button.dataset.rioOwned);
+        const reason=garageStorageBlock(entry.id);
+        if(reason){toast(reason,'warn',2400);return;}
         choices.forEach(choice=>{choice.disabled=true;});
         try{
-          if(!await requestBrazilModel(entry.model)||!button.isConnected||!rioAtFleetCounter()||
-            !state.vehicles.owned.includes(entry.id))return;
+          if(!await requestBrazilModel(entry.model)||!button.isConnected||!rioAtFleetCounter()||garageStorageBlock(entry.id))return;
+          const parked=world.vehicles.find(v=>v.id!==entry.id&&v.group.visible&&distance2D(v.group.position,RIO_GARAGE_BAY)<4.5);
+          if(parked&&(!rioOwnedRoadVehicle(parked)||!storeOwnedVehicle(parked.id,true))){toast('A vaga está ocupada. Libere a passagem para retirar o veículo.','warn',2500);return;}
           const car=ensureCatalogVehicle(entry.id,1,RIO_GARAGE_BAY);
           if(!car)return;
           rioSyncFleetPresent(car,RIO_GARAGE_BAY);closeModal();saveState(true);
@@ -18038,6 +18225,7 @@ function precompile(T,renderer,scene,camera){
     return true;
   }
   function rioBuildFleetParking(){
+    ensurePlayerGarageState();
     const {x,z,heading}=RIO_GARAGE_BAY,s=Math.sin(heading),c=Math.cos(heading);
     const point=(side,forward)=>({x:x+c*side+s*forward,z:z-s*side+c*forward});
     const root=new THREE.Group();root.name='RIO_OWNED_FLEET';worldGroup.add(root);
@@ -18130,7 +18318,7 @@ function precompile(T,renderer,scene,camera){
   }
 
   const rioCityActors={
-    traffic:new Map(),folks:new Map(),animals:new Map(),nextAt:0,trafficAcc:0,lifeAcc:0
+    traffic:new Map(),folks:new Map(),nextAt:0,trafficAcc:0,lifeAcc:0
   };
   function rioPedestrianRoute(site,variant=0){
     const p=nearestRioRoad({x:site.x,z:site.z},true);
@@ -18169,7 +18357,7 @@ function precompile(T,renderer,scene,camera){
       world.interactables=world.interactables.filter(action=>!action.id.startsWith('npc-')||!removed.has(action.id.slice(4)));
       rioCityActors.folks.delete(key);
     }
-    for(const [key,actors] of rioCityActors.traffic)if(!remainsNear(key)){
+    for(const [key,actors] of rioCityActors.traffic)if(!remainsNear(key)&&!actors.some(actor=>actor.incidentLocked||actor.taken)){
       for(const actor of actors){
         brazilDetach(actor.group);disposeDetachedVisual(actor.group);actor.group.parent?.remove(actor.group);
         const index=OTTOVIAS_RUNTIME.traffic.indexOf(actor);
@@ -18177,34 +18365,6 @@ function precompile(T,renderer,scene,camera){
       }
       rioCityActors.traffic.delete(key);world.trafficSnapshot=null;
     }
-  }
-  function rioCreateCapybara(key,site){
-    const p=rioPedestrianRoute(site);
-    if(!p)return;
-    const base=p[0],other=p[1],length=Math.hypot(other.x-base.x,other.z-base.z);
-    if(length<9)return;
-    const dx=(other.x-base.x)/length,dz=(other.z-base.z)/length;
-    let route=null;
-    for(const side of [-1,1]){
-      const a={x:base.x+dx*5-dz*side*3,z:base.z+dz*5+dx*side*3};
-      const b={x:a.x+dx*4.5,z:a.z+dz*4.5};
-      if(![a,b].some(q=>rioRoadAt(q.x,q.z,.45,r=>!r.pedestrian)||rioWaterAt(q.x,q.z)||rioGeometryBlocked(q.x,q.z,.45))){
-        route=[a,b];break;
-      }
-    }
-    if(!route)return;
-    const root=new THREE.Group();root.name='RIO_FAUNA_CAPIVARA_'+key;worldGroup.add(root);
-    const fur=renderMat(0x8e6744,{roughness:1}),dark=renderMat(0x594339),ge=new THREE.SphereGeometry(1,12,8);
-    const piece=(m,x,y,z,w,h,d)=>{const p=new THREE.Mesh(ge,m);p.position.set(x,y,z);p.scale.set(w,h,d);root.add(p);return p;};
-    piece(fur,0,.62,-.21,.47,.42,.69);piece(fur,0,.78,.40,.36,.36,.38);
-    piece(dark,0,.67,.72,.26,.18,.19);
-    const legs=[];
-    for(const side of [-1,1]){
-      piece(fur,side*.22,1.09,.33,.11,.14,.12);piece(dark,side*.29,.89,.56,.052,.067,.045);
-      for(const z of [-.56,.21])legs.push(piece(fur,side*.30,.28,z,.14,.26,.15));
-    }
-    root.position.set(route[0].x,0,route[0].z);
-    rioCityActors.animals.set(key,{root,legs,route,index:1});
   }
   function rioConnectTraffic(site,index){
     const start={x:site.road[0],z:site.road[1]};
@@ -18253,27 +18413,25 @@ function precompile(T,renderer,scene,camera){
           ['mercado_municipal','complexo_swift','canecao_represa','posto_brasilia','prefeitura_andalo'].includes(site.key)){
           rioCityActors.traffic.set(site.key,rioConnectTraffic(site,i));
         }
-        if(['dona_capi','parque-da-represa','canecao_represa'].includes(site.key)&&!rioCityActors.animals.has(site.key))rioCreateCapybara(site.key,site);
       }
       updateRioPractice(now);
     }
     rioCityActors.lifeAcc+=dt;
     if(rioCityActors.lifeAcc>=.08){
       const step=Math.min(.12,rioCityActors.lifeAcc);rioCityActors.lifeAcc=0;
-      for(const actor of [...[...rioCityActors.folks.values()].flat(),...rioCityActors.animals.values()]){
+      for(const actor of [...rioCityActors.folks.values()].flat()){
         const pose=actor.npc?.group||actor.root;
         pose.visible=Math.hypot(player.x-pose.position.x,player.z-pose.position.z)<116;
         if(!pose.visible)continue;
         const rate=actor.runner?3.05:actor.npc?1.23:.75;
         rioMoveAmbient(actor,step,rate);
         if(actor.npc)poseResident(actor.npc,actor.runner?'run':'walk',now/1000);
-        else for(const [i,leg] of actor.legs.entries())leg.rotation.x=Math.sin(now*.007+i*Math.PI)*.24;
       }
     }
     rioCityActors.trafficAcc+=dt;
     if(rioCityActors.trafficAcc>=1/14){
       const step=Math.min(.12,rioCityActors.trafficAcc);rioCityActors.trafficAcc=0;
-      const previous=captureTrafficPositions();updateOttoviasTraffic(step);resolveTrafficOverlaps(previous);
+      const previous=captureTrafficPositions();updateOttoviasTraffic(step);resolveTrafficOverlaps(previous);rioStepCityServices(step);
     }
   }
 
@@ -18299,7 +18457,12 @@ function precompile(T,renderer,scene,camera){
     return restored;
   }
   function updateOtthiMapContinue(){
-    setControlText(els.continueBtn,state.settings.lastWorldMap==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
+    setControlText(els.continueBtn,otthiContinueMap()==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
+  }
+  function otthiContinueMap(){
+    const selected=new URLSearchParams(location.search).get('map');
+    if(selected==='rio-preto'||selected==='ot')return selected;
+    return state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot';
   }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
@@ -18336,20 +18499,32 @@ function precompile(T,renderer,scene,camera){
     rioMap.svgPath??=data.roads.filter(r=>classNames.has(r[1])).map(r=>polyline(r[7].map(i=>data.nodes[i]))).join(' ');
     const bodies=data.water.map(([,rings])=>'<path class="rio-water-shape" d="'+rings.map(ring=>polyline(ring)+'Z').join(' ')+'"/>').join('');
     const active=world.routePath.length&&state.waypoint?'<path class="rio-active-route" d="'+polyline(world.routePath.map(p=>[p.x,p.z]))+'"/>':'';
+    const delivery=phoneDeliveryTracking();
+    const tracking=delivery?'<path class="rio-active-route" style="stroke:#ffbd45" d="'+polyline(delivery.route.map(p=>[p.x,p.z]))+'"/>'+
+      '<circle class="rio-map-point" style="fill:#ffbd45" cx="'+delivery.x+'" cy="'+delivery.z+'" r="66"><title>'+escapeHtml(phoneTrackingText(delivery))+'</title></circle>':'';
     return '<svg class="rio-real-map" viewBox="'+b.minX+' '+b.minZ+' '+(b.maxX-b.minX)+' '+(b.maxZ-b.minZ)+
       '" aria-label="Malha viária mapeada de São José do Rio Preto" role="img">'+bodies+
-      '<path class="rio-mapped-roads" d="'+rioMap.svgPath+'"/>'+active+
+      '<path class="rio-mapped-roads" d="'+rioMap.svgPath+'"/>'+active+tracking+
       rioFunctionalSites().map(p=>'<circle class="rio-map-point" cx="'+p.x+'" cy="'+p.z+'" r="52"><title>'+escapeHtml(p.name)+'</title></circle>').join('')+
       '<circle class="rio-map-player" cx="'+player.x+'" cy="'+player.z+'" r="78"/>'+
       '</svg>';
   }
-  function openRioMapPanel(){
-    const locations=rioFunctionalSites().map(rioMapLocation);
+  function rioMapLocations(){
+    const locations=[...rioFunctionalSites().map(rioMapLocation),...rioCommunityLocations()];
     if(rioMap.course)locations.push({id:'rio-orla-largada',name:'Largada da corrida na Represa',...rioMap.course.start});
     if(rioMap.garage)locations.push({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',
       ...rioMap.garage.counter,category:'Vaga para veículos da sua frota'});
     if(rioMap.waterfront)locations.push({id:'rio-represa-cais',name:'Cais da Represa',...rioMap.waterfront.entry,
       category:'Natação, prancha e embarcações'});
+    return locations;
+  }
+  function rioFindWaypoint(id){
+    const aliases={shop:'regional-mercado_municipal','family-park':'regional-parque_da_represa','my-garage':'rio-fleet-counter'};
+    const place=rioMapLocations().find(location=>location.id===(aliases[id]||id));
+    return place?rioSetWaypoint(place):false;
+  }
+  function openRioMapPanel(){
+    const locations=rioMapLocations();
     locations.sort((a,b)=>distance2D(player,a)-distance2D(player,b));
     const markup=locations.map(place=>'<button class="choice" data-rio-destination="'+place.id+
       '"><b>'+escapeHtml(place.name)+'</b><span>'+escapeHtml(place.category||rioSiteLabels[place.site?.kind]||'300 m na pista da orla')+
@@ -18369,6 +18544,11 @@ function precompile(T,renderer,scene,camera){
     openModal('São José do Rio Preto','<div class="choice-grid">'+
       '<button class="choice" data-rio-panel-map><b>Mapa e locais</b><span>Escolher o destino e traçar a rota</span></button>'+
       '<button class="choice" data-rio-panel-fleet><b>Minha garagem</b><span>Traçar rota para retirar seus veículos</span></button>'+
+      '<button class="choice" data-rio-panel-workshop><b>Oficina</b><span>Traçar rota para a SOS Valêncio</span></button>'+
+      '<button class="choice" data-rio-panel-emergency><b>Socorro</b><span>Acompanhar ocorrências e treinamentos</span></button>'+
+      '<button class="choice" data-rio-panel-phone><b>Celular</b><span>Comprar, acompanhar encomendas e chamar motorista</span></button>'+
+      '<button class="choice" data-rio-panel-journey><b>Meu caminho</b><span>Acompanhar os objetivos em Rio Preto</span></button>'+
+      '<button class="choice" data-rio-panel-life><b>Vida e atividades</b><span>Família, escola, horta, inventário e ferramentas</span></button>'+
       '<button class="choice" data-rio-panel-clothes><b>Meu personagem</b><span>Roupas e acessórios</span></button>'+
       (equippedTool().id==='none'?'':'<button class="choice" data-rio-panel-hands><b>Mãos vazias</b><span>Guardar a ferramenta atual</span></button>')+
       '<button class="choice" data-rio-panel-settings><b>Configurações</b><span>Áudio, câmera e desempenho</span></button>'+
@@ -18379,6 +18559,11 @@ function precompile(T,renderer,scene,camera){
         root.querySelector('[data-rio-panel-map]').onclick=()=>{closeModal();openRioMapPanel();};
         root.querySelector('[data-rio-panel-fleet]').onclick=()=>rioAtFleetCounter()?openRioFleetCounter():
           rioSetWaypoint({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',...rioMap.garage.counter});
+        root.querySelector('[data-rio-panel-workshop]').onclick=()=>rioSetWaypoint({id:'rio-workshop-reception',name:'Oficina SOS Valêncio',...RIO_WORKSHOP_ENTRY});
+        root.querySelector('[data-rio-panel-emergency]').onclick=openRioEmergency;
+        root.querySelector('[data-rio-panel-phone]').onclick=openWorldPhone;
+        root.querySelector('[data-rio-panel-journey]').onclick=openRioJourney;
+        root.querySelector('[data-rio-panel-life]').onclick=openRioActivities;
         root.querySelector('[data-rio-panel-clothes]').onclick=()=>{closeModal();openAvatarStudio();};
         root.querySelector('[data-rio-panel-hands]')?.addEventListener('click',()=>{equipTool('none');closeModal();updateContext(true);});
         root.querySelector('[data-rio-panel-settings]').onclick=()=>{closeModal();openSettings(true);};
@@ -18409,7 +18594,7 @@ function precompile(T,renderer,scene,camera){
       bounds:rioMap.data?.bounds,source:rioMap.data?.reference,
       roads:rioMap.data?.roads.length,buildings:rioMap.data?.buildings.length,water:rioMap.data?.water.length,
       chunks:rioMap.tiles.size,loadedPlaces:[...rioMap.sites.keys()],
-      actors:{residents:[...rioCityActors.folks.values()].flat().length,traffic:[...rioCityActors.traffic.values()].flat().length,animals:rioCityActors.animals.size},
+      actors:{residents:[...rioCityActors.folks.values()].flat().length,traffic:[...rioCityActors.traffic.values()].flat().length,animals:0},
       fleet:rioMap.vehicle?{id:rioMap.vehicle.id,model:rioMap.vehicle.brazilModel}:null,
       craft:[...(world.boats?.values()||[])].filter(boat=>boat.rioBerth).map(boat=>({id:boat.id,kind:boat.kind})),
       swimmers:rioMap.waterfront?.swimmers.length||0,
@@ -18712,6 +18897,587 @@ function precompile(T,renderer,scene,camera){
       parts.leftArm.rotation.set(-1.58+stroke*.32,0,.44);
     }
     paddle.position.set(.39,.86,.16+stroke*.23);paddle.rotation.set(stroke*.44,0,-.25);
+  }
+
+  // ===== MODULE: 93-rio-city-services.js =====
+  const RIO_WORKSHOP={x:953,z:110.7};
+  const RIO_WORKSHOP_SCRAP={x:984.6,z:94};
+  const RIO_WORKSHOP_ENTRY={x:953,z:119.8};
+
+  function rioBuildWorkshop(){
+    const {x,z}=RIO_WORKSHOP;
+    const yard=box(47,.055,40,0x626766,x+14,.0275,z,worldGroup);
+    yard.name='RIO_WORKSHOP_PARCEL';yard.castShadow=false;
+    const driveway=box(10.8,.064,17,0x626766,x,.032,z+23,worldGroup);
+    driveway.name='RIO_WORKSHOP_DRIVEWAY';driveway.castShadow=false;
+    const workshop=createWorkshopShed({id:'workshop',name:'SOS Valêncio · Rio Preto',x,z,color:0x242a30,roofColor:0x101419});
+    addHouseInterior(workshop,'workshop');
+    world.workshopHouse=workshop;
+    world.tioThiago=createTioThiagoWorkshop(workshop);
+    createWorkshopMechanic(workshop);
+    registerInteractable({id:'rio-workshop-reception',type:'workshop',icon:'🛠️',label:'Oficina SOS Valêncio',
+      x:x+4.8,z:z+5.3,radius:2.3,priority:390,action:openWorkshop});
+    workshopEnsureYardVisual();
+    createVehicleRepairStationV704();
+  }
+
+  function rioRestoreWorkshopVehicles(){
+    const saved=rioMapSave(),bays=Object.values(saved.workshopBayState||{});
+    let pending=false;
+    const owned=state.vehicles.owned.filter(id=>saved.workshopComponents?.[id]?.yardStatus||bays.some(bay=>bay.vehicleId===id));
+    for(const id of owned){
+      if(vehicleById(id))continue;
+      if(!ensureCatalogVehicle(id,1,rioFleetSavedPose(id)))pending=true;
+    }
+    if(!pending)ensureWorkshopBays();
+    return !pending;
+  }
+
+  const RIO_SERVICE_DEPOT={police:{x:1006,z:140},paramedic:{x:992,z:141.5},firefighter:{x:978,z:143}};
+  function rioServiceDepot(kind){
+    const base=RIO_SERVICE_DEPOT[kind],road=groundServiceRoadProjection(base);
+    const {a,b}=road,heading=Math.atan2(b.x-a.x,b.z-a.z);
+    return {x:road.point.x,z:road.point.z,heading};
+  }
+
+  function rioBuildEmergencyServices(){
+    createPoliceCar('rio-policia',[],0);
+    createAmbulance('rio-resgate');
+    createFireTruck('rio-bombeiros');
+    world.nextTrafficIncidentAt=performance.now()+20000;
+  }
+
+  function rioTrainingIncidentPoint(){
+    const roads=[...rioMap.geo.roads.query(player.x,player.z,140)]
+      .filter(road=>!road.pedestrian&&!road.restricted&&road.length>=44&&road.width>=5.5&&!road.bridge);
+    const projected=road=>rioSegmentProjection(player.x,player.z,road.a,road.b);
+    roads.sort((a,b)=>distance2D(player,projected(a))-distance2D(player,projected(b)));
+    for(const road of roads){
+      const center=rioSegmentProjection(player.x,player.z,road.a,road.b),t=clamp(center.t,16/road.length,1-16/road.length);
+      const p={x:lerp(road.a[0],road.b[0],t),z:lerp(road.a[1],road.b[1],t)};
+      if(distance2D(player,p)>10&&distance2D(player,p)<145&&!trafficIncidentWorkshopProtected(p.x,p.z))return p;
+    }
+    return null;
+  }
+
+  function openRioEmergency(){
+    const incident=world.activeIncident;
+    if(incident)return rioSetWaypoint({id:'rio-active-incident',name:'Área da ocorrência',x:incident.navX,z:incident.navZ});
+    openModal('Central de socorro','<p>Polícia, ambulância e bombeiros atendem as ocorrências do trânsito. Você também pode acompanhar um treinamento sinalizado.</p><button class="btn primary" data-rio-emergency-training>Iniciar treinamento</button>',root=>{
+      root.querySelector('[data-rio-emergency-training]').onclick=()=>{
+        if(player.vehicle||player.boating||player.swimming||currentHouse){toast('Desembarque e vá a uma calçada.','info',2200);return;}
+        const point=rioTrainingIncidentPoint();
+        if(!point){toast('Procure uma calçada próxima de uma rua acessível ao socorro.','info',2500);return;}
+        const drill=createTrafficIncidentAt(point.x,point.z,'minor');
+        if(drill)rioSetWaypoint({id:'rio-active-incident',name:'Treinamento de socorro',...point});
+      };
+    });
+  }
+
+  function rioStepCityServices(dt){
+    if(workshopBays.restored||rioRestoreWorkshopVehicles())updateWorkshopMechanicActions(dt);
+    for(const vehicle of serviceVehiclePools()){
+      const responding=!!vehicle.incidentTargetId;
+      const flash=Math.floor(performance.now()/225)%2===0;
+      if(vehicle.red){vehicle.red.visible=!responding||flash;vehicle.cyan.visible=!responding||!flash;}
+      if(vehicle.lightA){vehicle.lightA.visible=responding&&flash;vehicle.lightB.visible=responding&&!flash;}
+      if(!world.activeIncident&&!vehicle.occupied&&vehicle.serviceType!=='paramedic')returnServiceVehicleHome(vehicle,dt);
+    }
+    updateTrafficIncidents(dt);
+  }
+
+  // ===== MODULE: 94-rio-community.js =====
+  const RIO_FAMILY_HOME={x:976,z:-76.2};
+  const RIO_FARM={x:2084.3,z:-67.3};
+  const RIO_CLASSROOM={x:-197.6,z:288.2};
+  const rioVenues=new Map();
+
+  function rioBuildCommunity(){
+    const school=createHouse({id:'rio-classroom',name:'Escola da comunidade',...RIO_CLASSROOM,
+      color:0xe5ca92,roofColor:0x4d677a,publicBuilding:true});
+    addHouseInterior(school,'school');
+    createSignpost(school.x-2.5,school.z+5,'ESCOLA DA COMUNIDADE',0);
+    ensureWorldEvolutionState();
+    world.worldEvolution??={};
+    createFarmingSystem();
+    createDigSites();
+    rioBuildVenueCourtyard();
+  }
+
+  function rioCommunityLocations(){
+    return [
+      {id:'family-home',name:'Casa da Família',x:RIO_FAMILY_HOME.x,z:RIO_FAMILY_HOME.z+6,category:'Passeio, brincadeiras e guarda-roupa'},
+      {id:'school',name:'Escola da comunidade',x:RIO_CLASSROOM.x,z:RIO_CLASSROOM.z+4.3,category:'Aulas e desafios da Vila'},
+      {id:'farm',name:'Horta comunitária',...RIO_FARM,category:'Plantio, colheita e escavação'},
+      {id:'workshop',name:'Oficina SOS Valêncio',...RIO_WORKSHOP_ENTRY,category:'Reboque, diagnóstico, reparo e pátio'},
+      ...[...rioVenues.values()].map(v=>({id:'venue-'+v.id,name:v.label,x:v.navX,z:v.navZ,category:v.activity}))
+    ];
+  }
+
+  function rioBuildVenueCourtyard(){
+    const x=-1608,z=2367;
+    for(const [id,offset] of [['boxing',-12.5],['pingpong',0],['dance',12.5]]){
+      const original=WORLD_ACTIVITY_VENUES[id];
+      if(!original)continue;
+      const v={...original,x:x+offset,z,navX:x+offset,navZ:z+7.5,w:11.6,d:13,face:1};
+      rioVenues.set(id,v);venueDraw(v);
+    }
+    for(const [id,offset] of [['kart-mirassol',-10],['kart-cedral',0]]){
+      const original=WORLD_ACTIVITY_VENUES[id];
+      if(!original)continue;
+      const v={...original,x:x+offset,z:z+12,navX:x+offset,navZ:z+12};
+      rioVenues.set(id,v);
+      createSignpost(v.x-.5,v.z+.5,id==='aviation'?'AERO STRIKE WAR':id==='kart-mirassol'?'KART · MIRASSOL':'KART · CEDRAL',0);
+      registerInteractable({id:'activity-venue-'+id,type:'activity-venue',icon:v.icon,label:'Jogar · '+v.label,
+        x:v.navX,z:v.navZ,radius:2.7,priority:205,action:()=>venueOpen(id)});
+    }
+  }
+
+  function rioUpdateCommunity(dt){
+    rioMap.communityAcc=(rioMap.communityAcc||0)+dt;
+    if(rioMap.communityAcc<1/18)return;
+    updateFamilyAdventure(rioMap.communityAcc);
+    rioMap.communityAcc=0;
+    if(performance.now()>=Number(rioMap.nextFarmUpdate||0)){
+      rioMap.nextFarmUpdate=performance.now()+1000;
+      for(const plot of WORLD_V702.farmPlots.values())updateFarmPlotVisual(plot);
+    }
+  }
+
+  function openRioActivities(){
+    openModal('Vida e atividades',`<div class="choice-grid">
+      <button class="choice" data-rio-activity="family"><b>Família</b><span>Passear ou brincar com Luna e Liz</span></button>
+      <button class="choice" data-rio-activity="school"><b>Escola</b><span>Traçar rota para as aulas e desafios</span></button>
+      <button class="choice" data-rio-activity="farm"><b>Horta comunitária</b><span>Cavar, plantar e colher</span></button>
+      <button class="choice" data-rio-activity="items"><b>Inventário</b><span>Alimentos e materiais</span></button>
+      <button class="choice" data-rio-activity="tools"><b>Ferramentas</b><span>Equipar os itens do personagem</span></button>
+      <button class="choice" data-rio-activity="run"><b>Corrida a pé</b><span>Cronômetro e seis marcações na orla</span></button>
+      <button class="choice" data-rio-activity="back"><b>Voltar ao menu</b></button>
+    </div>`,root=>{
+      const actions={family:openFamilyAdventure,school:()=>setWaypoint('school'),farm:()=>setWaypoint('farm'),
+        items:openInventory,tools:openToolbelt,run:openRioGeoRun,back:openRioMapMenu};
+      for(const button of root.querySelectorAll('[data-rio-activity]'))button.onclick=actions[button.dataset.rioActivity];
+    });
+  }
+
+  function rioJourneySteps(){
+    const saved=rioMapSave(),me=sharedWorldOwnId();
+    return [
+      {title:'Visite o Mercadão',description:'Entre no Mercado Municipal e fale com o comerciante.',
+        done:!!saved.visits['regional-mercado_municipal'],action:()=>setWaypoint('shop')},
+      {title:'Receba uma encomenda',description:'Compre pelo celular e encontre o entregador na rua indicada.',
+        done:phoneOrders().some(order=>order.owner===me&&phoneOrderOnMap(order)&&order.kind==='parcel'&&order.status==='delivered'),action:openWorldPhone},
+      {title:'Passeie no Parque da Represa',description:'Reúna Thiago, Thamis, Luna e Liz e vá com o grupo até o parque.',
+        done:!!saved.familyPark,action:openFamilyAdventure},
+      {title:'Complete a volta na orla',description:'Percorra seis marcações em 300 m de corrida a pé.',
+        done:!!rioStreetRecord()?.best,action:openRioGeoRun},
+      {title:'Acompanhe o socorro',description:'Observe as três equipes chegarem e liberarem uma ocorrência.',
+        done:!!saved.physicalRescues,action:openRioEmergency}
+    ];
+  }
+
+  function openRioJourney(){
+    const steps=rioJourneySteps(),done=steps.filter(step=>step.done).length;
+    openModal('Meu caminho em Rio Preto',`<p>${done} de ${steps.length} objetivos concluídos</p><div class="choice-grid">${steps.map((step,i)=>
+      `<button class="choice" data-rio-journey="${i}"><b>${step.done?'✓ ':''}${step.title}</b><span>${step.description}</span></button>`).join('')}</div>`,root=>{
+        for(const button of root.querySelectorAll('[data-rio-journey]'))button.onclick=steps[Number(button.dataset.rioJourney)].action;
+    });
+  }
+  const beforeRioObjectives=openObjectivesPanel;
+  openObjectivesPanel=function(){return inRioMap()?openRioJourney():beforeRioObjectives();};
+  const beforeRioMissionHud=updateMissionHUD;
+  updateMissionHUD=function(){
+    if(!inRioMap())return beforeRioMissionHud();
+    const steps=rioJourneySteps(),next=steps.find(step=>!step.done),total=steps.filter(step=>step.done).length;
+    setControlText(els.missionChapter,'MEU CAMINHO');
+    setControlText(els.missionTitle,next?.title||'Rio Preto explorada');
+    setControlText(els.missionStep,next?.description||'Escolha uma atividade para repetir.');
+    els.missionFill.style.width=(total/steps.length*100)+'%';
+    els.missionCard.setAttribute('aria-label','Meu caminho em Rio Preto');
+  };
+
+  // ===== MODULE: 95-rio-open-buildings.js =====
+  function rioEnterPlace(target,onArrival){
+    return beginCharacterActivity('rio-entry',{target,walkSpeed:2.8,onArrival:()=>{onArrival?.();updateContext(true);}});
+  }
+
+  function rioPropertyTitle(id){
+    const properties=rioMapSave().properties??={};
+    const existing=state.houses[id];
+    const imported=id==='home'||(existing?.owned&&(!existing.ownerUid||existing.ownerUid===window.OTTHOS_RTDB?.uid));
+    if(imported&&!properties[id])properties[id]={owned:true,locked:!!existing?.locked,adopted:true};
+    return properties[id]||null;
+  }
+
+  function rioPropertyDoor({id,name,price,available,enter}){
+    if(!available())return false;
+    const property=rioPropertyTitle(id);
+    const purchase=property?.owned?'':'<button class="btn good" data-rio-property-buy>Comprar por '+price+' moedas</button>';
+    const lock=property?.owned?'<button class="btn" data-rio-property-lock>'+(property.locked?'Destrancar':'Trancar')+'</button>':'';
+    openModal(name,'<p>'+(property?.owned?'Sua residência em Rio Preto.':'Visite a casa ou compre com moedas do jogo.')+
+      '</p><div class="modal-actions"><button class="btn primary" data-rio-property-enter>'+(property?.owned?'Entrar':'Visitar')+'</button>'+purchase+lock+'</div>',root=>{
+      root.querySelector('[data-rio-property-enter]').onclick=()=>{if(available()){closeModal();enter();}};
+      root.querySelector('[data-rio-property-buy]')?.addEventListener('click',event=>{
+        if(event.currentTarget.disabled||!available()||rioPropertyTitle(id)?.owned)return;
+        if(state.profile.coins<price){toast('Moedas insuficientes.','warn',1900);return;}
+        event.currentTarget.disabled=true;
+        rioMapSave().properties[id]={owned:true,locked:false,paid:price,at:Date.now()};
+        addCoins(-price);setFlag('boughtHouse');awardMedal('Nova Propriedade');saveState(true);
+        rioPropertyDoor({id,name,price,available,enter});
+      });
+      root.querySelector('[data-rio-property-lock]')?.addEventListener('click',()=>{
+        const title=rioPropertyTitle(id);if(!title?.owned||!available())return;
+        title.locked=!title.locked;if(title.locked)setFlag('lockedHouse');saveState(true);
+        rioPropertyDoor({id,name,price,available,enter});
+      });
+    });
+    return true;
+  }
+
+  function rioResidenceDoor(site,room,target){
+    const point={x:site.entry[0],z:site.entry[1]},available=()=>room.root.visible&&rioPlayerAt(point,3.3);
+    return rioPropertyDoor({id:site.propertyId,name:site.name,price:site.price,available,enter:()=>{
+      room.gate.disabled=true;room.door.visible=false;
+      if(!rioEnterPlace(target,()=>{if(site.propertyId==='home')setFlag('enteredHome');})){
+        room.gate.disabled=false;room.door.visible=true;
+      }
+    }});
+  }
+
+  function rioBuildResidence(site,room){
+    const {w,d,yaw}=site,modern=site.style==='damha',back=-d/2+1.04,front=d/2-.12;
+    room.collider(0,front,Math.min(3.1,w*.4)-.13,.18,2.5);
+    room.gate=room.colliders.at(-1);
+    const doorPoint=room.point(0,front);
+    room.door=new THREE.Mesh(new THREE.BoxGeometry(Math.min(3.1,w*.4)-.15,2.5,.17),renderMat(modern?0x4a5a5a:0x8d593c));
+    room.door.position.set(doorPoint.x,1.25,doorPoint.z);room.door.rotation.y=yaw;room.root.add(room.door);
+    const bx=-w*.29;
+    room.object(bx,.30,back+.24,1.48,.56,2.03,0x8a6b50);
+    room.box(bx,.62,back+.13,1.37,.12,1.90,modern?0x7b979c:0xd3b88e);
+    room.box(bx,.73,back-.45,1.20,.14,.48,0xf4e2c8);
+    room.object(-w*.37,.92,.8,.49,1.84,1.26,0x876a51);
+    const sx=w*.29;
+    room.bench(sx,back-.15);
+    room.box(sx,1.32,-.42,1.15,.62,.12,0x29424d);
+    room.object(sx,.49,-.45,1.60,.98,.48,0x706459);
+    room.box(0,.059,.05,w*.22,.022,1.35,modern?0x708c8e:0xa87659);
+    if(modern){
+      room.box(w*.31,.045,d/2+.71,w*.34,.074,1.53,0xb2afa4);
+      room.box(w*.34,2.71,d/2+.52,w*.36,.21,1.06,0x657374);
+    }else for(const x of [-w*.38,w*.38]){
+      room.box(x,.23,d/2+.65,.91,.45,.72,0x99674d);
+      room.part('canopy',x,.61,d/2+.65,.63,.58,.58,0x617e50);
+    }
+    room.action('rest','Descansar na sala',sx,back+.65,()=>rioSitOnBench(site,room,sx,back-.15),{inside:true,icon:'🛋️'});
+    const bedApproach=room.point(bx,back+1.78),bed=room.point(bx,back+.24);
+    room.action('bed','Dormir na cama',bx,back+1.78,()=>beginCharacterActivity('bed',{
+      target:bedApproach,pose:{...bed,y:.72,yaw,lying:true},commit:()=>{
+        state.needs.energy=100;setFlag('slept');rioCountVisit(site);return true;
+      }
+    }),{inside:true,icon:'🛏️'});
+    room.action('wardrobe','Usar o guarda-roupa',-w*.37+.92,.8,openRioWardrobe,{inside:true,icon:'👕'});
+    room.action('home-entry','Ver propriedade',0,d*.24,()=>{
+      const title=rioPropertyTitle(site.propertyId);
+      toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
+    },{inside:true,icon:'🔑'});
+  }
+
+  function rioBuildBakeryService(site,room,counterZ,x,z){
+    const side=-site.w*.39;
+    const points=[room.point(side,counterZ-.85),room.point(side,counterZ+1.04),room.point(side,z-.95),room.point(-x-.58,z-.95)];
+    const npc=createNPC('rio-bakery-server','Garçonete',points[0].x,points[0].z,0xe6d6c6,0);
+    npc.stationary=true;npc.cityLifeManaged=true;npc.group.name='RIO_BAKERY_SERVER';room.root.add(npc.group);
+    world.interactables=world.interactables.filter(action=>action.id!=='npc-'+npc.id);
+    room.npcs=[npc];
+    const tray=new THREE.Group();tray.position.set(0,1.16,.62);npc.group.add(tray);
+    campaignBox(tray,campaignMaterial(0xac7950),0,0,0,.65,.06,.43);
+    campaignCylinder(tray,campaignMaterial(0xf6e9c9),.04,.09,.01,.16,.056);
+    campaignCylinder(tray,campaignMaterial(0xe9d9a8),-.19,.119,0,.08,.13);
+    tray.visible=false;
+    room.server={npc,points,tray,index:0,direction:1,serving:false};
+  }
+
+  function rioUpdatePlaceService(site,room,dt){
+    if(room.door&&!room.door.visible&&!room.forSite(player.x,player.z,2.8)&&!characterActivities.session){
+      room.door.visible=true;room.gate.disabled=false;
+    }
+    const server=room.server;
+    if(!server?.serving)return;
+    const {npc,points,tray}=server,target=points[server.index],p=npc.group.position,distance=distance2D(p,target);
+    if(distance>.08){
+      const step=Math.min(distance,dt*1.45),dx=target.x-p.x,dz=target.z-p.z;
+      p.x+=dx/distance*step;p.z+=dz/distance*step;npc.group.rotation.y=Math.atan2(dx,dz);
+      poseResident(npc,'walk',performance.now()/1000);return;
+    }
+    if(server.direction===1&&server.index===points.length-1){
+      tray.visible=false;server.direction=-1;
+      if(rioMap.order?.site===site.id){room.servedDish.visible=true;toast('Pedido servido na mesa 1.','good',2500);}
+    }else if(server.direction===-1&&server.index===0){server.serving=false;server.direction=1;return;}
+    server.index+=server.direction;
+  }
+
+  function rioWardrobeShop(site,room,counter,slot){
+    if(!rioPlayerAt(counter))return false;
+    const choices=Object.entries(RIO_WARDROBE_CATALOG).filter(([kind])=>slot===kind).flatMap(([,items])=>items).filter(([id])=>RIO_WARDROBE_STORE[id]);
+    openModal(slot==='shoes'?'Loja de calçados':'Loja de roupas','<div class="choice-grid">'+choices.map(([id,label])=>
+      '<button class="choice" data-rio-clothing-buy="'+id+'" '+(rioWardrobeHasItem(id)?'disabled':'')+'><b>'+label+'</b><span>'+
+      (rioWardrobeHasItem(id)?'No guarda-roupa':RIO_WARDROBE_STORE[id]+' moedas')+'</span></button>').join('')+
+      '</div><div class="modal-actions"><button class="btn" data-rio-clothing-try>Provar em Thiago ou Thamis</button><button class="btn" data-rio-custom-avatar>Criar meu personagem</button></div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-clothing-buy]'))button.onclick=()=>{
+          const id=button.dataset.rioClothingBuy,price=RIO_WARDROBE_STORE[id];
+          if(!price||button.disabled||rioWardrobeHasItem(id)||!room.root.visible||!rioPlayerAt(counter))return;
+          if(state.profile.coins<price){toast('Moedas insuficientes.','warn',2100);return;}
+          button.disabled=true;(rioMapSave().wardrobePurchases??={})[id]=true;
+          addCoins(-price);rioCountVisit(site);rioWardrobeShop(site,room,counter,slot);
+        };
+        root.querySelector('[data-rio-clothing-try]').onclick=()=>openRioWardrobe();
+        root.querySelector('[data-rio-custom-avatar]').onclick=openAvatarStudio;
+      });
+    return true;
+  }
+
+  function rioBuildShopping(site,room){
+    const x=site.w*.28,z=site.d*.15,w=Math.min(5.5,site.w*.24);
+    for(const [index,title,slot] of [[-1,'MODA', 'top'],[1,'CALÇADOS','shoes']]){
+      const counter=rioCounter(room,index*x,z,w,index<0?0x76516a:0x4d677f);
+      room.sign(title,index*x,2.52,z-.38,w,.45,index<0?'#69445d':'#395569');
+      for(let n=-1;n<=1;n++){
+        room.object(index*x+n*1.49,.68,z-2.3,1.27,1.35,.66,0xb2a496);
+        if(slot==='top'){
+          room.box(index*x+n*1.49,1.63,z-2.3,.56,.60,.19,[0x557b78,0xb1879c,0x94724e][n+1]);
+        }else for(const dx of [-.17,.17])room.box(index*x+n*1.49+dx,1.42,z-2.3,.25,.16,.43,0x394e67);
+      }
+      room.action('store-'+slot,slot==='top'?'Entrar na loja de roupas':'Entrar na sapataria',index*x,z+1.02,
+        ()=>rioWardrobeShop(site,room,counter,slot),{inside:true,icon:slot==='top'?'👕':'👟'});
+    }
+    rioBuildMarket(site,room);
+  }
+
+  function rioBuildOilShop(site,room){
+    const {w,d,yaw}=site,bay=room.point(0,-.55);
+    room.box(0,.035,0,w,.07,d,0x636c6e);
+    for(const side of [-1,1]){
+      room.object(side*(w/2-.2),2.1,0,.35,4.2,d,0xc9c6b1);
+      room.box(side*1.43,.08,.56,.1,.06,5.35,0xecc64d);
+      room.object(side*w*.32,.54,-d*.29,1.5,1.08,.73,0x4e6773);
+    }
+    room.object(0,2.07,-d/2+.16,w,4.14,.32,0xa8b1a9);
+    room.box(0,4.29,0,w+.18,.28,d,0x3d554f);
+    room.sign('CACHOEIRA · SUPER TROCA DE ÓLEO',0,3.91,d/2+.1,w-.42,.45,'#315c4c');
+    room.action('oil','Revisar motor e trocar óleo',0,-.55,()=>{
+      const vehicle=currentVehicleRef();
+      const valid=()=>player.vehicle&&rioOwnedRoadVehicle(vehicle)&&currentVehicleRef()===vehicle&&Math.abs(player.car.speed)<.4&&distance2D(player,bay)<2.3;
+      if(!valid()){toast('Pare seu carro dentro da baia demarcada.','info',2100);return false;}
+      const record=workshopComponentRecord(vehicle);
+      if(record.parts.engine>=100){toast('O motor está revisado.','good',1900);return false;}
+      openModal(site.name,'<p>Troca de óleo e revisão do motor por 12 moedas.</p><button class="btn primary" data-rio-oil-confirm>Confirmar revisão</button>',root=>{
+        root.querySelector('[data-rio-oil-confirm]').onclick=event=>{
+          if(event.currentTarget.disabled||!valid()||record.parts.engine>=100||state.profile.coins<12)return;
+          event.currentTarget.disabled=true;record.parts.engine=Math.min(100,record.parts.engine+18);
+          const durability=Math.max(vehicleDurabilityV704(vehicle),workshopPartsOverall(record.parts));
+          setVehicleDurabilityV704(vehicle,durability,'revisao-de-oleo');record.lastDurability=durability;
+          addCoins(-12);rioCountVisit(site);closeModal();toast('Revisão registrada no veículo.','good',2200);
+        };
+      });
+    },{vehicleOnly:true,icon:'🛠️',radius:2.3});
+  }
+
+  // ===== MODULE: 96-rio-airport.js =====
+  const rioFlightSpawns=new Map();
+  function rioBuildAirport(){
+    const airport=rioMap.data.airport,site=rioSiteByKey('aeroporto-sbsr');
+    if(!airport?.runway?.length||!site)return;
+    const surface=rioSurfaceBatch(),root=new THREE.Group();root.name='RIO_AIRPORT_SBSR';worldGroup.add(root);
+    for(const apron of airport.aprons)surface.polygon('street',apron,.028);
+    const a=airport.runway[0],b=airport.runway.at(-1),length=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    const dx=(b[0]-a[0])/length,dz=(b[1]-a[1])/length,yaw=Math.atan2(dx,dz);
+    const point=(along,side,y)=>[a[0]+dx*along-dz*side,y,a[1]+dz*along+dx*side];
+    const band=(kind,from,to,side,width,y)=>surface.quad(kind,point(from,side-width/2,y),point(to,side-width/2,y),
+      point(to,side+width/2,y),point(from,side+width/2,y));
+    band('street',0,length,0,35,.025);
+    for(const side of [-17,17])band('paint',14,length-14,side,.24,.030);
+    for(let offset=45;offset<length-45;offset+=28)band('paint',offset,offset+12,0,.53,.031);
+    for(const offset of [18,length-23])for(const side of [-7.5,-4.5,-1.5,1.5,4.5,7.5])band('paint',offset,offset+4.8,side,1.25,.032);
+    surface.commit(root);
+    for(const [name,offset] of [['07',33],['25',length-33]]){
+      const [x,,z]=point(offset,0,0);
+      const number=new THREE.Mesh(new THREE.PlaneGeometry(8,4),new THREE.MeshBasicMaterial({map:signTexture(name,'#4d585c','#ffffff')}));
+      number.position.set(x,.036,z);number.rotation.set(-Math.PI/2,0,-yaw+(name==='07'?Math.PI:0));root.add(number);
+    }
+    const [planeX,,planeZ]=point(length-78,0,0);
+    const apron=airport.aprons[0][0],heli=apron.reduce((p,[x,z])=>({x:p.x+x/apron.length,z:p.z+z/apron.length}),{x:0,z:0});
+    rioFlightSpawns.set('plane',{x:planeX,z:planeZ,yaw:yaw+Math.PI});
+    rioFlightSpawns.set('helicopter',{...heli,yaw});
+    const fleet=new THREE.Group();fleet.name='SBSR_AIRCRAFT';worldGroup.add(fleet);worldCampaign.aircraft=fleet;
+    for(const [id] of rioFlightSpawns){
+      const model=campaignCreateAircraft(id);model.name=id;fleet.add(model);
+      registerInteractable({id:'rio-aircraft-'+id,type:'activity-venue',icon:id==='plane'?'✈️':'🚁',
+        label:id==='plane'?'Embarcar no avião':'Embarcar no helicóptero',radius:6,
+        getPos:()=>campaignAircraftPose(id),available:()=>!otGames.active&&!player.vehicle&&!player.boating&&!player.swimming,
+        action:()=>campaignBoardAircraft(id)});
+    }
+    campaignSyncAircraft();
+  }
+
+  const beforeRioAirportPose=campaignAircraftPose;
+  campaignAircraftPose=function(id){
+    if(!inRioMap())return beforeRioAirportPose(id);
+    const spawn=rioFlightSpawns.get(id);
+    if(!spawn)return null;
+    const record=rioMapSave().aircraft?.[id];
+    return {...WORLD_CAMPAIGN_AIRCRAFT[id],...(record||spawn)};
+  };
+  const beforeRioAirportBoard=campaignBoardAircraft;
+  campaignBoardAircraft=function(id){return inRioMap()?airOriginalBoard(id):beforeRioAirportBoard(id);};
+  const beforeRioAirportPark=campaignParkAircraft;
+  campaignParkAircraft=function(id,body){
+    if(!inRioMap())return beforeRioAirportPark(id,body);
+    if(!rioFlightSpawns.has(id))return false;
+    (rioMapSave().aircraft??={})[id]={x:body.x,z:body.z,yaw:body.yaw,hp:body.hp};
+    saveState(true);campaignSyncAircraft();return true;
+  };
+
+  function rioBuildAirportTerminal(site,room){
+    const offset=Math.min(site.w*.21,4.3),z=-site.d*.22;
+    rioCounter(room,-offset,z,Math.min(site.w*.32,4.3));
+    room.sign('BALCÃO DE EMBARQUE',-offset,2.4,z-.32,Math.min(site.w*.39,5.1),.49);
+    room.bench(offset,z-1.8);
+    const point=room.point(-offset,z+1.02);
+    room.action('terminal','Consultar voos e portões',-offset,z+1.02,()=>{
+      if(!rioPlayerAt(point))return false;
+      openModal(site.name,'<div class="choice-grid"><button class="choice" data-rio-airport="plane"><b>Avião</b><span>Marcar aeronave junto à pista 07/25</span></button><button class="choice" data-rio-airport="helicopter"><b>Helicóptero</b><span>Marcar o pátio de embarque</span></button><button class="choice" data-rio-airport="aviation"><b>Aero Strike WAR</b><span>Abrir a escola de voo do console</span></button></div>',root=>{
+        for(const button of root.querySelectorAll('[data-rio-airport]'))button.onclick=()=>{
+          const id=button.dataset.rioAirport;if(id==='aviation'){closeModal();return venueOpen(id);}
+          const pose=campaignAircraftPose(id);
+          if(pose)rioSetWaypoint({id:'rio-aircraft-'+id,name:id==='plane'?'Avião · SBSR':'Helicóptero · SBSR',x:pose.x,z:pose.z});
+        };
+      });
+      return true;
+    },{inside:true,icon:'✈️'});
+    rioVenues.set('aviation',{...WORLD_ACTIVITY_VENUES.aviation,x:point.x,z:point.z,navX:point.x,navZ:point.z,label:site.name});
+  }
+
+  function rioStepFlight(dt){
+    updateOtGames(dt);
+    if(otGames.active&&performance.now()>=rioMap.lastStream){
+      rioMap.lastStream=performance.now()+66;rioStreamMap(otGames.body);campaignSyncAircraft();
+    }
+  }
+
+  // ===== MODULE: 97-rio-map-entrances.js =====
+  const RIO_HOUSE_USE=new Set(['house','residential','detached','terrace','apartments','semidetached_house']);
+
+  function rioAmbientWallHit(building,x,z,radius){
+    const {door,rings}=building;
+    for(const ring of rings)for(let i=0;i<ring.length;i++){
+      const p=rioSegmentProjection(x,z,ring[(i+ring.length-1)%ring.length],ring[i]);
+      if(Math.hypot(p.x-x,p.z-z)>radius+.075)continue;
+      if(ring===rings[0]&&i===door.edge&&Math.hypot(door.x-p.x,door.z-p.z)<.73-radius)continue;
+      return true;
+    }
+    return false;
+  }
+
+  function rioNearestBuildingDoor(){
+    let best=null,distance=3.2;
+    for(const building of rioMap.geo.doors.query(player.x,player.z,3.3)){
+      const d=distance2D(player,building.door.outside);
+      if(d<distance&&!positionBlockedForPlayer(building.door.outside.x,building.door.outside.z,.37,{ignoreTraffic:true})){best=building;distance=d;}
+    }
+    return best;
+  }
+  function rioOpenAmbientDoor(){
+    const building=rioNearestBuildingDoor();
+    if(!building)return false;
+    const {door,kind}=building,available=()=>running&&!player.vehicle&&!player.boating&&!player.swimming&&
+      distance2D(player,door.outside)<3.25&&!characterActivities.session;
+    if(!available())return false;
+    if(RIO_HOUSE_USE.has(kind))return rioPropertyDoor({id:door.id,name:'Residência · Rio Preto',price:290+building.id%120,available,
+      enter:()=>rioEnterAmbientRoom(building)});
+    return rioEnterAmbientRoom(building);
+  }
+
+  function rioEnterAmbientRoom(building){
+    const {door,rings}=building;
+    rioCloseAmbientRoom();
+    const root=new THREE.Group();root.name='RIO_MAPPED_INTERIOR';worldGroup.add(root);
+    const shell=rioSurfaceBatch();shell.polygon('pedestrian',rings,.035);shell.commit(root);
+    const dummy={id:'mapped-'+door.id,x:door.x,z:door.z,yaw:door.yaw,w:1,d:1};
+    const room=rioSiteLayout(dummy,root);
+    const open={building,room,outside:door.outside};rioMap.activeBuilding=open;
+    rioRefreshBuildingRoofs(building.tileKey);
+    const spots=[[-1.62,-2.6],[1.62,-2.6],[0,-3.45],[-1.17,-1.7],[1.17,-1.7]];
+    const furniture=spots.find(([x,z])=>{
+      const p=room.point(x,z),step=room.point(x,z+.68);
+      return rioWithinFootprint(p.x,p.z,rings,-.76)&&rioWithinFootprint(step.x,step.z,rings,-.53);
+    });
+    if(furniture){
+      const [x,z]=furniture,w=RIO_HOUSE_USE.has(building.kind)?1.24:1.06;
+      room.object(x,.27,z,w,.53,.64,0x897561);
+      room.box(x,.59,z,w-.07,.12,.60,0x637b79);
+      room.box(x,.83,z-.26,w,.42,.12,0x526b69);
+      const seat=room.point(x,z),step=room.point(x,z+.68);
+      room.action('seat','Sentar no interior',x,z+.68,()=>beginCharacterActivity('rio-rest',{
+        target:step,pose:{...seat,y:.63,yaw:door.yaw,sitting:true}
+      }),{radius:1.1,icon:'🪑'});
+    }
+    const text=RIO_HOUSE_USE.has(building.kind)?'RESIDÊNCIA':'RIO PRETO';
+    room.sign(text,0,1.40,-.55,1.33,.25,'#355565');
+    room.batch.commit();
+    if(!rioEnterPlace(door.inside)){rioCloseAmbientRoom();return false;}
+    return true;
+  }
+
+  function rioCloseAmbientRoom(){
+    const open=rioMap.activeBuilding;if(!open)return;
+    rioMap.activeBuilding=null;
+    const {room,building}=open;
+    const removed=new Set(room.colliders),actions=new Set(room.actions);
+    world.colliders=world.colliders.filter(c=>!removed.has(c));
+    world.interactables=world.interactables.filter(action=>!actions.has(action.id));
+    room.root.parent?.remove(room.root);
+    rioDisposeTileObjects(room.root);
+    rioRefreshBuildingRoofs(building.tileKey);
+  }
+
+  function rioUpdateAmbientRoom(){
+    const open=rioMap.activeBuilding;if(!open)return false;
+    const inside=rioWithinFootprint(player.x,player.z,open.building.rings,-.08);
+    if(!inside&&!characterActivities.session&&distance2D(player,open.outside)>1.8)rioCloseAmbientRoom();
+    return inside;
+  }
+
+  function rioBuildAmbientAccess(){
+    registerInteractable({id:'rio-building-door',type:'door',icon:'🚪',label:'Entrar no prédio',radius:3.2,priority:235,
+      getPos:()=>rioNearestBuildingDoor()?.door.outside||{x:Infinity,z:Infinity},
+      getLabel:()=>RIO_HOUSE_USE.has(rioNearestBuildingDoor()?.kind)?'Visitar ou comprar residência':'Entrar no prédio',
+      available:()=>!rioMap.activeBuilding&&!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session,
+      action:rioOpenAmbientDoor});
+  }
+
+  function rioBindBuildingPointer(){
+    const canvas=renderer.domElement,probe=new THREE.Vector3();
+    let press=null;
+    canvas.addEventListener('pointerdown',event=>{
+      if(event.isPrimary&&event.button===0)press={x:event.clientX,y:event.clientY,id:event.pointerId};
+    });
+    canvas.addEventListener('pointercancel',()=>{press=null;});
+    canvas.addEventListener('pointerup',event=>{
+      const start=press;press=null;
+      if(!start||start.id!==event.pointerId||Math.hypot(event.clientX-start.x,event.clientY-start.y)>6||
+        !running||paused||!els.modal.hidden||player.vehicle||player.boating||otGames.active)return;
+      const action=nearestInteractable();
+      if(!action)return;
+      const ambient=action.id==='rio-building-door',site=ambient?null:rioFunctionalSites().find(place=>place.id+'-entrance'===action.id);
+      if(!ambient&&!site)return;
+      const door=ambient?rioNearestBuildingDoor()?.door:null;
+      if(ambient&&!door)return;
+      const x=door?.x??(site.entry[0]-Math.sin(site.yaw)*1.35),z=door?.z??(site.entry[1]-Math.cos(site.yaw)*1.35);
+      const rect=canvas.getBoundingClientRect();probe.set(x,1.05,z).project(camera);
+      if(probe.z<-1||probe.z>1)return;
+      const sx=rect.left+(probe.x+1)*rect.width/2,sy=rect.top+(1-probe.y)*rect.height/2;
+      if(Math.abs(sx-event.clientX)<=32&&Math.abs(sy-event.clientY)<=46)action.action();
+    });
   }
 
 })();

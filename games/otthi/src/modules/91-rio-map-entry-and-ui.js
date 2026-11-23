@@ -21,7 +21,12 @@
     return restored;
   }
   function updateOtthiMapContinue(){
-    setControlText(els.continueBtn,state.settings.lastWorldMap==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
+    setControlText(els.continueBtn,otthiContinueMap()==='rio-preto'?'CONTINUAR EM RIO PRETO':'CONTINUAR NA VILA OT');
+  }
+  function otthiContinueMap(){
+    const selected=new URLSearchParams(location.search).get('map');
+    if(selected==='rio-preto'||selected==='ot')return selected;
+    return state.settings.lastWorldMap==='rio-preto'?'rio-preto':'ot';
   }
   function rioWorldDestination(mode){
     const url=new URL(OTTHI_GAME_LIVE_BASE);
@@ -58,20 +63,32 @@
     rioMap.svgPath??=data.roads.filter(r=>classNames.has(r[1])).map(r=>polyline(r[7].map(i=>data.nodes[i]))).join(' ');
     const bodies=data.water.map(([,rings])=>'<path class="rio-water-shape" d="'+rings.map(ring=>polyline(ring)+'Z').join(' ')+'"/>').join('');
     const active=world.routePath.length&&state.waypoint?'<path class="rio-active-route" d="'+polyline(world.routePath.map(p=>[p.x,p.z]))+'"/>':'';
+    const delivery=phoneDeliveryTracking();
+    const tracking=delivery?'<path class="rio-active-route" style="stroke:#ffbd45" d="'+polyline(delivery.route.map(p=>[p.x,p.z]))+'"/>'+
+      '<circle class="rio-map-point" style="fill:#ffbd45" cx="'+delivery.x+'" cy="'+delivery.z+'" r="66"><title>'+escapeHtml(phoneTrackingText(delivery))+'</title></circle>':'';
     return '<svg class="rio-real-map" viewBox="'+b.minX+' '+b.minZ+' '+(b.maxX-b.minX)+' '+(b.maxZ-b.minZ)+
       '" aria-label="Malha viária mapeada de São José do Rio Preto" role="img">'+bodies+
-      '<path class="rio-mapped-roads" d="'+rioMap.svgPath+'"/>'+active+
+      '<path class="rio-mapped-roads" d="'+rioMap.svgPath+'"/>'+active+tracking+
       rioFunctionalSites().map(p=>'<circle class="rio-map-point" cx="'+p.x+'" cy="'+p.z+'" r="52"><title>'+escapeHtml(p.name)+'</title></circle>').join('')+
       '<circle class="rio-map-player" cx="'+player.x+'" cy="'+player.z+'" r="78"/>'+
       '</svg>';
   }
-  function openRioMapPanel(){
-    const locations=rioFunctionalSites().map(rioMapLocation);
+  function rioMapLocations(){
+    const locations=[...rioFunctionalSites().map(rioMapLocation),...rioCommunityLocations()];
     if(rioMap.course)locations.push({id:'rio-orla-largada',name:'Largada da corrida na Represa',...rioMap.course.start});
     if(rioMap.garage)locations.push({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',
       ...rioMap.garage.counter,category:'Vaga para veículos da sua frota'});
     if(rioMap.waterfront)locations.push({id:'rio-represa-cais',name:'Cais da Represa',...rioMap.waterfront.entry,
       category:'Natação, prancha e embarcações'});
+    return locations;
+  }
+  function rioFindWaypoint(id){
+    const aliases={shop:'regional-mercado_municipal','family-park':'regional-parque_da_represa','my-garage':'rio-fleet-counter'};
+    const place=rioMapLocations().find(location=>location.id===(aliases[id]||id));
+    return place?rioSetWaypoint(place):false;
+  }
+  function openRioMapPanel(){
+    const locations=rioMapLocations();
     locations.sort((a,b)=>distance2D(player,a)-distance2D(player,b));
     const markup=locations.map(place=>'<button class="choice" data-rio-destination="'+place.id+
       '"><b>'+escapeHtml(place.name)+'</b><span>'+escapeHtml(place.category||rioSiteLabels[place.site?.kind]||'300 m na pista da orla')+
@@ -91,6 +108,11 @@
     openModal('São José do Rio Preto','<div class="choice-grid">'+
       '<button class="choice" data-rio-panel-map><b>Mapa e locais</b><span>Escolher o destino e traçar a rota</span></button>'+
       '<button class="choice" data-rio-panel-fleet><b>Minha garagem</b><span>Traçar rota para retirar seus veículos</span></button>'+
+      '<button class="choice" data-rio-panel-workshop><b>Oficina</b><span>Traçar rota para a SOS Valêncio</span></button>'+
+      '<button class="choice" data-rio-panel-emergency><b>Socorro</b><span>Acompanhar ocorrências e treinamentos</span></button>'+
+      '<button class="choice" data-rio-panel-phone><b>Celular</b><span>Comprar, acompanhar encomendas e chamar motorista</span></button>'+
+      '<button class="choice" data-rio-panel-journey><b>Meu caminho</b><span>Acompanhar os objetivos em Rio Preto</span></button>'+
+      '<button class="choice" data-rio-panel-life><b>Vida e atividades</b><span>Família, escola, horta, inventário e ferramentas</span></button>'+
       '<button class="choice" data-rio-panel-clothes><b>Meu personagem</b><span>Roupas e acessórios</span></button>'+
       (equippedTool().id==='none'?'':'<button class="choice" data-rio-panel-hands><b>Mãos vazias</b><span>Guardar a ferramenta atual</span></button>')+
       '<button class="choice" data-rio-panel-settings><b>Configurações</b><span>Áudio, câmera e desempenho</span></button>'+
@@ -101,6 +123,11 @@
         root.querySelector('[data-rio-panel-map]').onclick=()=>{closeModal();openRioMapPanel();};
         root.querySelector('[data-rio-panel-fleet]').onclick=()=>rioAtFleetCounter()?openRioFleetCounter():
           rioSetWaypoint({id:'rio-fleet-counter',name:'Minha garagem · Rio Preto',...rioMap.garage.counter});
+        root.querySelector('[data-rio-panel-workshop]').onclick=()=>rioSetWaypoint({id:'rio-workshop-reception',name:'Oficina SOS Valêncio',...RIO_WORKSHOP_ENTRY});
+        root.querySelector('[data-rio-panel-emergency]').onclick=openRioEmergency;
+        root.querySelector('[data-rio-panel-phone]').onclick=openWorldPhone;
+        root.querySelector('[data-rio-panel-journey]').onclick=openRioJourney;
+        root.querySelector('[data-rio-panel-life]').onclick=openRioActivities;
         root.querySelector('[data-rio-panel-clothes]').onclick=()=>{closeModal();openAvatarStudio();};
         root.querySelector('[data-rio-panel-hands]')?.addEventListener('click',()=>{equipTool('none');closeModal();updateContext(true);});
         root.querySelector('[data-rio-panel-settings]').onclick=()=>{closeModal();openSettings(true);};
@@ -131,7 +158,7 @@
       bounds:rioMap.data?.bounds,source:rioMap.data?.reference,
       roads:rioMap.data?.roads.length,buildings:rioMap.data?.buildings.length,water:rioMap.data?.water.length,
       chunks:rioMap.tiles.size,loadedPlaces:[...rioMap.sites.keys()],
-      actors:{residents:[...rioCityActors.folks.values()].flat().length,traffic:[...rioCityActors.traffic.values()].flat().length,animals:rioCityActors.animals.size},
+      actors:{residents:[...rioCityActors.folks.values()].flat().length,traffic:[...rioCityActors.traffic.values()].flat().length,animals:0},
       fleet:rioMap.vehicle?{id:rioMap.vehicle.id,model:rioMap.vehicle.brazilModel}:null,
       craft:[...(world.boats?.values()||[])].filter(boat=>boat.rioBerth).map(boat=>({id:boat.id,kind:boat.kind})),
       swimmers:rioMap.waterfront?.swimmers.length||0,

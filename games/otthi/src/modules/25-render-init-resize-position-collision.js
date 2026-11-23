@@ -104,7 +104,7 @@
     if(!Number.isFinite(x)||!Number.isFinite(z))return true;const bounds=v704WorldBounds();if(x<bounds.minX||x>bounds.maxX||z<bounds.minZ||z>bounds.maxZ)return true;
     if(!options.allowWater&&waterAt(x,z)&&groundHeightAt(x,z)<=.24)return true;
     const separateRio=typeof inRioMap==='function'&&inRioMap();
-    if(separateRio&&rioFootprintBlock(x,z,radius))return true;
+    if(separateRio&&rioFootprintBlock(x,z,radius,!player.vehicle&&!options.ignoreActor))return true;
     for(const c of nearbyWorldColliders(x,z,radius)){
       if(c.disabled)continue;if(options.ignoreHouseId&&c.houseId===options.ignoreHouseId)continue;
       if(c.houseId&&currentHouse&&c.houseId===currentHouse.id)continue;

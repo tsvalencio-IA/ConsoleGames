@@ -1,10 +1,11 @@
 /** Real street graph and footprint queries for the independently loaded Rio Preto map. */
 // @otthi-module-body
-  const rioMap={
+  // Legacy layout points are initialized earlier in the compiled script.
+  var rioMap={
     active:false,data:null,geo:null,tiles:new Map(),sites:new Map(),lastStream:0,
     order:null,legacyWaypoint:null,vehicle:null
   };
-  function inRioMap(){return rioMap.active;}
+  function inRioMap(){return !!rioMap?.active;}
   function rioMapSave(){
     const saved=state.cityServices.rioMap??={version:2,position:null,visits:{},waypoint:null};
     if(saved.version===1){delete saved.vehicle;saved.version=2;}
@@ -65,19 +66,26 @@
     return inside;
   }
   function rioWithinFootprint(x,z,rings,radius=0){
-    if(rioInsideRing(x,z,rings[0])&&!rings.slice(1).some(hole=>rioInsideRing(x,z,hole)))return true;
-    if(radius<=0)return false;
+    const inside=rioInsideRing(x,z,rings[0])&&!rings.slice(1).some(hole=>rioInsideRing(x,z,hole));
+    if(radius>=0&&inside)return true;
+    if(!radius||radius<0&&!inside)return false;
     for(const ring of rings)for(let i=0,j=ring.length-1;i<ring.length;j=i++){
       const closest=rioSegmentProjection(x,z,ring[j],ring[i]);
-      if((x-closest.x)**2+(z-closest.z)**2<radius*radius)return true;
+      if((x-closest.x)**2+(z-closest.z)**2<radius*radius)return radius>0;
     }
-    return false;
+    return inside;
   }
 
   const rioPedestrianClasses=new Set(['footway','path','pedestrian','cycleway','steps']);
   const rioCityTileSize=160;
+  function rioMapDoorLayout(data){
+    if(!data)return null;
+    const [edge,fraction,yaw,x,z,id]=data,s=Math.sin(yaw),c=Math.cos(yaw);
+    return {edge,fraction,yaw,x,z,id,outside:{x:x+s*1.22,z:z+c*1.22},inside:{x:x-s*1.10,z:z-c*1.10}};
+  }
+
   function indexRioGeography(data){
-    const roads=rioSpatialGrid(50),buildings=rioSpatialGrid(32),water=rioSpatialGrid(95),tiles=new Map();
+    const roads=rioSpatialGrid(50),buildings=rioSpatialGrid(32),doors=rioSpatialGrid(12),water=rioSpatialGrid(95),tiles=new Map();
     const points=data.nodes,adjacency=points.map(()=>[]);
     const at=(x,z)=>{
       const ix=Math.floor(x/rioCityTileSize),iz=Math.floor(z/rioCityTileSize),key=ix+':'+iz;
@@ -102,16 +110,18 @@
         }
       }
     }
-    for(const [id,height,kind,rings] of data.buildings){
-      const bounds=rioCoordinateBounds(rings[0]),building={id,height,kind,rings};
-      tileAtBounds(bounds).buildings.push(building);
+    for(const [id,height,kind,rings,entry] of data.buildings){
+      const bounds=rioCoordinateBounds(rings[0]),tile=tileAtBounds(bounds),door=rioMapDoorLayout(entry);
+      const building={id,height,kind,rings,door,tileKey:tile.key};
+      tile.buildings.push(building);
       buildings.insert(building,bounds);
+      if(door)doors.insert(building,[door.outside.x-.25,door.outside.z-.25,door.outside.x+.25,door.outside.z+.25]);
     }
     for(const [id,rings] of data.water)water.insert({id,rings},rioCoordinateBounds(rings[0]));
     for(const [id,kind,rings] of data.parks)tileAtBounds(rioCoordinateBounds(rings[0])).parks.push({id,kind,rings});
     for(const point of data.trees)at(...point).trees.push(point);
     for(const site of data.sites)at(site.x,site.z).sites.push(site);
-    return {roads,buildings,water,tiles,adjacency};
+    return {roads,buildings,doors,water,tiles,adjacency};
   }
   function rioRoadAt(x,z,margin=0,predicate=()=>true){
     for(const segment of rioMap.geo.roads.query(x,z,Math.max(0,margin))){
@@ -132,8 +142,12 @@
   function rioTerrainY(x,z){
     return Math.max(rioDockSurface(x,z),rioRoadAt(x,z,.12,road=>road.bridge)?.bridge ? .27 : 0);
   }
-  function rioFootprintBlock(x,z,radius){
-    for(const building of rioMap.geo.buildings.query(x,z,radius))if(rioWithinFootprint(x,z,building.rings,radius))return true;
+  function rioFootprintBlock(x,z,radius,interior=false){
+    for(const building of rioMap.geo.buildings.query(x,z,radius)){
+      if(interior&&rioMap.activeBuilding?.building===building){
+        if(rioAmbientWallHit(building,x,z,radius))return true;
+      }else if(rioWithinFootprint(x,z,building.rings,radius))return true;
+    }
     return false;
   }
   function nearestRioRoad(pos,walking=false){

@@ -43,6 +43,7 @@
     return {id,x,z,heading:0,moving:0,group,mesh,shadow,bones,joints,scale,path:[],routeAt:0,vertices:triangles.length,uniqueVertices:pos.length/3};
   }
   function familyHomeLocation(){
+    if(typeof inRioMap==='function'&&inRioMap())return RIO_FAMILY_HOME;
     // A new free lot is selected without moving a road, house or existing activity.
     for(const x of [-38,-40,-34,-44,-32])for(const z of [-24,-28,-32,-16]){
       if(waterAt(x,z)||v704RoadAt(x,z,1,false))continue;
@@ -69,10 +70,10 @@
     for(const [id,dx,dz] of [['thiago',-1,5.2],['thamis',1,5.3],['luna',-1.6,6.7],['liz',1.4,6.8]])familyWorld.actors[id]=familyCreateActor(id,location.x+dx,location.z+dz);
     registerInteractable({id:'thia-family',type:'family',icon:'🐾',label:'Aventuras com Thiago, Thamis, Luna e Liz',x:location.x,z:location.z+6,radius:4,priority:385,action:openFamilyAdventure});
     familyWorld.toyMesh=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),new THREE.MeshStandardMaterial({color:0xf7ba47,roughness:.45}));familyWorld.toyMesh.visible=false;worldGroup.add(familyWorld.toyMesh);
-    familyWorld.ready=true;familyWorld.restoreParty=!!familyProgress().party;familyCreateEntry();
+    familyWorld.ready=true;familyWorld.restoreParty=!(typeof inRioMap==='function'&&inRioMap())&&!!familyProgress().party;familyCreateEntry();
     if(familyCharacterId(state.avatar?.bodyStyle)&&typeof applyAvatarCustomization==='function')applyAvatarCustomization();
     for(const ghost of world.ghosts?.values?.()||[])if(familyCharacterId(ghost.userData.target?.avatar?.bodyStyle)){ghost.userData.avatarSignature='';applyRemoteAvatarIfChanged(ghost,ghost.userData.target.avatar);}
-    if(new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
+    if(!(typeof inRioMap==='function'&&inRioMap())&&new URLSearchParams(locationSearch()).get('family')==='1')familyRoute('family-home');
   }
   function familyCreateEntry(){
     if(typeof document.getElementById!=='function'||document.getElementById('family-world-entry'))return;
@@ -242,7 +243,7 @@
       clear=actor.lineProbe.clear;
     }
     if(!clear&&distance>1.4){
-      if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
+      if(familyWorld.clock-actor.routeAt>1.2||!actor.path.length){actor.path=typeof inRioMap==='function'&&inRioMap()?rioGeoRoute(actor,target,true,{connect:true}):buildRoutePoints(actor,{x:target.x,z:target.z,navX:target.x,navZ:target.z});actor.routeAt=familyWorld.clock;}
       while(actor.path.length&&Math.hypot(actor.path[0].x-actor.x,actor.path[0].z-actor.z)<1.1)actor.path.shift();
       if(actor.path.length)dest=actor.path[0];
     }else actor.path=[];

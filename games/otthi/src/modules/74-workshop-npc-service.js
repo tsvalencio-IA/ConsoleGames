@@ -32,15 +32,15 @@
   workshopClearVehicleYardMeta(vehicle);vehicle.occupied=false;vehicle.group.visible=false;record.serviceStatus='delivered';record.operatorReleasedAt=now;record.npcCollectedAt=now;record.npcAutoPhase='delivered';
   const actor=(world.ottoviasTraffic||[]).find(a=>String(a.id)===String(vehicle.trafficActorId||''));
   if(actor){delete trafficLocalClaims()[actor.id];actor.taken=!!trafficClaimOwner(actor.id);actor.group.visible=!actor.taken;world.trafficSnapshot=null;}
-  delete state.vehicles.parked?.[String(vehicle.id)];
+  if(!(typeof inRioMap==='function'&&inRioMap()))delete state.vehicles.parked?.[String(vehicle.id)];
   workshopNpcLog(vehicle,record.unrepairable?'npc-collected-towed':'npc-collected',now);
  }
  function updateWorkshopNpcService(){
   const now=Date.now();if(!workshopBays.restored||now-workshopNpcService.lastAt<1000)return;workshopNpcService.lastAt=now;
-  let changed=false,active=(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&state.vehicles?.workshopComponents?.[v.id]?.npcAutoPhase==='repairing').length;
+  let changed=false,active=(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&workshopMapState().workshopComponents?.[v.id]?.npcAutoPhase==='repairing').length;
   for(const vehicle of world.vehicles||[]){
    if(!vehicle?.group||workshopIsCurrentUserVehicle(vehicle))continue;
-   const record=state.vehicles?.workshopComponents?.[String(vehicle.id)];if(!record)continue;
+   const record=workshopMapState().workshopComponents?.[String(vehicle.id)];if(!record)continue;
    const lift=(world.workshopLifts||[]).find(l=>String(l.vehicleId)===String(vehicle.id));
    const claim=vehicle.trafficActorId&&trafficClaimOwner(vehicle.trafficActorId);
    if(claim&&claim!==sharedWorldOwnId())continue;
@@ -66,7 +66,7 @@
  workshopStartMechanicAction=function(vehicle,options={}){const result=workshopNpcActionBefore(vehicle,options);if(result&&vehicle&&!options.remote&&!workshopIsCurrentUserVehicle(vehicle)){const record=workshopComponentRecord(vehicle);record.npcAutoDueAt=Date.now()+workshopNpcService.graceMs;record.npcAutoPhase='waiting';saveState(true);}return result;};
  const workshopNpcHistoryBefore=workshopServiceHistoryLabel;
  workshopServiceHistoryLabel=function(result){return({'npc-repaired':'🔧 Reparado pela equipe','npc-collected':'🚗 Devolvido ao NPC','npc-collected-towed':'🚚 Retirado pelo NPC com reboque'})[result]||workshopNpcHistoryBefore(result);};
- function workshopNpcWasCollected(vehicle){const record=state.vehicles?.workshopComponents?.[vehicle.id];return!!record&&!workshopIsCurrentUserVehicle(vehicle)&&record.serviceStatus==='delivered'&&Number(record.npcCollectedAt||0)>=Number(record.serviceOpenedAt||1)&&!(vehicle.trafficActorId&&trafficLocalClaims()[vehicle.trafficActorId])&&!(player.vehicle&&String(player.car?.id)===String(vehicle.id));}
+ function workshopNpcWasCollected(vehicle){const record=workshopMapState().workshopComponents?.[vehicle.id];return!!record&&!workshopIsCurrentUserVehicle(vehicle)&&record.serviceStatus==='delivered'&&Number(record.npcCollectedAt||0)>=Number(record.serviceOpenedAt||1)&&!(vehicle.trafficActorId&&trafficLocalClaims()[vehicle.trafficActorId])&&!(player.vehicle&&String(player.car?.id)===String(vehicle.id));}
  const workshopNpcVisibilityBefore=updateParkedVehicleVisibility;
  updateParkedVehicleVisibility=function(...args){workshopNpcVisibilityBefore(...args);for(const v of world.vehicles||[]){v.npcServiceCollected=workshopNpcWasCollected(v);if(v.npcServiceCollected)v.group.visible=false;}};
- window.OT_WORKSHOP_NPC_SERVICE={diagnostics:()=>({graceMs:workshopNpcService.graceMs,repairMs:workshopNpcService.repairMs,collectionMs:workshopNpcService.collectionMs,vehicles:(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&state.vehicles?.workshopComponents?.[v.id]?.npcAutoPhase).map(v=>{const r=state.vehicles.workshopComponents[v.id];return{id:v.id,phase:r.npcAutoPhase,visible:v.group.visible,durability:vehicleDurabilityV704(v),collectedAt:r.npcCollectedAt||0};})})};
+ window.OT_WORKSHOP_NPC_SERVICE={diagnostics:()=>({graceMs:workshopNpcService.graceMs,repairMs:workshopNpcService.repairMs,collectionMs:workshopNpcService.collectionMs,vehicles:(world.vehicles||[]).filter(v=>!workshopIsCurrentUserVehicle(v)&&workshopMapState().workshopComponents?.[v.id]?.npcAutoPhase).map(v=>{const r=workshopMapState().workshopComponents[v.id];return{id:v.id,phase:r.npcAutoPhase,visible:v.group.visible,durability:vehicleDurabilityV704(v),collectedAt:r.npcCollectedAt||0};})})};

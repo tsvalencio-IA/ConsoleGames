@@ -11,6 +11,8 @@
     mall:{wall:0xd1c2a6,trim:0x498084,roof:0x777b73,floor:0xbebbae,height:5.4},
     reception:{wall:0xd4d9d2,trim:0x668887,roof:0x7e9190,floor:0xc5cec5,height:4.1},
     station:{wall:0xb0babe,trim:0x435c69,roof:0x627985,floor:0xafb8ba,height:5},
+    airport:{wall:0xd1d8dd,trim:0x365e76,roof:0x6e8088,floor:0xa7adb3,height:5.7,sign:'AEROPORTO PROF. ERIBELTO MANOEL REINO'},
+    residence:{wall:0xddc5a5,trim:0x6e6054,roof:0x995540,floor:0xc6ad8e,height:3.2},
   };
   const rioDiningStock=[
     {id:'meal',name:'Prato da casa',price:24,hunger:42},
@@ -19,14 +21,15 @@
   ];
   const rioSiteLabels={
     market:'Percorrer as bancas e comprar alimentos',dining:'Pedir no balcão e consumir à mesa',
-    bakery:'Comprar pães no balcão',church:'Entrar na nave, ver o vitral e sentar',
+    bakery:'Comprar pães ou consumir à mesa com atendimento',church:'Visitar a nave, as obras e os altares',
     civic:'Solicitar e retirar um protocolo do jogo',theater:'Retirar ingresso e acender o palco na cabine',
-    exhibition:'Retirar ingresso e visitar a exposição',mall:'Comprar no balcão do jogo',
+    exhibition:'Retirar ingresso e visitar a exposição',mall:'Percorrer as lojas de roupas e calçados',
     reception:'Retirar uma senha e usar a recepção',station:'Consultar o painel e alcançar a plataforma',
     fuel:'Entrar no pátio e abastecer o carro na bomba',stadium:'Jogar futebol 4 × 4',
     practice:'Entrar no gramado e treinar chutes',square:'Descansar em um banco da praça',
     garden:'Percorrer o caminho e cuidar dos vasos',trail:'Largar para os seis checkpoints da Represa',
-    statue:'Aproximar-se da escultura e observar a orla'
+    statue:'Aproximar-se da escultura e observar a orla',airport:'Terminal, pátio, pista 07/25 e aviação',
+    residence:'Visitar, comprar e usar os cômodos', 'oil-shop':'Entrar com o carro para revisar o motor'
   };
   const rioPaint={
     window:0x426979,glass:0x7dafa9,metal:0x3f5055,white:0xf1e6cf,wood:0x8b5840,
@@ -58,7 +61,7 @@
     function bench(x,z){
       draw.bench(x,z);collider(x,z,2.2,.58,1.03);
     }
-    return {...draw,bench,batch,root,colliders,actions,lights,object,action,collider,forSite};
+    return {...draw,site,bench,batch,root,colliders,actions,lights,object,action,collider,forSite};
   }
 
   function rioSiteContains(site,x,z,pad=0){
@@ -75,7 +78,8 @@
   }
 
   function rioBuildShell(site,room){
-    const p=rioPlaceStyles[site.kind],{w,d}=site,{box,object,sign}=room;
+    const base=rioPlaceStyles[site.kind],p=site.style==='damha'?{...base,wall:0xe3e2d9,trim:0x586364,roof:0x4c585a}:base;
+    const {w,d}=site,{box,object,sign}=room;
     const h=p.height,edge=.27,entry=site.kind==='market'?4.8:Math.min(3.1,w*.4);
     const front=d/2-edge,length=(w-entry)/2,center=(w+entry)/4;
     box(0,.028,0,w,.055,d,p.floor);
@@ -100,7 +104,7 @@
 
     const roof=new THREE.Group();roof.name='RIO_ROOF_'+site.key;room.root.add(roof);
     const cap=rioCreateBatch(roof),top=rioLocal(cap,site);
-    if(['market','church','theater','dining','bakery'].includes(site.kind)){
+    if(['market','church','theater','dining','bakery'].includes(site.kind)||site.kind==='residence'&&site.style!=='damha'){
       top.box(0,h+.06,0,w+.12,.17,d+.12,p.trim);
       top.part('hip',0,h+.66,0,w+.25,1.24,d+.20,p.roof);
     }else top.box(0,h+.16,0,w+.15,.34,d+.15,p.roof);
@@ -161,7 +165,8 @@
   }
   function rioOpenDining(site,room,counter){
     if(!rioPlayerAt(counter))return;
-    const stock=site.key==='canecao_represa'?rioDiningStock:
+    const stock=site.kind==='bakery'?[{id:'bread-coffee',name:'Pão na chapa e café',price:12,hunger:22},
+      {id:'juice',name:'Suco de laranja',price:10,hunger:10},{id:'bread-pack',name:'Pães para levar',price:16,food:3}]:site.key==='canecao_represa'?rioDiningStock:
       [{id:'burger',name:'Hambúrguer',price:14,hunger:38},{id:'juice',name:'Bebida sem álcool',price:10,hunger:10},{id:'parcel',name:'Lanche para levar',price:18,food:2}];
     const order=rioMap.order;
     if(order?.site===site.id){
@@ -183,8 +188,13 @@
         }else{
           const seat=room.seats[0];
           rioMap.order={site:site.id,item,seat};
-          room.servedDish.visible=true;
-          toast('Pedido pronto na mesa 1. Use Ação junto à cadeira.','good',2900);
+          if(room.server){
+            room.server.index=0;room.server.serving=true;room.server.tray.visible=true;
+            toast('A garçonete vai levar seu pedido à mesa 1.','good',2600);
+          }else{
+            room.servedDish.visible=true;
+            toast('Pedido pronto na mesa 1. Use Ação junto à cadeira.','good',2900);
+          }
         }
       };
     });
@@ -215,10 +225,11 @@
     const counterZ=-d/2+1.85;
     const counter=rioCounter(room,0,counterZ,Math.min(4.6,w*.53));
     room.sign('PEDIDOS',0,2.31,counterZ-.37,Math.min(3.4,w*.6),.32);
+    if(site.kind==='bakery')rioBuildBakeryService(site,room,counterZ,x,z);
     room.action('counter','Fazer pedido no balcão',0,counterZ+1.02,()=>rioOpenDining(site,room,counter),{inside:true,icon:'🍽️'});
     const p=marked.approach,dx=p.x-site.x,dz=p.z-site.z,c=Math.cos(site.yaw),s=Math.sin(site.yaw);
     room.action('table','Mesa 1 · sentar e consumir',c*dx-s*dz,s*dx+c*dz,
-      ()=>rioEatAtTable(site,room,marked),{inside:true,icon:'🍽️',available:()=>rioMap.order?.site===site.id});
+      ()=>rioEatAtTable(site,room,marked),{inside:true,icon:'🍽️',available:()=>rioMap.order?.site===site.id&&room.servedDish.visible});
     room.sign('1',-x,1.05,z+.04,.18,.21,'#6b3f31');
   }
 
@@ -314,6 +325,19 @@
       [0x5b8d9d,0xc59d62,0x926d89,0x799693][j]);
     room.action('pew','Sentar no banco da Catedral',lateral,pewZ+.81,()=>rioSitOnBench(site,room,lateral,pewZ),{inside:true});
     room.action('nave','Observar a nave e os vitrais',0,altarZ+1.47,()=>{rioCountVisit(site);toast('Visita à Catedral registrada.','good',2100);},{inside:true});
+    for(const side of [-1,1]){
+      const x=side*Math.min(w*.28,7.5),artZ=altarZ-.48;
+      room.box(x,2.13,artZ,1.17,1.56,.11,0x8c6046);
+      room.box(x,2.13,artZ+.065,.99,1.36,.04,side===1?0xa69759:0x568895);
+      room.box(x,2.31,artZ+.10,.48,.51,.036,0xe5c5a5);
+      room.object(x,.49,altarZ+.25,1.28,.98,.61,0x9e836b);
+      const kneelerZ=altarZ+1.33;
+      room.object(x,.19,kneelerZ,1.17,.38,.45,0xa95c54);
+      room.action('altar-'+side,'Rezar no altar lateral',x,kneelerZ+.75,()=>{
+        const approach=room.point(x,kneelerZ+.75),kneeler=room.point(x,kneelerZ);
+        beginCharacterActivity('rio-rest',{target:approach,pose:{...kneeler,y:.40,yaw:site.yaw+Math.PI,sitting:true},commit:()=>{rioCountVisit(site);return true;}});
+      },{inside:true,icon:'🕯️'});
+    }
   }
 
   function rioBuildFuel(site,room){
@@ -395,13 +419,17 @@
       registerInteractable({id,type:'activity',icon:'🚪',label:'Entrar · '+site.name,x,z,radius:3.2,priority:238,
         available:()=>root.visible&&!player.vehicle&&!player.boating&&!player.swimming&&!characterActivities.session&&
           !room.forSite(player.x,player.z,-.45),
-        action:()=>beginCharacterActivity('rio-entry',{target:inside,walkSpeed:2.8,onArrival:()=>updateContext(true)})});
+        action:()=>site.kind==='residence'?rioResidenceDoor(site,room,inside):rioEnterPlace(inside)});
       room.actions.push(id);
-      if(site.kind==='market'||site.kind==='bakery'||site.kind==='mall')rioBuildMarket(site,room);
-      else if(site.kind==='dining')rioBuildDining(site,room);
+      if(site.kind==='market')rioBuildMarket(site,room);
+      else if(site.kind==='mall')rioBuildShopping(site,room);
+      else if(site.kind==='dining'||site.kind==='bakery')rioBuildDining(site,room);
       else if(site.kind==='church')rioBuildChurch(site,room);
+      else if(site.kind==='residence')rioBuildResidence(site,room);
+      else if(site.kind==='airport')rioBuildAirportTerminal(site,room);
       else rioDeskModel(site,room);
     }else if(site.kind==='fuel')rioBuildFuel(site,room);
+    else if(site.kind==='oil-shop')rioBuildOilShop(site,room);
     else rioBuildOpenSite(site,room);
     room.batch.commit();rioMap.sites.set(site.id,room);
     return room;

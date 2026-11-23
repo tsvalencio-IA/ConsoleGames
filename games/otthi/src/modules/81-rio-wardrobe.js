@@ -9,7 +9,9 @@
       ['sport', 'Camiseta esportiva', '#237e61'],
       ['festival', 'Vestido de festa e leggings', '#ae4c78'],
       ['rain', 'Jaqueta corta-vento', '#da954a'],
-      ['hoodie', 'Moletom com capuz', '#66739c']
+      ['hoodie', 'Moletom com capuz', '#66739c'],
+      ['rio-polo', 'Polo vinho da cidade', '#862e4a'],
+      ['rio-lavanda', 'Camiseta lavanda', '#9f86b2']
     ],
     legs: [
       ['original', 'Roupa original'],
@@ -22,7 +24,9 @@
       ['original', 'Calçado original'],
       ['runner', 'Tênis de corrida', '#45a7a3'],
       ['leather', 'Sapato de couro', '#634432'],
-      ['boot', 'Bota de passeio', '#725543']
+      ['boot', 'Bota de passeio', '#725543'],
+      ['rio-tenis', 'Tênis branco da orla', '#e6dfd5'],
+      ['rio-sapato', 'Sapato azul-marinho', '#263a58']
     ],
     hat: [
       ['original', 'Sem chapéu novo'],
@@ -57,6 +61,8 @@
     top: 'Roupas', legs: 'Calças e bermudas', shoes: 'Calçados', hat: 'Bonés e chapéus',
     glasses: 'Óculos', jewel: 'Colares e brincos', wrist: 'Relógios e pulseiras', bag: 'Mochilas'
   });
+  const RIO_WARDROBE_STORE=Object.freeze({'rio-polo':65,'rio-lavanda':55,'rio-tenis':49,'rio-sapato':68});
+  function rioWardrobeHasItem(id){return !RIO_WARDROBE_STORE[id]||!!state.cityServices?.rioMap?.wardrobePurchases?.[id];}
   const RIO_WARDROBE_PRESETS = Object.freeze({
     original: {label:'Visual original', outfit:{}},
     passeio: {label:'Passeio no bairro', outfit:{top:'linen',legs:'chino',shoes:'leather',hat:'panama',glasses:'copper',jewel:'necklace',wrist:'bracelet'}},
@@ -413,7 +419,7 @@
               <option value="">Personalizar</option>${Object.entries(RIO_WARDROBE_PRESETS).map(([key,preset])=>`<option value="${key}">${preset.label}</option>`).join('')}
             </select></label>
             <div class="rio-wardrobe-slots">${Object.entries(RIO_WARDROBE_CATALOG).map(([slot,choices])=>`
-              <label>${RIO_WARDROBE_LABELS[slot]}<select data-rio-wardrobe-slot="${slot}">${choices.map(([id,label])=>`<option value="${id}">${label}</option>`).join('')}</select></label>
+              <label>${RIO_WARDROBE_LABELS[slot]}<select data-rio-wardrobe-slot="${slot}">${choices.map(([id,label])=>`<option value="${id}" ${rioWardrobeHasItem(id)?'':'disabled'}>${label}${rioWardrobeHasItem(id)?'':' · à venda no shopping'}</option>`).join('')}</select></label>
             `).join('')}</div>
           </div>
         </div>

@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = (-20.811, -49.378)
 METERS_PER_LATITUDE_DEGREE = 111_195.08
 METERS_PER_LONGITUDE_DEGREE = METERS_PER_LATITUDE_DEGREE * math.cos(math.radians(ORIGIN[0]))
-LIMITS = (-49.412, -20.849, -49.3465, -20.774)
+LIMITS = (-49.4145, -20.849, -49.3465, -20.774)
 CAR_ROADS = {
     "motorway": 8.0, "trunk": 8.0, "primary": 8.2, "secondary": 7.3,
     "tertiary": 6.4, "unclassified": 5.8, "residential": 5.7, "living_street": 4.0,
@@ -51,7 +51,17 @@ SITES = {
     "panificacao-zappas-centro": {"ref": "w1123192463", "kind": "bakery", "name": "Zappa’s · unidade do Centro", "ratio": .84},
     "terminal-urbano": {"ref": "r10789981", "kind": "station", "name": "Terminal Urbano", "ratio": .41},
     "upa-jaguare": {"ref": "w1190042324", "kind": "reception", "name": "UPA Jaguaré", "ratio": .80},
+    "aeroporto-sbsr": {"ref": "w424901184", "kind": "airport", "name": "Aeroporto Prof. Eribelto Manoel Reino", "ratio": .71, "street": "Avenida dos Estudantes"},
+    "cachoeira_troca_oleo": {"at": [-20.779792, -49.4043916], "kind": "oil-shop", "size": [13, 9], "street": "Rua Antoninho da Rocha Marmo", "source": "https://www.waze.com/live-map/directions/brazil/state-of-sao-paulo/sao-jose-do-rio-preto/cachoeira-super-troca-de-oleo?to=place.ChIJwx_AehOtvZQRzirbDhrtkXE"},
 }
+
+RESIDENCES = [
+    ("casa-jardim", "Casa do Jardim · Teixeira de Freitas", "home", 905.0, 66.0, 9.3, 7.2, 0.0, 0, "popular"),
+    ("casa-cotegipe", "Casa de varanda · Barão de Cotegipe", "blue", 852.4, 68.5, 10.5, 7.6, math.pi, 380, "popular"),
+    ("casa-vila-ercilia", "Casa térrea · Vila Ercília", "pink", 877.0, 66.0, 9.5, 7.5, -math.pi/2, 450, "popular"),
+    ("casa-damha", "Casa contemporânea · Damha", "cabin", 3147.5, 237.6, 16.0, 10.2, math.pi/2, 1250, "damha"),
+    ("casa-damha-varanda", "Casa com varanda · Damha", "rio-damha-varanda", 3169.4, 147.5, 15.2, 10.9, 0.0, 1490, "damha"),
+]
 
 
 def tags(element):
@@ -242,6 +252,25 @@ def import_map(directory):
             anchor = Point(border.x + vx / distance * 5.5, border.y + vz / distance * 5.5)
         street_point = road.interpolate(road.project(anchor))
         yaw = math.atan2(street_point.x - anchor.x, street_point.y - anchor.y)
+        if kind == "oil-shop":
+            w,d = spec["size"]
+            distance = road.project(anchor)
+            before,after = road.interpolate(distance-1),road.interpolate(distance+1)
+            angle = math.atan2(after.x-before.x,after.y-before.y)+math.pi/2
+            choices = []
+            for along in (0,-5,5,-10,10,-17,17):
+                adjacent = road.interpolate(max(0,distance+along))
+                for sign in (1,-1):
+                    for extra in (3.5,5.5,8.5,12.5):
+                        gap = width/2+d/2+extra
+                        x,z = adjacent.x+sign*math.sin(angle)*gap,adjacent.y+sign*math.cos(angle)*gap
+                        head = math.atan2(adjacent.x-x,adjacent.y-z)
+                        candidate = lot_rect(x,z,head,w,d).buffer(.8)
+                        if not len(road_buffers.query(candidate,predicate="intersects")):
+                            choices.append((Point(x,z).distance(anchor),x,z,head))
+            if choices:
+                _,x,z,yaw = min(choices)
+                anchor = Point(x,z)
         if shape_derived:
             rect = max(polygon_parts(shape), key=lambda p: p.area).minimum_rotated_rectangle
             edges = list(rect.exterior.coords)
@@ -283,6 +312,16 @@ def import_map(directory):
                        "street":road_name,"osm":ref,"plan":"mapped-footprint" if shape_derived else "interpretation",
                        "location":[round(ORIGIN[0]-anchor.y/METERS_PER_LATITUDE_DEGREE,7),round(ORIGIN[1]+anchor.x/METERS_PER_LONGITUDE_DEGREE,7)],
                        "source":spec.get("source", f"https://www.openstreetmap.org/{ {'w':'way','n':'node','r':'relation'}[ref[0]] if ref else 'copyright'}/{ref[1:]}" if ref else "https://www.openstreetmap.org/copyright")})
+    for key,name,property_id,x,z,w,d,yaw,price,style in RESIDENCES:
+        lot = lot_rect(x,z,yaw,w,d)
+        if lot.intersects(reserve_shape) or len(road_buffers.query(lot.buffer(.4),predicate="intersects")):
+            raise ValueError(f"{key} conflicts with nearby land use")
+        _,street,width,road = nearest_public(Point(x,z))
+        projection = road.interpolate(road.project(Point(x,z)))
+        points.append({"id":"regional-"+key,"key":key,"kind":"residence","name":name,"propertyId":property_id,
+                       "price":price,"style":style,"x":x,"z":z,"w":w,"d":d,"yaw":round(yaw,5),
+                       "entry":[round(v,2) for v in local_xy(x,z,yaw,0,d/2+1.1)],
+                       "road":[round(projection.x,2),round(projection.y,2)],"street":street,"plan":"fictional-residence"})
     build, parks, trail = [], [], []
     used_lots = [lot_rect(p["x"], p["z"], p["yaw"], p["w"]+.15, p["d"]+.15) for p in points]
     lot_index = STRtree(used_lots)
@@ -323,11 +362,52 @@ def import_map(directory):
             x,z=coords[node_id]
             if area.covers(Point(x,z)):
                 trail.append([x,z])
+    add_building_doors(build, public_tree, public_lines, road_buffers, water)
+    airport = {"runway": [list(p) for p in points_of(ways[142030176])],
+               "aprons": [rings(p) for ident in (219097651, 781892606) for p in polygon_parts(way_polygon(ident))],
+               "source": "https://ais.decea.mil.br/?codigo=SBSR&i=aerodromos"}
     return {"version":1,"reference":"© OpenStreetMap contributors · ODbL 1.0","coverage":boxes,
             "origin":{"lat":ORIGIN[0],"lon":ORIGIN[1],"metresLat":METERS_PER_LATITUDE_DEGREE,"metresLon":METERS_PER_LONGITUDE_DEGREE},
             "bounds":{"minX":min_x,"maxX":max_x,"minZ":min_z,"maxZ":max_z},
             "nodes":road_nodes,"roads":roads,"water":water_parts,"parks":parks,"buildings":build,
-            "trees":trail,"sites":points}
+            "trees":trail,"sites":points,"airport":airport}
+
+
+def add_building_doors(buildings, public_tree, public_lines, road_buffers, water):
+    """Pick an unobstructed physical entrance and a floor area within each footprint."""
+    polygons = [Polygon(row[3][0], row[3][1:]) for row in buildings]
+    footprints = STRtree(polygons)
+    for index, (row, poly) in enumerate(zip(buildings, polygons)):
+        near = public_lines[int(public_tree.nearest(poly))][3]
+        candidates = []
+        ring = row[3][0]
+        for edge, b in enumerate(ring):
+            a = ring[edge-1]
+            length = math.dist(a,b)
+            if length < 1.62:
+                continue
+            tx,tz = (b[0]-a[0])/length,(b[1]-a[1])/length
+            for ratio in (.5,.25,.75):
+                if min(ratio,1-ratio)*length < .79:
+                    continue
+                x,z = a[0]+tx*length*ratio,a[1]+tz*length*ratio
+                nx,nz = -tz,tx
+                if poly.covers(Point(x+nx*.16,z+nz*.16)):
+                    nx,nz = -nx,-nz
+                outside = Point(x+nx*1.22,z+nz*1.22)
+                inside = Point(x-nx*1.10,z-nz*1.10)
+                if not poly.covers(inside.buffer(.44)) or water.intersects(outside):
+                    continue
+                corridor = LineString([(x,z),outside]).buffer(.48)
+                if any(i != index and polygons[i].intersects(corridor) for i in footprints.query(corridor)):
+                    continue
+                if len(road_buffers.query(outside.buffer(.27),predicate='intersects')):
+                    continue
+                candidates.append((outside.distance(near),edge,ratio,math.atan2(nx,nz),x,z))
+        if candidates:
+            _, edge, fraction, yaw, x, z = min(candidates)
+            footprint_id = f"{row[0]}-{round(poly.centroid.x*10)}-{round(poly.centroid.y*10)}"
+            row.append([edge,round(fraction,5),round(yaw,5),round(x,2),round(z,2),footprint_id])
 
 
 def local_xy(x,z,yaw,dx,dz):

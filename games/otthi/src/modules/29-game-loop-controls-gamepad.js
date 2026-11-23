@@ -283,6 +283,7 @@
   }
 
   function setupControls(){
+    if(typeof inRioMap==='function'&&inRioMap())rioBindBuildingPointer();
     const resetJoy=()=>{input.joyId=null;input.joyX=0;input.joyZ=0;els.joystickKnob.style.transform='translate(-50%,-50%)';};
     els.joystick.addEventListener('pointerdown',e=>{e.preventDefault();if(input.joyId!==null&&input.joyId!==undefined)return;input.joyId=e.pointerId;safePointerCapture(els.joystick,e.pointerId);updateJoy(e);});
     els.joystick.addEventListener('pointermove',e=>{if(e.pointerId===input.joyId)updateJoy(e);});

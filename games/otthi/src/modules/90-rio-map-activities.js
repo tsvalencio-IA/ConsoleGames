@@ -52,16 +52,25 @@
   function rioAtFleetCounter(){
     return !player.vehicle&&!player.boating&&!player.swimming&&rioMap.garage&&distance2D(player,rioMap.garage.counter)<2.65;
   }
+  function rioFleetSavedPose(id){
+    const record=rioMapSave().roadVehicles[id];
+    const valid=record&&!record.stored&&[record.x,record.z,record.heading].every(Number.isFinite)&&
+      !positionBlockedForPlayer(record.x,record.z,1.25,{ignoreTraffic:true,ignoreParkedVehicles:true});
+    return valid?record:RIO_GARAGE_BAY;
+  }
+  function rioRemoveRoadVehicle(vehicle){
+    clearThemedVehicleGeometry(vehicle.group);vehicle.group.parent?.remove(vehicle.group);
+    world.vehicles=world.vehicles.filter(car=>car!==vehicle);
+    world.interactables=world.interactables.filter(action=>action.id!=='vehicle-'+vehicle.id);
+    if(world.vehicle===vehicle)world.vehicle=null;
+    if(rioMap.vehicle===vehicle)rioMap.vehicle=null;
+    world.trafficSnapshot=null;
+  }
   function rioSyncFleetPresent(vehicle,pose){
-    if(rioMap.vehicle&&rioMap.vehicle!==vehicle){
-      const prior=rioMap.vehicle;
-      clearThemedVehicleGeometry(prior.group);prior.group.parent?.remove(prior.group);
-      world.vehicles=world.vehicles.filter(car=>car!==prior);
-      world.interactables=world.interactables.filter(action=>action.id!=='vehicle-'+prior.id);
-    }
     world.vehicle=vehicle;
     rioMap.vehicle=vehicle;
     rioMapSave().roadVehicleId=vehicle.id;
+    rioRoadVehicleSave(vehicle.id).stored=false;
     setGarageVehicleStored(vehicle,false);
     vehicle.group.position.set(pose.x,rioTerrainY(pose.x,pose.z),pose.z);
     vehicle.group.rotation.y=pose.heading;
@@ -70,13 +79,11 @@
   }
   function rioRestoreOwnedFleet(){
     if(!rioMap.garage||player.vehicle||rioOwnedRoadVehicle(rioMap.vehicle))return;
-    if(rioMap.vehicle)setGarageVehicleStored(rioMap.vehicle,true);
+    if(rioMap.vehicle)rioRemoveRoadVehicle(rioMap.vehicle);
     const entries=garageOwnedEntries(),saved=rioMapSave();
     const entry=entries.find(e=>e.id===saved.roadVehicleId)||entries.find(e=>e.id===state.vehicles.primaryId)||entries[0];
-    if(!entry)return;
-    const record=saved.roadVehicles[entry.id],valid=record&&[record.x,record.z,record.heading].every(Number.isFinite)&&
-      !positionBlockedForPlayer(record.x,record.z,1.4,{ignoreTraffic:true,ignoreParkedVehicles:true,allowWater:false});
-    const pose=valid?record:RIO_GARAGE_BAY;
+    if(!entry||saved.roadVehicles[entry.id]?.stored)return;
+    const pose=rioFleetSavedPose(entry.id);
     const car=ensureCatalogVehicle(entry.id,1,pose);
     if(car)rioSyncFleetPresent(car,pose);
     // The pickup counter remains available if an imported car still needs to download.
@@ -92,10 +99,13 @@
       for(const button of choices)button.onclick=async()=>{
         if(!rioAtFleetCounter()||button.disabled)return;
         const entry=entries.find(e=>e.id===button.dataset.rioOwned);
+        const reason=garageStorageBlock(entry.id);
+        if(reason){toast(reason,'warn',2400);return;}
         choices.forEach(choice=>{choice.disabled=true;});
         try{
-          if(!await requestBrazilModel(entry.model)||!button.isConnected||!rioAtFleetCounter()||
-            !state.vehicles.owned.includes(entry.id))return;
+          if(!await requestBrazilModel(entry.model)||!button.isConnected||!rioAtFleetCounter()||garageStorageBlock(entry.id))return;
+          const parked=world.vehicles.find(v=>v.id!==entry.id&&v.group.visible&&distance2D(v.group.position,RIO_GARAGE_BAY)<4.5);
+          if(parked&&(!rioOwnedRoadVehicle(parked)||!storeOwnedVehicle(parked.id,true))){toast('A vaga está ocupada. Libere a passagem para retirar o veículo.','warn',2500);return;}
           const car=ensureCatalogVehicle(entry.id,1,RIO_GARAGE_BAY);
           if(!car)return;
           rioSyncFleetPresent(car,RIO_GARAGE_BAY);closeModal();saveState(true);
@@ -106,6 +116,7 @@
     return true;
   }
   function rioBuildFleetParking(){
+    ensurePlayerGarageState();
     const {x,z,heading}=RIO_GARAGE_BAY,s=Math.sin(heading),c=Math.cos(heading);
     const point=(side,forward)=>({x:x+c*side+s*forward,z:z-s*side+c*forward});
     const root=new THREE.Group();root.name='RIO_OWNED_FLEET';worldGroup.add(root);
@@ -198,7 +209,7 @@
   }
 
   const rioCityActors={
-    traffic:new Map(),folks:new Map(),animals:new Map(),nextAt:0,trafficAcc:0,lifeAcc:0
+    traffic:new Map(),folks:new Map(),nextAt:0,trafficAcc:0,lifeAcc:0
   };
   function rioPedestrianRoute(site,variant=0){
     const p=nearestRioRoad({x:site.x,z:site.z},true);
@@ -237,7 +248,7 @@
       world.interactables=world.interactables.filter(action=>!action.id.startsWith('npc-')||!removed.has(action.id.slice(4)));
       rioCityActors.folks.delete(key);
     }
-    for(const [key,actors] of rioCityActors.traffic)if(!remainsNear(key)){
+    for(const [key,actors] of rioCityActors.traffic)if(!remainsNear(key)&&!actors.some(actor=>actor.incidentLocked||actor.taken)){
       for(const actor of actors){
         brazilDetach(actor.group);disposeDetachedVisual(actor.group);actor.group.parent?.remove(actor.group);
         const index=OTTOVIAS_RUNTIME.traffic.indexOf(actor);
@@ -245,34 +256,6 @@
       }
       rioCityActors.traffic.delete(key);world.trafficSnapshot=null;
     }
-  }
-  function rioCreateCapybara(key,site){
-    const p=rioPedestrianRoute(site);
-    if(!p)return;
-    const base=p[0],other=p[1],length=Math.hypot(other.x-base.x,other.z-base.z);
-    if(length<9)return;
-    const dx=(other.x-base.x)/length,dz=(other.z-base.z)/length;
-    let route=null;
-    for(const side of [-1,1]){
-      const a={x:base.x+dx*5-dz*side*3,z:base.z+dz*5+dx*side*3};
-      const b={x:a.x+dx*4.5,z:a.z+dz*4.5};
-      if(![a,b].some(q=>rioRoadAt(q.x,q.z,.45,r=>!r.pedestrian)||rioWaterAt(q.x,q.z)||rioGeometryBlocked(q.x,q.z,.45))){
-        route=[a,b];break;
-      }
-    }
-    if(!route)return;
-    const root=new THREE.Group();root.name='RIO_FAUNA_CAPIVARA_'+key;worldGroup.add(root);
-    const fur=renderMat(0x8e6744,{roughness:1}),dark=renderMat(0x594339),ge=new THREE.SphereGeometry(1,12,8);
-    const piece=(m,x,y,z,w,h,d)=>{const p=new THREE.Mesh(ge,m);p.position.set(x,y,z);p.scale.set(w,h,d);root.add(p);return p;};
-    piece(fur,0,.62,-.21,.47,.42,.69);piece(fur,0,.78,.40,.36,.36,.38);
-    piece(dark,0,.67,.72,.26,.18,.19);
-    const legs=[];
-    for(const side of [-1,1]){
-      piece(fur,side*.22,1.09,.33,.11,.14,.12);piece(dark,side*.29,.89,.56,.052,.067,.045);
-      for(const z of [-.56,.21])legs.push(piece(fur,side*.30,.28,z,.14,.26,.15));
-    }
-    root.position.set(route[0].x,0,route[0].z);
-    rioCityActors.animals.set(key,{root,legs,route,index:1});
   }
   function rioConnectTraffic(site,index){
     const start={x:site.road[0],z:site.road[1]};
@@ -321,26 +304,24 @@
           ['mercado_municipal','complexo_swift','canecao_represa','posto_brasilia','prefeitura_andalo'].includes(site.key)){
           rioCityActors.traffic.set(site.key,rioConnectTraffic(site,i));
         }
-        if(['dona_capi','parque-da-represa','canecao_represa'].includes(site.key)&&!rioCityActors.animals.has(site.key))rioCreateCapybara(site.key,site);
       }
       updateRioPractice(now);
     }
     rioCityActors.lifeAcc+=dt;
     if(rioCityActors.lifeAcc>=.08){
       const step=Math.min(.12,rioCityActors.lifeAcc);rioCityActors.lifeAcc=0;
-      for(const actor of [...[...rioCityActors.folks.values()].flat(),...rioCityActors.animals.values()]){
+      for(const actor of [...rioCityActors.folks.values()].flat()){
         const pose=actor.npc?.group||actor.root;
         pose.visible=Math.hypot(player.x-pose.position.x,player.z-pose.position.z)<116;
         if(!pose.visible)continue;
         const rate=actor.runner?3.05:actor.npc?1.23:.75;
         rioMoveAmbient(actor,step,rate);
         if(actor.npc)poseResident(actor.npc,actor.runner?'run':'walk',now/1000);
-        else for(const [i,leg] of actor.legs.entries())leg.rotation.x=Math.sin(now*.007+i*Math.PI)*.24;
       }
     }
     rioCityActors.trafficAcc+=dt;
     if(rioCityActors.trafficAcc>=1/14){
       const step=Math.min(.12,rioCityActors.trafficAcc);rioCityActors.trafficAcc=0;
-      const previous=captureTrafficPositions();updateOttoviasTraffic(step);resolveTrafficOverlaps(previous);
+      const previous=captureTrafficPositions();updateOttoviasTraffic(step);resolveTrafficOverlaps(previous);rioStepCityServices(step);
     }
   }

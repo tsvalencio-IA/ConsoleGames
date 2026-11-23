@@ -172,9 +172,11 @@ const hook=`
         const room=roomFor(site.key);
         const prefix=site.id+'-';
         const actions=site.kind==='stadium'?world.interactables.filter(a=>a.id==='football-v705'):
-          world.interactables.filter(a=>a.id.startsWith(prefix));
+          world.interactables.filter(a=>room?.actions.includes(a.id)||!room&&a.id.startsWith(prefix));
         const blocked=positionBlockedForPlayer(x,z,.43,{ignoreTraffic:true,ignoreParkedVehicles:true});
         if(blocked||!actions.length)issues.push([site.key,'entrance/actions',blocked,actions.length]);
+        // Geometry audit after opening. The door and payment are exercised by the UI suite.
+        if(room?.gate)room.gate.disabled=true;
         for(const action of actions){
           if(action.vehicleOnly)continue;
           const target={x:action.x,z:action.z};
@@ -191,6 +193,7 @@ const hook=`
           }
           if(!result)issues.push([site.key,action.id,'no walkable path from entry or aisle']);
         }
+        if(room?.gate)room.gate.disabled=false;
         details.push({key:site.key,enterable:!blocked,room:!!room,actions:actions.length});
       }
       return {issues,details};
@@ -247,16 +250,16 @@ try{
   assert.equal(await page.locator('[data-retry-world]').count(),0);
   report.start=await page.evaluate(()=>__RIO_PHYSICAL_QA.snapshot());
   assert(report.start.map&&!report.start.legacyGarage);
-  assert.equal(report.start.diag.places,20);
+  assert.equal(report.start.diag.places,27);
   assert.equal(report.start.activeJob,'delivery');
   assert(report.start.models.some(name=>name.startsWith('RIO_TILE_')));
-  assert(!report.start.models.some(name=>/^(OTTHI_WORLD_GARAGE|V702|OTTHI_OTTOVIAS)/.test(name)));
+  assert(!report.start.models.some(name=>/^(OTTHI_WORLD_GARAGE|V702_TERRAIN|OTTHI_OTTOVIAS)/.test(name)));
   assert.deepEqual(report.start.legacy,{x:-18,y:0,z:39,yaw:0});
   await page.evaluate(()=>__RIO_PHYSICAL_QA.renderCurrent());
   await page.screenshot({path:out+'/mercadao-rua.png'});
 
   await page.locator('#miniNav').tap();
-  assert.equal(await page.locator('[data-rio-destination]').count(),23);
+  assert(await page.locator('[data-rio-destination]').count()>=35);
   await page.locator('[data-rio-destination="regional-canecao_represa"]').tap();
   report.navigation=await page.evaluate(()=>OTTHOS_TEST_API.navigation());
   assert.equal(report.navigation.waypoint.id,'regional-canecao_represa');

@@ -72,6 +72,10 @@ jobs:
         run: node tests/rio-physical-map-browser.mjs
       - name: Usar o cais e a porta do Canecao com os controles de toque
         run: node tests/rio-map-input-browser.mjs
+      - name: Verificar casas, lojas, padaria, Catedral e embarque no aeroporto de Rio Preto
+        run: node tests/rio-walkable-buildings-browser.mjs
+      - name: Concluir entrega, reboque e socorro físico em Rio Preto
+        run: node tests/rio-city-services-browser.mjs
       - name: Completar as corridas de Mirassol e Cedral no Kart Legends e recarregar os resultados
         run: node tests/rio-regional-races-browser.mjs
       - name: Conferir isolamento dos caches entre instalações
