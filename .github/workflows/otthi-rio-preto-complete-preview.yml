@@ -9,6 +9,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: otthi-rio-build-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   validate-and-build:
     if: github.ref == 'refs/heads/feat/otthi-rio-preto-completo-20261123' || github.ref == 'refs/heads/fix/otthi-rio-preto-recovery-20261123' || github.ref == 'refs/heads/feat/otthi-sims-home-living-20261123' || github.ref == 'refs/heads/feat/otthi-regions-simulator-20261123'
@@ -41,5 +44,7 @@ jobs:
             echo "Native build already synchronized."
           else
             git commit -m 'chore(otthi): sync validated Rio Preto preview runtime'
-            git push origin HEAD:${GITHUB_REF_NAME}
+            git fetch origin "${GITHUB_REF_NAME}"
+          git rebase "origin/${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
           fi
