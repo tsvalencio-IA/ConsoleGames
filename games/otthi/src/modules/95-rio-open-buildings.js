@@ -317,6 +317,53 @@
     };
     room.manageFurniture=openDecorCatalog;
     room.action('decor','Comprar, posicionar e decorar a casa',0,.8,openDecorCatalog,{inside:true,icon:'🪑'});
+
+    // Usable purchased furniture. Actions track moved items, so changing their
+    // coordinates never leaves a phantom interaction at the old location.
+    const furnitureAction={sofa:'sofa',armchair:'sofa',chair:'sofa',lounger:'sofa',
+      bed:'bed',tv:'tv',computer:'tv',table:'eat',fridge:'eat',grill:'cook',
+      desk:'sofa',bookshelf:'sofa'};
+    for(const item of furnishings){
+      const activity=furnitureAction[item.type];
+      if(!activity)continue;
+      const currentPlacement=()=>layoutFor(item,rioPropertyTitle(site.propertyId));
+      const position=()=>{const p=currentPlacement();return room.point(p.x,p.z);};
+      registerInteractable({
+        id:site.id+'-furniture-use-'+item.id,type:'activity',
+        label:'Usar · '+item.name,icon:activity==='bed'?'🛏️':activity==='cook'?'🍳':
+          activity==='eat'?'🍽️':activity==='tv'?'📺':'🛋️',
+        radius:2.05,priority:246,getPos:position,
+        available:()=>room.root.visible&&!player.vehicle&&!player.boating&&
+          !player.swimming&&!characterActivities.session&&
+          room.forSite(player.x,player.z,-.38)&&
+          !!rioPropertyTitle(site.propertyId)?.furniture?.includes(item.id)&&
+          !currentPlacement().stored,
+        action:()=>{
+          if((activity==='cook'||activity==='eat')&&Number(state.inventory.food||0)<1){
+            toast('Você precisa comprar alimentos antes.','info',2000);return;
+          }
+          const p=currentPlacement(),center=room.point(p.x,p.z);
+          const target=room.point(p.x,p.z+Math.min(item.d/2+.45,1.18));
+          const sitting=['sofa','tv','eat'].includes(activity);
+          beginCharacterActivity(activity,{target,pose:{...center,y:activity==='bed'?.74:.55,
+            yaw:yaw+p.rotation*Math.PI/2,sitting,lying:activity==='bed'},
+            commit:()=>{
+              if((activity==='cook'||activity==='eat')&&Number(state.inventory.food||0)<1)return false;
+              if(activity==='bed')state.needs.energy=100;
+              if(activity==='sofa'){
+                state.needs.energy=clamp(Number(state.needs.energy||0)+12,0,100);
+                state.needs.fun=clamp(Number(state.needs.fun||0)+14,0,100);
+              }
+              if(activity==='tv')state.needs.fun=clamp(Number(state.needs.fun||0)+28,0,100);
+              if(activity==='eat'||activity==='cook'){
+                state.inventory.food--;
+                state.needs.hunger=clamp(Number(state.needs.hunger||0)+(activity==='cook'?55:34),0,100);
+              }
+              rioCountVisit(site);saveState(true);updateHUD();return true;
+            }});
+        }
+      });
+    }
     room.action('home-entry','Ver propriedade',0,d*.24,()=>{
       const title=rioPropertyTitle(site.propertyId);
       toast(title?.owned?'Esta casa é sua.':'Residência disponível para compra na porta.','info',2100);
