@@ -469,6 +469,7 @@
   }
 
   function rioV51Visit(p){
+    rioV51World.lastVisit={id:p.id,key:p.key,shape:p.shape,kind:rioV51InteriorKind(p),compact:rioCompactWorld(),at:performance.now()};
     if(RIO_REGIONAL_ACTIVITIES[p.key])return rioRegionalExperience(p);
     if(rioV51InteriorKind(p)&&typeof rioCompactWorld==='function'&&rioCompactWorld()){
       // An action can be invoked before distance-streaming finishes this sector.
@@ -478,10 +479,11 @@
       if(!indoorMall){
         const sector=RIO_V51.sectors[p.sector];
         const root=rioV51World.roots.get(p.sector)||mountRioV51Sector(sector);
+        rioV51World.lastVisit.mounted=true;
         root.visible=true;
         indoorMall=rioV51IndoorMalls.get(p.id);
       }
-      if(indoorMall)return indoorMall.enter();
+      if(indoorMall){rioV51World.lastVisit.enterAttempt=true;const ok=indoorMall.enter();rioV51World.lastVisit.entered=ok;return ok;}
       toast('O interior deste estabelecimento não pôde ser carregado.','warn',2300);
       return false;
     }
@@ -734,6 +736,7 @@
     diagnostics:()=>({places:RIO_V51.places.length,sectors:Object.keys(RIO_V51.sectors).length,
       loaded:[...rioV51World.roots.keys()],visible:[...rioV51World.roots.values()].filter(root=>root.visible).length,
       course:{record:rioStreetRecord(),active:activeRace?.type==='rio-street'?{...activeRace}:null},
+      lastVisit:rioV51World.lastVisit||null,
       shoppingAction:(()=>{
         const id='regional-shopping_cidade_norte',target=world.interactables.find(a=>a.id===id);
         return {running,paused,modalHidden:els.modal.hidden,compact:rioCompactWorld(),
