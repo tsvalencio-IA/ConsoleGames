@@ -145,6 +145,17 @@
     const focus=navigationFocus();
     for(const room of rioMap.sites.values()){
       const {site}=room;
+      if(room.legacyResidence){
+        // Historic homes retain the exact old exterior while the furnished
+        // native room is visible only to the player who entered the door.
+        const inside=!!room.legacyRecord?.inside;
+        room.root.visible=inside;
+        if(inside){
+          if(room.roof)room.roof.visible=false;
+          rioMap.indoors=true;rioMap.indoorRoom=room;
+        }
+        continue;
+      }
       room.root.visible=distance2D(focus,site)<(qualityTier()==='low'?142:195);
       if(!room.root.visible)continue;
       if(room.roof){
