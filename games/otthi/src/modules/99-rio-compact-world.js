@@ -16,6 +16,8 @@
     const yaw=rioCompactYaw[facing],out={x:Math.sin(yaw),z:Math.cos(yaw)},threshold=d/2+1.35;
     const roadDistance=key==='posto_brasilia'?205-x:threshold+5;
     return {key,id,name,kind,style,price,street,x,z,w,d,yaw,
+      // Never change legacy residential save keys; each new condominium gets its own property key.
+      propertyId:key.startsWith('rios_')?id:undefined,
       entry:[x+out.x*threshold,z+out.z*threshold],
       road:[x+out.x*roadDistance,z+out.z*roadDistance]};
   }
@@ -76,7 +78,9 @@
       [-96,11,'AV. BADY BASSITT',0],[-145,7.1,'RUA ANTÔNIO DE GODOY',0],
       [11,-11,'AV. ALBERTO ANDALÓ',-Math.PI/2],[213,6,'AV. MURCHID HOMSI',-Math.PI/2],
       [-65,42,'PARQUE DA REPRESA',0],[152,-17,'BR-153 · TRANSBRASILIANA',Math.PI/2],
-      [90,-154,'SP-310 · WASHINGTON LUÍS',0]
+      [90,-154,'SP-310 · WASHINGTON LUÍS',0],
+      [205,128,'RIOS D’ITALIA · CONDOMÍNIOS',0],
+      [205,197,'RIO CANDELARO · FIORA · SALSO · FORTORE · LIRI · TANARO',0]
     ])createSignpost(x,z,text,yaw);
     createCastleChallengeTokens();
   }
@@ -128,7 +132,7 @@
     const icon={market:'🛒',church:'⛪',civic:'🏛️',trail:'🌳',dining:'🍽️',bakery:'🥐',mall:'🛍️',
       'oil-shop':'🔧',fuel:'⛽',residence:'🏠',airport:'✈️',theater:'🎭',stadium:'⚽',practice:'⚽'};
     return {id:site.id,name:site.name,icon:icon[site.kind]||'📍',group:'Rio Preto',x,z,navX:x,navZ:z,
-      description:[site.street,rioSiteLabels[site.kind]].filter(Boolean).join(' · ')};
+      description:[site.street,site.style==='rios-ditalia'?'Condomínio Rios D’Italia · apartamento mobiliado':rioSiteLabels[site.kind]].filter(Boolean).join(' · ')};
   }
 
   const beforeCompactRioLocations=expansionMapLocations;
