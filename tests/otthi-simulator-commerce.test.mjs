@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const source=readFileSync('games/otthi/src/modules/84-rio-v51-world.js','utf8');
 function setup(){
   const save={properties:{'regional-casa-damha':{owned:true}},constructionOrders:[],constructionInventory:{}};
-  const state={profile:{coins:500}};
+  const state={profile:{coins:500},needs:{fun:35,hygiene:40,energy:60,hunger:70}};
   const world={interactables:[]};
   const model={save,state,world,modal:null,buttons:[]};
   const registered=[];
@@ -27,6 +27,7 @@ function setup(){
     updateWorldExpansion:()=>{},expansionMapLocations:()=>[],
     worldExploreDirectoryHtml:()=>'',worldExploreBindDirectory:()=>{},
     world,running:true,paused:false,player:{vehicle:null,boating:false},state,
+    otGames:{active:false},clamp:(x,a,b)=>Math.min(b,Math.max(a,x)),updateHUD:()=>{},
     compactRio:{sites:[{key:'casa-damha',id:'regional-casa-damha',name:'Casa Damha',kind:'residence',propertyId:'regional-casa-damha',entry:[10,20]}]},
     rioMapSave:()=>save,rioPropertyTitle:id=>save.properties[id],
     registerInteractable:item=>{registered.push(item);world.interactables.push(item);return item;},
@@ -89,4 +90,40 @@ test('delivery pickup survives a re-created World with retained save data',()=>{
   model.world.interactables.length=0;
   vm.runInContext('rioRegisterHomeDelivery(compactRio.sites[0])',ctx);
   assert.equal(registered.length,2);
+});
+
+
+test('Ibirá, Olímpia and Barretos have independent paid experiences with persistently recorded visits',()=>{
+  const {ctx,model}=setup();
+  const catalog=JSON.parse(vm.runInContext('JSON.stringify(RIO_REGIONAL_ACTIVITIES)',ctx));
+  assert.deepEqual(Object.keys(catalog),['termas_ibira','thermas_laranjais','parque_peao_barretos']);
+  const attractions=[
+    ['termas_ibira','Termas de Ibirá'],
+    ['thermas_laranjais','Thermas dos Laranjais'],
+    ['parque_peao_barretos','Parque do Peão']
+  ];
+  let spent=0;
+  for(const [key,name] of attractions){
+    vm.runInContext('rioRegionalExperience('+JSON.stringify({id:'regional-'+key,key,name})+')',ctx);
+    const join=model.single['[data-regional-join]'];
+    assert(join?.onclick,key+' button missing');
+    const ticket=catalog[key].ticket;spent+=ticket;
+    join.onclick();join.onclick(); // no double charge from a repeated click
+    assert.equal(model.save.regionExperience.visits['regional-'+key].count,1);
+    assert.equal(model.save.regionExperience.visits['regional-'+key].spent,ticket);
+  }
+  assert.equal(model.save.regionExperience.paidTotal,spent);
+  assert.equal(model.state.profile.coins,500-spent);
+  assert(model.state.needs.fun>35);
+  assert(model.state.needs.hygiene>40);
+});
+
+test('regional tourism refuses unaffordable visits without spending money or changing needs',()=>{
+  const {ctx,model}=setup();
+  model.state.profile.coins=5;
+  vm.runInContext("rioRegionalExperience({key:'thermas_laranjais',id:'regional-thermas_laranjais',name:'Olímpia'})",ctx);
+  model.single['[data-regional-join]'].onclick();
+  assert.equal(model.state.profile.coins,5);
+  assert.equal(model.state.needs.fun,35);
+  assert.equal(model.save.regionExperience.visits['regional-thermas_laranjais'],undefined);
 });
