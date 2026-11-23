@@ -17163,7 +17163,13 @@ function precompile(T,renderer,scene,camera){
       let indoorMall=rioV51IndoorMalls.get(p.id);
       if(!indoorMall){
         const sector=RIO_V51.sectors[p.sector];
-        const root=rioV51World.roots.get(p.sector)||mountRioV51Sector(sector);
+        let root;
+        try{root=rioV51World.roots.get(p.sector)||mountRioV51Sector(sector);}
+        catch(error){
+          rioV51World.lastVisit.mountError=String(error?.stack||error);
+          toast('Falha ao abrir o interior. Registro disponível no diagnóstico.','warn',2600);
+          return false;
+        }
         rioV51World.lastVisit.mounted=true;
         root.visible=true;
         indoorMall=rioV51IndoorMalls.get(p.id);
