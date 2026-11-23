@@ -69,6 +69,17 @@ test('Rio Preto lots preserve all saved identities and keep doors, streets and t
   assert.equal(info.problems.length,0,JSON.stringify(info.problems.slice(0,12)));
 });
 
+test('all existing residences and all six condominiums keep independent stable ownership keys',()=>{
+  const ctx=compactContext({expansionMapLocations:()=>[],rioMap:{compact:true}});
+  const output=vm.runInContext(source('99-rio-compact-world')+
+    "\nJSON.stringify(RIO_COMPACT_LAYOUT.lots.map(compactRioSite).filter(site=>site.kind==='residence').map(site=>({key:site.key,id:site.id,propertyId:site.propertyId})))",ctx);
+  const result=JSON.parse(output);
+  assert.equal(result.length,11);
+  assert.equal(new Set(result.map(site=>site.propertyId)).size,result.length);
+  for(const site of result)assert.equal(site.propertyId,site.id,'property id cannot silently collapse ownership: '+site.key);
+  assert.equal(result.find(site=>site.key==='casa-damha')?.propertyId,'regional-casa-damha');
+  assert.equal(result.filter(site=>site.key.startsWith('rios_')).length,6);
+});
 test('moving to compact Rio keeps receipts, property and legacy coordinate snapshots',()=>{
   const older={position:{x:2700,z:120},waypoint:{id:'regional-casa-damha'},aboard:{id:'rio-prancha',x:1680,z:-430},
     properties:{'regional-casa-damha':{owned:true,paid:1250}},phoneDelivery:{status:'en-route',vehicleId:'home-green'}};
