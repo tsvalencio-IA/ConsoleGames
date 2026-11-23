@@ -34,18 +34,19 @@ function fixture(siteStyle='rios-ditalia'){
   return {context,room,site,saved,records,dialogs};
 }
 
-test('six condominium apartments have six stable independently purchasable IDs',()=>{
+test('all twenty apartments per condominium have stable independent property IDs',()=>{
   const f=fixture();
   vm.runInContext('rioResidenceDoor(site,room,{x:10,z:20})',f.context);
   assert.equal(f.dialogs.length,1);
   const buttons=f.dialogs[0].buttons;
-  assert.deepEqual(buttons.map(b=>b.dataset.rioApartment),['101','102','201','202','301','302']);
+  const unitNumbers=Array.from({length:5},(_,i)=>i+1).flatMap(floor=>[1,2,3,4].map(door=>String(floor)+'0'+String(door)));
+  assert.deepEqual(buttons.map(b=>b.dataset.rioApartment),unitNumbers);
   for(const button of buttons)button.onclick();
-  assert.equal(f.records.length,6);
+  assert.equal(f.records.length,20);
   const ids=f.records.map(r=>r.id);
-  assert.equal(new Set(ids).size,6);
+  assert.equal(new Set(ids).size,20);
   assert.equal(ids[0],f.site.propertyId,'legacy ownership of the existing first unit is preserved');
-  assert.deepEqual(ids.slice(1),['102','201','202','301','302'].map(n=>f.site.propertyId+'-unit-'+n));
+  assert.deepEqual(ids.slice(1),unitNumbers.slice(1).map(n=>f.site.propertyId+'-unit-'+n));
   for(const record of f.records){
     assert.equal(typeof record.enter,'function');
     assert.equal(typeof record.decorate,'function');
@@ -62,7 +63,7 @@ test('unit selection follows independent saved ownership without mixing furnishi
   buttons[0].onclick();
   assert.equal(f.room.selectedUnitId,f.site.propertyId);
   assert.equal(f.saved[f.room.selectedUnitId].furniture[0],'sofa-modular');
-  buttons[3].onclick();
+  buttons[5].onclick();
   assert.equal(f.room.selectedUnitId,other);
   assert.equal(f.saved[f.room.selectedUnitId].furniture[0],'tv-premium');
   assert.equal(f.saved[f.site.propertyId].furniture[0],'sofa-modular');
