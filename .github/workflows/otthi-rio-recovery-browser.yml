@@ -1,7 +1,7 @@
 name: OTThi Rio Preto - browser acceptance on isolated recovery
 on:
   push:
-    branches: [fix/otthi-rio-preto-recovery-20261123, feat/otthi-sims-home-living-20261123]
+    branches: [fix/otthi-rio-preto-recovery-20261123, feat/otthi-sims-home-living-20261123, feat/otthi-regions-simulator-20261123]
     paths:
       - 'games/otthi/**'
       - 'tests/rio-compact-world-browser.mjs'
